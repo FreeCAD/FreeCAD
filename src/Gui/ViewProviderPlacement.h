@@ -44,8 +44,6 @@ class GuiExport ViewProviderPlacement: public ViewProviderGeometryObject
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPlacement);
 
 public:
-    using ViewProviderGeometryObject::getElementPicked;
-
     /// Constructor
     ViewProviderPlacement();
     ~ViewProviderPlacement() override;
@@ -63,8 +61,7 @@ public:
     /// indicates if the ViewProvider can be selected
     bool isSelectable() const override;
 
-    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
-    bool getElementPicked(
+    bool resolvePickedElement(
         const SoPickedPoint* pp,
         std::string& subname,
         const SelectionPickContext* pickContext

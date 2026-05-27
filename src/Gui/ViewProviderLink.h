@@ -256,8 +256,7 @@ public:
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* prop) override;
     std::vector<App::DocumentObject*> claimChildren() const override;
-    bool getElementPicked(const SoPickedPoint*, std::string&) const override;
-    bool getElementPicked(
+    bool resolvePickedElement(
         const SoPickedPoint*,
         std::string&,
         const SelectionPickContext* pickContext

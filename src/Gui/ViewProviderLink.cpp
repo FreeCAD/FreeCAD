@@ -2854,12 +2854,7 @@ bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const
     return false;
 }
 
-bool ViewProviderLink::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
-{
-    return getElementPicked(pp, subname, nullptr);
-}
-
-bool ViewProviderLink::getElementPicked(
+bool ViewProviderLink::resolvePickedElement(
     const SoPickedPoint* pp,
     std::string& subname,
     const SelectionPickContext* pickContext

@@ -526,8 +526,6 @@ public:
     };
 
 public:
-    using PartGui::ViewProvider2DObject::getElementPicked;
-
     /// constructor
     ViewProviderSketch();
     /// destructor
@@ -813,8 +811,7 @@ protected:
     void startRestoring() override;
     void finishRestoring() override;
 
-    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
-    bool getElementPicked(
+    bool resolvePickedElement(
         const SoPickedPoint* pp,
         std::string& subname,
         const Gui::SelectionPickContext* pickContext
