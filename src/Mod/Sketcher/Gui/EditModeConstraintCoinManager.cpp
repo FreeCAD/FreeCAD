@@ -2248,93 +2248,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
 
     for (int childIdx = 0; childIdx < sep->getNumChildren(); ++childIdx) {
         if (tail == sep->getChild(childIdx) && dynamic_cast<SoImage*>(tail)) {
-            // The SoInfo node with the ID always follows the SoImage node.
-            if (childIdx + 1 < sep->getNumChildren()) {
-                SoInfo* constrIdsNode = dynamic_cast<SoInfo*>(sep->getChild(childIdx + 1));
-                if (!constrIdsNode) {
-                    continue;
-                }
-
-                QString constrIdsStr = QString::fromLatin1(
-                    constrIdsNode->string.getValue().getString()
-                );
-
-                if (combinedConstrBoxes.count(constrIdsStr)) {
-
-                    // 1. Get the icon group size in device independent pixels.
-                    SbVec3s iconGroupSize = getDisplayedSize(static_cast<SoImage*>(tail));
-
-                    // 2. Get the icon group's absolute world position from its
-                    // SoZoomTranslation node.
-                    SoZoomTranslation* translation = nullptr;
-                    SoNode* firstTransNode = sep->getChild(
-                        static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)
-                    );
-                    if (dynamic_cast<SoZoomTranslation*>(firstTransNode)) {
-                        translation = static_cast<SoZoomTranslation*>(firstTransNode);
-                    }
-                    if (!translation) {
-                        continue;
-                    }
-
-                    SbVec3f absPos = translation->abPos.getValue();
-                    SbVec3f trans = translation->translation.getValue();
-                    float scaleFactor = translation->getScaleFactor();
-
-                    // If this is the second icon in a pair, add its relative translation.
-                    if (int secondIndex = static_cast<int>(ConstraintNodePosition::SecondIconIndex);
-                        secondIndex < sep->getNumChildren()) {
-                        SoNode* secondIconNode = sep->getChild(secondIndex);
-                        if (tail == secondIconNode) {
-                            auto translation2 = static_cast<SoZoomTranslation*>(sep->getChild(
-                                static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)
-                            ));
-                            absPos += translation2->abPos.getValue();
-                            trans += translation2->translation.getValue();
-                            scaleFactor = translation2->getScaleFactor();
-                        }
-                    }
-
-                    // 3. Calculate the icon's center in world coordinates.
-                    SbVec3f iconGroupWorldPos = absPos + scaleFactor * trans;
-
-                    // 4. Project both the icon's center and the picked point to screen coordinates
-                    // (device independent pixels). This is the key: both points are now in the same
-                    // coordinate system.
-                    SbVec2f iconGroupScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                        viewProvider,
-                        iconGroupWorldPos
-                    );
-
-                    // 5. Calculate cursor position relative to the icon group's top-left corner.
-                    //    - QRect/QImage assumes a top-left origin (Y increases downwards).
-                    //    - Coin3D screen coordinates have a bottom-left origin (Y increases
-                    //    upwards). Cursor coordinates come from the viewport in that same
-                    //    coordinate system, so only the Y flip for QRect is needed here.
-                    int relativeX = static_cast<int>(
-                        cursorScreenPos[0] - iconGroupScreenCenter[0] + iconGroupSize[0] / 2.0f
-                    );
-                    int relativeY = static_cast<int>(
-                        iconGroupScreenCenter[1] - cursorScreenPos[1] + iconGroupSize[1] / 2.0f
-                    );
-
-                    // 6. Perform the hit test on each icon in the group.
-                    for (const auto& boxInfo : combinedConstrBoxes[constrIdsStr]) {
-                        if (boxInfo.first.contains(relativeX, relativeY)) {
-                            constrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
-                        }
-                    }
-                }
-                else {
-                    // Simple, non-merged icon.
-                    QStringList constrIdStrings = constrIdsStr.split(QStringLiteral(","));
-                    for (const QString& id : constrIdStrings) {
-                        constrIndices.insert(id.toInt());
-                    }
-                }
-
-                return constrIndices;
-            }
+            return detectPreselectionIcon(sep, static_cast<SoImage*>(tail), childIdx, cursorScreenPos);
         }
     }
 
@@ -2346,6 +2260,156 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
                 break;
             }
         }
+    }
+
+    return constrIndices;
+}
+
+std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
+    const SbVec2s& cursorScreenPos,
+    Base::Vector3d* pickedPoint
+)
+{
+    std::set<int> constrIndices;
+
+    for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
+        auto* sep = dynamic_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
+        if (!sep) {
+            continue;
+        }
+
+        if (int iconIndex = static_cast<int>(ConstraintNodePosition::FirstIconIndex);
+            iconIndex < sep->getNumChildren()) {
+            auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
+            if (iconNode) {
+                constrIndices
+                    = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                if (!constrIndices.empty()) {
+                    return constrIndices;
+                }
+            }
+        }
+
+        if (int iconIndex = static_cast<int>(ConstraintNodePosition::SecondIconIndex);
+            iconIndex < sep->getNumChildren()) {
+            auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
+            if (iconNode) {
+                constrIndices
+                    = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                if (!constrIndices.empty()) {
+                    return constrIndices;
+                }
+            }
+        }
+    }
+
+    return constrIndices;
+}
+
+std::set<int> EditModeConstraintCoinManager::parseConstraintIds(const QString& constrIdsStr) const
+{
+    std::set<int> constrIndices;
+    QStringList constrIdStrings = constrIdsStr.split(QStringLiteral(","));
+    for (const QString& id : constrIdStrings) {
+        constrIndices.insert(id.toInt());
+    }
+    return constrIndices;
+}
+
+bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
+    SoSeparator* sep,
+    SoImage* iconNode,
+    int iconIndex,
+    SbVec2f& iconScreenCenter,
+    SbVec3s& iconSize,
+    QString& constrIdsStr,
+    Base::Vector3d* pickedPoint
+) const
+{
+    if (!sep || !iconNode || iconIndex + 1 >= sep->getNumChildren()) {
+        return false;
+    }
+
+    auto* constrIdsNode = dynamic_cast<SoInfo*>(sep->getChild(iconIndex + 1));
+    if (!constrIdsNode) {
+        return false;
+    }
+
+    constrIdsStr = QString::fromLatin1(constrIdsNode->string.getValue().getString());
+    iconSize = getDisplayedSize(iconNode);
+    if (iconSize[0] <= 0 || iconSize[1] <= 0) {
+        return false;
+    }
+
+    auto* firstTransNode = dynamic_cast<SoZoomTranslation*>(
+        sep->getChild(static_cast<int>(ConstraintNodePosition::FirstTranslationIndex))
+    );
+    if (!firstTransNode) {
+        return false;
+    }
+
+    SbVec3f absPos = firstTransNode->abPos.getValue();
+    SbVec3f trans = firstTransNode->translation.getValue();
+    float scaleFactor = firstTransNode->getScaleFactor();
+
+    if (iconIndex == static_cast<int>(ConstraintNodePosition::SecondIconIndex)
+        && static_cast<int>(ConstraintNodePosition::SecondTranslationIndex) < sep->getNumChildren()) {
+        auto* secondTransNode = dynamic_cast<SoZoomTranslation*>(
+            sep->getChild(static_cast<int>(ConstraintNodePosition::SecondTranslationIndex))
+        );
+        if (secondTransNode) {
+            absPos += secondTransNode->abPos.getValue();
+            trans += secondTransNode->translation.getValue();
+            scaleFactor = secondTransNode->getScaleFactor();
+        }
+    }
+
+    SbVec3f iconWorldPos = absPos + scaleFactor * trans;
+    iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconWorldPos);
+
+    if (pickedPoint) {
+        *pickedPoint = Base::Vector3d(iconWorldPos[0], iconWorldPos[1], iconWorldPos[2]);
+    }
+
+    return true;
+}
+
+std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
+    SoSeparator* sep,
+    SoImage* iconNode,
+    int iconIndex,
+    const SbVec2s& cursorScreenPos,
+    Base::Vector3d* pickedPoint
+) const
+{
+    std::set<int> constrIndices;
+    SbVec2f iconScreenCenter;
+    SbVec3s iconSize;
+    QString constrIdsStr;
+    Base::Vector3d hitPoint;
+    Base::Vector3d* resultPoint = pickedPoint ? pickedPoint : &hitPoint;
+
+    if (
+        !resolveIconScreenGeometry(sep, iconNode, iconIndex, iconScreenCenter, iconSize, constrIdsStr, resultPoint)
+    ) {
+        return constrIndices;
+    }
+
+    int relativeX = static_cast<int>(cursorScreenPos[0] - iconScreenCenter[0] + iconSize[0] / 2.0f);
+    int relativeY = static_cast<int>(iconScreenCenter[1] - cursorScreenPos[1] + iconSize[1] / 2.0f);
+
+    if (combinedConstrBoxes.count(constrIdsStr)) {
+        for (const auto& boxInfo : combinedConstrBoxes.at(constrIdsStr)) {
+            if (boxInfo.first.contains(relativeX, relativeY)) {
+                constrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
+            }
+        }
+        return constrIndices;
+    }
+
+    QRect iconBounds(0, 0, iconSize[0], iconSize[1]);
+    if (iconBounds.contains(relativeX, relativeY)) {
+        return parseConstraintIds(constrIdsStr);
     }
 
     return constrIndices;

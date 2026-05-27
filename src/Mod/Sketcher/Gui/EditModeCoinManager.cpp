@@ -697,6 +697,16 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectConstraintPre
 )
 {
     PreselectionResult result;
+    Base::Vector3d pickedPoint;
+
+    result.ConstrIndices
+        = pEditModeConstraintCoinManager->detectPreselectionConstr(cursorPos, &pickedPoint);
+    if (!result.ConstrIndices.empty()) {
+        result.Kind = PreselectionResult::HitKind::Constraint;
+        result.PickedPoint = pickedPoint;
+        result.HasPickedPoint = true;
+        return result;
+    }
 
     for (int i = 0; i < points.getLength(); ++i) {
         SoPickedPoint* point = points[i];
