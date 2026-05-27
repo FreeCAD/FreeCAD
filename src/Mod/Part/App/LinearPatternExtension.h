@@ -32,6 +32,8 @@
 #include <gp_Vec.hxx>
 #include <gp_Dir.hxx>
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace Part
 {
 
