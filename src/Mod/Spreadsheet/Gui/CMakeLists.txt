@@ -129,7 +129,7 @@ if (FREECAD_WARN_ERROR)
     target_compile_warn_error(SpreadsheetGui)
 endif()
 
-SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
+SET_BIN_DIR(SpreadsheetGui)
 SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)
 
 fc_copy_sources(SpreadsheetGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Spreadsheet" ${SpreadsheetGuiIcon_SVG})
