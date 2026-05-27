@@ -59,6 +59,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             | PathOp.FeatureStepDown
             | PathOp.FeatureBaseEdges
             | PathOp.FeatureCoolant
+            | PathOp.FeatureLinking
         )
 
     def setupAdditionalProperties(self, obj):
@@ -197,7 +198,9 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
 
 def SetupProperties():
-    return ["StartVertex"]
+    setup = PathOp.SetupPropertiesLinking()
+    setup.append("StartVertex")
+    return setup
 
 
 def Create(name, obj=None, parentJob=None):

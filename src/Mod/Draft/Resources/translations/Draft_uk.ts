@@ -3847,7 +3847,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="321"/>
       <source>%1 pick next point</source>
-      <translation type="unfinished">%1 pick next point</translation>
+      <translation>%1 вибрати наступну точку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="374"/>
@@ -4100,7 +4100,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftguitools/gui_arcs.py" line="547"/>
       <location filename="../../draftguitools/gui_arcs.py" line="593"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>Дуга через 3 точки</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="620"/>
@@ -4113,13 +4113,13 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="221"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 вибрати першу точку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="310"/>
       <location filename="../../draftguitools/gui_arcs.py" line="662"/>
       <source>%1 pick second point</source>
-      <translation type="unfinished">%1 pick second point</translation>
+      <translation>%1 вибрати другу точку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="666"/>
@@ -4757,7 +4757,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="611"/>
       <source>%1 finish</source>
-      <translation type="unfinished">%1 finish</translation>
+      <translation>%1 завершити</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_dimensions.py" line="617"/>
@@ -5825,7 +5825,7 @@ of existing objects in all opened documents?</source>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="57"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>Перемкнути сітку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="63"/>
@@ -6157,7 +6157,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="207"/>
       <source>Edit Scale</source>
-      <translation type="unfinished">Edit Scale</translation>
+      <translation>Редагувати масштаб</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="105"/>
@@ -6485,7 +6485,7 @@ If the "Copy" option is active, it creates displaced copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="68"/>
       <source>Creates a point</source>
-      <translation type="unfinished">Creates a point</translation>
+      <translation>Створює точку</translation>
     </message>
   </context>
   <context>
@@ -6999,8 +6999,8 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/label.py" line="71"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
-      <translation type="unfinished">The position of the tip of the leader line.
-This point can be decorated with an arrow or another symbol.</translation>
+      <translation>Положення кінчика лінії-виноски.
+Цю точку можна оздоблити стрілкою або іншим символом.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="84"/>
@@ -8055,7 +8055,7 @@ beyond the dimension line</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="521"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>Дуга через 3 точки</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="524"/>
@@ -8180,7 +8180,7 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="64"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>Перемкнути сітку</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="67"/>

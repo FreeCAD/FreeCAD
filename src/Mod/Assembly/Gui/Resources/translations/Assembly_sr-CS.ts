@@ -23,8 +23,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>Deo</translation>
+      <source>Insert Component</source>
+      <translation>Umetni komponentu</translation>
     </message>
   </context>
   <context>
@@ -349,12 +349,12 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
-      <translation type="unfinished">Enter your formula…</translation>
+      <translation>Unesi svoju formulu…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="548"/>
       <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</translation>
+      <translation>Velikim slovima su označene promenljive koje treba zameniti stvarnim vrednostima. 'initialValue' je dinamički zamenjen sa trenutnim uglom ili rastojanjem. Više detalja o svakom primeru u kratkom opisu.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="551"/>
@@ -474,22 +474,22 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1045"/>
       <source>Animation</source>
-      <translation type="unfinished">Animation</translation>
+      <translation>Animacija</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1046"/>
       <source>Not enough frames to create an animation.</source>
-      <translation type="unfinished">Not enough frames to create an animation.</translation>
+      <translation>Nema dovoljno kadrova za pravljenje animacije.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1053"/>
       <source>Save Animation</source>
-      <translation type="unfinished">Save Animation</translation>
+      <translation>Sačuvaj animaciju</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1075"/>
       <source>Generating Frames…</source>
-      <translation type="unfinished">Generating Frames…</translation>
+      <translation>Pravim kadrove…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1076"/>
@@ -499,27 +499,27 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1103"/>
       <source>Assembling animation…</source>
-      <translation type="unfinished">Assembling animation…</translation>
+      <translation>Sastavljama animaciju…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1119"/>
       <source>An error occurred while saving the animation</source>
-      <translation type="unfinished">An error occurred while saving the animation</translation>
+      <translation>Došlo je do greške prilikom snimanja animacije</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1137"/>
       <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
-      <translation type="unfinished">Pillow (PIL) is not installed. It is required for GIF export.</translation>
+      <translation>Pillow (PIL) nije instaliran. Neophodan je za izvoz GIF-a.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1160"/>
       <source>OpenCV is not installed. It is required for video export.</source>
-      <translation type="unfinished">OpenCV is not installed. It is required for video export.</translation>
+      <translation>OpenCV nije instaliran. Neophodan je za izvoz videa.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1177"/>
       <source>Could not open video writer. Check codecs.</source>
-      <translation type="unfinished">Could not open video writer. Check codecs.</translation>
+      <translation>Nije moguće otvoriti program za snimanje videa. Proveri kodeke.</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="160"/>
@@ -1008,7 +1008,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
     <message>
       <location filename="../../../CommandCreateJoint.py" line="324"/>
       <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Napravi navojni spoj koji sjedinjuje dva dela, jedan koji ima tanslacioni spoj i drugi koji ima rotacioni spoj.&lt;/p&gt;&lt;p&gt;Izaberi iste koordinatne sisteme kao za translacione i rotacione spojeve. Korak navoja određuje međusobno pomeranje delova.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1223,7 +1223,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Save the animation as a GIF or video file.</source>
-      <translation type="unfinished">Save the animation as a GIF or video file.</translation>
+      <translation>Sačuvaj animaciju u vidu GIF ili video datoteke.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
@@ -1323,7 +1323,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
       <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;1 - Ako je sklop aktivan: Napravi spoj koji zaključava dva dela zajedno, sprečavajući bilo kakvo pomeranje ili rotaciju&lt;/p&gt;&lt;p&gt;2 - Ako je deo aktivan: Pozicionira podređene delove podudaranjem izabranih koordinatnih sistema. Drugi izabrani deo će se pomeriti.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1440,7 +1440,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
     <message>
       <location filename="../../../CommandCreateJoint.py" line="300"/>
       <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Napravi prenos sa zupčastom letvom koji sjedinjuje deo koji ima translacioni spoj sa delom koji ima rotacioni spoj.&lt;/p&gt;&lt;p&gt;Izaberi iste koordinatne sisteme kao za translacione i rotacione spojeve. Podeoni poluprečnik određuje međusobno pomeranje zupčaste letve i zupčanika.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1479,7 +1479,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
     <message>
       <location filename="../../../CommandCreateJoint.py" line="437"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
-      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</translation>
+      <translation>&lt;p&gt;Nepokretni deo.&lt;/p&gt;&lt;p&gt;Pravljenje dela nepokretnim trajno zaključava njegov položaj u sklopu, sprečavajući bilo kakvu translaciju ili rotaciju.</translation>
     </message>
   </context>
   <context>
@@ -1548,9 +1548,9 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
 Click to select these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
-Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
+      <translation>Sklop ima delove kojima nisu ograničeni svi stepeni slobode.
+Klikni da bi izabrao ovakve delove.
+Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i dalje imaju stepene slobode se ne biraju.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
@@ -1563,17 +1563,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="101"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Sklop</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
       <source>Go to linked Assembly</source>
-      <translation type="unfinished">Go to linked Assembly</translation>
+      <translation>Idi na povezani sklop</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
       <source>Selects the linked assembly and switches to its original document</source>
-      <translation type="unfinished">Selects the linked assembly and switches to its original document</translation>
+      <translation>Izaberi poveyani sklop i prebaci se na njegov originalni dokument</translation>
     </message>
   </context>
   <context>
@@ -1581,17 +1581,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="165"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Sklop</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
       <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <translation>Izaberi sukobljene spojeve</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
       <source>Selects conflicting joints in the active assembly</source>
-      <translation type="unfinished">Selects conflicting joints in the active assembly</translation>
+      <translation>Izaberi u aktivnom sklopu spojeve koji su međusobno sukobljeni</translation>
     </message>
   </context>
   <context>
@@ -1599,17 +1599,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="200"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Sklop</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
       <source>Select redundant constraints</source>
-      <translation type="unfinished">Select redundant constraints</translation>
+      <translation>Izaberi suvišne spojeve</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
       <source>Selects redundant joints in the active assembly</source>
-      <translation type="unfinished">Selects redundant joints in the active assembly</translation>
+      <translation>Izaberi u aktivnom sklopu spojeve koji su suvišni</translation>
     </message>
   </context>
   <context>
@@ -1617,17 +1617,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="233"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Sklop</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
       <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <translation>Izaberi oštećene spojeve</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
       <source>Selects malformed joints in the active assembly</source>
-      <translation type="unfinished">Selects malformed joints in the active assembly</translation>
+      <translation>Izaberi u aktivnom sklopu spojeve koji su oštećeni</translation>
     </message>
   </context>
   <context>
@@ -1635,17 +1635,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="267"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Sklop</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
       <source>Select components with DoFs</source>
-      <translation type="unfinished">Select components with DoFs</translation>
+      <translation>Izaberi delove sa stepenima slobode</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
       <source>Selects unconstrained components in the active assembly</source>
-      <translation type="unfinished">Selects unconstrained components in the active assembly</translation>
+      <translation>Izaberi u aktivnom sklopu delove koji nisu potpuno ograničeni tj. koji imaju stepene slobode</translation>
     </message>
   </context>
   <context>
@@ -1653,17 +1653,17 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     <message>
       <location filename="../../Commands.cpp" line="310"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Sklop</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
       <source>Select component joints</source>
-      <translation type="unfinished">Select component joints</translation>
+      <translation>Izaberi sve spojeve dela</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>
       <source>Selects all joints referencing the selected component</source>
-      <translation type="unfinished">Selects all joints referencing the selected component</translation>
+      <translation>Izaberi sve spojeve koji se odnose na izabrani deo</translation>
     </message>
   </context>
 </TS>

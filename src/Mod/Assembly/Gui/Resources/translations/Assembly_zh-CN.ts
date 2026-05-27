@@ -23,8 +23,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>组件</translation>
+      <source>Insert Component</source>
+      <translation>插入零件</translation>
     </message>
   </context>
   <context>

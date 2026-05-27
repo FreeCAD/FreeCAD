@@ -12,7 +12,7 @@ jobs:
   build:
     name: issue metrics
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'FreeCAD'
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
 
     steps:
 
@@ -35,7 +35,7 @@ jobs:
         echo "last_month=$first_day..$last_day" >> "$GITHUB_ENV"
 
     - name: Run issue-metrics tool
-      uses: github/issue-metrics@7d11f06fad8611f09f067325c1ed4b363c18a90b # v4.2.5
+      uses: github/issue-metrics@1e38d5e62363e14db8019ed7d106b9855bdba6cc # v4.2.7
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SEARCH_QUERY: 'repo:FreeCAD/FreeCAD is:issue created:${{ env.last_month }}'

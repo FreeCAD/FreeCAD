@@ -2086,6 +2086,10 @@ void AssemblyObject::ensureIdentityPlacements()
 
 void AssemblyObject::syncGroundedJoints()
 {
+    if (App::GetApplication().isRestoring()) {
+        return;
+    }
+
     std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
     std::map<App::DocumentObject*, App::DocumentObject*> groundedMap;
     for (auto gJoint : groundedJoints) {
