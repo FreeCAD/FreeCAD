@@ -905,12 +905,14 @@ EditModeCoinManager::PreselectionResult ViewProviderSketch::getPreselectionResul
 ) const
 {
     SoPickedPointList points = getPickedPointsOnRay(pos, viewer);
-    if (points.getLength() == 0) {
-        EditModeCoinManager::PreselectionResult result;
-        return result;
+    int hoveredPointIndex = EditModeCoinManager::PreselectionResult::InvalidPoint;
+    if (viewProviderParameters.hasLastPreselectionResult
+        && viewProviderParameters.lastPreselectionResult.Kind
+            == EditModeCoinManager::PreselectionResult::HitKind::Point) {
+        hoveredPointIndex = viewProviderParameters.lastPreselectionResult.PointIndex;
     }
 
-    return editCoinManager->detectPreselection(points, pos);
+    return editCoinManager->detectPreselection(points, pos, hoveredPointIndex);
 }
 
 void ViewProviderSketch::cachePreselectionResult(

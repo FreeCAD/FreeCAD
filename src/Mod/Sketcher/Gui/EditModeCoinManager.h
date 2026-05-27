@@ -251,7 +251,11 @@ public:
 
     /** @name handle preselection and selection of points */
     //@{
-    PreselectionResult detectPreselection(const SoPickedPointList& points, const SbVec2s& cursorPos);
+    PreselectionResult detectPreselection(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos,
+        int hoveredPointIndex = PreselectionResult::InvalidPoint
+    );
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}
@@ -300,8 +304,29 @@ private:
         const SbVec2s& cursorPos
     );
     bool detectOriginPreselection(const SoPickedPoint* point, PreselectionResult& result);
-    bool detectGeometryPreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectGeometryPreselection(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos,
+        int hoveredPointIndex,
+        PreselectionResult& result
+    );
     bool detectPointPreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectNearbyPointPreselection(const SbVec2s& cursorPos, PreselectionResult& result);
+    bool detectPointDiskPreselection(
+        int pointIndex,
+        int layerIndex,
+        const SbVec2s& cursorPos,
+        float extraRadiusPx,
+        float& distanceSquared,
+        PreselectionResult& result
+    );
+    bool detectHoveredPointPreselection(
+        int hoveredPointIndex,
+        const SbVec2s& cursorPos,
+        float extraRadiusPx,
+        PreselectionResult& result
+    );
+    bool detectNearbyCurvePreselection(const SbVec2s& cursorPos, PreselectionResult& result);
     bool detectCurvePreselection(const SoPickedPointList& points, PreselectionResult& result);
     bool detectAxisPreselection(const SoPickedPointList& points, PreselectionResult& result);
     bool detectPointPreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);

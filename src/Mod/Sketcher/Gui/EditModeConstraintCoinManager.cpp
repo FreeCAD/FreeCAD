@@ -78,6 +78,11 @@ using namespace Gui;
 using namespace SketcherGui;
 using namespace Sketcher;
 
+namespace
+{
+constexpr int ConstraintIconHitPaddingPx = 3;
+}
+
 //**************************** EditModeConstraintCoinManager class ******************************
 
 EditModeConstraintCoinManager::EditModeConstraintCoinManager(
@@ -2400,7 +2405,14 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
 
     if (combinedConstrBoxes.count(constrIdsStr)) {
         for (const auto& boxInfo : combinedConstrBoxes.at(constrIdsStr)) {
-            if (boxInfo.first.contains(relativeX, relativeY)) {
+            if (boxInfo.first
+                    .adjusted(
+                        -ConstraintIconHitPaddingPx,
+                        -ConstraintIconHitPaddingPx,
+                        ConstraintIconHitPaddingPx,
+                        ConstraintIconHitPaddingPx
+                    )
+                    .contains(relativeX, relativeY)) {
                 constrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
             }
         }
@@ -2408,6 +2420,12 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
     }
 
     QRect iconBounds(0, 0, iconSize[0], iconSize[1]);
+    iconBounds.adjust(
+        -ConstraintIconHitPaddingPx,
+        -ConstraintIconHitPaddingPx,
+        ConstraintIconHitPaddingPx,
+        ConstraintIconHitPaddingPx
+    );
     if (iconBounds.contains(relativeX, relativeY)) {
         return parseConstraintIds(constrIdsStr);
     }
