@@ -113,6 +113,10 @@ private:
         ViewProviderSketch& vp,
         const std::vector<Base::Vector2d>& HintCurve
     );
+    static inline bool isLineExtensionAutoConstraintHintVisible(
+        const ViewProviderSketch& vp,
+        const std::vector<Base::Vector2d>& HintCurve
+    );
     static inline void drawEditMarkers(
         ViewProviderSketch& vp,
         const std::vector<Base::Vector2d>& EditMarkers,
@@ -278,6 +282,7 @@ protected:
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list) const;
     void drawEdit(const std::vector<Part::Geometry*>& geometries) const;
     void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve) const;
+    bool isLineExtensionAutoConstraintHintVisible(const std::vector<Base::Vector2d>& HintCurve) const;
     void drawEditMarkers(
         const std::vector<Base::Vector2d>& EditMarkers,
         unsigned int augmentationlevel = 0
@@ -351,6 +356,11 @@ protected:
     void resetLineExtensionAutoConstraintHint();
     void renderLineExtensionAutoConstraintHint() const;
 
+    bool isLineExtensionAutoConstraintHintVisible(
+        const Base::Vector2d& start,
+        const Base::Vector2d& end
+    ) const;
+
     bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
 
     bool seekAlignmentAutoConstraint(
@@ -379,6 +389,8 @@ protected:
 
     QWidget* toolwidget;
     int currentTransactionID {0};
+
+private:
     LineExtensionAutoConstraintHint lineExtensionAutoConstraintHint;
 };
 
