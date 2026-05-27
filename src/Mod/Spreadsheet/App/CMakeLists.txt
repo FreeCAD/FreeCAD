@@ -67,7 +67,7 @@ endif()
 target_compile_warn_error(Spreadsheet)
 
 
-SET_BIN_DIR(Spreadsheet Spreadsheet /Mod/Spreadsheet)
+SET_BIN_DIR(Spreadsheet)
 SET_PYTHON_PREFIX_SUFFIX(Spreadsheet)
 
 INSTALL(TARGETS Spreadsheet DESTINATION ${CMAKE_INSTALL_LIBDIR})

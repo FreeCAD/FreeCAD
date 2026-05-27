@@ -47,7 +47,7 @@ endif()
 
 target_compile_warn_error(ImportGui)
 
-SET_BIN_DIR(ImportGui ImportGui /Mod/Import)
+SET_BIN_DIR(ImportGui)
 SET_PYTHON_PREFIX_SUFFIX(ImportGui)
 
 INSTALL(TARGETS ImportGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
