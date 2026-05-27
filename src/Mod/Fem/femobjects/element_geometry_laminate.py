@@ -60,6 +60,13 @@ class ElementGeometryLaminate(base_femelement.BaseFemElement):
         )
 
         obj.addProperty(
+            "App::PropertyStringList",
+            "Materials",
+            "Layup",
+            "List of ply material names. If left blank and only one material is in the Analysis then this is used by default, otherwise the name (use Material's name NOT Label or Internal name) of each material to use must be typed manually",
+        )
+
+        obj.addProperty(
             "App::PropertyPythonObject",
             "Windall",
             "Layup",
