@@ -481,6 +481,9 @@ private:
         bool isShownVirtualSpace = false;  // indicates whether the present virtual space view is the
                                            // Real Space or the Virtual Space (virtual space 1 or 2)
         bool buttonPress = false;
+        bool hasLastPreselectionResult = false;
+        SbVec2s lastPreselectionCursorPos;
+        EditModeCoinManager::PreselectionResult lastPreselectionResult;
 
         int stdCountSegments = 50;  // preferences controlled default geometry sampling for selection
     };
@@ -832,6 +835,15 @@ private:
     ) const;
     EditModeCoinManager::PreselectionResult getPreselectionResultAtViewportPos(
         const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
+    void cachePreselectionResult(
+        const SbVec2s& pos,
+        const EditModeCoinManager::PreselectionResult& result
+    );
+    EditModeCoinManager::PreselectionResult resolveClickPreselectionResult(
+        const EditModeCoinManager::PreselectionResult& clickResult,
+        const SbVec2s& cursorPos,
         const Gui::View3DInventorViewer* viewer
     ) const;
     /// helper to detect preselection

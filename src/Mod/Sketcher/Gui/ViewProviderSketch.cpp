@@ -844,6 +844,7 @@ void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
 
         SbVec2s screencoords = viewer->getPointOnViewport(sbpoint);
         auto result = getPreselectionResultAtViewportPos(screencoords, viewer);
+        cachePreselectionResult(screencoords, result);
 
         if (detectAndShowPreselection(result) && sketchHandler) {
             sketchHandler->applyCursor();
@@ -910,6 +911,40 @@ EditModeCoinManager::PreselectionResult ViewProviderSketch::getPreselectionResul
     }
 
     return editCoinManager->detectPreselection(points, pos);
+}
+
+void ViewProviderSketch::cachePreselectionResult(
+    const SbVec2s& pos,
+    const EditModeCoinManager::PreselectionResult& result
+)
+{
+    viewProviderParameters.lastPreselectionCursorPos = pos;
+    viewProviderParameters.lastPreselectionResult = result;
+    viewProviderParameters.hasLastPreselectionResult = result.hasWinner();
+}
+
+EditModeCoinManager::PreselectionResult ViewProviderSketch::resolveClickPreselectionResult(
+    const EditModeCoinManager::PreselectionResult& clickResult,
+    const SbVec2s& cursorPos,
+    const Gui::View3DInventorViewer* viewer
+) const
+{
+    if (!viewer || !viewProviderParameters.hasLastPreselectionResult) {
+        return clickResult;
+    }
+
+    short dx = 0;
+    short dy = 0;
+    (cursorPos - viewProviderParameters.lastPreselectionCursorPos).getValue(dx, dy);
+
+    float distanceSquared = static_cast<float>(dx) * static_cast<float>(dx)
+        + static_cast<float>(dy) * static_cast<float>(dy);
+    float pickRadius = viewer->getPickRadius();
+    if (distanceSquared > pickRadius * pickRadius) {
+        return clickResult;
+    }
+
+    return viewProviderParameters.lastPreselectionResult;
 }
 
 bool ViewProviderSketch::getPreselectionAtViewportPos(
@@ -1121,6 +1156,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     boost::scoped_ptr<SoPickedPoint> pp(this->getPointOnRay(cursorPos, viewer));
     EditModeCoinManager::PreselectionResult clickResult
         = getPreselectionResultAtViewportPos(cursorPos, viewer);
+    EditModeCoinManager::PreselectionResult resolvedClickResult
+        = resolveClickPreselectionResult(clickResult, cursorPos, viewer);
 
     // Radius maximum to allow double click event
     const int dblClickRadius = 5;
@@ -1130,13 +1167,13 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     SbVec3f pos = point;
     Base::Vector3d selectionPoint(point[0], point[1], point[2]);
 
-    if (clickResult.hasPickedPoint()) {
+    if (resolvedClickResult.hasPickedPoint()) {
         pos = SbVec3f(
-            static_cast<float>(clickResult.PickedPoint.x),
-            static_cast<float>(clickResult.PickedPoint.y),
-            static_cast<float>(clickResult.PickedPoint.z)
+            static_cast<float>(resolvedClickResult.PickedPoint.x),
+            static_cast<float>(resolvedClickResult.PickedPoint.y),
+            static_cast<float>(resolvedClickResult.PickedPoint.z)
         );
-        selectionPoint = clickResult.PickedPoint;
+        selectionPoint = resolvedClickResult.PickedPoint;
     }
     else if (pp) {
         const SoDetail* detail = pp->getDetail();
@@ -1146,7 +1183,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
         const SbVec3f pickedPoint = pp->getPoint();
         selectionPoint = Base::Vector3d(pickedPoint[0], pickedPoint[1], pickedPoint[2]);
     }
-    const bool hasSelectionPoint = clickResult.hasPickedPoint() || static_cast<bool>(pp);
+    const bool hasSelectionPoint = resolvedClickResult.hasPickedPoint() || static_cast<bool>(pp);
 
     std::unique_ptr<SnapManager::SnapHandle> snapHandle;
     try {
@@ -1164,9 +1201,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             switch (Mode) {
                 case STATUS_NONE: {
                     bool done = false;
-                    detectAndShowPreselection(clickResult);
+                    detectAndShowPreselection(resolvedClickResult);
 
-                    switch (clickResult.Kind) {
+                    switch (resolvedClickResult.Kind) {
                         case EditModeCoinManager::PreselectionResult::HitKind::Point:
                             setSketchMode(STATUS_SELECT_Point);
                             done = true;
@@ -1375,9 +1412,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_NONE: {
-                    detectAndShowPreselection(clickResult);
+                    detectAndShowPreselection(resolvedClickResult);
 
-                    switch (clickResult.Kind) {
+                    switch (resolvedClickResult.Kind) {
                         case EditModeCoinManager::PreselectionResult::HitKind::Point:
                             setSketchMode(STATUS_SELECT_Point);
                             break;
@@ -1727,6 +1764,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
         && Mode != STATUS_SELECT_Constraint && Mode != STATUS_SKETCH_Drag
         && Mode != STATUS_SKETCH_DragConstraint && Mode != STATUS_SKETCH_UseRubberBand) {
         auto result = getPreselectionResultAtViewportPos(cursorPos, viewer);
+        cachePreselectionResult(cursorPos, result);
         preselectChanged = detectAndShowPreselection(result);
     }
 
