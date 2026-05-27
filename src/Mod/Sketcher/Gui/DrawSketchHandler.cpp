@@ -102,6 +102,14 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::drawLineExtensionAutoCo
     vp.drawLineExtensionAutoConstraintHint(HintCurve);
 }
 
+inline bool ViewProviderSketchDrawSketchHandlerAttorney::isLineExtensionAutoConstraintHintVisible(
+    const ViewProviderSketch& vp,
+    const std::vector<Base::Vector2d>& HintCurve
+)
+{
+    return vp.isLineExtensionAutoConstraintHintVisible(HintCurve);
+}
+
 inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(
     ViewProviderSketch& vp,
     const std::vector<Base::Vector2d>& EditMarkers,
@@ -597,11 +605,15 @@ bool DrawSketchHandler::seekLineExtensionAutoConstraint(
 
     for (int geoId = 0; geoId <= getHighestCurveIndex(); ++geoId) {
         const Part::Geometry* geo = obj->getGeometry(geoId);
-        if (!geo || !geo->isDerivedFrom<Part::GeomLineSegment>()) {
+        if (!geo) {
             continue;
         }
 
-        auto* line = static_cast<const Part::GeomLineSegment*>(geo);
+        const auto* line = freecad_cast<const Part::GeomLineSegment*>(geo);
+        if (!line) {
+            continue;
+        }
+
         const Base::Vector2d startPoint = toVector2d(line->getStartPoint());
         const Base::Vector2d endPoint = toVector2d(line->getEndPoint());
         const Base::Vector2d lineDirection = endPoint - startPoint;
@@ -636,6 +648,10 @@ bool DrawSketchHandler::seekLineExtensionAutoConstraint(
         return false;
     }
 
+    if (!isLineExtensionAutoConstraintHintVisible(bestAnchor, bestProjection)) {
+        return false;
+    }
+
     AutoConstraint constr;
     constr.Type = Sketcher::PointOnObject;
     constr.GeoId = bestGeoId;
@@ -664,6 +680,14 @@ void DrawSketchHandler::renderLineExtensionAutoConstraintHint() const
     drawLineExtensionAutoConstraintHint(
         {lineExtensionAutoConstraintHint.start, lineExtensionAutoConstraintHint.end}
     );
+}
+
+bool DrawSketchHandler::isLineExtensionAutoConstraintHintVisible(
+    const Base::Vector2d& start,
+    const Base::Vector2d& end
+) const
+{
+    return isLineExtensionAutoConstraintHintVisible(std::vector<Base::Vector2d> {start, end});
 }
 
 bool DrawSketchHandler::seekAlignmentAutoConstraint(
@@ -1301,6 +1325,16 @@ void DrawSketchHandler::drawLineExtensionAutoConstraintHint(
 ) const
 {
     ViewProviderSketchDrawSketchHandlerAttorney::drawLineExtensionAutoConstraintHint(
+        *sketchgui,
+        HintCurve
+    );
+}
+
+bool DrawSketchHandler::isLineExtensionAutoConstraintHintVisible(
+    const std::vector<Base::Vector2d>& HintCurve
+) const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::isLineExtensionAutoConstraintHintVisible(
         *sketchgui,
         HintCurve
     );
