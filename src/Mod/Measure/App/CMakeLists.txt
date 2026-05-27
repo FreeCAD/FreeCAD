@@ -102,7 +102,7 @@ endif()
 #    set_target_properties(Measure PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
 #endif(MSVC)
 
-SET_BIN_DIR(Measure Measure /Mod/Measure)
+SET_BIN_DIR(Measure)
 SET_PYTHON_PREFIX_SUFFIX(Measure)
 
 INSTALL(TARGETS Measure DESTINATION ${CMAKE_INSTALL_LIBDIR})

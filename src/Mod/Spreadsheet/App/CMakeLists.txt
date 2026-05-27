@@ -69,7 +69,7 @@ if (FREECAD_WARN_ERROR)
 endif()
 
 
-SET_BIN_DIR(Spreadsheet Spreadsheet /Mod/Spreadsheet)
+SET_BIN_DIR(Spreadsheet)
 SET_PYTHON_PREFIX_SUFFIX(Spreadsheet)
 
 INSTALL(TARGETS Spreadsheet DESTINATION ${CMAKE_INSTALL_LIBDIR})

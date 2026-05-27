@@ -80,7 +80,7 @@ if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Surface)
 endif()
 
-SET_BIN_DIR(Surface Surface /Mod/Surface)
+SET_BIN_DIR(Surface)
 SET_PYTHON_PREFIX_SUFFIX(Surface)
 
 install(TARGETS Surface DESTINATION ${CMAKE_INSTALL_LIBDIR})
