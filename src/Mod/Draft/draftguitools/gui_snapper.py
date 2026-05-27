@@ -330,6 +330,9 @@ class Snapper:
         if self.snapInfo and "Component" in self.snapInfo:
             osnap = self.snapToObject(lastpoint, active, constrain, eline, point)
             if osnap:
+                tb = getattr(Gui, "draftToolBar", None)
+                if tb is not None and hasattr(tb, "apply_field_locks"):
+                    osnap = tb.apply_field_locks(osnap, lastpoint)
                 self.running = False
                 return osnap
 
@@ -342,6 +345,9 @@ class Snapper:
             else:
                 point = self.snapToGrid(point)
         fp = self.cstr(lastpoint, constrain, point)
+        tb = getattr(Gui, "draftToolBar", None)
+        if tb is not None and hasattr(tb, "apply_field_locks"):
+            fp = tb.apply_field_locks(fp, lastpoint)
         if self.trackLine and lastpoint and (not noTracker):
             self.trackLine.p2(fp)
             self.trackLine.setColor()
