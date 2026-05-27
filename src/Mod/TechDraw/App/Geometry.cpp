@@ -1667,10 +1667,13 @@ bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
 {
     BRepAdaptor_Curve adapt(occEdge);
 
-    Handle(Geom_BSplineCurve) spline = adapt.BSpline();
     double firstParm = adapt.FirstParameter();
     double lastParm = adapt.LastParameter();
+
+    // Because Geom_BSplineCurve::Segment() modifies the curve in-place, we must work with a copy
+    Handle(Geom_BSplineCurve) spline = Handle(Geom_BSplineCurve)::DownCast(adapt.BSpline()->Copy());
     spline->Segment(firstParm, lastParm);
+
     auto startPoint = Base::convertTo<Base::Vector3d>(adapt.Value(firstParm));
     auto endPoint = Base::convertTo<Base::Vector3d>(adapt.Value(lastParm));
     auto edgeLong = edgeLength(occEdge);
