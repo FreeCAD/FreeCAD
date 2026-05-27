@@ -8,6 +8,7 @@ add_executable(Gui_tests_run
         Assistant.cpp
         Camera.cpp
         FileDialog.cpp
+        TreeSearchUtil.cpp
         StyleParameters/StyleParametersApplicationTest.cpp
         StyleParameters/ParserTest.cpp
         StyleParameters/ParameterManagerTest.cpp
