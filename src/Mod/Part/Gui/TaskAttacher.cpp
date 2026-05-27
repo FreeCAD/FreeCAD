@@ -518,7 +518,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     for (size_t i = 0; i < names.size(); ++i) {
         App::DocumentObject* obj = doc->getObject(names[i].c_str());
         if (!obj) {
-            break; // we reached the TNP string or the element name.
+            break;  // we reached the TNP string or the element name.
         }
 
         if (groupPassed) {
