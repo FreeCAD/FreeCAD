@@ -11,6 +11,9 @@ x-freecad-service: &freecad-service
     DISPLAY: "${DISPLAY:-}"
     FREECAD_USER_HOME: /workspace/.freecad
     CCACHE_DIR: /workspace/.ccache
+    COPILOT_PROVIDER: "${COPILOT_PROVIDER:-local}"
+    OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+    OPENAI_MODEL: "${OPENAI_MODEL:-gpt-4.1-mini}"
   volumes:
     - .:/workspace/FreeCAD
     - freecad-pixi:/workspace/FreeCAD/.pixi
@@ -52,6 +55,9 @@ services:
       DISPLAY: ":1"
       FREECAD_USER_HOME: /workspace/.freecad
       CCACHE_DIR: /workspace/.ccache
+      COPILOT_PROVIDER: "${COPILOT_PROVIDER:-local}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      OPENAI_MODEL: "${OPENAI_MODEL:-gpt-4.1-mini}"
       VNC_RESOLUTION: "${VNC_RESOLUTION:-1280x800x24}"
     ports:
       - "8010:6080"

@@ -18,6 +18,8 @@ if(BUILD_CLOUD)
     add_subdirectory(Cloud)
 endif(BUILD_CLOUD)
 
+add_subdirectory(copilot)
+
 if(BUILD_DRAFT)
   add_subdirectory(Draft)
 endif(BUILD_DRAFT)
