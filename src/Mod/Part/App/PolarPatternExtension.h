@@ -32,6 +32,8 @@
 #include <gp_Ax2.hxx>
 #include <gp_Trsf.hxx>
 
+#include <Mod/Part/PartGlobal.h>
+
 namespace Part
 {
 
