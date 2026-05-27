@@ -1512,7 +1512,7 @@ if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADGui)
 endif()
 
-SET_BIN_DIR(FreeCADGui FreeCADGui)
+SET_BIN_DIR(FreeCADGui)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADGui

@@ -198,7 +198,7 @@ if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MatGui)
 endif()
 
-SET_BIN_DIR(MatGui MatGui /Mod/Material)
+SET_BIN_DIR(MatGui)
 SET_PYTHON_PREFIX_SUFFIX(MatGui)
 
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiIcon_SVG})
