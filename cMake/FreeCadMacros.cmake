@@ -246,44 +246,47 @@ macro(generate_from_any INPUT_FILE OUTPUT_FILE VARIABLE)
 endmacro(generate_from_any)
 
 
-# Macro to replace all the binary output locations.  Takes 2 optional parameters.
-# ${ARGVN} is zero based so the 3rd element is ${ARGV2}.  When the 3rd element is missing,
-# Runtime and Lib directories default to /bin and /lib.  When present, the 3rd element
-# specifies both Runtime and Lib directories.  4th specifies linux install path.
-MACRO(SET_BIN_DIR ProjectName OutputName)
+# Function to replace all the binary output locations.
+# SET_BIN_DIR(ProjectName [OutputName])
+#   ProjectName is the name of the target
+#   OutputName will be the name of the file on disk. Optional and defaults to ProjectName
+function(SET_BIN_DIR ProjectName)
+    if(${ARGC} GREATER 1)
+        set(OutputName "${ARGV1}")
+    else()
+        set(OutputName "${ProjectName}")
+    endif()
+
+    string(REPLACE "/" ";" DIR_LIST "${SOURCE_DIR}//")
+    list(GET DIR_LIST 0 DIR0)
+    list(GET DIR_LIST 1 DIR1)
+    list(GET DIR_LIST 2 MODULE_NAME)
+    if("${DIR0}" STREQUAL "src" AND ("${DIR1}" STREQUAL "Mod" OR
+                                    ("${DIR1}" STREQUAL "Tools" AND "${MODULE_NAME}" STREQUAL "_TEMPLATE_")))
+        set(BIN_DIR "/Mod/${MODULE_NAME}")
+        set(LIB_DIR "/Mod/${MODULE_NAME}")
+    else()
+        set(BIN_DIR "/bin")
+        set(LIB_DIR "/lib")
+    endif()
+
     set_target_properties(${ProjectName} PROPERTIES OUTPUT_NAME ${OutputName})
-    if(${ARGC} GREATER 2)
-        # VS_IDE (and perhaps others) make Release and Debug subfolders.  This removes them.
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${ARGV2})
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${ARGV2})
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${ARGV2})
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${ARGV2})
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${ARGV2})
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${ARGV2})
-    else(${ARGC} GREATER 2)
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/bin)
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/bin)
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/lib)
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/lib)
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/lib)
-    endif(${ARGC} GREATER 2)
+    # VS_IDE (and perhaps others) make Release and Debug subfolders.  This removes them.
+    set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${BIN_DIR})
+    set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${BIN_DIR})
+    set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${BIN_DIR})
+    set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${LIB_DIR})
+    set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${LIB_DIR})
+    set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${LIB_DIR})
 
     if(WIN32)
         set_target_properties(${ProjectName} PROPERTIES DEBUG_OUTPUT_NAME ${OutputName}_d)
-    else(WIN32)
+    elseif(NOT ${ProjectName} MATCHES "^(FreeCADBase|SMDS|Driver|MEFISTO2)$")
         # FreeCADBase, SMDS, Driver and MEFISTO2 libs don't depend on parts from CMAKE_INSTALL_LIBDIR
-        if(NOT ${ProjectName} MATCHES "^(FreeCADBase|SMDS|Driver|MEFISTO2)$")
-            if(${ARGC} STREQUAL 4)
-                set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${ARGV3})
-            elseif(NOT IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
-                set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
-            else()
-                set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_LIBDIR})
-            endif()
-        endif()
-    endif(WIN32)
-ENDMACRO(SET_BIN_DIR)
+        cmake_path(APPEND CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_LIBDIR}" OUTPUT_VARIABLE RPATH)
+        set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH "${RPATH}")
+    endif()
+endfunction(SET_BIN_DIR)
 
 # Set python prefix & suffix together
 MACRO(SET_PYTHON_PREFIX_SUFFIX ProjectName)

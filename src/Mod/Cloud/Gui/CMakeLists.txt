@@ -36,7 +36,7 @@ endif(FREECAD_USE_PCH)
 
 fc_copy_sources(CloudGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Cloud" ${Cloud_SVG})
 
-SET_BIN_DIR(CloudGui CloudGui /Mod/Cloud)
+SET_BIN_DIR(CloudGui)
 SET_PYTHON_PREFIX_SUFFIX(CloudGui)
 
 install(TARGETS CloudGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

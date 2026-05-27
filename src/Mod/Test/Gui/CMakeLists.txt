@@ -77,7 +77,7 @@ endif()
 fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/Mod/Test" qtunittest.py)
 fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Test" ${TestGuiIcon_SVG})
 
-SET_BIN_DIR(QtUnitGui QtUnitGui /Mod/Test)
+SET_BIN_DIR(QtUnitGui)
 SET_PYTHON_PREFIX_SUFFIX(QtUnitGui)
 
 INSTALL(TARGETS QtUnitGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

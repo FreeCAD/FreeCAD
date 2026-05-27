@@ -385,7 +385,7 @@ endif()
 
 add_dependencies(FreeCADApp fc_version)
 
-SET_BIN_DIR(FreeCADApp FreeCADApp)
+SET_BIN_DIR(FreeCADApp)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADApp
