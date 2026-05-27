@@ -39,11 +39,6 @@ constexpr auto pi = std::numbers::pi_v<float>;
 #define PY 1
 #define PZ 2
 
-// Maximum ratio of radius to chord length for treating arc as curved
-// Ratios above this indicate the arc is essentially a straight line
-// and should be treated as linear to avoid numerical precision issues
-constexpr float ARC_LINEARIZATION_THRESHOLD = 100000.0f;
-
 namespace CAMSimulator
 {
 

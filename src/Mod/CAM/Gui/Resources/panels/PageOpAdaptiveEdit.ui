@@ -260,14 +260,14 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="9" column="0">
        <widget class="QLabel" name="label_max_stepdown">
         <property name="text">
-         <string>Max stepdown</string>
+         <string>Max pitch</string>
         </property>
        </widget>
       </item>
       <item row="9" column="1">
-       <widget class="Gui::InputField" name="HelixMaxStepdown">
+       <widget class="Gui::InputField" name="HelixMaxPitch">
         <property name="toolTip">
-         <string>The maximum allowable descent in a single revolution of the helix.</string>
+         <string>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
@@ -277,14 +277,14 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="10" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Ramp angle</string>
+         <string>Max ramp angle</string>
         </property>
        </widget>
       </item>
       <item row="10" column="1">
-       <widget class="Gui::InputField" name="HelixAngle">
+       <widget class="Gui::InputField" name="HelixMaxRampAngle">
         <property name="toolTip">
-         <string>Angle of the helix ramp entry</string>
+         <string>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>

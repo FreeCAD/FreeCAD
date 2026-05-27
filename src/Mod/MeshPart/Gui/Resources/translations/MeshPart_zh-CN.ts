@@ -489,8 +489,8 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
-      <translation>没有活动文档</translation>
+      <source>No Active Document</source>
+      <translation>无活动文档</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>

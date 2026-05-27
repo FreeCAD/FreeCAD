@@ -37,6 +37,8 @@ import DraftVecUtils
 import WorkingPlane
 from draftfunctions import svgtext
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
+
+# from draftgeoutils import fillets as geo_fillets
 from draftobjects import layer
 from draftutils import params
 from draftutils import utils
@@ -44,7 +46,6 @@ from draftutils.messages import _wrn, _err
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 
 ## \addtogroup draftfunctions
@@ -959,7 +960,7 @@ def get_svg(
         basewire = obj.Base.Shape.Wires[0].copy()
         # Not applying rounding because the results are not correct
         # if hasattr(obj, "Rounding") and obj.Rounding:
-        #     basewire = DraftGeomUtils.filletWire(
+        #     basewire = geo_fillets.filletWire(
         #         basewire, obj.Rounding * obj.Diameter.Value
         #     )
         wires = []
@@ -1169,11 +1170,24 @@ def get_svg(
             and hasattr(vobj, "ArrowTypeEnd")
             and hasattr(vobj, "ArrowSizeStart")
             and hasattr(vobj, "ArrowSizeEnd")
-            and len(obj.Shape.Vertexes) > 1
+            and len(obj.Points) > 1
         ):
-            # Draft_Wire
-            p1 = get_proj(obj.Shape.Vertexes[0].Point, plane)
-            p2 = get_proj(obj.Shape.Vertexes[1].Point, plane)
+            # Draft_Wire, Draft_BezCurve and Draft_BSpline.
+            shp = obj.Shape
+            end_idx = 0 if obj.Closed else -1
+            if utils.get_type(obj) == "BSpline":
+                edge = shp.Edges[0]  # shp.ShapeType may be "Edge"/"Wire"/"Face", we need an edge.
+                v1 = edge.tangentAt(edge.FirstParameter)
+                if obj.Closed:
+                    v2 = -v1
+                else:
+                    v2 = -edge.tangentAt(edge.LastParameter)
+            else:
+                rot = obj.Placement.Rotation
+                v1 = rot.multVec(obj.Points[1].sub(obj.Points[0]))
+                v2 = rot.multVec(obj.Points[end_idx - 1].sub(obj.Points[end_idx]))
+            p1 = get_proj(shp.Vertexes[0].Point, plane)
+            p2 = get_proj(shp.Vertexes[0].Point + v1, plane)
             svg += get_arrow(
                 obj,
                 vobj.ArrowTypeStart,
@@ -1183,8 +1197,8 @@ def get_svg(
                 linewidth,
                 -DraftVecUtils.angle(p2 - p1),
             )
-            p1 = get_proj(obj.Shape.Vertexes[-1].Point, plane)
-            p2 = get_proj(obj.Shape.Vertexes[-2].Point, plane)
+            p1 = get_proj(shp.Vertexes[end_idx].Point, plane)
+            p2 = get_proj(shp.Vertexes[end_idx].Point + v2, plane)
             svg += get_arrow(
                 obj,
                 vobj.ArrowTypeEnd,

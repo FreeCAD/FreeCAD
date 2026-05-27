@@ -963,7 +963,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
 {
     auto pcProvider = static_cast<ViewProviderDocumentObject*>(getViewProvider(&Obj));
     if (!pcProvider) {
-        std::string cName = Obj.getViewProviderNameStored();
+        std::string_view cName {Obj.getViewProviderNameStored()};
         for (;;) {
             if (cName.empty()) {
                 // handle document object with no view provider specified
@@ -971,7 +971,7 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
                 return;
             }
             Base::Type type = Base::Type::getTypeIfDerivedFrom(
-                cName.c_str(),
+                cName,
                 ViewProviderDocumentObject::getClassTypeId(),
                 true
             );
@@ -1712,7 +1712,7 @@ bool Document::saveAs()
         getMainWindow(),
         QObject::tr("Save %1 Document").arg(exe),
         name,
-        QStringList(QStringLiteral("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")))
+        FileDialog::FilterList {{QObject::tr("%1 document").arg(exe), {"*.FCStd"}}}
     );
 
     if (!fn.isEmpty()) {
@@ -1842,7 +1842,7 @@ bool Document::saveCopy()
         getMainWindow(),
         QObject::tr("Save %1 Document").arg(exe),
         name,
-        QStringList(QObject::tr("%1 document (*.FCStd)").arg(exe))
+        FileDialog::FilterList {{QObject::tr("%1 document").arg(exe), {"*.FCStd"}}}
     );
     if (!fn.isEmpty()) {
         const char* DocName = App::GetApplication().getDocumentName(getDocument());

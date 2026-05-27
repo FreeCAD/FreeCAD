@@ -183,59 +183,6 @@ std::vector<App::DocumentObject*> ViewProviderGroupExtension::extensionClaimChil
     return group->Group.getValues();
 }
 
-void ViewProviderGroupExtension::extensionShow()
-{
-
-    // avoid possible infinite recursion
-    if (guard) {
-        return;
-    }
-    Base::StateLocker lock(guard);
-
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    //
-    // Property::User1 is used by ViewProviderDocumentObject to mark for
-    // temporary visibility changes. Do not propagate the change to children.
-    if (!getExtendedViewProvider()->isRestoring()
-        && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1)) {
-        auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-        for (auto obj : group->Group.getValues()) {
-            if (obj && !obj->Visibility.getValue()) {
-                obj->Visibility.setValue(true);
-            }
-        }
-    }
-
-    ViewProviderExtension::extensionShow();
-}
-
-void ViewProviderGroupExtension::extensionHide()
-{
-
-    // avoid possible infinite recursion
-    if (guard) {
-        return;
-    }
-    Base::StateLocker lock(guard);
-
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    //
-    // Property::User1 is used by ViewProviderDocumentObject to mark for
-    // temporary visibility changes. Do not propagate the change to children.
-    if (!getExtendedViewProvider()->isRestoring()
-        && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1)) {
-        auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-        for (auto obj : group->Group.getValues()) {
-            if (obj && obj->Visibility.getValue()) {
-                obj->Visibility.setValue(false);
-            }
-        }
-    }
-    ViewProviderExtension::extensionHide();
-}
-
 bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string>&)
 {
 

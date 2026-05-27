@@ -125,6 +125,9 @@ public:
                                                   const TopoDS_Edge& e2);
     static int                      isSubset(const TopoDS_Edge &e0,
                                              const TopoDS_Edge &e1);
+    static bool                     curvesCoincide(const TopoDS_Edge& e0,
+                                                   const TopoDS_Edge& e1,
+                                                   double tol);
     static std::vector<TopoDS_Edge> fuseEdges(const TopoDS_Edge& e0,
                                               const TopoDS_Edge& e1);
     static bool                     boxesIntersect(const TopoDS_Edge& e0,

@@ -223,6 +223,8 @@ class ObjectDressup:
         if not obj.Base.Path:
             obj.Path = Path.Path()
             return
+        if not obj.LeadIn and not obj.LeadOut:
+            obj.Path = PathUtils.getPathWithPlacement(obj.Base)
 
         if obj.RadiusIn <= 0:
             obj.RadiusIn = 1
@@ -1083,10 +1085,14 @@ class ObjectDressup:
         self.profileLength = 0
         if startIndex >= len(self.source):
             return len(self.source) - 1
-        for i in range(startIndex, len(self.source), +1):
+        startPoint = self.source[startIndex].positionBegin()
+        for i in range(startIndex, len(self.source)):
             if not self.isCuttingMove(self.source[i]):
                 return i - 1
             self.profileLength += self.source[i].pathLength()
+            if Path.Geom.pointsCoincide(startPoint, self.source[i].positionEnd()):
+                # Workaround for several closed paths without retraction
+                return i
 
         return i
 
@@ -1411,6 +1417,20 @@ class ObjectDressup:
                 self.firstMillIndex = None
                 self.lastMillIndex = None
                 self.invertAlt = not self.invertAlt if getattr(obj, "InvertAlt", None) else False
+
+            # Workaround for several closed paths without retraction
+            if not Path.Geom.isRoughly(instr.positionBegin().z, instr.positionEnd().z):
+                # reset firstMillIndex, if move not in XY plane
+                self.firstMillIndex = i + 1
+            if self.lastMillIndex and i >= self.lastMillIndex:
+                # lastMillIndex not correct any more, find new
+                self.lastMillIndex = self.findLastCutMultiProfileIndex()
+            if self.lastMillIndex and Path.Geom.pointsCoincide(
+                instr.positionBegin(), source[self.lastMillIndex].positionEnd()
+            ):
+                # get firstMillIndex for last closed path
+                self.firstMillIndex = i
+                self.closedProfile = True
 
         maneuver.addInstructions(commands)
         return maneuver.toPath()

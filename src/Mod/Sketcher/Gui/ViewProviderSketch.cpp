@@ -85,6 +85,14 @@
 #include "ViewProviderSketchGeometryExtension.h"
 #include "Workbench.h"
 
+#include <BRep_Builder.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <Precision.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_ListIteratorOfListOfShape.hxx>
+
 #include <Mod/Part/Gui/SoFCShapeObject.h>
 
 
@@ -552,6 +560,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewPr
 ViewProviderSketch::ViewProviderSketch()
     : SelectionObserver(false)
     , toolManager(this)
+    , editingCancelled(false)
     , Mode(STATUS_NONE)
     , pcSketchFaces(new SoSketchFaces)
     , pcSketchFacesToggle(new SoToggleSwitch)
@@ -562,7 +571,6 @@ ViewProviderSketch::ViewProviderSketch()
     , sketchHandler(nullptr)
     , viewOrientationFactor(1)
     , blockContextMenu(false)
-    , editingCancelled(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
     PartGui::ViewProviderGridExtension::initExtension(this);
@@ -2682,7 +2690,20 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         resetPreselectPoint();
         preselection.blockedPreselection = false;
         updateToolTip(); // Clear tooltip when no point picked
-
+        // when no point is preselected, the cursor will stay as Qt::ForbiddenCursor
+        // because the code hasn't entered SelectionSingleton::setPreselect
+        // so the cursor has to be restored to normal
+        const Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (!doc)
+        {
+          return false;
+        }
+        Gui::MDIView* mdi = doc->getActiveView();
+        if (!mdi)
+        {
+          return false;
+        }
+        mdi->restoreOverrideCursor();
         return true;
     }
 
@@ -3444,6 +3465,7 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
 
     if (prop == &AutoColor) {
         updateColorPropertiesVisibility();
+        updateAutomaticColorProperties();
         return;
     }
 
@@ -3477,6 +3499,17 @@ void SketcherGui::ViewProviderSketch::updateColorPropertiesVisibility()
     ShapeAppearance.setStatus(App::Property::Hidden, usesAutomaticColors);
 }
 
+void SketcherGui::ViewProviderSketch::updateAutomaticColorProperties()
+{
+    if (!AutoColor.getValue()) {
+        return;
+    }
+
+    pObserver->updateFromParameter("SketchEdgeColor");
+    pObserver->updateFromParameter("SketchVertexColor");
+    pObserver->updateFromParameter("SketchFaceColor");
+}
+
 void SketcherGui::ViewProviderSketch::startRestoring()
 {
     // small hack: before restoring mark AutoColor property as non-touched
@@ -3503,9 +3536,7 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 
     if (AutoColor.getValue()) {
         // update colors according to current user preferences
-        pObserver->updateFromParameter("SketchEdgeColor");
-        pObserver->updateFromParameter("SketchVertexColor");
-        pObserver->updateFromParameter("SketchFaceColor");
+        updateAutomaticColorProperties();
 
         updateColorPropertiesVisibility();
     }
@@ -3532,6 +3563,62 @@ bool ViewProviderSketch::getElementPicked(const SoPickedPoint* pp, std::string& 
     }
 
     return ViewProvider2DObject::getElementPicked(pp, subname);
+}
+
+std::vector<std::pair<std::string, std::string>> ViewProviderSketch::getRelatedElements(
+    const std::string& subname,
+    const SbVec3f& pickPoint
+) const
+{
+    std::vector<std::pair<std::string, std::string>> result;
+
+    if (!subname.starts_with("Edge") && !subname.starts_with("InternalEdge")) {
+        return result;
+    }
+
+    const auto& internalShape = getSketchObject()->InternalShape.getShape();
+    if (internalShape.isNull()) {
+        return result;
+    }
+
+    const TopoDS_Shape& shape = internalShape.getShape();
+
+    TopTools_IndexedDataMapOfShapeListOfShape edgeToFaces;
+    TopExp::MapShapesAndAncestors(shape, TopAbs_EDGE, TopAbs_FACE, edgeToFaces);
+
+    TopTools_IndexedMapOfShape faceMap;
+    TopExp::MapShapes(shape, TopAbs_FACE, faceMap);
+
+    // The picked name may refer to an unsplit edge in the main Shape; use the pick
+    // point to select the specific split segment the user actually clicked.
+    gp_Pnt pickPt(pickPoint[0], pickPoint[1], pickPoint[2]);
+    TopoDS_Vertex pickVertex;
+    BRep_Builder().MakeVertex(pickVertex, pickPt, Precision::Confusion());
+
+    double bestDist = std::numeric_limits<double>::max();
+    int bestEdgeIdx = 0;
+    for (int i = 1; i <= edgeToFaces.Extent(); i++) {
+        BRepExtrema_DistShapeShape dist(pickVertex, edgeToFaces.FindKey(i));
+        if (dist.IsDone() && dist.Value() < bestDist) {
+            bestDist = dist.Value();
+            bestEdgeIdx = i;
+        }
+    }
+
+    if (bestEdgeIdx == 0) {
+        return result;
+    }
+
+    const TopTools_ListOfShape& faces = edgeToFaces.FindFromIndex(bestEdgeIdx);
+    for (TopTools_ListIteratorOfListOfShape it(faces); it.More(); it.Next()) {
+        int faceIdx = faceMap.FindIndex(it.Value());
+        if (faceIdx > 0) {
+            std::string idx = std::to_string(faceIdx);
+            result.push_back({"Face" + idx, SketchObject::internalPrefix() + "Face" + idx});
+        }
+    }
+
+    return result;
 }
 
 bool ViewProviderSketch::getDetailPath(
@@ -3575,7 +3662,7 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
     ViewProvider2DObject::attach(pcFeat);
 
-    getAnnotation()->addChild(pcSketchFacesToggle);
+    getOrCreateAnnotation()->addChild(pcSketchFacesToggle);
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

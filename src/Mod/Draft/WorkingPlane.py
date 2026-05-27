@@ -44,13 +44,13 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import DraftVecUtils
 from FreeCAD import Vector
+from draftgeoutils import geometry as geo_geometry
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
 
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Part = lz.LazyLoader("Part", globals(), "Part")
 FreeCADGui = lz.LazyLoader("FreeCADGui", globals(), "FreeCADGui")
 
@@ -332,7 +332,7 @@ class PlaneBase:
 
         The center of gravity of the face defines the WP `position` and the
         normal of the face the WP `axis`. The WP `u` and `v` vectors are
-        determined by the DraftGeomUtils.uv_vectors_from_face function.
+        determined by the draftgeoutils.geometry.uv_vectors_from_face function.
         See there.
 
         Parameters
@@ -350,7 +350,7 @@ class PlaneBase:
         """
         if face.Surface.isPlanar() is False:
             return False
-        place = DraftGeomUtils.placement_from_face(face)
+        place = geo_geometry.placement_from_face(face)
         self.u, self.v, self.axis = self._axes_from_rotation(place.Rotation)
         self.position = place.Base + (self.axis * offset)
         return True
@@ -670,13 +670,13 @@ class PlaneBase:
             Direction of projection.
         force_projection: bool, optional
             Defaults to `True`.
-            See DraftGeomUtils.project_point_on_plane
+            See draftgeoutils.geometry.project_point_on_plane
 
         Returns
         -------
         Base.Vector
         """
-        return DraftGeomUtils.project_point_on_plane(
+        return geo_geometry.project_point_on_plane(
             point, self.position, self.axis, direction, force_projection
         )
 
@@ -785,7 +785,7 @@ class Plane(PlaneBase):
 
         The returned value is the negative of the local Z coordinate of the point.
         """
-        return -DraftGeomUtils.distance_to_plane(point, self.position, self.axis)
+        return -geo_geometry.distance_to_plane(point, self.position, self.axis)
 
     def projectPoint(self, point, direction=None, force_projection=True):
         """See PlaneBase.project_point."""
@@ -854,7 +854,7 @@ class Plane(PlaneBase):
 
         The center of gravity of the face defines the WP `position` and the
         normal of the face the WP `axis`. The WP `u` and `v` vectors are
-        determined by the DraftGeomUtils.uv_vectors_from_face function.
+        determined by the draftgeoutils.geometry.uv_vectors_from_face function.
         See there.
 
         Parameters
@@ -874,7 +874,7 @@ class Plane(PlaneBase):
             `True` if successful.
         """
         if shape.ShapeType == "Face" and shape.Surface.isPlanar():
-            place = DraftGeomUtils.placement_from_face(shape)
+            place = geo_geometry.placement_from_face(shape)
             if parent:
                 place = parent.getGlobalPlacement() * place
             super().align_to_placement(place, offset)
@@ -961,17 +961,17 @@ class Plane(PlaneBase):
 
         normal = None
         for n in range(len(shapes)):
-            if not DraftGeomUtils.is_planar(shapes[n]):
+            if not geo_geometry.is_planar(shapes[n]):
                 _wrn(translate("draft", "'{}' object is not planar".format(names[n])) + "\n")
                 return False
             if not normal:
-                normal = DraftGeomUtils.get_normal(shapes[n])
+                normal = geo_geometry.get_normal(shapes[n])
                 shape_ref = n
 
         # test if all shapes are coplanar
         if normal:
             for n in range(len(shapes)):
-                if not DraftGeomUtils.are_coplanar(shapes[shape_ref], shapes[n]):
+                if not geo_geometry.are_coplanar(shapes[shape_ref], shapes[n]):
                     _wrn(
                         translate(
                             "draft", "{} and {} are not coplanar".format(names[shape_ref], names[n])
@@ -984,10 +984,10 @@ class Plane(PlaneBase):
             points = [vertex.Point for shape in shapes for vertex in shape.Vertexes]
             if len(points) >= 3:
                 poly = Part.makePolygon(points)
-                if not DraftGeomUtils.is_planar(poly):
+                if not geo_geometry.is_planar(poly):
                     _wrn(translate("draft", "All shapes must be coplanar") + "\n")
                     return False
-                normal = DraftGeomUtils.get_normal(poly)
+                normal = geo_geometry.get_normal(poly)
             else:
                 normal = None
 
@@ -2007,17 +2007,17 @@ if FreeCAD.GuiUp:
 def getPlacementFromPoints(points):
     """Return a placement from a list of 3 or 4 points. The 4th point is no longer used.
 
-    Calls DraftGeomUtils.placement_from_points(). See there.
+    Calls draftgeoutils.geometry.placement_from_points(). See there.
     """
     utils.use_instead("DraftGeomUtils.placement_from_points")
-    return DraftGeomUtils.placement_from_points(*points[:3])
+    return geo_geometry.placement_from_points(*points[:3])
 
 
 # Compatibility function (v1.0, 2023):
 def getPlacementFromFace(face, rotated=False):
     """Return a placement from a face.
 
-    Calls DraftGeomUtils.placement_from_face(). See there.
+    Calls draftgeoutils.geometry.placement_from_face(). See there.
     """
     utils.use_instead("DraftGeomUtils.placement_from_face")
-    return DraftGeomUtils.placement_from_face(face, rotated=rotated)
+    return geo_geometry.placement_from_face(face, rotated=rotated)

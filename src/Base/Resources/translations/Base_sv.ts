@@ -19,7 +19,7 @@
       <translation>US-amerikanska mått (in, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="679"/>
+      <location filename="../../UnitsSchemasData.h" line="681"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Imperiala för civilingenjörsvetenskap (ft, lb, mph)</translation>
     </message>

@@ -288,7 +288,7 @@ void View3DInventor::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")))
+        FileDialog::FilterList {{QStringLiteral("PDF"), {"*.pdf"}}}
     );
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
@@ -914,7 +914,7 @@ void View3DInventor::customEvent(QEvent* e)
             "User parameter:BaseApp/Preferences/View"
         );
         if (hGrp->GetBool("SameStyleForAllViews", true)) {
-            hGrp->SetASCII("NavigationStyle", se->style().getName());
+            hGrp->SetASCII("NavigationStyle", std::string {se->style().getName()}.c_str());
         }
         else {
             _viewer->setNavigationType(se->style());

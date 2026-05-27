@@ -625,13 +625,15 @@ class FemSelectionObserver:
 
     def addSelection(self, docName, objName, sub, pos):
         selected_object = FreeCAD.getDocument(docName).getObject(objName)  # get the obj objName
-        if FreeCADGui.editDocument().getInEdit().Object.Document != selected_object.Document:
-            QtGui.QMessageBox.critical(
-                None, "Selection error", "External object selection is not supported"
-            )
-            FreeCADGui.Selection.clearSelection()
-            return
-
+        edit_doc = FreeCADGui.editDocument()
+        in_edit = edit_doc.getInEdit() if edit_doc else None
+        if in_edit is not None and hasattr(in_edit, "Object"):
+            if in_edit.Object.Document != selected_object.Document:
+                QtGui.QMessageBox.critical(
+                    None, "Selection error", "External object selection is not supported"
+                )
+                FreeCADGui.Selection.clearSelection()
+                return
         self.added_obj = (selected_object, sub)
         # on double click on a vertex of a solid sub is None and obj is the solid
         self.parseSelectionFunction(self.added_obj)

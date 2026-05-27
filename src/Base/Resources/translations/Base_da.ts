@@ -19,7 +19,7 @@
       <translation>Standard, US (i, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="679"/>
+      <location filename="../../UnitsSchemasData.h" line="681"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Imperial for bygningsingeniører (ft, ft/s)</translation>
     </message>
