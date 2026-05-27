@@ -100,4 +100,6 @@ FreeCAD.__unit_test__ += [
     "GuiDocument",
     "TestRubberbandSelection",
     "TestCoinSelectionVisual",
+    "TestCoinNodeSnapshots",
+    "TestViewProviderLink",
 ]

@@ -198,7 +198,12 @@ class TestViewProviderLink(unittest.TestCase):
         import PartGui  # noqa: F401
 
         self.doc = self.FreeCAD.newDocument("TestViewProviderLink")
-        self.FreeCADGui.ActiveDocument = self.FreeCADGui.getDocument(self.doc.Name)
+        self.FreeCADGui.setActiveDocument(self.doc.Name)
+        self.gui_doc = (
+            self.FreeCADGui.getDocument(self.doc.Name) or self.FreeCADGui.activeDocument()
+        )
+        if self.gui_doc is None:
+            raise AssertionError(f"failed to resolve Gui document for {self.doc.Name}")
 
     def tearDown(self):
         if getattr(self, "doc", None) is None:
@@ -297,7 +302,7 @@ class TestViewProviderLink(unittest.TestCase):
         _make_material(box.ViewObject, (0.1, 0.85, 0.15, 1.0))
         box.ViewObject.Visibility = False
 
-        view = self.FreeCADGui.getDocument(self.doc.Name).ActiveView
+        view = self.gui_doc.ActiveView
         self.assertIsNotNone(view, "expected the GUI document to expose an active 3D view")
 
         width = 512
@@ -342,7 +347,7 @@ class TestViewProviderLink(unittest.TestCase):
 
         box.ViewObject.Visibility = False
 
-        view = self.FreeCADGui.getDocument(self.doc.Name).ActiveView
+        view = self.gui_doc.ActiveView
         self.assertIsNotNone(view, "expected the GUI document to expose an active 3D view")
 
         width = 512
@@ -411,7 +416,7 @@ class TestViewProviderLink(unittest.TestCase):
         ]
         self.FreeCADGui.updateGui()
 
-        view = self.FreeCADGui.getDocument(self.doc.Name).ActiveView
+        view = self.gui_doc.ActiveView
         self.assertIsNotNone(view, "expected the GUI document to expose an active 3D view")
 
         width = 512

@@ -254,6 +254,9 @@ def _require_gui():
 
     _configure_software_gl_for_snapshots()
 
+    if os.environ.get("CI", "").strip() and not sys.platform.startswith("linux"):
+        raise unittest.SkipTest("Coin node snapshot visual tests are only supported on Linux CI")
+
     # `FreeCADCmd -t 0` runs the base test suite without X11/Wayland. Creating a Qt application
     # in that environment can abort the whole process (instead of raising a Python exception).
     # Skip early unless a display (or explicit headless Qt platform) is configured.
@@ -1521,7 +1524,10 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         try:
             box = doc.addObject("Part::Box", "Box")
             doc.recompute()
-            FreeCADGui.ActiveDocument = FreeCADGui.getDocument(doc.Name)
+            FreeCADGui.setActiveDocument(doc.Name)
+            gui_doc = FreeCADGui.getDocument(doc.Name) or FreeCADGui.activeDocument()
+            if gui_doc is None:
+                raise AssertionError(f"failed to resolve Gui document for {doc.Name}")
 
             box.ViewObject.DiffuseColor = [
                 (0.90, 0.18, 0.18, 1.0),
@@ -1591,11 +1597,6 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         is_ci = bool(os.environ.get("CI", "").strip())
         is_linux = sys.platform.startswith("linux")
         smoke_mode = is_ci and not is_linux
-
-        if is_ci and not is_linux:
-            raise unittest.SkipTest(
-                "Coin node snapshot visual tests are only supported on Linux CI"
-            )
 
         _, FreeCADGui, coin = _require_gui()
 
