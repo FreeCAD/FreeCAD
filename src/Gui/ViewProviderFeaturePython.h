@@ -233,8 +233,10 @@ public:
 
 private:
     template<typename Fallback>
-    bool dispatchGetElementPicked(const SoPickedPoint* pp, std::string& subname, Fallback&& fallback) const
+    bool dispatchResolvePickedElement(const SoPickedPoint* pp, std::string& subname, Fallback&& fallback) const
     {
+        // Python view providers still expose the legacy getElementPicked() hook. If it is not
+        // implemented, continue through the C++ context-aware resolution path.
         const auto ret = imp->getElementPicked(pp, subname);
         if (ret == ViewProviderFeaturePythonImp::NotImplemented) {
             return fallback();
@@ -323,20 +325,14 @@ public:
     {
         return imp->onSelectionChanged(changes);
     }
-    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override
-    {
-        return dispatchGetElementPicked(pp, subname, [&]() {
-            return ViewProviderT::getElementPicked(pp, subname);
-        });
-    }
-    bool getElementPicked(
+    bool resolvePickedElement(
         const SoPickedPoint* pp,
         std::string& subname,
         const SelectionPickContext* pickContext
     ) const override
     {
-        return dispatchGetElementPicked(pp, subname, [&]() {
-            return ViewProviderT::getElementPicked(pp, subname, pickContext);
+        return dispatchResolvePickedElement(pp, subname, [&]() {
+            return ViewProviderT::resolvePickedElement(pp, subname, pickContext);
         });
     }
     std::string getElement(const SoDetail* det) const override

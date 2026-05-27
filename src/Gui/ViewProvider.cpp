@@ -1009,16 +1009,19 @@ std::vector<App::DocumentObject*> ViewProvider::claimChildren3D() const
 
 bool ViewProvider::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector) {
-        if (ext->extensionGetElementPicked(pp, subname)) {
-            return true;
-        }
-    }
-    return resolvePickedElementFromDetail(pp, subname);
+    return getElementPicked(pp, subname, nullptr);
 }
 
 bool ViewProvider::getElementPicked(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const SelectionPickContext* pickContext
+) const
+{
+    return resolvePickedElement(pp, subname, pickContext);
+}
+
+bool ViewProvider::resolvePickedElement(
     const SoPickedPoint* pp,
     std::string& subname,
     const SelectionPickContext* pickContext

@@ -189,19 +189,19 @@ public:
     virtual void extensionFinishRestoring()
     {}
 
-    virtual bool extensionGetElementPicked(const SoPickedPoint*, std::string&) const
+    bool extensionGetElementPicked(const SoPickedPoint* pp, std::string& subname) const
     {
-        return false;
+        return extensionGetElementPicked(pp, subname, nullptr);
     }
-    /// Context-aware extension hook; \a pickContext may be null when callers only need the legacy
-    /// pick resolution.
+    /// Canonical extension hook for single-pick resolution. \a pickContext may be null when
+    /// callers only need the legacy pick resolution.
     virtual bool extensionGetElementPicked(
-        const SoPickedPoint* pp,
-        std::string& subname,
+        const SoPickedPoint*,
+        std::string&,
         const SelectionPickContext* /*pickContext*/
     ) const
     {
-        return extensionGetElementPicked(pp, subname);
+        return false;
     }
     virtual bool extensionGetDetailPath(const char*, SoFullPath*, SoDetail*&) const
     {
