@@ -456,7 +456,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     //: A context menu action used to show or hide the input hints in the status bar
     d->hintLabel->setWindowTitle(tr("Input Hints"));
 
-    statusBar()->addWidget(d->hintLabel);
+    statusBar()->addPermanentWidget(d->hintLabel);
 
     // right side label
     d->rightSideLabel = new StatusBarLabel(statusBar(), "QuickMeasureEnabled");
