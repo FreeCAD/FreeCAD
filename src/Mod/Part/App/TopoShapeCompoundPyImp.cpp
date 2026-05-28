@@ -73,15 +73,18 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
     }
 
-    std::vector<TopoShape> shapes;
+    BRep_Builder builder;
+    TopoDS_Compound Comp;
+    builder.MakeCompound(Comp);
 
     try {
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
-                const TopoShape& sh = *(static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr());
-                if (!sh.isNull()) {
-                    shapes.push_back(sh);
+                const TopoDS_Shape& sh
+                    = static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr()->getShape();
+                if (!sh.IsNull()) {
+                    builder.Add(Comp, sh);
                 }
             }
         }
@@ -91,7 +94,7 @@ int TopoShapeCompoundPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
     }
 
-    getTopoShapePtr()->makeElementCompound(shapes);
+    getTopoShapePtr()->setShape(Comp);
     return 0;
 }
 
@@ -102,19 +105,16 @@ PyObject* TopoShapeCompoundPy::add(PyObject* args)
         return nullptr;
     }
 
-    TopoShape& comp = *(getTopoShapePtr());
-    std::vector<TopoShape> shapes;
+    BRep_Builder builder;
+    TopoDS_Shape comp = getTopoShapePtr()->getShape();
+    if (comp.IsNull()) {
+        builder.MakeCompound(TopoDS::Compound(comp));
+    }
 
     try {
-        if (comp.shapeType() == TopAbs_COMPOUND) {
-            for (const TopoShape& childShape : comp.getSubTopoShapes()) {
-                shapes.push_back(childShape);
-            }
-        }
-
-        const TopoShape& sh = *(static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
-        if (!sh.isNull()) {
-            shapes.push_back(sh);
+        const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->getTopoShapePtr()->getShape();
+        if (!sh.IsNull()) {
+            builder.Add(comp, sh);
         }
     }
     catch (Standard_Failure& e) {
@@ -123,7 +123,7 @@ PyObject* TopoShapeCompoundPy::add(PyObject* args)
         return nullptr;
     }
 
-    getTopoShapePtr()->makeElementCompound(shapes);
+    getTopoShapePtr()->setShape(comp);
 
     Py_Return;
 }
