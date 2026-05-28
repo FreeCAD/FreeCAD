@@ -22,4 +22,3 @@ endif(BUILD_TEMPLATE)
 
 # "if" clause moved into local CMakeLists.txt file to support Conda and Homebrew builds
 add_subdirectory(MacAppBundle)
-

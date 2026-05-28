@@ -44,7 +44,7 @@ if (NOT FREECAD_USE_EXTERNAL_COIN_PIVY)
 
     set(PIVY_USE_QT6 ON)
     set(PIVY_USE_SOQT OFF)
-    add_subdirectory(pivy)
+    add_subdirectory(pivy EXCLUDE_FROM_ALL)
     set_target_properties(coin PROPERTIES
         AUTOMOC OFF
         AUTOUIC OFF
@@ -74,5 +74,12 @@ if (NOT FREECAD_USE_EXTERNAL_COIN_PIVY)
             ${PROJECT_BINARY_DIR}/Mod/pivy/
 
         DEPENDS CopyPivyFiles
+    )
+
+    # Install pivy with freecad rather than with the global python
+    # We add pivy with EXCLUDE_FROM_ALL to supress it's own install rule
+    install(
+        DIRECTORY ${PROJECT_BINARY_DIR}/Mod/pivy/
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/Mod/pivy
     )
 endif()
