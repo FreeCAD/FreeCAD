@@ -28,8 +28,8 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>Composant</translation>
+      <source>Insert Component</source>
+      <translation>Insérer un composant</translation>
     </message>
   </context>
   <context>

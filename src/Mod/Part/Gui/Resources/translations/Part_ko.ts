@@ -2224,7 +2224,7 @@ of the projection.</source>
       <translation>부착 편집</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="488"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
       <translation>면 색상 변경</translation>
     </message>
@@ -2265,7 +2265,7 @@ of the projection.</source>
       <translation>스윕</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1613"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
       <source>Project on surface</source>
       <translation>표면에 투상</translation>
     </message>
@@ -4139,17 +4139,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
       <source>Projection object</source>
       <translation>투상 객체</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
       <translation>활성 문서가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
       <translation>투상 객체를 생성할 수 없습니다</translation>
     </message>
@@ -4887,7 +4887,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>요소 개수 부족</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
@@ -5254,12 +5254,12 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>요소 개수 부족</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="382"/>
       <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
+      <translation>잘못된 선택</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="393"/>
@@ -5802,7 +5802,7 @@ Individual boolean operation checks:</source>
       <translation>2회 %1 선택 후 확인</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1654"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Datum dialog: input error</source>
       <translation>기준 대화 상자: 입력 오류</translation>
     </message>
@@ -6696,10 +6696,10 @@ Continue?</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>계속</translation>
     </message>
@@ -7121,12 +7121,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="332"/>
+      <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
       <translation>단순</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="337"/>
+      <location filename="../../../App/FaceMaker.cpp" line="343"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>각 와이어로부터 독립적으로 별도의 평면을 생성합니다. 구멍은 지원하지 않으며, 와이어는 서로 다른 평면에 있을 수 있습니다.</translation>
     </message>
@@ -7303,7 +7303,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6698"/>
+      <location filename="../../../App/Geometry.cpp" line="6701"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>곡선의 교점을 추정할 수 없습니다. 모깎기하려는 곡선의 꼭짓점 사이에 일치 구속을 추가해 보세요.</translation>
     </message>
@@ -7710,7 +7710,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="940"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>간격 재설정</translation>
     </message>
   </context>
   <context>

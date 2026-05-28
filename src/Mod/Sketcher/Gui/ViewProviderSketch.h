@@ -796,6 +796,10 @@ protected:
     void finishRestoring() override;
 
     bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    std::vector<std::pair<std::string, std::string>> getRelatedElements(
+        const std::string& subname,
+        const SbVec3f& pickPoint
+    ) const override;
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 
 private:

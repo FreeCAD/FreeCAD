@@ -413,16 +413,6 @@
       <translation>Zellen löschen</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
-      <source>Setup conf table</source>
-      <translation>Konfigurationstabelle einrichten</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
-      <source>Unsetup conf table</source>
-      <translation>Konfigurationstabelle aufheben</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>Binde Zellen</translation>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>Zellen aufheben</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation>Konfigurationstabelle einrichten</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation>Konfigurationstabelle aufheben</translation>
     </message>
   </context>
   <context>

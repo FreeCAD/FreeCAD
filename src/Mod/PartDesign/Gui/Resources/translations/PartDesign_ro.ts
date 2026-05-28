@@ -910,18 +910,18 @@ astfel încât intersecția de sine să fie evitată</translation>
       <translation type="unfinished">Convert to Multi-Transform feature</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="265"/>
+      <location filename="../../SketchWorkflow.cpp" line="266"/>
       <source>Sketch on Face</source>
       <translation type="unfinished">Sketch on Face</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="326"/>
+      <location filename="../../SketchWorkflow.cpp" line="327"/>
       <source>Make copy</source>
       <translation>Fă o copie</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="528"/>
-      <location filename="../../SketchWorkflow.cpp" line="804"/>
+      <location filename="../../SketchWorkflow.cpp" line="529"/>
+      <location filename="../../SketchWorkflow.cpp" line="805"/>
       <source>New Sketch</source>
       <translation type="unfinished">New Sketch</translation>
     </message>
@@ -2906,7 +2906,7 @@ măsurată de-a lungul direcției specificate</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="204"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="210"/>
       <source>Face</source>
       <translation>Faţă</translation>
     </message>
@@ -3135,51 +3135,51 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Eroare</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="841"/>
+      <location filename="../../SketchWorkflow.cpp" line="842"/>
       <source>Several sub-elements selected</source>
       <translation>Mai multe sub-elemente selectate</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="842"/>
+      <location filename="../../SketchWorkflow.cpp" line="843"/>
       <source>Select a single face as support for a sketch!</source>
       <translation type="unfinished">Select a single face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="849"/>
+      <location filename="../../SketchWorkflow.cpp" line="850"/>
       <source>Select a face as support for a sketch!</source>
       <translation type="unfinished">Select a face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="856"/>
+      <location filename="../../SketchWorkflow.cpp" line="857"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation type="unfinished">Need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="863"/>
+      <location filename="../../SketchWorkflow.cpp" line="864"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="848"/>
+      <location filename="../../SketchWorkflow.cpp" line="849"/>
       <source>No support face selected</source>
       <translation>Nici o faţă suport selectată</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="855"/>
+      <location filename="../../SketchWorkflow.cpp" line="856"/>
       <source>No planar support</source>
       <translation>Nici un plan suport</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="862"/>
+      <location filename="../../SketchWorkflow.cpp" line="863"/>
       <source>No valid planes in this document</source>
       <translation>Nu sunt plane valabile în acest document</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="760"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <source>A dialog is already open in the task panel</source>
       <translation>O fereastră de dialog este deja deschisă în fereastra de sarcini</translation>
     </message>
@@ -3219,11 +3219,11 @@ măsurată de-a lungul direcției specificate</translation>
       <translation>Nicio Schița nu este disponibilă în document</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="761"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
@@ -3519,9 +3519,9 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <source>Edit %1</source>
       <translation>Editare %1</translation>
     </message>
@@ -4458,22 +4458,23 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation>Nu se poate efectua operația booleană cu forma de bază invalidă</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="482"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="531"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Result has multiple solids: enable 'Allow Compound' in the active body</translation>
     </message>
@@ -4510,7 +4511,7 @@ peste 90: rază mai mare la partea de jos</translation>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="523"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>Forma rezultată nu este solidă</translation>
@@ -4588,8 +4589,8 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation>Crearea a eșuat deoarece direcția este ortogonală pentru vectorul normal al schiței</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <source>Creating a face from sketch failed</source>
       <translation>Crearea unei fațete din schiță a eșuat</translation>
     </message>
@@ -4654,9 +4655,9 @@ Entitățile de schiță intersectate dintr-o schiță nu sunt permise</translat
       <translation>Eroare: Fața trebuie să fie plană</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
       <source>Error: Result is not a solid</source>
       <translation>Eroare: Rezultatul nu este solid</translation>
     </message>
@@ -4810,7 +4811,7 @@ Elementele de intersectare ale schiței sau multiplele fețe dintr-o schiță nu
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="303"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="446"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <source>Loft: Failed to create shell</source>
       <translation type="unfinished">Loft: Failed to create shell</translation>
     </message>
@@ -4822,97 +4823,92 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o schiță</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="205"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Could not obtain profile shape</source>
       <translation>Pipe: Nu s-a putut obține forma profilului</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="212"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="218"/>
       <source>No spine linked</source>
       <translation>Nici o coloană vertebrală legată</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="227"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="233"/>
       <source>No auxiliary spine linked.</source>
       <translation>Nici o coloană vertebrală auxiliară legată</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="250"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>Conducta: Este nevoie doar de un singur punct izolat în cazul în care se utilizează o schiţă cu puncte izolate pentru secţiune</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="259"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="264"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
       <translation>Conducta: Cel putin o sectiune este necesara cand se foloseste un singur punct pentru profil</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="277"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: All sections need to be Part features</source>
       <translation type="unfinished">Pipe: All sections need to be Part features</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="285"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Could not obtain section shape</source>
       <translation>Pipe: Nu s-a putut obține forma secțiunii</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="295"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="298"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
       <translation>Pipe: Numai profilul şi ultima secţiune pot fi noduri</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="308"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="311"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
       <translation>Multisecțiunile trebuie să aibă același număr de fire interioare ca și secțiunea de bază</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="341"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="344"/>
       <source>Path must not be a null shape</source>
       <translation>Calea nu trebuie să fie o formă nulă</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="381"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="384"/>
       <source>Pipe could not be built</source>
       <translation>Conducta nu a putut fi construită</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="438"/>
-      <source>Result is not a solid</source>
-      <translation>Rezultatul nu este solid</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="477"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="532"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>Conducta: Nu este nimic de retras din</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="545"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="584"/>
+      <source>Pipe: Invalid Boolean Type</source>
+      <translation type="unfinished">Pipe: Invalid Boolean Type</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="614"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>A aparut o eroare fatala la crearea conductei</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="674"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="741"/>
       <source>Invalid element in spine.</source>
       <translation>Element nevalid în coloana vertebrală</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="679"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="746"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>Elementul din coloana vertebrală nu este nici margine, nici sârmă</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="700"/>
-      <source>Spine is not connected.</source>
-      <translation>Spinul nu este conectat</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="706"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="759"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>Spinul nu este nici margine, nici sârmă</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="711"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="764"/>
       <source>Invalid spine.</source>
       <translation>coloană vertebrală nevalidă</translation>
     </message>
@@ -4923,14 +4919,12 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="507"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation>Tip de operațiune necunoscut</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="515"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation>Operațiunea booleană a eșuat</translation>
@@ -5435,14 +5429,6 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Eroarea de introducere a datelor</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -5465,6 +5451,14 @@ Please adjust the parameters and try again.</source>
       <translation>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Eroarea de introducere a datelor</translation>
     </message>
   </context>
 </TS>

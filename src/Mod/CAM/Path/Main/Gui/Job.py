@@ -1818,7 +1818,7 @@ class TaskPanel:
             """Display window with warning message and Add action button.
             Return action state."""
             txtHeader = translate("CAM_Job", "Warning")
-            txtPleaseAddOne = translate("CAM_Job", "Please add one.")
+            txtPleaseAddOne = translate("CAM_Job", "Add one.")
             txtOk = translate("CAM_Job", "Ok")
             txtAdd = translate("CAM_Job", "Add")
 

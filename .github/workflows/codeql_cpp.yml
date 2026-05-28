@@ -35,7 +35,7 @@ jobs:
     #   - https://gh.io/using-larger-runners (GitHub.com only)
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-    if: github.repository_owner == 'FreeCAD'
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
     permissions:
       # required for all workflows
       security-events: write
