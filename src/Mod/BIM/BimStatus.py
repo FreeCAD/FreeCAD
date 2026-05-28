@@ -103,10 +103,7 @@ def setStatusIcons(show=True):
                     "A context menu action used to show or hide this toolbar widget",
                 )
                 statuswidget.setWindowTitle(text)
-                s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt(
-                    "ToolbarIconSize", 24
-                )
-                statuswidget.setIconSize(QtCore.QSize(s, s))
+                statuswidget.setIconSize(QtCore.QSize(16, 16))
                 st.insertPermanentWidget(2, statuswidget)
 
                 # bim views widget toggle button
