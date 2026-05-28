@@ -1589,6 +1589,8 @@ class TaskPanel(object):
                 if getattr(page, "InitBase", True) and hasattr(page, "addBase"):
                     page.clearBase()
                     page.addBaseGeometry(sel)
+            if hasattr(self.obj.Proxy, "initAfterBase"):
+                self.obj.Proxy.initAfterBase(self.obj)
 
         # Update properties based upon expressions in case expression value has changed
         for prp, expr in self.obj.ExpressionEngine:
