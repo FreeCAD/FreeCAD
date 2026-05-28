@@ -4,6 +4,7 @@ set(Copilot_Scripts
     Init.py
     InitGui.py
     commands.py
+    constants.py
     executor.py
     panel.py
     provider.py
@@ -26,6 +27,7 @@ install(
         Init.py
         InitGui.py
         commands.py
+        constants.py
         executor.py
         panel.py
         provider.py

@@ -15,6 +15,7 @@ try:
 except ImportError:
     from PySide2 import QtCore, QtWidgets
 
+from constants import MAX_IMAGE_SIZE_BYTES
 from executor import CopilotExecutor
 from provider import describe_plan, get_provider
 
@@ -28,11 +29,15 @@ class CopilotPanel(QtWidgets.QDockWidget):
     def __init__(self, parent=None):
         super(CopilotPanel, self).__init__("Copilot", parent)
         self.setObjectName(PANEL_OBJECT_NAME)
-        self.provider = get_provider()
         self.executor = CopilotExecutor()
         self.image_path = None
         self.image_data_url = None
         self._build_ui()
+
+    @property
+    def provider(self):
+        """Return a fresh provider instance (environment may change)."""
+        return get_provider()
 
     def _build_ui(self):
         root = QtWidgets.QWidget()
@@ -89,9 +94,8 @@ class CopilotPanel(QtWidgets.QDockWidget):
             )
             if not path:
                 return
-            max_bytes = 8 * 1024 * 1024
-            if os.path.getsize(path) > max_bytes:
-                raise ValueError("Image is larger than 8 MB. Please choose a smaller image.")
+            if os.path.getsize(path) > MAX_IMAGE_SIZE_BYTES:
+                raise ValueError("Image is larger than {0} MB. Please choose a smaller image.".format(MAX_IMAGE_SIZE_BYTES // (1024 * 1024)))
             mime_type = mimetypes.guess_type(path)[0] or "image/png"
             with open(path, "rb") as image_file:
                 encoded = base64.b64encode(image_file.read()).decode("ascii")

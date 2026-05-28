@@ -12,6 +12,8 @@ import ast
 import urllib.error
 import urllib.request
 
+from constants import ALLOWED_ACTIONS, COLORS, DEFAULTS
+
 
 class LocalIntentProvider:
     """Parse simple English prompts without any network dependency."""
@@ -39,7 +41,7 @@ class LocalIntentProvider:
 
         color = _color(lower)
         if color and _has_any(lower, ["selected", "selection"]):
-            return [{"action": "set_color", "target": "selected", "color": color}]
+            return [{"action": "set_color", "target": "selected", "color": list(color)}]
 
         transform = _transform(lower)
         if transform:
@@ -149,8 +151,8 @@ class OpenAIIntentProvider:
             with urllib.request.urlopen(request, timeout=45) as response:
                 body = response.read().decode("utf-8")
         except urllib.error.HTTPError as err:
-            detail = err.read().decode("utf-8", errors="replace")
-            raise ValueError("OpenAI request failed: {0} {1}".format(err.code, detail))
+            detail = _sanitize_error(err.read().decode("utf-8", errors="replace"))
+            raise ValueError("OpenAI request failed: HTTP {0}".format(err.code))
         parsed = json.loads(body)
         plan_text = _response_text(parsed)
         plan = json.loads(plan_text)
@@ -212,12 +214,44 @@ class OpenRouterIntentProvider:
             with urllib.request.urlopen(request, timeout=45) as response:
                 body = response.read().decode("utf-8")
         except urllib.error.HTTPError as err:
-            detail = err.read().decode("utf-8", errors="replace")
-            raise ValueError("OpenRouter request failed: {0} {1}".format(err.code, detail))
+            detail = _sanitize_error(err.read().decode("utf-8", errors="replace"))
+            raise ValueError("OpenRouter request failed: HTTP {0}".format(err.code))
         parsed = json.loads(body)
-        content = parsed["choices"][0]["message"]["content"]
+        content = _get_openrouter_content(parsed)
         plan = json.loads(content)
         return _validate_plan(plan.get("steps", []))
+
+
+def _sanitize_error(text):
+    """Remove sensitive fields from API error responses."""
+    if not text:
+        return ""
+    try:
+        parsed = json.loads(text)
+        for key in ("api_key", "token", "access_token", "secret", "key"):
+            if key in parsed:
+                parsed[key] = "<redacted>"
+        return json.dumps(parsed)
+    except (ValueError, TypeError):
+        # If not JSON, redact common patterns inline
+        redacted = re.sub(r'(api[_-]?key|token|secret)\s*[:=]\s*[^\s&]+', r'\1=<redacted>', text, flags=re.IGNORECASE)
+        return redacted[:500]
+
+
+def _get_openrouter_content(parsed):
+    """Safely extract content from OpenRouter response."""
+    if not isinstance(parsed, dict):
+        raise ValueError("Invalid OpenRouter response format.")
+    choices = parsed.get("choices")
+    if not choices or not isinstance(choices, list):
+        raise ValueError("OpenRouter response missing choices.")
+    message = choices[0].get("message")
+    if not isinstance(message, dict):
+        raise ValueError("OpenRouter response missing message.")
+    content = message.get("content")
+    if not isinstance(content, str):
+        raise ValueError("OpenRouter response missing content text.")
+    return content
 
 
 def _response_text(response):
@@ -255,24 +289,7 @@ def _supported_actions():
 
 
 def _validate_plan(plan):
-    allowed = {
-        "create_box",
-        "create_cylinder",
-        "create_sphere",
-        "create_cone",
-        "create_torus",
-        "move_selected",
-        "rotate_selected",
-        "scale_selected",
-        "select_by_name",
-        "delete_selected",
-        "set_color",
-        "boolean_fuse",
-        "boolean_cut",
-        "fit_view",
-        "save",
-        "open",
-    }
+    allowed = ALLOWED_ACTIONS
     if not isinstance(plan, list) or not plan:
         raise ValueError("Planner returned no steps.")
     plan = [_normalize_step(step) for step in plan]
@@ -302,8 +319,16 @@ def _normalize_step(step):
 
 
 def _parse_function_style_step(text):
+    stripped = text.strip()
+    if not stripped:
+        return {"action": text}
+
+    # Safety: only allow simple identifier calls with literal args
+    if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*\s*\(", stripped):
+        return {"action": text}
+
     try:
-        expression = ast.parse(text.strip(), mode="eval").body
+        expression = ast.parse(stripped, mode="eval").body
     except SyntaxError:
         return {"action": text}
 
@@ -311,9 +336,14 @@ def _parse_function_style_step(text):
         return {"action": text}
 
     action = expression.func.id
+    if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", action):
+        return {"action": text}
+
     step = _step_from_function_args(action, [_literal_arg(arg) for arg in expression.args])
     for keyword in expression.keywords:
         if keyword.arg:
+            if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", keyword.arg):
+                continue
             value = _literal_arg(keyword.value)
             if value is not _PLACEHOLDER:
                 step[keyword.arg] = value
@@ -495,18 +525,7 @@ def _transform(text):
 
 
 def _color(text):
-    colors = {
-        "red": [1.0, 0.0, 0.0],
-        "green": [0.0, 0.8, 0.0],
-        "blue": [0.0, 0.2, 1.0],
-        "yellow": [1.0, 0.9, 0.0],
-        "orange": [1.0, 0.45, 0.0],
-        "white": [1.0, 1.0, 1.0],
-        "black": [0.0, 0.0, 0.0],
-        "gray": [0.45, 0.45, 0.45],
-        "grey": [0.45, 0.45, 0.45],
-    }
-    for name, rgb in colors.items():
+    for name, rgb in COLORS.items():
         if name in text:
             return rgb
     return None

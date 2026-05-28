@@ -9,6 +9,8 @@ try:
 except ImportError:
     Gui = None
 
+from constants import COLORS, DEFAULTS
+
 
 class CopilotExecutor:
     """Execute the small command language produced by provider.py."""
@@ -90,7 +92,7 @@ class CopilotExecutor:
         vector = App.Vector(float(step.get("x", 0.0)), float(step.get("y", 0.0)), float(step.get("z", 0.0)))
         for obj in objects:
             obj.Placement.Base = obj.Placement.Base + vector
-        App.ActiveDocument.recompute()
+        self._document().recompute()
         return "Moved {0} selected object(s)".format(len(objects))
 
     def _rotate_selected(self, step):
@@ -99,15 +101,15 @@ class CopilotExecutor:
         axis = {"x": App.Vector(1, 0, 0), "y": App.Vector(0, 1, 0), "z": App.Vector(0, 0, 1)}.get(axis_name)
         if axis is None:
             raise ValueError("Axis must be x, y, or z.")
-        angle = float(step.get("angle", 90.0))
+        angle = float(step.get("angle", DEFAULTS["rotation_angle"]))
         for obj in objects:
             obj.Placement.rotate(App.Vector(0, 0, 0), axis, angle)
-        App.ActiveDocument.recompute()
+        self._document().recompute()
         return "Rotated {0} selected object(s)".format(len(objects))
 
     def _scale_selected(self, step):
         objects = self._require_selection()
-        factor = float(step.get("factor", 1.0))
+        factor = float(step.get("factor", DEFAULTS["scale_factor"]))
         if factor <= 0:
             raise ValueError("Scale factor must be greater than zero.")
         for obj in objects:
@@ -115,7 +117,7 @@ class CopilotExecutor:
             for prop in ("Length", "Width", "Height", "Radius", "Radius1", "Radius2"):
                 if hasattr(obj, prop):
                     setattr(obj, prop, getattr(obj, prop) * factor)
-        App.ActiveDocument.recompute()
+        self._document().recompute()
         return "Scaled {0} selected object(s)".format(len(objects))
 
     def _delete_selected(self, step):
@@ -179,7 +181,7 @@ class CopilotExecutor:
                 doc.save()
                 return "Saved {0}".format(doc.FileName)
             raise ValueError("Please provide a path, for example: save as /workspace/FreeCAD/model.FCStd")
-        path = os.path.abspath(os.path.expanduser(path))
+        path = self._validate_path(path)
         doc.saveAs(path)
         return "Saved {0}".format(path)
 
@@ -187,7 +189,8 @@ class CopilotExecutor:
         path = step.get("path")
         if not path:
             raise ValueError("Please provide a file path to open.")
-        App.openDocument(os.path.abspath(os.path.expanduser(path)))
+        path = self._validate_path(path)
+        App.openDocument(path)
         return "Opened {0}".format(path)
 
     def _require_selection(self):
@@ -233,19 +236,18 @@ class CopilotExecutor:
 
     def _coerce_color(self, color):
         if isinstance(color, str):
-            colors = {
-                "red": (1.0, 0.0, 0.0),
-                "green": (0.0, 0.8, 0.0),
-                "blue": (0.0, 0.2, 1.0),
-                "yellow": (1.0, 0.9, 0.0),
-                "orange": (1.0, 0.45, 0.0),
-                "white": (1.0, 1.0, 1.0),
-                "black": (0.0, 0.0, 0.0),
-                "gray": (0.45, 0.45, 0.45),
-                "grey": (0.45, 0.45, 0.45),
-            }
-            return colors.get(color.lower(), (0.8, 0.8, 0.8))
+            return COLORS.get(color.lower(), (0.8, 0.8, 0.8))
         return tuple(float(part) for part in color)
+
+    def _validate_path(self, path):
+        """Validate and sanitize a file path for save/open operations."""
+        expanded = os.path.abspath(os.path.expanduser(path))
+        # Allow paths within workspace and home; block obviously dangerous ones
+        blocked_prefixes = ("/dev/", "/proc/", "/sys/", "//", "\\", ":")
+        normalized = os.path.normpath(expanded)
+        if any(normalized.startswith(p) for p in blocked_prefixes):
+            raise ValueError("Path is not allowed: {0}".format(path))
+        return expanded
 
     def _select(self, obj):
         if Gui is not None:

@@ -23,7 +23,7 @@ docker compose --profile desktop up desktop
 Then open this URL in your browser:
 
 ```text
-http://localhost:8010/vnc.html
+http://localhost:8010/vnc.html?resize=scale&autoconnect=true
 ```
 
 ## What Each Command Does
@@ -83,7 +83,7 @@ Starts the browser-accessible desktop service. This runs Xvfb, x11vnc, noVNC, an
 The service exposes noVNC on host port `8010`, so FreeCAD can be opened at:
 
 ```text
-http://localhost:8010/vnc.html
+http://localhost:8010/vnc.html?resize=scale&autoconnect=true
 ```
 
 Keep this command running while using FreeCAD in the browser. Stop it with `Ctrl + C`.
