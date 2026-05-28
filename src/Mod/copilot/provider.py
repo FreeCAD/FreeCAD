@@ -8,6 +8,7 @@ into a small command language that executor.py applies to the active document.
 import json
 import os
 import re
+import ast
 import urllib.error
 import urllib.request
 
@@ -65,6 +66,8 @@ def get_provider():
         return LocalIntentProvider()
     if provider_name == "openai":
         return OpenAIIntentProvider()
+    if provider_name == "openrouter":
+        return OpenRouterIntentProvider()
     raise ValueError("Unsupported COPILOT_PROVIDER: {0}".format(provider_name))
 
 
@@ -152,6 +155,73 @@ class OpenAIIntentProvider:
         return _validate_plan(plan.get("steps", []))
 
 
+class OpenRouterIntentProvider:
+    """Use OpenRouter's OpenAI-compatible Chat Completions API."""
+
+    def __init__(self):
+        self.api_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+        self.model = os.environ.get("OPENROUTER_MODEL", "openai/gpt-4o-mini").strip()
+        self.base_url = os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1").rstrip("/")
+        self.site_url = os.environ.get("OPENROUTER_SITE_URL", "http://localhost:8010").strip()
+        self.app_name = os.environ.get("OPENROUTER_APP_NAME", "MetaCad FreeCAD Copilot").strip()
+        if not self.api_key:
+            raise ValueError("OPENROUTER_API_KEY is required when COPILOT_PROVIDER=openrouter.")
+
+    def plan(self, prompt, context=None):
+        payload = {
+            "model": self.model,
+            "messages": [
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a FreeCAD CAD planning assistant. Return JSON only, "
+                        "with this shape: {\"steps\":[{\"action\":\"...\"}]}. "
+                        "Use only the supported actions. Do not include markdown."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": json.dumps(
+                        {
+                            "request": prompt,
+                            "context": context or {},
+                            "supported_actions": _supported_actions(),
+                        }
+                    ),
+                },
+            ],
+            "temperature": 0.1,
+            "max_tokens": 800,
+            "response_format": {"type": "json_object"},
+        }
+        data = json.dumps(payload).encode("utf-8")
+        headers = {
+            "Authorization": "Bearer {0}".format(self.api_key),
+            "Content-Type": "application/json",
+        }
+        if self.site_url:
+            headers["HTTP-Referer"] = self.site_url
+        if self.app_name:
+            headers["X-Title"] = self.app_name
+
+        request = urllib.request.Request(
+            "{0}/chat/completions".format(self.base_url),
+            data=data,
+            headers=headers,
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=45) as response:
+                body = response.read().decode("utf-8")
+        except urllib.error.HTTPError as err:
+            detail = err.read().decode("utf-8", errors="replace")
+            raise ValueError("OpenRouter request failed: {0} {1}".format(err.code, detail))
+        parsed = json.loads(body)
+        content = parsed["choices"][0]["message"]["content"]
+        plan = json.loads(content)
+        return _validate_plan(plan.get("steps", []))
+
+
 def _response_text(response):
     chunks = []
     for item in response.get("output", []):
@@ -199,6 +269,7 @@ def _validate_plan(plan):
     }
     if not isinstance(plan, list) or not plan:
         raise ValueError("Planner returned no steps.")
+    plan = [_normalize_step(step) for step in plan]
     for step in plan:
         if not isinstance(step, dict):
             raise ValueError("Planner returned an invalid step.")
@@ -206,6 +277,91 @@ def _validate_plan(plan):
         if action not in allowed:
             raise ValueError("Planner returned unsupported action: {0}".format(action))
     return plan
+
+
+def _normalize_step(step):
+    if isinstance(step, str):
+        return _parse_function_style_step(step)
+    if not isinstance(step, dict):
+        return step
+
+    action = step.get("action")
+    if isinstance(action, str) and "(" in action and action.endswith(")"):
+        parsed = _parse_function_style_step(action)
+        for key, value in step.items():
+            if key != "action":
+                parsed[key] = value
+        return parsed
+    return step
+
+
+def _parse_function_style_step(text):
+    try:
+        expression = ast.parse(text.strip(), mode="eval").body
+    except SyntaxError:
+        return {"action": text}
+
+    if not isinstance(expression, ast.Call) or not isinstance(expression.func, ast.Name):
+        return {"action": text}
+
+    action = expression.func.id
+    step = _step_from_function_args(action, [_literal_arg(arg) for arg in expression.args])
+    for keyword in expression.keywords:
+        if keyword.arg:
+            value = _literal_arg(keyword.value)
+            if value is not _PLACEHOLDER:
+                step[keyword.arg] = value
+    return step
+
+
+def _step_from_function_args(action, args):
+    step = {"action": action}
+    if action == "create_box":
+        _assign_args(step, args, ["length", "width", "height", "name"])
+    elif action == "create_cylinder":
+        _assign_args(step, args, ["radius", "height", "name"])
+    elif action == "create_sphere":
+        _assign_args(step, args, ["radius", "name"])
+    elif action == "create_cone":
+        _assign_args(step, args, ["radius1", "radius2", "height", "name"])
+    elif action == "move_selected":
+        _assign_args(step, args, ["x", "y", "z"])
+    elif action == "rotate_selected":
+        _assign_args(step, args, ["axis", "angle"])
+    elif action == "scale_selected":
+        _assign_args(step, args, ["factor"])
+    elif action == "set_color":
+        _assign_args(step, args, ["color"])
+    elif action in ("delete_selected", "fit_view"):
+        pass
+    elif action in ("save", "open"):
+        _assign_args(step, args, ["path"])
+    return step
+
+
+def _assign_args(step, args, names):
+    for index, name in enumerate(names):
+        if index < len(args) and args[index] is not _PLACEHOLDER:
+            step[name] = args[index]
+
+
+_PLACEHOLDER = object()
+
+
+def _literal_arg(node):
+    if isinstance(node, ast.Constant):
+        return node.value
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.USub):
+        value = _literal_arg(node.operand)
+        if isinstance(value, (int, float)):
+            return -value
+    if isinstance(node, ast.List):
+        values = [_literal_arg(item) for item in node.elts]
+        return [value for value in values if value is not _PLACEHOLDER]
+    if isinstance(node, ast.Tuple):
+        values = [_literal_arg(item) for item in node.elts]
+        return tuple(value for value in values if value is not _PLACEHOLDER)
+    return _PLACEHOLDER
 
 
 def _has_any(text, words):

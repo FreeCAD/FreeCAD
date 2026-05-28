@@ -119,3 +119,185 @@ docker compose run --rm configure
 docker compose run --rm build
 docker compose --profile desktop up desktop
 ```
+
+## Faster Development And Testing
+
+You do not need to run every Docker command after every code change.
+
+The full startup sequence is:
+
+```powershell
+docker compose build
+docker compose run --rm configure
+docker compose run --rm build
+docker compose --profile desktop up desktop
+```
+
+Use the full sequence when setting up the project for the first time, after deleting Docker volumes, or after changing major build/dependency configuration.
+
+For day-to-day development, use the smallest command needed for the type of change you made.
+
+### If You Changed Python Code
+
+For most Python-only changes, especially in:
+
+```text
+src/Mod/copilot
+```
+
+you usually do not need to rebuild the Docker image.
+
+Use:
+
+```powershell
+docker compose --profile desktop up desktop
+```
+
+If FreeCAD is already running, stop the desktop service with `Ctrl + C`, then start it again:
+
+```powershell
+docker compose --profile desktop up desktop
+```
+
+This is usually enough because the repository is mounted into the container.
+
+If the changed Python files are copied into FreeCAD's build output by CMake and the change does not appear inside FreeCAD, run:
+
+```powershell
+docker compose run --rm build
+docker compose --profile desktop up desktop
+```
+
+### If You Added Or Removed Python Files
+
+If you add or remove files that are listed in a `CMakeLists.txt`, run configure and build again:
+
+```powershell
+docker compose run --rm configure
+docker compose run --rm build
+docker compose --profile desktop up desktop
+```
+
+Use this for changes such as:
+
+- adding a new file under `src/Mod/copilot`
+- removing a Copilot file
+- updating `src/Mod/copilot/CMakeLists.txt`
+- updating `src/Mod/CMakeLists.txt`
+
+### If You Changed C++ Code
+
+Run only the build step:
+
+```powershell
+docker compose run --rm build
+docker compose --profile desktop up desktop
+```
+
+CMake/Ninja should rebuild only the files affected by your change. It should not rebuild all of FreeCAD unless many shared files changed.
+
+### If You Changed CMake Configuration
+
+Run configure, then build:
+
+```powershell
+docker compose run --rm configure
+docker compose run --rm build
+docker compose --profile desktop up desktop
+```
+
+Use this when you change files such as:
+
+- `CMakeLists.txt`
+- `CMakePresets.json`
+- CMake helper files
+- build options
+- module registration
+
+### If You Changed Docker Configuration
+
+Rebuild the Docker image:
+
+```powershell
+docker compose build
+docker compose --profile desktop up desktop
+```
+
+Use this when you change:
+
+- `Dockerfile`
+- `docker-compose.yml`
+- `.dockerignore`
+- files under `docker/`
+- OS-level packages
+- container startup behavior
+
+If the Docker change also affects the FreeCAD build environment, run:
+
+```powershell
+docker compose build
+docker compose run --rm configure
+docker compose run --rm build
+docker compose --profile desktop up desktop
+```
+
+### If You Changed Pixi Dependencies
+
+Run the full build setup:
+
+```powershell
+docker compose build
+docker compose run --rm configure
+docker compose run --rm build
+docker compose --profile desktop up desktop
+```
+
+Use this when you change:
+
+- `pixi.toml`
+- `pixi.lock`
+- compiler or dependency versions
+
+### Quick Command Guide
+
+Use this table as the normal development guide:
+
+| Change Type | Commands |
+| --- | --- |
+| Start existing built FreeCAD | `docker compose --profile desktop up desktop` |
+| Python-only change | restart desktop service |
+| Python change not appearing | `docker compose run --rm build` then start desktop |
+| Added/removed CMake-listed files | `configure`, then `build`, then start desktop |
+| C++ change | `build`, then start desktop |
+| CMake change | `configure`, then `build`, then start desktop |
+| Dockerfile or startup script change | `docker compose build`, then start desktop |
+| Dependency change | full sequence |
+| Corrupted build/cache | `docker compose down -v`, then full sequence |
+
+### Recommended Copilot Development Loop
+
+For Copilot work, use this loop most of the time:
+
+```powershell
+docker compose --profile desktop up desktop
+```
+
+Make a Python change under:
+
+```text
+src/Mod/copilot
+```
+
+Then restart the desktop service:
+
+```powershell
+Ctrl + C
+docker compose --profile desktop up desktop
+```
+
+If FreeCAD does not pick up the change:
+
+```powershell
+docker compose run --rm build
+docker compose --profile desktop up desktop
+```

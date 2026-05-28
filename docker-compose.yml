@@ -14,6 +14,11 @@ x-freecad-service: &freecad-service
     COPILOT_PROVIDER: "${COPILOT_PROVIDER:-local}"
     OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
     OPENAI_MODEL: "${OPENAI_MODEL:-gpt-4.1-mini}"
+    OPENROUTER_API_KEY: "${OPENROUTER_API_KEY:-}"
+    OPENROUTER_MODEL: "${OPENROUTER_MODEL:-openai/gpt-4o-mini}"
+    OPENROUTER_BASE_URL: "${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}"
+    OPENROUTER_SITE_URL: "${OPENROUTER_SITE_URL:-http://localhost:8010}"
+    OPENROUTER_APP_NAME: "${OPENROUTER_APP_NAME:-MetaCad FreeCAD Copilot}"
   volumes:
     - .:/workspace/FreeCAD
     - freecad-pixi:/workspace/FreeCAD/.pixi
@@ -58,7 +63,12 @@ services:
       COPILOT_PROVIDER: "${COPILOT_PROVIDER:-local}"
       OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
       OPENAI_MODEL: "${OPENAI_MODEL:-gpt-4.1-mini}"
-      VNC_RESOLUTION: "${VNC_RESOLUTION:-1280x800x24}"
+      OPENROUTER_API_KEY: "${OPENROUTER_API_KEY:-}"
+      OPENROUTER_MODEL: "${OPENROUTER_MODEL:-openai/gpt-4o-mini}"
+      OPENROUTER_BASE_URL: "${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}"
+      OPENROUTER_SITE_URL: "${OPENROUTER_SITE_URL:-http://localhost:8010}"
+      OPENROUTER_APP_NAME: "${OPENROUTER_APP_NAME:-MetaCad FreeCAD Copilot}"
+      VNC_RESOLUTION: "${VNC_RESOLUTION:-1920x1080x24}"
     ports:
       - "8010:6080"
     command: ["start-novnc"]
