@@ -545,8 +545,7 @@ const std::string& TopoShape::shapeName(bool silent) const
 
 PyObject* TopoShape::getPySubShape(const char* Type, bool silent) const
 {
-    TopoShape s(*this);
-    return Py::new_reference_to(shape2pyshape(s.getSubTopoShape(Type, silent)));
+    return Py::new_reference_to(shape2pyshape(getSubShape(Type, silent)));
 }
 
 PyObject* TopoShape::getPyObject()
