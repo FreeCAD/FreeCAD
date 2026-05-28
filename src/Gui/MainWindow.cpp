@@ -119,6 +119,7 @@
 namespace
 {
 constexpr const char* kStatusBarFullTextProperty = "statusBarFullText";
+constexpr const char* kInputHintsVisibleProperty = "inputHintsVisible";
 
 /// Apply ellipsis to text based on available widget width
 void setElidedText(QWidget* widget, const QString& fullText)
@@ -153,6 +154,95 @@ void refreshElidedText(QWidget* widget)
         setElidedText(widget, fullText.toString());
     }
 }
+
+enum class InputHintsVisibility
+{
+    Hidden,
+    Visible
+};
+
+bool hasInputHints(const std::list<Gui::InputHint>& hints)
+{
+    return !hints.empty();
+}
+
+// Store the last applied hint visibility
+bool inputHintsVisibilityProperty(const QWidget* widget)
+{
+    if (!widget) {
+        return false;
+    }
+
+    const QVariant value = widget->property(kInputHintsVisibleProperty);
+    if (!value.isValid()) {
+        return widget->isVisible();
+    }
+
+    return value.toBool();
+}
+
+void setInputHintsVisibilityProperty(QWidget* widget, bool visible)
+{
+    if (!widget) {
+        return;
+    }
+
+    widget->setProperty(kInputHintsVisibleProperty, visible);
+}
+
+// Show or hide the input hints widget
+void applyInputHintsVisibility(QWidget* widget, InputHintsVisibility visibility)
+{
+    if (!widget) {
+        return;
+    }
+
+    const bool visible = visibility == InputHintsVisibility::Visible;
+
+    if (inputHintsVisibilityProperty(widget) == visible && widget->isVisible() == visible) {
+        return;
+    }
+
+    setInputHintsVisibilityProperty(widget, visible);
+    widget->setVisible(visible);
+}
+
+void clearInputHints(Gui::InputHintWidget* hintWidget)
+{
+    if (!hintWidget) {
+        return;
+    }
+
+    hintWidget->clearHints();
+}
+
+// Empty hints should not reserve space in the status bar
+void hideInputHints(Gui::InputHintWidget* hintWidget)
+{
+    if (!hintWidget) {
+        return;
+    }
+
+    clearInputHints(hintWidget);
+    applyInputHintsVisibility(hintWidget, InputHintsVisibility::Hidden);
+}
+
+// Keep hints visible only while there is useful hint content to show
+void showInputHints(Gui::InputHintWidget* hintWidget, const std::list<Gui::InputHint>& hints)
+{
+    if (!hintWidget) {
+        return;
+    }
+
+    if (!hasInputHints(hints)) {
+        hideInputHints(hintWidget);
+        return;
+    }
+
+    applyInputHintsVisibility(hintWidget, InputHintsVisibility::Visible);
+    hintWidget->showHints(hints);
+}
+
 }  // namespace
 
 #include "MergeDocuments.h"
@@ -464,6 +554,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
     d->hintLabel->setWindowTitle(tr("Input Hints"));
     statusBar()->addWidget(d->hintLabel, 100);
+    applyInputHintsVisibility(d->hintLabel, InputHintsVisibility::Hidden);
 
     // Low-priority preselection (stretch=1): clipped first when space limited
     d->actionLabel = new StatusBarLabel(statusBar());
@@ -2707,12 +2798,12 @@ void MainWindow::showStatus(int type, const QString& message)
 
 void MainWindow::showHints(const std::list<InputHint>& hints)
 {
-    d->hintLabel->showHints(hints);
+    showInputHints(d->hintLabel, hints);
 }
 
 void MainWindow::hideHints()
 {
-    d->hintLabel->clearHints();
+    hideInputHints(d->hintLabel);
 }
 
 // set text to the pane

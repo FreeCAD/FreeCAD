@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <gtest/gtest.h>
+#include "MainWindow.h"
+#include <QWidget>
+#include <QApplication>
 #include <QString>
 #include <algorithm>
 
@@ -48,4 +51,23 @@ TEST_F(StatusBarHintsPriorityTest, PropertyNameConstant)
 {
     constexpr const char* kStatusBarFullTextProperty = "statusBarFullText";
     EXPECT_STREQ(kStatusBarFullTextProperty, "statusBarFullText");
+}
+
+// Test that an empty hints list hides the input hints widget
+TEST_F(StatusBarHintsPriorityTest, EmptyHintsHideInputHintsWidget)
+{
+    ASSERT_NE(qApp, nullptr) << "This test requires a QApplication instance.";
+    Gui::MainWindow mainWindow;
+
+    auto* hintWidget = mainWindow.findChild<QWidget*>(QStringLiteral("hintLabel"));
+    ASSERT_NE(hintWidget, nullptr);
+
+    // Simulate a previously visible hints widget
+    hintWidget->show();
+    ASSERT_FALSE(hintWidget->isHidden());
+
+    // An empty hints list should clear and hide the high-priority hints widget
+    mainWindow.showHints({});
+
+    EXPECT_TRUE(hintWidget->isHidden());
 }
