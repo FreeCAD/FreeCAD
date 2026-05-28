@@ -178,11 +178,7 @@ class Snapshot:
 
             captured_objs.append(part)
             captured_placements.append(part.Placement)
-
-            try:
-                captured_visibilities.append(bool(part.Visibility))
-            except AttributeError:
-                captured_visibilities.append(True)  # Fallback value if Visibility is unavailable
+            captured_visibilities.append(bool(part.Visibility))
 
         snapshot_obj.Components = captured_objs
         snapshot_obj.Placements = captured_placements
@@ -216,14 +212,9 @@ class Snapshot:
             if not part:
                 continue
 
-            # Restore Placement
+            # Restore Placement & Visibility
             part.Placement = placements[i]
-
-            # Restore Visibility
-            try:
-                part.Visibility = visibilities[i]
-            except AttributeError:
-                pass
+            part.Visibility = visibilities[i]
 
             part.purgeTouched()
 
