@@ -27,6 +27,8 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 
+#include <algorithm>
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -59,12 +61,18 @@
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "DrawGuiUtil.h"
+#include "MDIViewPage.h"
+#include "QGIFace.h"
+#include "QGIEdge.h"
+#include "QGIView.h"
 #include "QGSPage.h"
+#include "QGVPage.h"
 #include "TaskCosmeticCircle.h"
 #include "TaskSelectLineAttributes.h"
 #include "ViewProviderBalloon.h"
 #include "ViewProviderDimension.h"
 #include "ViewProviderPage.h"
+#include "TechDrawHandler.h"
 
 
 using namespace TechDrawGui;
@@ -97,15 +105,11 @@ std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat);
 // TechDraw_ExtensionHoleCircle
 //===========================================================================
 
-void execHoleCircle(Gui::Command* cmd)
+void execHoleCircle(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat, 
+    std::vector<std::string>& lines)
 {
     //create centerlines of a hole/bolt circle
-    std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw hole circle"))) {
-        return;
-    }
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
+
     std::vector<TechDraw::CirclePtr> Circles;
     for (const std::string& Name : SubNames) {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
@@ -115,20 +119,13 @@ void execHoleCircle(Gui::Command* cmd)
             if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
                 Circles.push_back(cgen);
-            } else {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw hole circle"),
-                                     QObject::tr("Can not make hole circle for %1")
-                                         .arg(QString::fromStdString(GeometryUtils::getGeomTypeName(geom->getGeomType()))));
-
             }
         }
     }
+
     if (Circles.size() <= 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw hole circle"),
-                             QObject::tr("Fewer than three circles selected"));
         return;
     }
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Bolt circle centerlines"));
 
     // make the bolt hole circle from 3 scaled and rotated points
     Base::Vector3d bigCenter =
@@ -140,6 +137,7 @@ void execHoleCircle(Gui::Command* cmd)
     TechDraw::BaseGeomPtr bigCircle =
         std::make_shared<TechDraw::Circle>(bigCenter, bigRadius);
     std::string bigCircleTag = objFeat->addCosmeticEdge(bigCircle);
+    lines.push_back(bigCircleTag);
     TechDraw::CosmeticEdge* ceCircle = objFeat->getCosmeticEdge(bigCircleTag);
     _setLineAttributes(ceCircle);
 
@@ -157,14 +155,127 @@ void execHoleCircle(Gui::Command* cmd)
         Base::Vector3d endPt = oneCircleCenter - delta;
         std::string oneLineTag = objFeat->addCosmeticEdge(startPt, endPt);
         TechDraw::CosmeticEdge* ceLine = objFeat->getCosmeticEdge(oneLineTag);
+        lines.push_back(oneLineTag);
         _setLineAttributes(ceLine);
     }
-    cmd->getSelection().clearSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
-    cmd->commitCommand();
 }
 }// namespace TechDrawGui
+
+
+class TDBoltCenterlinesHandler : public TechDrawHandler {
+    private:
+        std::vector<std::string> currentLines;
+        TechDraw::DrawViewPart* currentObjFeat{nullptr};
+        std::vector<std::string> previousSubnames;
+    public:
+        void activated() override
+        {
+            if (viewPage) {
+                QPoint hotspot(15, 15);
+                QPixmap pixmap = viewPage->prepareCursorPixmap("TechDraw_ExtensionHoleCircle_Pointer.svg", hotspot);
+                viewPage->activateCursor(QCursor(pixmap, hotspot.x(), hotspot.y()));
+            }
+
+            Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
+        }
+
+        void deactivated() override
+        {
+            Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
+            currentLines.clear();
+            currentObjFeat = nullptr;
+        }
+
+        void mouseMoveEvent(QMouseEvent* event) override
+        {
+            Q_UNUSED(event);
+        }
+
+        void mouseReleaseEvent(QMouseEvent* event) override
+        {
+            std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+
+            TechDraw::DrawViewPart* objFeat{nullptr};
+            std::vector<std::string> subNames;
+
+            if (!selection.empty()) {
+                objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
+                subNames = selection[0].getSubNames();
+
+                // If the user clicks on cosmetic edges we stop the selection
+                // So we dont attemt to reference it when we remove the former lines
+                if (!currentLines.empty()) {
+                    for (const std::string& name : subNames) {
+                        TechDraw::CosmeticEdge* cosmeticEdge = objFeat->getCosmeticEdgeBySelection(name);
+                        if (cosmeticEdge) {
+                            previousSubnames.clear();
+                            currentLines.clear();
+                            currentObjFeat = nullptr;
+                            Gui::Selection().clearSelection();
+                            return;
+                        }
+                    }
+                }
+
+            } else {
+                return;
+            }
+
+            // If the selection does not change then they have finished selecting circles
+            // It is possible to do this by just looking at the size of the selection since it is greedy selection
+            if (subNames.size() == previousSubnames.size()) {
+                previousSubnames.clear();
+                Gui::Selection().clearSelection();
+                currentLines.clear();
+                currentObjFeat = nullptr;
+                return;
+            }
+
+            previousSubnames = subNames;
+
+            // The redrawing of the lines clears the selection somehow
+            // But it works if it just gets blocked before we redraw
+            auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+            if (mdi) {
+                mdi->blockSceneSelection(true);
+            }
+            
+            if (!currentLines.empty() && currentObjFeat) {
+                currentObjFeat->removeCosmeticEdge(currentLines);
+                currentObjFeat->refreshCEGeoms();
+                currentObjFeat->requestPaint();
+                currentLines.clear();
+                currentObjFeat = nullptr;
+            }
+    
+            if (objFeat) {
+                currentObjFeat = objFeat;
+
+                execHoleCircle(subNames, objFeat, currentLines);
+            }
+
+            if (mdi) {
+                if (objFeat) {
+                    mdi->selectQGIView(objFeat, true, subNames);
+                }
+                mdi->blockSceneSelection(false);
+            }
+
+            Q_UNUSED(event);
+        }
+
+        void mousePressEvent(QMouseEvent* event) override
+        {
+            Q_UNUSED(event);
+        }
+
+        void keyPressEvent(QKeyEvent* event) override
+        {
+            Q_UNUSED(event);
+        }
+};
 
 DEF_STD_CMD_A(CmdTechDrawExtensionHoleCircle)
 
@@ -183,8 +294,34 @@ CmdTechDrawExtensionHoleCircle::CmdTechDrawExtensionHoleCircle()
 void CmdTechDrawExtensionHoleCircle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execHoleCircle(this);
-    //Base::Console().message("HoleCircle started\n");
+
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
+
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    // Post selection handler
+    viewPage->activateHandler(new TDBoltCenterlinesHandler());
+
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    
+    if (!selection.empty()) {
+        TechDraw::DrawViewPart* objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
+        std::vector<std::string> SubNames = selection[0].getSubNames();
+
+        std::vector<std::string> currentLines;
+        execHoleCircle(SubNames, objFeat, currentLines);
+    }
 }
 
 bool CmdTechDrawExtensionHoleCircle::isActive()
@@ -198,16 +335,10 @@ bool CmdTechDrawExtensionHoleCircle::isActive()
 // TechDraw_ExtensionCircleCenterLines
 //===========================================================================
 
-void execCircleCenterLines(Gui::Command* cmd)
+void execCircleCenterLines(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat,
+                           std::vector<std::string>& lines)
 {
     // create circle centerlines
-    std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw circle centerlines"))) {
-        return;
-    }
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Circle Centerlines"));
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
         TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
@@ -230,6 +361,8 @@ void execCircleCenterLines(Gui::Command* cmd)
                 Base::Vector3d bottom(center.x, center.y - radius - lineOutsideCircle, 0.0);
                 std::string line1tag = objFeat->addCosmeticEdge(right, left);
                 std::string line2tag = objFeat->addCosmeticEdge(top, bottom);
+                lines.push_back(line1tag);
+                lines.push_back(line2tag);
                 TechDraw::CosmeticEdge* horiz = objFeat->getCosmeticEdge(line1tag);
                 _setLineAttributes(horiz);
                 TechDraw::CosmeticEdge* vert = objFeat->getCosmeticEdge(line2tag);
@@ -238,18 +371,106 @@ void execCircleCenterLines(Gui::Command* cmd)
                 // number and not the number from line attributes
                 horiz->m_format.setLineNumber(Preferences::CenterLineStyle());
                 vert->m_format.setLineNumber(Preferences::CenterLineStyle());
-            } else {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw circle centerlines"),
-                                     QObject::tr("Can not make centerlines for %1")
-                                        .arg(QString::fromStdString(GeometryUtils::getGeomTypeName(geom->getGeomType()))));
             }
         }
     }
-    Gui::Selection().clearCompleteSelection();
+
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
-    cmd->commitCommand();
 }
+
+class TDCircleCenterlinesHandler : public TechDrawHandler {
+    private:
+        std::vector<std::string> previewLines;
+        TechDraw::DrawViewPart* previewObjFeat{nullptr};
+    public:
+        void activated() override
+        {
+            if (viewPage) {
+                QPoint hotspot(15, 15);
+                QPixmap pixmap = viewPage->prepareCursorPixmap("TechDraw_ExtensionCircleCenterLines_Pointer.svg", hotspot);
+                viewPage->activateCursor(QCursor(pixmap, hotspot.x(), hotspot.y()));
+            }
+        }
+
+
+        void mouseMoveEvent(QMouseEvent* event) override
+        {
+            auto items = viewPage->scene()->items(viewPage->mapToScene(event->pos()));
+            
+            std::vector<std::string> SubNames;
+            TechDraw::DrawViewPart* objFeat{nullptr};
+
+            for (QGraphicsItem* item : items) {
+                QGIEdge* edge = dynamic_cast<QGIEdge*>(item);
+                if (edge) {
+                    SubNames.push_back("Edge" + std::to_string(edge->getProjIndex()));
+                    auto* parent = edge->parentItem();
+                    QGIView* view = dynamic_cast<QGIView*>(parent);
+                    if (view) {
+                        objFeat = dynamic_cast<TechDraw::DrawViewPart*>(view->getViewObject());
+                    }
+
+                    int GeoId = TechDraw::DrawUtil::getIndexFromName("Edge" + std::to_string(edge->getProjIndex()));
+                    TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
+
+                    if (geom->getGeomType() != GeomType::CIRCLE && geom->getGeomType() != GeomType::ARCOFCIRCLE) {
+                        SubNames.clear();
+                        objFeat = nullptr;
+                        continue;
+                    }
+                    break;
+                }
+            }
+
+            if (SubNames.empty() || !objFeat) {
+                if (!previewLines.empty()) {
+                    previewObjFeat->removeCosmeticEdge(previewLines);
+                    previewObjFeat->refreshCEGeoms();
+                    previewObjFeat->requestPaint();
+                    previewLines.clear();
+                    previewObjFeat = nullptr;
+                }
+            }
+            else {
+                execCircleCenterLines(SubNames, objFeat, previewLines);
+                previewObjFeat = objFeat;
+            }
+        }
+
+        void mouseReleaseEvent(QMouseEvent* event) override
+        {
+            std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    
+            if (!selection.empty()) {
+                TechDraw::DrawViewPart* objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
+                std::vector<std::string> SubNames = selection[0].getSubNames();
+                std::vector<std::string> lines;
+
+                int GeoId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+                TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
+
+                if (geom->getGeomType() != GeomType::CIRCLE && geom->getGeomType() != GeomType::ARCOFCIRCLE) {
+                    return;
+                }
+
+                execCircleCenterLines(SubNames, objFeat, lines);
+            }
+
+            Gui::Selection().clearSelection();
+        }
+
+        void mousePressEvent(QMouseEvent* event) override
+        {
+            Q_UNUSED(event);
+        }
+
+        void keyPressEvent(QKeyEvent* event) override
+        {
+            Q_UNUSED(event);
+        }
+
+};
 
 DEF_STD_CMD_A(CmdTechDrawExtensionCircleCenterLines)
 
@@ -268,7 +489,35 @@ CmdTechDrawExtensionCircleCenterLines::CmdTechDrawExtensionCircleCenterLines()
 void CmdTechDrawExtensionCircleCenterLines::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execCircleCenterLines(this);
+
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
+
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    // Post selection handler
+    viewPage->activateHandler(new TDCircleCenterlinesHandler());
+
+    // Preselection handling
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    
+    if (!selection.empty()) {
+        TechDraw::DrawViewPart* objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
+        std::vector<std::string> SubNames = selection[0].getSubNames();
+        std::vector<std::string> lines;
+        execCircleCenterLines(SubNames, objFeat, lines);
+    }
+    
 }
 
 bool CmdTechDrawExtensionCircleCenterLines::isActive()
@@ -306,12 +555,13 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::activated(int iMsg)
 
     auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
+    auto& cmdMgr = Gui::Application::Instance->commandManager();
     switch (iMsg) {
         case 0://circle centerlines
-            execCircleCenterLines(this);
+            cmdMgr.runCommandByName("TechDraw_ExtensionCircleCenterLines");
             break;
         case 1://bolt circle centerlines
-            execHoleCircle(this);
+            cmdMgr.runCommandByName("TechDraw_ExtensionHoleCircle");
             break;
         default:
             Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
