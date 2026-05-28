@@ -36,7 +36,6 @@
 #include "MainWindow.h"
 #include "ProgressDialog.h"
 #include "WaitCursor.h"
-#include <App/Application.h>
 
 
 using namespace Gui;
@@ -61,7 +60,6 @@ struct ProgressBarPrivate
     int minimumDuration;
     int observeEventFilter;
     bool userEnabled {true};
-    ParameterGrp::handle hGrp;
 
     bool isModalDialog(QObject* o) const
     {
@@ -439,10 +437,8 @@ ProgressBar::ProgressBar(SequencerBar* s, QWidget* parent)
     d->delayShowTimer->setSingleShot(true);
     connect(d->delayShowTimer, &QTimer::timeout, this, &ProgressBar::delayedShow);
     d->observeEventFilter = 0;
-    d->hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/MainWindow"
-    );
-    d->userEnabled = d->hGrp->GetBool("ProgressBarEnabled", true);
+    // Visibility is owned by MainWindow's status-bar registry, which sets
+    // userEnabled from the persisted value after registration.
 
     setFixedWidth(120);
 
@@ -464,7 +460,6 @@ void ProgressBar::setUserEnabled(bool enabled)
         return;
     }
     d->userEnabled = enabled;
-    d->hGrp->SetBool("ProgressBarEnabled", enabled);
     if (!enabled) {
         QProgressBar::setVisible(false);
     }

@@ -24,124 +24,19 @@
 #include <QMenu>
 #include <QClipboard>
 #include <QApplication>
-#include <QHash>
-#include <QSet>
-#include <QStatusBar>
-#include <QAction>
 #include <QContextMenuEvent>
-#include <QHideEvent>
 #include <QPointer>
 #include <QTimer>
 
-#include <utility>
-
 #include "StatusBarLabel.h"
-#include <App/Application.h>
+#include "MainWindow.h"
 
 namespace Gui
 {
 
-StatusBarLabel::StatusBarLabel(QWidget* parent, const std::string& parameterName)
+StatusBarLabel::StatusBarLabel(QWidget* parent)
     : QLabel(parent)
-{
-    if (!parameterName.empty()) {
-        hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/MainWindow"
-        );
-
-        // set visibility before storing parameterName to avoid saving it immediately
-        setVisible(hGrp->GetBool(parameterName.c_str(), true));
-
-        // now we can store parameterName
-        this->parameterName = parameterName;
-    }
-}
-
-static void addToggleAction(QMenu& menu, QWidget* widget)
-{
-    QAction* action = menu.addAction(widget->windowTitle());
-    action->setCheckable(true);
-
-    // Widgets such as the progress bar manage their own show/hide lifecycle and
-    // expose a userEnabled Q_PROPERTY so the checked state reflects the user's
-    // preference rather than the transient isVisible() state.
-    QVariant userEnabled = widget->property("userEnabled");
-    if (userEnabled.isValid()) {
-        action->setChecked(userEnabled.toBool());
-        QObject::connect(action, &QAction::toggled, widget, [widget](bool checked) {
-            widget->setProperty("userEnabled", checked);
-        });
-    }
-    else {
-        action->setChecked(widget->isVisible());
-        QObject::connect(action, &QAction::toggled, widget, &QWidget::setVisible);
-    }
-}
-
-// static
-void StatusBarLabel::buildToggleMenu(QMenu& menu, QStatusBar* statusBar)
-{
-    // Explicit display order for known widgets.  Workbench-added widgets (Draft,
-    // BIM, etc.) keep their position in the actual status-bar layout: each one is
-    // emitted just before the first known widget that follows it on the bar.
-    static const QStringList order = {
-        QStringLiteral("actionLabel"),
-        QStringLiteral("hintLabel"),
-        QStringLiteral("progressBar"),
-        QStringLiteral("rightSideLabel"),
-        QStringLiteral("toggleBottomPanelsButton"),
-        QStringLiteral("notificationArea"),
-        QStringLiteral("NavigationIndicator"),
-        QStringLiteral("sizeLabel"),
-    };
-
-    // Collect titled widgets in actual status-bar layout order.  QStatusBar
-    // doesn't expose a QLayout, so use widget x-position to get visual order.
-    QList<QWidget*> layoutOrder;
-    for (QObject* child : statusBar->children()) {
-        auto* widget = qobject_cast<QWidget*>(child);
-        if (widget && !widget->windowTitle().isEmpty()) {
-            layoutOrder.append(widget);
-        }
-    }
-    std::stable_sort(layoutOrder.begin(), layoutOrder.end(), [](QWidget* a, QWidget* b) {
-        return a->x() < b->x();
-    });
-
-    auto isKnown = [&](QWidget* w) {
-        return order.contains(w->objectName());
-    };
-
-    QHash<QString, QWidget*> byName;
-    for (QWidget* w : layoutOrder) {
-        byName.insert(w->objectName(), w);
-    }
-
-    QSet<QWidget*> emitted;
-    for (const QString& name : order) {
-        QWidget* known = byName.value(name);
-        if (!known) {
-            continue;
-        }
-        const int idx = layoutOrder.indexOf(known);
-        for (int i = 0; i < idx; ++i) {
-            QWidget* w = layoutOrder[i];
-            if (!isKnown(w) && !emitted.contains(w)) {
-                addToggleAction(menu, w);
-                emitted.insert(w);
-            }
-        }
-        addToggleAction(menu, known);
-        emitted.insert(known);
-    }
-
-    // Unknown widgets that sit after every known one (or when no layout was found).
-    for (QWidget* w : layoutOrder) {
-        if (!emitted.contains(w)) {
-            addToggleAction(menu, w);
-        }
-    }
-}
+{}
 
 void StatusBarLabel::contextMenuEvent(QContextMenuEvent* event)
 {
@@ -154,8 +49,8 @@ void StatusBarLabel::contextMenuEvent(QContextMenuEvent* event)
             return;
         }
         QMenu menu(self);
-        if (auto* statusBar = qobject_cast<QStatusBar*>(self->parentWidget())) {
-            buildToggleMenu(menu, statusBar);
+        if (auto* mw = getMainWindow()) {
+            mw->buildStatusBarContextMenu(menu);
         }
         if (self->textInteractionFlags() & Qt::TextSelectableByMouse) {
             menu.addSeparator();
@@ -176,11 +71,8 @@ void StatusBarLabel::contextMenuEvent(QContextMenuEvent* event)
 
 void StatusBarLabel::setVisible(bool visible)
 {
-    if (!parameterName.empty() && hGrp) {
-        hGrp->SetBool(parameterName.c_str(), visible);
-    }
     if (!visible) {
-        clear();  // Clear text
+        clear();  // Drop stale text while hidden
     }
     QLabel::setVisible(visible);
 }

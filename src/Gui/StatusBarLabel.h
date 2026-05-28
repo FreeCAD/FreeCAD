@@ -23,47 +23,29 @@
 
 #pragma once
 
-#include <string>
-
-#include <QAction>
-#include <QApplication>
-#include <QClipboard>
 #include <QContextMenuEvent>
 #include <QLabel>
-#include <QStatusBar>
-#include <QMenu>
 
 #include <FCGlobal.h>
-
-#include <Base/Parameter.h>
 
 namespace Gui
 {
 /**
  * @brief Label for displaying information in the status bar
  *
- * A QLabel subclass that provides a context menu with additional actions
- * similar to the standard status bar widgets.
+ * A QLabel subclass whose right-click context menu lets the user toggle the
+ * status-bar items. Visibility/persistence and the menu contents are owned by
+ * MainWindow's status-bar registry; this class only forwards the request.
  */
 class GuiExport StatusBarLabel: public QLabel
 {
     Q_OBJECT
 public:
-    explicit StatusBarLabel(QWidget* parent, const std::string& parameterName = {});
-
-    /** Populates \a menu with checkable toggle actions for every titled child of
-     *  \a statusBar.  Widgets that expose a \c userEnabled Q_PROPERTY use it for
-     *  the checked state (e.g. the progress bar, which is normally hidden when idle).
-     *  All others use \c isVisible(). */
-    static void buildToggleMenu(QMenu& menu, QStatusBar* statusBar);
+    explicit StatusBarLabel(QWidget* parent = nullptr);
 
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
     void setVisible(bool visible) override;
-
-private:
-    ParameterGrp::handle hGrp;
-    std::string parameterName;
 };
 
 }  // Namespace Gui

@@ -44,36 +44,17 @@ from draftutils import params
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.translate import translate
 
+# Order keys within MainWindow's status-bar registry (Right slot). Workbench
+# widgets use the 550-699 band so they sit just left of the Bottom Panel Toggle.
+_SNAP_ORDER = 550
+_SCALE_ORDER = 560
 
-def _insert_before_toggle(sb, widget):
-    """Place widget into the permanent area immediately before
-    toggleBottomPanelsButton. Avoids `insertPermanentWidget`'s fragile index
-    parameter (which can produce 'Index out of range' warnings when permanent
-    widgets are still being added). Falls back to appending if the toggle is
-    missing."""
-    mw = Gui.getMainWindow()
-    toggle = mw.findChild(QtWidgets.QToolButton, "toggleBottomPanelsButton")
-    if not toggle:
-        sb.addPermanentWidget(widget)
-        return
-    siblings = [c for c in sb.children() if isinstance(c, QtWidgets.QWidget) and c is not widget]
-    siblings.sort(key=lambda w: w.x())
-    try:
-        anchor = siblings.index(toggle)
-    except ValueError:
-        sb.addPermanentWidget(widget)
-        return
-    after = siblings[anchor:]
-    # Preserve each widget's visibility: removeWidget() hides it and
-    # addPermanentWidget() would otherwise reveal user-hidden widgets (and,
-    # for widgets that persist visibility, write the preference back to true).
-    visibilities = [w.isVisible() for w in after]
-    for w in after:
-        sb.removeWidget(w)
-    sb.addPermanentWidget(widget)
-    for w, was_visible in zip(after, visibilities):
-        sb.addPermanentWidget(w)
-        w.setVisible(was_visible)
+
+def _register_status_item(widget, item_id, title, order):
+    """Register widget through MainWindow's owned status-bar API. MainWindow
+    handles placement, ordering, visibility persistence and the context menu, so
+    workbenches never touch the QStatusBar layout directly."""
+    Gui.getMainWindow().addStatusBarItem(widget, id=item_id, title=title, slot="Right", order=order)
 
 
 # ----------------------------------------------------------------------------
@@ -284,7 +265,7 @@ def init_draft_statusbar_scale():
     scale_widget.scaleLabel = scaleLabel
 
     # add scale widget to the statusbar
-    _insert_before_toggle(sb, scale_widget)
+    _register_status_item(scale_widget, "draft_scale_widget", text, _SCALE_ORDER)
     scale_widget.show()
 
 
@@ -322,7 +303,7 @@ def init_draft_statusbar_snap():
     snap_widget.setWindowTitle(text)
     snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
     snap_widget.setIconSize(QtCore.QSize(16, 16))
-    _insert_before_toggle(sb, snap_widget)
+    _register_status_item(snap_widget, "draft_snap_widget", text, _SNAP_ORDER)
 
     # grid button:
     snap_widget.addAction(Gui.Command.get("Draft_ToggleGrid").getAction()[0])
@@ -375,7 +356,9 @@ def show_draft_statusbar_scale():
     else:
         scale_widget = mw.findChild(QtWidgets.QToolBar, "draft_scale_widget")
         if scale_widget:
-            _insert_before_toggle(sb, scale_widget)
+            _register_status_item(
+                scale_widget, "draft_scale_widget", scale_widget.windowTitle(), _SCALE_ORDER
+            )
             scale_widget.show()
         else:
             init_draft_statusbar_scale()
@@ -395,7 +378,9 @@ def show_draft_statusbar_snap():
     else:
         snap_widget = mw.findChild(QtWidgets.QToolBar, "draft_snap_widget")
         if snap_widget:
-            _insert_before_toggle(sb, snap_widget)
+            _register_status_item(
+                snap_widget, "draft_snap_widget", snap_widget.windowTitle(), _SNAP_ORDER
+            )
             snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
             snap_widget.show()
         else:

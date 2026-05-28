@@ -931,11 +931,15 @@ retranslateUi()
 onCompact()
 onTooltip()
 
-label = statusBar.children()[2]
-statusBar.removeWidget(label)
-statusBar.addPermanentWidget(indicator)
-statusBar.addPermanentWidget(label)
-label.show()
+# MainWindow owns status-bar placement/ordering/persistence/menu; we only register.
+mw.addStatusBarItem(
+    indicator,
+    id="NavigationIndicator",
+    title=text,
+    slot="Right",
+    # Far right of the status bar, after Notifications.
+    order=900,
+)
 
 setCurrent()
 
