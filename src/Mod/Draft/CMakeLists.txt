@@ -258,6 +258,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_annotationstyleeditor.py
     draftguitools/gui_base.py
     draftguitools/gui_base_original.py
+    draftguitools/gui_field_locks.py
     draftguitools/gui_tool_utils.py
     draftguitools/gui_planeproxy.py
     draftguitools/gui_selectplane.py

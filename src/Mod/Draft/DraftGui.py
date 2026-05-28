@@ -50,6 +50,7 @@ import FreeCAD
 import FreeCADGui
 import DraftVecUtils
 import WorkingPlane
+from draftguitools.gui_field_locks import InputFieldLockGroup
 from draftutils import params
 from draftutils import utils
 from draftutils.todo import todo
@@ -115,20 +116,6 @@ class DraftLineEdit(QtWidgets.QLineEdit):
             super().keyPressEvent(event)
 
 
-class _FieldLockFilter(QtCore.QObject):
-    """Unlock a Draft task-panel input field on double-click."""
-
-    def __init__(self, tool_bar, key):
-        super().__init__()
-        self._tool_bar = tool_bar
-        self._key = key
-
-    def eventFilter(self, obj, event):
-        if event.type() == QtCore.QEvent.MouseButtonDblClick:
-            self._tool_bar._unlock_field(self._key)
-        return False
-
-
 class DraftTaskPanel:
     def __init__(self, widget, extra=None):
         if extra:
@@ -175,6 +162,15 @@ class DraftToolBar:
     Draft Ui Commands call and get information such as point coordinates,
     subcommands activation, continue mode, etc. from Task Panel Ui
     """
+
+    _LOCK_FIELDS = {
+        "x": "xValue",
+        "y": "yValue",
+        "z": "zValue",
+        "length": "lengthValue",
+        "angle": "angleValue",
+    }
+    _LOCK_VALUES = {"length": "lvalue", "angle": "avalue"}
 
     def __init__(self):
         self.tray = None
@@ -243,8 +239,8 @@ class DraftToolBar:
         self.tray.setParent(mw)
         self.tray.hide()
         self.display_point_active = False  # prevent cyclic processing of point values
-        self._field_locks = {}
-        self._field_lock_filters = []
+        self._locks = InputFieldLockGroup(on_change=self._on_lock_change)
+        self._angle_lock_axis = None
 
     # ---------------------------------------------------------------------------
     # General UI setup
@@ -344,65 +340,60 @@ class DraftToolBar:
             cb.hide()
         layout.addWidget(cb)
 
-    # Locked fields keep their typed value and force their component on the
-    # committed point; the cursor only updates live fields.
+    def _on_lock_change(self, key, locked):
+        if locked:
+            self._read_locked_value(key)
+            if key in ("x", "y", "z"):
+                self._unlock_polar_fields()
+            elif key in ("length", "angle"):
+                self._unlock_cartesian_fields()
+                self.mask = None
+                if hasattr(FreeCADGui, "Snapper"):
+                    FreeCADGui.Snapper.mask = None
+                if key == "length" and self._is_field_locked("angle"):
+                    self._apply_snapper_angle_lock()
+        if key != "angle":
+            return
+        if locked:
+            self.mask = None
+            self._angle_lock_axis = self._current_angle_axis()
+            self._apply_snapper_angle_lock()
+        else:
+            self._clear_snapper_angle_lock()
 
-    _LOCKABLE_FIELD_KEYS = ("x", "y", "z", "length", "angle")
-
-    def _install_field_lock(self, field, key):
-        icon = QtGui.QIcon(":/icons/Draft_Snap_Lock.svg")
-        action = field.addAction(icon, QtWidgets.QLineEdit.TrailingPosition)
-        action.setVisible(False)
-        action.setToolTip(translate("draft", "Locked. Click to unlock, or double-click the field."))
-        action.triggered.connect(lambda checked=False, k=key: self._unlock_field(k))
-        field._lock_action = action
-        field.textEdited.connect(lambda txt, k=key: self._on_field_edited(k, txt))
-        flt = _FieldLockFilter(self, key)
-        field.installEventFilter(flt)
-        self._field_lock_filters.append(flt)
-        self._field_locks[key] = False
-
-    def _lockable_field(self, key):
-        return {
-            "x": getattr(self, "xValue", None),
-            "y": getattr(self, "yValue", None),
-            "z": getattr(self, "zValue", None),
-            "length": getattr(self, "lengthValue", None),
-            "angle": getattr(self, "angleValue", None),
-        }.get(key)
+    def _read_locked_value(self, key):
+        field = getattr(self, self._LOCK_FIELDS.get(key, ""), None)
+        if field is None:
+            return
+        value = field.property("rawValue")
+        if value is not None:
+            setattr(self, self._LOCK_VALUES.get(key, key), float(value))
 
     def _is_field_locked(self, key):
-        return self._field_locks.get(key, False)
+        return self._locks.is_locked(key)
 
     def _set_field_locked(self, key, locked):
-        if self._field_locks.get(key) == locked:
-            return
-        self._field_locks[key] = locked
-        field = self._lockable_field(key)
-        action = getattr(field, "_lock_action", None) if field is not None else None
-        if action is not None:
-            action.setVisible(locked)
-        if key == "angle":
-            if locked:
-                self._apply_snapper_angle_lock()
-            else:
-                self._clear_snapper_angle_lock()
-
-    def _on_field_edited(self, key, text):
-        text = text.lstrip()
-        locked = bool(text) and text[0] in "0123456789.,-+"
-        self._set_field_locked(key, locked)
+        if locked:
+            field = getattr(self, self._LOCK_FIELDS.get(key, ""), None)
+            if field is not None:
+                value = getattr(self, self._LOCK_VALUES.get(key, key))
+                field.setProperty("rawValue", value)
+        self._locks.set_locked(key, locked)
 
     def _unlock_field(self, key):
-        self._set_field_locked(key, False)
+        self._locks.unlock(key)
 
-    def _reset_field_locks(self):
-        for key in self._LOCKABLE_FIELD_KEYS:
-            self._set_field_locked(key, False)
+    def _unlock_cartesian_fields(self):
+        # Editing length/angle recomputes X/Y/Z, so their locks no longer hold.
+        self._locks.unlock_keys(("x", "y", "z"))
 
-    def apply_field_locks(self, point, last=None):
+    def _unlock_polar_fields(self):
+        # Editing X/Y/Z recomputes length/angle, so their locks no longer hold.
+        self._locks.unlock_keys(("length", "angle"))
+
+    def constrain_point(self, point, last=None):
         """Return `point` with locked axes/length/angle overridden by typed values."""
-        if not point or not any(self._field_locks.values()):
+        if point is None or not self._locks.any_locked():
             return point
         plane = WorkingPlane.get_working_plane(update=False)
         if last is None:
@@ -418,21 +409,44 @@ class DraftToolBar:
             delta.y = self.y
         if self._is_field_locked("z"):
             delta.z = self.z
-        if self._is_field_locked("length") or self._is_field_locked("angle"):
-            length, theta, phi = DraftVecUtils.get_spherical_coords(delta.x, delta.y, delta.z)
+        if self._is_field_locked("angle"):
+            axis = self._angle_lock_axis or self._current_angle_axis()
+            factor = delta.dot(axis) / axis.dot(axis)
             if self._is_field_locked("length"):
-                length = self.lvalue
-            if self._is_field_locked("angle"):
-                phi = math.radians(self.avalue)
-            cx, cy, cz = DraftVecUtils.get_cartesian_coords(length, theta, phi)
-            delta = FreeCAD.Vector(cx, cy, cz)
-        return self.get_new_point(delta)
+                factor = -self.lvalue if factor < 0 else self.lvalue
+            delta = axis * factor
+        elif self._is_field_locked("length"):
+            if delta.Length:
+                delta.normalize()
+                delta *= self.lvalue
+            else:
+                delta = self._current_angle_axis() * self.lvalue
+        if self.globalMode:
+            base = last if self.relativeMode else FreeCAD.Vector()
+            return base + delta
+        global_delta = plane.get_global_coords(delta, as_vector=True)
+        base = last if self.relativeMode else plane.position
+        return base + global_delta
+
+    def _current_angle_axis(self):
+        return FreeCAD.Vector(
+            DraftVecUtils.get_cartesian_coords(
+                1, math.radians(self.pvalue), math.radians(self.avalue)
+            )
+        )
+
+    def _update_locked_angle_display(self, delta):
+        if delta.Length == 0:
+            return
+        _, _, phi = DraftVecUtils.get_spherical_coords(*delta)
+        self.avalue = math.degrees(phi)
+        self.angleValue.setText(display_external(self.avalue, None, "Angle"))
 
     def setupToolBar(self, task=False):
         """sets the draft toolbar up"""
 
-        self._field_locks = {}
-        self._field_lock_filters = []
+        # Fields are recreated on every rebuild, so start with a fresh group.
+        self._locks = InputFieldLockGroup(on_change=self._on_lock_change)
 
         # command
 
@@ -497,11 +511,11 @@ class DraftToolBar:
         self.angleValue = self._inputfield("angleValue", al)
         self.angleValue.setText(FreeCAD.Units.Quantity(0, FreeCAD.Units.Angle).UserString)
 
-        self._install_field_lock(self.xValue, "x")
-        self._install_field_lock(self.yValue, "y")
-        self._install_field_lock(self.zValue, "z")
-        self._install_field_lock(self.lengthValue, "length")
-        self._install_field_lock(self.angleValue, "angle")
+        self._locks.add_field("x", self.xValue)
+        self._locks.add_field("y", self.yValue)
+        self._locks.add_field("z", self.zValue)
+        self._locks.add_field("length", self.lengthValue)
+        self._locks.add_field("angle", self.angleValue)
 
         # options
 
@@ -848,6 +862,8 @@ class DraftToolBar:
         self.baseWidget = DraftBaseWidget()
         self.layout = QtWidgets.QVBoxLayout(self.baseWidget)
         self.setupToolBar(task=True)
+        if hasattr(FreeCADGui, "Snapper"):
+            FreeCADGui.Snapper.setPointConstraintProvider(self)
         self.retranslateUi(self.baseWidget)
         self.panel = DraftTaskPanel(self.baseWidget, extra)
         todo.delay(self._show_dialog, self.panel)
@@ -874,10 +890,20 @@ class DraftToolBar:
                 if axis.isEqual(constraint_dir, 0.1) or axis.isEqual(-constraint_dir, 0.1):
                     force_xyz = True
 
-        if not force_xyz and params.get_param("focusOnLength") and self.lengthValue.isVisible():
+        if (
+            not force_xyz
+            and params.get_param("focusOnLength")
+            and self.lengthValue.isVisible()
+            and not self._is_field_locked("length")
+        ):
             self.lengthValue.setFocus()
             self.lengthValue.setSelection(0, self.number_length(self.lengthValue.text()))
-        elif not force_xyz and self._is_field_locked("angle") and self.lengthValue.isVisible():
+        elif (
+            not force_xyz
+            and self._is_field_locked("angle")
+            and self.lengthValue.isVisible()
+            and not self._is_field_locked("length")
+        ):
             self.lengthValue.setFocus()
             self.lengthValue.setSelection(0, self.number_length(self.lengthValue.text()))
         elif f == "x":
@@ -893,9 +919,28 @@ class DraftToolBar:
             self.radiusValue.setFocus()
             self.radiusValue.setSelection(0, self.number_length(self.radiusValue.text()))
         else:
-            # f is None
-            self.xValue.setFocus()
-            self.xValue.setSelection(0, self.number_length(self.xValue.text()))
+            # f is None: focus the first field the cursor can still drive so
+            # auto-focus skips locked fields instead of landing on them.
+            target = self._first_unlocked_point_field()
+            target.setFocus()
+            target.setSelection(0, self.number_length(target.text()))
+
+    def _first_unlocked_point_field(self):
+        """Return the first visible, enabled, unlocked point-entry field.
+
+        Falls back to xValue when every candidate is locked, matching the
+        historical default when nothing is locked.
+        """
+        for key, widget in (
+            ("x", self.xValue),
+            ("y", self.yValue),
+            ("z", self.zValue),
+            ("length", self.lengthValue),
+            ("angle", self.angleValue),
+        ):
+            if widget.isVisible() and widget.isEnabled() and not self._is_field_locked(key):
+                return widget
+        return self.xValue
 
     def number_length(self, st):
         nl = len(st)
@@ -1051,6 +1096,8 @@ class DraftToolBar:
         todo.delay(self.setFocus, "radius")
 
     def offUi(self):
+        if hasattr(FreeCADGui, "Snapper"):
+            FreeCADGui.Snapper.clearPointConstraintProvider(self)
         todo.delay(FreeCADGui.Control.closeDialog, None)
         self.cancel = None
         self.sourceCmd = None
@@ -1287,6 +1334,8 @@ class DraftToolBar:
         self.globalMode = bool(getattr(val, "value", val))
         self.checkLocal()
         self.displayPoint(self.new_point, self.get_last_point())
+        if self._is_field_locked("angle"):
+            self._apply_snapper_angle_lock()
         self.updateSnapper()
 
     def setMakeFace(self, val):
@@ -1569,7 +1618,7 @@ class DraftToolBar:
 
         self.display_point_active = True  # prevent cyclic processing of point values
 
-        if point:
+        if point is not None:
             if not plane:
                 plane = WorkingPlane.get_working_plane(update=False)
             if not last:
@@ -1607,7 +1656,9 @@ class DraftToolBar:
             if not self._is_field_locked("length"):
                 self.lvalue = length
                 self.lengthValue.setText(display_external(length, None, "Length"))
-            if not self._is_field_locked("angle"):
+            if self._is_field_locked("angle"):
+                self._update_locked_angle_display(delta)
+            else:
                 self.avalue = phi
                 self.angleValue.setText(display_external(phi, None, "Angle"))
 
@@ -1838,7 +1889,9 @@ class DraftToolBar:
             else:
                 self._set_field_locked("angle", True)
             return
-        elif self.mask == val:
+        if self._is_field_locked("angle"):
+            self._unlock_field("angle")
+        if self.mask == val:
             self.mask = None
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.mask = None
@@ -1857,6 +1910,7 @@ class DraftToolBar:
         if not self.xValue.hasFocus():
             return
         self.x = d.Value
+        self._unlock_polar_fields()
         self.update_spherical_coords()
         self.updateSnapper()
 
@@ -1866,6 +1920,7 @@ class DraftToolBar:
         if not self.yValue.hasFocus():
             return
         self.y = d.Value
+        self._unlock_polar_fields()
         self.update_spherical_coords()
         self.updateSnapper()
 
@@ -1875,6 +1930,7 @@ class DraftToolBar:
         if not self.zValue.hasFocus():
             return
         self.z = d.Value
+        self._unlock_polar_fields()
         self.update_spherical_coords()
         self.updateSnapper()
 
@@ -1891,6 +1947,7 @@ class DraftToolBar:
         if not self.lengthValue.hasFocus():
             return
         self.lvalue = d.Value
+        self._unlock_cartesian_fields()
         self.update_cartesian_coords()
         self.updateSnapper()
 
@@ -1900,24 +1957,28 @@ class DraftToolBar:
         if not self.angleValue.hasFocus():
             return
         self.avalue = d.Value
+        self._unlock_cartesian_fields()
         self.update_cartesian_coords()
         self.updateSnapper()
         if self._is_field_locked("angle"):
+            self._angle_lock_axis = self._current_angle_axis()
             self._apply_snapper_angle_lock()
 
     def _apply_snapper_angle_lock(self):
-        if not hasattr(FreeCADGui, "Snapper") or self.angle is None:
+        if not hasattr(FreeCADGui, "Snapper"):
             return
+        angle_axis = self._angle_lock_axis or self._current_angle_axis()
         if not self.globalMode:
             plane = WorkingPlane.get_working_plane(update=False)
-            angle_vec = plane.get_global_coords(self.angle, as_vector=True)
+            angle_vec = plane.get_global_coords(angle_axis, as_vector=True)
         else:
-            angle_vec = self.angle
+            angle_vec = angle_axis
         FreeCADGui.Snapper.setAngle(angle_vec)
 
     def _clear_snapper_angle_lock(self):
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.setAngle()
+        self._angle_lock_axis = None
         self.angle = None
 
     def update_spherical_coords(self):
@@ -1926,10 +1987,8 @@ class DraftToolBar:
         self.pvalue = math.degrees(theta)
         self.avalue = math.degrees(phi)
         self.angle = FreeCAD.Vector(DraftVecUtils.get_cartesian_coords(1, theta, phi))
-        if not self._is_field_locked("length"):
-            self.lengthValue.setText(display_external(self.lvalue, None, "Length"))
-        if not self._is_field_locked("angle"):
-            self.angleValue.setText(display_external(self.avalue, None, "Angle"))
+        self.lengthValue.setText(display_external(self.lvalue, None, "Length"))
+        self.angleValue.setText(display_external(self.avalue, None, "Angle"))
 
     def update_cartesian_coords(self):
         self.x, self.y, self.z = DraftVecUtils.get_cartesian_coords(
@@ -1940,12 +1999,9 @@ class DraftToolBar:
                 1, math.radians(self.pvalue), math.radians(self.avalue)
             )
         )
-        if not self._is_field_locked("x"):
-            self.xValue.setText(display_external(self.x, None, "Length"))
-        if not self._is_field_locked("y"):
-            self.yValue.setText(display_external(self.y, None, "Length"))
-        if not self._is_field_locked("z"):
-            self.zValue.setText(display_external(self.z, None, "Length"))
+        self.xValue.setText(display_external(self.x, None, "Length"))
+        self.yValue.setText(display_external(self.y, None, "Length"))
+        self.zValue.setText(display_external(self.z, None, "Length"))
 
     def get_last_point(self):
         """Get the last point in the GCS."""
@@ -2050,6 +2106,7 @@ class DraftToolBar:
         self.pvalue = 90
         self.avalue = 0
         self.angle = None
+        self._angle_lock_axis = None
         self.radius = 0
         self.offset = 0
 
