@@ -178,7 +178,7 @@ class Snapshot:
 
             captured_objs.append(part)
             captured_placements.append(part.Placement)
-            captured_visibilities.append(bool(part.Visibility))
+            captured_visibilities.append(part.Visibility)
 
         snapshot_obj.Components = captured_objs
         snapshot_obj.Placements = captured_placements
