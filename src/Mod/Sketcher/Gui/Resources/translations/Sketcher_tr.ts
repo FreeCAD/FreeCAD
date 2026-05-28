@@ -180,15 +180,13 @@
       <location filename="../../Command.cpp" line="1160"/>
       <source>Skipping external geometry #%1
 </source>
-      <translation type="unfinished">Skipping external geometry #%1
-</translation>
+      <translation>Harici geometri atlanıyor #%1</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1203"/>
       <source>External geometry '%1' is out of scope:
 </source>
-      <translation type="unfinished">External geometry '%1' is out of scope:
-</translation>
+      <translation>Harici geometri '%1' kapsam dışındadır:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1254"/>
@@ -214,15 +212,13 @@
       <location filename="../../Command.cpp" line="1360"/>
       <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
 </source>
-      <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
-</translation>
+      <translation>'%3'ten '%2' kısıtlamanın '%1'i kopyalandı. Bazıları atlandı.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1376"/>
       <source>Skipping constraint #%1 of '%2': references unmerged geometry.
 </source>
-      <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
-</translation>
+      <translation>'%2'nin '%1'inci kısıtlaması atlanıyor: birleştirilmemiş geometriye referans veriyor.</translation>
     </message>
   </context>
   <context>
@@ -482,7 +478,7 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
     <message>
       <location filename="../../CommandConstraints.cpp" line="10668"/>
       <source>Add Group constraint</source>
-      <translation type="unfinished">Add Group constraint</translation>
+      <translation>Grup kısıtlaması ekle</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="11092"/>
@@ -984,12 +980,12 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
     <message>
       <location filename="../../EditTextDialog.cpp" line="114"/>
       <source>Modify sketch text constraint</source>
-      <translation type="unfinished">Modify sketch text constraint</translation>
+      <translation>Çizim metni kısıtlamasını değiştirin</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="131"/>
       <source>Add sketch Text</source>
-      <translation type="unfinished">Add sketch Text</translation>
+      <translation>Çizim metni ekle</translation>
     </message>
   </context>
   <context>
@@ -1151,7 +1147,7 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
+      <translation>Geçersiz seçim</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="179"/>
@@ -1466,31 +1462,31 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
       <location filename="../../CommandConstraints.cpp" line="10167"/>
       <location filename="../../CommandConstraints.cpp" line="10278"/>
       <source>Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</source>
-      <translation type="unfinished">Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</translation>
+      <translation>Çizim alanında simetrik bir nokta ve bir öğe veya bir simetrik hat ve bir öğe, bir simetrik nokta ve iki nokta yada bir simetrik hat ve iki nokta seç.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10034"/>
       <location filename="../../CommandConstraints.cpp" line="10213"/>
       <location filename="../../CommandConstraints.cpp" line="10353"/>
       <source>Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</translation>
+      <translation>Seçilen ilk elemanın uç noktası olmadığı için simetri kısıtlaması eklenemiyor. Bunun yerine bir çizgi veya açık bir eğri seçin.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10045"/>
       <location filename="../../CommandConstraints.cpp" line="10363"/>
       <source>Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</translation>
+      <translation>İkinci seçilen öğe bir çizgi olmadığı için simetri kısıtlaması eklenemiyor. Bunun yerine bir çizgi veya eksen seçin.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10058"/>
       <location filename="../../CommandConstraints.cpp" line="10198"/>
       <source>Cannot add a symmetry constraint between an element and its end points!</source>
-      <translation type="unfinished">Cannot add a symmetry constraint between an element and its end points!</translation>
+      <translation>Bir eleman ile uç noktaları arasına simetri kısıtlaması eklenemez!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10343"/>
       <source>Cannot add a symmetry constraint between an element and itself.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint between an element and itself.</translation>
+      <translation>Bir öğe ile kendisi arasına simetri kısıtlaması eklenemez.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10423"/>
@@ -1891,7 +1887,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     <message>
       <location filename="../../CommandConstraints.cpp" line="10640"/>
       <source>No geometries selected</source>
-      <translation type="unfinished">No geometries selected</translation>
+      <translation>Hiçbir geometri seçilmedi.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10876"/>
@@ -2068,7 +2064,7 @@ Harici geometri dışarıda bırakılacak</translation>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="245"/>
       <source>Text parameters</source>
-      <translation type="unfinished">Text parameters</translation>
+      <translation>Metin parametreleri</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="726"/>
@@ -2079,17 +2075,17 @@ Harici geometri dışarıda bırakılacak</translation>
       <location filename="../../DrawSketchHandlerText.h" line="736"/>
       <location filename="../../DrawSketchHandlerText.h" line="744"/>
       <source>%1 pick bottom-left point</source>
-      <translation type="unfinished">%1 pick bottom-left point</translation>
+      <translation>%1 sol alt noktayı seçin</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="740"/>
       <source>%1 pick top-left point</source>
-      <translation type="unfinished">%1 pick top-left point</translation>
+      <translation>%1 sol üst noktayı seçin</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="748"/>
       <source>%1 pick bottom-right point</source>
-      <translation type="unfinished">%1 pick bottom-right point</translation>
+      <translation>%1 sağ alt noktayı seçin</translation>
     </message>
   </context>
   <context>
@@ -2343,7 +2339,7 @@ Harici geometri dışarıda bırakılacak</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="132"/>
       <source>PointOnObject</source>
-      <translation type="unfinished">PointOnObject</translation>
+      <translation>Nesne Üzerindeki Nokta</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="135"/>
@@ -2363,7 +2359,7 @@ Harici geometri dışarıda bırakılacak</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="144"/>
       <source>Equal</source>
-      <translation type="unfinished">Equal</translation>
+      <translation>Eşit</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="147"/>
@@ -2383,12 +2379,12 @@ Harici geometri dışarıda bırakılacak</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="156"/>
       <source>DistanceX</source>
-      <translation type="unfinished">DistanceX</translation>
+      <translation>X Mesafesi </translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="159"/>
       <source>DistanceY</source>
-      <translation type="unfinished">DistanceY</translation>
+      <translation>Y Mesafesi</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="162"/>
@@ -2413,7 +2409,7 @@ Harici geometri dışarıda bırakılacak</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="174"/>
       <source>Snell</source>
-      <translation type="unfinished">Snell</translation>
+      <translation>Delik açıcı</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="177"/>
@@ -2423,7 +2419,7 @@ Harici geometri dışarıda bırakılacak</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="186"/>
       <source>Constraint</source>
-      <translation type="unfinished">Constraint</translation>
+      <translation>Kısıtlama</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="654"/>
@@ -2691,7 +2687,7 @@ Harici geometri dışarıda bırakılacak</translation>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="88"/>
       <source>Group Constraint</source>
-      <translation type="unfinished">Group Constraint</translation>
+      <translation>Grup Kısıtlaması</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="102"/>
@@ -2731,7 +2727,7 @@ Harici geometri dışarıda bırakılacak</translation>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="755"/>
       <source>Convert to geometries</source>
-      <translation type="unfinished">Convert to geometries</translation>
+      <translation>Geometrilere dönüştür</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="880"/>
@@ -3109,11 +3105,13 @@ Aksi halde mevcut yapı moduna göre eklenir.</translation>
 'Never': Automatic scaling upon first dimension is never performed.
 'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.
 </source>
-      <translation type="unfinished">Select the mode of automatic geometry scaling upon first dimension:
-'Always': Automatic scaling upon first dimension is always performed.
-'Never': Automatic scaling upon first dimension is never performed.
-'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.
-</translation>
+      <translation>İlk boyuta göre otomatik geometri ölçeklendirme modunu seçin:
+
+'Her zaman': İlk boyuta göre otomatik ölçeklendirme her zaman gerçekleştirilir.
+
+'Asla': İlk boyuta göre otomatik ölçeklendirme asla gerçekleştirilmez.
+'
+Görünürde ölçek özelliği yoksa': İlk boyuta göre otomatik ölçeklendirme yalnızca 3B görünümde görünür nesne yoksa gerçekleştirilir.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="349"/>
@@ -3121,10 +3119,12 @@ Aksi halde mevcut yapı moduna göre eklenir.</translation>
 'Disabled': On-View-Parameters are completely disabled.
 'Dimensional only': Only dimensional On-View-Parameters are visible. They are the most useful. For example, the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation type="unfinished">Choose a visibility mode for the On-View-Parameters:
-'Disabled': On-View-Parameters are completely disabled.
-'Dimensional only': Only dimensional On-View-Parameters are visible. They are the most useful. For example, the radius of a circle.
-'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</translation>
+      <translation>Görünüm Parametreleri için bir görünürlük modu seçin:
+'Devre Dışı': Görünüm Parametreleri tamamen devre dışı bırakılır.
+
+'Yalnızca Boyutsal': Yalnızca boyutsal Görünüm Parametreleri görünür. Bunlar en kullanışlı olanlardır. Örneğin, bir dairenin yarıçapı.
+
+'Tümü': Hem boyutsal hem de konumsal Görünüm Parametreleri. Konumsal olanlar imlecin (x,y) konumudur. Örneğin, bir dairenin merkezi için.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="336"/>
@@ -4464,23 +4464,23 @@ BFGS çözücüsü, Broyden–Fletcher–Goldfarb–Shanno algoritmasını kulla
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="298"/>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="317"/>
       <source>Automatically select the QR algorithm based on number of dofs</source>
-      <translation type="unfinished">Automatically select the QR algorithm based on number of dofs</translation>
+      <translation>Serbestlik derecesi sayısına göre QR algoritmasını otomatik olarak seçin.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
       <source>Automatic QR algorithm</source>
-      <translation type="unfinished">Automatic QR algorithm</translation>
+      <translation>Otomatik QR algoritması</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="340"/>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="350"/>
       <source>Maximum number of parameters before switching to sparse QR algorithm</source>
-      <translation type="unfinished">Maximum number of parameters before switching to sparse QR algorithm</translation>
+      <translation>Seyrek QR algoritmasına geçmeden önce maksimum parametre sayısı</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="343"/>
       <source>Auto QR threshold</source>
-      <translation type="unfinished">Auto QR threshold</translation>
+      <translation>Otomatik QR eşiği</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="382"/>
@@ -4782,7 +4782,7 @@ Izgara aralığı, belirtilen piksel boyutundan küçük hale gelirse değişir.
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="173"/>
       <source>Sets the transparency of the grid lines (0 = opaque, 100 = fully transparent)</source>
-      <translation type="unfinished">Sets the transparency of the grid lines (0 = opaque, 100 = fully transparent)</translation>
+      <translation>Izgara çizgilerinin şeffaflığını ayarlar (0 = opak, 100 = tamamen şeffaf)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="198"/>
@@ -4847,7 +4847,7 @@ Izgara aralığı, belirtilen piksel boyutundan küçük hale gelirse değişir.
     <message>
       <location filename="../../../App/SketchObjectConstraints.cpp" line="155"/>
       <source>"%1" has partially redundant constraint(s).</source>
-      <translation type="unfinished">"%1" has partially redundant constraint(s).</translation>
+      <translation>"%1" kısmen gereksiz kısıtlamalara sahiptir.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="1058"/>
@@ -5142,7 +5142,7 @@ Izgara aralığı, belirtilen piksel boyutundan küçük hale gelirse değişir.
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="183"/>
       <source>Failed to add text</source>
-      <translation type="unfinished">Failed to add text</translation>
+      <translation>Metin ekleme başarısız oldu.</translation>
     </message>
   </context>
   <context>
@@ -5192,12 +5192,12 @@ Izgara aralığı, belirtilen piksel boyutundan küçük hale gelirse değişir.
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="94"/>
       <source>Line edit 1</source>
-      <translation type="unfinished">Line edit 1</translation>
+      <translation>Satır düzenleme 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="108"/>
       <source>Line edit 2</source>
-      <translation type="unfinished">Line edit 2</translation>
+      <translation>Satır düzenleme 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="122"/>
@@ -5300,7 +5300,7 @@ Izgara aralığı, belirtilen piksel boyutundan küçük hale gelirse değişir.
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1205"/>
       <source>Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</source>
-      <translation type="unfinished">Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</translation>
+      <translation>Orijinal geometriyi siler. Tek bir kopya oluşturulursa, bu işlem aslında bir 'Taşıma' işlemi gerçekleştirir.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="481"/>
@@ -5325,7 +5325,7 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1213"/>
       <source>Adds a distance constraint with additional construction geometries that allows the distance to modify the entire offset geometry</source>
-      <translation type="unfinished">Adds a distance constraint with additional construction geometries that allows the distance to modify the entire offset geometry</translation>
+      <translation>Mesafe kısıtlaması ekleyerek, mesafenin tüm ofset geometrisini değiştirmesine olanak tanıyan ek yapı geometrileri ekler.</translation>
     </message>
   </context>
   <context>
@@ -5818,7 +5818,7 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="287"/>
       <source>Removes the original geometry and keeps only the mirrored result.</source>
-      <translation type="unfinished">Removes the original geometry and keeps only the mirrored result.</translation>
+      <translation>Orijinal geometriyi kaldırır ve yalnızca aynalanmış sonucu saklar.</translation>
     </message>
   </context>
   <context>
@@ -5908,7 +5908,7 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
     <message>
       <location filename="../../Command.cpp" line="370"/>
       <source>Finish editing the active sketch. You can also press Escape to exit.</source>
-      <translation type="unfinished">Finish editing the active sketch. You can also press Escape to exit.</translation>
+      <translation>Etkin çizimi düzenlemeyi bitirin. Çıkmak için Escape tuşuna da basabilirsiniz.</translation>
     </message>
   </context>
   <context>
@@ -6279,7 +6279,7 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
     <message>
       <location filename="../../CommandConstraints.cpp" line="5876"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
-      <translation type="unfinished">Constrains the vertical distance between two points, or from a point to the origin if only one is selected</translation>
+      <translation>İki nokta arasındaki dikey mesafeyi veya yalnızca bir nokta seçilmişse, o noktadan orijine olan mesafeyi sınırlandırır.</translation>
     </message>
   </context>
   <context>
@@ -8205,7 +8205,7 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="299"/>
       <source>Create symmetry constraints between the original and mirrored geometries</source>
-      <translation type="unfinished">Create symmetry constraints between the original and mirrored geometries</translation>
+      <translation>Orijinal ve aynalanmış geometriler arasında simetri kısıtlamaları oluşturun.</translation>
     </message>
   </context>
   <context>
@@ -8226,12 +8226,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
     <message>
       <location filename="../../EditTextDialog.ui" line="22"/>
       <source>Text:</source>
-      <translation type="unfinished">Text:</translation>
+      <translation>Metin</translation>
     </message>
     <message>
       <location filename="../../EditTextDialog.ui" line="32"/>
       <source>Font:</source>
-      <translation type="unfinished">Font:</translation>
+      <translation>Yazı tipi</translation>
     </message>
     <message>
       <location filename="../../EditTextDialog.ui" line="44"/>
@@ -8249,12 +8249,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
     <message>
       <location filename="../../CommandConstraints.cpp" line="10601"/>
       <source>Group Constraint</source>
-      <translation type="unfinished">Group Constraint</translation>
+      <translation>Grup Kısıtlaması</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10602"/>
       <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
-      <translation type="unfinished">Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</translation>
+      <translation>Seçilen geometrileri tek bir varlık olarak bir araya getirir. Gruplandırılmış geometrilerin konumu ve boyutu, oluşturulan yardımcı çizgiyi kısıtlayarak tanımlanabilir. Grup kısıtlaması mevcut olduğu sürece, gruplandırılmış kenarlara uygulanan kısıtlamalar göz ardı edilir.</translation>
     </message>
   </context>
   <context>
@@ -8262,12 +8262,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
     <message>
       <location filename="../../EditTextDialog.cpp" line="72"/>
       <source>Font not found</source>
-      <translation type="unfinished">Font not found</translation>
+      <translation>Yazı tipi bulunamadı</translation>
     </message>
     <message>
       <location filename="../../EditTextDialog.cpp" line="73"/>
       <source>The original font '%1' is not found on your system. A default font has been selected.</source>
-      <translation type="unfinished">The original font '%1' is not found on your system. A default font has been selected.</translation>
+      <translation>Sisteminizde orijinal '%1' yazı tipi bulunamadı. Varsayılan bir yazı tipi seçildi.</translation>
     </message>
   </context>
   <context>
@@ -8293,7 +8293,7 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="375"/>
       <source>Font</source>
-      <translation type="unfinished">Font</translation>
+      <translation>Yazı tipi</translation>
     </message>
   </context>
   <context>
@@ -8301,12 +8301,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
     <message>
       <location filename="../../Command.cpp" line="409"/>
       <source>Cancel Editing</source>
-      <translation type="unfinished">Cancel Editing</translation>
+      <translation>Düzenlemeyi İptal Et</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Leave 'edit' mode and revert any changes</source>
-      <translation type="unfinished">Leave 'edit' mode and revert any changes</translation>
+      <translation>Düzenleme modundan çıkın ve yaptığınız tüm değişiklikleri geri alın.</translation>
     </message>
   </context>
   <context>
@@ -8314,12 +8314,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Leave</source>
-      <translation type="unfinished">Leave</translation>
+      <translation>Vazgeçmek</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="455"/>
       <source>Leave the sketch editing mode.</source>
-      <translation type="unfinished">Leave the sketch editing mode.</translation>
+      <translation>Çizim düzenleme modundan çıkın.</translation>
     </message>
   </context>
   <context>
@@ -8336,11 +8336,13 @@ To Edit: Double-click the Text constraint to change the text content and font.
 To Position/Size: Apply constraints to the group's construction line.
 Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
 </source>
-      <translation type="unfinished">Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</translation>
+      <translation>Metin kısıtlamasıyla kontrol edilen metin geometrileri oluşturlur.
+
+Düzenlemek için: Metin içeriğini ve yazı tipini değiştirmek için Metin kısıtlamasına çift tıklayın.
+
+Konumlandırmak/Boyutlandırmak için: Kısıtlamaları grubun yardımcı çizgisine uygulayın.
+
+Not: Metin kısıtlaması etkinken, metin geometrilerine doğrudan uygulanan tüm kısıtlamalar göz ardı edilecektir.</translation>
     </message>
   </context>
 </TS>

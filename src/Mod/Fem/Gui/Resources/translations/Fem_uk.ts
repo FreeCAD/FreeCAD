@@ -8745,7 +8745,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverElmer.ui" line="74"/>
       <source>Solver Parameters</source>
-      <translation type="unfinished">Solver Parameters</translation>
+      <translation>Параметри розв'язувача</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="82"/>
@@ -8760,7 +8760,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverElmer.ui" line="129"/>
       <source>Solver Version</source>
-      <translation type="unfinished">Solver Version</translation>
+      <translation>Версія розв'язувача</translation>
     </message>
   </context>
   <context>

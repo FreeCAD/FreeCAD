@@ -703,7 +703,7 @@ CmdTestConsoleOutput::CmdTestConsoleOutput()
 {
     sGroup = "Standard-Test";
     sMenuText = QT_TR_NOOP("Test Console Output");
-    sToolTipText = QT_TR_NOOP("Run test cases to verify console messages");
+    sToolTipText = QT_TR_NOOP("Runs test cases to verify console messages");
     sStatusTip = sToolTipText;
 }
 
