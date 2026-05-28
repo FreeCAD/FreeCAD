@@ -25,6 +25,7 @@
 #pragma once
 
 #include <functional>
+#include <optional>
 #include <vector>
 
 #include <App/Application.h>
@@ -207,8 +208,7 @@ public:
                                       // -3,-4,-5,... for external geometry
         Axes Cross = Axes::None;
         std::set<int> ConstrIndices;
-        Base::Vector3d PickedPoint;
-        bool HasPickedPoint = false;
+        std::optional<Base::Vector3d> PickedPoint;
 
         [[nodiscard]] inline bool hasWinner() const
         {
@@ -217,9 +217,15 @@ public:
 
         [[nodiscard]] inline bool hasPickedPoint() const
         {
-            return HasPickedPoint;
+            return PickedPoint.has_value();
         }
 
+        [[nodiscard]] inline const Base::Vector3d& pickedPoint() const
+        {
+            return PickedPoint.value();
+        }
+
+        void setPickedPoint(const Base::Vector3d& point);
         void setPickedPoint(const SoPickedPoint* point);
 
         inline void clear()
@@ -229,8 +235,7 @@ public:
             GeoIndex = InvalidCurve;
             Cross = Axes::None;
             ConstrIndices.clear();
-            PickedPoint = Base::Vector3d();
-            HasPickedPoint = false;
+            PickedPoint.reset();
         }
     };
 

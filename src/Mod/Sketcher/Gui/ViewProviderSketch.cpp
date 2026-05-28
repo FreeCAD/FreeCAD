@@ -963,7 +963,7 @@ bool ViewProviderSketch::getPreselectionAtViewportPos(
         return false;
     }
 
-    pickedPoint = result.PickedPoint;
+    pickedPoint = result.pickedPoint();
 
     switch (result.Kind) {
         case EditModeCoinManager::PreselectionResult::HitKind::Point:
@@ -1167,23 +1167,18 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     double x = std::numeric_limits<double>::quiet_NaN();
     double y = std::numeric_limits<double>::quiet_NaN();
     SbVec3f pos = point;
-    Base::Vector3d selectionPoint(point[0], point[1], point[2]);
+    Base::Vector3d selectionPoint = Base::convertTo<Base::Vector3d>(point);
 
     if (resolvedClickResult.hasPickedPoint()) {
-        pos = SbVec3f(
-            static_cast<float>(resolvedClickResult.PickedPoint.x),
-            static_cast<float>(resolvedClickResult.PickedPoint.y),
-            static_cast<float>(resolvedClickResult.PickedPoint.z)
-        );
-        selectionPoint = resolvedClickResult.PickedPoint;
+        pos = Base::convertTo<SbVec3f>(resolvedClickResult.pickedPoint());
+        selectionPoint = resolvedClickResult.pickedPoint();
     }
     else if (pp) {
         const SoDetail* detail = pp->getDetail();
         if (detail && detail->getTypeId() == SoPointDetail::getClassTypeId()) {
             pos = pp->getPoint();
         }
-        const SbVec3f pickedPoint = pp->getPoint();
-        selectionPoint = Base::Vector3d(pickedPoint[0], pickedPoint[1], pickedPoint[2]);
+        selectionPoint = Base::convertTo<Base::Vector3d>(pp->getPoint());
     }
     const bool hasSelectionPoint = resolvedClickResult.hasPickedPoint() || static_cast<bool>(pp);
 
@@ -1270,7 +1265,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             switch (Mode) {
                 case STATUS_SELECT_Point:
                     if (hasSelectionPoint) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         //  Do selection
                         std::stringstream ss;
                         ss << "Vertex" << preselection.getPreselectionVertexIndex();
@@ -1281,7 +1275,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Edge:
                     if (hasSelectionPoint) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         std::stringstream ss;
                         if (preselection.isEdge())
                             ss << "Edge" << preselection.getPreselectionEdgeIndex();
@@ -1294,7 +1287,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Cross:
                     if (hasSelectionPoint) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         std::stringstream ss;
                         switch (preselection.PreselectCross) {
                             case Preselection::Axes::RootPoint:
@@ -1459,7 +1451,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Point:
                     if (hasSelectionPoint) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         //  Do selection
                         std::stringstream ss;
                         ss << "Vertex" << preselection.getPreselectionVertexIndex();
@@ -1471,7 +1462,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Edge:
                     if (hasSelectionPoint) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         std::stringstream ss;
                         if (preselection.isEdge()) {
                             ss << "Edge" << preselection.getPreselectionEdgeIndex();
@@ -1487,7 +1477,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Cross:
                     if (hasSelectionPoint) {
-                        // Base::Console().log("Select Point:%d\n",this->DragPoint);
                         std::stringstream ss;
                         switch (preselection.PreselectCross) {
                             case Preselection::Axes::RootPoint:
@@ -2729,14 +2718,15 @@ bool ViewProviderSketch::detectAndShowPreselection(
     if (result.hasWinner()) {
         if (result.Kind == EditModeCoinManager::PreselectionResult::HitKind::Point
             && result.PointIndex != preselection.PreselectPoint) {// if a new point is hit
+            const auto& pickedPoint = result.pickedPoint();
             std::stringstream ss;
             ss << "Vertex" << result.PointIndex + 1;
             bool accepted =
                 setPreselect(
                     ss.str(),
-                    result.PickedPoint.x,
-                    result.PickedPoint.y,
-                    result.PickedPoint.z)
+                    pickedPoint.x,
+                    pickedPoint.y,
+                    pickedPoint.z)
                 != 0;
             preselection.blockedPreselection = !accepted;
             if (accepted) {
@@ -2755,8 +2745,9 @@ bool ViewProviderSketch::detectAndShowPreselection(
             if (handleId != geoIndex) {
                 if (handleId == preselection.PreselectCurve) {
                     if (result.hasPickedPoint()) {
+                        const auto& pickedPoint = result.pickedPoint();
                         Gui::Selection().setPreselectCoord(
-                            result.PickedPoint.x, result.PickedPoint.y, result.PickedPoint.z);
+                            pickedPoint.x, pickedPoint.y, pickedPoint.z);
                     }
                     return false;
                 }
@@ -2770,12 +2761,13 @@ bool ViewProviderSketch::detectAndShowPreselection(
                 ss << "ExternalEdge"
                    << -geoIndex + Sketcher::GeoEnum::RefExt
                         + 1;// convert index start from -3 to 1
+            const auto& pickedPoint = result.pickedPoint();
             bool accepted =
                 setPreselect(
                     ss.str(),
-                    result.PickedPoint.x,
-                    result.PickedPoint.y,
-                    result.PickedPoint.z)
+                    pickedPoint.x,
+                    pickedPoint.y,
+                    pickedPoint.z)
                 != 0;
             preselection.blockedPreselection = !accepted;
             if (accepted) {
@@ -2789,6 +2781,7 @@ bool ViewProviderSketch::detectAndShowPreselection(
         else if (result.Kind == EditModeCoinManager::PreselectionResult::HitKind::Axis
                  && static_cast<int>(result.Cross)
                      != static_cast<int>(preselection.PreselectCross)) {// if a cross line is hit
+            const auto& pickedPoint = result.pickedPoint();
             std::stringstream ss;
             switch (result.Cross) {
                 case EditModeCoinManager::PreselectionResult::Axes::RootPoint:
@@ -2806,9 +2799,9 @@ bool ViewProviderSketch::detectAndShowPreselection(
             bool accepted =
                 setPreselect(
                     ss.str(),
-                    result.PickedPoint.x,
-                    result.PickedPoint.y,
-                    result.PickedPoint.z)
+                    pickedPoint.x,
+                    pickedPoint.y,
+                    pickedPoint.z)
                 != 0;
             preselection.blockedPreselection = !accepted;
             if (accepted) {
@@ -2826,6 +2819,7 @@ bool ViewProviderSketch::detectAndShowPreselection(
         else if (result.Kind == EditModeCoinManager::PreselectionResult::HitKind::Constraint
                  && result.ConstrIndices
                      != preselection.PreselectConstraintSet) {// if a constraint is hit
+            const auto& pickedPoint = result.pickedPoint();
             bool accepted = true;
             for (std::set<int>::iterator it = result.ConstrIndices.begin();
                  it != result.ConstrIndices.end();
@@ -2836,9 +2830,9 @@ bool ViewProviderSketch::detectAndShowPreselection(
                 accepted &=
                     setPreselect(
                         ss.str(),
-                        result.PickedPoint.x,
-                        result.PickedPoint.y,
-                        result.PickedPoint.z)
+                        pickedPoint.x,
+                        pickedPoint.y,
+                        pickedPoint.z)
                     != 0;
 
                 preselection.blockedPreselection = !accepted;
@@ -2864,8 +2858,9 @@ bool ViewProviderSketch::detectAndShowPreselection(
             }
         }
         if (result.hasPickedPoint()) {
+            const auto& pickedPoint = result.pickedPoint();
             Gui::Selection().setPreselectCoord(
-                result.PickedPoint.x, result.PickedPoint.y, result.PickedPoint.z);
+                pickedPoint.x, pickedPoint.y, pickedPoint.z);
         }
     }
     else if (preselection.isPreselectCurveValid() || preselection.isPreselectPointValid()
@@ -4871,36 +4866,12 @@ SbVec2f ViewProviderSketch::getScreenCoordinates(SbVec3f sketchcoordinates) cons
         return SbVec2f(0, 0);
 
     Gui::View3DInventorViewer* viewer = view->getViewer();
-
-    SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
-
-    if (!pCam)
+    if (!viewer || !viewer->getSoRenderManager() || !viewer->getSoRenderManager()->getCamera()) {
         return SbVec2f(0, 0);
-
-    SbViewVolume vol = pCam->getViewVolume();
-    Gui::ViewVolumeProjection proj(vol);
-
-    // dimensionless [0 1] (or 1.5 see View3DInventorViewer.cpp )
-    Base::Vector3d screencoords = proj(pos);
-
-    int width = viewer->getGLWidget()->width(), height = viewer->getGLWidget()->height();
-
-    if (width >= height) {
-        // "Landscape" orientation, to square
-        screencoords.x *= height;
-        screencoords.x += (width - height) / 2.0;
-        screencoords.y *= height;
-    }
-    else {
-        // "Portrait" orientation
-        screencoords.x *= width;
-        screencoords.y *= width;
-        screencoords.y += (height - width) / 2.0;
     }
 
-    SbVec2f iconCoords(screencoords.x, screencoords.y);
-
-    return iconCoords;
+    SbVec2s viewportPoint = viewer->getPointOnViewport(Base::convertTo<SbVec3f>(pos));
+    return SbVec2f(static_cast<float>(viewportPoint[0]), static_cast<float>(viewportPoint[1]));
 }
 
 QFont ViewProviderSketch::getApplicationFont() const

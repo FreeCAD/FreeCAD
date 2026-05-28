@@ -78,11 +78,6 @@ using namespace Gui;
 using namespace SketcherGui;
 using namespace Sketcher;
 
-namespace
-{
-constexpr int ConstraintIconHitPaddingPx = 3;
-}
-
 //**************************** EditModeConstraintCoinManager class ******************************
 
 EditModeConstraintCoinManager::EditModeConstraintCoinManager(
@@ -2373,7 +2368,7 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
     iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconWorldPos);
 
     if (pickedPoint) {
-        *pickedPoint = Base::Vector3d(iconWorldPos[0], iconWorldPos[1], iconWorldPos[2]);
+        *pickedPoint = Base::convertTo<Base::Vector3d>(iconWorldPos);
     }
 
     return true;
@@ -2402,17 +2397,16 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
 
     int relativeX = static_cast<int>(cursorScreenPos[0] - iconScreenCenter[0] + iconSize[0] / 2.0f);
     int relativeY = static_cast<int>(iconScreenCenter[1] - cursorScreenPos[1] + iconSize[1] / 2.0f);
+    const QMargins iconHitPadding(
+        drawingParameters.constraintIconHitPaddingPx,
+        drawingParameters.constraintIconHitPaddingPx,
+        drawingParameters.constraintIconHitPaddingPx,
+        drawingParameters.constraintIconHitPaddingPx
+    );
 
     if (combinedConstrBoxes.count(constrIdsStr)) {
         for (const auto& boxInfo : combinedConstrBoxes.at(constrIdsStr)) {
-            if (boxInfo.first
-                    .adjusted(
-                        -ConstraintIconHitPaddingPx,
-                        -ConstraintIconHitPaddingPx,
-                        ConstraintIconHitPaddingPx,
-                        ConstraintIconHitPaddingPx
-                    )
-                    .contains(relativeX, relativeY)) {
+            if (boxInfo.first.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
                 constrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
             }
         }
@@ -2420,13 +2414,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
     }
 
     QRect iconBounds(0, 0, iconSize[0], iconSize[1]);
-    iconBounds.adjust(
-        -ConstraintIconHitPaddingPx,
-        -ConstraintIconHitPaddingPx,
-        ConstraintIconHitPaddingPx,
-        ConstraintIconHitPaddingPx
-    );
-    if (iconBounds.contains(relativeX, relativeY)) {
+    if (iconBounds.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
         return parseConstraintIds(constrIdsStr);
     }
 

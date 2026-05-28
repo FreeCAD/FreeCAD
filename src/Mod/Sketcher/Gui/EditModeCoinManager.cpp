@@ -46,9 +46,11 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
 
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/Inventor/SoFCBoundingBox.h>
+#include <Gui/Utilities.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/GeoList.h>
@@ -285,12 +287,13 @@ struct GeometryScreenPreselector
                     result.clear();
                     result.Kind = SketcherGui::EditModeCoinManager::PreselectionResult::HitKind::Edge;
                     result.GeoIndex = geoIndex;
-                    result.PickedPoint = Base::Vector3d(
-                        startPoint[0] + (endPoint[0] - startPoint[0]) * interpolation,
-                        startPoint[1] + (endPoint[1] - startPoint[1]) * interpolation,
-                        startPoint[2] + (endPoint[2] - startPoint[2]) * interpolation
+                    result.setPickedPoint(
+                        Base::Vector3d(
+                            startPoint[0] + (endPoint[0] - startPoint[0]) * interpolation,
+                            startPoint[1] + (endPoint[1] - startPoint[1]) * interpolation,
+                            startPoint[2] + (endPoint[2] - startPoint[2]) * interpolation
+                        )
                     );
-                    result.HasPickedPoint = true;
                     bestDistanceSquared = bestCurveDistanceSquared;
                     found = true;
                 }
@@ -337,12 +340,13 @@ private:
         result.clear();
         result.Kind = SketcherGui::EditModeCoinManager::PreselectionResult::HitKind::Point;
         result.PointIndex = coinMapping.getPointVertexId(pointIndex, layerIndex);
-        result.PickedPoint = Base::Vector3d(
-            pointValues[pointIndex][0],
-            pointValues[pointIndex][1],
-            pointValues[pointIndex][2]
+        result.setPickedPoint(
+            Base::Vector3d(
+                pointValues[pointIndex][0],
+                pointValues[pointIndex][1],
+                pointValues[pointIndex][2]
+            )
         );
-        result.HasPickedPoint = true;
         return true;
     }
 
@@ -402,11 +406,14 @@ private:
 };
 }  // namespace
 
+void EditModeCoinManager::PreselectionResult::setPickedPoint(const Base::Vector3d& point)
+{
+    PickedPoint = point;
+}
+
 void EditModeCoinManager::PreselectionResult::setPickedPoint(const SoPickedPoint* point)
 {
-    const SbVec3f pickedPoint = point->getPoint();
-    PickedPoint = Base::Vector3d(pickedPoint[0], pickedPoint[1], pickedPoint[2]);
-    HasPickedPoint = true;
+    setPickedPoint(Base::convertTo<Base::Vector3d>(point->getPoint()));
 }
 
 //**************************** ParameterObserver nested class ******************************
@@ -477,6 +484,8 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"MarkerSize", [this](const std::string&) { Client.updateElementSizeParameters(); }},
         {"EditSketcherFontName", [this](const std::string&) { Client.updateElementSizeParameters(); }},
         {"EditSketcherFontSize", [this](const std::string&) { Client.updateElementSizeParameters(); }},
+        {"ConstraintIconHitPadding",
+         [this](const std::string&) { Client.updateElementSizeParameters(); }},
         {"EdgeWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.CurveWidth, param, 2);
@@ -1045,8 +1054,7 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectConstraintPre
         = pEditModeConstraintCoinManager->detectPreselectionConstr(cursorPos, &pickedPoint);
     if (!result.ConstrIndices.empty()) {
         result.Kind = PreselectionResult::HitKind::Constraint;
-        result.PickedPoint = pickedPoint;
-        result.HasPickedPoint = true;
+        result.setPickedPoint(pickedPoint);
         return result;
     }
 
@@ -1659,6 +1667,7 @@ void EditModeCoinManager::updateElementSizeParameters()
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
     int constraintSymbolSizePref = hGrp->GetInt("ConstraintSymbolSize", defaultFontSizePixels);
+    drawingParameters.constraintIconHitPaddingPx = hGrp->GetInt("ConstraintIconHitPadding", 3);
 
     double dpi = getApplicationLogicalDPIX();
     double devicePixelRatio = getDevicePixelRatio();
