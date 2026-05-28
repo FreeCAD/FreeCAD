@@ -28,8 +28,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>Кампанент</translation>
+      <source>Insert Component</source>
+      <translation>Уставіць кампанент</translation>
     </message>
   </context>
   <context>

@@ -96,7 +96,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1725"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>Розмір кута</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1726"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1534"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>Розмір діаметра</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1535"/>
@@ -1780,7 +1780,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1486"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Розмір радіуса</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1487"/>
@@ -3748,7 +3748,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="359"/>
       <source>Image files</source>
-      <translation type="unfinished">Image files</translation>
+      <translation>Файли зображень</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="363"/>
@@ -5623,7 +5623,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="569"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>Режим діаметра/радіуса інструмента розміру</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="576"/>
@@ -9895,7 +9895,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1433"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>Інструменти розмірів</translation>
     </message>
   </context>
   <context>
@@ -10271,7 +10271,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandDecorate.cpp" line="139"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>Перемкнути сітку</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="140"/>

@@ -104,10 +104,46 @@ def debugWire(label, w):
     print("#%s wire <<<<<<<<<<<<<<<<<<<<<<<<" % label)
 
 
+def getCoincideTolerance(edges):
+    """getCoincideTolerance(edges) ... Returns actual tolerance of edges connection in wire
+    Assumes the edges are in an order so they can be connected.
+    Return None if any edge length less than defined tolerance
+
+    Note:
+    Default tolerance of methods Part.sortEdges() and Part.__sortEdges__()
+    is Base.Precision.confusion() => 1e-7
+    """
+    tolerance = FreeCAD.Base.Precision.confusion()
+    for i in range(len(edges) - 1):
+        e1 = edges[i]
+        e1f = e1.valueAt(e1.FirstParameter)
+        e1l = e1.valueAt(e1.LastParameter)
+        e2 = edges[i + 1]
+        e2f = e2.valueAt(e2.FirstParameter)
+        e2l = e2.valueAt(e2.LastParameter)
+        pairs = ((e1l, e2f), (e1l, e2l), (e1f, e2f), (e1f, e2l))
+        dist = min((p2 - p1).Length for p1, p2 in pairs)
+        tolerance = max(dist, tolerance)
+
+    if any(e.Length < 2 * tolerance for e in edges):
+        Path.Log.error(
+            "Can not define tolerance edge connection. "
+            "One of the edge has length less than defined tolerance or edges not sorted."
+        )
+        return None
+
+    return tolerance
+
+
 def _orientEdges(inEdges):
     """_orientEdges(inEdges) ... internal worker function to orient edges so the last vertex of one edge connects to the first vertex of the next edge.
     Assumes the edges are in an order so they can be connected."""
     Path.Log.track()
+
+    tol = getCoincideTolerance(inEdges)
+    if not tol:
+        return None
+
     # orient all edges of the wire so each edge's last value connects to the next edge's first value
     e0 = inEdges[0]
     # well, even the very first edge could be misoriented, so let's try and connect it to the second
@@ -115,19 +151,16 @@ def _orientEdges(inEdges):
         last = e0.valueAt(e0.LastParameter)
         e1 = inEdges[1]
         if not Path.Geom.pointsCoincide(
-            last, e1.valueAt(e1.FirstParameter)
-        ) and not Path.Geom.pointsCoincide(last, e1.valueAt(e1.LastParameter)):
+            last, e1.valueAt(e1.FirstParameter), tol
+        ) and not Path.Geom.pointsCoincide(last, e1.valueAt(e1.LastParameter), tol):
             debugEdge("#  _orientEdges - flip first", e0)
             e0 = Path.Geom.flipEdge(e0)
 
     edges = [e0]
     last = e0.valueAt(e0.LastParameter)
     for e in inEdges[1:]:
-        edge = (
-            e
-            if Path.Geom.pointsCoincide(last, e.valueAt(e.FirstParameter))
-            else Path.Geom.flipEdge(e)
-        )
+        ef = e.valueAt(e.FirstParameter)
+        edge = e if Path.Geom.pointsCoincide(last, ef, tol) else Path.Geom.flipEdge(e)
         edges.append(edge)
         last = edge.valueAt(edge.LastParameter)
     return edges

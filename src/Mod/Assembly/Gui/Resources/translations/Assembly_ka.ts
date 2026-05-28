@@ -23,8 +23,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>კომპონენტი</translation>
+      <source>Insert Component</source>
+      <translation>კომპონენტის ჩასმა</translation>
     </message>
   </context>
   <context>

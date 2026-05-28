@@ -695,7 +695,7 @@ class PathData:
         else:
             self.edges = []
         self.baseWires = self.findBottomWire(self.edges)
-        self.obj.Proxy.amountClosedWires = len(self.baseWires)
+        self.obj.Proxy.amountClosedWires = max(1, len(self.baseWires))
 
     def findBottomWire(self, edges):
         minZ, maxZ = self.findZLimits(edges)
@@ -898,38 +898,20 @@ class PathData:
     def defaultTagRadius(self):
         return HoldingTagPreferences.defaultRadius()
 
-    def sortedTags(self, tags):
-        ordered = []
-        allEdges = [e for be in self.bottomEdges for e in be]
-
-        for edge in allEdges:
-            ts = [
-                t
-                for t in tags
-                if Path.Geom.isRoughly(
-                    0, Part.Vertex(t.originAt(self.minZ)).distToShape(edge)[0], 1
-                )
-            ]
-            for t in sorted(
-                ts,
-                key=lambda t, edge=edge: (
-                    t.originAt(self.minZ) - edge.valueAt(edge.FirstParameter)
-                ).Length,
-            ):
-                tags.remove(t)
-                ordered.append(t)
-        # disable all tags that are not on the base wire.
-        for tag in tags:
+    def checkTag(self, tag):
+        # Returns True if tag on the base wires
+        v = Part.Vertex(tag.originAt(self.minZ))
+        if any(v.distToShape(w)[0] < 1 for w in self.baseWires):
+            return True
+        else:
             logger.info(
                 "Tag #{} ({:.2f}, {:.2f}, {:.2f}) not on base wire - disabling\n",
-                len(ordered),
+                tag.nr,
                 tag.x,
                 tag.y,
                 self.minZ,
             )
-            tag.enabled = False
-            ordered.append(tag)
-        return ordered
+            return False
 
     def pointIsOnPath(self, p):
         v = Part.Vertex(self.pointAtBottom(p))
@@ -1120,6 +1102,9 @@ class ObjectTagDressup:
             if not edge:
                 edge = pathData.edges[lastEdge]
                 debugEdge(edge, "=======  new edge: {}/{}", lastEdge, len(pathData.edges))
+                tagsSorted = sorted(
+                    tags, key=lambda t: (t.originAt(t.z) - edge.valueAt(edge.FirstParameter)).Length
+                )
                 lastEdge += 1
 
             if mapper:
@@ -1134,11 +1119,11 @@ class ObjectTagDressup:
             if edge:
                 tIndex = (t + lastTag) % len(tags)
                 t += 1
-                i = tags[tIndex].intersects(edge, edge.FirstParameter)
+                i = tagsSorted[tIndex].intersects(edge, edge.FirstParameter)
                 if i and self.isValidTagStartIntersection(edge, i):
                     mapper = MapWireToTag(
                         edge,
-                        tags[tIndex],
+                        tagsSorted[tIndex],
                         i,
                         pathData.maxZ,
                         hSpeed=horizFeed,
@@ -1197,6 +1182,7 @@ class ObjectTagDressup:
                 obj.Radius,
                 i not in disabledIn,
             )
+            tag.enabled = self.pathData.checkTag(tag)
             tag.createSolidsAt(self.pathData.minZ, self.toolRadius)
             rawTags.append(tag)
         # disable all tags that intersect with their previous tag
@@ -1204,7 +1190,7 @@ class ObjectTagDressup:
         tags = []
         positions = []
         disabled = []
-        for i, tag in enumerate(self.pathData.sortedTags(rawTags)):
+        for i, tag in enumerate(rawTags):
             if tag.enabled:
                 if prev:
                     if (

@@ -139,17 +139,17 @@ void DlgSettingsViewColor::onRadioButtonSimpleToggled(bool val)
 void DlgSettingsViewColor::onRadioButtonGradientToggled(bool val)
 {
     setGradientColorVisibility(val);
-    ui->color1Label->setText(tr("Top:"));
-    ui->color2Label->setText(tr("Middle:"));
-    ui->color3Label->setText(tr("Bottom:"));
+    ui->color1Label->setText(tr("Top"));
+    ui->color2Label->setText(tr("Middle"));
+    ui->color3Label->setText(tr("Bottom"));
 }
 
 void DlgSettingsViewColor::onRadioButtonRadialGradientToggled(bool val)
 {
     setGradientColorVisibility(val);
-    ui->color1Label->setText(tr("Central:"));
-    ui->color2Label->setText(tr("Midway:"));
-    ui->color3Label->setText(tr("End:"));
+    ui->color1Label->setText(tr("Central"));
+    ui->color2Label->setText(tr("Midway"));
+    ui->color3Label->setText(tr("End"));
 }
 
 void DlgSettingsViewColor::setGradientColorVisibility(bool val)

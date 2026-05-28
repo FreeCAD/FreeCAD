@@ -51,7 +51,7 @@ TemplateTextField::TemplateTextField(QGraphicsItem *parent,
     setAcceptHoverEvents(true);
     setFiltersChildEvents(true);
 
-    setToolTip(QObject::tr("Click to update text"));
+    setToolTip(QObject::tr("Updates the text"));
 
     addToGroup(m_rect);
     QPen rectPen(Qt::transparent);
