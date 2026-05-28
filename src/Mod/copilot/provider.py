@@ -20,6 +20,8 @@ class LocalIntentProvider:
         text = prompt.strip()
         if not text:
             raise ValueError("Enter a modeling request first.")
+        if context and context.get("image"):
+            raise ValueError("Image prompts require COPILOT_PROVIDER=openrouter with a vision-capable model.")
 
         lower = text.lower()
         if _has_any(lower, ["delete", "remove"]) and _has_any(lower, ["selected", "selection"]):
@@ -176,19 +178,15 @@ class OpenRouterIntentProvider:
                     "content": (
                         "You are a FreeCAD CAD planning assistant. Return JSON only, "
                         "with this shape: {\"steps\":[{\"action\":\"...\"}]}. "
-                        "Use only the supported actions. Do not include markdown."
+                        "Use only the supported actions. Do not include markdown. "
+                        "If an image is provided, approximate the visible object as a "
+                        "parametric CAD model by decomposing it into safe primitives, "
+                        "placements, colors, boolean fuses, and cuts. Create multiple "
+                        "steps for complex objects. Use reasonable dimensions when the "
+                        "image has no scale."
                     ),
                 },
-                {
-                    "role": "user",
-                    "content": json.dumps(
-                        {
-                            "request": prompt,
-                            "context": context or {},
-                            "supported_actions": _supported_actions(),
-                        }
-                    ),
-                },
+                _openrouter_user_message(prompt, context or {}),
             ],
             "temperature": 0.1,
             "max_tokens": 800,
@@ -237,15 +235,19 @@ def _response_text(response):
 
 def _supported_actions():
     return [
-        "create_box(length,width,height,name)",
-        "create_cylinder(radius,height,name)",
-        "create_sphere(radius,name)",
-        "create_cone(radius1,radius2,height,name)",
+        "create_box(length,width,height,name,x,y,z)",
+        "create_cylinder(radius,height,name,x,y,z)",
+        "create_sphere(radius,name,x,y,z)",
+        "create_cone(radius1,radius2,height,name,x,y,z)",
+        "create_torus(radius1,radius2,name,x,y,z)",
         "move_selected(x,y,z)",
         "rotate_selected(axis,angle)",
         "scale_selected(factor)",
+        "select_by_name(name)",
         "delete_selected()",
-        "set_color(color)",
+        "set_color(color,name)",
+        "boolean_fuse(objects,name)",
+        "boolean_cut(base,tool,name)",
         "fit_view()",
         "save(path)",
         "open(path)",
@@ -258,11 +260,15 @@ def _validate_plan(plan):
         "create_cylinder",
         "create_sphere",
         "create_cone",
+        "create_torus",
         "move_selected",
         "rotate_selected",
         "scale_selected",
+        "select_by_name",
         "delete_selected",
         "set_color",
+        "boolean_fuse",
+        "boolean_cut",
         "fit_view",
         "save",
         "open",
@@ -317,21 +323,29 @@ def _parse_function_style_step(text):
 def _step_from_function_args(action, args):
     step = {"action": action}
     if action == "create_box":
-        _assign_args(step, args, ["length", "width", "height", "name"])
+        _assign_args(step, args, ["length", "width", "height", "name", "x", "y", "z"])
     elif action == "create_cylinder":
-        _assign_args(step, args, ["radius", "height", "name"])
+        _assign_args(step, args, ["radius", "height", "name", "x", "y", "z"])
     elif action == "create_sphere":
-        _assign_args(step, args, ["radius", "name"])
+        _assign_args(step, args, ["radius", "name", "x", "y", "z"])
     elif action == "create_cone":
-        _assign_args(step, args, ["radius1", "radius2", "height", "name"])
+        _assign_args(step, args, ["radius1", "radius2", "height", "name", "x", "y", "z"])
+    elif action == "create_torus":
+        _assign_args(step, args, ["radius1", "radius2", "name", "x", "y", "z"])
     elif action == "move_selected":
         _assign_args(step, args, ["x", "y", "z"])
     elif action == "rotate_selected":
         _assign_args(step, args, ["axis", "angle"])
     elif action == "scale_selected":
         _assign_args(step, args, ["factor"])
+    elif action == "select_by_name":
+        _assign_args(step, args, ["name"])
     elif action == "set_color":
-        _assign_args(step, args, ["color"])
+        _assign_args(step, args, ["color", "name"])
+    elif action == "boolean_fuse":
+        _assign_args(step, args, ["objects", "name"])
+    elif action == "boolean_cut":
+        _assign_args(step, args, ["base", "tool", "name"])
     elif action in ("delete_selected", "fit_view"):
         pass
     elif action in ("save", "open"):
@@ -366,6 +380,38 @@ def _literal_arg(node):
 
 def _has_any(text, words):
     return any(word in text for word in words)
+
+
+def _openrouter_user_message(prompt, context):
+    image = context.get("image") or {}
+    request_context = dict(context)
+    if "image" in request_context:
+        request_context["image"] = {"path": image.get("path"), "attached": True}
+
+    text = json.dumps(
+        {
+            "request": prompt,
+            "context": request_context,
+            "supported_actions": _supported_actions(),
+            "output_rules": [
+                "Return only JSON.",
+                "Use {\"steps\": [...]} as the top-level shape.",
+                "Each step must use an exact supported action name, not prose.",
+                "Prefer multiple simple primitives for complex image objects.",
+                "Set x, y, z placement fields when parts should not overlap.",
+            ],
+        }
+    )
+    data_url = image.get("data_url")
+    if not data_url:
+        return {"role": "user", "content": text}
+    return {
+        "role": "user",
+        "content": [
+            {"type": "text", "text": text},
+            {"type": "image_url", "image_url": {"url": data_url}},
+        ],
+    }
 
 
 def _quoted(text):

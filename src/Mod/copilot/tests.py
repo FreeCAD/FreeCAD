@@ -60,6 +60,19 @@ class CopilotProviderTest(unittest.TestCase):
         self.assertEqual(plan[0]["action"], "create_box")
         self.assertNotIn("length", plan[0])
 
+    def test_validate_complex_actions(self):
+        plan = _validate_plan(
+            [
+                "create_torus(20, 4, 'Wheel', 0, 0, 5)",
+                {"action": "set_color('blue','Wheel')"},
+                {"action": "boolean_fuse", "objects": ["Wheel", "Hub"], "name": "WheelAssembly"},
+            ]
+        )
+        self.assertEqual(plan[0]["action"], "create_torus")
+        self.assertEqual(plan[0]["x"], 0)
+        self.assertEqual(plan[1]["color"], "blue")
+        self.assertEqual(plan[2]["action"], "boolean_fuse")
+
 
 if __name__ == "__main__":
     unittest.main()
