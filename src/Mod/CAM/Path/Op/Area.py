@@ -212,49 +212,60 @@ class ObjectOp(PathOp.ObjectOp):
     def opSetDefaultSide(self, obj):
         """setDefaltSide(obj) ...  offer side while creating new operation"""
         base, subNames = obj.Base[0]
-
-        # find parent boundbox
-        if isinstance(base.Shape, Part.Compound):
-            bbs = [shape.BoundBox for shape in base.Shape.SubShapes]
-        else:
-            bbs = [base.Shape.BoundBox]
-
-        subBb = None
         if "Face" in subNames[0]:
             faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
-            vFaces = [f for f in faces if not Path.Geom.isHorizontal(f)]
+            vFaces = []
+            hFaces = []
+            for face in faces:
+                if Path.Geom.isHorizontal(face):
+                    hFaces.append(face)
+                else:
+                    vFaces.append(face)
             if vFaces:
                 # check if vertical faces creates a closed area
                 fzMin = min(e.BoundBox.ZMin for f in vFaces for e in f.Edges)
-                bottomEdges = [
-                    e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)
-                ]
-                wire = Part.Wire(Part.__sortEdges__(bottomEdges))
-                if not wire.isClosed():
-                    # for open area always offer 'Outside'
+                bEdges = [e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)]
+                wire = Part.Wire(Part.__sortEdges__(bEdges))
+                if not wire.isClosed():  # for open area always offer 'Outside'
                     obj.Side = "Outside"
                     return
-            shape = Part.Compound(faces)
-            subBb = shape.BoundBox
+                volume = Part.Compound(vFaces).Volume
+                if not isRoughly(volume, 0) and volume < 0:  # negative volume forms inner area
+                    obj.Side = "Inside"
+                    return
+                else:
+                    obj.Side = "Outside"
+                    return
+            if hFaces:
+                verts = [v.Point for v in hFaces[0].OuterWire.Vertexes]
+                vFaces = set([f for f in base.Shape.Faces for v in f.Vertexes if v.Point in verts])
+                vFaces = list(vFaces)
+                if vFaces:
+                    volume = Part.Compound(vFaces).Volume
+                    if not isRoughly(volume, 0) and volume < 0:  # negative volume forms inner area
+                        obj.Side = "Inside"
+                        return
+                    else:
+                        obj.Side = "Outside"
+                        return
         elif "Edge" in subNames[0]:
             edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
-            wire = Part.Wire(Part.__sortEdges__(edges))
-            if not wire.isClosed():
-                # for open wire always offer 'Outside'
+            cluster = Part.getSortedClusters(edges)[0]
+            wire = Part.Wire(Part.__sortEdges__(cluster))
+            if not wire.isClosed():  # for open wire always offer 'Outside'
                 obj.Side = "Outside"
                 return
-            else:
-                subBb = wire.BoundBox
-
-        if subBb:
-            for bb in bbs:
-                if not bb.isInside(subBb):
-                    continue
-                if isRoughly(bb.XLength, subBb.XLength) and isRoughly(bb.YLength, subBb.YLength):
-                    obj.Side = "Outside"
-                else:
+            verts = [v.Point for e in cluster for v in e.Vertexes]
+            vFaces = set([f for f in base.Shape.Faces for v in f.Vertexes if v.Point in verts])
+            vFaces = list(vFaces)
+            if vFaces:
+                volume = Part.Compound(vFaces).Volume
+                if not isRoughly(volume, 0) and volume < 0:  # negative volume forms inner area
                     obj.Side = "Inside"
-                return
+                    return
+                else:
+                    obj.Side = "Outside"
+                    return
 
     def getMiddlePointLongestEdge(self, shape):
         """getMiddlePointLongestEdge(shape) ... return middle point of longest edge from shape."""
