@@ -35,8 +35,6 @@
 #include <QOpenGLFunctions>
 #include <QProcess>
 #include <QStatusBar>
-#include <QThread>
-#include <QTimer>
 #include <QWindow>
 
 #include <Inventor/SoDB.h>
@@ -303,17 +301,7 @@ void StartupPostProcess::setWheelEventFilter()
 
 void StartupPostProcess::setLocale()
 {
-    // For values different to 1 and 2 use the OS locale settings
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    auto localeFormat = hGrp->GetInt("UseLocaleFormatting", 0);
-    if (localeFormat == 1) {
-        Translator::instance()->setLocale(
-            hGrp->GetASCII("Language", Translator::instance()->activeLanguage().c_str())
-        );
-    }
-    else if (localeFormat == 2) {
-        Translator::instance()->setLocale("C.UTF-8");
-    }
+    Translator::instance()->applyLocaleFormattingPreference();
 }
 
 void StartupPostProcess::setCursorFlashing()

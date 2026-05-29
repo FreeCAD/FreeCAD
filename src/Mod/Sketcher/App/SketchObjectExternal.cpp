@@ -1637,8 +1637,7 @@ void processEdge(const TopoDS_Edge& edge,
                  const gp_Pln& sketchPlane,
                  const Base::Rotation& invRot,
                  gp_Ax3& sketchAx3,
-                 TopoDS_Shape& aProjFace,
-                 int externalGeoVersion = 1)
+                 TopoDS_Shape& aProjFace)
 {
     using std::numbers::pi;
 
@@ -1991,11 +1990,8 @@ void processEdge(const TopoDS_Edge& edge,
         auto shape = Part::TopoShape(edge);
         bool planar = shape.findPlane(plane);
 
-        // Check if the edge is planar and plane is perpendicular to the projection plane.
-        // The getBoundBoxOptimal approach (version >= 1) produces better results for new
-        // sketches, but old files (version 0) must use NormalProjection to preserve element maps.
-        if (externalGeoVersion >= 1
-            && planar && plane.Axis().IsNormal(sketchPlane.Axis(), Precision::Angular())) {
+        // Check if the edge is planar and plane is perpendicular to the projection plane
+        if (planar && plane.Axis().IsNormal(sketchPlane.Axis(), Precision::Angular())) {
             // Project an edge to a line. Only works if the edge is planar and its plane is
             // perpendicular to the projection plane. OCC has trouble handling
             // BSpline projection to a straight line. Although it does correctly projects
@@ -2037,8 +2033,11 @@ void processEdge(const TopoDS_Edge& edge,
                 p2.Transform(trsf);
             }
 
-            Base::Vector3d P1(p1.X(), p1.Y(), 0);
-            Base::Vector3d P2(p2.X(), p2.Y(), 0);
+            // The bounding box has no expansion in Y direction.
+            // Due to possible rounding errors force the same y
+            // value for both points. This fixes issue 25720
+            Base::Vector3d P1(p1.X(), (p1.Y() + p2.Y()) / 2.0, 0);
+            Base::Vector3d P2(p2.X(), (p1.Y() + p2.Y()) / 2.0, 0);
 
             // check for degenerated case when the line is collapsed to a point
             if (p1.SquareDistance(p2) < Precision::SquareConfusion()) {
@@ -2198,8 +2197,7 @@ void processFace (const Rotation& invRot,
                   gp_Ax3& sketchAx3,
                   TopoDS_Shape& aProjFace,
                   std::vector<std::unique_ptr<Part::Geometry>>& geos,
-                  TopoDS_Shape& refSubShape,
-                  int externalGeoVersion = 1)
+                  TopoDS_Shape& refSubShape)
 {
     const TopoDS_Face& face = TopoDS::Face(refSubShape);
     BRepAdaptor_Surface surface(face);
@@ -2214,7 +2212,7 @@ void processFace (const Rotation& invRot,
         for (edgeExp.Init(face, TopAbs_EDGE); edgeExp.More(); edgeExp.Next()) {
             TopoDS_Edge edge = TopoDS::Edge(edgeExp.Current());
             // Process each edge
-            processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace, externalGeoVersion);
+            processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
         }
 
         if (fabs(dnormal.Angle(snormal) - std::numbers::pi/2) < Precision::Confusion()) {
@@ -2299,8 +2297,6 @@ void processFace (const Rotation& invRot,
 void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd)
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
-
-    int extGeoVersion = _ExternalGeoVersion.getValue();
 
     fixMissingAxisInExternalGeo();
 
@@ -2535,11 +2531,11 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
             if (projection && !refSubShape.IsNull()) {
                 switch (refSubShape.ShapeType()) {
                 case TopAbs_FACE: {
-                    processFace(invRot, invPlm, mov, sketchPlane, gPlane, sketchAx3, aProjFace, geos, refSubShape, extGeoVersion);
+                    processFace(invRot, invPlm, mov, sketchPlane, gPlane, sketchAx3, aProjFace, geos, refSubShape);
                 } break;
                 case TopAbs_EDGE: {
                     const TopoDS_Edge& edge = TopoDS::Edge(refSubShape);
-                    processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace, extGeoVersion);
+                    processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
                 } break;
                 case TopAbs_VERTEX: {
                     importVertex(refSubShape);
@@ -2567,7 +2563,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 auto edges = intersectionShape.getSubTopoShapes(TopAbs_EDGE);
                 for (const auto& s : edges) {
                     TopoDS_Edge edge = TopoDS::Edge(s.getShape());
-                    processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace, extGeoVersion);
+                    processEdge(edge, geos, gPlane, invPlm, mov, sketchPlane, invRot, sketchAx3, aProjFace);
                 }
                 // Section of some face (e.g. sphere) produce more than one arcs
                 // from the same circle. So we try to fit the arcs with a single

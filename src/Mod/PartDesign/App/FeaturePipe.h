@@ -77,7 +77,7 @@ protected:
     void buildPipePath(
         const Part::TopoShape& input,
         const std::vector<std::string>& edges,
-        TopoDS_Shape& result
+        Part::TopoShape& result
     );
     void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, const TopoDS_Shape& auxshape);
     /// handle changed property

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <TColgp_Array2OfPnt.hxx>
 #include <gtest/gtest.h>
 #include "src/App/InitApplication.h"
 #include <Mod/Part/App/TopoShape.h>
@@ -29,6 +30,7 @@
 #include <ShapeBuild_ReShape.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TColgp_Array1OfPnt.hxx>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
@@ -1817,6 +1819,54 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
             "Vertex4;:G(Vertex4;K-1;:H2:4,V);LFT;:H1:1c,E", "Vertex4;:H1,V", "Vertex4;:H2,V",
         }
     ));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftAllowsDistinctProfilesWithSameCenter)  // NOLINT
+{
+    // Regression test for PR #29982 / forum thread t=88234.  The fix for issue #5855 rejected any
+    // two consecutive loft profiles that share a center of gravity, which is too strict: two
+    // concentric, coplanar squares of different size share the center (2.5, 2.5, 0) but are clearly
+    // distinct shapes, so the loft between them must still be created.
+    //
+    // See also test makeElementLoftRejectsCoincidentProfiles, below, to confirm that 5855 is still
+    // fixed
+
+    // Arrange
+    auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);  // 5x5, CoG (2.5,2.5,0)
+    auto scale {gp_Trsf()};
+    scale.SetScale(gp_Pnt(2.5, 2.5, 0.0), 2.0);  // 10x10 square, same CoG
+    auto biggerWire = BRepBuilderAPI_Transform(wire1, scale, true).Shape();
+    TopoShape smallerProfile {wire1, 1L};
+    TopoShape biggerProfile {biggerWire, 2L};
+    std::vector<TopoShape> shapes = {smallerProfile, biggerProfile};
+
+    // Act: the previous code raised Base::CADKernelError here because the centers of gravity match.
+    auto* loft = new TopoShape();
+    ASSERT_NO_THROW(loft->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled));  // NOLINT
+
+    // Assert: the result is the flat frame between the 5x5 and the 10x10 square.
+    EXPECT_FALSE(loft->isNull());
+    EXPECT_NEAR(getArea(loft->getShape()), 10.0 * 10.0 - 5.0 * 5.0, 1e-6);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftRejectsCoincidentProfiles)  // NOLINT
+{
+    // The fix for issue #5855 must still hold: lofting through coincident profiles (for example the
+    // same sketch used as more than one section) crashes OCCT, so makeElementLoft has to reject it.
+    //
+    // See also makeElementLoftAllowsDistinctProfilesWithSameCenter, above
+
+    // Arrange
+    auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);
+    TopoShape firstProfile {wire1, 1L};
+    TopoShape secondProfile {wire1, 2L};
+    std::vector<TopoShape> shapes = {firstProfile, secondProfile};
+
+    // Act / Assert
+    EXPECT_THROW(  // NOLINT
+        (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled),
+        Base::CADKernelError
+    );
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementPipeShell)

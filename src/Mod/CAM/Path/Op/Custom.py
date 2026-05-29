@@ -215,8 +215,7 @@ class ObjectCustom(PathOp.ObjectOp):
 
         if errorNumLines:
             Path.Log.warning(
-                translate("PathCustom", "Please check lines: %s")
-                % ", ".join(map(str, errorNumLines))
+                translate("PathCustom", "Check lines: %s") % ", ".join(map(str, errorNumLines))
             )
 
             if len(errorLines) > 7:

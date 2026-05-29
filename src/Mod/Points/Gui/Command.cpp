@@ -77,13 +77,12 @@ void CmdPointsImport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    QString fn = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(),
-        QString(),
-        QString(),
-        QStringLiteral("%1 (*.asc *.pcd *.ply *.e57);;%2 (*.*)")
-            .arg(QObject::tr("Point formats"), QObject::tr("All Files"))
-    );
+    const Gui::FileDialog::FilterList formatList {
+        {QObject::tr("Point formats"), {"*.asc", "*.pcd", "*.ply", "*.e57"}},
+        Gui::FileDialog::Filter::AllFiles(),
+    };
+    QString fn
+        = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), formatList);
     if (fn.isEmpty()) {
         return;
     }
@@ -165,13 +164,12 @@ void CmdPointsExport::activated(int iMsg)
         Points::Feature::getClassTypeId()
     );
     for (auto point : points) {
-        QString fn = Gui::FileDialog::getSaveFileName(
-            Gui::getMainWindow(),
-            QString(),
-            QString(),
-            QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
-                .arg(QObject::tr("Point formats"), QObject::tr("All Files"))
-        );
+        const Gui::FileDialog::FilterList formatList {
+            {QObject::tr("Point formats"), {"*.asc", "*.pcd", "*.ply"}},
+            Gui::FileDialog::Filter::AllFiles(),
+        };
+        QString fn
+            = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), formatList);
         if (fn.isEmpty()) {
             break;
         }

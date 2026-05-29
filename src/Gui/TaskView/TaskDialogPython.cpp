@@ -130,6 +130,7 @@ void ControlPy::init_type()
         "show the Model panel\n"
         "showModelView()"
     );
+    behaviors().readyType();
 }
 
 ControlPy::ControlPy() = default;
@@ -494,6 +495,7 @@ void TaskDialogPy::init_type()
     );
     add_varargs_method("accept", &TaskDialogPy::accept, "Accept the task dialog");
     add_varargs_method("reject", &TaskDialogPy::reject, "Reject the task dialog");
+    behaviors().readyType();
 }
 
 TaskDialogPy::TaskDialogPy(TaskDialog* dlg)

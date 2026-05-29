@@ -41,14 +41,13 @@ import lazy_loader.lazy_loader as lz
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
+from draftgeoutils import general as geo_general
+from draftobjects.base import DraftObject
 from draftutils import gui_utils
 from draftutils.messages import _log
 
-from draftobjects.base import DraftObject
-
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 ## \addtogroup draftobjects
 # @{
@@ -229,7 +228,7 @@ class DraftLink(DraftObject):
                 else:
                     obj.Shape = Part.makeCompound(base)
 
-                if not DraftGeomUtils.isNull(pl):
+                if not geo_general.isNull(pl):
                     obj.Placement = pl
 
         if self.use_link:

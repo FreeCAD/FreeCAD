@@ -503,7 +503,7 @@ int Constraint::getPosIdAsInt(int index) const
 
 bool Constraint::hasElement(int index) const
 {
-    return index >= 0 && index < elements.size();
+    return index >= 0 && static_cast<decltype(elements)::size_type>(index) < elements.size();
 }
 
 void Constraint::setGeoId(int index, int geoId)
@@ -577,7 +577,7 @@ bool Constraint::ensureElementExists(int index)
     if (index < 0) {
         return false;  // Indicate failure for an invalid index
     }
-    if (index >= elements.size()) {
+    if (static_cast<decltype(elements)::size_type>(index) >= elements.size()) {
         elements.resize(index + 1);
     }
     return true;

@@ -345,7 +345,7 @@ struct BaseExport Tools
      * @param String to be checked and sanitized.
      * @return A std::string that is a valid Python 3 identifier.
      */
-    static std::string getIdentifier(const std::string& name);
+    static std::string getIdentifier(std::string_view name);
     static std::wstring widen(const std::string& str);
 
     /**
@@ -405,6 +405,8 @@ struct BaseExport Tools
     static std::string currentDateTimeString();
 
     static bool isCLocaleName(std::string_view localeName);
+    static void setOperatingSystemNumericLocale(std::string_view localeName);
+    static std::string getOperatingSystemNumericLocale();
     static void setIcuDefaultLocale(std::string_view icuLocaleId);
 
     static std::vector<std::string> splitSubName(const std::string& subname);

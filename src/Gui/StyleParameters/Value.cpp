@@ -54,7 +54,7 @@ Numeric Numeric::operator/(const Numeric& rhs) const
     }
 
     if (rhs.unit.empty() || unit.empty()) {
-        return {value / rhs.value, unit};
+        return {value / rhs.value, unit.empty() ? rhs.unit : unit};
     }
 
     ensureEqualUnits(rhs);
@@ -64,7 +64,7 @@ Numeric Numeric::operator/(const Numeric& rhs) const
 Numeric Numeric::operator*(const Numeric& rhs) const
 {
     if (rhs.unit.empty() || unit.empty()) {
-        return {value * rhs.value, unit};
+        return {value * rhs.value, unit.empty() ? rhs.unit : unit};
     }
 
     ensureEqualUnits(rhs);

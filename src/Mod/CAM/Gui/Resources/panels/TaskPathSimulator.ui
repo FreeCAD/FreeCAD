@@ -297,7 +297,7 @@
       <string notr="true">QLabel { color: rgb(250, 100, 0) }</string>
      </property>
      <property name="text">
-      <string>* Note: Volumetric simulation, inaccuracies are inherent.</string>
+      <string>* Note: Volumetric simulation, inaccuracies are inherent</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -25,6 +25,8 @@
 
 #include <Inventor/SoFullPath.h>
 #include <Inventor/SoPickedPoint.h>
+
+#include "SoFullPathHelper.h"
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -109,6 +111,73 @@ void printPreselectionInfo(
 
 SoFullPath* Gui::SoFCUnifiedSelection::currentHighlightPath = nullptr;
 
+namespace Gui::SelectionPickPolicy
+{
+
+bool canFinalizeSinglePick(const std::vector<Candidate>& picked)
+{
+    bool foundSelectionGate = false;
+    for (const auto& info : picked) {
+        if (!info.hasGate) {
+            continue;
+        }
+
+        foundSelectionGate = true;
+        if (info.passesGate) {
+            return true;
+        }
+    }
+
+    // Preserve the existing first-object behavior unless an active gate rejected every pick so far.
+    return !foundSelectionGate;
+}
+
+std::size_t choosePreferredPick(const std::vector<Candidate>& picked)
+{
+    if (picked.empty()) {
+        return 0;
+    }
+
+    std::size_t preferred = 0;
+    int pickedPriority = picked.front().priority;
+    const void* firstOwner = picked.front().owner;
+    bool preferredIsAnnotation = picked.front().isAnnotation;
+
+    for (std::size_t i = 1; i < picked.size(); ++i) {
+        const auto& info = picked[i];
+        if (info.owner != firstOwner) {
+            break;
+        }
+
+        if (!info.closeToFirst) {
+            continue;
+        }
+
+        if (info.priority > pickedPriority) {
+            preferred = i;
+            pickedPriority = info.priority;
+            preferredIsAnnotation = info.isAnnotation;
+        }
+        else if (info.priority == pickedPriority && info.isAnnotation && !preferredIsAnnotation) {
+            preferred = i;
+            preferredIsAnnotation = true;
+        }
+    }
+
+    if (!picked[preferred].passesGate) {
+        for (std::size_t i = 0; i < picked.size(); ++i) {
+            if (picked[i].passesGate) {
+                preferred = i;
+                break;
+            }
+        }
+    }
+
+    return preferred;
+}
+
+}  // namespace Gui::SelectionPickPolicy
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoFCUnifiedSelection)
@@ -137,7 +206,7 @@ SoFCUnifiedSelection::SoFCUnifiedSelection()
     // instances to the SoFullPath type. This will allow you to examine hidden children. Actually,
     // you are not supposed to allocate instances of this class at all. It is only available as an
     // "extended interface" into the superclass SoPath.
-    detailPath = static_cast<SoFullPath*>(new SoPath(20));
+    detailPath = Gui::toFullPath(new SoPath(20));
     detailPath->ref();
 
     setPreSelection = false;
@@ -230,6 +299,23 @@ void SoFCUnifiedSelection::write(SoWriteAction* action)
     }
 }
 
+// Returns true if the pick path goes through any view provider's annotation root.
+static bool isAnnotationPick(const SoPickedPoint* pp, const Document* doc)
+{
+    auto path = Gui::toFullPath(pp->getPath());
+    if (!path) {
+        return false;
+    }
+    auto vps = doc->getViewProvidersByPath(path);
+    for (auto& [vp, idx] : vps) {
+        auto* annot = vp->getAnnotation();
+        if (annot && path->containsNode(annot)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 int SoFCUnifiedSelection::getPriority(const SoPickedPoint* p)
 {
     const SoDetail* detail = p->getDetail();
@@ -248,6 +334,74 @@ int SoFCUnifiedSelection::getPriority(const SoPickedPoint* p)
     return 0;
 }
 
+bool SoFCUnifiedSelection::passesSelectionGate(const PickedInfo& info)
+{
+    if (!info.vpd) {
+        return false;
+    }
+
+    App::DocumentObject* obj = info.vpd->getObject();
+    if (!obj) {
+        return false;
+    }
+
+    return Selection().testSelection(obj->getDocument(), obj, info.element.c_str());
+}
+
+bool SoFCUnifiedSelection::hasSelectionGate(const PickedInfo& info)
+{
+    if (!info.vpd) {
+        return false;
+    }
+
+    App::DocumentObject* obj = info.vpd->getObject();
+    if (!obj) {
+        return false;
+    }
+
+    return Selection().hasSelectionGate(obj->getDocument());
+}
+
+SelectionPickPolicy::Candidate SoFCUnifiedSelection::getPickCandidate(
+    const PickedInfo& info,
+    const Document* doc,
+    const PickedInfo* firstPicked
+)
+{
+    SelectionPickPolicy::Candidate candidate;
+    candidate.owner = info.vpd;
+    candidate.priority = getPriority(info.pp);
+    candidate.isAnnotation = doc && info.pp && isAnnotationPick(info.pp, doc);
+    candidate.hasGate = hasSelectionGate(info);
+    candidate.passesGate = passesSelectionGate(info);
+
+    if (firstPicked && info.pp && firstPicked->pp) {
+        candidate.closeToFirst = info.pp->getPoint().equals(firstPicked->pp->getPoint(), 0.2F);
+    }
+
+    return candidate;
+}
+
+std::vector<SelectionPickPolicy::Candidate> SoFCUnifiedSelection::getPickCandidates(
+    const std::vector<PickedInfo>& picked,
+    const Document* doc
+)
+{
+    std::vector<SelectionPickPolicy::Candidate> candidates;
+    candidates.reserve(picked.size());
+    const PickedInfo* firstPicked = picked.empty() ? nullptr : &picked.front();
+    for (const auto& info : picked) {
+        candidates.push_back(getPickCandidate(info, doc, firstPicked));
+    }
+
+    return candidates;
+}
+
+bool SoFCUnifiedSelection::canFinalizeSinglePick(const std::vector<PickedInfo>& picked)
+{
+    return SelectionPickPolicy::canFinalizeSinglePick(getPickCandidates(picked, nullptr));
+}
+
 std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedList(
     SoHandleEventAction* action,
     bool singlePick
@@ -261,11 +415,11 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
         info.pp = points[i];
         info.vpd = nullptr;
         ViewProvider* vp = nullptr;
-        auto path = static_cast<SoFullPath*>(info.pp->getPath());
+        auto path = Gui::toFullPath(info.pp->getPath());
         if (this->pcDocument && path && path->containsPath(action->getCurPath())) {
             vp = this->pcDocument->getViewProviderByPathFromHead(path);
-            if (singlePick && last_vp && last_vp != vp) {
-                return ret;
+            if (singlePick && last_vp && last_vp != vp && canFinalizeSinglePick(ret)) {
+                break;
             }
         }
         if (!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
@@ -303,29 +457,13 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
         return ret;
     }
 
-    // To identify the picking of lines in a concave area we have to
-    // get all intersection points. If we have two or more intersection
-    // points where the first is of a face and the second of a line with
-    // almost similar coordinates we use the second point, instead.
-
-    int picked_prio = getPriority(ret[0].pp);
-    auto last_vpd = ret[0].vpd;
-    const SbVec3f& picked_pt = ret.front().pp->getPoint();
-    auto itPicked = ret.begin();
-    for (auto it = ret.begin() + 1; it != ret.end(); ++it) {
-        auto& info = *it;
-        if (last_vpd != info.vpd) {
-            break;
-        }
-
-        int cur_prio = getPriority(info.pp);
-        const SbVec3f& cur_pt = info.pp->getPoint();
-
-        if ((cur_prio > picked_prio) && picked_pt.equals(cur_pt, 0.2F)) {
-            itPicked = it;
-            picked_prio = cur_prio;
-        }
-    }
+    // To identify the picking of lines in a concave area we have to get all intersection points.
+    // If the preferred point is rejected by the active selection gate, choose the first allowed
+    // candidate still inside the viewer pick radius.
+    auto pickedIndex = SelectionPickPolicy::choosePreferredPick(
+        getPickCandidates(ret, this->pcDocument)
+    );
+    auto itPicked = ret.begin() + pickedIndex;
 
     if (singlePick) {
         std::vector<PickedInfo> sret(itPicked, itPicked + 1);
@@ -411,7 +549,7 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
                     }
                     else {
                         // fallback to ViewProvider root if no specific path
-                        pathToHighlight = static_cast<SoFullPath*>(new SoPath(2));
+                        pathToHighlight = Gui::toFullPath(new SoPath(2));
                         pathToHighlight->ref();
                         pathToHighlight->append(vp->getRoot());
                     }
@@ -419,7 +557,7 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
             }
             else {
                 detail = vp->getDetail(subName);
-                pathToHighlight = static_cast<SoFullPath*>(new SoPath(2));
+                pathToHighlight = Gui::toFullPath(new SoPath(2));
                 pathToHighlight->ref();
                 pathToHighlight->append(vp->getRoot());
             }
@@ -431,7 +569,7 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
                 highlightAction.setElement(detail);
                 highlightAction.apply(pathToHighlight);
 
-                currentHighlightPath = static_cast<SoFullPath*>(pathToHighlight->copy());
+                currentHighlightPath = Gui::toFullPath(pathToHighlight->copy());
                 currentHighlightPath->ref();
 
                 // clean up temporary path if we created one
@@ -598,7 +736,7 @@ bool SoFCUnifiedSelection::setPreselect(const PickedInfo& info)
 
     const auto& pt = info.pp->getPoint();
     return setPreselect(
-        static_cast<SoFullPath*>(info.pp->getPath()),
+        Gui::toFullPath(info.pp->getPath()),
         info.pp->getDetail(),
         info.vpd,
         info.element.c_str(),
@@ -644,7 +782,7 @@ bool SoFCUnifiedSelection::setPreselect(
                 currentHighlightPath->unref();
                 currentHighlightPath = nullptr;
             }
-            currentHighlightPath = static_cast<SoFullPath*>(path->copy());
+            currentHighlightPath = Gui::toFullPath(path->copy());
             currentHighlightPath->ref();
             highlighted = true;
         }
@@ -720,7 +858,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
     const SoPickedPoint* pp = info.pp;
     const SoDetail* det = pp->getDetail();
     SoDetail* detNext = nullptr;
-    auto pPath = static_cast<SoFullPath*>(pp->getPath());
+    auto pPath = Gui::toFullPath(pp->getPath());
     const auto& pt = pp->getPoint();
     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
     auto preselectionMode = static_cast<SelectionModes>(this->preselectionMode.getValue());

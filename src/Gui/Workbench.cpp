@@ -764,7 +764,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     if (DockWindowManager::instance()->isOverlayActivated()) {
         *view << "Std_DockOverlay";
     }
-    *view << "Separator"
+    *view << "Std_ToggleBottomPanels"
+          << "Separator"
           << "Std_LinkSelectActions"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";
@@ -805,12 +806,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
            << "Std_RecentMacros"
            << "Separator"
            << "Std_DlgMacroExecuteDirect"
-           << "Std_MacroAttachDebugger"
-           << "Std_MacroStartDebug"
-           << "Std_MacroStopDebug"
-           << "Std_MacroStepOver"
-           << "Std_MacroStepInto"
-           << "Std_ToggleBreakpoint";
+           << "Std_MacroAttachDebugger";
 
     // Windows
     auto wnd = new MenuItem(menuBar);

@@ -1998,6 +1998,9 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
                                         : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
+                if (!drawingParameters.labelFontName.isEmpty()) {
+                    text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
+                }
                 text->size.setValue(drawingParameters.labelFontSize);
                 text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
                 text->useAntialiasing = false;
@@ -2035,7 +2038,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 // For a group, we will draw a dashed rectangle.
                 // We need a Material, a DrawStyle, Coordinates, and a LineSet.
 
-                // 1. Material (for color, re-using the one already created)
+                // 1. Material (for color, reusing the one already created)
                 sep->addChild(mat);
 
                 // 2. DrawStyle (to make the line dashed)
