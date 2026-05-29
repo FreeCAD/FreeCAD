@@ -98,19 +98,17 @@ private:
         int numberOfCopies
     ) const;
 
-    /// try to apply an expression to a constraint if it matches copied geometry
+    /// try to apply an expression to a constraint if it matches the original constraint's copies
     bool tryApplyExpressionToConstraint(
         const Sketcher::Constraint* cstr,
         size_t constraintIndex,
-        int originalIndex,
+        const Sketcher::Constraint* origCstr,
+        const std::vector<int>& listOfGeoIds,
         const CopyCalculationParams& params,
         int secondNumberOfCopies,
         const std::shared_ptr<App::Expression>& expression,
         const std::string& sketchObj
     ) const;
-
-    /// check if a constraint references the specified geometry ID
-    bool constraintReferencesGeometry(const Sketcher::Constraint* cstr, int geoId) const;
 
     // original constraint index to expression and geoId mapping
     std::map<int, ConstraintExpressionInfo> originalExpressions;
