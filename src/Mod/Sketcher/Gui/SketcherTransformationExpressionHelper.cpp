@@ -50,7 +50,8 @@ void SketcherTransformationExpressionHelper::storeOriginalExpressions(
                     || (cstr->Second == geoId && cstr->Type != Sketcher::Radius
                         && cstr->Type != Sketcher::Diameter && cstr->Type != Sketcher::Weight))) {
 
-                App::ObjectIdentifier spath = sketchObject->Constraints.createPath(static_cast<int>(i));
+                App::ObjectIdentifier spath = sketchObject->Constraints.createPath(static_cast<int>(i)
+                );
                 App::PropertyExpressionEngine::ExpressionInfo expr_info
                     = sketchObject->getExpression(spath);
 
@@ -93,23 +94,25 @@ void SketcherTransformationExpressionHelper::copyExpressionsToNewConstraints(
         // try to find and apply a matching expression for this constraint
         bool expressionApplied = false;
         for (const auto& exprPair : originalExpressions) {
-            int originalGeoId = exprPair.second.geoId;
-            int originalIndex = indexOfGeoId(listOfGeoIds, originalGeoId);
+            int origCstrIdx = exprPair.first;
+            if (origCstrIdx < 0 || origCstrIdx >= static_cast<int>(vals.size())) {
+                continue;
+            }
+            const auto& origCstr = vals[origCstrIdx];
 
-            if (originalIndex >= 0) {
-                expressionApplied = tryApplyExpressionToConstraint(
-                    cstr,
-                    i,
-                    originalIndex,
-                    params,
-                    secondNumberOfCopies,
-                    exprPair.second.expression,
-                    sketchObj
-                );
+            expressionApplied = tryApplyExpressionToConstraint(
+                cstr,
+                i,
+                origCstr,
+                listOfGeoIds,
+                params,
+                secondNumberOfCopies,
+                exprPair.second.expression,
+                sketchObj
+            );
 
-                if (expressionApplied) {
-                    break;
-                }
+            if (expressionApplied) {
+                break;
             }
         }
     }
@@ -143,7 +146,8 @@ SketcherTransformationExpressionHelper::CopyCalculationParams SketcherTransforma
 bool SketcherTransformationExpressionHelper::tryApplyExpressionToConstraint(
     const Sketcher::Constraint* cstr,
     size_t constraintIndex,
-    int originalIndex,
+    const Sketcher::Constraint* origCstr,
+    const std::vector<int>& listOfGeoIds,
     const CopyCalculationParams& params,
     int secondNumberOfCopies,
     const std::shared_ptr<App::Expression>& expression,
@@ -152,12 +156,26 @@ bool SketcherTransformationExpressionHelper::tryApplyExpressionToConstraint(
 {
     // check all copies of this geometry as we assign them the same expression
     for (int k = 0; k < secondNumberOfCopies; k++) {
-        for (int copy = 1; copy <= params.numberOfCopiesToMake; copy++) {
-            int expectedNewGeoId = params.firstCurveCreated + originalIndex
-                + params.size * (copy - 1) + params.size * params.numberOfCopiesToMake * k;
+        int startCopy = (k == 0) ? 1 : 0;
+        for (int copy = startCopy; copy <= params.numberOfCopiesToMake; copy++) {
+            auto getExpectedGeoId = [&](int origGeoId) {
+                if (origGeoId < 0) {
+                    return origGeoId;  // negative IDs correspond to axes, etc.
+                }
+                int idx = indexOfGeoId(listOfGeoIds, origGeoId);
+                if (idx >= 0) {
+                    return params.firstCurveCreated + idx + params.size * (copy - 1)
+                        + params.size * (params.numberOfCopiesToMake + 1) * k;
+                }
+                return origGeoId;  // geometry not in selection remains the same
+            };
 
-            // if this constraint references our copied geometry, apply the expression
-            if (constraintReferencesGeometry(cstr, expectedNewGeoId)) {
+            bool match = (cstr->Type == origCstr->Type)
+                && (cstr->First == getExpectedGeoId(origCstr->First))
+                && (cstr->Second == getExpectedGeoId(origCstr->Second))
+                && (cstr->Third == getExpectedGeoId(origCstr->Third));
+
+            if (match) {
                 Gui::Command::doCommand(
                     Gui::Command::Doc,
                     "%s.setExpression('Constraints[%d]', '%s')",
@@ -170,14 +188,4 @@ bool SketcherTransformationExpressionHelper::tryApplyExpressionToConstraint(
         }
     }
     return false;
-}
-
-bool SketcherTransformationExpressionHelper::constraintReferencesGeometry(
-    const Sketcher::Constraint* cstr,
-    int geoId
-) const
-{
-    return cstr->First == geoId
-        || (cstr->Second == geoId && cstr->Type != Sketcher::Radius
-            && cstr->Type != Sketcher::Diameter && cstr->Type != Sketcher::Weight);
 }
