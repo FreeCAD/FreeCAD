@@ -39,7 +39,8 @@ TEST_F(StatusBarHintsPriorityTest, TextSimplification)
 // Test that QString contains() and length() work
 TEST_F(StatusBarHintsPriorityTest, StringProcessing)
 {
-    QString longText = "This is a very long text that should be ellipsed when the widget is too narrow";
+    QString longText
+        = "This is a very long text that should be ellipsed when the widget is too narrow";
     EXPECT_GT(longText.length(), 50);
 
     QString shortText = "Short";
