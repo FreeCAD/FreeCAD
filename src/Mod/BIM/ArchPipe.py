@@ -407,32 +407,43 @@ class _ArchPipe(ArchComponent.Component):
     def trimex_axis(self, obj):
         """Trimex adapter (see draftguitools.gui_trimex._trimex_axis_for).
 
-        Straight pipes expose their two endpoints to Trimex: wire/line-based
+        Straight pipes expose their two end caps to Trimex: wire/line-based
         pipes redirect to the base wire (the pipe follows on recompute);
         baseless pipes update ``Length`` and ``Placement`` so the local +Z
-        axis aligns with the new endpoints.
+        axis aligns with the new caps.
+
+        ``OffsetStart`` / ``OffsetEnd`` inset the caps from the raw path
+        ends (see execute), so the exposed endpoints are inset to match;
+        otherwise the cap face would not lie on the endpoint plane and
+        Trimex would not recognise it as an end face.
         """
         import Part
         import Draft
 
         pipe_pl = obj.Placement
+        off_start = float(obj.OffsetStart.Value) if hasattr(obj, "OffsetStart") else 0.0
+        off_end = float(obj.OffsetEnd.Value) if hasattr(obj, "OffsetEnd") else 0.0
         base = getattr(obj, "Base", None)
         if base is None:
             length = float(obj.Length.Value)
-            p1 = FreeCAD.Vector(pipe_pl.Base)
             axis = pipe_pl.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
-            p2 = p1 + axis * length
+            p1 = pipe_pl.multVec(FreeCAD.Vector(0, 0, off_start))
+            p2 = pipe_pl.multVec(FreeCAD.Vector(0, 0, length - off_end))
 
             def _set(pts):
                 new_p1 = FreeCAD.Vector(pts[0])
                 new_p2 = FreeCAD.Vector(pts[1])
-                new_len = new_p1.distanceToPoint(new_p2)
+                cap_len = new_p1.distanceToPoint(new_p2)
+                new_len = cap_len + off_start + off_end
                 if new_len < 1e-9:
                     return
                 new_dir = new_p2 - new_p1
                 new_dir.normalize()
-                obj.Placement.Base = new_p1
-                obj.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), new_dir)
+                # The path origin sits OffsetStart before the visible cap.
+                obj.Placement = FreeCAD.Placement(
+                    new_p1 - new_dir * off_start,
+                    FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), new_dir),
+                )
                 obj.Length = new_len
 
             return {
@@ -467,11 +478,16 @@ class _ArchPipe(ArchComponent.Component):
             t.normalize()
             return pipe_pl.Rotation.multVec(t)
 
-        p_start = pipe_pl.multVec(edges[0].Vertexes[0].Point)
-        p_end = pipe_pl.multVec(edges[-1].Vertexes[-1].Point)
+        axis_start = _tangent(edges[0], True)
+        axis_end = _tangent(edges[-1], False)
+        raw_start = pipe_pl.multVec(edges[0].Vertexes[0].Point)
+        raw_end = pipe_pl.multVec(edges[-1].Vertexes[-1].Point)
+        # Caps are inset from the raw path ends (toward the body) by the offsets.
+        p_start = raw_start - axis_start * off_start
+        p_end = raw_end - axis_end * off_end
         return {
             "endpoints": [p_start, p_end],
-            "axes": [_tangent(edges[0], True), _tangent(edges[-1], False)],
+            "axes": [axis_start, axis_end],
             "redirect": base,
         }
 

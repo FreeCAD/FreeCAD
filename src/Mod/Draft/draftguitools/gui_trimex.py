@@ -94,20 +94,36 @@ def _builtin_trimex_axis(obj):
 
 def _part_extrusion_axis(obj):
     """``Part::Extrusion`` adapter: modify ``LengthFwd`` / ``LengthRev``
-    when the user trims one of the two end caps along ``Dir``."""
+    when the user trims one of the two end caps along ``Dir``.
+
+    Mirrors the executor's geometry rules (FeatureExtrusion.cpp): honours
+    ``Reversed`` and the "both lengths zero -> use |Dir|" fallback.
+
+    Symmetric mode is supported but behaves per its definition: the caps
+    stay centred on the base point, so dragging one cap makes it land where
+    placed while the opposite cap mirrors it (it cannot stay anchored).
+    """
     try:
         dir_local = App.Vector(obj.Dir)
     except Exception:
         return None
-    if dir_local.Length < 1e-9:
+    dir_len = dir_local.Length
+    if dir_len < 1e-9:
         return None
     pl = obj.Placement
-    dir_world = pl.Rotation.multVec(dir_local).normalize()
+    dir_world = pl.Rotation.multVec(dir_local)
+    dir_world.normalize()
+    if bool(getattr(obj, "Reversed", False)):
+        dir_world = dir_world.negative()
     base = App.Vector(pl.Base)
     fwd = float(obj.LengthFwd.Value) if hasattr(obj.LengthFwd, "Value") else float(obj.LengthFwd)
     rev = float(obj.LengthRev.Value) if hasattr(obj.LengthRev, "Value") else float(obj.LengthRev)
+    # When both lengths are zero the executor extrudes |Dir| forward.
+    if abs(fwd) < 1e-7 and abs(rev) < 1e-7:
+        fwd = dir_len
     symmetric = bool(getattr(obj, "Symmetric", False))
     if symmetric:
+        # In symmetric mode LengthFwd is the total, centred on the base.
         half = fwd / 2.0
         p_back = base - dir_world * half
         p_fwd = base + dir_world * half
@@ -121,13 +137,14 @@ def _part_extrusion_axis(obj):
         # Project onto the extrusion direction. Trimex only affects the
         # axial length: off-axis displacement is ignored on purpose since
         # changing Dir would alter the shape orientation, not just trim it.
-        new_rev = (base - new_back).dot(dir_world)
-        new_len = (new_fwd - base).dot(dir_world)
         if symmetric:
-            obj.LengthFwd = max(0.0, new_len + new_rev)
+            # Whichever cap was dragged defines the new half-length; the
+            # executor recentres both caps around the base point.
+            moved = new_back if (new_back - p_back).Length >= (new_fwd - p_fwd).Length else new_fwd
+            obj.LengthFwd = max(0.0, 2.0 * abs((moved - base).dot(dir_world)))
         else:
-            obj.LengthRev = max(0.0, new_rev)
-            obj.LengthFwd = max(0.0, new_len)
+            obj.LengthRev = max(0.0, (base - new_back).dot(dir_world))
+            obj.LengthFwd = max(0.0, (new_fwd - base).dot(dir_world))
 
     return {
         "endpoints": [p_back, p_fwd],
@@ -311,6 +328,8 @@ class Trimex(gui_base_original.Modifier):
                 end_idx = match
                 break
         if end_idx is None:
+            # Not an end face (side / top / bottom, or no face picked): keep
+            # the default face-extrude behaviour untouched.
             return False
 
         redirect = adapter.get("redirect")
@@ -318,10 +337,20 @@ class Trimex(gui_base_original.Modifier):
         host = self.obj
 
         if redirect is not None:
-            # Modify the base directly; the host follows on recompute.
+            # Modify the base directly; the host follows on recompute. The
+            # adapter reports two ends (first / last cap), but the wire-mode
+            # vertex list spans every vertex of the base wire, so map the
+            # matched cap to the correct vertex index: 0 -> first, last cap
+            # -> the wire's final vertex (== edge count). Without this a
+            # multi-segment base would move the 2nd vertex instead of the
+            # last when the far end is trimmed.
             self.trimexHost = host
             self.obj = redirect
-            self.lockedActivePoint = end_idx
+            if end_idx == 0:
+                self.lockedActivePoint = 0
+            else:
+                # Last cap -> final vertex; its index equals the edge count.
+                self.lockedActivePoint = self._wireEdgeCount(redirect)
             return False
 
         if setter is None:
@@ -352,6 +381,18 @@ class Trimex(gui_base_original.Modifier):
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick distance"))
         return True
+
+    @staticmethod
+    def _wireEdgeCount(obj):
+        """Edge count of ``obj``'s wire, using the same edge selection as the
+        wire-mode setup. The final vertex index of the vertex list equals
+        this count."""
+        import Part
+
+        shape = obj.Shape
+        if shape.Wires:
+            return len(Part.__sortEdges__(shape.Wires[0].Edges))
+        return len(shape.Edges)
 
     @staticmethod
     def _matchEndFace(face, ends):
@@ -660,6 +701,18 @@ class Trimex(gui_base_original.Modifier):
                     if self.placement:
                         np = invpl.multVec(np)
                     p.append(np)
+                # When the far endpoint is trimmed, redraw rebuilds the wire
+                # in reverse, which flips the Points order. That is harmless
+                # for a standalone wire but flips direction-sensitive parents
+                # (Arch Truss/Frame, ...) when we trim a redirected base. In
+                # that case keep the original orientation by comparing both
+                # ends against the previous Points.
+                old = self.obj.Points
+                if self.trimexHost is not None and len(p) == len(old) and len(old) >= 2:
+                    same = (p[0] - old[0]).Length + (p[-1] - old[-1]).Length
+                    flipped = (p[0] - old[-1]).Length + (p[-1] - old[0]).Length
+                    if flipped < same:
+                        p.reverse()
                 self.obj.Points = p
             elif utils.getType(self.obj) == "Part::Line":
                 p = []
