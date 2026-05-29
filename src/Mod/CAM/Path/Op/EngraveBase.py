@@ -192,8 +192,10 @@ class ObjectOp(PathOp.ObjectOp):
                 obj.OpFinalDepth = job.Stock.Shape.BoundBox.ZMax
 
             if obj.Base:
-                obj.OpFinalDepth = obj.Base[0][0].Shape.BoundBox.ZMax
+                obj.OpFinalDepth = max(
+                    sh.BoundBox.ZMax for base, sub in obj.Base for sh in base.getSubObject(sub)
+                )
             elif obj.BaseShapes:
-                obj.OpFinalDepth = obj.BaseShapes[0].Shape.BoundBox.ZMax
+                obj.OpFinalDepth = max(base.Shape.BoundBox.ZMax for base in obj.BaseShapes)
 
             obj.OpStartDepth = max(obj.OpStartDepth, obj.OpFinalDepth)
