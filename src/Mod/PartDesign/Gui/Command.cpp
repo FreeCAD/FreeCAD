@@ -146,7 +146,7 @@ void UnifiedDatumCommand(Gui::Command& cmd, Base::Type type, std::string name)
                 else {
                     QMessageBox::information(
                         Gui::getMainWindow(),
-                        QObject::tr("Invalid selection"),
+                        QObject::tr("Invalid Selection"),
                         QObject::tr("There are no attachment modes that fit selected objects. Select something else.")
                     );
                 }
@@ -2193,7 +2193,7 @@ void prepareTransformed(
             QMessageBox::warning(
                 Gui::getMainWindow(),
                 QObject::tr("Selection is not in the active body"),
-                QObject::tr("Please select only one feature in an active body.")
+                QObject::tr("Select only one feature in an active body.")
             );
             return;
         }

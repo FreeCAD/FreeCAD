@@ -30,71 +30,81 @@
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
+      <source>&amp;Copy</source>
+      <translation>&amp;Cóipeáil</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="131"/>
+      <source>Ctrl+C</source>
+      <translation>Ctrl+C</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="141"/>
       <source>&amp;Help</source>
       <translation>&amp;Cabhair</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="131"/>
+      <location filename="../../UnitTest.ui" line="144"/>
       <source>F1</source>
       <translation>F1</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="141"/>
+      <location filename="../../UnitTest.ui" line="154"/>
       <source>&amp;About</source>
       <translation>&amp;Maidir</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="144"/>
+      <location filename="../../UnitTest.ui" line="157"/>
       <source>Alt+A</source>
       <translation>Alt+A</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="154"/>
-      <source>&amp;Close</source>
-      <translation>&amp;Dún</translation>
+      <location filename="../../UnitTest.ui" line="167"/>
+      <source>Close</source>
+      <translation>Dún</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="157"/>
+      <location filename="../../UnitTest.ui" line="170"/>
       <source>Alt+C</source>
       <translation>Alt+C</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="169"/>
+      <location filename="../../UnitTest.ui" line="182"/>
       <source>Progress</source>
       <translation>Dul Chun Cinn</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="188"/>
+      <location filename="../../UnitTest.ui" line="201"/>
       <source>Run</source>
       <translation>Rith</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="205"/>
+      <location filename="../../UnitTest.ui" line="218"/>
       <source>Failures</source>
       <translation>Teipeanna</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="222"/>
+      <location filename="../../UnitTest.ui" line="235"/>
       <source>Errors</source>
       <translation>Earráidí</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="239"/>
+      <location filename="../../UnitTest.ui" line="252"/>
       <source>Remaining</source>
       <translation>Fágtha</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="259"/>
+      <location filename="../../UnitTest.ui" line="272"/>
       <source>Failures and Errors</source>
       <translation>Teipeanna agus Earráidí</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="275"/>
+      <location filename="../../UnitTest.ui" line="288"/>
       <source>Description</source>
       <translation>Cur síos</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="292"/>
+      <location filename="../../UnitTest.ui" line="305"/>
       <source>Idle</source>
       <translation>Díomhaoin</translation>
     </message>
@@ -102,12 +112,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="167"/>
+      <location filename="../../UnitTestImp.cpp" line="172"/>
       <source>Help</source>
       <translation>Cabhair</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="168"/>
+      <location filename="../../UnitTestImp.cpp" line="173"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -118,18 +128,23 @@ Cliceáil 'tosaigh', agus déanfar an tástáil a tháirgtear ar an gcaoi sin a 
 Cliceáil faoi dhó ar earráid sa radharc crann chun tuilleadh eolais a fheiceáil fúithi, lena n-áirítear an rian cruachta.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="182"/>
+      <location filename="../../UnitTestImp.cpp" line="187"/>
       <source>About FreeCAD UnitTest</source>
       <translation>Maidir le FreeCAD UnitTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="183"/>
+      <location filename="../../UnitTestImp.cpp" line="188"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>Cóipcheart (c) Werner Mayer
 
 Is cuid de FreeCAD é FreeCAD UnitTest agus tacaíonn sé le Tástálacha Aonaid a scríobh do mhodúil duine féin.</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTestImp.cpp" line="206"/>
+      <source>Errors copied to clipboard</source>
+      <translation>Earráidí cóipeáilte chuig an ghearrthaisce</translation>
     </message>
   </context>
 </TS>

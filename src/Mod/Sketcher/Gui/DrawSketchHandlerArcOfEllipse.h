@@ -222,8 +222,10 @@ public:
             setAngleSnapping(true, centerPoint);
             Mode = SelectMode::Second;
         }
-        else if (Mode == SelectMode::Second
-                 && (centerPoint - onSketchPos).Length() >= Precision::Confusion()) {
+        else if (
+            Mode == SelectMode::Second
+            && (centerPoint - onSketchPos).Length() >= Precision::Confusion()
+        ) {
             EditCurve[1] = onSketchPos;
             axisPoint = onSketchPos;
             Mode = SelectMode::Third;
@@ -233,8 +235,10 @@ public:
             arcAngle = 0.;
             Mode = SelectMode::Fourth;
         }
-        else if (Mode == SelectMode::Fourth && centerPoint != onSketchPos && arcAngle != 0
-                 && abs(arcAngle) != 2 * pi) {
+        else if (
+            Mode == SelectMode::Fourth && centerPoint != onSketchPos && arcAngle != 0
+            && abs(arcAngle) != 2 * pi
+        ) {
             endPoint = onSketchPos;
 
             setAngleSnapping(false);

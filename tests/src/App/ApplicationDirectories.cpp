@@ -45,7 +45,12 @@ class ApplicationDirectoriesTestClass: public App::ApplicationDirectories
 public:
     void wrapAppendVersionIfPossible(const fs::path& basePath, std::vector<std::string>& subdirs) const
     {
-        appendVersionIfPossible(basePath, subdirs);
+        appendVersionIfPossible(basePath, subdirs, MissingDirectoryBehavior::doNotAppend);
+    }
+
+    void wrapAppendVersionIfPossibleCreate(const fs::path& basePath, std::vector<std::string>& subdirs) const
+    {
+        appendVersionIfPossible(basePath, subdirs, MissingDirectoryBehavior::create);
     }
 
     std::tuple<int, int> wrapExtractVersionFromConfigMap(
@@ -434,9 +439,10 @@ TEST_F(ApplicationDirectoriesTest, migrateConfigCreatesDestinationAndCopiesFiles
     writeFile(oldPath / "b.ini", "bravo");
 
     // Act
-    App::ApplicationDirectories::migrateConfig(oldPath, newPath);
+    auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
 
     // Assert
+    EXPECT_TRUE(result.failedPaths.empty());
     ASSERT_TRUE(fs::exists(newPath));
     ASSERT_TRUE(fs::is_directory(newPath));
 
@@ -586,6 +592,54 @@ TEST_F(ApplicationDirectoriesTest, migrateAllPathsIgnoresIfDestinationAlreadyExi
     std::vector<fs::path> inputs {base};
 
     ASSERT_NO_THROW(appDirs->migrateAllPaths(inputs));
+}
+
+// Broken symlink is skipped and counted as a failure
+TEST_F(ApplicationDirectoriesTest, migrateConfigSkipsBrokenSymlink)
+{
+    fs::path oldPath = tempDir() / "symlink_src";
+    fs::path newPath = tempDir() / "symlink_dst";
+    writeFile(oldPath / "good.txt", "ok");
+    fs::create_symlink(oldPath / "nonexistent_target", oldPath / "bad_link");
+
+    auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
+
+    EXPECT_FALSE(result.failedPaths.empty());
+    EXPECT_TRUE(fs::exists(newPath / "good.txt"));
+    EXPECT_EQ(readFile(newPath / "good.txt"), "ok");
+}
+
+// Valid symlink is copied successfully
+TEST_F(ApplicationDirectoriesTest, migrateConfigCopiesValidSymlink)
+{
+    fs::path oldPath = tempDir() / "valid_link_src";
+    fs::path newPath = tempDir() / "valid_link_dst";
+    writeFile(oldPath / "target.txt", "content");
+    fs::create_symlink(oldPath / "target.txt", oldPath / "good_link");
+
+    auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
+
+    EXPECT_TRUE(result.failedPaths.empty());
+    EXPECT_TRUE(fs::exists(newPath / "target.txt"));
+    EXPECT_TRUE(fs::exists(newPath / "good_link"));
+}
+
+// migrateAllPaths returns skipped paths
+TEST_F(ApplicationDirectoriesTest, migrateAllPathsReturnsSkippedPaths)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "fail_count";
+    fs::create_directories(base);
+    writeFile(base / "good.txt", "ok");
+    fs::create_symlink(base / "no_such_file", base / "broken");
+
+    std::vector<fs::path> inputs {base};
+    auto result = appDirs->migrateAllPaths(inputs);
+
+    EXPECT_FALSE(result.failedPaths.empty());
+    fs::path dest = versionedPath(base, 5, 4);
+    EXPECT_TRUE(fs::exists(dest / "good.txt"));
 }
 
 // Multiple inputs: one versioned, one non-versioned -> both destinations created
@@ -791,6 +845,102 @@ TEST_F(ApplicationDirectoriesTest, sanitizeReturnsUnchangedIfNoNullCharacter)
 
     EXPECT_EQ(result.string(), input);
     EXPECT_EQ(result.string().find('\0'), std::string::npos);
+}
+
+// --- Tests for MissingDirectoryBehavior::create ---
+
+// Base exists, current version dir already present -> append current, no extra creation needed
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseExistsAppendsCurrentWhenAlreadyPresent)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_current";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(base / "configs");
+    fs::create_directories(versionedPath(base / "configs", 5, 4));
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+    EXPECT_TRUE(fs::is_directory(versionedPath(base / "configs", 5, 4)));
+}
+
+// Base exists, older version dir present -> create behavior still uses current version
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseExistsUsesCurrentEvenWhenOlderVersionPresent)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_older";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(versionedPath(base / "configs", 5, 2));
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+    EXPECT_TRUE(fs::is_directory(versionedPath(base / "configs", 5, 4)));
+}
+
+// Base exists but no versioned children -> create behavior appends current AND creates the directory
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseExistsNoVersionsAppendsAndCreatesDir)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_noversions";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(base / "configs");
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+    // The directory should have been created on disk
+    EXPECT_TRUE(fs::is_directory(versionedPath(base / "configs", 5, 4)));
+}
+
+// Contrast: doNotAppend does NOT append or create when base exists with no versioned children
+TEST_F(ApplicationDirectoriesTest, appendDoNotAppendBaseExistsNoVersionsLeavesUnchanged)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "donotappend_noversions";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(base / "configs");
+
+    auto before = sub;
+    appDirs->wrapAppendVersionIfPossible(base, sub);
+
+    EXPECT_EQ(sub, before);
+    EXPECT_FALSE(fs::exists(versionedPath(base / "configs", 5, 4)));
+}
+
+// Base does not exist -> both behaviors append current version (no directory creation needed)
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseMissingAppendsCurrentSuffix)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_missing";
+    std::vector<std::string> sub {"configs"};
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+}
+
+// Already versioned -> create behavior still bails out (no change)
+TEST_F(ApplicationDirectoriesTest, appendCreateAlreadyVersionedBails)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_bail";
+    std::vector<std::string> sub {"configs", App::ApplicationDirectories::versionStringForPath(5, 2)};
+    fs::create_directories(base / sub[0] / sub[1]);
+
+    auto before = sub;
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+    EXPECT_EQ(sub, before);
 }
 
 /* NOLINTEND(

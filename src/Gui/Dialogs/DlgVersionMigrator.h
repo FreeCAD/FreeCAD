@@ -27,6 +27,7 @@
 #include <cstdint>
 #include <memory>
 #include <QDialog>
+#include <QStringList>
 
 
 namespace Gui
@@ -77,6 +78,7 @@ public:
 Q_SIGNALS:
     void finished();
     void complete();
+    void completedWithWarnings(QStringList skippedFiles);
     void failed();
 
 protected:
@@ -116,6 +118,8 @@ protected:
         const std::string& oldString,
         const std::string& newString
     );
+
+    void writeMigrationLog(const std::vector<std::filesystem::path>& skippedPaths);
 
 private:
     std::string _configDir;

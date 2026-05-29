@@ -764,7 +764,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     if (DockWindowManager::instance()->isOverlayActivated()) {
         *view << "Std_DockOverlay";
     }
-    *view << "Separator"
+    *view << "Std_ToggleBottomPanels"
+          << "Separator"
           << "Std_LinkSelectActions"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";
@@ -779,6 +780,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     }
 #endif
     *tool << "Std_Measure"
+          << "Std_MassProperties"
           << "Std_AnnotationLabel"
           << "Std_UnitsCalculator"
           << "Std_ClarifySelection"
@@ -804,12 +806,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
            << "Std_RecentMacros"
            << "Separator"
            << "Std_DlgMacroExecuteDirect"
-           << "Std_MacroAttachDebugger"
-           << "Std_MacroStartDebug"
-           << "Std_MacroStopDebug"
-           << "Std_MacroStepOver"
-           << "Std_MacroStepInto"
-           << "Std_ToggleBreakpoint";
+           << "Std_MacroAttachDebugger";
 
     // Windows
     auto wnd = new MenuItem(menuBar);
@@ -871,7 +868,8 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem(root);
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
-          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions" << "Std_Measure";
+          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions" << "Separator"
+          << "Std_Measure" << "Std_MassProperties";
 
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);

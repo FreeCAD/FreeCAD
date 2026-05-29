@@ -28,7 +28,6 @@ import Path
 from Path.Tool.library.ui.dock import ToolBitLibraryDock
 from Path.Tool.library.ui.editor import LibraryEditor
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -49,7 +48,7 @@ class CommandToolBitLibraryDockOpen:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitSelection", "Add toolbit…"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitSelection", "Add Toolbit…"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_ToolBitSelection", "Opens the toolbit selection dialog"
             ),

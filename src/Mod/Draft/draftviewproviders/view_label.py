@@ -26,6 +26,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the Label object."""
+
 ## @package view_label
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Label object.

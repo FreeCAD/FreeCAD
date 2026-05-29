@@ -168,6 +168,23 @@ public:
         initialize("This module is the Path module.");  // register with Python
 
         PyModule_AddObject(m_module, "Voronoi", voronoi.module().ptr());
+
+        // Expose Clipper2 join types
+        PyModule_AddIntConstant(
+            m_module,
+            "ClipperJoinTypeRound",
+            static_cast<int>(Clipper2Lib::JoinType::Round)
+        );
+        PyModule_AddIntConstant(
+            m_module,
+            "ClipperJoinTypeSquare",
+            static_cast<int>(Clipper2Lib::JoinType::Square)
+        );
+        PyModule_AddIntConstant(
+            m_module,
+            "ClipperJoinTypeMiter",
+            static_cast<int>(Clipper2Lib::JoinType::Miter)
+        );
     }
 
     ~Module() override
@@ -400,8 +417,10 @@ private:
         if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type))) {
             shapes.push_back(static_cast<Part::TopoShapePy*>(pShapes)->getTopoShapePtr()->getShape());
         }
-        else if (PyObject_TypeCheck(pShapes, &(PyList_Type))
-                 || PyObject_TypeCheck(pShapes, &(PyTuple_Type))) {
+        else if (
+            PyObject_TypeCheck(pShapes, &(PyList_Type))
+            || PyObject_TypeCheck(pShapes, &(PyTuple_Type))
+        ) {
             Py::Sequence shapeSeq(pShapes);
             for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
                 PyObject* item = (*it).ptr();
@@ -474,8 +493,10 @@ private:
         if (PyObject_TypeCheck(pShapes, &(Part::TopoShapePy::Type))) {
             shapes.push_back(static_cast<Part::TopoShapePy*>(pShapes)->getTopoShapePtr()->getShape());
         }
-        else if (PyObject_TypeCheck(pShapes, &(PyList_Type))
-                 || PyObject_TypeCheck(pShapes, &(PyTuple_Type))) {
+        else if (
+            PyObject_TypeCheck(pShapes, &(PyList_Type))
+            || PyObject_TypeCheck(pShapes, &(PyTuple_Type))
+        ) {
             Py::Sequence shapeSeq(pShapes);
             for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
                 PyObject* item = (*it).ptr();

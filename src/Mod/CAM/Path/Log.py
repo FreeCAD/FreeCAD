@@ -49,48 +49,14 @@ class Level:
         return cls._names.get(level, "UNKNOWN")
 
 
-_defaultLogLevel = Level.NOTICE
-_moduleLogLevel = {}
-_useConsole = True
-_trackModule = {}
-_trackAll = False
-
-
 def logToConsole(yes):
     """(boolean) - if set to True (default behaviour) log messages are printed to the console. Otherwise they are printed to stdout."""
     global _useConsole
     _useConsole = yes
 
 
-def setLevel(level, module=None):
-    """(level, module = None)
-    if no module is specified the default log level is set.
-    Otherwise the module specific log level is changed (use RESET to clear)."""
-    global _defaultLogLevel
-    global _moduleLogLevel
-    if module:
-        if level == Level.RESET:
-            if _moduleLogLevel.get(module, -1) != -1:
-                del _moduleLogLevel[module]
-        else:
-            _moduleLogLevel[module] = level
-    else:
-        if level == Level.RESET:
-            _defaultLogLevel = Level.NOTICE
-            _moduleLogLevel = {}
-        else:
-            _defaultLogLevel = level
-
-
-def getLevel(module=None):
-    """(module = None) - return the global (None) or module specific log level."""
-    if module:
-        return _moduleLogLevel.get(module, _defaultLogLevel)
-    return _defaultLogLevel
-
-
 def thisModule():
-    """returns the module id of the caller, can be used for setLevel, getLevel and trackModule."""
+    """returns the module id of the caller please use logger.getModule instead if possible"""
     return _caller()[0]
 
 
@@ -100,12 +66,31 @@ def _caller():
     return os.path.splitext(os.path.basename(filename))[0], line, func
 
 
-def _log(level, module_line_func, msg):
-    """internal function to do the logging"""
-    module, line, func = module_line_func
+_defaultLogLevel = Level.NOTICE
+_useConsole = True
+_trackAll = False
+_moduleLoggers = {}
 
-    if getLevel(module) >= level:
-        message = "%s.%s: %s" % (module, Level.toString(level), msg)
+
+class ModuleLogger:
+    _tracked = False
+    _logLevel = None
+
+    def __init__(self, module, initialLogLevel=None):
+        self._logLevel = initialLogLevel
+        self._module = module
+
+    def getModule(self):
+        return self._module
+
+    def _log(self, level, msg, *args):
+        """internal function to do the logging"""
+
+        if not self.willLogAt(level):
+            return None
+
+        message = ("{}.{}: " + str(msg)).format(self.getModule(), Level.toString(level), *args)
+
         if _useConsole:
             message += "\n"
             if level == Level.NOTICE:
@@ -119,35 +104,107 @@ def _log(level, module_line_func, msg):
         else:
             print(message)
         return message
-    return None
+
+    def isTrackingEnabled(self):
+        return self._tracked or _trackAll
+
+    def setTrackingEnabled(self, enabled):
+        """(enabled)"""
+        self._tracked = enabled
+
+    def enableTracking(self):
+        self.setTrackingEnabled(True)
+
+    def disableTracking(self):
+        self.setTrackingEnabled(False)
+
+    def getLevel(self):
+        if self._logLevel is None:
+            return _defaultLogLevel
+        else:
+            return self._logLevel
+
+    def setLevel(self, level):
+        if level == Level.RESET:
+            self._logLevel = None
+        else:
+            self._logLevel = level
+
+    def willLogAt(self, level):
+        """(level)"""
+        return self.getLevel() >= level
+
+    def debug(self, message, *args):
+        """(message, *args)"""
+        if not self.willLogAt(Level.DEBUG):
+            return None
+
+        module, line, func = _caller()
+        return self._log(Level.DEBUG, "({}) - " + str(message), line, *args)
+
+    def info(self, message, *args):
+        """(message, *args)"""
+        return self._log(Level.INFO, message, *args)
+
+    def notice(self, message, *args):
+        """(message, *args)"""
+        return self._log(Level.NOTICE, message, *args)
+
+    def warning(self, message, *args):
+        """(message, *args)"""
+        return self._log(Level.WARNING, message, *args)
+
+    def error(self, message, *args):
+        """(message, *args)"""
+        return self._log(Level.ERROR, message, *args)
+
+    def track(self, *args, fmt=None):
+        """(....) - call with arguments of current function you want logged if tracking is enabled."""
+
+        if self.isTrackingEnabled():
+            module, line, func = _caller()
+
+            if fmt is None:
+                formattedArgs = ", ".join([str(arg) for arg in args])
+            else:
+                formattedArgs = fmt.format(*args)
+
+            message = f"{module}({line}).{func}({formattedArgs})"
+            if _useConsole:
+                FreeCAD.Console.PrintMessage(message + "\n")
+            else:
+                print(message)
+            return message
+        return None
 
 
-def debug(msg):
-    """(message)"""
-    caller_info = _caller()
-    _, line, _ = caller_info
-    msg = "({}) - {}".format(line, msg)
-    return _log(Level.DEBUG, caller_info, msg)
+def getModuleLoggerWithLevelOrDebug(level, debug, module=None):
+    """(level, debug, module=None)"""
+
+    if module is None:
+        module = _caller()[0]
+
+    withLevel = Level.DEBUG if debug else level
+    return getModuleLogger(module, withLevel=withLevel, enableTracking=debug)
 
 
-def info(msg):
-    """(message)"""
-    return _log(Level.INFO, _caller(), msg)
+def getModuleLogger(module=None, withLevel=None, enableTracking=None):
+    """(module=None, withLevel=None, enableTracking=None)"""
 
+    if module is None:
+        module = _caller()[0]
 
-def notice(msg):
-    """(message)"""
-    return _log(Level.NOTICE, _caller(), msg)
+    logger = _moduleLoggers.get(module, None)
+    if logger is None:
+        logger = ModuleLogger(module, initialLogLevel=withLevel)
+        _moduleLoggers[module] = logger
+    elif withLevel is not None:
+        logger.setLevel(withLevel)
 
+    if enableTracking is not None:
+        logger.setTrackingEnabled(enableTracking)
 
-def warning(msg):
-    """(message)"""
-    return _log(Level.WARNING, _caller(), msg)
-
-
-def error(msg):
-    """(message)"""
-    return _log(Level.ERROR, _caller(), msg)
+    return logger
 
 
 def trackAllModules(boolean):
@@ -159,42 +216,130 @@ def trackAllModules(boolean):
 def untrackAllModules():
     """In addition to stop tracking all modules it also clears the tracking flag for all individual modules."""
     global _trackAll
-    global _trackModule
+    global _moduleLoggers
+
     _trackAll = False
-    _trackModule = {}
+
+    for module in _moduleLoggers.values():
+        module.disableTracking()
+
+
+# deprecated methods:
+
+
+def setLevel(level, module=None):
+    """(level, module = None)
+
+    deprecated - use logger.setLevel instead
+
+    if no module is specified the default log level is set.
+    Otherwise the module specific log level is changed (use RESET to clear)."""
+    global _defaultLogLevel
+    global _moduleLoggers
+    if module is None:
+        if level == Level.RESET:
+            _defaultLogLevel = Level.NOTICE
+
+            for module in _moduleLoggers.values():
+                module.setLevel(Level.RESET)
+        else:
+            _defaultLogLevel = level
+    else:
+        getModuleLogger(module).setLevel(level)
+
+
+def getLevel(module=None):
+    """(module = None) - return the global (None) or module specific log level.
+
+    deprecated - use logger.getLevel instead
+    """
+    if module is None:
+        return _defaultLogLevel
+    else:
+        return getModuleLogger(module).getLevel()
 
 
 def trackModule(module=None):
-    """(module = None) - start tracking given module, current module if not set."""
-    global _trackModule
-    if module:
-        _trackModule[module] = True
-    else:
-        mod, line, func = _caller()
-        _trackModule[mod] = True
+    """(module = None) - start tracking given module, current module if not set.
+
+    deprecated - use logger.enableTracking instead
+    """
+
+    if module is None:
+        module, _, _ = _caller()
+
+    getModuleLogger(module).enableTracking()
 
 
 def untrackModule(module=None):
-    """(module = None) - stop tracking given module, current module if not set."""
-    global _trackModule
-    if module and _trackModule.get(module, None):
-        del _trackModule[module]
-    elif not module:
-        mod, line, func = _caller()
-        if _trackModule.get(mod, None):
-            del _trackModule[mod]
+    """(module = None) - stop tracking given module, current module if not set.
+
+    deprecated - use logger.disableTracking instead
+    """
+    global _moduleLoggers
+
+    if module is None:
+        module, _, _ = _caller()
+
+    logger = _moduleLoggers.get(module, None)
+
+    if logger is not None:
+        logger.disableTracking()
+
+
+def debug(msg):
+    """(msg)
+
+    deprecated - use logger.debug(format, *args) instead
+    """
+    module, line, func = _caller()
+    return getModuleLogger(module)._log(Level.DEBUG, "({}) - {}", line, msg)
+
+
+def info(msg):
+    """(msg)
+
+    deprecated - use logger.info(format, *args) instead
+    """
+    return getModuleLogger(_caller()[0]).info("{}", msg)
+
+
+def notice(msg):
+    """(msg)
+
+    deprecated - use logger.notice(format, *args) instead
+    """
+    return getModuleLogger(_caller()[0]).notice("{}", msg)
+
+
+def warning(msg):
+    """(msg)
+
+    deprecated - use logger.warning(format, *args) instead
+    """
+    return getModuleLogger(_caller()[0]).warning("{}", msg)
+
+
+def error(msg):
+    """(msg)
+
+    deprecated - use logger.error(format, *args) instead
+    """
+    return getModuleLogger(_caller()[0]).error("{}", msg)
 
 
 def track(*args):
-    """(....) - call with arguments of current function you want logged if tracking is enabled."""
+    """(*args)
+
+    deprecated - use logger.track(format, *args) instead
+    """
     module, line, func = _caller()
-    if _trackAll or _trackModule.get(module, None):
-        message = "%s(%d).%s(%s)" % (
-            module,
-            line,
-            func,
-            ", ".join([str(arg) for arg in args]),
-        )
+
+    if getModuleLogger(module).isTrackingEnabled():
+
+        formattedArgs = ", ".join([str(arg) for arg in args])
+
+        message = f"{module}({line}).{func}({formattedArgs})"
         if _useConsole:
             FreeCAD.Console.PrintMessage(message + "\n")
         else:

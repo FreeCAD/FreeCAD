@@ -64,7 +64,7 @@ class CommandFillTemplateFields:
         if App.ActiveDocument:
             objs = App.ActiveDocument.findObjects(Type="TechDraw::DrawPage")
             if not objs:
-                return false
+                return False
 
             for obj in objs:
                 file_path = (
@@ -93,7 +93,7 @@ class CommandFillTemplateFields:
                             and obj.Views != []
                         ):
                             return True
-            return false
+            return False
 
 
 

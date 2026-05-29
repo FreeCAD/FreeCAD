@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import unittest
 import FreeCAD as App
 import Arch
 import ArchAxis
@@ -63,26 +62,3 @@ class TestArchAxis(TestArchBase.TestArchBase):
         axis_system = Arch.makeAxisSystem([axis1, axis2], name="TestAxisSystem")
         self.assertIsNotNone(axis_system, "makeAxisSystem failed to create an axis system.")
         self.assertEqual(axis_system.Label, "TestAxisSystem", "Axis system label is incorrect.")
-
-    @unittest.skipIf(not App.GuiUp, "Requires GUI viewproviders for Axis bubble data")
-    def test_axis_bubble_data_link_parity(self):
-        axis = Arch.makeAxis(num=2, size=1500)
-        self.document.recompute()
-
-        link = self.document.addObject("App::Link", "AxisLink")
-        link.LinkedObject = axis
-        link.LinkTransform = True
-        link.Placement.Base = App.Vector(1000, 2000, 0)
-        self.document.recompute()
-
-        parent_shapes, parent_texts = ArchAxis.get_axis_bubble_data(axis, axis.ViewObject)
-        link_shapes, link_texts = ArchAxis.get_axis_bubble_data(link, axis.ViewObject)
-
-        self.assertEqual(len(parent_shapes), len(link_shapes))
-        self.assertEqual([t[0] for t in parent_texts], [t[0] for t in link_texts])
-
-        delta = link.getGlobalPlacement().multiply(axis.getGlobalPlacement().inverse())
-        for i, item in enumerate(parent_texts):
-            expected = delta.multVec(item[1])
-            actual = link_texts[i][1]
-            self.assertLess((expected - actual).Length, 1e-6)

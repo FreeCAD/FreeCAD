@@ -24,6 +24,7 @@
 
 #include <sstream>
 
+#include <Standard_Version.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
@@ -44,7 +45,11 @@
 #include <Geom2dAPI_InterCurveCurve.hxx>
 #include <Geom2dAPI_ProjectPointOnCurve.hxx>
 #include <Geom2dConvert_ApproxCurve.hxx>
-#include <Geom2dLProp_CLProps2d.hxx>
+#if OCC_VERSION_HEX >= 0x080000
+# include <GeomLProp_CLProps.hxx>
+#else
+# include <Geom2dLProp_CLProps2d.hxx>
+#endif
 #include <gp_Dir2d.hxx>
 #include <Precision.hxx>
 #include <ShapeConstruct_Curve.hxx>
@@ -93,7 +98,8 @@ PyObject* Curve2dPy::reverse(PyObject* args)
 {
     if (PyArg_ParseTuple(args, "")) {
         try {
-            Handle(Geom2d_Curve) curve = Handle(Geom2d_Curve)::DownCast(getGeom2dCurvePtr()->handle());
+            Handle(Geom2d_Curve)
+                curve = Handle(Geom2d_Curve)::DownCast(getGeom2dCurvePtr()->handle());
             curve->Reverse();
             Py_Return;
         }
@@ -315,15 +321,9 @@ PyObject* Curve2dPy::discretize(PyObject* args, PyObject* kwds) const
         static const std::array<const char*, 4> kwds_numPoints {"Number", "First", "Last", nullptr};
         PyErr_Clear();
         int numPoints = -1;
-        if (Base::Wrapped_ParseTupleAndKeywords(
-                args,
-                kwds,
-                "i|dd",
-                kwds_numPoints,
-                &numPoints,
-                &first,
-                &last
-            )) {
+        if (
+            Base::Wrapped_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_numPoints, &numPoints, &first, &last)
+        ) {
             GCPnts_UniformAbscissa discretizer;
             discretizer.Initialize(adapt, numPoints, first, last);
 
@@ -348,7 +348,9 @@ PyObject* Curve2dPy::discretize(PyObject* args, PyObject* kwds) const
         static const std::array<const char*, 4> kwds_Distance {"Distance", "First", "Last", nullptr};
         PyErr_Clear();
         double distance = -1;
-        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)) {
+        if (
+            Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)
+        ) {
             GCPnts_UniformAbscissa discretizer;
             discretizer.Initialize(adapt, distance, first, last);
 
@@ -373,15 +375,9 @@ PyObject* Curve2dPy::discretize(PyObject* args, PyObject* kwds) const
         static const std::array<const char*, 4> kwds_Deflection {"Deflection", "First", "Last", nullptr};
         PyErr_Clear();
         double deflection;
-        if (Base::Wrapped_ParseTupleAndKeywords(
-                args,
-                kwds,
-                "d|dd",
-                kwds_Deflection,
-                &deflection,
-                &first,
-                &last
-            )) {
+        if (
+            Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)
+        ) {
             GCPnts_UniformDeflection discretizer(adapt, deflection, first, last);
             if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
                 Py::List points;
@@ -602,7 +598,11 @@ PyObject* Curve2dPy::tangent(PyObject* args)
                 return nullptr;
             }
             gp_Dir2d dir;
+#if OCC_VERSION_HEX >= 0x080000
+            GeomLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#else
             Geom2dLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#endif
             if (prop.IsTangentDefined()) {
                 prop.Tangent(dir);
             }
@@ -630,7 +630,11 @@ PyObject* Curve2dPy::normal(PyObject* args) const
                 return nullptr;
             }
             gp_Dir2d dir;
+#if OCC_VERSION_HEX >= 0x080000
+            GeomLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#else
             Geom2dLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#endif
             prop.Normal(dir);
 
             return Py::new_reference_to(Base::Vector2dPy::create(dir.X(), dir.Y()));
@@ -655,7 +659,11 @@ PyObject* Curve2dPy::curvature(PyObject* args) const
             if (!PyArg_ParseTuple(args, "d", &u)) {
                 return nullptr;
             }
+#if OCC_VERSION_HEX >= 0x080000
+            GeomLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#else
             Geom2dLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#endif
             double C = prop.Curvature();
             return Py::new_reference_to(Py::Float(C));
         }
@@ -679,7 +687,11 @@ PyObject* Curve2dPy::centerOfCurvature(PyObject* args) const
             if (!PyArg_ParseTuple(args, "d", &u)) {
                 return nullptr;
             }
+#if OCC_VERSION_HEX >= 0x080000
+            GeomLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#else
             Geom2dLProp_CLProps2d prop(c, u, 2, Precision::Confusion());
+#endif
             gp_Pnt2d pnt;
             prop.CentreOfCurvature(pnt);
 
@@ -735,9 +747,10 @@ PyObject* Curve2dPy::toBSpline(PyObject* args)
                 return nullptr;
             }
             ShapeConstruct_Curve scc;
-            Handle(Geom2d_BSplineCurve) spline = scc.ConvertToBSpline(c, u, v, Precision::Confusion());
+            Handle(Geom2d_BSplineCurve)
+                spline = scc.ConvertToBSpline(c, u, v, Precision::Confusion());
             if (spline.IsNull()) {
-                Standard_NullValue::Raise("Conversion to B-spline failed");
+                throw Standard_NullValue("Conversion to B-spline failed");
             }
             return new BSplineCurve2dPy(new Geom2dBSplineCurve(spline));
         }

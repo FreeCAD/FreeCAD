@@ -132,7 +132,7 @@ App::DocumentObjectExecReturn* AssemblyObject::execute()
         "User parameter:BaseApp/Preferences/Mod/Assembly"
     );
     if (hGrp->GetBool("SolveOnRecompute", true)) {
-        solve(false, false);  // No need to update jcs since recompute updated them.
+        solve(false);
     }
     return ret;
 }
@@ -145,9 +145,11 @@ void AssemblyObject::onChanged(const App::Property* prop)
     App::Part::onChanged(prop);
 }
 
-int AssemblyObject::solve(bool enableRedo, bool updateJCS)
+int AssemblyObject::solve(bool enableRedo)
 {
     ensureIdentityPlacements();
+
+    syncGroundedJoints();
 
     mbdAssembly = makeMbdAssembly();
     objectPartMap.clear();
@@ -159,7 +161,7 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
         return -6;
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(updateJCS);
+    std::vector<App::DocumentObject*> joints = getJoints();
 
     removeUnconnectedJoints(joints, groundedObjs);
 
@@ -320,7 +322,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getMotionsFromSimulation(App::
     return prop->getValue();
 }
 
-int Assembly::AssemblyObject::updateForFrame(size_t index, bool updateJCS)
+int Assembly::AssemblyObject::updateForFrame(size_t index)
 {
     if (!mbdAssembly) {
         return -1;
@@ -333,7 +335,7 @@ int Assembly::AssemblyObject::updateForFrame(size_t index, bool updateJCS)
 
     mbdAssembly->updateForFrame(index);
     setNewPlacements();
-    auto jointDocs = getJoints(updateJCS);
+    auto jointDocs = getJoints();
     redrawJointPlacements(jointDocs);
     return 0;
 }
@@ -419,7 +421,7 @@ void AssemblyObject::doDragStep()
         if (validateNewPlacements()) {
             setNewPlacements();
 
-            auto joints = getJoints(false);
+            auto joints = getJoints();
             for (auto* joint : joints) {
                 if (joint->Visibility.getValue()) {
                     // redraw only the moving joint as its quite slow as its python code.
@@ -536,7 +538,7 @@ void AssemblyObject::undoSolve()
     previousPositions.clear();
 
     // update joint placements:
-    getJoints(/*updateJCS*/ true, /*delBadJoints*/ false);
+    getJoints();
 }
 
 void AssemblyObject::clearUndo()
@@ -717,7 +719,7 @@ ViewGroup* AssemblyObject::getExplodedViewGroup() const
     return nullptr;
 }
 
-std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool delBadJoints, bool subJoints)
+std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool delBadJoints, bool subJoints)
 {
     std::vector<App::DocumentObject*> joints = {};
 
@@ -799,7 +801,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfObj(App::DocumentOb
         return {};
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
@@ -819,7 +821,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
         return {};
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
@@ -834,25 +836,13 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
 
 std::unordered_set<App::DocumentObject*> AssemblyObject::getGroundedParts()
 {
-    std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
-
     std::unordered_set<App::DocumentObject*> groundedSet;
-    for (auto gJoint : groundedJoints) {
-        if (!gJoint) {
-            continue;
-        }
-
-        auto* propObj = dynamic_cast<App::PropertyLink*>(gJoint->getPropertyByName("ObjectToGround"));
-
-        if (propObj) {
-            App::DocumentObject* objToGround = propObj->getValue();
-            if (objToGround) {
-                if (auto* asmLink = dynamic_cast<AssemblyLink*>(objToGround)) {
-                    if (!asmLink->isRigid()) {
-                        continue;
-                    }
-                }
-                groundedSet.insert(objToGround);
+    std::vector<App::DocumentObject*> allParts = getAssemblyComponents(this);
+    for (auto part : allParts) {
+        if (part) {
+            auto propPlc = part->getPlacementProperty();
+            if (propPlc && propPlc->isReadOnly()) {
+                groundedSet.insert(part);
             }
         }
     }
@@ -1118,7 +1108,7 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
     }
 
     auto groundedObjs = getGroundedParts();
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
 
     std::vector<ObjRef> connectedParts;
 
@@ -1551,6 +1541,24 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
         }
     }
     std::vector<App::DocumentObject*> done;
+
+    auto replaceInitialValue =
+        [](std::string& form, App::DocumentObject* jnt, const std::string& mType) {
+            if (form.find("initialValue") != std::string::npos) {
+                double val = getJointCurrentValue(jnt, mType == "Angular");
+
+                std::ostringstream out;
+                out.precision(10);
+                out << val;
+                std::string valStr = out.str();
+
+                size_t pos;
+                while ((pos = form.find("initialValue")) != std::string::npos) {
+                    form.replace(pos, 12, valStr);
+                }
+            }
+        };
+
     // Add motions if needed
     for (auto* motion : motions) {
         if (std::ranges::find(done, motion) != done.end()) {
@@ -1576,6 +1584,8 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
             continue;
         }
         std::string motionType = pType->getValueAsString();
+
+        replaceInitialValue(formula, joint, motionType);
 
         // check if there is a second motion as cylindrical can have both,
         // in which case the solver needs a general motion.
@@ -1604,6 +1614,8 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
             if (motionType2 == motionType) {
                 continue;  // only if both motions are different. ie one angular and one linear.
             }
+
+            replaceInitialValue(formula2, joint, motionType2);
 
             auto ASMTmotion = CREATE<ASMTGeneralMotion>::With();
             ASMTmotion->setName(joint->getFullName() + "-ScrewMotion");
@@ -1789,7 +1801,7 @@ int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     int slidingFound = 0;
-    for (auto* jt : getJoints(false, false)) {
+    for (auto* jt : getJoints()) {
         if (getJointType(jt) == JointType::Slider) {
             App::DocumentObject* jpart1 = getMovingPartFromRef(jt, "Reference1");
             App::DocumentObject* jpart2 = getMovingPartFromRef(jt, "Reference2");
@@ -1961,7 +1973,7 @@ std::vector<ObjRef> AssemblyObject::getDownstreamParts(
         setJointActivated(joint, false);
     }
 
-    std::vector<App::DocumentObject*> joints = getJoints(false);
+    std::vector<App::DocumentObject*> joints = getJoints();
 
     std::vector<ObjRef> connectedParts = {{part, nullptr}};
     traverseAndMarkConnectedParts(part, connectedParts, joints);
@@ -2068,6 +2080,78 @@ void AssemblyObject::ensureIdentityPlacements()
                 pPlc->setValue(plc * pPlc->getValue());
                 elt->purgeTouched();
             }
+        }
+    }
+}
+
+void AssemblyObject::syncGroundedJoints()
+{
+    if (App::GetApplication().isRestoring()) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> groundedJoints = getGroundedJoints();
+    std::map<App::DocumentObject*, App::DocumentObject*> groundedMap;
+    for (auto gJoint : groundedJoints) {
+        auto propObj = dynamic_cast<App::PropertyLink*>(gJoint->getPropertyByName("ObjectToGround"));
+        if (propObj && propObj->getValue()) {
+            groundedMap[propObj->getValue()] = gJoint;
+        }
+    }
+
+    std::vector<App::DocumentObject*> allParts = getAssemblyComponents(this);
+
+    for (auto part : allParts) {
+        if (!part) {
+            continue;
+        }
+        auto propPlc = part->getPlacementProperty();
+        if (!propPlc) {
+            continue;
+        }
+
+        bool isReadOnly = propPlc->isReadOnly();
+        auto it = groundedMap.find(part);
+        bool hasJoint = (it != groundedMap.end());
+
+        // Create grounding joint if placement is locked but no joint exists
+        if (isReadOnly && !hasJoint) {
+            Base::PyGILStateLocker lock;
+            try {
+                std::string docName = getDocument()->getName();
+                std::string asmName = getNameInDocument();
+                std::string partName = part->getNameInDocument();
+                std::string code = "import FreeCAD\n"
+                                   "try:\n"
+                                   "    import JointObject\n"
+                                   "    import UtilsAssembly\n"
+                                   "    doc = FreeCAD.getDocument('"
+                    + docName
+                    + "')\n"
+                      "    asm = doc.getObject('"
+                    + asmName
+                    + "')\n"
+                      "    part = doc.getObject('"
+                    + partName
+                    + "')\n"
+                      "    jg = UtilsAssembly.getJointGroup(asm)\n"
+                      "    if jg:\n"
+                      "        j = jg.newObject('App::FeaturePython', 'GroundedJoint')\n"
+                      "        JointObject.GroundedJoint(j, part)\n"
+                      "        if hasattr(JointObject, 'ViewProviderGroundedJoint') and getattr(j, "
+                      "'ViewObject', None):\n"
+                      "            JointObject.ViewProviderGroundedJoint(j.ViewObject)\n"
+                      "        j.recompute()\n"
+                      "except Exception as e:\n"
+                      "    FreeCAD.Console.PrintError(str(e) + '\\n')\n";
+                Base::Interpreter().runString(code.c_str());
+            }
+            catch (...) {
+            }
+        }
+        // Delete grounding joint if placement lock was lifted
+        else if (!isReadOnly && hasJoint) {
+            getDocument()->removeObject(it->second->getNameInDocument());
         }
     }
 }

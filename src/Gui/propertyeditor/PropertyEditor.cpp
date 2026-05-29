@@ -25,6 +25,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 #include <QClipboard>
+#include <QCompleter>
 #include <QInputDialog>
 #include <QHeaderView>
 #include <QMenu>
@@ -35,6 +36,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 
 #include "Document.h"
@@ -402,7 +404,7 @@ void PropertyEditor::openEditor(const QModelIndex& index)
     if (items.size() > 1) {
         str << "...";
     }
-    transactionID = obj->getDocument()->openTransaction(str.str().c_str());
+    transactionID = Command::openActiveDocumentCommand(str.str());
     FC_LOG("editor transaction " << App::GetApplication().getTransactionName(transactionID));
 }
 
@@ -466,6 +468,7 @@ void PropertyEditor::closeTransaction()
             recomputeDocument(doc);
         }
         doc->commitTransaction();
+        transactionID = 0;
     }
 }
 
@@ -1217,7 +1220,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             const char* oldName = prop->getName();
             QString res = QInputDialog::getText(
                 Gui::getMainWindow(),
-                tr("Rename property"),
+                tr("Rename Property"),
                 tr("Property name"),
                 QLineEdit::Normal,
                 QString::fromUtf8(oldName)
@@ -1244,14 +1247,49 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             if (!groupName) {
                 groupName = "Base";
             }
-            QString res = QInputDialog::getText(
-                Gui::getMainWindow(),
-                tr("Rename property group"),
-                tr("Group name:"),
-                QLineEdit::Normal,
-                QString::fromUtf8(groupName)
-            );
-            if (res.size()) {
+
+            QInputDialog dialog(Gui::getMainWindow());
+            dialog.setInputMode(QInputDialog::TextInput);
+            dialog.setWindowTitle(tr("Rename Property Group"));
+            dialog.setLabelText(tr("Group name:"));
+            dialog.setTextValue(QString::fromUtf8(groupName));
+
+            if (auto* lineEdit = dialog.findChild<QLineEdit*>()) {
+                QStringList groups;
+                if (auto* container = (*props.begin())->getContainer()) {
+                    std::vector<App::Property*> properties;
+                    container->getPropertyList(properties);
+                    for (auto* property : properties) {
+                        const char* group = property ? property->getGroup() : nullptr;
+                        if (!group || !*group) {
+                            continue;
+                        }
+                        const QString groupName = QString::fromUtf8(group);
+                        if (!groups.contains(groupName)) {
+                            groups.push_back(groupName);
+                        }
+                    }
+                }
+                if (!groups.isEmpty()) {
+                    auto* completer = new QCompleter(groups, lineEdit);
+                    completer->setCaseSensitivity(Qt::CaseInsensitive);
+                    completer->setCompletionMode(QCompleter::PopupCompletion);
+                    lineEdit->setCompleter(completer);
+                    connect(
+                        completer,
+                        qOverload<const QString&>(&QCompleter::activated),
+                        &dialog,
+                        &QDialog::accept,
+                        Qt::QueuedConnection
+                    );
+                }
+            }
+
+            if (dialog.exec() == QDialog::Accepted) {
+                QString res = dialog.textValue().trimmed();
+                if (res.isEmpty()) {
+                    return;
+                }
                 std::string group = res.toUtf8().constData();
                 for (auto prop : props) {
                     prop->getContainer()->changeDynamicProperty(prop, group.c_str(), nullptr);
@@ -1296,8 +1334,10 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event)
                     }
                 }
             }
-            else if (mouse_event->type() == QEvent::MouseButtonPress
-                     && mouse_event->button() == Qt::LeftButton && !dragInProgress) {
+            else if (
+                mouse_event->type() == QEvent::MouseButtonPress
+                && mouse_event->button() == Qt::LeftButton && !dragInProgress
+            ) {
                 if (indexResizable(mouse_event->pos()).isValid()) {
                     dragInProgress = true;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -1309,8 +1349,10 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event)
                     return true;
                 }
             }
-            else if (mouse_event->type() == QEvent::MouseButtonRelease
-                     && mouse_event->button() == Qt::LeftButton && dragInProgress) {
+            else if (
+                mouse_event->type() == QEvent::MouseButtonRelease
+                && mouse_event->button() == Qt::LeftButton && dragInProgress
+            ) {
                 dragInProgress = false;
 
                 auto hGrp = App::GetApplication().GetParameterGroupByPath(

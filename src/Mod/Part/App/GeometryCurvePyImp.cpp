@@ -227,15 +227,9 @@ PyObject* GeometryCurvePy::discretize(PyObject* args, PyObject* kwds) const
         static const std::array<const char*, 4> kwds_Deflection {"Deflection", "First", "Last", nullptr};
         PyErr_Clear();
         double deflection;
-        if (Base::Wrapped_ParseTupleAndKeywords(
-                args,
-                kwds,
-                "d|dd",
-                kwds_Deflection,
-                &deflection,
-                &first,
-                &last
-            )) {
+        if (
+            Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)
+        ) {
             GCPnts_UniformDeflection discretizer(adapt, deflection, first, last);
             if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
                 Py::List points;
@@ -637,7 +631,9 @@ PyObject* GeometryCurvePy::projectPoint(PyObject* args, PyObject* kwds) const
     PyObject* v;
     const char* meth = "NearestPoint";
     static const std::array<const char*, 3> kwlist {"Point", "Method", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist, &Base::VectorPy::Type, &v, &meth)) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist, &Base::VectorPy::Type, &v, &meth)
+    ) {
         return nullptr;
     }
 
@@ -791,9 +787,8 @@ PyObject* GeometryCurvePy::makeRuledSurface(PyObject* args) const
         }
         // check the result surface type
         if (aSurf->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
-            Handle(Geom_RectangularTrimmedSurface) aTSurf = Handle(
-                Geom_RectangularTrimmedSurface
-            )::DownCast(aSurf);
+            Handle(Geom_RectangularTrimmedSurface)
+                aTSurf = Handle(Geom_RectangularTrimmedSurface)::DownCast(aSurf);
             return new RectangularTrimmedSurfacePy(new GeomTrimmedSurface(aTSurf));
         }
         else if (aSurf->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {

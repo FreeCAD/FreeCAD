@@ -58,6 +58,7 @@
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
+#include "Constraint.h"
 #include "SketchObjectPy.h"
 #include "ExternalGeometryFacade.h"
 
@@ -119,11 +120,6 @@ SketchObject::SketchObject() : geoLastId(0)
                       "Internal Geometry",
                       App::Prop_None,
                       "Enables selection of closed profiles within a sketch as input for operations");
-    ADD_PROPERTY_TYPE(_ExternalGeoVersion,
-                      (0),
-                      "Compatibility",
-                      (App::PropertyType)(App::Prop_Hidden | App::Prop_ReadOnly),
-                      "Version of external geometry projection algorithm");
 
     Geometry.setOrderRelevant(true);
 
@@ -173,8 +169,7 @@ void SketchObject::setupObject()
     ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher");
     ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
-    MakeInternals.setValue(hGrpp->GetBool("MakeInternals", false));
-    _ExternalGeoVersion.setValue(1);
+    MakeInternals.setValue(hGrpp->GetBool("MakeInternals", true));
     inherited::setupObject();
 }
 
@@ -405,21 +400,21 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
         return Part::TopoShape();
 
     try {
+        Part::TopoShape result(getID(), getDocument()->getStringHasher());
+        result = result.makeElementFace(edges.getSubTopoShapes(TopAbs_WIRE),
+                /*op*/"",
+                /*maker*/"Part::FaceMakerBuildFace",
+                /*pln*/nullptr
+        );
+
+        // Append open wires (edges not part of any closed face)
         Part::WireJoiner joiner;
         joiner.setTightBound(true);
         joiner.setMergeEdges(true);
         joiner.addShape(edges);
-        Part::TopoShape result(getID(), getDocument()->getStringHasher());
-        if (!joiner.Shape().IsNull()) {
-            joiner.getResultWires(result, "SKF");
-            result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
-                    /*op*/"",
-                    /*maker*/"Part::FaceMakerRing",
-                    /*pln*/nullptr
-            );
-        }
         Part::TopoShape openWires(getID(), getDocument()->getStringHasher());
         joiner.getOpenWires(openWires, "SKF");
+
         if (openWires.isNull()) {
             return result;  // No open wires, return either face or empty toposhape
         }
@@ -853,6 +848,22 @@ int SketchObject::getGroupHandleIfInGroup(int geoId)
         }
     }
     return geoId;
+}
+
+std::set<int> SketchObject::getGroupGeometries(int handleGeoId) const
+{
+    std::set<int> geoIds;
+    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
+    for (const auto& constr : vals) {
+        if (constr->Type == Group || constr->Type == Text) {
+            if (constr->getGeoId(0) == handleGeoId) {
+                for (int i = 1; constr->hasElement(i); ++i) {
+                    geoIds.insert(constr->getElement(i).GeoId);
+                }
+            }
+        }
+    }
+    return geoIds;
 }
 
 PyObject* SketchObject::getPyObject()
@@ -1449,6 +1460,16 @@ void SketchObject::migrateSketch()
 
             g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
         }
+    }
+
+    {
+        // Migrate point-line, circle-circle and circle-line distance from abs to signed
+        auto constraints = Constraints.getValues();
+        for (auto& constr : constraints) {
+            setOrientation(constr, false);
+        }
+
+        Constraints.setValues(std::move(constraints));
     }
 
     /* parabola axis as internal geometry */

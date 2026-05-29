@@ -579,6 +579,7 @@ void UiLoaderPy::init_type()
     );
     add_varargs_method("setWorkingDirectory", &UiLoaderPy::setWorkingDirectory, "setWorkingDirectory()");
     add_varargs_method("workingDirectory", &UiLoaderPy::workingDirectory, "workingDirectory()");
+    behaviors().readyType();
 }
 
 UiLoaderPy::UiLoaderPy()

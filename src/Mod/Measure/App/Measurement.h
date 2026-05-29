@@ -60,6 +60,7 @@ enum class MeasureType
     Torus,      // One Torus
     Plane,      // One Plane
     TwoPlanes,  // One Plane
+    Disc,
     Points,
     PointToPoint,  // Measure between TWO points
     PointToEdge,   // Measure between ONE point and ONE edge

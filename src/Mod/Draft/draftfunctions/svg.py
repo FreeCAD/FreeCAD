@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the SVG representation of various shapes."""
+
 ## @package svg
 # \ingroup draftfunctions
 # \brief Provides functions to return the SVG representation of shapes.
@@ -36,6 +37,8 @@ import DraftVecUtils
 import WorkingPlane
 from draftfunctions import svgtext
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
+
+# from draftgeoutils import fillets as geo_fillets
 from draftobjects import layer
 from draftutils import params
 from draftutils import utils
@@ -43,7 +46,6 @@ from draftutils.messages import _wrn, _err
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 
 ## \addtogroup draftfunctions
@@ -323,7 +325,7 @@ def _svg_dimension(
     if not nolines:
         svg += 'fill="none" stroke="'
         svg += stroke + '" '
-        svg += 'stroke-width="' + str(linewidth) + ' px" '
+        svg += 'stroke-width="' + str(linewidth) + 'px" '
         svg += 'style="stroke-width:' + str(linewidth)
         svg += ';stroke-miterlimit:4;stroke-dasharray:none;stroke-linecap:square" '
         svg += 'freecad:basepoint1="' + str(p1.x) + " " + str(p1.y) + '" '
@@ -645,6 +647,10 @@ def get_svg(
             if vobj.Proxy:
                 if hasattr(vobj.Proxy, "circle"):
                     prx = vobj.Proxy
+                    p1 = get_proj(prx.p1, plane)
+                    p2 = get_proj(prx.p2, plane)
+                    p3 = get_proj(prx.p3, plane)
+                    p4 = get_proj(prx.p4, plane)
 
                     # drawing arc
                     fill = "none"
@@ -661,12 +667,38 @@ def get_svg(
                         obj, plane, fill, pathdata, stroke, linewidth, lstyle, edges=edges
                     )
 
+                    if hasattr(vobj, "DimOvershoot") and vobj.DimOvershoot.Value:
+                        shootsize = vobj.DimOvershoot.Value / pointratio
+                        tangent1 = get_proj(prx.circle.tangentAt(prx.circle.FirstParameter), plane)
+                        tangent2 = get_proj(prx.circle.tangentAt(prx.circle.LastParameter), plane)
+                        if not DraftVecUtils.isNull(tangent1):
+                            svg += get_overshoot(
+                                p2, shootsize, stroke, linewidth, -DraftVecUtils.angle(tangent1)
+                            )
+                        if not DraftVecUtils.isNull(tangent2):
+                            svg += get_overshoot(
+                                p3,
+                                shootsize,
+                                stroke,
+                                linewidth,
+                                -DraftVecUtils.angle(tangent2) + math.pi,
+                            )
+
+                    if hasattr(vobj, "ExtOvershoot") and vobj.ExtOvershoot.Value:
+                        shootsize = vobj.ExtOvershoot.Value / pointratio
+                        ext1 = p1 - p2
+                        ext2 = p4 - p3
+                        if not DraftVecUtils.isNull(ext1):
+                            svg += get_overshoot(
+                                p2, shootsize, stroke, linewidth, -DraftVecUtils.angle(ext1)
+                            )
+                        if not DraftVecUtils.isNull(ext2):
+                            svg += get_overshoot(
+                                p3, shootsize, stroke, linewidth, -DraftVecUtils.angle(ext2)
+                            )
+
                     # draw extlines
                     if hasattr(vobj, "ExtLines") and vobj.ExtLines:
-                        p1 = get_proj(prx.p1, plane)
-                        p2 = get_proj(prx.p2, plane)
-                        p3 = get_proj(prx.p3, plane)
-                        p4 = get_proj(prx.p4, plane)
                         d1 = (
                             "M " + str(p1.x) + " " + str(p1.y) + " L " + str(p2.x) + " " + str(p2.y)
                         )
@@ -675,7 +707,7 @@ def get_svg(
                         )
                         svg += '<path d="' + d1 + '" '
                         svg += 'fill="none" stroke="' + stroke + '" '
-                        svg += 'stroke-width="' + str(linewidth) + ' px" '
+                        svg += 'stroke-width="' + str(linewidth) + 'px" '
                         svg += 'style="stroke-width:' + str(linewidth)
                         svg += (
                             ";stroke-miterlimit:4;stroke-dasharray:"
@@ -684,7 +716,7 @@ def get_svg(
                         )
                         svg += '<path d="' + d2 + '" '
                         svg += 'fill="none" stroke="' + stroke + '" '
-                        svg += 'stroke-width="' + str(linewidth) + ' px" '
+                        svg += 'stroke-width="' + str(linewidth) + 'px" '
                         svg += 'style="stroke-width:' + str(linewidth)
                         svg += (
                             ";stroke-miterlimit:4;stroke-dasharray:"
@@ -699,8 +731,6 @@ def get_svg(
                         and hasattr(vobj, "ArrowSizeStart")
                         and hasattr(vobj, "ArrowSizeEnd")
                     ):
-                        p2 = get_proj(prx.p2, plane)
-                        p3 = get_proj(prx.p3, plane)
                         arrowsizestart = vobj.ArrowSizeStart.Value / pointratio
                         halfstartarrowlength = 2 * arrowsizestart
                         startarrowangle = 2 * math.asin(
@@ -773,7 +803,7 @@ def get_svg(
                 svg_path = "<path "
                 svg_path += 'fill="none" '
                 svg_path += 'stroke="{}" '.format(stroke)
-                svg_path += 'stroke-width="{}" '.format(linewidth)
+                svg_path += 'stroke-width="{}px" '.format(linewidth)
                 svg_path += 'stroke-linecap="square" '
                 svg_path += 'd="{}"'.format(path_dir_str)
                 svg_path += "/>"
@@ -930,7 +960,7 @@ def get_svg(
         basewire = obj.Base.Shape.Wires[0].copy()
         # Not applying rounding because the results are not correct
         # if hasattr(obj, "Rounding") and obj.Rounding:
-        #     basewire = DraftGeomUtils.filletWire(
+        #     basewire = geo_fillets.filletWire(
         #         basewire, obj.Rounding * obj.Diameter.Value
         #     )
         wires = []
@@ -1140,11 +1170,24 @@ def get_svg(
             and hasattr(vobj, "ArrowTypeEnd")
             and hasattr(vobj, "ArrowSizeStart")
             and hasattr(vobj, "ArrowSizeEnd")
-            and len(obj.Shape.Vertexes) > 1
+            and len(obj.Points) > 1
         ):
-            # Draft_Wire
-            p1 = get_proj(obj.Shape.Vertexes[0].Point, plane)
-            p2 = get_proj(obj.Shape.Vertexes[1].Point, plane)
+            # Draft_Wire, Draft_BezCurve and Draft_BSpline.
+            shp = obj.Shape
+            end_idx = 0 if obj.Closed else -1
+            if utils.get_type(obj) == "BSpline":
+                edge = shp.Edges[0]  # shp.ShapeType may be "Edge"/"Wire"/"Face", we need an edge.
+                v1 = edge.tangentAt(edge.FirstParameter)
+                if obj.Closed:
+                    v2 = -v1
+                else:
+                    v2 = -edge.tangentAt(edge.LastParameter)
+            else:
+                rot = obj.Placement.Rotation
+                v1 = rot.multVec(obj.Points[1].sub(obj.Points[0]))
+                v2 = rot.multVec(obj.Points[end_idx - 1].sub(obj.Points[end_idx]))
+            p1 = get_proj(shp.Vertexes[0].Point, plane)
+            p2 = get_proj(shp.Vertexes[0].Point + v1, plane)
             svg += get_arrow(
                 obj,
                 vobj.ArrowTypeStart,
@@ -1154,8 +1197,8 @@ def get_svg(
                 linewidth,
                 -DraftVecUtils.angle(p2 - p1),
             )
-            p1 = get_proj(obj.Shape.Vertexes[-1].Point, plane)
-            p2 = get_proj(obj.Shape.Vertexes[-2].Point, plane)
+            p1 = get_proj(shp.Vertexes[end_idx].Point, plane)
+            p2 = get_proj(shp.Vertexes[end_idx].Point + v2, plane)
             svg += get_arrow(
                 obj,
                 vobj.ArrowTypeEnd,
