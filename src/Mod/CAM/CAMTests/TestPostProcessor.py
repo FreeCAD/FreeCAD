@@ -29,10 +29,11 @@ from unittest.mock import patch, Mock
 
 import FreeCAD
 import Path
+import Path.Preferences
+import Path.Main.Job as PathJob
 from Path.Post.Processor import PostProcessor, PostProcessorFactory, _HeaderBuilder
 import Path.Post.Command as PathCommand
-import Path.Main.Job as PathJob
-import Path.Preferences
+from Path.Post.PostList import Postable
 from Machine.models.machine import Machine
 
 PathCommand.LOG_MODULE = Path.Log.thisModule()
@@ -743,3 +744,82 @@ class TestConfigurationBundle(unittest.TestCase):
         pp._job.PostProcessorPropertyOverrides = "[1, 2, 3]"
         result = pp._read_job_overrides()
         self.assertEqual(result, {})
+
+
+class TestPostProcessorMBPPMethods(unittest.TestCase):
+    def test_add_post_items(self):
+        """test the several cases of appending/not-appending"""
+
+        # we shouldn't need any of the arguments
+        pp = PostProcessor(None, None, None, None)
+
+        def initial_sections():
+            # new each time
+
+            postables = [
+                Postable(
+                    label=f"p{pi}",
+                    item_type=f"item{pi}",  # what we append based on
+                    data={},
+                    path=None,
+                    source=None,
+                )
+                for pi in range(1, 3)
+            ]
+
+            # [ ("s1", [ Postable("p1", "item1")...])... ]
+            initial = []
+            for si in range(1, 3):
+                initial.append((f"s{si}", postables))
+            return initial
+
+        def to_str(sections):
+            rez = []
+            for si, (sn, postables) in enumerate(sections):
+                rez.append(f"Section[{si}] '{sn}'")
+                for pi, p in enumerate(postables):
+                    rez.append(f"  Postable[{pi}] '{p.Name}'")
+            return "\n".join(rez)
+
+        unmodified = initial_sections()
+
+        sections = pp._add_post_items(initial_sections(), lambda sn, i, ss: [])
+
+        # unchanged
+        self.assertEqual(len(sections), len(unmodified))
+        for i in range(0, 2):
+            self.assertEqual(
+                len(sections[i]),
+                len(unmodified[i]),
+                f"Items in section[{i}] are same length, modified=\n---\n{to_str(sections)}\n---",
+            )
+            for item_i in range(0, 2):
+                self.assertEqual(
+                    unmodified[i][1],
+                    sections[i][1],
+                    f"Section[{i}].item[{item_i}] are unchanged, modified=\n---\n{to_str(sections)}\n---",
+                )
+
+        def append_s1_p1(sn, postable, section_state):
+            if postable.Name == "p1":
+                section_state["dumy"] = 1
+                return [
+                    Postable(
+                        label=f"append_p1", item_type=f"itemp1_a", data={}, path=None, source=None
+                    )
+                ]
+            else:
+                return []
+
+        sections = pp._add_post_items(initial_sections(), append_s1_p1)
+        self.assertEqual(len(sections), len(unmodified))
+        self.assertEqual(
+            sections[0][1][1].Name,
+            "append_p1",
+            f"in section[0].Postable[1]---\n{to_str(sections)}\n---",
+        )
+        self.assertEqual(
+            sections[1][1][1].Name,
+            "append_p1",
+            f"in section[1].Postable[1]---\n{to_str(sections)}\n---",
+        )
