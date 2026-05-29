@@ -182,7 +182,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <item row="3" column="0">
        <widget class="QLabel" name="stepOver_label">
         <property name="text">
-         <string>Step Over</string>
+         <string>Step over</string>
         </property>
        </widget>
       </item>

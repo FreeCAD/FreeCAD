@@ -172,7 +172,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Step Over</string>
+         <string>Step over</string>
         </property>
        </widget>
       </item>
