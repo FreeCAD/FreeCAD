@@ -454,9 +454,6 @@ def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, L
                         break
 
                 if m6_cmd and len(m6_cmd.Parameters) > 0:
-                    # M6 command has parameters like {'T': 5}, access via key
-                    tool_number = m6_cmd.Parameters.get("T", item.ToolNumber)
-
                     tc_position = next(
                         (
                             idx

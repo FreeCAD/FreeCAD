@@ -220,7 +220,6 @@ def _decompose_2axis(
         List of candidate angle dictionaries
     """
     first_ref, first_plane = _get_relangle_params(first_axis.rotation_vector)
-    second_ref, second_plane = _get_relangle_params(second_axis.rotation_vector)
 
     z_target = FreeCAD.Vector(0, 0, 1)
     v2 = second_axis.rotation_vector.normalize()
@@ -259,7 +258,7 @@ def _decompose_2axis(
         C_const = d_par.dot(v2)
         # A·cos(θ) + B·sin(θ) = required_proj - C
         rhs = required_proj - C_const
-        amplitude = math.sqrt(A_coeff**2 + B_coeff**2)
+        amplitude = math.hypot(A_coeff, B_coeff)
         if amplitude > 1e-12 and abs(rhs / amplitude) <= 1.0 + 1e-9:
             ratio = max(-1.0, min(1.0, rhs / amplitude))
             base = math.acos(ratio)

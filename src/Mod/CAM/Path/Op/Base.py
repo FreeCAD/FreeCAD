@@ -139,6 +139,8 @@ def _transform_shape_with_arc_fix(shape, matrix):
                     any_converted = True
                     continue
             except Exception:
+                # Biarc conversion can fail for degenerate or unsupported
+                # B-spline geometry; fall back to keeping the original edge.
                 pass
         fixed_edges.append(edge)
 

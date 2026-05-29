@@ -25,9 +25,10 @@ import FreeCAD
 import Part
 import Path
 import Path.Op.Util as PathOpUtil
+import Path.Op.Custom as PathCustom
+import Path.Main.Job as PathJob
 import CAMTests.PathTestUtils as PathTestUtils
 import math
-from unittest.mock import MagicMock
 
 from FreeCAD import Vector
 
@@ -996,40 +997,50 @@ def _makeRectanglePath(x0, y0, x1, y1, z):
     return Path.Path(cmds)
 
 
-def _makeFakeOp(name, workplane, path, diameter=5.0, active=True):
-    """Build a minimal duck-typed op for getClearedAreas filtering tests."""
-    op = MagicMock()
-    op.Name = name
-    op.Active = active
-    op.Workplane = workplane
-    op.Path = path
-    op.ToolController.Tool.Diameter.getValueAs.return_value = diameter
-    # Strip TipAngle so the dz drill branch in getClearedAreas is not taken
-    del op.ToolController.Tool.TipAngle
-    # No RestMachiningPass attribute on a regular op
-    del op.RestMachiningPass
-    return op
-
-
 class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
     """Verify getClearedAreas filters previous ops by Workplane.
 
     REST machining stores each op's Path in its own (rotated) workplane frame.
     Mixing frames produces meaningless cleared-area polygons, so previous ops
     with a different Workplane than the current op must be skipped.
+
+    The previous ops are real Custom (user-gcode) operations rather than mocks:
+    this exercises the genuine ``PathDressup.baseOp`` resolution used to detect
+    the current op while iterating, and the real ToolController/Workplane
+    property access. Each op's Path is assigned directly so the filtering logic
+    is tested independently of the rotation/post pipeline, which has its own
+    coverage.
     """
 
-    def _makeJob(self, ops):
-        job = MagicMock()
-        job.GeometryTolerance.getValueAs.return_value = 0.001
-        job.Operations.Group = ops
-        return job
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("TestGetClearedAreasWorkplane")
+        box = self.doc.addObject("Part::Box", "Box")
+        box.Length = 100
+        box.Width = 100
+        box.Height = 100
+        self.doc.recompute()
+        self.job = PathJob.Create("Job", [box], None)
+        self.job.GeometryTolerance.Value = 0.001
+        self.doc.recompute()
 
-    def _makeCurrentOp(self, name, workplane, job):
-        op = MagicMock()
-        op.Name = name
-        op.Workplane = workplane
-        op.Proxy.job = job
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)
+
+    def _makeOp(self, name, workplane, path, diameter=5.0, active=True):
+        """Create a real Custom op in the job with the given Path and Workplane."""
+        op = PathCustom.Create(name, parentJob=self.job)
+        op.Active = active
+        if workplane is None:
+            # Simulate an older op that predates the Workplane property.
+            op.removeProperty("Workplane")
+        else:
+            op.Workplane = workplane
+        op.ToolController.Tool.Diameter = diameter
+        # Assign the toolpath directly: getClearedAreas only reads op.Path, and
+        # driving it here keeps the cleared-area filtering test independent of
+        # path generation (and of any machine configuration the rotation
+        # pipeline would otherwise require for non-Z-up workplanes).
+        op.Path = path
         return op
 
     def _bbox(self):
@@ -1041,14 +1052,8 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
     def test_sameWorkplaneIncluded(self):
         """A previous op sharing the current op's Workplane is included."""
         z_up = Vector(0, 0, 1)
-        prev = _makeFakeOp("Prev", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
-        job = self._makeJob([prev, "_currentSentinel"])
-        current = self._makeCurrentOp("_currentSentinel", z_up, job)
-        # Wire baseOp() lookup so it returns the op itself (no dressup wrapper).
-        # PathDressup.baseOp(op) returns op when not wrapped, which is what
-        # MagicMock-based ops simulate by default. We patch the Group entry
-        # for current to be the actual op instance to exercise the break.
-        job.Operations.Group = [prev, current]
+        self._makeOp("Prev", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
+        current = self._makeOp("Current", z_up, _makeRectanglePath(-10, -10, 10, 10, -1))
 
         areas = PathOpUtil.getClearedAreas(current, self._bbox())
         self.assertEqual(len(areas), 1, "Same-workplane previous op must be included")
@@ -1057,13 +1062,9 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
         """A previous op with a different Workplane is skipped."""
         z_up = Vector(0, 0, 1)
         x_dir = Vector(1, 0, 0)
-        prev_top = _makeFakeOp("PrevTop", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
-        prev_side = _makeFakeOp("PrevSide", x_dir, _makeRectanglePath(-15, -15, 15, 15, -1))
-        current = MagicMock()
-        current.Name = "Current"
-        current.Workplane = x_dir
-        job = self._makeJob([prev_top, prev_side, current])
-        current.Proxy.job = job
+        self._makeOp("PrevTop", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
+        self._makeOp("PrevSide", x_dir, _makeRectanglePath(-15, -15, 15, 15, -1))
+        current = self._makeOp("Current", x_dir, _makeRectanglePath(-10, -10, 10, 10, -1))
 
         areas = PathOpUtil.getClearedAreas(current, self._bbox())
         self.assertEqual(
@@ -1075,13 +1076,9 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
     def test_currentOpStopsIteration(self):
         """Ops at or after the current op in the list are not considered."""
         z_up = Vector(0, 0, 1)
-        prev = _makeFakeOp("Prev", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
-        later = _makeFakeOp("Later", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
-        current = MagicMock()
-        current.Name = "Current"
-        current.Workplane = z_up
-        job = self._makeJob([prev, current, later])
-        current.Proxy.job = job
+        self._makeOp("Prev", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
+        current = self._makeOp("Current", z_up, _makeRectanglePath(-10, -10, 10, 10, -1))
+        self._makeOp("Later", z_up, _makeRectanglePath(-20, -20, 20, 20, -1))
 
         areas = PathOpUtil.getClearedAreas(current, self._bbox())
         self.assertEqual(len(areas), 1, "Operations after the current op must be ignored")
@@ -1089,12 +1086,8 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
     def test_inactiveOpSkipped(self):
         """Inactive previous ops are skipped regardless of Workplane."""
         z_up = Vector(0, 0, 1)
-        prev = _makeFakeOp("Prev", z_up, _makeRectanglePath(-20, -20, 20, 20, -1), active=False)
-        current = MagicMock()
-        current.Name = "Current"
-        current.Workplane = z_up
-        job = self._makeJob([prev, current])
-        current.Proxy.job = job
+        self._makeOp("Prev", z_up, _makeRectanglePath(-20, -20, 20, 20, -1), active=False)
+        current = self._makeOp("Current", z_up, _makeRectanglePath(-10, -10, 10, 10, -1))
 
         areas = PathOpUtil.getClearedAreas(current, self._bbox())
         self.assertEqual(len(areas), 0, "Inactive previous ops must not contribute")
@@ -1102,14 +1095,10 @@ class TestGetClearedAreasWorkplane(PathTestUtils.PathTestBase):
     def test_missingWorkplaneTreatedAsZUp(self):
         """An op without a Workplane property is treated as Z-up."""
         z_up = Vector(0, 0, 1)
-        prev = _makeFakeOp("Prev", None, _makeRectanglePath(-20, -20, 20, 20, -1))
-        # Remove Workplane to simulate an older op missing the property.
-        del prev.Workplane
-        current = MagicMock()
-        current.Name = "Current"
-        current.Workplane = z_up
-        job = self._makeJob([prev, current])
-        current.Proxy.job = job
+        # Passing workplane=None drops the Workplane property to simulate an
+        # older op missing it.
+        self._makeOp("Prev", None, _makeRectanglePath(-20, -20, 20, 20, -1))
+        current = self._makeOp("Current", z_up, _makeRectanglePath(-10, -10, 10, 10, -1))
 
         areas = PathOpUtil.getClearedAreas(current, self._bbox())
         self.assertEqual(len(areas), 1, "A previous op without Workplane should default to Z-up")
