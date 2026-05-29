@@ -601,7 +601,8 @@ bool DrawSketchHandler::seekLineExtensionAutoConstraint(
     constexpr double segmentStartParameter = 0.0;
     constexpr double segmentEndParameter = 1.0;
 
-    double bestDistance = getAutoConstraintSearchDistance();
+    const double searchDistance = getAutoConstraintSearchDistance();
+    double bestDistanceSquared = searchDistance * searchDistance;
     int bestGeoId = GeoEnum::GeoUndef;
     Base::Vector2d bestAnchor;
     Base::Vector2d bestProjection;
@@ -636,12 +637,12 @@ bool DrawSketchHandler::seekLineExtensionAutoConstraint(
         }
 
         const Base::Vector2d projection = startPoint + parameter * lineDirection;
-        const double distance = (Pos - projection).Length();
-        if (distance > bestDistance) {
+        const double distanceSquared = (Pos - projection).Sqr();
+        if (distanceSquared > bestDistanceSquared) {
             continue;
         }
 
-        bestDistance = distance;
+        bestDistanceSquared = distanceSquared;
         bestGeoId = geoId;
         bestAnchor = parameter < segmentStartParameter ? startPoint : endPoint;
         bestProjection = projection;
@@ -691,6 +692,16 @@ bool DrawSketchHandler::isLineExtensionAutoConstraintHintVisible(
 ) const
 {
     return isLineExtensionAutoConstraintHintVisible(std::vector<Base::Vector2d> {start, end});
+}
+
+bool DrawSketchHandler::getLineExtensionAutoConstraintSnapPoint(Base::Vector2d& point) const
+{
+    if (!lineExtensionAutoConstraintHint.isValid) {
+        return false;
+    }
+
+    point = lineExtensionAutoConstraintHint.end;
+    return true;
 }
 
 bool DrawSketchHandler::seekAlignmentAutoConstraint(

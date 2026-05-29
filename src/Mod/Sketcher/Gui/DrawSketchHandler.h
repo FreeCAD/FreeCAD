@@ -360,6 +360,7 @@ protected:
         const Base::Vector2d& start,
         const Base::Vector2d& end
     ) const;
+    bool getLineExtensionAutoConstraintSnapPoint(Base::Vector2d& point) const;
 
     bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
 
