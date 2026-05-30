@@ -388,7 +388,7 @@ bool Gui::OpenURLInBrowser(const char* URL)
             QObject::tr(
                 "Opening web pages in the default browser is disabled.\n"
                 "Change this in Preferences > General > Help > External browser links."
-            )
+                "Opening web pages in the default browser is disabled by default but can be changed in the preferences"
         );
         return false;
     }
