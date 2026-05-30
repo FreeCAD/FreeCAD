@@ -384,7 +384,7 @@ bool Gui::OpenURLInBrowser(const char* URL)
     if (policy == NeverOpenExternalBrowserPolicy) {
         QMessageBox::warning(
             Gui::getMainWindow(),
-            QObject::tr("External links are disabled"),
+            QObject::tr("External Hyperlink Disabled"),
             QObject::tr(
                 "Opening web pages in the default browser is disabled.\n"
                 "Change this in Preferences > General > Help > External browser links."
