@@ -66,7 +66,26 @@ class BIM_ImagePlane:
             self.basepoint = None
             self.opposite = None
             self.tracker = DraftTrackers.rectangleTracker()
-            FreeCADGui.Snapper.getPoint(callback=self.PointCallback, movecallback=self.MoveCallback)
+            FreeCADGui.Snapper.getPoint(
+                callback=self.PointCallback,
+                movecallback=self.MoveCallback,
+                hints=self.get_hints,
+            )
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        if not self.basepoint:
+            label = translate("BIM", "%1 pick first point")
+        else:
+            label = translate("BIM", "%1 pick opposite point")
+        return (
+            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def MoveCallback(self, point, snapinfo):
         import DraftVecUtils
@@ -99,7 +118,10 @@ class BIM_ImagePlane:
             self.tracker.setorigin(point)
             self.tracker.on()
             FreeCADGui.Snapper.getPoint(
-                last=point, callback=self.PointCallback, movecallback=self.MoveCallback
+                last=point,
+                callback=self.PointCallback,
+                movecallback=self.MoveCallback,
+                hints=self.get_hints,
             )
         else:
             # this is our second point

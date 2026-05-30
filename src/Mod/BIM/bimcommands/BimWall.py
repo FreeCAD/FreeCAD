@@ -144,8 +144,24 @@ class Arch_Wall:
             callback=self.getPoint,
             extradlg=self.taskbox(),
             title=translate("Arch", "First Point of Wall"),
+            hints=self.get_hints,
         )
         FreeCADGui.draftToolBar.continueCmd.show()
+
+    def get_hints(self):
+        """Return status bar input hints for the current tool state."""
+        from draftguitools import gui_tool_utils
+
+        if not self.points:
+            label = translate("Arch", "%1 pick first point")
+        else:
+            label = translate("Arch", "%1 pick next point")
+        return (
+            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def getPoint(self, point=None, obj=None):
         """Callback for clicks during interactive mode.
@@ -187,6 +203,7 @@ class Arch_Wall:
                 extradlg=self.taskbox(),
                 title=translate("Arch", "Next point"),
                 mode="line",
+                hints=self.get_hints,
             )
 
         elif len(self.points) == 2:

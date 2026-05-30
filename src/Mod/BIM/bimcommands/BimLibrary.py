@@ -663,9 +663,25 @@ class BIM_Library_TaskPanel:
                 movecallback=self.mouseMove,
                 callback=self.mouseClick,
                 extradlg=self.origin,
+                hints=self.get_hints,
             )
         else:
             Part.show(self.shape)
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        return (
+            [
+                FreeCADGui.InputHint(
+                    translate("BIM", "%1 pick insertion point"), FreeCADGui.UserInput.MouseLeft
+                )
+            ]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def makeOriginWidget(self):
 
