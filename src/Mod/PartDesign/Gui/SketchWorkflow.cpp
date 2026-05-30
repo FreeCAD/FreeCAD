@@ -526,15 +526,15 @@ public:
     {
         try {
             // Start command early, so undo will undo any Body creation
-            guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "New Sketch"));
+            transactionId = guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "New Sketch"));
             tryFindSupport();
         }
         catch (const RejectException&) {
-            guidocument->abortCommand();
+            Gui::Command::abortCommand(transactionId);
             throw;
         }
         catch (const MissingPlanesException&) {
-            guidocument->abortCommand();
+            Gui::Command::abortCommand(transactionId);
             throw;
         }
     }
@@ -628,8 +628,9 @@ private:
 
             PartDesignGui::setEdit(sketch, partDesignBody);
         };
-        auto onReject = [partDesignBody]() {
+        auto onReject = [partDesignBody, transactionId = transactionId]() {
             resetOriginVisibility(partDesignBody);
+            Gui::Command::abortCommand(transactionId);
         };
 
         Gui::Selection().clearSelection();
@@ -819,6 +820,7 @@ private:
 private:
     Gui::Document* guidocument;
     PartDesign::Body* activeBody;
+    int transactionId = App::NullTransaction;
 };
 
 }  // namespace
