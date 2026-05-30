@@ -1570,5 +1570,3 @@ yyreturnlab:
 
   return yyresult;
 }
-
-
