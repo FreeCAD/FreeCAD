@@ -31,7 +31,6 @@
 
 #include "Window.h"
 #include "InputHint.h"
-#include "StatusBarManager.h"
 
 class QMimeData;
 class QUrl;
@@ -68,6 +67,33 @@ public:
     ~UrlHandler() override = default;
     virtual void openUrl(App::Document*, const QUrl&)
     {}
+};
+
+/**
+ * Identifies which side of the status bar an item belongs to.
+ * Left items are non-permanent (they may be temporarily hidden by status
+ * messages); Right items are permanent and never obscured.
+ */
+enum class StatusBarSlot
+{
+    Left,
+    Right,
+};
+
+/**
+ * Metadata describing a status-bar item registered through
+ * MainWindow::addStatusBarItem(). Callers provide intent (slot + order + a
+ * stable id + a human title); MainWindow owns the actual layout, ordering,
+ * visibility persistence and context-menu participation.
+ */
+struct StatusBarItemSpec
+{
+    QByteArray id;  ///< Stable identifier, used for removal and persistence.
+    QString title;  ///< Label shown in the status-bar context menu.
+    StatusBarSlot slot = StatusBarSlot::Right;
+    int order = 0;                     ///< Sort key within the slot (lower = closer to the centre).
+    bool persistentVisibility = true;  ///< Persist the user's show/hide choice across sessions.
+    int stretch = 0;                   ///< Layout stretch factor.
 };
 
 /**
