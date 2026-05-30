@@ -577,8 +577,16 @@ bool DrawViewDimension::okToProceed()
     // is this check still relevant or is it replaced by the autocorrect and
     // validate methods?
     if (References3D.getValues().empty() && !checkReferences2D()) {
-        // Base::Console().warning("%s has invalid 2D References\n", getNameInDocument());
-        return false;
+        // Issue #19871: a stale index (e.g. after an HLR projector toggle that
+        // changed the projected edge set) means the reference no longer
+        // resolves. Try a SavedGeometry-driven repair via DimensionAutoCorrect
+        // before giving up.
+        if (!Preferences::autoCorrectDimRefs()
+            || !autocorrectReferences()
+            || !checkReferences2D()) {
+            // Base::Console().warning("%s has invalid 2D References\n", getNameInDocument());
+            return false;
+        }
     }
     return validateReferenceForm();
 }

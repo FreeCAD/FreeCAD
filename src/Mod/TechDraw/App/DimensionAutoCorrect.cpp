@@ -57,7 +57,19 @@
 //                //we can't fix this
 
 
+#include <algorithm>
+#include <cmath>
+#include <limits>
+
+#include <BRepAdaptor_Curve.hxx>
+#include <BRep_Tool.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
+#include <Standard_Failure.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <gp_Pnt.hxx>
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -363,10 +375,15 @@ bool DimensionAutoCorrect::findExactEdge3d(ReferenceEntry& refToFix, const Part:
 bool DimensionAutoCorrect::findSimilarVertex2d(ReferenceEntry& refToFix,
                                                const Part::TopoShape& refGeom) const
 {
-    // Base::Console().message("DAC::findSimilarVertex2d()\n");
-    (void)refToFix;
-    (void)refGeom;
-    // Base::Console().message("DAC::findSimilarVertex2d is not implemented yet\n");
+    auto refDvp = dynamic_cast<TechDraw::DrawViewPart*>(refToFix.getObject());
+    if (!refDvp) {
+        return false;
+    }
+    ReferenceEntry fixed = searchViewForSimilarVert(refDvp, refGeom);
+    if (fixed.getObject()) {
+        refToFix = fixed;
+        return true;
+    }
     return false;
 }
 
@@ -375,10 +392,15 @@ bool DimensionAutoCorrect::findSimilarVertex2d(ReferenceEntry& refToFix,
 bool DimensionAutoCorrect::findSimilarEdge2d(ReferenceEntry& refToFix,
                                              const Part::TopoShape& refGeom) const
 {
-    // Base::Console().message("DAC::findSimilarEdge2d()\n");
-    (void)refToFix;
-    (void)refGeom;
-    // Base::Console().message("DAC::findSimilarEdge2d is not implemented yet\n");
+    auto refDvp = dynamic_cast<TechDraw::DrawViewPart*>(refToFix.getObject());
+    if (!refDvp) {
+        return false;
+    }
+    ReferenceEntry fixed = searchViewForSimilarEdge(refDvp, refGeom);
+    if (fixed.getObject()) {
+        refToFix = fixed;
+        return true;
+    }
     return false;
 }
 
@@ -508,15 +530,167 @@ ReferenceEntry DimensionAutoCorrect::searchViewForExactEdge(DrawViewPart* obj,
 }
 
 
-//! search View (2d part display) for an edge that is similar to refEdge
+//! search View (2d part display) for an edge whose endpoints, length and curve
+//! type match refEdge within a tight tolerance. Phase-2 fallback for stale 2D
+//! references; rejects on any ambiguity rather than risk a wrong rebind (#19871).
 ReferenceEntry DimensionAutoCorrect::searchViewForSimilarEdge(DrawViewPart* obj,
                                                               const Part::TopoShape& refEdge) const
 {
-    // Base::Console().message("DAC::searchViewForSimilarEdge()\n");
-    (void)obj;
-    (void)refEdge;
-    Base::Console().message("DAC::searchViewForSimilarEdge is not implemented yet\n");
-    return {};
+    if (!obj || refEdge.isNull()) {
+        return {};
+    }
+    const TopoDS_Shape& refShape = refEdge.getShape();
+    if (refShape.IsNull() || refShape.ShapeType() != TopAbs_EDGE) {
+        return {};
+    }
+    // The projected reference edge can be degenerate; OCCT raises Standard_Failure
+    // (not a std::exception) which would otherwise escape recompute (#19871).
+    GeomAbs_CurveType refType = GeomAbs_OtherCurve;
+    double refLength = 0.0;
+    gp_Pnt refP0;
+    gp_Pnt refP1;
+    try {
+        TopoDS_Edge refOcc = TopoDS::Edge(refShape);
+        BRepAdaptor_Curve refAdapt(refOcc);
+        refType = refAdapt.GetType();
+        refLength = GCPnts_AbscissaPoint::Length(refAdapt);
+        refP0 = refAdapt.Value(refAdapt.FirstParameter());
+        refP1 = refAdapt.Value(refAdapt.LastParameter());
+    }
+    catch (const Standard_Failure&) {
+        return {};
+    }
+
+    // Match on BOTH endpoints (orientation-independent) plus length, not just the
+    // midpoint: an edge with a similar midpoint but different endpoints is a
+    // different edge, and binding to it yields a confidently wrong dimension.
+    int bestIdx = -1;
+    double bestScore = std::numeric_limits<double>::max();
+    double runnerUp = std::numeric_limits<double>::max();
+
+    const auto edgesAll = obj->getEdgeGeometry();
+    for (size_t i = 0; i < edgesAll.size(); ++i) {
+        const auto& bg = edgesAll[i];
+        if (!bg) {
+            continue;
+        }
+        Part::TopoShape canon = ReferenceEntry::asCanonicalTopoShape(bg->asTopoShape(), *obj);
+        const TopoDS_Shape& cShape = canon.getShape();
+        if (cShape.IsNull() || cShape.ShapeType() != TopAbs_EDGE) {
+            continue;
+        }
+        double endpointDist = 0.0;
+        try {
+            TopoDS_Edge cEdge = TopoDS::Edge(cShape);
+            BRepAdaptor_Curve cAdapt(cEdge);
+            if (cAdapt.GetType() != refType) {
+                continue;
+            }
+            double cLength = GCPnts_AbscissaPoint::Length(cAdapt);
+            double lenMax = std::max(refLength, cLength);
+            if (lenMax > 1.0e-7 && std::fabs(refLength - cLength) / lenMax > 0.05) {
+                continue;  // length differs by more than 5 % -- not the same edge
+            }
+            gp_Pnt cP0 = cAdapt.Value(cAdapt.FirstParameter());
+            gp_Pnt cP1 = cAdapt.Value(cAdapt.LastParameter());
+            // orientation can flip between projections; take the better pairing.
+            double sameDir = refP0.Distance(cP0) + refP1.Distance(cP1);
+            double flipDir = refP0.Distance(cP1) + refP1.Distance(cP0);
+            endpointDist = std::min(sameDir, flipDir);
+        }
+        catch (const Standard_Failure&) {
+            continue;
+        }
+        if (endpointDist < bestScore) {
+            runnerUp = bestScore;
+            bestScore = endpointDist;
+            bestIdx = static_cast<int>(i);
+        }
+        else if (endpointDist < runnerUp) {
+            runnerUp = endpointDist;
+        }
+    }
+
+    // Tight accept window: both endpoints must land within ~0.5 mm (model space)
+    // of the saved edge, summed, and the best candidate must be clearly better
+    // than the runner-up. Otherwise refuse to rebind.
+    const double acceptThreshold = 1.0;   // mm, summed over both endpoints
+    const double ambiguityMargin = 0.5;   // best must be <= 50 % of runner-up
+    if (bestIdx < 0 || bestScore > acceptThreshold) {
+        return {};
+    }
+    if (runnerUp != std::numeric_limits<double>::max()
+        && bestScore > (1.0 - ambiguityMargin) * runnerUp) {
+        return {};
+    }
+    auto newSubname = std::string("Edge") + std::to_string(bestIdx);
+    return {obj, newSubname, getDimension()->getDocument()};
+}
+
+//! search View (2d part display) for a vertex within an accept-threshold of
+//! refVertex. Companion to searchViewForSimilarEdge for the phase-2 fallback.
+ReferenceEntry DimensionAutoCorrect::searchViewForSimilarVert(DrawViewPart* obj,
+                                                              const Part::TopoShape& refVertex) const
+{
+    if (!obj || refVertex.isNull()) {
+        return {};
+    }
+    const TopoDS_Shape& refShape = refVertex.getShape();
+    if (refShape.IsNull() || refShape.ShapeType() != TopAbs_VERTEX) {
+        return {};
+    }
+    gp_Pnt refPnt;
+    try {
+        refPnt = BRep_Tool::Pnt(TopoDS::Vertex(refShape));
+    }
+    catch (const Standard_Failure&) {
+        return {};
+    }
+
+    int bestIdx = -1;
+    double bestDist = std::numeric_limits<double>::max();
+    double runnerUp = std::numeric_limits<double>::max();
+
+    const auto vertsAll = obj->getVertexGeometry();
+    for (size_t i = 0; i < vertsAll.size(); ++i) {
+        if (!vertsAll[i]) {
+            continue;
+        }
+        Part::TopoShape canon =
+            ReferenceEntry::asCanonicalTopoShape(vertsAll[i]->asTopoShape(), *obj);
+        const TopoDS_Shape& cShape = canon.getShape();
+        if (cShape.IsNull() || cShape.ShapeType() != TopAbs_VERTEX) {
+            continue;
+        }
+        gp_Pnt cPnt;
+        try {
+            cPnt = BRep_Tool::Pnt(TopoDS::Vertex(cShape));
+        }
+        catch (const Standard_Failure&) {
+            continue;
+        }
+        double d = refPnt.Distance(cPnt);
+        if (d < bestDist) {
+            runnerUp = bestDist;
+            bestDist = d;
+            bestIdx = static_cast<int>(i);
+        }
+        else if (d < runnerUp) {
+            runnerUp = d;
+        }
+    }
+
+    const double acceptThreshold = 0.5;   // mm in canonical view space
+    const double ambiguityMargin = 0.5;
+    if (bestIdx < 0 || bestDist > acceptThreshold) {
+        return {};
+    }
+    if (runnerUp != std::numeric_limits<double>::max()
+        && bestDist > (1.0 - ambiguityMargin) * runnerUp) {
+        return {};
+    }
+    auto newSubname = std::string("Vertex") + std::to_string(bestIdx);
+    return {obj, newSubname, getDimension()->getDocument()};
 }
 
 //! search model for for a 3d edge that is a match to refEdge

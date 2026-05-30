@@ -79,6 +79,7 @@ private:
 
     ReferenceEntry searchViewForExactEdge(DrawViewPart* obj, const Part::TopoShape& refEdge) const;
     ReferenceEntry searchViewForSimilarEdge(DrawViewPart* obj, const Part::TopoShape& refEdge) const;
+    ReferenceEntry searchViewForSimilarVert(DrawViewPart* obj, const Part::TopoShape& refVertex) const;
 
     bool isMatchingGeometry(const ReferenceEntry& ref, const Part::TopoShape& savedGeometry) const;
 
