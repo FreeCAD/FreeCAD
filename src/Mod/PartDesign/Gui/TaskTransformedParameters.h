@@ -224,13 +224,6 @@ private:
     // Either through the ViewProvider or the currently active subFeature of the parentTask
     App::DocumentObject* getBaseObject() const;
 
-    /**
-     * Returns the base transformation view provider
-     * For stand alone features it will be view provider associated with this object
-     * For features inside multitransform it will be the view provider of the multitransform object
-     */
-    PartDesignGui::ViewProviderTransformed* getTopTransformedView() const;
-
     void changeEvent(QEvent* event) override;
 
 protected:
@@ -247,6 +240,13 @@ protected:
 
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
     bool blockUpdate = false;
+
+    /**
+     * Returns the base transformation view provider.
+     * For stand alone features it will be the view provider associated with this object.
+     * For features inside multitransform it will be the view provider of the multitransform object.
+     */
+    PartDesignGui::ViewProviderTransformed* getTopTransformedView() const;
 
 private:
     int transactionID = 0;
