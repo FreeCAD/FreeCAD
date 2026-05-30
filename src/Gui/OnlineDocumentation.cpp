@@ -398,10 +398,7 @@ bool Gui::OpenURLInBrowser(const char* URL)
         const auto result = Gui::Dialog::DlgCheckableMessageBox::question(
             Gui::getMainWindow(),
             QObject::tr("Open External Hyperlink"),
-            QObject::tr(
-                "Proceed to: %1"
-            )
-                .arg(QString::fromUtf8(URL)),
+            QObject::tr("Proceed to: %1").arg(QString::fromUtf8(URL)),
             QObject::tr("Remember for all links"),
             &rememberChoice,
             QDialogButtonBox::Open | QDialogButtonBox::Cancel,
