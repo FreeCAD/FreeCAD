@@ -397,7 +397,7 @@ bool Gui::OpenURLInBrowser(const char* URL)
         bool rememberChoice = false;
         const auto result = Gui::Dialog::DlgCheckableMessageBox::question(
             Gui::getMainWindow(),
-            QObject::tr("Open external web page"),
+            QObject::tr("Open External Hyperlink"),
             QObject::tr(
                 "FreeCAD wants to open the following web page in your default browser:\n%1\n\n"
                 "Do you want to allow this?"
