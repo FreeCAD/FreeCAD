@@ -344,20 +344,23 @@ void DrawSketchHandler::preActivated()
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, false);
 }
 
-void DrawSketchHandler::registerPressedKey(bool pressed, int key)
+void DrawSketchHandler::cancelCurrentAction()
 {
     // the default behaviour is to quit - specific handler categories may
     // override this behaviour, for example to implement a continuous mode
+    quit();
+}
+
+void DrawSketchHandler::registerPressedKey(bool pressed, int key)
+{
     if (key == SoKeyboardEvent::ESCAPE && !pressed) {
-        quit();
+        cancelCurrentAction();
     }
 }
 
 void DrawSketchHandler::pressRightButton(Base::Vector2d /*onSketchPos*/)
 {
-    // the default behaviour is to quit - specific handler categories may
-    // override this behaviour, for example to implement a continuous mode
-    quit();
+    cancelCurrentAction();
 }
 
 

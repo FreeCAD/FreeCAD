@@ -49,6 +49,7 @@ TaskDialog::TaskDialog()
     , pos(North)
     , escapeButton(true)
     , autoCloseTransaction(false)
+    , autoCloseResetEdit(false)
     , autoCloseDeletedDocument(false)
     , autoCloseClosedView(false)
 {}
@@ -128,6 +129,9 @@ void TaskDialog::closed()
 {}
 
 void TaskDialog::autoClosedOnTransactionChange()
+{}
+
+void TaskDialog::autoClosedOnResetEdit()
 {}
 
 void TaskDialog::autoClosedOnDeletedDocument()

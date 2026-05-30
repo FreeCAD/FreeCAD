@@ -4268,8 +4268,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     connectSolverUpdate.disconnect();
     connectConstraintAdded.disconnect();
 
-    // when pressing ESC make sure to close the dialog
-    Gui::Control().closeDialog();
     unsetupActiveAndInEdit();
 
     // visibility automation
