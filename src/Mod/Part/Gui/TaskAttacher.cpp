@@ -322,10 +322,12 @@ TaskAttacher::~TaskAttacher()
 {
     stopPendingAttachmentUpdate();
 
-    try {
-        visibilityAutomation(false);
-    }
-    catch (...) {
+    if (Gui::getMainWindow()) {
+        try {
+            visibilityAutomation(false);
+        }
+        catch (...) {
+        }
     }
 
     connectDelObject.disconnect();
@@ -361,6 +363,8 @@ void TaskAttacher::documentDeleted(const Gui::Document&)
 {
     stopPendingAttachmentUpdate();
     ViewProvider = nullptr;
+    overrides.clear();
+    modifiedPlaneViewProviders.clear();
     this->setDisabled(true);
 }
 
@@ -1616,7 +1620,10 @@ TaskDlgAttacher::TaskDlgAttacher(
 
 TaskDlgAttacher::~TaskDlgAttacher()
 {
-    Gui::getMainWindow()->hideHints();
+    auto* mainWindow = Gui::getMainWindow();
+    if (mainWindow) {
+        mainWindow->hideHints();
+    }
     if (dblClickViewer) {
         // Re-enable selection in case it was disabled for a double-click that never completed
         dblClickViewer->setSelectionEnabled(true);
@@ -1625,6 +1632,9 @@ TaskDlgAttacher::~TaskDlgAttacher()
             &TaskDlgAttacher::handleMouseButtonCB,
             this
         );
+    }
+    if (!mainWindow) {
+        return;
     }
     if (accepted && onAccept) {
         onAccept();
