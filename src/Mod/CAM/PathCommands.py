@@ -31,7 +31,9 @@ from PathScripts.PathUtils import loopdetect
 from PathScripts.PathUtils import wiresdetect
 from PathScripts.PathUtils import horizontalEdgeLoop
 from PathScripts.PathUtils import tangentEdgeLoop
+from PathScripts.PathUtils import horizontalFacesAtHeight
 from PathScripts.PathUtils import horizontalFaceLoops
+from PathScripts.PathUtils import innerEdgesFromFace
 from PathScripts.PathUtils import addToJob
 from PathScripts.PathUtils import findParentJob
 
@@ -59,6 +61,7 @@ class _CommandSelectLoop:
                 "CAM_SelectLoop",
                 "Completes the selection of edges or faces that forms a loop"
                 "\n\nSelect vertical faces: searching loops faces which forms the walls."
+                "\n\nSelect horizontal face: searching inner edges of the face or coplanar faces."
                 "\n\nSelect one edge: searching loop edges in horizontal plane"
                 "\nor wire which contain selected edge."
                 "\n\nSelect two edges: searching loop edges in wires of the shape"
@@ -94,8 +97,14 @@ class _CommandSelectLoop:
 
         elif all(isinstance(sub, Part.Face) for sub in subs):
             # face(s) selected
-            if all(Path.Geom.isVertical(face) for face in subs):
-                names = horizontalFaceLoops(obj, subs)
+            edges = innerEdgesFromFace(obj, subs[0])
+            if not edges:
+                if all(Path.Geom.isVertical(face) for face in subs):
+                    names = horizontalFaceLoops(obj, subs)
+                elif Path.Geom.isHorizontal(subs[0]):
+                    names = horizontalFacesAtHeight(obj, subs[0].CenterOfMass.z)
+                if not names:
+                    edges = [e for sub in subs for e in sub.Edges]
 
         elif isinstance(subs[0], Part.Edge):
             if len(subs) == 1:
