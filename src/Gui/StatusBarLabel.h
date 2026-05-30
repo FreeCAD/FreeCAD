@@ -36,6 +36,11 @@ namespace Gui
  * A QLabel subclass whose right-click context menu lets the user toggle the
  * status-bar items. Visibility/persistence and the menu contents are owned by
  * MainWindow's status-bar registry; this class only forwards the request.
+ *
+ * Optional text elision: when an elide mode other than Qt::ElideNone is set the
+ * label paints its text shortened to the current width and reports a small
+ * horizontal minimum size, so the layout can shrink it under width pressure
+ * (used for Preselection so it never crowds out Input Hints).
  */
 class GuiExport StatusBarLabel: public QLabel
 {
@@ -43,9 +48,22 @@ class GuiExport StatusBarLabel: public QLabel
 public:
     explicit StatusBarLabel(QWidget* parent = nullptr);
 
+    /// Enables horizontal text elision. Defaults to Qt::ElideNone (no elision).
+    void setElideMode(Qt::TextElideMode mode);
+    Qt::TextElideMode elideMode() const
+    {
+        return m_elideMode;
+    }
+
+    QSize minimumSizeHint() const override;
+
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
     void setVisible(bool visible) override;
+    void paintEvent(QPaintEvent* event) override;
+
+private:
+    Qt::TextElideMode m_elideMode = Qt::ElideNone;
 };
 
 }  // Namespace Gui

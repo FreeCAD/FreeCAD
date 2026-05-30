@@ -323,7 +323,7 @@ struct StatusBarItem
 struct MainWindowP
 {
     DimensionWidget* sizeLabel;
-    QLabel* actionLabel;
+    StatusBarLabel* actionLabel;
     InputHintWidget* hintLabel;
     QLabel* rightSideLabel;
     std::vector<StatusBarItem> statusBarItems;
@@ -456,6 +456,10 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     //          Unit System(1000, rightmost)
     d->actionLabel = new StatusBarLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    // Preselection text yields under width pressure: it elides with an ellipsis
+    // rather than crowding out higher-priority widgets like Input Hints.
+    d->actionLabel->setElideMode(Qt::ElideRight);
+    d->actionLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
     addStatusBarItem(
         d->actionLabel,
         {.id = "actionLabel",
@@ -468,6 +472,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     );
 
     d->hintLabel = new InputHintWidget(statusBar());
+    // Tool hints have the highest priority: they must keep their full sizeHint
+    // and never be clipped (issue #29632).
+    d->hintLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
     addStatusBarItem(
         d->hintLabel,
         {.id = "hintLabel",
@@ -505,6 +512,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
     d->rightSideLabel = new StatusBarLabel(statusBar());
     d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    // Other status-bar widgets must not be shortened under width pressure
+    // (issue #29632); only Preselection yields.
+    d->rightSideLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
     addStatusBarItem(
         d->rightSideLabel,
         {.id = "rightSideLabel",
