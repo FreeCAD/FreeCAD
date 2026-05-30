@@ -399,8 +399,7 @@ bool Gui::OpenURLInBrowser(const char* URL)
             Gui::getMainWindow(),
             QObject::tr("Open External Hyperlink"),
             QObject::tr(
-                "FreeCAD wants to open the following web page in your default browser:\n%1\n\n"
-                "Do you want to allow this?"
+                "Proceed to: %1"
             )
                 .arg(QString::fromUtf8(URL)),
             QObject::tr("Remember my choice for future external web pages"),
