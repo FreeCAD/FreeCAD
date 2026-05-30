@@ -33,7 +33,6 @@
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFont.h>
-#include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
@@ -53,6 +52,7 @@
 #include "BitmapFactory.h"
 #include "Document.h"
 #include "SoFCSelection.h"
+#include "SoTextLabel.h"
 #include "Tools.h"
 #include "Window.h"
 
@@ -87,7 +87,7 @@ ViewProviderAnnotation::ViewProviderAnnotation()
 
     pFont = new SoFont();
     pFont->ref();
-    pLabel = new SoText2();
+    pLabel = new SoFCText2();
     pLabel->ref();
     pLabel3d = new SoAsciiText();
     pLabel3d->ref();
@@ -284,7 +284,7 @@ ViewProviderAnnotationLabel::ViewProviderAnnotationLabel()
     pTextTranslation->ref();
     pCoords = new SoCoordinate3();
     pCoords->ref();
-    pImage = new SoImage();
+    pImage = new SoFrameLabel();
     pImage->ref();
 
     BackgroundColor.touch();
@@ -435,60 +435,27 @@ void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag
 void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
 {
     if (s.empty()) {
-        pImage->image = SoSFImage();
+        pImage->string.setNum(0);
         this->hide();
         return;
     }
 
-    QFont font(QString::fromLatin1(this->FontName.getValue()), (int)this->FontSize.getValue());
-    QFontMetrics fm(font);
-    int w = 0;
-    int h = fm.height() * s.size();
-    const Base::Color& b = this->BackgroundColor.getValue();
-    QColor brush;
-    brush.setRgbF(b.r, b.g, b.b);
+    // Delegate the actual rendering to SoFrameLabel, which renders the text into
+    // an image at the active device pixel ratio so the label stays crisp and keeps
+    // a constant perceived size on HiDPI displays.
     const Base::Color& t = this->TextColor.getValue();
-    QColor front;
-    front.setRgbF(t.r, t.g, t.b);
+    pImage->textColor.setValue(t.r, t.g, t.b);
+    const Base::Color& b = this->BackgroundColor.getValue();
+    pImage->backgroundColor.setValue(b.r, b.g, b.b);
+    pImage->name = this->FontName.getValue();
+    pImage->size = (int)this->FontSize.getValue();
+    pImage->justification = this->Justification.getValue();
+    const bool drawFrame = this->Frame.getValue();
+    pImage->frame = drawFrame;
+    pImage->border = drawFrame;
 
-    QStringList lines;
-    for (const auto& it : s) {
-        QString line = QString::fromUtf8(it.c_str());
-        w = std::max<int>(w, QtTools::horizontalAdvance(fm, line));
-        lines << line;
+    pImage->string.setNum((int)s.size());
+    for (std::size_t i = 0; i < s.size(); i++) {
+        pImage->string.set1Value((int)i, SbString(s[i].c_str()));
     }
-
-    QImage image(w + 10, h + 10, QImage::Format_ARGB32_Premultiplied);
-    image.fill(0x00000000);
-    QPainter painter(&image);
-    painter.setRenderHint(QPainter::Antialiasing);
-
-    bool drawFrame = this->Frame.getValue();
-    if (drawFrame) {
-        painter.setPen(QPen(QColor(0, 0, 127), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        painter.setBrush(QBrush(brush, Qt::SolidPattern));
-        QRectF rectangle(0.0, 0.0, w + 10, h + 10);
-        painter.drawRoundedRect(rectangle, 5, 5);
-    }
-
-    painter.setPen(front);
-
-    Qt::Alignment align = Qt::AlignVCenter;
-    if (Justification.getValue() == 0) {
-        align = Qt::AlignVCenter | Qt::AlignLeft;
-    }
-    else if (Justification.getValue() == 1) {
-        align = Qt::AlignVCenter | Qt::AlignRight;
-    }
-    else {
-        align = Qt::AlignVCenter | Qt::AlignHCenter;
-    }
-    QString text = lines.join(QLatin1String("\n"));
-    painter.setFont(font);
-    painter.drawText(5, 5, w, h, align, text);
-    painter.end();
-
-    SoSFImage sfimage;
-    Gui::BitmapFactory().convert(image, sfimage);
-    pImage->image = sfimage;
 }

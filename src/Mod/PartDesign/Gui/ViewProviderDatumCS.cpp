@@ -36,6 +36,7 @@
 
 #include <App/Application.h>
 #include <Gui/Inventor/SoAutoZoomTranslation.h>
+#include <Gui/SoTextLabel.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 
 #include "ViewProviderDatumCS.h"
@@ -181,17 +182,17 @@ void ViewProviderDatumCoordinateSystem::setupLabels()
 
     // Transformation for axis labels are relative so no need in separators
     labelGroup->addChild(axisLabelXTrans);
-    auto* t = new SoText2();
+    auto* t = new Gui::SoFCText2();
     t->string = "X";
     labelGroup->addChild(t);
 
     labelGroup->addChild(axisLabelXToYTrans);
-    t = new SoText2();
+    t = new Gui::SoFCText2();
     t->string = "Y";
     labelGroup->addChild(t);
 
     labelGroup->addChild(axisLabelYToZTrans);
-    t = new SoText2();
+    t = new Gui::SoFCText2();
     t->string = "Z";
     labelGroup->addChild(t);
 }

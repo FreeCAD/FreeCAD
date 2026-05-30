@@ -61,6 +61,7 @@
 
 #include "SoAxisCrossKit.h"
 #include "SoDevicePixelRatioElement.h"
+#include <SoTextLabel.h>
 
 using namespace Gui;
 
@@ -285,7 +286,7 @@ SoRegPoint::SoRegPoint()
     auto sub = new SoSeparator();
     sub->addChild(col);
     sub->addChild(font);
-    sub->addChild(new SoText2());
+    sub->addChild(new SoFCText2());
     root->addChild(sub);
 }
 

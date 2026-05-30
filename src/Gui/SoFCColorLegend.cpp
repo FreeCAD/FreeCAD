@@ -33,6 +33,7 @@
 
 
 #include "SoFCColorLegend.h"
+#include "SoTextLabel.h"
 #include "ViewProvider.h"
 
 
@@ -155,7 +156,7 @@ void SoFCColorLegend::setMarkerLabel(const SoMFString& label)
         for (int i = 0; i < num; i++) {
             auto trans = new SoTransform;
             auto color = new SoBaseColor;
-            auto text2 = new SoText2;
+            auto text2 = new SoFCText2;
 
             trans->translation.setValue(pos[i + 1]);
             color->rgb.setValue(0, 0, 0);
@@ -182,7 +183,7 @@ void SoFCColorLegend::setMarkerValue(const SoMFString& value)
         for (int i = 0; i < num; i++) {
             auto trans = new SoTransform;
             auto color = new SoBaseColor;
-            auto text2 = new SoText2;
+            auto text2 = new SoFCText2;
 
             trans->translation.setValue(pos[i + 1]);
             color->rgb.setValue(0, 0, 0);

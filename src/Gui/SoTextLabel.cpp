@@ -32,6 +32,7 @@
 #endif
 
 #include <algorithm>
+#include <cmath>
 
 #include <QFontMetrics>
 #include <QOpenGLContext>
@@ -47,6 +48,7 @@
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
@@ -56,6 +58,7 @@
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 
 #include "SoTextLabel.h"
+#include "SoDevicePixelRatioElement.h"
 #include "SoFCInteractiveElement.h"
 #include "Tools.h"
 
@@ -63,11 +66,59 @@
 using namespace Gui;
 
 
+SO_NODE_SOURCE(SoFCText2)
+
+void SoFCText2::initClass()
+{
+    SO_NODE_INIT_CLASS(SoFCText2, SoText2, "Text2");
+}
+
+SoFCText2::SoFCText2()
+{
+    SO_NODE_CONSTRUCTOR(SoFCText2);
+}
+
+namespace
+{
+// Multiply the current font size element by the device pixel ratio so screen-space
+// text keeps a constant perceived size on HiDPI displays. SoDevicePixelRatioElement
+// is only enabled for the GL render action, so guard against other actions (e.g.
+// bounding box) where reading it would trip the element-enabled assertion.
+void scaleFontSizeByDevicePixelRatio(SoState* state, SoNode* node)
+{
+    if (!state->isElementEnabled(SoDevicePixelRatioElement::getClassStackIndex())) {
+        return;
+    }
+    const float dpr = SoDevicePixelRatioElement::get(state);
+    SoFontSizeElement::set(state, node, SoFontSizeElement::get(state) * dpr);
+}
+}  // namespace
+
+void SoFCText2::GLRender(SoGLRenderAction* action)
+{
+    SoState* state = action->getState();
+    state->push();
+    scaleFontSizeByDevicePixelRatio(state, this);
+    inherited::GLRender(action);
+    state->pop();
+}
+
+void SoFCText2::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
+{
+    SoState* state = action->getState();
+    state->push();
+    scaleFontSizeByDevicePixelRatio(state, this);
+    inherited::computeBBox(action, box, center);
+    state->pop();
+}
+
+// ------------------------------------------------------
+
 SO_NODE_SOURCE(SoTextLabel)
 
 void SoTextLabel::initClass()
 {
-    SO_NODE_INIT_CLASS(SoTextLabel, SoText2, "Text2");
+    SO_NODE_INIT_CLASS(SoTextLabel, SoFCText2, "FCText2");
 }
 
 SoTextLabel::SoTextLabel()
@@ -230,7 +281,7 @@ SO_NODE_SOURCE(SoColorBarLabel)
 
 void SoColorBarLabel::initClass()
 {
-    SO_NODE_INIT_CLASS(SoColorBarLabel, SoText2, "Text2");
+    SO_NODE_INIT_CLASS(SoColorBarLabel, SoFCText2, "FCText2");
 }
 
 SoColorBarLabel::SoColorBarLabel()
@@ -415,7 +466,13 @@ void SoFrameLabel::drawImage()
         return;
     }
 
-    QFont font(QString::fromLatin1(QByteArray(name.getValue())), size.getValue());
+    // Render the image at the active device pixel ratio so it stays crisp and
+    // keeps a constant perceived size on HiDPI displays (SoImage blits the image
+    // one texel per physical framebuffer pixel).
+    const float dpr = renderDpr;
+
+    QFont font(QString::fromLatin1(QByteArray(name.getValue())), -1);
+    font.setPointSizeF(size.getValue() * dpr);
     QFontMetrics fm(font);
     int w = 0;
     int h = fm.height() * num;
@@ -425,7 +482,7 @@ void SoFrameLabel::drawImage()
     const SbColor& t = textColor.getValue();
     QColor front;
     front.setRgbF(t[0], t[1], t[2]);
-    const QPen borderPen(QColor(0, 0, 127), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    const QPen borderPen(QColor(0, 0, 127), 2 * dpr, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
     QStringList lines;
     for (int i = 0; i < num; i++) {
@@ -434,7 +491,7 @@ void SoFrameLabel::drawImage()
         lines << line;
     }
 
-    int padding = 5;
+    int padding = std::lround(5 * dpr);
 
     bool drawIcon = false;
     QImage iconImg;
@@ -443,6 +500,17 @@ void SoFrameLabel::drawImage()
     if (!iconPixmap.isNull()) {
         drawIcon = true;
         iconImg = iconPixmap.toImage();
+        // The icon pixmap may already carry a HiDPI device pixel ratio (e.g. it
+        // was rendered by pixmapFromSvg at size * dpr). Render it at its
+        // device-independent size times the label's device pixel ratio so it
+        // matches the text scaling, fills its slot and stays centered. The ratio
+        // is reset to 1 so the resulting pixels are taken at face value.
+        const qreal iconDpr = iconImg.devicePixelRatio();
+        const int targetWidth = std::lround(iconImg.width() / iconDpr * dpr);
+        const int targetHeight = std::lround(iconImg.height() / iconDpr * dpr);
+        iconImg.setDevicePixelRatio(1.0);
+        iconImg
+            = iconImg.scaled(targetWidth, targetHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         widthIcon = iconImg.width() + 2 * padding;
         heightIcon = iconImg.height() + 2 * padding;
     }
@@ -466,7 +534,8 @@ void SoFrameLabel::drawImage()
         painter.setBrush(QBrush(drawFrame ? backgroundBrush : Qt::transparent));
 
         QRectF rectangle(0.0, 0.0, widthTotal, heightTotal);
-        painter.drawRoundedRect(rectangle, 5, 5);
+        const qreal radius = 5 * dpr;
+        painter.drawRoundedRect(rectangle, radius, radius);
     }
 
     if (drawIcon) {
@@ -500,6 +569,13 @@ void SoFrameLabel::drawImage()
  */
 void SoFrameLabel::GLRender(SoGLRenderAction* action)
 {
+    // Re-render the label image whenever the device pixel ratio changes (e.g. the
+    // window moves to another monitor) so it matches the current display density.
+    const float dpr = SoDevicePixelRatioElement::get(action->getState());
+    if (dpr != this->renderDpr) {
+        this->renderDpr = dpr;
+        drawImage();
+    }
 
     if (backgroundUseBaseColor.getValue()) {
         SoState* state = action->getState();

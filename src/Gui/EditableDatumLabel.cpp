@@ -21,6 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <cmath>
 #include <limits>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/nodes/SoAnnotation.h>
@@ -109,7 +110,10 @@ EditableDatumLabel::EditableDatumLabel(
     label->ref();
     label->string = " ";
     setDeactivatedColor();
-    label->size.setValue(17);
+    // Scale the font size by the device pixelratio so the on-view-parameter value keeps a constant
+    // perceived size on HiDPI displays (SoDatumLabel renders the text in physical pixels).
+    const double dpr = view ? view->devicePixelRatio() : 1.0;
+    label->size.setValue(static_cast<int>(std::lround(17 * dpr)));
     label->lineWidth = 2.0;
     label->useAntialiasing = false;
     label->datumtype = SoDatumLabel::DISTANCE;

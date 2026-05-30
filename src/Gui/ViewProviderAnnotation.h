@@ -34,7 +34,6 @@ class SoBaseColor;
 class SoTranslation;
 class SoTransform;
 class SoRotationXYZ;
-class SoImage;
 class SoCoordinate3;
 
 namespace Gui
@@ -117,7 +116,7 @@ private:
 
 private:
     SoCoordinate3* pCoords;
-    SoImage* pImage;
+    SoFrameLabel* pImage;
     SoBaseColor* pColor;
     SoTranslation* pBaseTranslation;
     TranslateManip* pTextTranslation;
