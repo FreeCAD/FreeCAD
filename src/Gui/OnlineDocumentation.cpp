@@ -402,7 +402,7 @@ bool Gui::OpenURLInBrowser(const char* URL)
                 "Proceed to: %1"
             )
                 .arg(QString::fromUtf8(URL)),
-            QObject::tr("Remember my choice for future external web pages"),
+            QObject::tr("Remember for all links"),
             &rememberChoice,
             QDialogButtonBox::Open | QDialogButtonBox::Cancel,
             QDialogButtonBox::Cancel
