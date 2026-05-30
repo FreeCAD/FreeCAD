@@ -393,18 +393,7 @@ class CreateSketch(unittest.TestCase):
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.Selection.addSelection(App.ActiveDocument.Body)
             FreeCADGui.runCommand("Std_OrthographicCamera", 1)
-            mw = FreeCADGui.getMainWindow()
-            workflowcheck = CallableCheckExemptionDialog(self)
-            QtCore.QTimer.singleShot(100, workflowcheck)
-            FreeCADGui.runCommand("PartDesign_CompSketches", 0)
-            taskspanel = None
-
-            def find_task_panel():
-                nonlocal taskspanel
-                taskspanel = mw.findChild(QtGui.QWidget, "PartDesignGui__TaskFeaturePick")
-                if taskspanel is None:
-                    taskspanel = mw.findChild(QtGui.QWidget, "PartDesignGui::TaskFeaturePick")
-                return taskspanel
+            FreeCADGui.runCommand("PartDesign_NewSketch", 0)
 
             def sketch_created():
                 return any(
@@ -412,16 +401,31 @@ class CreateSketch(unittest.TestCase):
                 )
 
             self.assertTrue(
-                spin_events(lambda: find_task_panel() is not None or sketch_created(), timeout=0.5)
+                spin_events(
+                    lambda: Gui.Control.activeDialog() and sketch_created(),
+                    timeout=1.0,
+                )
             )
-            if taskspanel is not None:
-                QtCore.QTimer.singleShot(0, taskspanel, QtCore.SLOT("hide()"))
-            if Gui.Control.activeDialog():
-                Gui.Control.closeDialog()
-                self.assertTrue(spin_events(lambda: not Gui.Control.activeDialog(), timeout=0.5))
-            elif sketch_created():
-                Gui.ActiveDocument.resetEdit()
-                self.assertTrue(spin_events(lambda: not Gui.Control.activeDialog(), timeout=0.5))
+            self.assertTrue(Gui.Control.activeDialog())
+            self.assertTrue(sketch_created())
+
+            dialog = Gui.Control.activeTaskDialog()
+            self.assertIsNotNone(dialog)
+            dialog.reject()
+            self.assertTrue(
+                spin_events(
+                    lambda: (
+                        not Gui.Control.activeDialog()
+                        and not sketch_created()
+                        and not App.ActiveDocument.HasPendingTransaction
+                        and App.ActiveDocument.getBookedTransactionID() == 0
+                    ),
+                    timeout=1.5,
+                )
+            )
+            self.assertFalse(sketch_created())
+            self.assertFalse(App.ActiveDocument.HasPendingTransaction)
+            self.assertEqual(App.ActiveDocument.getBookedTransactionID(), 0)
         finally:
             if App.ActiveDocument is not None:
                 App.closeDocument(App.ActiveDocument.Name)
