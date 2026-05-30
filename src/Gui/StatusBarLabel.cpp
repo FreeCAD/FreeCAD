@@ -25,6 +25,8 @@
 #include <QClipboard>
 #include <QApplication>
 #include <QContextMenuEvent>
+#include <QPainter>
+#include <QPaintEvent>
 #include <QPointer>
 #include <QTimer>
 
@@ -37,6 +39,37 @@ namespace Gui
 StatusBarLabel::StatusBarLabel(QWidget* parent)
     : QLabel(parent)
 {}
+
+void StatusBarLabel::setElideMode(Qt::TextElideMode mode)
+{
+    if (m_elideMode == mode) {
+        return;
+    }
+    m_elideMode = mode;
+    updateGeometry();
+    update();
+}
+
+QSize StatusBarLabel::minimumSizeHint() const
+{
+    if (m_elideMode == Qt::ElideNone) {
+        return QLabel::minimumSizeHint();
+    }
+    // Elidable labels must be allowed to shrink horizontally so the layout can
+    // give priority to neighbours with a real minimum (Input Hints, Quick Measure).
+    return QSize(0, QLabel::minimumSizeHint().height());
+}
+
+void StatusBarLabel::paintEvent(QPaintEvent* event)
+{
+    if (m_elideMode == Qt::ElideNone) {
+        QLabel::paintEvent(event);
+        return;
+    }
+    QPainter painter(this);
+    const QString elided = fontMetrics().elidedText(text(), m_elideMode, contentsRect().width());
+    painter.drawText(contentsRect(), static_cast<int>(alignment()), elided);
+}
 
 void StatusBarLabel::contextMenuEvent(QContextMenuEvent* event)
 {
