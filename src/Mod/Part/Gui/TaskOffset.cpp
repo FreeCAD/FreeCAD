@@ -315,9 +315,8 @@ bool OffsetWidget::accept(QDialogButtonBox* dialogButtonBox)
             ? d->asyncPreviewSession
                   ->makeInlineRecomputeProgressTarget(this, dialogButtonBox, recomputeStatus)
             : Gui::AsyncInlineRecomputeProgressTarget {};
-        const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(progressTarget);
         Gui::AsyncRecomputeDialogOptions recomputeOptions;
-        recomputeOptions.showDialog = !inlineProgress.isActive();
+        recomputeOptions.inlineProgressTarget = progressTarget;
         const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
             this,
             tr("Offset"),

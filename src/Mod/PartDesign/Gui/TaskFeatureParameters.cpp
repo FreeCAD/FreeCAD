@@ -59,10 +59,12 @@ Gui::AsyncRecomputeDialogOptions acceptedFeatureRecomputeDialogOptions()
     return options;
 }
 
-Gui::AsyncRecomputeDialogOptions acceptedFeatureRecomputeDialogOptions(bool showDialog)
+Gui::AsyncRecomputeDialogOptions acceptedFeatureRecomputeDialogOptions(
+    const Gui::AsyncInlineRecomputeProgressTarget& inlineProgressTarget
+)
 {
     auto options = acceptedFeatureRecomputeDialogOptions();
-    options.showDialog = showDialog;
+    options.inlineProgressTarget = inlineProgressTarget;
     return options;
 }
 
@@ -400,14 +402,14 @@ void TaskDlgFeatureParameters::prepareAcceptedFeatureForDocumentRecompute(
 bool TaskDlgFeatureParameters::runAcceptedFeatureRecompute(
     App::Document* document,
     AcceptRecomputeMode mode,
-    bool hasInlineProgress
+    const Gui::AsyncInlineRecomputeProgressTarget& inlineProgressTarget
 )
 {
     switch (mode) {
         case AcceptRecomputeMode::AsyncDocument:
             return runAsyncAcceptDocumentRecompute(
                 document,
-                acceptedFeatureRecomputeDialogOptions(!hasInlineProgress)
+                acceptedFeatureRecomputeDialogOptions(inlineProgressTarget)
             );
         case AcceptRecomputeMode::CommandDocument:
             Gui::cmdAppDocument(document, "recompute()");
@@ -515,8 +517,7 @@ bool TaskDlgFeatureParameters::accept()
             }
         }
 
-        const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(std::move(progressTarget));
-        if (!runAcceptedFeatureRecompute(document, recomputeMode, inlineProgress.isActive())) {
+        if (!runAcceptedFeatureRecompute(document, recomputeMode, progressTarget)) {
             return false;
         }
 

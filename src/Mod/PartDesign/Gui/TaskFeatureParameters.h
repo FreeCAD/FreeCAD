@@ -265,7 +265,7 @@ protected:
     bool runAcceptedFeatureRecompute(
         App::Document* document,
         AcceptRecomputeMode mode,
-        bool hasInlineProgress = false
+        const Gui::AsyncInlineRecomputeProgressTarget& inlineProgressTarget
     );
     void finalizeAcceptedFeature(App::DocumentObject* feature);
     bool reportAcceptException(const Base::Exception& e) const;

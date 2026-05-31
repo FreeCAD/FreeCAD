@@ -4,14 +4,20 @@
 
 #pragma once
 
+#include <algorithm>
 #include <exception>
 #include <functional>
+#include <memory>
 #include <utility>
 
-#include <QEventLoop>
 #include <QDialogButtonBox>
+#include <QEventLoop>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLayout>
 #include <QPointer>
 #include <QProgressDialog>
+#include <QSizePolicy>
 #include <QString>
 #include <QTimer>
 #include <QWidget>
@@ -20,21 +26,13 @@
 #include <Base/Exception.h>
 
 #include "AsyncPreviewController.h"
+#include "AsyncPreviewWidgetUtils.h"
 
 namespace Gui
 {
 
 /// Delay before showing accepted-operation progress, avoiding modal flicker for fast recomputes.
 inline constexpr int AsyncRecomputeProgressDialogDelayMs = 150;
-
-struct AsyncRecomputeDialogOptions
-{
-    int showDelayMs = AsyncRecomputeProgressDialogDelayMs;
-    bool cancelable = true;
-    bool dynamicLabel = true;
-    bool forceIndeterminate = false;
-    bool showDialog = true;
-};
 
 /**
  * @brief Result captured from an async recompute progress dialog helper.
@@ -58,6 +56,16 @@ struct AsyncInlineRecomputeProgressTarget
     {
         return static_cast<bool>(setPending);
     }
+};
+
+struct AsyncRecomputeDialogOptions
+{
+    int showDelayMs = AsyncRecomputeProgressDialogDelayMs;
+    bool cancelable = true;
+    bool dynamicLabel = true;
+    bool forceIndeterminate = false;
+    bool showDialog = true;
+    AsyncInlineRecomputeProgressTarget inlineProgressTarget;
 };
 
 class ScopedAsyncInlineRecomputeProgress
@@ -111,6 +119,99 @@ private:
     bool buttonBoxWasEnabled = false;
     bool active = false;
 };
+
+inline AsyncInlineRecomputeProgressTarget makeTaskPanelInlineRecomputeProgressTarget(
+    QWidget* contentWidget,
+    QDialogButtonBox* buttonBox,
+    QString statusText,
+    QLayout* statusLayout = nullptr
+)
+{
+    auto* layout = statusLayout ? statusLayout : (contentWidget ? contentWidget->layout() : nullptr);
+    if (!contentWidget || !layout) {
+        return {};
+    }
+
+    struct State
+    {
+        QPointer<QWidget> contentWidget;
+        QPointer<QLayout> statusLayout;
+        QPointer<QWidget> statusWidget;
+        QPointer<AsyncPreviewBusySpinner> spinner;
+        QPointer<QLabel> statusLabel;
+    };
+
+    auto state = std::make_shared<State>();
+    state->contentWidget = contentWidget;
+    state->statusLayout = layout;
+
+    AsyncInlineRecomputeProgressTarget target;
+    target.contentWidget = contentWidget;
+    target.buttonBox = buttonBox;
+    target.statusText = std::move(statusText);
+    target.setPending = [state](bool pending, const QString& status) {
+        if (!state->contentWidget || !state->statusLayout) {
+            return;
+        }
+
+        if (!pending) {
+            if (state->spinner) {
+                state->spinner->setAnimated(false);
+            }
+            auto* statusWidget = state->statusWidget.data();
+            state->statusWidget = nullptr;
+            state->spinner = nullptr;
+            state->statusLabel = nullptr;
+            if (statusWidget) {
+                statusWidget->hide();
+                state->statusLayout->removeWidget(statusWidget);
+                statusWidget->deleteLater();
+            }
+            return;
+        }
+
+        if (!state->statusWidget) {
+            auto* statusParent = state->statusLayout->parentWidget()
+                ? state->statusLayout->parentWidget()
+                : state->contentWidget.data();
+            auto* statusWidget = new QWidget(statusParent);
+            statusWidget->setObjectName(QStringLiteral("fcAsyncAcceptProgress"));
+            statusWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+
+            auto* rowLayout = new QHBoxLayout(statusWidget);
+            rowLayout->setContentsMargins(0, 4, 0, 0);
+            rowLayout->setSpacing(6);
+
+            auto* spinner = new AsyncPreviewBusySpinner(statusWidget);
+            auto* statusLabel = new QLabel(statusWidget);
+            statusLabel->setObjectName(QStringLiteral("fcAsyncAcceptProgressLabel"));
+            statusLabel->setMinimumWidth(0);
+            statusLabel->setWordWrap(false);
+            statusLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+            rowLayout->addWidget(spinner);
+            rowLayout->addWidget(statusLabel);
+            state->statusLayout->addWidget(statusWidget);
+
+            state->statusWidget = statusWidget;
+            state->spinner = spinner;
+            state->statusLabel = statusLabel;
+        }
+
+        if (state->statusLabel) {
+            state->statusLabel->setText(status);
+            state->statusLabel->setToolTip(status);
+        }
+        if (state->spinner) {
+            state->spinner->setAnimated(true);
+        }
+        if (state->statusWidget) {
+            state->statusWidget->show();
+        }
+    };
+
+    return target;
+}
 
 /**
  * @brief Execute the legacy synchronous recompute path and normalize exceptions.
@@ -205,7 +306,13 @@ void runAsyncRecomputeProgressDialog(
     StartFn&& start
 )
 {
-    if (!options.showDialog) {
+    AsyncRecomputeDialogOptions effectiveOptions = options;
+    ScopedAsyncInlineRecomputeProgress inlineProgress(effectiveOptions.inlineProgressTarget);
+    if (inlineProgress.isActive()) {
+        effectiveOptions.showDialog = false;
+    }
+
+    if (!effectiveOptions.showDialog) {
         Q_UNUSED(parent);
         Q_UNUSED(windowTitle);
         Q_UNUSED(fallbackLabel);
@@ -244,14 +351,14 @@ void runAsyncRecomputeProgressDialog(
     dialog.setMinimumDuration(0);
     dialog.setRange(0, 0);
     dialog.setLabelText(fallbackLabel);
-    if (!options.cancelable) {
+    if (!effectiveOptions.cancelable) {
         dialog.setCancelButton(nullptr);
     }
 
     QEventLoop loop;
     QTimer showTimer;
     showTimer.setSingleShot(true);
-    if (options.cancelable) {
+    if (effectiveOptions.cancelable) {
         QObject::connect(&dialog, &QProgressDialog::canceled, &controller, [&controller]() {
             controller.stopPendingRecompute();
         });
@@ -260,8 +367,8 @@ void runAsyncRecomputeProgressDialog(
         &controller,
         &AsyncPreviewController::stateChanged,
         &dialog,
-        [&dialog, &controller, fallbackLabel, &options, &loop, &showTimer]() {
-            updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel, options);
+        [&dialog, &controller, fallbackLabel, &effectiveOptions, &loop, &showTimer]() {
+            updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel, effectiveOptions);
             if (!controller.hasOutstandingRecompute()) {
                 showTimer.stop();
                 dialog.hide();
@@ -283,11 +390,11 @@ void runAsyncRecomputeProgressDialog(
         &showTimer,
         &QTimer::timeout,
         &dialog,
-        [&dialog, &controller, fallbackLabel, &options]() {
+        [&dialog, &controller, fallbackLabel, &effectiveOptions]() {
             if (!controller.hasOutstandingRecompute()) {
                 return;
             }
-            updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel, options);
+            updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel, effectiveOptions);
             dialog.show();
         }
     );
@@ -298,9 +405,9 @@ void runAsyncRecomputeProgressDialog(
         return;
     }
 
-    updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel, options);
-    if (options.showDialog) {
-        showTimer.start(std::max(0, options.showDelayMs));
+    updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel, effectiveOptions);
+    if (effectiveOptions.showDialog) {
+        showTimer.start(std::max(0, effectiveOptions.showDelayMs));
     }
     loop.exec();
 }

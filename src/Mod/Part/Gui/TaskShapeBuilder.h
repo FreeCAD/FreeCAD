@@ -43,6 +43,7 @@ public:
     bool accept();
     bool reject();
     void setSelectionGate();
+    void setDialogButtonBox(QDialogButtonBox* dialogButtonBox);
 
 private:
     void onCreateButtonClicked();

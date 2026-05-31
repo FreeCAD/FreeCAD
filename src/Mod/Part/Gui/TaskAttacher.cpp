@@ -1764,12 +1764,21 @@ bool TaskDlgAttacher::accept()
             "MapMode = '%s'",
             AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str()
         );
+        const QString recomputeStatus = tr("Computing attachment...");
+        Gui::AsyncRecomputeDialogOptions recomputeOptions;
+        recomputeOptions.inlineProgressTarget = Gui::makeTaskPanelInlineRecomputeProgressTarget(
+            parameter,
+            buttonBox,
+            recomputeStatus,
+            parameter ? parameter->groupLayout() : nullptr
+        );
         const auto outcome = Gui::runAsyncDocumentObjectRecomputeProgressDialog(
             parameter,
             tr("Attachment"),
-            tr("Computing attachment..."),
+            recomputeStatus,
             obj,
             /*recursive=*/false,
+            recomputeOptions,
             [obj]() {
                 if (obj) {
                     obj->recomputeFeature(/*recursive=*/false);

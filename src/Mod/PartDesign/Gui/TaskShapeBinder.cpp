@@ -632,12 +632,11 @@ bool TaskDlgShapeBinder::accept()
                     buttonBox,
                     tr("Applying changes...")
                 );
-                const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(std::move(progressTarget));
                 Gui::AsyncRecomputeDialogOptions options;
                 options.cancelable = false;
                 options.dynamicLabel = false;
                 options.forceIndeterminate = true;
-                options.showDialog = !inlineProgress.isActive();
+                options.inlineProgressTarget = progressTarget;
                 if (!runAsyncAcceptDocumentRecompute(binder->getDocument(), options)) {
                     return false;
                 }

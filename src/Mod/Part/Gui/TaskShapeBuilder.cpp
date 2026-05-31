@@ -24,7 +24,9 @@
 
 
 #include <QButtonGroup>
+#include <QDialogButtonBox>
 #include <QMessageBox>
+#include <QPointer>
 #include <QTextStream>
 #include <sstream>
 #include <TopExp.hxx>
@@ -103,6 +105,7 @@ public:
     QButtonGroup bg;
     ShapeSelection* gate;
     BoxSelection selection;
+    QPointer<QDialogButtonBox> dialogButtonBox;
     Private()
     {
         Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
@@ -141,6 +144,11 @@ ShapeBuilderWidget::~ShapeBuilderWidget()
 {
     Gui::Selection().rmvSelectionGate();
     delete d;
+}
+
+void ShapeBuilderWidget::setDialogButtonBox(QDialogButtonBox* dialogButtonBox)
+{
+    d->dialogButtonBox = dialogButtonBox;
 }
 
 void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -207,12 +215,20 @@ void ShapeBuilderWidget::onCreateButtonClicked()
                 appDoc->recompute();
             }
         };
+        const QString recomputeStatus = tr("Computing shape...");
+        Gui::AsyncRecomputeDialogOptions recomputeOptions;
+        recomputeOptions.inlineProgressTarget = Gui::makeTaskPanelInlineRecomputeProgressTarget(
+            this,
+            d->dialogButtonBox,
+            recomputeStatus
+        );
         const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
             this,
             tr("Shape builder"),
-            tr("Computing shape..."),
+            recomputeStatus,
             appDoc,
             /*force=*/false,
+            recomputeOptions,
             recomputeDocument
         );
         if (!outcome.success) {
@@ -654,7 +670,9 @@ TaskShapeBuilder::TaskShapeBuilder()
 TaskShapeBuilder::~TaskShapeBuilder() = default;
 
 void TaskShapeBuilder::open()
-{}
+{
+    widget->setDialogButtonBox(buttonBox);
+}
 
 void TaskShapeBuilder::clicked(int)
 {}
