@@ -52,7 +52,7 @@ public:
     explicit ThicknessWidget(Part::Thickness*, QWidget* parent = nullptr);
     ~ThicknessWidget() override;
 
-    bool accept();
+    bool accept(QDialogButtonBox* dialogButtonBox = nullptr);
     bool reject();
     void flushPendingRecompute();
     void stopPendingRecompute();

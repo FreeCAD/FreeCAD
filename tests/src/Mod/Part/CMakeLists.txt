@@ -2,6 +2,10 @@
 
 add_subdirectory(App)
 
+if(BUILD_GUI)
+    add_subdirectory(Gui)
+endif(BUILD_GUI)
+
 target_link_libraries(Part_tests_run
     GTest::gtest_main
     ${Python3_LIBRARIES}

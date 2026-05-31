@@ -24,6 +24,7 @@
 
 #include <limits>
 
+#include <QDialogButtonBox>
 #include <QMessageBox>
 #include <QSignalBlocker>
 
@@ -352,7 +353,7 @@ void ThicknessWidget::onUpdateViewToggled(bool on)
     }
 }
 
-bool ThicknessWidget::accept()
+bool ThicknessWidget::accept(QDialogButtonBox* dialogButtonBox)
 {
     if (d->ui.facesButton->isChecked()) {
         return false;
@@ -390,12 +391,21 @@ bool ThicknessWidget::accept()
             }
         }
 
+        const QString recomputeStatus = tr("Computing thickness...");
+        const auto progressTarget = d->asyncPreviewSession
+            ? d->asyncPreviewSession
+                  ->makeInlineRecomputeProgressTarget(this, dialogButtonBox, recomputeStatus)
+            : Gui::AsyncInlineRecomputeProgressTarget {};
+        const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(progressTarget);
+        Gui::AsyncRecomputeDialogOptions recomputeOptions;
+        recomputeOptions.showDialog = !inlineProgress.isActive();
         const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
             this,
             tr("Thickness"),
-            tr("Computing thickness..."),
+            recomputeStatus,
             document,
             /*force=*/false,
+            recomputeOptions,
             [document]() {
                 if (document) {
                     document->recompute();
@@ -550,7 +560,7 @@ bool TaskThickness::accept()
         return false;
     }
 
-    return widget->accept();
+    return widget->accept(buttonBox);
 }
 
 bool TaskThickness::reject()
