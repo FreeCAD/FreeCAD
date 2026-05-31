@@ -34,6 +34,7 @@
 #include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/AsyncPreviewSession.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
@@ -806,6 +807,28 @@ void TaskBoxPrimitives::setDeferredClosePending(bool pending)
     }
 }
 
+Gui::AsyncInlineRecomputeProgressTarget TaskBoxPrimitives::makeAcceptedRecomputeProgressTarget(
+    QDialogButtonBox* dialogButtonBox,
+    const QString& statusText
+)
+{
+    if (!asyncPreviewSession) {
+        return {};
+    }
+
+    QPointer<TaskBoxPrimitives> guard(this);
+    Gui::AsyncInlineRecomputeProgressTarget target;
+    target.contentWidget = this;
+    target.buttonBox = dialogButtonBox;
+    target.statusText = statusText;
+    target.setPending = [guard](bool pending, const QString& status) {
+        if (guard && guard->asyncPreviewSession) {
+            guard->asyncPreviewSession->setForcedBusy(pending, status);
+        }
+    };
+    return target;
+}
+
 void TaskBoxPrimitives::updateRecomputeUi()
 {
     if (!ui || !asyncPreviewSession) {
@@ -1214,7 +1237,15 @@ bool TaskDlgPrimitiveParameters::accept()
         }
     }
 
-    if (!runAsyncAcceptDocumentRecompute(document)) {
+    auto progressTarget
+        = primitive->makeAcceptedRecomputeProgressTarget(buttonBox, tr("Applying changes..."));
+    const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(std::move(progressTarget));
+    Gui::AsyncRecomputeDialogOptions options;
+    options.cancelable = false;
+    options.dynamicLabel = false;
+    options.forceIndeterminate = true;
+    options.showDialog = !inlineProgress.isActive();
+    if (!runAsyncAcceptDocumentRecompute(document, options)) {
         return false;
     }
     Gui::cmdGuiDocument(document, "resetEdit()");

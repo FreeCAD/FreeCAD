@@ -38,6 +38,7 @@
 
 class Ui_TaskShapeBinder;
 class QListWidget;
+class QDialogButtonBox;
 
 namespace App
 {
@@ -49,6 +50,7 @@ namespace Gui
 class ButtonGroup;
 class ViewProvider;
 class AsyncPreviewSession;
+struct AsyncInlineRecomputeProgressTarget;
 }  // namespace Gui
 
 namespace PartDesignGui
@@ -73,6 +75,10 @@ public:
     bool hasOutstandingRecompute() const;
     bool canReuseAcceptedPreviewResult() const;
     void setDeferredClosePending(bool pending);
+    Gui::AsyncInlineRecomputeProgressTarget makeAcceptedRecomputeProgressTarget(
+        QDialogButtonBox* dialogButtonBox,
+        const QString& statusText
+    );
     void clearInteractiveSelection();
 
 Q_SIGNALS:

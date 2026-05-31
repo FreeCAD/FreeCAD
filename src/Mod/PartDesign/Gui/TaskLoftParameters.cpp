@@ -235,6 +235,18 @@ void TaskLoftParameters::setDeferredClosePending(bool pending)
     }
 }
 
+bool TaskLoftParameters::hasAcceptedRecomputeProgressUi() const
+{
+    return static_cast<bool>(asyncPreviewSession);
+}
+
+void TaskLoftParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setForcedBusy(pending, statusText);
+    }
+}
+
 void TaskLoftParameters::requestRecompute(bool waitForCompletion)
 {
     if (!isUpdateBlocked() && asyncPreviewSession) {

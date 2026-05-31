@@ -281,6 +281,18 @@ void TaskHelixParameters::setDeferredClosePending(bool pending)
     }
 }
 
+bool TaskHelixParameters::hasAcceptedRecomputeProgressUi() const
+{
+    return static_cast<bool>(asyncPreviewSession);
+}
+
+void TaskHelixParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setForcedBusy(pending, statusText);
+    }
+}
+
 void TaskHelixParameters::clearInteractiveSelection()
 {
     TaskSketchBasedParameters::exitSelectionMode();

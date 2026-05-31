@@ -111,7 +111,7 @@ public:
     );
     ~TaskPipeParameters() override;
 
-    bool accept(bool previewSettled = true);
+    bool accept(bool previewSettled = true, bool hasInlineProgress = false);
     void flushPendingRecompute() override;
     void stopPendingRecompute() override;
     void runImmediateRecompute();
@@ -119,6 +119,8 @@ public:
     bool hasOutstandingRecompute() const override;
     bool canReuseAcceptedPreviewResult() const override;
     void setDeferredClosePending(bool pending);
+    bool hasAcceptedRecomputeProgressUi() const override;
+    void setAcceptedRecomputePending(bool pending, const QString& statusText) override;
 
 Q_SIGNALS:
     void recomputeSettled();

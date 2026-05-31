@@ -455,6 +455,18 @@ void TaskRevolutionParameters::setDeferredClosePending(bool pending)
     }
 }
 
+bool TaskRevolutionParameters::hasAcceptedRecomputeProgressUi() const
+{
+    return static_cast<bool>(asyncPreviewSession);
+}
+
+void TaskRevolutionParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setForcedBusy(pending, statusText);
+    }
+}
+
 void TaskRevolutionParameters::updateRecomputeUi()
 {
     if (!ui || !asyncPreviewSession) {
