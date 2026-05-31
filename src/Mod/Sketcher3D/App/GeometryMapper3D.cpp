@@ -207,6 +207,22 @@ void GeometryMapper3D::push(
                 }
                 break;
             }
+            case Constraint3D::Angle3D: {
+                if (c.getElements().size() < 2) {
+                    break;
+                }
+                const int la = resolveLineHandle(c.getElements()[0]);
+                const int lb = resolveLineHandle(c.getElements()[1]);
+                if (la >= 0 && lb >= 0) {
+                    solver.addConstraintAngle(tagId,
+                                              la,
+                                              c.getElements()[0].Pos,
+                                              lb,
+                                              c.getElements()[1].Pos,
+                                              c.Value);
+                }
+                break;
+            }
             case Constraint3D::AlongX:
             case Constraint3D::AlongY:
             case Constraint3D::AlongZ: {

@@ -3477,4 +3477,174 @@ double ConstraintParallel3D::grad(double* param)
     return scale * deriv;
 }
 
+// --------------------------------------------------------
+// L2LAngle3D
+ConstraintL2LAngle3D::ConstraintL2LAngle3D(Line3D& l1, Line3D& l2, double* a)
+{
+    pvec.push_back(l1.p1.x);
+    pvec.push_back(l1.p1.y);
+    pvec.push_back(l1.p1.z);
+    pvec.push_back(l1.p2.x);
+    pvec.push_back(l1.p2.y);
+    pvec.push_back(l1.p2.z);
+    pvec.push_back(l2.p1.x);
+    pvec.push_back(l2.p1.y);
+    pvec.push_back(l2.p1.z);
+    pvec.push_back(l2.p2.x);
+    pvec.push_back(l2.p2.y);
+    pvec.push_back(l2.p2.z);
+    pvec.push_back(a);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintL2LAngle3D::ConstraintL2LAngle3D(Point3D& p1,
+                                           Point3D& p2,
+                                           Point3D& p3,
+                                           Point3D& p4,
+                                           double* a)
+{
+    pvec.push_back(p1.x);
+    pvec.push_back(p1.y);
+    pvec.push_back(p1.z);
+    pvec.push_back(p2.x);
+    pvec.push_back(p2.y);
+    pvec.push_back(p2.z);
+    pvec.push_back(p3.x);
+    pvec.push_back(p3.y);
+    pvec.push_back(p3.z);
+    pvec.push_back(p4.x);
+    pvec.push_back(p4.y);
+    pvec.push_back(p4.z);
+    pvec.push_back(a);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintL2LAngle3D::getTypeId()
+{
+    return L2LAngle3D;
+}
+
+double ConstraintL2LAngle3D::value()
+{
+    double dx1 = *p2x() - *p1x();
+    double dy1 = *p2y() - *p1y();
+    double dz1 = *p2z() - *p1z();
+    double dx2 = *p4x() - *p3x();
+    double dy2 = *p4y() - *p3y();
+    double dz2 = *p4z() - *p3z();
+    double dot = dx1 * dx2 + dy1 * dy2 + dz1 * dz2;
+    double cx = dy1 * dz2 - dz1 * dy2;
+    double cy = dz1 * dx2 - dx1 * dz2;
+    double cz = dx1 * dy2 - dy1 * dx2;
+    double crossMag = sqrt(cx * cx + cy * cy + cz * cz);
+
+    // angle in [0, pi], because 3d lacks the refrence plane so there is
+    // not clockwise or anticlockwise
+    return atan2(crossMag, dot);
+}
+
+double ConstraintL2LAngle3D::error()
+{
+    return scale * (value() - *angle());
+}
+
+double ConstraintL2LAngle3D::grad(double* param)
+{
+    double deriv = 0.;
+
+    if (param == p1x() || param == p1y() || param == p1z() || param == p2x()
+        || param == p2y() || param == p2z() || param == p3x() || param == p3y()
+        || param == p3z() || param == p4x() || param == p4y() || param == p4z()) {
+        double dx1 = *p2x() - *p1x();
+        double dy1 = *p2y() - *p1y();
+        double dz1 = *p2z() - *p1z();
+        double dx2 = *p4x() - *p3x();
+        double dy2 = *p4y() - *p3y();
+        double dz2 = *p4z() - *p3z();
+
+        double len1Sq = dx1 * dx1 + dy1 * dy1 + dz1 * dz1;
+        double len2Sq = dx2 * dx2 + dy2 * dy2 + dz2 * dz2;
+        double cx = dy1 * dz2 - dz1 * dy2;
+        double cy = dz1 * dx2 - dx1 * dz2;
+        double cz = dx1 * dy2 - dy1 * dx2;
+        double crossSq = cx * cx + cy * cy + cz * cz;
+        if (len1Sq > 1e-24 && len2Sq > 1e-24 && crossSq > 1e-24) {
+            double dot = dx1 * dx2 + dy1 * dy2 + dz1 * dz2;
+            double cross = sqrt(crossSq);
+
+            double inv1 = 1.0 / (cross * len1Sq);
+            double inv2 = 1.0 / (cross * len2Sq);
+            double d1x = (dot * dx1 - len1Sq * dx2) * inv1;
+            double d1y = (dot * dy1 - len1Sq * dy2) * inv1;
+            double d1z = (dot * dz1 - len1Sq * dz2) * inv1;
+            double d2x = (dot * dx2 - len2Sq * dx1) * inv2;
+            double d2y = (dot * dy2 - len2Sq * dy1) * inv2;
+            double d2z = (dot * dz2 - len2Sq * dz1) * inv2;
+
+            if (param == p1x()) {
+                deriv -= d1x;
+            }
+            if (param == p1y()) {
+                deriv -= d1y;
+            }
+            if (param == p1z()) {
+                deriv -= d1z;
+            }
+            if (param == p2x()) {
+                deriv += d1x;
+            }
+            if (param == p2y()) {
+                deriv += d1y;
+            }
+            if (param == p2z()) {
+                deriv += d1z;
+            }
+            if (param == p3x()) {
+                deriv -= d2x;
+            }
+            if (param == p3y()) {
+                deriv -= d2y;
+            }
+            if (param == p3z()) {
+                deriv -= d2z;
+            }
+            if (param == p4x()) {
+                deriv += d2x;
+            }
+            if (param == p4y()) {
+                deriv += d2y;
+            }
+            if (param == p4z()) {
+                deriv += d2z;
+            }
+        }
+    }
+    if (param == angle()) {
+        deriv += -1.0;
+    }
+
+    return scale * deriv;
+}
+
+double ConstraintL2LAngle3D::maxStep(MAP_pD_D& dir, double lim)
+{
+    constexpr double pi_18 = std::numbers::pi / 18;
+
+    MAP_pD_D::iterator it = dir.find(angle());
+    if (it != dir.end()) {
+        double step = std::abs(it->second);
+        if (step > pi_18) {
+            lim = std::min(lim, pi_18 / step);
+        }
+    }
+    return lim;
+}
+
+void ConstraintL2LAngle3D::evaluate()
+{
+    *angle() = value();
+}
+
 }  // namespace GCS

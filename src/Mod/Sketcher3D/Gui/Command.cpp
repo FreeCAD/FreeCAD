@@ -29,6 +29,7 @@
 #include <QObject>
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/Unit.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -606,13 +607,14 @@ bool CmdSketcher3DConstrainCoincident::isActive()
     return isSketch3DInEdit();
 }
 
-// helper function to collect selected line refs for the parallel and Along constraints
+// helper function to collect selected line refs for the parallel, angle, and Along constraints
 std::vector<Sketcher3D::GeoElementId3D> collectSelectedLineRefs(Sketcher3D::Sketch3DObject* sketch)
 {
     std::vector<Sketcher3D::GeoElementId3D> refs;
     if (!sketch) {
         return refs;
     }
+    const auto& geos = sketch->Geometry.getValues();
 
     const auto sels
         = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
@@ -633,13 +635,91 @@ std::vector<Sketcher3D::GeoElementId3D> collectSelectedLineRefs(Sketcher3D::Sket
                 continue;
             }
             auto id = sketch->resolveSubName(subname);
-            if (id.isValid()) {
+            if (id.isValid() && id.GeoId >= 0 && id.GeoId < static_cast<int>(geos.size())
+                && dynamic_cast<const Part::GeomLineSegment*>(geos[id.GeoId])) {
                 refs.push_back(id);
             }
         }
     }
 
     return refs;
+}
+
+// Finds the closest pair of endpoints between the two lines, sets
+// which endpoint is tail and returns the angle between the two outward pointing
+// direction vectors in [0, pi]. and store tail endpoint info in ref1.Pos and ref2.Pos.
+bool calculateAngle3D(
+    const Sketcher3D::Sketch3DObject* sketch,
+    Sketcher3D::GeoElementId3D& ref1,
+    Sketcher3D::GeoElementId3D& ref2,
+    double& actAngle
+)
+{
+    if (!sketch) {
+        return false;
+    }
+
+    const auto& geos = sketch->Geometry.getValues();
+    if (ref1.GeoId < 0 || ref1.GeoId >= static_cast<int>(geos.size()) || ref2.GeoId < 0
+        || ref2.GeoId >= static_cast<int>(geos.size())) {
+        return false;
+    }
+    const auto* line1 = dynamic_cast<const Part::GeomLineSegment*>(geos[ref1.GeoId]);
+    const auto* line2 = dynamic_cast<const Part::GeomLineSegment*>(geos[ref2.GeoId]);
+    if (!line1 || !line2) {
+        return false;
+    }
+
+    const Base::Vector3d p1[2] = {line1->getStartPoint(), line1->getEndPoint()};
+    const Base::Vector3d p2[2] = {line2->getStartPoint(), line2->getEndPoint()};
+
+    // Find the pair of endpoints (one from each line) that are closest together.
+    double minDist = std::numeric_limits<double>::max();
+    int tailIdx1 = 0;
+    int tailIdx2 = 0;
+    for (int i = 0; i <= 1; ++i) {
+        for (int j = 0; j <= 1; ++j) {
+            const double d = (p1[i] - p2[j]).Length();
+            if (d < minDist) {
+                minDist = d;
+                tailIdx1 = i;
+                tailIdx2 = j;
+            }
+        }
+    }
+
+    // Store which endpoint is the tail
+    ref1.Pos = tailIdx1 ? Sketcher3D::PointPos::end : Sketcher3D::PointPos::start;
+    ref2.Pos = tailIdx2 ? Sketcher3D::PointPos::end : Sketcher3D::PointPos::start;
+
+    // Direction vectors pointing AWAY from the shared vertex.
+    const Base::Vector3d dir1 = tailIdx1 ? (p1[0] - p1[1]) : (p1[1] - p1[0]);
+    const Base::Vector3d dir2 = tailIdx2 ? (p2[0] - p2[1]) : (p2[1] - p2[0]);
+
+    if (dir1.Sqr() <= 1e-24 || dir2.Sqr() <= 1e-24) {
+        return false;
+    }
+
+    // Angle between the two outward vectors in [0, pi].
+    const double crossMag = (dir1 % dir2).Length();
+    const double dot = dir1 * dir2;
+    actAngle = std::atan2(crossMag, dot);
+    return true;
+}
+
+double normalizedLineAngle(double angle)
+{
+    const double fullTurn = 2.0 * std::numbers::pi;
+    angle = std::fmod(angle, fullTurn);
+    if (angle < 0.0) {
+        angle += fullTurn;
+    }
+    // Clamp because in 3d there is no referce plane so 
+    // clockwise vs counterclockwise dont matter.
+    if (angle > std::numbers::pi) {
+        angle = fullTurn - angle;
+    }
+    return angle;
 }
 
 DEF_STD_CMD_A(CmdSketcher3DConstrainParallel)
@@ -693,6 +773,87 @@ void CmdSketcher3DConstrainParallel::activated(int iMsg)
 }
 
 bool CmdSketcher3DConstrainParallel::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainAngle)
+
+CmdSketcher3DConstrainAngle::CmdSketcher3DConstrainAngle()
+    : Command("Sketcher3D_ConstrainAngle")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain angle");
+    sToolTipText = QT_TR_NOOP("Force the smaller angle between two 3D lines");
+    sWhatsThis = "Sketcher3D_ConstrainAngle";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_InternalAngle";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainAngle::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    if (!sketch) {
+        return;
+    }
+
+    const auto refs = collectSelectedLineRefs(sketch);
+
+    if (refs.size() != 2) {
+        Base::Console().warning("Sketcher3D: select exactly two 3D sketch lines for Angle.\n");
+        return;
+    }
+    if (refs[0] == refs[1]) {
+        Base::Console().warning("Sketcher3D: Angle needs two distinct lines.\n");
+        return;
+    }
+
+    Sketcher3D::GeoElementId3D ref1 = refs[0];
+    Sketcher3D::GeoElementId3D ref2 = refs[1];
+    double actAngle = 0.0;
+    if (!calculateAngle3D(sketch, ref1, ref2, actAngle)) {
+        Base::Console().warning("Sketcher3D: Angle needs two non-zero length lines.\n");
+        return;
+    }
+    if (actAngle == 0.0) {
+        Base::Console().warning(
+            "Sketcher3D: An angle constraint cannot be set for two parallel lines.\n"
+        );
+        return;
+    }
+
+    DlgEditConstraintValue dlg(
+        QObject::tr("Constrain angle"),
+        QObject::tr("Angle:"),
+        Base::toDegrees(actAngle),
+        Base::Unit::Angle,
+        Gui::getMainWindow()
+    );
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain angle"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Angle3D;
+    c.Value = normalizedLineAngle(Base::toRadians(dlg.value()));
+    c.setElements({ref1, ref2});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainAngle::isActive()
 {
     return isSketch3DInEdit();
 }
@@ -826,17 +987,17 @@ bool CmdSketcher3DConstrainAlongZ::isActive()
     return isSketch3DInEdit();
 }
 
-class CmdSketcher3DCompDistance: public Gui::GroupCommand
+class CmdSketcher3DCompDimensionTools: public Gui::GroupCommand
 {
 public:
-    CmdSketcher3DCompDistance()
-        : GroupCommand("Sketcher3D_CompDistance")
+    CmdSketcher3DCompDimensionTools()
+        : GroupCommand("Sketcher3D_CompDimensionTools")
     {
         sAppModule = "Sketcher3D";
         sGroup = QT_TR_NOOP("Sketcher3D");
-        sMenuText = QT_TR_NOOP("Dimensional constraint");
-        sToolTipText = QT_TR_NOOP("Constrain a 3D line length or the distance between 3D points");
-        sWhatsThis = "Sketcher3D_CompDistance";
+        sMenuText = QT_TR_NOOP("Dimension");
+        sToolTipText = QT_TR_NOOP("Dimension tools");
+        sWhatsThis = "Sketcher3D_CompDimensionTools";
         sStatusTip = sToolTipText;
         eType = ForEdit;
 
@@ -844,6 +1005,7 @@ public:
         setRememberLast(false);
 
         addCommand("Sketcher3D_ConstrainDistance");
+        addCommand("Sketcher3D_ConstrainAngle");
         addCommand("Sketcher3D_ConstrainDistanceX");
         addCommand("Sketcher3D_ConstrainDistanceY");
         addCommand("Sketcher3D_ConstrainDistanceZ");
@@ -851,7 +1013,7 @@ public:
 
     const char* className() const override
     {
-        return "CmdSketcher3DCompDistance";
+        return "CmdSketcher3DCompDimensionTools";
     }
 
     bool isActive() override
@@ -905,6 +1067,7 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateLine());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreatePolyline());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistance());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAngle());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceX());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceY());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceZ());
@@ -913,6 +1076,6 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongX());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongY());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongZ());
-    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompDistance());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompDimensionTools());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompParallel());
 }

@@ -31,6 +31,7 @@
 
 #include <Base/Vector3D.h>
 #include <Mod/Sketcher/App/planegcs/GCS.h>
+#include <Mod/Sketcher3D/App/GeoEnum3D.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
 
@@ -73,6 +74,15 @@ public:
 
     /// Parallel constraint between two lines.
     void addConstraintParallel(int tagId, int lineHandleA, int lineHandleB);
+
+    /// Angle constraint between two lines.
+    /// Angle is unsigned, in radians, in [0, pi].
+    void addConstraintAngle(int tagId,
+                            int lineHandleA,
+                            PointPos posA,
+                            int lineHandleB,
+                            PointPos posB,
+                            double angle);
 
     /// Constraint to align a line along the X axis.
     void addConstraintAlongX(int tagId, int lineHandle);

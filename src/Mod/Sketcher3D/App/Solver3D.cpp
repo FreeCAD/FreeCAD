@@ -28,6 +28,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
+#include "GeoEnum3D.h"
 #include "Solver3D.h"
 
 
@@ -102,6 +103,29 @@ void Solver3D::addConstraintParallel(int tagId, int lineHandleA, int lineHandleB
     GCS::Line3D& la = lines[lineHandleA];
     GCS::Line3D& lb = lines[lineHandleB];
     gcs.addConstraintParallel3D(la.p1, la.p2, lb.p1, lb.p2, tagId);
+}
+
+void Solver3D::addConstraintAngle(int tagId,
+                                  int lineHandleA,
+                                  PointPos posA,
+                                  int lineHandleB,
+                                  PointPos posB,
+                                  double angle)
+{
+    if (lineHandleA < 0 || lineHandleA >= static_cast<int>(lines.size()) || lineHandleB < 0
+        || lineHandleB >= static_cast<int>(lines.size())) {
+        throw Base::IndexError("Solver3D::addConstraintAngle handle out of range");
+    }
+    double* a = allocDrivenParam(angle);
+    GCS::Line3D& la = lines[lineHandleA];
+    GCS::Line3D& lb = lines[lineHandleB];
+
+    GCS::Point3D& la_tail = (posA == PointPos::end) ? la.p2 : la.p1;
+    GCS::Point3D& la_head = (posA == PointPos::end) ? la.p1 : la.p2;
+    GCS::Point3D& lb_tail = (posB == PointPos::end) ? lb.p2 : lb.p1;
+    GCS::Point3D& lb_head = (posB == PointPos::end) ? lb.p1 : lb.p2;
+
+    gcs.addConstraintL2LAngle3D(la_tail, la_head, lb_tail, lb_head, a, tagId);
 }
 
 void Solver3D::addConstraintAlongX(int tagId, int lineHandle)

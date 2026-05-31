@@ -183,6 +183,8 @@ QIcon iconForConstraint(Sketcher3D::Constraint3D::Constraint3DType type)
             return Gui::BitmapFactory().iconFromTheme("Constraint_PointOnPoint");
         case Sketcher3D::Constraint3D::Parallel3D:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Parallel");
+        case Sketcher3D::Constraint3D::Angle3D:
+            return Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle");
         case Sketcher3D::Constraint3D::AlongX:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Horizontal");
         case Sketcher3D::Constraint3D::AlongY:
@@ -480,6 +482,9 @@ void TaskSketcher3DTool::populateConstraints()
             || c.Type == Sketcher3D::Constraint3D::DistanceY3D
             || c.Type == Sketcher3D::Constraint3D::DistanceZ3D) {
             text += tr(" = %1").arg(c.Value, 0, 'f', 3);
+        }
+        else if (c.Type == Sketcher3D::Constraint3D::Angle3D) {
+            text += tr(" = %1 deg").arg(Base::toDegrees(c.Value), 0, 'f', 3);
         }
         auto* item = new QListWidgetItem(iconForConstraint(c.Type), text, constraintsList);
         item->setData(Qt::UserRole, subnames);
