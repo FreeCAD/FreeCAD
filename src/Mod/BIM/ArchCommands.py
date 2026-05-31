@@ -688,7 +688,7 @@ def removeCurves(shape, dae=False, tolerance=5):
 
 
 def removeShape(objs, mark=True):
-    """removeShape(objs,mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
+    """removeShape(objs, mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
     the inner shape, keeping its length, width and height as parameters. If mark is True, objects that cannot
     be processed by this function will become red."""
     import DraftGeomUtils
@@ -699,32 +699,32 @@ def removeShape(objs, mark=True):
         if DraftGeomUtils.isCubic(obj.Shape):
             dims = DraftGeomUtils.getCubicDimensions(obj.Shape)
             if dims:
+                place, length, width, height = dims
                 name = obj.Name
                 tp = Draft.getType(obj)
-                print(tp)
                 if tp == "Structure":
-                    FreeCAD.ActiveDocument.removeObject(name)
-                    import ArchStructure
-
-                    str = ArchStructure.makeStructure(
-                        length=dims[1], width=dims[2], height=dims[3], name=name
-                    )
-                    str.Placement = dims[0]
-                elif tp == "Wall":
-                    FreeCAD.ActiveDocument.removeObject(name)
                     import Arch
 
-                    length = dims[1]
-                    width = dims[2]
-                    v1 = Vector(length / 2, 0, 0)
-                    v2 = v1.negative()
-                    v1 = dims[0].multVec(v1)
-                    v2 = dims[0].multVec(v2)
-                    line = Draft.makeLine(v1, v2)
-                    Arch.makeWall(line, width=width, height=dims[3], name=name)
-        else:
-            if mark:
-                obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
+                    stru = Arch.makeStructure(length=length, width=width, height=height, name=name)
+                    if height <= length:
+                        # Beam
+                        place.move(place.Rotation.multVec(Vector(-length / 2, 0, height / 2)))
+                    stru.Placement = place
+                    Draft.format_object(stru, obj)
+                    FreeCAD.ActiveDocument.removeObject(name)
+                elif tp == "Wall":
+                    import Arch
+
+                    place.move(place.Rotation.multVec(Vector(-length / 2, 0, 0)))
+                    line = Draft.makeLine(Vector(0, 0, 0), Vector(length, 0, 0))
+                    line.Placement = place
+                    wall = Arch.makeWall(
+                        line, width=width, height=height, align="Center", name=name
+                    )
+                    Draft.format_object(wall, obj)
+                    FreeCAD.ActiveDocument.removeObject(name)
+        elif FreeCAD.GuiUp and mark:
+            obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
 
 
 def mergeCells(objectslist):
