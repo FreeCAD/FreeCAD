@@ -35,6 +35,8 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
+#include <Geom_Curve.hxx>
+#include <Geom_TrimmedCurve.hxx>
 
 #include "Tag.h"
 
@@ -474,6 +476,11 @@ class TechDrawExport GeometryUtils
         static std::vector<int> findNestedFaceIndices(const std::vector<FacePtr>& holes);
 
         static std::string getGeomTypeName(GeomType typeEnumValue);
+        static gp_Pnt midPoint(const opencascade::handle<Geom_TrimmedCurve>& curve);
+        static opencascade::handle<Geom_TrimmedCurve>
+                    bestFitArc(opencascade::handle<Geom_TrimmedCurve> splineActual,
+                               opencascade::handle<Geom_TrimmedCurve> circleArc0,
+                               opencascade::handle<Geom_TrimmedCurve> circleArc1);
 };
 
 } //end namespace TechDraw
