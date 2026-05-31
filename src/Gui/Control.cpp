@@ -160,18 +160,17 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document*
         return;
     }
 
-    // only one dialog at a time, print a warning instead of raising an assert
+    // Only one dialog per document can be active at a time.
     TaskView::TaskDialog* foundDialog = taskView->dialog(attachTo);
-    if (!dlg || foundDialog == dlg) {
-        if (dlg) {
-            qWarning() << "ControlSingleton::showDialog: Can't show "
-                       << dlg->metaObject()->className()
-                       << " since there is already an active task dialog in Document "
-                       << (attachTo ? attachTo->getName() : "''");
-        }
-        else {
-            qWarning() << "ControlSingleton::showDialog: Task dialog is null";
-        }
+    if (!dlg) {
+        qWarning() << "ControlSingleton::showDialog: Task dialog is null";
+        return;
+    }
+
+    if (foundDialog) {
+        qWarning() << "ControlSingleton::showDialog: Can't show " << dlg->metaObject()->className()
+                   << " since there is already an active task dialog in Document "
+                   << (attachTo ? attachTo->getName() : "''");
         return;
     }
 

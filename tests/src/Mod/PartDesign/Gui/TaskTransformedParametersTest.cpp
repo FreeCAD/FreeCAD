@@ -12,6 +12,7 @@
 
 #include <QComboBox>
 #include <QCoreApplication>
+#include <QDialogButtonBox>
 #include <QListWidget>
 #include <QPointer>
 #include <QPushButton>
@@ -203,6 +204,12 @@ Gui::QuantitySpinBox* findExtentSpinBox(PartGui::PatternParametersWidget* widget
 QComboBox* findPlaneCombo(QWidget* taskBox)
 {
     return taskBox ? taskBox->findChild<QComboBox*>(QStringLiteral("comboPlane")) : nullptr;
+}
+
+QDialogButtonBox* findActiveDialogButtonBox()
+{
+    auto* taskView = Gui::Control().taskPanel();
+    return taskView ? taskView->findChild<QDialogButtonBox*>() : nullptr;
 }
 
 Gui::UIntSpinBox* findUIntSpinBox(QWidget* taskBox, const QString& objectName)
@@ -765,6 +772,81 @@ private Q_SLOTS:
         QCOMPARE(pattern->Angle.getValue(), finalAngle);
         QCOMPARE(getBlockingTransformedTotalExecutionCount(), 2);
     }
+
+    void polarQueuedPreviewKeepsSingleActiveTaskDialog()  // NOLINT
+    {
+        prepareTransformedFixture(TransformedKind::Polar);
+        auto* pattern = dynamic_cast<PartDesign::BlockingPolarPatternTest*>(
+            doc->getObject("BlockingPolarPattern")
+        );
+        QVERIFY(pattern != nullptr);
+
+        auto* dialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
+        QPointer<PartDesignGui::TaskDlgLinearPatternParameters> guard(dialog);
+        Gui::Control().showDialog(dialog, doc);
+        QCoreApplication::processEvents();
+
+        auto* taskBox = findTaskBox<PartDesignGui::TaskPatternParameters>(dialog);
+        QVERIFY(taskBox != nullptr);
+        QTRY_VERIFY_WITH_TIMEOUT(!taskBox->hasOutstandingRecompute(), 3000);
+
+        auto* buttonBox = findActiveDialogButtonBox();
+        QVERIFY(buttonBox != nullptr);
+        QVERIFY(buttonBox->isEnabled());
+
+        auto* widget = findPrimaryPatternParametersWidget(taskBox);
+        QVERIFY(widget != nullptr);
+
+        auto* extent = findExtentSpinBox(widget);
+        QVERIFY(extent != nullptr);
+
+        auto* cancelPreview = findCancelPreviewButton(taskBox);
+        QVERIFY(cancelPreview != nullptr);
+
+        PartDesign::BlockingPolarPatternTest::armBlocker();
+        extent->setValue(extent->rawValue() - 45.0);
+        QCoreApplication::processEvents();
+
+        QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingPolarPatternTest::getExecutionCount(), 1, 3000);
+        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 1);
+        QVERIFY(taskBox->hasOutstandingRecompute());
+        QVERIFY(cancelPreview->isEnabled());
+
+        const double finalAngle = extent->rawValue() + 15.0;
+        extent->setValue(finalAngle);
+        QCoreApplication::processEvents();
+
+        QVERIFY(taskBox->hasOutstandingRecompute());
+        QVERIFY(extent->isEnabled());
+        QVERIFY(cancelPreview->isEnabled());
+        QVERIFY(buttonBox->isEnabled());
+
+        auto* duplicateDialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
+        QPointer<PartDesignGui::TaskDlgLinearPatternParameters> duplicateGuard(duplicateDialog);
+        Gui::Control().showDialog(duplicateDialog, doc);
+        QCoreApplication::processEvents();
+
+        QCOMPARE(Gui::Control().activeDialog(doc), static_cast<Gui::TaskView::TaskDialog*>(dialog));
+        QVERIFY(!guard.isNull());
+        QVERIFY(!duplicateGuard.isNull());
+
+        delete duplicateDialog;
+        QVERIFY(duplicateGuard.isNull());
+
+        PartDesign::BlockingPolarPatternTest::releaseBlocker();
+
+        QTRY_COMPARE_WITH_TIMEOUT(getBlockingTransformedTotalExecutionCount(), 2, 3000);
+        QTRY_VERIFY_WITH_TIMEOUT(!taskBox->hasOutstandingRecompute(), 3000);
+        QVERIFY(buttonBox->isEnabled());
+
+        Gui::Control().accept(doc);
+
+        QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
+        QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
+        QVERIFY(!guiDoc->hasPendingCommand());
+        QCOMPARE(pattern->Angle.getValue(), finalAngle);
+    }
+
     void mirroredRejectDefersCloseUntilAsyncPreviewSettles()  // NOLINT
     {
         prepareTransformedFixture(TransformedKind::Mirrored);
