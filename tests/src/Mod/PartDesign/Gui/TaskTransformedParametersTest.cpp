@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: 2026 Joao Matos
 // SPDX-FileNotice: Part of the FreeCAD project.
 
+#include <algorithm>
 #include <condition_variable>
 #include <chrono>
 #include <memory>
@@ -24,6 +25,7 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/PropertyContainer.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
@@ -175,6 +177,65 @@ FC_TEST_DECLARE_BLOCKING_EXECUTION_STATE(blockingTransformedState)
 using tests::partdesigngui::ensureGuiHarness;
 using tests::partdesigngui::findCancelPreviewButton;
 using tests::partdesigngui::findTaskBox;
+
+struct CapturedConsoleLog
+{
+    std::string msg;
+    Base::LogStyle level;
+};
+
+class CapturingConsoleLogger final: public Base::ILogger
+{
+public:
+    CapturingConsoleLogger(std::vector<CapturedConsoleLog>& output, std::mutex& mutex)
+        : output(output)
+        , mutex(mutex)
+    {
+        bNotification = true;
+    }
+
+    void sendLog(
+        const std::string&,
+        const std::string& msg,
+        Base::LogStyle level,
+        Base::IntendedRecipient,
+        Base::ContentType
+    ) override
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        output.push_back({msg, level});
+    }
+
+private:
+    std::vector<CapturedConsoleLog>& output;
+    std::mutex& mutex;
+};
+
+class ScopedConsoleObserver
+{
+public:
+    explicit ScopedConsoleObserver(Base::ILogger& logger)
+        : logger(logger)
+    {
+        Base::Console().attachObserver(&logger);
+    }
+
+    ~ScopedConsoleObserver()
+    {
+        Base::Console().detachObserver(&logger);
+    }
+
+private:
+    Base::ILogger& logger;
+};
+
+bool isUserVisiblePreviewAbortLog(const CapturedConsoleLog& log)
+{
+    const bool userVisibleLevel = log.level == Base::LogStyle::Warning
+        || log.level == Base::LogStyle::Error || log.level == Base::LogStyle::Critical
+        || log.level == Base::LogStyle::Notification;
+    return userVisibleLevel && log.msg.find("User aborted") != std::string::npos;
+}
 
 int getBlockingTransformedTotalExecutionCount()
 {
@@ -570,6 +631,12 @@ private Q_SLOTS:
         auto* cancelPreview = findCancelPreviewButton(taskBox);
         QVERIFY(cancelPreview != nullptr);
 
+        std::mutex logMutex;
+        std::vector<CapturedConsoleLog> logs;
+        CapturingConsoleLogger logger(logs, logMutex);
+        ScopedConsoleObserver scopedLogger(logger);
+        Base::Console().setConnectionMode(Base::ConsoleSingleton::Direct);
+
         PartDesign::BlockingPolarPatternTest::armBlocker();
         extent->setValue(extent->rawValue() - 45.0);
         QCoreApplication::processEvents();
@@ -591,6 +658,12 @@ private Q_SLOTS:
         QVERIFY(!guard.isNull());
         QCOMPARE(Gui::Control().activeDialog(doc), static_cast<Gui::TaskView::TaskDialog*>(dialog));
         QCOMPARE(PartDesign::BlockingPolarPatternTest::getExecutionCount(), 1);
+
+        {
+            std::lock_guard<std::mutex> lock(logMutex);
+            const bool reportedAbort = std::ranges::any_of(logs, isUserVisiblePreviewAbortLog);
+            QVERIFY2(!reportedAbort, "manual preview cancel must not report User aborted");
+        }
     }
 
     void polarAcceptAfterCanceledPreviewRunsFinalRecompute()  // NOLINT
