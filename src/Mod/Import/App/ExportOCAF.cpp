@@ -95,11 +95,16 @@ std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
         std::vector<App::DocumentObject*> keepObjects;
         for (auto it : entries) {
             std::vector<App::DocumentObject*> inList = it->getInList();
+            bool accept = true;
             for (auto jt : inList) {
                 if (auto kt = std::ranges::find(filterType, jt); kt != filterType.end()) {
+                    accept = false;
                     keepObjects.push_back(it);
                     break;
                 }
+            }
+            if (accept) {
+                keepObjects.push_back(it);
             }
         }
         entries.swap(keepObjects);
