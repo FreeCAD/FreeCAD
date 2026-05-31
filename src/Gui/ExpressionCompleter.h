@@ -97,6 +97,7 @@ Q_SIGNALS:
 
 private:
     void init();
+    void updateCompletionModel(const QString& completionPrefix);
     QString pathFromIndex(const QModelIndex& index) const override;
     QStringList splitPath(const QString& input) const override;
 

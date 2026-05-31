@@ -3,6 +3,8 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <algorithm>
+
 #include "Base/Quantity.h"
 
 #include "App/Application.h"
@@ -10,6 +12,8 @@
 #include "App/DocumentObject.h"
 #include "App/Expression.h"
 #include "App/ExpressionParser.h"
+#include "App/ObjectIdentifier.h"
+#include "App/Property.h"
 
 #include "src/App/InitApplication.h"
 
@@ -325,6 +329,28 @@ TEST_F(ExpressionParserTest, canParseProperties)
     this_obj()->addDynamicProperty("App::PropertyQuantity", "Bar");
     EXPECT_THAT(parseExpr("Sketch.Bar"), IsQuantity(Base::Quantity()))
         << "PropertyQuantity on object";
+}
+
+TEST_F(ExpressionParserTest, placementAdvertisesSupportedRotationPaths)
+{
+    App::Property* placement = this_obj()->getPropertyByName("Placement");
+    ASSERT_NE(placement, nullptr);
+
+    std::vector<App::ObjectIdentifier> paths;
+    placement->getPaths(paths);
+
+    auto hasPath = [&paths](const char* subPath) {
+        return std::any_of(paths.cbegin(), paths.cend(), [subPath](const App::ObjectIdentifier& path) {
+            return path.getSubPathStr() == subPath;
+        });
+    };
+
+    EXPECT_TRUE(hasPath(".Rotation.Axis.x"));
+    EXPECT_TRUE(hasPath(".Rotation.Axis.y"));
+    EXPECT_TRUE(hasPath(".Rotation.Axis.z"));
+    EXPECT_TRUE(hasPath(".Rotation.Yaw"));
+    EXPECT_TRUE(hasPath(".Rotation.Pitch"));
+    EXPECT_TRUE(hasPath(".Rotation.Roll"));
 }
 
 }  // namespace App::ExpressionParser::Test

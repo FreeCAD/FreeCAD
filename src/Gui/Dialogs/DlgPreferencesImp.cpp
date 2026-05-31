@@ -68,6 +68,7 @@
 #include "Dialogs/DlgPreferencesImp.h"
 #include "ui_DlgPreferences.h"
 #include "BitmapFactory.h"
+#include "FuzzyMatcher.h"
 #include "MainWindow.h"
 #include "Tools.h"
 #include "WidgetFactory.h"
@@ -1460,7 +1461,7 @@ void PreferencesSearchController::collectSearchResults(
 
     // First, check if the page display name itself matches (highest priority)
     int pageScore = 0;
-    if (fuzzyMatch(searchText, pageDisplayName, pageScore)) {
+    if (Gui::FuzzyMatcher::match(searchText, pageDisplayName, pageScore)) {
         SearchResult result {
             .groupName = groupName,
             .pageName = pageName,
@@ -1661,7 +1662,7 @@ void PreferencesSearchController::searchWidgetType(
 
         if (!widgetText.isEmpty()) {
             int score = 0;
-            if (fuzzyMatch(searchText, widgetText, score)) {
+            if (Gui::FuzzyMatcher::match(searchText, widgetText, score)) {
                 SearchResult result {
                     .groupName = groupName,
                     .pageName = pageName,
@@ -1681,7 +1682,7 @@ void PreferencesSearchController::searchWidgetType(
         QString tooltip = widget->toolTip();
         if (!tooltip.isEmpty()) {
             int tooltipScore = 0;
-            if (fuzzyMatch(searchText, tooltip, tooltipScore)) {
+            if (Gui::FuzzyMatcher::match(searchText, tooltip, tooltipScore)) {
                 SearchResult result {
                     .groupName = groupName,
                     .pageName = pageName,
@@ -1716,7 +1717,7 @@ void PreferencesSearchController::searchWidgetType(
                 QString itemText = widget->itemText(i);
                 if (!itemText.isEmpty()) {
                     int itemScore = 0;
-                    if (fuzzyMatch(searchText, itemText, itemScore)) {
+                    if (Gui::FuzzyMatcher::match(searchText, itemText, itemScore)) {
                         SearchResult result {
                             .groupName = groupName,
                             .pageName = pageName,
@@ -1803,110 +1804,6 @@ void PreferencesSearchController::configurePopupSize()
     }
 
     m_searchResultsList->move(globalPos);
-}
-
-// Fuzzy search implementation
-
-bool PreferencesSearchController::isExactMatch(const QString& searchText, const QString& targetText)
-{
-    return targetText.toLower().contains(searchText.toLower());
-}
-
-bool PreferencesSearchController::fuzzyMatch(
-    const QString& searchText,
-    const QString& targetText,
-    int& score
-)
-{
-    if (searchText.isEmpty()) {
-        score = 0;
-        return true;
-    }
-
-    const QString lowerSearch = searchText.toLower();
-    const QString lowerTarget = targetText.toLower();
-
-    // First check for exact substring match (highest score)
-    if (lowerTarget.contains(lowerSearch)) {
-        // Score based on how early the match appears and how much of the string it covers
-        int matchIndex = lowerTarget.indexOf(lowerSearch);
-        int coverage = (lowerSearch.length() * 100) / lowerTarget.length();  // Percentage coverage
-        score = 1000 - matchIndex + coverage;  // Higher score for earlier matches and better coverage
-        return true;
-    }
-
-    // For fuzzy matching, require minimum search length to avoid too many false positives
-    if (lowerSearch.length() < 3) {
-        score = 0;
-        return false;
-    }
-
-    // Fuzzy matching: check if all characters appear in order
-    int searchIndex = 0;
-    int targetIndex = 0;
-    int consecutiveMatches = 0;
-    int maxConsecutive = 0;
-    int firstMatchIndex = -1;
-    int lastMatchIndex = -1;
-
-    while (searchIndex < lowerSearch.length() && targetIndex < lowerTarget.length()) {
-        if (lowerSearch[searchIndex] == lowerTarget[targetIndex]) {
-            if (firstMatchIndex == -1) {
-                firstMatchIndex = targetIndex;
-            }
-            lastMatchIndex = targetIndex;
-            searchIndex++;
-            consecutiveMatches++;
-            maxConsecutive = qMax(maxConsecutive, consecutiveMatches);
-        }
-        else {
-            consecutiveMatches = 0;
-        }
-        targetIndex++;
-    }
-
-    // Check if all search characters were found
-    if (searchIndex == lowerSearch.length()) {
-        // Calculate match density - how spread out are the matches?
-        int matchSpan = lastMatchIndex - firstMatchIndex + 1;
-        int density = (lowerSearch.length() * 100) / matchSpan;  // Characters per span
-
-        // Require minimum density - matches shouldn't be too spread out
-        if (density < 20) {  // Less than 20% density is too sparse
-            score = 0;
-            return false;
-        }
-
-        // Require minimum coverage of search term
-        int coverage = (lowerSearch.length() * 100) / lowerTarget.length();
-        if (coverage < 15 && lowerTarget.length() > 20) {  // For long strings, require better coverage
-            score = 0;
-            return false;
-        }
-
-        // Calculate score based on:
-        // - Match density (how compact the matches are)
-        // - Consecutive matches bonus
-        // - Coverage (how much of target string is the search term)
-        // - Position bonus (earlier matches are better)
-        int densityScore = qMin(density, 100);  // Cap at 100
-        int consecutiveBonus = (maxConsecutive * 30) / lowerSearch.length();
-        int coverageScore = qMin(coverage * 2, 100);        // Coverage is important
-        int positionBonus = qMax(0, 50 - firstMatchIndex);  // Earlier is better
-
-        score = densityScore + consecutiveBonus + coverageScore + positionBonus;
-
-        // Minimum score threshold for fuzzy matches
-        if (score < 80) {
-            score = 0;
-            return false;
-        }
-
-        return true;
-    }
-
-    score = 0;
-    return false;
 }
 
 void PreferencesSearchController::ensureSearchBoxFocus()
