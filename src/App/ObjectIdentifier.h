@@ -250,7 +250,7 @@ public:
          *                     FreeCAD quoting rules.
          * @return The string representation.
          */
-        std::string toString(bool toPython = false) const;
+        AppExport std::string toString(bool toPython = false) const;
 
         // Operators
 

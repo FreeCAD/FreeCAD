@@ -1378,6 +1378,8 @@ SET(FreeCADGui_SRCS
     ExpressionBinding.h
     ExpressionBindingPy.h
     ExpressionCompleter.h
+    FuzzyMatcher.cpp
+    FuzzyMatcher.h
     FreeCADGuiInit.py
     FreeCADGuiTest.py
     FreeCADStyle.h
