@@ -44,7 +44,7 @@ public:
     explicit OffsetWidget(Part::Offset*, QWidget* parent = nullptr);
     ~OffsetWidget() override;
 
-    bool accept();
+    bool accept(QDialogButtonBox* dialogButtonBox = nullptr);
     bool reject();
     void flushPendingRecompute();
     void stopPendingRecompute();

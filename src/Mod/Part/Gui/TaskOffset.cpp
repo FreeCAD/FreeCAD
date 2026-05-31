@@ -24,6 +24,7 @@
 
 #include <limits>
 
+#include <QDialogButtonBox>
 #include <QMessageBox>
 
 #include <App/Application.h>
@@ -275,7 +276,7 @@ void OffsetWidget::onUpdateViewToggled(bool on)
     }
 }
 
-bool OffsetWidget::accept()
+bool OffsetWidget::accept(QDialogButtonBox* dialogButtonBox)
 {
     const bool previewUpToDate = d->ui.updateView->isChecked();
     flushPendingRecompute();
@@ -309,12 +310,21 @@ bool OffsetWidget::accept()
             }
         }
 
+        const QString recomputeStatus = tr("Computing offset...");
+        const auto progressTarget = d->asyncPreviewSession
+            ? d->asyncPreviewSession
+                  ->makeInlineRecomputeProgressTarget(this, dialogButtonBox, recomputeStatus)
+            : Gui::AsyncInlineRecomputeProgressTarget {};
+        const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(progressTarget);
+        Gui::AsyncRecomputeDialogOptions recomputeOptions;
+        recomputeOptions.showDialog = !inlineProgress.isActive();
         const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
             this,
             tr("Offset"),
-            tr("Computing offset..."),
+            recomputeStatus,
             document,
             /*force=*/false,
+            recomputeOptions,
             [document]() {
                 if (document) {
                     document->recompute();
@@ -405,7 +415,7 @@ bool TaskOffset::accept()
         return false;
     }
 
-    return widget->accept();
+    return widget->accept(buttonBox);
 }
 
 bool TaskOffset::reject()
