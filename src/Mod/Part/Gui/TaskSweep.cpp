@@ -302,7 +302,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
     return (!pathShape.IsNull());
 }
 
-bool SweepWidget::accept()
+bool SweepWidget::accept(QDialogButtonBox* dialogButtonBox)
 {
     if (d->ui.buttonPath->isChecked()) {
         return false;
@@ -416,12 +416,17 @@ bool SweepWidget::accept()
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Sweep"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
+        const QString recomputeStatus = tr("Computing sweep…");
+        Gui::AsyncRecomputeDialogOptions recomputeOptions;
+        recomputeOptions.inlineProgressTarget
+            = Gui::makeTaskPanelInlineRecomputeProgressTarget(this, dialogButtonBox, recomputeStatus);
         const auto outcome = Gui::runAsyncDocumentObjectRecomputeProgressDialog(
             this,
             tr("Sweep"),
-            tr("Computing sweep…"),
+            recomputeStatus,
             obj,
             /*recursive=*/true,
+            recomputeOptions,
             [obj]() {
                 if (obj && obj->getDocument()) {
                     obj->getDocument()->recomputeFeature(obj, /*recursive=*/true);
@@ -578,7 +583,7 @@ void TaskSweep::clicked(int id)
 
 bool TaskSweep::accept()
 {
-    return widget->accept();
+    return widget->accept(buttonBox);
 }
 
 bool TaskSweep::reject()

@@ -28,6 +28,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+class QDialogButtonBox;
 class QTreeWidgetItem;
 
 namespace PartGui
@@ -41,7 +42,7 @@ public:
     explicit LoftWidget(QWidget* parent = nullptr);
     ~LoftWidget() override;
 
-    bool accept();
+    bool accept(QDialogButtonBox* dialogButtonBox);
     bool reject();
 
 private Q_SLOTS:

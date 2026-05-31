@@ -167,7 +167,7 @@ void LoftWidget::findShapes()
     }
 }
 
-bool LoftWidget::accept()
+bool LoftWidget::accept(QDialogButtonBox* dialogButtonBox)
 {
     QString list, solid, ruled, closed;
     if (d->ui.checkSolid->isChecked()) {
@@ -226,12 +226,17 @@ bool LoftWidget::accept()
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Loft"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
+        const QString recomputeStatus = tr("Computing loft…");
+        Gui::AsyncRecomputeDialogOptions recomputeOptions;
+        recomputeOptions.inlineProgressTarget
+            = Gui::makeTaskPanelInlineRecomputeProgressTarget(this, dialogButtonBox, recomputeStatus);
         const auto outcome = Gui::runAsyncDocumentObjectRecomputeProgressDialog(
             this,
             tr("Loft"),
-            tr("Computing loft…"),
+            recomputeStatus,
             obj,
             /*recursive=*/true,
+            recomputeOptions,
             [obj]() {
                 if (obj && obj->getDocument()) {
                     obj->getDocument()->recomputeFeature(obj, /*recursive=*/true);
@@ -316,7 +321,7 @@ void TaskLoft::clicked(int)
 
 bool TaskLoft::accept()
 {
-    return widget->accept();
+    return widget->accept(buttonBox);
 }
 
 bool TaskLoft::reject()
