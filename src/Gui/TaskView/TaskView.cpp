@@ -636,7 +636,10 @@ bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
     if (foundTaskInfo != taskInfos.end() && foundTaskInfo->ActiveDialog == dlg) {
         return false;
     }
-    assert(foundTaskInfo == taskInfos.end());
+    if (foundTaskInfo != taskInfos.end()) {
+        Base::Console().warning("TaskView::showDialog: document already has an active task dialog\n");
+        return false;
+    }
 
     TaskInfo outInfo {.Document = doc};
     // first create the control element, set it up and wire it:
