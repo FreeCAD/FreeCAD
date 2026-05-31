@@ -23,7 +23,6 @@
  ***************************************************************************/
 
 #include <QAction>
-#include <QPointer>
 #include <QSignalBlocker>
 
 #include <App/Application.h>
@@ -526,16 +525,9 @@ void TaskExtrudeParameters::setDeferredClosePending(bool pending)
     }
 }
 
-bool TaskExtrudeParameters::hasAcceptedRecomputeProgressUi() const
+Gui::AsyncPreviewSession* TaskExtrudeParameters::getAcceptedRecomputeProgressSession()
 {
-    return static_cast<bool>(asyncPreviewSession);
-}
-
-void TaskExtrudeParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
-{
-    if (asyncPreviewSession) {
-        asyncPreviewSession->setForcedBusy(pending, statusText);
-    }
+    return asyncPreviewSession.get();
 }
 
 void TaskExtrudeParameters::runInteractiveRecompute()

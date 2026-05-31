@@ -110,7 +110,6 @@ public:
     bool hasOutstandingRecompute() const;
     bool canReuseAcceptedPreviewResult() const;
     void setDeferredClosePending(bool pending);
-    void setAcceptedRecomputePending(bool pending, const QString& statusText);
     Gui::AsyncInlineRecomputeProgressTarget makeAcceptedRecomputeProgressTarget(
         QDialogButtonBox* dialogButtonBox,
         const QString& statusText

@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QPointer>
 #include <QSignalBlocker>
 
 #include <App/Application.h>
@@ -455,16 +454,9 @@ void TaskRevolutionParameters::setDeferredClosePending(bool pending)
     }
 }
 
-bool TaskRevolutionParameters::hasAcceptedRecomputeProgressUi() const
+Gui::AsyncPreviewSession* TaskRevolutionParameters::getAcceptedRecomputeProgressSession()
 {
-    return static_cast<bool>(asyncPreviewSession);
-}
-
-void TaskRevolutionParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
-{
-    if (asyncPreviewSession) {
-        asyncPreviewSession->setForcedBusy(pending, statusText);
-    }
+    return asyncPreviewSession.get();
 }
 
 void TaskRevolutionParameters::updateRecomputeUi()

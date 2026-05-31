@@ -24,7 +24,6 @@
 
 
 #include <QAction>
-#include <QPointer>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -235,16 +234,9 @@ void TaskLoftParameters::setDeferredClosePending(bool pending)
     }
 }
 
-bool TaskLoftParameters::hasAcceptedRecomputeProgressUi() const
+Gui::AsyncPreviewSession* TaskLoftParameters::getAcceptedRecomputeProgressSession()
 {
-    return static_cast<bool>(asyncPreviewSession);
-}
-
-void TaskLoftParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
-{
-    if (asyncPreviewSession) {
-        asyncPreviewSession->setForcedBusy(pending, statusText);
-    }
+    return asyncPreviewSession.get();
 }
 
 void TaskLoftParameters::requestRecompute(bool waitForCompletion)

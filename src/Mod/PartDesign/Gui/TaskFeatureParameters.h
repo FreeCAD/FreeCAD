@@ -52,6 +52,7 @@ class QDialogButtonBox;
 
 namespace Gui
 {
+class AsyncPreviewSession;
 struct AsyncInlineRecomputeProgressTarget;
 struct AsyncRecomputeDialogOptions;
 }  // namespace Gui
@@ -124,8 +125,7 @@ public:
     }
     virtual void setDeferredClosePending(bool)
     {}
-    virtual bool hasAcceptedRecomputeProgressUi() const;
-    virtual void setAcceptedRecomputePending(bool pending, const QString& statusText);
+    virtual Gui::AsyncPreviewSession* getAcceptedRecomputeProgressSession();
     Gui::AsyncInlineRecomputeProgressTarget makeAcceptedRecomputeProgressTarget(
         QDialogButtonBox* dialogButtonBox,
         const QString& statusText
