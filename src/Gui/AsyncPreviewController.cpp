@@ -470,6 +470,11 @@ bool AsyncPreviewController::didLastRecomputeSucceed() const
     return lastRecomputeSucceeded;
 }
 
+std::uint64_t AsyncPreviewController::currentGeneration() const
+{
+    return recomputeGeneration;
+}
+
 bool AsyncPreviewController::isProgressDeterminate() const
 {
     return recomputeProgressDeterminate;

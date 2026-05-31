@@ -5,6 +5,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <utility>
@@ -57,7 +58,8 @@ public:
             &QTimer::timeout,
             progressUiDelayTimer.get(),
             [this]() {
-                progressUiVisible = previewController && previewController->isInProgress();
+                progressUiVisible = previewController && previewController->isInProgress()
+                    && previewController->currentGeneration() == progressUiDelayGeneration;
                 updateUi();
             }
         );
@@ -237,6 +239,7 @@ private:
     {
         if (forcedBusy) {
             progressUiVisible = true;
+            progressUiDelayGeneration = 0;
             if (progressUiDelayTimer) {
                 progressUiDelayTimer->stop();
             }
@@ -250,6 +253,7 @@ private:
 
         if (!inProgress) {
             progressUiVisible = false;
+            progressUiDelayGeneration = 0;
             if (progressUiDelayTimer) {
                 progressUiDelayTimer->stop();
             }
@@ -258,6 +262,7 @@ private:
 
         if (forceVisible) {
             progressUiVisible = true;
+            progressUiDelayGeneration = 0;
             if (progressUiDelayTimer) {
                 progressUiDelayTimer->stop();
             }
@@ -270,7 +275,10 @@ private:
 
         // Delay short-lived preview progress UI to avoid distracting layout churn
         // for recomputes that settle almost immediately.
-        if (progressUiDelayTimer && !progressUiDelayTimer->isActive()) {
+        const auto currentGeneration = previewController ? previewController->currentGeneration() : 0;
+        if (progressUiDelayTimer
+            && (!progressUiDelayTimer->isActive() || progressUiDelayGeneration != currentGeneration)) {
+            progressUiDelayGeneration = currentGeneration;
             progressUiDelayTimer->start(progressUiDelayMs);
         }
     }
@@ -290,6 +298,7 @@ private:
     bool forcedBusy = false;
     QString forcedBusyStatusText;
     std::unique_ptr<QTimer> progressUiDelayTimer;
+    std::uint64_t progressUiDelayGeneration = 0;
     int progressUiDelayMs = DefaultProgressUiDelayMs;
     bool progressUiVisible = false;
     QMetaObject::Connection cancelConnection;

@@ -11,7 +11,12 @@
 #include <thread>
 
 #include <QSignalSpy>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QProgressBar>
+#include <QPushButton>
 #include <QTest>
+#include <QWidget>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -21,6 +26,7 @@
 
 #include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/AsyncPreviewController.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <src/App/InitApplication.h>
 
 using namespace std::chrono_literals;
@@ -378,6 +384,60 @@ private Q_SLOTS:
         QVERIFY(!controller->hasOutstandingRecompute());
         QVERIFY(!controller->isInProgress());
         QVERIFY(!controller->isQueued());
+    }
+
+    void delayedPreviewUiDoesNotReuseTimerAcrossGenerations()  // NOLINT
+    {
+        QWidget statusWidget;
+        QHBoxLayout layout(&statusWidget);
+        QProgressBar progressBar(&statusWidget);
+        QLabel statusLabel(&statusWidget);
+        QPushButton cancelButton(&statusWidget);
+        layout.addWidget(&progressBar);
+        layout.addWidget(&statusLabel);
+        layout.addWidget(&cancelButton);
+
+        Gui::AsyncPreviewController::Callbacks callbacks;
+        callbacks.makeRequest = [this]() {
+            auto* object = static_cast<App::DocumentObject*>(blocker);
+            return object ? App::RecomputeRequest::fromDocumentObject(*object)
+                          : App::RecomputeRequest {};
+        };
+        callbacks.runSync = [this]() {
+            if (blocker) {
+                blocker->recomputeFeature();
+            }
+        };
+        Gui::AsyncPreviewSession session(std::move(callbacks));
+        session.bindWidgets(
+            {&statusWidget, &progressBar, &statusLabel, &cancelButton},
+            [](const char* text) { return QString::fromUtf8(text); }
+        );
+        session.setProgressUiDelay(300);
+
+        blocker->touch();
+        session.requestRecompute(/*waitForCompletion=*/false);
+        QVERIFY(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+        QVERIFY(session.controller()->isInProgress());
+        QVERIFY(statusLabel.isHidden());
+
+        QTest::qWait(120);
+
+        blocker->touch();
+        session.requestRecompute(/*waitForCompletion=*/false);
+        QVERIFY(session.controller()->isQueued());
+
+        QTest::qWait(220);
+
+        QVERIFY(session.controller()->isInProgress());
+        QVERIFY2(
+            statusLabel.isHidden(),
+            "an older delay timer must not reveal progress UI for a newer preview generation"
+        );
+
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+        QTRY_VERIFY_WITH_TIMEOUT(!session.hasOutstandingRecompute(), 2000);
+        QVERIFY(statusLabel.isHidden());
     }
 
     void waitForCompletionPumpsMainThreadHooksWhileBlocked()  // NOLINT
