@@ -51,6 +51,7 @@ set(PartDesign_TestScripts
     PartDesignTests/TestPolarPattern.py
     PartDesignTests/TestMultiTransform.py
     PartDesignTests/TestBoolean.py
+    PartDesignTests/TestBaseFeature.py
     PartDesignTests/TestFillet.py
     PartDesignTests/TestChamfer.py
     PartDesignTests/TestDraft.py

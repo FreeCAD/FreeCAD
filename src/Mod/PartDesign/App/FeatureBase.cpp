@@ -27,6 +27,7 @@
 
 
 #include <App/FeaturePythonPyImp.h>
+#include <Base/Placement.h>
 #include "Body.h"
 #include "FeatureBase.h"
 #include "FeaturePy.h"
@@ -75,14 +76,31 @@ App::DocumentObjectExecReturn* FeatureBase::execute()
         );
     }
 
-    auto shape = Part::Feature::getTopoShape(
-        BaseFeature.getValue(),
-        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-    );
+    auto* base = BaseFeature.getValue();
+    const bool isBodyLocalFeature = base->isDerivedFrom<PartDesign::Feature>()
+        && Body::findBodyOf(base);
+    const bool isPartDesignBody = base->isDerivedFrom<PartDesign::Body>();
+
+    auto options = Part::ShapeOptions(Part::ShapeOption::ResolveLink);
+    if (!isBodyLocalFeature && !isPartDesignBody) {
+        options |= Part::ShapeOption::Transform;
+    }
+
+    auto shape = Part::Feature::getTopoShape(base, options);
     if (shape.isNull()) {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "BaseFeature has an empty shape")
         );
+    }
+
+    // PartDesign feature shapes are body-local, but may carry their own feature Placement.
+    // Bake that into geometry. For a whole Body, drop only its top-level Placement because
+    // this FeatureBase owns the clone placement.
+    if (isBodyLocalFeature) {
+        shape.transformShape(shape.getTransform(), true);
+    }
+    else if (isPartDesignBody) {
+        shape.setPlacement(Base::Placement());
     }
 
     Shape.setValue(shape);
