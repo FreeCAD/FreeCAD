@@ -33,14 +33,14 @@ import sys
 from typing import Any, Dict, List, Optional, Tuple, Union
 import datetime
 
-import Constants
-
 import FreeCAD
+import Constants
 import Path
 import Path.Post.UtilsArguments as PostUtilsArguments
 import Path.Post.UtilsExport as PostUtilsExport
 from Path.Post import PostList
 import Path.Post.Utils as PostUtils
+from Path.Post.PostList import Postable
 from Path.Post.DrillCycleExpander import DrillCycleExpander
 from Machine.models.machine import MachineFactory, OutputUnits
 
@@ -1389,7 +1389,14 @@ class PostProcessor:
         Tracks rotary move groups and inserts pre/post rotary blocks.
         Handles M6 tool change suppression when tool_change is disabled.
         """
+
+        if item.item_type == "str":
+            # append the output & done
+            gcode_lines.extend(item.data["str"].split("\n"))
+            return
+
         if not item.path:
+            Path.Log.debug(f"Item (!str) w/o path: {item.item_type}:{item.label} {item}")
             return
 
         in_rotary_group = False
@@ -1424,20 +1431,117 @@ class PostProcessor:
         if in_rotary_group:
             gcode_lines.extend(self._get_property_lines("post_rotary_move"))
 
-    def _emit_item_post_block(self, item, gcode_lines) -> None:
-        """Emit post-block lines for a postable item based on its type.
+    def _expand_post_item(self, postables) -> None:
+        """Expand post-block lines for a postable item based on its type.
 
         Handles tool_controller, fixture, and operation item types.
         Derived postprocessors can override to customize post-block
         behavior.
         """
-        if item.item_type == "tool_controller":
-            gcode_lines.extend(self._get_property_lines("post_tool_change"))
-            gcode_lines.extend(self._get_property_lines("tool_return"))
-        elif item.item_type == "fixture":
-            gcode_lines.extend(self._get_property_lines("post_fixture_change"))
-        elif item.item_type == "operation":
-            gcode_lines.extend(self._get_property_lines("post_operation"))
+
+        def append(section_name: str, item, section_state: dict) -> list[Postable]:
+            """figure out what to append based on item_type
+            [...] is appended
+            """
+
+            def pblock(block_name):
+                # factored postable maker, name/count/contents
+                lines = self._get_property_lines(block_name)
+                if lines and lines != "":
+                    count = "" if state["count"] == 0 else f"state['count']:03d"
+                    return self._make_postable(
+                        f"Post: {section_name} {item.label} post-block:{block_name}{count}",
+                        self._get_property_lines(block_name),
+                    )
+                    state["count"] += 1
+                else:
+                    return None
+
+            # our per-section state
+            if "_expand_post_item" not in section_state:
+                section_state["_expand_post_item"] = {"count": 0}
+            state = section_state["_expand_post_item"]
+
+            # item -> 'str' Postable's
+            if item.item_type == "tool_controller":
+                return [pblock("post_tool_change"), pblock("tool_return")]
+            elif item.item_type == "fixture":
+                return [pblock("post_fixture_change")]
+            elif item.item_type == "operation":
+                return [pblock("post_operation")]
+            else:
+                return []
+
+        return self._add_post_items(postables, append)
+
+    def _make_postable(
+        self,
+        label: str,
+        contents: str | list[str] | Path.Command | list[Path.Command] | list[Any],
+        extra_data={},
+    ) -> Postable:
+        """Makes a Postable with the right kind of args and item_type
+        for the supported inputs.
+        A postable contents=[] is fine, it's just a marker with no content
+        extra_data is added to the `data`
+        """
+        if isinstance(contents, str):
+            args = {"item_type": "str", "data": {"str": contents}, "path": None, "source": None}
+        elif isinstance(contents, Path.Command):
+            args = {
+                "item_type": "command",
+                "data": {},
+                "path": Path.Path([contents]),
+                "source": None,
+            }
+        elif contents == [] or isinstance(contents[0], Path.Command):
+            # A postable of "command" with empty .path is fine, it's just a marker with no content
+            args = {"item_type": "command", "data": {}, "path": Path.Path(contents), "source": None}
+        elif isinstance(contents[0], str):
+            # one blob
+            args = {
+                "item_type": "str",
+                "data": {"str": "\n".join(contents)},
+                "path": None,
+                "source": None,
+            }
+        else:
+            raise Exception(
+                f"Can't smartly make a Postable for label '{label}'\n\tfor contents: {contents}"
+            )
+
+        args["data"].update(extra_data)
+        return Postable(label=label, **args)
+
+    def _add_post_items(
+        self, postables: list[Postable], append
+    ):  # -> [ (section_name, [Postable]) ]
+        """Add postables after items, according to append():
+        append(section_name, item, section_state) is called for each item
+            section_state is a dict for you, you have to initialize your sub-state:
+                # section_state is reset to {} for each section
+                if "myfnname" not in section_state:
+                    section_state["myfnname"] = { mystate:x }
+            return:
+            [] appends nothing
+            [ Postable, ... ] appends the list of postables, eliding None items
+        """
+        new_sections = []  # have to rebuild sections, sadly
+        for section_name, sublist in postables:
+            # sadly, we have to rebuild the sublist whether or not any items gets appended to
+            #   since we can't tell yet
+            new_sublist = []
+            section_state = {}
+            for item in sublist:
+                new_sublist.append(item)
+
+                rez = [
+                    x for x in append(section_name, item, section_state) if x is not None
+                ]  # reduce None's
+                if rez:
+                    new_sublist.extend(rez)
+            new_sections.append((section_name, new_sublist))
+        return new_sections
 
     def _optimize_gcode(self, header_lines, gcode_lines) -> str:
         """Apply G-code optimizations and produce a final string.
@@ -1476,28 +1580,15 @@ class PostProcessor:
             body_part = insert_line_numbers(body_part, start=start, increment=increment)
 
         final_lines = header_part + body_part
-        gcode_with_newlines = "\n".join(final_lines)
+        return final_lines
 
-        line_ending = self.values.get("END_OF_LINE_CHARS", "\n")
-        if line_ending == "\n":
-            return gcode_with_newlines
-        else:
-            return gcode_with_newlines.replace("\n", line_ending)
-
-    def _append_trailing_lines(self, gcode_string) -> str:
+    def _append_trailing_lines(self) -> str:
         """Append post_job and postamble lines to a gcode section."""
         trailing = []
         trailing.extend(self._get_property_lines("post_job"))
         trailing.extend(self._get_property_lines("postamble"))
 
-        if trailing:
-            trailing_str = "\n".join(trailing)
-            line_ending = self.values.get("END_OF_LINE_CHARS", "\n")
-            if line_ending == "\n":
-                gcode_string = gcode_string + "\n" + trailing_str
-            else:
-                gcode_string = gcode_string + line_ending + trailing_str.replace("\n", line_ending)
-        return gcode_string
+        return trailing
 
     def _append_bcnc_postamble(self, job_sections) -> None:
         """Append bCNC postamble to the last section only.
@@ -1521,18 +1612,11 @@ class PostProcessor:
                     bcnc_lines.append(gcode)
             if bcnc_lines:
                 last_name, last_gcode = job_sections[-1]
-                line_ending = self.values.get("END_OF_LINE_CHARS", "\n")
                 bcnc_gcode = "\n".join(bcnc_lines)
-                if line_ending == "\n":
-                    job_sections[-1] = (
-                        last_name,
-                        last_gcode + "\n" + bcnc_gcode,
-                    )
-                else:
-                    job_sections[-1] = (
-                        last_name,
-                        last_gcode + line_ending + bcnc_gcode.replace("\n", line_ending),
-                    )
+                job_sections[-1] = (
+                    last_name,
+                    last_gcode + "\n" + bcnc_gcode,
+                )
         else:
             Path.Log.debug("No bCNC postamble commands to process")
 
@@ -1546,12 +1630,7 @@ class PostProcessor:
             return
 
         safety_gcode_newlines = "\n".join(safety_lines)
-        line_ending = self.values.get("END_OF_LINE_CHARS", "\n")
-
-        if line_ending == "\n":
-            safety_gcode = safety_gcode_newlines + "\n"
-        else:
-            safety_gcode = safety_gcode_newlines.replace("\n", line_ending) + line_ending
+        safety_gcode = safety_gcode_newlines + "\n"
 
         first_name, first_gcode = all_job_sections[0]
         all_job_sections[0] = (first_name, safety_gcode + first_gcode)
@@ -1571,15 +1650,32 @@ class PostProcessor:
                 if self._emit_item_pre_block(item, gcode_lines):
                     continue
                 self._convert_item_commands(item, gcode_lines)
-                self._emit_item_post_block(item, gcode_lines)
 
             # ===== STAGE 4: G-CODE OPTIMIZATION =====
             gcode_string = self._optimize_gcode(header_lines, gcode_lines)
+
+            gcode_string += self._append_trailing_lines()
+
+            # one place for end-of-line_chars
+            gcode_string = "\n".join(gcode_string)
+            line_ending = self.values.get("END_OF_LINE_CHARS", "\n")
+            if line_ending != "\n":
+                gcode_string = gcode_string.replace("\n", line_ending)
+
             if gcode_string:
-                gcode_string = self._append_trailing_lines(gcode_string)
                 job_sections.append((section_name, gcode_string))
 
         return job_sections
+
+    def dump_sections(self, sections):
+        """Print the sections
+        for development/debugging
+        """
+        for si, (sn, postables) in enumerate(sections):
+            print(f"Section[{si}] '{sn}'")
+            for pi, p in enumerate(postables):
+                print(f"  Postable[{pi}] {p.item_type}:'{p.Name}'")
+                print(f"    {p}")
 
     def export2(self) -> Union[None, GCodeSections]:
         """
@@ -1622,6 +1718,8 @@ class PostProcessor:
         self._expand_xy_before_z(postables)
         self._expand_bcnc_commands(postables)
         self._expand_tool_length_offset(postables)
+
+        postables = self._expand_post_item(postables)
 
         Path.Log.debug(postables)
 
@@ -1919,6 +2017,9 @@ class PostProcessor:
     def convert_command_to_gcode(self, command: Path.Command) -> str:
         """
         Converts a single-line command to gcode.
+        Return one-string
+            use "\n" to join multiple-lines
+        Return None or "" for nothing.
 
         This method dispatches to specialized hook methods based on command type.
         Derived postprocessors can override individual hook methods to customize
@@ -1963,7 +2064,16 @@ class PostProcessor:
 
         # Comments
         if command_name.startswith("("):
-            return self._convert_comment(command)
+            gcode = [self._convert_comment(command)]
+
+            # We use comments for some sequence signals (Probe, etc.)
+            if "probe_open" in command.Annotations:
+                gcode.append(self._convert_probe_open(command))
+            elif "probe_close" in command.Annotations:
+                gcode.append(self._convert_probe_close(command))
+
+            # drop None/""
+            return "\n".join([l for l in gcode if l])
 
         # Rapid moves
         if command_name in Constants.GCODE_MOVE_RAPID:
@@ -2248,10 +2358,30 @@ class PostProcessor:
     def _convert_probe(self, command: Path.Command) -> str:
         """
         Converts a probe command to gcode.
+        _convert_probe_open(command) is called to start the sequence
+        _convert_probe_close(command) is called to end the sequence
 
         This method can be overridden by derived postprocessors to customize probe handling.
         """
         return self._convert_move(command)
+
+    def _convert_probe_open(self, command: Path.Command) -> str:
+        """Probe sequence is starting, do your prefix
+            command is a comment, already processed as a comment.
+            command.Annotations["probe_open"] has the filename from the operation
+                if the filename is "", generate something from the section_name, Postable.Name, "probe", and count
+
+        This method can be overridden by derived postprocessors to customize handling.
+        """
+        return None
+
+    def _convert_probe_close(self, command: Path.Command) -> str:
+        """Probe sequence is ended, do your postfix
+            command is a comment, already processed as a comment.
+
+        This method can be overridden by derived postprocessors to customize handling.
+        """
+        return None
 
     def _convert_dwell(self, command: Path.Command) -> str:
         """

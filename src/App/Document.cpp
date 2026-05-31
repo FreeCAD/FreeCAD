@@ -3472,6 +3472,11 @@ void Document::removeObject(const char* sName)
         return;
     }
 
+    if (pos->second->testStatus(ObjectStatus::Remove)) {
+        FC_LOG("Avoid recursive deletion of " << pos->second->getFullName());
+        return;
+    }
+
     if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
         // TODO: shall we allow removal if there is active undo transaction?
         FC_MSG("pending remove of " << sName << " after recomputing document " << getName());
@@ -3495,6 +3500,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
     if (pos == d->objectMap.end()) {
         FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
+        return;
     }
 
     if (options.testFlag(RemoveObjectOption::PreserveChildrenVisibility)
