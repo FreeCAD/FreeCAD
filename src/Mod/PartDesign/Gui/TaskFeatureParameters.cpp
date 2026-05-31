@@ -23,7 +23,9 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QDialogButtonBox>
 #include <QMessageBox>
+#include <QPointer>
 
 #include <App/DocumentObserver.h>
 #include <App/DocumentObject.h>
@@ -54,6 +56,13 @@ Gui::AsyncRecomputeDialogOptions acceptedFeatureRecomputeDialogOptions()
     options.cancelable = false;
     options.dynamicLabel = false;
     options.forceIndeterminate = true;
+    return options;
+}
+
+Gui::AsyncRecomputeDialogOptions acceptedFeatureRecomputeDialogOptions(bool showDialog)
+{
+    auto options = acceptedFeatureRecomputeDialogOptions();
+    options.showDialog = showDialog;
     return options;
 }
 
@@ -199,6 +208,36 @@ void TaskFeatureParameters::recomputeFeature()
         feature->recomputeFeature();
         feature->recomputePreview();
     }
+}
+
+bool TaskFeatureParameters::hasAcceptedRecomputeProgressUi() const
+{
+    return false;
+}
+
+void TaskFeatureParameters::setAcceptedRecomputePending(bool, const QString&)
+{}
+
+Gui::AsyncInlineRecomputeProgressTarget TaskFeatureParameters::makeAcceptedRecomputeProgressTarget(
+    QDialogButtonBox* dialogButtonBox,
+    const QString& statusText
+)
+{
+    if (!hasAcceptedRecomputeProgressUi()) {
+        return {};
+    }
+
+    QPointer<TaskFeatureParameters> guard(this);
+    Gui::AsyncInlineRecomputeProgressTarget target;
+    target.contentWidget = this;
+    target.buttonBox = dialogButtonBox;
+    target.statusText = statusText;
+    target.setPending = [guard](bool pending, const QString& status) {
+        if (guard) {
+            guard->setAcceptedRecomputePending(pending, status);
+        }
+    };
+    return target;
 }
 
 /*********************************************************************
@@ -372,12 +411,16 @@ void TaskDlgFeatureParameters::prepareAcceptedFeatureForDocumentRecompute(
 
 bool TaskDlgFeatureParameters::runAcceptedFeatureRecompute(
     App::Document* document,
-    AcceptRecomputeMode mode
+    AcceptRecomputeMode mode,
+    bool hasInlineProgress
 )
 {
     switch (mode) {
         case AcceptRecomputeMode::AsyncDocument:
-            return runAsyncAcceptDocumentRecompute(document);
+            return runAsyncAcceptDocumentRecompute(
+                document,
+                acceptedFeatureRecomputeDialogOptions(!hasInlineProgress)
+            );
         case AcceptRecomputeMode::CommandDocument:
             Gui::cmdAppDocument(document, "recompute()");
             return true;
@@ -465,10 +508,27 @@ bool TaskDlgFeatureParameters::accept()
         }
 
         prepareAcceptedFeatureForDocumentRecompute(feature, isUpdateBlocked, pendingRecomputeAction);
-        if (!runAcceptedFeatureRecompute(
-                document,
-                acceptRecomputeMode(isUpdateBlocked, pendingRecomputeAction)
-            )) {
+        const auto recomputeMode = acceptRecomputeMode(isUpdateBlocked, pendingRecomputeAction);
+        Gui::AsyncInlineRecomputeProgressTarget progressTarget;
+        if (recomputeMode == AcceptRecomputeMode::AsyncDocument) {
+            for (QWidget* widget : Content) {
+                auto* param = qobject_cast<TaskFeatureParameters*>(widget);
+                if (!param) {
+                    continue;
+                }
+
+                progressTarget = param->makeAcceptedRecomputeProgressTarget(
+                    buttonBox,
+                    tr("Applying changes...")
+                );
+                if (progressTarget) {
+                    break;
+                }
+            }
+        }
+
+        const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(std::move(progressTarget));
+        if (!runAcceptedFeatureRecompute(document, recomputeMode, inlineProgress.isActive())) {
             return false;
         }
 

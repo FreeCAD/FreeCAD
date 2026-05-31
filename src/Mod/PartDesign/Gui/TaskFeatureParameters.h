@@ -33,6 +33,7 @@
 
 #include <App/Application.h>
 #include <QPointer>
+#include <QString>
 #include <Gui/AsyncPreviewController.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -47,10 +48,13 @@ class Document;
 class DocumentObject;
 }  // namespace App
 
+class QDialogButtonBox;
+
 namespace Gui
 {
+struct AsyncInlineRecomputeProgressTarget;
 struct AsyncRecomputeDialogOptions;
-}
+}  // namespace Gui
 
 namespace PartDesignGui
 {
@@ -120,6 +124,12 @@ public:
     }
     virtual void setDeferredClosePending(bool)
     {}
+    virtual bool hasAcceptedRecomputeProgressUi() const;
+    virtual void setAcceptedRecomputePending(bool pending, const QString& statusText);
+    Gui::AsyncInlineRecomputeProgressTarget makeAcceptedRecomputeProgressTarget(
+        QDialogButtonBox* dialogButtonBox,
+        const QString& statusText
+    );
 
     void recomputeFeature();
 
@@ -251,7 +261,11 @@ protected:
         bool isUpdateBlocked,
         AcceptPendingRecomputeAction pendingRecomputeAction
     );
-    bool runAcceptedFeatureRecompute(App::Document* document, AcceptRecomputeMode mode);
+    bool runAcceptedFeatureRecompute(
+        App::Document* document,
+        AcceptRecomputeMode mode,
+        bool hasInlineProgress = false
+    );
     void finalizeAcceptedFeature(App::DocumentObject* feature);
     bool reportAcceptException(const Base::Exception& e) const;
     bool hasDeferredRejectPending() const;

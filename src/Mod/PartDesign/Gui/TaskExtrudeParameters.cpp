@@ -526,6 +526,18 @@ void TaskExtrudeParameters::setDeferredClosePending(bool pending)
     }
 }
 
+bool TaskExtrudeParameters::hasAcceptedRecomputeProgressUi() const
+{
+    return static_cast<bool>(asyncPreviewSession);
+}
+
+void TaskExtrudeParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setForcedBusy(pending, statusText);
+    }
+}
+
 void TaskExtrudeParameters::runInteractiveRecompute()
 {
     if (asyncPreviewSession) {
