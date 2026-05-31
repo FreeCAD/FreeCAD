@@ -5,9 +5,12 @@
 #pragma once
 
 #include <exception>
+#include <functional>
 #include <utility>
 
 #include <QEventLoop>
+#include <QDialogButtonBox>
+#include <QPointer>
 #include <QProgressDialog>
 #include <QString>
 #include <QTimer>
@@ -42,6 +45,71 @@ struct AsyncRecomputeProgressOutcome
     bool canceled = false;
     App::RecomputeFailure failure = App::RecomputeFailure::None;
     std::string message;
+};
+
+struct AsyncInlineRecomputeProgressTarget
+{
+    QPointer<QWidget> contentWidget;
+    QPointer<QDialogButtonBox> buttonBox;
+    QString statusText;
+    std::function<void(bool pending, const QString& statusText)> setPending;
+
+    explicit operator bool() const
+    {
+        return static_cast<bool>(setPending);
+    }
+};
+
+class ScopedAsyncInlineRecomputeProgress
+{
+public:
+    explicit ScopedAsyncInlineRecomputeProgress(AsyncInlineRecomputeProgressTarget target)
+        : target(std::move(target))
+        , contentWasEnabled(this->target.contentWidget ? this->target.contentWidget->isEnabled() : false)
+        , buttonBoxWasEnabled(this->target.buttonBox ? this->target.buttonBox->isEnabled() : false)
+    {
+        if (!this->target) {
+            return;
+        }
+
+        active = true;
+        this->target.setPending(true, this->target.statusText);
+        if (this->target.contentWidget) {
+            this->target.contentWidget->setEnabled(false);
+        }
+        if (this->target.buttonBox) {
+            this->target.buttonBox->setEnabled(false);
+        }
+    }
+
+    ~ScopedAsyncInlineRecomputeProgress()
+    {
+        if (!active) {
+            return;
+        }
+
+        if (target.buttonBox) {
+            target.buttonBox->setEnabled(buttonBoxWasEnabled);
+        }
+        if (target.contentWidget) {
+            target.contentWidget->setEnabled(contentWasEnabled);
+        }
+        target.setPending(false, {});
+    }
+
+    ScopedAsyncInlineRecomputeProgress(const ScopedAsyncInlineRecomputeProgress&) = delete;
+    ScopedAsyncInlineRecomputeProgress& operator=(const ScopedAsyncInlineRecomputeProgress&) = delete;
+
+    bool isActive() const
+    {
+        return active;
+    }
+
+private:
+    AsyncInlineRecomputeProgressTarget target;
+    bool contentWasEnabled = false;
+    bool buttonBoxWasEnabled = false;
+    bool active = false;
 };
 
 /**

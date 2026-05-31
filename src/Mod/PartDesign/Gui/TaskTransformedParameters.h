@@ -40,6 +40,8 @@
 #include "TaskFeatureParameters.h"
 #include "TaskTransformedMessages.h"
 #include "ViewProviderTransformed.h"
+
+class QDialogButtonBox;
 class QListWidget;
 
 class Ui_TaskTransformedParameters;
@@ -55,8 +57,9 @@ class Transformed;
 }
 namespace Gui
 {
+struct AsyncInlineRecomputeProgressTarget;
 class AsyncPreviewSession;
-}
+}  // namespace Gui
 
 namespace PartDesignGui
 {
@@ -107,7 +110,11 @@ public:
     bool hasOutstandingRecompute() const;
     bool canReuseAcceptedPreviewResult() const;
     void setDeferredClosePending(bool pending);
-    void setAcceptedRecomputePending(bool pending);
+    void setAcceptedRecomputePending(bool pending, const QString& statusText);
+    Gui::AsyncInlineRecomputeProgressTarget makeAcceptedRecomputeProgressTarget(
+        QDialogButtonBox* dialogButtonBox,
+        const QString& statusText
+    );
     /// Recompute either this feature or the parent MultiTransform feature
     void recomputeFeature();
     bool isUpdateBlocked() const

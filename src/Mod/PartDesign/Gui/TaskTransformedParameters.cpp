@@ -63,58 +63,6 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskTransformedParameters */
 
-namespace
-{
-
-class ScopedAcceptedRecomputePending
-{
-public:
-    ScopedAcceptedRecomputePending(TaskTransformedParameters* parameter, QDialogButtonBox* buttonBox)
-        : parameter(parameter)
-        , buttonBox(buttonBox)
-        , parameterWasEnabled(parameter ? parameter->isEnabled() : false)
-        , buttonBoxWasEnabled(buttonBox ? buttonBox->isEnabled() : false)
-    {
-        if (this->parameter) {
-            this->parameter->setAcceptedRecomputePending(true);
-            this->parameter->setEnabled(false);
-        }
-        if (this->buttonBox) {
-            this->buttonBox->setEnabled(false);
-        }
-    }
-
-    ~ScopedAcceptedRecomputePending()
-    {
-        if (buttonBox) {
-            buttonBox->setEnabled(buttonBoxWasEnabled);
-        }
-        if (parameter) {
-            parameter->setEnabled(parameterWasEnabled);
-            parameter->setAcceptedRecomputePending(false);
-        }
-    }
-
-private:
-    QPointer<TaskTransformedParameters> parameter;
-    QPointer<QDialogButtonBox> buttonBox;
-    bool parameterWasEnabled = false;
-    bool buttonBoxWasEnabled = false;
-};
-
-Gui::AsyncRecomputeDialogOptions transformedAcceptRecomputeOptions()
-{
-    Gui::AsyncRecomputeDialogOptions options;
-    options.cancelable = false;
-    options.dynamicLabel = false;
-    options.forceIndeterminate = true;
-    options.showDialog = false;
-    return options;
-}
-
-}  // namespace
-
-
 TaskTransformedParameters::TaskTransformedParameters(
     ViewProviderTransformed* TransformedView,
     QWidget* parent
@@ -514,16 +462,38 @@ void TaskTransformedParameters::setDeferredClosePending(bool pending)
     }
 }
 
-void TaskTransformedParameters::setAcceptedRecomputePending(bool pending)
+void TaskTransformedParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
 {
     if (insideMultiTransform && parentTask) {
-        parentTask->setAcceptedRecomputePending(pending);
+        parentTask->setAcceptedRecomputePending(pending, statusText);
         return;
     }
 
     if (auto* previewSession = getAsyncPreviewSession()) {
-        previewSession->setForcedBusy(pending, tr("Applying changes..."));
+        previewSession->setForcedBusy(pending, statusText);
     }
+}
+
+Gui::AsyncInlineRecomputeProgressTarget TaskTransformedParameters::makeAcceptedRecomputeProgressTarget(
+    QDialogButtonBox* dialogButtonBox,
+    const QString& statusText
+)
+{
+    if (!getAsyncPreviewSession()) {
+        return {};
+    }
+
+    QPointer<TaskTransformedParameters> guard(this);
+    Gui::AsyncInlineRecomputeProgressTarget target;
+    target.contentWidget = this;
+    target.buttonBox = dialogButtonBox;
+    target.statusText = statusText;
+    target.setPending = [guard](bool pending, const QString& status) {
+        if (guard) {
+            guard->setAcceptedRecomputePending(pending, status);
+        }
+    };
+    return target;
 }
 
 void TaskTransformedParameters::cancelPendingRecompute()
@@ -977,8 +947,14 @@ bool TaskDlgTransformedParameters::accept()
 
         const auto pendingRecomputeAction = AcceptPendingRecomputeAction::Stop;
         prepareAcceptedFeatureForDocumentRecompute(feature, isUpdateBlocked, pendingRecomputeAction);
-        const ScopedAcceptedRecomputePending acceptedRecomputePending(parameter, buttonBox);
-        if (!runAsyncAcceptDocumentRecompute(document, transformedAcceptRecomputeOptions())) {
+        auto progressTarget
+            = parameter->makeAcceptedRecomputeProgressTarget(buttonBox, tr("Applying changes..."));
+        const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(std::move(progressTarget));
+        if (!runAcceptedFeatureRecompute(
+                document,
+                acceptRecomputeMode(isUpdateBlocked, pendingRecomputeAction),
+                inlineProgress.isActive()
+            )) {
             return false;
         }
 
