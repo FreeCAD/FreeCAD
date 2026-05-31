@@ -11,6 +11,10 @@ if(BUILD_TRACY_FRAME_PROFILER)
     add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
 endif()
 
+if(CMAKE_BUILD_TYPE)
+    add_definitions(-DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
+endif(CMAKE_BUILD_TYPE)
+
 if(FREECAD_RELEASE_SEH)
     add_definitions(-DHAVE_SEH)
 endif(FREECAD_RELEASE_SEH)
@@ -144,6 +148,7 @@ SET(Document_CPP_SRCS
     Annotation.cpp
     BackupPolicy.cpp
     Document.cpp
+    RecoverySnapshot.cpp
     DocumentObject.cpp
     Extension.cpp
     ExtensionPyImp.cpp
@@ -199,6 +204,7 @@ SET(Document_HPP_SRCS
     Annotation.h
     BackupPolicy.h
     Document.h
+    RecoverySnapshot.h
     DocumentObject.h
     Extension.h
     ExtensionContainer.h
@@ -293,6 +299,8 @@ SET(FreeCADApp_CPP_SRCS
     ColorModel.cpp
     ComplexGeoData.cpp
     ComplexGeoDataPyImp.cpp
+    ConsoleQtBridge.cpp
+    TranslationQtBridge.cpp
     ElementMap.cpp
     Enumeration.cpp
     IndexedName.cpp
@@ -305,6 +313,7 @@ SET(FreeCADApp_CPP_SRCS
     Metadata.cpp
     MetadataPyImp.cpp
     ElementNamingUtils.cpp
+    ProgramInformation.cpp
     SafeMode.cpp
     Services.cpp
     StringHasher.cpp
@@ -331,13 +340,17 @@ SET(FreeCADApp_HPP_SRCS
     MeasureManager.h
     Metadata.h
     ElementNamingUtils.h
+    ProgramInformation.h
     Services.h
     StringHasher.h
+    MainThreadSignal.h
 )
 
 # auto-generate resource file with all available translations
 set (FreeCADApp_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/App_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
+    ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
+qt_find_and_add_translation(QM_SRCS "${CMAKE_SOURCE_DIR}/src/Base/Resources/translations/*_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Resources/translations)
 qt_create_resource_file(${FreeCADApp_TR_QRC} ${QM_SRCS})
 qt_add_resources(FreeCADApp_QRC_SRCS ${FreeCADApp_TR_QRC})

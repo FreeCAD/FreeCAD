@@ -23,7 +23,9 @@
  ***************************************************************************/
 
 #pragma once
-#include "OpenGlWrapper.h"
+
+#include <QOpenGLFunctions>
+#include <vector>
 #include "linmath.h"
 
 #define SET_DUAL(var, idx, y, z) \
@@ -45,7 +47,7 @@
         var[idx++] = z + offs; \
     }
 
-namespace MillSim
+namespace CAMSimulator
 {
 typedef unsigned int uint;
 
@@ -75,18 +77,17 @@ public:
     ~Shape();
 
 public:
-    uint vao = 0;
     uint vbo = 0;
     uint ibo = 0;
     int numIndices = 0;
 
 public:
-    void Render();
-    void Render(const mat4x4& modelMat, const mat4x4& normallMat);
+    void Render() const;
+    void Render(const mat4x4& modelMat, const mat4x4& normallMat) const;
     void FreeResources();
     void SetModelData(const std::vector<Vertex>& vbuffer, const std::vector<GLushort>& ibuffer);
     void RotateProfile(
-        float* profPoints,
+        const float* profPoints,
         int nPoints,
         float distance,
         float deltaHeight,
@@ -94,7 +95,7 @@ public:
         bool isHalfTurn
     );
     void ExtrudeProfileRadial(
-        float* profPoints,
+        const float* profPoints,
         int nPoints,
         float radius,
         float angleRad,
@@ -103,7 +104,7 @@ public:
         bool capEnd
     );
     void ExtrudeProfileLinear(
-        float* profPoints,
+        const float* profPoints,
         int nPoints,
         float fromX,
         float toX,
@@ -120,6 +121,7 @@ public:
 
 protected:
     void GenerateModel(const float* vbuffer, const GLushort* ibuffer, int numVerts, int numIndices);
+    void SetupVertexAttribs() const;
     void CalculateExtrudeBufferSizes(
         int nProfilePoints,
         bool capStart,
@@ -133,4 +135,4 @@ protected:
     );
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

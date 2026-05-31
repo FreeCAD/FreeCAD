@@ -50,7 +50,7 @@
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Utilities.h>
@@ -201,6 +201,7 @@ public:
 Mirroring::Mirroring(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui_Mirroring)
+    , filterSelection(true)
 {
     ui->setupUi(this);
     constexpr double max = std::numeric_limits<double>::max();
@@ -219,8 +220,7 @@ Mirroring::Mirroring(QWidget* parent)
 
     connect(ui->selectButton, &QPushButton::clicked, this, &Mirroring::onSelectButtonClicked);
 
-    MirrorPlaneSelection* gate = new MirrorPlaneSelection();
-    Gui::Selection().addSelectionGate(gate);
+    setSelectionGate();
 }
 
 /*
@@ -232,11 +232,12 @@ void Mirroring::onSelectButtonClicked()
 {
     if (!ui->selectButton->isChecked()) {
         Gui::Selection().rmvSelectionGate();
+        filterSelection = false;
         ui->selectButton->setText(tr("Select Reference"));
     }
     else {
-        MirrorPlaneSelection* gate = new MirrorPlaneSelection();
-        Gui::Selection().addSelectionGate(gate);
+        filterSelection = true;
+        setSelectionGate();
         ui->selectButton->setText(tr("Selecting"));
     }
 }
@@ -302,6 +303,7 @@ void Mirroring::findShapes()
 bool Mirroring::reject()
 {
     Gui::Selection().rmvSelectionGate();
+    filterSelection = false;
     return true;
 }
 
@@ -381,17 +383,27 @@ bool Mirroring::accept()
                            .arg(basey)
                            .arg(basez)
                            .arg(selectionString);
-        Gui::Command::runCommand(Gui::Command::App, code.toLatin1());
-        QByteArray from = shape.toLatin1();
-        Gui::Command::copyVisual("ActiveObject", "ShapeAppearance", from);
-        Gui::Command::copyVisual("ActiveObject", "LineColor", from);
-        Gui::Command::copyVisual("ActiveObject", "PointColor", from);
+        Gui::Command::runCommand(Gui::Command::App, code.toUtf8());
+        QByteArray from = shape.toUtf8();
+        auto dst = activeDoc->getActiveObject();
+        auto src = activeDoc->getObject(from);
+        Gui::copyVisualT(dst, "ShapeAppearance", src);
+        Gui::copyVisualT(dst, "LineColor", src);
+        Gui::copyVisualT(dst, "PointColor", src);
     }
 
     activeDoc->commitTransaction();
     activeDoc->recompute();
     Gui::Selection().rmvSelectionGate();
+    filterSelection = false;
     return true;
+}
+void Mirroring::setSelectionGate()
+{
+    if (filterSelection) {
+        MirrorPlaneSelection* gate = new MirrorPlaneSelection();
+        Gui::Selection().addSelectionGate(gate);
+    }
 }
 
 // ---------------------------------------

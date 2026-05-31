@@ -95,8 +95,8 @@ class Draft_Hatch_TaskPanel:
         if hasattr(self.baseobj, "File") and hasattr(self.baseobj, "Pattern"):
             # modify existing hatch object
             o = 'FreeCAD.ActiveDocument.getObject("' + self.baseobj.Name + '")'
-            FreeCADGui.doCommand(o + '.File="' + self.form.File.property("fileName") + '"')
-            FreeCADGui.doCommand(o + '.Pattern="' + self.form.Pattern.currentText() + '"')
+            FreeCADGui.doCommand(o + ".File=" + repr(self.form.File.property("fileName")))
+            FreeCADGui.doCommand(o + ".Pattern=" + repr(self.form.Pattern.currentText()))
             FreeCADGui.doCommand(o + ".Scale=" + str(self.form.Scale.value()))
             FreeCADGui.doCommand(o + ".Rotation=" + str(self.form.Rotation.value()))
             FreeCADGui.doCommand(o + ".Translate=" + str(self.form.Translate.isChecked()))
@@ -106,9 +106,9 @@ class Draft_Hatch_TaskPanel:
             FreeCADGui.addModule("Draft")
             cmd = "Draft.make_hatch("
             cmd += 'baseobject=FreeCAD.ActiveDocument.getObject("' + self.baseobj.Name
-            cmd += '"),filename="' + self.form.File.property("fileName")
-            cmd += '",pattern="' + self.form.Pattern.currentText()
-            cmd += '",scale=' + str(self.form.Scale.value())
+            cmd += '"),filename=' + repr(self.form.File.property("fileName"))
+            cmd += ",pattern=" + repr(self.form.Pattern.currentText())
+            cmd += ",scale=" + str(self.form.Scale.value())
             cmd += ",rotation=" + str(self.form.Rotation.value())
             cmd += ",translate=" + str(self.form.Translate.isChecked()) + ")"
             FreeCADGui.doCommand(cmd)

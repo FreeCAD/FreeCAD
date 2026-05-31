@@ -25,6 +25,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 #include <QClipboard>
+#include <QCompleter>
 #include <QInputDialog>
 #include <QHeaderView>
 #include <QMenu>
@@ -32,10 +33,11 @@
 #include <QActionGroup>
 
 #include <App/Application.h>
-#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Gui/Command.h>
+#include <Gui/Document.h>
 
 #include "Document.h"
 #include "Tree.h"
@@ -358,11 +360,6 @@ void PropertyEditor::openEditor(const QModelIndex& index)
         return;
     }
 
-    auto& app = App::GetApplication();
-    if (app.getActiveTransaction()) {
-        FC_LOG("editor already transacting " << app.getActiveTransaction());
-        return;
-    }
     auto item = static_cast<PropertyItem*>(editingIndex.internalPointer());
     auto items = item->getPropertyData();
     for (auto propItem = item->parent(); items.empty() && propItem; propItem = propItem->parent()) {
@@ -407,8 +404,8 @@ void PropertyEditor::openEditor(const QModelIndex& index)
     if (items.size() > 1) {
         str << "...";
     }
-    transactionID = app.setActiveTransaction(str.str().c_str());
-    FC_LOG("editor transaction " << app.getActiveTransaction());
+    transactionID = Command::openActiveDocumentCommand(str.str());
+    FC_LOG("editor transaction " << App::GetApplication().getTransactionName(transactionID));
 }
 
 void PropertyEditor::onItemActivated(const QModelIndex& index)
@@ -462,13 +459,16 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
 
 void PropertyEditor::closeTransaction()
 {
-    int tid = 0;
-    if (App::GetApplication().getActiveTransaction(&tid) && tid == transactionID) {
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc) {
+        return;
+    }
+    if (doc->getBookedTransactionID() == transactionID) {
         if (autoupdate) {
-            App::Document* doc = App::GetApplication().getActiveDocument();
             recomputeDocument(doc);
         }
-        App::GetApplication().closeActiveTransaction();
+        doc->commitTransaction();
+        transactionID = 0;
     }
 }
 
@@ -828,7 +828,7 @@ void PropertyEditor::setFirstLevelExpanded(bool doExpand)
         }
 
         auto* item = static_cast<PropertyItem*>(index.internalPointer());
-        if (item == nullptr || item->childCount() <= 0) {
+        if (!item || item->childCount() <= 0) {
             return;
         }
 
@@ -941,15 +941,20 @@ std::unordered_set<App::Property*> PropertyEditor::acquireSelectedProperties() c
 
 void PropertyEditor::removeProperties(const std::unordered_set<App::Property*>& props)
 {
-    App::AutoTransaction committer("Remove property");
+    int tid = 0;
     for (auto prop : props) {
         try {
+            if (App::Document* doc = propertyDocument(prop->getContainer())) {
+                tid = doc->openTransaction("Remove property");
+            }
             prop->getContainer()->removeDynamicProperty(prop->getName());
         }
         catch (Base::Exception& e) {
+            App::GetApplication().abortTransaction(tid);
             e.reportException();
         }
     }
+    App::GetApplication().commitTransaction(tid);
 }
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
@@ -1157,12 +1162,17 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             break;
         case MA_AddProp: {
             App::PropertyContainer* container = getSelectedPropertyContainer();
-            if (container == nullptr) {
+            if (!container) {
                 return;
             }
-            App::AutoTransaction committer("Add property");
+            int tid = 0;
+            if (App::Document* doc = propertyDocument(container)) {
+                tid = doc->openTransaction("Add property");
+            }
             Gui::Dialog::DlgAddProperty dlg(Gui::getMainWindow(), container);
             dlg.exec();
+
+            App::GetApplication().commitTransaction(tid);
             return;
         }
         case MA_EditPropTooltip: {
@@ -1203,12 +1213,14 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 || prop->testStatus(App::Property::LockDynamic)) {
                 break;
             }
-
-            App::AutoTransaction committer("Rename property");
+            int tid = 0;
+            if (App::Document* doc = propertyDocument(prop->getContainer())) {
+                tid = doc->openTransaction("Rename property");
+            }
             const char* oldName = prop->getName();
             QString res = QInputDialog::getText(
                 Gui::getMainWindow(),
-                tr("Rename property"),
+                tr("Rename Property"),
                 tr("Property name"),
                 QLineEdit::Normal,
                 QString::fromUtf8(oldName)
@@ -1222,9 +1234,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 prop->getContainer()->renameDynamicProperty(prop, newName.c_str());
             }
             catch (Base::Exception& e) {
+                App::GetApplication().abortTransaction(tid);
                 e.reportException();
                 break;
             }
+            App::GetApplication().commitTransaction(tid);
             break;
         }
         case MA_EditPropGroup: {
@@ -1233,14 +1247,49 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             if (!groupName) {
                 groupName = "Base";
             }
-            QString res = QInputDialog::getText(
-                Gui::getMainWindow(),
-                tr("Rename property group"),
-                tr("Group name:"),
-                QLineEdit::Normal,
-                QString::fromUtf8(groupName)
-            );
-            if (res.size()) {
+
+            QInputDialog dialog(Gui::getMainWindow());
+            dialog.setInputMode(QInputDialog::TextInput);
+            dialog.setWindowTitle(tr("Rename Property Group"));
+            dialog.setLabelText(tr("Group name:"));
+            dialog.setTextValue(QString::fromUtf8(groupName));
+
+            if (auto* lineEdit = dialog.findChild<QLineEdit*>()) {
+                QStringList groups;
+                if (auto* container = (*props.begin())->getContainer()) {
+                    std::vector<App::Property*> properties;
+                    container->getPropertyList(properties);
+                    for (auto* property : properties) {
+                        const char* group = property ? property->getGroup() : nullptr;
+                        if (!group || !*group) {
+                            continue;
+                        }
+                        const QString groupName = QString::fromUtf8(group);
+                        if (!groups.contains(groupName)) {
+                            groups.push_back(groupName);
+                        }
+                    }
+                }
+                if (!groups.isEmpty()) {
+                    auto* completer = new QCompleter(groups, lineEdit);
+                    completer->setCaseSensitivity(Qt::CaseInsensitive);
+                    completer->setCompletionMode(QCompleter::PopupCompletion);
+                    lineEdit->setCompleter(completer);
+                    connect(
+                        completer,
+                        qOverload<const QString&>(&QCompleter::activated),
+                        &dialog,
+                        &QDialog::accept,
+                        Qt::QueuedConnection
+                    );
+                }
+            }
+
+            if (dialog.exec() == QDialog::Accepted) {
+                QString res = dialog.textValue().trimmed();
+                if (res.isEmpty()) {
+                    return;
+                }
                 std::string group = res.toUtf8().constData();
                 for (auto prop : props) {
                     prop->getContainer()->changeDynamicProperty(prop, group.c_str(), nullptr);
@@ -1285,8 +1334,10 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event)
                     }
                 }
             }
-            else if (mouse_event->type() == QEvent::MouseButtonPress
-                     && mouse_event->button() == Qt::LeftButton && !dragInProgress) {
+            else if (
+                mouse_event->type() == QEvent::MouseButtonPress
+                && mouse_event->button() == Qt::LeftButton && !dragInProgress
+            ) {
                 if (indexResizable(mouse_event->pos()).isValid()) {
                     dragInProgress = true;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -1298,8 +1349,10 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event)
                     return true;
                 }
             }
-            else if (mouse_event->type() == QEvent::MouseButtonRelease
-                     && mouse_event->button() == Qt::LeftButton && dragInProgress) {
+            else if (
+                mouse_event->type() == QEvent::MouseButtonRelease
+                && mouse_event->button() == Qt::LeftButton && dragInProgress
+            ) {
                 dragInProgress = false;
 
                 auto hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -1323,6 +1376,19 @@ QModelIndex PropertyEditor::indexResizable(QPoint mouse_pos)
         }
     }
     return QModelIndex();
+}
+App::Document* PropertyEditor::propertyDocument(App::PropertyContainer* cont) const
+{
+    if (auto* doc = dynamic_cast<App::Document*>(cont)) {
+        return doc;
+    }
+    if (auto* docObj = dynamic_cast<App::DocumentObject*>(cont)) {
+        return docObj->getDocument();
+    }
+    if (auto* vp = dynamic_cast<ViewProviderDocumentObject*>(cont)) {
+        return vp->getDocument()->getDocument();
+    }
+    return nullptr;
 }
 
 #include "moc_PropertyEditor.cpp"

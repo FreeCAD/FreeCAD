@@ -142,6 +142,10 @@ public:
 
     void redrawPage() const;
 
+    // Called by MDIViewPage::closeEvent() instead of hide() to avoid re-entrantly
+    // calling removeWindow() on a QMdiSubWindow that is mid-closeEvent.
+    void onMDIViewClosed();
+
 protected:
     bool setEdit(int ModNum) override;
     void createMDIViewPage();

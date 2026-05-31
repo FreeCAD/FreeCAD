@@ -140,12 +140,10 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
-                                "Instead, the linked object(s) reside within '%s'.\n",
+        Base::Console().warning("%s: %s links are out of scope. Out of scope links to: %s\n",
                                 getTypeId().getName(),
-                                objnames.c_str(),
                                 getNameInDocument(),
-                                scopenames.c_str());
+                                objnames.c_str());
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -739,13 +737,15 @@ bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
     return renamed;
 }
 
-App::Property* DocumentObject::addDynamicProperty(const char* type,
-                                                  const char* name,
-                                                  const char* group,
-                                                  const char* doc,
-                                                  short attr,
-                                                  bool ro,
-                                                  bool hidden)
+App::Property* DocumentObject::addDynamicProperty(
+    std::string_view type,
+    const char* name,
+    const char* group,
+    const char* doc,
+    short attr,
+    bool ro,
+    bool hidden
+)
 {
     auto prop = TransactionalObject::addDynamicProperty(type, name, group, doc, attr, ro, hidden);
     if (prop && _pDoc) {
@@ -780,7 +780,7 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
 
     // We re only called if the new label differs from the old one, and our code to check duplicates
     // may not work if this is not the case.
-    std::string oldLabel = Label.getStrValue();
+    std::string_view oldLabel = Label.getStrValue();
     assert(newLabel != oldLabel);
     if (!isAttachedToDocument()) {
         return {};
@@ -798,7 +798,7 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
     if (doc && !newLabel.empty() && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
         && doc->containsLabel(newLabel)) {
         // The label already exists but settings are such that duplicate labels should not be assigned.
-        std::string objName = getNameInDocument();
+        std::string_view objName = getNameInDocument();
         if (!doc->containsLabel(objName) && doc->haveSameBaseName(objName, newLabel)) {
             // The object name is not already a Label and the base name of the proposed label
             // equals the base name of the object Name, so we use the object Name as the replacement Label.

@@ -7,12 +7,34 @@
    id="svg2869"
    version="1.1"
    viewBox="0 0 64 64"
+   sodipodi:docname="FEM_EquationFlux.svg"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="6.4375"
+     inkscape:cx="63.145631"
+     inkscape:cy="42.563107"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2869" />
   <defs
      id="defs2871">
     <linearGradient
@@ -351,7 +373,7 @@
      id="layer3"
      style="display:inline">
     <path
-       style="fill:#eeeeec;fill-opacity:0.5;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6, 2;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:#eeeeec;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6, 2;stroke-dashoffset:0;stroke-opacity:1"
        d="M 31,5 3,11 v 38 l 28,-8 z"
        id="path987" />
     <g
@@ -446,9 +468,9 @@
          d="M 5.5254238,44.013865 C 0.6025815,60.868049 44.983051,67.441009 44.983051,49.02236"
          id="path44" />
     </g>
-    <path
-       style="vector-effect:none;fill:#eeeeec;fill-opacity:0.5;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6, 2;stroke-dashoffset:0;stroke-opacity:1;marker:none"
-       d="M 61,9 V 45 L 37,55 V 17 Z"
-       id="path2995" />
   </g>
+  <path
+     style="display:inline;fill:#eeeeec;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6, 2;stroke-dashoffset:0;stroke-opacity:1"
+     d="m 62,12.977802 -28,6 v 38 l 28,-8 z"
+     id="path987-7" />
 </svg>

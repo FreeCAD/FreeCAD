@@ -202,7 +202,6 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const
 }
 TopoShape ProfileBased::getTopoShapeVerifiedFace(
     bool silent,
-    [[maybe_unused]] bool doFit,  // TODO: Remove parameter
     bool allowOpen,
     const App::DocumentObject* profile,
     const std::vector<std::string>& _subs
@@ -629,8 +628,9 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
     if (!sketch) {
         shape = getTopoShapeVerifiedFace(true);
     }
-    else if (sketch->MapMode.getValue() == Attacher::mmFlatFace
-             && sketch->AttachmentSupport.getValue()) {
+    else if (
+        sketch->MapMode.getValue() == Attacher::mmFlatFace && sketch->AttachmentSupport.getValue()
+    ) {
         const auto& Support = sketch->AttachmentSupport;
         App::DocumentObject* ref = Support.getValue();
         shape = Part::Feature::getTopoShape(
@@ -752,10 +752,15 @@ int ProfileBased::getUpToShapeFromLinkSubList(
     const App::PropertyLinkSubList& refShape
 )
 {
-    int ret = 0;
-
     auto subSets = refShape.getSubListValues();
 
+    // early returns if only one full shape is selected
+    if (subSets.size() == 1 && (subSets[0].second.empty() || subSets[0].second[0].empty())) {
+        upToShape = Part::Feature::getTopoShape(subSets[0].first, Part::ShapeOption::ResolveLink);
+        return 2;  // 0 and 1 have special treatment but true face count isn't relevant
+    }
+
+    int ret = 0;
     std::vector<TopoShape> faceList;
     for (auto& subSet : subSets) {
         auto ref = subSet.first;
@@ -776,22 +781,19 @@ int ProfileBased::getUpToShapeFromLinkSubList(
                         | Part::ShapeOption::Transform
                 );
 
-
-                for (auto face : baseShape.getSubTopoShapes(TopAbs_FACE)) {
+                for (const auto& face : baseShape.getSubTopoShapes(TopAbs_FACE)) {
                     faceList.push_back(face);
                     ret++;
                 }
             }
             else {
                 for (auto& subString : subStrings) {
-                    auto shape = Part::Feature::getShape(
+                    TopoShape face = Part::Feature::getTopoShape(
                         ref,
                         Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
                             | Part::ShapeOption::Transform,
                         subString.c_str()
                     );
-
-                    TopoShape face = shape;
                     face = face.makeElementFace();
                     if (face.isNull()) {
                         throw Base::ValueError("SketchBased: Failed to extract face");
@@ -909,6 +911,47 @@ void ProfileBased::getUpToFace(
     BRepExtrema_DistShapeShape distSS(sketchshape.getShape(), face);
     if (distSS.Value() < Precision::Confusion()) {
         throw Base::ValueError("SketchBased: Up to face: Must not intersect sketch!");
+    }
+}
+
+void ProfileBased::getUpToFace(
+    TopoShape& upToFace,
+    const TopoShape& support,
+    const TopoShape& sketchshape,
+    const std::string& method,
+    const gp_Ax1& axis
+)
+{
+    if ((method == "UpToLast") || (method == "UpToFirst")) {
+        std::vector<Part::cutTopoShapeFaces> cfaces
+            = Part::findAllFacesCutBy(support, sketchshape, axis);
+        if (cfaces.empty()) {
+            throw Base::ValueError("SketchBased: No faces found in this direction");
+        }
+
+        // Find nearest/furthest face
+        std::sort(cfaces.begin(), cfaces.end(), [](const auto& it1, const auto& it2) {
+            return it1.distsq < it2.distsq;
+        });
+        upToFace = (method == "UpToLast" ? cfaces.back().face : cfaces.front().face);
+    }
+
+    if (upToFace.shapeType(true) != TopAbs_FACE) {
+        if (!upToFace.hasSubShape(TopAbs_FACE)) {
+            throw Base::ValueError("SketchBased: Up to face: No face found");
+        }
+        upToFace = upToFace.getSubTopoShape(TopAbs_FACE, 1);
+    }
+
+    TopoDS_Face face = TopoDS::Face(upToFace.getShape());
+
+    // Check that the upToFace does not intersect the sketch face and
+    // is not normal to the rotation axis
+    BRepAdaptor_Surface adapt(face);
+    if (adapt.GetType() == GeomAbs_Plane) {
+        if (axis.Direction().IsParallel(adapt.Plane().Axis().Direction(), Precision::Confusion())) {
+            throw Base::ValueError("SketchBased: Up to face: Must not be normal to rotation axis!");
+        }
     }
 }
 
@@ -1055,15 +1098,6 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
     }
 
     return false;
-}
-
-void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
-{
-    (void)newShape;
-    // Realthunder: with the new topological naming, I don't think this function
-    // is necessary. A missing element will cause an explicitly error, and the
-    // user will be force to manually select the element. Various editors, such
-    // as dress up editors, can perform element guessing when activated.
 }
 
 namespace PartDesign
@@ -1374,11 +1408,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const
         return SketchVector;
     }
 
-    // For newer version, do not do fitting, as it may flip the face normal for
-    // some reason.
-    TopoShape shape = getTopoShapeVerifiedFace(true, true, true);  //, _ProfileBasedVersion.getValue()
-                                                                   //<= 0);
-
+    TopoShape shape = getTopoShapeVerifiedFace(true, true);
     if (shape.isNull()) {
         return SketchVector;
     }

@@ -196,7 +196,7 @@ bool LoftWidget::accept()
     if (count < 2) {
         QMessageBox::critical(
             this,
-            tr("Too few elements"),
+            tr("Too Few Elements"),
             tr("At least 2 vertices, edges, wires, or faces are required.")
         );
         return false;

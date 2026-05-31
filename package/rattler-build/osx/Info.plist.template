@@ -21,11 +21,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string></string>
+	<string>FREECAD_BUNDLE_VERSION</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>FREECAD_VERSION</string>
+	<string>FREECAD_BUNDLE_VERSION</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>

@@ -4,24 +4,24 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="92"/>
+      <location filename="../../FirstStartWidget.cpp" line="91"/>
       <source>Done</source>
       <translation>Déanta</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="95"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Welcome to %1</source>
-      <translation type="unfinished">Welcome to %1</translation>
+      <translation>Fáilte go %1</translation>
+    </message>
+    <message>
+      <location filename="../../FirstStartWidget.cpp" line="97"/>
+      <source>Set your basic configuration options below.</source>
+      <translation>Socraigh do roghanna cumraíochta bunúsacha thíos.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="98"/>
-      <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
-    </message>
-    <message>
-      <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>Is féidir na roghanna seo (agus go leor eile) a athrú níos déanaí sna roghanna.</translation>
     </message>
   </context>
   <context>
@@ -29,17 +29,17 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="222"/>
       <source>Language</source>
-      <translation type="unfinished">Language</translation>
+      <translation>Teanga</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
       <source>Unit System</source>
-      <translation type="unfinished">Unit System</translation>
+      <translation>Córas Aonaid</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="240"/>
       <source>Navigation Style</source>
-      <translation type="unfinished">Navigation Style</translation>
+      <translation>Stíl Loingseoireachta</translation>
     </message>
   </context>
   <context>
@@ -52,106 +52,106 @@
     <message>
       <location filename="../../Manipulator.cpp" line="46"/>
       <source>&amp;Start Page</source>
-      <translation type="unfinished">&amp;Start Page</translation>
+      <translation>&amp;Leathanach Tosaigh</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation type="unfinished">Displays the start page</translation>
+      <translation>Taispeánann sé an leathanach tosaigh</translation>
     </message>
   </context>
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="211"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>Oscail Comhad</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Tionól</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>Dréacht 2T</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>Cruthaíonn sé doiciméad Dréachta 2T</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="229"/>
+      <location filename="../../StartView.cpp" line="235"/>
       <source>BIM/Architecture</source>
-      <translation type="unfinished">BIM/Architecture</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="206"/>
-      <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="207"/>
-      <source>Creates a new empty FreeCAD file</source>
-      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+      <translation>BIM/Ailtireacht</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="212"/>
+      <source>Empty File</source>
+      <translation>Comhad Folamh</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="213"/>
+      <source>Creates a new empty FreeCAD file</source>
+      <translation>Cruthaíonn comhad FreeCAD folamh nua</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="218"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="216"/>
-      <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="217"/>
-      <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>Osclaíonn comhad CAD nó samhail 3T atá ann cheana féin</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="222"/>
+      <source>Parametric Body</source>
+      <translation>Comhlacht Paraiméadrach</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="223"/>
+      <source>Creates a body with the Part Design workbench</source>
+      <translation>Cruthaíonn sé corp leis an mbinse oibre Dearaidh Páirteanna</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Cruthaíonn tionscadal tionóil</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="230"/>
+      <location filename="../../StartView.cpp" line="236"/>
       <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <translation>Cruthaíonn tionscadal ailtireachta</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="509"/>
+      <location filename="../../StartView.cpp" line="520"/>
       <source>New File</source>
-      <translation type="unfinished">New File</translation>
+      <translation>Comhad Nua</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="510"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>Samplaí</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="511"/>
+      <location filename="../../StartView.cpp" line="524"/>
       <source>Recent Files</source>
-      <translation type="unfinished">Recent Files</translation>
+      <translation>Comhaid Le Déanaí</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="527"/>
+      <location filename="../../StartView.cpp" line="539"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>Oscail an Socrú Tosaigh ar dtús</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="528"/>
+      <location filename="../../StartView.cpp" line="540"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>Ná taispeáin an leathanach Tosaigh seo arís (tosaigh le scáileán bán)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="503"/>
+      <location filename="../../StartView.cpp" line="514"/>
       <source>Start</source>
       <translation>Tosaigh</translation>
     </message>
@@ -159,47 +159,47 @@
   <context>
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
-      <source>FreeCAD Classic</source>
-      <translation type="unfinished">FreeCAD Classic</translation>
-    </message>
-    <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
-      <source>FreeCAD Dark</source>
-      <translation type="unfinished">FreeCAD Dark</translation>
+      <source>FreeCAD Classic</source>
+      <translation>Clasaiceach FreeCAD</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
-      <source>FreeCAD Light</source>
-      <translation type="unfinished">FreeCAD Light</translation>
+      <source>FreeCAD Dark</source>
+      <translation>SaorCAD Dorcha</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="247"/>
-      <source>Theme</source>
-      <translation type="unfinished">Theme</translation>
+      <location filename="../../ThemeSelectorWidget.cpp" line="117"/>
+      <source>FreeCAD Light</source>
+      <translation>FreeCAD Solas</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
-      <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation type="unfinished">Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <source>Theme</source>
+      <translation>Téama</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="257"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="253"/>
+      <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
+      <translation>Ag lorg tuilleadh téamaí? Is féidir leat iad a fháil trí úsáid a bhaint as &lt;a href="freecad:Std_AddonMgr"&gt;Bainisteoir Breiseán&lt;/a&gt;.</translation>
+    </message>
+    <message>
+      <location filename="../../ThemeSelectorWidget.cpp" line="260"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Dark</translation>
+      <translation>SaorCAD Dorcha</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="258"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Light</translation>
+      <translation>FreeCAD Solas</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="259"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
-      <translation type="unfinished">FreeCAD Classic</translation>
+      <translation>Clasaiceach FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -212,40 +212,40 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>Ábhar</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <location filename="../../DlgStartPreferences.ui" line="86"/>
       <source>Show only FreeCAD files in additional folder</source>
-      <translation type="unfinished">Show only FreeCAD files in additional folder</translation>
+      <translation>Taispeáin comhaid FreeCAD amháin i bhfillteán breise</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>Taispeáin ábhar fillteáin samplaí</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="40"/>
       <source>Show additional folder contents</source>
-      <translation type="unfinished">Show additional folder contents</translation>
+      <translation>Taispeáin ábhar breise fillteáin</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>Fillteán saincheaptha roghnach le taispeáint ar an Leathanach Tosaigh.
+Is féidir fillteáin iolracha a chur leis ag baint úsáide as ";;" chun cosáin a dheighilt.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>Taispeánann sé comhaid shamplacha ar an leathanach tosaigh</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>Dúnfar an leathanach tosaigh go huathoibríoch nuair a sheoltar FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -255,15 +255,28 @@ Multiple folders can be added using ";;" to separate paths.</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>Dún an leathanach tosaigh tar éis lódála</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="125"/>
+      <location filename="../../AppStartGui.cpp" line="139"/>
       <source>Start</source>
       <translation>Tosaigh</translation>
+    </message>
+  </context>
+  <context>
+    <name>Start::DisplayedFilesModel</name>
+    <message>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
+      <source>Created at:</source>
+      <translation>Cruthaithe ag:</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
+      <source>Modified at:</source>
+      <translation>Athraithe ag:</translation>
     </message>
   </context>
 </TS>

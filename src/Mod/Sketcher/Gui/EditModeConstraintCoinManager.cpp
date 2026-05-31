@@ -26,6 +26,7 @@
 
 #include <QPainter>
 #include <QRegularExpression>
+#include <Bnd_Box.hxx>
 #include <limits>
 #include <memory>
 #include <map>
@@ -46,6 +47,8 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTranslation.h>
+
+#include <BRepBndLib.hxx>
 
 #include <Base/Converter.h>
 #include <Base/Exception.h>
@@ -793,6 +796,88 @@ Restart:
                     translation->translation = SbVec3f(relpos2.x - relpos1.x, relpos2.y - relpos1.y, 0);
 
                 } break;
+                case Text:
+                case Group: {
+                    if (Constr->isElementsEmpty()) {
+                        break;  // Nothing to do if the group is empty
+                    }
+
+                    Bnd_Box totalBBox;
+                    int elementIndex = 0;
+                    while (Constr->hasElement(elementIndex)) {
+                        auto element = Constr->getElement(elementIndex);
+                        if (element.GeoId < -extGeoCount || element.GeoId >= intGeoCount) {
+                            elementIndex++;
+                            continue;
+                        }
+                        const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(element.GeoId);
+                        if (!geo) {
+                            elementIndex++;
+                            continue;
+                        }
+                        TopoDS_Shape shape = geo->toShape();
+                        if (!shape.IsNull()) {
+                            BRepBndLib::Add(shape, totalBBox, false);
+                        }
+                        elementIndex++;
+                    }
+
+                    if (!totalBBox.HasFinitePart() || totalBBox.IsVoid()) {
+                        // If no valid box, hide the geometry by setting all points to the origin.
+                        SoCoordinate3* coords = static_cast<SoCoordinate3*>(sep->getChild(2));
+
+                        // Use startEditing() to get a writable pointer to the internal array.
+                        SbVec3f* points = coords->point.startEditing();
+                        for (int j = 0; j < 5; ++j) {
+                            points[j].setValue(0.0f, 0.0f, 0.0f);
+                        }
+                        coords->point.finishEditing();
+                        break;
+                    }
+
+                    // 1. Get the original min/max points and dimensions
+                    gp_Pnt min_pnt_orig = totalBBox.CornerMin();
+                    gp_Pnt max_pnt_orig = totalBBox.CornerMax();
+                    double width = max_pnt_orig.X() - min_pnt_orig.X();
+                    double height = max_pnt_orig.Y() - min_pnt_orig.Y();
+
+                    // 2. Calculate the offset amount
+                    // Using the average of width and height is a good heuristic for a uniform
+                    // offset.
+                    double offset = (width + height) / 2.0 * 0.05;  // 5% of the average dimension
+
+                    // 3. Create new, "inflated" corner points by applying the offset
+                    gp_Pnt min_pnt(
+                        min_pnt_orig.X() - offset,
+                        min_pnt_orig.Y() - offset,
+                        min_pnt_orig.Z()
+                    );
+                    gp_Pnt max_pnt(
+                        max_pnt_orig.X() + offset,
+                        max_pnt_orig.Y() + offset,
+                        max_pnt_orig.Z()
+                    );
+
+                    // 4. Define the 4 corners of the rectangle using the inflated points
+                    SbVec3f p0(min_pnt.X(), min_pnt.Y(), zConstrH);  // bottom-left
+                    SbVec3f p1(max_pnt.X(), min_pnt.Y(), zConstrH);  // bottom-right
+                    SbVec3f p2(max_pnt.X(), max_pnt.Y(), zConstrH);  // top-right
+                    SbVec3f p3(min_pnt.X(), max_pnt.Y(), zConstrH);  // top-left
+
+                    // 3. Get the SoCoordinate3 node we created in rebuildConstraintNodes
+                    //    Index 0: SoMaterial, Index 1: SoDrawStyle, Index 2: SoCoordinate3
+                    SoCoordinate3* coords = static_cast<SoCoordinate3*>(sep->getChild(2));
+
+                    // 4. Update the points in the node to draw the rectangle
+                    SbVec3f* points = coords->point.startEditing();
+                    points[0] = p0;
+                    points[1] = p1;
+                    points[2] = p2;
+                    points[3] = p3;
+                    points[4] = p0;  // Repeat the first point to close the loop
+                    coords->point.finishEditing();
+
+                } break;
                 case Distance:
                 case DistanceX:
                 case DistanceY: {
@@ -1147,8 +1232,9 @@ Restart:
                                 pos = lineSeg->getStartPoint() + dir * length;
                                 relPos = norm * 1;  // TODO Huh?
                             }
-                            else if (geo2->is<Part::GeomEllipse>()
-                                     || geo2->is<Part::GeomArcOfEllipse>()) {
+                            else if (
+                                geo2->is<Part::GeomEllipse>() || geo2->is<Part::GeomArcOfEllipse>()
+                            ) {
 
                                 Base::Vector3d center;
                                 if (geo2->is<Part::GeomEllipse>()) {
@@ -1205,8 +1291,9 @@ Restart:
                             pos = circle->getCenter() + dir * circle->getRadius();
                             relPos = dir * 1;
                         }
-                        else if (geo1->is<Part::GeomArcOfCircle>()
-                                 && geo2->is<Part::GeomArcOfCircle>()) {
+                        else if (
+                            geo1->is<Part::GeomArcOfCircle>() && geo2->is<Part::GeomArcOfCircle>()
+                        ) {
                             const Part::GeomArcOfCircle* arc1
                                 = static_cast<const Part::GeomArcOfCircle*>(geo1);
                             const Part::GeomArcOfCircle* arc2
@@ -1795,12 +1882,16 @@ void EditModeConstraintCoinManager::updateConstraintColor(
             }
         }
         else {
+            bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(
+                viewProvider,
+                constraint
+            );
             if (hasDatumLabel) {
                 SoDatumLabel* l = static_cast<SoDatumLabel*>(
                     s->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                 );
 
-                l->textColor = constraint->isActive
+                l->textColor = isActive
                     ? ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider, i)
                         ? drawingParameters.ExprBasedConstrDimColor
                         : (constraint->isDriving ? drawingParameters.ConstrDimColor
@@ -1808,7 +1899,7 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                     : drawingParameters.DeactivatedConstrDimColor;
             }
             else if (hasMaterial) {
-                m->diffuseColor = constraint->isActive
+                m->diffuseColor = isActive
                     ? (constraint->isDriving ? drawingParameters.ConstrDimColor
                                              : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
@@ -1884,7 +1975,8 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
         // every constrained visual node gets its own material for preselection and selection
         SoMaterial* mat = new SoMaterial;
         mat->ref();
-        mat->diffuseColor = (*it)->isActive
+        bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(viewProvider, *it);
+        mat->diffuseColor = isActive
             ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
                                 : drawingParameters.NonDrivingConstrDimColor)
             : drawingParameters.DeactivatedConstrDimColor;
@@ -1902,10 +1994,13 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 SoDatumLabel* text = new SoDatumLabel();
                 text->norm.setValue(norm);
                 text->string = "";
-                text->textColor = (*it)->isActive
+                text->textColor = isActive
                     ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
                                         : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
+                if (!drawingParameters.labelFontName.isEmpty()) {
+                    text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
+                }
                 text->size.setValue(drawingParameters.labelFontSize);
                 text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
                 text->useAntialiasing = false;
@@ -1936,6 +2031,31 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 sep->addChild(new SoInfo());
 
                 // remember the type of this constraint node
+                vConstrType.push_back((*it)->Type);
+            } break;
+            case Group:
+            case Text: {
+                // For a group, we will draw a dashed rectangle.
+                // We need a Material, a DrawStyle, Coordinates, and a LineSet.
+
+                // 1. Material (for color, reusing the one already created)
+                sep->addChild(mat);
+
+                // 2. DrawStyle (to make the line dashed)
+                SoDrawStyle* drawStyle = new SoDrawStyle();
+                drawStyle->linePattern = 0x0F0F;  // A standard 50% dashed pattern
+                sep->addChild(drawStyle);
+
+                // 3. Coordinates (for the 4 corners + 1 to close the loop)
+                SoCoordinate3* coords = new SoCoordinate3();
+                coords->point.setNum(5);  // Pre-allocate 5 points for a closed rectangle
+                sep->addChild(coords);
+
+                // 4. LineSet (to connect the coordinates)
+                SoLineSet* lineSet = new SoLineSet();
+                lineSet->numVertices.set1Value(0, 5);  // A single polyline of 5 vertices
+                sep->addChild(lineSet);
+
                 vConstrType.push_back((*it)->Type);
             } break;
             case Coincident:  // no visual for coincident so far
@@ -2109,7 +2229,10 @@ QString EditModeConstraintCoinManager::getPresentationString(
     return fixedValueStr;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point)
+std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
+    const SoPickedPoint* Point,
+    const SbVec2s& cursorScreenPos
+)
 {
     std::set<int> constrIndices;
     SoPath* path = Point->getPath();
@@ -2125,98 +2248,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
 
     for (int childIdx = 0; childIdx < sep->getNumChildren(); ++childIdx) {
         if (tail == sep->getChild(childIdx) && dynamic_cast<SoImage*>(tail)) {
-            // The SoInfo node with the ID always follows the SoImage node.
-            if (childIdx + 1 < sep->getNumChildren()) {
-                SoInfo* constrIdsNode = dynamic_cast<SoInfo*>(sep->getChild(childIdx + 1));
-                if (!constrIdsNode) {
-                    continue;
-                }
-
-                QString constrIdsStr = QString::fromLatin1(
-                    constrIdsNode->string.getValue().getString()
-                );
-
-                if (combinedConstrBoxes.count(constrIdsStr)) {
-
-                    // 1. Get the icon group size in device independent pixels.
-                    SbVec3s iconGroupSize = getDisplayedSize(static_cast<SoImage*>(tail));
-
-                    // 2. Get the icon group's absolute world position from its
-                    // SoZoomTranslation node.
-                    SoZoomTranslation* translation = nullptr;
-                    SoNode* firstTransNode = sep->getChild(
-                        static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)
-                    );
-                    if (dynamic_cast<SoZoomTranslation*>(firstTransNode)) {
-                        translation = static_cast<SoZoomTranslation*>(firstTransNode);
-                    }
-                    if (!translation) {
-                        continue;
-                    }
-
-                    SbVec3f absPos = translation->abPos.getValue();
-                    SbVec3f trans = translation->translation.getValue();
-                    float scaleFactor = translation->getScaleFactor();
-
-                    // If this is the second icon in a pair, add its relative translation.
-                    if (int secondIndex = static_cast<int>(ConstraintNodePosition::SecondIconIndex);
-                        secondIndex < sep->getNumChildren()) {
-                        SoNode* secondIconNode = sep->getChild(secondIndex);
-                        if (tail == secondIconNode) {
-                            auto translation2 = static_cast<SoZoomTranslation*>(sep->getChild(
-                                static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)
-                            ));
-                            absPos += translation2->abPos.getValue();
-                            trans += translation2->translation.getValue();
-                            scaleFactor = translation2->getScaleFactor();
-                        }
-                    }
-
-                    // 3. Calculate the icon's center in world coordinates.
-                    SbVec3f iconGroupWorldPos = absPos + scaleFactor * trans;
-
-                    // 4. Project both the icon's center and the picked point to screen coordinates
-                    // (device independent pixels). This is the key: both points are now in the same
-                    // coordinate system.
-                    SbVec2f iconGroupScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                        viewProvider,
-                        SbVec2f(iconGroupWorldPos[0], iconGroupWorldPos[1])
-                    );
-
-                    SbVec2f cursorScreenPos = ViewProviderSketchCoinAttorney::getScreenCoordinates(
-                        viewProvider,
-                        SbVec2f(Point->getPoint()[0], Point->getPoint()[1])
-                    );
-
-                    // 5. Calculate cursor position relative to the icon group's top-left corner.
-                    //    - QRect/QImage assumes a top-left origin (Y increases downwards).
-                    //    - Coin3D screen coordinates have a bottom-left origin (Y increases
-                    //    upwards).
-                    //    - We must flip the Y-axis for the check.
-                    int relativeX = static_cast<int>(
-                        cursorScreenPos[0] - iconGroupScreenCenter[0] + iconGroupSize[0] / 2.0f
-                    );
-                    int relativeY = static_cast<int>(
-                        iconGroupScreenCenter[1] - cursorScreenPos[1] + iconGroupSize[1] / 2.0f
-                    );
-
-                    // 6. Perform the hit test on each icon in the group.
-                    for (const auto& boxInfo : combinedConstrBoxes[constrIdsStr]) {
-                        if (boxInfo.first.contains(relativeX, relativeY)) {
-                            constrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
-                        }
-                    }
-                }
-                else {
-                    // Simple, non-merged icon.
-                    QStringList constrIdStrings = constrIdsStr.split(QStringLiteral(","));
-                    for (const QString& id : constrIdStrings) {
-                        constrIndices.insert(id.toInt());
-                    }
-                }
-
-                return constrIndices;
-            }
+            return detectPreselectionIcon(sep, static_cast<SoImage*>(tail), childIdx, cursorScreenPos);
         }
     }
 
@@ -2228,6 +2260,162 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                 break;
             }
         }
+    }
+
+    return constrIndices;
+}
+
+std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
+    const SbVec2s& cursorScreenPos,
+    Base::Vector3d* pickedPoint
+)
+{
+    std::set<int> constrIndices;
+
+    for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
+        auto* sep = dynamic_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
+        if (!sep) {
+            continue;
+        }
+
+        if (int iconIndex = static_cast<int>(ConstraintNodePosition::FirstIconIndex);
+            iconIndex < sep->getNumChildren()) {
+            auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
+            if (iconNode) {
+                constrIndices
+                    = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                if (!constrIndices.empty()) {
+                    return constrIndices;
+                }
+            }
+        }
+
+        if (int iconIndex = static_cast<int>(ConstraintNodePosition::SecondIconIndex);
+            iconIndex < sep->getNumChildren()) {
+            auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
+            if (iconNode) {
+                constrIndices
+                    = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                if (!constrIndices.empty()) {
+                    return constrIndices;
+                }
+            }
+        }
+    }
+
+    return constrIndices;
+}
+
+std::set<int> EditModeConstraintCoinManager::parseConstraintIds(const QString& constrIdsStr) const
+{
+    std::set<int> constrIndices;
+    QStringList constrIdStrings = constrIdsStr.split(QStringLiteral(","));
+    for (const QString& id : constrIdStrings) {
+        constrIndices.insert(id.toInt());
+    }
+    return constrIndices;
+}
+
+bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
+    SoSeparator* sep,
+    SoImage* iconNode,
+    int iconIndex,
+    SbVec2f& iconScreenCenter,
+    SbVec3s& iconSize,
+    QString& constrIdsStr,
+    Base::Vector3d* pickedPoint
+) const
+{
+    if (!sep || !iconNode || iconIndex + 1 >= sep->getNumChildren()) {
+        return false;
+    }
+
+    auto* constrIdsNode = dynamic_cast<SoInfo*>(sep->getChild(iconIndex + 1));
+    if (!constrIdsNode) {
+        return false;
+    }
+
+    constrIdsStr = QString::fromLatin1(constrIdsNode->string.getValue().getString());
+    iconSize = getDisplayedSize(iconNode);
+    if (iconSize[0] <= 0 || iconSize[1] <= 0) {
+        return false;
+    }
+
+    auto* firstTransNode = dynamic_cast<SoZoomTranslation*>(
+        sep->getChild(static_cast<int>(ConstraintNodePosition::FirstTranslationIndex))
+    );
+    if (!firstTransNode) {
+        return false;
+    }
+
+    SbVec3f absPos = firstTransNode->abPos.getValue();
+    SbVec3f trans = firstTransNode->translation.getValue();
+    float scaleFactor = firstTransNode->getScaleFactor();
+
+    if (iconIndex == static_cast<int>(ConstraintNodePosition::SecondIconIndex)
+        && static_cast<int>(ConstraintNodePosition::SecondTranslationIndex) < sep->getNumChildren()) {
+        auto* secondTransNode = dynamic_cast<SoZoomTranslation*>(
+            sep->getChild(static_cast<int>(ConstraintNodePosition::SecondTranslationIndex))
+        );
+        if (secondTransNode) {
+            absPos += secondTransNode->abPos.getValue();
+            trans += secondTransNode->translation.getValue();
+            scaleFactor = secondTransNode->getScaleFactor();
+        }
+    }
+
+    SbVec3f iconWorldPos = absPos + scaleFactor * trans;
+    iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconWorldPos);
+
+    if (pickedPoint) {
+        *pickedPoint = Base::convertTo<Base::Vector3d>(iconWorldPos);
+    }
+
+    return true;
+}
+
+std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
+    SoSeparator* sep,
+    SoImage* iconNode,
+    int iconIndex,
+    const SbVec2s& cursorScreenPos,
+    Base::Vector3d* pickedPoint
+) const
+{
+    std::set<int> constrIndices;
+    SbVec2f iconScreenCenter;
+    SbVec3s iconSize;
+    QString constrIdsStr;
+    Base::Vector3d hitPoint;
+    Base::Vector3d* resultPoint = pickedPoint ? pickedPoint : &hitPoint;
+
+    if (
+        !resolveIconScreenGeometry(sep, iconNode, iconIndex, iconScreenCenter, iconSize, constrIdsStr, resultPoint)
+    ) {
+        return constrIndices;
+    }
+
+    int relativeX = static_cast<int>(cursorScreenPos[0] - iconScreenCenter[0] + iconSize[0] / 2.0f);
+    int relativeY = static_cast<int>(iconScreenCenter[1] - cursorScreenPos[1] + iconSize[1] / 2.0f);
+    const QMargins iconHitPadding(
+        drawingParameters.constraintIconHitPaddingPx,
+        drawingParameters.constraintIconHitPaddingPx,
+        drawingParameters.constraintIconHitPaddingPx,
+        drawingParameters.constraintIconHitPaddingPx
+    );
+
+    if (combinedConstrBoxes.count(constrIdsStr)) {
+        for (const auto& boxInfo : combinedConstrBoxes.at(constrIdsStr)) {
+            if (boxInfo.first.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
+                constrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
+            }
+        }
+        return constrIndices;
+    }
+
+    QRect iconBounds(0, 0, iconSize[0], iconSize[1]);
+    if (iconBounds.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
+        return parseConstraintIds(constrIdsStr);
     }
 
     return constrIndices;
@@ -2861,6 +3049,10 @@ QColor EditModeConstraintCoinManager::constrColor(int constraintId)
     };
 
     const auto constraints = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
+    bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(
+        viewProvider,
+        constraints[constraintId]
+    );
 
     if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, constraintId)) {
         return toQColor(drawingParameters.PreselectColor);
@@ -2868,7 +3060,7 @@ QColor EditModeConstraintCoinManager::constrColor(int constraintId)
     else if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId)) {
         return toQColor(drawingParameters.SelectColor);
     }
-    else if (!constraints[constraintId]->isActive) {
+    else if (!isActive) {
         return toQColor(drawingParameters.DeactivatedConstrDimColor);
     }
     else if (!constraints[constraintId]->isDriving) {

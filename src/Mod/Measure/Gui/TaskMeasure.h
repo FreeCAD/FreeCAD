@@ -68,6 +68,8 @@ public:
     bool reject() override;
     void reset();
     void closed() override;
+    void activate() override;
+    void deactivate() override;
 
     bool hasSelection();
     void clearSelection();
@@ -76,7 +78,6 @@ private:
     void setupShortcuts(QWidget* parent);
     void tryUpdate();
     void updateUnitDropdown(const App::MeasureType* measureType);
-    void setUnitFromResultString();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void onObjectDeleted(const App::DocumentObject& obj);
     void saveMeasurement();
@@ -101,6 +102,7 @@ private:
     void showDeltaChanged(int checkState);
     void autoSaveChanged(bool checked);
     void newMeasurementBehaviourChanged(bool checked);
+    void updateSelectionType();
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
@@ -108,7 +110,8 @@ private:
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
     void initViewObject(Measure::MeasureBase* measure);
-    void updateResultWithUnit();
+    void syncDisplayUnit();
+    void refreshResult();
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
@@ -116,7 +119,8 @@ private:
     // Stores if delta measures shall be shown
     bool delta = true;
     bool mAutoSave = false;
-    QString mLastUnitSelection = QLatin1String("-");
+    bool mGreedySelection = false;
+    Gui::Document* mTargetDoc;
 };
 
 }  // namespace MeasureGui
