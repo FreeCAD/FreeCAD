@@ -203,16 +203,9 @@ void TaskDressUpParameters::setDeferredClosePending(bool pending)
     }
 }
 
-bool TaskDressUpParameters::hasAcceptedRecomputeProgressUi() const
+Gui::AsyncPreviewSession* TaskDressUpParameters::getAcceptedRecomputeProgressSession()
 {
-    return static_cast<bool>(asyncPreviewSession);
-}
-
-void TaskDressUpParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
-{
-    if (asyncPreviewSession) {
-        asyncPreviewSession->setForcedBusy(pending, statusText);
-    }
+    return asyncPreviewSession.get();
 }
 
 void TaskDressUpParameters::clearInteractiveSelection()

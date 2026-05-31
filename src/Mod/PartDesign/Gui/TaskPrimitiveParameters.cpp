@@ -26,7 +26,6 @@
 
 #include <QCoreApplication>
 #include <QMessageBox>
-#include <QPointer>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -816,17 +815,7 @@ Gui::AsyncInlineRecomputeProgressTarget TaskBoxPrimitives::makeAcceptedRecompute
         return {};
     }
 
-    QPointer<TaskBoxPrimitives> guard(this);
-    Gui::AsyncInlineRecomputeProgressTarget target;
-    target.contentWidget = this;
-    target.buttonBox = dialogButtonBox;
-    target.statusText = statusText;
-    target.setPending = [guard](bool pending, const QString& status) {
-        if (guard && guard->asyncPreviewSession) {
-            guard->asyncPreviewSession->setForcedBusy(pending, status);
-        }
-    };
-    return target;
+    return asyncPreviewSession->makeInlineRecomputeProgressTarget(this, dialogButtonBox, statusText);
 }
 
 void TaskBoxPrimitives::updateRecomputeUi()

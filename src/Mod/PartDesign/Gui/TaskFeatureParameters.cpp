@@ -25,11 +25,11 @@
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QMessageBox>
-#include <QPointer>
 
 #include <App/DocumentObserver.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -210,34 +210,22 @@ void TaskFeatureParameters::recomputeFeature()
     }
 }
 
-bool TaskFeatureParameters::hasAcceptedRecomputeProgressUi() const
+Gui::AsyncPreviewSession* TaskFeatureParameters::getAcceptedRecomputeProgressSession()
 {
-    return false;
+    return nullptr;
 }
-
-void TaskFeatureParameters::setAcceptedRecomputePending(bool, const QString&)
-{}
 
 Gui::AsyncInlineRecomputeProgressTarget TaskFeatureParameters::makeAcceptedRecomputeProgressTarget(
     QDialogButtonBox* dialogButtonBox,
     const QString& statusText
 )
 {
-    if (!hasAcceptedRecomputeProgressUi()) {
+    auto* previewSession = getAcceptedRecomputeProgressSession();
+    if (!previewSession) {
         return {};
     }
 
-    QPointer<TaskFeatureParameters> guard(this);
-    Gui::AsyncInlineRecomputeProgressTarget target;
-    target.contentWidget = this;
-    target.buttonBox = dialogButtonBox;
-    target.statusText = statusText;
-    target.setPending = [guard](bool pending, const QString& status) {
-        if (guard) {
-            guard->setAcceptedRecomputePending(pending, status);
-        }
-    };
-    return target;
+    return previewSession->makeInlineRecomputeProgressTarget(this, dialogButtonBox, statusText);
 }
 
 /*********************************************************************

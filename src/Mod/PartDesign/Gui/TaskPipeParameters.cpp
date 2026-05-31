@@ -25,7 +25,6 @@
 
 #include <QAction>
 #include <QMessageBox>
-#include <QPointer>
 #include <QSignalBlocker>
 
 #include <App/Application.h>
@@ -291,16 +290,9 @@ void TaskPipeParameters::setDeferredClosePending(bool pending)
     }
 }
 
-bool TaskPipeParameters::hasAcceptedRecomputeProgressUi() const
+Gui::AsyncPreviewSession* TaskPipeParameters::getAcceptedRecomputeProgressSession()
 {
-    return static_cast<bool>(asyncPreviewSession);
-}
-
-void TaskPipeParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
-{
-    if (asyncPreviewSession) {
-        asyncPreviewSession->setForcedBusy(pending, statusText);
-    }
+    return asyncPreviewSession.get();
 }
 
 void TaskPipeParameters::requestRecompute(bool waitForCompletion)

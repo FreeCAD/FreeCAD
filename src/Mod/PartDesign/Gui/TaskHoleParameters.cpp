@@ -24,7 +24,6 @@
 
 
 #include <QApplication>
-#include <QPointer>
 
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -424,16 +423,9 @@ void TaskHoleParameters::setDeferredClosePending(bool pending)
     }
 }
 
-bool TaskHoleParameters::hasAcceptedRecomputeProgressUi() const
+Gui::AsyncPreviewSession* TaskHoleParameters::getAcceptedRecomputeProgressSession()
 {
-    return static_cast<bool>(asyncPreviewSession);
-}
-
-void TaskHoleParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
-{
-    if (asyncPreviewSession) {
-        asyncPreviewSession->setForcedBusy(pending, statusText);
-    }
+    return asyncPreviewSession.get();
 }
 
 void TaskHoleParameters::runImmediateRecompute(unsigned updates)

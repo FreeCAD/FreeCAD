@@ -11,10 +11,12 @@
 #include <utility>
 
 #include <QMetaObject>
+#include <QPointer>
 #include <QString>
 #include <QTimer>
 #include <QWidget>
 
+#include "AsyncRecomputeProgressDialog.h"
 #include "AsyncPreviewController.h"
 #include "AsyncPreviewWidgetUtils.h"
 
@@ -187,6 +189,31 @@ public:
     bool didLastRecomputeSucceed() const
     {
         return previewController && previewController->didLastRecomputeSucceed();
+    }
+
+    AsyncInlineRecomputeProgressTarget makeInlineRecomputeProgressTarget(
+        QWidget* contentWidget,
+        QDialogButtonBox* buttonBox,
+        QString statusText
+    )
+    {
+        if (!previewController || !owner || !contentWidget) {
+            return {};
+        }
+
+        auto* session = this;
+        QPointer<QObject> ownerGuard(owner);
+        QPointer<QWidget> contentGuard(contentWidget);
+        AsyncInlineRecomputeProgressTarget target;
+        target.contentWidget = contentWidget;
+        target.buttonBox = buttonBox;
+        target.statusText = std::move(statusText);
+        target.setPending = [session, ownerGuard, contentGuard](bool pending, const QString& status) {
+            if (ownerGuard && contentGuard) {
+                session->setForcedBusy(pending, status);
+            }
+        };
+        return target;
     }
 
     /**

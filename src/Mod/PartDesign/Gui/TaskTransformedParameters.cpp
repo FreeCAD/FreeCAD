@@ -27,7 +27,6 @@
 #include <QDialogButtonBox>
 #include <QEvent>
 #include <QListWidget>
-#include <QPointer>
 #include <QWidget>
 
 #include <sstream>
@@ -462,38 +461,17 @@ void TaskTransformedParameters::setDeferredClosePending(bool pending)
     }
 }
 
-void TaskTransformedParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
-{
-    if (insideMultiTransform && parentTask) {
-        parentTask->setAcceptedRecomputePending(pending, statusText);
-        return;
-    }
-
-    if (auto* previewSession = getAsyncPreviewSession()) {
-        previewSession->setForcedBusy(pending, statusText);
-    }
-}
-
 Gui::AsyncInlineRecomputeProgressTarget TaskTransformedParameters::makeAcceptedRecomputeProgressTarget(
     QDialogButtonBox* dialogButtonBox,
     const QString& statusText
 )
 {
-    if (!getAsyncPreviewSession()) {
+    auto* previewSession = getAsyncPreviewSession();
+    if (!previewSession) {
         return {};
     }
 
-    QPointer<TaskTransformedParameters> guard(this);
-    Gui::AsyncInlineRecomputeProgressTarget target;
-    target.contentWidget = this;
-    target.buttonBox = dialogButtonBox;
-    target.statusText = statusText;
-    target.setPending = [guard](bool pending, const QString& status) {
-        if (guard) {
-            guard->setAcceptedRecomputePending(pending, status);
-        }
-    };
-    return target;
+    return previewSession->makeInlineRecomputeProgressTarget(this, dialogButtonBox, statusText);
 }
 
 void TaskTransformedParameters::cancelPendingRecompute()

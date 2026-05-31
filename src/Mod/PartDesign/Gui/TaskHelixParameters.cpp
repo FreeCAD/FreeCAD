@@ -23,9 +23,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include <QPointer>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -281,16 +278,9 @@ void TaskHelixParameters::setDeferredClosePending(bool pending)
     }
 }
 
-bool TaskHelixParameters::hasAcceptedRecomputeProgressUi() const
+Gui::AsyncPreviewSession* TaskHelixParameters::getAcceptedRecomputeProgressSession()
 {
-    return static_cast<bool>(asyncPreviewSession);
-}
-
-void TaskHelixParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
-{
-    if (asyncPreviewSession) {
-        asyncPreviewSession->setForcedBusy(pending, statusText);
-    }
+    return asyncPreviewSession.get();
 }
 
 void TaskHelixParameters::clearInteractiveSelection()

@@ -72,8 +72,6 @@ public:
     bool hasOutstandingRecompute() const override;
     void setDeferredClosePending(bool pending) override;
     Gui::AsyncPreviewSession* getAcceptedRecomputeProgressSession() override;
-    bool hasAcceptedRecomputeProgressUi() const override;
-    void setAcceptedRecomputePending(bool pending, const QString& statusText) override;
 
     bool getThreaded() const;
     long getThreadType() const;
