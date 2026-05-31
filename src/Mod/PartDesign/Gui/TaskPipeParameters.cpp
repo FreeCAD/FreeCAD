@@ -32,6 +32,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/AsyncPreviewSession.h>
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
@@ -287,6 +288,18 @@ void TaskPipeParameters::setDeferredClosePending(bool pending)
 {
     if (asyncPreviewSession) {
         asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+bool TaskPipeParameters::hasAcceptedRecomputeProgressUi() const
+{
+    return static_cast<bool>(asyncPreviewSession);
+}
+
+void TaskPipeParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setForcedBusy(pending, statusText);
     }
 }
 
@@ -569,7 +582,7 @@ void TaskPipeParameters::setVisibilityOfSpineAndProfile()
     }
 }
 
-bool TaskPipeParameters::accept(bool previewSettled)
+bool TaskPipeParameters::accept(bool previewSettled, bool hasInlineProgress)
 {
     // see what to do with external references
     // check the prerequisites for the selected objects
@@ -693,7 +706,12 @@ bool TaskPipeParameters::accept(bool previewSettled)
                 obj->touch();
             }
         }
-        if (!runAsyncAcceptDocumentRecompute(pipe->getDocument())) {
+        Gui::AsyncRecomputeDialogOptions options;
+        options.cancelable = false;
+        options.dynamicLabel = false;
+        options.forceIndeterminate = true;
+        options.showDialog = !hasInlineProgress;
+        if (!runAsyncAcceptDocumentRecompute(pipe->getDocument(), options)) {
             return false;
         }
 
@@ -1456,7 +1474,10 @@ bool TaskDlgPipeParameters::accept()
     else {
         parameter->stopPendingRecompute();
     }
-    return parameter->accept(previewSettled);
+    auto progressTarget
+        = parameter->makeAcceptedRecomputeProgressTarget(buttonBox, tr("Applying changes..."));
+    const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(std::move(progressTarget));
+    return parameter->accept(previewSettled, inlineProgress.isActive());
 }
 
 bool TaskDlgPipeParameters::reject()

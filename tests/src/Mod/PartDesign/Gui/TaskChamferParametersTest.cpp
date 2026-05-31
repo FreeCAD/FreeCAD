@@ -10,8 +10,12 @@
 #include <thread>
 #include <vector>
 
+#include <QApplication>
 #include <QCoreApplication>
+#include <QDialogButtonBox>
+#include <QLabel>
 #include <QPointer>
+#include <QProgressDialog>
 #include <QPushButton>
 #include <QTest>
 #include <QTimer>
@@ -69,6 +73,12 @@ FC_TEST_DECLARE_BLOCKING_EXECUTION_STATE(blockingChamferState)
 using tests::partdesigngui::ensureGuiHarness;
 using tests::partdesigngui::findCancelPreviewButton;
 using tests::partdesigngui::findTaskBox;
+
+QDialogButtonBox* findActiveDialogButtonBox()
+{
+    auto* taskView = Gui::Control().taskPanel();
+    return taskView ? taskView->findChild<QDialogButtonBox*>() : nullptr;
+}
 
 Gui::QuantitySpinBox* findSizeSpinBox(QWidget* taskBox)
 {
@@ -347,10 +357,39 @@ private Q_SLOTS:
         QVERIFY(taskBox->hasOutstandingRecompute());
 
         int timerTicksWhileAccepting = 0;
+        bool sawModalProgressDialog = false;
+        bool sawInlineAcceptStatus = false;
+        bool sawDisabledDialogButtons = false;
         QTimer responsivenessTimer;
+        QPointer<QWidget> taskBoxGuard(taskBox);
         responsivenessTimer.setInterval(10);
-        connect(&responsivenessTimer, &QTimer::timeout, [&timerTicksWhileAccepting]() {
+        connect(&responsivenessTimer, &QTimer::timeout, [&]() {
             ++timerTicksWhileAccepting;
+
+            for (auto* widget : QApplication::topLevelWidgets()) {
+                if (qobject_cast<QProgressDialog*>(widget) && widget->isVisible()) {
+                    sawModalProgressDialog = true;
+                }
+            }
+
+            if (taskBoxGuard) {
+                auto* statusLabel = taskBoxGuard->findChild<QLabel*>(
+                    QStringLiteral("labelPreviewStatus")
+                );
+                auto* statusWidget = taskBoxGuard->findChild<QWidget*>(
+                    QStringLiteral("previewStatusWidget")
+                );
+                if (statusLabel && statusWidget && !statusLabel->isHidden()
+                    && !statusWidget->isHidden()
+                    && statusLabel->text().contains(QStringLiteral("Applying changes"))) {
+                    sawInlineAcceptStatus = true;
+                }
+            }
+
+            auto* activeButtonBox = findActiveDialogButtonBox();
+            if (activeButtonBox && !activeButtonBox->isEnabled()) {
+                sawDisabledDialogButtons = true;
+            }
         });
         responsivenessTimer.start();
         QCoreApplication::processEvents();
@@ -384,6 +423,15 @@ private Q_SLOTS:
         QVERIFY2(
             timerTicksWhileAccepting > 0,
             "accept should keep the GUI event loop responsive while the final recompute settles"
+        );
+        QVERIFY2(!sawModalProgressDialog, "chamfer accept should use the inline task-panel status instead of a modal progress dialog");
+        QVERIFY2(
+            sawInlineAcceptStatus,
+            "chamfer accept should show inline task-panel feedback while final recompute settles"
+        );
+        QVERIFY2(
+            sawDisabledDialogButtons,
+            "chamfer accept should disable task dialog buttons until final recompute settles"
         );
     }
 

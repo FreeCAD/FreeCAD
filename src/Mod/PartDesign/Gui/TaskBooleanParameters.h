@@ -40,6 +40,7 @@
 
 
 class Ui_TaskBooleanParameters;
+class QDialogButtonBox;
 
 namespace App
 {
@@ -50,6 +51,7 @@ namespace Gui
 {
 class ViewProvider;
 class AsyncPreviewSession;
+struct AsyncInlineRecomputeProgressTarget;
 }  // namespace Gui
 
 
@@ -72,6 +74,10 @@ public:
     bool hasOutstandingRecompute() const;
     bool canReuseAcceptedPreviewResult() const;
     void setDeferredClosePending(bool pending);
+    Gui::AsyncInlineRecomputeProgressTarget makeAcceptedRecomputeProgressTarget(
+        QDialogButtonBox* dialogButtonBox,
+        const QString& statusText
+    );
 
 Q_SIGNALS:
     void recomputeSettled();

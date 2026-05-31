@@ -48,7 +48,10 @@ class ViewProvider;
 class GizmoContainer;
 class LinearGizmo;
 class AsyncPreviewSession;
+struct AsyncInlineRecomputeProgressTarget;
 }  // namespace Gui
+
+class QDialogButtonBox;
 
 namespace PartDesignGui
 {
@@ -69,6 +72,10 @@ public:
     bool hasOutstandingRecompute() const;
     bool canReuseAcceptedPreviewResult() const;
     void setDeferredClosePending(bool pending);
+    Gui::AsyncInlineRecomputeProgressTarget makeAcceptedRecomputeProgressTarget(
+        QDialogButtonBox* dialogButtonBox,
+        const QString& statusText
+    );
 
 Q_SIGNALS:
     void recomputeSettled();

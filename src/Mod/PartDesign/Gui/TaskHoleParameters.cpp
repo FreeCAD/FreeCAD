@@ -424,6 +424,18 @@ void TaskHoleParameters::setDeferredClosePending(bool pending)
     }
 }
 
+bool TaskHoleParameters::hasAcceptedRecomputeProgressUi() const
+{
+    return static_cast<bool>(asyncPreviewSession);
+}
+
+void TaskHoleParameters::setAcceptedRecomputePending(bool pending, const QString& statusText)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setForcedBusy(pending, statusText);
+    }
+}
+
 void TaskHoleParameters::runImmediateRecompute(unsigned updates)
 {
     stopPendingRecompute();
