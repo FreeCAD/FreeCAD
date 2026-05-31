@@ -856,19 +856,14 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransform
 {}
 
 TaskDlgFeatureParameters::AcceptRecomputeMode TaskDlgTransformedParameters::acceptRecomputeMode(
-    bool isUpdateBlocked,
-    AcceptPendingRecomputeAction pendingRecomputeAction
+    bool,
+    AcceptPendingRecomputeAction
 ) const
 {
-    if (pendingRecomputeAction == AcceptPendingRecomputeAction::Stop) {
-        return AcceptRecomputeMode::AsyncDocument;
-    }
-
-    // When no preview work is outstanding, accept() keeps the existing command
-    // path: the settled preview already computed the transformed feature, so the
-    // remaining document recompute only needs to propagate touched parents.
-    return isUpdateBlocked ? AcceptRecomputeMode::AsyncDocument
-                           : AcceptRecomputeMode::CommandDocument;
+    // Transformed previews run with InteractivePreview and can intentionally skip
+    // final-only work such as refinement. Accept must always recompute the final
+    // feature instead of reusing the settled preview shape.
+    return AcceptRecomputeMode::AsyncDocument;
 }
 
 //==== calls from the TaskView ===============================================================
@@ -915,10 +910,7 @@ bool TaskDlgTransformedParameters::accept()
             throw Base::RuntimeError("Feature document is not available.");
         }
 
-        const auto pendingRecomputeAction = canReusePreviewResult
-                && parameter->canReuseAcceptedPreviewResult()
-            ? AcceptPendingRecomputeAction::Flush
-            : AcceptPendingRecomputeAction::Stop;
+        const auto pendingRecomputeAction = AcceptPendingRecomputeAction::Stop;
         prepareAcceptedFeatureForDocumentRecompute(feature, isUpdateBlocked, pendingRecomputeAction);
         if (!runAcceptedFeatureRecompute(
                 document,

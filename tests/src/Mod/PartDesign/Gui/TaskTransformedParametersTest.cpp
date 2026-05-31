@@ -846,6 +846,50 @@ private Q_SLOTS:
         QCOMPARE(getBlockingTransformedTotalExecutionCount(), 2);
     }
 
+    void polarAcceptAfterSettledPreviewRunsFinalRecompute()  // NOLINT
+    {
+        prepareTransformedFixture(TransformedKind::Polar);
+        auto* pattern = dynamic_cast<PartDesign::BlockingPolarPatternTest*>(
+            doc->getObject("BlockingPolarPattern")
+        );
+        QVERIFY(pattern != nullptr);
+
+        auto* dialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
+        QPointer<PartDesignGui::TaskDlgLinearPatternParameters> guard(dialog);
+        Gui::Control().showDialog(dialog, doc);
+        QCoreApplication::processEvents();
+
+        auto* taskBox = findTaskBox<PartDesignGui::TaskPatternParameters>(dialog);
+        QVERIFY(taskBox != nullptr);
+        QTRY_VERIFY_WITH_TIMEOUT(!taskBox->hasOutstandingRecompute(), 3000);
+
+        auto* widget = findPrimaryPatternParametersWidget(taskBox);
+        QVERIFY(widget != nullptr);
+
+        auto* extent = findExtentSpinBox(widget);
+        QVERIFY(extent != nullptr);
+
+        const int startingExecutionCount = getBlockingTransformedTotalExecutionCount();
+        const double finalAngle = extent->rawValue() - 45.0;
+        extent->setValue(finalAngle);
+        QCoreApplication::processEvents();
+
+        QTRY_VERIFY_WITH_TIMEOUT(
+            getBlockingTransformedTotalExecutionCount() > startingExecutionCount,
+            3000
+        );
+        QTRY_VERIFY_WITH_TIMEOUT(!taskBox->hasOutstandingRecompute(), 3000);
+        const int settledPreviewExecutionCount = getBlockingTransformedTotalExecutionCount();
+
+        Gui::Control().accept(doc);
+
+        QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
+        QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
+        QVERIFY(!guiDoc->hasPendingCommand());
+        QCOMPARE(pattern->Angle.getValue(), finalAngle);
+        QCOMPARE(getBlockingTransformedTotalExecutionCount(), settledPreviewExecutionCount + 1);
+    }
+
     void polarQueuedPreviewKeepsSingleActiveTaskDialog()  // NOLINT
     {
         prepareTransformedFixture(TransformedKind::Polar);
