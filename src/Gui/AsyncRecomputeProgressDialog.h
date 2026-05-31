@@ -30,6 +30,7 @@ struct AsyncRecomputeDialogOptions
     bool cancelable = true;
     bool dynamicLabel = true;
     bool forceIndeterminate = false;
+    bool showDialog = true;
 };
 
 /**
@@ -200,7 +201,9 @@ void runAsyncRecomputeProgressDialog(
     }
 
     updateAsyncRecomputeProgressDialog(dialog, controller, fallbackLabel, options);
-    showTimer.start(std::max(0, options.showDelayMs));
+    if (options.showDialog) {
+        showTimer.start(std::max(0, options.showDelayMs));
+    }
     loop.exec();
 }
 
