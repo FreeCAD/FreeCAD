@@ -205,6 +205,36 @@ void runAsyncRecomputeProgressDialog(
     StartFn&& start
 )
 {
+    if (!options.showDialog) {
+        Q_UNUSED(parent);
+        Q_UNUSED(windowTitle);
+        Q_UNUSED(fallbackLabel);
+
+        QEventLoop loop;
+        QObject loopContext;
+        bool settled = false;
+        const auto quitIfSettled = [&]() {
+            if (!controller.hasOutstandingRecompute()) {
+                settled = true;
+                loop.quit();
+            }
+        };
+        QObject::connect(&controller, &AsyncPreviewController::stateChanged, &loopContext, quitIfSettled);
+        QObject::connect(
+            &controller,
+            &AsyncPreviewController::recomputeSettled,
+            &loopContext,
+            quitIfSettled
+        );
+
+        start();
+        quitIfSettled();
+        if (!settled) {
+            loop.exec();
+        }
+        return;
+    }
+
     QProgressDialog dialog(parent);
     dialog.setWindowTitle(windowTitle);
     dialog.setCancelButtonText(QObject::tr("Cancel"));
