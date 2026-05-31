@@ -18,6 +18,7 @@ Test files
 https://knowledge.autodesk.com/support/autocad/downloads/
     caas/downloads/content/autocad-sample-files.html
 """
+
 # Check code quality with
 # flake8 --ignore=E226,E266,E401,W503
 

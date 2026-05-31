@@ -209,9 +209,9 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 
 void TaskDlgFemConstraint::open()
 {
-    if (!Gui::Command::hasPendingCommand()) {
-        const char* typeName = ConstraintView->getObject()->getTypeId().getName();
-        Gui::Command::openCommand(typeName);
+    if (!ConstraintView->getDocument()->hasPendingCommand()) {
+        const auto typeName = ConstraintView->getObject()->getTypeId().getName();
+        ConstraintView->getDocument()->openCommand(std::string {typeName}.c_str());
         ConstraintView->setVisible(true);
     }
 }
@@ -234,7 +234,7 @@ bool TaskDlgFemConstraint::accept()
         else {
             QMessageBox::warning(
                 parameter,
-                tr("Input error"),
+                tr("Input Error"),
                 tr("You must specify at least one reference")
             );
             return false;
@@ -252,10 +252,11 @@ bool TaskDlgFemConstraint::accept()
             throw Base::RuntimeError(ConstraintView->getObject()->getStatusString());
         }
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+        ConstraintView->getDocument()->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        ConstraintView->getDocument()->abortCommand();
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 
@@ -265,7 +266,7 @@ bool TaskDlgFemConstraint::accept()
 bool TaskDlgFemConstraint::reject()
 {
     // roll back the changes
-    Gui::Command::abortCommand();
+    ConstraintView->getDocument()->abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     Gui::Command::updateActive();
 

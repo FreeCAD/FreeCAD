@@ -29,6 +29,7 @@ this big module because it creates manually the interface.
 Instead we should provide its own .ui file and task panel,
 similar to the OrthoArray tool.
 """
+
 ## @package gui_fillet
 # \ingroup draftguitools
 # \brief Provides GUI tools to create Fillet objects between two lines.

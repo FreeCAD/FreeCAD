@@ -21,13 +21,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-import sys
 import FreeCAD
-from FreeCAD import Vector
 
 import ObjectsFem
+import Materials
 import Part
-import Sketcher
 
 from . import manager
 from .manager import get_meshname
@@ -39,7 +37,7 @@ def get_information():
     return {
         "name": "Deformation (nonlinear elasticity) - Elmer",
         "meshtype": "solid",
-        "meshelement": "Tet10",
+        "meshelement": "Tet4",
         "constraints": ["displacement", "spring"],
         "solvers": ["elmer"],
         "material": "solid",
@@ -73,57 +71,31 @@ def setup(doc=None, solvertype="elmer"):
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # geometric objects
-
-    # sketch defining the spring form
-    body = doc.addObject("PartDesign::Body", "Body")
-    SketchPath = body.newObject("Sketcher::SketchObject", "Spring_Path")
-    SketchPath.AttachmentSupport = (doc.getObject("XY_Plane"), [""])
-    SketchPath.MapMode = "FlatFace"
-    SketchPath.addGeometry(
-        Part.LineSegment(Vector(-20.0, 30.0, 0.0), Vector(-20.0, 0.0, 0.0)), False
+    profile = doc.addObject("Part::Circle", "Profile")
+    profile.Radius = "7.5 mm"
+    profile.Placement = FreeCAD.Placement(
+        FreeCAD.Vector(-20, 0, 0),
+        FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
     )
-    SketchPath.addConstraint(Sketcher.Constraint("PointOnObject", 0, 2, -1))
-    SketchPath.addConstraint(Sketcher.Constraint("Vertical", 0))
-    SketchPath.addGeometry(
-        Part.ArcOfCircle(
-            Part.Circle(Vector(0.0, 0.0, 0.0), Vector(0, 0, 1), 20.0),
-            3.141593,
-            6.283185,
-        ),
-        False,
+
+    line_left = Part.makeLine((-20.0, 30.0, 0.0), (-20.0, 0.0, 0.0))
+    half_circle = Part.makeCircle(
+        20.0,
+        FreeCAD.Vector(0.0, 0.0, 0.0),
+        FreeCAD.Vector(0.0, 0.0, 1.0),
+        180.0,
+        360.0
     )
-    SketchPath.addConstraint(Sketcher.Constraint("Tangent", 0, 2, 1, 1))
-    SketchPath.addConstraint(Sketcher.Constraint("PointOnObject", 1, 2, -1))
-    SketchPath.addGeometry(Part.LineSegment(Vector(20.0, 0.0, 0.0), Vector(20.0, 30.0, 0.0)), False)
-    SketchPath.addConstraint(Sketcher.Constraint("Tangent", 1, 2, 2, 1))
-    SketchPath.addConstraint(Sketcher.Constraint("Equal", 2, 0))
-    SketchPath.ViewObject.Visibility = False
+    line_right = Part.makeLine((20.0, 0.0, 0.0), (20.0, 30.0, 0.0))
+    path = doc.addObject("Part::Feature", "Path")
+    path.Shape = Part.Wire((line_left, half_circle, line_right))
 
-    # sketch defining the spring cross section
-    SketchCircle = body.newObject("Sketcher::SketchObject", "Spring_Circle")
-    SketchCircle.AttachmentSupport = (doc.getObject("XZ_Plane"), [""])
-    SketchCircle.MapMode = "FlatFace"
-    SketchCircle.addGeometry(Part.Circle(Vector(-20.0, 0.0, 0.0), Vector(0, 0, 1), 7.5), False)
-    SketchCircle.addConstraint(Sketcher.Constraint("PointOnObject", 0, 3, -1))
-    SketchCircle.ViewObject.Visibility = False
-
-    # the spring object
-    SpringObject = body.newObject("PartDesign::AdditivePipe", "Spring")
-    SpringObject.Profile = SketchCircle
-    SpringObject.Spine = SketchPath
-
-    # set view
-    doc.recompute()
-    if FreeCAD.GuiUp:
-        SpringObject.ViewObject.Document.activeView().viewTop()
-        SpringObject.ViewObject.Document.activeView().fitAll()
+    spring = doc.addObject("Part::Sweep", "Spring")
+    spring.Sections = [profile]
+    spring.Spine = [path, ("Edge1", "Edge2", "Edge3")]
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
-    if FreeCAD.GuiUp:
-        import FemGui
-
-        FemGui.setActiveAnalysis(analysis)
 
     # solver
     if solvertype == "elmer":
@@ -145,58 +117,67 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(solver_obj)
 
     # material iron
-    material_obj = ObjectsFem.makeMaterialSolid(doc, "Iron")
-    mat = material_obj.Material
-    mat["Name"] = "Iron Generic"
-    mat["YoungsModulus"] = "211 GPa"
-    mat["PoissonRatio"] = "0.29"
-    mat["Density"] = "7874 kg/m^3"
-    material_obj.Material = mat
-    material_obj.References = [(body, "Solid1")]
-    analysis.addObject(material_obj)
+    mat_manager = Materials.MaterialManager()
+
+    iron = mat_manager.getMaterial("1826c364-d26a-43fb-8f61-288281236836")
+    iron_obj = ObjectsFem.makeMaterialSolid(doc, "Iron")
+    iron_obj.UUID = iron.UUID
+    iron_obj.Material = iron.Properties
+    iron_obj.References = [(spring, "Solid1")]
+    analysis.addObject(iron_obj)
 
     # constraints displacement
-    DisplaceLeft = doc.addObject("Fem::ConstraintDisplacement", "DisplacementLeft")
-    DisplaceLeft.xFree = False
-    DisplaceLeft.hasXFormula = True
-    DisplaceLeft.xDisplacementFormula = 'Variable "time"; Real MATC "0.006*tx"'
-    DisplaceLeft.yFree = False
-    DisplaceLeft.yDisplacement = 0
-    DisplaceLeft.zFree = False
-    DisplaceLeft.zDisplacement = 0
-    DisplaceLeft.References = [(SpringObject, "Face1")]
-    analysis.addObject(DisplaceLeft)
+    displace_left = doc.addObject("Fem::ConstraintDisplacement", "DisplacementLeft")
+    displace_left.xFree = False
+    displace_left.hasXFormula = True
+    displace_left.xDisplacementFormula = 'Variable "time"; Real MATC "0.006*tx"'
+    displace_left.yFree = False
+    displace_left.yDisplacement = 0
+    displace_left.zFree = False
+    displace_left.zDisplacement = 0
+    displace_left.References = [(spring, "Face4")]
+    analysis.addObject(displace_left)
 
-    DisplaceRight = doc.addObject("Fem::ConstraintDisplacement", "DisplacementRight")
-    DisplaceRight.xFree = False
-    DisplaceRight.hasXFormula = True
-    DisplaceRight.xDisplacementFormula = 'Variable "time"; Real MATC "-0.006*tx"'
-    DisplaceRight.yFree = False
-    DisplaceRight.yDisplacement = 0
-    DisplaceRight.zFree = False
-    DisplaceRight.zDisplacement = 0
-    DisplaceRight.References = [(SpringObject, "Face5")]
-    analysis.addObject(DisplaceRight)
+    displace_right = doc.addObject("Fem::ConstraintDisplacement", "DisplacementRight")
+    displace_right.xFree = False
+    displace_right.hasXFormula = True
+    displace_right.xDisplacementFormula = 'Variable "time"; Real MATC "-0.006*tx"'
+    displace_right.yFree = False
+    displace_right.yDisplacement = 0
+    displace_right.zFree = False
+    displace_right.zDisplacement = 0
+    displace_right.References = [(spring, "Face5")]
+    analysis.addObject(displace_right)
 
     # constraints spring
-    StiffnessLeft = doc.addObject("Fem::ConstraintSpring", "StiffnessLeft")
-    StiffnessLeft.TangentialStiffness = "50 N/m"
-    StiffnessLeft.ElmerStiffness = "Tangential Stiffness"
-    StiffnessLeft.References = [(SpringObject, "Face1")]
-    analysis.addObject(StiffnessLeft)
+    stiffness_left = doc.addObject("Fem::ConstraintSpring", "StiffnessLeft")
+    stiffness_left.TangentialStiffness = "50 N/m"
+    stiffness_left.ElmerStiffness = "Tangential Stiffness"
+    stiffness_left.References = [(spring, "Face4")]
+    analysis.addObject(stiffness_left)
 
-    StiffnessRight = doc.addObject("Fem::ConstraintSpring", "StiffnessRight")
-    StiffnessRight.TangentialStiffness = "50 N/m"
-    StiffnessRight.ElmerStiffness = "Tangential Stiffness"
-    StiffnessRight.References = [(SpringObject, "Face5")]
-    analysis.addObject(StiffnessRight)
+    stiffness_right = doc.addObject("Fem::ConstraintSpring", "StiffnessRight")
+    stiffness_right.TangentialStiffness = "50 N/m"
+    stiffness_right.ElmerStiffness = "Tangential Stiffness"
+    stiffness_right.References = [(spring, "Face5")]
+    analysis.addObject(stiffness_right)
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Shape = body
+    femmesh_obj.Shape = spring
     femmesh_obj.CharacteristicLengthMax = "1.25 mm"
     femmesh_obj.ElementOrder = "1st"
-    femmesh_obj.ViewObject.Visibility = False
+
+    # set view
+    doc.recompute()
+    if FreeCAD.GuiUp:
+        import FemGui
+        FemGui.setActiveAnalysis(analysis)
+        spring.ViewObject.Document.activeView().viewTop()
+        spring.ViewObject.Document.activeView().fitAll()
+        profile.ViewObject.Visibility = False
+        path.ViewObject.Visibility = False
+        femmesh_obj.ViewObject.Visibility = False
 
     # generate the mesh
     generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")

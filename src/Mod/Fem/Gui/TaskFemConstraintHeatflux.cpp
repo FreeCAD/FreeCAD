@@ -142,7 +142,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->qsb_ambienttemp_rad->setValue(pcConstraint->AmbientTemp.getQuantityValue());
     ui->dsb_emissivity->setValue(pcConstraint->Emissivity.getValue());
 
-    ui->qsb_heat_flux->setValue(pcConstraint->DFlux.getQuantityValue());
+    ui->qsb_heat_flux->setValue(pcConstraint->DistributedHeatFlux.getQuantityValue());
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -174,7 +174,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
     ui->qsb_ambienttemp_conv->bind(pcConstraint->AmbientTemp);
     ui->qsb_ambienttemp_rad->bind(pcConstraint->AmbientTemp);
     ui->dsb_emissivity->bind(pcConstraint->Emissivity);
-    ui->qsb_heat_flux->bind(pcConstraint->DFlux);
+    ui->qsb_heat_flux->bind(pcConstraint->DistributedHeatFlux);
 
     updateUI();
 }
@@ -211,7 +211,7 @@ void TaskFemConstraintHeatflux::onEmissivityChanged(double val)
 void TaskFemConstraintHeatflux::onHeatFluxChanged(double val)
 {
     Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
-    pcConstraint->DFlux.setValue(val);
+    pcConstraint->DistributedHeatFlux.setValue(val);
 }
 
 void TaskFemConstraintHeatflux::Conv()
@@ -254,7 +254,7 @@ void TaskFemConstraintHeatflux::Flux()
         name.c_str(),
         getConstraintType().c_str()
     );
-    ui->qsb_heat_flux->setValue(pcConstraint->DFlux.getQuantityValue());
+    ui->qsb_heat_flux->setValue(pcConstraint->DistributedHeatFlux.getQuantityValue());
     ui->sw_heatflux->setCurrentIndex(0);
 }
 
@@ -263,7 +263,7 @@ void TaskFemConstraintHeatflux::onConstrTypeChanged(int item)
     auto obj = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     obj->ConstraintType.setValue(item);
     const char* type = obj->ConstraintType.getValueAsString();
-    if (strcmp(type, "DFlux") == 0) {
+    if (strcmp(type, "DistributedHeatFlux") == 0) {
         this->Flux();
     }
     else if (strcmp(type, "Convection") == 0) {
@@ -279,7 +279,7 @@ void TaskFemConstraintHeatflux::addToSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintHeatflux* pcConstraint = ConstraintView->getObject<Fem::ConstraintHeatflux>();
@@ -288,7 +288,7 @@ void TaskFemConstraintHeatflux::addToSelection()
 
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -296,7 +296,7 @@ void TaskFemConstraintHeatflux::addToSelection()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -308,7 +308,7 @@ void TaskFemConstraintHeatflux::addToSelection()
                 if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
                     QMessageBox::warning(
                         this,
-                        tr("Selection error"),
+                        tr("Selection Error"),
                         tr("Selection must only consist of faces! (edges in 2D models)")
                     );
                     return;
@@ -356,7 +356,7 @@ void TaskFemConstraintHeatflux::removeFromSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
 
@@ -366,7 +366,7 @@ void TaskFemConstraintHeatflux::removeFromSelection()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();
@@ -377,7 +377,7 @@ void TaskFemConstraintHeatflux::removeFromSelection()
                 if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
                     QMessageBox::warning(
                         this,
-                        tr("Selection error"),
+                        tr("Selection Error"),
                         tr("Selection must only consist of faces! (edges in 2D models)")
                     );
                     return;
@@ -547,13 +547,13 @@ bool TaskDlgFemConstraintHeatflux::accept()
         );
         Gui::Command::doCommand(
             Gui::Command::Doc,
-            "App.ActiveDocument.%s.DFlux = \"%s\"",
+            "App.ActiveDocument.%s.DistributedHeatFlux = \"%s\"",
             name.c_str(),
             parameterHeatflux->getDFlux().c_str()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 

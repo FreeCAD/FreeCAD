@@ -26,10 +26,10 @@ from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
 import Path.Base.Util as PathUtil
+import Path.Geom
 import PathScripts.PathUtils as PathUtils
 import math
 import time
-
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -57,10 +57,11 @@ FeatureStartPoint = 0x0008  # StartPoint
 FeatureFinishDepth = 0x0010  # FinishDepth
 FeatureStepDown = 0x0020  # StepDown
 FeatureNoFinalDepth = 0x0040  # edit or not edit FinalDepth
+FeatureLinking = 0x0080  # Linking
 FeatureBaseVertexes = 0x0100  # Base
 FeatureBaseEdges = 0x0200  # Base
 FeatureBaseFaces = 0x0400  # Base
-FeatureBasePanels = 0x0800  # Base
+FeatureBaseModels = 0x0800  # Base
 FeatureLocations = 0x1000  # Locations
 FeatureCoolant = 0x2000  # Coolant
 FeatureDiameters = 0x4000  # Turning Diameters
@@ -97,6 +98,7 @@ class ObjectOp(object):
         FeatureBaseVertexes  ... Base geometry support for vertexes
         FeatureBaseEdges     ... Base geometry support for edges
         FeatureBaseFaces     ... Base geometry support for faces
+        FeatureBaseModels    ... Base geometry support for whole shape
         FeatureLocations     ... Base location support
         FeatureCoolant       ... Support for operation coolant
         FeatureDiameters     ... Support for turning operation diameters
@@ -157,6 +159,35 @@ class ObjectOp(object):
             )
             obj.setEditorMode("OpStockZMin", 1)  # read-only
 
+    def addLinking(self, obj):
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "CollisionAvoidanceStrategy",
+            "Linking",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Method collision detection to create optimal path between areas"
+                "\n\nClearance Height: no collision detection, uses clearance height for rapid moves between areas"
+                "\nRetract Height: no collision detection, uses safe height for rapid moves between areas"
+                "\nLine of Sight: fastest - checks the path centerline"
+                "\nTool Diameter: balanced - checks clearance using the tool diameter"
+                "\nTool Shape: safest - checks clearance using the cross section of the tool shape",
+            ),
+        )
+        obj.CollisionAvoidanceStrategy = [
+            "Clearance Height",
+            "Retract Height",
+            "Line of Sight",
+            "Tool Diameter",
+            "Tool Shape",
+        ]
+        obj.addProperty(
+            "App::PropertyLength",
+            "CollisionClearance",
+            "Linking",
+            QT_TRANSLATE_NOOP("App::Property", "Distance for collision detection"),
+        )
+
     def __init__(self, obj, name, parentJob=None):
         Path.Log.track()
 
@@ -166,6 +197,14 @@ class ObjectOp(object):
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property", "Make False, to prevent operation from generating code"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "BlockDelete",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Enable post processor to add block delete commands"
             ),
         )
         obj.addProperty(
@@ -187,6 +226,12 @@ class ObjectOp(object):
             QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
+
+        # Add attachment extension to enable attaching operations to geometry
+        # This allows operations to automatically position/orient based on attached faces
+        # Only add to real objects, not OpPrototypes
+        if hasattr(obj, "hasExtension") and not obj.hasExtension("Part::AttachExtension"):
+            obj.addExtension("Part::AttachExtensionPython")
 
         features = self.opFeatures(obj)
 
@@ -313,6 +358,9 @@ class ObjectOp(object):
                 QT_TRANSLATE_NOOP("App::Property", "Upper limit of the turning diameter."),
             )
 
+        if FeatureLinking & features:
+            self.addLinking(obj)
+
         # members being set later
         self.commandlist = None
         self.horizFeed = None
@@ -325,6 +373,7 @@ class ObjectOp(object):
         self.vertFeed = None
         self.vertRapid = None
         self.addNewProps = None
+        self.isBaseValid = True
 
         self.initOperation(obj)
 
@@ -392,6 +441,7 @@ class ObjectOp(object):
 
     def onDocumentRestored(self, obj):
         Path.Log.track()
+        self.checkBase(obj)
         features = self.opFeatures(obj)
         if (
             FeatureBaseGeometry & features
@@ -443,6 +493,15 @@ class ObjectOp(object):
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
             )
+        if not hasattr(obj, "BlockDelete"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "BlockDelete",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Enable post processor to add block delete commands"
+                ),
+            )
 
         if FeatureStepDown & features and not hasattr(obj, "StepDown"):
             obj.addProperty(
@@ -452,6 +511,14 @@ class ObjectOp(object):
                 QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool"),
             )
             obj.StepDown = 0
+
+        if FeatureLinking & features and not hasattr(obj, "CollisionAvoidanceStrategy"):
+            self.addLinking(obj)
+            for n in self.opPropertyEnumerations():
+                if hasattr(obj, n[0]):
+                    setattr(obj, n[0], n[1])
+            obj.CollisionAvoidanceStrategy = "Clearance Height"
+            self.applyExpression(obj, "CollisionClearance", "OpToolDiameter")
 
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
@@ -524,14 +591,13 @@ class ObjectOp(object):
     def onChanged(self, obj, prop):
         """onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead."""
-
-        # there's a bit of cycle going on here, if sanitizeBase causes the transaction to
-        # be cancelled we end right here again with the unsainitized Base - if that is the
-        # case, stop the cycle and return immediately
-        if prop == "Base" and self.sanitizeBase(obj):
+        if prop == "Base" and not self.checkBase(obj):
             return
 
-        if "Restore" not in obj.State and prop in ["Base", "StartDepth", "FinalDepth"]:
+        if not getattr(self, "isBaseValid", True):
+            return
+
+        if "Restore" not in obj.State and prop in ("Base", "StartDepth", "FinalDepth"):
             self.updateDepths(obj, True)
 
         self.opOnChanged(obj, prop)
@@ -611,6 +677,10 @@ class ObjectOp(object):
 
         if FeatureStartPoint & features:
             obj.UseStartPoint = False
+
+        if FeatureLinking & features:
+            obj.CollisionAvoidanceStrategy = job.SetupSheet.CollisionAvoidanceStrategy
+            self.applyExpression(obj, "CollisionClearance", "OpToolDiameter")
 
         self.opSetDefaultValues(obj, job)
         return job
@@ -712,18 +782,22 @@ class ObjectOp(object):
 
         self.opUpdateDepths(obj)
 
-    def sanitizeBase(self, obj):
-        """sanitizeBase(obj) ... check if Base is valid and clear on errors."""
+    def checkBase(self, obj):
+        """checkBase(obj) ... check if Base is valid."""
         if hasattr(obj, "Base"):
             try:
                 for o, sublist in obj.Base:
                     for sub in sublist:
                         o.Shape.getElement(sub)
-            except Part.OCCError:
-                Path.Log.error("{} - stale base geometry detected - clearing.".format(obj.Label))
-                obj.Base = []
-                return True
-        return False
+            except Exception:
+                Path.Log.error(
+                    "%s - stale base geometry detected - %s, %s" % (obj.Label, o.Label, sub)
+                )
+                self.isBaseValid = False
+                return False
+
+        self.isBaseValid = True
+        return True
 
     @waiting_effects
     def execute(self, obj):
@@ -748,6 +822,10 @@ class ObjectOp(object):
         """
         Path.Log.track()
 
+        job = getattr(self, "job", None) or PathUtils.findParentJob(obj)
+        if job and "freezed" in job.getStatusString().casefold():
+            return
+
         if not obj.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
@@ -756,8 +834,10 @@ class ObjectOp(object):
         if not self._setBaseAndStock(obj):
             return
 
-        # make sure Base is still valid or clear it
-        self.sanitizeBase(obj)
+        # make sure Base is still valid
+        if not self.checkBase(obj):
+            obj.Path = Path.Path()
+            raise Exception("Base geometry error!")
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController
@@ -803,7 +883,50 @@ class ObjectOp(object):
             # Let's finish by rapid to clearance...just for safety
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
+        # Add block delete annotations if enabled
+        if hasattr(obj, "BlockDelete") and obj.BlockDelete:
+            for command in self.commandlist:
+                annotations = command.Annotations
+                annotations["BlockDelete"] = True
+                command.Annotations = annotations
+
+        # Add handling of coolant commands.
+        # if the coolant mode is not None, add the command to turn it on right before the first non-rapid
+        # move in the command list.
+        # Add the command to turn it off right after the last non-rapid move in the command list.
+        if hasattr(obj, "CoolantMode") and obj.CoolantMode != "None":
+            # Find the first and last cutting moves (includes G1, G2, G3, and canned drill cycles)
+            # Use Path.Geom.CmdMove which includes: G1, G2, G3, G73, G81, G82, G83, G85
+            first_feed_index = None
+            last_feed_index = None
+
+            for i, cmd in enumerate(self.commandlist):
+                if cmd.Name in Path.Geom.CmdMove:
+                    if first_feed_index is None:
+                        first_feed_index = i
+                    last_feed_index = i
+
+            # Insert coolant commands if we found cutting moves
+            if first_feed_index is not None:
+                # Insert coolant on command before first cutting move
+                if obj.CoolantMode == "Flood":
+                    coolant_on = Path.Command("M8", {})
+                elif obj.CoolantMode == "Mist":
+                    coolant_on = Path.Command("M7", {})
+                else:
+                    coolant_on = None
+
+                if coolant_on:
+                    self.commandlist.insert(first_feed_index, coolant_on)
+                    # Adjust last_feed_index since we inserted a command
+                    last_feed_index += 1
+
+                    # Insert coolant off command after last cutting move
+                    coolant_off = Path.Command("M9", {})
+                    self.commandlist.insert(last_feed_index + 1, coolant_off)
+
         path = Path.Path(self.commandlist)
+
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()
@@ -1100,3 +1223,10 @@ def getCycleTimeEstimate(obj):
     cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
 
     return cycleTime
+
+
+def SetupPropertiesLinking():
+    setup = []
+    setup.append("CollisionAvoidanceStrategy")
+    setup.append("CollisionClearance")
+    return setup

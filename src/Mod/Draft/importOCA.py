@@ -14,6 +14,7 @@ See: https://groups.google.com/forum/#!forum/open_cad_format
 As of 2019 this file format is practically obsolete, and this module is not
 maintained.
 """
+
 # Check code with
 # flake8 --ignore=E226,E266,E401,W503
 

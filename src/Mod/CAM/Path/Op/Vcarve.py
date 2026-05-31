@@ -130,8 +130,8 @@ def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
 
     result = []
     while begin:
-        (bIdx, bLen) = closestTo(start, begin)
-        (eIdx, eLen) = closestTo(start, end)
+        bIdx, bLen = closestTo(start, begin)
+        eIdx, eLen = closestTo(start, end)
         if bLen < eLen:
             result.append(wires[bIdx])
             start = end[bIdx]
@@ -479,7 +479,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         def is_exterior(vertex, face):
             vector = FreeCAD.Vector(vertex.toPoint(face.BoundBox.ZMin))
-            (u, v) = face.Surface.parameter(vector)
+            u, v = face.Surface.parameter(vector)
             # isPartOfDomain is faster than face.IsInside(...)
             return not face.isPartOfDomain(u, v)
 
@@ -596,47 +596,21 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             edge_list = backtrack_edges + wire
 
             e = edge_list[0]
-            newPosition = e.valueAt(e.FirstParameter)
+            pos = e.valueAt(e.FirstParameter)
 
             hSpeed = obj.ToolController.HorizFeed.Value
             vSpeed = obj.ToolController.VertFeed.Value
 
             # check if we can smart-skip using G0 repositioning which is slow
-            if not canSkipRepositioning(positionHistory, newPosition, obj.Tolerance):
+            if not canSkipRepositioning(positionHistory, pos, obj.Tolerance):
                 path.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
-                path.append(
-                    Path.Command(
-                        "G0",
-                        {
-                            "X": newPosition.x,
-                            "Y": newPosition.y,
-                            "Z": obj.SafeHeight.Value,
-                        },
-                    )
-                )
-
-                path.append(
-                    Path.Command(
-                        "G1",
-                        {
-                            "X": newPosition.x,
-                            "Y": newPosition.y,
-                            "Z": newPosition.z,
-                            "F": vSpeed,
-                        },
-                    )
-                )
+                path.append(Path.Command("G0", {"X": pos.x, "Y": pos.y, "Z": obj.SafeHeight.Value}))
+                path.append(Path.Command("G1", {"X": pos.x, "Y": pos.y, "Z": pos.z, "F": vSpeed}))
             else:  # skip repositioning
                 # technically hSpeed + vSpeed should be properly recalculated into F parameter
                 # as cmdsForEdge does but we either cut max 0.5 mm through stock or backtrack
                 # over already carved edges, so hSpeed will be just fine
-                path.append(
-                    Path.Command(
-                        "G1 X{} Y{} Z{} F{}".format(
-                            newPosition.x, newPosition.y, newPosition.z, hSpeed
-                        )
-                    )
-                )
+                path.append(Path.Command("G1", {"X": pos.x, "Y": pos.y, "Z": pos.z, "F": hSpeed}))
 
             for e in edge_list:
                 path.extend(Path.Geom.cmdsForEdge(e, hSpeed=hSpeed, vSpeed=vSpeed))
@@ -655,6 +629,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             # This is done to avoid adding additional step-down engraving passes when it
             # would make no sense as depth is limited by Maximum Inscribed Circle anyway.
 
+            geom.stepDownPass = 1  # reset pass number
             maximumUsableDepth = geom.stop
 
             if geom.stepDown > 0:

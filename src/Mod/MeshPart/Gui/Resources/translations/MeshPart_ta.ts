@@ -490,8 +490,8 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
-      <translation>செயலில் உள்ள ஆவணம் இல்லை</translation>
+      <source>No Active Document</source>
+      <translation>செயலில் ஆவணம் இல்லை</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>

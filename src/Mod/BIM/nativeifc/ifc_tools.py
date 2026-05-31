@@ -32,6 +32,7 @@ import FreeCAD
 import Arch
 import ArchBuildingPart
 import Draft
+from . import report_missing_ifcopenshell
 
 from draftviewproviders import view_layer
 
@@ -49,17 +50,9 @@ try:
     import ifcopenshell.util.schema
     import ifcopenshell.util.unit
     import ifcopenshell.entity_instance
-except ImportError as e:
-    import FreeCAD
-
-    FreeCAD.Console.PrintError(
-        translate(
-            "BIM",
-            "IfcOpenShell was not found on this system. IFC support is disabled",
-        )
-        + "\n"
-    )
-    raise e
+except ImportError:
+    report_missing_ifcopenshell()
+    raise
 
 from . import ifc_objects
 from . import ifc_viewproviders
@@ -643,7 +636,9 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
         if short and attr not in ("Class", "StepId"):
             continue
         attr_def = next((a for a in attr_defs if a.name() == attr), None)
+        attr_type = str(attr_def.type_of_attribute()).lower() if attr_def else ""
         data_type = ifcopenshell.util.attribute.get_primitive_type(attr_def) if attr_def else None
+        is_logical = "<logical>" in attr_type
         if attr == "Class":
             # main enum property, not saved to file
             if attr not in obj.PropertiesList:
@@ -663,6 +658,18 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
             obj.addProperty("App::PropertyDistance", attr, "IFC")
             if value:
                 setattr(obj, attr, value * (1 / get_scale(ifcfile)))
+        elif data_type == "boolean" or is_logical:
+            if attr not in obj.PropertiesList:
+                obj.addProperty("App::PropertyBool", attr, "IFC", locked=True)
+            if isinstance(value, str):
+                value = value.upper()
+            if value in (None, "", False, 0, "0", "FALSE", ".F.", "UNKNOWN"):
+                value = False
+            elif value in (True, 1, "1", "TRUE", ".T."):
+                value = True
+            else:
+                value = bool(value)
+            setattr(obj, attr, value)
         elif isinstance(value, int):
             if attr not in obj.PropertiesList:
                 obj.addProperty("App::PropertyInteger", attr, "IFC", locked=True)
@@ -673,15 +680,6 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
             if attr not in obj.PropertiesList:
                 obj.addProperty("App::PropertyFloat", attr, "IFC", locked=True)
             setattr(obj, attr, value)
-        elif data_type == "boolean":
-            if attr not in obj.PropertiesList:
-                obj.addProperty("App::PropertyBool", attr, "IFC", locked=True)
-            if not value or value in ["UNKNOWN", "FALSE"]:
-                value = False
-            elif not isinstance(value, bool):
-                print("DEBUG: attempting to set boolean value:", attr, value)
-                value = bool(value)
-            setattr(obj, attr, value)  # will trigger error. TODO: Fix this
         elif isinstance(value, ifcopenshell.entity_instance):
             if links:
                 if attr not in obj.PropertiesList:
@@ -744,8 +742,11 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
                                     classification_name += cref.ReferencedSource.Name + " "
 
                             # Add the Identification if present
-                            if cref.Identification:
-                                classification_name += cref.Identification
+                            ident = getattr(cref, "Identification", None)
+                            if not ident:
+                                ident = getattr(cref, "ItemReference", None)
+                            if ident:
+                                classification_name += ident
 
                             classification_name = classification_name.strip()
                             if classification_name:
@@ -841,8 +842,36 @@ def remove_unused_properties(obj):
                 obj.removeProperty(prop)
 
 
+def _iter_schema_subtypes(declaration):
+    """Yield all descendants of a schema declaration."""
+
+    for subtype in declaration.subtypes():
+        yield subtype
+        yield from _iter_schema_subtypes(subtype)
+
+
+def _inherits_from(declaration, ancestor_name):
+    """Tell if a declaration inherits from a given ancestor."""
+
+    current = declaration
+    while current:
+        if current.name() == ancestor_name:
+            return True
+        current = current.supertype()
+    return False
+
+
+def _get_class_family_root(schema, declaration):
+    """Return the broadest reassignable family root for a declaration."""
+
+    for root_name in ("IfcTypeProduct", "IfcProduct", "IfcGroup"):
+        if _inherits_from(declaration, root_name):
+            return schema.declaration_by_name(root_name)
+    return None
+
+
 def get_ifc_classes(obj, baseclass):
-    """Returns a list of sibling classes from a given FreeCAD object"""
+    """Returns the active-schema IFC classes that can reclassify this object."""
 
     # this function can become pure IFC
 
@@ -854,7 +883,15 @@ def get_ifc_classes(obj, baseclass):
     classes = []
     schema = ifcfile.wrapped_data.schema_name()
     schema = ifcopenshell.ifcopenshell_wrapper.schema_by_name(schema)
-    declaration = schema.declaration_by_name(baseclass)
+    try:
+        declaration = schema.declaration_by_name(baseclass)
+    except RuntimeError:
+        return [baseclass]
+    family_root = _get_class_family_root(schema, declaration)
+    if family_root:
+        classes = {sub.name() for sub in _iter_schema_subtypes(family_root)}
+        classes.add(baseclass)
+        return sorted(classes)
     if "StandardCase" in baseclass:
         declaration = declaration.supertype()
     if declaration.supertype():

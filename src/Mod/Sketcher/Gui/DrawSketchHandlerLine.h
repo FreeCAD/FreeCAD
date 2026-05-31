@@ -131,11 +131,11 @@ private:
         try {
             createShape(false);
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -144,7 +144,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add line")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -791,8 +791,10 @@ void DSHLineController::addConstraints()
                 constraintp4DistanceY();
             }
         }
-        else if (handler->constructionMethod()
-                 == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle) {
+        else if (
+            handler->constructionMethod()
+            == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle
+        ) {
             if (p3set) {
                 constraintp3length();
             }
@@ -853,8 +855,10 @@ void DSHLineController::addConstraints()
                 constraintp4DistanceY();
             }
         }
-        else if (handler->constructionMethod()
-                 == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle) {
+        else if (
+            handler->constructionMethod()
+            == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle
+        ) {
 
             int DoFs = startpointinfo.getDoFs();
             DoFs += endpointinfo.getDoFs();

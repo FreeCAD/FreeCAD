@@ -161,14 +161,29 @@ Sketcher::SketchObject* getSketchObject()
 bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
     std::vector<int> listOfGeoId = getListOfSelectedGeoIds(true);
     if (listOfGeoId.empty()) { return false; }
-    sort(listOfGeoId.begin(), listOfGeoId.end());
 
-    //Export selected geometries as a formatted string.
+    // If a group handle is selected, ensure all its grouped geometries are copied too.
+    std::vector<int> groupMembersToAdd;
+    for (auto geoId : listOfGeoId) {
+        if (obj->isGroupHandle(geoId)) {
+            std::set<int> groupIds = obj->getGroupGeometries(geoId);
+            for (auto id : groupIds) {
+                groupMembersToAdd.push_back(id);
+            }
+        }
+    }
+    listOfGeoId.insert(listOfGeoId.end(), groupMembersToAdd.begin(), groupMembersToAdd.end());
+
+    // Sort and remove duplicates to avoid double-copying geometries
+    std::sort(listOfGeoId.begin(), listOfGeoId.end());
+    listOfGeoId.erase(std::unique(listOfGeoId.begin(), listOfGeoId.end()), listOfGeoId.end());
+
     std::vector<Part::Geometry*> shapeGeometry;
     for (auto geoId : listOfGeoId) {
         Part::Geometry* geoNew = obj->getGeometry(geoId)->copy();
         shapeGeometry.push_back(geoNew);
     }
+
     std::string geosAsStr = Sketcher::PythonConverter::convert(
         "objectStr",
         shapeGeometry,
@@ -184,22 +199,29 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
                 || value == GeoEnum::VAxis || value == GeoEnum::HAxis;
         };
 
-        if (!isSelectedGeoOrAxis(listOfGeoId, constr->First)
-            || !isSelectedGeoOrAxis(listOfGeoId, constr->Second)
-            || !isSelectedGeoOrAxis(listOfGeoId, constr->Third)) {
+        bool skip = false;
+        for (int i = 0; constr->hasElement(i); ++i) {
+            if (!isSelectedGeoOrAxis(listOfGeoId, constr->getGeoId(i))) {
+                skip = true;
+                break;
+            }
+            if (constr->Type == Group || constr->Type == Text) {
+                // Note for groups, all geoIds of the group have been added.
+                // So no point in checking them all, we only check the handle (i=0)
+                break;
+            }
+        }
+        if (skip) {
             continue;
         }
 
         Constraint* temp = constr->copy();
         for (size_t j = 0; j < listOfGeoId.size(); j++) {
-            if (temp->First == listOfGeoId[j]) {
-                temp->First = j;
-            }
-            if (temp->Second == listOfGeoId[j]) {
-                temp->Second = j;
-            }
-            if (temp->Third == listOfGeoId[j]) {
-                temp->Third = j;
+            for (int i = 0; temp->hasElement(i); ++i) {
+                int geoid = temp->getGeoId(i);
+                if (geoid != GeoEnum::GeoUndef && geoid == listOfGeoId[j]) {
+                    temp->setGeoId(i, j);
+                }
             }
         }
         shapeConstraints.push_back(temp);
@@ -273,9 +295,9 @@ void CmdSketcherCut::activated(int iMsg)
         ReleaseHandler(doc);
         auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cut in Sketcher"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Cut in Sketcher"));
         vp->deleteSelected();
-        Gui::Command::commitCommand();
+        commitCommand();
     }
 }
 
@@ -318,14 +340,14 @@ void CmdSketcherPaste::activated(int iMsg)
     }
     data = "objectStr = " + Gui::Command::getObjectCmd(obj) +"\n" + data;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Paste in Sketcher"));
+   openCommand(QT_TRANSLATE_NOOP("Command", "Paste in Sketcher"));
 
     Gui::Command::doCommand(Gui::Command::Doc, data.c_str());
 
     obj->solve(true);
     vp->draw(false, false);
 
-    Gui::Command::commitCommand();
+    commitCommand();
 }
 
 bool CmdSketcherPaste::isActive()
@@ -1065,7 +1087,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
         int currentgeoid = Obj->getHighestCurveIndex();
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Exposing Internal Geometry"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Exposing Internal Geometry"));
             Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
 
             int aftergeoid = Obj->getHighestCurveIndex();
@@ -1077,14 +1099,14 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
         catch (const Base::Exception& e) {
             Gui::NotifyUserError(
                 Obj, QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"), e.what());
-            Gui::Command::abortCommand();
+            abortCommand();
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(Obj));
 
             return;
         }
 
-        Gui::Command::commitCommand();
+        commitCommand();
         tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(Obj));
     }
 }
@@ -1186,7 +1208,7 @@ static const char* cursor_createcopy[] = {"32 32 3 1",
 class DrawSketchHandlerCopy: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerCopy(string geoidlist, int origingeoid, Sketcher::PointPos originpos,
+    DrawSketchHandlerCopy(App::Document* doc, string geoidlist, int origingeoid, Sketcher::PointPos originpos,
                           int nelements, SketcherCopy::Op op)
         : Mode(STATUS_SEEK_First)
         , snapMode(SnapMode::Free)
@@ -1197,6 +1219,7 @@ public:
         , nElements(nelements)
         , Op(op)
         , EditCurve(2)
+        , doc(doc)
     {}
 
     ~DrawSketchHandlerCopy() override
@@ -1267,7 +1290,7 @@ public:
             unsetCursor();
             resetPositionText();
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Copy/clone/move geometry"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Copy/clone/move geometry"));
 
             try {
                 if (Op != SketcherCopy::Move) {
@@ -1285,12 +1308,12 @@ public:
                                           vector.x,
                                           vector.y);
                 }
-                Gui::Command::commitCommand();
+                commitCommand();
             }
             catch (const Base::Exception& e) {
                 Gui::NotifyUserError(
                     sketchgui->getObject(), QT_TRANSLATE_NOOP("Notifications", "Error"), e.what());
-                Gui::Command::abortCommand();
+                abortCommand();
             }
 
             tryAutoRecomputeIfNotSolve(
@@ -1324,6 +1347,7 @@ protected:
     SketcherCopy::Op Op;
     std::vector<Base::Vector2d> EditCurve;
     std::vector<AutoConstraint> sugConstr1;
+    App::Document* doc;
 };
 
 /*---- SketcherCopy definition ----*/
@@ -1453,9 +1477,9 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     return;
     }
 */
-
-    ActivateHandler(getActiveGuiDocument(),
-                    std::make_unique<DrawSketchHandlerCopy>(geoIdList, LastGeoId, LastPointPos, geoids, op));
+    Gui::Document* guidoc = getActiveGuiDocument();
+    ActivateHandler(guidoc,
+                    std::make_unique<DrawSketchHandlerCopy>(guidoc->getDocument(), geoIdList, LastGeoId, LastPointPos, geoids, op));
 }
 
 
@@ -1851,7 +1875,7 @@ public:
             unsetCursor();
             resetPositionText();
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create copy of geometry"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Create copy of geometry"));
 
             try {
                 Gui::cmdAppObjectArgs(
@@ -1865,12 +1889,12 @@ public:
                     Rows,
                     (ConstraintSeparation ? "True" : "False"),
                     (EqualVerticalHorizontalSpacing ? 1.0 : 0.5));
-                Gui::Command::commitCommand();
+                commitCommand();
             }
             catch (const Base::Exception& e) {
                 Gui::NotifyUserError(
                     sketchgui, QT_TRANSLATE_NOOP("Notifications", "Error"), e.what());
-                Gui::Command::abortCommand();
+                abortCommand();
             }
 
             // add auto constraints for the destination copy
@@ -2101,14 +2125,14 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
         Sketcher::SketchObject* Obj = getSketchObject();
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete all geometry"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Delete all geometry"));
             Gui::cmdAppObjectArgs(Obj, "deleteAllGeometry()");
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             Gui::NotifyUserError(
                 Obj, QT_TRANSLATE_NOOP("Notifications", "Failed to delete all geometry"), e.what());
-            Gui::Command::abortCommand();
+            abortCommand();
         }
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -2165,16 +2189,16 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
         Sketcher::SketchObject* Obj = getSketchObject();
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete all constraints"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Delete all constraints"));
             Gui::cmdAppObjectArgs(Obj, "deleteAllConstraints()");
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             Gui::NotifyUserError(
                 Obj,
                 QT_TRANSLATE_NOOP("Notifications", "Failed to delete all constraints"),
                 e.what());
-            Gui::Command::abortCommand();
+            abortCommand();
         }
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -2299,15 +2323,15 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
     geoIdList.insert(0, 1, '[');
     geoIdList.append(1, ']');
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove Axes Alignment"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Remove Axes Alignment"));
 
     try {
         Gui::cmdAppObjectArgs(Obj, "removeAxesAlignment(%s)", geoIdList.c_str());
-        Gui::Command::commitCommand();
+        commitCommand();
     }
     catch (const Base::Exception& e) {
         Gui::NotifyUserError(Obj, QT_TRANSLATE_NOOP("Notifications", "Error"), e.what());
-        Gui::Command::abortCommand();
+        abortCommand();
     }
 
     tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject*>(Obj));

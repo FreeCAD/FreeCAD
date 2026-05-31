@@ -489,8 +489,8 @@ Luach sa raon 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
-      <translation>Gan aon doiciméad gníomhach</translation>
+      <source>No Active Document</source>
+      <translation>Gan Doiciméad Gníomhach</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>

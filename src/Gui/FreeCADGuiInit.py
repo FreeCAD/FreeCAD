@@ -430,10 +430,8 @@ def GeneratePackageIcon(
         return
     absolute_filename = Path(subdirectory) / Path(relative_filename)
     if hasattr(wb_handle, "Icon") and wb_handle.Icon:
-        Log(
-            f"Init:      Packaged workbench {workbench_metadata.Name} specified icon\
-            in class {workbench_metadata.Classname}"
-        )
+        Log(f"Init:      Packaged workbench {workbench_metadata.Name} specified icon\
+            in class {workbench_metadata.Classname}")
         Log(" ... replacing with icon from package.xml data.\n")
     wb_handle.__dict__["Icon"] = str(absolute_filename.resolve())
 
@@ -456,7 +454,7 @@ FreeCAD.addImportType("Inventor V2.1 (*.iv *.IV)", "FreeCADGui")
 FreeCAD.addImportType(
     "VRML V2.0 (*.wrl *.WRL *.vrml *.VRML *.wrz *.WRZ *.wrl.gz *.WRL.GZ)", "FreeCADGui"
 )
-FreeCAD.addImportType("Python (*.py *.FCMacro *.FCScript *.fcmacro *.fcscript)", "FreeCADGui")
+FreeCAD.addImportType("Python (*.py *.FCMacro *.fcmacro *.FCScript *.fcscript)", "FreeCADGui")
 FreeCAD.addExportType("Inventor V2.1 (*.iv)", "FreeCADGui")
 FreeCAD.addExportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)", "FreeCADGui")
 FreeCAD.addExportType("X3D Extensible 3D (*.x3d *.x3dz)", "FreeCADGui")

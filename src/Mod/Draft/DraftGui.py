@@ -71,8 +71,10 @@ class DraftBaseWidget(QtWidgets.QWidget):
         super().__init__(parent)
 
     def eventFilter(self, widget, event):
-        if event.type() == QtCore.QEvent.KeyPress and event.text().upper() in _get_incmd_shortcut(
-            "CycleSnap"
+        if (
+            event.type() == QtCore.QEvent.KeyPress
+            and event.text()
+            and event.text()[0].upper() in _get_incmd_shortcut("CycleSnap")
         ):
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.cycleSnapObject()
