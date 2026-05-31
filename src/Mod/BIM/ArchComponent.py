@@ -2426,7 +2426,7 @@ class ComponentTaskPanel:
         ]
         self.psetdefs = {}
         psetspath = os.path.join(
-            FreeCAD.getResourceDir(), "Mod", "Arch", "Presets", "pset_definitions.csv"
+            FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "pset_definitions.csv"
         )
         if os.path.exists(psetspath):
             with open(psetspath, "r") as csvfile:
