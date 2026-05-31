@@ -207,12 +207,25 @@ public:
         updateUi();
     }
 
+    void setForcedBusy(bool busy, QString statusText = {})
+    {
+        if (forcedBusy == busy && forcedBusyStatusText == statusText) {
+            return;
+        }
+
+        forcedBusy = busy;
+        forcedBusyStatusText = std::move(statusText);
+        updateUi();
+    }
+
     void updateUi()
     {
         updateProgressUiVisibility();
         updateAsyncPreviewWidgets(
             previewController.get(),
             deferredClosePending,
+            forcedBusy,
+            forcedBusyStatusText,
             progressUiVisible,
             previewWidgets,
             translateCallback ? translateCallback : defaultTranslate
@@ -222,6 +235,14 @@ public:
 private:
     void updateProgressUiVisibility()
     {
+        if (forcedBusy) {
+            progressUiVisible = true;
+            if (progressUiDelayTimer) {
+                progressUiDelayTimer->stop();
+            }
+            return;
+        }
+
         const bool inProgress = previewController && previewController->isInProgress();
         const bool forceVisible = inProgress
             && (deferredClosePending || previewController->isCancelRequested()
@@ -266,6 +287,8 @@ private:
     std::function<QString(const char*)> translateCallback;
     QWidget* deferredCloseTarget = nullptr;
     bool deferredClosePending = false;
+    bool forcedBusy = false;
+    QString forcedBusyStatusText;
     std::unique_ptr<QTimer> progressUiDelayTimer;
     int progressUiDelayMs = DefaultProgressUiDelayMs;
     bool progressUiVisible = false;

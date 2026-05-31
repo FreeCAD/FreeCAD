@@ -11,11 +11,14 @@
 #include <thread>
 #include <vector>
 
+#include <QApplication>
 #include <QComboBox>
 #include <QCoreApplication>
 #include <QDialogButtonBox>
+#include <QLabel>
 #include <QListWidget>
 #include <QPointer>
+#include <QProgressDialog>
 #include <QPushButton>
 #include <QTest>
 #include <QTimer>
@@ -766,10 +769,39 @@ private Q_SLOTS:
         QVERIFY(taskBox->hasOutstandingRecompute());
 
         int timerTicksWhileAccepting = 0;
+        bool sawModalProgressDialog = false;
+        bool sawInlineAcceptStatus = false;
+        bool sawDisabledDialogButtons = false;
         QTimer responsivenessTimer;
+        QPointer<QWidget> taskBoxGuard(taskBox);
         responsivenessTimer.setInterval(10);
-        connect(&responsivenessTimer, &QTimer::timeout, [&timerTicksWhileAccepting]() {
+        connect(&responsivenessTimer, &QTimer::timeout, [&]() {
             ++timerTicksWhileAccepting;
+
+            for (auto* widget : QApplication::topLevelWidgets()) {
+                if (qobject_cast<QProgressDialog*>(widget) && widget->isVisible()) {
+                    sawModalProgressDialog = true;
+                }
+            }
+
+            if (taskBoxGuard) {
+                auto* statusLabel = taskBoxGuard->findChild<QLabel*>(
+                    QStringLiteral("labelPreviewStatus")
+                );
+                auto* statusWidget = taskBoxGuard->findChild<QWidget*>(
+                    QStringLiteral("previewStatusWidget")
+                );
+                if (statusLabel && statusWidget && !statusLabel->isHidden()
+                    && !statusWidget->isHidden()
+                    && statusLabel->text().contains(QStringLiteral("Applying changes"))) {
+                    sawInlineAcceptStatus = true;
+                }
+            }
+
+            auto* activeButtonBox = findActiveDialogButtonBox();
+            if (activeButtonBox && !activeButtonBox->isEnabled()) {
+                sawDisabledDialogButtons = true;
+            }
         });
         responsivenessTimer.start();
         QCoreApplication::processEvents();
@@ -790,6 +822,12 @@ private Q_SLOTS:
         QVERIFY2(
             timerTicksWhileAccepting > 0,
             "accept should keep the GUI event loop responsive while the final recompute settles"
+        );
+        QVERIFY2(!sawModalProgressDialog, "transformed accept should use the inline task-panel status instead of a modal progress dialog");
+        QVERIFY2(sawInlineAcceptStatus, "transformed accept should show inline task-panel feedback while final recompute settles");
+        QVERIFY2(
+            sawDisabledDialogButtons,
+            "transformed accept should disable task dialog buttons until final recompute settles"
         );
         QCOMPARE(pattern->Angle.getValue(), acceptedAngle);
         QCOMPARE(getBlockingTransformedTotalExecutionCount(), 2);

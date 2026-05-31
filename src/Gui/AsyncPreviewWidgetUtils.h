@@ -193,6 +193,8 @@ template<typename TranslateFn>
 void updateAsyncPreviewWidgets(
     const AsyncPreviewController* controller,
     bool deferredClosePending,
+    bool forcedBusy,
+    const QString& forcedBusyStatusText,
     bool showProgressUi,
     const AsyncPreviewWidgetSet& widgets,
     TranslateFn&& translate
@@ -207,7 +209,9 @@ void updateAsyncPreviewWidgets(
         widgets.statusWidget->findChild<QWidget*>(QStringLiteral("fcAsyncPreviewSpinner"))
     );
 
-    if (!controller || !controller->isInProgress()) {
+    widgets.cancelButton->setVisible(!forcedBusy);
+
+    if (!forcedBusy && (!controller || !controller->isInProgress())) {
         if (spinner) {
             spinner->setAnimated(false);
             spinner->hide();
@@ -215,6 +219,22 @@ void updateAsyncPreviewWidgets(
         widgets.statusWidget->hide();
         widgets.progressBar->hide();
         widgets.statusLabel->hide();
+        return;
+    }
+
+    if (forcedBusy) {
+        widgets.statusWidget->show();
+        if (spinner) {
+            spinner->show();
+            spinner->setAnimated(true);
+        }
+        widgets.statusLabel->show();
+        widgets.progressBar->hide();
+
+        const QString status = forcedBusyStatusText.isEmpty() ? translate("Applying changes…")
+                                                              : forcedBusyStatusText;
+        widgets.statusLabel->setText(status);
+        widgets.statusLabel->setToolTip(status);
         return;
     }
 

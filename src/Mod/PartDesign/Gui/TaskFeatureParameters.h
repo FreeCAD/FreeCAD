@@ -47,12 +47,21 @@ class Document;
 class DocumentObject;
 }  // namespace App
 
+namespace Gui
+{
+struct AsyncRecomputeDialogOptions;
+}
+
 namespace PartDesignGui
 {
 
 using AsyncPreviewController = Gui::AsyncPreviewController;
 
 bool runAsyncAcceptDocumentRecompute(App::Document* document);
+bool runAsyncAcceptDocumentRecompute(
+    App::Document* document,
+    const Gui::AsyncRecomputeDialogOptions& options
+);
 
 class Ui_TaskPreviewParameters;
 

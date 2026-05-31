@@ -107,6 +107,7 @@ public:
     bool hasOutstandingRecompute() const;
     bool canReuseAcceptedPreviewResult() const;
     void setDeferredClosePending(bool pending);
+    void setAcceptedRecomputePending(bool pending);
     /// Recompute either this feature or the parent MultiTransform feature
     void recomputeFeature();
     bool isUpdateBlocked() const

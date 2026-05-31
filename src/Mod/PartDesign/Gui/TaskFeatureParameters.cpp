@@ -279,6 +279,14 @@ void TaskDlgFeatureParameters::clearDeferredRejectHandlers()
 
 bool PartDesignGui::runAsyncAcceptDocumentRecompute(App::Document* document)
 {
+    return runAsyncAcceptDocumentRecompute(document, acceptedFeatureRecomputeDialogOptions());
+}
+
+bool PartDesignGui::runAsyncAcceptDocumentRecompute(
+    App::Document* document,
+    const Gui::AsyncRecomputeDialogOptions& options
+)
+{
     if (!document) {
         throw Base::RuntimeError("Feature document is not available.");
     }
@@ -289,7 +297,7 @@ bool PartDesignGui::runAsyncAcceptDocumentRecompute(App::Document* document)
         QApplication::translate("PartDesignGui::TaskDlgFeatureParameters", "Applying changes..."),
         document,
         /*force=*/false,
-        acceptedFeatureRecomputeDialogOptions(),
+        options,
         [document]() {
             if (document) {
                 document->recompute();
