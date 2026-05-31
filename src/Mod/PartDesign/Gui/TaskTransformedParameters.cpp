@@ -927,11 +927,10 @@ bool TaskDlgTransformedParameters::accept()
         prepareAcceptedFeatureForDocumentRecompute(feature, isUpdateBlocked, pendingRecomputeAction);
         auto progressTarget
             = parameter->makeAcceptedRecomputeProgressTarget(buttonBox, tr("Applying changes..."));
-        const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(std::move(progressTarget));
         if (!runAcceptedFeatureRecompute(
                 document,
                 acceptRecomputeMode(isUpdateBlocked, pendingRecomputeAction),
-                inlineProgress.isActive()
+                progressTarget
             )) {
             return false;
         }

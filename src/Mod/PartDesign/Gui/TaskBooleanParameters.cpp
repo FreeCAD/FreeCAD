@@ -529,12 +529,11 @@ bool TaskDlgBooleanParameters::accept()
 
         auto progressTarget
             = parameter->makeAcceptedRecomputeProgressTarget(buttonBox, tr("Applying changes..."));
-        const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(std::move(progressTarget));
         Gui::AsyncRecomputeDialogOptions options;
         options.cancelable = false;
         options.dynamicLabel = false;
         options.forceIndeterminate = true;
-        options.showDialog = !inlineProgress.isActive();
+        options.inlineProgressTarget = progressTarget;
         if (!runAsyncAcceptDocumentRecompute(document, options)) {
             return false;
         }

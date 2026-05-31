@@ -44,6 +44,7 @@ namespace Gui
 class ButtonGroup;
 class ViewProvider;
 class AsyncPreviewSession;
+struct AsyncInlineRecomputeProgressTarget;
 }  // namespace Gui
 
 namespace PartDesignGui
@@ -111,7 +112,8 @@ public:
     );
     ~TaskPipeParameters() override;
 
-    bool accept(bool previewSettled = true, bool hasInlineProgress = false);
+    bool accept(bool previewSettled = true);
+    bool accept(bool previewSettled, const Gui::AsyncInlineRecomputeProgressTarget& inlineProgressTarget);
     void flushPendingRecompute() override;
     void stopPendingRecompute() override;
     void runImmediateRecompute();

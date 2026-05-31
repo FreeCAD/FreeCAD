@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <algorithm>
+
 #include <QBoxLayout>
 #include <QLabel>
 #include <QPainter>

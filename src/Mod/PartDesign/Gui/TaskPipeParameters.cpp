@@ -574,7 +574,15 @@ void TaskPipeParameters::setVisibilityOfSpineAndProfile()
     }
 }
 
-bool TaskPipeParameters::accept(bool previewSettled, bool hasInlineProgress)
+bool TaskPipeParameters::accept(bool previewSettled)
+{
+    return accept(previewSettled, Gui::AsyncInlineRecomputeProgressTarget {});
+}
+
+bool TaskPipeParameters::accept(
+    bool previewSettled,
+    const Gui::AsyncInlineRecomputeProgressTarget& inlineProgressTarget
+)
 {
     // see what to do with external references
     // check the prerequisites for the selected objects
@@ -702,7 +710,7 @@ bool TaskPipeParameters::accept(bool previewSettled, bool hasInlineProgress)
         options.cancelable = false;
         options.dynamicLabel = false;
         options.forceIndeterminate = true;
-        options.showDialog = !hasInlineProgress;
+        options.inlineProgressTarget = inlineProgressTarget;
         if (!runAsyncAcceptDocumentRecompute(pipe->getDocument(), options)) {
             return false;
         }
@@ -1468,8 +1476,7 @@ bool TaskDlgPipeParameters::accept()
     }
     auto progressTarget
         = parameter->makeAcceptedRecomputeProgressTarget(buttonBox, tr("Applying changes..."));
-    const Gui::ScopedAsyncInlineRecomputeProgress inlineProgress(std::move(progressTarget));
-    return parameter->accept(previewSettled, inlineProgress.isActive());
+    return parameter->accept(previewSettled, progressTarget);
 }
 
 bool TaskDlgPipeParameters::reject()
