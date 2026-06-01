@@ -6523,7 +6523,7 @@ Continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="185"/>
       <source>Distance in Parameter Space</source>
-      <translation>Distance dans l'espace des paramètres</translation>
+      <translation>Distance entre les points</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="186"/>
