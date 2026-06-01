@@ -294,7 +294,10 @@ class Edit(gui_base_original.Modifier):
             # https://github.com/FreeCAD/FreeCAD/issues/27308
             QtCore.QTimer.singleShot(300, self.proceed)
         else:
-            self.ui.selectUi(on_close_call=self.finish)
+            self.ui.selectUi(
+                extra=self.create_task_panel_widget("select_object"),
+                on_close_call=self.finish,
+            )
             App.Console.PrintMessage(translate("draft", "Select a Draft object to edit") + "\n")
             self.register_selection_callback()
 
@@ -311,10 +314,14 @@ class Edit(gui_base_original.Modifier):
         Gui.Selection.clearSelection()
         Gui.Snapper.setSelectMode(True)
 
-        self.ui.editUi()
-
+        edit_points_by_obj = []
         for obj in self.edited_objects:
-            self.setTrackers(obj, self.getEditPoints(obj))
+            edit_points_by_obj.append((obj, self.getEditPoints(obj)))
+
+        self.ui.editUi(extra=self.create_task_panel_widget("select_point"))
+
+        for obj, edit_points in edit_points_by_obj:
+            self.setTrackers(obj, edit_points)
 
         App.addDocumentObserver(self)
         self.register_editing_callbacks()
@@ -500,7 +507,13 @@ class Edit(gui_base_original.Modifier):
 
         App.Console.PrintMessage(obj.Name + ": editing node number " + str(node_idx) + "\n")
 
-        self.ui.lineUi(title=translate("draft", "Edit Node"), icon="Draft_Edit")
+        self.ui.lineUi(
+            title=translate("draft", "Edit Node"),
+            extra=self.create_task_panel_widget(
+                "set_position", selected_obj=obj, selected_node=node_idx
+            ),
+            icon="Draft_Edit",
+        )
         self.ui.continueCmd.hide()
         self.editing = node_idx
         self.trackers[obj.Name][node_idx].off()
@@ -538,11 +551,39 @@ class Edit(gui_base_original.Modifier):
             self.trackers[obj.Name][nodeIndex].set(v)
         self.update(obj, nodeIndex, v)
         self.alt_edit_mode = 0
-        self.ui.editUi()
+        self.ui.editUi(extra=self.create_task_panel_widget("select_point"))
         self.node = []
         self.editing = None
         self.showTrackers()
         gui_tool_utils.redraw_3d_view()
+
+    def create_task_panel_widget(self, state, selected_obj=None, selected_node=None):
+        """Create the Draft Edit task panel section for the current state."""
+        widget = QtWidgets.QWidget()
+        widget.setWindowTitle(translate("draft", "Draft Edit"))
+        widget.setWindowIcon(Gui.getIcon(":/icons/Draft_Edit.svg"))
+
+        layout = QtWidgets.QVBoxLayout(widget)
+
+        status_label = QtWidgets.QLabel()
+        status_label.setWordWrap(True)
+        status_label.setText(self.get_task_panel_status(state, selected_obj, selected_node))
+        layout.addWidget(status_label)
+
+        return widget
+
+    def get_task_panel_status(self, state, selected_obj=None, selected_node=None):
+        """Return the status text for the Draft Edit task panel."""
+        if state == "select_object":
+            return translate("draft", "Select an editable object.")
+        if state == "select_point":
+            return translate("draft", "Select a point to edit.")
+        if state == "set_position":
+            return translate(
+                "draft",
+                "Set the position for point {point} of {object}.",
+            ).format(point=selected_node + 1, object=selected_obj.Label)
+        return ""
 
     # -------------------------------------------------------------------------
     # EDIT TRACKERS functions

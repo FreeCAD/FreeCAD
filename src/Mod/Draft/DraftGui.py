@@ -1050,8 +1050,8 @@ class DraftToolBar:
     def selectUi(self, extra=None, on_close_call=None):
         self.makeDumbTask(extra, on_close_call)
 
-    def editUi(self):
-        self.makeDumbTask(on_close_call=self.finish)
+    def editUi(self, extra=None):
+        self.makeDumbTask(extra=extra, on_close_call=self.finish)
 
     def extUi(self):
         if params.get_param("UsePartPrimitives"):
