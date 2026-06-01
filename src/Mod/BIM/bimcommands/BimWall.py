@@ -136,8 +136,9 @@ class Arch_Wall:
         # interactive mode
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
-        self.points = []
         self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
+        self.points = []
         self.tracker = DraftTrackers.boxTracker()
         FreeCADGui.Snapper.getPoint(
             callback=self.getPoint,
@@ -169,6 +170,7 @@ class Arch_Wall:
                 if not obj in self.existing:
                     self.existing.append(obj)
         if point is None:
+            self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             self.tracker.finalize()
@@ -380,12 +382,13 @@ class Arch_Wall:
         """Orchestrate wall creation according to the baseline mode."""
         from draftutils import params
 
-        p0 = self.wp.get_local_coords(self.points[0])
-        p1 = self.wp.get_local_coords(self.points[1])
-
-        self.tracker.off()
+        self.wp._restore()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
+        self.tracker.off()
+
+        p0 = self.wp.get_local_coords(self.points[0])
+        p1 = self.wp.get_local_coords(self.points[1])
 
         self.doc.openTransaction(translate("Arch", "Create Wall"))
 

@@ -118,10 +118,10 @@ private:
     bool setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2);
     bool computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2);
     bool computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2);
-    bool computeOriginFaceEdge(TopoDS_Shape& s1, TopoDS_Shape& s2);
+    bool computeOriginFaceEdge(TopoDS_Shape& s1);
 
-    bool setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2);  // not the actual normals adjusted
-                                                             // for arc visualization
+    bool setDirections(TopoDS_Shape& s1);  // not the actual normals adjusted for arc visualization
+
     void onChanged(const App::Property* prop) override;
 };
 

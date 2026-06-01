@@ -17,27 +17,27 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8956"/>
+      <location filename="../../CommandConstraints.cpp" line="9253"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Toise Ga/Trastomhas</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8957"/>
+      <location filename="../../CommandConstraints.cpp" line="9254"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
       <translation>Srianann sé ga nó trastomhas stua nó ciorcail</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9067"/>
+      <location filename="../../CommandConstraints.cpp" line="9364"/>
       <source>Constrain radius</source>
       <translation>Srian a chur ar an nga</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9073"/>
+      <location filename="../../CommandConstraints.cpp" line="9370"/>
       <source>Constrain diameter</source>
       <translation>Srian a chur ar an trastomhas</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9079"/>
+      <location filename="../../CommandConstraints.cpp" line="9376"/>
       <source>Constrain auto radius/diameter</source>
       <translation>Srian a chur ar gha/trastomhas uathoibríoch</translation>
     </message>
@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="579"/>
+      <location filename="../../Command.cpp" line="651"/>
       <source>Attach Sketch</source>
       <translation>Ceangail Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="580"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Attaches a sketch to the selected geometry element</source>
       <translation>Ceanglaíonn sé sceitse leis an eilimint gheoiméadrach roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="671"/>
+      <location filename="../../Command.cpp" line="743"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Braitheann cuid de na rudaí roghnaithe ar an sceitse atá le mapáil. Ní cheadaítear spleáchais chiorclacha.</translation>
     </message>
@@ -177,35 +177,63 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1003"/>
+      <location filename="../../Command.cpp" line="1160"/>
+      <source>Skipping external geometry #%1
+</source>
+      <translation>Ag scipeáil geoiméadracht sheachtrach #%1
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1203"/>
+      <source>External geometry '%1' is out of scope:
+</source>
+      <translation>Tá geoiméadracht sheachtrach '%1' lasmuigh den raon feidhme:
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1254"/>
       <source>Merge Sketches</source>
       <translation>Cumaisc Sceitsí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1004"/>
+      <location filename="../../Command.cpp" line="1255"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
       <translation>Cruthaíonn sé sceitse nua trí dhá sceitse roghnaithe ar a laghad a chumasc</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1019"/>
+      <location filename="../../Command.cpp" line="1270"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1020"/>
+      <location filename="../../Command.cpp" line="1271"/>
       <source>Select at least 2 sketches</source>
       <translation>Roghnaigh 2 sceitse ar a laghad</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1360"/>
+      <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
+</source>
+      <translation>Cóipeáladh %1 de %2 srianta ó '%3'. Scaipeadh cuid acu.
+</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1376"/>
+      <source>Skipping constraint #%1 of '%2': references unmerged geometry.
+</source>
+      <translation>Srian scipeála #%1 de '%2': tagraíonn sé do gheoiméadracht neamhchumaiscthe.
+</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>Mirror Sketch</source>
       <translation>Sceitse Scátháin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
@@ -214,12 +242,12 @@ trí úsáid a bhaint as na haiseanna X nó Y, nó an pointe tionscnaimh,
 mar thagairt scáthánaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="893"/>
+      <location filename="../../Command.cpp" line="965"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="894"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Select at least 1 sketch</source>
       <translation>Roghnaigh sceitse amháin ar a laghad</translation>
     </message>
@@ -266,24 +294,24 @@ mar thagairt scáthánaithe</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="835"/>
+      <location filename="../../Command.cpp" line="907"/>
       <source>Validate Sketch</source>
       <translation>Bailíochtú Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="836"/>
+      <location filename="../../Command.cpp" line="908"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation>Déanann sé sceitse a bhailíochtú trí sheiceáil le haghaidh comhtharlaíochtaí atá ar iarraidh,
 srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="852"/>
+      <location filename="../../Command.cpp" line="924"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="853"/>
+      <location filename="../../Command.cpp" line="925"/>
       <source>Select only 1 sketch.</source>
       <translation>Roghnaigh sceitse amháin.</translation>
     </message>
@@ -291,399 +319,400 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3779"/>
+      <location filename="../../CommandConstraints.cpp" line="4076"/>
       <source>Add 'Lock' constraint</source>
       <translation>Cuir srian 'Glas' leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3833"/>
+      <location filename="../../CommandConstraints.cpp" line="4130"/>
       <source>Add relative 'Lock' constraint</source>
       <translation>Cuir srian coibhneasta 'Glas' leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3899"/>
+      <location filename="../../CommandConstraints.cpp" line="4196"/>
       <source>Add fixed constraint</source>
       <translation>Cuir srian seasta leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4118"/>
+      <location filename="../../CommandConstraints.cpp" line="4415"/>
       <source>Add block constraint</source>
       <translation>Cuir srian bloc leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4458"/>
-      <location filename="../../CommandConstraints.cpp" line="4641"/>
+      <location filename="../../CommandConstraints.cpp" line="4755"/>
+      <location filename="../../CommandConstraints.cpp" line="4938"/>
       <source>Add coincident constraint</source>
       <translation>Cuir srian comhthráthach leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4877"/>
-      <location filename="../../CommandConstraints.cpp" line="5200"/>
+      <location filename="../../CommandConstraints.cpp" line="5174"/>
+      <location filename="../../CommandConstraints.cpp" line="5497"/>
       <source>Add distance from horizontal axis constraint</source>
       <translation>Cuir srian an achar ón ais chothrománach leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4889"/>
-      <location filename="../../CommandConstraints.cpp" line="5214"/>
+      <location filename="../../CommandConstraints.cpp" line="5186"/>
+      <location filename="../../CommandConstraints.cpp" line="5511"/>
       <source>Add distance from vertical axis constraint</source>
       <translation>Cuir an fad ón srian ais ingearach leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4901"/>
-      <location filename="../../CommandConstraints.cpp" line="5227"/>
+      <location filename="../../CommandConstraints.cpp" line="5198"/>
+      <location filename="../../CommandConstraints.cpp" line="5524"/>
       <source>Add point to point distance constraint</source>
       <translation>Cuir srian achair pointe go pointe leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2255"/>
+      <location filename="../../CommandConstraints.cpp" line="2552"/>
       <source>Add point to line Distance constraint</source>
       <translation>Cuir pointe leis an líne Srian achair</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5025"/>
-      <location filename="../../CommandConstraints.cpp" line="5376"/>
+      <location filename="../../CommandConstraints.cpp" line="5322"/>
+      <location filename="../../CommandConstraints.cpp" line="5673"/>
       <source>Add circle to circle distance constraint</source>
       <translation>Cuir srian achair idir chiorcail leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5068"/>
+      <location filename="../../CommandConstraints.cpp" line="5365"/>
       <source>Add circle to line distance constraint</source>
       <translation>Cuir srian achair ciorcail le líne</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2353"/>
-      <location filename="../../CommandConstraints.cpp" line="2376"/>
-      <location filename="../../CommandConstraints.cpp" line="2444"/>
-      <location filename="../../CommandConstraints.cpp" line="2528"/>
-      <location filename="../../CommandConstraints.cpp" line="5116"/>
-      <location filename="../../CommandConstraints.cpp" line="5143"/>
-      <location filename="../../CommandConstraints.cpp" line="5271"/>
+      <location filename="../../CommandConstraints.cpp" line="2650"/>
+      <location filename="../../CommandConstraints.cpp" line="2673"/>
+      <location filename="../../CommandConstraints.cpp" line="2741"/>
+      <location filename="../../CommandConstraints.cpp" line="2825"/>
+      <location filename="../../CommandConstraints.cpp" line="5413"/>
+      <location filename="../../CommandConstraints.cpp" line="5440"/>
+      <location filename="../../CommandConstraints.cpp" line="5568"/>
       <source>Add length constraint</source>
       <translation>Cuir srian faid leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1757"/>
-      <location filename="../../CommandConstraints.cpp" line="1948"/>
-      <location filename="../../CommandConstraints.cpp" line="3169"/>
+      <location filename="../../CommandConstraints.cpp" line="2054"/>
+      <location filename="../../CommandConstraints.cpp" line="2245"/>
+      <location filename="../../CommandConstraints.cpp" line="3466"/>
       <source>Dimension</source>
       <translation>Toise</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2224"/>
+      <location filename="../../CommandConstraints.cpp" line="2521"/>
       <source>Add lock constraint</source>
       <translation>Cuir srian glasála leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2220"/>
+      <location filename="../../CommandConstraints.cpp" line="2517"/>
       <source>Add 'Distance to origin' constraint</source>
       <translation>Cuir srian 'Fad go dtí an bunús' leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2236"/>
-      <location filename="../../CommandConstraints.cpp" line="2850"/>
-      <location filename="../../CommandConstraints.cpp" line="3087"/>
+      <location filename="../../CommandConstraints.cpp" line="2533"/>
+      <location filename="../../CommandConstraints.cpp" line="3147"/>
+      <location filename="../../CommandConstraints.cpp" line="3384"/>
       <source>Add Distance constraint</source>
       <translation>Cuir srian Fad leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2241"/>
-      <location filename="../../CommandConstraints.cpp" line="2270"/>
-      <location filename="../../CommandConstraints.cpp" line="2304"/>
+      <location filename="../../CommandConstraints.cpp" line="2538"/>
+      <location filename="../../CommandConstraints.cpp" line="2567"/>
+      <location filename="../../CommandConstraints.cpp" line="2601"/>
       <source>Add 'Horizontal' constraints</source>
       <translation>Cuir srianta 'Cothrománacha' leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2245"/>
-      <location filename="../../CommandConstraints.cpp" line="2277"/>
-      <location filename="../../CommandConstraints.cpp" line="2311"/>
+      <location filename="../../CommandConstraints.cpp" line="2542"/>
+      <location filename="../../CommandConstraints.cpp" line="2574"/>
+      <location filename="../../CommandConstraints.cpp" line="2608"/>
       <source>Add 'Vertical' constraints</source>
       <translation>Cuir srianta 'Ingearach' leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2260"/>
-      <location filename="../../CommandConstraints.cpp" line="2323"/>
+      <location filename="../../CommandConstraints.cpp" line="2557"/>
+      <location filename="../../CommandConstraints.cpp" line="2620"/>
       <source>Add Symmetry constraint</source>
       <translation>Cuir srian siméadrachta leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2283"/>
-      <location filename="../../CommandConstraints.cpp" line="2455"/>
+      <location filename="../../CommandConstraints.cpp" line="2580"/>
+      <location filename="../../CommandConstraints.cpp" line="2752"/>
       <source>Add Symmetry constraints</source>
       <translation>Cuir srianta siméadrachta leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2328"/>
-      <location filename="../../CommandConstraints.cpp" line="2340"/>
+      <location filename="../../CommandConstraints.cpp" line="2625"/>
+      <location filename="../../CommandConstraints.cpp" line="2637"/>
       <source>Add Distance constraints</source>
       <translation>Cuir srianta faid leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2386"/>
+      <location filename="../../CommandConstraints.cpp" line="2683"/>
       <source>Add Horizontal constraint</source>
       <translation>Cuir srian cothrománach leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2391"/>
+      <location filename="../../CommandConstraints.cpp" line="2688"/>
       <source>Add Vertical constraint</source>
       <translation>Cuir srian Ingearach leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2395"/>
-      <location filename="../../CommandConstraints.cpp" line="4070"/>
+      <location filename="../../CommandConstraints.cpp" line="2692"/>
+      <location filename="../../CommandConstraints.cpp" line="4367"/>
       <source>Add Block constraint</source>
       <translation>Cuir srian Bloc leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2410"/>
+      <location filename="../../CommandConstraints.cpp" line="2707"/>
       <source>Add Angle constraint</source>
       <translation>Cuir srian uillinne leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2420"/>
-      <location filename="../../CommandConstraints.cpp" line="2543"/>
-      <location filename="../../CommandConstraints.cpp" line="2553"/>
-      <location filename="../../CommandConstraints.cpp" line="2591"/>
+      <location filename="../../CommandConstraints.cpp" line="2717"/>
+      <location filename="../../CommandConstraints.cpp" line="2840"/>
+      <location filename="../../CommandConstraints.cpp" line="2850"/>
+      <location filename="../../CommandConstraints.cpp" line="2888"/>
       <source>Add Equality constraint</source>
       <translation>Cuir srian Comhionannais leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2431"/>
+      <location filename="../../CommandConstraints.cpp" line="2728"/>
       <source>Add Equality constraints</source>
       <translation>Cuir srianta comhionannais leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10545"/>
+      <location filename="../../CommandConstraints.cpp" line="10877"/>
       <source>Add Group constraint</source>
       <translation>Cuir srian Grúpa leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10969"/>
+      <location filename="../../CommandConstraints.cpp" line="11301"/>
       <source>Activate/Deactivate constraints</source>
       <translation>Srianta a ghníomhachtú/a dhíghníomhachtú</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2479"/>
-      <location filename="../../CommandConstraints.cpp" line="2512"/>
+      <location filename="../../CommandConstraints.cpp" line="2776"/>
+      <location filename="../../CommandConstraints.cpp" line="2809"/>
       <source>Add arc angle constraint</source>
       <translation>Cuir srian uillinn stua leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2533"/>
+      <location filename="../../CommandConstraints.cpp" line="2830"/>
       <source>Add concentric and length constraint</source>
       <translation>Cuir srianta comhlárnacha agus faid leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3067"/>
+      <location filename="../../CommandConstraints.cpp" line="3364"/>
       <source>Add DistanceX constraint</source>
       <translation>Cuir srian DistanceX leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3077"/>
+      <location filename="../../CommandConstraints.cpp" line="3374"/>
       <source>Add DistanceY constraint</source>
       <translation>Cuir srian DistanceY leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4378"/>
-      <location filename="../../CommandConstraints.cpp" line="4557"/>
+      <location filename="../../CommandConstraints.cpp" line="4675"/>
+      <location filename="../../CommandConstraints.cpp" line="4854"/>
       <source>Add point on object constraint</source>
       <translation>Cuir pointe leis an srian réada</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2484"/>
-      <location filename="../../CommandConstraints.cpp" line="2516"/>
+      <location filename="../../CommandConstraints.cpp" line="2781"/>
+      <location filename="../../CommandConstraints.cpp" line="2813"/>
       <source>Add arc length constraint</source>
       <translation>Cuir srian fad stua leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4944"/>
-      <location filename="../../CommandConstraints.cpp" line="5321"/>
+      <location filename="../../CommandConstraints.cpp" line="5241"/>
+      <location filename="../../CommandConstraints.cpp" line="5618"/>
       <source>Add point to line distance constraint</source>
       <translation>Cuir srian achair pointe go líne leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4974"/>
+      <location filename="../../CommandConstraints.cpp" line="5271"/>
       <source>Add point to circle distance constraint</source>
       <translation>Cuir pointe le srian achair chiorcail</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5562"/>
-      <location filename="../../CommandConstraints.cpp" line="5688"/>
+      <location filename="../../CommandConstraints.cpp" line="5859"/>
+      <location filename="../../CommandConstraints.cpp" line="5985"/>
       <source>Add point to point horizontal distance constraint</source>
       <translation>Cuir srian achair chothrománach pointe go pointe leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5603"/>
+      <location filename="../../CommandConstraints.cpp" line="5900"/>
       <source>Add fixed x-coordinate constraint</source>
       <translation>Cuir srian comhordanáide x seasta leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5862"/>
-      <location filename="../../CommandConstraints.cpp" line="5984"/>
+      <location filename="../../CommandConstraints.cpp" line="6159"/>
+      <location filename="../../CommandConstraints.cpp" line="6281"/>
       <source>Add point to point vertical distance constraint</source>
       <translation>Cuir srian achair ingearach pointe go pointe leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5900"/>
+      <location filename="../../CommandConstraints.cpp" line="6197"/>
       <source>Add fixed y-coordinate constraint</source>
       <translation>Cuir srian comhordanáide y seasta leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6132"/>
-      <location filename="../../CommandConstraints.cpp" line="6176"/>
+      <location filename="../../CommandConstraints.cpp" line="6429"/>
+      <location filename="../../CommandConstraints.cpp" line="6473"/>
       <source>Add parallel constraint</source>
       <translation>Cuir srian comhthreomhar leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6297"/>
-      <location filename="../../CommandConstraints.cpp" line="6335"/>
-      <location filename="../../CommandConstraints.cpp" line="6436"/>
-      <location filename="../../CommandConstraints.cpp" line="6600"/>
-      <location filename="../../CommandConstraints.cpp" line="6650"/>
-      <location filename="../../CommandConstraints.cpp" line="6799"/>
-      <location filename="../../CommandConstraints.cpp" line="6848"/>
-      <location filename="../../CommandConstraints.cpp" line="6904"/>
+      <location filename="../../CommandConstraints.cpp" line="6594"/>
+      <location filename="../../CommandConstraints.cpp" line="6632"/>
+      <location filename="../../CommandConstraints.cpp" line="6733"/>
+      <location filename="../../CommandConstraints.cpp" line="6897"/>
+      <location filename="../../CommandConstraints.cpp" line="6947"/>
+      <location filename="../../CommandConstraints.cpp" line="7096"/>
+      <location filename="../../CommandConstraints.cpp" line="7145"/>
+      <location filename="../../CommandConstraints.cpp" line="7201"/>
       <source>Add perpendicular constraint</source>
       <translation>Cuir srian ingearach leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6475"/>
+      <location filename="../../CommandConstraints.cpp" line="6772"/>
       <source>Add perpendicularity constraint</source>
       <translation>Cuir srian ingearach leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7040"/>
+      <location filename="../../CommandConstraints.cpp" line="7337"/>
       <source>Swap coincident+tangency with ptp tangency</source>
       <translation>Malartaigh comhthráthacht+tadhlachas le tadhlachas ptp</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7170"/>
-      <location filename="../../CommandConstraints.cpp" line="7271"/>
-      <location filename="../../CommandConstraints.cpp" line="7320"/>
-      <location filename="../../CommandConstraints.cpp" line="7529"/>
-      <location filename="../../CommandConstraints.cpp" line="7715"/>
-      <location filename="../../CommandConstraints.cpp" line="7785"/>
-      <location filename="../../CommandConstraints.cpp" line="7818"/>
+      <location filename="../../CommandConstraints.cpp" line="7467"/>
+      <location filename="../../CommandConstraints.cpp" line="7568"/>
+      <location filename="../../CommandConstraints.cpp" line="7617"/>
+      <location filename="../../CommandConstraints.cpp" line="7826"/>
+      <location filename="../../CommandConstraints.cpp" line="8012"/>
+      <location filename="../../CommandConstraints.cpp" line="8082"/>
+      <location filename="../../CommandConstraints.cpp" line="8115"/>
       <source>Add tangent constraint</source>
       <translation>Cuir srian tadhlaíoch leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7366"/>
-      <location filename="../../CommandConstraints.cpp" line="7380"/>
-      <location filename="../../CommandConstraints.cpp" line="7394"/>
-      <location filename="../../CommandConstraints.cpp" line="7421"/>
-      <location filename="../../CommandConstraints.cpp" line="7436"/>
-      <location filename="../../CommandConstraints.cpp" line="7463"/>
-      <location filename="../../CommandConstraints.cpp" line="7478"/>
-      <location filename="../../CommandConstraints.cpp" line="7506"/>
-      <location filename="../../CommandConstraints.cpp" line="7602"/>
-      <location filename="../../CommandConstraints.cpp" line="7616"/>
-      <location filename="../../CommandConstraints.cpp" line="7631"/>
-      <location filename="../../CommandConstraints.cpp" line="7658"/>
-      <location filename="../../CommandConstraints.cpp" line="7673"/>
-      <location filename="../../CommandConstraints.cpp" line="7700"/>
+      <location filename="../../CommandConstraints.cpp" line="7663"/>
+      <location filename="../../CommandConstraints.cpp" line="7677"/>
+      <location filename="../../CommandConstraints.cpp" line="7691"/>
+      <location filename="../../CommandConstraints.cpp" line="7718"/>
+      <location filename="../../CommandConstraints.cpp" line="7733"/>
+      <location filename="../../CommandConstraints.cpp" line="7760"/>
+      <location filename="../../CommandConstraints.cpp" line="7775"/>
+      <location filename="../../CommandConstraints.cpp" line="7803"/>
+      <location filename="../../CommandConstraints.cpp" line="7899"/>
+      <location filename="../../CommandConstraints.cpp" line="7913"/>
+      <location filename="../../CommandConstraints.cpp" line="7928"/>
+      <location filename="../../CommandConstraints.cpp" line="7955"/>
+      <location filename="../../CommandConstraints.cpp" line="7970"/>
+      <location filename="../../CommandConstraints.cpp" line="7997"/>
       <source>Add tangent constraint point</source>
       <translation>Cuir pointe srianta tadhlaí leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2488"/>
-      <location filename="../../CommandConstraints.cpp" line="2492"/>
-      <location filename="../../CommandConstraints.cpp" line="2499"/>
-      <location filename="../../CommandConstraints.cpp" line="2504"/>
-      <location filename="../../CommandConstraints.cpp" line="8037"/>
-      <location filename="../../CommandConstraints.cpp" line="8081"/>
-      <location filename="../../CommandConstraints.cpp" line="8110"/>
-      <location filename="../../CommandConstraints.cpp" line="8187"/>
+      <location filename="../../CommandConstraints.cpp" line="2785"/>
+      <location filename="../../CommandConstraints.cpp" line="2789"/>
+      <location filename="../../CommandConstraints.cpp" line="2796"/>
+      <location filename="../../CommandConstraints.cpp" line="2801"/>
+      <location filename="../../CommandConstraints.cpp" line="8334"/>
+      <location filename="../../CommandConstraints.cpp" line="8378"/>
+      <location filename="../../CommandConstraints.cpp" line="8407"/>
+      <location filename="../../CommandConstraints.cpp" line="8484"/>
       <source>Add radius constraint</source>
       <translation>Cuir srian ga leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8388"/>
-      <location filename="../../CommandConstraints.cpp" line="8420"/>
-      <location filename="../../CommandConstraints.cpp" line="8441"/>
-      <location filename="../../CommandConstraints.cpp" line="8517"/>
+      <location filename="../../CommandConstraints.cpp" line="8685"/>
+      <location filename="../../CommandConstraints.cpp" line="8717"/>
+      <location filename="../../CommandConstraints.cpp" line="8738"/>
+      <location filename="../../CommandConstraints.cpp" line="8814"/>
       <source>Add diameter constraint</source>
       <translation>Cuir srian trastomhais leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8713"/>
-      <location filename="../../CommandConstraints.cpp" line="8761"/>
-      <location filename="../../CommandConstraints.cpp" line="8796"/>
-      <location filename="../../CommandConstraints.cpp" line="8885"/>
+      <location filename="../../CommandConstraints.cpp" line="9010"/>
+      <location filename="../../CommandConstraints.cpp" line="9058"/>
+      <location filename="../../CommandConstraints.cpp" line="9093"/>
+      <location filename="../../CommandConstraints.cpp" line="9182"/>
       <source>Add radiam constraint</source>
       <translation>Cuir srian radiam leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="264"/>
-      <location filename="../../CommandConstraints.cpp" line="9218"/>
-      <location filename="../../CommandConstraints.cpp" line="9334"/>
-      <location filename="../../CommandConstraints.cpp" line="9360"/>
-      <location filename="../../CommandConstraints.cpp" line="9455"/>
+      <location filename="../../CommandConstraints.cpp" line="539"/>
+      <location filename="../../CommandConstraints.cpp" line="9517"/>
+      <location filename="../../CommandConstraints.cpp" line="9633"/>
+      <location filename="../../CommandConstraints.cpp" line="9659"/>
+      <location filename="../../CommandConstraints.cpp" line="9748"/>
+      <location filename="../../CommandConstraints.cpp" line="9787"/>
       <source>Add angle constraint</source>
       <translation>Cuir srian uillinne leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7063"/>
+      <location filename="../../CommandConstraints.cpp" line="7360"/>
       <source>Swap point on object and tangency with point to curve tangency</source>
       <translation>Malartaigh pointe ar réad agus tadhlaíoch le pointe le tadhlaíoch cuar</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9717"/>
-      <location filename="../../CommandConstraints.cpp" line="9772"/>
+      <location filename="../../CommandConstraints.cpp" line="10049"/>
+      <location filename="../../CommandConstraints.cpp" line="10104"/>
       <source>Add equality constraint</source>
       <translation>Cuir srian comhionannais leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9941"/>
-      <location filename="../../CommandConstraints.cpp" line="10000"/>
-      <location filename="../../CommandConstraints.cpp" line="10021"/>
-      <location filename="../../CommandConstraints.cpp" line="10137"/>
-      <location filename="../../CommandConstraints.cpp" line="10178"/>
-      <location filename="../../CommandConstraints.cpp" line="10252"/>
+      <location filename="../../CommandConstraints.cpp" line="10273"/>
+      <location filename="../../CommandConstraints.cpp" line="10332"/>
+      <location filename="../../CommandConstraints.cpp" line="10353"/>
+      <location filename="../../CommandConstraints.cpp" line="10469"/>
+      <location filename="../../CommandConstraints.cpp" line="10510"/>
+      <location filename="../../CommandConstraints.cpp" line="10584"/>
       <source>Add symmetric constraint</source>
       <translation>Cuir srian siméadrach leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10414"/>
+      <location filename="../../CommandConstraints.cpp" line="10746"/>
       <source>Add Snell's law constraint</source>
       <translation>Cuir srian dlí Snell leis</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10882"/>
+      <location filename="../../CommandConstraints.cpp" line="11214"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>Srianadh a scoránaigh chuig tiomáint/tagairt</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="246"/>
+      <location filename="../../Command.cpp" line="248"/>
       <source>Create a new sketch on a face</source>
       <translation>Cruthaigh sceitse nua ar aghaidh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="288"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Create a new sketch</source>
       <translation>Cruthaigh sceitse nua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="552"/>
+      <location filename="../../Command.cpp" line="624"/>
       <source>Reorient sketch</source>
       <translation>Aththreoraigh an sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="761"/>
+      <location filename="../../Command.cpp" line="833"/>
       <source>Attach sketch</source>
       <translation>Ceangail sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="770"/>
+      <location filename="../../Command.cpp" line="842"/>
       <source>Detach sketch</source>
       <translation>Scar sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="909"/>
+      <location filename="../../Command.cpp" line="981"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>Cruthaigh sceitse scáthánaithe do gach sceitse roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1029"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Merge sketches</source>
       <translation>Cumaisc sceitsí</translation>
     </message>
@@ -859,29 +888,29 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Athainmnigh srian sceitse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1921"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1922"/>
       <source>Drag Point</source>
       <translation>Pointe Tarraingthe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1921"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1922"/>
       <source>Drag Curve</source>
       <translation>Cuar Tarraingthe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1922"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1923"/>
       <source>Drag geometries</source>
       <translation>Geoiméadrachtaí tarraingthe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1168"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1169"/>
       <source>Drag Constraint</source>
       <translation>Srian Tarraingthe</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="11079"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1412"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1276"/>
-      <location filename="../../CommandConstraints.cpp" line="10747"/>
-      <location filename="../../ViewProviderSketch.cpp" line="1411"/>
       <source>Modify sketch constraints</source>
       <translation>Modhnaigh srianta sceitse</translation>
     </message>
@@ -891,7 +920,7 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Cruthaigh cóip charbóin</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="430"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="431"/>
       <source>Offset</source>
       <translation>Fritháireamh</translation>
     </message>
@@ -926,14 +955,20 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Geoiméadrachtaí siméadrachta</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="462"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="467"/>
       <source>Add line to sketch polyline</source>
       <translation>Cuir líne le polalíne sceitseála</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="492"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="497"/>
       <source>Add arc to sketch polyline</source>
       <translation>Cuir stua le sceitseáil polalíne</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="943"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1261"/>
+      <source>Add sketch polyline</source>
+      <translation>Cuir polalíne sceitse leis</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="183"/>
@@ -941,8 +976,8 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Scoránaigh geoiméadracht tógála</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="922"/>
-      <location filename="../../DrawSketchHandler.cpp" line="799"/>
+      <location filename="../../DrawSketchHandler.cpp" line="943"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="938"/>
       <source>Add Auto-Constraints</source>
       <translation>Cuir Srianta Uathoibríocha leis</translation>
     </message>
@@ -1095,58 +1130,191 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Sceitseálaí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="124"/>
+      <location filename="../../Command.cpp" line="126"/>
       <source>There are no modes that accept the selected set of subelements</source>
       <translation>Níl aon mhodhanna ann a ghlacann leis an tacar fo-eilimintí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="127"/>
+      <location filename="../../Command.cpp" line="129"/>
       <source>Broken link to support subelements</source>
       <translation>Nasc briste chuig fo-eilimintí tacaíochta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="130"/>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="132"/>
+      <location filename="../../Command.cpp" line="142"/>
       <source>Unexpected error</source>
       <translation>Earráid gan choinne</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="134"/>
+      <location filename="../../Command.cpp" line="136"/>
       <source>Face is non-planar</source>
       <translation>Tá an aghaidh neamhphlánach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="136"/>
+      <location filename="../../Command.cpp" line="138"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
       <translation>Tá cruth mícheart ar na cruthanna roghnaithe (m.sh., imeall cuartha áit a bhfuil ceann díreach ag teastáil)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="176"/>
-      <source>Invalid selection</source>
-      <translation>Rogha neamhbhailí</translation>
+      <location filename="../../Command.cpp" line="178"/>
+      <source>Invalid Selection</source>
+      <translation>Rogha Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="179"/>
       <source>Too many objects selected</source>
       <translation>An iomarca rudaí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Sketch mapping</source>
       <translation>Léarscáiliú sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
       <translation>Ní féidir an sceitse a mhapáil leis an réad roghnaithe. %1.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="203"/>
-      <location filename="../../Command.cpp" line="700"/>
+      <location filename="../../Command.cpp" line="205"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>Do not attach</source>
       <translation>Ná ceangail</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="449"/>
+      <location filename="../../CommandConstraints.cpp" line="456"/>
+      <location filename="../../CommandConstraints.cpp" line="3126"/>
+      <location filename="../../CommandConstraints.cpp" line="3285"/>
+      <location filename="../../CommandConstraints.cpp" line="3301"/>
+      <location filename="../../CommandConstraints.cpp" line="3614"/>
+      <location filename="../../CommandConstraints.cpp" line="4021"/>
+      <location filename="../../CommandConstraints.cpp" line="4048"/>
+      <location filename="../../CommandConstraints.cpp" line="4053"/>
+      <location filename="../../CommandConstraints.cpp" line="4307"/>
+      <location filename="../../CommandConstraints.cpp" line="4340"/>
+      <location filename="../../CommandConstraints.cpp" line="4345"/>
+      <location filename="../../CommandConstraints.cpp" line="4639"/>
+      <location filename="../../CommandConstraints.cpp" line="4669"/>
+      <location filename="../../CommandConstraints.cpp" line="4692"/>
+      <location filename="../../CommandConstraints.cpp" line="4722"/>
+      <location filename="../../CommandConstraints.cpp" line="4739"/>
+      <location filename="../../CommandConstraints.cpp" line="4869"/>
+      <location filename="../../CommandConstraints.cpp" line="4891"/>
+      <location filename="../../CommandConstraints.cpp" line="4920"/>
+      <location filename="../../CommandConstraints.cpp" line="5131"/>
+      <location filename="../../CommandConstraints.cpp" line="5143"/>
+      <location filename="../../CommandConstraints.cpp" line="5392"/>
+      <location filename="../../CommandConstraints.cpp" line="5400"/>
+      <location filename="../../CommandConstraints.cpp" line="5466"/>
+      <location filename="../../CommandConstraints.cpp" line="5592"/>
+      <location filename="../../CommandConstraints.cpp" line="5697"/>
+      <location filename="../../CommandConstraints.cpp" line="5782"/>
+      <location filename="../../CommandConstraints.cpp" line="5795"/>
+      <location filename="../../CommandConstraints.cpp" line="5828"/>
+      <location filename="../../CommandConstraints.cpp" line="5890"/>
+      <location filename="../../CommandConstraints.cpp" line="5926"/>
+      <location filename="../../CommandConstraints.cpp" line="5961"/>
+      <location filename="../../CommandConstraints.cpp" line="6083"/>
+      <location filename="../../CommandConstraints.cpp" line="6096"/>
+      <location filename="../../CommandConstraints.cpp" line="6127"/>
+      <location filename="../../CommandConstraints.cpp" line="6189"/>
+      <location filename="../../CommandConstraints.cpp" line="6223"/>
+      <location filename="../../CommandConstraints.cpp" line="6257"/>
+      <location filename="../../CommandConstraints.cpp" line="6379"/>
+      <location filename="../../CommandConstraints.cpp" line="6414"/>
+      <location filename="../../CommandConstraints.cpp" line="6423"/>
+      <location filename="../../CommandConstraints.cpp" line="6462"/>
+      <location filename="../../CommandConstraints.cpp" line="6561"/>
+      <location filename="../../CommandConstraints.cpp" line="6573"/>
+      <location filename="../../CommandConstraints.cpp" line="6627"/>
+      <location filename="../../CommandConstraints.cpp" line="6705"/>
+      <location filename="../../CommandConstraints.cpp" line="6715"/>
+      <location filename="../../CommandConstraints.cpp" line="6756"/>
+      <location filename="../../CommandConstraints.cpp" line="6767"/>
+      <location filename="../../CommandConstraints.cpp" line="6797"/>
+      <location filename="../../CommandConstraints.cpp" line="6818"/>
+      <location filename="../../CommandConstraints.cpp" line="6996"/>
+      <location filename="../../CommandConstraints.cpp" line="7017"/>
+      <location filename="../../CommandConstraints.cpp" line="7196"/>
+      <location filename="../../CommandConstraints.cpp" line="7416"/>
+      <location filename="../../CommandConstraints.cpp" line="7428"/>
+      <location filename="../../CommandConstraints.cpp" line="7462"/>
+      <location filename="../../CommandConstraints.cpp" line="7533"/>
+      <location filename="../../CommandConstraints.cpp" line="7553"/>
+      <location filename="../../CommandConstraints.cpp" line="7562"/>
+      <location filename="../../CommandConstraints.cpp" line="7591"/>
+      <location filename="../../CommandConstraints.cpp" line="7600"/>
+      <location filename="../../CommandConstraints.cpp" line="7611"/>
+      <location filename="../../CommandConstraints.cpp" line="7639"/>
+      <location filename="../../CommandConstraints.cpp" line="7820"/>
+      <location filename="../../CommandConstraints.cpp" line="7873"/>
+      <location filename="../../CommandConstraints.cpp" line="8065"/>
+      <location filename="../../CommandConstraints.cpp" line="8110"/>
+      <location filename="../../CommandConstraints.cpp" line="8235"/>
+      <location filename="../../CommandConstraints.cpp" line="8248"/>
+      <location filename="../../CommandConstraints.cpp" line="8314"/>
+      <location filename="../../CommandConstraints.cpp" line="8322"/>
+      <location filename="../../CommandConstraints.cpp" line="8478"/>
+      <location filename="../../CommandConstraints.cpp" line="8598"/>
+      <location filename="../../CommandConstraints.cpp" line="8611"/>
+      <location filename="../../CommandConstraints.cpp" line="8656"/>
+      <location filename="../../CommandConstraints.cpp" line="8674"/>
+      <location filename="../../CommandConstraints.cpp" line="8800"/>
+      <location filename="../../CommandConstraints.cpp" line="8808"/>
+      <location filename="../../CommandConstraints.cpp" line="8916"/>
+      <location filename="../../CommandConstraints.cpp" line="8929"/>
+      <location filename="../../CommandConstraints.cpp" line="8990"/>
+      <location filename="../../CommandConstraints.cpp" line="8998"/>
+      <location filename="../../CommandConstraints.cpp" line="9176"/>
+      <location filename="../../CommandConstraints.cpp" line="9461"/>
+      <location filename="../../CommandConstraints.cpp" line="9474"/>
+      <location filename="../../CommandConstraints.cpp" line="9510"/>
+      <location filename="../../CommandConstraints.cpp" line="9608"/>
+      <location filename="../../CommandConstraints.cpp" line="9621"/>
+      <location filename="../../CommandConstraints.cpp" line="9686"/>
+      <location filename="../../CommandConstraints.cpp" line="9780"/>
+      <location filename="../../CommandConstraints.cpp" line="9934"/>
+      <location filename="../../CommandConstraints.cpp" line="9948"/>
+      <location filename="../../CommandConstraints.cpp" line="9966"/>
+      <location filename="../../CommandConstraints.cpp" line="9973"/>
+      <location filename="../../CommandConstraints.cpp" line="9994"/>
+      <location filename="../../CommandConstraints.cpp" line="10027"/>
+      <location filename="../../CommandConstraints.cpp" line="10043"/>
+      <location filename="../../CommandConstraints.cpp" line="10098"/>
+      <location filename="../../CommandConstraints.cpp" line="10194"/>
+      <location filename="../../CommandConstraints.cpp" line="10209"/>
+      <location filename="../../CommandConstraints.cpp" line="10242"/>
+      <location filename="../../CommandConstraints.cpp" line="10253"/>
+      <location filename="../../CommandConstraints.cpp" line="10266"/>
+      <location filename="../../CommandConstraints.cpp" line="10294"/>
+      <location filename="../../CommandConstraints.cpp" line="10325"/>
+      <location filename="../../CommandConstraints.cpp" line="10375"/>
+      <location filename="../../CommandConstraints.cpp" line="10406"/>
+      <location filename="../../CommandConstraints.cpp" line="10421"/>
+      <location filename="../../CommandConstraints.cpp" line="10462"/>
+      <location filename="../../CommandConstraints.cpp" line="10486"/>
+      <location filename="../../CommandConstraints.cpp" line="10551"/>
+      <location filename="../../CommandConstraints.cpp" line="10561"/>
+      <location filename="../../CommandConstraints.cpp" line="10571"/>
+      <location filename="../../CommandConstraints.cpp" line="10647"/>
+      <location filename="../../CommandConstraints.cpp" line="10657"/>
+      <location filename="../../CommandConstraints.cpp" line="10682"/>
+      <location filename="../../CommandConstraints.cpp" line="10692"/>
+      <location filename="../../CommandConstraints.cpp" line="10710"/>
+      <location filename="../../CommandConstraints.cpp" line="10838"/>
+      <location filename="../../CommandConstraints.cpp" line="10848"/>
+      <location filename="../../CommandConstraints.cpp" line="11084"/>
+      <location filename="../../CommandConstraints.cpp" line="11160"/>
+      <location filename="../../CommandConstraints.cpp" line="11172"/>
+      <location filename="../../CommandConstraints.cpp" line="11208"/>
+      <location filename="../../CommandConstraints.cpp" line="11283"/>
+      <location filename="../../CommandConstraints.cpp" line="11295"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="176"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <location filename="../../CommandSketcherTools.cpp" line="393"/>
       <location filename="../../CommandSketcherTools.cpp" line="1037"/>
       <location filename="../../CommandSketcherTools.cpp" line="1366"/>
@@ -1168,139 +1336,6 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
-      <location filename="../../CommandConstraints.cpp" line="174"/>
-      <location filename="../../CommandConstraints.cpp" line="181"/>
-      <location filename="../../CommandConstraints.cpp" line="2829"/>
-      <location filename="../../CommandConstraints.cpp" line="2988"/>
-      <location filename="../../CommandConstraints.cpp" line="3004"/>
-      <location filename="../../CommandConstraints.cpp" line="3317"/>
-      <location filename="../../CommandConstraints.cpp" line="3724"/>
-      <location filename="../../CommandConstraints.cpp" line="3751"/>
-      <location filename="../../CommandConstraints.cpp" line="3756"/>
-      <location filename="../../CommandConstraints.cpp" line="4010"/>
-      <location filename="../../CommandConstraints.cpp" line="4043"/>
-      <location filename="../../CommandConstraints.cpp" line="4048"/>
-      <location filename="../../CommandConstraints.cpp" line="4342"/>
-      <location filename="../../CommandConstraints.cpp" line="4372"/>
-      <location filename="../../CommandConstraints.cpp" line="4395"/>
-      <location filename="../../CommandConstraints.cpp" line="4425"/>
-      <location filename="../../CommandConstraints.cpp" line="4442"/>
-      <location filename="../../CommandConstraints.cpp" line="4572"/>
-      <location filename="../../CommandConstraints.cpp" line="4594"/>
-      <location filename="../../CommandConstraints.cpp" line="4623"/>
-      <location filename="../../CommandConstraints.cpp" line="4834"/>
-      <location filename="../../CommandConstraints.cpp" line="4846"/>
-      <location filename="../../CommandConstraints.cpp" line="5095"/>
-      <location filename="../../CommandConstraints.cpp" line="5103"/>
-      <location filename="../../CommandConstraints.cpp" line="5169"/>
-      <location filename="../../CommandConstraints.cpp" line="5295"/>
-      <location filename="../../CommandConstraints.cpp" line="5400"/>
-      <location filename="../../CommandConstraints.cpp" line="5485"/>
-      <location filename="../../CommandConstraints.cpp" line="5498"/>
-      <location filename="../../CommandConstraints.cpp" line="5531"/>
-      <location filename="../../CommandConstraints.cpp" line="5593"/>
-      <location filename="../../CommandConstraints.cpp" line="5629"/>
-      <location filename="../../CommandConstraints.cpp" line="5664"/>
-      <location filename="../../CommandConstraints.cpp" line="5786"/>
-      <location filename="../../CommandConstraints.cpp" line="5799"/>
-      <location filename="../../CommandConstraints.cpp" line="5830"/>
-      <location filename="../../CommandConstraints.cpp" line="5892"/>
-      <location filename="../../CommandConstraints.cpp" line="5926"/>
-      <location filename="../../CommandConstraints.cpp" line="5960"/>
-      <location filename="../../CommandConstraints.cpp" line="6082"/>
-      <location filename="../../CommandConstraints.cpp" line="6117"/>
-      <location filename="../../CommandConstraints.cpp" line="6126"/>
-      <location filename="../../CommandConstraints.cpp" line="6165"/>
-      <location filename="../../CommandConstraints.cpp" line="6264"/>
-      <location filename="../../CommandConstraints.cpp" line="6276"/>
-      <location filename="../../CommandConstraints.cpp" line="6330"/>
-      <location filename="../../CommandConstraints.cpp" line="6408"/>
-      <location filename="../../CommandConstraints.cpp" line="6418"/>
-      <location filename="../../CommandConstraints.cpp" line="6459"/>
-      <location filename="../../CommandConstraints.cpp" line="6470"/>
-      <location filename="../../CommandConstraints.cpp" line="6500"/>
-      <location filename="../../CommandConstraints.cpp" line="6521"/>
-      <location filename="../../CommandConstraints.cpp" line="6699"/>
-      <location filename="../../CommandConstraints.cpp" line="6720"/>
-      <location filename="../../CommandConstraints.cpp" line="6899"/>
-      <location filename="../../CommandConstraints.cpp" line="7119"/>
-      <location filename="../../CommandConstraints.cpp" line="7131"/>
-      <location filename="../../CommandConstraints.cpp" line="7165"/>
-      <location filename="../../CommandConstraints.cpp" line="7236"/>
-      <location filename="../../CommandConstraints.cpp" line="7256"/>
-      <location filename="../../CommandConstraints.cpp" line="7265"/>
-      <location filename="../../CommandConstraints.cpp" line="7294"/>
-      <location filename="../../CommandConstraints.cpp" line="7303"/>
-      <location filename="../../CommandConstraints.cpp" line="7314"/>
-      <location filename="../../CommandConstraints.cpp" line="7342"/>
-      <location filename="../../CommandConstraints.cpp" line="7523"/>
-      <location filename="../../CommandConstraints.cpp" line="7576"/>
-      <location filename="../../CommandConstraints.cpp" line="7768"/>
-      <location filename="../../CommandConstraints.cpp" line="7813"/>
-      <location filename="../../CommandConstraints.cpp" line="7938"/>
-      <location filename="../../CommandConstraints.cpp" line="7951"/>
-      <location filename="../../CommandConstraints.cpp" line="8017"/>
-      <location filename="../../CommandConstraints.cpp" line="8025"/>
-      <location filename="../../CommandConstraints.cpp" line="8181"/>
-      <location filename="../../CommandConstraints.cpp" line="8301"/>
-      <location filename="../../CommandConstraints.cpp" line="8314"/>
-      <location filename="../../CommandConstraints.cpp" line="8359"/>
-      <location filename="../../CommandConstraints.cpp" line="8377"/>
-      <location filename="../../CommandConstraints.cpp" line="8503"/>
-      <location filename="../../CommandConstraints.cpp" line="8511"/>
-      <location filename="../../CommandConstraints.cpp" line="8619"/>
-      <location filename="../../CommandConstraints.cpp" line="8632"/>
-      <location filename="../../CommandConstraints.cpp" line="8693"/>
-      <location filename="../../CommandConstraints.cpp" line="8701"/>
-      <location filename="../../CommandConstraints.cpp" line="8879"/>
-      <location filename="../../CommandConstraints.cpp" line="9162"/>
-      <location filename="../../CommandConstraints.cpp" line="9175"/>
-      <location filename="../../CommandConstraints.cpp" line="9211"/>
-      <location filename="../../CommandConstraints.cpp" line="9309"/>
-      <location filename="../../CommandConstraints.cpp" line="9322"/>
-      <location filename="../../CommandConstraints.cpp" line="9387"/>
-      <location filename="../../CommandConstraints.cpp" line="9448"/>
-      <location filename="../../CommandConstraints.cpp" line="9602"/>
-      <location filename="../../CommandConstraints.cpp" line="9616"/>
-      <location filename="../../CommandConstraints.cpp" line="9634"/>
-      <location filename="../../CommandConstraints.cpp" line="9641"/>
-      <location filename="../../CommandConstraints.cpp" line="9662"/>
-      <location filename="../../CommandConstraints.cpp" line="9695"/>
-      <location filename="../../CommandConstraints.cpp" line="9711"/>
-      <location filename="../../CommandConstraints.cpp" line="9766"/>
-      <location filename="../../CommandConstraints.cpp" line="9862"/>
-      <location filename="../../CommandConstraints.cpp" line="9877"/>
-      <location filename="../../CommandConstraints.cpp" line="9910"/>
-      <location filename="../../CommandConstraints.cpp" line="9921"/>
-      <location filename="../../CommandConstraints.cpp" line="9934"/>
-      <location filename="../../CommandConstraints.cpp" line="9962"/>
-      <location filename="../../CommandConstraints.cpp" line="9993"/>
-      <location filename="../../CommandConstraints.cpp" line="10043"/>
-      <location filename="../../CommandConstraints.cpp" line="10074"/>
-      <location filename="../../CommandConstraints.cpp" line="10089"/>
-      <location filename="../../CommandConstraints.cpp" line="10130"/>
-      <location filename="../../CommandConstraints.cpp" line="10154"/>
-      <location filename="../../CommandConstraints.cpp" line="10219"/>
-      <location filename="../../CommandConstraints.cpp" line="10229"/>
-      <location filename="../../CommandConstraints.cpp" line="10239"/>
-      <location filename="../../CommandConstraints.cpp" line="10315"/>
-      <location filename="../../CommandConstraints.cpp" line="10325"/>
-      <location filename="../../CommandConstraints.cpp" line="10350"/>
-      <location filename="../../CommandConstraints.cpp" line="10360"/>
-      <location filename="../../CommandConstraints.cpp" line="10378"/>
-      <location filename="../../CommandConstraints.cpp" line="10506"/>
-      <location filename="../../CommandConstraints.cpp" line="10516"/>
-      <location filename="../../CommandConstraints.cpp" line="10752"/>
-      <location filename="../../CommandConstraints.cpp" line="10828"/>
-      <location filename="../../CommandConstraints.cpp" line="10840"/>
-      <location filename="../../CommandConstraints.cpp" line="10876"/>
-      <location filename="../../CommandConstraints.cpp" line="10951"/>
-      <location filename="../../CommandConstraints.cpp" line="10963"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="176"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
@@ -1311,332 +1346,332 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Roghnaigh imill ón sceitse</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="109"/>
+      <location filename="../../EditDatumDialog.cpp" line="111"/>
       <source>Not allowed to edit the datum because the sketch contains conflicting constraints</source>
       <translation>Ní cheadaítear an sonraí a chur in eagar mar go bhfuil srianta contrártha sa sceitse</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="108"/>
+      <location filename="../../EditDatumDialog.cpp" line="110"/>
       <source>Dimensional constraint</source>
       <translation>Srianadh toisí</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="175"/>
+      <location filename="../../CommandConstraints.cpp" line="450"/>
       <source>Cannot add a constraint between two external geometries.</source>
       <translation>Ní féidir srian a chur idir dhá gheoiméadracht sheachtracha.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="182"/>
+      <location filename="../../CommandConstraints.cpp" line="457"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
       <translation>Ní féidir srian a chur idir dhá gheoiméadracht sheasta. Áirítear le geoiméadrachtaí seasta geoiméadracht sheachtrach, geoiméadracht bhlocáilte, agus pointí speisialta amhail pointí snaidhme B-splíne.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="738"/>
+      <location filename="../../CommandConstraints.cpp" line="1013"/>
       <source>Sketcher Constraint Substitution</source>
       <translation>Ionadú Srianta Sketcher</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="850"/>
+      <location filename="../../CommandConstraints.cpp" line="1125"/>
       <source>One of the selected has to be on the sketch.</source>
       <translation>Caithfidh duine de na daoine roghnaithe a bheith ar an sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3318"/>
+      <location filename="../../CommandConstraints.cpp" line="3615"/>
       <source>Select an edge from the sketch.</source>
       <translation>Roghnaigh imeall ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3282"/>
-      <location filename="../../CommandConstraints.cpp" line="3291"/>
-      <location filename="../../CommandConstraints.cpp" line="3343"/>
-      <location filename="../../CommandConstraints.cpp" line="3367"/>
-      <location filename="../../CommandConstraints.cpp" line="3421"/>
-      <location filename="../../CommandConstraints.cpp" line="3455"/>
+      <location filename="../../CommandConstraints.cpp" line="3579"/>
+      <location filename="../../CommandConstraints.cpp" line="3588"/>
+      <location filename="../../CommandConstraints.cpp" line="3640"/>
+      <location filename="../../CommandConstraints.cpp" line="3664"/>
+      <location filename="../../CommandConstraints.cpp" line="3718"/>
+      <location filename="../../CommandConstraints.cpp" line="3752"/>
       <source>Impossible constraint</source>
       <translation>Srianadh dodhéanta</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3344"/>
-      <location filename="../../CommandConstraints.cpp" line="3456"/>
+      <location filename="../../CommandConstraints.cpp" line="3641"/>
+      <location filename="../../CommandConstraints.cpp" line="3753"/>
       <source>The selected edge is not a line segment.</source>
       <translation>Ní mírlíne an imeall roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3274"/>
-      <location filename="../../CommandConstraints.cpp" line="4060"/>
-      <location filename="../../CommandConstraints.cpp" line="4112"/>
+      <location filename="../../CommandConstraints.cpp" line="3571"/>
+      <location filename="../../CommandConstraints.cpp" line="4357"/>
+      <location filename="../../CommandConstraints.cpp" line="4409"/>
       <source>Double constraint</source>
       <translation>Srianadh dúbailte</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3275"/>
+      <location filename="../../CommandConstraints.cpp" line="3572"/>
       <source>The selected edge already has a horizontal constraint!</source>
       <translation>Tá srian cothrománach ar an imeall roghnaithe cheana féin!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3283"/>
+      <location filename="../../CommandConstraints.cpp" line="3580"/>
       <source>The selected edge already has a vertical constraint!</source>
       <translation>Tá srian ingearach ar an imeall roghnaithe cheana féin!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3422"/>
+      <location filename="../../CommandConstraints.cpp" line="3719"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation>Tá níos mó ná pointe socraithe amháin roghnaithe. Roghnaigh pointe socraithe amháin ar a mhéad!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3725"/>
-      <location filename="../../CommandConstraints.cpp" line="4011"/>
-      <location filename="../../CommandConstraints.cpp" line="4835"/>
+      <location filename="../../CommandConstraints.cpp" line="4022"/>
+      <location filename="../../CommandConstraints.cpp" line="4308"/>
+      <location filename="../../CommandConstraints.cpp" line="5132"/>
       <source>Select vertices from the sketch.</source>
       <translation>Roghnaigh buaicphointí ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3752"/>
+      <location filename="../../CommandConstraints.cpp" line="4049"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>Roghnaigh buaicphointe amháin ón sceitse seachas an bunphointe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3757"/>
+      <location filename="../../CommandConstraints.cpp" line="4054"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
       <translation>Roghnaigh buaicphointí amháin ón sceitse. Féadfaidh an buaicphointe deireanach a roghnaíodh a bheith mar an mbunphointe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4024"/>
+      <location filename="../../CommandConstraints.cpp" line="4321"/>
       <source>Wrong solver status</source>
       <translation>Stádas réiteora mícheart</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4044"/>
+      <location filename="../../CommandConstraints.cpp" line="4341"/>
       <source>Select one edge from the sketch.</source>
       <translation>Roghnaigh imeall amháin ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4049"/>
+      <location filename="../../CommandConstraints.cpp" line="4346"/>
       <source>Select only edges from the sketch.</source>
       <translation>Roghnaigh imill amháin ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4426"/>
+      <location filename="../../CommandConstraints.cpp" line="4723"/>
       <source>None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible.</source>
       <translation>Níor cuireadh srian ar aon cheann de na pointí roghnaithe ar na cuartha faoi seach, toisc gur cuid den eilimint chéanna iad, gur geoiméadracht sheachtrach iad araon, nó nach bhfuil an imeall incháilithe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7524"/>
+      <location filename="../../CommandConstraints.cpp" line="7821"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
       <translation>Ní thacaítear ach le pointe trí thadhlaí le B-spline.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8026"/>
-      <location filename="../../CommandConstraints.cpp" line="8702"/>
+      <location filename="../../CommandConstraints.cpp" line="8323"/>
+      <location filename="../../CommandConstraints.cpp" line="8999"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
       <translation>Roghnaigh cuaille B-splíne amháin nó níos mó nó áirse nó ciorcal amháin nó níos mó ón sceitse, ach gan iad a mheascadh.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9863"/>
-      <location filename="../../CommandConstraints.cpp" line="9878"/>
-      <location filename="../../CommandConstraints.cpp" line="9963"/>
-      <location filename="../../CommandConstraints.cpp" line="10044"/>
-      <location filename="../../CommandConstraints.cpp" line="10155"/>
+      <location filename="../../CommandConstraints.cpp" line="10195"/>
+      <location filename="../../CommandConstraints.cpp" line="10210"/>
+      <location filename="../../CommandConstraints.cpp" line="10295"/>
+      <location filename="../../CommandConstraints.cpp" line="10376"/>
+      <location filename="../../CommandConstraints.cpp" line="10487"/>
       <source>Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</source>
       <translation>Roghnaigh dhá phointe agus líne siméadrachta, dhá phointe agus pointe siméadrachta, eilimint agus líne siméadrachta nó eilimint agus pointe siméadrachta ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9911"/>
-      <location filename="../../CommandConstraints.cpp" line="10090"/>
-      <location filename="../../CommandConstraints.cpp" line="10230"/>
+      <location filename="../../CommandConstraints.cpp" line="10243"/>
+      <location filename="../../CommandConstraints.cpp" line="10422"/>
+      <location filename="../../CommandConstraints.cpp" line="10562"/>
       <source>Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</source>
       <translation>Ní féidir srian siméadrachta a chur leis mar nach bhfuil aon chríochphointí ag an gcéad eilimint roghnaithe. Roghnaigh líne nó cuar oscailte ina ionad.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9922"/>
-      <location filename="../../CommandConstraints.cpp" line="10240"/>
+      <location filename="../../CommandConstraints.cpp" line="10254"/>
+      <location filename="../../CommandConstraints.cpp" line="10572"/>
       <source>Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</source>
       <translation>Ní féidir srian siméadrachta a chur leis mar nach líne an dara heilimint roghnaithe. Roghnaigh líne nó ais ina ionad.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9935"/>
-      <location filename="../../CommandConstraints.cpp" line="10075"/>
+      <location filename="../../CommandConstraints.cpp" line="10267"/>
+      <location filename="../../CommandConstraints.cpp" line="10407"/>
       <source>Cannot add a symmetry constraint between an element and its end points!</source>
       <translation>Ní féidir srian siméadrachta a chur idir eilimint agus a chríochphointí!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10220"/>
+      <location filename="../../CommandConstraints.cpp" line="10552"/>
       <source>Cannot add a symmetry constraint between an element and itself.</source>
       <translation>Ní féidir srian siméadrachta a chur idir eilimint agus í féin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10300"/>
+      <location filename="../../CommandConstraints.cpp" line="10632"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and the value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Roghnaigh dhá phointe deiridh línte le gníomhú mar ghathanna, agus imeall a léiríonn teorainn. Freagraíonn an chéad phointe roghnaithe d'innéacs n1, an dara pointe do n2, agus socraíonn an luach an cóimheas n2/n1.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10326"/>
+      <location filename="../../CommandConstraints.cpp" line="10658"/>
       <source>Number of selected objects is not 3</source>
       <translation>Ní ionann líon na réad roghnaithe agus 3</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="1042"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
-      <location filename="../../CommandConstraints.cpp" line="767"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4275"/>
+      <location filename="../../CommandConstraints.cpp" line="4572"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>Cuireadh tadhlaíocht críochphointe go críochphointe i bhfeidhm ina ionad.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4443"/>
+      <location filename="../../CommandConstraints.cpp" line="4740"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>Roghnaigh dhá bhuaicphointe nó níos mó ón sceitse le haghaidh srian comhthráthach, nó dhá chiorcal, eilips, áirse nó áirsí eilips nó níos mó le haghaidh srian comhlárnach.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4624"/>
+      <location filename="../../CommandConstraints.cpp" line="4921"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>Roghnaigh dhá bhuaicphointe ón sceitse le haghaidh srian comhthráthach, nó dhá chiorcal, dhá eilips, dhá áirse nó dhá áirse eilips le haghaidh srian comhlárnach.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4847"/>
+      <location filename="../../CommandConstraints.cpp" line="5144"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>Roghnaigh líne amháin nó pointe amháin agus líne amháin nó dhá phointe ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5104"/>
+      <location filename="../../CommandConstraints.cpp" line="5401"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>Ní féidir srian faid a chur ar ais!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5170"/>
-      <location filename="../../CommandConstraints.cpp" line="5401"/>
+      <location filename="../../CommandConstraints.cpp" line="5467"/>
+      <location filename="../../CommandConstraints.cpp" line="5698"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
       <translation>Roghnaigh líne amháin nó pointe amháin agus líne amháin nó dhá phointe nó dhá chiorcal ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5296"/>
+      <location filename="../../CommandConstraints.cpp" line="5593"/>
       <source>This constraint does not make sense for non-linear curves.</source>
       <translation>Ní dhéanann an srian seo ciall i gcás cuar neamhlíneacha.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4227"/>
+      <location filename="../../CommandConstraints.cpp" line="4524"/>
       <source>Endpoint to edge tangency was applied instead.</source>
       <translation>Cuireadh tadhlaí ó chríochphointe go himill i bhfeidhm ina ionad.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5486"/>
-      <location filename="../../CommandConstraints.cpp" line="5787"/>
-      <location filename="../../CommandConstraints.cpp" line="7939"/>
-      <location filename="../../CommandConstraints.cpp" line="8302"/>
-      <location filename="../../CommandConstraints.cpp" line="8620"/>
-      <location filename="../../CommandConstraints.cpp" line="9163"/>
+      <location filename="../../CommandConstraints.cpp" line="5783"/>
+      <location filename="../../CommandConstraints.cpp" line="6084"/>
+      <location filename="../../CommandConstraints.cpp" line="8236"/>
+      <location filename="../../CommandConstraints.cpp" line="8599"/>
+      <location filename="../../CommandConstraints.cpp" line="8917"/>
+      <location filename="../../CommandConstraints.cpp" line="9462"/>
       <source>Select the right things from the sketch.</source>
       <translation>Roghnaigh na rudaí cearta ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4396"/>
-      <location filename="../../CommandConstraints.cpp" line="4573"/>
-      <location filename="../../CommandConstraints.cpp" line="6331"/>
-      <location filename="../../CommandConstraints.cpp" line="6471"/>
-      <location filename="../../CommandConstraints.cpp" line="6522"/>
-      <location filename="../../CommandConstraints.cpp" line="6721"/>
-      <location filename="../../CommandConstraints.cpp" line="6900"/>
-      <location filename="../../CommandConstraints.cpp" line="7166"/>
-      <location filename="../../CommandConstraints.cpp" line="7315"/>
-      <location filename="../../CommandConstraints.cpp" line="7343"/>
-      <location filename="../../CommandConstraints.cpp" line="7577"/>
-      <location filename="../../CommandConstraints.cpp" line="7814"/>
-      <location filename="../../CommandConstraints.cpp" line="8360"/>
-      <location filename="../../CommandConstraints.cpp" line="8512"/>
-      <location filename="../../CommandConstraints.cpp" line="9212"/>
-      <location filename="../../CommandConstraints.cpp" line="9310"/>
-      <location filename="../../CommandConstraints.cpp" line="9449"/>
-      <location filename="../../CommandConstraints.cpp" line="10379"/>
+      <location filename="../../CommandConstraints.cpp" line="4693"/>
+      <location filename="../../CommandConstraints.cpp" line="4870"/>
+      <location filename="../../CommandConstraints.cpp" line="6628"/>
+      <location filename="../../CommandConstraints.cpp" line="6768"/>
+      <location filename="../../CommandConstraints.cpp" line="6819"/>
+      <location filename="../../CommandConstraints.cpp" line="7018"/>
+      <location filename="../../CommandConstraints.cpp" line="7197"/>
+      <location filename="../../CommandConstraints.cpp" line="7463"/>
+      <location filename="../../CommandConstraints.cpp" line="7612"/>
+      <location filename="../../CommandConstraints.cpp" line="7640"/>
+      <location filename="../../CommandConstraints.cpp" line="7874"/>
+      <location filename="../../CommandConstraints.cpp" line="8111"/>
+      <location filename="../../CommandConstraints.cpp" line="8657"/>
+      <location filename="../../CommandConstraints.cpp" line="8809"/>
+      <location filename="../../CommandConstraints.cpp" line="9511"/>
+      <location filename="../../CommandConstraints.cpp" line="9609"/>
+      <location filename="../../CommandConstraints.cpp" line="9781"/>
+      <location filename="../../CommandConstraints.cpp" line="10711"/>
       <source>Select an edge that is not a B-spline weight.</source>
       <translation>Roghnaigh imeall nach meáchan B-splíne é.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4317"/>
+      <location filename="../../CommandConstraints.cpp" line="4614"/>
       <source>Select either several points, or several conics for concentricity.</source>
       <translation>Roghnaigh roinnt pointí, nó roinnt cónic le haghaidh comhchruinneachta.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4320"/>
+      <location filename="../../CommandConstraints.cpp" line="4617"/>
       <source>Select either one point and several curves, or one curve and several points</source>
       <translation>Roghnaigh pointe amháin agus roinnt cuar, nó cuar amháin agus roinnt pointí</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4323"/>
+      <location filename="../../CommandConstraints.cpp" line="4620"/>
       <source>Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</source>
       <translation>Roghnaigh pointe amháin agus roinnt cuar nó cuar amháin agus roinnt pointí le haghaidh pointOnObject, nó roinnt pointí le haghaidh comhtharlú, nó roinnt cónicí le haghaidh comhchruinnithe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4595"/>
+      <location filename="../../CommandConstraints.cpp" line="4892"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>Ní raibh aon cheann de na pointí roghnaithe srianta ar na cuartha faoi seach, bíodh sé toisc gur codanna den eilimint chéanna iad, nó toisc gur geoiméadracht sheachtrach iad araon.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5096"/>
+      <location filename="../../CommandConstraints.cpp" line="5393"/>
       <source>Cannot add a length constraint on this selection!</source>
       <translation>Ní féidir srian faid a chur leis an rogha seo!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5499"/>
-      <location filename="../../CommandConstraints.cpp" line="5630"/>
-      <location filename="../../CommandConstraints.cpp" line="5800"/>
+      <location filename="../../CommandConstraints.cpp" line="5796"/>
       <location filename="../../CommandConstraints.cpp" line="5927"/>
+      <location filename="../../CommandConstraints.cpp" line="6097"/>
+      <location filename="../../CommandConstraints.cpp" line="6224"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Roghnaigh líne amháin go díreach nó suas le dhá phointe ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5532"/>
+      <location filename="../../CommandConstraints.cpp" line="5829"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>Ní féidir srian faid chothrománach a chur ar ais!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5594"/>
+      <location filename="../../CommandConstraints.cpp" line="5891"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation>Ní féidir srian comhordanáide x seasta a chur leis an bpointe tionscnaimh!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5665"/>
-      <location filename="../../CommandConstraints.cpp" line="5961"/>
+      <location filename="../../CommandConstraints.cpp" line="5962"/>
+      <location filename="../../CommandConstraints.cpp" line="6258"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
       <translation>Ní dhéanann an srian seo ciall ach ar mhírlíne nó ar phéire pointí.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5831"/>
+      <location filename="../../CommandConstraints.cpp" line="6128"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>Ní féidir srian faid ingearach a chur ar ais!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5893"/>
+      <location filename="../../CommandConstraints.cpp" line="6190"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation>Ní féidir srian comhordanáide y seasta a chur leis an bpointe tionscnaimh!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6083"/>
+      <location filename="../../CommandConstraints.cpp" line="6380"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>Roghnaigh dhá líne nó níos mó ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6118"/>
+      <location filename="../../CommandConstraints.cpp" line="6415"/>
       <source>One selected edge is not a valid line.</source>
       <translation>Ní líne bhailí í imeall amháin roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6127"/>
-      <location filename="../../CommandConstraints.cpp" line="9617"/>
+      <location filename="../../CommandConstraints.cpp" line="6424"/>
+      <location filename="../../CommandConstraints.cpp" line="9949"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Roghnaigh dhá líne ar a laghad ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6166"/>
+      <location filename="../../CommandConstraints.cpp" line="6463"/>
       <source>The selected edge is not a valid line.</source>
       <translation>Ní líne bhailí an imeall roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6255"/>
+      <location filename="../../CommandConstraints.cpp" line="6552"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -1646,35 +1681,35 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe; dhá chuar agus pointe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6260"/>
+      <location filename="../../CommandConstraints.cpp" line="6557"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
       <translation>Roghnaigh roinnt geoiméadrachta ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6419"/>
-      <location filename="../../CommandConstraints.cpp" line="6460"/>
+      <location filename="../../CommandConstraints.cpp" line="6716"/>
+      <location filename="../../CommandConstraints.cpp" line="6757"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Ní féidir srian ingearachachta a chur ag pointe neamhcheangailte!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6501"/>
-      <location filename="../../CommandConstraints.cpp" line="6700"/>
+      <location filename="../../CommandConstraints.cpp" line="6798"/>
+      <location filename="../../CommandConstraints.cpp" line="6997"/>
       <source>One of the selected edges should be a line.</source>
       <translation>Ba chóir go mbeadh ceann de na himill roghnaithe ina líne.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7051"/>
+      <location filename="../../CommandConstraints.cpp" line="7348"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>Cuireadh tadhlaíocht críochphointe go críochphointe i bhfeidhm. Scriosadh an srian comhthráthach.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7079"/>
+      <location filename="../../CommandConstraints.cpp" line="7376"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
       <translation>Cuireadh tadhlaí an chríochphointe go dtí an imeall i bhfeidhm. Scriosadh an srianadh pointe ar an réad.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7110"/>
+      <location filename="../../CommandConstraints.cpp" line="7407"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -1684,198 +1719,198 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe; dhá chuar agus pointe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7115"/>
+      <location filename="../../CommandConstraints.cpp" line="7412"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
       <translation>Roghnaigh roinnt geoiméadrachta ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7266"/>
-      <location filename="../../CommandConstraints.cpp" line="7304"/>
-      <location filename="../../CommandConstraints.cpp" line="7769"/>
+      <location filename="../../CommandConstraints.cpp" line="7563"/>
+      <location filename="../../CommandConstraints.cpp" line="7601"/>
+      <location filename="../../CommandConstraints.cpp" line="8066"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Ní féidir srian tadhlaíoch a chur ag pointe neamhcheangailte!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7257"/>
-      <location filename="../../CommandConstraints.cpp" line="7295"/>
+      <location filename="../../CommandConstraints.cpp" line="7554"/>
+      <location filename="../../CommandConstraints.cpp" line="7592"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
       <translation>Ní thacaítear le srian tadhlaí ag snaidhm B-splíne ach le línte!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="230"/>
+      <location filename="../../CommandConstraints.cpp" line="505"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
       <translation>Scriosadh srian pointe-ar-réad amháin nó dhó, ós rud é go gcuireann an srian is déanaí atá á chur i bhfeidhm pointe-ar-réad i bhfeidhm go hinmheánach chomh maith.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="744"/>
+      <location filename="../../CommandConstraints.cpp" line="1019"/>
       <source>Keep notifying about constraint substitutions</source>
       <translation>Coinnigh ort ag cur fógraí faoi ionadú srianta</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="768"/>
+      <location filename="../../CommandConstraints.cpp" line="1043"/>
       <source>Unexpected error. More information may be available in the report view.</source>
       <translation>Earráid gan choinne. D’fhéadfadh tuilleadh eolais a bheith ar fáil i radharc na tuarascála.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="818"/>
+      <location filename="../../CommandConstraints.cpp" line="1093"/>
       <source>Only the sketch and its support are allowed to be selected</source>
       <translation>Ní cheadaítear ach an sceitse agus a thacaíocht a roghnú</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="829"/>
+      <location filename="../../CommandConstraints.cpp" line="1104"/>
       <source>Only the sketch and its support may be selected</source>
       <translation>Ní féidir ach an sceitse agus a thacaíocht a roghnú</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="841"/>
+      <location filename="../../CommandConstraints.cpp" line="1116"/>
       <source>Only the sketch and its support  may be selected</source>
       <translation>Ní féidir ach an sceitse agus a thacaíocht a roghnú</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3292"/>
-      <location filename="../../CommandConstraints.cpp" line="4061"/>
-      <location filename="../../CommandConstraints.cpp" line="4113"/>
+      <location filename="../../CommandConstraints.cpp" line="3589"/>
+      <location filename="../../CommandConstraints.cpp" line="4358"/>
+      <location filename="../../CommandConstraints.cpp" line="4410"/>
       <source>The selected edge already has a block constraint!</source>
       <translation>Tá srian bloc ar an imeall roghnaithe cheana féin!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3368"/>
+      <location filename="../../CommandConstraints.cpp" line="3665"/>
       <source>The selected items cannot be constrained horizontally or vertically!</source>
       <translation>Ní féidir na míreanna roghnaithe a shrianadh go cothrománach ná go hingearach!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4025"/>
+      <location filename="../../CommandConstraints.cpp" line="4322"/>
       <source>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
       <translation>Ní féidir srian bloic a chur leis mura bhfuil an sceitse réitithe nó má tá srianta iomarcacha agus contrártha ann.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4295"/>
+      <location filename="../../CommandConstraints.cpp" line="4592"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
       <translation>Cuireadh tadhlaí snaidhm-B-splíne go dtí an pointe deiridh i bhfeidhm ina ionad.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6277"/>
-      <location filename="../../CommandConstraints.cpp" line="7132"/>
+      <location filename="../../CommandConstraints.cpp" line="6574"/>
+      <location filename="../../CommandConstraints.cpp" line="7429"/>
       <source>Wrong number of selected objects!</source>
       <translation>Líon mícheart réad roghnaithe!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6409"/>
-      <location filename="../../CommandConstraints.cpp" line="7237"/>
+      <location filename="../../CommandConstraints.cpp" line="6706"/>
+      <location filename="../../CommandConstraints.cpp" line="7534"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <translation>Le 3 réad, ní mór 2 chuar agus 1 phointe a bheith ann.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7952"/>
-      <location filename="../../CommandConstraints.cpp" line="8018"/>
+      <location filename="../../CommandConstraints.cpp" line="8249"/>
       <location filename="../../CommandConstraints.cpp" line="8315"/>
-      <location filename="../../CommandConstraints.cpp" line="8378"/>
-      <location filename="../../CommandConstraints.cpp" line="8633"/>
-      <location filename="../../CommandConstraints.cpp" line="8694"/>
+      <location filename="../../CommandConstraints.cpp" line="8612"/>
+      <location filename="../../CommandConstraints.cpp" line="8675"/>
+      <location filename="../../CommandConstraints.cpp" line="8930"/>
+      <location filename="../../CommandConstraints.cpp" line="8991"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Roghnaigh áirse nó ciorcal amháin nó níos mó ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8182"/>
-      <location filename="../../CommandConstraints.cpp" line="8504"/>
-      <location filename="../../CommandConstraints.cpp" line="8880"/>
+      <location filename="../../CommandConstraints.cpp" line="8479"/>
+      <location filename="../../CommandConstraints.cpp" line="8801"/>
+      <location filename="../../CommandConstraints.cpp" line="9177"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Ní bhaineann srian ach le stuaí nó ciorcail.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9176"/>
-      <location filename="../../CommandConstraints.cpp" line="9388"/>
+      <location filename="../../CommandConstraints.cpp" line="9475"/>
+      <location filename="../../CommandConstraints.cpp" line="9687"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Roghnaigh líne amháin nó dhó ón sceitse. Nó roghnaigh dhá imeall agus pointe amháin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="258"/>
+      <location filename="../../CommandConstraints.cpp" line="533"/>
       <source>Parallel lines</source>
       <translation>Línte comhthreomhara</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="259"/>
+      <location filename="../../CommandConstraints.cpp" line="534"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
       <translation>Ní féidir srian uillinne a shocrú do dhá líne chomhthreomhara.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9323"/>
+      <location filename="../../CommandConstraints.cpp" line="9622"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Ní féidir srian uillinne a chur ar ais!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9603"/>
+      <location filename="../../CommandConstraints.cpp" line="9935"/>
       <source>Select two edges from the sketch.</source>
       <translation>Roghnaigh dhá imeall ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9635"/>
+      <location filename="../../CommandConstraints.cpp" line="9967"/>
       <source>Select two or more compatible edges.</source>
       <translation>Roghnaigh dhá imeall comhoiriúnacha nó níos mó.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9642"/>
+      <location filename="../../CommandConstraints.cpp" line="9974"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
       <translation>Ní féidir aiseanna sceitse a úsáid i srianta comhionannais.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9663"/>
+      <location filename="../../CommandConstraints.cpp" line="9995"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>Ní thacaítear le comhionannas d'imeall B-splíne faoi láthair.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2830"/>
-      <location filename="../../CommandConstraints.cpp" line="9696"/>
-      <location filename="../../CommandConstraints.cpp" line="9712"/>
-      <location filename="../../CommandConstraints.cpp" line="9767"/>
+      <location filename="../../CommandConstraints.cpp" line="3127"/>
+      <location filename="../../CommandConstraints.cpp" line="10028"/>
+      <location filename="../../CommandConstraints.cpp" line="10044"/>
+      <location filename="../../CommandConstraints.cpp" line="10099"/>
       <source>Select two or more edges of similar type.</source>
       <translation>Roghnaigh dhá imeall nó níos mó den chineál céanna.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10131"/>
+      <location filename="../../CommandConstraints.cpp" line="10463"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
       <translation>Ní féidir srian siméadrachta a chur idir líne agus a foircinnphointí.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2989"/>
-      <location filename="../../CommandConstraints.cpp" line="3005"/>
-      <location filename="../../CommandConstraints.cpp" line="9994"/>
+      <location filename="../../CommandConstraints.cpp" line="3286"/>
+      <location filename="../../CommandConstraints.cpp" line="3302"/>
+      <location filename="../../CommandConstraints.cpp" line="10326"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>Ní féidir srian siméadrachta a chur idir líne agus a críochphointí!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10309"/>
-      <location filename="../../CommandConstraints.cpp" line="10501"/>
+      <location filename="../../CommandConstraints.cpp" line="10641"/>
+      <location filename="../../CommandConstraints.cpp" line="10833"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Ní geoiméadracht ó sceitse amháin atá i gceist le rudaí roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10351"/>
+      <location filename="../../CommandConstraints.cpp" line="10683"/>
       <source>Cannot create constraint with external geometry only.</source>
       <translation>Ní féidir srian a chruthú le geoiméadracht sheachtrach amháin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10361"/>
+      <location filename="../../CommandConstraints.cpp" line="10693"/>
       <source>Incompatible geometry is selected.</source>
       <translation>Tá geoiméadracht neamh-chomhoiriúnach roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10517"/>
+      <location filename="../../CommandConstraints.cpp" line="10849"/>
       <source>No geometries selected</source>
       <translation>Gan aon gheoiméadrachtaí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10753"/>
+      <location filename="../../CommandConstraints.cpp" line="11085"/>
       <source>Select one dimensional constraint from the sketch.</source>
       <translation>Roghnaigh srian aontoiseach ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10829"/>
-      <location filename="../../CommandConstraints.cpp" line="10841"/>
-      <location filename="../../CommandConstraints.cpp" line="10877"/>
-      <location filename="../../CommandConstraints.cpp" line="10952"/>
-      <location filename="../../CommandConstraints.cpp" line="10964"/>
+      <location filename="../../CommandConstraints.cpp" line="11161"/>
+      <location filename="../../CommandConstraints.cpp" line="11173"/>
+      <location filename="../../CommandConstraints.cpp" line="11209"/>
+      <location filename="../../CommandConstraints.cpp" line="11284"/>
+      <location filename="../../CommandConstraints.cpp" line="11296"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
@@ -2030,6 +2065,11 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
       <location filename="../../TaskSketcherElements.cpp" line="717"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation>Ní thacaítear faoi láthair le geoiméadracht sheachtrach a bhogadh go sraith amhairc eile. Fágfar geoiméadracht sheachtrach ar lár</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1059"/>
+      <source>Polyline Parameters</source>
+      <translation>Paraiméadair Pholalíne</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="92"/>
@@ -2257,6 +2297,46 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
       <translation>Roghnaigh Eilimintí</translation>
     </message>
     <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="659"/>
+      <source>Toggle Driving/Reference</source>
+      <translation>Tiomáint/Tagairt a Athrú</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="663"/>
+      <source>Deactivate</source>
+      <translation>Díghníomhachtaigh</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="663"/>
+      <source>Activate</source>
+      <translation>Gníomhachtaigh</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="667"/>
+      <source>Show Constraints</source>
+      <translation>Taispeáin Srianta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="669"/>
+      <source>Hide Constraints</source>
+      <translation>Folaigh Srianta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="686"/>
+      <source>Center Sketch</source>
+      <translation>Sceitse Láir</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="694"/>
+      <source>Swap Constraint Names</source>
+      <translation>Malartaigh Ainmneacha Srianta</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="679"/>
+      <source>Rename</source>
+      <translation>Athainmnigh</translation>
+    </message>
+    <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="123"/>
       <source>Horizontal</source>
       <translation>Cothrománach</translation>
@@ -2358,48 +2438,8 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="654"/>
-      <source>Change Value</source>
-      <translation>Athraigh Luach</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="659"/>
-      <source>Toggle Driving/Reference</source>
-      <translation>Tiomáint/Tagairt a Athrú</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="663"/>
-      <source>Deactivate</source>
-      <translation>Díghníomhachtaigh</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="663"/>
-      <source>Activate</source>
-      <translation>Gníomhachtaigh</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="667"/>
-      <source>Show Constraints</source>
-      <translation>Taispeáin Srianta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="669"/>
-      <source>Hide Constraints</source>
-      <translation>Folaigh Srianta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="686"/>
-      <source>Center Sketch</source>
-      <translation>Sceitse Láir</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="694"/>
-      <source>Swap Constraint Names</source>
-      <translation>Malartaigh Ainmneacha Srianta</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="679"/>
-      <source>Rename</source>
-      <translation>Athainmnigh</translation>
+      <source>Edit Value</source>
+      <translation>Cuir Luach in Eagar</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="689"/>
@@ -2420,86 +2460,86 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="134"/>
+      <location filename="../../EditDatumDialog.cpp" line="136"/>
       <source>Insert Angle</source>
       <translation>Uillinn Ionsáigh</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="136"/>
+      <location filename="../../EditDatumDialog.cpp" line="138"/>
       <source>Angle:</source>
       <translation>Uillinn:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="142"/>
-      <location filename="../../EditDatumDialog.cpp" line="245"/>
+      <location filename="../../EditDatumDialog.cpp" line="144"/>
+      <location filename="../../EditDatumDialog.cpp" line="247"/>
       <source>Insert Radius</source>
       <translation>Cuir Ga isteach</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="151"/>
-      <location filename="../../EditDatumDialog.cpp" line="251"/>
+      <location filename="../../EditDatumDialog.cpp" line="153"/>
+      <location filename="../../EditDatumDialog.cpp" line="253"/>
       <source>Insert Diameter</source>
       <translation>Trastomhas Ionsáigh</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="160"/>
+      <location filename="../../EditDatumDialog.cpp" line="162"/>
       <source>Insert Weight</source>
       <translation>Cuir Meáchan isteach</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="167"/>
+      <location filename="../../EditDatumDialog.cpp" line="169"/>
       <source>Refractive Index Ratio</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Cóimheas Innéacs Athraonta</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="175"/>
+      <location filename="../../EditDatumDialog.cpp" line="177"/>
       <source>Insert Length</source>
       <translation>Fad Ionsáigh</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="243"/>
+      <location filename="../../EditDatumDialog.cpp" line="245"/>
       <source>Radius</source>
       <translation>Ga</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="249"/>
+      <location filename="../../EditDatumDialog.cpp" line="251"/>
       <source>Diameter</source>
       <translation>Trastomhas</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="144"/>
+      <location filename="../../EditDatumDialog.cpp" line="146"/>
       <source>Radius:</source>
       <translation>Ga:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="153"/>
+      <location filename="../../EditDatumDialog.cpp" line="155"/>
       <source>Diameter:</source>
       <translation>Trastomhas:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="161"/>
+      <location filename="../../EditDatumDialog.cpp" line="163"/>
       <source>Weight:</source>
       <translation>Meáchan:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="168"/>
+      <location filename="../../EditDatumDialog.cpp" line="170"/>
       <source>Ratio n2/n1:</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Cóimheas n2/n1:</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="177"/>
+      <location filename="../../EditDatumDialog.cpp" line="179"/>
       <source>Length:</source>
       <translation>Fad:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10390"/>
+      <location filename="../../CommandConstraints.cpp" line="10722"/>
       <source>Refractive Index Ratio</source>
       <translation>Cóimheas Innéacs Athraonta</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10391"/>
+      <location filename="../../CommandConstraints.cpp" line="10723"/>
       <source>Ratio n2/n1:</source>
       <translation>Cóimheas n2/n1:</translation>
     </message>
@@ -3144,62 +3184,62 @@ Ní bhaineann an socrú seo ach leis an mbarra uirlisí. Cibé ceann a roghnaío
 'Ga': Cuirfidh an uirlis ga i bhfeidhm ar stuaiceanna agus ciorcail araon.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="201"/>
+      <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Single tool</source>
       <translation>Uirlis aonair</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="202"/>
+      <location filename="../../SketcherSettings.cpp" line="227"/>
       <source>Separated tools</source>
       <translation>Uirlisí scartha</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="203"/>
+      <location filename="../../SketcherSettings.cpp" line="228"/>
       <source>Both</source>
       <translation>An dá</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="224"/>
+      <location filename="../../SketcherSettings.cpp" line="249"/>
       <source>Auto</source>
       <translation>Uathoibríoch</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="225"/>
+      <location filename="../../SketcherSettings.cpp" line="250"/>
       <source>Diameter</source>
       <translation>Trastomhas</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="226"/>
+      <location filename="../../SketcherSettings.cpp" line="251"/>
       <source>Radius</source>
       <translation>Ga</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="237"/>
+      <location filename="../../SketcherSettings.cpp" line="262"/>
       <source>Always</source>
       <translation>I gcónaí</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="238"/>
+      <location filename="../../SketcherSettings.cpp" line="263"/>
       <source>Never</source>
       <translation>Choíche</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="239"/>
+      <location filename="../../SketcherSettings.cpp" line="264"/>
       <source>When no scale feature is visible</source>
       <translation>Nuair nach bhfuil aon ghné scála le feiceáil</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="247"/>
+      <location filename="../../SketcherSettings.cpp" line="272"/>
       <source>None</source>
       <translation>Dada</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="248"/>
+      <location filename="../../SketcherSettings.cpp" line="273"/>
       <source>Dimensions only</source>
       <translation>Toisí amháin</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="249"/>
+      <location filename="../../SketcherSettings.cpp" line="274"/>
       <source>Position and dimensions</source>
       <translation>Suíomh agus toisí</translation>
     </message>
@@ -3212,50 +3252,50 @@ Ní bhaineann an socrú seo ach leis an mbarra uirlisí. Cibé ceann a roghnaío
       <translation>Taispeáin</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="248"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="58"/>
       <source>Font size</source>
       <translation>Méid cló</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="40"/>
-      <location filename="../../SketcherSettingsDisplay.ui" line="202"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="71"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="186"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="68"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="214"/>
       <source>View scale ratio</source>
       <translation>Cóimheas scála amhairc</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="225"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="341"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>Ní thaispeánfar aonaid faid bonn i srianta ná i gcomhordanáidí cúrsóra.
 Tacaíonn sé le gach córas aonad seachas 'gnáthnós SAM' agus 'Foirgneamh SAM/Euro'.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="170"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="255"/>
       <source>Segments per geometry</source>
       <translation>Deighleoga de réir geoiméadrachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="287"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation>Iarr luach tar éis srianadh tríthoiseach a chruthú</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="183"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Cruthú geoiméadrachta "Mód Leanúna"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="261"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="325"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>Cruthú srianta "Mód Leanúna"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="229"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="345"/>
       <source>Hide base length units for supported unit systems</source>
       <translation>Folaigh aonaid fhaid bhunúsacha do chórais aonad tacaithe</translation>
     </message>
@@ -3265,109 +3305,140 @@ Tacaíonn sé le gach córas aonad seachas 'gnáthnós SAM' agus 'Foirgneamh SAM
       <translation>Eagarthóireacht Sceitse</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="37"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="183"/>
       <source>Pixel size used to render constraint symbols</source>
       <translation>Méid picteilín a úsáidtear chun siombailí srianta a rindreáil</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="78"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
       <source>Scales the 3D view based on this factor</source>
       <translation>Scálaíonn sé an radharc 3T bunaithe ar an bhfachtóir seo</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="109"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="265"/>
       <source>The number of polygons used for geometry approximation</source>
       <translation>Líon na bpolagán a úsáidtear le haghaidh garmheastacháin gheoiméadrachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="131"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="396"/>
       <source>Show dimensional constraint name with format</source>
       <translation>Taispeáin ainm an tsrianta tríthoisigh leis an bhformáid</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="157"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="422"/>
       <source>%N = %V</source>
       <translation>%N = %V</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="180"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="303"/>
       <source>Keeps the current Sketcher tool active after creating geometry</source>
       <translation>Coinníonn an uirlis Sketcher reatha gníomhach tar éis geoiméadracht a chruthú</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="199"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="68"/>
       <source>Font size used for labels and constraints</source>
       <translation>Méid an chló a úsáidtear le haghaidh lipéid agus srianta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="322"/>
       <source>Keeps the current Sketcher constraint tool active after creating geometry</source>
       <translation>Coinníonn sé an uirlis srianta Sketcher reatha gníomhach tar éis geoiméadracht a chruthú</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="284"/>
       <source>Opens a dialog to input a value for new dimensional constraints after creation</source>
       <translation>Osclaíonn sé seo dialóg chun luach a ionchur le haghaidh srianta nua-thoiseacha tar éis a gcruthaithe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="26"/>
+      <source>Font name</source>
+      <translation>Ainm cló</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="39"/>
+      <source>Font face used for labels and constraints</source>
+      <translation>Aghaidh chló a úsáidtear le haghaidh lipéid agus srianta</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="93"/>
+      <source>Font preview</source>
+      <translation>Réamhamharc cló</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="103"/>
+      <source>Preview of a constraint text when selected font family and size is used</source>
+      <translation>Réamhamharc ar théacs srianta nuair a úsáidtear an teaghlach cló agus an méid cló roghnaithe</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="112"/>
+      <source>⌀123.45 µm (ƒ𝑥)</source>
+      <translation>⌀123.45 µm (ƒ𝑥)</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="149"/>
+      <source>Because the selected font does not contain all characters Sketcher uses,
+the characters listed here will be drawn using a substitute font.</source>
+      <translation>Ós rud é nach bhfuil na carachtair uile a úsáideann Sketcher sa chló roghnaithe, déanfar na carachtair atá liostaithe anseo a tharraingt ag baint úsáide as cló ionadaíoch.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="377"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form</source>
       <translation>Úsáidfidh comhordanáidí an chúrsóra socrú deachúlacha an chórais in ionad an fhoirm ghearr</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="361"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="465"/>
       <source>Visibility Automation</source>
       <translation>Uathoibriú Infheictheachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="367"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="471"/>
       <source>Hides all object features that depend on the opened sketch</source>
       <translation>Folaíonn sé gach gné réada a bhraitheann ar an sceitse oscailte</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="386"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="490"/>
       <source>Shows source objects which are used for external geometry in the opened sketch</source>
       <translation>Taispeánann sé réada foinseacha a úsáidtear le haghaidh geoiméadracht sheachtrach sa sceitse oscailte</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="405"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="509"/>
       <source>Shows objects the opened sketch is attached to</source>
       <translation>Taispeánann sé rudaí a bhfuil an sceitse oscailte ceangailte leo</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="424"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="528"/>
       <source>Restores the camera position after closing the sketch</source>
       <translation>Athbhunaíonn sé suíomh an cheamara tar éis an sceitse a dhúnadh</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="443"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="547"/>
       <source>Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</source>
       <translation>Éiríonn sé seo leis an gceamara radharc ortagrafach a úsáid agus sceitse á chur in eagar.
 Ní oibríonn sé seo ach amháin nuair a bhíonn "Athchóirigh suíomh an cheamara tar éis eagarthóireachta" cumasaithe.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="463"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="567"/>
       <source>Opens a sketch in section view mode, showing only objects behind the sketch plane</source>
       <translation>Osclaíonn sé sceitse i mód radhairc rannóige, ag taispeáint rudaí taobh thiar den phlána sceitse amháin</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="466"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="570"/>
       <source>Open sketch in section view mode</source>
       <translation>Oscail sceitse i mód radhairc rannóige</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="507"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="611"/>
       <source>Applies current visibility automation settings to all sketches in the open documents</source>
       <translation>Cuireann sé socruithe uathoibrithe infheictheachta reatha i bhfeidhm ar gach sceitse sna doiciméid oscailte</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="510"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="614"/>
       <source>Apply to Existing Sketches</source>
       <translation>Cuir i bhFeidhm ar Sceitsí atá ann cheana</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
       <source>The format of the dimensional constraint string presentation.
 Defaults to: %N = %V
 
@@ -3380,69 +3451,74 @@ Réamhshocraithe go: %N = %V
 %V - luach toise</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="27"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="173"/>
       <source>Constraint symbol size</source>
       <translation>Méid siombail srianta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="128"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="393"/>
       <source>Shows names of dimensional constraints, if they exist</source>
       <translation>Taispeánann sé ainmneacha srianta tríthoiseacha, más ann dóibh</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="277"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="358"/>
       <source>Shows cursor position coordinates next to the cursor while editing a sketch</source>
       <translation>Taispeánann comhordanáidí shuíomh an chúrsóra in aice leis an gcúrsóir agus sceitse á chur in eagar</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="361"/>
       <source>Show coordinates next to the cursor while editing</source>
       <translation>Taispeáin comhordanáidí in aice leis an gcúrsóir agus tú ag eagarthóireacht</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="380"/>
       <source>Use system decimals setting for cursor coordinates</source>
       <translation>Úsáid socruithe deachúlacha an chórais le haghaidh comhordanáidí cúrsóra</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="370"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="474"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>Folaigh gach réad a bhraitheann ar an sceitse</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="389"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="493"/>
       <source>Show objects used for external geometry</source>
       <translation>Taispeáin réada a úsáidtear le haghaidh geoiméadracht sheachtrach</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="512"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>Taispeáin na rudaí a bhfuil an sceitse ceangailte leo</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="531"/>
       <source>Restore camera position after editing</source>
       <translation>Athchóirigh suíomh an cheamara tar éis eagarthóireachta</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="447"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="551"/>
       <source>Force orthographic camera when entering edit</source>
       <translation>Fórsaigh ceamara ortagrafach agus tú ag dul isteach in eagar</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="488"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="592"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Tabhair faoi deara: is socruithe réamhshocraithe iad seo a chuirtear i bhfeidhm ar sceitsí nua. Cuimhnítear ar an iompraíocht do gach sceitse ina haonar mar airíonna ar an táb Amharc.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="527"/>
+      <location filename="../../SketcherSettings.cpp" line="578"/>
       <source>Unexpected C++ exception</source>
       <translation>Eisceacht C++ gan choinne</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="530"/>
+      <location filename="../../SketcherSettings.cpp" line="581"/>
       <source>Sketcher</source>
       <translation>Sceitseálaí</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.cpp" line="605"/>
+      <source>Glyphs not present:</source>
+      <translation>Glifí nach bhfuil i láthair:</translation>
     </message>
   </context>
   <context>
@@ -3999,112 +4075,112 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3603"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3633"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3627"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3657"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Tá an sceitse neamhbhailí agus ní féidir é a chur in eagar.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3823"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3853"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Tá an srian seo a leanas iomarcach go páirteach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3824"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3854"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Tá na srianta seo a leanas iomarcach go páirteach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3582"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3606"/>
       <source>Edit Sketch</source>
       <translation>Cuir Sceitse in Eagar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3604"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3634"/>
       <source>Close this dialog?</source>
       <translation>An bhfuil tú ag iarraidh an dialóg seo a dhúnadh?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3625"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3655"/>
       <source>Invalid Sketch</source>
       <translation>Sceitse Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3626"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3656"/>
       <source>Open the sketch validation tool?</source>
       <translation>An uirlis bailíochtaithe sceitse a oscailt?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3809"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3839"/>
       <source>Remove the following constraint:</source>
       <translation>Bain an srian seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3810"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3840"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Bain ceann amháin ar a laghad de na srianta seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3816"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3846"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Bain an srian iomarcach seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3817"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3847"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Bain na srianta iomarcacha seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3830"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3860"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Bain an srian mífhoirmithe seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3831"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3861"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Bain na srianta mífhoirmithe seo a leanas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3890"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3920"/>
       <source>Empty sketch</source>
       <translation>Sceitse folamh</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3895"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3925"/>
       <source>Over-constrained:</source>
       <translation>Ró-shrianta:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3901"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3931"/>
       <source>Malformed constraints:</source>
       <translation>Srianta mífhoirmithe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3909"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3939"/>
       <source>Redundant constraints:</source>
       <translation>Srianta iomarcacha:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3915"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3945"/>
       <source>Partially redundant:</source>
       <translation>Go páirteach iomarcach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3922"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3952"/>
       <source>Solver failed to converge</source>
       <translation>Theip ar an réiteoir teacht le chéile</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3928"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3958"/>
       <source>Under-constrained:</source>
       <translation>Faoi shrianta:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3930"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3960"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Céim Saoirse</numerusform>
@@ -4115,7 +4191,7 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3934"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3964"/>
       <source>Fully constrained</source>
       <translation>Srianta go hiomlán</translation>
     </message>
@@ -4168,8 +4244,8 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9074"/>
-      <location filename="../../CommandConstraints.cpp" line="9076"/>
+      <location filename="../../CommandConstraints.cpp" line="9371"/>
+      <location filename="../../CommandConstraints.cpp" line="9373"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Socraigh trastomhas ciorcail nó stua</translation>
     </message>
@@ -4199,74 +4275,74 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="697"/>
       <source>No sketch found</source>
       <translation>Níor aimsíodh aon sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="627"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>Ní féidir sceitse a cheangal leis féin!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="628"/>
+      <location filename="../../Command.cpp" line="700"/>
       <source>The document does not contain a sketch</source>
       <translation>Níl sceitse sa cháipéis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="644"/>
+      <location filename="../../Command.cpp" line="716"/>
       <source>Select Sketch</source>
       <translation>Roghnaigh Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="646"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>Roghnaigh sceitse (ní thaispeántar roinnt sceitsí chun spleáchas ciorclach a chosc)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Select a sketch from the list</source>
       <translation>Roghnaigh sceitse ón liosta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="713"/>
+      <location filename="../../Command.cpp" line="785"/>
       <source> (incompatible with selection)</source>
       <translation> (neamh-chomhoiriúnach leis an roghnú)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="714"/>
+      <location filename="../../Command.cpp" line="786"/>
       <source> (current)</source>
       <translation> (reatha)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="722"/>
+      <location filename="../../Command.cpp" line="794"/>
       <source> (suggested)</source>
       <translation> (molta)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="729"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Sketch Attachment</source>
       <translation>Ceangaltán Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="731"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Tá an modh ceangail reatha neamh-chomhoiriúnach leis an roghnú nua.
 Roghnaigh an modh chun an sceitse seo a cheangal leis na réada roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="735"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Roghnaigh an modh chun an sceitse seo a cheangal le réada roghnaithe.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="781"/>
+      <location filename="../../Command.cpp" line="853"/>
       <source>Map sketch</source>
       <translation>Sceitse léarscáile</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="782"/>
+      <location filename="../../Command.cpp" line="854"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Ní féidir sceitse a mhapáil chun tacú le:
@@ -4285,12 +4361,12 @@ Roghnaigh an modh chun an sceitse seo a cheangal leis na réada roghnaithe.</tra
   <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="216"/>
       <source>Sketch Attachment</source>
       <translation>Ceangaltán Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="217"/>
       <source>Select the method to attach this sketch to selected object</source>
       <translation>Roghnaigh an modh chun an sceitse seo a cheangal leis an réad roghnaithe</translation>
     </message>
@@ -4298,12 +4374,12 @@ Roghnaigh an modh chun an sceitse seo a cheangal leis na réada roghnaithe.</tra
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="529"/>
       <source>Sketch Has Support</source>
       <translation>Tá tacaíocht ag Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation>Ní féidir sceitse le haghaidh tacaíochta a ath-threoshuíomh.
@@ -4606,7 +4682,7 @@ Tá algartam Eigen Sparse QR optamaithe do mhaitrísí tanaí; is gnách go mbí
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3873"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3903"/>
       <source>and %1 more</source>
       <translation>agus %1 eile</translation>
     </message>
@@ -4834,32 +4910,33 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="110"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="143"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="482"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="514"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1359"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="355"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="110"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="148"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
+      <location filename="../../DrawSketchHandlerText.h" line="182"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="318"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="135"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="196"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="264"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="223"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="175"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="174"/>
       <location filename="../../CommandSketcherTools.cpp" line="1315"/>
       <location filename="../../CommandSketcherTools.cpp" line="1896"/>
       <location filename="../../CommandSketcherTools.cpp" line="2333"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="190"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="477"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="509"/>
       <location filename="../../DrawSketchHandlerScale.h" line="153"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="196"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="157"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="135"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="515"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="175"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="174"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="264"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="143"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="223"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="157"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="148"/>
-      <location filename="../../DrawSketchHandlerText.h" line="182"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="393"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="678"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="755"/>
@@ -4898,26 +4975,26 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Tá faisnéis innéacs neamhbhailí sa srian agus tá sé mífhoirmithe.</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="710"/>
+      <location filename="../../CommandConstraints.cpp" line="787"/>
+      <location filename="../../CommandConstraints.cpp" line="879"/>
+      <location filename="../../CommandConstraints.cpp" line="963"/>
+      <location filename="../../CommandConstraints.cpp" line="6932"/>
+      <location filename="../../CommandConstraints.cpp" line="7134"/>
       <location filename="../../CommandSketcherTools.cpp" line="1101"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
-      <location filename="../../CommandConstraints.cpp" line="435"/>
-      <location filename="../../CommandConstraints.cpp" line="512"/>
-      <location filename="../../CommandConstraints.cpp" line="604"/>
-      <location filename="../../CommandConstraints.cpp" line="688"/>
-      <location filename="../../CommandConstraints.cpp" line="6635"/>
-      <location filename="../../CommandConstraints.cpp" line="6837"/>
       <source>Invalid Constraint</source>
       <translation>Srian Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="758"/>
+      <location filename="../../CommandConstraints.cpp" line="1033"/>
       <source>Invalid constraint</source>
       <translation>Srian neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="510"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="515"/>
       <source>Failed to add arc</source>
       <translation>Theip ar stua a chur leis</translation>
     </message>
@@ -4942,6 +5019,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Earráid ag cruthú B-spline</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1360"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="679"/>
       <source>Error deleting last pole/knot</source>
       <translation>Earráid ag scriosadh an chuaille/an snaidhm dheireanaigh</translation>
@@ -4977,24 +5055,24 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Theip ar chruthú filléad</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="478"/>
       <location filename="../../DrawSketchHandlerLine.h" line="144"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="483"/>
       <source>Failed to add line</source>
       <translation>Theip ar líne a chur leis</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="239"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="222"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="142"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="230"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="182"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="197"/>
       <location filename="../../DrawSketchHandlerScale.h" line="162"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="164"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="142"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="522"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="222"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="182"/>
       <location filename="../../DrawSketchHandlerArc.h" line="299"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="150"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="230"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="522"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="164"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="239"/>
       <source>Tool execution aborted</source>
       <translation>Cuireadh deireadh le forghníomhú na huirlise</translation>
     </message>
@@ -5029,44 +5107,44 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Theip ar an imeall a bhearradh</translation>
     </message>
     <message>
+      <location filename="../../EditDatumDialog.cpp" line="66"/>
+      <location filename="../../EditDatumDialog.cpp" line="342"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1331"/>
-      <location filename="../../EditDatumDialog.cpp" line="64"/>
-      <location filename="../../EditDatumDialog.cpp" line="340"/>
       <source>Value Error</source>
       <translation>Earráid Luach</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="984"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="1000"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>Is cúis le srianta uathoibríocha iomarcaíocht. Baintear iad</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1004"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="1020"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>Ní uathshrianadh é srian iomarcach. Níor cuireadh aon uathshrianta ná srianta breise leis. Tuairiscigh le do thoil!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1055"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="1071"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
       <translation>Iomarcaíocht/Srianadh Coimhlinte Gan Choinne. Seiceáil srianta agus uathshrianta na hoibríochta seo.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="424"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="425"/>
       <source>Offset Error</source>
       <translation>Earráid Fritháireamh</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="425"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="426"/>
       <source>Offset could not be created.</source>
       <translation>Níorbh fhéidir an fritháireamh a chruthú.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1241"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1242"/>
       <source>Invalid Value</source>
       <translation>Luach Neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1242"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1243"/>
       <source>Offset value can't be 0.</source>
       <translation>Ní féidir leis an luach fritháireamh a bheith 0.</translation>
     </message>
@@ -5106,7 +5184,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Theip ar shiméadracht a chruthú</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="65"/>
+      <location filename="../../EditDatumDialog.cpp" line="67"/>
       <source>Invalid constraint name (must only contain alphanumericals and underscores, and must not start with digit)</source>
       <translation>Ainm srianta neamhbhailí (ní mór ach alfa-uimhriúla agus fo-línte a bheith ann, agus ní mór dó tosú le digit)</translation>
     </message>
@@ -5119,12 +5197,12 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
   <context>
     <name>CmdSketcherDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3184"/>
+      <location filename="../../CommandConstraints.cpp" line="3481"/>
       <source>Dimension</source>
       <translation>Toise</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3185"/>
+      <location filename="../../CommandConstraints.cpp" line="3482"/>
       <source>Constrains contextually based on the selection. The type can be changed with the M key.</source>
       <translation>Cuireann sé srian ar chomhthéacs bunaithe ar an roghnú. Is féidir an cineál a athrú leis an eochair M.</translation>
     </message>
@@ -5132,12 +5210,12 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
   <context>
     <name>CmdSketcherCompDimensionTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1542"/>
+      <location filename="../../CommandConstraints.cpp" line="1839"/>
       <source>Dimension</source>
       <translation>Toise</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1543"/>
+      <location filename="../../CommandConstraints.cpp" line="1840"/>
       <source>Dimension tools</source>
       <translation>Uirlisí toise</translation>
     </message>
@@ -5264,12 +5342,12 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1196"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1197"/>
       <source>Delete original geometries (U)</source>
       <translation>Scrios geoiméadrachtaí bunaidh (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1204"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1205"/>
       <source>Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</source>
       <translation>Scriosann sé an geoiméadracht bhunaidh. Má tá cóip aonair á cruthú, déantar oibríocht 'Bog' go héifeachtach leis seo.</translation>
     </message>
@@ -5289,12 +5367,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1200"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1201"/>
       <source>Add offset constraint (J)</source>
       <translation>Cuir srian fritháireamh (J) leis</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1212"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1213"/>
       <source>Adds a distance constraint with additional construction geometries that allows the distance to modify the entire offset geometry</source>
       <translation>Cuireann sé srian achair leis le geoiméadrachtaí tógála breise a ligeann don achar geoiméadracht iomlán an fhritháireamh a mhodhnú</translation>
     </message>
@@ -5670,12 +5748,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherCompConstrainTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1615"/>
+      <location filename="../../CommandConstraints.cpp" line="1912"/>
       <source>Constrain</source>
       <translation>Srian</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1616"/>
+      <location filename="../../CommandConstraints.cpp" line="1913"/>
       <source>Constrain tools</source>
       <translation>Uirlisí srianta</translation>
     </message>
@@ -5769,12 +5847,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1178"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1179"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1179"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1180"/>
       <source>Intersection</source>
       <translation>Crosbhealach</translation>
     </message>
@@ -5796,13 +5874,13 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="938"/>
-      <source>Press F to undo last point.</source>
-      <translation>Brúigh F chun an pointe deireanach a chealú.</translation>
+      <source>Press R to undo last point.</source>
+      <translation>Brúigh R chun an pointe deireanach a chealú.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="949"/>
-      <source>Periodic (R)</source>
-      <translation>Tréimhsiúil (R)</translation>
+      <source>Periodic (F)</source>
+      <translation>Tréimhsiúil (F)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="953"/>
@@ -5813,8 +5891,8 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9068"/>
-      <location filename="../../CommandConstraints.cpp" line="9070"/>
+      <location filename="../../CommandConstraints.cpp" line="9365"/>
+      <location filename="../../CommandConstraints.cpp" line="9367"/>
       <source>Fix the radius of an arc or a circle</source>
       <translation>Socraigh ga stua nó ciorcail</translation>
     </message>
@@ -5822,8 +5900,8 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>Sketcher_ConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9081"/>
-      <location filename="../../CommandConstraints.cpp" line="9083"/>
+      <location filename="../../CommandConstraints.cpp" line="9378"/>
+      <location filename="../../CommandConstraints.cpp" line="9380"/>
       <source>Fix the radius/diameter of an arc or a circle</source>
       <translation>Socraigh ga/trastomhas stua nó ciorcail</translation>
     </message>
@@ -5846,12 +5924,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="159"/>
       <source>New Sketch</source>
       <translation>Sceitse Nua</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="158"/>
+      <location filename="../../Command.cpp" line="160"/>
       <source>Creates a new sketch</source>
       <translation>Cruthaíonn sceitse nua</translation>
     </message>
@@ -5859,12 +5937,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Edit Sketch</source>
       <translation>Cuir Sceitse in Eagar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Opens the selected sketch for editing</source>
       <translation>Osclaíonn an sceitse roghnaithe le haghaidh eagarthóireachta</translation>
     </message>
@@ -5872,25 +5950,25 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="367"/>
+      <location filename="../../Command.cpp" line="369"/>
       <source>Leave Sketch</source>
       <translation>Fág Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="368"/>
-      <source>Exits the active sketch</source>
-      <translation>Fágann sé an sceitse gníomhach</translation>
+      <location filename="../../Command.cpp" line="370"/>
+      <source>Finish editing the active sketch. You can also press Escape to exit.</source>
+      <translation>Críochnaigh ag eagarthóireacht an sceitse ghníomhach. Is féidir leat brúigh ar Escape freisin chun imeacht.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="477"/>
       <source>Stop Operation</source>
       <translation>Stop Oibríocht</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>Stops the active operation while in edit mode</source>
       <translation>Stopann sé an oibríocht ghníomhach agus í i mód eagarthóireachta</translation>
     </message>
@@ -5898,12 +5976,12 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Reorient Sketch</source>
       <translation>Aththreorú Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation>Cuireann sé an sceitse roghnaithe ar cheann de na pláin chomhordanáidí domhanda.
@@ -5913,12 +5991,12 @@ Glanfaidh sé seo an mhaoin AttachmentSupport.</translation>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Align View to Sketch</source>
       <translation>Ailínigh an Radharc leis an Sceitse</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="804"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation>Ailíníonn sé treoshuíomh an cheamara go hingearach leis an eitleán sceitse gníomhach</translation>
     </message>
@@ -5926,12 +6004,12 @@ Glanfaidh sé seo an mhaoin AttachmentSupport.</translation>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1105"/>
+      <location filename="../../Command.cpp" line="1421"/>
       <source>Toggle Section View</source>
       <translation>Amharc Rannóige a Athraigh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1106"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Toggles between section view and full view</source>
       <translation>Athraíonn idir radharc rannóige agus radharc iomlán</translation>
     </message>
@@ -5939,42 +6017,42 @@ Glanfaidh sé seo an mhaoin AttachmentSupport.</translation>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1180"/>
+      <location filename="../../Command.cpp" line="1496"/>
       <source>Display grid</source>
       <translation>Eangach taispeána</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1181"/>
+      <location filename="../../Command.cpp" line="1497"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>Athraíonn sé infheictheacht an ghreille sa sceitse gníomhach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1184"/>
+      <location filename="../../Command.cpp" line="1500"/>
       <source>Grid auto-spacing</source>
       <translation>Spásáil uathoibríoch ghreille</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1185"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>Coigeartaíonn sé an spásáil eangaí go huathoibríoch bunaithe ar an leibhéal súmála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1504"/>
       <source>Spacing</source>
       <translation>Spásáil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1189"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Fad idir dhá líne ghreille ina dhiaidh sin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1191"/>
+      <location filename="../../Command.cpp" line="1507"/>
       <source>Snap to grid</source>
       <translation>Snapáil chuig an ngreille</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1193"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Snapálfaidh pointí nua go dtí an líne eangaí is gaire.
@@ -5984,12 +6062,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1318"/>
+      <location filename="../../Command.cpp" line="1634"/>
       <source>Toggle Grid</source>
       <translation>Eangach a Athrú</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1320"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>Athraíonn an taispeáint eangaí sa sceitse gníomhach</translation>
     </message>
@@ -5997,22 +6075,22 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1425"/>
+      <location filename="../../Command.cpp" line="1741"/>
       <source>Snap to objects</source>
       <translation>Snapáil chuig réada</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1426"/>
+      <location filename="../../Command.cpp" line="1742"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Snapálfaidh pointí nua chuig an réad atá réamhroghnaithe faoi láthair. Snapálfaidh sé freisin chuig lár línte agus áirsí.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>Snap angle</source>
       <translation>Uillinn snap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1748"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>Céim uilleach le haghaidh uirlisí a úsáideann 'Snap ag uillinn'. Coinnigh Ctrl chun 'Snap ag uillinn' a chumasú. Tosaíonn an uillinn ón ais X dhearfach den sceitse.</translation>
     </message>
@@ -6020,12 +6098,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1518"/>
+      <location filename="../../Command.cpp" line="1834"/>
       <source>Toggle Snap</source>
       <translation>Scoránaigh Snap</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1520"/>
+      <location filename="../../Command.cpp" line="1836"/>
       <source>Toggles snapping</source>
       <translation>Scoránaigh sé snapáil</translation>
     </message>
@@ -6033,27 +6111,27 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1943"/>
       <source>Normal geometry</source>
       <translation>Geoiméadracht gnáth</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1629"/>
+      <location filename="../../Command.cpp" line="1945"/>
       <source>Construction geometry</source>
       <translation>Geoiméadracht tógála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1631"/>
+      <location filename="../../Command.cpp" line="1947"/>
       <source>External geometry</source>
       <translation>Geoiméadracht sheachtrach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1634"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Unknown geometry</source>
       <translation>Geoiméadracht anaithnid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1675"/>
+      <location filename="../../Command.cpp" line="1991"/>
       <source>Rendering order</source>
       <translation>Ord rindreála</translation>
     </message>
@@ -6061,12 +6139,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="1760"/>
+      <location filename="../../Command.cpp" line="2076"/>
       <source>Rendering Order</source>
       <translation>Ordú Rindreála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1761"/>
+      <location filename="../../Command.cpp" line="2077"/>
       <source>Reorders items in the rendering order</source>
       <translation>Athordaíonn sé míreanna san ord rindreála</translation>
     </message>
@@ -6087,12 +6165,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCompToggleConstraints</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1646"/>
+      <location filename="../../CommandConstraints.cpp" line="1943"/>
       <source>Toggle Constraints</source>
       <translation>Srianta a Athrú</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1647"/>
+      <location filename="../../CommandConstraints.cpp" line="1944"/>
       <source>Toggle constrain tools</source>
       <translation>Uirlisí srianta a scoránaigh</translation>
     </message>
@@ -6100,12 +6178,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCompHorizontalVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3238"/>
+      <location filename="../../CommandConstraints.cpp" line="3535"/>
       <source>Horizontal/Vertical Constraint</source>
       <translation>Srianadh Cothrománach/Ingearach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3239"/>
+      <location filename="../../CommandConstraints.cpp" line="3536"/>
       <source>Constrains the selected elements either horizontally or vertically</source>
       <translation>Cuireann sé srian ar na heilimintí roghnaithe go cothrománach nó go hingearach</translation>
     </message>
@@ -6113,12 +6191,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainHorVer</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3556"/>
+      <location filename="../../CommandConstraints.cpp" line="3853"/>
       <source>Horizontal/Vertical Constraint</source>
       <translation>Srianadh Cothrománach/Ingearach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3557"/>
+      <location filename="../../CommandConstraints.cpp" line="3854"/>
       <source>Constrains the selected elements either horizontally or vertically, based on their closest alignment</source>
       <translation>Cuireann sé srian ar na heilimintí roghnaithe go cothrománach nó go hingearach, bunaithe ar a n-ailíniú is gaire dóibh</translation>
     </message>
@@ -6126,12 +6204,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3602"/>
+      <location filename="../../CommandConstraints.cpp" line="3899"/>
       <source>Horizontal Constraint</source>
       <translation>Srianadh Cothrománach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3603"/>
+      <location filename="../../CommandConstraints.cpp" line="3900"/>
       <source>Constrains the selected elements horizontally</source>
       <translation>Srianann sé na heilimintí roghnaithe go cothrománach</translation>
     </message>
@@ -6139,12 +6217,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3647"/>
+      <location filename="../../CommandConstraints.cpp" line="3944"/>
       <source>Vertical Constraint</source>
       <translation>Srian Ingearach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3648"/>
+      <location filename="../../CommandConstraints.cpp" line="3945"/>
       <source>Constrains the selected elements vertically</source>
       <translation>Srianann sé na heilimintí roghnaithe go hingearach</translation>
     </message>
@@ -6152,12 +6230,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3693"/>
+      <location filename="../../CommandConstraints.cpp" line="3990"/>
       <source>Lock Position</source>
       <translation>Seasamh Glasála</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3694"/>
+      <location filename="../../CommandConstraints.cpp" line="3991"/>
       <source>Constrains the selected vertices by adding horizontal and vertical distance constraints</source>
       <translation>Cuireann sé srian ar na buaicphointí roghnaithe trí shrianta achair chothrománacha agus ingearacha a chur leis</translation>
     </message>
@@ -6165,12 +6243,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3979"/>
+      <location filename="../../CommandConstraints.cpp" line="4276"/>
       <source>Block Constraint</source>
       <translation>Srianadh Bloc</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3980"/>
+      <location filename="../../CommandConstraints.cpp" line="4277"/>
       <source>Constrains the selected edges as fixed</source>
       <translation>Srianann sé na himill roghnaithe mar sheasta</translation>
     </message>
@@ -6178,12 +6256,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainCoincidentUnified</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4180"/>
+      <location filename="../../CommandConstraints.cpp" line="4477"/>
       <source>Coincident Constraint</source>
       <translation>Srianadh Comhthráthach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4181"/>
+      <location filename="../../CommandConstraints.cpp" line="4478"/>
       <source>Constrains the selected elements to be coincident</source>
       <translation>Cuireann sé srian ar na heilimintí roghnaithe a bheith comhthráthach</translation>
     </message>
@@ -6191,12 +6269,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4695"/>
+      <location filename="../../CommandConstraints.cpp" line="4992"/>
       <source>Coincident Constraint</source>
       <translation>Srianadh Comhthráthach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4696"/>
+      <location filename="../../CommandConstraints.cpp" line="4993"/>
       <source>Constrains the selected elements to be coincident</source>
       <translation>Cuireann sé srian ar na heilimintí roghnaithe a bheith comhthráthach</translation>
     </message>
@@ -6204,12 +6282,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4745"/>
+      <location filename="../../CommandConstraints.cpp" line="5042"/>
       <source>Point-On-Object Constraint</source>
       <translation>Srian Pointe-Ar-Réad</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4746"/>
+      <location filename="../../CommandConstraints.cpp" line="5043"/>
       <source>Constrains the selected point onto the selected object</source>
       <translation>Cuireann sé srian ar an bpointe roghnaithe ar an réad roghnaithe</translation>
     </message>
@@ -6217,12 +6295,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4797"/>
+      <location filename="../../CommandConstraints.cpp" line="5094"/>
       <source>Distance Dimension</source>
       <translation>Toise an Achair</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4798"/>
+      <location filename="../../CommandConstraints.cpp" line="5095"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if one is selected</source>
       <translation>Cuireann sé srian ar an achar ingearach idir dhá phointe, nó ó phointe go dtí an bunphointe má roghnaítear ceann amháin</translation>
     </message>
@@ -6230,12 +6308,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5451"/>
+      <location filename="../../CommandConstraints.cpp" line="5748"/>
       <source>Horizontal Dimension</source>
       <translation>Toise Cothrománach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5452"/>
+      <location filename="../../CommandConstraints.cpp" line="5749"/>
       <source>Constrains the horizontal distance between two points, or from a point to the origin if only one is selected</source>
       <translation>Cuireann sé srian ar an achar cothrománach idir dhá phointe, nó ó phointe go dtí an bunphointe mura bhfuil ach ceann amháin roghnaithe</translation>
     </message>
@@ -6243,12 +6321,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5752"/>
+      <location filename="../../CommandConstraints.cpp" line="6049"/>
       <source>Vertical Dimension</source>
       <translation>Toise Ingearach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5753"/>
+      <location filename="../../CommandConstraints.cpp" line="6050"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
       <translation>Cuireann sé srian ar an achar ingearach idir dhá phointe, nó ó phointe go dtí an bunphointe mura bhfuil ach ceann amháin roghnaithe</translation>
     </message>
@@ -6256,12 +6334,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6047"/>
+      <location filename="../../CommandConstraints.cpp" line="6344"/>
       <source>Parallel Constraint</source>
       <translation>Srianadh Comhthreomhar</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6048"/>
+      <location filename="../../CommandConstraints.cpp" line="6345"/>
       <source>Constrains the selected lines to be parallel</source>
       <translation>Cuireann sé srian ar na línte roghnaithe a bheith comhthreomhar</translation>
     </message>
@@ -6269,12 +6347,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6210"/>
+      <location filename="../../CommandConstraints.cpp" line="6507"/>
       <source>Perpendicular Constraint</source>
       <translation>Srianadh Ingearach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6211"/>
+      <location filename="../../CommandConstraints.cpp" line="6508"/>
       <source>Constrains the selected lines to be perpendicular</source>
       <translation>Cuireann sé srian ar na línte roghnaithe a bheith ingearach</translation>
     </message>
@@ -6282,12 +6360,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6994"/>
+      <location filename="../../CommandConstraints.cpp" line="7291"/>
       <source>Tangent/Collinear Constraint</source>
       <translation>Srian Tangent/Comhlíneach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6995"/>
+      <location filename="../../CommandConstraints.cpp" line="7292"/>
       <source>Constrains the selected elements to be tangent or collinear</source>
       <translation>Cuireann sé srian ar na heilimintí roghnaithe a bheith tadhlaíoch nó comhlíneach</translation>
     </message>
@@ -6295,12 +6373,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7907"/>
+      <location filename="../../CommandConstraints.cpp" line="8204"/>
       <source>Radius Dimension</source>
       <translation>Toise Ga</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7908"/>
+      <location filename="../../CommandConstraints.cpp" line="8205"/>
       <source>Constrains the radius of the selected circle or arc</source>
       <translation>Srianann sé ga an chiorcail nó an áirse roghnaithe</translation>
     </message>
@@ -6308,12 +6386,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8270"/>
+      <location filename="../../CommandConstraints.cpp" line="8567"/>
       <source>Diameter Dimension</source>
       <translation>Toise Trastomhas</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8271"/>
+      <location filename="../../CommandConstraints.cpp" line="8568"/>
       <source>Constrains the diameter of the selected circle or arc</source>
       <translation>Srianann sé trastomhas an chiorcail nó an áirse roghnaithe</translation>
     </message>
@@ -6321,12 +6399,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8588"/>
+      <location filename="../../CommandConstraints.cpp" line="8885"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Toise Ga/Trastomhas</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8589"/>
+      <location filename="../../CommandConstraints.cpp" line="8886"/>
       <source>Constrains the radius of the selected arc or the diameter of the selected circle</source>
       <translation>Cuireann sé srian ar gha an áirse roghnaithe nó ar thrastomhas an chiorcail roghnaithe</translation>
     </message>
@@ -6334,12 +6412,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9116"/>
+      <location filename="../../CommandConstraints.cpp" line="9413"/>
       <source>Angle Dimension</source>
       <translation>Toise Uillinne</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9117"/>
+      <location filename="../../CommandConstraints.cpp" line="9414"/>
       <source>Constrains the angle between two straight lines or between one line and the X-axis of the sketch if only one is selected</source>
       <translation>Cuireann sé srian ar an uillinn idir dhá líne dhíreacha nó idir líne amháin agus ais-X an sceitse mura bhfuil ach ceann amháin roghnaithe</translation>
     </message>
@@ -6347,12 +6425,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9569"/>
+      <location filename="../../CommandConstraints.cpp" line="9901"/>
       <source>Equal Constraint</source>
       <translation>Srianadh Comhionann</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9571"/>
+      <location filename="../../CommandConstraints.cpp" line="9903"/>
       <source>Constrains the selected edges or circles to be equal</source>
       <translation>Cuireann sé srian ar na himill nó na ciorcail roghnaithe le bheith cothrom</translation>
     </message>
@@ -6360,12 +6438,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9819"/>
+      <location filename="../../CommandConstraints.cpp" line="10151"/>
       <source>Symmetric Constraint</source>
       <translation>Srian Siméadrach</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9820"/>
+      <location filename="../../CommandConstraints.cpp" line="10152"/>
       <source>Constrains the selected elements to be symmetric</source>
       <translation>Srianann sé na heilimintí roghnaithe le bheith siméadrach</translation>
     </message>
@@ -6373,12 +6451,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10281"/>
+      <location filename="../../CommandConstraints.cpp" line="10613"/>
       <source>Refraction Constraint</source>
       <translation>Srianadh Athraonta</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10282"/>
+      <location filename="../../CommandConstraints.cpp" line="10614"/>
       <source>Constrains the selected elements based on the refraction law (Snell's Law)</source>
       <translation>Cuireann sé srian ar na heilimintí roghnaithe bunaithe ar an dlí athraonta (Dlí Snell)</translation>
     </message>
@@ -6386,12 +6464,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherChangeDimensionConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10717"/>
+      <location filename="../../CommandConstraints.cpp" line="11049"/>
       <source>Edit Value</source>
       <translation>Cuir Luach in Eagar</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10718"/>
+      <location filename="../../CommandConstraints.cpp" line="11050"/>
       <source>Edits the value of a dimensional constraint</source>
       <translation>Cuirtear luach srianta tríthoiseach in eagar</translation>
     </message>
@@ -6399,12 +6477,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10771"/>
+      <location filename="../../CommandConstraints.cpp" line="11103"/>
       <source>Toggle Driving/Reference Constraints</source>
       <translation>Srianta Tiomána/Tagartha a Athrú</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10772"/>
+      <location filename="../../CommandConstraints.cpp" line="11104"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
       <translation>Athraíonn sé idir mód tiomána agus mód tagartha na srianta agus na n-orduithe roghnaithe</translation>
     </message>
@@ -6412,12 +6490,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10926"/>
+      <location filename="../../CommandConstraints.cpp" line="11258"/>
       <source>Toggle Constraints</source>
       <translation>Srianta a Athrú</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10927"/>
+      <location filename="../../CommandConstraints.cpp" line="11259"/>
       <source>Toggles the state of the selected constraints</source>
       <translation>Athraíonn staid na srianta roghnaithe</translation>
     </message>
@@ -6464,25 +6542,25 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="232"/>
+      <location filename="../../CommandCreateGeo.cpp" line="264"/>
       <source>Polyline</source>
       <translation>Polalíne</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="233"/>
-      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
-      <translation>Cruthaíonn sé seo polalíne leanúnach. Brúigh an eochair 'M' chun modhanna deighleog a athrú</translation>
+      <location filename="../../CommandCreateGeo.cpp" line="265"/>
+      <source>Creates a polyline in the sketch. M key cycles through segment modes.</source>
+      <translation>Cruthaíonn sé seo polalíne sa sceitse. Úsáideann an eochair M an eochair chun dul trí mhodhanna na coda.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="267"/>
+      <location filename="../../CommandCreateGeo.cpp" line="297"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="268"/>
+      <location filename="../../CommandCreateGeo.cpp" line="298"/>
       <source>Creates an arc</source>
       <translation>Cruthaíonn stua</translation>
     </message>
@@ -6490,12 +6568,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="337"/>
+      <location filename="../../CommandCreateGeo.cpp" line="367"/>
       <source>Arc From Center</source>
       <translation>Arc ón Lár</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="338"/>
+      <location filename="../../CommandCreateGeo.cpp" line="368"/>
       <source>Creates an arc defined by a center point and an end point</source>
       <translation>Cruthaíonn sé stua atá sainmhínithe ag pointe lárnach agus pointe deiridh</translation>
     </message>
@@ -6503,12 +6581,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="369"/>
+      <location filename="../../CommandCreateGeo.cpp" line="399"/>
       <source>Arc From 3 Points</source>
       <translation>Arc ó 3 Phointe</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="370"/>
+      <location filename="../../CommandCreateGeo.cpp" line="400"/>
       <source>Creates an arc defined by 2 end points and 1 point on the arc</source>
       <translation>Cruthaíonn sé stua atá sainmhínithe ag 2 phointe deiridh agus 1 phointe ar an stua</translation>
     </message>
@@ -6516,12 +6594,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="405"/>
+      <location filename="../../CommandCreateGeo.cpp" line="435"/>
       <source>Elliptical Arc</source>
       <translation>Arc Eilipteach</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="406"/>
+      <location filename="../../CommandCreateGeo.cpp" line="436"/>
       <source>Creates an elliptical arc</source>
       <translation>Cruthaíonn stua éilipseach</translation>
     </message>
@@ -6529,12 +6607,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="436"/>
+      <location filename="../../CommandCreateGeo.cpp" line="466"/>
       <source>Hyperbolic Arc</source>
       <translation>Stua Hipearbólach</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="437"/>
+      <location filename="../../CommandCreateGeo.cpp" line="467"/>
       <source>Creates a hyperbolic arc</source>
       <translation>Cruthaíonn stua hipearbólach</translation>
     </message>
@@ -6542,12 +6620,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="466"/>
+      <location filename="../../CommandCreateGeo.cpp" line="496"/>
       <source>Parabolic Arc</source>
       <translation>Stór Parabólach</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="467"/>
+      <location filename="../../CommandCreateGeo.cpp" line="497"/>
       <source>Creates a parabolic arc</source>
       <translation>Cruthaíonn stua parabólach</translation>
     </message>
@@ -6555,12 +6633,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="498"/>
+      <location filename="../../CommandCreateGeo.cpp" line="528"/>
       <source>Conic</source>
       <translation>Cónghearradh</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="499"/>
+      <location filename="../../CommandCreateGeo.cpp" line="529"/>
       <source>Creates a conic</source>
       <translation>Cruthaíonn cónchruth</translation>
     </message>
@@ -6568,12 +6646,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="565"/>
+      <location filename="../../CommandCreateGeo.cpp" line="595"/>
       <source>Circle From Center</source>
       <translation>Ciorcal ón Lár</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="566"/>
+      <location filename="../../CommandCreateGeo.cpp" line="596"/>
       <source>Creates a circle from a center and rim point</source>
       <translation>Cruthaíonn ciorcal ó lárphointe agus imeallphointe</translation>
     </message>
@@ -6581,12 +6659,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="596"/>
+      <location filename="../../CommandCreateGeo.cpp" line="626"/>
       <source>Circle From 3 Points</source>
       <translation>Ciorcal ó 3 Phointe</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="597"/>
+      <location filename="../../CommandCreateGeo.cpp" line="627"/>
       <source>Creates a circle from 3 perimeter points</source>
       <translation>Cruthaíonn sé ciorcal ó 3 phointe imlíne</translation>
     </message>
@@ -6594,12 +6672,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="636"/>
+      <location filename="../../CommandCreateGeo.cpp" line="666"/>
       <source>Ellipse From Center</source>
       <translation>Éilips ón Lár</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="637"/>
+      <location filename="../../CommandCreateGeo.cpp" line="667"/>
       <source>Creates an ellipse from a center and rim point</source>
       <translation>Cruthaíonn sé éilips ó lárphointe agus ó phointe imeall</translation>
     </message>
@@ -6607,12 +6685,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="671"/>
+      <location filename="../../CommandCreateGeo.cpp" line="701"/>
       <source>Ellipse From 3 Points</source>
       <translation>Éilips ó 3 Phointe</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="672"/>
+      <location filename="../../CommandCreateGeo.cpp" line="702"/>
       <source>Creates an ellipse from 3 points on its perimeter</source>
       <translation>Cruthaíonn sé éilips ó 3 phointe ar a imlíne</translation>
     </message>
@@ -6620,12 +6698,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCompCreateRectangles</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="709"/>
+      <location filename="../../CommandCreateGeo.cpp" line="739"/>
       <source>Rectangle</source>
       <translation>Dronuilleog</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="710"/>
+      <location filename="../../CommandCreateGeo.cpp" line="740"/>
       <source>Creates a rectangle</source>
       <translation>Cruthaíonn dronuilleog</translation>
     </message>
@@ -6633,12 +6711,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="769"/>
+      <location filename="../../CommandCreateGeo.cpp" line="799"/>
       <source>Rectangle</source>
       <translation>Dronuilleog</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="770"/>
+      <location filename="../../CommandCreateGeo.cpp" line="800"/>
       <source>Creates a rectangle from 2 corner points</source>
       <translation>Cruthaíonn dronuilleog ó 2 phointe cúinne</translation>
     </message>
@@ -6646,12 +6724,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateRectangleCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="805"/>
+      <location filename="../../CommandCreateGeo.cpp" line="835"/>
       <source>Centered Rectangle</source>
       <translation>Dronuilleog Láraithe</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="806"/>
+      <location filename="../../CommandCreateGeo.cpp" line="836"/>
       <source>Creates a centered rectangle from a center and a corner point</source>
       <translation>Cruthaíonn dronuilleog lárnaithe ó lár agus pointe cúinne</translation>
     </message>
@@ -6659,12 +6737,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="842"/>
+      <location filename="../../CommandCreateGeo.cpp" line="872"/>
       <source>Rounded Rectangle</source>
       <translation>Dronuilleog Babhta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="843"/>
+      <location filename="../../CommandCreateGeo.cpp" line="873"/>
       <source>Creates a rounded rectangle from 2 corner points</source>
       <translation>Cruthaíonn dronuilleog chruinn ó 2 phointe cúinne</translation>
     </message>
@@ -6672,12 +6750,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="881"/>
+      <location filename="../../CommandCreateGeo.cpp" line="911"/>
       <source>Polygon</source>
       <translation>Polagán</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="882"/>
+      <location filename="../../CommandCreateGeo.cpp" line="912"/>
       <source>Creates a regular polygon from a center and corner point</source>
       <translation>Cruthaíonn polagán rialta ó lárphointe agus ó phointe cúinne</translation>
     </message>
@@ -6685,12 +6763,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="953"/>
+      <location filename="../../CommandCreateGeo.cpp" line="983"/>
       <source>Triangle</source>
       <translation>Triantán</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="954"/>
+      <location filename="../../CommandCreateGeo.cpp" line="984"/>
       <source>Creates an equilateral triangle from a center and corner point</source>
       <translation>Cruthaíonn triantán comhshleasach ó lárphointe agus cúinne</translation>
     </message>
@@ -6698,12 +6776,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="984"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1014"/>
       <source>Square</source>
       <translation>Cearnóg</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="985"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1015"/>
       <source>Creates a square from a center and corner point</source>
       <translation>Cruthaíonn cearnóg ó lárphointe agus cúinne</translation>
     </message>
@@ -6711,12 +6789,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1015"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1045"/>
       <source>Pentagon</source>
       <translation>An Pentagon</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1016"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1046"/>
       <source>Creates a pentagon from a center and corner point</source>
       <translation>Cruthaíonn sé peinteagán ó lárphointe agus ó phointe cúinne</translation>
     </message>
@@ -6724,12 +6802,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1046"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1076"/>
       <source>Hexagon</source>
       <translation>Heicseagán</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1047"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1077"/>
       <source>Creates a hexagon from a center and corner point</source>
       <translation>Cruthaíonn heicseagán ó lárphointe agus ó phointe cúinne</translation>
     </message>
@@ -6737,12 +6815,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1077"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1107"/>
       <source>Heptagon</source>
       <translation>Heiptagán</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1078"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1108"/>
       <source>Creates a heptagon from a center and corner point</source>
       <translation>Cruthaíonn sé heiptagán ó lárphointe agus cúinne</translation>
     </message>
@@ -6750,12 +6828,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1108"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1138"/>
       <source>Octagon</source>
       <translation>Ochtagán</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1109"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1139"/>
       <source>Creates an octagon from a center and corner point</source>
       <translation>Cruthaíonn ochtagán ó lárphointe agus cúinne</translation>
     </message>
@@ -6763,12 +6841,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1139"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1169"/>
       <source>Polygon</source>
       <translation>Polagán</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1140"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1170"/>
       <source>Creates a regular polygon from a center and corner point</source>
       <translation>Cruthaíonn polagán rialta ó lárphointe agus ó phointe cúinne</translation>
     </message>
@@ -6776,12 +6854,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCompSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1177"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1207"/>
       <source>Slot</source>
       <translation>Sliotán</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1178"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1208"/>
       <source>Slot tools</source>
       <translation>Uirlisí sliotán</translation>
     </message>
@@ -6789,12 +6867,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1233"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1263"/>
       <source>Slot</source>
       <translation>Sliotán</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1234"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1264"/>
       <source>Creates a slot</source>
       <translation>Cruthaíonn sliotán</translation>
     </message>
@@ -6802,12 +6880,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateArcSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1264"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1294"/>
       <source>Arc Slot</source>
       <translation>Sliotán Arc</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1265"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1295"/>
       <source>Creates an arc slot</source>
       <translation>Cruthaíonn sliotán stua</translation>
     </message>
@@ -6815,12 +6893,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1297"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1327"/>
       <source>B-Spline</source>
       <translation>B-Splíne</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1298"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1328"/>
       <source>Creates a B-spline curve defined by control points</source>
       <translation>Cruthaíonn cuar B-splíne atá sainmhínithe ag pointí rialaithe</translation>
     </message>
@@ -6828,12 +6906,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1406"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1436"/>
       <source>B-Spline</source>
       <translation>B-Splíne</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1407"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1437"/>
       <source>Creates a B-spline curve defined by control points</source>
       <translation>Cruthaíonn cuar B-splíne atá sainmhínithe ag pointí rialaithe</translation>
     </message>
@@ -6841,12 +6919,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1446"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1476"/>
       <source>Periodic B-Spline</source>
       <translation>Splíne B Thréimhsiúil</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1447"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1477"/>
       <source>Creates a periodic B-spline curve defined by control points</source>
       <translation>Cruthaíonn cuar B-splíne tréimhsiúil atá sainmhínithe ag pointí rialaithe</translation>
     </message>
@@ -6854,12 +6932,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1485"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1515"/>
       <source>B-Spline From Knots</source>
       <translation>B-Spline Ó Snaidhmeanna</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1486"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1516"/>
       <source>Creates a B-spline from knots, i.e. from interpolation</source>
       <translation>Cruthaíonn sé splíne-B ó snaidhmeanna, i.e. ó idirshuíomh</translation>
     </message>
@@ -6867,12 +6945,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreatePeriodicBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1522"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1552"/>
       <source>Periodic B-Spline From Knots</source>
       <translation>Splíne B Thréimhsiúil ó Snaidhmeanna</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1523"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1553"/>
       <source>Creates a periodic B-spline defined by knots using interpolation</source>
       <translation>Cruthaíonn sé splíne B tréimhsiúil atá sainmhínithe ag snaidhmeanna ag baint úsáide as idirshuíomh</translation>
     </message>
@@ -6880,12 +6958,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1565"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1595"/>
       <source>Fillet/Chamfer</source>
       <translation>Filléad/Camféar</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1566"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1596"/>
       <source>Creates a fillet or chamfer between 2 lines</source>
       <translation>Cruthaíonn sé filléad nó camféar idir 2 líne</translation>
     </message>
@@ -6893,12 +6971,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1599"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1629"/>
       <source>Fillet</source>
       <translation>Filléad</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1600"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1630"/>
       <source>Creates a fillet between 2 selected lines or at coincident points</source>
       <translation>Cruthaíonn sé filléad idir 2 líne roghnaithe nó ag pointí comhthráthacha</translation>
     </message>
@@ -6906,12 +6984,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCreateChamfer</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1631"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1661"/>
       <source>Chamfer</source>
       <translation>Seaimféaráil</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1632"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1662"/>
       <source>Creates a chamfer between 2 selected lines or at coincident points</source>
       <translation>Cruthaíonn sé seo camféar idir 2 líne roghnaithe nó ag pointí comhthráthacha</translation>
     </message>
@@ -6919,12 +6997,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCompCurveEdition</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1665"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1695"/>
       <source>Edit Edges</source>
       <translation>Cuir Imeall in Eagar</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1666"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1696"/>
       <source>Edge editing tools</source>
       <translation>Uirlisí eagarthóireachta imeall</translation>
     </message>
@@ -6932,12 +7010,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1699"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1729"/>
       <source>Trim Edge</source>
       <translation>Gearr an Imeall</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1700"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1730"/>
       <source>Trims an edge with respect to the selected position</source>
       <translation>Gearrtar imeall i ndáil leis an suíomh roghnaithe</translation>
     </message>
@@ -6945,12 +7023,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1729"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1759"/>
       <source>Extend Edge</source>
       <translation>Leathnaigh Imeall</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1730"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1760"/>
       <source>Extends an edge with respect to the selected position</source>
       <translation>Síneann sé imeall i ndáil leis an suíomh roghnaithe</translation>
     </message>
@@ -6958,12 +7036,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1759"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1789"/>
       <source>Split Edge</source>
       <translation>Imeall Scoilte</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1760"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1790"/>
       <source>Splits an edge into 2 segments while preserving constraints</source>
       <translation>Roinneann imeall ina dhá dheighleog agus srianta á gcaomhnú ag an am céanna</translation>
     </message>
@@ -6971,12 +7049,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCompExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1790"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1820"/>
       <source>External Geometry</source>
       <translation>Geoiméadracht Sheachtrach</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1791"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1821"/>
       <source>Creates sketch elements linked to geometry defined outside the sketch</source>
       <translation>Cruthaíonn eilimintí sceitse atá nasctha le geoiméadracht atá sainmhínithe lasmuigh den sceitse</translation>
     </message>
@@ -6984,12 +7062,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherProjection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1848"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1878"/>
       <source>External Projection</source>
       <translation>Teilgean Seachtrach</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1849"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1879"/>
       <source>Creates the projection of external geometry in the sketch plane</source>
       <translation>Cruthaíonn teilgean na geoiméadrachta seachtraí sa phlána sceitse</translation>
     </message>
@@ -6997,12 +7075,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherIntersection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1885"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1915"/>
       <source>External Intersection</source>
       <translation>Trasnú Seachtrach</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1886"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1916"/>
       <source>Creates the intersection of external geometry with the sketch plane</source>
       <translation>Cruthaíonn sé trasnú na geoiméadrachta seachtraí leis an eitleán sceitse</translation>
     </message>
@@ -7010,12 +7088,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1923"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1953"/>
       <source>Carbon Copy</source>
       <translation>Cóip Charbóin</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1924"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1954"/>
       <source>Copies the geometry of another sketch</source>
       <translation>Cóipeálann sé geoiméadracht sceitse eile</translation>
     </message>
@@ -7882,22 +7960,22 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::DrawSketchHandlerLineSet</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="803"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="808"/>
       <source>%1 pick first point</source>
       <translation>%1 roghnaigh an chéad phointe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="808"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="813"/>
       <source>%1 pick next point</source>
       <translation>%1 roghnaigh an chéad phointe eile</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="809"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="814"/>
       <source>%1 finish</source>
       <translation>Críoch %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="810"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="815"/>
       <source>%1 switch mode</source>
       <translation>%1 mód lasctha</translation>
     </message>
@@ -7905,12 +7983,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
   <context>
     <name>SketcherGui::DrawSketchHandlerOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="191"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="192"/>
       <source>Offset Parameters</source>
       <translation>Paraiméadair Fritháireamh</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="209"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="210"/>
       <source>%1 set offset direction and distance</source>
       <comment>Sketcher Offset: hint</comment>
       <translation>%1 socraíodh treo agus fad an fhritháireamh</translation>
@@ -8216,24 +8294,80 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     </message>
   </context>
   <context>
-    <name>CmdSketcherCreateText</name>
+    <name>CmdSketcherConstrainGroup</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1369"/>
-      <source>Text</source>
-      <translation>Téacs</translation>
+      <location filename="../../CommandConstraints.cpp" line="10810"/>
+      <source>Group Constraint</source>
+      <translation>Srianadh Grúpa</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1370"/>
-      <source>Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
-</source>
-      <translation>Cruthaíonn sé geoiméadrachtaí téacs atá faoi rialú srian Téacs.
-Chun Eagarthóireacht a dhéanamh: Cliceáil faoi dhó ar an srian Téacs chun ábhar agus cló an téacs a athrú.
-Chun Suíomh/Méid: Cuir srianta i bhfeidhm ar líne tógála an ghrúpa.
-Nóta: Cé go bhfuil an srian Téacs gníomhach, déanfar neamhaird d'aon srianta a chuirtear i bhfeidhm go díreach ar na geoiméadrachtaí téacs.
-</translation>
+      <location filename="../../CommandConstraints.cpp" line="10811"/>
+      <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
+      <translation>Cuireann sé srian ar na geoiméadrachtaí roghnaithe le chéile mar aonán amháin. Is féidir suíomh agus méid na geoiméadrachtaí grúpáilte a shainiú tríd an líne tógála a ghintear a shrianadh. Déantar neamhaird ar shrianta a chuirtear i bhfeidhm ar imill ghrúpáilte chomh fada agus a bhíonn an srian Grúpa anseo.</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::DrawSketchHandlerPolyLine</name>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1015"/>
+      <source>%1 switch to arc</source>
+      <translation>%1 athraigh go stua</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
+      <source>%1 switch to line</source>
+      <translation>%1 athraigh go líne</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1019"/>
+      <source>%1 toggle fillet</source>
+      <translation>%1 filléad scoránaigh</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1020"/>
+      <source>%1 undo last point</source>
+      <translation>%1 cealaigh an pointe deireanach</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1028"/>
+      <source>%1 pick first point</source>
+      <translation>%1 roghnaigh an chéad phointe</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1033"/>
+      <source>%1 pick next point</source>
+      <translation>%1 roghnaigh an chéad phointe eile</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1034"/>
+      <source>%1 finish</source>
+      <translation>Críoch %1</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreatePolyline</name>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1699"/>
+      <source>Line</source>
+      <translation>Líne</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1700"/>
+      <source>Arc</source>
+      <translation>Arc</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_PolyLine</name>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1706"/>
+      <source>Fillet (F)</source>
+      <translation>Filléad (F)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1710"/>
+      <source>Adds a fillet between the current and previous line</source>
+      <translation>Cuireann filléid idir an líne reatha agus an líne roimhe seo</translation>
     </message>
   </context>
   <context>
@@ -8247,19 +8381,6 @@ Nóta: Cé go bhfuil an srian Téacs gníomhach, déanfar neamhaird d'aon sriant
       <location filename="../../EditTextDialog.cpp" line="73"/>
       <source>The original font '%1' is not found on your system. A default font has been selected.</source>
       <translation>Ní bhfuarthas an cló bunaidh '%1' ar do chóras. Tá cló réamhshocraithe roghnaithe.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherConstrainGroup</name>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="10478"/>
-      <source>Group Constraint</source>
-      <translation>Srianadh Grúpa</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="10479"/>
-      <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
-      <translation>Cuireann sé srian ar na geoiméadrachtaí roghnaithe le chéile mar aonán amháin. Is féidir suíomh agus méid na geoiméadrachtaí grúpáilte a shainiú tríd an líne tógála a ghintear a shrianadh. Déantar neamhaird ar shrianta a chuirtear i bhfeidhm ar imill ghrúpáilte chomh fada agus a bhíonn an srian Grúpa anseo.</translation>
     </message>
   </context>
   <context>
@@ -8286,6 +8407,66 @@ Nóta: Cé go bhfuil an srian Téacs gníomhach, déanfar neamhaird d'aon sriant
       <location filename="../../DrawSketchHandlerText.h" line="375"/>
       <source>Font</source>
       <translation>Cló</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCancelSketch</name>
+    <message>
+      <location filename="../../Command.cpp" line="409"/>
+      <source>Cancel Editing</source>
+      <translation>Cealaigh an Eagarthóireacht</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="410"/>
+      <source>Leave 'edit' mode and revert any changes</source>
+      <translation>Fág an mód 'eagarthóireachta' agus cuir aon athruithe ar ais</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherLeaveGroup</name>
+    <message>
+      <location filename="../../Command.cpp" line="454"/>
+      <source>Leave</source>
+      <translation>Fág</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="455"/>
+      <source>Leave the sketch editing mode.</source>
+      <translation>Fág an modh eagarthóireachta sceitse.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreatePolylineLegacy</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="232"/>
+      <source>Polyline</source>
+      <translation>Polalíne</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="233"/>
+      <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
+      <translation>Cruthaíonn sé seo polalíne leanúnach. Brúigh an eochair 'M' chun modhanna deighleog a athrú</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherCreateText</name>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1399"/>
+      <source>Text</source>
+      <translation>Téacs</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateGeo.cpp" line="1400"/>
+      <source>Creates text geometries controlled by a Text constraint.
+To Edit: Double-click the Text constraint to change the text content and font.
+To Position/Size: Apply constraints to the group's construction line.
+Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+</source>
+      <translation>Cruthaíonn sé geoiméadrachtaí téacs atá faoi rialú srian Téacs.
+Chun Eagarthóireacht a dhéanamh: Cliceáil faoi dhó ar an srian Téacs chun ábhar agus cló an téacs a athrú.
+Chun Suíomh/Méid: Cuir srianta i bhfeidhm ar líne tógála an ghrúpa.
+Nóta: Cé go bhfuil an srian Téacs gníomhach, déanfar neamhaird d'aon srianta a chuirtear i bhfeidhm go díreach ar na geoiméadrachtaí téacs.
+</translation>
     </message>
   </context>
 </TS>

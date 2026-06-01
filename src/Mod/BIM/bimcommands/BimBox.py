@@ -53,6 +53,7 @@ class BIM_Box:
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         self.doc = FreeCAD.ActiveDocument
         self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
         # here we will store our points
         self.points = []
         # we build a special cube tracker which is a list of 4 rectangle trackers
@@ -257,7 +258,6 @@ class BIM_Box:
             r.on()
         point = self.cubetracker[0].p3()
         axis = self.cubetracker[0].p2().sub(self.cubetracker[0].p3())
-        self.wp._save()
         self.wp.align_to_point_and_axis(point, axis, upvec=self.normal, _hist_add=False)
         FreeCADGui.Snapper.getPoint(
             last=point,

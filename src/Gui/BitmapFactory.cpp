@@ -698,6 +698,10 @@ QIcon BitmapFactoryInst::mergePixmap(
     QIcon overlayedIcon;
 
     int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+    auto sizes = base.availableSizes();
+    if (sizes.size() == 1) {
+        w = sizes.front().width();
+    }
 
     overlayedIcon.addPixmap(
         Gui::BitmapFactory().merge(base.pixmap(w, w, QIcon::Normal, QIcon::Off), px, position),

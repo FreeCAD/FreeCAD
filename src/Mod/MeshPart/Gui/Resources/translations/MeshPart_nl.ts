@@ -490,8 +490,8 @@ Een waarde tussen 0,2 en 10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
-      <translation>Geen actief document</translation>
+      <source>No Active Document</source>
+      <translation type="unfinished">No Active Document</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>

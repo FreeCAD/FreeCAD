@@ -34,7 +34,12 @@
 #pragma warning(disable : 4267)
 #endif
 
+#include <algorithm>
+#include <cmath>
+#include <limits>
+
 #include <QInputEvent>
+#include <QPointF>
 #include <Inventor/events/SoEvents.h>
 
 #include "devices/InputDevice.h"
@@ -53,6 +58,25 @@ InputDevice::InputDevice(QuarterWidget* quarter) :
     quarter(quarter)
 {
   this->mousepos = SbVec2s(0, 0);
+}
+
+SbVec2s
+InputDevice::toDevicePixelPosition(
+    const QPointF& logicalPosition,
+    const SbVec2s& logicalWindowSize,
+    qreal devicePixelRatio
+)
+{
+  int xpos = static_cast<int>(std::lround(logicalPosition.x() * devicePixelRatio));
+  int ypos = static_cast<int>(
+      std::lround((logicalWindowSize[1] - logicalPosition.y() - 1.0) * devicePixelRatio));
+
+  constexpr int ShortMin = std::numeric_limits<short>::min();
+  constexpr int ShortMax = std::numeric_limits<short>::max();
+  xpos = std::clamp(xpos, ShortMin, ShortMax);
+  ypos = std::clamp(ypos, ShortMin, ShortMax);
+
+  return SbVec2s(static_cast<short>(xpos), static_cast<short>(ypos));
 }
 
 /*!

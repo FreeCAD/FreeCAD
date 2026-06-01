@@ -48,6 +48,7 @@ public:
     App::PropertyEnumeration  ArrowStyle;
     App::PropertyLength LineWidth;
     App::PropertyColor  Color;
+    App::PropertyBool   AllowSnap;
 
     static const int STD_STYLE_ISO_ORIENTED     = 0;
     static const int STD_STYLE_ISO_REFERENCING  = 1;

@@ -495,8 +495,8 @@ void Command::_invoke(int id, bool disablelog)
 
             getMainWindow()->updateActions();
         }
-        // here we assume that the overriden activated() function
-        // commited, aborted or gave the transaction id to a dialog
+        // here we assume that the overridden activated() function
+        // committed, aborted or gave the transaction id to a dialog
         currentTransactionID = App::NullTransaction;  // Get ready for next invoke
     }
     catch (const Base::SystemExitException&) {

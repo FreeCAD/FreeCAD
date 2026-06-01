@@ -668,7 +668,7 @@ class GmshTools(ObjectTools):
                     continue
                 if boundary_layer_set:
                     Console.PrintLog("Boundary layer already set, ignoring {}".format(mr_obj.Name))
-                    # continue to get one waring for each ignored object
+                    # continue to get one warning for each ignored object
                     continue
 
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
@@ -727,7 +727,7 @@ class GmshTools(ObjectTools):
 
                         # Notes:
                         # 1. With gmsh version 4.7 new names for settings have been introduced.
-                        #    Due to deprication of old command names we switched to the new ones,
+                        #    Due to deprecation of old command names we switched to the new ones,
                         #    dropping support for gmsh <4.7 (released Nov. 2020)
                         setting = {}
                         setting["Size"] = Units.Quantity(mr_obj.MinimumThickness).Value
@@ -1292,8 +1292,8 @@ class GmshTools(ObjectTools):
                 self.outputCompoundWarning()
 
             edge_map = tft.setup_transfinite_edge_map(self.part_obj.Shape, transfinite_curve_list)
-            # the settings are only created at the very end, when we know if surface and volume atomation added
-            # addiotional transfinite curves
+            # the settings are only created at the very end, when we know if surface and volume
+            # automation added additional transfinite curves
 
         # transfinite surfaces
         surface_map = {}
@@ -1931,7 +1931,7 @@ class PreviewSignals(QtCore.QObject):
 
 
 class GmshPreviewTools(GmshTools):
-    # overriden tool to not generate a meshing gmsh file, but a sizefield preview
+    # overridden tool to not generate a meshing gmsh file, but a sizefield preview
 
     def __init__(self, gmsh_mesh_obj, preview_object):
 
@@ -2083,10 +2083,10 @@ Combine (unused):
 Unused:
     AutomaticMeshSizeField: Compute a mesh size field that is quite automatic Takes into account surface curvatures and closeness of objects
     Extend:                 Compute an extension of the mesh sizes from the given boundary curves (resp. surfaces) inside the surfaces (resp. volumes) being meshed.
-    Frustum:                Interpolate mesh sizes on a extended cylinder frustrum defined by inner (R1i and R2i) and outer (R1o and R2o) radii and two endpoints P1 and P2.The field value F for a point P is given by :
+    Frustum:                Interpolate mesh sizes on a extended cylinder frustum defined by inner (R1i and R2i) and outer (R1o and R2o) radii and two endpoints P1 and P2.The field value F for a point P is given by :
     LonLat:                 Evaluate Field[InField] in geographic coordinates (longitude, latitude):
     MaxEigenHessian:        Compute the maximum eigenvalue of the Hessian matrix of Field[InField], with the gradients evaluated by finite differences:
-    Octree:                 Pre compute another field on an octree to speed-up evalution.
+    Octree:                 Pre compute another field on an octree to speed-up evaluation.
     Param:                  Evaluate Field[InField] in parametric coordinates:
     Structured:             Linearly interpolate between data provided on a 3D rectangular structured grid.
 """

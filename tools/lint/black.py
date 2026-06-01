@@ -78,7 +78,7 @@ def main():
         "--line-length",
         str(DEFAULT_LINE_LENGTH_LIMIT),
         "--check",
-    ] + args.files.split()
+    ] + args.files
     stdout, stderr, exit_code = run_command(cmd, check=False)
     output = stdout + "\n" + stderr
 
