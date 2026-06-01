@@ -34,6 +34,8 @@
 
 
 #include <array>
+#include <unordered_map>
+#include <algorithm>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
