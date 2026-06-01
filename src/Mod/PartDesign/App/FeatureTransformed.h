@@ -67,7 +67,7 @@ public:
     Part::Feature* getBaseObject(bool silent = false) const override;
 
     virtual std::vector<App::DocumentObject*> getOriginals() const;
-    /** Returns the list of original features sorted in chronological order of 
+    /** Returns the list of original features sorted in chronological order of
      *  the parent Body's history (retaining suppressed features).
      */
     std::vector<App::DocumentObject*> getSortedOriginals() const;
