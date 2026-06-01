@@ -455,13 +455,18 @@ public:
             this->iterateToNextConstructionMethod();
         }
         else if (key == SoKeyboardEvent::ESCAPE && pressed) {
-            rightButtonOrEsc();
+            cancelCurrentAction();
         }
     }
 
     void pressRightButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
+        cancelCurrentAction();
+    }
+
+    void cancelCurrentAction() override
+    {
         rightButtonOrEsc();
     }
 

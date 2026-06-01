@@ -1161,7 +1161,7 @@ NaviCubeDraggableCmd::NaviCubeDraggableCmd()
 {
     sGroup = "";
     sMenuText = QT_TR_NOOP("Movable Navigation Cube");
-    sToolTipText = QT_TR_NOOP("Drag and place NaviCube");
+    sToolTipText = QT_TR_NOOP("Drags and places the NaviCube");
     sWhatsThis = "";
     sStatusTip = sToolTipText;
     eType = Alter3DView;

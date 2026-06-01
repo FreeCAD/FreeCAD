@@ -172,8 +172,8 @@ CmdFemAddPart::CmdFemAddPart()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Add a part to the analysis");
-    sToolTipText    = QT_TR_NOOP("Add a part to the Analysis");
+    sMenuText       = QT_TR_NOOP("Add Part to Analysis");
+    sToolTipText    = QT_TR_NOOP("Adds a part to the analysis");
     sWhatsThis      = "FEM_FemAddPart";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-add-fem-mesh";
@@ -183,7 +183,7 @@ void CmdFemAddPart::activated(int)
 {
 #ifndef FCWithNetgen
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
+            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work…"));
     return;
 #endif
 
@@ -2551,7 +2551,7 @@ CmdFemPostContoursFilter::CmdFemPostContoursFilter()
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
     sMenuText = QT_TR_NOOP("Contours Filter");
-    sToolTipText = QT_TR_NOOP("Define/create a contours filter which displays iso contours");
+    sToolTipText = QT_TR_NOOP("Defines a contours filter that displays iso contours");
     sWhatsThis = "FEM_PostFilterContours";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterContours";

@@ -65,6 +65,7 @@ from CAMTests.TestPostProcessor import (
     TestHeaderBuilder,
     TestPostProcessorClassification,
     TestConfigurationBundle,
+    TestPostProcessorMBPPMethods,
 )
 from CAMTests.TestPostOutput import (
     TestFileNameGenerator,
