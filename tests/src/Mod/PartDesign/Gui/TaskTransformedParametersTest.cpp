@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <condition_variable>
 #include <chrono>
+#include <cstdio>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -181,6 +182,12 @@ using tests::partdesigngui::ensureGuiHarness;
 using tests::partdesigngui::findCancelPreviewButton;
 using tests::partdesigngui::findTaskBox;
 
+void traceTransformedTest(const char* message)
+{
+    std::fprintf(stderr, "[TaskTransformedParametersTest] %s\n", message);
+    std::fflush(stderr);
+}
+
 struct CapturedConsoleLog
 {
     std::string msg;
@@ -346,9 +353,17 @@ class testTaskTransformedParameters final: public QObject
 private Q_SLOTS:
     void initTestCase()  // NOLINT
     {
+        traceTransformedTest("initTestCase: begin");
+        traceTransformedTest("initTestCase: before tests::initApplication");
         tests::initApplication();
+        traceTransformedTest("initTestCase: after tests::initApplication");
+        traceTransformedTest("initTestCase: before Python Part import");
         Base::Interpreter().runString("import Part");
+        traceTransformedTest("initTestCase: after Python Part import");
+        traceTransformedTest("initTestCase: before Python _PartDesign import");
         Base::Interpreter().runString("import _PartDesign");
+        traceTransformedTest("initTestCase: after Python _PartDesign import");
+        traceTransformedTest("initTestCase: before ensureGuiHarness");
         Q_UNUSED(ensureGuiHarness(
             {&PartDesign::BlockingLinearPatternTest::init,
              &PartDesign::BlockingPolarPatternTest::init,
@@ -356,24 +371,31 @@ private Q_SLOTS:
              &PartDesign::BlockingScaledTest::init,
              &PartDesign::BlockingMultiTransformTest::init}
         ));
+        traceTransformedTest("initTestCase: after ensureGuiHarness");
 
+        traceTransformedTest("initTestCase: before async parameter lookup");
         asyncParams = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Document"
         );
         oldAsyncEnabled = asyncParams->GetBool("EnableAsyncRecompute", true);
         asyncParams->SetBool("EnableAsyncRecompute", true);
+        traceTransformedTest("initTestCase: done");
     }
 
     void cleanupTestCase()  // NOLINT
     {
+        traceTransformedTest("cleanupTestCase: begin");
         if (asyncParams) {
             asyncParams->SetBool("EnableAsyncRecompute", oldAsyncEnabled);
             asyncParams = nullptr;
         }
+        traceTransformedTest("cleanupTestCase: done");
     }
 
     void init()  // NOLINT
     {
+        traceTransformedTest("init: begin");
+        traceTransformedTest("init: before ensureGuiHarness");
         Q_UNUSED(ensureGuiHarness(
             {&PartDesign::BlockingLinearPatternTest::init,
              &PartDesign::BlockingPolarPatternTest::init,
@@ -381,51 +403,75 @@ private Q_SLOTS:
              &PartDesign::BlockingScaledTest::init,
              &PartDesign::BlockingMultiTransformTest::init}
         ));
+        traceTransformedTest("init: after ensureGuiHarness");
 
+        traceTransformedTest("init: before resetBlocker");
         PartDesign::BlockingLinearPatternTest::resetBlocker();
+        traceTransformedTest("init: after resetBlocker");
 
+        traceTransformedTest("init: before unique document name");
         docName = App::GetApplication().getUniqueDocumentName("blocking_pattern_dialog");
         App::DocumentInitFlags initFlags;
         initFlags.createView = false;
+        traceTransformedTest("init: before newDocument");
         doc = App::GetApplication().newDocument(docName.c_str(), "testUser", initFlags);
         QVERIFY(doc != nullptr);
+        traceTransformedTest("init: after newDocument");
 
+        traceTransformedTest("init: before gui document lookup");
         guiDoc = Gui::Application::Instance->getDocument(doc);
         QVERIFY(guiDoc != nullptr);
+        traceTransformedTest("init: after gui document lookup");
 
+        traceTransformedTest("init: before body creation");
         body = doc->addObject<PartDesign::Body>("Body");
         QVERIFY(body != nullptr);
+        traceTransformedTest("init: after body creation");
 
+        traceTransformedTest("init: before base box creation");
         baseBox = doc->addObject<PartDesign::AdditiveBox>("BaseBox");
         QVERIFY(baseBox != nullptr);
         body->addObject(baseBox);
+        traceTransformedTest("init: after base box creation");
 
         baseBox->Length.setValue(10.0);
         baseBox->Width.setValue(8.0);
         baseBox->Height.setValue(6.0);
+        traceTransformedTest("init: after base box dimensions");
 
+        traceTransformedTest("init: before origin references");
         bodyXAxis = body->getOrigin()->getX();
         bodyXYPlane = body->getOrigin()->getXY();
         bodyYZPlane = body->getOrigin()->getYZ();
         QVERIFY(bodyXAxis != nullptr);
         QVERIFY(bodyXYPlane != nullptr);
         QVERIFY(bodyYZPlane != nullptr);
+        traceTransformedTest("init: after origin references");
 
+        traceTransformedTest("init: before doc recompute");
         doc->recompute();
+        traceTransformedTest("init: done");
     }
 
     void cleanup()  // NOLINT
     {
+        traceTransformedTest("cleanup: begin");
+        traceTransformedTest("cleanup: before releaseBlocker");
         PartDesign::BlockingLinearPatternTest::releaseBlocker();
         QCoreApplication::processEvents();
+        traceTransformedTest("cleanup: after releaseBlocker/processEvents");
 
         if (doc && Gui::Control().activeDialog(doc)) {
+            traceTransformedTest("cleanup: before closeDialog");
             Gui::Control().closeDialog(doc);
             QCoreApplication::processEvents();
+            traceTransformedTest("cleanup: after closeDialog");
         }
 
         if (!docName.empty() && App::GetApplication().getDocument(docName.c_str())) {
+            traceTransformedTest("cleanup: before closeDocument");
             App::GetApplication().closeDocument(docName.c_str());
+            traceTransformedTest("cleanup: after closeDocument");
         }
 
         transformedView = nullptr;
@@ -437,6 +483,7 @@ private Q_SLOTS:
         guiDoc = nullptr;
         doc = nullptr;
         docName.clear();
+        traceTransformedTest("cleanup: done");
     }
 
     void linearRejectDefersCloseUntilAsyncPreviewSettles()  // NOLINT
