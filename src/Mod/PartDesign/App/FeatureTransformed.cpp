@@ -131,6 +131,22 @@ std::vector<App::DocumentObject*> Transformed::getOriginals() const
 
     std::vector<DocumentObject*> originals = Originals.getValues();
 
+    // Sort originals in chronological order of the body's group history
+    if (auto body = getFeatureBody()) {
+        const auto& group = body->Group.getValues();
+        std::unordered_map<const DocumentObject*, size_t> indexMap;
+        for (size_t i = 0; i < group.size(); ++i) {
+            indexMap[group[i]] = i;
+        }
+        std::ranges::sort(originals, [&indexMap](const DocumentObject* a, const DocumentObject* b) {
+            auto itA = indexMap.find(a);
+            auto itB = indexMap.find(b);
+            size_t idxA = (itA != indexMap.end()) ? itA->second : std::numeric_limits<size_t>::max();
+            size_t idxB = (itB != indexMap.end()) ? itB->second : std::numeric_limits<size_t>::max();
+            return idxA < idxB;
+        });
+    }
+
     const auto isSuppressed = [](const DocumentObject* obj) {
         auto feature = freecad_cast<Feature*>(obj);
 
