@@ -564,8 +564,6 @@ class CommandCreateJointRigidGroup:
         for sel in selection:
             for sub in sel.SubElementNames:
                 part_ref, new_sub = UtilsAssembly.getComponentReference(assembly, sel.Object, sub)
-                if not part_ref:
-                    continue
 
                 # Only objects within the assembly.
                 if part_ref is None:
