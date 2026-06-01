@@ -245,7 +245,7 @@ class ObjectDressup:
 
         if obj.StyleIn in ("ArcZ", "ArcZFollow") and obj.AngleIn > 179:
             obj.AngleIn = 179
-        elif obj.StyleIn in ("LineZFollow") and obj.AngleIn > 89:
+        elif obj.StyleIn == "LineZFollow" and obj.AngleIn > 89:
             obj.AngleIn = 89
 
         if obj.AngleOut > 180:
@@ -255,7 +255,7 @@ class ObjectDressup:
 
         if obj.StyleOut in ("ArcZ", "ArcZFollow") and obj.AngleOut > 179:
             obj.AngleOut = 179
-        elif obj.StyleOut in ("LineZFollow") and obj.AngleOut > 89:
+        elif obj.StyleOut == "LineZFollow" and obj.AngleOut > 89:
             obj.AngleOut = 89
 
         extStyles = ("Arc", "Line", "Perpendicular", "Tangent")
