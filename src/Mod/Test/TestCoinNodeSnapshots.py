@@ -832,7 +832,7 @@ def _make_scene_for_node(coin, type_name: str):
 
         if type_name == "SoBrepFaceSetHighlight":
             # Highlight the front face (part 2).
-            faces.highlightPartIndex.setValue(2)
+            faces.highlightPartIndex.setValues(0, 1, [2])
             faces.highlightColor.setValue(1.0, 0.0, 0.0)
         elif type_name == "SoBrepFaceSetSelection":
             # Select a couple of faces to exercise the selection overlay.
