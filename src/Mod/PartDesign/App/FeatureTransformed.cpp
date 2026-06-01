@@ -91,7 +91,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     }
 
     const char* err = nullptr;
-    const std::vector<App::DocumentObject*>& originals = Originals.getValues();
+    const std::vector<App::DocumentObject*>& originals = getOriginals();
     // NOTE: may be here supposed to be last origin but in order to keep the old behaviour keep here
     // first
     App::DocumentObject* firstOriginal = originals.empty() ? nullptr : originals.front();
