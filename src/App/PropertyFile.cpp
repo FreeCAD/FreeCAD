@@ -45,7 +45,7 @@ using namespace std;
 
 namespace {
 
-constexpr std::size_t includedFileRestoreBufferSize = 64 * 1024;
+constexpr std::size_t includedFileBufferSize = 64 * 1024;
 
 }
 
@@ -452,10 +452,26 @@ void PropertyFileIncluded::SaveDocFile(Base::Writer& writer) const
     }
 
     // copy plain data
-    unsigned char c;
+    std::array<char, includedFileBufferSize> buffer {};
     std::ostream& to = writer.Stream();
-    while (from.get((char&)c)) {
-        to.put((char)c);
+    while (from) {
+        from.read(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+        const std::streamsize count = from.gcount();
+        if (count > 0) {
+            to.write(buffer.data(), count);
+            if (!to) {
+                std::stringstream str;
+                str << "PropertyFileIncluded::SaveDocFile(): "
+                    << "File '" << _cValue << "' in transient directory cannot be written.";
+                throw Base::FileSystemError(str.str());
+            }
+        }
+    }
+    if (from.bad()) {
+        std::stringstream str;
+        str << "PropertyFileIncluded::SaveDocFile(): "
+            << "File '" << _cValue << "' in transient directory cannot be read.";
+        throw Base::FileSystemError(str.str());
     }
 }
 
@@ -477,7 +493,7 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader& reader)
 
     // copy plain data
     aboutToSetValue();
-    std::array<char, includedFileRestoreBufferSize> buffer {};
+    std::array<char, includedFileBufferSize> buffer {};
     while (reader) {
         reader.read(buffer.data(), static_cast<std::streamsize>(buffer.size()));
         const std::streamsize count = reader.gcount();
@@ -490,6 +506,12 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader& reader)
                 throw Base::FileSystemError(str.str());
             }
         }
+    }
+    if (reader.bad()) {
+        std::stringstream str;
+        str << "PropertyFileIncluded::RestoreDocFile(): "
+            << "File '" << _cValue << "' in transient directory cannot be read.";
+        throw Base::FileSystemError(str.str());
     }
     to.close();
     if (!to) {
