@@ -5,6 +5,7 @@
 #pragma once
 
 #include <condition_variable>
+#include <cstdio>
 #include <initializer_list>
 #include <mutex>
 #include <utility>
@@ -28,6 +29,12 @@ namespace partdesigngui
 
 using GuiInitFunction = void (*)();
 
+inline void traceGuiHarness(const char* message)
+{
+    std::fprintf(stderr, "[TaskDialogTestUtils] %s\n", message);
+    std::fflush(stderr);
+}
+
 class TestGuiApplication: public Gui::Application
 {
 public:
@@ -41,25 +48,48 @@ struct GuiHarness
     explicit GuiHarness(std::initializer_list<GuiInitFunction> initFunctions = {})
         : app(true)
     {
+        traceGuiHarness("GuiHarness: begin");
+        traceGuiHarness("GuiHarness: before Gui::Application::initApplication");
         Gui::Application::initApplication();
+        traceGuiHarness("GuiHarness: after Gui::Application::initApplication");
+        traceGuiHarness("GuiHarness: before Gui::Application::initOpenInventor");
         Gui::Application::initOpenInventor();
+        traceGuiHarness("GuiHarness: after Gui::Application::initOpenInventor");
+        traceGuiHarness("GuiHarness: before Python FreeCADGui import");
         Base::Interpreter().runString("import FreeCAD as App\nimport FreeCADGui as Gui");
+        traceGuiHarness("GuiHarness: after Python FreeCADGui import");
+        traceGuiHarness("GuiHarness: before Python PartDesignGui import");
         Base::Interpreter().runString("import PartDesignGui");
+        traceGuiHarness("GuiHarness: after Python PartDesignGui import");
 
+        traceGuiHarness("GuiHarness: before custom init functions");
         for (auto initFunction : initFunctions) {
             if (initFunction) {
                 initFunction();
             }
         }
+        traceGuiHarness("GuiHarness: after custom init functions");
 
+        traceGuiHarness("GuiHarness: before MainWindow creation");
         mainWindow = new Gui::MainWindow();
+        traceGuiHarness("GuiHarness: after MainWindow creation");
         mainWindow->hide();
+        traceGuiHarness("GuiHarness: after MainWindow hide");
 
+        traceGuiHarness("GuiHarness: before Tasks dock lookup");
         if (!Gui::DockWindowManager::instance()->getDockWindow("Tasks")) {
+            traceGuiHarness("GuiHarness: before TaskView creation");
             auto* taskView = new Gui::TaskView::TaskView(Gui::getMainWindow());
+            traceGuiHarness("GuiHarness: after TaskView creation");
             taskView->setWindowTitle(QStringLiteral("Tasks"));
+            traceGuiHarness("GuiHarness: before Tasks dock add");
             Gui::DockWindowManager::instance()->addDockWindow("Tasks", taskView, Qt::RightDockWidgetArea);
+            traceGuiHarness("GuiHarness: after Tasks dock add");
         }
+        else {
+            traceGuiHarness("GuiHarness: Tasks dock already present");
+        }
+        traceGuiHarness("GuiHarness: done");
     }
 
     TestGuiApplication app;
