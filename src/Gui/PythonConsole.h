@@ -170,7 +170,7 @@ private:
     QString* _sourceDrain {nullptr};
     QString _historyFile;
     QTimer* flusher {nullptr};
-    QAction *clearAction;
+    QAction* clearAction;
 
     friend class PythonStdout;
     friend class PythonStderr;
