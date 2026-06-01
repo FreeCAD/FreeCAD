@@ -65,9 +65,9 @@ def add_shell2D(commtxt, mat_objs, ele_name, ca_writer):
         geoms = []
         if len(shellth_obj.References) == 0:
             femmesh = ca_writer.mesh_object.FemMesh
-            for i in range(femmesh.GroupCount):
-                if femmesh.getGroupElementType(i) == "Face":
-                    geoms.append(femmesh.getGroupName(i))
+            for g in femmesh.Groups:
+                if femmesh.getGroupElementType(g) == "Face":
+                    geoms.append(femmesh.getGroupName(g))
         else:
             for ref in shellth_obj.References:
                 for geom in ref[1]:
@@ -174,9 +174,9 @@ def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer)
 
     if len(shelllam_obj.References) == 0:
         femmesh = ca_writer.mesh_object.FemMesh
-        for i in range(femmesh.GroupCount):
-            if femmesh.getGroupElementType(i) == "Face":
-                geoms.append(femmesh.getGroupName(i))
+        for g in femmesh.Groups:
+            if femmesh.getGroupElementType(g) == "Face":
+                geoms.append(femmesh.getGroupName(g))
     else:
         for ref in shelllam_obj.References:
             for geom in ref[1]:

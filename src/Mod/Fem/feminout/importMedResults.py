@@ -169,7 +169,8 @@ def read_med_resultVTK(medfile, grid):
                 tup = q.getTuple(i)
                 disp.append(tup)
             disp = np.array(disp)
-            disp_vtk = vtk_np.numpy_to_vtk(disp[:, 0:3], deep=True)
+            # TODO: Not quite sure how units are handled, but it seems to assume m for displacements
+            disp_vtk = vtk_np.numpy_to_vtk(disp[:, 0:3]/1000, deep=True)
             disp_vtk.SetName("Displacement")
             grid.GetPointData().AddArray(disp_vtk)
             # set rotations in degrees here until we have a general method to set units
@@ -178,3 +179,9 @@ def read_med_resultVTK(medfile, grid):
             grid.GetPointData().AddArray(disp_vtk)
         if "EFGE_NOEU" in fn:
             fieldname = fn
+            q = mc.ReadField(medfile, fieldname).getArrays()[0] # There should
+            stresses = []
+            for i in range(q.getNumberOfTuples()):
+                tup = q.getTuple(i)
+                stresses.append(tup)
+            stresses = np.array(stresses)
