@@ -491,12 +491,13 @@ PythonConsole::PythonConsole(QWidget* parent)
     connect(flusher, &QTimer::timeout, this, &PythonConsole::flushOutput);
     flusher->start(100);
 
-    clearAction = addAction(QIcon(QStringLiteral(":/icons/edit-delete.svg")),
-                            tr("Clear Console"),
-                            QKeySequence(Qt::CTRL | Qt::Key_L));
+    clearAction = addAction(
+        QIcon(QStringLiteral(":/icons/edit-delete.svg")),
+        tr("Clear Console"),
+        QKeySequence(Qt::CTRL | Qt::Key_L)
+    );
     clearAction->setShortcutContext(Qt::WidgetShortcut);
-    QObject::connect(clearAction, &QAction::triggered,
-                     this, &PythonConsole::onClearConsole);
+    QObject::connect(clearAction, &QAction::triggered, this, &PythonConsole::onClearConsole);
 }
 
 /** Destroys the object and frees any allocated resources */
