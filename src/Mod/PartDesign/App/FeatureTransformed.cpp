@@ -123,14 +123,8 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     return rv;
 }
 
-std::vector<App::DocumentObject*> Transformed::getOriginals() const
+std::vector<App::DocumentObject*> Transformed::getSortedOriginals() const
 {
-    auto const mode = static_cast<Mode>(TransformMode.getValue());
-
-    if (mode == Mode::WholeShape) {
-        return {};
-    }
-
     std::vector<DocumentObject*> originals = Originals.getValues();
 
     // Sort originals in chronological order of the body's group history
@@ -148,6 +142,19 @@ std::vector<App::DocumentObject*> Transformed::getOriginals() const
             return idxA < idxB;
         });
     }
+
+    return originals;
+}
+
+std::vector<App::DocumentObject*> Transformed::getOriginals() const
+{
+    auto const mode = static_cast<Mode>(TransformMode.getValue());
+
+    if (mode == Mode::WholeShape) {
+        return {};
+    }
+
+    std::vector<DocumentObject*> originals = getSortedOriginals();
 
     const auto isSuppressed = [](const DocumentObject* obj) {
         auto feature = freecad_cast<Feature*>(obj);
