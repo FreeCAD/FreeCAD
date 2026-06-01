@@ -607,12 +607,12 @@ private Q_SLOTS:
     void onHistoryActionTriggered(QAction* action);
 
 private:
-    TreeWidget*              treeWidget  = nullptr;
-    QWidget*                 searchRow   = nullptr;
-    QLineEdit*               searchBox   = nullptr;
-    QToolButton*             historyBtn  = nullptr;
-    QCheckBox*               globalBtn   = nullptr;
-    QMenu*                   historyMenu = nullptr;
+    TreeWidget* treeWidget = nullptr;
+    QWidget* searchRow = nullptr;
+    QLineEdit* searchBox = nullptr;
+    QToolButton* historyBtn = nullptr;
+    QCheckBox* globalBtn = nullptr;
+    QMenu* historyMenu = nullptr;
 
     void saveSearchHistory(const QString& term);
     static constexpr int kMaxHistory = 10;

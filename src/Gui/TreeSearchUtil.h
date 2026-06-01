@@ -32,4 +32,4 @@ namespace Gui::TreeSearchUtil
 QRegularExpression wildcardToRegex(const QString& pattern);
 bool regexMatches(const QRegularExpression& re, const QString& haystack);
 
-}
+}  // namespace Gui::TreeSearchUtil

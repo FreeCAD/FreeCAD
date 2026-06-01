@@ -92,12 +92,15 @@ using Gui::TreeSearchUtil::wildcardToRegex;
 namespace
 {
 
-class UnfilteredCompleter : public QCompleter {
+class UnfilteredCompleter: public QCompleter
+{
 public:
-    UnfilteredCompleter(QAbstractItemModel *model, QObject *parent = nullptr)
-        : QCompleter(model, parent) {}
+    UnfilteredCompleter(QAbstractItemModel* model, QObject* parent = nullptr)
+        : QCompleter(model, parent)
+    {}
 
-    QStringList splitPath(const QString &) const override {
+    QStringList splitPath(const QString&) const override
+    {
         return QStringList("");
     }
 };
@@ -4270,8 +4273,10 @@ TreePanel::TreePanel(const char* name, QWidget* parent)
     this->searchBox = new QLineEdit(this);
     this->searchBox->setPlaceholderText(tr("Search"));
     this->searchBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    this->searchBox->setToolTip(tr("Searches the model tree.\n"
-                                   "Uses * for any sequence, ? for a single character."));
+    this->searchBox->setToolTip(
+        tr("Searches the model tree.\n"
+           "Uses * for any sequence, ? for a single character.")
+    );
     this->searchBox->installEventFilter(this);
 
     QStringListModel* listModel = new QStringListModel(this);
@@ -4285,13 +4290,17 @@ TreePanel::TreePanel(const char* name, QWidget* parent)
     this->historyBtn->setAutoRaise(true);
     this->historyBtn->setPopupMode(QToolButton::InstantPopup);
     this->historyBtn->setMenu(historyMenu);
-    this->historyBtn->setToolTip(tr("<b>Search History</b> (Alt+Down)<br>Accesses recent searches from this session."));
+    this->historyBtn->setToolTip(
+        tr("<b>Search History</b> (Alt+Down)<br>Accesses recent searches from this session.")
+    );
     this->historyBtn->setEnabled(false);
     this->historyBtn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
     this->historyBtn->setFixedWidth(15);
 
     this->globalBtn = new QCheckBox(tr("Global"), searchRow);
-    this->globalBtn->setToolTip(tr("<b>Global Search</b><br>Enables searching in the tree models of all open documents."));
+    this->globalBtn->setToolTip(
+        tr("<b>Global Search</b><br>Enables searching in the tree models of all open documents.")
+    );
     this->globalBtn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Minimum);
     this->globalBtn->setChecked(true);
 
@@ -4304,8 +4313,7 @@ TreePanel::TreePanel(const char* name, QWidget* parent)
 
     connect(this->searchBox, &QLineEdit::returnPressed, this, &TreePanel::accept);
     connect(this->searchBox, &QLineEdit::textEdited, this, &TreePanel::itemSearch);
-    connect(this->historyMenu, &QMenu::triggered,
-            this, &TreePanel::onHistoryActionTriggered);
+    connect(this->historyMenu, &QMenu::triggered, this, &TreePanel::onHistoryActionTriggered);
 
     connect(this->globalBtn, &QCheckBox::toggled, this, [this](bool on) {
         const QString text = searchBox->text();
@@ -4441,7 +4449,8 @@ void TreePanel::saveSearchHistory(const QString& term)
     QAction* newAct = new QAction(term, this);
     if (this->historyMenu->isEmpty()) {
         this->historyMenu->addAction(newAct);
-    } else {
+    }
+    else {
         this->historyMenu->insertAction(this->historyMenu->actions().first(), newAct);
     }
 

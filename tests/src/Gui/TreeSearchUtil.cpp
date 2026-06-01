@@ -16,7 +16,7 @@ bool matches(const QString& pattern, const QString& haystack)
     return Gui::TreeSearchUtil::regexMatches(re, haystack);
 }
 
-}
+}  // namespace
 
 TEST(TreeSearchUtil, PlainTextSearchMatchesSubstrings)
 {

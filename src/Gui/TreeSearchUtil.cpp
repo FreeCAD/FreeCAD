@@ -27,8 +27,7 @@ namespace Gui::TreeSearchUtil
 
 QRegularExpression wildcardToRegex(const QString& pattern)
 {
-    const bool hasWildcard = pattern.contains(QLatin1Char('*'))
-        || pattern.contains(QLatin1Char('?'));
+    const bool hasWildcard = pattern.contains(QLatin1Char('*')) || pattern.contains(QLatin1Char('?'));
     const QString effectivePattern = hasWildcard ? pattern : QStringLiteral("*%1*").arg(pattern);
 
     QString rx;
@@ -56,4 +55,4 @@ bool regexMatches(const QRegularExpression& re, const QString& haystack)
     return re.isValid() && re.match(haystack).hasMatch();
 }
 
-}
+}  // namespace Gui::TreeSearchUtil
