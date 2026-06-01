@@ -111,6 +111,73 @@ void printPreselectionInfo(
 
 SoFullPath* Gui::SoFCUnifiedSelection::currentHighlightPath = nullptr;
 
+namespace Gui::SelectionPickPolicy
+{
+
+bool canFinalizeSinglePick(const std::vector<Candidate>& picked)
+{
+    bool foundSelectionGate = false;
+    for (const auto& info : picked) {
+        if (!info.hasGate) {
+            continue;
+        }
+
+        foundSelectionGate = true;
+        if (info.passesGate) {
+            return true;
+        }
+    }
+
+    // Preserve the existing first-object behavior unless an active gate rejected every pick so far.
+    return !foundSelectionGate;
+}
+
+std::size_t choosePreferredPick(const std::vector<Candidate>& picked)
+{
+    if (picked.empty()) {
+        return 0;
+    }
+
+    std::size_t preferred = 0;
+    int pickedPriority = picked.front().priority;
+    const void* firstOwner = picked.front().owner;
+    bool preferredIsAnnotation = picked.front().isAnnotation;
+
+    for (std::size_t i = 1; i < picked.size(); ++i) {
+        const auto& info = picked[i];
+        if (info.owner != firstOwner) {
+            break;
+        }
+
+        if (!info.closeToFirst) {
+            continue;
+        }
+
+        if (info.priority > pickedPriority) {
+            preferred = i;
+            pickedPriority = info.priority;
+            preferredIsAnnotation = info.isAnnotation;
+        }
+        else if (info.priority == pickedPriority && info.isAnnotation && !preferredIsAnnotation) {
+            preferred = i;
+            preferredIsAnnotation = true;
+        }
+    }
+
+    if (!picked[preferred].passesGate) {
+        for (std::size_t i = 0; i < picked.size(); ++i) {
+            if (picked[i].passesGate) {
+                preferred = i;
+                break;
+            }
+        }
+    }
+
+    return preferred;
+}
+
+}  // namespace Gui::SelectionPickPolicy
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoFCUnifiedSelection)
@@ -267,6 +334,74 @@ int SoFCUnifiedSelection::getPriority(const SoPickedPoint* p)
     return 0;
 }
 
+bool SoFCUnifiedSelection::passesSelectionGate(const PickedInfo& info)
+{
+    if (!info.vpd) {
+        return false;
+    }
+
+    App::DocumentObject* obj = info.vpd->getObject();
+    if (!obj) {
+        return false;
+    }
+
+    return Selection().testSelection(obj->getDocument(), obj, info.element.c_str());
+}
+
+bool SoFCUnifiedSelection::hasSelectionGate(const PickedInfo& info)
+{
+    if (!info.vpd) {
+        return false;
+    }
+
+    App::DocumentObject* obj = info.vpd->getObject();
+    if (!obj) {
+        return false;
+    }
+
+    return Selection().hasSelectionGate(obj->getDocument());
+}
+
+SelectionPickPolicy::Candidate SoFCUnifiedSelection::getPickCandidate(
+    const PickedInfo& info,
+    const Document* doc,
+    const PickedInfo* firstPicked
+)
+{
+    SelectionPickPolicy::Candidate candidate;
+    candidate.owner = info.vpd;
+    candidate.priority = getPriority(info.pp);
+    candidate.isAnnotation = doc && info.pp && isAnnotationPick(info.pp, doc);
+    candidate.hasGate = hasSelectionGate(info);
+    candidate.passesGate = passesSelectionGate(info);
+
+    if (firstPicked && info.pp && firstPicked->pp) {
+        candidate.closeToFirst = info.pp->getPoint().equals(firstPicked->pp->getPoint(), 0.2F);
+    }
+
+    return candidate;
+}
+
+std::vector<SelectionPickPolicy::Candidate> SoFCUnifiedSelection::getPickCandidates(
+    const std::vector<PickedInfo>& picked,
+    const Document* doc
+)
+{
+    std::vector<SelectionPickPolicy::Candidate> candidates;
+    candidates.reserve(picked.size());
+    const PickedInfo* firstPicked = picked.empty() ? nullptr : &picked.front();
+    for (const auto& info : picked) {
+        candidates.push_back(getPickCandidate(info, doc, firstPicked));
+    }
+
+    return candidates;
+}
+
+bool SoFCUnifiedSelection::canFinalizeSinglePick(const std::vector<PickedInfo>& picked)
+{
+    return SelectionPickPolicy::canFinalizeSinglePick(getPickCandidates(picked, nullptr));
+}
+
 std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedList(
     SoHandleEventAction* action,
     bool singlePick
@@ -283,8 +418,8 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
         auto path = Gui::toFullPath(info.pp->getPath());
         if (this->pcDocument && path && path->containsPath(action->getCurPath())) {
             vp = this->pcDocument->getViewProviderByPathFromHead(path);
-            if (singlePick && last_vp && last_vp != vp) {
-                return ret;
+            if (singlePick && last_vp && last_vp != vp && canFinalizeSinglePick(ret)) {
+                break;
             }
         }
         if (!vp || !vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
@@ -322,43 +457,13 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
         return ret;
     }
 
-    // To identify the picking of lines in a concave area we have to
-    // get all intersection points. If we have two or more intersection
-    // points where the first is of a face and the second of a line with
-    // almost similar coordinates we use the second point, instead.
-
-    int picked_prio = getPriority(ret[0].pp);
-    auto last_vpd = ret[0].vpd;
-    const SbVec3f& picked_pt = ret.front().pp->getPoint();
-    auto itPicked = ret.begin();
-    for (auto it = ret.begin() + 1; it != ret.end(); ++it) {
-        auto& info = *it;
-        if (last_vpd != info.vpd) {
-            break;
-        }
-
-        int cur_prio = getPriority(info.pp);
-        const SbVec3f& cur_pt = info.pp->getPoint();
-
-        if (!picked_pt.equals(cur_pt, 0.2F)) {
-            continue;
-        }
-
-        if (cur_prio > picked_prio) {
-            itPicked = it;
-            picked_prio = cur_prio;
-        }
-        // When priorities are equal, prefer annotation picks (overlays)
-        // over regular shape picks, so that e.g. sketch internal faces
-        // on a solid surface are picked before the solid face.
-        else if (cur_prio == picked_prio && this->pcDocument) {
-            bool curIsAnnotation = isAnnotationPick(info.pp, this->pcDocument);
-            bool pickedIsAnnotation = isAnnotationPick(itPicked->pp, this->pcDocument);
-            if (curIsAnnotation && !pickedIsAnnotation) {
-                itPicked = it;
-            }
-        }
-    }
+    // To identify the picking of lines in a concave area we have to get all intersection points.
+    // If the preferred point is rejected by the active selection gate, choose the first allowed
+    // candidate still inside the viewer pick radius.
+    auto pickedIndex = SelectionPickPolicy::choosePreferredPick(
+        getPickCandidates(ret, this->pcDocument)
+    );
+    auto itPicked = ret.begin() + pickedIndex;
 
     if (singlePick) {
         std::vector<PickedInfo> sret(itPicked, itPicked + 1);

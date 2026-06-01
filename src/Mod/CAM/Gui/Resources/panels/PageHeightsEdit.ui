@@ -65,6 +65,59 @@
     </widget>
    </item>
    <item row="2" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBoxLinking">
+     <property name="title">
+      <string>Linking</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayoutLinking">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelCollisionAvoidanceStrategy">
+        <property name="text">
+         <string>Collision Avoidance Strategy</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="CollisionAvoidanceStrategy">
+        <property name="toolTip">
+         <string>How collision detection is performed when the tool moves between features.
+
+Retract Height: No collision detection, uses retract height for rapid moves between areas
+Clearance Height: No collision detection, uses clearance height for rapid moves between areas
+Line of Sight: fastest - checks the path centerline.
+Tool Diameter: balanced - checks clearance using the tool diameter.
+Tool Shape: safest - checks clearance using the cross section of the tool shape
+          </string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelCollisionClearance">
+        <property name="text">
+         <string>Collision Clearance</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="CollisionClearance">
+        <property name="toolTip">
+         <string>Minimum clearance distance between the tool and any solid during linking moves. Applies to all linking modes.</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="minimum">
+         <double>0.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>999999999.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

@@ -281,7 +281,7 @@
     <message>
       <location filename="../../qtcolorpicker.cpp" line="558"/>
       <source>Custom Colors</source>
-      <translation type="unfinished">Custom Colors</translation>
+      <translation>Сопствене боје</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="653"/>
@@ -384,7 +384,7 @@
     <message>
       <location filename="../../SheetTableView.cpp" line="224"/>
       <source>Recompute Cells</source>
-      <translation type="unfinished">Recompute Cells</translation>
+      <translation>Поновно прорачунај ћелије</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="326"/>
@@ -399,7 +399,7 @@
     <message>
       <location filename="../../SheetTableView.cpp" line="366"/>
       <source>Remove Columns</source>
-      <translation type="unfinished">Remove Columns</translation>
+      <translation>Уклони колоне</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="339"/>
@@ -413,16 +413,6 @@
       <translation>Обриши ћелије</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
-      <source>Setup conf table</source>
-      <translation type="unfinished">Setup conf table</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
-      <source>Unsetup conf table</source>
-      <translation type="unfinished">Unsetup conf table</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>Повежи ћелије</translation>
@@ -430,7 +420,17 @@
     <message>
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Одвежи ћелије</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation>Поставка конфигурационе табеле</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation>Поништи поставку конфигурационе табеле</translation>
     </message>
   </context>
   <context>
@@ -1101,7 +1101,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="141"/>
       <source>Insert %n Rows Above</source>
       <translation type="unfinished">
-        <numerusform>Insert %n Rows Above</numerusform>
+        <numerusform>Уметни %n ред(ова) изнад</numerusform>
         <numerusform>Insert %n Rows Above</numerusform>
         <numerusform>Insert %n Rows Above</numerusform>
       </translation>
@@ -1110,7 +1110,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="143"/>
       <source>Insert %n Rows Below</source>
       <translation type="unfinished">
-        <numerusform>Insert %n Rows Below</numerusform>
+        <numerusform>Уметни %n ред(ова) испод</numerusform>
         <numerusform>Insert %n Rows Below</numerusform>
         <numerusform>Insert %n Rows Below</numerusform>
       </translation>
@@ -1119,7 +1119,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n Columns Left</source>
       <translation type="unfinished">
-        <numerusform>Insert %n Columns Left</numerusform>
+        <numerusform>Уметни %n колону(а) лево</numerusform>
         <numerusform>Insert %n Columns Left</numerusform>
         <numerusform>Insert %n Columns Left</numerusform>
       </translation>
@@ -1128,7 +1128,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="163"/>
       <source>Insert %n Columns Right</source>
       <translation type="unfinished">
-        <numerusform>Insert %n Columns Right</numerusform>
+        <numerusform>Уметни %n колону(а) десно</numerusform>
         <numerusform>Insert %n Columns Right</numerusform>
         <numerusform>Insert %n Columns Right</numerusform>
       </translation>
@@ -1136,7 +1136,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="170"/>
       <source>Remove Columns</source>
-      <translation type="unfinished">Remove Columns</translation>
+      <translation>Уклони колоне</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="183"/>
@@ -1146,7 +1146,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="188"/>
       <source>Configuration Table</source>
-      <translation type="unfinished">Configuration Table</translation>
+      <translation>Конфигурациона табела</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>

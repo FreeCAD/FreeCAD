@@ -43,6 +43,7 @@
 #include <utility>
 #include <list>
 #include <string>
+#include <string_view>
 
 namespace Base
 {
@@ -467,11 +468,13 @@ public:
      *
      * @return The newly added object.
      */
-    DocumentObject* addObject(const char* sType,
-                              const char* pObjectName = nullptr,
-                              bool isNew = true,
-                              const char* viewType = nullptr,
-                              bool isPartial = false);
+    DocumentObject* addObject(
+        std::string_view sType,
+        const char* pObjectName = nullptr,
+        bool isNew = true,
+        const char* viewType = nullptr,
+        bool isPartial = false
+    );
 
     /**
      * @brief Add an object of a given type to the document.
@@ -630,7 +633,7 @@ public:
      * @return A unique name for the object or an empty string if the proposed
      * name is empty.
      */
-    std::string getUniqueObjectName(const char* proposedName) const;
+    std::string getUniqueObjectName(std::string_view proposedName) const;
 
     /**
      * @brief Get a unique label for an object.
@@ -656,7 +659,7 @@ public:
      *
      * @return Returns true if the base names are the same, false otherwise.
      */
-    bool haveSameBaseName(const std::string& name, const std::string& label);
+    bool haveSameBaseName(std::string_view name, std::string_view label);
 
     /// Get a list of the document's objects including the dependencies.
     std::vector<DocumentObject*> getDependingObjects() const;
@@ -1269,15 +1272,15 @@ public:
 
     /// Check if there is any document restoring/importing.
     static bool isAnyRestoring();
-                                                                
+
     /// Register a new label.
-    void registerLabel(const std ::string& newLabel);
+    void registerLabel(std::string_view newLabel);
     /// Unregister a label.
-    void unregisterLabel(const std::string& oldLabel);
+    void unregisterLabel(std::string_view oldLabel);
     /// Check if a label exists.
-    bool containsLabel(const std::string& label);
+    bool containsLabel(std::string_view label);
     /// Create a unique label based on the given modelLabel.
-    std::string makeUniqueLabel(const std::string& modelLabel);
+    std::string makeUniqueLabel(std::string_view modelLabel);
 
     friend class Application;
     // because of transaction handling

@@ -203,12 +203,6 @@ class GenericPlasma(PostProcessor):
 
         return reset_commands
 
-    def _get_property_value(self, name, default):
-        """Get a property value from machine configuration with fallback to default."""
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            return self._machine.postprocessor_properties.get(name, default)
-        return default
-
     def init_values(self, values: Values) -> None:
         """Initialize values that are used throughout the postprocessor."""
         #
@@ -256,12 +250,12 @@ class GenericPlasma(PostProcessor):
 
     def _inject_pierce_delay(self, postables):
         """Inject pierce delay after torch ignition command."""
-        pierce_delay_ms = int(self._get_property_value("pierce_delay", 1000))
+        pierce_delay_ms = int(self.values["PIERCE_DELAY"])
         if pierce_delay_ms <= 0:
             return
 
         # Marking doesn't pierce through stock (i.e. no delay needed)
-        if self._get_property_value("mark_entry_only", False):
+        if self.values["MARK_ENTRY_ONLY"]:
             return
 
         # Convert milliseconds to seconds for G4 command
@@ -285,7 +279,7 @@ class GenericPlasma(PostProcessor):
 
     def _inject_cooling_delay(self, postables):
         """Inject cooling delay after torch extinguish command."""
-        cooling_delay_ms = int(self._get_property_value("cooling_delay", 500))
+        cooling_delay_ms = int(self.values["COOLING_DELAY"])
         if cooling_delay_ms <= 0:
             return
 
@@ -310,7 +304,7 @@ class GenericPlasma(PostProcessor):
 
     def _inject_torch_control(self, postables):
         """Handle torch ignition/extinguishment based on Z-axis movement."""
-        if not self._get_property_value("torch_zaxis_control", True):
+        if not self.values["TORCH_ZAXIS_CONTROL"]:
             return
 
         for section_name, sublist in postables:
@@ -334,7 +328,7 @@ class GenericPlasma(PostProcessor):
                         if not self._torch_active and CompValue(cmd.Parameters["Z"]) <= CompValue(
                             cut_height
                         ):
-                            if self._get_property_value("mark_entry_only", False):
+                            if self.values["MARK_ENTRY_ONLY"]:
                                 new_commands.append(cmd)
                                 new_commands.append(self.TorchIgniteCommand)
                                 self._torch_active = True
@@ -389,10 +383,10 @@ class GenericPlasma(PostProcessor):
 
     def _inject_mark_entry_only(self, postables):
         """Mark first entry points only (Z- to cut height, torch on, short delay, torch off, Z+ to clearance)."""
-        if not self._get_property_value("mark_entry_only", False):
+        if not self.values["MARK_ENTRY_ONLY"]:
             return
 
-        marking_delay_ms = int(self._get_property_value("marking_delay", 100))
+        marking_delay_ms = int(self.values["MARKING_DELAY"])
 
         # Convert milliseconds to seconds for G4 command
         marking_delay_sec = marking_delay_ms / 1000.0
@@ -464,7 +458,7 @@ class GenericPlasma(PostProcessor):
 
     def _force_rapid_feeds(self, postables):
         """Replace all feed rates with rapid speeds for dry runs."""
-        if not self._get_property_value("force_rapid_feeds", False):
+        if not self.values["FORCE_RAPID_FEEDS"]:
             return
 
         for section_name, sublist in postables:

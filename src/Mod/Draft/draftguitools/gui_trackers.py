@@ -45,6 +45,9 @@ import FreeCAD
 import FreeCADGui
 import DraftVecUtils
 from FreeCAD import Vector
+from draftgeoutils import general as geo_general
+from draftgeoutils import geometry as geo_geometry
+from draftgeoutils import wires as geo_wires
 from draftutils import grid_observer
 from draftutils import gui_utils
 from draftutils import params
@@ -61,9 +64,8 @@ class Tracker:
     """A generic Draft Tracker, to be used by other specific trackers."""
 
     def __init__(self, dotted=False, scolor=None, swidth=None, children=[], ontop=False, name=None):
-        global Part, DraftGeomUtils
+        global Part
         import Part
-        import DraftGeomUtils
 
         self.ontop = ontop
         self.color = coin.SoBaseColor()
@@ -477,7 +479,7 @@ class dimTracker(Tracker):
                     proj = None
                 else:
                     base = Part.LineSegment(p1, p4).toShape()
-                    proj = DraftGeomUtils.findDistance(self.p3, base)
+                    proj = geo_geometry.findDistance(self.p3, base)
                 if not proj:
                     p2 = p1
                     p3 = p4
@@ -1108,7 +1110,7 @@ class wireTracker(Tracker):
 
     def __init__(self, wire):
         self.line = coin.SoLineSet()
-        self.closed = DraftGeomUtils.isReallyClosed(wire)
+        self.closed = geo_wires.isReallyClosed(wire)
         if self.closed:
             self.line.numVertices.setValue(len(wire.Vertexes) + 1)
         else:
@@ -1562,8 +1564,6 @@ class boxTracker(Tracker):
 
     def update(self, line=None, normal=None):
         """Update the tracker."""
-        import DraftGeomUtils
-
         if not normal:
             normal = self._get_wp().axis
         if line:
@@ -1571,10 +1571,10 @@ class boxTracker(Tracker):
                 bp = line[0]
                 lvec = line[1].sub(line[0])
             else:
-                lvec = DraftGeomUtils.vec(line.Shape.Edges[0])
+                lvec = geo_general.vec(line.Shape.Edges[0])
                 bp = line.Shape.Edges[0].Vertexes[0].Point
         elif self.baseline:
-            lvec = DraftGeomUtils.vec(self.baseline.Shape.Edges[0])
+            lvec = geo_general.vec(self.baseline.Shape.Edges[0])
             bp = self.baseline.Shape.Edges[0].Vertexes[0].Point
         else:
             return

@@ -732,6 +732,7 @@ void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
     setGizmoPositions();
 
     ui->inputMode->currentIndexChanged(ui->inputMode->currentIndex());
+    showDraggerHints();
 }
 
 void TaskHelixParameters::setGizmoPositions()

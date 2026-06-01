@@ -34,6 +34,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
+from draftgeoutils import wires as geo_wires
 from draftobjects.base import DraftObject
 from draftutils import groups
 from draftutils import gui_utils
@@ -156,7 +157,6 @@ class Shape2DView(DraftObject):
         "returns projected edges from a shape and a direction"
         import Part
         import TechDraw
-        import DraftGeomUtils
 
         edges = []
         _groups = TechDraw.projectEx(shape, direction)
@@ -169,7 +169,7 @@ class Shape2DView(DraftObject):
                     edges.append(g)
         edges = self.cleanExcluded(obj, edges)
         if getattr(obj, "Tessellation", False):
-            return DraftGeomUtils.cleanProjection(
+            return geo_wires.cleanProjection(
                 Part.makeCompound(edges), obj.Tessellation, obj.SegmentLength
             )
         else:
@@ -221,7 +221,6 @@ class Shape2DView(DraftObject):
             return
 
         import Part
-        import DraftGeomUtils
 
         pl = obj.Placement
         if obj.Base:
@@ -386,7 +385,7 @@ class Shape2DView(DraftObject):
                                         c = self.getProjected(obj, c, proj)
                             # faces = []
                             # if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
-                            #    wires = DraftGeomUtils.findWires(c.Edges)
+                            #    wires = geo_wires.findWires(c.Edges)
                             #    for w in wires:
                             #        if w.isClosed():
                             #            faces.append(Part.Face(w))

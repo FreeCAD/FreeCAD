@@ -103,7 +103,7 @@ public:
         const char* docName = nullptr,
         const char* objName = nullptr,
         const char* subName = nullptr,
-        const char* typeName = nullptr,
+        std::string_view typeName = {},
         float x = 0,
         float y = 0,
         float z = 0,
@@ -115,13 +115,11 @@ public:
         , y(y)
         , z(z)
         , Object(docName, objName, subName)
+        , TypeName(typeName)
     {
         pDocName = Object.getDocumentName().c_str();
         pObjectName = Object.getObjectName().c_str();
         pSubName = Object.getSubName().c_str();
-        if (typeName) {
-            TypeName = typeName;
-        }
         pTypeName = TypeName.c_str();
     }  // explicit bombs
 
@@ -130,7 +128,7 @@ public:
         const std::string& docName,
         const std::string& objName,
         const std::string& subName,
-        const std::string& typeName = std::string(),
+        std::string_view typeName = {},
         float x = 0,
         float y = 0,
         float z = 0,
@@ -327,7 +325,7 @@ public:
         const char* DocName;
         const char* FeatName;
         const char* SubName;
-        const char* TypeName;
+        std::string_view TypeName;
         App::Document* pDoc;
         App::DocumentObject* pObject;
         App::DocumentObject* pResolvedObject;
@@ -400,6 +398,14 @@ public:
         const char* pSubName = nullptr,
         ResolveMode resolve = ResolveMode::OldStyleElement
     ) const;
+
+    /// Check if an object or sub-element passes the active selection gate without changing selection.
+    bool testSelection(
+        App::Document* pDoc,
+        App::DocumentObject* pObject,
+        const char* pSubName = nullptr
+    ) const;
+    bool hasSelectionGate(App::Document* pDoc) const;
 
     std::string getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 

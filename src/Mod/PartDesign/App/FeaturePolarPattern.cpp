@@ -153,15 +153,76 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         return {gp_Trsf()};
     }
 
-    bool reversed = Reversed.getValue();
+    gp_Ax2 axis = getRotation();
 
+    double angle;
+
+    if (Mode.getValue() == (int)PolarPatternMode::Extent) {
+        angle = Angle.getValue();
+
+        if (std::fabs(angle - 360.0) < Precision::Confusion()) {
+            angle /= occurrences;  // Because e.g. two occurrences in 360 degrees need to be 180
+                                   // degrees apart
+        }
+        else {
+            angle /= occurrences - 1;
+        }
+
+        angle = Base::toRadians(angle);
+        if (fabs(angle) < Precision::Angular()) {
+            throw Base::ValueError("Pattern angle can't be null");
+        }
+    }
+
+    // make sure spacings are correct size :
+    updateSpacings();
+
+    const std::vector<double> spacings = Spacings.getValues();
+    const std::vector<double> pattern = SpacingPattern.getValues();
+    bool usePattern = pattern.size() > 1;
+
+    double cumulativeSpacings = 0.0;
+
+    std::list<gp_Trsf> transformations;
+    gp_Trsf trans;
+    transformations.push_back(trans);
+
+
+    // Note: The original feature is already included in the list of transformations!
+    // Therefore we start with occurrence number 1
+    for (int i = 1; i < occurrences; i++) {
+        if (Mode.getValue() == (int)PolarPatternMode::Spacing) {
+            double spacing;
+            if (spacings[i - 1] != -1.0) {
+                spacing = spacings[i - 1];
+            }
+            else if (usePattern) {
+                spacing = pattern[(size_t)fmod(i - 1, pattern.size())];
+            }
+            else {
+                spacing = Offset.getValue();
+            }
+            cumulativeSpacings += Base::toRadians(spacing);
+            trans.SetRotation(axis.Axis(), cumulativeSpacings);
+        }
+        else {
+            trans.SetRotation(axis.Axis(), angle * i);
+        }
+        transformations.push_back(trans);
+    }
+
+    return transformations;
+}
+
+gp_Ax2 PolarPattern::getRotation() const
+{
     App::DocumentObject* refObject = Axis.getValue();
     if (!refObject) {
-        throw Base::ValueError("No axis reference specified");
+        return gp_Ax2();
     }
     std::vector<std::string> subStrings = Axis.getSubValues();
     if (subStrings.empty()) {
-        throw Base::ValueError("No axis reference specified");
+        return gp_Ax2();
     }
 
     gp_Pnt axbase;
@@ -257,73 +318,19 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     else {
         throw Base::TypeError("Axis reference must be edge of a feature or datum line");
     }
+
+    // Transform the axis into the local coordinate system of this feature.
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     axbase.Transform(invObjLoc.Transformation());
     axdir.Transform(invObjLoc.Transformation());
 
     gp_Ax2 axis(axbase, axdir);
 
-    if (reversed) {
+    if (Reversed.getValue()) {
         axis.SetDirection(axis.Direction().Reversed());
     }
 
-    double angle;
-
-    if (Mode.getValue() == (int)PolarPatternMode::Extent) {
-        angle = Angle.getValue();
-
-        if (std::fabs(angle - 360.0) < Precision::Confusion()) {
-            angle /= occurrences;  // Because e.g. two occurrences in 360 degrees need to be 180
-                                   // degrees apart
-        }
-        else {
-            angle /= occurrences - 1;
-        }
-
-        angle = Base::toRadians(angle);
-        if (fabs(angle) < Precision::Angular()) {
-            throw Base::ValueError("Pattern angle can't be null");
-        }
-    }
-
-    // make sure spacings are correct size :
-    updateSpacings();
-
-    const std::vector<double> spacings = Spacings.getValues();
-    const std::vector<double> pattern = SpacingPattern.getValues();
-    bool usePattern = pattern.size() > 1;
-
-    double cumulativeSpacings = 0.0;
-
-    std::list<gp_Trsf> transformations;
-    gp_Trsf trans;
-    transformations.push_back(trans);
-
-
-    // Note: The original feature is already included in the list of transformations!
-    // Therefore we start with occurrence number 1
-    for (int i = 1; i < occurrences; i++) {
-        if (Mode.getValue() == (int)PolarPatternMode::Spacing) {
-            double spacing;
-            if (spacings[i - 1] != -1.0) {
-                spacing = spacings[i - 1];
-            }
-            else if (usePattern) {
-                spacing = pattern[(size_t)fmod(i - 1, pattern.size())];
-            }
-            else {
-                spacing = Offset.getValue();
-            }
-            cumulativeSpacings += Base::toRadians(spacing);
-            trans.SetRotation(axis.Axis(), cumulativeSpacings);
-        }
-        else {
-            trans.SetRotation(axis.Axis(), angle * i);
-        }
-        transformations.push_back(trans);
-    }
-
-    return transformations;
+    return axis;
 }
 
 void PolarPattern::handleChangedPropertyType(

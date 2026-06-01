@@ -129,13 +129,6 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant& va
 
 void QGIDatumLabel::snapPosition(QPointF& pos)
 {
-    if (!Preferences::SnapViews()) {
-        return;
-    }
-
-    qreal snapPercent = 0.4;
-    double dimSpacing = Rez::guiX(activeDimAttributes.getCascadeSpacing());
-
     auto* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
     if (!qgivd) {
         return;
@@ -150,6 +143,14 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
     if(type != "Distance" && type != "DistanceX" && type != "DistanceY") {
         return;
     }
+
+    auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(dim));
+    if (!vp || !vp->AllowSnap.getValue()) {
+        return;
+    }
+
+    qreal snapTextPercent = Preferences::SnapDimensionsTextFactor();
+    double dimSpacing = Rez::guiX(activeDimAttributes.getCascadeSpacing());
 
     // 1 - We try to snap the label to its center position.
     pointPair pp = dim->getLinearPoints();
@@ -179,18 +180,18 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
     projPnt.ProjectToLine(posV - mid, normal);
     projPnt = projPnt + mid;
 
-    if ((projPnt - posV).Length() < dimSpacing * snapPercent) {
+    if ((projPnt - posV).Length() < dimSpacing * snapTextPercent) {
         posV = projPnt;
         pos.setX(posV.x - toCenter.x);
         pos.setY(posV.y - toCenter.y);
     }
 
     // 2 - We check for coord/chain dimensions to offer proper snapping
+    double snapChainPercent = Preferences::SnapDimensionsChainFactor();
     auto* qgiv = dynamic_cast<QGIView*>(qgivd->parentItem());
     if (qgiv) {
         auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(qgiv->getViewObject());
         if (dvp) {
-            snapPercent = 0.2;
             std::vector<TechDraw::DrawViewDimension*> dims = dvp->getDimensions();
             for (auto& d : dims) {
                 if (d == dim) { continue; }
@@ -234,13 +235,13 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
                 projPnt2.ProjectToLine(posV - posVi, idir);
                 projPnt2 = projPnt2 + posVi;
 
-                if ((projPnt2 - posV).Length() < dimSpacing * snapPercent) {
+                if ((projPnt2 - posV).Length() < dimSpacing * snapChainPercent) {
                     posV = projPnt2;
                     pos.setX(posV.x - toCenter.x);
                     pos.setY(posV.y - toCenter.y);
                     break;
                 }
-                else if (fabs((projPnt2 - posV).Length() - fabs(dimSpacing)) < dimSpacing * snapPercent) {
+                else if (fabs((projPnt2 - posV).Length() - fabs(dimSpacing)) < dimSpacing * snapChainPercent) {
                     posV = projPnt2 + (posV - projPnt2).Normalize() * dimSpacing;
                     pos.setX(posV.x - toCenter.x);
                     pos.setY(posV.y - toCenter.y);

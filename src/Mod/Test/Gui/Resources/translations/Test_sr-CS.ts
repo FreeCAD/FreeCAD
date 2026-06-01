@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
       <source>Ctrl+C</source>
-      <translation type="unfinished">Ctrl+C</translation>
+      <translation>Ctrl+C</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="141"/>
@@ -144,7 +144,7 @@ FreeCAD UnitTest je deo FreeCAD-a i podržava pisanje testova za sopstvene modul
     <message>
       <location filename="../../UnitTestImp.cpp" line="206"/>
       <source>Errors copied to clipboard</source>
-      <translation type="unfinished">Errors copied to clipboard</translation>
+      <translation>Greška je kopirana u privremenu memoriju</translation>
     </message>
   </context>
 </TS>

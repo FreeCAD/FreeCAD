@@ -226,7 +226,7 @@
       <location filename="../../AttacherTexts.cpp" line="798"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Pontra</translation>
+      <translation>Csomópont</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="799"/>
@@ -2226,7 +2226,7 @@ irányát.</translation>
       <translation>Csatolmány szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="488"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
       <translation>Felületi színek megváltoztatása</translation>
     </message>
@@ -2267,7 +2267,7 @@ irányát.</translation>
       <translation>Húzás</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1613"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
       <source>Project on surface</source>
       <translation>Felszínre vetít</translation>
     </message>
@@ -2355,7 +2355,7 @@ Megjegyzés: A pozíció a rögzített objektum helyi terében ábrázolt.</tran
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment Mode</source>
-      <translation>Illesztés módja</translation>
+      <translation>Rögzítés módja</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -3184,7 +3184,7 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
       <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
-      <translation type="unfinished">Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</translation>
+      <translation>Az importálás során az összes formát egyetlen összetett formává egyesíti, feloldva az alkotórészeket és alkalmazva a változtatásokat. Ez meghosszabbítja az importálás idejét, de nem befolyásolja a geometria pontosságát vagy a megjelenítés minőségét.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -3372,7 +3372,7 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="23"/>
       <source>Select the type of geometric primitive to create</source>
-      <translation>Válaszd ki az alakzat típusát</translation>
+      <translation>Válaszd ki az alaptest típusát</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="36"/>
@@ -3542,12 +3542,12 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="516"/>
       <source>Skew angle of the cylinder in the first direction</source>
-      <translation>Nyírás szöge az első irányban</translation>
+      <translation>A henger nyírás szöge az első irányban</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="542"/>
       <source>Skew angle of the cylinder in the second direction</source>
-      <translation>Nyírás szöge a második irányban</translation>
+      <translation>A henger nyírás szöge a második irányban</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="593"/>
@@ -3624,12 +3624,12 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="924"/>
       <source>Start angle of the sphere along the local Z axis</source>
-      <translation>A gömbszelet kezdeti magassági szöge</translation>
+      <translation>A gömb indulási szöge a helyi Z-tengely mentén</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="956"/>
       <source>End angle of the sphere along the local Z axis</source>
-      <translation>A gömbszelet végső magassági szöge</translation>
+      <translation>A gömb végső szöge a helyi Z-tengely mentén</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1033"/>
@@ -3665,12 +3665,12 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1154"/>
       <source>Start angle of the ellipsoid along the local Z axis</source>
-      <translation>Az ellipszoidszelet kezdeti magassági szöge</translation>
+      <translation>Az ellipszoid indulási szöge a helyi Z-tengely mentén</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1186"/>
       <source>End angle of the ellipsoid along the local Z axis</source>
-      <translation>Az ellipszoidszelet végső magassági szöge</translation>
+      <translation>Az ellipszoid végszöge a helyi Z-tengely mentén</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1260"/>
@@ -3685,17 +3685,17 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1335"/>
       <source>Rotation angle of the torus cross-section around the local Z axis</source>
-      <translation>A tórusz generáló körének tengely körüli forgatási szöge</translation>
+      <translation>A tórusz generáló körének Z tengely körüli forgatási szöge</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1358"/>
       <source>Start angle of the torus cross-section</source>
-      <translation>A generáló kör ívének kezdeti szöge</translation>
+      <translation>A tórusz generáló kör ívének kezdeti szöge</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1390"/>
       <source>End angle of the torus cross-section</source>
-      <translation>A generáló kör ívének végső szöge</translation>
+      <translation>A tórusz generáló kör ívének végső szöge</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1460"/>
@@ -3706,7 +3706,7 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1467"/>
       <source>Number of sides of the polygon cross-section</source>
-      <translation>A hasába alapja éleinek száma</translation>
+      <translation>A sokszög keresztmetszet oldalainak száma</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1486"/>
@@ -3717,22 +3717,22 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1493"/>
       <source>Circumradius of the polygon cross-section</source>
-      <translation>A hasáb alapja köréírt körének sugara</translation>
+      <translation>A sokszög keresztmetszetének kerületi sugara</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1516"/>
       <source>Height of the prism along the local Z axis</source>
-      <translation>A hasáb magassága a helyi Z tengely mentén</translation>
+      <translation>A prizma magassága a helyi Z tengely mentén</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1539"/>
       <source>Skew angle of the prism in the first direction</source>
-      <translation>Nyírás szöge az első irányban</translation>
+      <translation>A prizma nyírás szöge az első irányban</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1565"/>
       <source>Skew angle of the prism in the second direction</source>
-      <translation>Nyírás szöge a második irányban</translation>
+      <translation>A prizma nyírás szöge a második irányban</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1611"/>
@@ -3742,12 +3742,12 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1618"/>
       <source>Minimum X value of the base face</source>
-      <translation>Az alsó lap minimum X koordinátája</translation>
+      <translation>Az alapfelület minimális X-értéke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1631"/>
       <source>Maximum X value of the base face</source>
-      <translation>Az alsó lap maximum X koordinátája</translation>
+      <translation>Az alapfelület maximum X értéke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1647"/>
@@ -3757,12 +3757,12 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1654"/>
       <source>Minimum Y value (height start)</source>
-      <translation>A kezdőpont Y koordinátája (magasság kezdete)</translation>
+      <translation>Minimum Y érték (magasság kezdete)</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1667"/>
       <source>Maximum Y value (height end)</source>
-      <translation>A végpont Y koordinátája (magasság vége)</translation>
+      <translation>Maximum Y érték (magasság vége)</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1683"/>
@@ -3772,12 +3772,12 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1690"/>
       <source>Minimum Z value of the base face</source>
-      <translation>Az alsó lap minimum Z koordinátája</translation>
+      <translation>Az alapfelület minimális Z-értéke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1703"/>
       <source>Maximum Z value of the base face</source>
-      <translation>Az alsó lap maximum Z koordinátája</translation>
+      <translation>Az alapfelület maximális Z értéke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1719"/>
@@ -3787,12 +3787,12 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1726"/>
       <source>Minimum X value of the top face</source>
-      <translation>A felső lap minimum X koordinátája</translation>
+      <translation>A felső lap minimum X értéke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1742"/>
       <source>Maximum X value of the top face</source>
-      <translation>A felső lap maximum X koordinátája</translation>
+      <translation>A felső lap maximum X értéke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1758"/>
@@ -3802,12 +3802,12 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1765"/>
       <source>Minimum Z value of the top face</source>
-      <translation>A felső lap minimum Z koordinátája</translation>
+      <translation>A felső lap minimum Z értéke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1781"/>
       <source>Maximum Z value of the top face</source>
-      <translation>A felső lap maximum Z koordinátája</translation>
+      <translation>A felső lap maximum Z értéke</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1848"/>
@@ -3817,22 +3817,22 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1855"/>
       <source>Distance between consecutive turns of the helix</source>
-      <translation>A csavarvonal menetei közötti távolság</translation>
+      <translation>A csavarmenet közötti távolság</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1878"/>
       <source>Total height of the helix</source>
-      <translation>A csavarvonal teljes magassága</translation>
+      <translation>A csavarmenet teljes magassága</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1901"/>
       <source>Radius of the helix</source>
-      <translation>A csavarvonal sugara</translation>
+      <translation>A csavarmenet sugara</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1924"/>
       <source>Taper angle of the helix</source>
-      <translation>A kúpra illesztett csavarvonal fél nyílásszöge</translation>
+      <translation>Csavarmenet kúpossága</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1937"/>
@@ -3842,7 +3842,7 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1944"/>
       <source>Handedness of the helix: right-handed or left-handed</source>
-      <translation>A csavarvonal meneteinek iránya: jobbsodrású vagy balsodrású</translation>
+      <translation>A csavarmenet meneteinek iránya: jobbsodrású vagy balsodrású</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2012"/>
@@ -3852,7 +3852,7 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2019"/>
       <source>Radial growth per rotation of the spiral</source>
-      <translation>A spirálvonal menetei közötti távolság</translation>
+      <translation>A spirál sugárirányú növekedése menetenként</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2035"/>
@@ -3862,7 +3862,7 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2042"/>
       <source>Total number of rotations of the spiral</source>
-      <translation>A spirál fordulatainak száma</translation>
+      <translation>A spirál összes tekercsszáma</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2065"/>
@@ -4002,7 +4002,7 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2649"/>
       <source>Circumradius of the regular polygon</source>
-      <translation>A sokszög köréírt körének sugara</translation>
+      <translation>A szabályos sokszög kerületének sugara</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="509"/>
@@ -4143,17 +4143,17 @@ Válasszon ki egy vagy több élt.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
       <source>Projection object</source>
       <translation>Vetítési objektum</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
       <translation>Nincs aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
       <translation>Vetítési objektumot nem lehet létrehozni</translation>
     </message>
@@ -4382,7 +4382,7 @@ Válasszon ki egy vagy több élt.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</source>
-      <translation>Alakzat automatikus letisztítása logikai művelet után redundáns élek eltávolításával és szomszédos lapok egywesítéséval</translation>
+      <translation>Alakzat automatikus letisztítása logikai művelet után redundáns élek eltávolításával és szomszédos lapok egyesítésével</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="80"/>
@@ -4890,8 +4890,8 @@ the sketch plane's normal vector will be used</source>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
-      <source>Too few elements</source>
-      <translation>Túl kevés elem</translation>
+      <source>Too Few Elements</source>
+      <translation type="unfinished">Too Few Elements</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
@@ -5165,19 +5165,19 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="233"/>
       <location filename="../../TaskShapeBuilder.cpp" line="252"/>
+      <source>Select two vertices</source>
+      <translation>Válasszon ki a két csúcsot</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="233"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="252"/>
       <location filename="../../TaskShapeBuilder.cpp" line="281"/>
       <location filename="../../TaskShapeBuilder.cpp" line="323"/>
       <location filename="../../TaskShapeBuilder.cpp" line="378"/>
       <location filename="../../TaskShapeBuilder.cpp" line="432"/>
       <location filename="../../TaskShapeBuilder.cpp" line="498"/>
-      <source>Wrong selection</source>
-      <translation>Rossz kijelölés</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="233"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="252"/>
-      <source>Select two vertices</source>
-      <translation>Válasszon ki a két csúcsot</translation>
+      <source>Wrong Selection</source>
+      <translation>Hibás kijelölés</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="281"/>
@@ -5245,18 +5245,8 @@ only created cuts will be visible</source>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
-      <source>Too few elements</source>
-      <translation>Túl kevés elem</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
       <source>At least one edge or wire is required.</source>
       <translation>Szükséges legalább egy él vagy háló.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
-      <source>Invalid selection</source>
-      <translation>Érvénytelen kijelölés</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="383"/>
@@ -5264,9 +5254,19 @@ only created cuts will be visible</source>
       <translation>Jelöljön ki legalább 1 élt egyetlen objektumból.</translation>
     </message>
     <message>
+      <location filename="../../TaskSweep.cpp" line="376"/>
+      <source>Too Few Elements</source>
+      <translation type="unfinished">Too Few Elements</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="382"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
+    </message>
+    <message>
       <location filename="../../TaskSweep.cpp" line="393"/>
-      <source>Wrong selection</source>
-      <translation>Rossz kijelölés</translation>
+      <source>Wrong Selection</source>
+      <translation>Hibás kijelölés</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="394"/>
@@ -5291,14 +5291,14 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="505"/>
       <location filename="../../TaskSweep.cpp" line="513"/>
-      <source>Sweep path</source>
-      <translation>Húzás elérési útja</translation>
+      <source>The selected sweep path is invalid.</source>
+      <translation>A kijelölt pásztázási (sweep) út érvénytelen.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="505"/>
       <location filename="../../TaskSweep.cpp" line="513"/>
-      <source>The selected sweep path is invalid.</source>
-      <translation>A kijelölt pásztázási (sweep) út érvénytelen.</translation>
+      <source>Sweep Path</source>
+      <translation>Pásztázás (Sweep) útvonala</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="525"/>
@@ -5359,7 +5359,7 @@ of the object being attached</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment Mode</source>
-      <translation>Illesztés módja</translation>
+      <translation>Rögzítés módja</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="172"/>
@@ -5804,7 +5804,7 @@ Egyedi logikai művelet ellenőrzés:</translation>
       <translation type="unfinished">2x%1 select and confirm</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1654"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Datum dialog: input error</source>
       <translation>Hivatkozás párbeszéd: Beviteli hiba</translation>
     </message>
@@ -6077,16 +6077,6 @@ in the 3D view for the sweep path.</source>
       <translation>Importáló-Exportáló</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
-      <location filename="../../Command.cpp" line="410"/>
-      <location filename="../../Command.cpp" line="510"/>
-      <location filename="../../Command.cpp" line="952"/>
-      <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="2277"/>
-      <source>Wrong selection</source>
-      <translation>Rossz kijelölés</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="350"/>
       <location filename="../../Command.cpp" line="427"/>
       <location filename="../../Command.cpp" line="527"/>
@@ -6098,6 +6088,16 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Select 2 shapes</source>
       <translation>Válassz 2 formát</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="333"/>
+      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="952"/>
+      <location filename="../../Command.cpp" line="1015"/>
+      <location filename="../../Command.cpp" line="2277"/>
+      <source>Wrong Selection</source>
+      <translation>Hibás kijelölés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="351"/>
@@ -6555,7 +6555,7 @@ Folytassa?</translation>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="101"/>
       <source>Edit Attachment</source>
-      <translation>Illesztés szerkesztése</translation>
+      <translation>Csatolás szerkesztése</translation>
     </message>
   </context>
   <context>
@@ -6698,10 +6698,10 @@ Folytassa?</translation>
       <translation>Rossz kiválasztás</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Tovább</translation>
     </message>
@@ -7126,12 +7126,12 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="332"/>
+      <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
       <translation>Egyszerű</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="337"/>
+      <location filename="../../../App/FaceMaker.cpp" line="343"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Külön sík felület létrehozása minden dróthálóhoz függetlenül. Nincs lyuk támogatás; drótok lehetnek különböző síkokon.</translation>
     </message>
@@ -7308,7 +7308,7 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6698"/>
+      <location filename="../../../App/Geometry.cpp" line="6701"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nem tudja meghatározni a görbék metszéspontját. Próbáljon meg hozzáadni egybeesés kényszert a görbék csúcsaihoz, melyeket le szeretné kerekíteni.</translation>
     </message>
@@ -7685,32 +7685,37 @@ A formák átfedő részei eltávolításra kerülnek.</translation>
       <translation>Események</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="69"/>
+      <location filename="../../PatternParametersWidget.cpp" line="78"/>
       <source>Axis</source>
       <translation>Tengely</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="70"/>
-      <location filename="../../PatternParametersWidget.cpp" line="72"/>
+      <location filename="../../PatternParametersWidget.cpp" line="79"/>
+      <location filename="../../PatternParametersWidget.cpp" line="81"/>
       <source>Total Angle</source>
       <translation>Teljes szög</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="71"/>
-      <location filename="../../PatternParametersWidget.cpp" line="73"/>
+      <location filename="../../PatternParametersWidget.cpp" line="80"/>
+      <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Angular Spacing</source>
-      <translation>Szög köz</translation>
+      <translation>Szögtávolság</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="412"/>
-      <location filename="../../PatternParametersWidget.cpp" line="508"/>
+      <location filename="../../PatternParametersWidget.cpp" line="423"/>
+      <location filename="../../PatternParametersWidget.cpp" line="519"/>
       <source>Spacing %1</source>
       <translation>Távolságtartás %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="428"/>
+      <location filename="../../PatternParametersWidget.cpp" line="439"/>
       <source>Remove this spacing definition.</source>
       <translation>Távolítsa el ezt a térköz meghatározást.</translation>
+    </message>
+    <message>
+      <location filename="../../PatternParametersWidget.cpp" line="940"/>
+      <source>Reset spacing</source>
+      <translation type="unfinished">Reset spacing</translation>
     </message>
   </context>
   <context>
