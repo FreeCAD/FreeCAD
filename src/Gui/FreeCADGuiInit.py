@@ -93,6 +93,12 @@ class ToggleVisibilityMode(Enum):
     NoToggleVisibility = "NoToggleVisibility"
 
 
+class ViewerInputClaimKind(str, Enum):
+    PointPick = "PointPick"
+    DragInteraction = "DragInteraction"
+    SelectionMenu = "SelectionMenu"
+
+
 def _isCommandActive(name: str) -> bool:
     cmd = Gui.Command.get(name)
     return bool(cmd and cmd.isActive())
@@ -103,6 +109,7 @@ Gui.listCommands = Gui.Command.listAll
 Gui.isCommandActive = _isCommandActive
 Gui.Selection.SelectionStyle = SelectionStyle
 Gui.Selection.SelectionActionMode = SelectionActionMode
+Gui.ViewerInputClaimKind = ViewerInputClaimKind
 
 
 # Important definitions

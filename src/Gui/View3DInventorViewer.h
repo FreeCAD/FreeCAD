@@ -23,10 +23,12 @@
 
 #pragma once
 
+#include <cstdint>
 #include <list>
 #include <map>
 #include <memory>
 #include <set>
+#include <string>
 #include <vector>
 
 #include <QCursor>
@@ -119,6 +121,14 @@ public:
         BoxZoom = 3,    /**< Perform a box zoom. */
         Clip = 4,       /**< Clip objects using a lasso. */
     };
+    enum class ViewerInputClaimKind
+    {
+        PointPick,
+        DragInteraction,
+        SelectionMenu,
+    };
+    using ViewerInputClaimId = std::uint64_t;
+
     /** @name Modus handling of the viewer
      * Here you can switch several features on/off
      * and modes of the Viewer
@@ -355,6 +365,10 @@ public:
     {
         return this->allowredir;
     }
+    ViewerInputClaimId beginInputClaim(std::string owner, ViewerInputClaimKind kind);
+    void endInputClaim(ViewerInputClaimId id);
+    bool hasInputClaim() const;
+    bool canStartSelection() const;
     //@}
 
     /** @name Pick actions */
@@ -630,6 +644,13 @@ private:
     SoEventCallback* pEventCallback;
     NavigationStyle* navigation;
     SoFCUnifiedSelection* selectionRoot;
+    struct ViewerInputClaim
+    {
+        std::string owner;
+        ViewerInputClaimKind kind;
+    };
+    std::map<ViewerInputClaimId, ViewerInputClaim> inputClaims;
+    ViewerInputClaimId nextInputClaimId {1};
 
     SoClipPlane* pcClipPlane;
 

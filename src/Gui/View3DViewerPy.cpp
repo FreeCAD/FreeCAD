@@ -35,6 +35,26 @@
 
 using namespace Gui;
 
+namespace
+{
+View3DInventorViewer::ViewerInputClaimKind parseViewerInputClaimKind(const char* kind)
+{
+    const std::string kindName(kind);
+    if (kindName == "PointPick") {
+        return View3DInventorViewer::ViewerInputClaimKind::PointPick;
+    }
+    if (kindName == "DragInteraction") {
+        return View3DInventorViewer::ViewerInputClaimKind::DragInteraction;
+    }
+    if (kindName == "SelectionMenu") {
+        return View3DInventorViewer::ViewerInputClaimKind::SelectionMenu;
+    }
+
+    throw Py::ValueError("Unknown viewer input claim kind: " + kindName);
+}
+
+}  // namespace
+
 
 void View3DInventorViewerPy::init_type()
 {
@@ -151,6 +171,27 @@ void View3DInventorViewerPy::init_type()
         "isRedirectedToSceneGraph",
         &View3DInventorViewerPy::isRedirectedToSceneGraph,
         "isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled."
+    );
+    add_varargs_method(
+        "beginInputClaim",
+        &View3DInventorViewerPy::beginInputClaim,
+        "beginInputClaim(owner, kind) -> int: claim viewer input. "
+        "kind is a Gui.ViewerInputClaimKind value."
+    );
+    add_varargs_method(
+        "endInputClaim",
+        &View3DInventorViewerPy::endInputClaim,
+        "endInputClaim(claim_id): release a viewer input claim."
+    );
+    add_varargs_method(
+        "hasInputClaim",
+        &View3DInventorViewerPy::hasInputClaim,
+        "hasInputClaim() -> bool: check whether any viewer input claim is active."
+    );
+    add_varargs_method(
+        "canStartSelection",
+        &View3DInventorViewerPy::canStartSelection,
+        "canStartSelection() -> bool: check whether selection may start."
     );
     add_varargs_method(
         "grabFramebuffer",
@@ -683,6 +724,47 @@ Py::Object View3DInventorViewerPy::isRedirectedToSceneGraph(const Py::Tuple& arg
     }
     bool ok = _viewer->isRedirectedToSceneGraph();
     return Py::Boolean(ok);
+}
+
+Py::Object View3DInventorViewerPy::beginInputClaim(const Py::Tuple& args)
+{
+    const char* owner = nullptr;
+    const char* kind = nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "ss", &owner, &kind)) {
+        throw Py::Exception();
+    }
+
+    const auto claimId = _viewer->beginInputClaim(owner, parseViewerInputClaimKind(kind));
+    return Py::Object(PyLong_FromUnsignedLongLong(static_cast<unsigned long long>(claimId)), true);
+}
+
+Py::Object View3DInventorViewerPy::endInputClaim(const Py::Tuple& args)
+{
+    unsigned long long claimId = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "K", &claimId)) {
+        throw Py::Exception();
+    }
+
+    _viewer->endInputClaim(static_cast<View3DInventorViewer::ViewerInputClaimId>(claimId));
+    return Py::None();
+}
+
+Py::Object View3DInventorViewerPy::hasInputClaim(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+
+    return Py::Boolean(_viewer->hasInputClaim());
+}
+
+Py::Object View3DInventorViewerPy::canStartSelection(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+
+    return Py::Boolean(_viewer->canStartSelection());
 }
 
 Py::Object View3DInventorViewerPy::grabFramebuffer(const Py::Tuple& args)
