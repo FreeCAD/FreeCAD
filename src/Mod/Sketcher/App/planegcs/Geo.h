@@ -252,12 +252,7 @@ public:
     // multiply vector by a variable with a derivative.
     DeriVector3 multD(double val, double dval) const
     {
-        return {x * val,
-                y * val,
-                z * val,
-                dx * val + x * dval,
-                dy * val + y * dval,
-                dz * val + z * dval};
+        return {x * val, y * val, z * val, dx * val + x * dval, dy * val + y * dval, dz * val + z * dval};
     }
 
     // divide vector by a variable with a derivative
@@ -266,12 +261,14 @@ public:
     // linear combination of two vectors
     DeriVector3 linCombi(double m1, const DeriVector3& v2, double m2) const
     {
-        return {x * m1 + v2.x * m2,
-                y * m1 + v2.y * m2,
-                z * m1 + v2.z * m2,
-                dx * m1 + v2.dx * m2,
-                dy * m1 + v2.dy * m2,
-                dz * m1 + v2.dz * m2};
+        return {
+            x * m1 + v2.x * m2,
+            y * m1 + v2.y * m2,
+            z * m1 + v2.z * m2,
+            dx * m1 + v2.dx * m2,
+            dy * m1 + v2.dy * m2,
+            dz * m1 + v2.dz * m2
+        };
     }
 };
 
@@ -543,10 +540,9 @@ public:
     // returns an outward normal vector at a point on the curve. For curves
     // where the normal is not well defined without a reference plane.
     // current implementations return a zero vector.
-    virtual DeriVector3 CalculateNormal(const Point3D& p,
-                                        const double* derivparam = nullptr) const = 0;
+    virtual DeriVector3 CalculateNormal(const Point3D& p, const double* derivparam = nullptr) const = 0;
 
-     /**
+    /**
      * @brief Value: returns point (vector) given the value of parameter
      * @param u: value of parameter
      * @param du: derivative of parameter by derivparam
@@ -570,8 +566,7 @@ class SketcherExport Line3D: public Curve3D
 public:
     Point3D p1;
     Point3D p2;
-    DeriVector3 CalculateNormal(const Point3D& p,
-                                const double* derivparam = nullptr) const override;
+    DeriVector3 CalculateNormal(const Point3D& p, const double* derivparam = nullptr) const override;
     DeriVector3 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;

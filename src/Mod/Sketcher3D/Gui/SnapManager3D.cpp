@@ -39,10 +39,11 @@ SnapManager3D::SnapManager3D(ViewProviderSketch3D& vp)
 
 SnapManager3D::~SnapManager3D() = default;
 
-Base::Vector3d
-SnapManager3D::snap(const Base::Vector3d& rawProjected,
-                    const std::string& pickedSubName,
-                    Sketcher3D::GeoElementId3D& target) const
+Base::Vector3d SnapManager3D::snap(
+    const Base::Vector3d& rawProjected,
+    const std::string& pickedSubName,
+    Sketcher3D::GeoElementId3D& target
+) const
 {
     target = {};
 
@@ -53,9 +54,11 @@ SnapManager3D::snap(const Base::Vector3d& rawProjected,
     return rawProjected;
 }
 
-bool SnapManager3D::snapToPickedObject(const std::string& pickedSubName,
-                                       Base::Vector3d& snapPos,
-                                       Sketcher3D::GeoElementId3D& target) const
+bool SnapManager3D::snapToPickedObject(
+    const std::string& pickedSubName,
+    Base::Vector3d& snapPos,
+    Sketcher3D::GeoElementId3D& target
+) const
 {
     const Sketcher3D::Sketch3DObject* sketch = viewProvider.getSketch3DObject();
     if (!sketch || pickedSubName.empty()) {

@@ -74,8 +74,7 @@ void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
         return;
     }
 
-    auto* editTb =
-        new Gui::ToolBarItem(toolBar, Gui::ToolBarItem::DefaultVisibility::Unavailable);
+    auto* editTb = new Gui::ToolBarItem(toolBar, Gui::ToolBarItem::DefaultVisibility::Unavailable);
     editTb->setCommand("Sketcher3D Edit");
     *editTb << "Sketcher3D_CreatePoint"
             << "Sketcher3D_CreateLine"

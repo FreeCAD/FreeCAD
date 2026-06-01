@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3DGUI_DRAWSKETCHHANDLERPOINT3D_H
-#define SKETCHER3DGUI_DRAWSKETCHHANDLERPOINT3D_H
+#pragma once
 
 #include "DrawSketchHandler3D.h"
 
@@ -50,5 +49,3 @@ private:
 };
 
 }  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_DRAWSKETCHHANDLERPOINT3D_H

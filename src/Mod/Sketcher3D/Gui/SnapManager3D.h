@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER3DGUI_SNAPMANAGER3D_H
-#define SKETCHER3DGUI_SNAPMANAGER3D_H
+#pragma once
 
 #include <string>
 
@@ -61,5 +60,3 @@ private:
 };
 
 }  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_SNAPMANAGER3D_H

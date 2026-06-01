@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3D_GEOMETRYMAPPER3D_H
-#define SKETCHER3D_GEOMETRYMAPPER3D_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -87,5 +86,3 @@ private:
 };
 
 }  // namespace Sketcher3D
-
-#endif  // SKETCHER3D_GEOMETRYMAPPER3D_H

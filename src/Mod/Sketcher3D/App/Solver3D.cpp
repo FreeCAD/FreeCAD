@@ -105,12 +105,14 @@ void Solver3D::addConstraintParallel(int tagId, int lineHandleA, int lineHandleB
     gcs.addConstraintParallel3D(la.p1, la.p2, lb.p1, lb.p2, tagId);
 }
 
-void Solver3D::addConstraintAngle(int tagId,
-                                  int lineHandleA,
-                                  PointPos posA,
-                                  int lineHandleB,
-                                  PointPos posB,
-                                  double angle)
+void Solver3D::addConstraintAngle(
+    int tagId,
+    int lineHandleA,
+    PointPos posA,
+    int lineHandleB,
+    PointPos posB,
+    double angle
+)
 {
     if (lineHandleA < 0 || lineHandleA >= static_cast<int>(lines.size()) || lineHandleB < 0
         || lineHandleB >= static_cast<int>(lines.size())) {

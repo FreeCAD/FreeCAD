@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3D_SKETCH3DOBJECT_H
-#define SKETCHER3D_SKETCH3DOBJECT_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -121,5 +120,3 @@ private:
 };
 
 }  // namespace Sketcher3D
-
-#endif  // SKETCHER3D_SKETCH3DOBJECT_H

@@ -28,42 +28,42 @@
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
+# define WIN32_LEAN_AND_MEAN
+# ifndef NOMINMAX
+#  define NOMINMAX
+# endif
+# include <windows.h>
 #endif
 
 #ifdef _PreComp_
 
-#include <algorithm>
-#include <map>
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
+# include <algorithm>
+# include <map>
+# include <memory>
+# include <sstream>
+# include <string>
+# include <vector>
 
 // Coin3D
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoFont.h>
-#include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoPointSet.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoText2.h>
-#include <Inventor/nodes/SoTranslation.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoFont.h>
+# include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoPointSet.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTranslation.h>
 
 // Qt
-#include <QComboBox>
-#include <QDoubleSpinBox>
-#include <QFormLayout>
-#include <QGridLayout>
-#include <QLabel>
-#include <QListWidget>
-#include <QPushButton>
-#include <QVBoxLayout>
+# include <QComboBox>
+# include <QDoubleSpinBox>
+# include <QFormLayout>
+# include <QGridLayout>
+# include <QLabel>
+# include <QListWidget>
+# include <QPushButton>
+# include <QVBoxLayout>
 
 #endif  // _PreComp_

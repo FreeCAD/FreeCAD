@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
-#define SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H
+#pragma once
 
 #include <array>
 #include <memory>
@@ -204,5 +203,3 @@ private:
 };
 
 }  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_VIEWPROVIDERSKETCH3D_H

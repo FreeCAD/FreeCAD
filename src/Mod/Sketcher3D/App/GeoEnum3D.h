@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3D_GEOENUM3D_H
-#define SKETCHER3D_GEOENUM3D_H
+#pragma once
 
 #include <functional>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
@@ -102,14 +101,10 @@ namespace std
 template<>
 struct less<Sketcher3D::GeoElementId3D>
 {
-    bool operator()(const Sketcher3D::GeoElementId3D& lhs,
-                    const Sketcher3D::GeoElementId3D& rhs) const
+    bool operator()(const Sketcher3D::GeoElementId3D& lhs, const Sketcher3D::GeoElementId3D& rhs) const
     {
-        return (lhs.GeoId != rhs.GeoId)
-            ? (lhs.GeoId < rhs.GeoId)
-            : (static_cast<int>(lhs.Pos) < static_cast<int>(rhs.Pos));
+        return (lhs.GeoId != rhs.GeoId) ? (lhs.GeoId < rhs.GeoId)
+                                        : (static_cast<int>(lhs.Pos) < static_cast<int>(rhs.Pos));
     }
 };
 }  // namespace std
-
-#endif // SKETCHER3D_GEOENUM3D_H

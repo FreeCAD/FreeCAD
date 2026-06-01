@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3D_CONSTRAINT3D_H
-#define SKETCHER3D_CONSTRAINT3D_H
+#pragma once
 
 #include "Mod/Sketcher3D/App/GeoEnum3D.h"
 
@@ -112,5 +111,3 @@ private:
 };
 
 }  // namespace Sketcher3D
-
-#endif  // SKETCHER3D_CONSTRAINT3D_H

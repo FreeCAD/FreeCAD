@@ -203,22 +203,26 @@ double DeriVector3::scalarProd(const DeriVector3& v2, double* dprd) const
 
 DeriVector3 DeriVector3::divD(double val, double dval) const
 {
-    return {x / val,
-            y / val,
-            z / val,
-            dx / val - x * dval / (val * val),
-            dy / val - y * dval / (val * val),
-            dz / val - z * dval / (val * val)};
+    return {
+        x / val,
+        y / val,
+        z / val,
+        dx / val - x * dval / (val * val),
+        dy / val - y * dval / (val * val),
+        dz / val - z * dval / (val * val)
+    };
 }
 
 DeriVector3 DeriVector3::crossProd(const DeriVector3& v2) const
 {
-    return {y * v2.z - z * v2.y,
-            z * v2.x - x * v2.z,
-            x * v2.y - y * v2.x,
-            dy * v2.z + y * v2.dz - dz * v2.y - z * v2.dy,
-            dz * v2.x + z * v2.dx - dx * v2.z - x * v2.dz,
-            dx * v2.y + x * v2.dy - dy * v2.x - y * v2.dx};
+    return {
+        y * v2.z - z * v2.y,
+        z * v2.x - x * v2.z,
+        x * v2.y - y * v2.x,
+        dy * v2.z + y * v2.dz - dz * v2.y - z * v2.dy,
+        dz * v2.x + z * v2.dx - dx * v2.z - x * v2.dz,
+        dx * v2.y + x * v2.dy - dy * v2.x - y * v2.dx
+    };
 }
 
 DeriVector2 Curve::Value(double /*u*/, double /*du*/, const double* /*derivparam*/) const

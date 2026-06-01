@@ -255,9 +255,11 @@ void CmdSketcher3DConstrainDistance::activated(int iMsg)
                 refs.push_back(id);
                 positions.emplace_back(p.X(), p.Y(), p.Z());
             }
-            else if (sub.ShapeType() == TopAbs_EDGE && id.Kind == Sketcher3D::GeoKind::Line
-                     && id.Pos == Sketcher3D::PointPos::none && id.GeoId >= 0
-                     && id.GeoId < static_cast<int>(geos.size())) {
+            else if (
+                sub.ShapeType() == TopAbs_EDGE && id.Kind == Sketcher3D::GeoKind::Line
+                && id.Pos == Sketcher3D::PointPos::none && id.GeoId >= 0
+                && id.GeoId < static_cast<int>(geos.size())
+            ) {
                 if (const auto* line = dynamic_cast<const Part::GeomLineSegment*>(geos[id.GeoId])) {
                     refs.emplace_back(id.GeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
                     positions.push_back(line->getStartPoint());
@@ -714,7 +716,7 @@ double normalizedLineAngle(double angle)
     if (angle < 0.0) {
         angle += fullTurn;
     }
-    // Clamp because in 3d there is no referce plane so 
+    // Clamp because in 3d there is no referce plane so
     // clockwise vs counterclockwise dont matter.
     if (angle > std::numbers::pi) {
         angle = fullTurn - angle;

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3D_PROPERTYCONSTRAINT3DLIST_H
-#define SKETCHER3D_PROPERTYCONSTRAINT3DLIST_H
+#pragma once
 
 #include <App/Property.h>
 
@@ -79,5 +78,3 @@ private:
 };
 
 }  // namespace Sketcher3D
-
-#endif  // SKETCHER3D_PROPERTYCONSTRAINT3DLIST_H

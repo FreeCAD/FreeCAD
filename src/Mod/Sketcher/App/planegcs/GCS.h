@@ -519,13 +519,7 @@ public:
         int tagId = 0,
         bool driving = true
     );
-    int addConstraintL2LAngle3D(
-        Line3D& l1,
-        Line3D& l2,
-        double* angle,
-        int tagId = 0,
-        bool driving = true
-    );
+    int addConstraintL2LAngle3D(Line3D& l1, Line3D& l2, double* angle, int tagId = 0, bool driving = true);
     int addConstraintL2LAngle3D(
         Point3D& p1,
         Point3D& p2,

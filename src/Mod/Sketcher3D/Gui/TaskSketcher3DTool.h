@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER3DGUI_TASKSKETCHER3DTOOL_H
-#define SKETCHER3DGUI_TASKSKETCHER3DTOOL_H
+#pragma once
 
 #include <QStringList>
 
@@ -75,5 +74,3 @@ private:
 };
 
 }  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_TASKSKETCHER3DTOOL_H

@@ -34,7 +34,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("Sketcher3D")
     {
-        initialize("Welcome to the Sketcher3D Letsss Go!"); 
+        initialize("Welcome to the Sketcher3D Letsss Go!");
     }
 };
 

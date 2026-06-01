@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER3DGUI_TASKDLGEDITSKETCH3D_H
-#define SKETCHER3DGUI_TASKDLGEDITSKETCH3D_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -70,5 +69,3 @@ private:
 };
 
 }  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_TASKDLGEDITSKETCH3D_H

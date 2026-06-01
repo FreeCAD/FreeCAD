@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3DGUI_DRAWSKETCHHANDLERLINE3D_H
-#define SKETCHER3DGUI_DRAWSKETCHHANDLERLINE3D_H
+#pragma once
 
 #include <vector>
 
@@ -68,5 +67,3 @@ private:
 };
 
 }  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_DRAWSKETCHHANDLERLINE3D_H

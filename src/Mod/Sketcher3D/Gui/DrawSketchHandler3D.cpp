@@ -119,7 +119,8 @@ int DrawSketchHandler3D::seekAutoConstraint(
     std::vector<AutoConstraint3D>& suggestedConstraints,
     const Base::Vector3d& Pos,
     const Base::Vector3d& Dir,
-    AutoConstraint3D::TargetType type) const
+    AutoConstraint3D::TargetType type
+) const
 {
     suggestedConstraints.clear();
 
@@ -136,7 +137,8 @@ void DrawSketchHandler3D::seekPreselectionAutoConstraint(
     std::vector<AutoConstraint3D>& suggestedConstraints,
     const Base::Vector3d& Pos,
     const Base::Vector3d& Dir,
-    AutoConstraint3D::TargetType type) const
+    AutoConstraint3D::TargetType type
+) const
 {
     (void)Pos;
     (void)Dir;
@@ -151,8 +153,7 @@ void DrawSketchHandler3D::seekPreselectionAutoConstraint(
 
     const bool isPoint = preSel.kind == Sketcher3D::GeoKind::Point;
     const bool isLineEndpoint = preSel.kind == Sketcher3D::GeoKind::Line
-        && (preSel.posId == Sketcher3D::PointPos::start
-            || preSel.posId == Sketcher3D::PointPos::end);
+        && (preSel.posId == Sketcher3D::PointPos::start || preSel.posId == Sketcher3D::PointPos::end);
     if (isPoint || isLineEndpoint) {
         AutoConstraint3D constr;
         constr.Type = Sketcher3D::Constraint3D::Coincident3D;
@@ -167,7 +168,8 @@ void DrawSketchHandler3D::createAutoConstraints(
     const std::vector<AutoConstraint3D>& autoConstrs,
     int geoId1,
     Sketcher3D::PointPos posId1,
-    Sketcher3D::GeoKind geoKind1) const
+    Sketcher3D::GeoKind geoKind1
+) const
 {
     Sketcher3D::Sketch3DObject* sketch = getSketch();
     if (!sketch || autoConstrs.empty() || geoId1 < 0) {

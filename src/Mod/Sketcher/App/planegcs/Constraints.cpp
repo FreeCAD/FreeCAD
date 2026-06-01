@@ -3316,11 +3316,7 @@ void ConstraintP2PDistance3D::evaluate()
 
 // --------------------------------------------------------
 // Parallel3D
-ConstraintParallel3D::ConstraintParallel3D(Point3D& p1,
-                                           Point3D& p2,
-                                           Point3D& p3,
-                                           Point3D& p4,
-                                           Component comp)
+ConstraintParallel3D::ConstraintParallel3D(Point3D& p1, Point3D& p2, Point3D& p3, Point3D& p4, Component comp)
     : component(comp)
 {
     pvec.push_back(p1.x);
@@ -3352,8 +3348,7 @@ void ConstraintParallel3D::rescale(double coef)
     double dx2 = (*p3x() - *p4x());
     double dy2 = (*p3y() - *p4y());
     double dz2 = (*p3z() - *p4z());
-    double lengthProduct =
-        (dx1 * dx1 + dy1 * dy1 + dz1 * dz1) * (dx2 * dx2 + dy2 * dy2 + dz2 * dz2);
+    double lengthProduct = (dx1 * dx1 + dy1 * dy1 + dz1 * dz1) * (dx2 * dx2 + dy2 * dy2 + dz2 * dz2);
     scale = coef / sqrt(lengthProduct);
 }
 
@@ -3498,11 +3493,7 @@ ConstraintL2LAngle3D::ConstraintL2LAngle3D(Line3D& l1, Line3D& l2, double* a)
     rescale();
 }
 
-ConstraintL2LAngle3D::ConstraintL2LAngle3D(Point3D& p1,
-                                           Point3D& p2,
-                                           Point3D& p3,
-                                           Point3D& p4,
-                                           double* a)
+ConstraintL2LAngle3D::ConstraintL2LAngle3D(Point3D& p1, Point3D& p2, Point3D& p3, Point3D& p4, double* a)
 {
     pvec.push_back(p1.x);
     pvec.push_back(p1.y);
@@ -3554,9 +3545,9 @@ double ConstraintL2LAngle3D::grad(double* param)
 {
     double deriv = 0.;
 
-    if (param == p1x() || param == p1y() || param == p1z() || param == p2x()
-        || param == p2y() || param == p2z() || param == p3x() || param == p3y()
-        || param == p3z() || param == p4x() || param == p4y() || param == p4z()) {
+    if (param == p1x() || param == p1y() || param == p1z() || param == p2x() || param == p2y()
+        || param == p2z() || param == p3x() || param == p3y() || param == p3z() || param == p4x()
+        || param == p4y() || param == p4z()) {
         double dx1 = *p2x() - *p1x();
         double dy1 = *p2y() - *p1y();
         double dz1 = *p2z() - *p1z();

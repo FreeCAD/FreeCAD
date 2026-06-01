@@ -1022,13 +1022,7 @@ int System::addConstraintParallel3D(Point3D& p1, Point3D& p2, Point3D& p3, Point
     return lastIdx;
 }
 
-int System::addConstraintL2LAngle3D(
-    Line3D& l1,
-    Line3D& l2,
-    double* angle,
-    int tagId,
-    bool driving
-)
+int System::addConstraintL2LAngle3D(Line3D& l1, Line3D& l2, double* angle, int tagId, bool driving)
 {
     return addConstraintL2LAngle3D(l1.p1, l1.p2, l2.p1, l2.p2, angle, tagId, driving);
 }

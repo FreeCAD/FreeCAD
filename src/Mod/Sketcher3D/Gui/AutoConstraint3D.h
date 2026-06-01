@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER3DGUI_AUTOCONSTRAINT3D_H
-#define SKETCHER3DGUI_AUTOCONSTRAINT3D_H
+#pragma once
 
 #include <Mod/Sketcher3D/App/Constraint3D.h>
 #include <Mod/Sketcher3D/App/GeoEnum3D.h>
@@ -47,5 +46,3 @@ struct AutoConstraint3D
 };
 
 }  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_AUTOCONSTRAINT3D_H

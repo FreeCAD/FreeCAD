@@ -39,7 +39,8 @@ using namespace Sketcher3D;
 
 TYPESYSTEM_SOURCE(Sketcher3D::Constraint3D, Base::Persistence)
 
-namespace {
+namespace
+{
 std::vector<int> parseIntegerList(const char* text)
 {
     std::vector<int> values;
@@ -121,7 +122,9 @@ void Constraint3D::Restore(Base::XMLReader& xmlReader)
     }
 
     const auto ids = parseIntegerList(xmlReader.getAttribute<const char*>("ElementIds", ""));
-    const auto positions = parseIntegerList(xmlReader.getAttribute<const char*>("ElementPositions", ""));
+    const auto positions = parseIntegerList(
+        xmlReader.getAttribute<const char*>("ElementPositions", "")
+    );
 
     if (ids.size() != positions.size()) {
         throw Base::ParserError("Constraint3D restore found mismatched element id and position counts");

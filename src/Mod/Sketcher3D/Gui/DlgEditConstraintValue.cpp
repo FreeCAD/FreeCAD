@@ -78,8 +78,7 @@ DlgEditConstraintValue::DlgEditConstraintValue(
     spin->setEntryName(QByteArray("DatumValue"));
     spin->onRestore();
     spin->setValue(Base::Quantity(initialValue, u));
-    const double minValue =
-        (u == Base::Unit::Length && !allowNegative) ? 0.0 : -1.0e9;
+    const double minValue = (u == Base::Unit::Length && !allowNegative) ? 0.0 : -1.0e9;
     spin->setMinimum(minValue);
     spin->setMaximum(1.0e9);
     spin->selectNumber();

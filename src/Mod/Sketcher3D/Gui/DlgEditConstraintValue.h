@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3DGUI_DLGEDITCONSTRAINTVALUE_H
-#define SKETCHER3DGUI_DLGEDITCONSTRAINTVALUE_H
+#pragma once
 
 #include <QDialog>
 
@@ -61,5 +60,3 @@ private:
 };
 
 }  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_DLGEDITCONSTRAINTVALUE_H

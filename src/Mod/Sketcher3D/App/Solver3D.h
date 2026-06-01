@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER3D_SOLVER3D_H
-#define SKETCHER3D_SOLVER3D_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -77,12 +76,14 @@ public:
 
     /// Angle constraint between two lines.
     /// Angle is unsigned, in radians, in [0, pi].
-    void addConstraintAngle(int tagId,
-                            int lineHandleA,
-                            PointPos posA,
-                            int lineHandleB,
-                            PointPos posB,
-                            double angle);
+    void addConstraintAngle(
+        int tagId,
+        int lineHandleA,
+        PointPos posA,
+        int lineHandleB,
+        PointPos posB,
+        double angle
+    );
 
     /// Constraint to align a line along the X axis.
     void addConstraintAlongX(int tagId, int lineHandle);
@@ -116,11 +117,13 @@ public:
     void addConstraintCoordinateZ(int tagId, int pointHandle, double value);
 
     /// Lock a point x/y/z to its current value. lockX/Y/Z toggles individual axes.
-    void groundPoint(int pointHandle,
-                     int tagId = 0,
-                     bool lockX = true,
-                     bool lockY = true,
-                     bool lockZ = true);
+    void groundPoint(
+        int pointHandle,
+        int tagId = 0,
+        bool lockX = true,
+        bool lockY = true,
+        bool lockZ = true
+    );
 
     int solve();
 
@@ -169,5 +172,3 @@ private:
 };
 
 }  // namespace Sketcher3D
-
-#endif  // SKETCHER3D_SOLVER3D_H

@@ -84,8 +84,7 @@ void PropertyConstraint3DList::setConstraintAt(int index, const Constraint3D& co
 
 void PropertyConstraint3DList::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Constraints3D count=\"" << getSize() << "\">"
-                    << std::endl;
+    writer.Stream() << writer.ind() << "<Constraints3D count=\"" << getSize() << "\">" << std::endl;
     writer.incInd();
     for (const auto& c : _constraints) {
         c.Save(writer);

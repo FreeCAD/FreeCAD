@@ -129,9 +129,9 @@ SoSeparator* buildAxisHandle(std::array<SoMaterial*, 3>& axisMaterials)
         style->lineWidth.setValue(kAxisHandleLineWidth);
         axisSep->addChild(style);
 
-        SbVec3f end       = axes[i].dir * kAxisHandleLength;
+        SbVec3f end = axes[i].dir * kAxisHandleLength;
         SbVec3f arrowBase = end - axes[i].dir * kAxisHandleArrowLength;
-        SbVec3f sideVec   = axes[i].side * (kAxisHandleArrowLength * kArrowHeadHalfWidthFactor);
+        SbVec3f sideVec = axes[i].side * (kAxisHandleArrowLength * kArrowHeadHalfWidthFactor);
 
         auto* coords = new SoCoordinate3();
         coords->point.setNum(6);
@@ -169,9 +169,11 @@ SbVec3f planeNormal(ViewProviderSketch3D::ActivePlane p)
     }
 }
 
-float planeSizeFromCursor(ViewProviderSketch3D::ActivePlane plane,
-                          const Base::Vector3d& base,
-                          const Base::Vector3d& cursor)
+float planeSizeFromCursor(
+    ViewProviderSketch3D::ActivePlane plane,
+    const Base::Vector3d& base,
+    const Base::Vector3d& cursor
+)
 {
     double dx = std::abs(cursor.x - base.x);
     double dy = std::abs(cursor.y - base.y);
@@ -194,31 +196,29 @@ float planeSizeFromCursor(ViewProviderSketch3D::ActivePlane plane,
     return std::max(kAxisHandleLength, (float)mouseSize);
 }
 
-void writePlaneQuadCoords(SoCoordinate3* coords,
-                          ViewProviderSketch3D::ActivePlane p,
-                          float size)
+void writePlaneQuadCoords(SoCoordinate3* coords, ViewProviderSketch3D::ActivePlane p, float size)
 {
     coords->point.setNum(kPlaneQuadVertexCount);
     SbVec3f* pts = coords->point.startEditing();
     switch (p) {
         case ViewProviderSketch3D::ActivePlane::YZ:
             pts[0] = {0.0F, -size, -size};
-            pts[1] = {0.0F,  size, -size};
-            pts[2] = {0.0F,  size,  size};
-            pts[3] = {0.0F, -size,  size};
+            pts[1] = {0.0F, size, -size};
+            pts[2] = {0.0F, size, size};
+            pts[3] = {0.0F, -size, size};
             break;
         case ViewProviderSketch3D::ActivePlane::ZX:
             pts[0] = {-size, 0.0F, -size};
-            pts[1] = { size, 0.0F, -size};
-            pts[2] = { size, 0.0F,  size};
-            pts[3] = {-size, 0.0F,  size};
+            pts[1] = {size, 0.0F, -size};
+            pts[2] = {size, 0.0F, size};
+            pts[3] = {-size, 0.0F, size};
             break;
         case ViewProviderSketch3D::ActivePlane::XY:
         default:
             pts[0] = {-size, -size, 0.0F};
-            pts[1] = { size, -size, 0.0F};
-            pts[2] = { size,  size, 0.0F};
-            pts[3] = {-size,  size, 0.0F};
+            pts[1] = {size, -size, 0.0F};
+            pts[2] = {size, size, 0.0F};
+            pts[3] = {-size, size, 0.0F};
             break;
     }
     coords->point.finishEditing();
@@ -564,10 +564,7 @@ Base::Vector3d ViewProviderSketch3D::projectToSketchPlane(
     SbVec3f rayEnd;
     viewer->projectPointToLine(cursorPx, rayStart, rayEnd);
 
-    SbPlane plane(
-        planeNormal(activePlane),
-        SbVec3f(planeBase.x, planeBase.y, planeBase.z)
-    );
+    SbPlane plane(planeNormal(activePlane), SbVec3f(planeBase.x, planeBase.y, planeBase.z));
 
     SbVec3f hit;
     if (!plane.intersect(SbLine(rayStart, rayEnd), hit)) {

@@ -214,12 +214,14 @@ void GeometryMapper3D::push(
                 const int la = resolveLineHandle(c.getElements()[0]);
                 const int lb = resolveLineHandle(c.getElements()[1]);
                 if (la >= 0 && lb >= 0) {
-                    solver.addConstraintAngle(tagId,
-                                              la,
-                                              c.getElements()[0].Pos,
-                                              lb,
-                                              c.getElements()[1].Pos,
-                                              c.Value);
+                    solver.addConstraintAngle(
+                        tagId,
+                        la,
+                        c.getElements()[0].Pos,
+                        lb,
+                        c.getElements()[1].Pos,
+                        c.Value
+                    );
                 }
                 break;
             }

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER3DGUI_UTILS_H
-#define SKETCHER3DGUI_UTILS_H
+#pragma once
 
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
@@ -40,5 +39,3 @@ Sketcher3DGuiExport bool isSketch3DInEdit();
 Sketcher3DGuiExport ViewProviderSketch3D* getActiveSketch3DVP();
 
 }  // namespace Sketcher3DGui
-
-#endif  // SKETCHER3DGUI_UTILS_H
