@@ -30,6 +30,7 @@
 #include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace Gui
 {
@@ -44,7 +45,7 @@ class Thickness;
 namespace PartGui
 {
 
-class ThicknessWidget: public QWidget
+class PartGuiExport ThicknessWidget: public QWidget
 {
     Q_OBJECT
 
@@ -90,7 +91,7 @@ private:
     Private* d;
 };
 
-class TaskThickness: public Gui::TaskView::TaskDialog
+class PartGuiExport TaskThickness: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 

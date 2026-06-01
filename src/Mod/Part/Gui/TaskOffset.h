@@ -28,6 +28,7 @@
 #include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {
@@ -36,7 +37,7 @@ class Offset;
 namespace PartGui
 {
 
-class OffsetWidget: public QWidget
+class PartGuiExport OffsetWidget: public QWidget
 {
     Q_OBJECT
 
@@ -76,7 +77,7 @@ private:
     Private* d;
 };
 
-class TaskOffset: public Gui::TaskView::TaskDialog
+class PartGuiExport TaskOffset: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
