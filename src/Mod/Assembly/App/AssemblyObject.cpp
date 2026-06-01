@@ -1074,7 +1074,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getRigidGroups()
                     continue;
                 }
 
-                // Ignore duplicats.
+                // Ignore duplicates.
                 if (!seen.insert(member).second) {
                     continue;
                 }
