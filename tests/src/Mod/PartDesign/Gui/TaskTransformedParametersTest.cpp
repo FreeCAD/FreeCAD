@@ -1638,7 +1638,8 @@ private:
                 pattern->Direction.setValue(baseBox, {"Edge1"});
                 pattern->Length.setValue(20.0);
                 pattern->Occurrences.setValue(2);
-                pattern->Refine.setValue(false);
+                // Transformed also declares Refine; refineShapeIfActive() reads the base property.
+                static_cast<PartDesign::FeatureRefine*>(pattern)->Refine.setValue(false);
                 traceTransformedTest("prepareTransformedFixture: Linear after blocking property setup");
                 traceTransformedTest("prepareTransformedFixture: Linear before blocking doc recompute");
                 doc->recompute();
