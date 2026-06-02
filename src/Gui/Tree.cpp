@@ -2014,6 +2014,7 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
 
 void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
+    expandIndicatorPressed = false;
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());
         if (item && item->type() == TreeWidget::ObjectType && event->button() == Qt::LeftButton) {
@@ -2071,7 +2072,6 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
         }
     }
 
-    expandIndicatorPressed = false;
     if (event->button() == Qt::LeftButton) {
         QTreeWidgetItem* pressedItem = itemAt(event->pos());
         if (pressedItem && pressedItem->childCount() > 0) {
