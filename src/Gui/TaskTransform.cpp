@@ -114,7 +114,6 @@ TaskTransform::TaskTransform(
     , ui(new Ui_TaskTransformDialog)
 {
     blockSelection(true);
-    clearDocumentScope();  // allow cross-document selection for links
 
     dragger->addStartCallback(dragStartCallback, this);
     dragger->addMotionCallback(dragMotionCallback, this);
