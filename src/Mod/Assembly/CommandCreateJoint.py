@@ -533,7 +533,7 @@ class CommandCreateJointRigidGroup:
 
     def GetResources(self):
         return {
-            "Pixmap": "Assembly_AssemblyLinkRigid",
+            "Pixmap": "Assembly_CreateJointRigidGroup",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointRigidGroup", "Create Rigid Group"),
             "Accel": "O",
             "ToolTip": QT_TRANSLATE_NOOP(

@@ -1433,7 +1433,7 @@ class ViewProviderRigidGroupJoint:
         vobj.addExtension("Gui::ViewProviderSuppressibleExtensionPython")
 
     def getIcon(self):
-        return ":/icons/Assembly_AssemblyLinkRigid.svg"
+        return ":/icons/Assembly_CreateJointRigidGroup.svg"
 
     def setupContextMenu(self, vobj, menu):
         action = menu.addAction(App.Qt.translate("Assembly", "Update Stored Positions"))
