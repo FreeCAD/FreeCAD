@@ -201,7 +201,7 @@ void TaskBox::hideGroupBox()
 
 bool TaskBox::isGroupVisible() const
 {
-    return myGroup->isVisible();
+    return myGroup->isVisible() || m_foldDirection == 1;
 }
 
 void TaskBox::actionEvent(QActionEvent* e)
