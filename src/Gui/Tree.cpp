@@ -2014,6 +2014,7 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
 
 void TreeWidget::mousePressEvent(QMouseEvent* event)
 {
+    expandIndicatorPressed = false;
     if (isVisibilityIconEnabled()) {
         QTreeWidgetItem* item = itemAt(event->pos());
         if (item && item->type() == TreeWidget::ObjectType && event->button() == Qt::LeftButton) {
@@ -2071,7 +2072,6 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
         }
     }
 
-    expandIndicatorPressed = false;
     if (event->button() == Qt::LeftButton) {
         QTreeWidgetItem* pressedItem = itemAt(event->pos());
         if (pressedItem && pressedItem->childCount() > 0) {
@@ -5778,25 +5778,14 @@ DocumentObjectItem* DocumentItem::findItemByObject(
 
     // When selecting the whole object (no subname), mark every tree instance so
     // all appearances of the object are highlighted regardless of which tree item
-    // was allocated first. Return the preferred item for scroll-to purposes.
+    // was allocated first.
     if (select && *subname == 0) {
-        DocumentObjectItem* preferred = nullptr;
-        if (it->second->rootItem) {
-            preferred = findItem(sync, it->second->rootItem, subname, true);
-        }
         for (auto item : it->second->items) {
-            if (item == it->second->rootItem) {
-                continue;
-            }
-            auto found = findItem(sync, item, subname, true);
-            if (!preferred && !item->isParentGroup()) {
-                preferred = found;
-            }
+            findItem(sync, item, subname, true);
         }
-        if (!preferred && !it->second->items.empty()) {
-            preferred = findItem(sync, *it->second->items.begin(), subname, false);
-        }
-        return preferred;
+        return it->second->rootItem
+            ? it->second->rootItem
+            : (it->second->items.empty() ? nullptr : *it->second->items.begin());
     }
 
     // prefer top level item of this object
