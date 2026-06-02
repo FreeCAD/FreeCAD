@@ -195,7 +195,7 @@ void TaskBox::hideGroupBox()
     myGroup->hide();
 
     m_foldPixmap = QPixmap();
-    setFixedHeight(myHeader->height());
+    setFixedHeight(myScheme->headerSize);
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
