@@ -110,7 +110,7 @@ if (FREECAD_WARN_ERROR)
     target_compile_warn_error(StartGui)
 endif()
 
-SET_BIN_DIR(StartGui StartGui /Mod/Start)
+SET_BIN_DIR(StartGui)
 SET_PYTHON_PREFIX_SUFFIX(StartGui)
 
 fc_copy_sources(StartGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start" ${StartGuiIcon_SVG})

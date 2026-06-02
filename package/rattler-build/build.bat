@@ -1,5 +1,7 @@
 @echo on
 
+if "%LIBRARY_PREFIX%" == "" if not "%CONDA_PREFIX%" == "" set LIBRARY_PREFIX=%CONDA_PREFIX%\Library
+
 @REM :: free up extra disk space, compare
 @REM :: https://github.com/conda-forge/conda-smithy/issues/1949
 @REM rmdir /s /q C:\hostedtoolcache\windows

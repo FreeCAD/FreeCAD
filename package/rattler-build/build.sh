@@ -1,3 +1,7 @@
+if [[ "$PREFIX" == "" ]] && [[ "$CONDA_PREFIX" != "" ]]; then
+    PREFIX=$CONDA_PREFIX
+fi
+
 if [[ ${HOST} =~ .*linux.*  ]]; then
     CMAKE_PRESET=conda-linux-release
 fi
@@ -59,6 +63,7 @@ cmake \
     -D CMAKE_INSTALL_PREFIX:FILEPATH="$PREFIX" \
     -D CMAKE_LIBRARY_PATH:FILEPATH="$PREFIX/lib" \
     -D CMAKE_PREFIX_PATH:FILEPATH="$PREFIX" \
+    -D RELATIVE_RPATH=ON \
     -D FREECAD_USE_EXTERNAL_FMT:BOOL=OFF \
     -D INSTALL_TO_SITEPACKAGES:BOOL=ON \
     -D OCC_INCLUDE_DIR:FILEPATH="$PREFIX/include/opencascade" \

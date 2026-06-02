@@ -71,7 +71,7 @@ fc_target_copy_resource_flat(JtReader
     ${CMAKE_BINARY_DIR}/Mod/JtReader
     ${JtReader_Scripts})
 
-SET_BIN_DIR(JtReader JtReader /Mod/JtReader)
+SET_BIN_DIR(JtReader)
 SET_PYTHON_PREFIX_SUFFIX(JtReader)
 
 INSTALL(TARGETS JtReader DESTINATION ${CMAKE_INSTALL_LIBDIR})
