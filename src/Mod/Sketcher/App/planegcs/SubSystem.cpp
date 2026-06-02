@@ -43,7 +43,11 @@ SubSystem::SubSystem(const std::vector<Constraint*>& clist_, const VEC_pD& param
     initialize(params, dummymap);
 }
 
-SubSystem::SubSystem(const std::vector<Constraint*>& clist_, const VEC_pD& params, const MAP_pD_pD& reductionmap)
+SubSystem::SubSystem(
+    const std::vector<Constraint*>& clist_,
+    const VEC_pD& params,
+    const MAP_pD_pD& reductionmap
+)
     : clist(clist_)
 {
     initialize(params, reductionmap);
@@ -66,7 +70,7 @@ void SubSystem::initialize(const VEC_pD& params, const MAP_pD_pD& reductionmap)
     for (const auto& constr : clist) {
         for (const auto& param : constr->origParams()) {
             if (rindex.find(param) != rindex.end()) {
-                continue; // Already in index
+                continue;  // Already in index
             }
             auto foundReduction = reductionmap.find(param);
             if (foundReduction == reductionmap.end()) {
