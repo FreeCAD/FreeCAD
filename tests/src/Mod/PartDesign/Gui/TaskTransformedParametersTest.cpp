@@ -252,6 +252,12 @@ int getBlockingTransformedTotalExecutionCount()
     return blockingTransformedState().getTotalExecutionCount();
 }
 
+void disableTransformedFixtureRefine(PartDesign::FeatureRefine* feature)
+{
+    // Transformed also declares Refine; refineShapeIfActive() reads the base property.
+    feature->Refine.setValue(false);
+}
+
 PartGui::PatternParametersWidget* findPrimaryPatternParametersWidget(QWidget* taskBox)
 {
     if (!taskBox) {
@@ -604,7 +610,6 @@ private Q_SLOTS:
             doc->getObject("BlockingLinearPattern")
         );
         QVERIFY(pattern != nullptr);
-        const int baselineExecutionCount = getBlockingTransformedTotalExecutionCount();
 
         auto* dialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
         QPointer<PartDesignGui::TaskDlgLinearPatternParameters> guard(dialog);
@@ -626,7 +631,7 @@ private Q_SLOTS:
         QCoreApplication::processEvents();
 
         QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingLinearPatternTest::getExecutionCount(), 1, 3000);
-        QCOMPARE(getBlockingTransformedTotalExecutionCount(), baselineExecutionCount + 1);
+        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 1);
         QVERIFY(taskBox->hasOutstandingRecompute());
 
         const int finalOccurrences = occurrences->value() + 1;
@@ -646,7 +651,7 @@ private Q_SLOTS:
         QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
         QVERIFY(!guiDoc->hasPendingCommand());
         QCOMPARE(pattern->Occurrences.getValue(), finalOccurrences);
-        QCOMPARE(getBlockingTransformedTotalExecutionCount(), baselineExecutionCount + 2);
+        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 2);
     }
 
     void polarRejectDefersCloseUntilAsyncPreviewSettles()  // NOLINT
@@ -1638,8 +1643,7 @@ private:
                 pattern->Direction.setValue(baseBox, {"Edge1"});
                 pattern->Length.setValue(20.0);
                 pattern->Occurrences.setValue(2);
-                // Transformed also declares Refine; refineShapeIfActive() reads the base property.
-                static_cast<PartDesign::FeatureRefine*>(pattern)->Refine.setValue(false);
+                disableTransformedFixtureRefine(pattern);
                 traceTransformedTest("prepareTransformedFixture: Linear after blocking property setup");
                 traceTransformedTest("prepareTransformedFixture: Linear before blocking doc recompute");
                 doc->recompute();
@@ -1662,6 +1666,7 @@ private:
                 pattern->Axis.setValue(bodyXAxis, {""});
                 pattern->Angle.setValue(270.0);
                 pattern->Occurrences.setValue(3);
+                disableTransformedFixtureRefine(pattern);
                 doc->recompute();
                 transformedView = dynamic_cast<PartDesignGui::ViewProviderTransformed*>(
                     guiDoc->getViewProvider(pattern)
@@ -1674,6 +1679,7 @@ private:
                 body->addObject(mirrored);
                 mirrored->Originals.setValues({baseBox});
                 mirrored->MirrorPlane.setValue(bodyXYPlane, {""});
+                disableTransformedFixtureRefine(mirrored);
                 doc->recompute();
                 transformedView = dynamic_cast<PartDesignGui::ViewProviderTransformed*>(
                     guiDoc->getViewProvider(mirrored)
@@ -1687,6 +1693,7 @@ private:
                 scaled->Originals.setValues({baseBox});
                 scaled->Factor.setValue(2.0);
                 scaled->Occurrences.setValue(2);
+                disableTransformedFixtureRefine(scaled);
                 doc->recompute();
                 transformedView = dynamic_cast<PartDesignGui::ViewProviderTransformed*>(
                     guiDoc->getViewProvider(scaled)
@@ -1700,6 +1707,7 @@ private:
                 scaled->Originals.setValues({baseBox});
                 scaled->Factor.setValue(2.0);
                 scaled->Occurrences.setValue(2);
+                disableTransformedFixtureRefine(scaled);
                 doc->recompute();
 
                 auto* multiTransform = doc->addObject<PartDesign::BlockingMultiTransformTest>(
@@ -1710,6 +1718,7 @@ private:
                 multiTransform->Originals.setValues({baseBox});
                 multiTransform->Transformations.setValues({scaled});
                 scaled->Originals.setValues({});
+                disableTransformedFixtureRefine(multiTransform);
                 doc->recompute();
                 transformedView = dynamic_cast<PartDesignGui::ViewProviderTransformed*>(
                     guiDoc->getViewProvider(multiTransform)
@@ -1724,6 +1733,7 @@ private:
                 polar->Axis.setValue(bodyXAxis, {""});
                 polar->Angle.setValue(270.0);
                 polar->Occurrences.setValue(3);
+                disableTransformedFixtureRefine(polar);
                 doc->recompute();
 
                 auto* multiTransform = doc->addObject<PartDesign::BlockingMultiTransformTest>(
@@ -1734,6 +1744,7 @@ private:
                 multiTransform->Originals.setValues({baseBox});
                 multiTransform->Transformations.setValues({polar});
                 polar->Originals.setValues({});
+                disableTransformedFixtureRefine(multiTransform);
                 doc->recompute();
                 transformedView = dynamic_cast<PartDesignGui::ViewProviderTransformed*>(
                     guiDoc->getViewProvider(multiTransform)
