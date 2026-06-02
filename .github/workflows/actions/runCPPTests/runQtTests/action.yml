@@ -26,48 +26,7 @@ runs:
         TEST_LOG_FILE: ${{ inputs.testLogFile }}
       run: |
         set -o pipefail
-        set +e
         ctest --test-dir "$BUILD_DIR" -L Qt --output-on-failure | tee -a "$TEST_LOG_FILE"
-        qt_status=${PIPESTATUS[0]}
-        set -e
-
-        if [ "$qt_status" -ne 0 ]; then
-          transformed_runner="$BUILD_DIR/tests/TaskTransformedParametersTest_Tests_run"
-          transformed_module="$BUILD_DIR/tests/TaskTransformedParametersTestModule.so"
-
-          {
-            echo ""
-            echo "===== Focused TaskTransformedParametersTest debugger rerun ====="
-            ctest --test-dir "$BUILD_DIR" -N -V -R '^TaskTransformedParametersTest_Tests_run$' || true
-          } 2>&1 | tee -a "$TEST_LOG_FILE"
-
-          if [ -x "$transformed_runner" ] && [ -f "$transformed_module" ]; then
-            if ! command -v gdb >/dev/null 2>&1; then
-              sudo apt-get update -y -qq
-              sudo apt-get install -y -qq gdb
-            fi
-
-            {
-              echo ""
-              echo "===== gdb thread backtrace ====="
-              QT_QPA_PLATFORM=offscreen gdb -batch \
-                -ex "set pagination off" \
-                -ex "set print thread-events off" \
-                -ex "run" \
-                -ex "info threads" \
-                -ex "thread apply all bt full" \
-                --args "$transformed_runner" "$transformed_module" runTaskTransformedParametersTest
-            } 2>&1 | tee -a "$TEST_LOG_FILE"
-          else
-            {
-              echo ""
-              echo "Skipping debugger rerun: transformed Qt test runner or module was not found."
-              ls -la "$BUILD_DIR/tests" || true
-            } 2>&1 | tee -a "$TEST_LOG_FILE"
-          fi
-        fi
-
-        exit "$qt_status"
     - name: Parse test results
       if: always()
       id: report
