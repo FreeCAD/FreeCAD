@@ -1619,24 +1619,44 @@ private:
         switch (kind) {
             case TransformedKind::Linear: {
                 traceTransformedTest("prepareTransformedFixture: Linear begin");
-                traceTransformedTest("prepareTransformedFixture: Linear before addObject");
+                traceTransformedTest("prepareTransformedFixture: Linear before stable addObject");
+                auto* stablePattern = doc->addObject<PartDesign::LinearPattern>(
+                    "StableLinearPattern"
+                );
+                traceTransformedTest("prepareTransformedFixture: Linear after stable addObject");
+                QVERIFY(stablePattern != nullptr);
+                traceTransformedTest("prepareTransformedFixture: Linear before stable body addObject");
+                body->addObject(stablePattern);
+                traceTransformedTest("prepareTransformedFixture: Linear after stable body addObject");
+                traceTransformedTest("prepareTransformedFixture: Linear before stable property setup");
+                stablePattern->Originals.setValues({baseBox});
+                stablePattern->Direction.setValue(bodyXAxis, {""});
+                stablePattern->Length.setValue(20.0);
+                stablePattern->Occurrences.setValue(2);
+                traceTransformedTest("prepareTransformedFixture: Linear after stable property setup");
+                traceTransformedTest("prepareTransformedFixture: Linear before stable doc recompute");
+                doc->recompute();
+                traceTransformedTest("prepareTransformedFixture: Linear after stable doc recompute");
+
+                traceTransformedTest("prepareTransformedFixture: Linear before blocking addObject");
                 auto* pattern = doc->addObject<PartDesign::BlockingLinearPatternTest>(
                     "BlockingLinearPattern"
                 );
-                traceTransformedTest("prepareTransformedFixture: Linear after addObject");
+                traceTransformedTest("prepareTransformedFixture: Linear after blocking addObject");
                 QVERIFY(pattern != nullptr);
-                traceTransformedTest("prepareTransformedFixture: Linear before body addObject");
+                traceTransformedTest(
+                    "prepareTransformedFixture: Linear before blocking body addObject"
+                );
                 body->addObject(pattern);
-                traceTransformedTest("prepareTransformedFixture: Linear after body addObject");
-                traceTransformedTest("prepareTransformedFixture: Linear before property setup");
+                traceTransformedTest("prepareTransformedFixture: Linear after blocking body addObject");
+                traceTransformedTest(
+                    "prepareTransformedFixture: Linear before blocking property setup"
+                );
                 pattern->Originals.setValues({baseBox});
                 pattern->Direction.setValue(bodyXAxis, {""});
                 pattern->Length.setValue(20.0);
                 pattern->Occurrences.setValue(2);
-                traceTransformedTest("prepareTransformedFixture: Linear after property setup");
-                traceTransformedTest("prepareTransformedFixture: Linear before doc recompute");
-                doc->recompute();
-                traceTransformedTest("prepareTransformedFixture: Linear after doc recompute");
+                traceTransformedTest("prepareTransformedFixture: Linear after blocking property setup");
                 traceTransformedTest("prepareTransformedFixture: Linear before getViewProvider");
                 transformedView = dynamic_cast<PartDesignGui::ViewProviderTransformed*>(
                     guiDoc->getViewProvider(pattern)
