@@ -45,10 +45,11 @@ std::tuple<std::string_view, std::string_view, unsigned int, Base::UnlimitedUnsi
         // We must return the trailer as the suffix so makeUniqueName injects digits before it.
         unsigned int digitCount = std::distance(trailerStart, digitsStart);
 
-        std::string base = std::string(name.cbegin(), digitsStart.base());
-        std::string numStr(digitsStart.base(), digitsStart.base() + digitCount);
+        std::string_view base = name.substr(0, digitsStart.base() - name.begin());
+        std::string_view numStr = name.substr(digitsStart.base() - name.begin(), digitCount);
+        std::string_view suffix = name.substr(name.size() - trailer.size());
 
-        return {base, trailer, digitCount, UnlimitedUnsigned::fromString(numStr)};
+        return {base, suffix, digitCount, UnlimitedUnsigned::fromString(numStr)};
     }
 
     // 2. Standard Logic
