@@ -488,40 +488,69 @@ private Q_SLOTS:
 
     void linearRejectDefersCloseUntilAsyncPreviewSettles()  // NOLINT
     {
+        traceTransformedTest("linearReject: begin");
+        traceTransformedTest("linearReject: before prepareTransformedFixture");
         prepareTransformedFixture(TransformedKind::Linear);
+        traceTransformedTest("linearReject: after prepareTransformedFixture");
 
+        traceTransformedTest("linearReject: before dialog creation");
         auto* dialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
+        traceTransformedTest("linearReject: after dialog creation");
         QPointer<PartDesignGui::TaskDlgLinearPatternParameters> guard(dialog);
+        traceTransformedTest("linearReject: before showDialog");
         Gui::Control().showDialog(dialog, doc);
+        traceTransformedTest("linearReject: after showDialog");
         QCoreApplication::processEvents();
+        traceTransformedTest("linearReject: after processEvents");
 
+        traceTransformedTest("linearReject: before findTaskBox");
         auto* taskBox = findTaskBox<PartDesignGui::TaskPatternParameters>(dialog);
         QVERIFY(taskBox != nullptr);
+        traceTransformedTest("linearReject: after findTaskBox");
 
+        traceTransformedTest("linearReject: before findPrimaryPatternParametersWidget");
         auto* widget = findPrimaryPatternParametersWidget(taskBox);
         QVERIFY(widget != nullptr);
+        traceTransformedTest("linearReject: after findPrimaryPatternParametersWidget");
 
+        traceTransformedTest("linearReject: before findOccurrencesSpinBox");
         auto* occurrences = findOccurrencesSpinBox(widget);
         QVERIFY(occurrences != nullptr);
+        traceTransformedTest("linearReject: after findOccurrencesSpinBox");
 
+        traceTransformedTest("linearReject: before armBlocker");
         PartDesign::BlockingLinearPatternTest::armBlocker();
+        traceTransformedTest("linearReject: after armBlocker");
+        traceTransformedTest("linearReject: before occurrences change");
         occurrences->setValue(occurrences->value() + 1);
         QCoreApplication::processEvents();
+        traceTransformedTest("linearReject: after occurrences change/processEvents");
 
+        traceTransformedTest("linearReject: before wait for execution count");
         QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingLinearPatternTest::getExecutionCount(), 1, 3000);
+        traceTransformedTest("linearReject: after wait for execution count");
         QVERIFY(taskBox->hasOutstandingRecompute());
+        traceTransformedTest("linearReject: after outstanding recompute verify");
 
+        traceTransformedTest("linearReject: before reject");
         Gui::Control().reject(doc);
+        traceTransformedTest("linearReject: after reject");
 
         QCOMPARE(Gui::Control().activeDialog(doc), static_cast<Gui::TaskView::TaskDialog*>(dialog));
         QVERIFY(taskBox->hasOutstandingRecompute());
         QVERIFY(guiDoc->hasPendingCommand());
+        traceTransformedTest("linearReject: after reject state verifies");
 
+        traceTransformedTest("linearReject: before releaseBlocker");
         PartDesign::BlockingLinearPatternTest::releaseBlocker();
+        traceTransformedTest("linearReject: after releaseBlocker");
 
+        traceTransformedTest("linearReject: before wait for dialog close");
         QTRY_VERIFY_WITH_TIMEOUT(guard.isNull(), 3000);
+        traceTransformedTest("linearReject: after wait for dialog close");
         QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
         QVERIFY(!guiDoc->hasPendingCommand());
+        traceTransformedTest("linearReject: done");
     }
 
     void linearCancelPreviewStopsAsyncRunWithoutClosingDialog()  // NOLINT
@@ -1585,21 +1614,34 @@ private Q_SLOTS:
 private:
     void prepareTransformedFixture(TransformedKind kind)
     {
+        traceTransformedTest("prepareTransformedFixture: begin");
         switch (kind) {
             case TransformedKind::Linear: {
+                traceTransformedTest("prepareTransformedFixture: Linear begin");
+                traceTransformedTest("prepareTransformedFixture: Linear before addObject");
                 auto* pattern = doc->addObject<PartDesign::BlockingLinearPatternTest>(
                     "BlockingLinearPattern"
                 );
+                traceTransformedTest("prepareTransformedFixture: Linear after addObject");
                 QVERIFY(pattern != nullptr);
+                traceTransformedTest("prepareTransformedFixture: Linear before body addObject");
                 body->addObject(pattern);
+                traceTransformedTest("prepareTransformedFixture: Linear after body addObject");
+                traceTransformedTest("prepareTransformedFixture: Linear before property setup");
                 pattern->Originals.setValues({baseBox});
                 pattern->Direction.setValue(bodyXAxis, {""});
                 pattern->Length.setValue(20.0);
                 pattern->Occurrences.setValue(2);
+                traceTransformedTest("prepareTransformedFixture: Linear after property setup");
+                traceTransformedTest("prepareTransformedFixture: Linear before doc recompute");
                 doc->recompute();
+                traceTransformedTest("prepareTransformedFixture: Linear after doc recompute");
+                traceTransformedTest("prepareTransformedFixture: Linear before getViewProvider");
                 transformedView = dynamic_cast<PartDesignGui::ViewProviderTransformed*>(
                     guiDoc->getViewProvider(pattern)
                 );
+                traceTransformedTest("prepareTransformedFixture: Linear after getViewProvider");
+                traceTransformedTest("prepareTransformedFixture: Linear done");
                 break;
             }
             case TransformedKind::Polar: {
@@ -1692,8 +1734,12 @@ private:
             }
         }
 
+        traceTransformedTest("prepareTransformedFixture: after switch");
         QVERIFY(transformedView != nullptr);
+        traceTransformedTest("prepareTransformedFixture: transformedView verified");
+        traceTransformedTest("prepareTransformedFixture: before openCommand");
         guiDoc->openCommand("Edit blocking transformed");
+        traceTransformedTest("prepareTransformedFixture: done");
     }
 
 private:
