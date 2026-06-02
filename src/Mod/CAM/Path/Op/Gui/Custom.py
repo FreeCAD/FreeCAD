@@ -26,12 +26,17 @@ import FreeCADGui
 import Path.Op.Custom as PathCustom
 import Path.Op.Gui.Base as PathOpGui
 
+from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import os
 
 __title__ = "CAM Custom Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Custom operation page controller and command implementation."
+
+translate = FreeCAD.Qt.translate
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
@@ -39,29 +44,73 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getForm(self):
         """getForm() ... returns UI"""
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpCustomEdit.ui")
+        form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpCustomEdit.ui")
+
+        comboToPropertyMap = [("source", "Source")]
+        enumTups = PathCustom.ObjectCustom.propertyEnumerations(dataType="raw")
+
+        self.populateCombobox(form, enumTups, comboToPropertyMap)
+        return form
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
+        if obj.Source != str(self.form.source.currentData()):
+            obj.Source = str(self.form.source.currentData())
+        if obj.GcodeFile != str(self.form.fileName.text()):
+            obj.GcodeFile = str(self.form.fileName.text())
+        if obj.Gcode != str(self.form.txtGCode.toPlainText().split("\n")):
+            obj.Gcode = self.form.txtGCode.toPlainText().split("\n")
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.setupToolController(obj, self.form.toolController)
-        self.form.txtGCode.setText("\n".join(obj.Gcode))
         self.setupCoolant(obj, self.form.coolantController)
+        self.selectInComboBox(obj.Source, self.form.source)
+        self.form.fileName.setText(obj.GcodeFile)
+        self.form.txtGCode.setText("\n".join(obj.Gcode))
+
+        self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
-        self.form.txtGCode.textChanged.connect(self.setGCode)
+        signals.append(self.form.source.currentIndexChanged)
+        signals.append(self.form.fileName.editingFinished)
+        signals.append(self.form.txtGCode.textChanged)
+
         return signals
 
-    def setGCode(self):
-        self.obj.Gcode = self.form.txtGCode.toPlainText().split("\n")
+    def updateVisibility(self):
+        source = self.obj.getEnumerationsOfProperty("Source")[self.form.source.currentIndex()]
+        if source == "File":
+            self.form.fileNameBox.show()
+            self.form.verticalSpacerBox.show()
+            self.form.txtGCodeBox.hide()
+        else:
+            self.form.txtGCodeBox.show()
+            self.form.fileNameBox.hide()
+            self.form.verticalSpacerBox.hide()
+
+    def registerSignalHandlers(self, obj):
+        self.form.source.currentIndexChanged.connect(self.updateVisibility)
+        self.form.setFileName.clicked.connect(self.setFileName)
+
+    def setFileName(self):
+        dirname = os.path.dirname(self.obj.GcodeFile)
+        filename = QtGui.QFileDialog.getOpenFileName(
+            self.form,
+            translate("CAM_Custom", "Select file containing the gcode"),
+            dirname,
+            translate("CAM_Custom", "All Files (*.*)"),
+        )
+        if filename and filename[0]:
+            self.obj.GcodeFile = str(filename[0])
+            self.form.fileName.setText(str(filename[0]))
+            self.setDirty()
 
 
 Command = PathOpGui.SetupOperation(
