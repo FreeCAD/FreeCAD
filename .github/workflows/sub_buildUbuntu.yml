@@ -206,7 +206,7 @@ jobs:
           path: /tmp/FreeCADTesting/CoinNodeSnapshots
 
       - name: C++ tests
-        timeout-minutes: 2
+        timeout-minutes: 1
         uses: ./.github/workflows/actions/runCPPTests/runAllTests
         with:
           reportdir: ${{ env.reportdir }}
