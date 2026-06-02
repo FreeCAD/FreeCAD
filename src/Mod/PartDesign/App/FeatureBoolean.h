@@ -46,6 +46,11 @@ public:
 
     /// The type of the boolean operation
     App::PropertyEnumeration Type;
+    /**
+     * Compatibility property to preserve the historic transformed-body Boolean behavior
+     * in restored documents. New Boolean features use Body-local linked geometry.
+     */
+    App::PropertyBool UseLegacyBodyPlacement;
 
     /** @name methods override feature */
     //@{
@@ -70,6 +75,8 @@ protected:
 
 
 private:
+    Part::TopoShape getBooleanTopoShape(const App::DocumentObject* object) const;
+
     static const char* TypeEnums[];
 };
 

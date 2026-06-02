@@ -29,6 +29,7 @@
 #include <Standard_Failure.hxx>
 
 
+#include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
@@ -52,16 +53,31 @@ Boolean::Boolean()
 {
     ADD_PROPERTY(Type, ((long)0));
     Type.setEnums(TypeEnums);
+    ADD_PROPERTY_TYPE(
+        UseLegacyBodyPlacement,
+        (App::GetApplication().isRestoring()),
+        "Compatibility",
+        App::Prop_Hidden,
+        "Use legacy PartDesign Boolean body placement handling"
+    );
 
     App::GeoFeatureGroupExtension::initExtension(this);
 }
 
 short Boolean::mustExecute() const
 {
-    if (Group.isTouched()) {
+    if (Group.isTouched() || UseLegacyBodyPlacement.isTouched()) {
         return 1;
     }
     return PartDesign::Feature::mustExecute();
+}
+
+TopoShape Boolean::getBooleanTopoShape(const App::DocumentObject* object) const
+{
+    if (UseLegacyBodyPlacement.getValue()) {
+        return getTopoShape(object, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    }
+    return getTopoShapeInLocalCoordinates(object);
 }
 
 App::DocumentObjectExecReturn* Boolean::execute()
@@ -86,7 +102,12 @@ App::DocumentObjectExecReturn* Boolean::execute()
     // Get the base shape to operate on
     Part::TopoShape baseTopShape;
     if (baseFeature) {
-        baseTopShape = baseFeature->Shape.getShape();
+        if (UseLegacyBodyPlacement.getValue()) {
+            baseTopShape = baseFeature->Shape.getShape();
+        }
+        else {
+            baseTopShape = getBooleanTopoShape(baseFeature);
+        }
     }
     else {
         auto feature = tools.back();
@@ -97,7 +118,12 @@ App::DocumentObjectExecReturn* Boolean::execute()
             ));
         }
 
-        baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
+        if (UseLegacyBodyPlacement.getValue()) {
+            baseTopShape = static_cast<Part::Feature*>(feature)->Shape.getShape();
+        }
+        else {
+            baseTopShape = getBooleanTopoShape(feature);
+        }
         tools.pop_back();
     }
 
@@ -110,7 +136,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
     std::vector<TopoShape> shapes;
     shapes.push_back(baseTopShape);
     for (auto it = tools.begin(); it < tools.end(); ++it) {
-        auto shape = getTopoShape(*it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+        auto shape = getBooleanTopoShape(*it);
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Tool shape is null")
@@ -172,7 +198,10 @@ App::DocumentObjectExecReturn* Boolean::execute()
 void Boolean::updatePreviewShape()
 {
     if (strcmp(Type.getValueAsString(), "Cut") == 0) {
-        TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
+        TopoShape base = UseLegacyBodyPlacement.getValue()
+            ? getBaseTopoShape(true)
+            : getBooleanTopoShape(BaseFeature.getValue());
+        base.move(getLocation().Inverted());
         TopoShape result = Shape.getShape();
 
         try {
@@ -199,9 +228,7 @@ void Boolean::updatePreviewShape()
         std::vector<TopoShape> shapes;
 
         for (auto& obj : Group.getValues()) {
-            shapes.push_back(
-                getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform)
-            );
+            shapes.push_back(getBooleanTopoShape(obj));
         }
 
         TopoShape result;
