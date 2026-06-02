@@ -439,6 +439,9 @@ private Q_SLOTS:
         baseBox->Height.setValue(6.0);
         traceTransformedTest("init: after base box dimensions");
 
+        traceTransformedTest("init: before doc recompute");
+        doc->recompute();
+
         traceTransformedTest("init: before origin references");
         bodyXAxis = body->getOrigin()->getX();
         bodyXYPlane = body->getOrigin()->getXY();
@@ -448,8 +451,6 @@ private Q_SLOTS:
         QVERIFY(bodyYZPlane != nullptr);
         traceTransformedTest("init: after origin references");
 
-        traceTransformedTest("init: before doc recompute");
-        doc->recompute();
         traceTransformedTest("init: done");
     }
 
