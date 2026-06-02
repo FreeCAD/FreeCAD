@@ -289,7 +289,7 @@ def get_circle(plane, fill, stroke, linewidth, lstyle, edge):
     svg += 'stroke="{}" '.format(stroke)
     # Editor: why is stroke-width repeated? Is this really necessary
     # for the generated SVG?
-    svg += 'stroke-width="{} px" '.format(linewidth)
+    svg += 'stroke-width="{}px" '.format(linewidth)
     svg += 'style="'
     svg += "stroke-width:{};".format(linewidth)
     svg += "stroke-miterlimit:4;"
@@ -315,7 +315,7 @@ def get_ellipse(plane, fill, stroke, linewidth, lstyle, edge):
     svg += 'cx="{}" cy="{}" '.format(cen.x, cen.y)
     svg += 'rx="{}" ry="{}" '.format(mar, mir)
     svg += 'stroke="{}" '.format(stroke)
-    svg += 'stroke-width="{} px" '.format(linewidth)
+    svg += 'stroke-width="{}px" '.format(linewidth)
     svg += 'style="'
     svg += "stroke-width:{};".format(linewidth)
     svg += "stroke-miterlimit:4;"
@@ -445,7 +445,7 @@ def get_path(
 
     svg += '" '
     svg += 'stroke="{}" '.format(stroke)
-    svg += 'stroke-width="{} px" '.format(linewidth)
+    svg += 'stroke-width="{}px" '.format(linewidth)
     svg += 'style="'
     svg += "stroke-width:{};".format(linewidth)
     svg += "stroke-miterlimit:4;"

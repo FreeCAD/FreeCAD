@@ -1019,6 +1019,12 @@ bool ViewProvider::getElementPicked(const SoPickedPoint* pp, std::string& subnam
     return true;
 }
 
+std::vector<std::pair<std::string, std::string>> ViewProvider::
+    getRelatedElements(const std::string& /*subname*/, const SbVec3f& /*pickPoint*/) const
+{
+    return {};
+}
+
 bool ViewProvider::getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const
 {
     if (pcRoot->findChild(pcModeSwitch) < 0) {

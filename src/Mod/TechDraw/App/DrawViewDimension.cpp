@@ -863,6 +863,8 @@ pointPair DrawViewDimension::getPointsOneEdge(ReferenceVector references)
 
 pointPair DrawViewDimension::getPointsTwoEdges(ReferenceVector references)
 {
+    constexpr bool UseProjectionCS{true};
+    constexpr bool UsePaperCS{false};
     App::DocumentObject* refObject = references.front().getObject();
     int iSubelement0 = DrawUtil::getIndexFromName(references.at(0).getSubName());
     int iSubelement1 = DrawUtil::getIndexFromName(references.at(1).getSubName());
@@ -876,6 +878,9 @@ pointPair DrawViewDimension::getPointsTwoEdges(ReferenceVector references)
             ssMessage << getNameInDocument() << " can not find geometry for 2d reference (2)";
             throw Base::RuntimeError(ssMessage.str());
         }
+        if (isCircleSpecialCase(geom0->getOCCEdge(), geom1->getOCCEdge())) {
+            return getPointsTwoCircles(geom0->getOCCEdge(), geom1->getOCCEdge(), UsePaperCS);
+        }
         return closestPoints(geom0->getOCCEdge(), geom1->getOCCEdge());
     }
 
@@ -887,11 +892,93 @@ pointPair DrawViewDimension::getPointsTwoEdges(ReferenceVector references)
         throw Base::RuntimeError("Geometry for dimension reference is null.");
     }
 
+    TopoDS_Edge edge0 = TopoDS::Edge(geometry0);
+    TopoDS_Edge edge1 = TopoDS::Edge(geometry1);
     pointPair pts = closestPoints(geometry0, geometry1);
+    if (isCircleSpecialCase(edge0, edge1)) {
+        pts = getPointsTwoCircles(edge0, edge1, UseProjectionCS);
+    }
     pts.move(getViewPart()->getCurrentCentroid());
     pts.project(getViewPart());
     return pts;
 }
+
+
+//! true if this is a circle to circle dimension that requires special handling
+bool DrawViewDimension::isCircleSpecialCase(const TopoDS_Edge& edge0, const TopoDS_Edge& edge1)
+{
+    BRepAdaptor_Curve adapt0(edge0);
+    BRepAdaptor_Curve adapt1(edge1);
+    if (adapt0.GetType() != GeomAbs_Circle ||
+        adapt1.GetType() != GeomAbs_Circle) {
+        return false;
+    }
+    return Type.isValue("DistanceX") || Type.isValue("DistanceY");
+}
+
+
+//! Specialization for circle to circle horizontal or vertical dimensions
+pointPair DrawViewDimension::getPointsTwoCircles(const TopoDS_Edge& edge0, const TopoDS_Edge& edge1, bool is3d)
+{
+    BRepAdaptor_Curve adapt0(edge0);
+    BRepAdaptor_Curve adapt1(edge1);
+
+    gp_Ax2 projectionCS = getViewPart()->getProjectionCS();
+    if (!is3d) {
+        // edges are on the XY plane already so use OXYZ as the projectionCS
+        projectionCS = gp_Ax2();
+    }
+
+    gp_Dir alignmentDir = projectionCS.XDirection();
+    if (Type.isValue("DistanceY")) {
+        alignmentDir = projectionCS.YDirection();
+    }
+
+    gp_Circ circle0 = adapt0.Circle();
+    gp_Pnt shift0 = alignmentDir.XYZ() * circle0.Radius();
+    gp_Pnt point0 = circle0.Location();
+
+    gp_Circ circle1 = adapt1.Circle();
+    gp_Pnt point1 = circle1.Location();
+    gp_Pnt shift1 = alignmentDir.XYZ() * circle1.Radius();
+
+    gp_Ax3 projectionCS3{projectionCS};
+    gp_Ax3 OXYZ;
+    gp_Trsf xToProjectionCS;
+    xToProjectionCS.SetTransformation(OXYZ, projectionCS3);
+
+    gp_Pnt center0Local = point0;
+    gp_Pnt center1Local = point1;
+    if (is3d) {
+        center0Local = point0.Transformed(xToProjectionCS);
+        center1Local = point1.Transformed(xToProjectionCS);
+    }
+
+    gp_Dir centerDir = center1Local.XYZ() - center0Local.XYZ();
+    double dot = centerDir.Dot(alignmentDir);
+
+    if (dot == 0) {
+        // dot == 0 means alignmentDir and centerDir are at 90* and the separation of the two circles along aligmentDir will
+        // be zero.  Dimension will have zero value until user changes DistanceX to DistanY, or vv.
+        Base::Console().log("DVD::getPointsTwoCircles - %s dot is zero\n", Label.getValue());
+        return closestPoints(edge0, edge1);
+    }
+
+    if (dot > 0) {
+        point0 = point0.XYZ() + shift0.XYZ();
+        point1 = point1.XYZ() - shift1.XYZ();
+    }
+
+    if (dot < 0) {
+        point0 = point0.XYZ() - shift0.XYZ();
+        point1 = point1.XYZ() + shift1.XYZ();
+    }
+
+    auto point0Out = Base::convertTo<Base::Vector3d>(point0);
+    auto point1Out = Base::convertTo<Base::Vector3d>(point1);
+    return {point0Out, point1Out};
+}
+
 
 pointPair DrawViewDimension::getPointsTwoVerts(ReferenceVector references)
 {

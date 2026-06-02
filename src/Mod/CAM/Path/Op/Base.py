@@ -61,7 +61,7 @@ FeatureLinking = 0x0080  # Linking
 FeatureBaseVertexes = 0x0100  # Base
 FeatureBaseEdges = 0x0200  # Base
 FeatureBaseFaces = 0x0400  # Base
-FeatureBasePanels = 0x0800  # Base
+FeatureBaseModels = 0x0800  # Base
 FeatureLocations = 0x1000  # Locations
 FeatureCoolant = 0x2000  # Coolant
 FeatureDiameters = 0x4000  # Turning Diameters
@@ -98,6 +98,7 @@ class ObjectOp(object):
         FeatureBaseVertexes  ... Base geometry support for vertexes
         FeatureBaseEdges     ... Base geometry support for edges
         FeatureBaseFaces     ... Base geometry support for faces
+        FeatureBaseModels    ... Base geometry support for whole shape
         FeatureLocations     ... Base location support
         FeatureCoolant       ... Support for operation coolant
         FeatureDiameters     ... Support for turning operation diameters
@@ -173,6 +174,13 @@ class ObjectOp(object):
                 "\nTool Shape: safest - checks clearance using the cross section of the tool shape",
             ),
         )
+        obj.CollisionAvoidanceStrategy = [
+            "Clearance Height",
+            "Retract Height",
+            "Line of Sight",
+            "Tool Diameter",
+            "Tool Shape",
+        ]
         obj.addProperty(
             "App::PropertyLength",
             "CollisionClearance",
@@ -403,13 +411,6 @@ class ObjectOp(object):
                 (translate("CAM_Operation", "None"), "None"),
                 (translate("CAM_Operation", "Flood"), "Flood"),
                 (translate("CAM_Operation", "Mist"), "Mist"),
-            ],
-            "CollisionAvoidanceStrategy": [
-                (translate("CAM_Operation", "Clearance Height"), "Clearance Height"),
-                (translate("CAM_Operation", "Retract Height"), "Retract Height"),
-                (translate("CAM_Operation", "Line of Sight"), "Line of Sight"),
-                (translate("CAM_Operation", "Tool Diameter"), "Tool Diameter"),
-                (translate("CAM_Operation", "Tool Shape"), "Tool Shape"),
             ],
         }
 
@@ -678,7 +679,7 @@ class ObjectOp(object):
             obj.UseStartPoint = False
 
         if FeatureLinking & features:
-            obj.CollisionAvoidanceStrategy = "Clearance Height"
+            obj.CollisionAvoidanceStrategy = job.SetupSheet.CollisionAvoidanceStrategy
             self.applyExpression(obj, "CollisionClearance", "OpToolDiameter")
 
         self.opSetDefaultValues(obj, job)
@@ -820,6 +821,10 @@ class ObjectOp(object):
         the receiver's Path property from the command list.
         """
         Path.Log.track()
+
+        job = getattr(self, "job", None) or PathUtils.findParentJob(obj)
+        if job and "freezed" in job.getStatusString().casefold():
+            return
 
         if not obj.Active:
             path = Path.Path("(inactive operation)")
@@ -1218,3 +1223,10 @@ def getCycleTimeEstimate(obj):
     cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
 
     return cycleTime
+
+
+def SetupPropertiesLinking():
+    setup = []
+    setup.append("CollisionAvoidanceStrategy")
+    setup.append("CollisionClearance")
+    return setup

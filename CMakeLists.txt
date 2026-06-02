@@ -171,6 +171,7 @@ endif()
 if (ENABLE_DEVELOPER_TESTS)
     include(CTest)
     enable_testing()
+    find_package(GTest REQUIRED)
     add_subdirectory(tests)
 endif()
 

@@ -425,10 +425,6 @@
                     "type": "BOOL",
                     "value": "TRUE"
                 },
-                "FREECAD_USE_EXTERNAL_GTEST": {
-                    "type": "BOOL",
-                    "value": "TRUE"
-                },
                 "ONDSELSOLVER_BUILD_EXE": {
                     "type": "BOOL",
                     "value": "TRUE"
