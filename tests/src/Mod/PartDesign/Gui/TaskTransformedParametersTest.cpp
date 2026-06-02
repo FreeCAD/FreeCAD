@@ -604,6 +604,7 @@ private Q_SLOTS:
             doc->getObject("BlockingLinearPattern")
         );
         QVERIFY(pattern != nullptr);
+        const int baselineExecutionCount = getBlockingTransformedTotalExecutionCount();
 
         auto* dialog = new PartDesignGui::TaskDlgLinearPatternParameters(transformedView);
         QPointer<PartDesignGui::TaskDlgLinearPatternParameters> guard(dialog);
@@ -625,7 +626,7 @@ private Q_SLOTS:
         QCoreApplication::processEvents();
 
         QTRY_COMPARE_WITH_TIMEOUT(PartDesign::BlockingLinearPatternTest::getExecutionCount(), 1, 3000);
-        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 1);
+        QCOMPARE(getBlockingTransformedTotalExecutionCount(), baselineExecutionCount + 1);
         QVERIFY(taskBox->hasOutstandingRecompute());
 
         const int finalOccurrences = occurrences->value() + 1;
@@ -645,7 +646,7 @@ private Q_SLOTS:
         QCOMPARE(Gui::Control().activeDialog(doc), nullptr);
         QVERIFY(!guiDoc->hasPendingCommand());
         QCOMPARE(pattern->Occurrences.getValue(), finalOccurrences);
-        QCOMPARE(getBlockingTransformedTotalExecutionCount(), 2);
+        QCOMPARE(getBlockingTransformedTotalExecutionCount(), baselineExecutionCount + 2);
     }
 
     void polarRejectDefersCloseUntilAsyncPreviewSettles()  // NOLINT
@@ -1637,7 +1638,11 @@ private:
                 pattern->Direction.setValue(baseBox, {"Edge1"});
                 pattern->Length.setValue(20.0);
                 pattern->Occurrences.setValue(2);
+                pattern->Refine.setValue(false);
                 traceTransformedTest("prepareTransformedFixture: Linear after blocking property setup");
+                traceTransformedTest("prepareTransformedFixture: Linear before blocking doc recompute");
+                doc->recompute();
+                traceTransformedTest("prepareTransformedFixture: Linear after blocking doc recompute");
                 traceTransformedTest("prepareTransformedFixture: Linear before getViewProvider");
                 transformedView = dynamic_cast<PartDesignGui::ViewProviderTransformed*>(
                     guiDoc->getViewProvider(pattern)
