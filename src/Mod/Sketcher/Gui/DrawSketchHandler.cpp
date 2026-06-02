@@ -612,8 +612,8 @@ bool DrawSketchHandler::seekAlignmentAutoConstraint(
                     candidateConstraint = Sketcher::Parallel;
                 }
                 else if (
-                    std::abs(lineAngle - angle - 2.0 * pi) < angleDevRad
-                    || std::abs(lineAngle - angle + 2.0 * pi) < angleDevRad
+                    std::abs(lineAngle - angle - 0.5 * pi) < angleDevRad
+                    || std::abs(lineAngle - angle + 0.5 * pi) < angleDevRad
                 ) {
                     candidateConstraint = Sketcher::Perpendicular;
                 }
