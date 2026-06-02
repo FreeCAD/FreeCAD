@@ -1251,7 +1251,7 @@ bool OverlayTabWidget::checkAutoHide() const
 
     if (autoMode == AutoMode::TaskShow) {
         if (isTransparent()) {
-          return false;
+            return false;
         }
         return (!Control().taskPanel() || Control().taskPanel()->isEmpty(false));
     }
