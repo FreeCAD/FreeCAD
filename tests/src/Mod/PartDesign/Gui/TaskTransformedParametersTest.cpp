@@ -1619,25 +1619,6 @@ private:
         switch (kind) {
             case TransformedKind::Linear: {
                 traceTransformedTest("prepareTransformedFixture: Linear begin");
-                traceTransformedTest("prepareTransformedFixture: Linear before stable addObject");
-                auto* stablePattern = doc->addObject<PartDesign::LinearPattern>(
-                    "StableLinearPattern"
-                );
-                traceTransformedTest("prepareTransformedFixture: Linear after stable addObject");
-                QVERIFY(stablePattern != nullptr);
-                traceTransformedTest("prepareTransformedFixture: Linear before stable body addObject");
-                body->addObject(stablePattern);
-                traceTransformedTest("prepareTransformedFixture: Linear after stable body addObject");
-                traceTransformedTest("prepareTransformedFixture: Linear before stable property setup");
-                stablePattern->Originals.setValues({baseBox});
-                stablePattern->Direction.setValue(bodyXAxis, {""});
-                stablePattern->Length.setValue(20.0);
-                stablePattern->Occurrences.setValue(2);
-                traceTransformedTest("prepareTransformedFixture: Linear after stable property setup");
-                traceTransformedTest("prepareTransformedFixture: Linear before stable doc recompute");
-                doc->recompute();
-                traceTransformedTest("prepareTransformedFixture: Linear after stable doc recompute");
-
                 traceTransformedTest("prepareTransformedFixture: Linear before blocking addObject");
                 auto* pattern = doc->addObject<PartDesign::BlockingLinearPatternTest>(
                     "BlockingLinearPattern"
@@ -1653,7 +1634,7 @@ private:
                     "prepareTransformedFixture: Linear before blocking property setup"
                 );
                 pattern->Originals.setValues({baseBox});
-                pattern->Direction.setValue(bodyXAxis, {""});
+                pattern->Direction.setValue(baseBox, {"Edge1"});
                 pattern->Length.setValue(20.0);
                 pattern->Occurrences.setValue(2);
                 traceTransformedTest("prepareTransformedFixture: Linear after blocking property setup");
