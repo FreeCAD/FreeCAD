@@ -31,7 +31,6 @@
 
 
 #include "FeaturePartFuse.h"
-#include "ProgressIndicator.h"
 #include "TopoShape.h"
 #include "modelRefine.h"
 #include "TopoShapeOpCode.h"
@@ -172,11 +171,7 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
             if (this->Refine.getValue()) {
                 try {
                     TopoDS_Shape oldShape = res.getShape();
-                    BRepBuilderAPI_RefineModel mkRefine(
-                        oldShape,
-                        BRepBuilderAPI_RefineModel::BuildMode::Deferred
-                    );
-                    Part::buildWithProgress(mkRefine);
+                    BRepBuilderAPI_RefineModel mkRefine(oldShape);
                     // We just built an element map above for the fuse, don't erase it for a refine.
                     res.setShape(mkRefine.Shape(), false);
                     ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
