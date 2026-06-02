@@ -298,6 +298,9 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             ),
         )
 
+        for n in self.helixOpPropertyEnumerations():
+            setattr(obj, n[0], n[1])
+
         self.opSetEditorModes(obj)
 
     def opOnChanged(self, obj, prop):
@@ -317,9 +320,6 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.setEditorMode("SingleHelix", 2)  # hide
 
     def opSetDefaultValues(self, obj, job):
-        for n in self.helixOpPropertyEnumerations():
-            setattr(obj, n[0], n[1])
-
         obj.CutMode = "Conventional"
         obj.FinishHelixCircle = True
         obj.FinishSpiralCircle = True
@@ -588,23 +588,30 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
         singleHelix = obj.SingleHelix or obj.SpiralMill
 
-        # build list of solids for collision detection
+        # Prepare linking parameters
         solids = [base.Shape for base in self.job.Model.Group]
-        machinestate = PathMachineState.MachineState()
         linkingArgs = {
             "start_position": None,
             "target_position": None,
             "local_clearance": safeHeight,
             "global_clearance": clearanceHeight,
-            "solids": solids,
+            "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
-            "safety_margin": obj.LinkingSafetyMargin.Value,
+            "collision_clearance": obj.CollisionClearance.Value,
         }
-        if obj.LinkingMode == "Safest":
-            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
-        elif obj.LinkingMode == "Compromise":
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["local_clearance"] = clearanceHeight
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
             linkingArgs["tool_diameter"] = tooldiameter
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
 
         obj.Direction = _caclulatePathDirection(obj)
 
@@ -632,6 +639,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         else:
             args["cone_angle_rad"] = -math.radians(obj.HelixConeAngle.Value)
 
+        machinestate = PathMachineState.MachineState()
         self.commandlist.append(Path.Command("(helix cut operation)"))
         for hole_index, hole in enumerate(holes):
             if obj.RotationAngle.Value == -1:
@@ -909,11 +917,24 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
 def SetupProperties():
     """Returns property names for which the "Setup Sheet" should provide defaults."""
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("CutMode")
+    setup.append("Direction")
+    setup.append("FinishHelixCircle")
+    setup.append("FinishSpiralCircle")
+    setup.append("HelixConeAngle")
+    setup.append("HelixMaxPitch")
+    setup.append("HelixMaxRampAngle")
+    setup.append("OverrideArcFeedRate")
+    setup.append("RadialStockToLeaveInner")
+    setup.append("RadialStockToLeaveOuter")
+    setup.append("RetractFromWall")
+    setup.append("RotationAngle")
+    setup.append("Side")
+    setup.append("SingleHelix")
+    setup.append("SpiralMill")
     setup.append("StartAt")
     setup.append("StepOver")
-    setup.append("RadialStockToLeaveInner")
     return setup
 
 

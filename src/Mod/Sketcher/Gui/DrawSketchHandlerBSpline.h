@@ -919,14 +919,14 @@ void DSHBSplineController::secondKeyShortcut()
 template<>
 void DSHBSplineController::thirdKeyShortcut()
 {
-    auto firstchecked = toolWidget->getCheckboxChecked(WCheckbox::FirstBox);
-    toolWidget->setCheckboxChecked(WCheckbox::FirstBox, !firstchecked);
+    handler->undoLastPoint();
 }
 
 template<>
 void DSHBSplineController::fourthKeyShortcut()
 {
-    handler->undoLastPoint();
+    auto firstchecked = toolWidget->getCheckboxChecked(WCheckbox::FirstBox);
+    toolWidget->setCheckboxChecked(WCheckbox::FirstBox, !firstchecked);
 }
 
 template<>
@@ -935,7 +935,7 @@ void DSHBSplineController::configureToolWidget()
     if (!init) {  // Code to be executed only upon initialisation
         toolWidget->setNoticeVisible(true);
         toolWidget->setNoticeText(
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Press F to undo last point.")
+            QApplication::translate("TaskSketcherTool_c1_bspline", "Press R to undo last point.")
         );
 
         QStringList names = {
@@ -946,7 +946,7 @@ void DSHBSplineController::configureToolWidget()
 
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_bspline", "Periodic (R)")
+            QApplication::translate("TaskSketcherTool_c1_bspline", "Periodic (F)")
         );
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,

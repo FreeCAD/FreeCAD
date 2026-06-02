@@ -18,7 +18,7 @@ if(NOT Shiboken6_FOUND)
         # The include directory we actually want is part of shiboken6-generator
         find_pip_package(shiboken6_generator)
         if(shiboken6_generator_FOUND)
-            set(SHIBOKEN_INCLUDE_DIR ${shiboken6_generator_INCLUDE_DIRS})
+            set(SHIBOKEN_INCLUDE_DIR ${shiboken6_generator_INCLUDE_DIRS};${shiboken6_generator_INCLUDE_DIRS}/shiboken6)
         endif()
     endif()
 else()

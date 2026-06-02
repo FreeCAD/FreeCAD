@@ -107,20 +107,21 @@ class Trimex(gui_base_original.Modifier):
             self.finish()
             return
         self.obj = sel[0]
-        self.ui.trimUi(title=translate("draft", self.featureName))
-        self.linetrack = trackers.lineTracker()
+        sel = Gui.Selection.getSelectionEx("", 0)[0]
 
         import Part
 
-        if not hasattr(self.obj, "Shape"):
+        reason = utils.get_trimex_unsupported_reason(self.obj, sel.SubObjects)
+        if reason:
             self.obj = None
             self.finish()
-            _err(translate("draft", "This object is not supported"))
+            _err(reason)
             return
+        self.ui.trimUi(title=translate("draft", self.featureName))
+        self.linetrack = trackers.lineTracker()
         if hasattr(self.obj, "Placement"):
             self.placement = self.obj.Placement
         if self.obj.Shape.Faces:
-            sel = Gui.Selection.getSelectionEx("", 0)[0]
             self.obj = sel.Object
             if len(self.obj.Shape.Faces) == 1:
                 # simple extrude mode, the object itself is extruded

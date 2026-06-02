@@ -453,6 +453,10 @@ public:
     virtual void addConstraints()
     {}
 
+    /// function to create constraints based on control information for infinite DSH (polyline).
+    virtual void addStepConstraints()
+    {}
+
     /// Configures on-view parameters
     void configureOnViewParameters()
     {}
@@ -675,6 +679,11 @@ protected:
                 &Gui::EditableDatumLabel::editingFinished,
                 handleParameterValueChanged
             );
+            QObject::connect(parameter, &Gui::EditableDatumLabel::editingCanceled, [this](double) {
+                if (handler) {
+                    handler->cancelCurrentAction();
+                }
+            });
 
             // this gets triggered whenever user deletes content in OVP, we remove the
             // constraints and unset everything to give user another change to select stuff
@@ -741,14 +750,29 @@ protected:
                 bool visible = isOnViewParameterVisible(i);
 
                 if (visible) {
-                    onViewParameters[i]->activate();
-
-                    // points/value will be overridden by the mouseMove triggered by the mode
-                    // change.
-                    onViewParameters[i]->setPoints(Base::Vector3d(), Base::Vector3d());
-                    onViewParameters[i]->startEdit(0.0, keymanager.get());
+                    activateOnViewParameter(i);
                 }
             }
+        }
+    }
+
+    void activateOnViewParameter(size_t i)
+    {
+        if (i < onViewParameters.size()) {
+            onViewParameters[i]->activate();
+
+            // points/value will be overridden by the mouseMove triggered by the mode
+            // change.
+            onViewParameters[i]->setPoints(Base::Vector3d(), Base::Vector3d());
+            onViewParameters[i]->startEdit(0.0, keymanager.get());
+        }
+    }
+
+    void deactivateOnViewParameter(size_t i)
+    {
+        if (i < onViewParameters.size()) {
+            onViewParameters[i]->stopEdit();
+            onViewParameters[i]->deactivate();
         }
     }
 

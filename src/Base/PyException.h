@@ -25,7 +25,7 @@
 
 #include <exception>
 
-#include <PyCXX/CXX/Exception.hxx>
+#include <CXX/Exception.hxx>
 
 #include "Exception.h"
 

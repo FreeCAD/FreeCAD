@@ -31,6 +31,8 @@ packages=(
   libboost-thread-dev
   libcoin-dev
   libeigen3-dev
+  libgtest-dev
+  libgmock-dev
   libkdtree++-dev
   libmedc-dev
   libocct-data-exchange-dev

@@ -37,16 +37,30 @@ using namespace PartDesign;
 namespace PartDesign
 {
 PROPERTY_SOURCE(PartDesign::FeatureRefine, PartDesign::Feature)
+const App::PropertyFloatConstraint::Constraints floatFuzzy = {-1.0, 1.0, 0.0001};
 
 FeatureRefine::FeatureRefine()
 {
     ADD_PROPERTY_TYPE(
         Refine,
-        (0),
+        (false),
         "Part Design",
         (App::PropertyType)(App::Prop_None),
         "Refine shape (clean up redundant edges) after operations"
     );
+    ADD_PROPERTY_TYPE(
+        FuzzyTolerance,
+        (0.0),
+        "Part Design",
+        (App::PropertyType)(App::Prop_None),
+        "Fuzzy tolerance:\n"
+        "If value > 0: use the value\n"
+        "If value = 0: leave default value\n"
+        "If value < 0: determine value"
+    );
+    FuzzyTolerance.setConstraints(&floatFuzzy);
+
+
     // init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
                                              .GetUserParameter()

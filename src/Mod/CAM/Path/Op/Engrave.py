@@ -59,6 +59,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             | PathOp.FeatureStepDown
             | PathOp.FeatureBaseEdges
             | PathOp.FeatureCoolant
+            | PathOp.FeatureLinking
         )
 
     def setupAdditionalProperties(self, obj):
@@ -97,6 +98,12 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
         ]
         obj.CutPattern = "Bidirectional"
+        obj.addProperty(
+            "App::PropertyBool",
+            "Approximation",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Approximate complex curves to arcs and lines"),
+        )
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
@@ -118,6 +125,14 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 QT_TRANSLATE_NOOP("CAM_Engrave", "Directional"),
                 QT_TRANSLATE_NOOP("CAM_Engrave", "Bidirectional"),
             ]
+        if not hasattr(obj, "Approximation"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Approximation",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Approximate complex curves to arcs and lines"),
+            )
+
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
@@ -183,7 +198,9 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
 
 def SetupProperties():
-    return ["StartVertex"]
+    setup = PathOp.SetupPropertiesLinking()
+    setup.append("StartVertex")
+    return setup
 
 
 def Create(name, obj=None, parentJob=None):

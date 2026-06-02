@@ -413,16 +413,6 @@
       <translation>Cancella celle</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
-      <source>Setup conf table</source>
-      <translation>Imposta tabella conf</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
-      <source>Unsetup conf table</source>
-      <translation>Annulla la tabella di configurazione</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>Collega celle</translation>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>Scollega le celle</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation>Imposta tabella conf</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation>Annulla la tabella di configurazione</translation>
     </message>
   </context>
   <context>
@@ -1116,7 +1116,7 @@ Predefinito a: %V = %A
       <location filename="../../SheetTableView.cpp" line="161"/>
       <source>Insert %n Columns Left</source>
       <translation>
-        <numerusform>Inserisci %n colonna a sinistra</numerusform>
+        <numerusform>Inserisci una colonna a sinistra</numerusform>
         <numerusform>Inserisci %n colonne a sinistra</numerusform>
       </translation>
     </message>
@@ -1124,7 +1124,7 @@ Predefinito a: %V = %A
       <location filename="../../SheetTableView.cpp" line="163"/>
       <source>Insert %n Columns Right</source>
       <translation>
-        <numerusform>Inserisci %n colonne a destra</numerusform>
+        <numerusform>Inserisci una colonna a destra</numerusform>
         <numerusform>Inserisci %n colonne a destra</numerusform>
       </translation>
     </message>

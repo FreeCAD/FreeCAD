@@ -407,6 +407,7 @@ void PyResource::init_type()
     add_varargs_method("setValue", &PyResource::setValue);
     add_varargs_method("show", &PyResource::show);
     add_varargs_method("connect", &PyResource::connect);
+    behaviors().readyType();
 }
 
 PyResource::PyResource()

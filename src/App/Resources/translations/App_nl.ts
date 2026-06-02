@@ -74,8 +74,7 @@ Het is aanbevolen dat de gebruiker met de rechter muis knop de hoofdmap van het 
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>Bewaart de laatste keuze van de gebruiker om KopierBijVerandering setup toe te passen op alle link die linkt naar hetzelfde configureerbare object</translation>
     </message>
   </context>
 </TS>

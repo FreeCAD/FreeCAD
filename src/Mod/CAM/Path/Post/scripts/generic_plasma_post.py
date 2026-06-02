@@ -237,16 +237,7 @@ class GenericPlasma(PostProcessor):
             "P",
         ]
 
-        values["MACHINE_NAME"] = "GenericPlasma"
         values["POSTPROCESSOR_FILE_NAME"] = __name__
-        #
-        # Load preamble from machine configuration if available
-        #
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            props = self._machine.postprocessor_properties
-            values["PREAMBLE"] = props.get("preamble", "")
-        else:
-            values["PREAMBLE"] = ""
 
     def _inject_pierce_delay(self, postables):
         """Inject pierce delay after torch ignition command."""

@@ -492,14 +492,9 @@ void ViewProvider::toggleVisibility()
         return;
     }
     if (auto* bodyVp = getBodyViewProvider()) {
-        if (bodyVp->isActiveBody()) {
-            // Inside the active body, toggle the feature itself.
-            Gui::ViewProvider::toggleVisibility();
-        }
-        else {
-            // Outside the active body, toggle the whole body.
-            bodyVp->toggleVisibility();
-        }
+        // When toggling via the global Std_ToggleVisibility shortcut (i.e. from
+        // the 3D view), always toggle the whole body
+        bodyVp->toggleVisibility();
         return;
     }
     Gui::ViewProvider::toggleVisibility();

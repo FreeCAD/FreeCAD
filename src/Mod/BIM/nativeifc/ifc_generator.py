@@ -419,7 +419,7 @@ def get_geom_iterator(ifcfile, elements, brep_mode):
         else:
             # We print a debug message but we continue
             print("DEBUG: ifc_tools.get_geom_iterator: Iterator could not be set up correctly")
-    cores = multiprocessing.cpu_count()
+    cores = max(1, multiprocessing.cpu_count() - 1)
     iterator = ifcopenshell.geom.iterator(settings, ifcfile, cores, include=elements)
     if not iterator.initialize():
         print("DEBUG: ifc_tools.get_geom_iterator: Invalid iterator")

@@ -175,11 +175,12 @@ SoBrepFaceSet::SoBrepFaceSet()
 {
     SO_NODE_CONSTRUCTOR(SoBrepFaceSet);
     SO_NODE_ADD_FIELD(partIndex, (-1));
-    SO_NODE_ADD_FIELD(highlightPartIndex, (-1));
+    SO_NODE_ADD_FIELD(highlightPartIndex, (0));
     SO_NODE_ADD_FIELD(selectionPartIndex, (0));
     SO_NODE_ADD_FIELD(highlightColor, (SbColor(1.0f, 0.0f, 0.0f)));
     SO_NODE_ADD_FIELD(selectionColor, (SbColor(0.0f, 0.6f, 0.0f)));
 
+    highlightPartIndex.setNum(0);
     selectionPartIndex.setNum(0);
 
     selContext = std::make_shared<SelContext>();
@@ -589,9 +590,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
     SelContextPtr ctx2;
     std::vector<SelContextPtr> ctxs;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext(this, selContext, ctx2);
-    const bool hasOverlayFields = (highlightPartIndex.getValue() >= 0)
-        || (selectionPartIndex.getNum() > 0);
-    if (!hasOverlayFields && ctx2 && ctx2->selectionIndex.empty()) {
+    if (ctx2 && ctx2->selectionIndex.empty()) {
         return;
     }
     if (selContext2->checkGlobal(ctx)) {
@@ -815,21 +814,41 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
     // Optional overlay rendering for deterministic tests (and programmatic usage).
     // Render selection first, then highlight on top.
     const int selNum = selectionPartIndex.getNum();
-    if (selNum > 0) {
-        SelContextPtr octx = std::make_shared<SelContext>();
-        octx->selectionColor = selectionColor.getValue();
-        const int32_t* vals = selectionPartIndex.getValues(0);
-        for (int i = 0; i < selNum; i++) {
-            octx->selectionIndex.insert(vals[i]);
+    const int hlNum = highlightPartIndex.getNum();
+    if (selNum > 0 || hlNum > 0) {
+        GLint oldDepthFunc = GL_LEQUAL;
+        glGetIntegerv(GL_DEPTH_FUNC, &oldDepthFunc);
+        if (oldDepthFunc != GL_LEQUAL) {
+            glDepthFunc(GL_LEQUAL);
         }
-        renderSelection(action, octx);
-    }
-    const int hl = highlightPartIndex.getValue();
-    if (hl >= 0) {
-        SelContextPtr octx = std::make_shared<SelContext>();
-        octx->highlightIndex = hl;
-        octx->highlightColor = highlightColor.getValue();
-        renderHighlight(action, octx);
+
+        if (selNum > 0) {
+            SelContextPtr octx = std::make_shared<SelContext>();
+            octx->selectionColor = selectionColor.getValue();
+            const int32_t* vals = selectionPartIndex.getValues(0);
+            for (int i = 0; i < selNum; i++) {
+                octx->selectionIndex.insert(vals[i]);
+            }
+            renderSelection(action, octx);
+        }
+        if (hlNum > 0) {
+            const int32_t* vals = highlightPartIndex.getValues(0);
+            for (int i = 0; i < hlNum; i++) {
+                SelContextPtr octx = std::make_shared<SelContext>();
+                octx->highlightIndex = vals[i];
+                octx->highlightColor = highlightColor.getValue();
+                renderHighlight(action, octx);
+            }
+        }
+        // Keep live face preselection on top when it overlaps the explicit
+        // overlay selection/highlight fields.
+        if (hasContextHighlight) {
+            renderHighlight(action, ctx);
+        }
+
+        if (oldDepthFunc != GL_LEQUAL) {
+            glDepthFunc(oldDepthFunc);
+        }
     }
 }
 #endif

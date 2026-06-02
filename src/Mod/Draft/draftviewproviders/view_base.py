@@ -589,6 +589,10 @@ class ViewProviderDraftAlt(ViewProviderDraft):
     def claimChildren(self):
         return []
 
+    def updateData(self, obj, prop):
+        if prop == "AutoUpdate":
+            obj.ViewObject.signalChangeIcon()
+
 
 # Alias for compatibility with v0.18 and earlier
 _ViewProviderDraftAlt = ViewProviderDraftAlt

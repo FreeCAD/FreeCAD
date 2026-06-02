@@ -55,7 +55,7 @@ namespace CAMSimulator
 
 // use short declaration as using 'include' causes a header loop
 class MillSimulation;
-class MillSimulationState;
+struct MillSimulationState;
 struct Vertex;
 class ViewCAMSimulator;
 class GuiDisplay;

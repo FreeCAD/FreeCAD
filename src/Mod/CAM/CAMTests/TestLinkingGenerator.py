@@ -88,7 +88,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
                 target_position=self.target,
                 local_clearance=5,
                 global_clearance=11,
-                safety_margin=1.1,
+                collision_clearance=1.1,
                 solids=[blocking_box],
                 tool_diameter=0,
             )
@@ -162,7 +162,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             local_clearance=self.local_clearance,
             global_clearance=self.global_clearance,
             tool_diameter=self.tooldiameter,
-            safety_margin=0.001,
+            collision_clearance=0.001,
             solids=[blocking_box1, blocking_box2],
         )
         self.assertGreater(len(cmds), 0)
@@ -177,7 +177,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
                 local_clearance=self.local_clearance,
                 global_clearance=self.global_clearance,
                 tool_diameter=self.tooldiameter,
-                safety_margin=0.001,
+                collision_clearance=0.001,
                 solids=[blocking_box1, blocking_box2],
             )
 
@@ -195,7 +195,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             local_clearance=self.local_clearance,
             global_clearance=self.global_clearance,
             tool_diameter=self.tooldiameter,
-            safety_margin=0.001,
+            collision_clearance=0.001,
             solids=[blocking_box1, blocking_box2],
         )
         self.assertGreater(len(cmds), 0)
@@ -210,7 +210,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
                 local_clearance=self.local_clearance,
                 global_clearance=self.global_clearance,
                 tool_shape=self.tool,
-                safety_margin=0.001,
+                collision_clearance=0.001,
                 solids=[blocking_box1, blocking_box2],
             )
 
@@ -222,7 +222,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             local_clearance=self.local_clearance,
             global_clearance=self.global_clearance,
             tool_shape=Part.Shape(),
-            safety_margin=0.001,
+            collision_clearance=0.001,
             solids=[Part.Shape()],
         )
         self.assertGreater(len(cmds), 0)

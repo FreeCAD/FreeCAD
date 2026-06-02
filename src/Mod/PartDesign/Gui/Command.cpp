@@ -2193,7 +2193,7 @@ void prepareTransformed(
             QMessageBox::warning(
                 Gui::getMainWindow(),
                 QObject::tr("Selection is not in the active body"),
-                QObject::tr("Please select only one feature in an active body.")
+                QObject::tr("Select only one feature in an active body.")
             );
             return;
         }
