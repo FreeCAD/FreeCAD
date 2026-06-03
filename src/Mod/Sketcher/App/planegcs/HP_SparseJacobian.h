@@ -13,23 +13,27 @@
 #include <Eigen/Sparse>
 #include <Eigen/SparseCholesky>
 
-namespace PlaneGCS {
+namespace PlaneGCS
+{
 
-struct SystemNode {
+struct SystemNode
+{
     int i;
     int j;
     double x;
     double y;
 };
 
-struct ConstraintEdge {
+struct ConstraintEdge
+{
     int edge_id;
     std::pair<int, int> node_A;
     std::pair<int, int> node_B;
     double target_distance;
 };
 
-class HighPerformanceSparseJacobian {
+class HighPerformanceSparseJacobian
+{
 public:
     explicit HighPerformanceSparseJacobian(std::pair<int, int> grid_size = {5, 5});
     ~HighPerformanceSparseJacobian() = default;
@@ -46,7 +50,10 @@ public:
     void computeJacobian();
 
     void applyTransformation(
-        double u_x, double u_y, double t_x, double t_y,
+        double u_x,
+        double u_y,
+        double t_x,
+        double t_y,
         const std::vector<std::pair<int, int>>& node_indices = {}
     );
 
@@ -55,7 +62,8 @@ public:
         const std::vector<std::pair<int, int>>& node_indices = {}
     );
 
-    struct SolveResult {
+    struct SolveResult
+    {
         bool converged;
         int iterations;
         double final_residual;
@@ -68,15 +76,39 @@ public:
     );
 
     // Getters for performance testing and internal verification
-    int getRows() const { return m_rows; }
-    int getCols() const { return m_cols; }
-    int getNumNodes() const { return m_num_nodes; }
-    int getNumVariables() const { return m_num_variables; }
-    int getNumConstraints() const { return m_num_constraints; }
+    int getRows() const
+    {
+        return m_rows;
+    }
+    int getCols() const
+    {
+        return m_cols;
+    }
+    int getNumNodes() const
+    {
+        return m_num_nodes;
+    }
+    int getNumVariables() const
+    {
+        return m_num_variables;
+    }
+    int getNumConstraints() const
+    {
+        return m_num_constraints;
+    }
 
-    const std::vector<double>& getJacobianData() const { return m_csr_data; }
-    const std::vector<int>& getJacobianIndices() const { return m_csr_indices; }
-    const std::vector<int>& getJacobianIndPtr() const { return m_csr_indptr; }
+    const std::vector<double>& getJacobianData() const
+    {
+        return m_csr_data;
+    }
+    const std::vector<int>& getJacobianIndices() const
+    {
+        return m_csr_indices;
+    }
+    const std::vector<int>& getJacobianIndPtr() const
+    {
+        return m_csr_indptr;
+    }
 
 private:
     void prepareVectorizedEvaluation();
@@ -109,6 +141,6 @@ private:
     Eigen::VectorXd m_delta_x_eigen;
 };
 
-} // namespace PlaneGCS
+}  // namespace PlaneGCS
 
-#endif // PLANEGCS_HP_SPARSEJACOBIAN_H
+#endif  // PLANEGCS_HP_SPARSEJACOBIAN_H

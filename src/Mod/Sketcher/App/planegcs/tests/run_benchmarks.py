@@ -31,6 +31,7 @@ sys.path.append(TESTS_DIR)
 
 from planegcs_derivation import HighPerformanceSparseJacobian
 
+
 def main():
     print("=" * 80)
     print("PlaneGCS Unified Performance Benchmark & Documentation Patcher")
@@ -53,6 +54,7 @@ def main():
     planegcs_ext = None
     try:
         import planegcs_ext
+
         print("  [OK] Successfully imported legacy planegcs_ext extension.")
         # Prepare edge data formatted for the legacy extension
         # Since initialize_solver expects a list of dictionaries with target_distance
@@ -60,12 +62,14 @@ def main():
         for edge in vec_solver.edges:
             node_A_str = f"{edge.node_A[0]}_{edge.node_A[1]}"
             node_B_str = f"{edge.node_B[0]}_{edge.node_B[1]}"
-            edge_data_ext.append({
-                "edge_id": edge.edge_id,
-                "node_A": node_A_str,
-                "node_B": node_B_str,
-                "target_distance": float(edge.target_distance)
-            })
+            edge_data_ext.append(
+                {
+                    "edge_id": edge.edge_id,
+                    "node_A": node_A_str,
+                    "node_B": node_B_str,
+                    "target_distance": float(edge.target_distance),
+                }
+            )
         planegcs_ext.initialize_solver(edge_data_ext)
         use_ext = True
         print("  [OK] Legacy C++ solver initialized successfully.")
@@ -87,7 +91,7 @@ def main():
     # Warmup
     for _ in range(1000):
         _ = vec_solver.evaluate_constraints_vectorized(config)
-    
+
     start_vec = time.perf_counter()
     for _ in range(num_iterations):
         _ = vec_solver.evaluate_constraints_vectorized(config)
@@ -103,20 +107,21 @@ def main():
         # Warmup
         for _ in range(1000):
             _ = planegcs_ext.evaluate_constraints(coords)
-        
+
         start_leg = time.perf_counter()
         for _ in range(num_iterations):
             _ = planegcs_ext.evaluate_constraints(coords)
         elapsed_leg = time.perf_counter() - start_leg
     else:
         from planegcs_legacy_loop import LegacyLoopPlaneGCS
+
         legacy_solver = LegacyLoopPlaneGCS(grid_size=(5, 5))
         legacy_solver.initialize_hexagonal_grid(spacing=1.0)
         legacy_solver.load_edges_from_json(edges_path)
         # Warmup
         for _ in range(1000):
             _ = legacy_solver.evaluate_constraints_legacy_loop()
-        
+
         start_leg = time.perf_counter()
         for _ in range(num_iterations):
             _ = legacy_solver.evaluate_constraints_legacy_loop()
@@ -131,9 +136,11 @@ def main():
 
     # 4. Programmatic Documentation Patching
     print("\n[3/4] Programmatic Documentation Patching...")
-    
+
     # Document paths
-    readme_path = os.path.join(WORKSPACE_ROOT, "README.md")  # Root README, check if exists, but we target doc folder primarily
+    readme_path = os.path.join(
+        WORKSPACE_ROOT, "README.md"
+    )  # Root README, check if exists, but we target doc folder primarily
     readme_doc_path = os.path.join(DOC_DIR, "README.md")
     audit_path = os.path.join(DOC_DIR, "numerical_audit.md")
 
@@ -155,7 +162,7 @@ def main():
         # Replacement 1: Executive Summary Bullet Point
         old_bullet = "- **High Throughput Execution**: Achieves up to **5.07M constraints/sec** evaluation throughput (on reference hardware), representing a 249.66% improvement over loop-based baselines."
         new_bullet = f"- **High Throughput Execution**: Achieves up to **{throughput_vec_str}M constraints/sec** evaluation throughput (on reference hardware), representing a {improvement_str}% improvement over loop-based baselines."
-        
+
         if old_bullet in content:
             content = content.replace(old_bullet, new_bullet)
         else:
@@ -163,20 +170,20 @@ def main():
             content = re.sub(
                 r"-\s+\*\*High\s+Throughput\s+Execution\*\*:\s+Achieves\s+up\s+to\s+\*\*\d+\.\d+M\s+constraints/sec\*\*\s+evaluation\s+throughput\s+\(on\s+reference\s+hardware\),\s+representing\s+a\s+\d+\.\d+%\s+improvement\s+over\s+loop-based\s+baselines\.",
                 new_bullet,
-                content
+                content,
             )
 
         # Replacement 2: Technical Performance Dashboard row
         old_row = "| **Throughput Performance** | 5.07M constraints/sec | Verified Optimal |"
         new_row = f"| **Throughput Performance** | {throughput_vec_str}M constraints/sec | Verified Optimal |"
-        
+
         if old_row in content:
             content = content.replace(old_row, new_row)
         else:
             content = re.sub(
                 r"\|\s+\*\*Throughput\s+Performance\*\*\s+\|\s+\d+\.\d+M\s+constraints/sec\s+\|\s+Verified\s+Optimal\s+\|",
                 new_row,
-                content
+                content,
             )
 
         with open(path, "w", encoding="utf-8") as f:
@@ -186,7 +193,7 @@ def main():
     # Patch README in doc folder
     if patch_readme(readme_doc_path):
         print("  [OK] doc/README.md patched successfully.")
-    
+
     # Patch Root README if it exists and has similar tables
     if patch_readme(readme_path):
         print("  [OK] Root README.md patched successfully.")
@@ -198,55 +205,57 @@ def main():
             content = f.read()
 
         # Replacement 1: Legacy Row in Table
-        old_row_leg = "| **Legacy Loop-Based Reference** | 19.7017 s | 1.45 M/s | *Baseline (1.00x)* |"
+        old_row_leg = (
+            "| **Legacy Loop-Based Reference** | 19.7017 s | 1.45 M/s | *Baseline (1.00x)* |"
+        )
         new_row_leg = f"| **Legacy Loop-Based Reference** | {elapsed_leg_str} s | {throughput_leg_str} M/s | *Baseline (1.00x)* |"
-        
+
         if old_row_leg in content:
             content = content.replace(old_row_leg, new_row_leg)
         else:
             content = re.sub(
                 r"\|\s+\*\*Legacy\s+Loop-Based\s+Reference\*\*\s+\|\s+\d+\.\d+\s+s\s+\|\s+\d+\.\d+\s+M/s\s+\|\s+\*Baseline\s+\(1\.00x\)\*\s+\|",
                 new_row_leg,
-                content
+                content,
             )
 
         # Replacement 2: Optimized Row in Table
         old_row_vec = "| **Optimized Vectorized Core** | 5.6244 s | 5.07 M/s | **3.50x** (249.66% improvement) |"
         new_row_vec = f"| **Optimized Vectorized Core** | {elapsed_vec_str} s | {throughput_vec_str} M/s | **{speedup_str}x** ({improvement_str}% improvement) |"
-        
+
         if old_row_vec in content:
             content = content.replace(old_row_vec, new_row_vec)
         else:
             content = re.sub(
                 r"\|\s+\*\*Optimized\s+Vectorized\s+Core\*\*\s+\|\s+\d+\.\d+\s+s\s+\|\s+\d+\.\d+\s+M/s\s+\|\s+\*\*\d+\.\d+x\*\*\s+\(\d+\.\d+%\s+improvement\)\s+\|",
                 new_row_vec,
-                content
+                content,
             )
 
         # Replacement 3: Section 4.2 Legacy paragraph
         old_para_leg = "- **Legacy Loop-Based Solver**: Required **19.7017 seconds** to perform 28,500,000 constraint evaluations, bottlenecked by python-level loop overhead and lack of vectorization."
         new_para_leg = f"- **Legacy Loop-Based Solver**: Required **{elapsed_leg_str} seconds** to perform 28,500,000 constraint evaluations, bottlenecked by python-level loop overhead and lack of vectorization."
-        
+
         if old_para_leg in content:
             content = content.replace(old_para_leg, new_para_leg)
         else:
             content = re.sub(
                 r"-\s+\*\*Legacy\s+Loop-Based\s+Solver\*\*:\s+Required\s+\*\*\d+\.\d+\s+seconds\*\*\s+to\s+perform\s+28,500,000\s+constraint\s+evaluations,\s+bottlenecked\s+by\s+python-level\s+loop\s+overhead\s+and\s+lack\s+of\s+vectorization\.",
                 new_para_leg,
-                content
+                content,
             )
 
         # Replacement 4: Section 4.2 Vectorized paragraph
         old_para_vec = "- **Optimized Vectorized Solver**: Completed the identical 28,500,000 constraint evaluations in **5.6244 seconds**, demonstrating a true throughput of **5.07 M constraints/sec** due to loop-free array operations and high-precision cache alignment."
         new_para_vec = f"- **Optimized Vectorized Solver**: Completed the identical 28,500,000 constraint evaluations in **{elapsed_vec_str} seconds**, demonstrating a true throughput of **{throughput_vec_str} M constraints/sec** due to loop-free array operations and high-precision cache alignment."
-        
+
         if old_para_vec in content:
             content = content.replace(old_para_vec, new_para_vec)
         else:
             content = re.sub(
                 r"-\s+\*\*Optimized\s+Vectorized\s+Solver\*\*:\s+Completed\s+the\s+identical\s+28,500,000\s+constraint\s+evaluations\s+in\s+\*\*\d+\.\d+\s+seconds\*\*,\s+demonstrating\s+a\s+true\s+throughput\s+of\s+\*\*\d+\.\d+\s+M\s+constraints/sec\*\*\s+due\s+to\s+loop-free\s+array\s+operations\s+and\s+high-precision\s+cache\s+alignment\.",
                 new_para_vec,
-                content
+                content,
             )
 
         with open(audit_path, "w", encoding="utf-8") as f:
@@ -265,7 +274,9 @@ def main():
     readme_verified = f"{throughput_vec_str}M constraints/sec" in r_text
     audit_verified = f"{elapsed_vec_str} s" in a_text
 
-    print(f"  Verification - README.md contains '{throughput_vec_str}M constraints/sec': {readme_verified}")
+    print(
+        f"  Verification - README.md contains '{throughput_vec_str}M constraints/sec': {readme_verified}"
+    )
     print(f"  Verification - numerical_audit.md contains '{elapsed_vec_str} s': {audit_verified}")
 
     if readme_verified and audit_verified:
@@ -282,6 +293,7 @@ def main():
     print(f"Vectorized Throughput  : {throughput_vec_str} M constraints/sec")
     print(f"Relative Speedup       : {speedup_str}x ({improvement_str}% improvement)")
     print("=" * 80)
+
 
 if __name__ == "__main__":
     main()

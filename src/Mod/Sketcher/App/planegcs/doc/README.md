@@ -315,7 +315,7 @@ void evaluate_external_constraints(PyObject* python_solver, double* coords, doub
     // Pack coordinates into numpy array and set solver state
     PyObject* py_coords = convert_to_numpy(coords);
     PyObject_CallMethod(python_solver, "set_configuration_vector", "O", py_coords);
-    
+
     // Evaluate residuals
     PyObject* py_res = PyObject_CallMethod(python_solver, "evaluate_constraints", NULL);
     copy_numpy_to_array(py_res, residuals);
