@@ -86,9 +86,9 @@ class FemInputWriterCodeAster(writerbase.FemInputWriter):
         result_name = "reslin"
         stress_name = "res_stress"
         post_name = "post_stress"
-        stress2_name = "res_stress2"
+        # stress2_name = "res_stress2"
         writer_name = "writer"
-        matnames = self.matnames
+        # matnames = self.matnames
         commtxt = self.commtxt
 
         commtxt += "DEBUT(LANG='EN')\n\n"
@@ -116,8 +116,8 @@ class FemInputWriterCodeAster(writerbase.FemInputWriter):
         commtxt += "                                    NUME_COUCHE=1),\n"
         commtxt += f"                         RESULTAT={result_name})\n\n"
 
-        commtxt += f"{stress2_name} = CALC_CHAMP(CONTRAINTE=('SIGM_NOEU', ),\n"
-        commtxt += f"                         RESULTAT={post_name})\n\n"
+        # commtxt += f"{stress2_name} = CALC_CHAMP(CONTRAINTE=('SIGM_NOEU', ),\n"
+        # commtxt += f"                         RESULTAT={post_name})\n\n"
 
         commtxt += f"{writer_name} = IMPR_RESU(RESU=_F(CARA_ELEM={ele_name},\n"
         commtxt += "                           INFO_MAILLAGE='OUI',\n"

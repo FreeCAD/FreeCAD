@@ -179,9 +179,28 @@ def read_med_resultVTK(medfile, grid):
             grid.GetPointData().AddArray(disp_vtk)
         if "EFGE_NOEU" in fn:
             fieldname = fn
-            q = mc.ReadField(medfile, fieldname).getArrays()[0] # There should
+            q = mc.ReadField(medfile, fieldname).getArrays()[0]
             stresses = []
             for i in range(q.getNumberOfTuples()):
                 tup = q.getTuple(i)
                 stresses.append(tup)
             stresses = np.array(stresses)
+            disp_vtk = vtk_np.numpy_to_vtk(stresses[:, 0:3], deep=True)
+            disp_vtk.SetName("Stress_membrane")
+            disp_vtk.SetComponentName(0,"Nxx")
+            disp_vtk.SetComponentName(1,"Nyy")
+            disp_vtk.SetComponentName(2,"Nxy")
+            grid.GetPointData().AddArray(disp_vtk)
+            disp_vtk = vtk_np.numpy_to_vtk(stresses[:, 3:6], deep=True)
+            disp_vtk.SetName("Stress_bending")
+            disp_vtk.SetComponentName(0,"Mxx")
+            disp_vtk.SetComponentName(1,"Myy")
+            disp_vtk.SetComponentName(2,"Mxy")
+            grid.GetPointData().AddArray(disp_vtk)
+            disp_vtk = vtk_np.numpy_to_vtk(stresses[:, 6:8], deep=True)
+            disp_vtk.SetName("Stress_shear_outplane")
+            disp_vtk.SetComponentName(0,"Qx")
+            disp_vtk.SetComponentName(1,"Qy")
+            grid.GetPointData().AddArray(disp_vtk)
+
+            
