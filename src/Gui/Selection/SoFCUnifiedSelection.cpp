@@ -1629,8 +1629,7 @@ bool SoFCSelectionRoot::renderBBox(
     SoGLRenderAction* action,
     SoNode* node,
     const SbColor& color,
-    const SbMatrix* mat,
-    bool force
+    const SbMatrix* mat
 )
 {
     auto data = static_cast<SoFCBBoxRenderInfo*>(so_bbox_storage->get());
