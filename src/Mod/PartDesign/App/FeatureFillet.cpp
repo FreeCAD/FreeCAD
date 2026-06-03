@@ -93,6 +93,11 @@ App::DocumentObjectExecReturn* Fillet::execute()
     auto edges = UseAllEdges.getValue() ? baseShape.getSubTopoShapes(TopAbs_EDGE)
                                         : getContinuousEdges(baseShape);
     if (edges.empty()) {
+        if (Base.getSubValues().empty() && !UseAllEdges.getValue()) {
+            positionByBaseFeature();
+            Shape.setValue(getSolid(baseShape));
+            return App::DocumentObject::StdReturn;  // Silently return, don't show error
+        }
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "Fillet not possible on selected shapes")
         );
