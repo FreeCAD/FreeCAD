@@ -59,6 +59,38 @@ class TestFillet(unittest.TestCase):
         self.Doc.recompute()
         self.assertNotAlmostEqual(self.Fillet.Shape.Volume, 4 / 3 * pi * 5**3, places=3)
 
+    def testFilletNoEdgeSelection(self):
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
+        self.Body.addObject(self.Box)
+        self.Box.Length = 10.00
+        self.Box.Width = 10.00
+        self.Box.Height = 10.00
+        self.Doc.recompute()
+        box_volume = self.Box.Shape.Volume
+
+        self.Fillet = self.Doc.addObject("PartDesign::Fillet", "Fillet")
+        self.Body.addObject(self.Fillet)
+
+        # No edges selected, UseAllEdges off
+        self.Fillet.UseAllEdges = False
+        self.Fillet.Base = (self.Box, [])
+        self.Doc.recompute()
+        self.assertTrue(self.Fillet.isValid())
+        self.assertTrue(self.Body.isValid())
+        self.assertEqual(self.Body.Tip, self.Fillet)
+        self.assertAlmostEqual(self.Fillet.Shape.Volume, box_volume, places=3)
+        self.assertAlmostEqual(self.Body.Shape.Volume, box_volume, places=3)
+
+        # No edge subnames, UseAllEdges on
+        self.Fillet.UseAllEdges = True
+        self.Fillet.Base = (self.Box, [""])
+        self.Doc.recompute()
+        self.assertTrue(self.Fillet.isValid())
+        self.assertTrue(self.Body.isValid())
+        self.assertGreater(self.Fillet.Shape.Volume, 0)
+        self.assertNotAlmostEqual(self.Fillet.Shape.Volume, box_volume, places=3)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("PartDesignTestFillet")
