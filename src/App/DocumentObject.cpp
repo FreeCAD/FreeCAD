@@ -831,6 +831,10 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
         // See PropertyLinkBase::restoreLabelReference() for more details.
         return {};
     }
+
+    // Remove the old label to free it up for future use.
+    doc->unregisterLabel(oldLabel);
+    
     return PropertyLinkBase::updateLabelReferences(this, newLabel.c_str());
 }
 
