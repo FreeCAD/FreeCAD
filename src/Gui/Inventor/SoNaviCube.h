@@ -94,7 +94,6 @@ public:
         ArrowLeft,
         Backside,
         Home,
-        Isometric,
         ViewMenu
     };
 
