@@ -667,14 +667,6 @@ void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
             face.trianglesArray.push_back(loopTri[2]);
             break;
         }
-        case PickId::Isometric: {
-            offx = 0.10F;
-            offy = 0.84F;
-            pointData = {0.0F, 0.0F, 15.0F,  -6.0F, 0.0F,   -12.0F, -15.0F, -6.0F,
-                         0.0F, 0.0F, -15.0F, -6.0F, -15.0F, 12.0F,  0.0F,   18.0F,
-                         0.0F, 0.0F, 0.0F,   18.0F, 15.0F,  12.0F,  15.0F,  -6.0F};
-            break;
-        }
         case PickId::Home: {
             offx = 0.09F;
             offy = 0.09F;
