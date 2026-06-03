@@ -17,7 +17,7 @@ target_include_directories(
     Mesh
     SYSTEM
     PUBLIC
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/libkdtree
+    ${KDTREE_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     ${QtConcurrent_INCLUDE_DIRS}
 )
