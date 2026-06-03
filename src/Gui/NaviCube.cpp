@@ -1029,11 +1029,6 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
 
                 return true;
             }
-            else if (pickId == PickId::Isometric) {
-                SbRotation rotation;
-                m_View3DInventorViewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
-                return true;
-            }
 
             // Handle the flat buttons
             resetClickState();
