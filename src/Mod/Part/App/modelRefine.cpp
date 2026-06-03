@@ -1314,7 +1314,6 @@ bool FaceUniter::process(const Message_ProgressRange& theRange)
                 return false;
             }
             sewScope.Close();
-            sewScope.Close();
         }
         else {
             Message_ProgressScope sewScope(refineScope.Next(), "Sewing refined shell...", 1);
