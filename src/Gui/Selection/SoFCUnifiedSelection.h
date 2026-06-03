@@ -460,8 +460,7 @@ public:
         SoGLRenderAction* action,
         SoNode* node,
         const SbColor& color,
-        const SbMatrix* mat = 0,
-        bool force = false
+        const SbMatrix* mat = 0
     );
 
     static bool renderBBox(
