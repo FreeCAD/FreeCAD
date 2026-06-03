@@ -42,12 +42,9 @@ bool ShapeRelationKey::operator<(const ShapeRelationKey& other) const
 TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int index)
 {
     std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
-    auto& ts = topoShapes[index - 1];
-    if (ts.isNull()) {
-        ts.setShape(shapes.FindKey(index), true);
-        ts.initCache();
-        ts._cache->setSubLocation(ts._Shape.Location());
-    }
+    TopoShape ts(shapes.FindKey(index));
+    ts.initCache();
+    ts._cache->setSubLocation(ts._Shape.Location());
 
     if (ts._Shape.IsEqual(parent._cache->shape)) {
         return parent;
@@ -101,10 +98,8 @@ void TopoShapeCache::Ancestry::clear()
 {
     if (owner) {
         std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
-        topoShapes.clear();
         return;
     }
-    topoShapes.clear();
 }
 
 TopoShape TopoShapeCache::Ancestry::getTopoShape(const TopoShape& parent, int index)
@@ -114,7 +109,6 @@ TopoShape TopoShapeCache::Ancestry::getTopoShape(const TopoShape& parent, int in
     if (index <= 0 || index > shapes.Extent()) {
         return res;
     }
-    topoShapes.resize(shapes.Extent());
     return _getTopoShape(parent, index);
 }
 
@@ -124,7 +118,6 @@ std::vector<TopoShape> TopoShapeCache::Ancestry::getTopoShapes(const TopoShape& 
     int count = shapes.Extent();
     std::vector<TopoShape> res;
     res.reserve(count);
-    topoShapes.resize(count);
     for (int i = 1; i <= count; ++i) {
         res.push_back(_getTopoShape(parent, i));
     }

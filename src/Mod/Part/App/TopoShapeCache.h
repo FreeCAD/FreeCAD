@@ -74,9 +74,6 @@ public:
         /// TopoDS_Shape
         TopTools_IndexedMapOfShape shapes;
 
-        /// One-to-one corresponding TopoShape to each child TopoDS_Shape
-        std::vector<TopoShape> topoShapes;
-
         /// Caches the OCCT ancestor shape maps, e.g.
         ///     Cache::shapeAncestryCache[TopAbs_FACE].ancestors[TopAbs_EDGE]
         /// stores an OCCT TopTools_IndexedDataMapOfShapeListOfShape that can return a list of
