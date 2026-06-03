@@ -506,6 +506,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.ExternalDefiningWidth, param, 2);
          }},
+        {"InformationWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateWidth(drawingParameters.InformationWidth, param, 1);
+         }},
         {"EdgePattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.CurvePattern, param, 0b1111111111111111);
@@ -525,6 +529,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"ExternalDefiningPattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.ExternalDefiningPattern, param, 0b1111111111111111);
+         }},
+        {"InformationPattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.InformationPattern, param, 0b1111110011111100);
          }},
         {"EditedEdgeColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -601,6 +609,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"CursorTextColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.CursorTextColor, param);
+         }},
+        {"InformationColor",
+         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateColor(drawingParameters.InformationColor, param);
          }},
         {"UserSchema", [this](const std::string& param) { updateUnit(param); }},
     };
@@ -1019,13 +1031,6 @@ void EditModeCoinManager::drawLineExtensionAutoConstraintHint(
         hintCurveSize
     );
 
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->lineWidth
-        = editModeScenegraphNodes.InformationDrawStyle->lineWidth;
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->linePattern
-        = editModeScenegraphNodes.CurvesConstructionDrawStyle->linePattern;
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->linePatternScaleFactor
-        = editModeScenegraphNodes.CurvesConstructionDrawStyle->linePatternScaleFactor;
-
     int i = 0;
     for (const auto& point : HintCurve) {
         editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate->point.set1Value(
@@ -1062,13 +1067,6 @@ void EditModeCoinManager::drawParallelPerpendicularHint(const std::vector<Base::
     editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.set1Value(1, 2);
     editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->point.setNum(numPoints);
     editModeScenegraphNodes.ParallelPerpendicularHintMaterials->diffuseColor.setNum(numPoints);
-
-    editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle->lineWidth
-        = editModeScenegraphNodes.InformationDrawStyle->lineWidth;
-    editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle->linePattern
-        = editModeScenegraphNodes.CurvesConstructionDrawStyle->linePattern;
-    editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle->linePatternScaleFactor
-        = editModeScenegraphNodes.CurvesConstructionDrawStyle->linePatternScaleFactor;
 
     int i = 0;
     for (const auto& point : HintLines) {
@@ -1635,78 +1633,6 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditCurveSet->setName("EditCurveLineSet");
     editCurvesRoot->addChild(editModeScenegraphNodes.EditCurveSet);
 
-    SoSeparator* lineExtensionAutoConstraintHintRoot = new SoSeparator;
-    editModeScenegraphNodes.EditRoot->addChild(lineExtensionAutoConstraintHintRoot);
-
-    SoPickStyle* lineExtensionAutoConstraintHintPickStyle = new SoPickStyle;
-    lineExtensionAutoConstraintHintPickStyle->style = SoPickStyle::UNPICKABLE;
-    lineExtensionAutoConstraintHintRoot->addChild(lineExtensionAutoConstraintHintPickStyle);
-
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials = new SoMaterial;
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials->setName(
-        "LineExtensionAutoConstraintHintMaterials"
-    );
-    lineExtensionAutoConstraintHintRoot->addChild(
-        editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials
-    );
-
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate = new SoCoordinate3;
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate->setName(
-        "LineExtensionAutoConstraintHintCoordinate"
-    );
-    lineExtensionAutoConstraintHintRoot->addChild(
-        editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate
-    );
-
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle = new SoDrawStyle;
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->setName(
-        "LineExtensionAutoConstraintHintDrawStyle"
-    );
-    lineExtensionAutoConstraintHintRoot->addChild(
-        editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle
-    );
-
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet = new SoLineSet;
-    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet->setName(
-        "LineExtensionAutoConstraintHintLineSet"
-    );
-    lineExtensionAutoConstraintHintRoot->addChild(
-        editModeScenegraphNodes.LineExtensionAutoConstraintHintSet
-    );
-
-    // Parallel / Perpendicular reference lines ++++++++++++++++++++++++
-    SoSeparator* parallelPerpendicularHintRoot = new SoSeparator;
-    editModeScenegraphNodes.EditRoot->addChild(parallelPerpendicularHintRoot);
-
-    SoPickStyle* parallelPerpendicularHintPickStyle = new SoPickStyle;
-    parallelPerpendicularHintPickStyle->style = SoPickStyle::UNPICKABLE;
-    parallelPerpendicularHintRoot->addChild(parallelPerpendicularHintPickStyle);
-
-    editModeScenegraphNodes.ParallelPerpendicularHintMaterials = new SoMaterial;
-    editModeScenegraphNodes.ParallelPerpendicularHintMaterials->setName(
-        "ParallelPerpendicularHintMaterials"
-    );
-    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintMaterials
-    );
-
-    editModeScenegraphNodes.ParallelPerpendicularHintCoordinate = new SoCoordinate3;
-    editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->setName(
-        "ParallelPerpendicularHintCoordinate"
-    );
-    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintCoordinate
-    );
-
-    editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle = new SoDrawStyle;
-    editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle->setName(
-        "ParallelPerpendicularHintDrawStyle"
-    );
-    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle
-    );
-
-    editModeScenegraphNodes.ParallelPerpendicularHintSet = new SoLineSet;
-    editModeScenegraphNodes.ParallelPerpendicularHintSet->setName("ParallelPerpendicularHintLineSet");
-    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintSet);
-
     // stuff for the EditMarkers +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editMarkersRoot = new SoSeparator;
     editModeScenegraphNodes.EditRoot->addChild(editMarkersRoot);
@@ -1763,22 +1689,86 @@ void EditModeCoinManager::createEditModeInventorNodes()
     pEditModeConstraintCoinManager->createEditModeInventorNodes();
 
     // group node for the Geometry information visual +++++++++++++++++++++++++++++++++++
+    SoSeparator* infoLayerRoot = new SoSeparator;
+    infoLayerRoot->setName("InfoLayerRoot");
+    editModeScenegraphNodes.EditRoot->addChild(infoLayerRoot);
+
     MtlBind = new SoMaterialBinding;
     MtlBind->setName("InformationMaterialBinding");
     MtlBind->value = SoMaterialBinding::OVERALL;
-    editModeScenegraphNodes.EditRoot->addChild(MtlBind);
+    infoLayerRoot->addChild(MtlBind);
 
     // use small line width for the information visual
     editModeScenegraphNodes.InformationDrawStyle = new SoDrawStyle;
     editModeScenegraphNodes.InformationDrawStyle->setName("InformationDrawStyle");
-    editModeScenegraphNodes.InformationDrawStyle->lineWidth = 1
+    editModeScenegraphNodes.InformationDrawStyle->lineWidth = drawingParameters.InformationWidth
         * drawingParameters.pixelScalingFactor;
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.InformationDrawStyle);
+    editModeScenegraphNodes.InformationDrawStyle->linePattern = drawingParameters.InformationPattern;
+    editModeScenegraphNodes.InformationDrawStyle->linePatternScaleFactor = 2;
+    infoLayerRoot->addChild(editModeScenegraphNodes.InformationDrawStyle);
 
     // add the group where all the information entity has its SoSeparator
     editModeScenegraphNodes.infoGroup = new SoGroup();
     editModeScenegraphNodes.infoGroup->setName("InformationGroup");
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.infoGroup);
+    infoLayerRoot->addChild(editModeScenegraphNodes.infoGroup);
+        
+    // Extension line for autoconstraint ++++++++++++++++++++++++
+    SoSeparator* lineExtensionAutoConstraintHintRoot = new SoSeparator;
+    infoLayerRoot->addChild(lineExtensionAutoConstraintHintRoot);
+
+    SoPickStyle* lineExtensionAutoConstraintHintPickStyle = new SoPickStyle;
+    lineExtensionAutoConstraintHintPickStyle->style = SoPickStyle::UNPICKABLE;
+    lineExtensionAutoConstraintHintRoot->addChild(lineExtensionAutoConstraintHintPickStyle);
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials = new SoMaterial;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials->setName(
+        "LineExtensionAutoConstraintHintMaterials"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials
+    );
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate = new SoCoordinate3;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate->setName(
+        "LineExtensionAutoConstraintHintCoordinate"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate
+    );
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet = new SoLineSet;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet->setName(
+        "LineExtensionAutoConstraintHintLineSet"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintSet
+    );
+
+    // Parallel / Perpendicular reference lines ++++++++++++++++++++++++
+    SoSeparator* parallelPerpendicularHintRoot = new SoSeparator;
+    infoLayerRoot->addChild(parallelPerpendicularHintRoot);
+
+    SoPickStyle* parallelPerpendicularHintPickStyle = new SoPickStyle;
+    parallelPerpendicularHintPickStyle->style = SoPickStyle::UNPICKABLE;
+    parallelPerpendicularHintRoot->addChild(parallelPerpendicularHintPickStyle);
+
+    editModeScenegraphNodes.ParallelPerpendicularHintMaterials = new SoMaterial;
+    editModeScenegraphNodes.ParallelPerpendicularHintMaterials->setName(
+        "ParallelPerpendicularHintMaterials"
+    );
+    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintMaterials
+    );
+
+    editModeScenegraphNodes.ParallelPerpendicularHintCoordinate = new SoCoordinate3;
+    editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->setName(
+        "ParallelPerpendicularHintCoordinate"
+    );
+    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintCoordinate
+    );
+
+    editModeScenegraphNodes.ParallelPerpendicularHintSet = new SoLineSet;
+    editModeScenegraphNodes.ParallelPerpendicularHintSet->setName("ParallelPerpendicularHintLineSet");
+    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintSet);
 }
 
 void EditModeCoinManager::redrawViewProvider()
@@ -1926,8 +1916,6 @@ void EditModeCoinManager::updateInventorNodeSizes()
     editModeScenegraphNodes.EditMarkerSet->markerIndex
         = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", drawingParameters.markerSize);
     editModeScenegraphNodes.ConstraintDrawStyle->lineWidth = 1 * drawingParameters.pixelScalingFactor;
-    editModeScenegraphNodes.InformationDrawStyle->lineWidth = 1
-        * drawingParameters.pixelScalingFactor;
 
     editModeScenegraphNodes.textFont->size.setValue(drawingParameters.coinFontSize);
 
@@ -1946,6 +1934,8 @@ void EditModeCoinManager::updateInventorWidths()
         * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->lineWidth
         = drawingParameters.ExternalDefiningWidth * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.InformationDrawStyle->lineWidth = drawingParameters.InformationWidth
+        * drawingParameters.pixelScalingFactor;
 }
 
 void EditModeCoinManager::updateInventorPatterns()
@@ -1957,6 +1947,7 @@ void EditModeCoinManager::updateInventorPatterns()
     editModeScenegraphNodes.CurvesExternalDrawStyle->linePattern = drawingParameters.ExternalPattern;
     editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->linePattern
         = drawingParameters.ExternalDefiningPattern;
+    editModeScenegraphNodes.InformationDrawStyle->linePattern = drawingParameters.InformationPattern;
 }
 
 void EditModeCoinManager::updateInventorColors()
