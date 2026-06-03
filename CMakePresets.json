@@ -79,10 +79,6 @@
             "type": "BOOL",
             "value": "OFF"
           },
-          "FREECAD_USE_EXTERNAL_FMT": {
-            "type": "BOOL",
-            "value": "ON"
-          },
           "FREECAD_USE_EXTERNAL_SMESH": {
             "type": "BOOL",
             "value": "ON"
@@ -390,10 +386,6 @@
                     "value": "/usr/share/freecad"
                 },
                 "FREECAD_USE_EXTERNAL_PIVY": {
-                    "type": "BOOL",
-                    "value": "TRUE"
-                },
-                "FREECAD_USE_EXTERNAL_FMT": {
                     "type": "BOOL",
                     "value": "TRUE"
                 },
