@@ -287,7 +287,7 @@ void SoNaviCube::renderGL(bool pickMode) const
 
     const auto& baseFaces = faces();
     for (const auto& [pickId, face] : baseFaces) {
-        if (face.vertexArray.empty()) {
+        if (face.vertexArray.empty() && face.trianglesArray.empty()) {
             continue;
         }
         if (pickMode) {
@@ -298,8 +298,14 @@ void SoNaviCube::renderGL(bool pickMode) const
             const float* rgb = color.rgb.getValue();
             glColor4f(rgb[0], rgb[1], rgb[2], color.alpha * currentOpacity);
         }
-        glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<const float*>(face.vertexArray.data()));
-        glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(face.vertexArray.size()));
+        if (!face.trianglesArray.empty()) {
+            glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<const float*>(face.trianglesArray.data()));
+            glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(face.trianglesArray.size()));
+        }
+        else if (!face.vertexArray.empty()) {
+            glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<const float*>(face.vertexArray.data()));
+            glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(face.vertexArray.size()));
+        }
     }
 
     if (!pickMode) {
@@ -351,9 +357,11 @@ void SoNaviCube::renderGL(bool pickMode) const
     glLoadIdentity();
 
     for (const auto& [pickId, face] : buttons) {
-        if (face.vertexArray.empty()) {
+        // 1. Allow faces that use explicit triangles to pass through
+        if (face.vertexArray.empty() && face.trianglesArray.empty()) {
             continue;
         }
+
         if (pickMode) {
             glColor3ub(static_cast<GLubyte>(pickId), 0, 0);
         }
@@ -362,12 +370,34 @@ void SoNaviCube::renderGL(bool pickMode) const
             const float* rgb = color.rgb.getValue();
             glColor4f(rgb[0], rgb[1], rgb[2], color.alpha * currentOpacity);
         }
-        glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<const float*>(face.vertexArray.data()));
-        glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(face.vertexArray.size()));
+
+        // 2. Draw the filled shape using triangles if available, else fallback to fans
+        if (!face.trianglesArray.empty()) {
+            glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<const float*>(face.trianglesArray.data()));
+            glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(face.trianglesArray.size()));
+        }
+        else if (!face.vertexArray.empty()) {
+            glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<const float*>(face.vertexArray.data()));
+            glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(face.vertexArray.size()));
+        }
+
+        // 3. Draw the outlines
         if (!pickMode) {
             const float* rgb = emph.rgb.getValue();
             glColor4f(rgb[0], rgb[1], rgb[2], emph.alpha * currentOpacity);
-            glDrawArrays(GL_LINE_LOOP, 0, static_cast<GLsizei>(face.vertexArray.size()));
+            if (!face.lineLoops.empty()) {
+                for (const auto& loop : face.lineLoops) {
+                    if (loop.empty()) {
+                        continue;
+                    }
+                    glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<const float*>(loop.data()));
+                    glDrawArrays(GL_LINE_LOOP, 0, static_cast<GLsizei>(loop.size()));
+                }
+            }
+            else if (!face.vertexArray.empty()) {
+                glVertexPointer(3, GL_FLOAT, 0, reinterpret_cast<const float*>(face.vertexArray.data()));
+                glDrawArrays(GL_LINE_LOOP, 0, static_cast<GLsizei>(face.vertexArray.size()));
+            }
         }
     }
 
@@ -557,7 +587,8 @@ void SoNaviCube::rebuildButtonFaces() const
     addButtonFace(PickId::ArrowWest, SbVec3f(0, -1, 0));
     addButtonFace(PickId::ArrowLeft, SbVec3f(0, 0, 1));
     addButtonFace(PickId::ArrowRight, SbVec3f(0, 0, -1));
-    addButtonFace(PickId::DotBackside, SbVec3f(0, 1, 0));
+    addButtonFace(PickId::Backside, SbVec3f(0, 1, 0));
+    addButtonFace(PickId::Home);
     addButtonFace(PickId::ViewMenu);
 }
 
@@ -565,10 +596,27 @@ void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
 {
     auto& face = m_ButtonFaces[pickId];
     face.vertexArray.clear();
+    face.trianglesArray.clear();
+    face.lineLoops.clear();
     float scale = 0.005F;
     float offx = 0.5F;
     float offy = 0.5F;
     std::vector<float> pointData;
+
+    auto transform = [&](float px, float py) {
+        float x = px * scale + offx;
+        float y = py * scale + offy;
+        if (pickId == PickId::ArrowNorth || pickId == PickId::ArrowWest
+            || pickId == PickId::ArrowLeft) {
+            x = 1.0F - x;
+        }
+        if (pickId == PickId::ArrowSouth || pickId == PickId::ArrowNorth) {
+            return SbVec3f(y, x, 0.0F);
+        }
+        else {
+            return SbVec3f(x, y, 0.0F);
+        }
+    };
 
     switch (pickId) {
         default:
@@ -588,40 +636,118 @@ void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
             break;
         }
         case PickId::ViewMenu: {
-            offx = 0.84F;
-            offy = 0.84F;
-            pointData = {0.0F, 0.0F, 15.0F,  -6.0F, 0.0F,   -12.0F, -15.0F, -6.0F,
-                         0.0F, 0.0F, -15.0F, -6.0F, -15.0F, 12.0F,  0.0F,   18.0F,
-                         0.0F, 0.0F, 0.0F,   18.0F, 15.0F,  12.0F,  15.0F,  -6.0F};
+            offx = 0.90F;
+            offy = 0.95F;
+
+            // 1. The small bar on top
+            std::vector<float> ptsBar = {-13.0F, -20.0F, 13.0F, -20.0F, 13.0F, -16.0F, -13.0F, -16.0F};
+            std::vector<SbVec3f> loopBar;
+            for (size_t i = 0; i < ptsBar.size(); i += 2) {
+                loopBar.push_back(transform(ptsBar[i], ptsBar[i + 1]));
+            }
+            face.lineLoops.push_back(loopBar);
+
+            face.trianglesArray.push_back(loopBar[0]);
+            face.trianglesArray.push_back(loopBar[1]);
+            face.trianglesArray.push_back(loopBar[2]);
+            face.trianglesArray.push_back(loopBar[0]);
+            face.trianglesArray.push_back(loopBar[2]);
+            face.trianglesArray.push_back(loopBar[3]);
+
+            // 2. The triangle pointing down
+            std::vector<float> ptsTri = {-13.0F, -12.0F, 13.0F, -12.0F, 0.0F, 0.0F};
+            std::vector<SbVec3f> loopTri;
+            for (size_t i = 0; i < ptsTri.size(); i += 2) {
+                loopTri.push_back(transform(ptsTri[i], ptsTri[i + 1]));
+            }
+            face.lineLoops.push_back(loopTri);
+
+            face.trianglesArray.push_back(loopTri[0]);
+            face.trianglesArray.push_back(loopTri[1]);
+            face.trianglesArray.push_back(loopTri[2]);
             break;
         }
-        case PickId::DotBackside: {
-            int steps = 16;
-            pointData.reserve(steps * 2);
-            for (int i = 0; i < steps; i++) {
-                float angle = 2.0F * std::numbers::pi_v<float>
-                    * (static_cast<float>(i) + 0.5F) / static_cast<float>(steps);
-                pointData.emplace_back(10.0F * std::cos(angle) + 87.0F);
-                pointData.emplace_back(10.0F * std::sin(angle) - 87.0F);
+        case PickId::Home: {
+            offx = 0.09F;
+            offy = 0.09F;
+            std::vector<float> pts = {0.0F,   -18.0F, 18.0F,  -6.0F, 12.0F,  -6.0F, 12.0F, 8.0F,
+                                      4.0F,   8.0F,   4.0F,   0.0F,  -4.0F,  0.0F,  -4.0F, 8.0F,
+                                      -12.0F, 8.0F,   -12.0F, -6.0F, -18.0F, -6.0F};
+            std::vector<SbVec3f> loop;
+            for (size_t i = 0; i < pts.size(); i += 2) {
+                loop.push_back(transform(pts[i], pts[i + 1]));
+            }
+            face.lineLoops.push_back(loop);
+            face.trianglesArray.push_back(transform(-18, -6));
+            face.trianglesArray.push_back(transform(18, -6));
+            face.trianglesArray.push_back(transform(0, -18));
+            face.trianglesArray.push_back(transform(-12, -6));
+            face.trianglesArray.push_back(transform(12, -6));
+            face.trianglesArray.push_back(transform(12, 0));
+            face.trianglesArray.push_back(transform(-12, -6));
+            face.trianglesArray.push_back(transform(12, 0));
+            face.trianglesArray.push_back(transform(-12, 0));
+            face.trianglesArray.push_back(transform(-12, 0));
+            face.trianglesArray.push_back(transform(-4, 0));
+            face.trianglesArray.push_back(transform(-4, 8));
+            face.trianglesArray.push_back(transform(-12, 0));
+            face.trianglesArray.push_back(transform(-4, 8));
+            face.trianglesArray.push_back(transform(-12, 8));
+            face.trianglesArray.push_back(transform(4, 0));
+            face.trianglesArray.push_back(transform(12, 0));
+            face.trianglesArray.push_back(transform(12, 8));
+            face.trianglesArray.push_back(transform(4, 0));
+            face.trianglesArray.push_back(transform(12, 8));
+            face.trianglesArray.push_back(transform(4, 8));
+            break;
+        }
+        case PickId::Backside: {
+            offx = 0.80F;
+            offy = 0.0F;
+            std::vector<float> pts1 = {24.,  21.5, 17.,  29.1, 16.7, 25.6, 12.0, 25.3, 8.2,
+                                       24.0, 4.,   22.,  1.2,  19.,  0.,   15.,  0.,   10.,
+                                       1.5,  8.1,  4.4,  6.1,  8.0,  5.5,  14.,  4.,   14.6,
+                                       9.2,  10.1, 10.2, 6.,   12.,  3.5,  14.,  3.4,  14.5,
+                                       6.0,  15.8, 10.,  17.,  16.3, 18.,  16.3, 13.6};
+            std::vector<SbVec3f> loop1;
+            for (size_t i = 0; i < pts1.size(); i += 2) {
+                loop1.push_back(transform(pts1[i], pts1[i + 1]));
+            }
+            face.lineLoops.push_back(loop1);
+            std::vector<int> idx1 = {0,  1,  2, 0,  2,  20, 0,  20, 21, 2,  20, 3,  20, 19, 3,
+                                     3,  19, 4, 19, 18, 4,  4,  18, 5,  18, 17, 5,  5,  17, 6,
+                                     17, 16, 6, 6,  16, 7,  16, 15, 7,  7,  15, 8,  15, 14, 8,
+                                     8,  14, 9, 14, 13, 9,  9,  13, 10, 10, 13, 11, 11, 13, 12};
+            for (int i : idx1) {
+                face.trianglesArray.push_back(loop1[i]);
+            }
+
+            std::vector<float> pts2 = {18.,  6.,   22.6, 0.,   22.5, 3.0,  27.,  3.3,  31.4,
+                                       4.3,  35.0, 5.6,  37.5, 7.1,  40.,  9.7,  40.,  12.8,
+                                       38.5, 16.5, 36.2, 20.,  33.,  21.9, 28.3, 22.9, 28.7,
+                                       16.,  32.8, 15.,  36.4, 12.9, 33.8, 10.8, 30.,  9.3,
+                                       26.1, 8.5,  22.5, 8.1,  22.4, 10.8};
+            std::vector<SbVec3f> loop2;
+            for (size_t i = 0; i < pts2.size(); i += 2) {
+                loop2.push_back(transform(pts2[i], pts2[i + 1]));
+            }
+            face.lineLoops.push_back(loop2);
+            std::vector<int> idx2 = {0,  1,  2, 0,  2,  19, 0,  19, 20, 2,  19, 3, 19, 18, 3,
+                                     3,  18, 4, 18, 17, 4,  4,  17, 5,  17, 16, 5, 5,  16, 6,
+                                     16, 15, 6, 6,  15, 7,  15, 14, 7,  7,  14, 8, 14, 13, 8,
+                                     8,  13, 9, 9,  13, 10, 10, 13, 11, 11, 13, 12};
+            for (int i : idx2) {
+                face.trianglesArray.push_back(loop2[i]);
             }
             break;
         }
     }
 
-    int count = static_cast<int>(pointData.size()) / 2;
-    face.vertexArray.reserve(count);
-    for (int i = 0; i < count; i++) {
-        float x = pointData[i * 2] * scale + offx;
-        float y = pointData[i * 2 + 1] * scale + offy;
-        if (pickId == PickId::ArrowNorth || pickId == PickId::ArrowWest
-            || pickId == PickId::ArrowLeft) {
-            x = 1.0F - x;
-        }
-        if (pickId == PickId::ArrowSouth || pickId == PickId::ArrowNorth) {
-            face.vertexArray.emplace_back(SbVec3f(y, x, 0.0F));
-        }
-        else {
-            face.vertexArray.emplace_back(SbVec3f(x, y, 0.0F));
+    if (!pointData.empty()) {
+        int count = static_cast<int>(pointData.size()) / 2;
+        face.vertexArray.reserve(count);
+        for (int i = 0; i < count; i++) {
+            face.vertexArray.push_back(transform(pointData[i * 2], pointData[i * 2 + 1]));
         }
     }
     face.type = FaceType::Button;

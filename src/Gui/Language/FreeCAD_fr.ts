@@ -4770,9 +4770,9 @@ Le système de préférences est celui défini dans les préférences générale
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation>Cliquez sur "Démarrer la récupération" pour lancer le processus de récupération des documents listés ci-dessous.
+      <translation>Cliquer sur « Démarrer la récupération » pour lancer le processus de récupération des documents listés ci-dessous.
 
-La colonne "État" indique si le document a pu être récupéré.</translation>
+La colonne « État » indique si le document a pu être récupéré.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="49"/>
@@ -7352,7 +7352,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4176"/>
+      <location filename="../Tree.cpp" line="4234"/>
       <source>Search</source>
       <translation>Rechercher</translation>
     </message>
@@ -7395,153 +7395,153 @@ Specify another directory?</source>
       <translation>Groupe</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3326"/>
-      <location filename="../Tree.cpp" line="3347"/>
+      <location filename="../Tree.cpp" line="3384"/>
+      <location filename="../Tree.cpp" line="3405"/>
       <source>Error</source>
       <translation>Erreur</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3326"/>
+      <location filename="../Tree.cpp" line="3384"/>
       <source>File does not exist.</source>
       <translation>Le fichier n'existe pas.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3347"/>
+      <location filename="../Tree.cpp" line="3405"/>
       <source>Failed to open directory.</source>
       <translation>Il n'a pas été possible d'ouvrir le répertoire.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3826"/>
+      <location filename="../Tree.cpp" line="3884"/>
       <source>Labels &amp; Attributes</source>
       <translation>Étiquettes &amp; attributs</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3827"/>
+      <location filename="../Tree.cpp" line="3885"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3828"/>
+      <location filename="../Tree.cpp" line="3886"/>
       <source>Internal name</source>
       <translation>Nom interne</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3830"/>
+      <location filename="../Tree.cpp" line="3888"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>Afficher les éléments cachés dans l'arborescence</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3832"/>
+      <location filename="../Tree.cpp" line="3890"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>Affiche les éléments marqués comme « masqués » dans l'arborescence.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3835"/>
+      <location filename="../Tree.cpp" line="3893"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>Activer/désactiver la visibilité dans l'arborescence</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3840"/>
+      <location filename="../Tree.cpp" line="3898"/>
       <source>Create Group</source>
       <translation>Créer un groupe</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3841"/>
+      <location filename="../Tree.cpp" line="3899"/>
       <source>Creates a group</source>
       <translation>Crée un groupe.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3844"/>
+      <location filename="../Tree.cpp" line="3902"/>
       <source>Renames object</source>
       <translation>Renomme un objet.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3846"/>
+      <location filename="../Tree.cpp" line="3904"/>
       <source>Finish Editing</source>
       <translation>Terminer l'édition</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3847"/>
+      <location filename="../Tree.cpp" line="3905"/>
       <source>Finishes editing object</source>
       <translation>Termine l'édition d'un objet.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3849"/>
+      <location filename="../Tree.cpp" line="3907"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>Ajouter des objets dépendants à la sélection</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3852"/>
+      <location filename="../Tree.cpp" line="3910"/>
       <source>Close Document</source>
       <translation>Fermer le document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3853"/>
+      <location filename="../Tree.cpp" line="3911"/>
       <source>Closes the document</source>
       <translation>Ferme le document.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3857"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Reveals the current file location in Finder</source>
       <translation>Affiche l'actuel emplacement du fichier dans Finder.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3860"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Opens the current file location</source>
       <translation>Ouvre l'actuel emplacement du fichier.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3863"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Reload Document</source>
       <translation>Recharger le document</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3864"/>
+      <location filename="../Tree.cpp" line="3922"/>
       <source>Reloads a partially loaded document</source>
       <translation>Recharge un document partiellement chargé.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3866"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Skip Recomputes</source>
       <translation>Ignorer les récalculs</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3867"/>
+      <location filename="../Tree.cpp" line="3925"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>Active/désactive les recalculs du document.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3869"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Allow Partial Recomputes</source>
       <translation>Autoriser les recalculs partiels</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3870"/>
+      <location filename="../Tree.cpp" line="3928"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Active/désactive le recalcul de l'objet d'édition lorsque l'option « Ignorer le recalcul » est activée.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3874"/>
+      <location filename="../Tree.cpp" line="3932"/>
       <source>Mark to Recompute</source>
       <translation>Marquer pour recalculer</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3875"/>
+      <location filename="../Tree.cpp" line="3933"/>
       <source>Marks this object to be recomputed</source>
       <translation>Marque cet objet pour qu'il soit recalculé.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3878"/>
+      <location filename="../Tree.cpp" line="3936"/>
       <source>Recompute Object</source>
       <translation>Recalculer un objet</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3879"/>
+      <location filename="../Tree.cpp" line="3937"/>
       <source>Recomputes the selected object</source>
       <translation>Recalcule l'objet sélectionné.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3837"/>
+      <location filename="../Tree.cpp" line="3895"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Active/désactive la visibilité des éléments sélectionnés dans l'arborescence.</translation>
     </message>
@@ -7562,33 +7562,33 @@ Specify another directory?</source>
 en modifiant la propriété « label2 ».</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3843"/>
-      <location filename="../Tree.cpp" line="6511"/>
+      <location filename="../Tree.cpp" line="3901"/>
+      <location filename="../Tree.cpp" line="6569"/>
       <source>Rename</source>
       <translation>Renommer</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3850"/>
+      <location filename="../Tree.cpp" line="3908"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Ajouter tous les objets dépendants à la sélection</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3856"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Reveal in Finder</source>
       <translation>Afficher dans Finder</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3859"/>
+      <location filename="../Tree.cpp" line="3917"/>
       <source>Open File Location</source>
       <translation>Ouvrir l'emplacement du fichier</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6479"/>
+      <location filename="../Tree.cpp" line="6537"/>
       <source> (but must be executed)</source>
       <translation> (mais doit être exécuté)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6482"/>
+      <location filename="../Tree.cpp" line="6540"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, nom interne : %2</translation>
     </message>
@@ -7927,8 +7927,10 @@ en modifiant la propriété « label2 ».</translation>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
-      <translation>Certains documents nécessitent un nouveau calcul à des fins de migration. Il est fortement recommandé d'effectuer un nouveau calcul
-avant toute modification afin d'éviter tout problème de compatibilité. Faut-il recalculer maintenant ?</translation>
+      <translation>Certains documents nécessitent un nouveau calcul à des fins de migration.
+Il est fortement recommandé d'effectuer un nouveau calcul avant toute modification afin d'éviter tout problème de compatibilité.
+
+Faut-il recalculer maintenant ?</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="1287"/>
@@ -8786,8 +8788,8 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Impossible d'ajouter la propriété à "%1" : %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2702"/>
-      <location filename="../Tree.cpp" line="3099"/>
+      <location filename="../Tree.cpp" line="2760"/>
+      <location filename="../Tree.cpp" line="3157"/>
       <source>Drag &amp; drop failed</source>
       <translation>Le glisser/déposer a échoué</translation>
     </message>
@@ -14385,7 +14387,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4248"/>
+      <location filename="../Tree.cpp" line="4306"/>
       <source>Tree View</source>
       <translation>Arborescence</translation>
     </message>

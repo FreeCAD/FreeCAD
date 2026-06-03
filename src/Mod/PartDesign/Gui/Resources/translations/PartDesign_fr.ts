@@ -4459,7 +4459,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <location filename="../../../App/FeaturePipe.cpp" line="537"/>
       <location filename="../../../App/FeaturePipe.cpp" line="571"/>
@@ -4647,7 +4647,7 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>Erreur : la face doit être plane</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <source>Error: Result is not a solid</source>
@@ -4749,13 +4749,13 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>Erreur sur le trou : la recherche de l'axe a échoué.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2073"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2081"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2071"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>L'opération booléenne a échoué sur le profil de l'arête.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2088"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2078"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>L'opération booléenne a produit des éléments non solides sur le profil de l'arête.</translation>
     </message>
@@ -4765,24 +4765,24 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>L'opération booléenne a échoué.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2114"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2104"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Impossible de créer une face à partir d'une esquisse.
 L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'est pas autorisée pour créer une cavité jusqu'à une face.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
       <source>Thread type out of range</source>
       <translation>Type de filetage en dehors de la gamme</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2283"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
       <source>Thread size out of range</source>
       <translation>Taille du filetage en dehors de la plage</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2431"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
       <source>Error: Thread could not be built</source>
       <translation>Erreur : le filetage n'a pas pu être construit.</translation>
     </message>

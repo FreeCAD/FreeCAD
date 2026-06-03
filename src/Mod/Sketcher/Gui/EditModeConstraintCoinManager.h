@@ -24,7 +24,6 @@
 
 #pragma once
 
-#include <functional>
 #include <vector>
 
 #include <QColor>
@@ -41,6 +40,7 @@
 
 
 class SbVec3f;
+class SbVec2s;
 class SoRayPickAction;
 class SoPickedPoint;
 class SbVec3s;
@@ -134,9 +134,13 @@ public:
     void setConstraintSelectability(bool enabled = true);
     //@}
 
-    std::set<int> detectPreselectionConstr(const SoPickedPoint* Point);
+    std::set<int> detectPreselectionConstr(const SoPickedPoint* Point, const SbVec2s& cursorScreenPos);
+    std::set<int> detectPreselectionConstr(
+        const SbVec2s& cursorScreenPos,
+        Base::Vector3d* pickedPoint = nullptr
+    );
 
-    SoSeparator* getConstraintIdSeparator(int i);
+    SoSeparator* getConstraintIdSeparator(int i) const;
 
     void createEditModeInventorNodes();
 
@@ -158,6 +162,23 @@ private:
 
     /// Returns the size that Coin should display the indicated image at
     SbVec3s getDisplayedSize(const SoImage*) const;
+    std::set<int> parseConstraintIds(const QString& constrIdsStr) const;
+    bool resolveIconScreenGeometry(
+        SoSeparator* sep,
+        SoImage* iconNode,
+        int iconIndex,
+        SbVec2f& iconScreenCenter,
+        SbVec3s& iconSize,
+        QString& constrIdsStr,
+        Base::Vector3d* pickedPoint = nullptr
+    ) const;
+    std::set<int> detectPreselectionIcon(
+        SoSeparator* sep,
+        SoImage* iconNode,
+        int iconIndex,
+        const SbVec2s& cursorScreenPos,
+        Base::Vector3d* pickedPoint = nullptr
+    ) const;
 
     /** @name Protected helpers for drawing constraint icons*/
     //@{

@@ -4496,17 +4496,17 @@ Default: 3 mm</source>
       <translation>스핀들 RPM</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="705"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="710"/>
       <source>Selected tool is not a drill</source>
       <translation>선택한 툴은 드릴이 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="712"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="717"/>
       <source>Invalid Cutting Edge Angle %.2f, must be &gt;0° and &lt;=180°</source>
       <translation>잘못된 절삭날 각도 %.2f, 0° 초과 180° 이하여야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="722"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="727"/>
       <source>Cutting Edge Angle (%.2f) results in negative tool tip length</source>
       <translation>절삭날 각도 (%.2f)로 인해 툴팁 길이가 음수가 됩니다</translation>
     </message>
@@ -4791,7 +4791,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
       <translation>툴패스에서의 리드 아웃을 수정합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="212"/>
+      <location filename="../../../Path/Op/Profile.py" line="210"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="95"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="442"/>
       <source>Set distance which will attempts to avoid unnecessary retractions</source>
@@ -5012,8 +5012,8 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>작업의 모든 툴 컨트롤러 모음입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="216"/>
-      <location filename="../../../Path/Op/Base.py" line="489"/>
+      <location filename="../../../Path/Op/Base.py" line="219"/>
+      <location filename="../../../Path/Op/Base.py" line="494"/>
       <location filename="../../../Path/Main/Job.py" line="542"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>작업 사이클 시간 추정</translation>
@@ -5094,7 +5094,7 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>픽스처 오프셋 번호</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="190"/>
+      <location filename="../../../Path/Op/Base.py" line="193"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="57"/>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
       <source>Make False, to prevent operation from generating code</source>
@@ -5235,148 +5235,152 @@ Set to zero to disable limitation by ramp angle</source>
       <translation>호를 이산 세그먼트로 분할합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="117"/>
+      <location filename="../../../Path/Op/Base.py" line="118"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="142"/>
       <source>The base geometry for this operation</source>
       <translation>이 작업의 기본 지오메트리입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="126"/>
+      <location filename="../../../Path/Op/Base.py" line="127"/>
       <source>Holds the calculated value for the StartDepth</source>
       <translation>계산된 시작 깊이 값을 보유합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="134"/>
+      <location filename="../../../Path/Op/Base.py" line="135"/>
       <source>Holds the calculated value for the FinalDepth</source>
       <translation>계산된 최종 깊이 값을 보유합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="142"/>
+      <location filename="../../../Path/Op/Base.py" line="143"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="100"/>
       <source>Holds the diameter of the tool</source>
       <translation>툴의 직경을 보유합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="150"/>
+      <location filename="../../../Path/Op/Base.py" line="151"/>
       <source>Holds the max Z value of Stock</source>
       <translation>스톡의 최대 Z 값을 보유합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="157"/>
+      <location filename="../../../Path/Op/Base.py" line="158"/>
       <source>Holds the min Z value of Stock</source>
       <translation>스톡의 최소 Z 값을 보유합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="172"/>
+      <location filename="../../../Path/Op/Base.py" line="175"/>
       <source>Method collision detection to create optimal path between areas
 
-Compromise: uses tool diameter (middle long time computation)
-Fastest: not related from tool size (fast computation)
-Safest: uses cross section of tool shape (most long time computation)</source>
-      <translation>영역 간 최적 경로를 생성하기 위한 충돌 감지 방법입니다.
+Clearance Height: no collision detection, uses clearance height for rapid moves between areas
+Retract Height: no collision detection, uses safe height for rapid moves between areas
+Line of Sight: fastest - checks the path centerline
+Tool Diameter: balanced - checks clearance using the tool diameter
+Tool Shape: safest - checks clearance using the cross section of the tool shape</source>
+      <translation type="unfinished">Method collision detection to create optimal path between areas
 
-절충: 툴 직경을 사용합니다(중간 수준의 긴 계산 시간).
-최고속: 툴 크기와 무관합니다(빠른 계산).
-최대안전: 툴 형상의 단면을 사용합니다(가장 긴 계산 시간).</translation>
+Clearance Height: no collision detection, uses clearance height for rapid moves between areas
+Retract Height: no collision detection, uses safe height for rapid moves between areas
+Line of Sight: fastest - checks the path centerline
+Tool Diameter: balanced - checks clearance using the tool diameter
+Tool Shape: safest - checks clearance using the cross section of the tool shape</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="178"/>
+      <location filename="../../../Path/Op/Base.py" line="181"/>
       <source>Distance for collision detection</source>
       <translation>충돌 감지를 위한 거리입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="198"/>
-      <location filename="../../../Path/Op/Base.py" line="498"/>
+      <location filename="../../../Path/Op/Base.py" line="201"/>
+      <location filename="../../../Path/Op/Base.py" line="503"/>
       <source>Enable post processor to add block delete commands</source>
       <translation>포스트 프로세서가 블록 삭제 명령을 추가할 수 있도록 활성화합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="204"/>
+      <location filename="../../../Path/Op/Base.py" line="207"/>
       <source>An optional comment for this Operation</source>
       <translation>이 작업에 대한 선택적 주석입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="210"/>
+      <location filename="../../../Path/Op/Base.py" line="213"/>
       <source>User Assigned Label</source>
       <translation>사용자 지정 레이블</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="236"/>
+      <location filename="../../../Path/Op/Base.py" line="239"/>
       <source>Base locations for this operation</source>
       <translation>이 작업의 기본 위치입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="247"/>
+      <location filename="../../../Path/Op/Base.py" line="250"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="94"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>경로를 계산하는 데 사용될 툴 컨트롤러입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="256"/>
+      <location filename="../../../Path/Op/Base.py" line="259"/>
       <source>Coolant mode for this operation</source>
       <translation>이 작업의 쿨런트 모드입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="264"/>
+      <location filename="../../../Path/Op/Base.py" line="267"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
       <translation>툴의 시작 깊이 - Z의 첫 번째 절삭 깊이입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="270"/>
+      <location filename="../../../Path/Op/Base.py" line="273"/>
       <source>Final Depth of Tool- lowest value in Z</source>
       <translation>툴의 최종 깊이 - Z의 가장 낮은 값입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="284"/>
+      <location filename="../../../Path/Op/Base.py" line="287"/>
       <source>Starting Depth internal use only for derived values</source>
       <translation>시작 깊이는 파생 값을 위한 내부 전용입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="295"/>
-      <location filename="../../../Path/Op/Base.py" line="506"/>
+      <location filename="../../../Path/Op/Base.py" line="298"/>
+      <location filename="../../../Path/Op/Base.py" line="511"/>
       <source>Incremental Step Down of Tool</source>
       <translation>툴의 증분 스텝다운입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="303"/>
+      <location filename="../../../Path/Op/Base.py" line="306"/>
       <source>Maximum material removed on final pass.</source>
       <translation>최종 패스에서 제거되는 최대 재질입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="314"/>
+      <location filename="../../../Path/Op/Base.py" line="317"/>
       <source>The height needed to clear clamps and obstructions</source>
       <translation>클램프 및 장애물을 피하기 위해 필요한 높이입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="320"/>
+      <location filename="../../../Path/Op/Base.py" line="323"/>
       <source>Rapid Safety Height between locations.</source>
       <translation>위치 간 급송 안전 높이입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="328"/>
+      <location filename="../../../Path/Op/Base.py" line="331"/>
       <source>The start point of this path</source>
       <translation>이 경로의 시작점입니다</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="418"/>
       <location filename="../../../Path/Op/Waterline.py" line="463"/>
-      <location filename="../../../Path/Op/Base.py" line="334"/>
-      <location filename="../../../Path/Op/Slot.py" line="226"/>
+      <location filename="../../../Path/Op/Base.py" line="337"/>
+      <location filename="../../../Path/Op/Slot.py" line="223"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>시작점을 지정하려면 True로 설정하십시오</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="342"/>
+      <location filename="../../../Path/Op/Base.py" line="345"/>
       <source>Lower limit of the turning diameter</source>
       <translation>터닝 직경의 하한입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="348"/>
+      <location filename="../../../Path/Op/Base.py" line="351"/>
       <source>Upper limit of the turning diameter.</source>
       <translation>터닝 직경의 상한입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="469"/>
+      <location filename="../../../Path/Op/Base.py" line="474"/>
       <location filename="../../../CAMTests/TestTestPost.py" line="657"/>
       <source>Coolant option for this operation</source>
       <translation>이 작업의 쿨런트 옵션입니다</translation>
@@ -5670,7 +5674,7 @@ For External profile - profile radius</source>
 외부 프로파일의 경우 - 프로파일 반경입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="142"/>
+      <location filename="../../../Path/Op/Profile.py" line="140"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>최종 프로파일에서 벗어나는 추가 값입니다. 조삭 툴패스에 적합합니다</translation>
     </message>
@@ -5690,7 +5694,7 @@ For External profile - profile radius</source>
       <translation>면 내부의 돌출된 영역의 밀링을 제외합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="116"/>
+      <location filename="../../../Path/Op/Profile.py" line="114"/>
       <location filename="../../../Path/Op/Surface.py" line="240"/>
       <location filename="../../../Path/Op/Pocket.py" line="67"/>
       <location filename="../../../Path/Op/Waterline.py" line="267"/>
@@ -5738,7 +5742,7 @@ For External profile - profile radius</source>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="206"/>
       <location filename="../../../Path/Op/PocketBase.py" line="303"/>
-      <location filename="../../../Path/Op/Profile.py" line="223"/>
+      <location filename="../../../Path/Op/Profile.py" line="221"/>
       <source>Order processing of the shapes
 Automatic: uses nearest neighbour algorithm to sort shapes
 Manual: uses order of shapes selection</source>
@@ -5797,57 +5801,57 @@ Manual: uses order of shapes selection</source>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="136"/>
-      <location filename="../../../Path/Op/Profile.py" line="107"/>
+      <location filename="../../../Path/Op/Profile.py" line="105"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>툴패스가 파트를 돌아야 하는 방향으로, 시계 방향(CW) 또는 반시계 방향(CCW)입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="125"/>
+      <location filename="../../../Path/Op/Profile.py" line="123"/>
       <source>Controls how tool moves around corners. Default=Round</source>
       <translation>툴이 코너를 도는 방법을 제어합니다. 기본값=라운드</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="133"/>
+      <location filename="../../../Path/Op/Profile.py" line="131"/>
       <source>Maximum distance before a miter joint is truncated</source>
       <translation>마이터 연결이 잘리기 전의 최대 거리입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="148"/>
+      <location filename="../../../Path/Op/Profile.py" line="146"/>
       <source>Profile holes as well as the outline</source>
       <translation>윤곽뿐만 아니라 홀도 프로파일합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="154"/>
+      <location filename="../../../Path/Op/Profile.py" line="152"/>
       <source>Profile the outline</source>
       <translation>윤곽을 프로파일합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="160"/>
+      <location filename="../../../Path/Op/Profile.py" line="158"/>
       <source>Profile round holes</source>
       <translation>원형 홀을 프로파일합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="166"/>
+      <location filename="../../../Path/Op/Profile.py" line="164"/>
       <source>Side of edge that tool should cut</source>
       <translation>툴이 절삭해야 하는 모서리의 측면입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="174"/>
+      <location filename="../../../Path/Op/Profile.py" line="172"/>
       <source>Make True, if using Cutter Radius Compensation</source>
       <translation>커터 반경 보상을 사용하는 경우 True로 설정하십시오</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="183"/>
+      <location filename="../../../Path/Op/Profile.py" line="181"/>
       <source>The number of passes to do. If more than one, requires a non-zero value for Stepover</source>
       <translation>수행할 패스 수입니다. 2 이상인 경우 스탭오버에 0이 아닌 값이 필요합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="192"/>
+      <location filename="../../../Path/Op/Profile.py" line="190"/>
       <source>If doing multiple passes, the extra offset of each additional pass</source>
       <translation>여러 패스를 수행할 경우, 각 추가 패스의 추가 오프셋입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="203"/>
+      <location filename="../../../Path/Op/Profile.py" line="201"/>
       <source>Override start point
 Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStartPoint</source>
       <translation>시작점을 재정의합니다.
@@ -5872,62 +5876,62 @@ Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStart
       <translation>깊이에서 단일 패스로 작업을 완료하거나, 최종 깊이까지 여러 패스로 수행합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="123"/>
+      <location filename="../../../Path/Op/Slot.py" line="120"/>
       <source>Show the temporary toolpath construction objects when module is in DEBUG mode.</source>
       <translation>모듈이 DEBUG 모드일 때 임시 툴패스 구성 객체를 표시합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="131"/>
+      <location filename="../../../Path/Op/Slot.py" line="128"/>
       <source>Enter custom start point for slot toolpath.</source>
       <translation>슬롯 툴패스의 사용자 정의 시작점을 입력하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="139"/>
+      <location filename="../../../Path/Op/Slot.py" line="136"/>
       <source>Enter custom end point for slot toolpath.</source>
       <translation>슬롯 툴패스의 사용자 정의 끝점을 입력하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="148"/>
+      <location filename="../../../Path/Op/Slot.py" line="145"/>
       <source>Set the cut pattern for the operation.</source>
       <translation>작업의 절삭 패턴을 설정합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="157"/>
+      <location filename="../../../Path/Op/Slot.py" line="154"/>
       <source>Positive extends the beginning of the toolpath, negative shortens.</source>
       <translation>양수는 툴패스 시작을 확장하고, 음수는 단축합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="166"/>
+      <location filename="../../../Path/Op/Slot.py" line="163"/>
       <source>Positive extends the end of the toolpath, negative shortens.</source>
       <translation>양수는 툴패스 끝을 확장하고, 음수는 단축합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="175"/>
+      <location filename="../../../Path/Op/Slot.py" line="172"/>
       <source>Choose the toolpath orientation with regard to the feature(s) selected.</source>
       <translation>선택한 피처에 대한 툴패스 방향을 선택하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="184"/>
+      <location filename="../../../Path/Op/Slot.py" line="181"/>
       <source>Choose what point to use on the first selected feature.</source>
       <translation>첫 번째 선택한 피처에 사용할 점을 선택하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="193"/>
+      <location filename="../../../Path/Op/Slot.py" line="190"/>
       <source>Choose what point to use on the second selected feature.</source>
       <translation>두 번째 선택한 피처에 사용할 점을 선택하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="202"/>
+      <location filename="../../../Path/Op/Slot.py" line="199"/>
       <source>For arcs/circular edges, offset the radius for the toolpath.</source>
       <translation>호/원형 모서리의 경우, 툴패스의 반경을 오프셋합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="211"/>
+      <location filename="../../../Path/Op/Slot.py" line="208"/>
       <source>Enable to reverse the cut direction of the slot toolpath.</source>
       <translation>슬롯 툴패스의 절삭 방향을 반전하려면 활성화하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="220"/>
+      <location filename="../../../Path/Op/Slot.py" line="217"/>
       <source>The custom start point for the toolpath of this operation</source>
       <translation>이 작업의 툴패스에 대한 사용자 정의 시작점입니다</translation>
     </message>
@@ -6694,68 +6698,68 @@ Should be identical for all base operations</source>
     <name>PathProfile</name>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="98"/>
-      <location filename="../../../Path/Op/Profile.py" line="254"/>
+      <location filename="../../../Path/Op/Profile.py" line="252"/>
       <source>Outside</source>
       <translation>바깥쪽</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="97"/>
-      <location filename="../../../Path/Op/Profile.py" line="255"/>
+      <location filename="../../../Path/Op/Profile.py" line="253"/>
       <source>Inside</source>
       <translation>안쪽</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="241"/>
+      <location filename="../../../Path/Op/Profile.py" line="239"/>
       <source>CW</source>
       <translation>시계 방향</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="242"/>
+      <location filename="../../../Path/Op/Profile.py" line="240"/>
       <source>CCW</source>
       <translation>반시계 방향</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="245"/>
+      <location filename="../../../Path/Op/Profile.py" line="243"/>
       <source>Collectively</source>
       <translation>일괄</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="246"/>
+      <location filename="../../../Path/Op/Profile.py" line="244"/>
       <source>Individually</source>
       <translation>개별</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="249"/>
+      <location filename="../../../Path/Op/Profile.py" line="247"/>
       <source>Round</source>
       <translation>라운드</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="250"/>
+      <location filename="../../../Path/Op/Profile.py" line="248"/>
       <source>Square</source>
       <translation>스퀘어</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="251"/>
+      <location filename="../../../Path/Op/Profile.py" line="249"/>
       <source>Miter</source>
       <translation>마이터</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="258"/>
+      <location filename="../../../Path/Op/Profile.py" line="256"/>
       <source>Automatic</source>
       <translation>자동</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="259"/>
+      <location filename="../../../Path/Op/Profile.py" line="257"/>
       <source>Manual</source>
       <translation>수동</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="471"/>
+      <location filename="../../../Path/Op/Profile.py" line="468"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation>선택한 모서리에 접근할 수 없습니다. 여러 개인 경우 선택 순서를 변경하면 작동할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="566"/>
+      <location filename="../../../Path/Op/Profile.py" line="625"/>
       <source>Unable to create path for face(s).</source>
       <translation>면에 대한 경로를 생성할 수 없습니다.</translation>
     </message>
@@ -7139,71 +7143,71 @@ Should be identical for all base operations</source>
       <translation>기본 지오메트리</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="934"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="940"/>
       <source>Multiple operations are labeled as</source>
       <translation>여러 작업이 다음으로 레이블 지정됨:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1008"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1014"/>
       <source>Base Location</source>
       <translation>기본 위치</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1121"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1127"/>
       <source>Heights</source>
       <translation>높이</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1191"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1197"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>이 작업에서는 최종 깊이를 수정할 수 없습니다.
 최종 깊이를 수동으로 설정해야 하는 경우 다른 작업을 선택하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1214"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1220"/>
       <source>Depths</source>
       <translation>깊이</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1315"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1321"/>
       <source>Diameters</source>
       <translation>직경</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1347"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1353"/>
       <source>AreaOp Operation</source>
       <translation>AreaOp 작업</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1408"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1414"/>
       <source>Operation</source>
       <translation>작업</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1473"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1479"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>AreaOp 작업 삭제</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1610"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1616"/>
       <source>Start Point Selection</source>
       <translation>시작점 선택</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1611"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1617"/>
       <source>Selects the start point</source>
       <translation>시작점을 선택합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1661"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1667"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>적합한 툴 컨트롤러를 찾을 수 없습니다.
 작업 생성을 중단합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1665"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1671"/>
       <source>No tool controller, aborting op creation</source>
       <translation>툴 컨트롤러가 없습니다. 작업 생성을 중단합니다</translation>
     </message>
@@ -7308,7 +7312,7 @@ Aborting op creation</source>
       <translation>루프 선택 완료</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="72"/>
+      <location filename="../../../PathCommands.py" line="73"/>
       <source>Completes the selection of edges or faces that form a loop
 
 Select faces: searching loop faces which form the walls.
@@ -7318,6 +7322,8 @@ or wire which contain selected edge.
 
 Select two edges: searching loop edges in wires of the shape
 or tangent edges.
+
+Select three or more edges: searching horizontal wires
 
 Without sub selection all edges of the shape will be selected</source>
       <translation type="unfinished">Completes the selection of edges or faces that form a loop
@@ -7330,10 +7336,12 @@ or wire which contain selected edge.
 Select two edges: searching loop edges in wires of the shape
 or tangent edges.
 
+Select three or more edges: searching horizontal wires
+
 Without sub selection all edges of the shape will be selected</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="128"/>
+      <location filename="../../../PathCommands.py" line="129"/>
       <source>Closed loop detection failed.</source>
       <translation>닫힌 루프 감지에 실패했습니다.</translation>
     </message>
@@ -8375,34 +8383,44 @@ Without sub selection all edges of the shape will be selected</translation>
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="401"/>
+      <location filename="../../../Path/Op/Base.py" line="404"/>
       <source>None</source>
       <translation>없음</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="402"/>
+      <location filename="../../../Path/Op/Base.py" line="405"/>
       <source>Flood</source>
       <translation>주수 냉각</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="403"/>
+      <location filename="../../../Path/Op/Base.py" line="406"/>
       <source>Mist</source>
       <translation>안개 분사</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="406"/>
-      <source>Fastest</source>
-      <translation>최고 속도</translation>
+      <location filename="../../../Path/Op/Base.py" line="409"/>
+      <source>Clearance Height</source>
+      <translation type="unfinished">Clearance Height</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="407"/>
-      <source>Compromise</source>
-      <translation>절충안</translation>
+      <location filename="../../../Path/Op/Base.py" line="410"/>
+      <source>Retract Height</source>
+      <translation type="unfinished">Retract Height</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="408"/>
-      <source>Safest</source>
-      <translation>최고 안전</translation>
+      <location filename="../../../Path/Op/Base.py" line="411"/>
+      <source>Line of Sight</source>
+      <translation type="unfinished">Line of Sight</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="412"/>
+      <source>Tool Diameter</source>
+      <translation>툴 직경</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="413"/>
+      <source>Tool Shape</source>
+      <translation>툴 형상</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="648"/>
@@ -8423,62 +8441,62 @@ Without sub selection all edges of the shape will be selected</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="688"/>
+      <location filename="../../../Path/Op/Base.py" line="693"/>
       <source>No parent job found for operation.</source>
       <translation>작업의 상위 작업을 찾을 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="693"/>
+      <location filename="../../../Path/Op/Base.py" line="698"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>상위 작업 %s에 기본 객체가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="841"/>
+      <location filename="../../../Path/Op/Base.py" line="846"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>툴 컨트롤러가 선택되지 않았습니다. 경로를 작성하려면 툴이 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="855"/>
+      <location filename="../../../Path/Op/Base.py" line="860"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>툴을 찾을 수 없거나 직경이 0입니다. 경로를 작성하려면 툴이 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1181"/>
+      <location filename="../../../Path/Op/Base.py" line="1186"/>
       <source>No Tool Controller selected.</source>
       <translation>툴 컨트롤러가 선택되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1184"/>
+      <location filename="../../../Path/Op/Base.py" line="1189"/>
       <source>Tool Error</source>
       <translation>툴 오류</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1196"/>
+      <location filename="../../../Path/Op/Base.py" line="1201"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>사이클 시간을 계산하려면 툴 컨트롤러의 피드 속도가 필요합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1199"/>
+      <location filename="../../../Path/Op/Base.py" line="1204"/>
       <source>Tool Feedrate Error</source>
       <translation>툴 피드 속도 오류</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1205"/>
+      <location filename="../../../Path/Op/Base.py" line="1210"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>더 정확한 사이클 시간을 위해 설정 시트에 툴 컨트롤러 급송 속도를 추가하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1214"/>
+      <location filename="../../../Path/Op/Base.py" line="1219"/>
       <source>Cycletime Error</source>
       <translation>사이클 시간 오류</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="943"/>
+      <location filename="../../../Path/Op/Base.py" line="948"/>
       <source>Base object %s.%s already in the list</source>
       <translation>기본 객체 %s.%s이(가) 이미 목록에 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="953"/>
+      <location filename="../../../Path/Op/Base.py" line="958"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>기본 객체 %s.%s이(가) 작업에 의해 거부되었습니다</translation>
     </message>
@@ -8819,7 +8837,7 @@ This will not delete the toolbits contained within it.</source>
       <translation>선택한 툴비트를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다. 툴비트가 디스크와 이를 포함하는 모든 라이브러리에서 제거됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="233"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="238"/>
       <source>Selected faces should be vertical</source>
       <translation>선택한 면은 수직이어야 합니다</translation>
     </message>
@@ -9188,17 +9206,17 @@ This will not delete the toolbits contained within it.</source>
       <translation>2배 드릴 팁</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="421"/>
+      <location filename="../../../Path/Op/Drilling.py" line="429"/>
       <source>Tapping strategy requires a Tap tool with Pitch</source>
       <translation>태핑 전략에는 피치가 있는 탭 툴이 필요합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="494"/>
+      <location filename="../../../Path/Op/Drilling.py" line="502"/>
       <source>Tapping strategy requires a Tap tool with non-zero Pitch</source>
       <translation>태핑 전략에는 0이 아닌 피치가 있는 탭 툴이 필요합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="504"/>
+      <location filename="../../../Path/Op/Drilling.py" line="512"/>
       <source>Tapping strategy requires a ToolController with non-zero SpindleSpeed</source>
       <translation>태핑 전략에는 0이 아닌 스핀들 속도가 있는 툴 컨트롤러가 필요합니다</translation>
     </message>
@@ -9373,170 +9391,197 @@ This will not delete the toolbits contained within it.</source>
   <context>
     <name>CAM_Slot</name>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="106"/>
+      <location filename="../../../Path/Op/Slot.py" line="103"/>
       <source>New property added to</source>
       <translation>새 속성이 추가됨:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="108"/>
+      <location filename="../../../Path/Op/Slot.py" line="105"/>
       <source>Check default value(s).</source>
       <translation>기본값을 확인하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="244"/>
+      <location filename="../../../Path/Op/Slot.py" line="241"/>
       <source>Directional</source>
       <translation>단방향</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="245"/>
+      <location filename="../../../Path/Op/Slot.py" line="242"/>
       <source>Bidirectional</source>
       <translation>양방향</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="248"/>
+      <location filename="../../../Path/Op/Slot.py" line="245"/>
       <source>Start to End</source>
       <translation>시작에서 끝</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="249"/>
+      <location filename="../../../Path/Op/Slot.py" line="246"/>
       <source>Perpendicular</source>
       <translation>수직</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="252"/>
-      <location filename="../../../Path/Op/Slot.py" line="264"/>
+      <location filename="../../../Path/Op/Slot.py" line="249"/>
+      <location filename="../../../Path/Op/Slot.py" line="261"/>
       <source>Center of Mass</source>
       <translation>무게 중심</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="254"/>
-      <location filename="../../../Path/Op/Slot.py" line="266"/>
+      <location filename="../../../Path/Op/Slot.py" line="251"/>
+      <location filename="../../../Path/Op/Slot.py" line="263"/>
       <source>Center of Bounding Box</source>
       <translation>바운딩 박스 중심</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="257"/>
-      <location filename="../../../Path/Op/Slot.py" line="269"/>
+      <location filename="../../../Path/Op/Slot.py" line="254"/>
+      <location filename="../../../Path/Op/Slot.py" line="266"/>
       <source>Lowest Point</source>
       <translation>최저점</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="258"/>
-      <location filename="../../../Path/Op/Slot.py" line="270"/>
+      <location filename="../../../Path/Op/Slot.py" line="255"/>
+      <location filename="../../../Path/Op/Slot.py" line="267"/>
       <source>Highest Point</source>
       <translation>최고점</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="259"/>
+      <location filename="../../../Path/Op/Slot.py" line="256"/>
       <source>Long Edge</source>
       <translation>긴 모서리</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="260"/>
+      <location filename="../../../Path/Op/Slot.py" line="257"/>
       <source>Short Edge</source>
       <translation>짧은 모서리</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="261"/>
-      <location filename="../../../Path/Op/Slot.py" line="271"/>
+      <location filename="../../../Path/Op/Slot.py" line="258"/>
+      <location filename="../../../Path/Op/Slot.py" line="268"/>
       <source>Vertex</source>
       <translation>꼭짓점</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="593"/>
+      <location filename="../../../Path/Op/Slot.py" line="590"/>
       <source>No Base Geometry object in the operation.</source>
       <translation>작업에 기본 지오메트리 객체가 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="604"/>
+      <location filename="../../../Path/Op/Slot.py" line="601"/>
       <source>Custom points are identical. No slot path will be generated</source>
       <translation>사용자 정의 점이 동일합니다. 슬롯 경로가 생성되지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="613"/>
+      <location filename="../../../Path/Op/Slot.py" line="610"/>
       <source>Custom points not at same Z height. No slot path will be generated</source>
       <translation>사용자 정의 점이 동일한 Z 높이에 있지 않습니다. 슬롯 경로가 생성되지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="667"/>
+      <location filename="../../../Path/Op/Slot.py" line="636"/>
+      <source>Only one or two shapes should be selected.</source>
+      <translation type="unfinished">Only one or two shapes should be selected.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Slot.py" line="668"/>
       <source>Current Extend Radius value produces negative arc radius.</source>
       <translation>현재 확장 반경 값이 음수 호 반경을 생성합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="683"/>
+      <location filename="../../../Path/Op/Slot.py" line="684"/>
       <source>No path extensions available for full circles.</source>
       <translation>전체 원에는 사용 가능한 경로 확장이 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="711"/>
-      <location filename="../../../Path/Op/Slot.py" line="837"/>
+      <location filename="../../../Path/Op/Slot.py" line="712"/>
+      <location filename="../../../Path/Op/Slot.py" line="847"/>
       <source>operation collides with model.</source>
       <translation>작업이 모델과 충돌합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="802"/>
-      <location filename="../../../Path/Op/Slot.py" line="1083"/>
+      <location filename="../../../Path/Op/Slot.py" line="811"/>
+      <location filename="../../../Path/Op/Slot.py" line="1080"/>
       <source>Verify slot path start and end points.</source>
       <translation>슬롯 경로의 시작점과 끝점을 확인하십시오.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="909"/>
-      <source>The selected face is inaccessible.</source>
-      <translation>선택한 면에 접근할 수 없습니다.</translation>
+      <location filename="../../../Path/Op/Slot.py" line="818"/>
+      <source>Shapes should be parallel to create slot between them.</source>
+      <translation type="unfinished">Shapes should be parallel to create slot between them.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="928"/>
-      <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation>꼭짓점만 선택되었습니다. 기본 지오메트리에 다른 피처를 추가하십시오.</translation>
+      <location filename="../../../Path/Op/Slot.py" line="911"/>
+      <source>Points not defined.</source>
+      <translation type="unfinished">Points not defined.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="952"/>
+      <location filename="../../../Path/Op/Slot.py" line="926"/>
+      <source>Only one vertex selected. Add another feature to the Base Geometry.</source>
+      <translation type="unfinished">Only one vertex selected. Add another feature to the Base Geometry.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Slot.py" line="957"/>
       <source>A single selected face must have four edges.</source>
       <translation>단일 선택 면에는 4개의 모서리가 있어야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1014"/>
+      <location filename="../../../Path/Op/Slot.py" line="1122"/>
+      <source>Can not create slot from this circle</source>
+      <translation type="unfinished">Can not create slot from this circle</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Slot.py" line="1126"/>
+      <source>Can not create slot from not horizontal circle</source>
+      <translation type="unfinished">Can not create slot from not horizontal circle</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Slot.py" line="1144"/>
+      <location filename="../../../Path/Op/Slot.py" line="1162"/>
+      <location filename="../../../Path/Op/Slot.py" line="1171"/>
+      <source>Can not create slot from this edge</source>
+      <translation type="unfinished">Can not create slot from this edge</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Slot.py" line="1154"/>
+      <source>Can not create slot from too small circle</source>
+      <translation type="unfinished">Can not create slot from too small circle</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Slot.py" line="1016"/>
       <source>No parallel edges identified.</source>
       <translation>평행한 모서리가 식별되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1036"/>
+      <location filename="../../../Path/Op/Slot.py" line="1038"/>
       <source>value error.</source>
       <translation>값 오류.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1097"/>
+      <location filename="../../../Path/Op/Slot.py" line="1091"/>
       <source>Current tool larger than arc diameter.</source>
       <translation>현재 툴이 호 직경보다 큽니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1170"/>
-      <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
-      <translation>실패, 모서리에서의 슬롯은 직선, 호 및 원만 허용합니다.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Slot.py" line="1188"/>
+      <location filename="../../../Path/Op/Slot.py" line="1189"/>
       <source>Failed to determine point 1 from</source>
       <translation>점 1을 결정하지 못함:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1198"/>
+      <location filename="../../../Path/Op/Slot.py" line="1199"/>
       <source>Failed to determine point 2 from</source>
       <translation>점 2를 결정하지 못함:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1211"/>
+      <location filename="../../../Path/Op/Slot.py" line="1212"/>
       <source>Selected geometry not parallel.</source>
       <translation>선택한 지오메트리가 평행하지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1285"/>
+      <location filename="../../../Path/Op/Slot.py" line="1278"/>
       <source>The selected face is not oriented vertically:</source>
       <translation>선택한 면이 수직으로 배향되지 않았습니다:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Slot.py" line="1730"/>
-      <location filename="../../../Path/Op/Slot.py" line="1738"/>
+      <location filename="../../../Path/Op/Slot.py" line="1659"/>
+      <location filename="../../../Path/Op/Slot.py" line="1667"/>
       <source>Current offset value produces negative radius.</source>
       <translation>현재 오프셋 값이 음수 반경을 생성합니다.</translation>
     </message>
@@ -10344,12 +10389,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="141"/>
+      <location filename="../../../PathCommands.py" line="142"/>
       <source>Toggle Operation</source>
       <translation>작업 전환</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="145"/>
+      <location filename="../../../PathCommands.py" line="146"/>
       <source>Toggles the active state of the operation</source>
       <translation>작업의 활성 상태를 전환합니다</translation>
     </message>
@@ -10357,12 +10402,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="211"/>
+      <location filename="../../../PathCommands.py" line="212"/>
       <source>Copy Operation</source>
       <translation>작업 복사</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="212"/>
+      <location filename="../../../PathCommands.py" line="213"/>
       <source>Copies the operation in the job</source>
       <translation>작업 내의 작업을 복사합니다</translation>
     </message>
@@ -11657,7 +11702,7 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>PathHelix</name>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="702"/>
+      <location filename="../../../Path/Op/Helix.py" line="710"/>
       <source>Skipped hole at position %s</source>
       <translation>%s 위치의 홀을 건너뛰었습니다</translation>
     </message>

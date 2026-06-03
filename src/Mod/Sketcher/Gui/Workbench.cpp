@@ -321,7 +321,7 @@ inline void SketcherAddWorkspaceLines<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Commands"
     );
 
-    if (hGrp->GetBool("UnifiedLineCommands", false)) {
+    if (hGrp->GetBool("UnifiedLineCommands", true)) {
         geom << "Sketcher_CompLine";
     }
     else {

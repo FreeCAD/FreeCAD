@@ -283,6 +283,23 @@ public:
     {}
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint*, std::string& subname) const;
+    /** Return additional sub-element names related to a picked element.
+     *
+     * Lets a view provider expand a single pick into a set of logically related
+     * sub-elements (for example, adjacent faces of the same feature). The
+     * default implementation returns an empty vector.
+     *
+     * @param subname    the picked sub-element name (e.g. "Face1")
+     * @param pickPoint  3D pick location, used to filter results by proximity
+     * @return pairs of (element, subName), where @c element is the bare name
+     *         for display/categorization (e.g. "Face1") and @c subName is the
+     *         full sub-element reference used for selection (e.g.
+     *         "InternalFace1").
+     */
+    virtual std::vector<std::pair<std::string, std::string>> getRelatedElements(
+        const std::string& subname,
+        const SbVec3f& pickPoint
+    ) const;
     /// return a hit element to the selection path or 0
     virtual std::string getElement(const SoDetail*) const
     {

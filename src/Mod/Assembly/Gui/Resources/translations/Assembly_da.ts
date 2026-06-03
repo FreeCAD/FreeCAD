@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1876"/>
+      <location filename="../../../JointObject.py" line="1888"/>
       <source>Distance</source>
       <translation>Afstand</translation>
     </message>
@@ -175,22 +175,22 @@
       <translation>Ødelagt forbindelse i: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1695"/>
+      <location filename="../../../JointObject.py" line="1696"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Vælg 2 elementer fra 2 forskellige komponenter</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1878"/>
+      <location filename="../../../JointObject.py" line="1890"/>
       <source>Radius 1</source>
       <translation>Radius 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1880"/>
+      <location filename="../../../JointObject.py" line="1892"/>
       <source>Thread pitch</source>
       <translation>Gevindstigning</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1882"/>
+      <location filename="../../../JointObject.py" line="1894"/>
       <source>Pitch radius</source>
       <translation>Stigningsradius</translation>
     </message>
@@ -806,42 +806,52 @@ SLOPE definerer udglatnigen af overgangen mellem henholdsvis 0 og H1 og H2 til 0
       <translation>Definerer forskydning for forbindelsens andet markerede element (koordinatsystem)</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="237"/>
       <source>Reverse the direction of the joint</source>
       <translation>Vend forbindelsesretningen</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="240"/>
       <source>Reverse</source>
       <translation>Modsat</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
+      <source>Rotate the joint 90 degrees</source>
+      <translation type="unfinished">Rotate the joint 90 degrees</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
+      <source>Rotate</source>
+      <translation>Roter</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="291"/>
       <source>Limits</source>
       <translation>Grænser</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min length</source>
       <translation>Mindste længde</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="320"/>
       <source>Max length</source>
       <translation>Største længde</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="343"/>
       <source>Min angle</source>
       <translation>Mindste vinkel</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="372"/>
       <source>Max angle</source>
       <translation>Største vinkel</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="404"/>
       <source>Reverse rotation</source>
       <translation>Vend rotation</translation>
     </message>
@@ -1255,27 +1265,27 @@ Filerne hedder "runPreDrag. smt" og "dragging.log" og er placeret i standardmapp
       <translation>0,00 s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="256"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="278"/>
       <source>Step backward</source>
       <translation>Gå tilbage</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="276"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="310"/>
       <source>Play backward</source>
       <translation>Afspil baglæns</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="296"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="348"/>
       <source>Stop</source>
       <translation>Stop</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="316"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="380"/>
       <source>Play forward</source>
       <translation>Afspil forlæns</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="336"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="412"/>
       <source>Step forward</source>
       <translation>Gå fremad</translation>
     </message>

@@ -277,7 +277,7 @@ class ObjectArray:
             obj.Offset,
             obj.CopiesX,
             obj.CopiesY,
-            obj.Angle,
+            obj.Angle.Value,
             obj.Centre,
             obj.SwapDirection,
             jitterMagnitude,
@@ -478,12 +478,17 @@ class PathArray:
 
     def getPolarArray(self, commands):
         """Array type Polar"""
-        for i in range(self.copies):
-            ang = 360
-            if self.copies > 0:
-                ang = self.polarAngle / self.copies * (1 + i)
+        if not self.copies:
+            return
 
+        if Path.Geom.isRoughly(self.polarAngle, 360):
+            stepAng = self.polarAngle / (self.copies + 1)
+        else:
+            stepAng = self.polarAngle / self.copies
+
+        for i in range(self.copies):
             # prepare placement for polar pattern
+            ang = stepAng * (i + 1)
             pl = FreeCAD.Placement()
             pl.rotate(self.polarCentre, FreeCAD.Vector(0, 0, 1), ang)
 
