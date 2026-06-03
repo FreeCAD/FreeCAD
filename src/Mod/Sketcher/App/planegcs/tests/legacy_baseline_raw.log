@@ -1,0 +1,22 @@
+======================================================================
+Legacy Loop-Based Constraint Solver Simulation (PlaneGCS)
+======================================================================
+
+[1/5] Initializing hexagonal grid...
+  [OK] Initialized 25 nodes
+
+[2/5] Loading edge constraints...
+  [OK] Loaded 57 edge constraints
+
+[3/5] Evaluating constraints...
+  [OK] Residual norm: 9.805224e-16
+
+[4/5] Running LEGACY LOOP performance benchmark...
+  [OK] Iterations: 500,000
+  [OK] Total constraint evaluations: 28,500,000
+  [OK] Time elapsed: 19.7017 seconds
+  [OK] Throughput: 1.45 M constraints/sec
+
+======================================================================
+[COMPLETE] Legacy Loop-Based Constraint Solver Simulation (PlaneGCS)
+======================================================================

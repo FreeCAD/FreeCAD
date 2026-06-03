@@ -119,7 +119,9 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(PlaneGCS_SRCS
     planegcs/GCS.cpp
+    planegcs/HP_SparseJacobian.cpp
     planegcs/GCS.h
+    planegcs/HP_SparseJacobian.h
     planegcs/Util.h
     planegcs/Geo.cpp
     planegcs/Geo.h

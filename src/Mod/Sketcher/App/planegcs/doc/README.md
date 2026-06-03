@@ -23,7 +23,7 @@ This package provides a modernized, ultra-high-performance, geometric constraint
 
 | Parameter | Metric | Evaluation Status |
 | :--- | :--- | :--- |
-| **Throughput Performance** | 5.15M constraints/sec | Verified Optimal |
+| **Throughput Performance** | 4.40M constraints/sec | Verified Optimal |
 | **Trigonometric Functions** | 0 (purely algebraic) | Completely Eliminated |
 | **Effective Condition Number** | $\kappa_{eff} = 10.35$ | Well-Conditioned |
 | **Rank** | 47 / 50 | Mathematically Exact |

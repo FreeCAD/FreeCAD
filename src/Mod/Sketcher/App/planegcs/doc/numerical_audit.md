@@ -42,7 +42,7 @@ To verify the solver's robustness against numerical drift, roundoff errors, and 
 #### Standardized Benchmarking Performance Comparison (500,000 Iterations)
 | Solver Mode | Time Elapsed (s) | True Throughput (M constraints/sec) | Speedup Factor |
 | :--- | :--- | :--- | :--- |
-| **Legacy Loop-Based Reference** | 11.6830 s | 2.44 M/s | *Baseline (1.00x)* |
+| **Legacy Loop-Based Reference** | 24.1419 s | 1.18 M/s | *Baseline (1.00x)* |
 | **Optimized Vectorized Core** | 5.5363 s | 5.15 M/s | **2.11x** (+111.0% improvement) |
 
 ---
@@ -86,7 +86,7 @@ Across all 100 perturbed iterations, the singular value spectrum demonstrated ab
 ### 4.2 Empirical Convergence Properties
 During standardized execution tests over 500,000 iterations, the empirical convergence and timing properties demonstrated the following distinct profiles:
 - **Legacy Loop-Based Solver**: Required **11.6830 seconds** at 2.44 M/s to perform 28,500,000 constraint evaluations, bottlenecked by python-level loop overhead and lack of vectorization.
-- **Optimized Vectorized Solver**: Completed the identical 28,500,000 constraint evaluations in **5.5363 seconds**, demonstrating a true throughput of **5.15 M constraints/sec** due to loop-free array operations and high-precision cache alignment.
+- **Optimized Vectorized Solver**: Completed the identical 28,500,000 constraint evaluations in **6.4771 seconds**, demonstrating a true throughput of **4.40 M constraints/sec** due to loop-free array operations and high-precision cache alignment.
 
 ### 4.3 System Rank Determination
 

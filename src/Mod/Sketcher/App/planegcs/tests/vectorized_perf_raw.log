@@ -1,0 +1,35 @@
+======================================================================
+High-Performance Sparse Jacobian Solver (PlaneGCS)
+======================================================================
+
+[1/5] Initializing hexagonal grid...
+  [OK] Initialized 25 nodes
+
+[2/5] Loading edge constraints...
+  [OK] Loaded 57 edge constraints
+  [OK] Vectorized evaluation ready
+
+[3/5] Evaluating constraints...
+  [OK] Residual norm: 9.805224e-16
+
+[4/5] Computing Jacobian...
+  [OK] Jacobian shape: (57, 50)
+  [OK] Rank: 47
+  [OK] Condition number: 1.03e+01
+
+[5/5] Running VECTORIZED performance benchmark...
+  [OK] Iterations: 500,000
+  [OK] Total constraint evaluations: 28,500,000
+  [OK] Time elapsed: 5.6244 seconds
+  [OK] Throughput: 5.07 M constraints/sec
+
+[6/6] Benchmarking RAW NumPy operations...
+  [OK] Raw iterations: 1,000,000
+  [OK] Raw throughput: 5.27 M constraints/sec
+  [INFO] Raw current: 5.27M constraints/sec
+
+  [ANALYSIS] Method overhead: 1.04x
+
+======================================================================
+[COMPLETE] High-Performance Sparse Jacobian Solver (PlaneGCS)
+======================================================================
