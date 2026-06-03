@@ -166,7 +166,7 @@ class Hatch(DraftObject):
             for sel in obj.Faces:
                 if not hasattr(sel[0], "Shape"):
                     pass
-                elif sel[1] == ("", ):
+                elif sel[1] == ("",):
                     faces.extend(sel[0].Shape.Faces)
                 else:
                     for sub in sel[1]:
@@ -273,9 +273,9 @@ class Hatch(DraftObject):
                 sel_subs = sel.SubElementNames
             else:
                 sel_obj = sel
-                sel_subs = ("", )
+                sel_subs = ("",)
             if sel_obj.Name != obj.Name:
-                if sel_subs in ((), ("", )):
+                if sel_subs in ((), ("",)):
                     # Use all faces of the object.
                     sels.append((sel_obj, ""))
                 else:
