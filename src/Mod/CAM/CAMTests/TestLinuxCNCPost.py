@@ -27,7 +27,7 @@ import Path
 from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
-from Machine.models.machine import Machine, Toolhead, ToolheadType
+from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
@@ -88,6 +88,7 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         # Create a machine configuration for each test
         self.post._machine = Machine.create_3axis_config()
         self.post._machine.name = "Test LinuxCNC Machine"
+        self.post.apply_configuration_bundle()
         # Add a default toolhead (required by export2)
         toolhead = Toolhead(
             name="Default Toolhead",
@@ -158,7 +159,7 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         # G64 should be in the preamble (without P parameter)
         lines = gcode.splitlines()
         has_g64 = any("G64" in line and "P" not in line for line in lines)
-        self.assertTrue(has_g64, "Expected G64 without P parameter")
+        self.assertTrue(has_g64, f"Expected G64 without P parameter in\n{gcode}")
 
     def test_blend_mode_blend_with_tolerance(self):
         """Test BLEND mode with tolerance outputs G64 P<tolerance>."""
@@ -375,9 +376,10 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
             AFTER:  G33.1 K0.0591 Z-0.3937
         """
         # Setup - set imperial units
-        from Machine.models.machine import OutputUnits
 
         self.post._machine.output.units = OutputUnits.IMPERIAL
+        # Reapply to get the above effective
+        self.post.apply_configuration_bundle()
 
         command = Path.Command("G84", {"Z": -10.0, "F": 1.5})
         command.Annotations = {"rigid": "True", "operation": "tapping"}
@@ -428,7 +430,6 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         command.Annotations = {"rigid": "True", "operation": "tapping"}
 
         # Execute
-        self.post.apply_configuration_bundle()
         result = self.post._convert_drill_cycle(command)
 
         # Verify - should not contain G33.1 (fallback to parent)

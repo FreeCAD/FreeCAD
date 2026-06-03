@@ -165,12 +165,6 @@ Development file for OndselSolver
     %endif
     %if %{with tests}
         -DENABLE_DEVELOPER_TESTS=TRUE \
-    %if %{without bundled_gtest}
-        -DFREECAD_USE_EXTERNAL_GTEST=TRUE \
-    %else
-        -DINSTALL_GTEST=OFF \
-        -DINSTALL_GMOCK=OFF \
-    %endif
     %else
         -DENABLE_DEVELOPER_TESTS=FALSE \
     %endif

@@ -33,6 +33,7 @@ if(BUILD_GUI)
           SketcherTests/GuiTestCase.py
           SketcherTests/TestPlacementUpdate.py
           SketcherTests/TestOnViewParameterGui.py
+          SketcherTests/TestExternalFacePreselection.py
     )
 endif(BUILD_GUI)
 

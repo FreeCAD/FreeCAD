@@ -581,6 +581,7 @@ class TestExport2Integration(unittest.TestCase):
         post = PostProcessor(job, "", "", "mm")
         if machine:
             post._machine = machine
+        post.apply_configuration_bundle()
         return post
 
     def _run_export2(self, machine=None, job=None):
