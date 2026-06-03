@@ -629,6 +629,9 @@ static void finishFeature(
     if (updateDocument) {
         cmd->updateActive();
     }
+    else {
+        feature->recomputeFeature();
+    }
 
     auto base = dynamic_cast<PartDesign::Feature*>(feature);
     if (base) {
@@ -1890,7 +1893,8 @@ void finishDressupFeature(
     const std::string& which,
     Part::Feature* base,
     const std::vector<std::string>& SubNames,
-    const bool useAllEdges
+    const bool useAllEdges,
+    const bool updateDocument = true
 )
 {
     std::ostringstream str;
@@ -1914,7 +1918,7 @@ void finishDressupFeature(
         FCMD_OBJ_CMD(Feat, "UseAllEdges = True");
     }
     Gui::Command::doCommand(cmd->Gui, "Gui.Selection.clearSelection()");
-    finishFeature(cmd, Feat, base);
+    finishFeature(cmd, Feat, base, true, updateDocument);
 
     App::DocumentObject* baseFeature = static_cast<PartDesign::DressUp*>(Feat)->Base.getValue();
     if (baseFeature) {
@@ -1948,7 +1952,7 @@ void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
         SubNames = std::vector<std::string>(selected.getSubNames());
     }
 
-    finishDressupFeature(cmd, which, base, SubNames, useAllEdges);
+    finishDressupFeature(cmd, which, base, SubNames, useAllEdges, !noSelection);
 }
 
 //===========================================================================
