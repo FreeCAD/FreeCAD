@@ -43,6 +43,7 @@
 #include "SnapManager.h"
 
 class QWidget;
+class QTimer;
 
 namespace Sketcher
 {
@@ -108,6 +109,10 @@ private:
     static inline void drawEdit(
         ViewProviderSketch& vp,
         const std::list<std::vector<Base::Vector2d>>& list
+    );
+    static inline void drawParallelPerpendicularHint(
+        ViewProviderSketch& vp,
+        const std::vector<Base::Vector2d>& HintLines
     );
     static inline void drawLineExtensionAutoConstraintHint(
         ViewProviderSketch& vp,
@@ -288,6 +293,15 @@ protected:
         unsigned int augmentationlevel = 0
     ) const;
 
+    virtual bool getStartPointOfCurrentSegment(Base::Vector2d& point) const;
+    void drawParallelPerpendicularHint(const std::vector<Base::Vector2d>& HintLines) const;
+    void resetParallelPerpendicularHint();
+    void clearParallelPerpendicularHintDrawing() const;
+    void renderParallelPerpendicularHint() const;
+    void startHoverTimer();
+    void stopHoverTimer();
+    void onHoverTimeout();
+
     void clearEdit() const;
     void clearLineExtensionAutoConstraintHintDrawing() const;
     void clearEditMarkers() const;
@@ -408,6 +422,9 @@ protected:
 
 private:
     LineExtensionAutoConstraintHint lineExtensionAutoConstraintHint;
+    int parallelPerpendicularRefGeoId {Sketcher::GeoEnum::GeoUndef};
+    int lastHoveredGeoId {Sketcher::GeoEnum::GeoUndef};
+    QTimer* hoverTimer {nullptr};
 };
 
 

@@ -254,6 +254,15 @@ private:
         toolWidgetManager.resetControls();
     }
 
+    bool getStartPointOfCurrentSegment(Base::Vector2d& point) const override
+    {
+        if (state() == SelectMode::SeekSecond) {
+            point = startPoint;
+            return true;
+        }
+        return false;
+    }
+
 private:
     Base::Vector2d startPoint, endPoint;
     double length;

@@ -480,6 +480,14 @@ struct EditModeScenegraphNodes
     SoDrawStyle* LineExtensionAutoConstraintHintDrawStyle;
     //@}
 
+    /** @name Parallel/Perpendicular reference line hint nodes */
+    //@{
+    SoMaterial* ParallelPerpendicularHintMaterials;
+    SoCoordinate3* ParallelPerpendicularHintCoordinate;
+    SoLineSet* ParallelPerpendicularHintSet;
+    SoDrawStyle* ParallelPerpendicularHintDrawStyle;
+    //@}
+
     /** @name Temporal edit markers nodes- For operation rendering, such as trimming green circles*/
     //@{
     SoMaterial* EditMarkersMaterials;

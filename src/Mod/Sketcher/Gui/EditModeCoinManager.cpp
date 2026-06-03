@@ -1129,6 +1129,50 @@ void EditModeCoinManager::drawLineExtensionAutoConstraintHint(
     }
 }
 
+void EditModeCoinManager::drawParallelPerpendicularHint(const std::vector<Base::Vector2d>& HintLines)
+{
+    const int numPoints = static_cast<int>(HintLines.size());
+
+    if (numPoints < 4) {
+        editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.setNum(0);
+        editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->point.setNum(0);
+        return;
+    }
+
+    editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.setNum(2);
+    editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.set1Value(0, 2);
+    editModeScenegraphNodes.ParallelPerpendicularHintSet->numVertices.set1Value(1, 2);
+    editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->point.setNum(numPoints);
+    editModeScenegraphNodes.ParallelPerpendicularHintMaterials->diffuseColor.setNum(numPoints);
+
+    editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle->lineWidth
+        = editModeScenegraphNodes.InformationDrawStyle->lineWidth;
+    editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle->linePattern
+        = editModeScenegraphNodes.CurvesConstructionDrawStyle->linePattern;
+    editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle->linePatternScaleFactor
+        = editModeScenegraphNodes.CurvesConstructionDrawStyle->linePatternScaleFactor;
+
+    int i = 0;
+    for (const auto& point : HintLines) {
+        editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->point.set1Value(
+            i,
+            SbVec3f(
+                static_cast<float>(point.x),
+                static_cast<float>(point.y),
+                static_cast<float>(
+                    ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
+                    * drawingParameters.zEdit
+                )
+            )
+        );
+        editModeScenegraphNodes.ParallelPerpendicularHintMaterials->diffuseColor.set1Value(
+            i,
+            drawingParameters.InformationColor
+        );
+        ++i;
+    }
+}
+
 void EditModeCoinManager::setPositionText(const Base::Vector2d& Pos, const SbString& text)
 {
     editModeScenegraphNodes.textX->string = text;
@@ -1894,6 +1938,39 @@ void EditModeCoinManager::createEditModeInventorNodes()
     lineExtensionAutoConstraintHintRoot->addChild(
         editModeScenegraphNodes.LineExtensionAutoConstraintHintSet
     );
+
+    // Parallel / Perpendicular reference lines ++++++++++++++++++++++++
+    SoSeparator* parallelPerpendicularHintRoot = new SoSeparator;
+    editModeScenegraphNodes.EditRoot->addChild(parallelPerpendicularHintRoot);
+
+    SoPickStyle* parallelPerpendicularHintPickStyle = new SoPickStyle;
+    parallelPerpendicularHintPickStyle->style = SoPickStyle::UNPICKABLE;
+    parallelPerpendicularHintRoot->addChild(parallelPerpendicularHintPickStyle);
+
+    editModeScenegraphNodes.ParallelPerpendicularHintMaterials = new SoMaterial;
+    editModeScenegraphNodes.ParallelPerpendicularHintMaterials->setName(
+        "ParallelPerpendicularHintMaterials"
+    );
+    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintMaterials
+    );
+
+    editModeScenegraphNodes.ParallelPerpendicularHintCoordinate = new SoCoordinate3;
+    editModeScenegraphNodes.ParallelPerpendicularHintCoordinate->setName(
+        "ParallelPerpendicularHintCoordinate"
+    );
+    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintCoordinate
+    );
+
+    editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle = new SoDrawStyle;
+    editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle->setName(
+        "ParallelPerpendicularHintDrawStyle"
+    );
+    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintDrawStyle
+    );
+
+    editModeScenegraphNodes.ParallelPerpendicularHintSet = new SoLineSet;
+    editModeScenegraphNodes.ParallelPerpendicularHintSet->setName("ParallelPerpendicularHintLineSet");
+    parallelPerpendicularHintRoot->addChild(editModeScenegraphNodes.ParallelPerpendicularHintSet);
 
     // stuff for the EditMarkers +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editMarkersRoot = new SoSeparator;
