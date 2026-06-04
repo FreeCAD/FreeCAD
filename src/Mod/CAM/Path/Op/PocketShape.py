@@ -206,9 +206,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             self.horiz = []
             self.vert = []
             self.edges = []
+            virtFeatures = []
             for base, subList in obj.Base:
                 for sub in subList:
-                    if sub in avoidFeatures:
+                    if sub in avoidFeatures:  # TODO looks like do nothing
                         # skip this sub shape
                         continue
                     if "Edge" in sub and self.classifySubEdge(base, sub):
@@ -225,6 +226,14 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 if wire.isClosed():
                     face = Part.Face(wire)
                     self.horiz.append((face, base))
+                else:
+                    p0 = wire.OrderedVertexes[0].Point
+                    p1 = wire.OrderedVertexes[-1].Point
+                    e = Part.makeLine(p0, p1)
+                    wire = Part.Wire(sortEdges + [e])
+                    face = Part.Face(wire)
+                    self.horiz.append((face, base))
+                    virtFeatures.append([None, face, e])
 
             # Convert horizontal faces to use outline only if requested
             Path.Log.debug("UseOutline: {}".format(obj.UseOutline))
@@ -238,22 +247,37 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
             # Check if selected vertical faces form a loop
             if len(self.vert) > 0:
-                self.vertical = Path.Geom.combineConnectedShapes(self.vert)
-                self.vWires = [
-                    TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
-                    for shape in self.vertical
+                zMin = min(e.BoundBox.ZMin for f in self.vert for e in f.Edges)
+                bEdges = [
+                    e
+                    for f in self.vert
+                    for e in f.Edges
+                    if Path.Geom.isRoughly(e.BoundBox.ZMax, zMin)
                 ]
-                for wire in self.vWires:
-                    w = Path.Geom.removeDuplicateEdges(wire)
-                    face = Part.Face(w)
-                    # face.tessellate(0.1)
-                    if Path.Geom.isRoughly(face.Area, 0):
-                        Path.Log.error("Vertical faces do not form a loop - ignoring")
-                    else:
+                for se in Part.sortEdges(bEdges):
+                    wire = Part.Wire(se)
+                    if wire.isClosed():
+                        face = Part.Face(wire)
                         self.horiz.append(face)
+                    else:
+                        p0 = wire.OrderedVertexes[0].Point
+                        p1 = wire.OrderedVertexes[-1].Point
+                        e = Part.makeLine(p0, p1)
+                        wire = Part.Wire(wire.Edges + [e])
+                        face = Part.Face(wire)
+                        self.horiz.append(face)
+                        virtFeatures.append([None, face, e])
+
+            # Add base to virtaul features
+            for i in range(len(virtFeatures)):
+                for base, _ in obj.Base:
+                    if base.Shape.BoundBox.intersect(virtFeatures[i][1].BoundBox):
+                        virtFeatures[i][0] = base
+                        break
 
             # Add faces for extensions
             # Note: Extension faces don't have a parent base object, so we append them directly
+            extensions.extend(FeatureExtensions.getExtensions(obj, virtFeatures))
             self.exts = []
             for ext in extensions:
                 if not ext.avoid:
