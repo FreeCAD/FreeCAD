@@ -29,11 +29,21 @@ from CAMTests.PathTestUtils import PathTestBase
 
 class TestPathToolController(PathTestBase):
     def setUp(self):
+        self.units = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+        self.saved_user_schema = self.units.GetInt("UserSchema", 0)
+        self.saved_decimals = self.units.GetInt("Decimals", 2)
+        self.saved_schema = FreeCAD.Units.getSchema()
+        self.units.SetInt("UserSchema", 6)
+        self.units.SetInt("Decimals", 6)
+        FreeCAD.Units.setSchema(6)
         self.doc = FreeCAD.newDocument("TestPathToolController")
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
 
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)
+        self.units.SetInt("UserSchema", self.saved_user_schema)
+        self.units.SetInt("Decimals", self.saved_decimals)
+        FreeCAD.Units.setSchema(self.saved_schema)
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     def createTool(self, name="t1", diameter=1.75):
