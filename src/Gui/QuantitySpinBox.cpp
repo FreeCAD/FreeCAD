@@ -581,44 +581,48 @@ bool QuantitySpinBox::isNormalized()
             return false;
         }
 
-        if ((operatorExpr->getOperator() == OperatorExpression::NEG
-             || operatorExpr->getOperator() == OperatorExpression::POS)) {
-            // numbers with positive or negative sign without unit
-            if (freecad_cast<NumberExpression*>(operatorExpr->getLeft())) {
-                return true;
-            }
-
-            auto innerOperatorExpr = freecad_cast<OperatorExpression*>(operatorExpr->getLeft());
-            if (innerOperatorExpr->getOperator() == OperatorExpression::UNIT) {
-                // numbers with positive or negative sign and unit
-                if (!freecad_cast<UnitExpression*>(innerOperatorExpr->getRight())) {
-                    return false;
-                }
-
-                auto left = innerOperatorExpr->getLeft();
-                if (freecad_cast<NumberExpression*>(left)) {
-                    return true;
-                }
-
-                auto leftOp = freecad_cast<OperatorExpression*>(left);
-                if (leftOp
-                    && (leftOp->getOperator() == OperatorExpression::NEG
-                        || leftOp->getOperator() == OperatorExpression::POS)
-                    && freecad_cast<NumberExpression*>(leftOp->getLeft())) {
-                    return true;
-                }
-            }
-        }
-        else if (
-            operatorExpr->getOperator() == OperatorExpression::UNIT
+        if (operatorExpr->getOperator() == OperatorExpression::UNIT
             && freecad_cast<UnitExpression*>(operatorExpr->getRight())
-            && freecad_cast<NumberExpression*>(operatorExpr->getLeft())
-        ) {
+            && freecad_cast<NumberExpression*>(operatorExpr->getLeft())) {
             // numbers without sign but with unit
             return true;
         }
+
+        if ((operatorExpr->getOperator() != OperatorExpression::NEG
+             && operatorExpr->getOperator() != OperatorExpression::POS)) {
+            return false;
+        }
+
+        // numbers with positive or negative sign without unit
+        if (freecad_cast<NumberExpression*>(operatorExpr->getLeft())) {
+            return true;
+        }
+
+        auto innerOperatorExpr = freecad_cast<OperatorExpression*>(operatorExpr->getLeft());
+        if (innerOperatorExpr->getOperator() != OperatorExpression::UNIT) {
+            return false;
+        }
+        if (!freecad_cast<UnitExpression*>(innerOperatorExpr->getRight())) {
+            return false;
+        }
+
+        // numbers with positive or negative sign and unit
+        auto left = innerOperatorExpr->getLeft();
+        if (freecad_cast<NumberExpression*>(left)) {
+            return true;
+        }
+        auto leftOp = freecad_cast<OperatorExpression*>(left);
+        if (leftOp
+            && (leftOp->getOperator() == OperatorExpression::NEG
+                || leftOp->getOperator() == OperatorExpression::POS)
+            && freecad_cast<NumberExpression*>(leftOp->getLeft())) {
+            return true;
+        }
     }
-    catch (Base::Exception e) {
+    catch (Base::Exception) {
+        // The exception is intentionally ignored here and should be handled,
+        // when the value is assigned
+        return false;
     }
     return false;
 }
