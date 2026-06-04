@@ -830,8 +830,8 @@ bool Application::isFineGrainedRecomputeEnabled()
     static const ParameterGrp::handle hGrp = GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/General"
     );
-    bool enableAsyncRecompute = hGrp->GetBool("FineGrainedRecompute");
-    return enableAsyncRecompute;
+    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute");
+    return enableFineGrainedRecompute;
 }
 
 bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const
