@@ -1873,10 +1873,8 @@ StdCmdPlacement::StdCmdPlacement()
 void StdCmdPlacement::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(
-        nullptr,
-        App::GeoFeature::getClassTypeId()
-    );
+    std::vector<Gui::SelectionObject> selection
+        = Gui::Selection().getSelectionEx(nullptr, App::GeoFeature::getClassTypeId());
     auto plm = new Gui::Dialog::TaskPlacement();
     if (!selection.empty()) {
         auto obj = selection.front().getObject();
