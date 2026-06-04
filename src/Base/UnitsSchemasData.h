@@ -625,7 +625,6 @@ inline const UnitsSchemaSpec s7
     {
         { "Length", {
             { 0.00000254      , "in"       , in                },
-            { 2.54            , "thou"     , in / 1000         },
             { 304.8           , "\""       , in                },
             { 914.4           , "'"        , ft                },
             { 1'609'344.0     , "yd"       , yd                },

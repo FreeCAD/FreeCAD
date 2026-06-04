@@ -342,9 +342,30 @@ TEST_F(SchemaTest, imperial_decimal_20_mm_precision_0)
 TEST_F(SchemaTest, imperial_1_mm_precision_0)
 {
     const std::string result = setWithPrecision("Imperial", 1.0, Unit::Length, 0);
-    const auto expect {"39 thou"};
+    const auto expect {"0 in"};
 
     EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, imperial_1_mm_prefers_inches)
+{
+    UnitsApi::setSchema("Imperial");
+    Quantity quantity {1.0, Unit::Length};
+
+    double factor {};
+    std::string unitString;
+    quantity.getUserString(factor, unitString);
+
+    EXPECT_EQ(unitString, "in");
+    EXPECT_EQ(factor, Quantity::Inch.getValue());
+}
+
+TEST_F(SchemaTest, imperial_still_parses_thou)
+{
+    const auto quantity = Quantity::parse("1 thou");
+
+    EXPECT_DOUBLE_EQ(quantity.getValue(), Quantity::Thou.getValue());
+    EXPECT_EQ(quantity.getUnit(), Unit::Length);
 }
 
 TEST_F(SchemaTest, imperial_0_mm_precision_0)
@@ -1281,9 +1302,7 @@ TEST_F(SchemaTest, sweep_imperial)
     UnitsApi::setDecimals(6);
     sweepCheck({
         // Length
-        {"1 thou",
-         "10 thou",
-         "1\"",
+        {"1\"",
          "10\"",
          "1'",
          "2'",
