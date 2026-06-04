@@ -145,7 +145,7 @@ def get_mesh_to_solve(analysis):
             if not mesh_to_solve:
                 mesh_to_solve = m
             else:
-                raise Base.FreeCADError("FEM: multiple mesh in analysis not yet supported!")
+                raise Base.FreeCADError("FEM: multiple meshes in analysis are not supported yet")
     if mesh_to_solve is not None:
         return mesh_to_solve
     else:
