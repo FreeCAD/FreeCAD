@@ -56,7 +56,6 @@ from lazy_loader.lazy_loader import LazyLoader
 
 Part = LazyLoader("Part", globals(), "Part")
 TechDraw = LazyLoader("TechDraw", globals(), "TechDraw")
-FeatureExtensions = LazyLoader("Path.Op.FeatureExtension", globals(), "Path.Op.FeatureExtension")
 DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 
@@ -1082,33 +1081,27 @@ def _workingEdgeHelperManual(op, obj, depths):
     insideRegions = list()
     outsideRegions = list()
 
-    # User selections, with extensions
+    # User selections
     selectedRegions = list()
     selectedEdges = list()
-
-    # Get extensions and identify faces to avoid
-    extensions = FeatureExtensions.getExtensions(obj)
-    avoidFeatures = [e for e in extensions if e.avoid]
-
-    # Similarly, expand selected regions with extensions
-    for ext in extensions:
-        if not ext.avoid:
-            if wire := ext.getWire():
-                # NOTE: Can NOT just make a face directly, since that just gives
-                # the outside profile and removes internal holes
-                for f in ext.getExtensionFaces(wire):
-                    selectedRegions.extend(f.Faces)
 
     for base, subs in obj.Base:
         for sub in subs:
             element = base.Shape.getElement(sub)
-            if sub.startswith("Face") and sub not in avoidFeatures:
+            if sub.startswith("Face"):
                 shape = Part.Face(element.OuterWire) if obj.UseOutline else element
                 selectedRegions.append(shape)
             # Omit vertical edges, since they project to nothing in the XY plane
             # and cause processing failures later if included
             elif sub.startswith("Edge") and not Path.Geom.isVertical(element):
                 selectedEdges.append(element)
+
+    # Expand selected regions with extensions
+    if obj.ExtensionOffset:
+        solids = [model.Shape for model in op.model]
+        tol = op.job.GeometryTolerance.Value
+        ext = PathOpUtil.getExtended(selectedRegions, obj.ExtensionOffset.Value, solids, tol)
+        selectedRegions = ext
 
     # Multiple input solids can be selected- make a single part out of them,
     # will process each solid separately as appropriate
@@ -1236,24 +1229,19 @@ def _get_working_edges(op, obj):
     edge_list = list()
     rawEdges = list()
 
-    # Get extensions and identify faces to avoid
-    extensions = FeatureExtensions.getExtensions(obj)
-    avoidFeatures = [e.feature for e in extensions if e.avoid]
-
     # Get faces selected by user
     for base, subs in obj.Base:
         for sub in subs:
             if sub.startswith("Face"):
-                if sub not in avoidFeatures:
-                    if obj.UseOutline:
-                        face = base.Shape.getElement(sub)
-                        # get outline with wire_A method used in PocketShape, but it does not play nicely later
-                        # wire_A = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
-                        wire_B = face.OuterWire
-                        shape = Part.Face(wire_B)
-                    else:
-                        shape = base.Shape.getElement(sub)
-                    all_regions.append(shape)
+                if obj.UseOutline:
+                    face = base.Shape.getElement(sub)
+                    # get outline with wire_A method used in PocketShape, but it does not play nicely later
+                    # wire_A = TechDraw.findShapeOutline(face, 1, FreeCAD.Vector(0.0, 0.0, 1.0))
+                    wire_B = face.OuterWire
+                    shape = Part.Face(wire_B)
+                else:
+                    shape = base.Shape.getElement(sub)
+                all_regions.append(shape)
             elif sub.startswith("Edge"):
                 # Save edges for later processing
                 rawEdges.append(base.Shape.getElement(sub))
@@ -1267,15 +1255,12 @@ def _get_working_edges(op, obj):
                 for e in w.Edges:
                     edge_list.append([discretize(e)])
 
-    # Apply regular Extensions
-    op.exts = []
-    for ext in extensions:
-        if not ext.avoid:
-            wire = ext.getWire()
-            if wire:
-                for f in ext.getExtensionFaces(wire):
-                    op.exts.append(f)
-                    all_regions.append(f)
+    # Expand selected regions with extensions
+    if obj.ExtensionOffset:
+        solids = [model.Shape for model in op.model]
+        tol = op.job.GeometryTolerance.Value
+        ext = PathOpUtil.getExtended(all_regions, obj.ExtensionOffset.Value, solids, tol)
+        all_regions = ext
 
     # Second face-combining method attempted
     horizontal = Path.Geom.combineHorizontalFaces(all_regions)
@@ -1492,7 +1477,6 @@ class PathAdaptive(PathOp.ObjectOp):
             | PathOp.FeatureHeights
             | PathOp.FeatureBaseGeometry
             | PathOp.FeatureCoolant
-            | PathOp.FeatureLocations
         )
 
     @classmethod
@@ -1751,6 +1735,15 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs",
             ),
         )
+        obj.addProperty(
+            "App::PropertyLength",
+            "ExtensionOffset",
+            "Adaptive",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Offset for extension limited by the model shape",
+            ),
+        )
         obj.setEditorMode("OrderCutsByRegion", 2)
         obj.setEditorMode("ZStockToLeave", 2)
 
@@ -1758,8 +1751,6 @@ class PathAdaptive(PathOp.ObjectOp):
             setattr(obj, n[0], n[1])
 
         obj.setEditorMode("removalshape", 2)  # hide
-
-        FeatureExtensions.initialize_properties(obj)
 
     def opSetDefaultValues(self, obj, job):
         obj.Side = "Inside"
@@ -1785,7 +1776,6 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.UseRestMachining = False
         obj.OrderCutsByRegion = False
         obj.ModelAwareExperiment = False
-        FeatureExtensions.set_default_property_values(obj, job)
 
     def opExecute(self, obj):
         """opExecute(obj) ... called whenever the receiver needs to be recalculated.
@@ -1929,8 +1919,18 @@ class PathAdaptive(PathOp.ObjectOp):
         for prop in helixProps:
             if obj.getGroupOfProperty(prop) != "AdaptiveHelixEntry":
                 obj.setGroupOfProperty(prop, "AdaptiveHelixEntry")
-
-        FeatureExtensions.initialize_properties(obj)
+        if not hasattr(obj, "ExtensionOffset"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "ExtensionOffset",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Offset for extension limited by the model shape",
+                ),
+            )
+            if getattr(obj, "ExtensionFeature", None):
+                obj.ExtensionOffset = obj.ExtensionLengthDefault
 
 
 def SetupProperties():
@@ -1956,6 +1956,7 @@ def SetupProperties():
         "UseOutline",
         "UseRestMachining",
         "OrderCutsByRegion",
+        "ExtensionOffset",
     ]
     return setup
 

@@ -535,3 +535,28 @@ def getClearedAreas(currentOp, bbox):
             dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
             clearedAreas.append(op.Path.getClearedArea(diameter, z + dz, bbox))
     return clearedAreas
+
+
+def getExtended(faces, offset, solids, tolerance=0.01):
+    """getExtended(faces, offset, solids)
+    Returns extended faces which not intersect with solids
+    """
+    extensions = []
+    if isinstance(faces, Part.Face):
+        faces = [faces]
+    for face in faces:
+        extensions.append(face)
+        if not offset:
+            continue
+        plane = PathUtils.makeWorkplane(face)
+        oface = PathUtils.getOffsetArea(face, offset, plane=plane, tolerance=tolerance)
+        if not oface:
+            Path.Log.warning("Extension error: getOffsetArea() failed")
+            continue
+        ext = oface.cut(solids)
+        if not ext.isNull():
+            extensions.extend(ext.Faces)  # ext can be a Face or Shell
+        else:
+            Path.Log.warning("Extension error: cut() failed")
+
+    return extensions

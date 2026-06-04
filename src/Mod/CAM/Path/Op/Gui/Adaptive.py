@@ -26,7 +26,6 @@ import FreeCADGui
 import FreeCAD
 import Path.Op.Adaptive as PathAdaptive
 import Path.Op.Gui.Base as PathOpGui
-import Path.Op.Gui.FeatureExtension as PathFeatureExtensionsGui
 from PySide import QtCore
 
 import Path.Base.Gui.Util as PathGuiUtil
@@ -164,11 +163,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.setEditorMode("AdaptiveOutputState", 2)  # hide this property
         obj.setEditorMode("StopProcessing", 2)  # hide this property
         obj.setEditorMode("Stopped", 2)  # hide this property
-
-    def taskPanelBaseLocationPage(self, obj, features):
-        if not hasattr(self, "extensionsPanel"):
-            self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(obj, features)
-        return self.extensionsPanel
 
 
 Command = PathOpGui.SetupOperation(
