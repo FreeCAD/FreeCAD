@@ -254,8 +254,8 @@ def build_postlist_by_fixture(processor: Any) -> list:
             tc_postable = wrapped_op.ToolController
             if tc_postable is not None:
                 if needsTcOp(currTc, tc_postable):
-                    sublist.append(tc_postable)
-                    Path.Log.debug(f"Appending TC: {tc_postable.label}")
+                    sublist.append(_wrap_tc(tc_postable.source))
+                    Path.Log.debug(f"Appending TC: {tc_postable.source.Name}")
                     currTc = tc_postable
             sublist.append(wrapped_op)
 
@@ -313,7 +313,7 @@ def build_postlist_by_tool(processor: Any) -> list:
         else:
             commitToPostlist()
 
-            sublist = [tc_postable]
+            sublist = [_wrap_tc(tc_postable.source)]
             curlist = [wrapped_op]
             currTc = tc_postable
 
@@ -360,7 +360,7 @@ def build_postlist_by_operation(processor: Any) -> list:
             tc_postable = wrapped_op.ToolController
             if tc_postable is not None:
                 if processor._job.SplitOutput or needsTcOp(currTc, tc_postable):
-                    sublist.append(tc_postable)
+                    sublist.append(_wrap_tc(tc_postable.source))
                     currTc = tc_postable
             sublist.append(wrapped_op)
 
@@ -454,7 +454,6 @@ def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, L
                         break
 
                 if m6_cmd and len(m6_cmd.Parameters) > 0:
-
                     tc_position = next(
                         (
                             idx
