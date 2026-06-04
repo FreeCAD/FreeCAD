@@ -765,6 +765,8 @@ public:
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
     int getDefaultMode() const;
+    /// Returns the underlying display mask mode, ignoring any active override mode.
+    int getActualMode() const;
     //@}
 
     virtual void setRenderCacheMode(int);

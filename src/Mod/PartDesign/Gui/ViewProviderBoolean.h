@@ -27,6 +27,9 @@
 
 #pragma once
 
+#include <optional>
+
+#include <App/DocumentObserver.h>
 #include "ViewProvider.h"
 #include <Gui/ViewProviderGeoFeatureGroupExtension.h>
 #include <Gui/Inventor/SoToggleSwitch.h>
@@ -53,12 +56,11 @@ public:
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     void attach(App::DocumentObject*) override;
+    void beforeDelete() override;
     bool onDelete(const std::vector<std::string>&) override;
     const char* getDefaultDisplayMode() const override;
     void onChanged(const App::Property* prop) override;
     void update(const App::Property* prop) override;
-    void show() override;
-    bool isShow() const override;
 
 protected:
     void updateData(const App::Property* prop) override;
@@ -71,15 +73,28 @@ protected:
     static const char* DisplayEnum[];
 
 private:
+    struct ActiveBodyExposure
+    {
+        App::DocumentObjectWeakPtrT body;
+        std::optional<App::DocumentObjectWeakPtrT> parentResult;
+        int bodyMode;
+        int booleanMode;
+        bool bodyWasVisible;
+        bool booleanWasVisible;
+        bool indirect;
+    };
+
+    const char* getConfiguredDisplayMode();
     void updateBasePreviewVisibility();
+    void restoreActiveBodyExposure();
+    void syncParentBodyResultVisibility();
+    void syncActiveBodyVisibility();
     void onBodyActivated(const Gui::ViewProviderDocumentObject* vp, const char* name);
 
     Gui::CoinPtr<SoGroup> pcToolsPreview;
     Gui::CoinPtr<SoToggleSwitch> pcBasePreviewToggle;
     fastsignals::scoped_connection _bodyActivationConn;
-    App::DocumentObject* _shownBody = nullptr;
-    bool _indirectActivation = false;  // true when _shownBody is an intermediate body, not the
-                                       // activated leaf
+    std::optional<ActiveBodyExposure> _activeBodyExposure;
 };
 
 }  // namespace PartDesignGui
