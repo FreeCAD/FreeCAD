@@ -325,6 +325,15 @@ class ObjectOp(object):
             )
             obj.addProperty(
                 "App::PropertyDistance",
+                "ClearanceHeightOut",
+                "Depth",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Move to this height at the end of the operation",
+                ),
+            )
+            obj.addProperty(
+                "App::PropertyDistance",
                 "SafeHeight",
                 "Depth",
                 QT_TRANSLATE_NOOP("App::Property", "Rapid Safety Height between locations."),
@@ -520,6 +529,18 @@ class ObjectOp(object):
             obj.CollisionAvoidanceStrategy = "Clearance Height"
             self.applyExpression(obj, "CollisionClearance", "OpToolDiameter")
 
+        if FeatureHeights & features and not hasattr(obj, "ClearanceHeightOut"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "ClearanceHeightOut",
+                "Depth",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Move to this height at the end of the operation",
+                ),
+            )
+            self.applyExpression(obj, "ClearanceHeightOut", "ClearanceHeight")
+
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
 
@@ -668,6 +689,7 @@ class ObjectOp(object):
                     obj, "ClearanceHeight", job.SetupSheet.ClearanceHeightExpression
                 ):
                     obj.ClearanceHeight = "5 mm"
+                self.applyExpression(obj, "ClearanceHeightOut", "ClearanceHeight")
 
         if FeatureDiameters & features:
             obj.MinDiameter = "0 mm"
@@ -881,7 +903,7 @@ class ObjectOp(object):
 
         if self.commandlist and (FeatureHeights & self.opFeatures(obj)):
             # Let's finish by rapid to clearance...just for safety
-            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeightOut.Value}))
 
         # Add block delete annotations if enabled
         if hasattr(obj, "BlockDelete") and obj.BlockDelete:
