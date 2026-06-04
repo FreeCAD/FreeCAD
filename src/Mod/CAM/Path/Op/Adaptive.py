@@ -1915,7 +1915,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The maximum allowable descent in a single revolution of the helix"
+                    "The maximum allowable descent in a single revolution of the helix. "
                     "Set to zero to disable limitation by pitch",
                 ),
             )
