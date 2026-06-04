@@ -154,12 +154,8 @@ class TestActiveObject(unittest.TestCase):
         view.setActiveObject("pdbody", tools[0])
         self.assertTrue(tools[0].ViewObject.isVisible())
         self.assertTrue(innerBody.ViewObject.isVisible())
-        self.assertFalse(innerLaterFeature.ViewObject.isVisible())
-        self.assertFalse(outerLaterFeature.ViewObject.isVisible())
-
-        outerLaterFeature.ViewObject.show()
-        view.setActiveObject("pdbody", tools[0])
-        self.assertFalse(outerLaterFeature.ViewObject.isVisible())
+        self.assertTrue(innerLaterFeature.ViewObject.isVisible())
+        self.assertTrue(outerLaterFeature.ViewObject.isVisible())
 
         view.setActiveObject("pdbody", None)
         self.assertFalse(tools[0].ViewObject.isVisible())
@@ -181,7 +177,7 @@ class TestActiveObject(unittest.TestCase):
         FreeCADGui.activeView().setActiveObject("pdbody", tools[0])
         self.assertTrue(tools[0].ViewObject.isVisible())
         self.assertFalse(boolean.ViewObject.Visibility)
-        self.assertFalse(laterFeature.ViewObject.isVisible())
+        self.assertTrue(laterFeature.ViewObject.isVisible())
 
         FreeCADGui.activeView().setActiveObject("pdbody", None)
         self.assertFalse(tools[0].ViewObject.isVisible())
@@ -201,7 +197,7 @@ class TestActiveObject(unittest.TestCase):
 
         self.assertTrue(tools[0].ViewObject.isVisible())
         self.assertFalse(boolean.ViewObject.Visibility)
-        self.assertFalse(laterFeature.ViewObject.isVisible())
+        self.assertTrue(laterFeature.ViewObject.isVisible())
 
         view.setActiveObject("pdbody", None)
         self.assertFalse(tools[0].ViewObject.isVisible())

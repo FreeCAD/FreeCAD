@@ -33,7 +33,6 @@
 
 #include "StyleParameters.h"
 #include "TaskBooleanParameters.h"
-#include "ViewProviderBody.h"
 
 #include <Base/ServiceProvider.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
@@ -142,55 +141,6 @@ void ViewProviderBoolean::restoreActiveBodyExposure()
 
     setDefaultMode(exposure.booleanMode);
     setTemporaryVisible(this, exposure.booleanWasVisible);
-
-    if (exposure.parentResult) {
-        if (auto* result = exposure.parentResult->get<App::DocumentObject>();
-            result && result->Visibility.getValue()) {
-            if (auto* resultVP = Gui::Application::Instance->getViewProvider(result)) {
-                setTemporaryVisible(resultVP, true);
-            }
-        }
-    }
-}
-
-void ViewProviderBoolean::syncParentBodyResultVisibility()
-{
-    if (!_activeBodyExposure) {
-        return;
-    }
-
-    auto* bodyVP = getBodyViewProvider();
-    auto* shownFeature = bodyVP ? bodyVP->getShownFeature() : nullptr;
-    if (shownFeature == getObject()) {
-        shownFeature = nullptr;
-    }
-
-    auto* previousFeature = _activeBodyExposure->parentResult
-        ? _activeBodyExposure->parentResult->get<App::DocumentObject>()
-        : nullptr;
-    if (previousFeature == shownFeature) {
-        if (shownFeature) {
-            if (auto* shownVP = Gui::Application::Instance->getViewProvider(shownFeature)) {
-                setTemporaryVisible(shownVP, false);
-            }
-        }
-        return;
-    }
-
-    if (previousFeature && previousFeature->Visibility.getValue()) {
-        if (auto* previousVP = Gui::Application::Instance->getViewProvider(previousFeature)) {
-            setTemporaryVisible(previousVP, true);
-        }
-    }
-    _activeBodyExposure->parentResult.reset();
-
-    if (shownFeature) {
-        if (auto* shownVP = Gui::Application::Instance->getViewProvider(shownFeature);
-            shownVP && shownVP->Gui::ViewProvider::isShow()) {
-            _activeBodyExposure->parentResult.emplace(shownFeature);
-            setTemporaryVisible(shownVP, false);
-        }
-    }
 }
 
 void ViewProviderBoolean::syncActiveBodyVisibility()
@@ -251,7 +201,6 @@ void ViewProviderBoolean::onBodyActivated(const Gui::ViewProviderDocumentObject*
         _activeBodyExposure.emplace(
             ActiveBodyExposure {
                 .body = App::DocumentObjectWeakPtrT(matchingMember),
-                .parentResult = std::nullopt,
                 .bodyMode = bodyVP->getActualMode(),
                 .booleanMode = getActualMode(),
                 .bodyWasVisible = bodyVP->Gui::ViewProvider::isShow(),
@@ -268,7 +217,6 @@ void ViewProviderBoolean::onBodyActivated(const Gui::ViewProviderDocumentObject*
     else {
         setTemporaryVisible(bodyVP, true);
     }
-    syncParentBodyResultVisibility();
 }
 
 void ViewProviderBoolean::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

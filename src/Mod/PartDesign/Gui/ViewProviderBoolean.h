@@ -76,7 +76,6 @@ private:
     struct ActiveBodyExposure
     {
         App::DocumentObjectWeakPtrT body;
-        std::optional<App::DocumentObjectWeakPtrT> parentResult;
         int bodyMode;
         int booleanMode;
         bool bodyWasVisible;
@@ -87,7 +86,6 @@ private:
     const char* getConfiguredDisplayMode();
     void updateBasePreviewVisibility();
     void restoreActiveBodyExposure();
-    void syncParentBodyResultVisibility();
     void syncActiveBodyVisibility();
     void onBodyActivated(const Gui::ViewProviderDocumentObject* vp, const char* name);
 
