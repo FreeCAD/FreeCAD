@@ -11,6 +11,9 @@ inputs:
   testLogFile:
     description: "Path for the command-line output of the tests"
     required: true
+  reportFile:
+    description: "Optional path for appending the report text"
+    required: false
 outputs:
   reportText:
     description: "Report text"
@@ -33,6 +36,7 @@ runs:
       shell: bash -l {0}
       env:
         TEST_LOG_FILE: ${{ inputs.testLogFile }}
+        REPORT_FILE: ${{ inputs.reportFile }}
       run: |
         result=$(grep -E "(Test #|tests passed|tests failed|Total Test time)" "$TEST_LOG_FILE" || true)
         if grep -qE "[1-9][0-9]* tests failed" "$TEST_LOG_FILE"
@@ -49,6 +53,10 @@ runs:
         reportText+='```\n'
         reportText+="</details>\n"
         reportText+="\n"
+        if [ -n "$REPORT_FILE" ]
+        then
+          echo -e "$reportText" >> "$REPORT_FILE"
+        fi
         echo "reportText<<EOD" >> $GITHUB_OUTPUT
         echo -e "$reportText" >> $GITHUB_OUTPUT
         echo "EOD" >> $GITHUB_OUTPUT
