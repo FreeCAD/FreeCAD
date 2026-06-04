@@ -388,7 +388,7 @@ class MaterialDialog(QtWidgets.QDialog):
             try:
                 self.materialTreeWidget.UUID = current_uuid
             except Exception as e:
-                Path.Log.debug("Could not pre-select material %s: %s" % (current_uuid, e))
+                Path.Log.debug("Could not preselect material %s: %s" % (current_uuid, e))
 
         # Create OK and Cancel buttons
         self.okButton = QtWidgets.QPushButton("OK")

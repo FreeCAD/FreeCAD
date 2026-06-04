@@ -1318,7 +1318,7 @@ private:
                 PointPos prevPos = geoEltIds.back().Pos;
                 obj->moveGeometry(prevGeoId, prevPos, toVector3d(points.back()));
 
-                // Then transfert back the constraints
+                // Then transfer back the constraints
                 if (pointWasCreated) {
                     int pointGeoId = getHighestCurveIndex();
                     // We must first remove the point on object constraint.
@@ -2041,7 +2041,7 @@ void DSHPolyLineController::doConstructionMethodChanged()
         }
     }
 
-    // Since line has 4 OVP but arc has 5, and because we are not reseting the whole tool,
+    // Since line has 4 OVP but arc has 5, and because we are not resetting the whole tool,
     // we need to reset the OVP to have the correct number.
     resetOnViewParameters();
 
