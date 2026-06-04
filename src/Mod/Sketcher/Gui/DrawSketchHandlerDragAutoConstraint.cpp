@@ -105,8 +105,7 @@ bool DrawSketchHandlerDragAutoConstraint::hasMoved(const Base::Vector2d& actualP
         return true;
     }
 
-    const double tolerance = std::max(1e-7, 0.03 * static_cast<double>(sketchgui->getScaleFactor()));
-    return (actualPos - startPos).Length() > tolerance;
+    return (actualPos - startPos).Sqr() > Precision::SquareConfusion();
 }
 
 Base::Vector2d DrawSketchHandlerDragAutoConstraint::getDirection(
