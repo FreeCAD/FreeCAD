@@ -91,9 +91,8 @@ AutoSaver* AutoSaver::instance()
 
 void AutoSaver::flushPendingSave(const QString& documentName)
 {
-    // This runs from a queued singleShot after signalBecameStable(). Re-check
-    // that the document still exists and let saveDocument() consume any
-    // outstanding pending/scheduled state for this pass.
+    // Queued retries may outlive their document. Re-check that it still exists
+    // and let saveDocument() consume any dirty state still pending for this pass.
     const auto name = documentName.toStdString();
     auto it = saverMap.find(name);
     if (it == saverMap.end()) {
@@ -158,11 +157,11 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         return;
     }
 
-    // Claim the currently pending work for this save attempt. If new document
+    // Claim the currently dirty work for this save attempt. If new document
     // changes arrive while the snapshot is being written they will call
-    // markPendingAutosave() again, and the post-save check below will schedule
+    // markDirtyForAutosave() again, and the post-save check below will schedule
     // another pass.
-    if (!saver.consumePendingAutosave()) {
+    if (!saver.beginSaveAttempt()) {
         return;
     }
 
@@ -172,7 +171,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         // the save pending. signalBecameStable() will queue a retry once the
         // document returns to a state where a consistent full snapshot can be
         // written.
-        saver.markPendingAutosave();
+        saver.deferSaveUntilStable();
         return;
     }
 
@@ -193,7 +192,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         App::writeRecoverySnapshotToTransientDir(*doc, options);
     }
     catch (...) {
-        saver.restorePendingAutosave();
+        saver.restoreFailedSaveAttempt();
         throw;
     }
 
@@ -201,9 +200,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         "Save auto-recovery file in %fs\n",
         Base::TimeElapsed::diffTimeF(startTime, Base::TimeElapsed())
     );
-    if (saver.hasPendingAutosave()) {
-        saver.schedulePendingAutosaveRetry();
-    }
+    saver.scheduleQueuedRetry();
 }
 
 void AutoSaver::timerEvent(QTimerEvent* event)
@@ -229,22 +226,22 @@ AutoSaveProperty::AutoSaveProperty(const App::Document* doc)
 {
     auto* mutableDoc = const_cast<App::Document*>(doc);
     documentChanged = mutableDoc->signalChanged.connect(
-        [this](const App::Document&, const App::Property&) { markPendingAutosave(); }
+        [this](const App::Document&, const App::Property&) { markDirtyForAutosave(); }
     );
     documentNew = mutableDoc->signalNewObject.connect([this](const App::DocumentObject&) {
-        markPendingAutosave();
+        markDirtyForAutosave();
     });
     documentDeleted = mutableDoc->signalDeletedObject.connect([this](const App::DocumentObject&) {
-        markPendingAutosave();
+        markDirtyForAutosave();
     });
     documentMod = mutableDoc->signalChangedObject.connect(
-        [this](const App::DocumentObject&, const App::Property&) { markPendingAutosave(); }
+        [this](const App::DocumentObject&, const App::Property&) { markDirtyForAutosave(); }
     );
     documentUndo = mutableDoc->signalUndo.connect([this](const App::Document&) {
-        markPendingAutosave();
+        markDirtyForAutosave();
     });
     documentRedo = mutableDoc->signalRedo.connect([this](const App::Document&) {
-        markPendingAutosave();
+        markDirtyForAutosave();
     });
     documentStable = mutableDoc->signalBecameStable.connect([this](const App::Document& changedDoc) {
         slotDocumentBecameStable(changedDoc);
@@ -264,49 +261,48 @@ AutoSaveProperty::~AutoSaveProperty()
     documentStable.disconnect();
 }
 
-void AutoSaveProperty::markPendingAutosave()
+void AutoSaveProperty::markDirtyForAutosave()
 {
-    // The save itself is deferred until the document becomes stable again or
-    // until the next timer pass notices the pending flag.
-    pendingAutosave = true;
+    // Ordinary document changes are saved by the next timer pass. They do not
+    // start a save attempt by themselves.
+    dirty = true;
 }
 
-bool AutoSaveProperty::consumePendingAutosave()
+bool AutoSaveProperty::beginSaveAttempt()
 {
-    if (!pendingAutosave) {
-        retryScheduled = false;
+    if (!dirty) {
+        blockedUntilStable = false;
         return false;
     }
 
-    pendingAutosave = false;
-    retryScheduled = false;
+    dirty = false;
+    blockedUntilStable = false;
     return true;
 }
 
-void AutoSaveProperty::restorePendingAutosave()
+void AutoSaveProperty::deferSaveUntilStable()
 {
-    pendingAutosave = true;
-    retryScheduled = false;
+    dirty = true;
+    blockedUntilStable = true;
 }
 
-bool AutoSaveProperty::hasPendingAutosave() const
+void AutoSaveProperty::restoreFailedSaveAttempt()
 {
-    return pendingAutosave;
+    dirty = true;
+    blockedUntilStable = false;
 }
 
-void AutoSaveProperty::schedulePendingAutosaveRetry()
+void AutoSaveProperty::scheduleQueuedRetry()
 {
-    if (!pendingAutosave || retryScheduled) {
+    if (!dirty) {
         return;
     }
 
-    retryScheduled = true;
     const QString qDocumentName = QString::fromStdString(documentName);
 
     // Queue a later GUI-thread pass instead of flushing inline from
-    // signalBecameStable(). retryScheduled coalesces repeated stability
-    // notifications, so there is at most one queued retry outstanding at a
-    // time.
+    // signalBecameStable(). beginSaveAttempt() re-checks dirty state when the
+    // queued retry runs.
     QTimer::singleShot(0, AutoSaver::instance(), [qDocumentName]() {
         AutoSaver::instance()->flushPendingSave(qDocumentName);
     });
@@ -314,9 +310,15 @@ void AutoSaveProperty::schedulePendingAutosaveRetry()
 
 void AutoSaveProperty::slotDocumentBecameStable(const App::Document&)
 {
-    // Stability only means "it is now legal to try again". The pending and
-    // scheduled flags decide whether there is actually anything left to flush.
-    schedulePendingAutosaveRetry();
+    // Stability only means "it is now legal to try again". Only retry saves that
+    // were already due and then blocked by an unstable state; ordinary dirty
+    // changes should wait for the configured autosave timer.
+    if (!blockedUntilStable) {
+        return;
+    }
+
+    blockedUntilStable = false;
+    scheduleQueuedRetry();
 }
 
 

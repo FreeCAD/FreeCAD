@@ -49,9 +49,9 @@ StdCmdMeasure::StdCmdMeasure()
 {
     sGroup = "Measure";
     sMenuText = QT_TR_NOOP("&Measure");
-    sToolTipText = QT_TR_NOOP("Measure a feature");
+    sToolTipText = QT_TR_NOOP("Measures a feature");
     sWhatsThis = "Std_Measure";
-    sStatusTip = QT_TR_NOOP("Measure a feature");
+    sStatusTip = QT_TR_NOOP("Measures a feature");
     sPixmap = "umf-measurement";
 }
 

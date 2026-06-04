@@ -620,7 +620,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
                                 Gui::getMainWindow(),
                                 QObject::tr("Sketch plane cannot be migrated"),
                                 QObject::tr(
-                                    "Please edit '%1' and redefine it to use a Base or "
+                                    "Edit '%1' and redefine it to use a Base or "
                                     "Datum plane as the sketch plane."
                                 )
                                     .arg(QString::fromUtf8(sketch->Label.getValue()))

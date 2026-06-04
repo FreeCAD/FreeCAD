@@ -298,6 +298,9 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             ),
         )
 
+        for n in self.helixOpPropertyEnumerations():
+            setattr(obj, n[0], n[1])
+
         self.opSetEditorModes(obj)
 
     def opOnChanged(self, obj, prop):
@@ -317,9 +320,6 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.setEditorMode("SingleHelix", 2)  # hide
 
     def opSetDefaultValues(self, obj, job):
-        for n in self.helixOpPropertyEnumerations():
-            setattr(obj, n[0], n[1])
-
         obj.CutMode = "Conventional"
         obj.FinishHelixCircle = True
         obj.FinishSpiralCircle = True
@@ -917,11 +917,24 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
 def SetupProperties():
     """Returns property names for which the "Setup Sheet" should provide defaults."""
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("CutMode")
+    setup.append("Direction")
+    setup.append("FinishHelixCircle")
+    setup.append("FinishSpiralCircle")
+    setup.append("HelixConeAngle")
+    setup.append("HelixMaxPitch")
+    setup.append("HelixMaxRampAngle")
+    setup.append("OverrideArcFeedRate")
+    setup.append("RadialStockToLeaveInner")
+    setup.append("RadialStockToLeaveOuter")
+    setup.append("RetractFromWall")
+    setup.append("RotationAngle")
+    setup.append("Side")
+    setup.append("SingleHelix")
+    setup.append("SpiralMill")
     setup.append("StartAt")
     setup.append("StepOver")
-    setup.append("RadialStockToLeaveInner")
     return setup
 
 

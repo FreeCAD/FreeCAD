@@ -581,6 +581,7 @@ class TestExport2Integration(unittest.TestCase):
         post = PostProcessor(job, "", "", "mm")
         if machine:
             post._machine = machine
+        post.apply_configuration_bundle()
         return post
 
     def _run_export2(self, machine=None, job=None):
@@ -1412,7 +1413,9 @@ class TestExport2Integration(unittest.TestCase):
             self.assertIn("X10.1235", gcode, "X should have 4 decimal places (rounded)")
             self.assertIn("Y20.9876", gcode, "Y should have 4 decimal places (rounded)")
             self.assertIn("Z5.5000", gcode, "Z should have 4 decimal places")
-            self.assertIn("F6007.4", gcode, "Feed should have 1 decimal place")
+            self.assertIn(
+                "F6007.4", gcode, f"Feed should have 1 decimal place in the G1 F value\n{gcode}"
+            )
 
     def test123_spindle_decimals(self):
         """
