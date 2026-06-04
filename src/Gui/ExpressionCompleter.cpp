@@ -527,10 +527,10 @@ public:
                 auto str = paths[idx].getSubPathStr();
                 if (str.size() && (str[0] == '.' || str[0] == '#')) {
                     // skip the "."
-                    *v = QString::fromUtf8(str.c_str() + 1);
+                    *v = QString::fromStdString(str.substr(1));
                 }
                 else {
-                    *v = QString::fromUtf8(str.c_str());
+                    *v = QString::fromStdString(str);
                 }
             }
         }
