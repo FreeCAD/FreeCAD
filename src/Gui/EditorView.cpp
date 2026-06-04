@@ -377,7 +377,7 @@ bool EditorView::saveAs()
         this,
         QObject::tr("Save Macro"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")))
+        FileDialog::FilterList {{tr("FreeCAD macro"), {"*.FCMacro"}}, {"Python", {"*.py"}}}
     );
     if (fn.isEmpty()) {
         return false;
@@ -508,7 +508,7 @@ void EditorView::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file"))
+        FileDialog::FilterList {{QStringLiteral("PDF"), {"*.pdf"}}}
     );
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);

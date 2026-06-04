@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="131"/>
       <source>Ctrl+C</source>
-      <translation type="unfinished">Ctrl+C</translation>
+      <translation>Ctrl+C</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="141"/>

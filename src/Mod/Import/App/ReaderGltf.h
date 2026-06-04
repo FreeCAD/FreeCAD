@@ -25,6 +25,7 @@
 
 #include <Mod/Import/ImportGlobal.h>
 #include <Base/FileInfo.h>
+#include <Message_ProgressRange.hxx>
 #include <TDocStd_Document.hxx>
 #include <TDF_LabelSequence.hxx>
 #include <TopoDS_Shape.hxx>
@@ -37,7 +38,10 @@ class ImportExport ReaderGltf
 public:
     explicit ReaderGltf(const Base::FileInfo& file);
 
-    void read(Handle(TDocStd_Document) hDoc);
+    void read(
+        Handle(TDocStd_Document) hDoc,
+        const Message_ProgressRange& theProgress = Message_ProgressRange()
+    );
     bool cleanup() const;
     void setCleanup(bool);
 

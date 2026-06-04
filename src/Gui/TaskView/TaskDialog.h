@@ -100,6 +100,7 @@ public:
     {
         return escapeButton;
     }
+    QDialogButtonBox::ButtonRole roleOnEscape {QDialogButtonBox::ButtonRole::RejectRole};
 
     /// Defines whether a task dialog must be closed if the document changed the
     /// active transaction.
@@ -110,6 +111,16 @@ public:
     bool isAutoCloseOnTransactionChange() const
     {
         return autoCloseTransaction;
+    }
+
+    /// Defines whether a task dialog must be closed if the document exits edit mode.
+    void setAutoCloseOnResetEdit(bool on)
+    {
+        autoCloseResetEdit = on;
+    }
+    bool isAutoCloseOnResetEdit() const
+    {
+        return autoCloseResetEdit;
     }
 
     /// Defines whether a task dialog must be closed if the document is
@@ -191,6 +202,9 @@ public:
     /// changing the active transaction
     virtual void autoClosedOnTransactionChange();
     /// is called by the framework when the dialog is automatically closed due to
+    /// exiting edit mode
+    virtual void autoClosedOnResetEdit();
+    /// is called by the framework when the dialog is automatically closed due to
     /// deleting the document
     virtual void autoClosedOnDeletedDocument();
     /// is called by the framework when the dialog is automatically closed due to
@@ -235,6 +249,7 @@ private:
     const Gui::MDIView* associatedView;
     bool escapeButton;
     bool autoCloseTransaction;
+    bool autoCloseResetEdit;
     bool autoCloseDeletedDocument;
     bool autoCloseClosedView;
 

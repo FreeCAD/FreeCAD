@@ -489,15 +489,15 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
-      <translation>Немає активного документу</translation>
+      <source>No Active Document</source>
+      <translation type="unfinished">No Active Document</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
-      <translation type="unfinished">Error: body without a tip selected.
-Either set the tip of the body or select a different shape.</translation>
+      <translation>Помилка: вибрано тіло без активного елемента.
+Встановіть активний елемент тіла або виберіть іншу форму.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="288"/>

@@ -20,7 +20,9 @@ SET(Test_SRCS
     TestPythonSyntax.py
     TestPerf.py
     TestTreeSelection.py
+    TestRubberbandSelection.py
     TestCoinNodeSnapshots.py
+    TestCoinSelectionVisual.py
 )
 
 SET(TestData_SRCS

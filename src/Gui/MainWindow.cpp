@@ -82,6 +82,7 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Inventor/SoDB.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
 
@@ -432,10 +433,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // the rightmost permanent widget.
     auto* toggleBottomPanelsButton = new QToolButton(statusBar());
     toggleBottomPanelsButton->setObjectName(QStringLiteral("toggleBottomPanelsButton"));
-    int iconSize = App::GetApplication()
-                       .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                       ->GetInt("ToolbarIconSize", 24);
-    toggleBottomPanelsButton->setIconSize(QSize(iconSize, iconSize));
+    //: A context menu action used to show or hide the Toggle Bottom Panels button in the status bar
+    toggleBottomPanelsButton->setWindowTitle(tr("Bottom Panel Toggle"));
+    toggleBottomPanelsButton->setIconSize(QSize(16, 16));
     toggleBottomPanelsButton->setIcon(BitmapFactory().pixmap("Std_ToggleBottomPanels"));
     toggleBottomPanelsButton->setCheckable(true);
     // Starts checked because FreeCAD shows bottom panels by default on first launch. On subsequent
@@ -1440,7 +1440,6 @@ void MainWindow::setActiveWindow(MDIView* view)
     if (!view) {
         return;
     }
-
     // always update the focus and active sub window
 
     // We need the explicit call to setFocus because it seems the focus window and the
@@ -1450,8 +1449,16 @@ void MainWindow::setActiveWindow(MDIView* view)
     // switching from a 3d view to a spreadsheet using the "Windows..." dialog or when docking a
     // spreadsheet that was in top-level/fullscreen mode. Why this could only be reproduced with a
     // spreadsheet remains a mystery.
-
-    view->setFocus();
+    //
+    // However, only do this when the active view is actually changing. Calling setFocus
+    // unconditionally also stomps focus that the user has placed on a dock widget (e.g. the
+    // tree view): closing a modal popup triggers ActivationChange -> setActiveSubWindow ->
+    // setActiveWindow with the same view that is already active, which has no real reason
+    // to take focus.
+    // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+    if (view != d->activeView) {
+        view->setFocus();
+    }
 
     auto subwindow = qobject_cast<QMdiSubWindow*>(view->parentWidget());
     if (subwindow) {
@@ -1459,7 +1466,6 @@ void MainWindow::setActiveWindow(MDIView* view)
     }
 
     // if active view changed, notify rest of the application
-
     if (view == d->activeView) {
         return;
     }
@@ -2072,7 +2078,7 @@ void MainWindow::loadWindowSettings()
         winPos.setY(qMax(qMin(winPos.y(), screen.bottom() - winGeometry.height()), screen.y()));
     }
 
-    // Scale before move reducing, or vice versa, so a dpi change wont make window to be moved
+    // Scale before move reducing, or vice versa, so a dpi change wont force window to be moved
     resize(winSize.boundedTo(size()));
     move(winPos);
     resize(winSize);
@@ -2556,9 +2562,16 @@ void MainWindow::changeEvent(QEvent* e)
         App::GetApplication().retranslateExportTypes();
     }
     else if (e->type() == QEvent::ActivationChange) {
+        static SbTime savedRealTimeInterval = SoDB::getRealTimeInterval();
         if (isActiveWindow()) {
             QMdiSubWindow* mdi = d->mdiArea->currentSubWindow();
             setActiveSubWindow(mdi);
+            SoDB::enableRealTimeSensor(true);
+            SoDB::setRealTimeInterval(savedRealTimeInterval);
+        }
+        else {
+            savedRealTimeInterval = SoDB::getRealTimeInterval();
+            SoDB::enableRealTimeSensor(false);
         }
     }
     else {

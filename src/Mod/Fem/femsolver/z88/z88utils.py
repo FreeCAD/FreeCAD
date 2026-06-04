@@ -72,7 +72,7 @@ def load_mesh(path_o0):
         el, tp = file_o0.readline().split()
         # get element nodes
         e_n = file_o0.readline().split()
-        # skip emtpy line
+        # skip empty line
         file_o0.readline()
         # fill structured array
         zero_row = np.zeros([20])

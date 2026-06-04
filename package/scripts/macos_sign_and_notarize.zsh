@@ -245,18 +245,57 @@ if [[ -z "$id" ]]; then
 fi
 print "Notarization submission ID: $id"
 
+# We are getting occasional (well, really somewhat frequent) failures of the "staple" action
+# from Apple's server. I don't know if this is because of a flaky GitHub connection, or flaky
+# Apple server, or what, but we should be quite flexible in detecting and handling these failures.
+# *Sometimes*, but not always, the staple action will emit failure text, but still return 0, so
+# we have to check for both the bad exit code, as well as a few different possible error strings.
+#
+# To handle significant network stability issues, we use a very long timeout and backoff.
+staple_with_retry() {
+  local target="$1"
+  local max_attempts=120
+  local attempt=0
+  local out rc
+  while :; do
+    (( attempt++ ))
+    out=$(xcrun stapler staple "${target}" 2>&1)
+    rc=$?
+    print -r -- "$out"
+
+    local looks_failed=0
+    if [[ $rc -ne 0 ]]; then
+      looks_failed=1
+    elif print -r -- "$out" | grep -E -q -e 'The staple and validate action failed' \
+                                          -e 'Error 68' \
+                                          -e "CloudKit's response is inconsistent" \
+                                          -e 'Could not validate ticket'; then
+      looks_failed=1
+    fi
+
+    if [[ $looks_failed -eq 0 ]]; then
+      if xcrun stapler validate "${target}" >/dev/null 2>&1; then
+        return 0
+      fi
+      print -r -- "Staple appeared to succeed but stapler validate failed." >&2
+    fi
+
+    if [[ $attempt -ge $max_attempts ]]; then
+      print -r -- "Failed to staple after ${attempt} attempts" >&2
+      return 1
+    fi
+
+    print -r -- "Staple attempt ${attempt} failed, retrying..."
+    sleep $(( (attempt<6?2**attempt:60) + RANDOM%5 ))  # Increasing timeout plus jitter for multi-run safety
+  done
+}
+
 if wait_for_notarization_result "$id"; then
   print "✅ Notarization succeeded. Stapling..."
-  local staple_attempt=0
-  while ! xcrun stapler staple "${DMG_NAME}"; do
-    (( staple_attempt++ ))
-    if [[ $staple_attempt -ge 5 ]]; then
-      print "❌ Failed to staple after 5 attempts" >&2
-      exit 1
-    fi
-    print "Staple attempt $staple_attempt failed, retrying in $((staple_attempt * 10))s..."
-    sleep $((staple_attempt * 10))
-  done
+  if ! staple_with_retry "${DMG_NAME}"; then
+    print "❌ Failed to staple ${DMG_NAME}" >&2
+    exit 1
+  fi
   print "Stapled: ${DMG_NAME}"
   rm -f "${ID_FILE}"
 else

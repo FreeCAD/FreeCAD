@@ -187,6 +187,7 @@ void View3DInventorViewerPy::init_type()
         "getNavigationStyle() -> NavigationStyle\n"
         "Returns the current viewer navigation style class.\n"
     );
+    behaviors().readyType();
 }
 
 View3DInventorViewerPy::View3DInventorViewerPy(View3DInventorViewer* vi)

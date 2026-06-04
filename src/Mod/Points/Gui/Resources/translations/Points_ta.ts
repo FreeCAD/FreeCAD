@@ -4,17 +4,17 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="200"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Points</source>
       <translation>பிரிவகம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Convert to Points</source>
       <translation>புள்ளிகளாக மாற்றவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="204"/>
       <source>Converts to points</source>
       <translation>புள்ளிகளாக மாற்றுகிறது</translation>
     </message>
@@ -22,18 +22,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Points</source>
       <translation>பிரிவகம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="150"/>
+      <location filename="../../Command.cpp" line="151"/>
       <source>Export Points…</source>
       <translation>ஏற்றுமதி புள்ளிகள்…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="151"/>
-      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Exports a point cloud</source>
       <translation>புள்ளி மேகத்தை ஏற்றுமதி செய்கிறது</translation>
     </message>
@@ -59,17 +59,17 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="341"/>
       <source>Points</source>
       <translation>பிரிவகம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Merge Point Clouds</source>
       <translation>புள்ளி மேகங்களை ஒன்றிணைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="343"/>
       <source>Merges several point clouds into one</source>
       <translation>பல புள்ளி மேகங்களை ஒன்றாக இணைக்கிறது</translation>
     </message>
@@ -77,17 +77,17 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="289"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Points</source>
       <translation>பிரிவகம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="290"/>
+      <location filename="../../Command.cpp" line="292"/>
       <source>Cut Point Cloud</source>
       <translation>கட் பாயிண்ட் முகில்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="291"/>
+      <location filename="../../Command.cpp" line="293"/>
       <source>Cuts a point cloud with a selected polygon</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட பலகோணத்துடன் புள்ளி மேகத்தை வெட்டுகிறது</translation>
     </message>
@@ -95,17 +95,17 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>Points</source>
       <translation>பிரிவகம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="404"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Structured Point Cloud</source>
       <translation>கட்டமைக்கப்பட்ட புள்ளி முகில்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Converts points to a structured point cloud</source>
       <translation>புள்ளிகளை கட்டமைக்கப்பட்ட புள்ளி மேகமாக மாற்றுகிறது</translation>
     </message>
@@ -113,12 +113,12 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="92"/>
+      <location filename="../../Command.cpp" line="93"/>
       <source>Import points</source>
       <translation>இறக்குமதி புள்ளிகள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="238"/>
       <source>Convert to points</source>
       <translation>புள்ளிகளாக மாற்று</translation>
     </message>
@@ -263,33 +263,27 @@
     <name>QObject</name>
     <message>
       <location filename="../../Command.cpp" line="81"/>
-      <location filename="../../Command.cpp" line="167"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Point formats</source>
       <translation>புள்ளி வடிவங்கள்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="82"/>
-      <location filename="../../Command.cpp" line="168"/>
-      <source>All Files</source>
-      <translation>அனைத்து கோப்புகள்</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="112"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Points not at Origin</source>
       <translation>புள்ளிகள் தோற்றத்தில் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="115"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
       <translation>இறக்குமதி செய்யப்பட்ட புள்ளிகளின் எல்லைப் பெட்டியில் தோற்றம் இல்லை. மூலத்திற்கு மொழிபெயர்க்கவா?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="224"/>
       <source>Distance</source>
       <translation>தூரம்</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="223"/>
+      <location filename="../../Command.cpp" line="225"/>
       <source>Enter maximum distance:</source>
       <translation>அதிகபட்ச தூரத்தை உள்ளிடவும்:</translation>
     </message>

@@ -17,6 +17,7 @@ add_executable(Base_tests_run
         Parameter.cpp
         Placement.cpp
         Persistence.cpp
+        PyException.cpp
         Quantity.cpp
         Reader.cpp
         Rotation.cpp
@@ -46,7 +47,7 @@ setup_qt_test(InventorBuilder)
 target_link_libraries(Base_tests_run PRIVATE
     GTest::gtest_main
     GTest::gmock_main
-    ${Google_Tests_LIBS}
     FreeCADApp
+    ${Python3_LIBRARIES}
     ICU::uc ICU::i18n
 )

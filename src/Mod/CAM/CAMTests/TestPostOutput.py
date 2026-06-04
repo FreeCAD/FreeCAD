@@ -22,18 +22,19 @@
 # *                                                                         *
 # ***************************************************************************
 
+import os
+import unittest
 
+import FreeCAD
 from Path.Post.Processor import PostProcessorFactory
 from Machine.models.machine import Machine
-import FreeCAD
 import Path
 import Path.Post.Command as PathCommand
-import Path.Post.PostList as PostList
+from Path.Post import PostList
 import Path.Post.Utils as PostUtils
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
-import os
-import unittest
+from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
 
 from .FilePathTestUtils import assertFilePathsEqual
 
@@ -425,8 +426,6 @@ class TestExport2Integration(unittest.TestCase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         cls.doc = FreeCAD.newDocument("export2_test")
 
-        import Part
-
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
@@ -481,8 +480,6 @@ class TestExport2Integration(unittest.TestCase):
 
     def _create_machine(self, **output_options):
         """Helper to create a machine with specified output options."""
-        from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
-
         machine = Machine.create_3axis_config()
         machine.name = "TestMachine"
 
@@ -584,10 +581,13 @@ class TestExport2Integration(unittest.TestCase):
         post = PostProcessor(job, "", "", "mm")
         if machine:
             post._machine = machine
+        post.apply_configuration_bundle()
         return post
 
     def _run_export2(self, machine=None, job=None):
         """Helper to run export2 and return results."""
+        if machine is None:
+            machine = self._create_machine()
         post = self._create_postprocessor(machine, job)
         return post.export2()
 
@@ -751,10 +751,7 @@ class TestExport2Integration(unittest.TestCase):
 
     def test010_export2_returns_gcode_sections(self):
         """Test that export2() returns a non-empty list of (name, gcode) tuples."""
-        from Path.Post.Processor import PostProcessor
-
-        post = PostProcessor(self.job, "", "", "mm")
-        results = post.export2()
+        results = self._run_export2()
 
         self.assertIsNotNone(results, "export2 should return results")
         self.assertIsInstance(results, list)
@@ -1416,7 +1413,9 @@ class TestExport2Integration(unittest.TestCase):
             self.assertIn("X10.1235", gcode, "X should have 4 decimal places (rounded)")
             self.assertIn("Y20.9876", gcode, "Y should have 4 decimal places (rounded)")
             self.assertIn("Z5.5000", gcode, "Z should have 4 decimal places")
-            self.assertIn("F6007.4", gcode, "Feed should have 1 decimal place")
+            self.assertIn(
+                "F6007.4", gcode, f"Feed should have 1 decimal place in the G1 F value\n{gcode}"
+            )
 
     def test123_spindle_decimals(self):
         """
@@ -1597,7 +1596,7 @@ class TestExport2Integration(unittest.TestCase):
                 Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
             ]
         ):
-            machine = self._create_machine(commands=False, parameters=True)
+            machine = self._create_machine(commands=False, parameters=True, duplicates=False)
             results = self._run_export2(machine)
             gcode = self._get_all_gcode(results)
             lines = [
@@ -1615,7 +1614,9 @@ class TestExport2Integration(unittest.TestCase):
                 f"Should have only 1 G1 command when duplicates suppressed, found {g1_count}",
             )
             self.assertEqual(
-                suppressed_count, 3, f"Should have 3 suppressed G1 moves, found {suppressed_count}"
+                suppressed_count,
+                3,
+                f"Should have 3 suppressed G1 moves, found {suppressed_count}, in\n{gcode}",
             )
 
     def test128b_bare_command_suppressed_when_all_params_duplicate(self):
@@ -1696,7 +1697,7 @@ class TestExport2Integration(unittest.TestCase):
             # Find the second M3 line (after second M6)
             m3_lines = [l for l in lines if l.startswith("M3")]
             self.assertGreaterEqual(
-                len(m3_lines), 2, f"Should have at least 2 M3 lines, got: {m3_lines}"
+                len(m3_lines), 2, f"Should have at least 2 M3 lines, got: {m3_lines}, in\n{gcode}"
             )
             self.assertIn(
                 "S", m3_lines[1], f"Second M3 must include S parameter, got: '{m3_lines[1]}'"
@@ -1930,7 +1931,7 @@ class TestExport2Integration(unittest.TestCase):
                 Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
             ]
         ):
-            results = self._run_export2(machine)
+            self._run_export2(machine)
 
             # After export2, schema defaults should have been applied
             self.assertIn(

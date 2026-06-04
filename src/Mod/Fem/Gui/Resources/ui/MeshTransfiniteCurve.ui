@@ -86,7 +86,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>Mesh size when distance = DistanceMaximum</string>
+          <string>Number of nodes on the edge</string>
          </property>
          <property name="keyboardTracking">
           <bool>false</bool>
@@ -214,7 +214,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>Mesh size when distance = DistanceMaximum</string>
+          <string>Coefficient for bump/progression growth rate</string>
          </property>
          <property name="keyboardTracking">
           <bool>false</bool>

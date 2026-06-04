@@ -649,14 +649,16 @@ Ako nije potvrđeno, biće sortirani po imenima.</translation>
       <translation>Izaberi sliku</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Slikovne datoteke (*.jpg *.jpeg *.png *.bmp);;Sve datoteke (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation type="unfinished">Image files</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>Slikovne datoteke (*.svg);;Sve datoteke (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>Sve datoteke</translation>
     </message>
   </context>
   <context>
@@ -1193,15 +1195,15 @@ Ako nije potvrđeno, biće sortirani po imenima.</translation>
       <translation>U suprotnom, sve promene će biti izgubljene.</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Potvrdi brisanje</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="144"/>
       <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
       <translation>Obriši red?</translation>
     </message>

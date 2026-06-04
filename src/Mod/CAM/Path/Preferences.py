@@ -66,7 +66,6 @@ WarningSuppressRapidSpeeds = "WarningSuppressRapidSpeeds"
 WarningSuppressAllSpeeds = "WarningSuppressAllSpeeds"
 WarningSuppressSelectionMode = "WarningSuppressSelectionMode"
 WarningSuppressOpenCamLib = "WarningSuppressOpenCamLib"
-WarningSuppressVelocity = "WarningSuppressVelocity"
 EnableExperimentalFeatures = "EnableExperimentalFeatures"
 EnableAdvancedOCLFeatures = "EnableAdvancedOCLFeatures"
 
@@ -561,14 +560,9 @@ def suppressOpenCamLibWarning():
     return preferences().GetBool(WarningSuppressOpenCamLib, True)
 
 
-def suppressVelocity():
-    return preferences().GetBool(WarningSuppressVelocity, False)
-
-
-def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL, warnVelocity):
+def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL):
     preferences().SetBool(EnableAdvancedOCLFeatures, ocl)
     preferences().SetBool(WarningSuppressAllSpeeds, warnSpeeds)
     preferences().SetBool(WarningSuppressRapidSpeeds, warnRapids)
     preferences().SetBool(WarningSuppressSelectionMode, warnModes)
     preferences().SetBool(WarningSuppressOpenCamLib, warnOCL)
-    preferences().SetBool(WarningSuppressVelocity, warnVelocity)

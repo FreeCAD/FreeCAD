@@ -1574,6 +1574,10 @@ ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
 
 bool ExpLineEdit::apply(const std::string& propName)
 {
+    if (m_tentativeDiscard) {
+        m_tentativeDiscard = false;
+        m_savedExpr.reset();
+    }
 
     if (!ExpressionBinding::apply(propName)) {
         if (!autoClose) {
@@ -1731,9 +1735,52 @@ void ExpLineEdit::finishFormulaDialog()
 
 void ExpLineEdit::keyPressEvent(QKeyEvent* event)
 {
-    if (!hasExpression()) {
+    if (m_tentativeDiscard || !hasExpression()) {
         QLineEdit::keyPressEvent(event);
     }
+}
+
+void ExpLineEdit::stashExpression()
+{
+    if (!hasExpression() || m_tentativeDiscard) {
+        return;
+    }
+    m_savedExpr = getExpression();
+    m_textAtDiscard = text();
+    m_tentativeDiscard = true;
+    setExpression(std::shared_ptr<App::Expression>());
+    onChange();
+    selectAll();
+}
+
+void ExpLineEdit::mouseDoubleClickEvent(QMouseEvent* event)
+{
+    if (hasExpression() && !m_tentativeDiscard) {
+        stashExpression();
+        return;
+    }
+    QLineEdit::mouseDoubleClickEvent(event);
+}
+
+bool ExpLineEdit::isValueTouched() const
+{
+    return text() != m_textAtDiscard;
+}
+
+void ExpLineEdit::focusOutEvent(QFocusEvent* event)
+{
+    if (m_tentativeDiscard) {
+        m_tentativeDiscard = false;
+        if (!isValueTouched()) {
+            setExpression(m_savedExpr);
+            m_savedExpr.reset();
+            onChange();
+        }
+        else {
+            m_savedExpr.reset();
+        }
+    }
+    QLineEdit::focusOutEvent(event);
 }
 
 // --------------------------------------------------------------------

@@ -72,39 +72,27 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
         f.write("*BOUNDARY\n")
     if not disp_obj.xFree:
         f.write(
-            "{},1,1,{}\n".format(
-                disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.xDisplacement.getValueAs("mm"))
-            )
+            "{},1,1,{:.13G}\n".format(disp_obj.Name, disp_obj.xDisplacement.getValueAs("mm").Value)
         )
     if not disp_obj.yFree:
         f.write(
-            "{},2,2,{}\n".format(
-                disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.yDisplacement.getValueAs("mm"))
-            )
+            "{},2,2,{:.13G}\n".format(disp_obj.Name, disp_obj.yDisplacement.getValueAs("mm").Value)
         )
     if not disp_obj.zFree:
         f.write(
-            "{},3,3,{}\n".format(
-                disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.zDisplacement.getValueAs("mm"))
-            )
+            "{},3,3,{:.13G}\n".format(disp_obj.Name, disp_obj.zDisplacement.getValueAs("mm").Value)
         )
 
     if ccxwriter.member.geos_beamsection or ccxwriter.member.geos_shellthickness:
         if not disp_obj.rotxFree:
             f.write(
-                "{},4,4,{}\n".format(
-                    disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.xRotation.getValueAs("deg"))
-                )
+                "{},4,4,{:.13G}\n".format(disp_obj.Name, disp_obj.xRotation.getValueAs("rad").Value)
             )
         if not disp_obj.rotyFree:
             f.write(
-                "{},5,5,{}\n".format(
-                    disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.yRotation.getValueAs("deg"))
-                )
+                "{},5,5,{:.13G}\n".format(disp_obj.Name, disp_obj.yRotation.getValueAs("rad").Value)
             )
         if not disp_obj.rotzFree:
             f.write(
-                "{},6,6,{}\n".format(
-                    disp_obj.Name, FreeCAD.Units.Quantity(disp_obj.zRotation.getValueAs("deg"))
-                )
+                "{},6,6,{:.13G}\n".format(disp_obj.Name, disp_obj.zRotation.getValueAs("rad").Value)
             )

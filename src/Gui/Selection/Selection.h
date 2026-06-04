@@ -27,6 +27,7 @@
 #include <deque>
 #include <list>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include <App/DocumentObject.h>
@@ -102,7 +103,7 @@ public:
         const char* docName = nullptr,
         const char* objName = nullptr,
         const char* subName = nullptr,
-        const char* typeName = nullptr,
+        std::string_view typeName = {},
         float x = 0,
         float y = 0,
         float z = 0,
@@ -114,13 +115,11 @@ public:
         , y(y)
         , z(z)
         , Object(docName, objName, subName)
+        , TypeName(typeName)
     {
         pDocName = Object.getDocumentName().c_str();
         pObjectName = Object.getObjectName().c_str();
         pSubName = Object.getSubName().c_str();
-        if (typeName) {
-            TypeName = typeName;
-        }
         pTypeName = TypeName.c_str();
     }  // explicit bombs
 
@@ -129,7 +128,7 @@ public:
         const std::string& docName,
         const std::string& objName,
         const std::string& subName,
-        const std::string& typeName = std::string(),
+        std::string_view typeName = {},
         float x = 0,
         float y = 0,
         float z = 0,
@@ -253,6 +252,11 @@ public:
     void attachSelection();
     /** Detaches from the selection. */
     void detachSelection();
+    /** clears the document scope filter, allowing cross-document selection events. */
+    void clearDocumentScope()
+    {
+        documentScopeName.clear();
+    }
 
 private:
     virtual void onSelectionChanged(const SelectionChanges& msg) = 0;
@@ -277,6 +281,17 @@ class GuiExport SelectionGate
 public:
     virtual ~SelectionGate() = default;
     virtual bool allow(App::Document*, App::DocumentObject*, const char*) = 0;
+    /** @brief filter all available types
+     *  @param allTypesForGeometry Every type available to select (ex. {"Vertex", "Edge"})
+     *  @returns a set of filtered types (ex. {"Vertex"})
+     */
+    virtual std::unordered_set<std::string> getGatedTypes(
+        const std::vector<const char*>& allTypesForGeometry
+    ) const
+    {
+        (void)allTypesForGeometry;
+        return {};
+    }
 
     /**
      * @brief notAllowedReason is a string that sets the message to be
@@ -310,7 +325,7 @@ public:
         const char* DocName;
         const char* FeatName;
         const char* SubName;
-        const char* TypeName;
+        std::string_view TypeName;
         App::Document* pDoc;
         App::DocumentObject* pObject;
         App::DocumentObject* pResolvedObject;
@@ -384,6 +399,14 @@ public:
         ResolveMode resolve = ResolveMode::OldStyleElement
     ) const;
 
+    /// Check if an object or sub-element passes the active selection gate without changing selection.
+    bool testSelection(
+        App::Document* pDoc,
+        App::DocumentObject* pObject,
+        const char* pSubName = nullptr
+    ) const;
+    bool hasSelectionGate(App::Document* pDoc) const;
+
     std::string getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 
     /// set the preselected object (mostly by the 3D view)
@@ -410,6 +433,11 @@ public:
         ResolveMode resolve = ResolveMode::OldStyleElement,
         const char* pDocName = nullptr
     );
+
+    /** @brief get the pointer to the selection gate
+     * It will be nullptr when no selection filter active
+     */
+    const Gui::SelectionGate* getSelectionGate(const App::Document* document) const;
     /// remove the document's SelectionGate, by default the active document is selected, which is
     /// usually the intended behavior
     void rmvSelectionGate(const char* pDocName = nullptr);
@@ -722,6 +750,10 @@ protected:
     static PyObject* sSetPreselection(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sGetPreselection(PyObject* self, PyObject* args);
     static PyObject* sRemPreselection(PyObject* self, PyObject* args);
+    static PyObject* sApplyCoinHighlight(PyObject* self, PyObject* args, PyObject* kwd);
+    static PyObject* sClearCoinHighlight(PyObject* self, PyObject* args, PyObject* kwd);
+    static PyObject* sApplyCoinSelection(PyObject* self, PyObject* args, PyObject* kwd);
+    static PyObject* sClearCoinSelection(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sGetCompleteSelection(PyObject* self, PyObject* args);
     static PyObject* sGetSelectionEx(PyObject* self, PyObject* args);
     static PyObject* sGetSelectionObject(PyObject* self, PyObject* args);
@@ -846,6 +878,22 @@ protected:
 
     std::map<App::Document*, SelectionInfo> docSelectionContext;
 
+    struct SelectionAllowance
+    {
+        bool allowed {false};
+        std::string reason;
+    };
+
+    /** @brief Checks if a selection is allowed through the selection filter.
+     * Uses SelectionGate (which has a SelectionFilter).
+     * @param context The selection context.
+     * @param sel The object to be selected.
+     * @returns SelectionAllowance
+     */
+    SelectionAllowance isSelectionAllowed(
+        const SelectionContext& context,
+        const SelectionDescription& sel
+    );
     // Preselection helpers, it's a mess, needs clarifying -theo-vt
     std::string DocName;
     std::string FeatName;
