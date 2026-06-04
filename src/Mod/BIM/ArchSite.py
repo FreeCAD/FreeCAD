@@ -54,6 +54,7 @@ if FreeCAD.GuiUp:
     from PySide import QtGui, QtCore
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
+    from draftutils import gui_utils
     from draftutils.translate import translate
 else:
     # \cond
@@ -261,7 +262,7 @@ def makeSolarDiagram(longitude, latitude, scale=1, complete=False, tz=None):
         for w in item.Edges:
             hoursep.addChild(toNode(w))
     for p in circlepos:
-        text = coin.SoText2()
+        text = gui_utils.make_hidpi_text2()
         s = p[0] - 90
         s = -s
         if s > 360:
@@ -288,7 +289,7 @@ def makeSolarDiagram(longitude, latitude, scale=1, complete=False, tz=None):
         item.addChild(text)
         numsep.addChild(item)
     for p in hourpos:
-        text = coin.SoText2()
+        text = gui_utils.make_hidpi_text2()
         s = str(p[0])
         text.string = s
         text.justification = coin.SoText2.CENTER
@@ -2225,7 +2226,7 @@ class _ViewProviderSite:
                 if hasattr(vobj, "ShowHourLabels") and vobj.ShowHourLabels:
                     if vobj.ShowHourLabels and (hour_float in [9.0, 12.0, 15.0]):
                         # Create a text node for the label
-                        text_node = coin.SoText2()
+                        text_node = gui_utils.make_hidpi_text2()
                         text_node.string = f"{int(hour_float)}h"
 
                         # Create a transform to position the text slightly offset from the marker
