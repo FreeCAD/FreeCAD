@@ -1873,23 +1873,16 @@ StdCmdPlacement::StdCmdPlacement()
 void StdCmdPlacement::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(
+        nullptr,
         App::GeoFeature::getClassTypeId()
     );
     auto plm = new Gui::Dialog::TaskPlacement();
-    if (!sel.empty()) {
-        App::Property* prop = sel.front()->getPropertyByName("Placement");
+    if (!selection.empty()) {
+        auto obj = selection.front().getObject();
+        App::Property* prop = obj->getPropertyByName("Placement");
         if (prop && prop->is<App::PropertyPlacement>()) {
             plm->setPlacement(static_cast<App::PropertyPlacement*>(prop)->getValue());
-
-            std::vector<Gui::SelectionObject> selection;
-            selection.reserve(sel.size());
-            std::transform(
-                sel.cbegin(),
-                sel.cend(),
-                std::back_inserter(selection),
-                [](App::DocumentObject* obj) { return Gui::SelectionObject(obj); }
-            );
 
             plm->setPropertyName(QLatin1String("Placement"));
             plm->setSelection(selection);
