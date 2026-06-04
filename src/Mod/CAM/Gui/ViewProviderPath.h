@@ -97,13 +97,13 @@ private:
     long findFirstFeedMoveIndex(const Path::Toolpath& path) const;
 
 protected:
-    virtual Base::BoundBox3d _getBoundingBox(
+    Base::BoundBox3d _getBoundingBox(
         const char* subname = nullptr,
         const Base::Matrix4D* mat = nullptr,
         bool transform = true,
         const Gui::View3DInventorViewer* viewer = nullptr,
         int depth = 0
-    ) const;
+    ) const override;
 
     void onChanged(const App::Property* prop) override;
     unsigned long getBoundColor() const override;
