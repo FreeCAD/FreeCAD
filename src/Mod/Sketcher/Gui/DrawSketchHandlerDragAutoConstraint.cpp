@@ -27,7 +27,7 @@
 #include <limits>
 #include <numbers>
 
-#include <Base/Exception.h>
+#include <Precision.hxx>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -39,6 +39,11 @@
 using namespace SketcherGui;
 using namespace Sketcher;
 
+namespace
+{
+constexpr double DragAutoConstraintSnapDistanceFactor = 0.25;
+}
+
 bool DrawSketchHandlerDragAutoConstraint::canSuggestFor(const std::vector<GeoElementId>& dragged) const
 {
     return sketchgui && sketchgui->Autoconstraints.getValue() && dragged.size() == 1
@@ -48,21 +53,12 @@ bool DrawSketchHandlerDragAutoConstraint::canSuggestFor(const std::vector<GeoEle
 void DrawSketchHandlerDragAutoConstraint::initDragging(const std::vector<GeoElementId>& dragged)
 {
     clear();
-    hasStartPos = false;
 
     if (!canSuggestFor(dragged)) {
         return;
     }
 
-    try {
-        const Base::Vector3d start
-            = getSketchObject()->getPoint(dragged.front().GeoId, dragged.front().Pos);
-        startPos = Base::Vector2d(start.x, start.y);
-        hasStartPos = true;
-    }
-    catch (const Base::Exception&) {
-        hasStartPos = false;
-    }
+    startPos = toVector2d(getSketchObject()->getPoint(dragged.front().GeoId, dragged.front().Pos));
 }
 
 void DrawSketchHandlerDragAutoConstraint::addAutoConstraint(ConstraintType type, int geoId, PointPos posId)
@@ -74,37 +70,14 @@ void DrawSketchHandlerDragAutoConstraint::addAutoConstraint(ConstraintType type,
     suggestedConstraints.push_back(constr);
 }
 
-void DrawSketchHandlerDragAutoConstraint::clearCursor()
-{
-    unsetCursor();
-}
-
 void DrawSketchHandlerDragAutoConstraint::clear()
 {
     suggestedConstraints.clear();
-    clearCursor();
-}
-
-Base::Vector2d DrawSketchHandlerDragAutoConstraint::getPosition(
-    const GeoElementId& dragged,
-    const Base::Vector2d& fallbackPos
-) const
-{
-    try {
-        const Base::Vector3d actual = sketchgui->getSolvedSketch().getPoint(dragged.GeoId, dragged.Pos);
-        return Base::Vector2d(actual.x, actual.y);
-    }
-    catch (const Base::Exception&) {
-        return fallbackPos;
-    }
+    unsetCursor();
 }
 
 bool DrawSketchHandlerDragAutoConstraint::hasMoved(const Base::Vector2d& actualPos) const
 {
-    if (!hasStartPos) {
-        return true;
-    }
-
     return (actualPos - startPos).Sqr() > Precision::SquareConfusion();
 }
 
@@ -119,9 +92,6 @@ Base::Vector2d DrawSketchHandlerDragAutoConstraint::getDirection(
     }
 
     const auto* line = static_cast<const Part::GeomLineSegment*>(geo);
-    if (!line) {
-        return Base::Vector2d(0.0, 0.0);
-    }
 
     Base::Vector2d startPoint = toVector2d(line->getStartPoint());
     Base::Vector2d endPoint = toVector2d(line->getEndPoint());
@@ -230,31 +200,31 @@ void DrawSketchHandlerDragAutoConstraint::removeInvalidConstraints(const GeoElem
 
 void DrawSketchHandlerDragAutoConstraint::update(
     const std::vector<GeoElementId>& draggedElements,
-    const Base::Vector2d& pos
+    const Base::Vector2d& /*pos*/
 )
 {
     suggestedConstraints.clear();
 
-    if (!canSuggestFor(draggedElements)) {
-        clear();
-        return;
-    }
-
     SketchObject* obj = getSketchObject();
-    if (!obj) {
-        clearCursor();
+    if (!obj || !canSuggestFor(draggedElements)) {
+        unsetCursor();
         return;
     }
 
     const auto& dragged = draggedElements.front();
-    const Base::Vector2d actualPos = getPosition(dragged, pos);
+    const Base::Vector2d actualPos = toVector2d(
+        sketchgui->getSolvedSketch().getPoint(dragged.GeoId, dragged.Pos)
+    );
 
     if (!hasMoved(actualPos)) {
-        clearCursor();
+        unsetCursor();
         return;
     }
 
-    const double tolerance = std::max(1e-7, 0.25 * static_cast<double>(sketchgui->getScaleFactor()));
+    const double snapDistance = std::max(
+        Precision::Confusion(),
+        DragAutoConstraintSnapDistanceFactor * sketchgui->getScaleFactor()
+    );
 
     auto isDraggedPoint = [&dragged](int geoId, PointPos posId) {
         return dragged.GeoId == geoId && dragged.Pos == posId;
@@ -262,7 +232,7 @@ void DrawSketchHandlerDragAutoConstraint::update(
 
     int bestPointGeoId = GeoEnum::GeoUndef;
     PointPos bestPointPos = PointPos::none;
-    double bestPointDist = tolerance;
+    double bestPointDist = snapDistance;
 
     const int highestVertex = obj->getHighestVertexIndex();
     for (int vertexIndex = 0; vertexIndex <= highestVertex; ++vertexIndex) {
@@ -285,7 +255,7 @@ void DrawSketchHandlerDragAutoConstraint::update(
     if (bestPointGeoId != GeoEnum::GeoUndef) {
         addAutoConstraint(Coincident, bestPointGeoId, bestPointPos);
     }
-    else if (actualPos.Length() < tolerance) {
+    else if (actualPos.Length() < snapDistance) {
         addAutoConstraint(Coincident, GeoEnum::RtPnt, PointPos::start);
     }
     else {
@@ -299,7 +269,7 @@ void DrawSketchHandlerDragAutoConstraint::update(
         CurveCandidate bestCurve;
 
         auto considerCurve = [&](int geoId, double distance, bool lineCenter = false) {
-            if (geoId == dragged.GeoId || distance >= tolerance || distance >= bestCurve.distance) {
+            if (geoId == dragged.GeoId || distance >= snapDistance || distance >= bestCurve.distance) {
                 return;
             }
 
@@ -316,16 +286,13 @@ void DrawSketchHandlerDragAutoConstraint::update(
 
             if (geo->is<Part::GeomLineSegment>()) {
                 const auto* line = static_cast<const Part::GeomLineSegment*>(geo);
-                if (!line) {
-                    continue;
-                }
 
                 const Base::Vector2d a = toVector2d(line->getStartPoint());
                 const Base::Vector2d b = toVector2d(line->getEndPoint());
                 const Base::Vector2d ab = b - a;
                 const double len2 = ab * ab;
 
-                if (len2 <= 1e-16) {
+                if (len2 <= Precision::SquareConfusion()) {
                     continue;
                 }
 
@@ -338,9 +305,6 @@ void DrawSketchHandlerDragAutoConstraint::update(
             }
             else if (geo->is<Part::GeomCircle>()) {
                 const auto* circle = static_cast<const Part::GeomCircle*>(geo);
-                if (!circle) {
-                    continue;
-                }
 
                 const Base::Vector2d center = toVector2d(circle->getCenter());
                 const double distance = std::abs((actualPos - center).Length() - circle->getRadius());
@@ -352,16 +316,16 @@ void DrawSketchHandlerDragAutoConstraint::update(
         if (bestCurve.geoId != GeoEnum::GeoUndef) {
             addAutoConstraint(bestCurve.lineCenter ? Symmetric : PointOnObject, bestCurve.geoId);
         }
-        else if (std::abs(actualPos.y) < tolerance) {
+        else if (std::abs(actualPos.y) < snapDistance) {
             addAutoConstraint(PointOnObject, GeoEnum::HAxis);
         }
-        else if (std::abs(actualPos.x) < tolerance) {
+        else if (std::abs(actualPos.x) < snapDistance) {
             addAutoConstraint(PointOnObject, GeoEnum::VAxis);
         }
     }
 
     const Base::Vector2d dir = getDirection(dragged, actualPos);
-    if (dir.Length() > 1e-8) {
+    if (dir.Sqr() > Precision::SquareConfusion()) {
         using std::numbers::pi;
         constexpr double angleDevRad = Base::toRadians<double>(2);
 
@@ -386,7 +350,7 @@ void DrawSketchHandlerDragAutoConstraint::update(
     removeInvalidConstraints(dragged);
 
     if (suggestedConstraints.empty()) {
-        clearCursor();
+        unsetCursor();
     }
     else {
         renderSuggestConstraintsCursor(suggestedConstraints);
