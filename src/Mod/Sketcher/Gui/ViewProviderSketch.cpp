@@ -1818,11 +1818,13 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             Base::Vector2d dragPos = snapHandle->compute();
             const bool temporaryMoveSucceeded = doDragStep(dragPos.x, dragPos.y);
 
-            if (temporaryMoveSucceeded) {
-                updateDragAutoConstraints(dragPos);
-            }
-            else {
-                clearDragAutoConstraints();
+            if (dragAutoConstraintHandler) {
+                if (temporaryMoveSucceeded) {
+                    dragAutoConstraintHandler->update(drag.Dragged, dragPos);
+                }
+                else {
+                    dragAutoConstraintHandler->clear();
+                }
             }
             return true;
         }
@@ -1899,7 +1901,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
     }
 
     drag.reset();
-    clearDragAutoConstraints();
+    if (dragAutoConstraintHandler) {
+        dragAutoConstraintHandler->clear();
+    }
     setSketchMode(STATUS_SKETCH_Drag);
     drag.Dragged.emplace_back(geoId, pos);
 
@@ -1956,18 +1960,12 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         }
     }
 
-    dragAutoConstraintHasStartPos = false;
-    if (drag.Dragged.size() == 1 && drag.Dragged.front().Pos != Sketcher::PointPos::none) {
-        try {
-            const Base::Vector3d start =
-                getSketchObject()->getPoint(drag.Dragged.front().GeoId, drag.Dragged.front().Pos);
-            dragAutoConstraintStartPos = Base::Vector2d(start.x, start.y);
-            dragAutoConstraintHasStartPos = true;
-        }
-        catch (const Base::Exception&) {
-            dragAutoConstraintHasStartPos = false;
-        }
+    if (!dragAutoConstraintHandler) {
+        dragAutoConstraintHandler = std::make_unique<DrawSketchHandlerDragAutoConstraint>();
+        dragAutoConstraintHandler->setSketchGui(this);
+        dragAutoConstraintHandler->updateCursor();
     }
+    dragAutoConstraintHandler->initDragging(drag.Dragged);
 
     auto setRelative = [&]() {
         drag.relative = true;
@@ -2076,436 +2074,6 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
     }
 
     getSketchObject()->initTemporaryMove(drag.Dragged, false);
-}
-
-bool ViewProviderSketch::canUseDragAutoConstraints() const
-{
-    return Mode == STATUS_SKETCH_Drag && Autoconstraints.getValue()
-        && drag.Dragged.size() == 1
-        && drag.Dragged.front().Pos != Sketcher::PointPos::none;
-}
-
-void ViewProviderSketch::ensureDragAutoConstraintHandler()
-{
-    if (dragAutoConstraintHandler) {
-        return;
-    }
-
-    dragAutoConstraintHandler = std::make_unique<DrawSketchHandlerDragAutoConstraint>();
-    dragAutoConstraintHandler->setSketchGui(this);
-    dragAutoConstraintHandler->updateCursor();
-}
-
-void ViewProviderSketch::restoreDragAutoConstraintCursor()
-{
-    if (!dragAutoConstraintHandler) {
-        return;
-    }
-
-    dragAutoConstraintHandler->clearCursor();
-}
-
-void ViewProviderSketch::addDragAutoConstraint(Sketcher::ConstraintType type,
-                                               int geoId,
-                                               Sketcher::PointPos posId)
-{
-    AutoConstraint constr;
-    constr.Type = type;
-    constr.GeoId = geoId;
-    constr.PosId = posId;
-    dragAutoConstraints.push_back(constr);
-}
-
-void ViewProviderSketch::clearDragAutoConstraints()
-{
-    dragAutoConstraints.clear();
-    resetPreselectPoint();
-    restoreDragAutoConstraintCursor();
-}
-
-Base::Vector2d
-ViewProviderSketch::getDragAutoConstraintPosition(const Base::Vector2d& fallbackPos) const
-{
-    if (drag.Dragged.empty() || drag.Dragged.front().Pos == Sketcher::PointPos::none) {
-        return fallbackPos;
-    }
-
-    try {
-        const auto& dragged = drag.Dragged.front();
-        const Base::Vector3d actual = getSolvedSketch().getPoint(dragged.GeoId, dragged.Pos);
-        return Base::Vector2d(actual.x, actual.y);
-    }
-    catch (const Base::Exception&) {
-        return fallbackPos;
-    }
-}
-
-bool ViewProviderSketch::hasDraggedPointMoved(const Base::Vector2d& actualPos) const
-{
-    if (!dragAutoConstraintHasStartPos) {
-        return true;
-    }
-
-    const double tolerance = std::max(1e-7, 0.03 * static_cast<double>(getScaleFactor()));
-    return (actualPos - dragAutoConstraintStartPos).Length() > tolerance;
-}
-
-Base::Vector2d ViewProviderSketch::getDragAutoConstraintDirection(const Base::Vector2d& Pos) const
-{
-    if (drag.Dragged.empty()) {
-        return Base::Vector2d(0.0, 0.0);
-    }
-
-    const auto& dragged = drag.Dragged.front();
-    const Part::Geometry* geo = getSketchObject()->getGeometry(dragged.GeoId);
-    if (!geo || !geo->isDerivedFrom<Part::GeomLineSegment>()) {
-        return Base::Vector2d(0.0, 0.0);
-    }
-
-    const auto* line = freecad_cast<const Part::GeomLineSegment*>(geo);
-    if (!line) {
-        return Base::Vector2d(0.0, 0.0);
-    }
-
-    Base::Vector2d startPoint(line->getStartPoint().x, line->getStartPoint().y);
-    Base::Vector2d endPoint(line->getEndPoint().x, line->getEndPoint().y);
-
-    if (dragged.Pos == Sketcher::PointPos::start) {
-        startPoint = Pos;
-    }
-    else if (dragged.Pos == Sketcher::PointPos::end) {
-        endPoint = Pos;
-    }
-
-    return endPoint - startPoint;
-}
-
-bool ViewProviderSketch::isExistingDragAutoConstraint(const AutoConstraint& constraint) const
-{
-    if (drag.Dragged.empty()) {
-        return true;
-    }
-
-    const auto& dragged = drag.Dragged.front();
-
-    auto samePoint = [](int geoId1,
-                        Sketcher::PointPos posId1,
-                        int geoId2,
-                        Sketcher::PointPos posId2) {
-        return geoId1 == geoId2 && posId1 == posId2;
-    };
-
-    auto isDraggedPoint = [&](int geoId, Sketcher::PointPos posId) {
-        return samePoint(geoId, posId, dragged.GeoId, dragged.Pos);
-    };
-
-    const auto& constraints = getSketchObject()->Constraints.getValues();
-    for (const Sketcher::Constraint* c : constraints) {
-        if (!c) {
-            continue;
-        }
-
-        switch (constraint.Type) {
-            case Sketcher::Coincident:
-                if (c->Type == Sketcher::Coincident
-                    && ((isDraggedPoint(c->First, c->FirstPos)
-                         && samePoint(c->Second, c->SecondPos, constraint.GeoId, constraint.PosId))
-                        || (isDraggedPoint(c->Second, c->SecondPos)
-                            && samePoint(c->First,
-                                         c->FirstPos,
-                                         constraint.GeoId,
-                                         constraint.PosId)))) {
-                    return true;
-                }
-                break;
-
-            case Sketcher::PointOnObject:
-                if (c->Type == Sketcher::PointOnObject
-                    && isDraggedPoint(c->First, c->FirstPos)
-                    && c->Second == constraint.GeoId) {
-                    return true;
-                }
-                break;
-
-            case Sketcher::Symmetric: {
-                if (c->Type != Sketcher::Symmetric || !isDraggedPoint(c->Third, c->ThirdPos)) {
-                    break;
-                }
-
-                const bool sameLineStartEnd =
-                    samePoint(c->First,
-                              c->FirstPos,
-                              constraint.GeoId,
-                              Sketcher::PointPos::start)
-                    && samePoint(c->Second,
-                                 c->SecondPos,
-                                 constraint.GeoId,
-                                 Sketcher::PointPos::end);
-
-                const bool sameLineEndStart =
-                    samePoint(c->First,
-                              c->FirstPos,
-                              constraint.GeoId,
-                              Sketcher::PointPos::end)
-                    && samePoint(c->Second,
-                                 c->SecondPos,
-                                 constraint.GeoId,
-                                 Sketcher::PointPos::start);
-
-                if (sameLineStartEnd || sameLineEndStart) {
-                    return true;
-                }
-
-                break;
-            }
-
-            case Sketcher::Horizontal:
-            case Sketcher::Vertical: {
-                const int targetGeoId = constraint.GeoId != Sketcher::GeoEnum::GeoUndef
-                    ? constraint.GeoId
-                    : dragged.GeoId;
-                if (c->Type == constraint.Type && c->First == targetGeoId) {
-                    return true;
-                }
-                break;
-            }
-
-            default:
-                break;
-        }
-    }
-
-    return false;
-}
-
-void ViewProviderSketch::removeInvalidDragAutoConstraints()
-{
-    if (drag.Dragged.empty() || dragAutoConstraints.empty()) {
-        return;
-    }
-
-    const auto& dragged = drag.Dragged.front();
-
-    dragAutoConstraints.erase(
-        std::remove_if(
-            dragAutoConstraints.begin(),
-            dragAutoConstraints.end(),
-            [this, &dragged](const AutoConstraint& constraint) {
-                const bool isSelfPoint = constraint.Type == Sketcher::Coincident
-                    && constraint.GeoId == dragged.GeoId
-                    && constraint.PosId == dragged.Pos;
-                const bool isSelfObject =
-                    (constraint.Type == Sketcher::PointOnObject
-                     || constraint.Type == Sketcher::Tangent)
-                    && constraint.GeoId == dragged.GeoId;
-
-                return isSelfPoint || isSelfObject || isExistingDragAutoConstraint(constraint);
-            }),
-        dragAutoConstraints.end()
-    );
-}
-
-void ViewProviderSketch::updateDragAutoConstraints(const Base::Vector2d& pos)
-{
-    dragAutoConstraints.clear();
-
-    if (!canUseDragAutoConstraints()) {
-        clearDragAutoConstraints();
-        return;
-    }
-
-    ensureDragAutoConstraintHandler();
-
-    resetPreselectPoint();
-
-    Sketcher::SketchObject* obj = getSketchObject();
-    if (!obj || drag.Dragged.empty()) {
-        restoreDragAutoConstraintCursor();
-        return;
-    }
-
-    const auto& dragged = drag.Dragged.front();
-    const Base::Vector2d Pos = getDragAutoConstraintPosition(pos);
-
-    if (!hasDraggedPointMoved(Pos)) {
-        restoreDragAutoConstraintCursor();
-        return;
-    }
-
-    const double tolerance = std::max(1e-7, 0.25 * static_cast<double>(getScaleFactor()));
-
-    auto to2d = [](const Base::Vector3d& p) {
-        return Base::Vector2d(p.x, p.y);
-    };
-
-    auto isDraggedPoint = [&dragged](int geoId, Sketcher::PointPos posId) {
-        return dragged.GeoId == geoId && dragged.Pos == posId;
-    };
-
-    int bestPointGeoId = Sketcher::GeoEnum::GeoUndef;
-    Sketcher::PointPos bestPointPos = Sketcher::PointPos::none;
-    double bestPointDist = tolerance;
-
-    const int highestVertex = obj->getHighestVertexIndex();
-    for (int vertexIndex = 0; vertexIndex <= highestVertex; ++vertexIndex) {
-        int geoId = Sketcher::GeoEnum::GeoUndef;
-        Sketcher::PointPos posId = Sketcher::PointPos::none;
-        obj->getGeoVertexIndex(vertexIndex, geoId, posId);
-
-        if (geoId == Sketcher::GeoEnum::GeoUndef || isDraggedPoint(geoId, posId)) {
-            continue;
-        }
-
-        const double dist = (Pos - to2d(obj->getPoint(geoId, posId))).Length();
-        if (dist < bestPointDist) {
-            bestPointDist = dist;
-            bestPointGeoId = geoId;
-            bestPointPos = posId;
-        }
-    }
-
-    if (bestPointGeoId != Sketcher::GeoEnum::GeoUndef) {
-        addDragAutoConstraint(Sketcher::Coincident, bestPointGeoId, bestPointPos);
-    }
-    else if (Pos.Length() < tolerance) {
-        addDragAutoConstraint(
-            Sketcher::Coincident,
-            Sketcher::GeoEnum::RtPnt,
-            Sketcher::PointPos::start
-        );
-    }
-    else {
-        struct CurveCandidate
-        {
-            int geoId = Sketcher::GeoEnum::GeoUndef;
-            double distance = std::numeric_limits<double>::max();
-            bool lineCenter = false;
-        };
-
-        CurveCandidate bestCurve;
-
-        auto considerCurve = [&](int geoId, double distance, bool lineCenter = false) {
-            if (geoId == dragged.GeoId || distance >= tolerance
-                || distance >= bestCurve.distance) {
-                return;
-            }
-
-            bestCurve.geoId = geoId;
-            bestCurve.distance = distance;
-            bestCurve.lineCenter = lineCenter;
-        };
-
-        for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); ++geoId) {
-            const Part::Geometry* geo = obj->getGeometry(geoId);
-            if (!geo) {
-                continue;
-            }
-
-            if (geo->is<Part::GeomLineSegment>()) {
-                const auto* line = freecad_cast<const Part::GeomLineSegment*>(geo);
-                if (!line) {
-                    continue;
-                }
-
-                const Base::Vector2d a = to2d(line->getStartPoint());
-                const Base::Vector2d b = to2d(line->getEndPoint());
-                const Base::Vector2d ab = b - a;
-                const double len2 = ab * ab;
-
-                if (len2 <= 1e-16) {
-                    continue;
-                }
-
-                double t = ((Pos - a) * ab) / len2;
-                t = std::max(0.0, std::min(1.0, t));
-
-                const Base::Vector2d projection = a + ab * t;
-                const double distance = (Pos - projection).Length();
-                const Base::Vector2d startPoint = to2d(line->getStartPoint());
-                const Base::Vector2d endPoint = to2d(line->getEndPoint());
-                const Base::Vector2d midPoint = (startPoint + endPoint) / 2;
-                const bool lineCenter =
-                    (Pos - midPoint).Length() < (endPoint - startPoint).Length() * 0.05;
-
-                considerCurve(geoId, distance, lineCenter);
-            }
-            else if (geo->is<Part::GeomCircle>()) {
-                const auto* circle = freecad_cast<const Part::GeomCircle*>(geo);
-                if (!circle) {
-                    continue;
-                }
-
-                const Base::Vector2d center = to2d(circle->getCenter());
-                const double distance =
-                    std::abs((Pos - center).Length() - circle->getRadius());
-
-                considerCurve(geoId, distance);
-            }
-        }
-
-        if (bestCurve.geoId != Sketcher::GeoEnum::GeoUndef) {
-            addDragAutoConstraint(
-                bestCurve.lineCenter ? Sketcher::Symmetric : Sketcher::PointOnObject,
-                bestCurve.geoId
-            );
-        }
-        else if (std::abs(Pos.y) < tolerance) {
-            addDragAutoConstraint(Sketcher::PointOnObject, Sketcher::GeoEnum::HAxis);
-        }
-        else if (std::abs(Pos.x) < tolerance) {
-            addDragAutoConstraint(Sketcher::PointOnObject, Sketcher::GeoEnum::VAxis);
-        }
-    }
-
-    const Base::Vector2d Dir = getDragAutoConstraintDirection(Pos);
-    if (Dir.Length() > 1e-8) {
-        using std::numbers::pi;
-        constexpr double angleDevRad = Base::toRadians<double>(2);
-
-        AutoConstraint constr;
-        constr.Type = Sketcher::None;
-        constr.GeoId = Sketcher::GeoEnum::GeoUndef;
-        constr.PosId = Sketcher::PointPos::none;
-        double angle = std::abs(atan2(Dir.y, Dir.x));
-        if (angle < angleDevRad || (pi - angle) < angleDevRad) {
-            constr.Type = Sketcher::Horizontal;
-        }
-        else if (std::abs(angle - pi / 2) < angleDevRad) {
-            constr.Type = Sketcher::Vertical;
-        }
-
-        if (constr.Type != Sketcher::None) {
-            dragAutoConstraints.push_back(constr);
-        }
-    }
-
-    removeInvalidDragAutoConstraints();
-
-    if (dragAutoConstraints.empty()) {
-        restoreDragAutoConstraintCursor();
-    }
-    else {
-        dragAutoConstraintHandler->renderSuggestConstraintsCursor(dragAutoConstraints);
-    }
-}
-
-void ViewProviderSketch::createDragAutoConstraints()
-{
-    if (!canUseDragAutoConstraints() || dragAutoConstraints.empty()) {
-        return;
-    }
-
-    if (!dragAutoConstraintHandler) {
-        return;
-    }
-
-    const auto& dragged = drag.Dragged.front();
-    dragAutoConstraintHandler->createAutoConstraints(
-        dragAutoConstraints,
-        dragged.GeoId,
-        dragged.Pos,
-        false
-    );
 }
 
 bool ViewProviderSketch::doDragStep(double x, double y)
@@ -2628,12 +2196,16 @@ void ViewProviderSketch::commitDragMove(double x, double y)
 
     try {
         Gui::cmdAppObjectArgs(getObject(), cmd.str().c_str());
-        createDragAutoConstraints();
+        if (dragAutoConstraintHandler) {
+            dragAutoConstraintHandler->create(drag.Dragged);
+        }
     }
     catch (const Base::Exception& e) {
         getDocument()->abortCommand();
         Base::Console().developerError("ViewProviderSketch", "Drag: %s\n", e.what());
-        clearDragAutoConstraints();
+        if (dragAutoConstraintHandler) {
+            dragAutoConstraintHandler->clear();
+        }
         drag.reset();
         resetPositionText();
         return;
@@ -2642,7 +2214,9 @@ void ViewProviderSketch::commitDragMove(double x, double y)
     getDocument()->commitCommand();
 
     tryAutoRecomputeIfNotSolve(getSketchObject());
-    clearDragAutoConstraints();
+    if (dragAutoConstraintHandler) {
+        dragAutoConstraintHandler->clear();
+    }
     drag.reset();
     resetPositionText();
 }

@@ -872,23 +872,6 @@ private:
     bool doDragStep(double x, double y);
     void commitDragMove(double x, double y);
 
-    bool canUseDragAutoConstraints() const;
-    void ensureDragAutoConstraintHandler();
-    void restoreDragAutoConstraintCursor();
-    void addDragAutoConstraint(
-        Sketcher::ConstraintType type,
-        int geoId,
-        Sketcher::PointPos posId = Sketcher::PointPos::none
-    );
-    void updateDragAutoConstraints(const Base::Vector2d& pos);
-    void createDragAutoConstraints();
-    void clearDragAutoConstraints();
-    Base::Vector2d getDragAutoConstraintPosition(const Base::Vector2d& fallbackPos) const;
-    bool hasDraggedPointMoved(const Base::Vector2d& actualPos) const;
-    Base::Vector2d getDragAutoConstraintDirection(const Base::Vector2d& pos) const;
-    bool isExistingDragAutoConstraint(const AutoConstraint& constraint) const;
-    void removeInvalidDragAutoConstraints();
-
     //@}
 
     /** @name Selection functions */
@@ -1073,9 +1056,6 @@ private:
     std::unique_ptr<DrawSketchHandler> sketchHandler;
 
     std::unique_ptr<DrawSketchHandlerDragAutoConstraint> dragAutoConstraintHandler;
-    std::vector<AutoConstraint> dragAutoConstraints;
-    bool dragAutoConstraintHasStartPos = false;
-    Base::Vector2d dragAutoConstraintStartPos {0.0, 0.0};
 
     ViewProviderParameters viewProviderParameters;
 
