@@ -115,6 +115,34 @@ private Q_SLOTS:
         QVERIFY(std::abs(quantity.getValue() - Base::Quantity::parse("2 mm").getValue()) < 1e-12);
     }
 
+    void test_ImpliedUnitIgnoresDimensionlessReference()
+    {
+        Base::UnitsApi::setSchema("Internal");
+
+        docName = App::GetApplication().getUniqueDocumentName("test");
+        App::Document* doc = App::GetApplication().newDocument(docName.c_str(), "testUser");
+        App::DocumentObject* obj = doc->addObject("App::VarSet", "VarSet");
+        QVERIFY(obj != nullptr);
+
+        App::Property* source = obj->addDynamicProperty("App::PropertyFloat", "Source");
+        QVERIFY(source != nullptr);
+        source->setPathValue(App::ObjectIdentifier(*source), 10.0);
+
+        App::Property* length = obj->addDynamicProperty("App::PropertyLength", "Length");
+        QVERIFY(length != nullptr);
+        App::ObjectIdentifier lengthPath(*length);
+
+        auto expr = App::Expression::parse(obj, "Source");
+        auto exprShared = std::shared_ptr<const App::Expression>(expr.release());
+
+        Gui::Dialog::DlgExpressionInput dlg(lengthPath, exprShared, Base::Unit::Length);
+        dlg.accept();
+
+        auto accepted = dlg.getExpression();
+        QVERIFY(accepted != nullptr);
+        QCOMPARE(accepted->toString(), std::string("Source"));
+    }
+
 private:
     std::string docName;
 };

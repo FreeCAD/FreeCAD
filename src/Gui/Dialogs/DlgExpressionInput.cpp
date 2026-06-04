@@ -591,6 +591,9 @@ void DlgExpressionInput::applyImpliedUnit()
     if (!numberExpr || !numberExpr->getQuantity().isDimensionless()) {
         return;
     }
+    if (!expression->getIdentifiers().empty()) {
+        return;
+    }
 
     double factor = 1.0;
     std::string unitString;
