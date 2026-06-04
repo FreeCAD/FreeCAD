@@ -628,15 +628,15 @@ public:
 
         gx(id, nullptr, pts, 0);
 
-        points.push_back(p[0]);
+        points.push_back(p[0]);  // Position above hole
         markers.push_back(p[0]);
         colorindex.push_back(0);
 
-        points.push_back(p[1]);
+        points.push_back(p[1]);  // Rapid to retract height
         markers.push_back(p[1]);
         colorindex.push_back(0);
 
-        points.push_back(next);
+        points.push_back(next);  // Feed to hole bottom
         markers.push_back(next);
         colorindex.push_back(1);
 
@@ -644,7 +644,7 @@ public:
             markers.push_back(*it);
         }
 
-        points.push_back(p[2]);
+        points.push_back(p[2]);  // Rapid to final retract position
         markers.push_back(p[2]);
         colorindex.push_back(0);
 

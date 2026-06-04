@@ -24,7 +24,6 @@
 
 #pragma once
 
-#include <functional>
 #include <vector>
 
 #include <QColor>
@@ -141,7 +140,7 @@ public:
         Base::Vector3d* pickedPoint = nullptr
     );
 
-    SoSeparator* getConstraintIdSeparator(int i);
+    SoSeparator* getConstraintIdSeparator(int i) const;
 
     void createEditModeInventorNodes();
 

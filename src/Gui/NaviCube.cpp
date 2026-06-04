@@ -63,6 +63,7 @@
 #include <Base/Tools.h>
 #include "NaviCube.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Command.h"
 #include "Action.h"
 #include "MainWindow.h"
@@ -1016,18 +1017,23 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
             }
         }
         else if (faceType == FaceType::Button) {
-
             // Handle the menu
             if (pickId == PickId::ViewMenu) {
                 resetClickState();
                 handleMenu();
                 return true;
             }
+            else if (pickId == PickId::Home) {
+                CommandManager& rcCmdMgr = Application::Instance->commandManager();
+                rcCmdMgr.runCommandByName("Std_ViewHome");
+
+                return true;
+            }
 
             // Handle the flat buttons
             resetClickState();
             SbRotation rotation = getFaceRotation(pickId);
-            if (pickId == PickId::DotBackside) {
+            if (pickId == PickId::Backside) {
                 rotation.scaleAngle(pi);
             }
             else {

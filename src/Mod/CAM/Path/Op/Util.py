@@ -511,6 +511,31 @@ def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
     return orientWire(Part.Wire(edges), None)
 
 
+_ROTARY_AXES = ("A", "B", "C", "U", "V", "W")
+
+
+def _stripRotaryAxes(path):
+    """Return a copy of path with rotary-axis parameters removed.
+
+    PathSegmentWalker accumulates A/B/C state and applies compensateRotation()
+    to every subsequent move, mapping rotated-frame X/Y/Z back to world coords.
+    For 3+2 ops the X/Y/Z stored in the gcode are already in the rotated
+    workplane frame, so that compensation produces the wrong positions when we
+    just want to read the toolpath geometry as-emitted (e.g. to compute a
+    cleared area to compare against another op in the same rotated frame).
+    Stripping the rotary parameters keeps the walker's internal A/B/C at zero
+    so positions are passed through unrotated.
+    """
+    stripped = []
+    for cmd in path.Commands:
+        params = {k: v for k, v in cmd.Parameters.items() if k not in _ROTARY_AXES}
+        if not params and any(k in cmd.Parameters for k in _ROTARY_AXES):
+            # Pure rotary command (e.g. the leading G0 A45) — drop entirely.
+            continue
+        stripped.append(Path.Command(cmd.Name, params))
+    return Path.Path(stripped)
+
+
 def getClearedAreas(currentOp, bbox):
     """
     Returns the cleared area relevant to the operation
@@ -518,20 +543,35 @@ def getClearedAreas(currentOp, bbox):
       before this operation will be considered
     - bbox: the cleared region is only generated where it is close enough to
       impact the bbox region
+
+    Operations whose Workplane differs from the current op's are skipped:
+    each op's Path stores X/Y/Z in the rotated workplane frame used at
+    generation time, and projecting cleared area between non-coplanar
+    workplanes has no meaningful 2D interpretation. For ops that share a
+    non-Z-up Workplane the path's leading rotary G0 is stripped before
+    walking so positions are read in the same rotated frame as bbox.
     """
     clearedAreas = []
     job = currentOp.Proxy.job
     z = bbox.ZMin + job.GeometryTolerance.getValueAs("mm")
+    z_up = FreeCAD.Vector(0, 0, 1)
+    currentWp = getattr(currentOp, "Workplane", z_up)
+    rotated = not currentWp.isEqual(z_up, 1e-6)
     for op in job.Operations.Group:
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
             break
         if getattr(op, "RestMachiningPass", None):
             op = baseOp
-        if getattr(baseOp, "Active", False) and op.Path:
-            tool = baseOp.ToolController.Tool
-            diameter = tool.Diameter.getValueAs("mm")
-            # for drills, dz translates to the full width part of the tool
-            dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
-            clearedAreas.append(op.Path.getClearedArea(diameter, z + dz, bbox))
+        if not (getattr(baseOp, "Active", False) and op.Path):
+            continue
+        opWp = getattr(baseOp, "Workplane", z_up)
+        if not opWp.isEqual(currentWp, 1e-6):
+            continue
+        tool = baseOp.ToolController.Tool
+        diameter = tool.Diameter.getValueAs("mm")
+        # for drills, dz translates to the full width part of the tool
+        dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
+        opPath = _stripRotaryAxes(op.Path) if rotated else op.Path
+        clearedAreas.append(opPath.getClearedArea(diameter, z + dz, bbox))
     return clearedAreas
