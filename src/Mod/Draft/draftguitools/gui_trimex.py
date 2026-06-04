@@ -601,7 +601,7 @@ class Trimex(gui_base_original.Modifier):
         # Trimex-specific behavior instead of using the shared helpers.
         constrain_key = gui_tool_utils._HINT_MOD_KEYS[params.get_param("modconstrain")]
         alt_key = gui_tool_utils._HINT_MOD_KEYS[params.get_param("modalt")]
-        hints = [Gui.InputHint(translate("draft", "%1 pick distance"), Gui.UserInput.MouseLeft)]
+        hints = [Gui.InputHint(translate("draft", "%1 pick target"), Gui.UserInput.MouseLeft)]
         if self.extrudeMode:
             hints.append(Gui.InputHint(translate("draft", "Hold %1 free direction"), constrain_key))
         else:
