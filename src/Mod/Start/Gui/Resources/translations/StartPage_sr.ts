@@ -271,12 +271,12 @@ Multiple folders can be added using ";;" to separate paths.</source>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>Направљено:</translation>
     </message>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
       <source>Modified at:</source>
-      <translation type="unfinished">Modified at:</translation>
+      <translation>Измењено:</translation>
     </message>
   </context>
 </TS>

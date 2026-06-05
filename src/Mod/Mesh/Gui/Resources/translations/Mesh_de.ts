@@ -1596,7 +1596,7 @@ Wenn gilt:
     <message>
       <location filename="../../MeshEditor.cpp" line="255"/>
       <source>Cannot add triangle to avoid non-manifolds.</source>
-      <translation type="unfinished">Cannot add triangle to avoid non-manifolds.</translation>
+      <translation>Ein Dreieck kann nicht hinzugefügt werden, um Nicht-Mannigfaltigkeiten zu vermeiden.</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="407"/>

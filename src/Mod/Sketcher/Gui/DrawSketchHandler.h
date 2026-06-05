@@ -171,6 +171,8 @@ public:
     virtual bool pressButton(Base::Vector2d pos) = 0;
     virtual bool releaseButton(Base::Vector2d pos) = 0;
 
+    /// Cancels the current tool action. Used by Esc, right click, and OVP cancel.
+    virtual void cancelCurrentAction();
     virtual void registerPressedKey(bool pressed, int key);
     virtual void pressRightButton(Base::Vector2d pos);
 

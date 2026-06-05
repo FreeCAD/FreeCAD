@@ -716,7 +716,7 @@ class BIM_Preflight_TaskPanel:
             psetspath = os.path.join(
                 FreeCAD.getResourceDir(),
                 "Mod",
-                "Arch",
+                "BIM",
                 "Presets",
                 "pset_definitions.csv",
             )
@@ -788,7 +788,7 @@ class BIM_Preflight_TaskPanel:
             psetspath = os.path.join(
                 FreeCAD.getResourceDir(),
                 "Mod",
-                "Arch",
+                "BIM",
                 "Presets",
                 "pset_definitions.csv",
             )
