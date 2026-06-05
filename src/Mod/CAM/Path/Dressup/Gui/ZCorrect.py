@@ -149,16 +149,26 @@ class ObjectDressup:
             return
 
         cols = list(zip(*pointlist))
-        yindex = list(sorted(set(cols[1])))
+        xlist = list(sorted(set(cols[0])))
+        ylist = list(sorted(set(cols[1])))
 
         Path.Log.debug(pointlist)
         Path.Log.debug("cols: {}".format(cols))
-        Path.Log.debug("yindex: {}".format(yindex))
+        Path.Log.debug("yindex: {}".format(ylist))
 
-        array = []
-        for y in yindex:
-            points = sorted([p for p in pointlist if p[1] == y])
-            array.append([FreeCAD.Vector(p[0], p[1], p[2]) for p in points])
+        array = [[None for xi in range(len(xlist))] for yi in range(len(ylist))]
+        for yi in range(len(ylist)):
+            for xi in range(len(xlist)):
+                for p in pointlist:
+                    if xlist[xi] == p[0] and ylist[yi] == p[1]:
+                        array[yi][xi] = FreeCAD.Vector(p[0], p[1], p[2])
+                        break
+            if None in array[yi]:  # fill missed probe positions
+                zlist = [p.z for p in array[yi] if p]
+                averageZ = sum(zlist) / len(zlist)
+                for xi in range(len(xlist)):
+                    if array[yi][xi] is None:
+                        array[yi][xi] = FreeCAD.Vector(xlist[xi], ylist[yi], averageZ)
 
         intSurf = Part.BSplineSurface()
         try:
@@ -310,10 +320,13 @@ class TaskPanel:
         self.form.SetProbePointFileName.clicked.connect(self.SetProbePointFileName)
 
     def SetProbePointFileName(self):
+        dirname = os.path.dirname(self.obj.probefile)
+        if not dirname:
+            dirname = os.path.dirname(FreeCAD.activeDocument().FileName)
         filename = QtGui.QFileDialog.getOpenFileName(
             self.form,
             translate("CAM_Probe", "Select Probe Point File"),
-            None,
+            dirname,
             translate("CAM_Probe", "All Files (*.*)"),
         )
         if filename and filename[0]:

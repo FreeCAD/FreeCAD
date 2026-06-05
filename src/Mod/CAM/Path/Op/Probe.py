@@ -80,6 +80,27 @@ class ObjectProbing(PathOp.ObjectOp):
                 "App::Property", "The output location for the probe data to be written"
             ),
         )
+        obj.addProperty(
+            "App::PropertyLink",
+            "BaseShape",
+            "Probe",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Limit probe area by shape. Point should be inside shape at final depth",
+            ),
+        )
+
+    def opOnDocumentRestored(self, obj):
+        if not hasattr(obj, "BaseShape"):
+            obj.addProperty(
+                "App::PropertyLink",
+                "BaseShape",
+                "Probe",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Limit probe area by shape. Point should be inside shape at final depth",
+                ),
+            )
 
     def nextpoint(self, startpoint=0.0, endpoint=0.0, count=3):
         curstep = 0
@@ -87,6 +108,15 @@ class ObjectProbing(PathOp.ObjectOp):
         while curstep <= count - 1:
             yield startpoint + (curstep * dist)
             curstep += 1
+
+    def isValidPoint(self, base, x, y, z):
+        if not base:
+            return True
+        point = FreeCAD.Vector(x, y, z)
+        if base.isDerivedFrom("Part::Feature"):
+            return base.Shape.isInside(point, 0.1, True)
+
+        return False
 
     def opExecute(self, obj):
         """opExecute(obj) ... generate probe locations."""
@@ -103,12 +133,17 @@ class ObjectProbing(PathOp.ObjectOp):
         )
 
         stock = PathUtils.findParentJob(obj).Stock
-        bb = stock.Shape.BoundBox
+        if obj.BaseShape and obj.BaseShape.isDerivedFrom("Part::Feature"):
+            bb = obj.BaseShape.Shape.BoundBox
+        else:
+            bb = stock.Shape.BoundBox
 
         self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         for y in self.nextpoint(bb.YMin, bb.YMax, obj.PointCountY):
             for x in self.nextpoint(bb.XMin, bb.XMax, obj.PointCountX):
+                if not self.isValidPoint(obj.BaseShape, x, y, obj.FinalDepth.Value):
+                    continue
                 self.commandlist.append(
                     Path.Command(
                         "G0",
@@ -152,5 +187,5 @@ def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Probing operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectProbing(obj, name, parentJob)
+    obj.Proxy = ObjectProbing(obj, name, parentJob)
     return obj
