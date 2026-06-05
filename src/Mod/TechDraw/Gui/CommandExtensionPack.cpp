@@ -175,7 +175,10 @@ class TDBoltCenterlinesHandler : public TechDrawHandler {
             if (viewPage) {
                 QPoint hotspot(15, 15);
                 QPixmap pixmap = viewPage->prepareCursorPixmap("TechDraw_ExtensionHoleCircle_Pointer.svg", hotspot);
-                viewPage->activateCursor(QCursor(pixmap, hotspot.x(), hotspot.y()));
+                QCursor cursor(pixmap, hotspot.x(), hotspot.y());
+                if (auto vp = viewPage->viewport()) {
+                    vp->setCursor(cursor);
+                }
             }
 
             Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
@@ -184,6 +187,11 @@ class TDBoltCenterlinesHandler : public TechDrawHandler {
         void deactivated() override
         {
             Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
+            if (viewPage) {
+                if (auto vp = viewPage->viewport()) {
+                    vp->unsetCursor();
+                }
+            }
             currentLines.clear();
             currentObjFeat = nullptr;
         }
@@ -389,13 +397,34 @@ class TDCircleCenterlinesHandler : public TechDrawHandler {
             if (viewPage) {
                 QPoint hotspot(15, 15);
                 QPixmap pixmap = viewPage->prepareCursorPixmap("TechDraw_ExtensionCircleCenterLines_Pointer.svg", hotspot);
-                viewPage->activateCursor(QCursor(pixmap, hotspot.x(), hotspot.y()));
+                QCursor cursor(pixmap, hotspot.x(), hotspot.y());
+                if (auto vp = viewPage->viewport()) {
+                    vp->setCursor(cursor);
+                }
             }
         }
 
+        void deactivated() override
+        {
+            if (viewPage) {
+                if (auto vp = viewPage->viewport()) {
+                    vp->unsetCursor();
+                }
+            }
+            if (!previewLines.empty() && previewObjFeat) {
+                previewObjFeat->removeCosmeticEdge(previewLines);
+                previewObjFeat->refreshCEGeoms();
+                previewObjFeat->requestPaint();
+                previewLines.clear();
+                previewObjFeat = nullptr;
+            }
+        }
 
         void mouseMoveEvent(QMouseEvent* event) override
         {
+            if (!viewPage) {
+                return;
+            }
             auto items = viewPage->scene()->items(viewPage->mapToScene(event->pos()));
             
             std::vector<std::string> SubNames;
