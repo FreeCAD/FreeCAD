@@ -49,6 +49,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include "Expression.h"
 #include "MaterialPy.h"
 #include "ObjectIdentifier.h"
 
@@ -1681,30 +1682,11 @@ unsigned int PropertyString::getMemSize() const
 void PropertyString::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
     verifyPath(path);
-    if (value.type() == typeid(bool)) {
-        setValue(boost::any_cast<bool>(value) ? "True" : "False");
-    }
-    else if (value.type() == typeid(int)) {
-        setValue(std::to_string(boost::any_cast<int>(value)));
-    }
-    else if (value.type() == typeid(long)) {
-        setValue(std::to_string(boost::any_cast<long>(value)));
-    }
-    else if (value.type() == typeid(double)) {
-        setValue(std::to_string(App::any_cast<double>(value)));
-    }
-    else if (value.type() == typeid(float)) {
-        setValue(std::to_string(App::any_cast<float>(value)));
-    }
-    else if (value.type() == typeid(Quantity)) {
-        setValue(boost::any_cast<Quantity>(value).getUserString().c_str());
-    }
-    else if (value.type() == typeid(std::string)) {
+    if (value.type() == typeid(std::string)) {
         setValue(boost::any_cast<const std::string &>(value));
     }
     else {
-        Base::PyGILStateLocker lock;
-        setValue(pyObjectFromAny(value).as_string());
+        setValue(anyToString(value));
     }
 }
 
@@ -2093,15 +2075,18 @@ void PropertyMap::setPathValue(const ObjectIdentifier& path, const boost::any& v
 {
     if (path.numSubComponents() > 1) {
         const App::ObjectIdentifier::Component& comp = path.getPropertyComponent(1);
-        if (comp.isMap() && value.type() == typeid(std::string)) {
-            aboutToSetValue();
-            _lValueList[comp.getName()] = App::any_cast<const std::string&>(value);
-            hasSetValue();
+        if (comp.isMap()) {
+            if (value.type() == typeid(std::string)) {
+                setValue(comp.getName(), boost::any_cast<const std::string &>(value));
+            }
+            else {
+                setValue(comp.getName(), anyToString(value));
+            }
             return;
         }
     }
 
-    return Property::setPathValue(path, value);
+    Property::setPathValue(path, value);
 }
 
 ObjectIdentifier PropertyMap::getItemPath(const std::string& key) const

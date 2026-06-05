@@ -69,6 +69,16 @@ AppExport bool isAnyEqual(const App::any& v1, const App::any& v2);
  */
 AppExport Base::Quantity anyToQuantity(const App::any &value, const char *errmsg = nullptr);
 
+/**
+ * @brief Convert an App::any value to a std::string.
+ *
+ * @param[in] value The value to convert.
+ *
+ * @return The converted std::string.
+ * @throw Base::ExpressionError if the value has an unknown type.
+ */
+AppExport std::string anyToString(const App::any& value);
+
 // clang-format off
 /// Map of depending objects to a map of depending property name to the full referencing object identifier
 using ExpressionDeps = std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectIdentifier>>>;

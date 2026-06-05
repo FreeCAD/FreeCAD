@@ -1631,14 +1631,7 @@ void ExpLineEdit::onChange()
 
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
-        if (result->isDerivedFrom<App::StringExpression>()) {
-            setText(
-                QString::fromUtf8(static_cast<App::StringExpression*>(result.get())->getText().c_str())
-            );
-        }
-        else {
-            setText(QString::fromUtf8(result->toString().c_str()));
-        }
+        setText(QString::fromStdString(anyToString(result->getValueAsAny())));
         setReadOnly(true);
         iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
 
@@ -1880,7 +1873,7 @@ public:
 
     virtual QWidget* createEditor(
         QWidget* parent,
-        const QStyleOptionViewItem& option,
+        const QStyleOptionViewItem&,
         const QModelIndex& index
     ) const override
     {
