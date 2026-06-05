@@ -104,9 +104,3 @@ SectionEnd
 
 #--------------------------------
 #
-
-Function StartFreeCAD
-
-  Exec "$INSTDIR\${APP_RUN}"
-
-FunctionEnd

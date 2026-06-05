@@ -57,17 +57,11 @@ BrandingText " "
 # Watch the components being installed.
 !insertmacro MUI_PAGE_INSTFILES
 
-# The option to run FreeCAD from the finish page is currently disabled because
-# it may run with Administrator privileges, therefore causing a different
-# user directory to be used. This could be fixed by creating a separate
-# process without UAC elevation.
-#!define MUI_FINISHPAGE_RUN_TEXT "$(FinishPageRun)"
-#!define MUI_FINISHPAGE_RUN "$INSTDIR\${APP_RUN}"
+!define MUI_FINISHPAGE_RUN_TEXT "$(FinishPageRun)"
+# Use explorer to launch freecad without elevated privileges
+!define MUI_FINISHPAGE_RUN $WINDIR\explorer.exe
+!define MUI_FINISHPAGE_RUN_PARAMETERS "$\"$INSTDIR\${APP_RUN}$\""
 
-!define MUI_FINISHPAGE_SHOWREADME
-!define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
-!define MUI_FINISHPAGE_SHOWREADME_FUNCTION StartFreeCAD
-!define MUI_FINISHPAGE_SHOWREADME_TEXT $(FinishPageRun)
 !define MUI_FINISHPAGE_LINK $(TEXT_FINISH_WEBSITE)
 !define MUI_FINISHPAGE_LINK_LOCATION "https://www.freecad.org/"
 #!define MUI_PAGE_CUSTOMFUNCTION_SHOW CheckDesktopShortcut
