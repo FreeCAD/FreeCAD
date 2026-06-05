@@ -112,9 +112,6 @@ private Q_SLOTS:
     void undoAvailable(bool);
     void redoAvailable(bool);
 
-Q_SIGNALS:
-    void changeFileName(const QString&);
-
 private:
     void setCurrentFileName(const QString& fileName);
     bool saveFile();
@@ -140,10 +137,6 @@ public:
 
 public Q_SLOTS:
     void executeScript();
-    void startDebug();
-    void toggleBreakpoint();
-    void showDebugMarker(int line);
-    void hideDebugMarker();
 
 private:
     PythonEditor* _pye;

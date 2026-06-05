@@ -121,7 +121,6 @@ protected:
     {
         return lineNumberArea;
     }
-    virtual void drawMarker(int line, int x, int y, QPainter*);
 
 private:
     SyntaxHighlighter* highlighter;
