@@ -12,10 +12,9 @@ Configuration and variables of FreeCAD installer
 #--------------------------------
 # Names and version
 
-!define APP_NAME "FreeCAD"
 !define APP_VERSION_NUMBER "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}.${APP_VERSION_PATCH}.${APP_VERSION_BUILD}"
-# For the proposed install folder we use the scheme "FreeCAD 0.18" 
-# however for the Registry, we need the scheme "FreeCAD 0.18.x" in order
+# For the proposed install folder we use the scheme "FreeCAD x.x"
+# however for the Registry, we need the scheme "FreeCAD x.x.x" in order
 # to check if it is exactly this version (to support side-by-side installations)
 !define APP_SERIES_NAME "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}"
 !define APP_SERIES_KEY "${APP_VERSION_MAJOR}${APP_VERSION_MINOR}${APP_VERSION_PATCH}${APP_VERSION_EMERGENCY}"
