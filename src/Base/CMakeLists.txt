@@ -2,6 +2,8 @@
 
 add_library(FreeCADBase SHARED)
 
+add_subdirectory(CrashReporter)
+
 if(WIN32)
     add_definitions(-DFCBase)
     add_definitions(-DPYCXX_DLL)
