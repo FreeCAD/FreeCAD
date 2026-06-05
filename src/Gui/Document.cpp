@@ -538,11 +538,6 @@ Document::Document(App::Document* pcDocument, Application* app)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document"
     );
-    if (hGrp->GetBool("UsingUndo", true)) {
-        d->_pcDocument->setUndoMode(1);
-        // set the maximum stack size
-        d->_pcDocument->setMaxUndoStackSize(hGrp->GetInt("MaxUndoSize", 20));
-    }
 
     d->_changeViewTouchDocument = hGrp->GetBool("ChangeViewProviderTouchDocument", true);
 }
