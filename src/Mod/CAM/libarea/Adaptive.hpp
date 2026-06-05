@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include "clipper.hpp"
+#include "clipper2/clipper.h"
 #include <vector>
 #include <list>
 #include <optional>
