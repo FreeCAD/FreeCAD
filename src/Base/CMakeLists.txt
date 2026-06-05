@@ -2,8 +2,6 @@
 
 add_library(FreeCADBase SHARED)
 
-add_subdirectory(CrashReporter)
-
 if(WIN32)
     add_definitions(-DFCBase)
     add_definitions(-DPYCXX_DLL)
@@ -311,12 +309,19 @@ SET(FreeCADBase_HPP_SRCS
     ZipHeader.h
 )
 
+SET (FreeCADBase_CrashReporter_SRCS
+    CrashReporter/Format.h
+    CrashReporter/Reader.h
+    CrashReporter/Reader.cpp
+)
+
 SET(FreeCADBase_SRCS
     ${PYCXX_SOURCES}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
     ${FreeCADBase_Pyi_SRCS}
     ${FreeCADBase_UNITAPI_SRCS}
+    ${FreeCADBase_CrashReporter_SRCS}
     PyTools.c
     PyTools.h
     PreCompiled.h
