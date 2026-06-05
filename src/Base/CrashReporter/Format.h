@@ -33,6 +33,9 @@
 
 #pragma once
 
+#include "Base/Bitmask.h"
+
+#include <span>
 #include <cstdint>
 #include <type_traits>
 #include <bit>
@@ -50,15 +53,23 @@
 // looking.
 static_assert(std::endian::native == std::endian::little);
 
-namespace Base::CrashReporter {
-
-
+namespace Base::CrashReporter
+{
 enum class Flags : std::uint32_t {
     None = 0,
     HasMiniDump = 1U << 0,
     PartialWrite = 1U << 1,
     CaptureWasSignalSafe = 1U << 2
 };
+}
+ENABLE_BITMASK_OPERATORS(Base::CrashReporter::Flags);
+
+namespace Base::CrashReporter
+{
+[[nodiscard]] constexpr bool hasFlag(Flags flags, Flags flag) noexcept
+{
+    return (flags & flag) != Flags::None;
+}
 
 enum class OS : std::uint8_t {
     None,
@@ -77,8 +88,9 @@ static constexpr std::uint32_t NoString = 0xFFFFFFFFu;
 
 
 static constexpr std::size_t HeaderSize = 128;
+static constexpr std::uint32_t MagicNumber = 0x52434346; // hedxump gives 'FCCR' (little endian!)
 struct Header {
-    std::uint32_t magic = 0x52434346;  // hedxump gives 'FCCR' (little endian!)
+    std::uint32_t magic = MagicNumber;
     std::uint32_t version = 1;  // The fcrash format version
 
     std::uint64_t faultAddress = 0;
@@ -129,8 +141,14 @@ static_assert(sizeof(Frame) == 24);
 static_assert(std::is_standard_layout_v<Frame>);
 static_assert(std::is_trivially_copyable_v<Frame>);
 
-
-
+constexpr std::uint32_t MaxStringLength = 4096;
+struct StringRecord
+{
+    uint16_t stringLength = 0;
+    // NOTE: The string itself is variable-size, so isn't a member of the struct. The read and write
+    // code will simply inject stringLength bytes of string data after this record entry, and the
+    // next string will immediately follow.
+};
 
 struct Footer
 {
@@ -140,6 +158,44 @@ struct Footer
 static_assert(sizeof(Footer) == 4);
 static_assert(std::is_standard_layout_v<Footer>);
 static_assert(std::is_trivially_copyable_v<Footer>);
+
+// That footer is a CRC32 checksum of all of the files' contents (except the footer itself, of
+// course). To guarantee that our CRC32 code is async-signal-safe, don't use an external library.
+// This is a well-known algorithm from RFC 1952 Appendix C (gzip spec, Peter Deutsch, 1996). Public
+// domain. Code adapted for use here.
+[[nodiscard]] constexpr std::uint32_t crc32(std::span<const char> data) noexcept
+{
+    constexpr auto table = [] {
+        std::array<std::uint32_t, 256> t{};
+        for (std::uint32_t i = 0; i < 256; ++i) {
+            std::uint32_t c = i;
+            for (int j = 0; j < 8; ++j) {
+                c = (c & 1u) ? (0xEDB88320u ^ (c >> 1)) : (c >> 1);
+            }
+            t[i] = c;
+        }
+        return t;
+    }();
+
+    std::uint32_t crc = 0xFFFFFFFFu;
+    for (const char b : data) {
+        crc = table[(crc ^ static_cast<unsigned char>(b)) & 0xFFu] ^ (crc >> 8);
+    }
+    return crc ^ 0xFFFFFFFFu;
+}
+
+
+
+
+// The actual maximum file size is:
+// sizeof(Header)                                                    = 128     +
+// MaxFrames * sizeof(Frame) = 128 * 74                              = 3072    +
+// (MaxFrames + 4) * (sizeof(uint16_t) + MaxStringLen) = 132 * 4,098 = 540,936 +
+// sizeof(Footer)                                                    = 4
+//                                                                   = 544,140 bytes
+// So give us a nice round cap to check against -- very small in the grand scheme of things, a
+// corrupted or malicious file this size will not cause any memory pressure.
+constexpr std::uint64_t MaxFileSize = 1U << 20;  // 1 MiB
 
 }  // namespace Base::CrashReporter
 
