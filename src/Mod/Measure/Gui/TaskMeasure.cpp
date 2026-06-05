@@ -70,7 +70,7 @@ constexpr std::array
 
 constexpr std::array angleUnitLabels {"deg", "rad", "gon"};
 
-constexpr std::array areaUnitLabels {"mm^2", "cm^2", "m^2", "km^2", "in^2", "ft^2", "yd^2", "mi^2"};
+constexpr std::array areaUnitLabels {"mm²", "cm²", "m²", "km²", "in²", "ft²", "yd²", "mi²"};
 
 template<std::size_t N>
 QStringList toQStringList(const std::array<const char*, N>& strings)
