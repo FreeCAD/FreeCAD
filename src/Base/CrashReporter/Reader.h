@@ -18,3 +18,78 @@
  *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
  *                                                                            *
  ******************************************************************************/
+
+#pragma once
+#include <FCGlobal.h>
+#include "Format.h"
+
+#include <chrono>
+#include <string>
+#include <vector>
+#include <optional>
+
+#include <Base/Exception.h>
+
+namespace Base::CrashReporter {
+
+struct ParsedFrame
+{
+    // Raw Data
+    std::uint64_t rawAddress = 0;
+    std::uint64_t moduleOffset = 0;
+    std::string modulePath;
+
+    // Symbolicated frame
+    std::optional<std::string> symbol;
+    std::optional<std::string> file;
+    std::optional<std::uint32_t> line;
+    bool isInline {false};
+    bool isFreeCAD {false};
+};
+
+struct ParsedCrashReport
+{
+    std::string pathToRawReportFile;
+
+    std::uint64_t faultAddress = 0;
+    std::uint64_t threadID = 0;
+    std::chrono::system_clock::time_point timestamp;
+
+    std::uint32_t processID = 0;
+    std::uint32_t code = 0; // Signal number or SEH ExceptionCode
+    
+    bool partialWrite {false};
+    bool captureWasSignalSafe {false};
+
+    std::string buildID;
+    std::string minidumpPath;
+    std::string exceptionMessage;
+
+    OS osID = OS::None;
+    std::string osVersion;
+    Architecture architectureID = Architecture::None;
+    
+    std::uint8_t freecadVersionMajor = 0;
+    std::uint8_t freecadVersionMinor = 0;
+    std::uint8_t freecadVersionPatch = 0;
+    std::string freecadVersionSuffix;
+    std::uint32_t freecadVersionRevision = 0;
+
+    std::vector<ParsedFrame> stackFrames;
+};
+
+/**
+ * Parse and symbolicate a FreeCAD Crash Report file
+ *
+ * This *must* be run with the exact version of FreeCAD that created the file in the first place,
+ * and is expected to be run on the next successful startup of FreeCAD after the crash occurred.
+ * Throws a Base::BadFormatError if the file format is broken, or some other derivative of
+ * Base::Exception for various file-reading errors, etc.
+ *
+ * \returns a ParsedCrashReport with symbol information (depending on the availability of debug
+ * symbols that symbolication may be more or less complete).
+ */
+[[nodiscard]] ParsedCrashReport parse(const std::string &pathToRawReportFile);
+
+}  // namespace Base::CrashReporter
+
