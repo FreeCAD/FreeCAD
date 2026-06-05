@@ -40,34 +40,34 @@ Solver3D::~Solver3D() = default;
 
 void Solver3D::clear()
 {
-    gcs.clear();
-    ownedParams.clear();
-    ownedDrivenParams.clear();
+    GCSsys.clear();
     points.clear();
     lines.clear();
     parameters.clear();
+    parameterStorage.clear();
+    fixedParameterStorage.clear();
     conflictingTags.clear();
     redundantTags.clear();
 }
 
 double* Solver3D::allocParam(double value)
 {
-    ownedParams.emplace_back(std::make_unique<double>(value));
-    parameters.push_back(ownedParams.back().get());
-    return ownedParams.back().get();
+    parameterStorage.emplace_back(std::make_unique<double>(value));
+    parameters.push_back(parameterStorage.back().get());
+    return parameterStorage.back().get();
 }
 
-double* Solver3D::allocDrivenParam(double value)
+double* Solver3D::allocFixParam(double value)
 {
-    ownedDrivenParams.emplace_back(std::make_unique<double>(value));
-    return ownedDrivenParams.back().get();
+    fixedParameterStorage.emplace_back(std::make_unique<double>(value));
+    return fixedParameterStorage.back().get();
 }
 
-int Solver3D::addPoint(const Base::Vector3d& pos)
+int Solver3D::addPoint(const Base::Vector3d& pos, bool fixed)
 {
-    double* px = allocParam(pos.x);
-    double* py = allocParam(pos.y);
-    double* pz = allocParam(pos.z);
+    double* px = fixed ? allocFixParam(pos.x) : allocParam(pos.x);
+    double* py = fixed ? allocFixParam(pos.y) : allocParam(pos.y);
+    double* pz = fixed ? allocFixParam(pos.z) : allocParam(pos.z);
     points.emplace_back(px, py, pz);
     return static_cast<int>(points.size()) - 1;
 }
@@ -91,7 +91,7 @@ void Solver3D::addConstraintCoincident(int tagId, int pointHandleA, int pointHan
         || pointHandleB >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::addConstraintCoincident handle out of range");
     }
-    gcs.addConstraintP2PCoincident3D(points[pointHandleA], points[pointHandleB], tagId);
+    GCSsys.addConstraintP2PCoincident3D(points[pointHandleA], points[pointHandleB], tagId);
 }
 
 void Solver3D::addConstraintParallel(int tagId, int lineHandleA, int lineHandleB)
@@ -102,7 +102,7 @@ void Solver3D::addConstraintParallel(int tagId, int lineHandleA, int lineHandleB
     }
     GCS::Line3D& la = lines[lineHandleA];
     GCS::Line3D& lb = lines[lineHandleB];
-    gcs.addConstraintParallel3D(la.p1, la.p2, lb.p1, lb.p2, tagId);
+    GCSsys.addConstraintParallel3D(la.p1, la.p2, lb.p1, lb.p2, tagId);
 }
 
 void Solver3D::addConstraintAngle(
@@ -118,7 +118,7 @@ void Solver3D::addConstraintAngle(
         || lineHandleB >= static_cast<int>(lines.size())) {
         throw Base::IndexError("Solver3D::addConstraintAngle handle out of range");
     }
-    double* a = allocDrivenParam(angle);
+    double* a = allocFixParam(angle);
     GCS::Line3D& la = lines[lineHandleA];
     GCS::Line3D& lb = lines[lineHandleB];
 
@@ -127,7 +127,7 @@ void Solver3D::addConstraintAngle(
     GCS::Point3D& lb_tail = (posB == PointPos::end) ? lb.p2 : lb.p1;
     GCS::Point3D& lb_head = (posB == PointPos::end) ? lb.p1 : lb.p2;
 
-    gcs.addConstraintL2LAngle3D(la_tail, la_head, lb_tail, lb_head, a, tagId);
+    GCSsys.addConstraintL2LAngle3D(la_tail, la_head, lb_tail, lb_head, a, tagId);
 }
 
 void Solver3D::addConstraintAlongX(int tagId, int lineHandle)
@@ -136,7 +136,7 @@ void Solver3D::addConstraintAlongX(int tagId, int lineHandle)
         throw Base::IndexError("Solver3D::addConstraintAlongX handle out of range");
     }
     GCS::Line3D& line = lines[lineHandle];
-    gcs.addConstraintLineAlongX3D(line, tagId);
+    GCSsys.addConstraintLineAlongX3D(line, tagId);
 }
 
 void Solver3D::addConstraintAlongY(int tagId, int lineHandle)
@@ -145,7 +145,7 @@ void Solver3D::addConstraintAlongY(int tagId, int lineHandle)
         throw Base::IndexError("Solver3D::addConstraintAlongY handle out of range");
     }
     GCS::Line3D& line = lines[lineHandle];
-    gcs.addConstraintLineAlongY3D(line, tagId);
+    GCSsys.addConstraintLineAlongY3D(line, tagId);
 }
 
 void Solver3D::addConstraintAlongZ(int tagId, int lineHandle)
@@ -154,7 +154,7 @@ void Solver3D::addConstraintAlongZ(int tagId, int lineHandle)
         throw Base::IndexError("Solver3D::addConstraintAlongZ handle out of range");
     }
     GCS::Line3D& line = lines[lineHandle];
-    gcs.addConstraintLineAlongZ3D(line, tagId);
+    GCSsys.addConstraintLineAlongZ3D(line, tagId);
 }
 
 void Solver3D::addConstraintDistance(int tagId, int pointHandleA, int pointHandleB, double distance)
@@ -163,8 +163,8 @@ void Solver3D::addConstraintDistance(int tagId, int pointHandleA, int pointHandl
         || pointHandleB >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::addConstraintDistance handle out of range");
     }
-    double* d = allocDrivenParam(distance);
-    gcs.addConstraintP2PDistance3D(points[pointHandleA], points[pointHandleB], d, tagId);
+    double* d = allocFixParam(distance);
+    GCSsys.addConstraintP2PDistance3D(points[pointHandleA], points[pointHandleB], d, tagId);
 }
 
 void Solver3D::addConstraintDistanceX(int tagId, int pointHandleA, int pointHandleB, double distance)
@@ -173,10 +173,10 @@ void Solver3D::addConstraintDistanceX(int tagId, int pointHandleA, int pointHand
         || pointHandleB >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::addConstraintDistanceX handle out of range");
     }
-    double* d = allocDrivenParam(distance);
+    double* d = allocFixParam(distance);
     GCS::Point3D& a = points[pointHandleA];
     GCS::Point3D& b = points[pointHandleB];
-    gcs.addConstraintDifference(a.x, b.x, d, tagId);
+    GCSsys.addConstraintDifference(a.x, b.x, d, tagId);
 }
 
 void Solver3D::addConstraintDistanceY(int tagId, int pointHandleA, int pointHandleB, double distance)
@@ -185,10 +185,10 @@ void Solver3D::addConstraintDistanceY(int tagId, int pointHandleA, int pointHand
         || pointHandleB >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::addConstraintDistanceY handle out of range");
     }
-    double* d = allocDrivenParam(distance);
+    double* d = allocFixParam(distance);
     GCS::Point3D& a = points[pointHandleA];
     GCS::Point3D& b = points[pointHandleB];
-    gcs.addConstraintDifference(a.y, b.y, d, tagId);
+    GCSsys.addConstraintDifference(a.y, b.y, d, tagId);
 }
 
 void Solver3D::addConstraintDistanceZ(int tagId, int pointHandleA, int pointHandleB, double distance)
@@ -197,10 +197,10 @@ void Solver3D::addConstraintDistanceZ(int tagId, int pointHandleA, int pointHand
         || pointHandleB >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::addConstraintDistanceZ handle out of range");
     }
-    double* d = allocDrivenParam(distance);
+    double* d = allocFixParam(distance);
     GCS::Point3D& a = points[pointHandleA];
     GCS::Point3D& b = points[pointHandleB];
-    gcs.addConstraintDifference(a.z, b.z, d, tagId);
+    GCSsys.addConstraintDifference(a.z, b.z, d, tagId);
 }
 
 void Solver3D::addConstraintCoordinateX(int tagId, int pointHandle, double value)
@@ -208,8 +208,8 @@ void Solver3D::addConstraintCoordinateX(int tagId, int pointHandle, double value
     if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::addConstraintCoordinateX handle out of range");
     }
-    double* v = allocDrivenParam(value);
-    gcs.addConstraintCoordinateX3D(points[pointHandle], v, tagId);
+    double* v = allocFixParam(value);
+    GCSsys.addConstraintCoordinateX3D(points[pointHandle], v, tagId);
 }
 
 void Solver3D::addConstraintCoordinateY(int tagId, int pointHandle, double value)
@@ -217,8 +217,8 @@ void Solver3D::addConstraintCoordinateY(int tagId, int pointHandle, double value
     if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::addConstraintCoordinateY handle out of range");
     }
-    double* v = allocDrivenParam(value);
-    gcs.addConstraintCoordinateY3D(points[pointHandle], v, tagId);
+    double* v = allocFixParam(value);
+    GCSsys.addConstraintCoordinateY3D(points[pointHandle], v, tagId);
 }
 
 void Solver3D::addConstraintCoordinateZ(int tagId, int pointHandle, double value)
@@ -226,29 +226,8 @@ void Solver3D::addConstraintCoordinateZ(int tagId, int pointHandle, double value
     if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size())) {
         throw Base::IndexError("Solver3D::addConstraintCoordinateZ handle out of range");
     }
-    double* v = allocDrivenParam(value);
-    gcs.addConstraintCoordinateZ3D(points[pointHandle], v, tagId);
-}
-
-void Solver3D::groundPoint(int pointHandle, int tagId, bool lockX, bool lockY, bool lockZ)
-{
-    if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size())) {
-        throw Base::IndexError("Solver3D::groundPoint handle out of range");
-    }
-    GCS::Point3D& p = points[pointHandle];
-    // Lock the current position on each requested axis.
-    if (lockX) {
-        double* gx = allocDrivenParam(*p.x);
-        gcs.addConstraintCoordinateX3D(p, gx, tagId);
-    }
-    if (lockY) {
-        double* gy = allocDrivenParam(*p.y);
-        gcs.addConstraintCoordinateY3D(p, gy, tagId);
-    }
-    if (lockZ) {
-        double* gz = allocDrivenParam(*p.z);
-        gcs.addConstraintCoordinateZ3D(p, gz, tagId);
-    }
+    double* v = allocFixParam(value);
+    GCSsys.addConstraintCoordinateZ3D(points[pointHandle], v, tagId);
 }
 
 int Solver3D::solve()
@@ -260,16 +239,16 @@ int Solver3D::solve()
         return OK;
     }
 
-    gcs.declareUnknowns(parameters);
-    gcs.initSolution();
+    GCSsys.declareUnknowns(parameters);
+    GCSsys.initSolution();
 
-    gcs.diagnose();
-    gcs.getConflicting(conflictingTags);
-    gcs.getRedundant(redundantTags);
+    GCSsys.diagnose();
+    GCSsys.getConflicting(conflictingTags);
+    GCSsys.getRedundant(redundantTags);
 
-    const int status = gcs.solve();
+    const int status = GCSsys.solve();
     if (status == GCS::Success || status == GCS::Converged) {
-        gcs.applySolution();
+        GCSsys.applySolution();
         if (!redundantTags.empty()) {
             Base::Console().warning(
                 "Sketcher3D debug: Solver3D solved but returns Redundant, redundantTags=%d\n",

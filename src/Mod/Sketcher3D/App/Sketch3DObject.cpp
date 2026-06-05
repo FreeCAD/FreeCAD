@@ -89,6 +89,16 @@ int Sketch3DObject::addConstraint(const Constraint3D& c)
     return idx;
 }
 
+const Part::Geometry* Sketch3DObject::_getGeometry(int geoId) const
+{
+    const auto& geos = Geometry.getValues();
+    if (geoId >= 0 && geoId < static_cast<int>(geos.size())) {
+        return geos[geoId];
+    }
+
+    return nullptr;
+}
+
 
 namespace
 {
@@ -167,6 +177,11 @@ GeoElementId3D Sketch3DObject::resolveSubName(const std::string& subname) const
 
 bool Sketch3DObject::getPointAt(const GeoElementId3D& target, Base::Vector3d& point) const
 {
+    if (target.isRootPoint()) {
+        point = Base::Vector3d(0.0, 0.0, 0.0);
+        return true;
+    }
+
     const auto& geos = Geometry.getValues();
     if (target.GeoId < 0 || target.GeoId >= static_cast<int>(geos.size())) {
         return false;
@@ -298,6 +313,9 @@ void Sketch3DObject::acceptGeometry()
     for (const Constraint3D& c : current) {
         bool allResolve = true;
         for (const GeoElementId3D& ref : c.getElements()) {
+            if (ref.isRootPoint()) {
+                continue;
+            }
             if (ref.GeoId < 0 || ref.GeoId >= n || geos[ref.GeoId] == nullptr) {
                 allResolve = false;
                 break;
@@ -318,7 +336,12 @@ int Sketch3DObject::solve(bool updateGeo)
     Solver3D solver;
     GeometryMapper3D mapper;
 
-    mapper.push(Geometry.getValues(), Constraints.getConstraints(), solver);
+    mapper.setUpSketch(Geometry.getValues(), Constraints.getConstraints(), solver);
+    lastMalformedConstraints = mapper.getMalformedConstraints();
+    if (mapper.hasMalformedConstraints()) {
+        return Solver3D::Malformed;
+    }
+
     const int status = solver.solve();
 
     if (updateGeo && status != Solver3D::OK && status != Solver3D::Redundant) {
@@ -332,15 +355,8 @@ int Sketch3DObject::solve(bool updateGeo)
     // as they are not a failure.
     const bool solved = (status == Solver3D::OK || status == Solver3D::Redundant);
     if (updateGeo && solved) {
-        // Clone the list, update values in place, then reassign so the
-        // property transaction captures the change.
-        std::vector<Part::Geometry*> updated;
-        updated.reserve(Geometry.getSize());
-        for (Part::Geometry* g : Geometry.getValues()) {
-            updated.push_back(g ? g->clone() : nullptr);
-        }
-        mapper.writeBack(solver, updated);
-        Geometry.setValues(std::move(updated));
+        mapper.updateGeometry(solver);
+        Geometry.setValues(mapper.extractGeometry());
     }
 
     return status;

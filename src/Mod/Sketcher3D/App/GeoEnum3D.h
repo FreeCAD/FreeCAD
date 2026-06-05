@@ -33,6 +33,7 @@ namespace Sketcher3D
 
 enum GeoEnum3D
 {
+    RtPnt = -1,        // GeoId of the Root Point
     GeoUndef = -2000,  // Undefined geometry
 };
 
@@ -68,9 +69,16 @@ struct Sketcher3DExport GeoElementId3D
         , Kind(kind)
     {}
 
+    static const GeoElementId3D RtPnt;
+
     bool isValid() const
     {
         return GeoId != GeoEnum3D::GeoUndef;
+    }
+
+    bool isRootPoint() const
+    {
+        return GeoId == RtPnt.GeoId && Pos == RtPnt.Pos;
     }
 
     bool isCurve() const
@@ -93,6 +101,9 @@ struct Sketcher3DExport GeoElementId3D
         return !(*this == o);
     }
 };
+
+inline const GeoElementId3D GeoElementId3D::RtPnt
+    = GeoElementId3D(GeoEnum3D::RtPnt, PointPos::start, GeoKind::Point);
 
 }  // namespace Sketcher3D
 

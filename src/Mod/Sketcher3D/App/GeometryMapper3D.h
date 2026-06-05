@@ -25,9 +25,6 @@
 
 #pragma once
 
-#include <map>
-#include <vector>
-
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
 #include "GeoEnum3D.h"
@@ -46,43 +43,71 @@ class Solver3D;
 
 /** Translation layer between Sketch3DObject stored Geometry and
  *  Constraint3D lists and the lower level Solver3D handles. A
- *  mapper instance is built per recompute, populated via push(), then
- *  discarded after writeBack().
+ *  mapper instance is built per recompute.
  */
 class Sketcher3DExport GeometryMapper3D
 {
 public:
-    GeometryMapper3D() = default;
+    GeometryMapper3D();
+    ~GeometryMapper3D();
 
-    /// Push geometry and constraints into the solver.
-    /// Constraints referring to null geometry are silently
-    /// dropped.
-    void push(
+    /// Set the sketch up with geometry and constraints.
+    void setUpSketch(
         const std::vector<Part::Geometry*>& geoList,
         const std::vector<Constraint3D>& constraints,
         Solver3D& solver
     );
 
-    /// After solver has run and applied, copy solved positions back into
-    /// geoList.
-    void writeBack(const Solver3D& solver, std::vector<Part::Geometry*>& geoList) const;
+    bool hasMalformedConstraints() const
+    {
+        return !MalformedConstraints.empty();
+    }
+
+    const std::vector<int>& getMalformedConstraints() const
+    {
+        return MalformedConstraints;
+    }
+
+    /// Update the owned geometry copies from the applied solver solution.
+    void updateGeometry(const Solver3D& solver);
+
+    /// Return clones of the current internal geometry, preserving GeoId slots.
+    std::vector<Part::Geometry*> extractGeometry() const;
 
 private:
-    struct GeoMapping
+    enum GeoType
     {
-        int pointHandle {-1};  // GeomPoint
-        int startHandle {-1};  // GeomLineSegment start
-        int endHandle {-1};    // GeomLineSegment end
-        int lineHandle {-1};   // GeomLineSegment line
+        None = 0,
+        Point,
+        Line
     };
 
-    /// Resolve a constraint to a solver point
-    int resolvePointHandle(const GeoElementId3D& ref) const;
+    struct GeoDef
+    {
+        std::unique_ptr<Part::Geometry> geo;
+        GeoType type = None;    ///< Type of the geometry
+        int index = -1;         ///< Index in the corresponding storage vector (Lines, Arcs, ...)
+        int startPointId = -1;  ///< Index in Points of the start point of this geometry
+        int midPointId = -1;    ///< Index in Points of the mid point of this geometry
+        int endPointId = -1;    ///< Index in Points of the end point of this geometry
+    };
 
-    /// Resolve a constraint to a solver line handle.
-    int resolveLineHandle(const GeoElementId3D& ref) const;
+    void clear(Solver3D& solver);
+    void addGeometry(const std::vector<Part::Geometry*>& geoList, Solver3D& solver);
+    int addConstraints(const std::vector<Constraint3D>& constraints, Solver3D& solver);
 
-    std::map<int, GeoMapping> perGeo;
+    /// Return tagId when the constraint was mapped, or -1 when malformed.
+    int addConstraint(const Constraint3D& constraint, int tagId, Solver3D& solver);
+
+    /// Return the solver point index for a geometry.
+    int getPointId(const GeoElementId3D& ref) const;
+
+    /// Return the solver line index for a geometry.
+    int getLineId(const GeoElementId3D& ref) const;
+
+    std::vector<GeoDef> Geoms;
+    int rootPointId {-1};
+    std::vector<int> MalformedConstraints;
 };
 
 }  // namespace Sketcher3D

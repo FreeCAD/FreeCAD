@@ -61,9 +61,8 @@ public:
     /// Drop all geometry, constraints, and parameters.
     void clear();
 
-    /// Allocate an owned triple (x, y, z) of parameters and return a GCS
-    /// Point3D referring to them.
-    int addPoint(const Base::Vector3d& pos);
+    /// Add a point, optionally fixed parameters.
+    int addPoint(const Base::Vector3d& pos, bool fixed = false);
 
     /// Line between two previously added points.
     int addLine(int pointHandleA, int pointHandleB);
@@ -116,15 +115,6 @@ public:
     /// Lock the Z coordinate of a single point to a value.
     void addConstraintCoordinateZ(int tagId, int pointHandle, double value);
 
-    /// Lock a point x/y/z to its current value. lockX/Y/Z toggles individual axes.
-    void groundPoint(
-        int pointHandle,
-        int tagId = 0,
-        bool lockX = true,
-        bool lockY = true,
-        bool lockZ = true
-    );
-
     int solve();
 
     /// Read back the current value of a point after solve().
@@ -148,23 +138,19 @@ public:
     }
 
 private:
-    /// Allocate a solver owned unknown parameter, declared as an unknown.
     double* allocParam(double value);
-    /// Allocate a solver owned driven parameter
-    double* allocDrivenParam(double value);
+    double* allocFixParam(double value);
 
-    GCS::System gcs;
+    GCS::System GCSsys;
 
-    // ownedParams for unknowns
-    // ownedDrivenParams for driving values that the solver reads but never moves.
-    std::vector<std::unique_ptr<double>> ownedParams;
-    std::vector<std::unique_ptr<double>> ownedDrivenParams;
+    // storage for parameters, owned by the solver.
+    std::vector<std::unique_ptr<double>> parameterStorage;
+    std::vector<std::unique_ptr<double>> fixedParameterStorage;
 
     // Mapping from handle index to underlying GCS struct.
     std::vector<GCS::Point3D> points;
     std::vector<GCS::Line3D> lines;
 
-    // Flattened list of parameters fed to GCS::declareUnknowns.
     std::vector<double*> parameters;
 
     std::vector<int> conflictingTags;

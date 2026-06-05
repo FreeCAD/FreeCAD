@@ -73,6 +73,15 @@ public:
     /// add a constraint. Returns its index in Constraints.
     int addConstraint(const Constraint3D& c);
 
+    template<
+        typename GeometryT = Part::Geometry,
+        typename = typename std::enable_if<
+            std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
+    const GeometryT* getGeometry(int geoId) const
+    {
+        return static_cast<const GeometryT*>(_getGeometry(geoId));
+    }
+
     /// Resolve a shape subname like "Edge1" or "Vertex2" to the owning
     /// sketch geometry. Uses stable element map names so references survives
     GeoElementId3D resolveSubName(const std::string& subname) const;
@@ -88,6 +97,11 @@ public:
     /// when updateGeo is true. Returns a status code.
     int solve(bool updateGeo = true);
 
+    const std::vector<int>& getLastMalformedConstraints() const
+    {
+        return lastMalformedConstraints;
+    }
+
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
 
@@ -96,6 +110,8 @@ public:
     void onChanged(const App::Property* prop) override;
 
 private:
+    const Part::Geometry* _getGeometry(int geoId) const;
+
     /// Drop constraints whose referenced GeoIds are out of range or point
     /// to null geometry slots. Runs at the top of execute().
     void acceptGeometry();
@@ -117,6 +133,8 @@ private:
     /// stable id map to current positional index in Geometry. Rebuilt by
     /// assignStableIds(). "g{stableId}"
     std::map<long, int> stableToIndex;
+
+    std::vector<int> lastMalformedConstraints;
 };
 
 }  // namespace Sketcher3D
