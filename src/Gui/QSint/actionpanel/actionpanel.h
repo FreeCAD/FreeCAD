@@ -36,6 +36,7 @@ public:
      */
     explicit ActionPanel(QWidget *parent = nullptr);
 
+    bool empty();
     /**
      * @brief Adds a widget to the ActionPanel.
      * @param w The widget to add.
