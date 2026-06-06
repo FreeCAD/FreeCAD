@@ -36,7 +36,6 @@ added manually.
 ## \addtogroup draftutils
 # @{
 import FreeCAD as App
-from draftutils import params
 
 
 def _msg(text, end="\n"):
@@ -62,6 +61,8 @@ def _log(text, end="\n"):
 def _toolmsg(text, end="\n"):
     """Write messages to the console including the line ending,
     only if ToolMessages pref setting is True"""
+    from draftutils import params
+
     if params.get_param("ToolMessages"):
         App.Console.PrintMessage(text + end)
 
