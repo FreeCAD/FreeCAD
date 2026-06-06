@@ -132,6 +132,8 @@ class Stretch(gui_base_original.Modifier):
             self.nodetracker = []
             self.displacement = None
             _toolmsg(translate("draft", "Pick first point of selection rectangle"))
+            self.selection_done = True
+            self.update_hints()
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -172,6 +174,7 @@ class Stretch(gui_base_original.Modifier):
             if self.planetrack:
                 self.planetrack.set(point)
             self.step = 2
+            self.update_hints()
         elif self.step == 2:
             # second rectangle point
             _toolmsg(translate("draft", "Pick start point of displacement"))
@@ -248,6 +251,7 @@ class Stretch(gui_base_original.Modifier):
                 nt.on()
                 self.nodetracker.append(nt)
             self.step = 3
+            self.update_hints()
         elif self.step == 3:
             # first point of displacement line
             _toolmsg(translate("draft", "Pick end point of displacement"))
@@ -255,6 +259,7 @@ class Stretch(gui_base_original.Modifier):
             # print("first point:", point)
             self.node = [point]
             self.step = 4
+            self.update_hints()
         elif self.step == 4:
             # print("second point:", point)
             self.displacement = point.sub(self.displacement)
@@ -524,6 +529,22 @@ class Stretch(gui_base_original.Modifier):
             Gui.addModule("Draft")
             self.commit(translate("draft", "Stretch"), commitops)
         self.finish()
+
+    def get_action_hints(self):
+        if self.step == 1:
+            label = translate("draft", "%1 pick first point of selection rectangle")
+        elif self.step == 2:
+            label = translate("draft", "%1 pick opposite point of selection rectangle")
+        elif self.step == 3:
+            label = translate("draft", "%1 pick start point of displacement")
+        else:
+            label = translate("draft", "%1 pick end point of displacement")
+        return (
+            [Gui.InputHint(label, Gui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
 
 Gui.addCommand("Draft_Stretch", Stretch())

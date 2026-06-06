@@ -88,6 +88,8 @@ class SubelementHighlight(gui_base_original.Modifier):
             return self.finish()
         self.call = self.view.addEventCallback("SoEvent", self.action)
         self.highlight_editable_objects()
+        self.selection_done = True
+        self.update_hints()
 
     def finish(self):
         """Terminate the operation.
@@ -168,6 +170,15 @@ class SubelementHighlight(gui_base_original.Modifier):
             except Exception:
                 # This can occur if objects have had graph changing operations
                 pass
+
+    def get_action_hints(self):
+        return [
+            Gui.InputHint(
+                translate("draft", "%1 run Move, Rotate or Scale on subelements"),
+                Gui.UserInput.MouseLeft,
+            ),
+            Gui.InputHint(translate("draft", "%1 finish"), Gui.UserInput.KeyEscape),
+        ]
 
 
 Gui.addCommand("Draft_SubelementHighlight", SubelementHighlight())
