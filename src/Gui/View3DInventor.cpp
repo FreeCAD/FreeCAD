@@ -373,26 +373,6 @@ bool View3DInventor::onMsg(const char* pMsg)
         _viewer->viewSelection();
         return true;
     }
-    else if (strcmp("SetStereoRedGreen", pMsg) == 0) {
-        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::ANAGLYPH);
-        return true;
-    }
-    else if (strcmp("SetStereoQuadBuff", pMsg) == 0) {
-        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::QUAD_BUFFER);
-        return true;
-    }
-    else if (strcmp("SetStereoInterleavedRows", pMsg) == 0) {
-        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::INTERLEAVED_ROWS);
-        return true;
-    }
-    else if (strcmp("SetStereoInterleavedColumns", pMsg) == 0) {
-        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::INTERLEAVED_COLUMNS);
-        return true;
-    }
-    else if (strcmp("SetStereoOff", pMsg) == 0) {
-        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO);
-        return true;
-    }
     else if (strncmp("Dump", pMsg, 4) == 0) {
         dump(pMsg + 5);
         return true;
@@ -523,21 +503,6 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strcmp("PrintPdf", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("SetStereoRedGreen", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("SetStereoQuadBuff", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("SetStereoInterleavedRows", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("SetStereoInterleavedColumns", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("SetStereoOff", pMsg) == 0) {
         return true;
     }
     else if (strcmp("ViewFit", pMsg) == 0) {

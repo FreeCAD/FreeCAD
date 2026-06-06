@@ -84,6 +84,7 @@
 #include "Selection/SelectionView.h"
 #include "SelectionObject.h"
 #include "SoFCOffscreenRenderer.h"
+#include "SoQTQuarterAdaptor.h"
 #include "TextureMapping.h"
 #include "Tools.h"
 #include "Tree.h"
@@ -2588,15 +2589,18 @@ StdCmdViewIvStereoOff::StdCmdViewIvStereoOff()
     eType = Alter3DView;
 }
 
-void StdCmdViewIvStereoOff::activated(int iMsg)
+void StdCmdViewIvStereoOff::activated(int /*iMsg*/)
 {
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"Mono\")");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (view && view->getViewer()) {
+        view->getViewer()->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO);
+    }
 }
 
 bool StdCmdViewIvStereoOff::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoOff");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    return view && view->getViewer();
 }
 
 
@@ -2617,15 +2621,18 @@ StdCmdViewIvStereoRedGreen::StdCmdViewIvStereoRedGreen()
     eType = Alter3DView;
 }
 
-void StdCmdViewIvStereoRedGreen::activated(int iMsg)
+void StdCmdViewIvStereoRedGreen::activated(int /*iMsg*/)
 {
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"Anaglyph\")");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (view && view->getViewer()) {
+        view->getViewer()->setStereoMode(Quarter::SoQTQuarterAdaptor::ANAGLYPH);
+    }
 }
 
 bool StdCmdViewIvStereoRedGreen::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoRedGreen");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    return view && view->getViewer();
 }
 
 //===========================================================================
@@ -2645,15 +2652,18 @@ StdCmdViewIvStereoQuadBuff::StdCmdViewIvStereoQuadBuff()
     eType = Alter3DView;
 }
 
-void StdCmdViewIvStereoQuadBuff::activated(int iMsg)
+void StdCmdViewIvStereoQuadBuff::activated(int /*iMsg*/)
 {
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"QuadBuffer\")");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (view && view->getViewer()) {
+        view->getViewer()->setStereoMode(Quarter::SoQTQuarterAdaptor::QUAD_BUFFER);
+    }
 }
 
 bool StdCmdViewIvStereoQuadBuff::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoQuadBuff");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    return view && view->getViewer();
 }
 
 //===========================================================================
@@ -2673,15 +2683,18 @@ StdCmdViewIvStereoInterleavedRows::StdCmdViewIvStereoInterleavedRows()
     eType = Alter3DView;
 }
 
-void StdCmdViewIvStereoInterleavedRows::activated(int iMsg)
+void StdCmdViewIvStereoInterleavedRows::activated(int /*iMsg*/)
 {
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"InterleavedRows\")");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (view && view->getViewer()) {
+        view->getViewer()->setStereoMode(Quarter::SoQTQuarterAdaptor::INTERLEAVED_ROWS);
+    }
 }
 
 bool StdCmdViewIvStereoInterleavedRows::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoInterleavedRows");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    return view && view->getViewer();
 }
 
 //===========================================================================
@@ -2701,15 +2714,18 @@ StdCmdViewIvStereoInterleavedColumns::StdCmdViewIvStereoInterleavedColumns()
     eType = Alter3DView;
 }
 
-void StdCmdViewIvStereoInterleavedColumns::activated(int iMsg)
+void StdCmdViewIvStereoInterleavedColumns::activated(int /*iMsg*/)
 {
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"InterleavedColumns\")");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (view && view->getViewer()) {
+        view->getViewer()->setStereoMode(Quarter::SoQTQuarterAdaptor::INTERLEAVED_COLUMNS);
+    }
 }
 
 bool StdCmdViewIvStereoInterleavedColumns::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoInterleavedColumns");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    return view && view->getViewer();
 }
 
 
