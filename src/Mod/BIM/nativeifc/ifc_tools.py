@@ -824,10 +824,6 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
     elif ifcentity.is_a("IfcControl"):
         ifc_psets.show_psets(obj)
 
-    # link Label2 and Description
-    if "Description" in obj.PropertiesList and hasattr(obj, "setExpression"):
-        obj.setExpression("Label2", "Description")
-
 
 def remove_unused_properties(obj):
     """Remove IFC properties if they are not part of the current IFC class"""

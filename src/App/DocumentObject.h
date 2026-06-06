@@ -155,7 +155,7 @@ public:
     PropertyString Label;
 
     /// A property for the description of the document object.
-    PropertyString Label2;
+    PropertyString Description;
 
     /// A property that manages the expressions in the document object.
     PropertyExpressionEngine ExpressionEngine;
@@ -1349,6 +1349,10 @@ protected:
      * @param[in] oldStatus The old status of the property.
      */
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
+
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* typeName,
+                                   const char* propName) override;
 
 private:
     void printInvalidLinks() const;

@@ -178,7 +178,7 @@ public:
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
         itemHidden = !viewObject->showInTree();
         label = viewObject->getObject()->Label.getValue();
-        label2 = viewObject->getObject()->Label2.getValue();
+        label2 = viewObject->getObject()->Description.getValue();
         internalName = viewObject->getObject()->getNameInDocument();
     }
 
@@ -541,7 +541,7 @@ QWidget* TreeWidgetItemDelegate::createEditor(
     }
     auto item = static_cast<DocumentObjectItem*>(ti);
     App::DocumentObject* obj = item->object()->getObject();
-    auto& prop = index.column() ? obj->Label2 : obj->Label;
+    auto& prop = index.column() ? obj->Description : obj->Label;
 
     DynamicQLineEdit* editor;
     if (TreeParams::getLabelExpression()) {
@@ -1339,7 +1339,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     QAction* internalNameAction = new QAction(tr("Show Internal Name"), this);
     action->setStatusTip(
         tr("Shows a description column for items. An item's description can be set by editing the "
-           "'label2' property.")
+           "'description' property.")
     );
     action->setCheckable(true);
 
@@ -5079,8 +5079,8 @@ void TreeWidget::slotChangeObject(const Gui::ViewProviderDocumentObject& view, c
         return;
     }
 
-    if (&prop == &obj->Label2) {
-        const char* label = obj->Label2.getValue();
+    if (&prop == &obj->Description) {
+        const char* label = obj->Description.getValue();
         auto firstData = *itEntry->second.begin();
         if (firstData->label2 != label) {
             for (const auto& data : itEntry->second) {
@@ -6538,7 +6538,7 @@ void DocumentObjectItem::setData(int column, int role, const QVariant& value)
     QVariant myValue(value);
     if (role == Qt::EditRole && column <= 1) {
         auto obj = object()->getObject();
-        auto& label = column ? obj->Label2 : obj->Label;
+        auto& label = column ? obj->Description : obj->Label;
 
         std::ostringstream str;
         str << TreeWidget::tr("Rename").toStdString() << ' ' << getName() << '.' << label.getName();

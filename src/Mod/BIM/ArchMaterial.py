@@ -723,13 +723,14 @@ class _ArchMultiMaterial:
     def __init__(self, obj):
         self.Type = "MultiMaterial"
         obj.Proxy = self
-        obj.addProperty(
-            "App::PropertyString",
-            "Description",
-            "Arch",
-            QT_TRANSLATE_NOOP("App::Property", "A description for this material"),
-            locked=True,
-        )
+        if "Description" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyString",
+                "Description",
+                "Arch",
+                QT_TRANSLATE_NOOP("App::Property", "A description for this material"),
+                locked=True,
+            )
         obj.addProperty(
             "App::PropertyStringList",
             "Names",
