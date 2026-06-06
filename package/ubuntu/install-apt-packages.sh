@@ -56,6 +56,7 @@ packages=(
   ninja-build
   occt-draw
   pyside6-tools
+  python3-cxx-dev
   python3-dev
   python3-defusedxml
   python3-git

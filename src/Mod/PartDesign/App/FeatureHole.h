@@ -27,7 +27,7 @@
 
 #include <optional>
 #include <App/PropertyUnits.h>
-#include "json_fwd.hpp"
+#include "nlohmann/json_fwd.hpp"
 #include "FeatureSketchBased.h"
 
 class Property;

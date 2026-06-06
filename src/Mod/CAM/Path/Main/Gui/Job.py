@@ -1438,18 +1438,18 @@ class TaskPanel:
         for display, filename in entries:
             combo.addItem(display, filename or "")
         current = getattr(self.obj, "Machine", "") or ""
-        idx = combo.findData(current)
+        idx = combo.findText(current) if current else -1
         if idx < 0:
             idx = 0
         combo.setCurrentIndex(idx)
         combo.blockSignals(False)
 
     def machineChanged(self):
-        """Write the selected machine filename back to Job.Machine."""
+        """Write the selected machine name back to Job.Machine."""
         if not hasattr(self.obj, "Machine"):
             return
-        data = self.form.jobMachine.currentData()
-        self.obj.Machine = data if data else ""
+        text = self.form.jobMachine.currentText()
+        self.obj.Machine = text if text and text != "<any>" else ""
 
     def newMachine(self):
         """Open the Machine Editor to create a new machine, then refresh the combo."""
