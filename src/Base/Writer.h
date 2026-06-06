@@ -99,6 +99,13 @@ public:
     std::string addFile(const char* Name, const Base::Persistence* Object);
     /// process the requested file storing
     virtual void writeFiles() = 0;
+    /// write files to the document cache dir
+    virtual void writeFilesToCacheDir();
+
+    void setDocumentCacheDir(const std::string& dir)
+    {
+        documentCacheDir = dir;
+    }
     /// Set mode
     void setMode(const std::string& mode);
     /// Set modes
@@ -195,13 +202,19 @@ protected:
 
     bool forceXML {false};
     int fileVersion {1};
+    std::string documentCacheDir;
     // NOLINTEND
+
 
 public:
     Writer(const Writer&) = delete;
     Writer(Writer&&) = delete;
     Writer& operator=(const Writer&) = delete;
     Writer& operator=(Writer&&) = delete;
+
+private:
+    void writeFileToCacheDir(const FileEntry& entry);
+
 
 private:
     std::unique_ptr<std::ostream> CharStream;
@@ -248,6 +261,9 @@ public:
     ZipWriter(ZipWriter&&) = delete;
     ZipWriter& operator=(const ZipWriter&) = delete;
     ZipWriter& operator=(ZipWriter&&) = delete;
+
+private:
+    bool shouldWrite(FileEntry& entry);
 
 private:
     zipios::ZipOutputStream ZipStream;
