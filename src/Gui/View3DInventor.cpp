@@ -393,10 +393,6 @@ bool View3DInventor::onMsg(const char* pMsg)
         _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO);
         return true;
     }
-    else if (strncmp("Dump", pMsg, 4) == 0) {
-        dump(pMsg + 5);
-        return true;
-    }
     else if (strcmp("ViewBottom", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Bottom));
         _viewer->viewAll();
@@ -584,9 +580,6 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strcmp("PerspectiveCamera", pMsg) == 0) {
-        return true;
-    }
-    else if (strncmp("Dump", pMsg, 4) == 0) {
         return true;
     }
     else if (strcmp("AlignToSelection", pMsg) == 0) {
