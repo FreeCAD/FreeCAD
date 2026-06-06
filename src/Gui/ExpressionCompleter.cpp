@@ -403,7 +403,7 @@ public:
                 QString res;
                 // we resolved the property
                 if (propName) {
-                    res = QString::fromLatin1(propName);
+                    res = QString::fromUtf8(propName);
                     // resolve the property
                     if (sep && !noProperty && !retrieveSubPaths(prop).empty()) {
                         res += QLatin1Char('.');
@@ -496,7 +496,7 @@ public:
                     *count = propSize;
                 }
                 if (v) {
-                    QString res = QString::fromLatin1(propName);
+                    QString res = QString::fromUtf8(propName);
 
                     // check to see if we have accessible paths from this prop name?
                     if (sep && !retrieveSubPaths(prop).empty()) {
@@ -527,10 +527,10 @@ public:
                 auto str = paths[idx].getSubPathStr();
                 if (str.size() && (str[0] == '.' || str[0] == '#')) {
                     // skip the "."
-                    *v = QString::fromLatin1(str.c_str() + 1);
+                    *v = QString::fromStdString(str.substr(1));
                 }
                 else {
-                    *v = QString::fromLatin1(str.c_str());
+                    *v = QString::fromStdString(str);
                 }
             }
         }
