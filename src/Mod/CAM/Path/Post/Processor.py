@@ -1441,7 +1441,7 @@ class PostProcessor:
                 gcode = self.convert_command_to_gcode(cmd)
 
                 if cmd.Name in ("M6", "M06"):
-                    if self.values["TOOL_CHANGE"]:
+                    if not self.values["TOOL_CHANGE"]:
                         comment_symbol = self.values["COMMENT_SYMBOL"]
                         if comment_symbol == "(":
                             gcode = f"(Tool change suppressed: {gcode})"
