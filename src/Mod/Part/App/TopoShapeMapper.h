@@ -20,6 +20,7 @@
  *   <https://www.gnu.org/licenses/>.                                       *
  *                                                                          *
  ***************************************************************************/
+#pragma once
 
 #include <limits>
 #include <map>

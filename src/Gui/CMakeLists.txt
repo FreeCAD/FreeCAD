@@ -1474,6 +1474,55 @@ if(FREECAD_USE_PCH)
             PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE)
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(FreeCADGui PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        ActiveObjectList.cpp
+        Application.cpp
+        AutoSaver.cpp
+        Command.cpp
+        CommandDoc.cpp
+        CommandLink.cpp
+        Document.cpp
+        DocumentRecovery.cpp
+        ExpressionBinding.cpp
+        ExpressionCompleter.cpp
+        MainWindow.cpp
+        OverlayManager.cpp
+        OverlayParams.cpp
+        OverlayWidgets.cpp
+        SoFCVectorizeU3DAction.cpp
+        SoFCVectorizeSVGAction.cpp
+        TaskElementColors.cpp
+        Tree.cpp
+        TreeParams.cpp
+        View3DInventorSelection.cpp
+        View3DInventorViewer.cpp
+        ViewProvider.cpp
+        ViewProviderDocumentObject.cpp
+        ViewProviderFeaturePython.cpp
+        ViewProviderLink.cpp
+        WorkbenchManipulatorPython.cpp
+        3Dconnexion/navlib/NavlibCmds.cpp
+        3Dconnexion/navlib/NavlibPivot.cpp
+        3Dconnexion/navlib/NavlibNavigation.cpp
+        Dialogs/DlgAddProperty.cpp
+        Dialogs/DlgExpressionInput.cpp
+        Dialogs/DlgObjectSelection.cpp
+        Navigation/NavigationStateChart.cpp
+        Navigation/SiemensNXNavigationStyle.cpp
+        propertyeditor/PropertyEditor.cpp
+        propertyeditor/PropertyItemDelegate.cpp
+        TaskView/TaskView.cpp
+        Selection/Selection.cpp
+        Selection/SelectionObserverPython.cpp
+        Selection/SelectionView.cpp
+        Selection/SoFCUnifiedSelection.cpp
+        StyleParameters/ParameterManager.cpp
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 if (FREECAD_USE_QT_DIALOGS)
     set_source_files_properties(FileDialog.cpp PROPERTIES COMPILE_FLAGS -DUSE_QT_DIALOGS)
 endif()

@@ -134,6 +134,15 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(Path PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        AreaPyImp.cpp
+        FeatureAreaPyImp.cpp
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 SET_BIN_DIR(Path PathApp /Mod/CAM)
 SET_PYTHON_PREFIX_SUFFIX(Path)
 

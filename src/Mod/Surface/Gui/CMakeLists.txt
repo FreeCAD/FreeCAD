@@ -64,6 +64,10 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(SurfaceGui PROPERTIES UNITY_BUILD ON)
+endif()
+
 target_include_directories(
     SurfaceGui
     PRIVATE

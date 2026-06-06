@@ -404,6 +404,21 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(Mesh PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        CylinderFit.cpp
+        FeatureMeshSetOperations.cpp
+        Mesh.cpp
+        MeshPointPy.cpp
+
+        Core/Definitions.cpp
+
+        ${WildMagic4_SRCS}
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 # Suppress some very long Eigen3 warnings of older versions
 if (EIGEN3_NO_DEPRECATED_COPY)
     set_source_files_properties(

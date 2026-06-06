@@ -83,6 +83,14 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(Assembly PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        AssemblyObject.cpp
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 SET_BIN_DIR(Assembly AssemblyApp /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(Assembly)
 

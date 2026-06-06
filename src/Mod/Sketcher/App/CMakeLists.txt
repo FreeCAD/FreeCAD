@@ -175,6 +175,17 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(Sketcher PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        ExternalGeometryFacade.cpp
+        SketchObject.cpp
+        SketchObjectConstraints.cpp
+        SketchObjectExternal.cpp
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 # Suppress some very long Eigen3 warnings of older versions
 if (EIGEN3_NO_DEPRECATED_COPY)
     set_source_files_properties(

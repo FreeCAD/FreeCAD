@@ -371,6 +371,33 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(FreeCADApp PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        Application.cpp
+        AutoTransaction.cpp
+        ComplexGeoData.cpp
+        Document.cpp
+        DocumentObject.cpp
+        DynamicProperty.cpp
+        ElementMap.cpp
+        Expression.cpp
+        Link.cpp
+        MappedName.cpp
+        ObjectIdentifier.cpp
+        OriginGroupExtension.cpp
+        PropertyContainer.cpp
+        PropertyContainerPyImp.cpp
+        PropertyExpressionEngine.cpp
+        PropertyLinks.cpp
+        StringHasher.cpp
+        StringHasherPy.cpp
+        StringHasherPyImp.cpp
+        Transactions.cpp   
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 target_sources(FreeCADApp PRIVATE ${FreeCADApp_SRCS})
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
 

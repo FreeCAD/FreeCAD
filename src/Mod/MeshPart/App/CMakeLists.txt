@@ -76,6 +76,10 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(MeshPart PROPERTIES UNITY_BUILD ON)
+endif()
+
 # Suppress -Wundefined-var-template
 if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
     unset(_flag_found CACHE)

@@ -80,6 +80,16 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(Robot PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        TrajectoryPyImp.cpp
+        kdl_cp/utilities/svd_eigen_HH.cpp
+        ${KDL_SRCS}
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 # FIXME: The bundled KDL has some extensions which makes it incompatible
 # to an installed KDL. To fix the issue two things must be done:
 # * revert the changes (and look for an alternative)

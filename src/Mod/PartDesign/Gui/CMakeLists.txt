@@ -247,6 +247,24 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(PartDesignGui PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        Command.cpp
+        DlgActiveBody.cpp
+        TaskBooleanParameters.cpp
+        TaskDressUpParameters.cpp
+        TaskLoftParameters.cpp
+        TaskMultiTransformParameters.cpp
+        TaskPipeParameters.cpp
+        TaskShapeBinder.cpp
+        ViewProvider.cpp
+        ViewProviderShapeBinder.cpp
+        ViewProviderSketchBased.cpp
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 target_include_directories(
     PartDesignGui
     PRIVATE

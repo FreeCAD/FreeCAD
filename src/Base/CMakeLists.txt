@@ -338,6 +338,14 @@ endif(FREECAD_USE_PCH)
 target_sources(FreeCADBase PRIVATE ${FreeCADBase_SRCS})
 target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(FreeCADBase PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        ${zipios_SRCS}
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 if (MSVC)
     target_compile_definitions(FreeCADBase PRIVATE WIN32_LEAN_AND_MEAN)
 endif()
