@@ -4475,9 +4475,12 @@ void View3DInventorViewer::drawAxisCross()
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glPixelZoom((float)axiscrossSize / 30, (float)axiscrossSize / 30);  // 30 = 3 (character pixmap
-                                                                        // ratio) * 10 (default
-                                                                        // axiscrossSize)
+    // The viewport above is sized in physical framebuffer pixels, so the bitmap
+    // letters must be zoomed by the device pixel ratio to keep the same perceived
+    // size as the cross on HiDPI displays.
+    // 30 = 3 (character pixmap ratio) * 10 (default axiscrossSize)
+    const float letterZoom = (float)axiscrossSize / 30 * (float)devicePixelRatio();
+    glPixelZoom(letterZoom, letterZoom);
     glRasterPos2d(xpos[0], xpos[1]);
     glDrawPixels(XPM_WIDTH, XPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, XPM_pixel_data);
     glRasterPos2d(ypos[0], ypos[1]);

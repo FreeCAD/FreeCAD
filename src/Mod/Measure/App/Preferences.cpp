@@ -75,7 +75,7 @@ Base::Color Preferences::defaultTextBackgroundColor()
 
 int Preferences::defaultFontSize()
 {
-    return getPreferenceGroup("Appearance")->GetInt("DefaultFontSize", 18);
+    return getPreferenceGroup("Appearance")->GetInt("DefaultFontSize", 16);
 }
 
 int Preferences::defaultArrowRadius()

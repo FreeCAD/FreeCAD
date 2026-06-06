@@ -32,6 +32,7 @@
 #include <Inventor/nodes/SoTransform.h>
 
 #include "SoFCBoundingBox.h"
+#include <SoTextLabel.h>
 
 
 using namespace Gui;
@@ -81,7 +82,7 @@ SoFCBoundingBox::SoFCBoundingBox()
         auto temp = new SoSeparator();
         auto trans = new SoTransform();
         temp->addChild(trans);
-        auto text = new SoText2();
+        auto text = new SoFCText2();
         text->justification.setValue(SoText2::CENTER);
         temp->addChild(text);
         textSep->addChild(temp);
@@ -93,7 +94,7 @@ SoFCBoundingBox::SoFCBoundingBox()
         auto temp = new SoSeparator();
         auto trans = new SoTransform();
         temp->addChild(trans);
-        auto text = new SoText2();
+        auto text = new SoFCText2();
         text->justification.setValue(SoText2::CENTER);
         temp->addChild(text);
         dimSep->addChild(temp);

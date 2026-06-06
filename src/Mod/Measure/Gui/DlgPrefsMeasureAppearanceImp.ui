@@ -79,7 +79,7 @@
            <number>1</number>
           </property>
           <property name="value">
-           <number>18</number>
+           <number>16</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>DefaultFontSize</cstring>

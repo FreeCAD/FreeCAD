@@ -137,6 +137,7 @@ void Gui::SoFCDB::init()
     SoSelectionElementAction ::initClass();
     SoVRMLAction ::initClass();
     SoSkipBoundingGroup ::initClass();
+    SoFCText2 ::initClass();
     SoTextLabel ::initClass();
     SoDatumLabel ::initClass();
     SoColorBarLabel ::initClass();

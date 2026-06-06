@@ -40,12 +40,34 @@ namespace Gui
 {
 
 /**
+ * A screen-space text node that scales its font size by the device pixel ratio so
+ * that the text keeps a constant perceived size on HiDPI displays instead of being
+ * rendered at half size in physical framebuffer pixels.
+ * @author Werner Mayer
+ */
+class GuiExport SoFCText2: public SoText2
+{
+    using inherited = SoText2;
+
+    SO_NODE_HEADER(SoFCText2);
+
+public:
+    static void initClass();
+    SoFCText2();
+
+protected:
+    ~SoFCText2() override = default;
+    void GLRender(SoGLRenderAction* action) override;
+    void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
+};
+
+/**
  * A text label with a background color.
  * @author Werner Mayer
  */
-class GuiExport SoTextLabel: public SoText2
+class GuiExport SoTextLabel: public SoFCText2
 {
-    using inherited = SoText2;
+    using inherited = SoFCText2;
 
     SO_NODE_HEADER(SoTextLabel);
 
@@ -66,9 +88,9 @@ protected:
  * A text label for the color bar.
  * @author Werner Mayer
  */
-class GuiExport SoColorBarLabel: public SoText2
+class GuiExport SoColorBarLabel: public SoFCText2
 {
-    using inherited = SoText2;
+    using inherited = SoFCText2;
 
     SO_NODE_HEADER(SoColorBarLabel);
 
@@ -138,6 +160,11 @@ protected:
 
 private:
     void drawImage();
+
+    // Device pixel ratio the current image was rendered at. The image is
+    // re-rendered at the active ratio so the text stays crisp and keeps a
+    // constant perceived size on HiDPI displays.
+    float renderDpr {1.0F};
 };
 
 class GuiExport TranslateManip: public SoTransformManip
