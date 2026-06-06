@@ -587,7 +587,7 @@ class PostProcessor:
     def __init__(self, job, tooltip, tooltipargs, units, *args, **kwargs):
         self._tooltip = tooltip
         self._tooltipargs = tooltipargs
-        self._units = units # not used by MBPP
+        self._units = units  # not used by MBPP
         self._args = args
         self._kwargs = kwargs
 
@@ -722,7 +722,8 @@ class PostProcessor:
             self.values["OUTPUT_TOOL_LENGTH_OFFSET"] = output_options.output_tool_length_offset
         if hasattr(output_options, "remote_post"):
             self.values["REMOTE_POST"] = output_options.remote_post
-        self.values["OUTPUT_UNITS"] = output_options.units or self._units
+        if hasattr(output_options, "units"):
+            self.values["OUTPUT_UNITS"] = output_options.units
 
         # Header options
         self.values["OUTPUT_HEADER"] = output_options.output_header
@@ -1491,9 +1492,7 @@ class PostProcessor:
                 if comment_symbol == "(":
                     gcode_lines.append(f"(Tool change suppressed: M6 T{tool_num})")
                 else:
-                    gcode_lines.append(
-                        f"{comment_symbol} Tool change suppressed: M6 T{tool_num}"
-                    )
+                    gcode_lines.append(f"{comment_symbol} Tool change suppressed: M6 T{tool_num}")
                 return True
             gcode_lines.extend(self.values["PRE_TOOL_CHANGE"].split("\n"))
 
@@ -2306,7 +2305,7 @@ class PostProcessor:
         if comment_symbol == "(":
             return f"{block_delete_string}({comment_text})"
         else:
-            return f"{block_delete_string}{comment_symbol} {comment_text}" # FIXME: no extra space
+            return f"{block_delete_string}{comment_symbol} {comment_text}"  # FIXME: no extra space
 
     def format_parameter(self, param_name, value):
 
@@ -2395,7 +2394,7 @@ class PostProcessor:
         annotations = command.Annotations
 
         # Check for blockdelete annotation
-        block_delete_string = "/" if annotations.get("blockdelete") else "" # FIXME: never set
+        block_delete_string = "/" if annotations.get("blockdelete") else ""  # FIXME: never set
 
         # Build command line
         command_line = []

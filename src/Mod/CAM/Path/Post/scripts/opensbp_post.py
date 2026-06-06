@@ -31,6 +31,8 @@ OpenSBP Post Processor for ShopBot Controllers, "machine" based
 
 import operator
 import math
+import re
+import textwrap
 from typing import Any, Dict
 
 import FreeCAD
@@ -69,70 +71,6 @@ class OpenSBPPost(PostProcessor):
     OpenSBP postprocessor for ShopBot controllers.
 
     OpenSBP can use most gcodes (see GCodeKnow), with a few translated to opensbp
-    """
-
-    # This list is specific to shopbot, not from Mod/CAM/Constants.py
-    # from https://shopbottools.com/wp-content/uploads/2024/01/SBG-00142-User-Guide-20150317.pdf
-    # We want to translate some of the natively-supported gcodes (e.g. M2), so we omit them here.
-    # It includes commands that Operations shouldn't generate (cf. Constants.GCODE_NON_CONFORMING)
-    # It may include commands that Post/Processor.py shouldn't generate (cf. Constants.GCODE_SUPPORTED and Constants.MCODE_SUPPORTED and Constants.GCODE_NON_CONFORMING)
-    # Compatible should just pass-through
-    GCodeNative = set(
-        # M10/M11 is clamp-on/clamp-off
-        "G0 G00 G1 G01 G4 G04 G20 G21 G28 G29 G38.2 G92 M0 M00 M1 M01 M03 M5 M05 M8 M08 M9 M09 M10 M11".split(
-            " "
-        )
-    )
-    # NB: these are the generated strings, e.g. if an M02 generates to "M2", it counts
-    GCodeLineNumberRequired = set("M2 M3 M4 M5".split(" "))
-    GCodeLineNumberRequiredParameters = set("Z".split(" "))  # if modal, the parameter is first
-
-    # Suppressed/Tolerated
-    # because G54 is a default Job value, but shopbot has no concept
-    # G98/G99/G80 should have been consumed by drillcycleexpander FIXME
-    GCodeSuppressed = set("G54".split(" "))
-
-    # Unsupported
-    GCodeUnsupported = set(
-        "G40 G41 G42 G43 "
-        "G55 G56 G57 G58 G59 G59.1 G59.2 G59.3 G59.4 G59.5 G59.6 G59.7 G59.8 G59.9 "  # work-offsets
-        "G74 "
-        "G93 G94 G95 "  # opensbp only does units/sec
-        "G96 G97 "  # spindle control?
-        "M4 ".rstrip().split(  # ccw speed. We could support this, requires spindle-control on the machine
-            " "
-        )
-    )
-
-    # Others require translation
-    # FIXME: is M2/M30 program-end supposed to be in GCODE_SUPPORTED?
-    GCodeTranslate = set(
-        "G2 G02 G3 G03 G73 G80 G81 G83 G98 G99 M2 M02 M3 M03 M5 M05 M6 M06 M30".split(" ")
-    )
-    GCodeKnown = GCodeTranslate | GCodeNative | GCodeSuppressed
-    if GCodeKnown & GCodeUnsupported:
-        raise Exception(
-            f"Internal: you screwed up and have a value in both GCodeKnown & GCodeUnsupported: {GCodeKnown & GCodeUnsupported}"
-        )
-
-    # gcodes that are supported but shouldn't be used by CAM or Post/Processing
-    GCodeDontUse = GCodeKnown - set(
-        Constants.GCODE_SUPPORTED + Constants.MCODE_SUPPORTED + Constants.GCODE_NON_CONFORMING
-    )
-
-    # What we should support
-    GCodeSupported = GCodeKnown - GCodeDontUse - GCodeUnsupported
-
-    """
-    print(f"#== sbp native gcode {sorted(GCodeNative)}")
-    print(
-        f"#== sbp non-gcode {sorted(set(Constants.GCODE_SUPPORTED + Constants.MCODE_SUPPORTED + Constants.GCODE_NON_CONFORMING) - GCodeNative)}"
-    )
-    print(
-        f"#== sbp unsupported {sorted(set(Constants.GCODE_SUPPORTED + Constants.MCODE_SUPPORTED + Constants.GCODE_NON_CONFORMING) - GCodeKnown)}"
-    )
-    print(f"#== sbp don't use {sorted(GCodeDontUse)}")
-    print(f"#== sbp useable {sorted(GCodeKnown - GCodeDontUse)}")
     """
 
     # This list is specific to shopbot, not from Mod/CAM/Constants.py
@@ -270,6 +208,8 @@ class OpenSBPPost(PostProcessor):
             units=units,
         )
         Path.Log.debug("OpenSBP post processor initialized.")
+
+        self._first_probe_open = True  # for probe-subroutines only once
 
         # Track current speeds for OpenSBP (separate XY and Z speeds)
         self._current_move_speed_xy = None
@@ -583,6 +523,92 @@ class OpenSBPPost(PostProcessor):
             return "END"
         else:
             return super()._convert_program_control(command)
+
+    def _quote(self, string):
+        """Return a string that is safe for double-quotes (for opensbp)"""
+        # very conservative: only alpha-numeric and /-_.
+        return re.sub(r"[^A-Za-z0-9/_ .-]", "", string)
+
+    def _convert_probe_open(self, command):
+        """We need to setup for this probe-sequence,
+        provide subroutines for this/other probe-sequences.
+        The command should be a comment, and is already handled by
+        a _convert_comment().
+        But, has an annotation for the file-name from the Probe Operation
+        """
+
+        # we allow "/", "../", etc., in the filename
+        # but not things like "c:".
+        filename = command.Annotations["probe_open"]
+        if "." not in filename:
+            # default .txt (really "space delimited values")
+            filename += ".txt"
+        filename = self._quote(filename)
+
+        rez = [
+            # we already handled the probe-open comment
+            "C#,90",  # Loads "my variables", notably &my_ZzeroInput
+            f'OPEN "{filename}" FOR OUTPUT as #1',
+        ]
+
+        # only insert subroutines once
+        if self._first_probe_open:
+            self._first_probe_open = False
+            self.values["POST_JOB"] += textwrap.dedent("""\
+                GOTO SkipProbeSubRoutines
+                CaptureZPos:
+                  ' for g38.2 probe, write the data on probe-contact
+                  ' and set flag for didn't-fail
+                  ' xyzab
+                  WRITE #1; %(1); " "; %(2); " "; %(3); " "; %(4); " "; %(5)
+                  &hit = 1
+                  RETURN
+                FailedToTouch:
+                  ' for g38.2 probe, when
+                  ' failed to trigger w/in movement
+                  MSGBOX(Failed to touch...Exiting,16,Probe Failed) # fixme: which job/op label, and file?
+                  END
+                SkipProbeSubRoutines:
+            """).rstrip()
+
+        return "\n".join(rez)
+
+    def _convert_probe_close(self, command):
+        return textwrap.dedent("""\
+            '(PROBECLOSE)
+            'Clear probe-switch-trigger
+            ON INPUT(&my_ZzeroInput, 1)
+            CLOSE #1
+        """).rstrip()
+
+    def _convert_probe(self, command):
+        """
+        Converts a probe command (G38.2) to gcode.
+        _convert_probe_open(command) was already called to start the sequence
+        Probe.opExecute generated various move commands, and are handled as normal.
+        _convert_probe_close(command) will-be called to end the sequence
+        """
+
+        # We are being strict here, Z motion only
+        required = {p: v for p, v in command.Parameters.items() if p in "ZF"}
+        # FIXME: allow default F from MachineState when implemented?
+        if len(required) != 2:
+            raise Exception(f"A probing move (G38.2) must have a Z and F, only saw: {command}")
+        if len(command.Parameters) > 2:
+            raise Exception(f"A probing move (G38.2) should only have Z and F, saw {command}")
+
+        # G1, we aren't jogging, we are doing a slow, deliberate move, i.e. ~"feed".
+        probe_movement = self._convert_move(Path.Command("G1", required))
+
+        # &hit is set to 1 if the touch happens (see subroutine in _convert_probe_open)
+        rez = textwrap.dedent(f"""\
+            &hit = 0
+            ON INPUT(&my_ZzeroInput, 1) GOSUB CaptureZPos
+            {probe_movement}
+            IF &hit = 0 THEN GOTO FailedToTouch
+        """).rstrip()
+
+        return rez
 
     def _optimize_gcode(self, header_lines, gcode_lines) -> str:
         # There may be opensbp in the stream
