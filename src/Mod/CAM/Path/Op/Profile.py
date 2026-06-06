@@ -225,6 +225,20 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "\nManual: uses order of shapes selection",
                 ),
             ),
+            (
+                "App::PropertyBool",
+                "NaiveOffset",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Use naive offset instead of inside/outside based on model"
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "FlipNaiveOffsetDirection",
+                "Profile",
+                QT_TRANSLATE_NOOP("App::Property", "Flip naive offset direction"),
+            ),
         ]
 
     @classmethod
@@ -294,6 +308,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "processPerimeter": True,
             "Stepover": 0,
             "NumPasses": (1, 1, 99999, 1),
+            "NaiveOffset": False,
+            "FlipNaiveOffsetDirection": False,
         }
 
     def areaOpApplyPropertyDefaults(self, obj, job, propList):
@@ -675,18 +691,33 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     ][::-1]
                     openWires = []
                     for po in passOffsets:
-                        cutWireObjs = False
-                        self.ofstRadius = po
-                        cutShp = self._getCutAreaCrossSection(obj, base, origWire, flatWire)
-                        if cutShp:
-                            cutWireObjs = self._extractPathWire(obj, base, flatWire, cutShp)
-
-                        if cutWireObjs:
-                            for cW in cutWireObjs:
-                                openWires.append(cW)
+                        if obj.NaiveOffset:
+                            if obj.FlipNaiveOffsetDirection:
+                                po *= -1
+                            try:
+                                # NOTE: This outputs... BSplines instead of circles/ellipses
+                                projface = Path.Geom.makeBoundBoxFace(
+                                    wire.BoundBox, offset=1, zHeight=0
+                                )
+                                pw = projface.makeParallelProjection(wire, FreeCAD.Vector(0, 0, 1))
+                                openWires.append(pw.makeOffset2D(po, openResult=True))
+                            except:
+                                Path.Log.error(f"Offset barf, wire length: {flatWire.Length}")
+                                Part.show(flatWire, "flatWire")
                         else:
-                            Path.Log.error(self.inaccessibleMsg)
-                    shapeTups.append((openWires[0], openWires, "OpenEdge"))
+                            cutWireObjs = False
+                            self.ofstRadius = po
+                            cutShp = self._getCutAreaCrossSection(obj, base, origWire, flatWire)
+                            if cutShp:
+                                cutWireObjs = self._extractPathWire(obj, base, flatWire, cutShp)
+
+                            if cutWireObjs:
+                                for cW in cutWireObjs:
+                                    openWires.append(cW)
+                            else:
+                                Path.Log.error(self.inaccessibleMsg)
+                    if openWires:
+                        shapeTups.append((openWires[0], openWires, "OpenEdge"))
 
         return shapeTups
 
