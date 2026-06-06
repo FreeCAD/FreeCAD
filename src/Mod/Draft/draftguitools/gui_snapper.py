@@ -130,6 +130,7 @@ class Snapper:
         self.running = False
         self.callbackClick = None
         self.callbackMove = None
+        self._inputClaims = []
         self.snapObjectIndex = 0
 
         # snap keys, it's important that they are in this order for
@@ -1258,6 +1259,7 @@ class Snapper:
 
     def off(self):
         """Finish snapping."""
+        self._end_all_input_claims()
         if self.tracker:
             self.tracker.off()
         if self.trackLine:
@@ -1395,6 +1397,31 @@ class Snapper:
         if self.constrainLine:
             self.constrainLine.off()
 
+    def _begin_input_claim(self):
+        viewer = self.view.getViewer()
+        claim_id = viewer.beginInputClaim("Draft.Snapper", Gui.ViewerInputClaimKind.PointPick)
+        input_claim = (viewer, claim_id)
+        self._inputClaims.append(input_claim)
+        return input_claim
+
+    def _end_input_claim(self, input_claim):
+        viewer, claim_id = input_claim
+
+        for index, (active_viewer, active_claim_id) in enumerate(self._inputClaims):
+            if active_claim_id != claim_id or active_viewer is not viewer:
+                continue
+
+            del self._inputClaims[index]
+            try:
+                viewer.endInputClaim(claim_id)
+            except RuntimeError:
+                pass
+            return
+
+    def _end_all_input_claims(self):
+        for input_claim in self._inputClaims[:]:
+            self._end_input_claim(input_claim)
+
     def getPoint(
         self, last=None, callback=None, movecallback=None, extradlg=None, title=None, mode="point"
     ):
@@ -1451,6 +1478,7 @@ class Snapper:
             pass
         self.callbackClick = None
         self.callbackMove = None
+        self._end_all_input_claims()
 
         def move(event_cb):
             if not self.ui.mouse:
@@ -1505,15 +1533,21 @@ class Snapper:
             self.callbackMove = None
             Gui.Snapper.off()
             self.ui.offUi()
-            if callback:
-                if len(inspect.getfullargspec(callback).args) > 1:
-                    obj = None
-                    if self.snapInfo and ("Object" in self.snapInfo) and self.snapInfo["Object"]:
-                        obj = App.ActiveDocument.getObject(self.snapInfo["Object"])
-                    callback(self.pt, obj)
-                else:
-                    callback(self.pt)
-            self.pt = None
+            try:
+                if callback:
+                    if len(inspect.getfullargspec(callback).args) > 1:
+                        obj = None
+                        if (
+                            self.snapInfo
+                            and ("Object" in self.snapInfo)
+                            and self.snapInfo["Object"]
+                        ):
+                            obj = App.ActiveDocument.getObject(self.snapInfo["Object"])
+                        callback(self.pt, obj)
+                    else:
+                        callback(self.pt)
+            finally:
+                self.pt = None
 
         def cancel():
             try:
@@ -1549,18 +1583,27 @@ class Snapper:
         else:
             interface = self.ui.pointUi
         if callback:
-            if title:
-                interface(
-                    title=title, cancel=cancel, getcoords=getcoords, extra=extradlg, rel=bool(last)
+            input_claim = self._begin_input_claim()
+            try:
+                if title:
+                    interface(
+                        title=title,
+                        cancel=cancel,
+                        getcoords=getcoords,
+                        extra=extradlg,
+                        rel=bool(last),
+                    )
+                else:
+                    interface(cancel=cancel, getcoords=getcoords, extra=extradlg, rel=bool(last))
+                self.callbackClick = self.view.addEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(), click
                 )
-            else:
-                interface(cancel=cancel, getcoords=getcoords, extra=extradlg, rel=bool(last))
-            self.callbackClick = self.view.addEventCallbackPivy(
-                coin.SoMouseButtonEvent.getClassTypeId(), click
-            )
-            self.callbackMove = self.view.addEventCallbackPivy(
-                coin.SoLocation2Event.getClassTypeId(), move
-            )
+                self.callbackMove = self.view.addEventCallbackPivy(
+                    coin.SoLocation2Event.getClassTypeId(), move
+                )
+            except Exception:
+                self._end_input_claim(input_claim)
+                raise
 
     def get_snap_toolbar(self):
         """Get the snap toolbar."""

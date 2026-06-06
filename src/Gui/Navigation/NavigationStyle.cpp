@@ -2191,7 +2191,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     const SoPickedPointList& pplist = rp.getPickedPointList();
     QAction* pickAction = nullptr;
 
-    if (pplist.getLength() > 0) {
+    if (pplist.getLength() > 0 && viewer->canStartSelection()) {
         separator = true;
         if (auto cmd
             = Application::Instance->commandManager().getCommandByName("Std_ClarifySelection")) {

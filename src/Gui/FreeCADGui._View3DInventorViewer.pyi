@@ -7,6 +7,7 @@ from __future__ import annotations
 from typing import Any, overload
 
 from FreeCAD import Matrix, Vector
+from FreeCADGui import ViewerInputClaimKind
 
 class _View3DInventorViewer:
     """Low-level Coin viewer wrapper behind the 3D view."""
@@ -93,6 +94,30 @@ class _View3DInventorViewer:
 
     def isRedirectedToSceneGraph(self) -> bool:
         """Return whether rendering is redirected to the scene graph."""
+        ...
+
+    def beginInputClaim(
+        self,
+        owner: str,
+        kind: ViewerInputClaimKind,
+        /,
+    ) -> int:
+        """Claim viewer input and return a claim id.
+
+        The kind value is a ``FreeCADGui.ViewerInputClaimKind`` member.
+        """
+        ...
+
+    def endInputClaim(self, claim_id: int, /) -> None:
+        """Release a viewer input claim."""
+        ...
+
+    def hasInputClaim(self) -> bool:
+        """Return whether any viewer input claim is active."""
+        ...
+
+    def canStartSelection(self) -> bool:
+        """Return whether selection may start."""
         ...
 
     def grabFramebuffer(self) -> Any:

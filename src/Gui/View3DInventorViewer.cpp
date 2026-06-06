@@ -37,6 +37,8 @@
 
 #include <fmt/format.h>
 
+#include <utility>
+
 #include <Inventor/SbBox.h>
 #include <Inventor/SoEventManager.h>
 #include <Inventor/SoPickedPoint.h>
@@ -191,12 +193,17 @@ public:
 private:
     void triggerClarifySelection()
     {
+        if (!currentViewer || !currentViewer->canStartSelection()
+            || (Base::Sequencer().isRunning() && Base::Sequencer().isBlocking())) {
+            longPressTimer->stop();
+            currentViewer = nullptr;
+            return;
+        }
+
         // reset navigation state so button1down doesn't stay stuck ie. gh issue #29090
         // (the blocking QMenu::exec in ClarifySelection steals the LMB release)
-        if (currentViewer) {
-            if (auto* nav = currentViewer->navigationStyle()) {
-                nav->resetButtonState();
-            }
+        if (auto* nav = currentViewer->navigationStyle()) {
+            nav->resetButtonState();
         }
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Std_ClarifySelection')");
     }
@@ -207,6 +214,10 @@ private:
                            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
                            ->GetBool("EnableLongPressClarifySelection", true);
         if (!enabled) {
+            return false;
+        }
+
+        if (!viewer->canStartSelection()) {
             return false;
         }
 
@@ -2061,6 +2072,35 @@ void View3DInventorViewer::setSelectionEnabled(bool enable)
 bool View3DInventorViewer::isSelectionEnabled() const
 {
     return this->selectionRoot->selectionEnabled.getValue();  // NOLINT
+}
+
+View3DInventorViewer::ViewerInputClaimId View3DInventorViewer::beginInputClaim(
+    std::string owner,
+    ViewerInputClaimKind kind
+)
+{
+    const auto id = nextInputClaimId++;
+    inputClaims.emplace(id, ViewerInputClaim {std::move(owner), kind});
+    return id;
+}
+
+void View3DInventorViewer::endInputClaim(ViewerInputClaimId id)
+{
+    inputClaims.erase(id);
+}
+
+bool View3DInventorViewer::hasInputClaim() const
+{
+    return !inputClaims.empty();
+}
+
+bool View3DInventorViewer::canStartSelection() const
+{
+    if (Gui::Selection().isClarifySelectionActive()) {
+        return false;
+    }
+
+    return !hasInputClaim();
 }
 
 SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const

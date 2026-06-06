@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import FreeCAD as App
 from collections.abc import Sequence
-from enum import IntEnum
+from enum import Enum, IntEnum
 from typing import Any, ClassVar, Literal, Protocol, TypeAlias, overload
 
 from FreeCAD import DocumentObject
@@ -168,6 +168,13 @@ class UserInput(IntEnum):
     MouseScrollDown = ...
 
 _InputSequence: TypeAlias = UserInput | tuple[UserInput, ...]
+
+class ViewerInputClaimKind(str, Enum):
+    """Viewer input interaction kinds accepted by 3D viewer input claims."""
+
+    PointPick = "PointPick"
+    DragInteraction = "DragInteraction"
+    SelectionMenu = "SelectionMenu"
 
 class _WorkbenchBackend(Protocol):
     """Protocol for the mutable backend object behind one GUI workbench."""

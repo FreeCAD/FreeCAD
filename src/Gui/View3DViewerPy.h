@@ -73,6 +73,10 @@ public:
     Py::Object setBackgroundColor(const Py::Tuple& args);
     Py::Object setRedirectToSceneGraph(const Py::Tuple& args);
     Py::Object isRedirectedToSceneGraph(const Py::Tuple& args);
+    Py::Object beginInputClaim(const Py::Tuple& args);
+    Py::Object endInputClaim(const Py::Tuple& args);
+    Py::Object hasInputClaim(const Py::Tuple& args);
+    Py::Object canStartSelection(const Py::Tuple& args);
     Py::Object grabFramebuffer(const Py::Tuple& args);
 
     Py::Object setOverrideMode(const Py::Tuple& args);
