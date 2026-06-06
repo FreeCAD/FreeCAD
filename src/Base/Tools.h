@@ -346,8 +346,8 @@ namespace Tools
  * @param String to be checked and sanitized.
  * @return A std::string that is a valid Python 3 identifier.
  */
-std::string getIdentifier(std::string_view name);
-std::wstring widen(const std::string& str);
+BaseExport std::string getIdentifier(std::string_view name);
+BaseExport std::wstring widen(const std::string& str);
 
 /**
  * Locale-dependent, per-character "narrowing" of a std::wstring into a std::string using the
@@ -355,37 +355,37 @@ std::wstring widen(const std::string& str);
  * replaced with 0, producing embedded NULs (and corrupt the string). Use with caution! Most
  * code should prefer wstringToString().
  */
-std::string narrow(const std::wstring& str);
+BaseExport std::string narrow(const std::wstring& str);
 
 #ifdef FC_OS_WIN32
 /**
  * True UTF-16 to UTF-8 conversion. Handles full Unicode range, including surrogate pairs. Only
  * needed on Windows, and internally uses a Win32 API call to do its work.
  */
-std::string wstringToString(const std::wstring& str);
+BaseExport std::string wstringToString(const std::wstring& str);
 #endif
 
-std::string escapedUnicodeFromUtf8(const char* s);
-std::string escapedUnicodeToUtf8(const std::string& s);
-std::string escapeQuotesFromString(const std::string& s);
+BaseExport std::string escapedUnicodeFromUtf8(const char* s);
+BaseExport std::string escapedUnicodeToUtf8(const std::string& s);
+BaseExport std::string escapeQuotesFromString(const std::string& s);
 
-std::string escapeEncodeString(const std::string& s);
-std::string escapeEncodeFilename(const std::string& s);
+BaseExport std::string escapeEncodeString(const std::string& s);
+BaseExport std::string escapeEncodeFilename(const std::string& s);
 
 /**
  * @brief quoted Creates a quoted string.
  * @param String to be quoted.
  * @return A quoted std::string.
  */
-std::string quoted(const char*);
+BaseExport std::string quoted(const char*);
 /**
  * @brief quoted Creates a quoted string.
  * @param String to be quoted.
  * @return A quoted std::string.
  */
-std::string quoted(const std::string&);
+BaseExport std::string quoted(const std::string&);
 
-constexpr bool isNullOrEmpty(const char* str)
+BaseExport constexpr bool isNullOrEmpty(const char* str)
 {
     return !str || str[0] == '\0';
 }
@@ -397,26 +397,26 @@ constexpr bool isNullOrEmpty(const char* str)
  * @param sep
  * @return
  */
-std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
+BaseExport std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
 
 /**
  * @brief currentDateTimeString
  * @return Current time formatted as an ISO 8601 UTC timestamp, ending in 'Z'.
  */
-std::string currentDateTimeString();
+BaseExport std::string currentDateTimeString();
 
-bool isCLocaleName(std::string_view localeName);
-void setOperatingSystemNumericLocale(std::string_view localeName);
-std::string getOperatingSystemNumericLocale();
-void setIcuDefaultLocale(std::string_view icuLocaleId);
+BaseExport bool isCLocaleName(std::string_view localeName);
+BaseExport void setOperatingSystemNumericLocale(std::string_view localeName);
+BaseExport std::string getOperatingSystemNumericLocale();
+BaseExport void setIcuDefaultLocale(std::string_view icuLocaleId);
 
-std::vector<std::string> splitSubName(const std::string& subname);
+BaseExport std::vector<std::string> splitSubName(const std::string& subname);
 
 }  // namespace Tools
 
 namespace ZipTools
 {
-void rewrite(const std::string& source, const std::string& target);
+BaseExport void rewrite(const std::string& source, const std::string& target);
 }
 
 
