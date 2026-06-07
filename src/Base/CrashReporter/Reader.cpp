@@ -25,8 +25,11 @@
 #include <utility>
 
 #include "Base/Stream.h"
-//#include <QSysInfo>
-//#include <QString>
+
+#ifdef FC_HAVE_CPPTRACE
+#include <cpptrace/cpptrace.hpp>
+#include <unordered_map>  // Only needed for the cpptrace branch for moduleName lookup table
+#endif
 
 
 using namespace Base::CrashReporter;
@@ -118,7 +121,7 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string &pathToRawReportF
     parsedReport.minidumpPath = extractStringFromTable(stringTable, header.minidumpPathStringOffset);
     parsedReport.exceptionMessage = extractStringFromTable(stringTable, header.exceptionMessageStringOffset);
 
-    //parsedReport.osVersion = QSysInfo::prettyProductName().toStdString();  // Maybe stale on macOS
+    //parsedReport.osVersion = Set by App-level consumer at report-submission, Base has no easy access to OS information
     parsedReport.osID = header.osID;
     parsedReport.architectureID = header.architectureID;
 
@@ -136,6 +139,39 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string &pathToRawReportF
         throw Base::BadFormatError("Frame count doesn't fit in available storage");
     }
 
+#ifdef FC_HAVE_CPPTRACE
+    // Symbolicate:
+    cpptrace::object_trace objectTrace;
+    std::unordered_map<cpptrace::frame_ptr, std::string> modulePathMap;
+    for (std::uint32_t i = 0; i < header.frameCount; i++) {
+        Frame rawFrame;
+        std::memcpy(&rawFrame, buffer.data() + header.frameTableOffset + i * sizeof(Frame), sizeof(Frame));
+        cpptrace::object_frame objectFrame;
+        objectFrame.raw_address = rawFrame.rawAddress;
+        objectFrame.object_address = rawFrame.moduleOffset;
+        objectFrame.object_path = extractStringFromTable(stringTable, rawFrame.moduleStringOffset);
+        modulePathMap[objectFrame.raw_address] = objectFrame.object_path;  // For later lookup
+        objectTrace.frames.push_back(std::move(objectFrame));
+    }
+
+    auto stackTrace = objectTrace.resolve();  // This call does the actual resolution
+    parsedReport.stackFrames.reserve(stackTrace.frames.size());
+    for (const auto &frame : stackTrace.frames) {
+        ParsedFrame parsedFrame;
+        parsedFrame.rawAddress = frame.raw_address;
+        parsedFrame.moduleOffset = frame.object_address;
+
+        // To avoid any PII in the backtrace, only include the filename, not the full path:
+        parsedFrame.modulePath = Base::FileInfo(modulePathMap[frame.raw_address]).fileName();
+
+        parsedFrame.symbol = frame.symbol;
+        parsedFrame.file = frame.filename;
+        parsedFrame.line = frame.line.has_value() ? std::optional(frame.line.value()) : std::nullopt;
+        parsedFrame.isInline = frame.is_inline;
+        parsedReport.stackFrames.push_back(std::move(parsedFrame));
+    }
+#else
+
     parsedReport.stackFrames.reserve(header.frameCount);
     for (std::uint32_t i = 0; i < header.frameCount; i++) {
         Frame rawFrame;
@@ -144,14 +180,13 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string &pathToRawReportF
         ParsedFrame parsedFrame;
         parsedFrame.rawAddress = rawFrame.rawAddress;
         parsedFrame.moduleOffset = rawFrame.moduleOffset;
-        parsedFrame.modulePath = extractStringFromTable(stringTable, rawFrame.moduleStringOffset);
+        std::string modulePath = extractStringFromTable(stringTable, rawFrame.moduleStringOffset);
+        parsedFrame.modulePath = Base::FileInfo(modulePath).fileName(); // Avoid PII!
 
         parsedReport.stackFrames.push_back(std::move(parsedFrame));
     }
+#endif
 
-    // Symbolicate here...
-
-    // And later after we've put the data into it...
     return parsedReport;
 }
 

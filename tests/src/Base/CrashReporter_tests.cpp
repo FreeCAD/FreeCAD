@@ -210,7 +210,7 @@ TEST_F(CrashReporterReaderTests, TestBadStringTableOffset)
     {
         std::ofstream ofs(fcrashPath, std::ios::binary);
         auto buffer = createGoodCrashReport();
-        overwriteAtOffset(buffer, offsetof(Base::CrashReporter::Header, stringTableOffset), buffer.size());
+        overwriteAtOffset(buffer, offsetof(Base::CrashReporter::Header, stringTableOffset), static_cast<std::uint32_t>(buffer.size()));
         ofs.write(buffer.data(), buffer.size());
     }
     EXPECT_THROW(
@@ -225,7 +225,7 @@ TEST_F(CrashReporterReaderTests, TestBadFrameCount)
     {
         std::ofstream ofs(fcrashPath, std::ios::binary);
         auto buffer = createGoodCrashReport();
-        overwriteAtOffset(buffer, offsetof(Base::CrashReporter::Header, stringTableOffset), Base::CrashReporter::MaxFrames+1);
+        overwriteAtOffset(buffer, offsetof(Base::CrashReporter::Header, frameCount), static_cast<std::uint32_t>(Base::CrashReporter::MaxFrames+1));
         ofs.write(buffer.data(), buffer.size());
     }
     EXPECT_THROW(
@@ -240,7 +240,7 @@ TEST_F(CrashReporterReaderTests, TestBadFrameTableOffset)
     {
         std::ofstream ofs(fcrashPath, std::ios::binary);
         auto buffer = createGoodCrashReport();
-        overwriteAtOffset(buffer, offsetof(Base::CrashReporter::Header, frameTableOffset), buffer.size());
+        overwriteAtOffset(buffer, offsetof(Base::CrashReporter::Header, frameTableOffset), static_cast<std::uint32_t>(buffer.size()));
         ofs.write(buffer.data(), buffer.size());
     }
     EXPECT_THROW(
