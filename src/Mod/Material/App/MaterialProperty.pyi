@@ -12,7 +12,6 @@ from typing import Final
     Namespace="Materials",
     FatherNamespace="Materials",
     Constructor=True,
-    Delete=False,
 )
 class MaterialProperty(ModelProperty):
     """

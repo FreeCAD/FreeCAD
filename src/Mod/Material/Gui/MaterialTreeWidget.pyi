@@ -12,7 +12,6 @@ from Base.BaseClass import BaseClass
     Twin="MaterialTreeWidget",
     Namespace="MatGui",
     Constructor=True,
-    Delete=False,
 )
 class MaterialTreeWidget(BaseClass):
     """

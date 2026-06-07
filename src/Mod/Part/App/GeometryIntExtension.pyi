@@ -7,7 +7,6 @@ from Part.GeometryExtension import GeometryExtension
 
 @export(
     Father="GeometryExtensionPy",
-    Name="GeometryIntExtensionPy",
     PythonName="Part.GeometryIntExtension",
     Twin="GeometryIntExtension",
     Include="Mod/Part/App/GeometryDefaultExtension.h",

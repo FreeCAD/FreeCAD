@@ -8,7 +8,6 @@ from typing import Final
 
 @export(
     Father="ArcOfConicPy",
-    Name="ArcOfParabolaPy",
     PythonName="Part.ArcOfParabola",
     Twin="GeomArcOfParabola",
     Include="Mod/Part/App/Geometry.h",

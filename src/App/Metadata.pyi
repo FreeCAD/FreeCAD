@@ -10,8 +10,6 @@ from typing import Any, List, Dict, overload, Optional
 @export(
     Constructor=True,
     Delete=True,
-    NumberProtocol=False,
-    RichCompare=False,
 )
 @class_declarations(
     """public:

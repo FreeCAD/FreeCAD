@@ -6,7 +6,6 @@ from Metadata import export
 from Part.Geom2d import Curve2d
 
 @export(
-    Name="OffsetCurve2dPy",
     Namespace="Part",
     Twin="Geom2dOffsetCurve",
     PythonName="Part.Geom2d.OffsetCurve2d",

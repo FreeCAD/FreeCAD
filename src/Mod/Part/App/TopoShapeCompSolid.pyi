@@ -7,7 +7,6 @@ from TopoShape import TopoShape
 
 @export(
     Father="TopoShapePy",
-    Name="TopoShapeCompSolidPy",
     Twin="TopoShape",
     Include="Mod/Part/App/TopoShape.h",
     Namespace="Part",
