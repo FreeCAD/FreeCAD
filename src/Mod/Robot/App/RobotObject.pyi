@@ -8,9 +8,7 @@ from Base.Metadata import export
 
 from App.DocumentObject import DocumentObject
 
-@export(
-    Namespace="Robot",
-)
+@export()
 class RobotObject(DocumentObject):
     """
     Robot document object

@@ -9,9 +9,7 @@ from Fem.FemPostObject import FemPostObject
 
 vtkAlgorithm: TypeAlias = object
 
-@export(
-    Namespace="Fem",
-)
+@export()
 class FemPostFilter(FemPostObject):
     """
     The FemPostFilter class.

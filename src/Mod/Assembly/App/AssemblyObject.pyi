@@ -9,7 +9,7 @@ from Base.Metadata import constmethod, export
 from App.Part import Part
 from App.DocumentObject import DocumentObject
 
-@export(Namespace="Assembly")
+@export()
 class AssemblyObject(Part):
     """
     This class handles document objects in Assembly

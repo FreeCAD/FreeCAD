@@ -5,10 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from TechDraw.Drawview import DrawView
 
-
-@export(
-    Namespace="TechDraw",
-)
+@export()
 class DrawViewAnnotation(DrawView):
     """
     Feature for creating and manipulating Technical Drawing Annotation Views

@@ -8,9 +8,7 @@ from Base.Metadata import export
 
 from Fem.FemPostFilter import FemPostFilter
 
-@export(
-    Namespace="Fem",
-)
+@export()
 class FemPostBranchFilter(FemPostFilter):
     """
     The FemPostBranch class.

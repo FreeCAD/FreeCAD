@@ -8,7 +8,6 @@ from Base.Metadata import export
 from Base.Persistence import Persistence
 
 @export(
-    Namespace="Robot",
     Constructor=True,
     Delete=True,
 )

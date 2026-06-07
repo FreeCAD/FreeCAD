@@ -9,7 +9,6 @@ from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
 @export(
-    Namespace="Spreadsheet",
     Constructor=True,
 )
 class Sheet(DocumentObject):

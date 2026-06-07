@@ -9,9 +9,7 @@ from App.GeoFeature import GeoFeature
 
 vtkDataSet: TypeAlias = object
 
-@export(
-    Namespace="Fem",
-)
+@export()
 class FemPostObject(GeoFeature):
     """
     The FemPostObject class.

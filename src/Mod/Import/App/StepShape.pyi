@@ -8,7 +8,6 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Namespace="Import",
     Constructor=True,
     Delete=True,
 )

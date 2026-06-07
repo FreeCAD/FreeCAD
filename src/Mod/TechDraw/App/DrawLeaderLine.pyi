@@ -5,10 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from DrawView import DrawView
 
-
-@export(
-    Namespace="TechDraw",
-)
+@export()
 class DrawLeaderLine(DrawView):
     """
     Feature for adding leaders to Technical Drawings

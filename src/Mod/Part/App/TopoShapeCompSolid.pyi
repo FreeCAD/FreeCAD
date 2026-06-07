@@ -8,7 +8,6 @@ from TopoShape import TopoShape
 @export(
     Twin="TopoShape",
     Include="Mod/Part/App/TopoShape.h",
-    Namespace="Part",
     Constructor=True,
 )
 class TopoShapeCompSolid(TopoShape):

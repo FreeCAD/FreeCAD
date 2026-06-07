@@ -6,7 +6,6 @@ from Base.Metadata import export, sequence_protocol
 from Base.Persistence import Persistence
 
 @export(
-    Namespace="Spreadsheet",
     Constructor=True,
 )
 @sequence_protocol(

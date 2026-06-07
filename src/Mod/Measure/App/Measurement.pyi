@@ -8,7 +8,6 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
 @export(
-    Namespace="Measure",
     Constructor=True,
 )
 class Measurement(BaseClass):

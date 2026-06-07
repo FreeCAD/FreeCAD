@@ -8,7 +8,6 @@ from Base.Vector import Vector
 from typing import Final
 
 @export(
-    Namespace="Part",
     Twin="GeomToroid",
     PythonName="Part.Toroid",
     Include="Mod/Part/App/Geometry.h",

@@ -10,7 +10,6 @@ from Part.Geom2d import Curve2d
     PythonName="Part.Geom2d.ArcOfConic2d",
     Twin="Geom2dArcOfConic",
     Include="Mod/Part/App/Geometry2d.h",
-    Namespace="Part",
     Constructor=True,
 )
 class ArcOfConic2d(Curve2d):

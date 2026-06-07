@@ -8,7 +8,6 @@ from Conic import Conic
 from typing import Final, overload
 
 @export(
-    Namespace="Part",
     Twin="GeomHyperbola",
     PythonName="Part.Hyperbola",
     Include="Mod/Part/App/Geometry.h",

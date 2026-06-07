@@ -8,7 +8,6 @@ from Base.BaseClass import PyObjectBase
 from Base.Metadata import export
 
 @export(
-    Namespace="Surface",
     Constructor=True,
     Delete=True,
 )

@@ -8,9 +8,7 @@ from Base.Metadata import export
 
 from App.Part import Part
 
-@export(
-    Namespace="Assembly",
-)
+@export()
 class AssemblyLink(Part):
     """
     This class handles document objects in Assembly

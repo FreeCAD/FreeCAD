@@ -7,10 +7,7 @@ from typing import Any
 from Base.Metadata import export
 from DrawTemplate import DrawTemplate
 
-
-@export(
-    Namespace="TechDraw",
-)
+@export()
 class DrawSVGTemplate(DrawTemplate):
     """
     Feature for creating and manipulating Technical Drawing SVG Templates

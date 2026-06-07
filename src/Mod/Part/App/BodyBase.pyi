@@ -7,7 +7,6 @@ from PartFeature import PartFeature
 
 @export(
     Twin="BodyBase",
-    Namespace="Part",
 )
 class BodyBase(PartFeature):
     """

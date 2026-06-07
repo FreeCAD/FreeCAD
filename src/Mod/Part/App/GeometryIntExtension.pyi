@@ -8,7 +8,6 @@ from Part.GeometryExtension import GeometryExtension
 @export(
     Twin="GeometryIntExtension",
     Include="Mod/Part/App/GeometryDefaultExtension.h",
-    Namespace="Part",
     Constructor=True,
 )
 class GeometryIntExtension(GeometryExtension):

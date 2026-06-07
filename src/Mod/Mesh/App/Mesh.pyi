@@ -10,7 +10,6 @@ from App.ComplexGeoData import ComplexGeoData
 
 @export(
     Twin="MeshObject",
-    Namespace="Mesh",
     Constructor=True,
 )
 @class_declarations("""

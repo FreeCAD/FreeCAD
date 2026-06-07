@@ -7,10 +7,7 @@ from typing import Any
 from Base.Metadata import export
 from TechDraw.DrawViewCollection import DrawViewCollection
 
-
-@export(
-    Namespace="TechDraw",
-)
+@export()
 class DrawProjGroup(DrawViewCollection):
     """
     Feature for creating and manipulating Technical Drawing Projection Groups

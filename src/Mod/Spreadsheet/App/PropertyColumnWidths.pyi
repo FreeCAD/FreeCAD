@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Base.Persistence import Persistence
 
 @export(
-    Namespace="Spreadsheet",
     Constructor=True,
 )
 class PropertyColumnWidths(Persistence):

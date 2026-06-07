@@ -10,7 +10,6 @@ from typing import Final
     PythonName="Part.ArcOfParabola",
     Twin="GeomArcOfParabola",
     Include="Mod/Part/App/Geometry.h",
-    Namespace="Part",
     Constructor=True,
 )
 class ArcOfParabola(ArcOfConic):

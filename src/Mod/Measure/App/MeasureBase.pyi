@@ -7,7 +7,6 @@ from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
 @export(
-    Namespace="Measure",
     Constructor=True,
 )
 class MeasureBase(DocumentObject):

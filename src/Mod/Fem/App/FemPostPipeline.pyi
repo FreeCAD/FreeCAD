@@ -11,9 +11,7 @@ from App.DocumentObject import DocumentObject
 
 vtkAlgorithm: TypeAlias = object
 
-@export(
-    Namespace="Fem",
-)
+@export()
 class FemPostPipeline(FemPostObject):
     """
     The FemPostPipeline class.

@@ -8,7 +8,6 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Namespace="Mesh",
     Constructor=True,
     Delete=True,
 )

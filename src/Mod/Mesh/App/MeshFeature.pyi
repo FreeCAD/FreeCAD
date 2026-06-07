@@ -10,7 +10,6 @@ from App.GeoFeature import GeoFeature
 
 @export(
     Twin="Feature",
-    Namespace="Mesh",
 )
 class MeshFeature(GeoFeature):
     """

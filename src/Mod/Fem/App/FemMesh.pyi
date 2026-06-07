@@ -15,7 +15,6 @@ from Part.App.TopoShapeSolid import TopoShapeSolid
 from Part.App.TopoShapeVertex import TopoShapeVertex
 
 @export(
-    Namespace="Fem",
     Constructor=True,
 )
 class FemMesh(ComplexGeoData):
@@ -98,7 +97,11 @@ class FemMesh(ComplexGeoData):
 
     @constmethod
     def write(
-        self, file_name: str, highest: bool, vtk_cell_group_array: str, vtk_group_id_map: dict
+        self,
+        file_name: str,
+        highest: bool,
+        vtk_cell_group_array: str,
+        vtk_group_id_map: dict,
     ) -> None:
         """
         Write out various FEM mesh file formats.

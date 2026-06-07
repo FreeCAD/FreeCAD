@@ -5,10 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from TechDraw.DrawView import DrawView
 
-
-@export(
-    Namespace="TechDraw",
-)
+@export()
 class DrawWeldSymbol(DrawView):
     """
     Feature for adding welding tiles to leader lines

@@ -11,7 +11,6 @@ from Base import Vector
 
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
-    Namespace="TechDraw",
     Constructor=True,
     Delete=True,
 )

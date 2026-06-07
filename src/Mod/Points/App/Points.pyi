@@ -9,7 +9,6 @@ from App.ComplexGeoData import ComplexGeoData
 
 @export(
     Twin="PointKernel",
-    Namespace="Points",
     Constructor=True,
 )
 class Points(ComplexGeoData):

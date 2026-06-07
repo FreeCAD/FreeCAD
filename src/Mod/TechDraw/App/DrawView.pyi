@@ -8,10 +8,7 @@ from Base.Metadata import export, constmethod
 
 from App.DocumentObject import DocumentObject
 
-
-@export(
-    Namespace="TechDraw",
-)
+@export()
 class DrawView(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing Views
@@ -26,6 +23,7 @@ class DrawView(DocumentObject):
         No return value.  Replace the current label with a translated version where possible.
         """
         ...
+
     @constmethod
     def getScale(self) -> Any:
         """
@@ -40,5 +38,3 @@ class DrawView(DocumentObject):
         DrawPage parent = findParentPage().  Returns the parent page that contains this view.
         """
         ...
-
-
