@@ -96,6 +96,132 @@ class GenerateModelPythonTests(unittest.TestCase):
         self.assertEqual(user_doc.count("Example(value)"), 1)
         self.assertNotIn("--\n", user_doc)
 
+    def test_father_include_is_inferred_from_same_directory_parent_pyi(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Name="NativeParentPy")
+            class Parent(PyObjectBase):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export(Constructor=True)
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            (app_dir / "Parent.pyi").write_text(parent_source, encoding="utf-8")
+            child_path = app_dir / "Child.pyi"
+            child_path.write_text(child_source, encoding="utf-8")
+
+            model = parse_python_code(str(child_path))
+            self.assertEqual(
+                model.SourceDependencies,
+                [(app_dir / "Parent.pyi").resolve().as_posix()],
+            )
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.Father, "NativeParentPy")
+        self.assertEqual(
+            export.FatherInclude,
+            f"Mod/{Path(temp_dir).name}/App/NativeParentPy.h",
+        )
+
+    def test_father_include_is_inferred_from_runtime_style_parent_import(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.PyObjectBase import PyObjectBase
+
+
+            class Parent(PyObjectBase):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            module_name = Path(temp_dir).name
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            (app_dir / "Parent.pyi").write_text(parent_source, encoding="utf-8")
+            child_path = app_dir / "Child.pyi"
+            child_path.write_text(
+                textwrap.dedent(f"""
+                    from __future__ import annotations
+
+                    from Base.Metadata import export
+                    from {module_name}.Parent import Parent
+
+
+                    @export(Constructor=True)
+                    class Child(Parent):
+                        ...
+                    """),
+                encoding="utf-8",
+            )
+
+            model = parse_python_code(str(child_path))
+            self.assertEqual(
+                model.SourceDependencies,
+                [(app_dir / "Parent.pyi").resolve().as_posix()],
+            )
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.Father, "ParentPy")
+        self.assertEqual(export.FatherInclude, f"Mod/{module_name}/App/ParentPy.h")
+
+    def test_generation_writes_depfile_for_inferred_parent_pyi(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.PyObjectBase import PyObjectBase
+
+
+            class Parent(PyObjectBase):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export(Constructor=True)
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            parent_path = app_dir / "Parent.pyi"
+            child_path = app_dir / "Child.pyi"
+            output_dir = Path(temp_dir) / "generated"
+            depfile = output_dir / "ChildPy.d"
+            parent_path.write_text(parent_source, encoding="utf-8")
+            child_path.write_text(child_source, encoding="utf-8")
+
+            generate(str(child_path), str(output_dir), str(depfile))
+            depfile_text = depfile.read_text(encoding="utf-8")
+
+        self.assertIn((output_dir / "ChildPy.h").resolve().as_posix(), depfile_text)
+        self.assertIn((output_dir / "ChildPy.cpp").resolve().as_posix(), depfile_text)
+        self.assertIn(child_path.resolve().as_posix(), depfile_text)
+        self.assertIn(parent_path.resolve().as_posix(), depfile_text)
+
     def test_module_stub_parses_to_python_module_export(self):
         source = textwrap.dedent("""
             from __future__ import annotations
