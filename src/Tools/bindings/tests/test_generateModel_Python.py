@@ -12,6 +12,7 @@ sys.path.insert(0, str(BINDINGS_DIR))
 
 from generate import generate, source_dependency_map
 from model.generateModel_Python import parse, parse_python_code
+from model.typedModel import ParameterType
 
 
 class GenerateModelPythonTests(unittest.TestCase):
@@ -272,6 +273,69 @@ class GenerateModelPythonTests(unittest.TestCase):
                     "dependencies": [parent_path.resolve().as_posix()],
                 },
             ],
+        )
+
+    def test_annotated_vector_attributes_add_geometry_header_include(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from typing import Annotated
+
+            from Base import Vector
+            from Base.Metadata import cxx_type, export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Constructor=True)
+            class Example(PyObjectBase):
+                Position: Annotated[Vector, cxx_type("Vector")]
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            example_path = app_dir / "Example.pyi"
+            output_dir = Path(temp_dir) / "generated"
+            example_path.write_text(source, encoding="utf-8")
+
+            model = parse_python_code(str(example_path))
+            export = model.PythonExport[0]
+            generate(str(example_path), str(output_dir))
+            header_text = (output_dir / "ExamplePy.h").read_text(encoding="utf-8")
+
+        self.assertEqual(export.FatherInclude, "Base/PyObjectBase.h")
+        self.assertEqual(export.HeaderIncludes, ["Base/GeometryPyCXX.h"])
+        self.assertIn("#include <Base/PyObjectBase.h>", header_text)
+        self.assertIn("#include <Base/GeometryPyCXX.h>", header_text)
+        self.assertIn("ExamplePy : public Base::PyObjectBase", header_text)
+
+    def test_vector_attributes_remain_object_attributes_without_cxx_type(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            import Base
+            from Base.Vector import Vector
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Constructor=True)
+            class Example(PyObjectBase):
+                Position: Vector
+                Direction: Base.Vector
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            example_path = app_dir / "Example.pyi"
+            example_path.write_text(source, encoding="utf-8")
+            export = parse_python_code(str(example_path)).PythonExport[0]
+
+        self.assertEqual(export.HeaderIncludes, [])
+        self.assertEqual(
+            [attr.Parameter.Type for attr in export.Attribute],
+            [ParameterType.OBJECT, ParameterType.OBJECT],
         )
 
     def test_module_stub_parses_to_python_module_export(self):

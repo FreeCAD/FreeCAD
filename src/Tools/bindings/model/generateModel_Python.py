@@ -427,6 +427,53 @@ def _get_type_str(node):
             return "object"
 
 
+def _subscript_items(node: ast.AST) -> list[ast.AST]:
+    if isinstance(node, ast.Tuple):
+        return list(node.elts)
+    return [node]
+
+
+def _is_type_name(node: ast.AST, *names: str) -> bool:
+    type_name = _get_type_str(node).lower()
+    return type_name in {name.lower() for name in names}
+
+
+def _cxx_type_from_annotation(node: ast.AST) -> str | None:
+    if not isinstance(node, ast.Subscript) or not _is_type_name(
+        node.value, "Annotated", "typing.Annotated"
+    ):
+        return None
+
+    for metadata in _subscript_items(node.slice)[1:]:
+        if not isinstance(metadata, ast.Call) or not _is_type_name(metadata.func, "cxx_type"):
+            continue
+        if metadata.args and isinstance(metadata.args[0], ast.Constant):
+            value = metadata.args[0].value
+            if isinstance(value, str):
+                return value
+    return None
+
+
+def _cxx_type_to_parameter_type(cxx_type: str) -> ParameterType:
+    if cxx_type == "Vector":
+        return ParameterType.VECTOR
+    return ParameterType.OBJECT
+
+
+def _annotation_to_parameter_type(node: ast.AST) -> ParameterType:
+    if cxx_type := _cxx_type_from_annotation(node):
+        return _cxx_type_to_parameter_type(cxx_type)
+
+    if isinstance(node, ast.Subscript) and _is_type_name(
+        node.value, "Annotated", "typing.Annotated"
+    ):
+        items = _subscript_items(node.slice)
+        if items:
+            return _annotation_to_parameter_type(items[0])
+
+    return _python_type_to_parameter_type(_get_type_str(node))
+
+
 def _python_type_to_parameter_type(py_type: str) -> ParameterType:
     """
     Map a Python type annotation (as a string) to the ParameterType enum if possible.
@@ -452,10 +499,29 @@ def _python_type_to_parameter_type(py_type: str) -> ParameterType:
             return ParameterType.SEQUENCE
         case _ if py_type.startswith(("tuple", "typing.tuple")):
             return ParameterType.TUPLE
-        case _ if py_type.startswith(("pycxxvector")):
+        case _ if py_type.startswith("pycxxvector"):
             return ParameterType.VECTOR
         case _:
             return ParameterType.OBJECT
+
+
+_PARAMETER_TYPE_HEADER_INCLUDES = {
+    ParameterType.VECTOR: "Base/GeometryPyCXX.h",
+}
+
+
+def _attribute_header_includes(attributes: list[Attribute]) -> list[str]:
+    includes = []
+    for attr in attributes:
+        include = _PARAMETER_TYPE_HEADER_INCLUDES.get(attr.Parameter.Type)
+        if include and include not in includes:
+            includes.append(include)
+    return includes
+
+
+def _filter_header_includes(includes: list[str], *excluded_includes: str) -> list[str]:
+    excluded = set(excluded_includes)
+    return [include for include in includes if include not in excluded]
 
 
 def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[Attribute]:
@@ -471,32 +537,20 @@ def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[
         if isinstance(stmt, ast.AnnAssign):
             # e.g.: `TypeId: Final[str] = ""`
             name = stmt.target.id if isinstance(stmt.target, ast.Name) else "unknown"
-            # Evaluate the type annotation and detect Final for read-only attributes
-            if isinstance(stmt.annotation, ast.Name):
-                # e.g. `str`
-                type_name = stmt.annotation.id
-                readonly = False
-            elif isinstance(stmt.annotation, ast.Subscript):
-                # Check if this is a Final type hint, e.g. Final[int] or typing.Final[int]
+            # Evaluate the type annotation and detect Final for read-only attributes.
+            annotation = stmt.annotation
+            readonly = False
+            if isinstance(annotation, ast.Subscript):
                 is_final = (
-                    isinstance(stmt.annotation.value, ast.Name)
-                    and stmt.annotation.value.id == "Final"
+                    isinstance(annotation.value, ast.Name) and annotation.value.id == "Final"
                 ) or (
-                    isinstance(stmt.annotation.value, ast.Attribute)
-                    and stmt.annotation.value.attr == "Final"
+                    isinstance(annotation.value, ast.Attribute) and annotation.value.attr == "Final"
                 )
                 if is_final:
                     readonly = True
-                    # Extract the inner type from the Final[...] annotation
-                    type_name = _get_type_str(stmt.annotation.slice)
-                else:
-                    type_name = _get_type_str(stmt.annotation)
-                    readonly = False
-            else:
-                type_name = "object"
-                readonly = False
+                    annotation = annotation.slice
 
-            param_type = _python_type_to_parameter_type(type_name)
+            param_type = _annotation_to_parameter_type(annotation)
 
             # Look for a docstring immediately following the attribute definition.
             attr_doc = default_doc
@@ -1088,6 +1142,11 @@ def _parse_class(
         DisableNotify=export_decorator_kwargs.get("DisableNotify", False),
         DescriptorGetter=export_decorator_kwargs.get("DescriptorGetter", False),
         DescriptorSetter=export_decorator_kwargs.get("DescriptorSetter", False),
+        HeaderIncludes=_filter_header_includes(
+            _attribute_header_includes(class_attributes),
+            export_decorator_kwargs.get("FatherInclude", "") or father_include,
+            export_decorator_kwargs.get("Include", "") or include,
+        ),
         ForwardDeclarations=forward_declarations_text,
         ClassDeclarations=class_declarations_text,
         IsExplicitlyExported=is_exported,

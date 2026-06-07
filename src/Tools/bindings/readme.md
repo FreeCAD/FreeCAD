@@ -153,10 +153,16 @@ through `Constructor=True` rather than a normal method stub.
 
 Attributes defined as read-only are annotated with `Final` from Python’s `typing` module to indicate immutability.
 
+When the Python-facing type and generated PyCXX accessor type differ, use `Annotated`
+with `cxx_type()` metadata. Type checkers see the first argument, while the binding
+generator uses the metadata to select the generated accessor type.
+
 **Example:**
 
 ```python
-from typing import Final, Tuple
+from typing import Annotated, Final, Tuple
+from Base import Vector
+from Metadata import cxx_type
 
 class UnitPy(PyObjectBase):
     # holds the unit type as a string, e.g. 'Area'.
@@ -164,6 +170,9 @@ class UnitPy(PyObjectBase):
 
     # Returns the signature.
     Signature: Final[Tuple] = ...
+
+class CosmeticEdgePy(PyObjectBase):
+    Start: Annotated[Vector, cxx_type("Vector")]
 ```
 
 * * *

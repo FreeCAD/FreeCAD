@@ -183,6 +183,7 @@ class PythonExport:
     CustomAttributes: Optional[str] = ""  # To match the original XML model
     ClassDeclarations: str = ""
     ForwardDeclarations: str = ""
+    HeaderIncludes: List[str] = field(default_factory=list)
     NoArgs: bool = False
 
     # Attributes

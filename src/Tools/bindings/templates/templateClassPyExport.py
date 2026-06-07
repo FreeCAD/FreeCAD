@@ -112,6 +112,9 @@ class TemplateClassPyExport(template.ModelTemplate):
 
 #include <CXX/Objects.hxx>
 #include <@self.export.FatherInclude@>
++ for include in getattr(self.export, "HeaderIncludes", []):
+#include <@include@>
+-
 #include <@self.export.Include@>
 #include <string>
 
