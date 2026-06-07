@@ -10,7 +10,6 @@ from Fem.FemPostObject import FemPostObject
 vtkAlgorithm: TypeAlias = object
 
 @export(
-    Include="Mod/Fem/App/FemPostFilter.h",
     Namespace="Fem",
     FatherNamespace="Fem",
 )

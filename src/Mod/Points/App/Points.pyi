@@ -9,7 +9,6 @@ from App.ComplexGeoData import ComplexGeoData
 
 @export(
     Twin="PointKernel",
-    Include="Mod/Points/App/Points.h",
     Namespace="Points",
     FatherNamespace="Data",
     Constructor=True,

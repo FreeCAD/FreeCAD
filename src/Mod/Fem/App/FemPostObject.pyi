@@ -10,7 +10,6 @@ from App.GeoFeature import GeoFeature
 vtkDataSet: TypeAlias = object
 
 @export(
-    Include="Mod/Fem/App/FemPostObject.h",
     Namespace="Fem",
     FatherNamespace="App",
 )

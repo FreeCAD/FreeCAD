@@ -12,7 +12,6 @@ from App.DocumentObject import DocumentObject
 vtkAlgorithm: TypeAlias = object
 
 @export(
-    Include="Mod/Fem/App/FemPostPipeline.h",
     Namespace="Fem",
     FatherNamespace="Fem",
 )

@@ -9,7 +9,6 @@ from DrawTemplate import DrawTemplate
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawParametricTemplate.h",
     Namespace="TechDraw",
 )
 class DrawParametricTemplate(DrawTemplate):

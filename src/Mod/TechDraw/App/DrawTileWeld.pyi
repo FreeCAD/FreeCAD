@@ -7,7 +7,6 @@ from TechDraw.DrawTile import DrawTile
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawTileWeld.h",
     Namespace="TechDraw",
 )
 class DrawTileWeld(DrawTile):

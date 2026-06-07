@@ -9,7 +9,6 @@ from Base.Persistence import Persistence
 from .Command import Command
 
 @export(
-    Include="Mod/CAM/App/Path.h",
     Twin="Toolpath",
     Namespace="Path",
     Delete=True,

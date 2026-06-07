@@ -8,7 +8,6 @@ from App.DocumentObject import DocumentObject
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawTemplate.h",
     Namespace="TechDraw",
 )
 class DrawTemplate(DocumentObject):

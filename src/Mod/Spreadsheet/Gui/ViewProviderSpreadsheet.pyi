@@ -10,7 +10,6 @@ from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 
 @export(
     Twin="ViewProviderSheet",
-    Include="Mod/Spreadsheet/Gui/ViewProviderSpreadsheet.h",
     Namespace="SpreadsheetGui",
 )
 class ViewProviderSpreadsheet(ViewProviderDocumentObject):

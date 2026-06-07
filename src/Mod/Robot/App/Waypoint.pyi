@@ -8,7 +8,6 @@ from Base.Metadata import export
 from Base.Persistence import Persistence
 
 @export(
-    Include="Mod/Robot/App/Waypoint.h",
     Namespace="Robot",
     Constructor=True,
     Delete=True,

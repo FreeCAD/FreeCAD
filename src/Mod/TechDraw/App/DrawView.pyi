@@ -10,7 +10,6 @@ from App.DocumentObject import DocumentObject
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawView.h",
     Namespace="TechDraw",
 )
 class DrawView(DocumentObject):

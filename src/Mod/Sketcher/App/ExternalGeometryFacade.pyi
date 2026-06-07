@@ -8,7 +8,6 @@ from typing import Final, List
 
 @export(
     PythonName="Sketcher.ExternalGeometryFacade",
-    Include="Mod/Sketcher/App/ExternalGeometryFacade.h",
     Constructor=True,
 )
 class ExternalGeometryFacade(BaseClass):

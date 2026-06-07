@@ -9,7 +9,6 @@ from Base.Metadata import constmethod, export
 
 
 @export(
-    Include="Mod/TechDraw/App/CenterLine.h",
     Namespace="TechDraw",
     Constructor=True,
     Delete=True,

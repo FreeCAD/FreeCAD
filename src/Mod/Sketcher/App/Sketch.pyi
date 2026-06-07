@@ -8,7 +8,6 @@ from Base.Vector import Vector
 from typing import Final, Tuple
 
 @export(
-    Include="Mod/Sketcher/App/Sketch.h",
     Constructor=True,
 )
 class Sketch(Persistence):

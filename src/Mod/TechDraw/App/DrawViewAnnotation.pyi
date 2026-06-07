@@ -7,7 +7,6 @@ from TechDraw.Drawview import DrawView
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawViewAnnotation.h",
     Namespace="TechDraw",
 )
 class DrawViewAnnotation(DrawView):

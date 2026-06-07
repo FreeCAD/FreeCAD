@@ -8,7 +8,6 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Include="Mod/Import/App/StepShape.h",
     Namespace="Import",
     Constructor=True,
     Delete=True,

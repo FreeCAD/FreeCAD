@@ -13,7 +13,6 @@ from typing import Final, List
 
 @export(
     PythonName="Sketcher.GeometryFacade",
-    Include="Mod/Sketcher/App/GeometryFacade.h",
     Constructor=True,
     Delete=True,
 )

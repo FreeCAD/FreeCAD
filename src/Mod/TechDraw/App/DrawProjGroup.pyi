@@ -9,7 +9,6 @@ from TechDraw.DrawViewCollection import DrawViewCollection
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawProjGroup.h",
     Namespace="TechDraw",
 )
 class DrawProjGroup(DrawViewCollection):

@@ -10,7 +10,6 @@ from App.ComplexGeoData import ComplexGeoData
 from typing import Final, List, Tuple, Union, overload
 
 @export(
-    Include="Mod/Part/App/TopoShape.h",
     FatherNamespace="Data",
     Constructor=True,
 )

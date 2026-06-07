@@ -8,7 +8,6 @@ from typing import List
 
 
 @export(
-    Include="Mod/Material/App/MaterialFilter.h",
     Namespace="Materials",
     Constructor=True,
     Delete=True,

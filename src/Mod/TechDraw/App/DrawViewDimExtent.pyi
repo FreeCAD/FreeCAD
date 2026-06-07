@@ -9,7 +9,6 @@ from TechDraw.DrawViewDimension import DrawViewDimension
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawViewDimExtent.h",
     Namespace="TechDraw",
 )
 class DrawViewDimExtent(DrawViewDimension):

@@ -8,7 +8,6 @@ from Base.Metadata import constmethod, export
 from Base.Vector import Vector
 
 @export(
-    Include="Mod/CAM/App/Voronoi.h",
     Namespace="Path",
     Constructor=True,
     Delete=True,

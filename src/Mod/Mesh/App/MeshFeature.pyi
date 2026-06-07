@@ -10,7 +10,6 @@ from App.GeoFeature import GeoFeature
 
 @export(
     Twin="Feature",
-    Include="Mod/Mesh/App/MeshFeature.h",
     Namespace="Mesh",
 )
 class MeshFeature(GeoFeature):

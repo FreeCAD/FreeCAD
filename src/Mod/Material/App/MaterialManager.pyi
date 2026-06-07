@@ -7,7 +7,7 @@ from Base.BaseClass import BaseClass
 from typing import Final, List, Dict
 
 
-@export(Include="Mod/Material/App/MaterialManager.h", Namespace="Materials", Constructor=True)
+@export(Namespace="Materials", Constructor=True)
 class MaterialManager(BaseClass):
     """
     Material descriptions.

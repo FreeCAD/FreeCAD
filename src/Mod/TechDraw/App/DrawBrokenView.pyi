@@ -9,7 +9,6 @@ from TechDraw.DrawViewPart import DrawViewPart
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawBrokenView.h",
     Namespace="TechDraw",
 )
 class DrawBrokenView(DrawViewPart):

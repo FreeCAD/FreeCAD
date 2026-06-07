@@ -7,7 +7,6 @@ from TechDraw.DrawView import DrawView
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawWeldSymbol.h",
     Namespace="TechDraw",
 )
 class DrawWeldSymbol(DrawView):

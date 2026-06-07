@@ -10,7 +10,6 @@ from Base.PyObjectBase import PyObjectBase
 from Base.Vector import Vector
 
 @export(
-    Include="Gui/EditableDatumLabel.h",
     Constructor=True,
     Delete=True,
     Initialization=True,

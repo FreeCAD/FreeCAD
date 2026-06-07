@@ -10,7 +10,6 @@ from App.ComplexGeoData import ComplexGeoData
 
 @export(
     Twin="MeshObject",
-    Include="Mod/Mesh/App/Mesh.h",
     Namespace="Mesh",
     FatherNamespace="Data",
     Constructor=True,

@@ -6,7 +6,6 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
 @export(
-    Include="Mod/CAM/App/Area.h",
     Namespace="Path",
     Constructor=True,
     Delete=True,

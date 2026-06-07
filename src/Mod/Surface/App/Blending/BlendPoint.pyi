@@ -8,7 +8,6 @@ from Base.BaseClass import PyObjectBase
 from Base.Metadata import constmethod, export
 
 @export(
-    Include="Mod/Surface/App/Blending/BlendPoint.h",
     Namespace="Surface",
     Constructor=True,
     Delete=True,

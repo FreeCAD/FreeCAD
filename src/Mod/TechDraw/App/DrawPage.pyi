@@ -9,7 +9,6 @@ from App.DocumentObject import DocumentObject
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawPage.h",
     Namespace="TechDraw",
 )
 class DrawPage(DocumentObject):

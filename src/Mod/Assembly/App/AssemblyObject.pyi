@@ -9,7 +9,7 @@ from Base.Metadata import constmethod, export
 from App.Part import Part
 from App.DocumentObject import DocumentObject
 
-@export(Include="Mod/Assembly/App/AssemblyObject.h", Namespace="Assembly")
+@export(Namespace="Assembly")
 class AssemblyObject(Part):
     """
     This class handles document objects in Assembly

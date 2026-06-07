@@ -8,7 +8,6 @@ from typing import Final, List, Dict
 
 
 @export(
-    Include="Mod/Material/App/Model.h",
     Namespace="Materials",
     Constructor=True,
     Delete=True,

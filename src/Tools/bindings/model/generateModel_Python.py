@@ -780,8 +780,15 @@ def _source_root_from_path(path: str | Path) -> Path | None:
     return Path(*parts[: src_index + 1])
 
 
-def _header_path_from_pyi(path: Path, source_root: Path, export_name: str) -> str:
-    return (path.parent.relative_to(source_root) / f"{export_name}.h").as_posix()
+def _header_path_from_pyi(path: Path, source_root: Path, header_stem: str) -> str:
+    return (path.resolve().parent.relative_to(source_root) / f"{header_stem}.h").as_posix()
+
+
+def _include_path_from_pyi(path: str | Path, module_name: str, native_class_name: str) -> str:
+    source_root = _source_root_from_path(path)
+    if source_root is not None:
+        return _header_path_from_pyi(Path(path), source_root, native_class_name)
+    return _get_module_path(module_name) + "/" + native_class_name + ".h"
 
 
 def _export_kwargs_from_class(class_node: ast.ClassDef) -> dict:
@@ -1104,7 +1111,7 @@ def _parse_class(
 
     native_class_name = _get_native_class_name(class_node.name)
     native_python_class_name = _get_native_python_class_name(class_node.name)
-    include = _get_module_path(module_name) + "/" + native_class_name + ".h"
+    include = _include_path_from_pyi(path, module_name, native_class_name)
     twin = export_decorator_kwargs.get("Twin", "") or native_class_name
     twin_pointer = export_decorator_kwargs.get("TwinPointer", "") or twin
 

@@ -315,6 +315,7 @@ class GenerateModelPythonTests(unittest.TestCase):
 
             import Base
             from Base.Vector import Vector
+
             from Base.Metadata import export
             from Base.PyObjectBase import PyObjectBase
 
@@ -337,6 +338,35 @@ class GenerateModelPythonTests(unittest.TestCase):
             [attr.Parameter.Type for attr in export.Attribute],
             [ParameterType.OBJECT, ParameterType.OBJECT],
         )
+
+    def test_include_is_inferred_from_pyi_path(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Constructor=True)
+            class Example(PyObjectBase):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            module_name = Path(temp_dir).name
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            example_path = app_dir / "Example.pyi"
+            output_dir = Path(temp_dir) / "generated"
+            example_path.write_text(source, encoding="utf-8")
+
+            model = parse_python_code(str(example_path))
+            export = model.PythonExport[0]
+            generate(str(example_path), str(output_dir))
+            header_text = (output_dir / "ExamplePy.h").read_text(encoding="utf-8")
+
+        self.assertEqual(export.Include, f"Mod/{module_name}/App/Example.h")
+        self.assertIn(f"#include <Mod/{module_name}/App/Example.h>", header_text)
 
     def test_twin_pointer_defaults_to_twin(self):
         source = textwrap.dedent("""

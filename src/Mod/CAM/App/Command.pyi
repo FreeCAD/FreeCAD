@@ -5,7 +5,6 @@ from Base.Persistence import Persistence
 from Base.Placement import Placement
 
 @export(
-    Include="Mod/CAM/App/Command.h",
     Namespace="Path",
     Delete=True,
     Constructor=True,

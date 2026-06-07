@@ -7,7 +7,6 @@ from PartFeature import PartFeature
 
 @export(
     Twin="BodyBase",
-    Include="Mod/Part/App/BodyBase.h",
     Namespace="Part",
     FatherNamespace="Part",
 )

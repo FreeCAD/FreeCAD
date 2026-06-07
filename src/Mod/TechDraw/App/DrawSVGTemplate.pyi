@@ -9,7 +9,6 @@ from DrawTemplate import DrawTemplate
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawSVGTemplate.h",
     Namespace="TechDraw",
 )
 class DrawSVGTemplate(DrawTemplate):

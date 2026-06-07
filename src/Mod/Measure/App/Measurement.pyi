@@ -8,7 +8,6 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
 @export(
-    Include="Mod/Measure/App/Measurement.h",
     Namespace="Measure",
     Constructor=True,
 )

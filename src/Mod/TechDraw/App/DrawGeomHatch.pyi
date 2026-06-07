@@ -9,7 +9,6 @@ from App.DocumentObject import DocumentObject
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawGeomHatch.h",
     Namespace="TechDraw",
 )
 class DrawGeomHatch(DocumentObject):

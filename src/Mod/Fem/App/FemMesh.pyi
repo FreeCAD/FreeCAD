@@ -15,7 +15,6 @@ from Part.App.TopoShapeSolid import TopoShapeSolid
 from Part.App.TopoShapeVertex import TopoShapeVertex
 
 @export(
-    Include="Mod/Fem/App/FemMesh.h",
     Namespace="Fem",
     FatherNamespace="Data",
     Constructor=True,

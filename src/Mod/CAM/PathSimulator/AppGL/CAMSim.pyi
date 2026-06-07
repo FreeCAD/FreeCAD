@@ -12,7 +12,6 @@ from Part.App.TopoShape import TopoShape
 from CAM.App.Command import Command
 
 @export(
-    Include="Mod/CAM/PathSimulator/AppGL/CAMSim.h",
     Namespace="CAMSimulator",
     Constructor=True,
     Delete=True,

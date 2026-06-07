@@ -8,7 +8,6 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Include="Mod/Mesh/App/Edge.h",
     Namespace="Mesh",
     Constructor=True,
     Delete=True,

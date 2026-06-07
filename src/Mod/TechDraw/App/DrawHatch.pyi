@@ -8,7 +8,6 @@ from App.DocumentObject import DocumentObject
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawHatch.h",
     Namespace="TechDraw",
 )
 class DrawHatch(DocumentObject):

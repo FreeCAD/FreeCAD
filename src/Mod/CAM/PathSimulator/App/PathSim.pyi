@@ -12,7 +12,6 @@ from Mesh.App.Mesh import Mesh
 from CAM.App.Command import Command
 
 @export(
-    Include="Mod/CAM/PathSimulator/App/PathSim.h",
     Namespace="PathSimulator",
     Constructor=True,
     Delete=True,

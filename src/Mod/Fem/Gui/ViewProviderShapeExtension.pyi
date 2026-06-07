@@ -3,7 +3,6 @@ from Gui.ViewProviderExtension import ViewProviderExtension
 from typing import Any, List
 
 @export(
-    Include="Mod/Fem/Gui/ViewProviderShapeExtension.h",
     Namespace="FemGui",
 )
 class ViewProviderShapeExtension(ViewProviderExtension):

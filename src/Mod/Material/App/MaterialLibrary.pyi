@@ -7,7 +7,6 @@ from Base.BaseClass import BaseClass
 
 
 @export(
-    Include="Mod/Material/App/MaterialLibrary.h",
     Namespace="Materials",
     Constructor=True,
     Delete=True,

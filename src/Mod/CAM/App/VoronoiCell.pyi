@@ -6,7 +6,6 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod, export
 
 @export(
-    Include="Mod/CAM/App/VoronoiCell.h",
     Namespace="Path",
     Constructor=True,
     RichCompare=True,

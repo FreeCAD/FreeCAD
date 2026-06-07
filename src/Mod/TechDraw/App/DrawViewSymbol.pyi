@@ -9,7 +9,6 @@ from TechDraw.DrawView import DrawView
 
 
 @export(
-    Include="Mod/TechDraw/App/DrawViewSymbol.h",
     Namespace="TechDraw",
 )
 class DrawViewSymbol(DrawView):

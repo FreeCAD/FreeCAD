@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, List, Tuple, Union
 
 @export(
     Twin="Feature",
-    Include="Mod/Part/App/PartFeature.h",
 )
 class PartFeature(GeoFeature):
     """

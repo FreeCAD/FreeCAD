@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Spreadsheet.Sheet import Sheet
 
 @export(
-    Include="Mod/Assembly/App/BomObject.h",
     Namespace="Assembly",
 )
 class BomObject(Sheet):

@@ -6,7 +6,6 @@ from Base.Metadata import export, sequence_protocol
 from Base.Persistence import Persistence
 
 @export(
-    Include="Mod/Spreadsheet/App/PropertySheet.h",
     Namespace="Spreadsheet",
     Constructor=True,
 )

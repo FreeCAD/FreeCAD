@@ -6,9 +6,7 @@ from Base.Metadata import export
 from Part.PartFeature import PartFeature
 from typing import Optional, overload
 
-@export(
-    Include="Mod/PartDesign/App/Feature.h",
-)
+@export()
 class Feature(PartFeature):
     """
     This is the father of all PartDesign object classes
