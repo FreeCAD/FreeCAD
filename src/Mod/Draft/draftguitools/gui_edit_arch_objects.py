@@ -171,7 +171,7 @@ class ArchSpaceGuiTools(GuiTools):
 
     def update_object_from_edit_points(self, obj, node_idx, v, alt_edit_mode=0):
         if node_idx == 0:
-            obj.ViewObject.TextPosition = v
+            obj.ViewObject.Proxy.setTextPosition(obj.ViewObject, v)
 
 
 class ArchPanelCutGuiTools(GuiTools):
