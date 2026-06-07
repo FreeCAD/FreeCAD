@@ -8,7 +8,6 @@ from typing import Final, List
 
 @export(
     Twin="Geom2dBezierCurve",
-    TwinPointer="Geom2dBezierCurve",
     PythonName="Part.Geom2d.BezierCurve2d",
     Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,

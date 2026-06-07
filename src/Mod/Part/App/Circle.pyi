@@ -11,7 +11,6 @@ from typing import overload
 @export(
     PythonName="Part.Circle",
     Twin="GeomCircle",
-    TwinPointer="GeomCircle",
     Include="Mod/Part/App/Geometry.h",
     FatherNamespace="Part",
     Constructor=True,

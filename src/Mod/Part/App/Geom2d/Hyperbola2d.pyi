@@ -8,7 +8,6 @@ from typing import Final, overload
 
 @export(
     Twin="Geom2dHyperbola",
-    TwinPointer="Geom2dHyperbola",
     PythonName="Part.Geom2d.Hyperbola2d",
     Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,

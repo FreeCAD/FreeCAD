@@ -338,6 +338,28 @@ class GenerateModelPythonTests(unittest.TestCase):
             [ParameterType.OBJECT, ParameterType.OBJECT],
         )
 
+    def test_twin_pointer_defaults_to_twin(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Twin="NativeTwin")
+            class Example(PyObjectBase):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse_python_code(str(path))
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.Twin, "NativeTwin")
+        self.assertEqual(export.TwinPointer, "NativeTwin")
+
     def test_module_stub_parses_to_python_module_export(self):
         source = textwrap.dedent("""
             from __future__ import annotations

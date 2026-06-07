@@ -9,7 +9,6 @@ from typing import Final
 @export(
     PythonName="Part.ArcOfCircle",
     Twin="GeomArcOfCircle",
-    TwinPointer="GeomArcOfCircle",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

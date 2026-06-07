@@ -9,7 +9,6 @@ from typing import Final, List
 
 @export(
     Twin="GeomBezierCurve",
-    TwinPointer="GeomBezierCurve",
     PythonName="Part.BezierCurve",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

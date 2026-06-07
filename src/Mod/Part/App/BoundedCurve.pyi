@@ -8,7 +8,6 @@ from typing import Any, Final
 
 @export(
     Twin="GeomBoundedCurve",
-    TwinPointer="GeomBoundedCurve",
     PythonName="Part.BoundedCurve",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

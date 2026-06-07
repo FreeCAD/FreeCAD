@@ -8,7 +8,6 @@ from typing import Any, Final, Tuple
 
 @export(
     Twin="GeomTrimmedSurface",
-    TwinPointer="GeomTrimmedSurface",
     PythonName="Part.RectangularTrimmedSurface",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

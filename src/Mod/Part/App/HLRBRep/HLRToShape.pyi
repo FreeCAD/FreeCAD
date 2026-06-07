@@ -10,7 +10,6 @@ from typing import Optional
 @export(
     PythonName="Part.HLRToShapePy",
     Twin="HLRBRep_HLRToShape",
-    TwinPointer="HLRBRep_HLRToShape",
     Include="HLRBRep_HLRToShape.hxx",
     Constructor=True,
     Delete=True,

@@ -10,7 +10,6 @@ from typing import Final
 @export(
     PythonName="Part.Conic",
     Twin="GeomConic",
-    TwinPointer="GeomConic",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

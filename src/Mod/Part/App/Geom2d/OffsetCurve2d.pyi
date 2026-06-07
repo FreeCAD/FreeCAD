@@ -9,7 +9,6 @@ from Part.Geom2d import Curve2d
     Name="OffsetCurve2dPy",
     Namespace="Part",
     Twin="Geom2dOffsetCurve",
-    TwinPointer="Geom2dOffsetCurve",
     PythonName="Part.Geom2d.OffsetCurve2d",
     Include="Mod/Part/App/Geometry2d.h",
     Father="Curve2dPy",

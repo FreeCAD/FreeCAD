@@ -10,7 +10,6 @@ from typing import Final, List, Any
 
 @export(
     Twin="Array2D",
-    TwinPointer="Array2D",
     Namespace="Materials",
     Include="Mod/Material/App/MaterialValue.h",
     Delete=True,

@@ -10,7 +10,6 @@ from Base.BaseClass import BaseClass
 
 @export(
     Twin="MaterialTreeWidget",
-    TwinPointer="MaterialTreeWidget",
     Include="Mod/Material/Gui/MaterialTreeWidget.h",
     Namespace="MatGui",
     Constructor=True,

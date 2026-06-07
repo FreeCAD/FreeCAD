@@ -10,7 +10,6 @@ from typing import Final
 
 @export(
     Twin="GeomSphere",
-    TwinPointer="GeomSphere",
     PythonName="Part.Sphere",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

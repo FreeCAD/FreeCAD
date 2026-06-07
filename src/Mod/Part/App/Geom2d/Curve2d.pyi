@@ -11,7 +11,6 @@ from typing import Final, overload, List
 @export(
     Include="Mod/Part/App/Geometry2d.h",
     Twin="Geom2dCurve",
-    TwinPointer="Geom2dCurve",
     PythonName="Part.Geom2d.Curve2d",
     Constructor=True,
 )

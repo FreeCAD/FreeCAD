@@ -11,7 +11,6 @@ from typing import Final, overload
     Name="HyperbolaPy",
     Namespace="Part",
     Twin="GeomHyperbola",
-    TwinPointer="GeomHyperbola",
     PythonName="Part.Hyperbola",
     Include="Mod/Part/App/Geometry.h",
     Father="ConicPy",

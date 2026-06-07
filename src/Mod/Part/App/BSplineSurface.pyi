@@ -9,7 +9,6 @@ from typing import Final, List, Any
 @export(
     PythonName="Part.BSplineSurface",
     Twin="GeomBSplineSurface",
-    TwinPointer="GeomBSplineSurface",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

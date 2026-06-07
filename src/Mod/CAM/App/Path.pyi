@@ -11,7 +11,6 @@ from .Command import Command
 @export(
     Include="Mod/CAM/App/Path.h",
     Twin="Toolpath",
-    TwinPointer="Toolpath",
     Namespace="Path",
     Delete=True,
     Constructor=True,

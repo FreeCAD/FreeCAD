@@ -11,7 +11,6 @@ from typing import Final
     Name="ArcOfParabolaPy",
     PythonName="Part.ArcOfParabola",
     Twin="GeomArcOfParabola",
-    TwinPointer="GeomArcOfParabola",
     Include="Mod/Part/App/Geometry.h",
     Namespace="Part",
     FatherNamespace="Part",

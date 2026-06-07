@@ -1105,6 +1105,8 @@ def _parse_class(
     native_class_name = _get_native_class_name(class_node.name)
     native_python_class_name = _get_native_python_class_name(class_node.name)
     include = _get_module_path(module_name) + "/" + native_class_name + ".h"
+    twin = export_decorator_kwargs.get("Twin", "") or native_class_name
+    twin_pointer = export_decorator_kwargs.get("TwinPointer", "") or twin
 
     father_info = _infer_binding_parent_info(path, imported_from_module, base_class_name)
     if father_info:
@@ -1128,8 +1130,8 @@ def _parse_class(
         PythonName=export_decorator_kwargs.get("PythonName", "") or None,
         Include=export_decorator_kwargs.get("Include", "") or include,
         Father=export_decorator_kwargs.get("Father", "") or father_native_python_class_name,
-        Twin=export_decorator_kwargs.get("Twin", "") or native_class_name,
-        TwinPointer=export_decorator_kwargs.get("TwinPointer", "") or native_class_name,
+        Twin=twin,
+        TwinPointer=twin_pointer,
         Namespace=export_decorator_kwargs.get("Namespace", "") or module_name,
         FatherInclude=export_decorator_kwargs.get("FatherInclude", "") or father_include,
         FatherNamespace=export_decorator_kwargs.get("FatherNamespace", "") or parent_module_name,

@@ -11,7 +11,6 @@ from typing import Final
     Name="ArcOfHyperbolaPy",
     PythonName="Part.ArcOfHyperbola",
     Twin="GeomArcOfHyperbola",
-    TwinPointer="GeomArcOfHyperbola",
     Include="Mod/Part/App/Geometry.h",
     Namespace="Part",
     FatherNamespace="Part",

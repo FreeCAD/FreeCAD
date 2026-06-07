@@ -8,7 +8,6 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 @export(
     PythonName="Part.ShapeFix.Wireframe",
     Twin="ShapeFix_Wireframe",
-    TwinPointer="ShapeFix_Wireframe",
     Include="ShapeFix_Wireframe.hxx",
     Constructor=True,
 )

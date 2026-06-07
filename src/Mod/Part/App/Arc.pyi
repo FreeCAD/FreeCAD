@@ -12,7 +12,6 @@ from typing import overload
     Father="TrimmedCurvePy",
     PythonName="Part.Arc",
     Twin="GeomTrimmedCurve",
-    TwinPointer="GeomTrimmedCurve",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

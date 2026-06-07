@@ -9,7 +9,6 @@ from typing import Final
 
 @export(
     Twin="GeomParabola",
-    TwinPointer="GeomParabola",
     PythonName="Part.Parabola",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

@@ -9,7 +9,6 @@ from Part.Geom2d import Conic2d
 @export(
     PythonName="Part.Geom2d.Circle2d",
     Twin="Geom2dCircle",
-    TwinPointer="Geom2dCircle",
     Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,
 )

@@ -9,7 +9,6 @@ from typing import Final, overload
 @export(
     PythonName="Part.ArcOfEllipse",
     Twin="GeomArcOfEllipse",
-    TwinPointer="GeomArcOfEllipse",
     Include="Mod/Part/App/Geometry.h",
     FatherNamespace="Part",
     Constructor=True,

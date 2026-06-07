@@ -10,7 +10,6 @@ from typing import overload
 @export(
     PythonName="Part.Point",
     Twin="GeomPoint",
-    TwinPointer="GeomPoint",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

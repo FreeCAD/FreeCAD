@@ -9,7 +9,6 @@ from Base.PyObjectBase import PyObjectBase
     PythonName="Part.ShapeUpgrade.UnifySameDomain",
     Include="ShapeUpgrade_UnifySameDomain.hxx",
     Twin="ShapeUpgrade_UnifySameDomain",
-    TwinPointer="ShapeUpgrade_UnifySameDomain",
     Constructor=True,
     Delete=True,
 )

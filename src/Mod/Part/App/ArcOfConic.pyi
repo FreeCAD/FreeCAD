@@ -11,7 +11,6 @@ from typing import overload
     Father="TrimmedCurvePy",
     PythonName="Part.ArcOfConic",
     Twin="GeomArcOfConic",
-    TwinPointer="GeomArcOfConic",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

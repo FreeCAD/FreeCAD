@@ -13,7 +13,6 @@ from typing import Final, overload, List, Union, Optional, Tuple
 
 @export(
     Twin="GeomCurve",
-    TwinPointer="GeomCurve",
     PythonName="Part.Curve",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

@@ -7,7 +7,6 @@ from GeometrySurface import GeometrySurface
 
 @export(
     Twin="GeomPlateSurface",
-    TwinPointer="GeomPlateSurface",
     PythonName="Part.PlateSurface",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

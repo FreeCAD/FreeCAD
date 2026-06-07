@@ -8,7 +8,6 @@ from Part.Geom2d.Curve2d import Curve2d
 @export(
     PythonName="Part.Geom2d.Line2d",
     Twin="Geom2dLine",
-    TwinPointer="Geom2dLine",
     Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,
 )

@@ -9,7 +9,6 @@ from GeometryCurve import GeometryCurve
 @export(
     PythonName="Part.OffsetCurve",
     Twin="GeomOffsetCurve",
-    TwinPointer="GeomOffsetCurve",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

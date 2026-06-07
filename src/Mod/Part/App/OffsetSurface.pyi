@@ -7,7 +7,6 @@ from GeometrySurface import GeometrySurface
 
 @export(
     Twin="GeomOffsetSurface",
-    TwinPointer="GeomOffsetSurface",
     PythonName="Part.OffsetSurface",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

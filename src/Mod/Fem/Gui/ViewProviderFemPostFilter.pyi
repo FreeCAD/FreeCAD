@@ -10,7 +10,6 @@ from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 
 @export(
     Twin="ViewProviderFemPostObject",
-    TwinPointer="ViewProviderFemPostObject",
     Include="Mod/Fem/Gui/ViewProviderFemPostObject.h",
     Namespace="FemGui",
 )

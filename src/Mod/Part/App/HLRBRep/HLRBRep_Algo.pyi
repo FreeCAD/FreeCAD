@@ -7,7 +7,6 @@ from Base.PyObjectBase import PyObjectBase
 
 @export(
     Twin="HLRBRep_Algo",
-    TwinPointer="HLRBRep_Algo",
     Include="HLRBRep_Algo.hxx",
     Constructor=True,
 )

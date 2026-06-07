@@ -9,7 +9,6 @@ from typing import Final
 @export(
     PythonName="Part.GeomPlate.CurveConstraintPy",
     Twin="GeomPlate_CurveConstraint",
-    TwinPointer="GeomPlate_CurveConstraint",
     Include="GeomPlate_CurveConstraint.hxx",
     Constructor=True,
     Delete=True,

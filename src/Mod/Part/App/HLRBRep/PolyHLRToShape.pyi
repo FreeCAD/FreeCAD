@@ -11,7 +11,6 @@ from typing import Optional
 @export(
     PythonName="Part.PolyHLRToShapePy",
     Twin="HLRBRep_PolyHLRToShape",
-    TwinPointer="HLRBRep_PolyHLRToShape",
     Include="HLRBRep_PolyHLRToShape.hxx",
     Constructor=True,
     Delete=True,

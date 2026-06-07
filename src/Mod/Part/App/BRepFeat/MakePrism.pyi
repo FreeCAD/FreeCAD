@@ -9,7 +9,6 @@ from typing import List
 @export(
     PythonName="Part.BRepFeat.MakePrism",
     Twin="BRepFeat_MakePrism",
-    TwinPointer="BRepFeat_MakePrism",
     Include="BRepFeat_MakePrism.hxx",
     Constructor=True,
     Delete=True,

@@ -7,7 +7,6 @@ from BoundedCurve import BoundedCurve
 
 @export(
     Twin="GeomTrimmedCurve",
-    TwinPointer="GeomTrimmedCurve",
     PythonName="Part.TrimmedCurve",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

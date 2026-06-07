@@ -11,7 +11,6 @@ from typing import Final
 @export(
     PythonName="Part.Cone",
     Twin="GeomCone",
-    TwinPointer="GeomCone",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

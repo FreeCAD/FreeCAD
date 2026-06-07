@@ -10,7 +10,6 @@ from typing import Final
 @export(
     PythonName="Material.UUIDs",
     Twin="ModelUUIDs",
-    TwinPointer="ModelUUIDs",
     Include="Mod/Material/App/ModelUuids.h",
     Namespace="Materials",
     Constructor=True,

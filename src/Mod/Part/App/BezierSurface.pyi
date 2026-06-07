@@ -11,7 +11,6 @@ from typing import Final, Tuple, Any
 
 @export(
     Twin="GeomBezierSurface",
-    TwinPointer="GeomBezierSurface",
     PythonName="Part.BezierSurface",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

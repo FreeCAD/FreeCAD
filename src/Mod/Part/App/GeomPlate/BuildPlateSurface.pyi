@@ -9,7 +9,6 @@ from typing import List
 @export(
     PythonName="Part.GeomPlate.BuildPlateSurfacePy",
     Twin="GeomPlate_BuildPlateSurface",
-    TwinPointer="GeomPlate_BuildPlateSurface",
     Include="GeomPlate_BuildPlateSurface.hxx",
     Constructor=True,
     Delete=True,

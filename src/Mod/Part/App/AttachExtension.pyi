@@ -8,7 +8,6 @@ from typing import Any, Final
 
 @export(
     Twin="AttachExtension",
-    TwinPointer="AttachExtension",
     Include="Mod/Part/App/AttachExtension.h",
 )
 class AttachExtension(DocumentObjectExtension):

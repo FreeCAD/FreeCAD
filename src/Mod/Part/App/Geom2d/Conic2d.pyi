@@ -9,7 +9,6 @@ from Part.Geom2d import Curve2d
 @export(
     PythonName="Part.Geom2d.Conic2d",
     Twin="Geom2dConic",
-    TwinPointer="Geom2dConic",
     Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,
 )

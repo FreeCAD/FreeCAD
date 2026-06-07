@@ -12,7 +12,6 @@ from typing import Final, Tuple, Dict, List, overload
 
 @export(
     Twin="TopoShape",
-    TwinPointer="TopoShape",
     Include="Mod/Part/App/TopoShape.h",
     Constructor=True,
 )

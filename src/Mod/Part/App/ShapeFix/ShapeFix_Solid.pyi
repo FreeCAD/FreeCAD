@@ -8,7 +8,6 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 @export(
     PythonName="Part.ShapeFix.Solid",
     Twin="ShapeFix_Solid",
-    TwinPointer="ShapeFix_Solid",
     Include="ShapeFix_Solid.hxx",
     Constructor=True,
 )

@@ -9,7 +9,6 @@ from TopoShape import TopoShape
     Father="TopoShapePy",
     Name="TopoShapeCompSolidPy",
     Twin="TopoShape",
-    TwinPointer="TopoShape",
     Include="Mod/Part/App/TopoShape.h",
     Namespace="Part",
     FatherNamespace="Part",

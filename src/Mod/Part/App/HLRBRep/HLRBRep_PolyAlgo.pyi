@@ -9,7 +9,6 @@ from Part.TopoShapePy import TopoShape
 @export(
     PythonName="Part.HLRBRep_PolyAlgo",
     Twin="HLRBRep_PolyAlgo",
-    TwinPointer="HLRBRep_PolyAlgo",
     Include="HLRBRep_PolyAlgo.hxx",
     Constructor=True,
 )

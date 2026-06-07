@@ -11,7 +11,6 @@ from typing import Final
     Name="ToroidPy",
     Namespace="Part",
     Twin="GeomToroid",
-    TwinPointer="GeomToroid",
     PythonName="Part.Toroid",
     Include="Mod/Part/App/Geometry.h",
     Father="GeometrySurfacePy",

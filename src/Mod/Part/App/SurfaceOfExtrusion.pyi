@@ -9,7 +9,6 @@ from Base.Vector import Vector
 
 @export(
     Twin="GeomSurfaceOfExtrusion",
-    TwinPointer="GeomSurfaceOfExtrusion",
     PythonName="Part.SurfaceOfExtrusion",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,

@@ -10,7 +10,6 @@ from typing import Tuple
     Name="ChFi2d_AnaFilletAlgoPy",
     PythonName="Part.ChFi2d.AnaFilletAlgo",
     Twin="ChFi2d_AnaFilletAlgo",
-    TwinPointer="ChFi2d_AnaFilletAlgo",
     Include="ChFi2d_AnaFilletAlgo.hxx",
     Constructor=True,
     Delete=True,

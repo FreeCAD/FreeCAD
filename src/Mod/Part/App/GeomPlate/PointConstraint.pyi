@@ -9,7 +9,6 @@ from typing import Tuple
 @export(
     PythonName="Part.GeomPlate.PointConstraintPy",
     Twin="GeomPlate_PointConstraint",
-    TwinPointer="GeomPlate_PointConstraint",
     Include="GeomPlate_PointConstraint.hxx",
     Constructor=True,
     Delete=True,

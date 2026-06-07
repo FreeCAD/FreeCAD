@@ -7,7 +7,6 @@ from PartFeature import PartFeature
 
 @export(
     Twin="Part2DObject",
-    TwinPointer="Part2DObject",
     Include="Mod/Part/App/Part2DObject.h",
 )
 class Part2DObject(PartFeature):

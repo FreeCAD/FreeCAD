@@ -10,7 +10,6 @@ from Base.Vector import Vector
     Name="ChFi2d_FilletAlgoPy",
     PythonName="Part.ChFi2d.FilletAlgo",
     Twin="ChFi2d_FilletAlgo",
-    TwinPointer="ChFi2d_FilletAlgo",
     Include="ChFi2d_FilletAlgo.hxx",
     Constructor=True,
     Delete=True,
