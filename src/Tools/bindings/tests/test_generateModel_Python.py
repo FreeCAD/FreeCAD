@@ -10,7 +10,7 @@ BINDINGS_DIR = Path(__file__).resolve().parents[1]
 SRC_DIR = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(BINDINGS_DIR))
 
-from generate import generate
+from generate import generate, source_dependency_map
 from model.generateModel_Python import parse, parse_python_code
 
 
@@ -221,6 +221,58 @@ class GenerateModelPythonTests(unittest.TestCase):
         self.assertIn((output_dir / "ChildPy.cpp").resolve().as_posix(), depfile_text)
         self.assertIn(child_path.resolve().as_posix(), depfile_text)
         self.assertIn(parent_path.resolve().as_posix(), depfile_text)
+
+    def test_source_dependency_map_groups_dependencies_by_input(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.PyObjectBase import PyObjectBase
+
+
+            class Parent(PyObjectBase):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export(Constructor=True)
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            parent_path = app_dir / "Parent.pyi"
+            first_child_path = app_dir / "FirstChild.pyi"
+            second_child_path = app_dir / "SecondChild.pyi"
+            parent_path.write_text(parent_source, encoding="utf-8")
+            first_child_path.write_text(
+                child_source.replace("Child", "FirstChild"), encoding="utf-8"
+            )
+            second_child_path.write_text(
+                child_source.replace("Child", "SecondChild"), encoding="utf-8"
+            )
+
+            dependency_map = source_dependency_map([first_child_path, second_child_path])
+
+        self.assertEqual(
+            dependency_map,
+            [
+                {
+                    "source": first_child_path.resolve().as_posix(),
+                    "dependencies": [parent_path.resolve().as_posix()],
+                },
+                {
+                    "source": second_child_path.resolve().as_posix(),
+                    "dependencies": [parent_path.resolve().as_posix()],
+                },
+            ],
+        )
 
     def test_module_stub_parses_to_python_module_export(self):
         source = textwrap.dedent("""

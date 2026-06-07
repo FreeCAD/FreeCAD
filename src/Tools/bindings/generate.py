@@ -6,6 +6,7 @@
 import os
 import sys
 import getopt
+import json
 from pathlib import Path
 import model.generateModel_Module
 import model.generateModel_Python
@@ -24,6 +25,8 @@ Options:
  --depfile           write a Make-style dependency file
  --print-dependencies
                      print source dependencies without generating files
+ --print-dependency-map
+                     print source dependencies grouped by input as JSON
 
 Generate source code out of an model definition.
 
@@ -99,6 +102,19 @@ def source_dependencies(filename):
     return _unique_paths(getattr(generate_model_inst, "SourceDependencies", []))
 
 
+def source_dependency_map(filenames):
+    result = []
+    for filename in filenames:
+        absolute_filename = Path(filename).resolve().as_posix()
+        result.append(
+            {
+                "source": absolute_filename,
+                "dependencies": source_dependencies(absolute_filename),
+            }
+        )
+    return result
+
+
 def generate(filename, outputPath, depfile=None):
     GenerateModelInst = generate_model(filename)
 
@@ -141,6 +157,7 @@ def main():
     outputPath = ""
     depfile = None
     print_dependencies = False
+    print_dependency_map = False
 
     class generateOutput:
         def write(self, data):
@@ -153,7 +170,14 @@ def main():
         opts, args = getopt.getopt(
             sys.argv[1:],
             "hvo:",
-            ["help", "verbose", "outputPath=", "depfile=", "print-dependencies"],
+            [
+                "help",
+                "verbose",
+                "outputPath=",
+                "depfile=",
+                "print-dependencies",
+                "print-dependency-map",
+            ],
         )
     except getopt.GetoptError:
         # print help information and exit:
@@ -173,12 +197,19 @@ def main():
             depfile = a
         if o == "--print-dependencies":
             print_dependencies = True
+        if o == "--print-dependency-map":
+            print_dependency_map = True
 
     if print_dependencies:
         for i in args:
             filename = os.path.abspath(i)
             for dependency in source_dependencies(filename):
                 print(dependency)
+        return
+
+    if print_dependency_map:
+        filenames = [os.path.abspath(i) for i in args]
+        print(json.dumps(source_dependency_map(filenames)))
         return
 
     if not verbose:
