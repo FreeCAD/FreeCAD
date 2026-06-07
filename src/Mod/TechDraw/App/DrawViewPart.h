@@ -67,6 +67,7 @@ class DrawViewDimension;
 class DrawProjectSplit;
 class DrawViewSection;
 class DrawViewDetail;
+class DrawAuxiliaryView;
 class DrawViewBalloon;
 class CosmeticVertex;
 class CosmeticEdge;
@@ -150,6 +151,7 @@ public:
     std::vector<TechDraw::DrawViewBalloon*> getBalloons() const;
     virtual std::vector<DrawViewSection*> getSectionRefs() const;
     virtual std::vector<DrawViewDetail*> getDetailRefs() const;
+    virtual std::vector<DrawAuxiliaryView*> getAuxiliaryRefs() const;
 
     const std::vector<TechDraw::VertexPtr> getVertexGeometry() const;
     const BaseGeomPtrVector getEdgeGeometry() const;

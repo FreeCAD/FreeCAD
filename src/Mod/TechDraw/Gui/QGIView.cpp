@@ -41,6 +41,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
+#include <Mod/TechDraw/App/DrawAuxiliaryView.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
@@ -256,6 +257,13 @@ void QGIView::dragFinished()
     Gui::ViewProvider *vp = getViewProvider(viewObj);
     if (vp && !vp->isRestoring()) {
         snapping = true; // avoid triggering updateView by the VP updateData
+        if (auto* auxiliaryView = dynamic_cast<TechDraw::DrawAuxiliaryView*>(viewObj)) {
+            if (auxiliaryView->KeepAligned.getValue()) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.ActiveDocument.%s.KeepAligned = False",
+                                        viewObj->getNameInDocument());
+            }
+        }
         if (setX) {
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
                                 viewObj->getNameInDocument(), candidateX);

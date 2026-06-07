@@ -44,6 +44,7 @@ enum : int {
     QGDisplayArea,
     QGEPath,
     QGIArrow,
+    QGIAuxiliaryMarker,
     QGIBalloonLabel,
     QGIBreakLine,
     QGICaption,

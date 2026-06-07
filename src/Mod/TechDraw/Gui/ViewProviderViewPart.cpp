@@ -40,6 +40,7 @@
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawAuxiliaryView.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
@@ -55,6 +56,7 @@
 
 #include "PreferencesGui.h"
 #include "QGIView.h"
+#include "TaskAuxiliaryView.h"
 #include "TaskDetail.h"
 #include "TaskProjGroup.h"
 #include "ViewProviderViewPart.h"
@@ -214,10 +216,13 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 //    Base::Console().message("VPVP::attach(%s)\n", pcFeat->getNameInDocument());
     auto* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
     auto* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
+    auto* dva = dynamic_cast<TechDraw::DrawAuxiliaryView*>(pcFeat);
     if (dvm) {
         sPixmap = "TechDraw_TreeMulti";
     } else if (dvd) {
         sPixmap = "actions/TechDraw_DetailView";
+    } else if (dva) {
+        sPixmap = "actions/TechDraw_AuxiliaryView";
     }
 
     ViewProviderDrawingView::attach(pcFeat);
@@ -287,12 +292,24 @@ bool ViewProviderViewPart::setEdit(int ModNum)
 
     TechDraw::DrawViewPart* dvp = getViewObject();
     auto* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
+    auto* dva = dynamic_cast<TechDraw::DrawAuxiliaryView*>(dvp);
     if (dvd) {
         if (!dvd->BaseView.getValue()) {
             Base::Console().error("DrawViewDetail - %s - has no BaseView!\n", dvd->getNameInDocument());
             return false;
         }
         return setDetailEdit(ModNum, dvd);
+    }
+    if (dva) {
+        if (!dva->BaseView.getValue()) {
+            Base::Console().error("DrawAuxiliaryView - %s - has no BaseView!\n",
+                                  dva->getNameInDocument());
+            return false;
+        }
+        Gui::Control().showDialog(new TaskDlgAuxiliaryView(dva));
+        Gui::Selection().clearSelection();
+        Gui::Selection().addSelection(dva->getDocument()->getName(), dva->getNameInDocument());
+        return true;
     }
     auto* view = getObject<TechDraw::DrawView>();
     Gui::Control().showDialog(new TaskDlgProjGroup(view, false));
@@ -372,6 +389,7 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
     // with a derived class here in the parent
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     auto* dlgDetail = dynamic_cast<TaskDlgDetail*>(dlg);
+    auto* dlgAuxiliary = dynamic_cast<TaskDlgAuxiliaryView*>(dlg);
     if (dlgDetail) {
         std::string dlgDetailTarget = dlgDetail->getDetailName();   //new method
         if (getViewObject()->getNameInDocument() == dlgDetailTarget) {
@@ -384,12 +402,25 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
             return false;
         }
     }
+    if (dlgAuxiliary) {
+        std::string dlgAuxiliaryTarget = dlgAuxiliary->getAuxiliaryName();
+        if (getViewObject()->getNameInDocument() == dlgAuxiliaryTarget) {
+            bodyMessageStream << qApp->translate("Std_Delete",
+            "Close open dialog before deleting auxiliary view object");
+            bodyMessage = bodyMessageStream.readLine();
+            QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+            return false;
+        }
+    }
 
     // get child views
     auto viewSection = getViewObject()->getSectionRefs();
     auto viewDetail = getViewObject()->getDetailRefs();
+    auto viewAuxiliary = getViewObject()->getAuxiliaryRefs();
 
-    if (!viewSection.empty() || !viewDetail.empty()) {
+    if (!viewSection.empty() || !viewDetail.empty() || !viewAuxiliary.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
             "You cannot delete this view because it has one or more dependent views that would become broken.");
         bodyMessage = bodyMessageStream.readLine();

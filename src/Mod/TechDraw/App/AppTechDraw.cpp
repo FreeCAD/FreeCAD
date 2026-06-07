@@ -40,6 +40,7 @@
 #include "DrawTileWeld.h"
 #include "DrawViewAnnotation.h"
 #include "DrawViewArch.h"
+#include "DrawAuxiliaryViewPy.h"
 #include "DrawViewBalloon.h"
 #include "DrawViewClip.h"
 #include "DrawViewCollection.h"
@@ -117,6 +118,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawTileWeld        ::init();
     TechDraw::DrawWeldSymbol      ::init();
     TechDraw::DrawBrokenView      ::init();
+    TechDraw::DrawAuxiliaryView   ::init();
 
     TechDraw::PropertyGeomFormatList::init();
     TechDraw::GeomFormat            ::init();
@@ -147,6 +149,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawTileWeldPython  ::init();
     TechDraw::DrawWeldSymbolPython::init();
     TechDraw::DrawBrokenViewPython::init();
+    TechDraw::DrawAuxiliaryViewPython::init();
 
     TechDraw::LineFormat::initCurrentLineFormat();
 

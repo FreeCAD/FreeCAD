@@ -65,7 +65,9 @@ def projGroupMove(view, fromPage, toPage, copy):
 def moveView(view, fromPage, toPage, copy=False):
     if view.isDerivedFrom("TechDraw::DrawProjGroup"):
         projGroupMove(view, fromPage, toPage, copy)
-    elif view.isDerivedFrom("TechDraw::DrawViewSection") or view.isDerivedFrom("TechDraw::DrawViewDetail"):
+    elif (view.isDerivedFrom("TechDraw::DrawViewSection")
+          or view.isDerivedFrom("TechDraw::DrawViewDetail")
+          or view.isDerivedFrom("TechDraw::DrawAuxiliaryView")):
         sectionViewMove(view, fromPage, toPage, copy)
     elif view.isDerivedFrom("TechDraw::DrawView"):
         simpleViewMove(view, fromPage, toPage, copy)

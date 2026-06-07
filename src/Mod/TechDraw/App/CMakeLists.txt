@@ -42,6 +42,7 @@ generate_from_py(DrawTileWeld)
 generate_from_py(DrawWeldSymbol)
 generate_from_py(CosmeticExtension)
 generate_from_py(DrawBrokenView)
+generate_from_py(DrawAuxiliaryView)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -118,6 +119,8 @@ SET(Draw_SRCS
     FeatureProjection.h
     DrawBrokenView.cpp
     DrawBrokenView.h
+    DrawAuxiliaryView.cpp
+    DrawAuxiliaryView.h
 )
 
 SET(TechDraw_SRCS
@@ -244,6 +247,8 @@ SET(Python_SRCS
     CosmeticExtensionPyImp.cpp
     DrawBrokenView.pyi
     DrawBrokenViewPyImp.cpp
+    DrawAuxiliaryView.pyi
+    DrawAuxiliaryViewPyImp.cpp
 )
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})

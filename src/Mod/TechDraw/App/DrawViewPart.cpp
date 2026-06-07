@@ -73,6 +73,7 @@
 
 #include "Cosmetic.h"
 #include "CenterLine.h"
+#include "DrawAuxiliaryView.h"
 #include "DrawGeomHatch.h"
 #include "DrawHatch.h"
 #include "DrawPage.h"
@@ -288,6 +289,13 @@ void DrawViewPart::onChanged(const App::Property* prop)
     }
 
     DrawView::onChanged(prop);
+
+    if (!isRestoring() &&
+        (prop == &X || prop == &Y || prop == &Scale || prop == &Rotation)) {
+        for (auto* auxView : getAuxiliaryRefs()) {
+            auxView->autoPosition();
+        }
+    }
 }
 
 void DrawViewPart::partExec(TopoDS_Shape& shape)
@@ -1210,6 +1218,25 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs() const
                 result.push_back(detail);
             }
 
+        }
+    }
+    return result;
+}
+
+std::vector<DrawAuxiliaryView*> DrawViewPart::getAuxiliaryRefs() const
+{
+    std::vector<DrawAuxiliaryView*> result;
+    std::vector<App::DocumentObject*> inObjs = getInList();
+    for (auto& o : inObjs) {
+        if (o->isDerivedFrom<DrawAuxiliaryView>() &&
+            !o->isRemoving()) {
+            // expressions can add extra links to this DVP so we keep only
+            // objects that are BaseViews
+            auto auxView = static_cast<TechDraw::DrawAuxiliaryView*>(o);
+            auto base = auxView->BaseView.getValue();
+            if (base == this) {
+                result.push_back(auxView);
+            }
         }
     }
     return result;

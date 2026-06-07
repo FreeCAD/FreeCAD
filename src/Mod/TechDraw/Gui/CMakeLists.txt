@@ -45,6 +45,7 @@ set(TechDrawGui_UIC_SRCS
     TaskCosVertex.ui
     TaskCenterLine.ui
     TaskDetail.ui
+    TaskAuxiliaryView.ui
     TaskDimension.ui
     TaskGeomHatch.ui
     TaskHatch.ui
@@ -189,6 +190,9 @@ SET(TechDrawGui_SRCS
     TaskDetail.ui
     TaskDetail.cpp
     TaskDetail.h
+    TaskAuxiliaryView.ui
+    TaskAuxiliaryView.cpp
+    TaskAuxiliaryView.h
     PreferencesGui.cpp
     PreferencesGui.h
     TaskCosmeticLine.cpp
@@ -296,6 +300,8 @@ SET(TechDrawGuiView_SRCS
     QGIDimLines.h
     QGISectionLine.cpp
     QGISectionLine.h
+    QGIAuxiliaryMarker.cpp
+    QGIAuxiliaryMarker.h
     QGIDecoration.cpp
     QGIDecoration.h
     QGICenterLine.cpp
@@ -426,6 +432,7 @@ SET(TechDrawGuiTaskDlgs_SRCS
     SymbolChooser.ui
     TaskActiveView.ui
     TaskDetail.ui
+    TaskAuxiliaryView.ui
     TaskCosmeticLine.ui
     TaskSelectLineAttributes.ui
     TaskCustomizeFormat.ui

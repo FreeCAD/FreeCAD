@@ -45,6 +45,7 @@ class DrawViewSection;
 class DrawHatch;
 class DrawGeomHatch;
 class DrawViewDetail;
+class DrawAuxiliaryView;
 class DrawView;
 class LineGenerator;
 }
@@ -86,6 +87,8 @@ public:
     virtual void drawAllSectionLines();
     virtual void drawSectionLine(TechDraw::DrawViewSection* s, bool b);
     virtual void drawComplexSectionLine(TechDraw::DrawViewSection* viewSection, bool b);
+    virtual void drawAllAuxiliaryMarkers();
+    virtual void drawAuxiliaryMarker(TechDraw::DrawAuxiliaryView* auxiliaryView, bool b);
     virtual void drawCenterLines(bool b);
     virtual void drawAllHighlights();
     virtual void drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b);

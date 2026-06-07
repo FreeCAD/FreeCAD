@@ -35,6 +35,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/DrawAuxiliaryView.h>
 #include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
@@ -51,6 +52,7 @@
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
+#include "QGIAuxiliaryMarker.h"
 #include "QGICMark.h"
 #include "QGICenterLine.h"
 #include "QGIEdge.h"
@@ -279,6 +281,7 @@ void QGIViewPart::draw()
     //this is old C/L
     drawCenterLines(true);//have to draw centerlines after border to get size correct.
     drawAllSectionLines();//same for section lines
+    drawAllAuxiliaryMarkers();
 
     prepareGeometryChange();
 }
@@ -710,6 +713,67 @@ void QGIViewPart::drawAllSectionLines()
             }
         }
     }
+}
+
+void QGIViewPart::drawAllAuxiliaryMarkers()
+{
+    auto* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
+    if (!viewPart) {
+        return;
+    }
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if (!vp || !vp->ShowSectionLine.getValue()) {
+        return;
+    }
+
+    auto refs = viewPart->getAuxiliaryRefs();
+    for (auto& r : refs) {
+        drawAuxiliaryMarker(r, true);
+    }
+}
+
+void QGIViewPart::drawAuxiliaryMarker(TechDraw::DrawAuxiliaryView* auxiliaryView, bool b)
+{
+    Q_UNUSED(b);
+
+    auto* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
+    if (!viewPart || !auxiliaryView) {
+        return;
+    }
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(viewPart));
+    if (!vp) {
+        return;
+    }
+
+    double scale = viewPart->getScale();
+    Base::Vector3d start = Rez::guiX(auxiliaryView->ReferenceStart.getValue()) * scale;
+    Base::Vector3d end = Rez::guiX(auxiliaryView->ReferenceEnd.getValue()) * scale;
+    if (start.IsEqual(end, EWTOLERANCE)) {
+        return;
+    }
+
+    auto* marker = new QGIAuxiliaryMarker();
+    addToGroupWithoutUpdate(marker);
+    marker->setEnds(start, end);
+
+    Base::Vector3d arrowDir = viewPart->projectPoint(auxiliaryView->Direction.getValue());
+    marker->setDirection(Base::Vector3d(arrowDir.x, -arrowDir.y, 0.0));
+
+    Base::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
+    QPen markerPen = m_dashedLineGenerator->getLinePen(
+        (size_t)vp->SectionLineStyle.getValue(), vp->HiddenWidth.getValue());
+    markerPen.setColor(color.asValue<QColor>());
+    markerPen.setWidthF(Rez::guiX(vp->HiddenWidth.getValue()));
+    marker->setLinePen(markerPen);
+
+    marker->setLabel(auxiliaryView->ReferenceLabel.getValue());
+    marker->setFont(getFont(), Preferences::labelFontSizeMM());
+    marker->setArrowSize(QGIArrow::getPrefArrowSize());
+    marker->setZValue(ZVALUE::SECTIONLINE);
+    marker->setRotation(-viewPart->Rotation.getValue());
+    marker->draw();
 }
 
 void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
@@ -1381,7 +1445,7 @@ void QGIViewPart::updateFrameVisibility()
     QGIView::updateFrameVisibility();
 
     bool showDecorations = shouldShowFrame();
-    
+
     for (auto& child : childItems()) {
         if (child->type() == UserType::QGIVertex) {
             child->setVisible(showDecorations || child->isSelected());
@@ -1505,5 +1569,3 @@ void QGIViewPart::setMovableFlagProjGroupItem()
     // not locked, not autoDistribute
     setFlag(QGraphicsItem::ItemIsMovable, true);
 }
-
-

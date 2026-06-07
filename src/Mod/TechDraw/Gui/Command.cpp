@@ -50,6 +50,7 @@
 #include <Mod/Spreadsheet/App/Sheet.h>
 
 #include <Mod/TechDraw/App/DrawComplexSection.h>
+#include <Mod/TechDraw/App/DrawAuxiliaryView.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -60,6 +61,7 @@
 #include <Mod/TechDraw/App/DrawViewDraft.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
+#include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
 
@@ -72,6 +74,7 @@
 #include "TaskActiveView.h"
 #include "TaskComplexSection.h"
 #include "TaskDetail.h"
+#include "TaskAuxiliaryView.h"
 #include "TaskProjGroup.h"
 #include "TaskProjection.h"
 #include "TaskSectionView.h"
@@ -81,6 +84,10 @@
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
+bool getAuxiliarySelection(Gui::Command* cmd,
+                           TechDraw::DrawViewPart*& baseView,
+                           Base::Vector3d& referenceStart,
+                           Base::Vector3d& referenceEnd);
 void getSelectedShapes(Gui::Command* cmd,
                       std::vector<App::DocumentObject*>& shapes,
                       std::vector<App::DocumentObject*>& xShapes,
@@ -1050,6 +1057,63 @@ bool CmdTechDrawDetailView::isActive()
 }
 
 //===========================================================================
+// TechDraw_AuxiliaryView
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawAuxiliaryView)
+
+CmdTechDrawAuxiliaryView::CmdTechDrawAuxiliaryView()
+    : Command("TechDraw_AuxiliaryView")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Auxiliary View");
+    sToolTipText =
+        QT_TR_NOOP("Inserts a new auxiliary view based on the selected straight edge or two vertices");
+    sWhatsThis = "TechDraw_AuxiliaryView";
+    sStatusTip = sToolTipText;
+    sPixmap = "actions/TechDraw_AuxiliaryView";
+}
+
+void CmdTechDrawAuxiliaryView::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
+                             QObject::tr("Close active task dialog and try again"));
+        return;
+    }
+
+    TechDraw::DrawViewPart* baseView = nullptr;
+    Base::Vector3d referenceStart;
+    Base::Vector3d referenceEnd;
+    if (!getAuxiliarySelection(this, baseView, referenceStart, referenceEnd)) {
+        return;
+    }
+
+    if (!baseView->findParentPage()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("The selected base view is not on a TechDraw page"));
+        return;
+    }
+
+    Gui::Control().showDialog(new TaskDlgAuxiliaryView(baseView, referenceStart, referenceEnd));
+}
+
+bool CmdTechDrawAuxiliaryView::isActive()
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    bool taskInProgress = false;
+    if (havePage) {
+        taskInProgress = Gui::Control().activeDialog();
+    }
+    return (havePage && haveView && !taskInProgress);
+}
+
+//===========================================================================
 // TechDraw_ProjectionGroup
 //===========================================================================
 
@@ -1962,6 +2026,7 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawSectionView());
     rcCmdMgr.addCommand(new CmdTechDrawComplexSection());
     rcCmdMgr.addCommand(new CmdTechDrawDetailView());
+    rcCmdMgr.addCommand(new CmdTechDrawAuxiliaryView());
     rcCmdMgr.addCommand(new CmdTechDrawProjectionGroup());
     rcCmdMgr.addCommand(new CmdTechDrawClipGroup());
     rcCmdMgr.addCommand(new CmdTechDrawClipGroupAdd());
@@ -1979,6 +2044,106 @@ void CreateTechDrawCommands()
 }
 
 //****************************************
+
+bool getAuxiliarySelection(Gui::Command* cmd,
+                           TechDraw::DrawViewPart*& baseView,
+                           Base::Vector3d& referenceStart,
+                           Base::Vector3d& referenceEnd)
+{
+    baseView = nullptr;
+    std::vector<std::string> edgeNames;
+    std::vector<std::string> vertexNames;
+
+    auto selection = cmd->getSelection().getSelectionEx();
+    for (auto& sel : selection) {
+        auto* obj = sel.getObject();
+        if (!obj || !obj->isDerivedFrom<TechDraw::DrawViewPart>()) {
+            continue;
+        }
+
+        auto* candidate = static_cast<TechDraw::DrawViewPart*>(obj);
+        if (!TechDraw::DrawAuxiliaryView::canUseAsBaseView(candidate)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr(
+                                     "Select a base DrawViewPart or projection group item, "
+                                     "not a dependent view"));
+            return false;
+        }
+
+        if (baseView && baseView != candidate) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select references from a single base view"));
+            return false;
+        }
+        baseView = candidate;
+
+        for (const auto& subName : sel.getSubNames()) {
+            std::string subType = TechDraw::DrawUtil::getGeomTypeFromName(subName);
+            if (subType == "Edge") {
+                edgeNames.push_back(subName);
+            }
+            else if (subType == "Vertex") {
+                vertexNames.push_back(subName);
+            }
+        }
+    }
+
+    if (!baseView) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select a TechDraw view first"));
+        return false;
+    }
+
+    if (edgeNames.size() == 1 && vertexNames.empty()) {
+        TechDraw::BaseGeomPtr edge = baseView->getEdge(edgeNames.front());
+        if (!edge || edge->getGeomType() != TechDraw::GeomType::GENERIC) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select one straight edge or two vertices"));
+            return false;
+        }
+
+        referenceStart = edge->getStartPoint();
+        referenceEnd = edge->getEndPoint();
+    }
+    else if (edgeNames.empty() && vertexNames.size() == 2) {
+        TechDraw::VertexPtr vertex0 = baseView->getVertex(vertexNames.front());
+        TechDraw::VertexPtr vertex1 = baseView->getVertex(vertexNames.back());
+        if (!vertex0 || !vertex1) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("The selected vertices could not be read"));
+            return false;
+        }
+
+        referenceStart = vertex0->point();
+        referenceEnd = vertex1->point();
+    }
+    else {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Select one straight edge or exactly two vertices"));
+        return false;
+    }
+
+    if ((referenceEnd - referenceStart).Length() < 1.0e-7) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("The auxiliary reference direction is zero length"));
+        return false;
+    }
+
+    double scale = baseView->getScale();
+    if (!TechDraw::DrawUtil::fpCompare(scale, 0.0)) {
+        referenceStart /= scale;
+        referenceEnd /= scale;
+    }
+
+    double rotation = baseView->Rotation.getValue();
+    if (!TechDraw::DrawUtil::fpCompare(rotation, 0.0)) {
+        double rotationRad = Base::toRadians(rotation);
+        referenceStart.RotateZ(-rotationRad);
+        referenceEnd.RotateZ(-rotationRad);
+    }
+
+    return true;
+}
 
 
 //! extract the selected shapes and xShapes and determine if a face has been
@@ -2107,4 +2272,3 @@ Base::Vector3d checkDirectionVsBasis(Base::Vector3d dir)
     return dir;
 
 }
-
