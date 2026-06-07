@@ -7,7 +7,6 @@ from ArcOfConic import ArcOfConic
 from typing import Final
 
 @export(
-    Father="ArcOfConicPy",
     PythonName="Part.ArcOfParabola",
     Twin="GeomArcOfParabola",
     Include="Mod/Part/App/Geometry.h",

@@ -6,7 +6,6 @@ from Base.Metadata import export
 from TopoShape import TopoShape
 
 @export(
-    Father="TopoShapePy",
     Twin="TopoShape",
     Include="Mod/Part/App/TopoShape.h",
     Namespace="Part",

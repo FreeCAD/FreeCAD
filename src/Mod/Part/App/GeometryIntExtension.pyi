@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Part.GeometryExtension import GeometryExtension
 
 @export(
-    Father="GeometryExtensionPy",
     Twin="GeometryIntExtension",
     Include="Mod/Part/App/GeometryDefaultExtension.h",
     Namespace="Part",

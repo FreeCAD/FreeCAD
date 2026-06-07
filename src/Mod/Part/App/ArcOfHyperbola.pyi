@@ -7,7 +7,6 @@ from Part.ArcOfConic import ArcOfConic
 from typing import Final
 
 @export(
-    Father="ArcOfConicPy",
     PythonName="Part.ArcOfHyperbola",
     Twin="GeomArcOfHyperbola",
     Include="Mod/Part/App/Geometry.h",

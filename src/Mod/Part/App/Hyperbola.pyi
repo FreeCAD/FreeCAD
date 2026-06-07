@@ -12,7 +12,6 @@ from typing import Final, overload
     Twin="GeomHyperbola",
     PythonName="Part.Hyperbola",
     Include="Mod/Part/App/Geometry.h",
-    Father="ConicPy",
     Constructor=True,
 )
 class Hyperbola(Conic):

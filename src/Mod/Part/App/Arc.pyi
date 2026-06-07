@@ -9,7 +9,6 @@ from Geometry import Geom_Circle, Geom_Ellipse
 from typing import overload
 
 @export(
-    Father="TrimmedCurvePy",
     PythonName="Part.Arc",
     Twin="GeomTrimmedCurve",
     Include="Mod/Part/App/Geometry.h",

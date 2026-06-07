@@ -12,7 +12,6 @@ from typing import Final
     Twin="GeomToroid",
     PythonName="Part.Toroid",
     Include="Mod/Part/App/Geometry.h",
-    Father="GeometrySurfacePy",
     Constructor=True,
 )
 class Toroid(GeometrySurface):
