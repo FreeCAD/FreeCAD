@@ -48,6 +48,7 @@ class BindingClassInfo:
     class_name: str
     export_name: str
     python_name: str | None
+    namespace: str
     path: Path
     father_include: str
 
@@ -146,7 +147,13 @@ class FunctionSignature:
         self.annotated_text = SELF_CLS_ARG.sub("(", f"{func.name}({parameters}) -> {returns}", 1)
 
         # Not Annotated signatures (supported by __text_signature__)
-        all_args = [*args.posonlyargs, *args.args, args.vararg, *args.kwonlyargs, args.kwarg]
+        all_args = [
+            *args.posonlyargs,
+            *args.args,
+            args.vararg,
+            *args.kwonlyargs,
+            args.kwarg,
+        ]
         for item in all_args:
             if item:
                 item.annotation = None
@@ -806,10 +813,12 @@ def _binding_info_from_class(
     python_name = export_kwargs.get("PythonName", None)
     if not isinstance(python_name, str) or not python_name:
         python_name = None
+    module_name = _get_module_from_path(path.as_posix())
     return BindingClassInfo(
         class_name=class_node.name,
         export_name=export_name,
         python_name=python_name,
+        namespace=export_kwargs.get("Namespace", "") or module_name or "",
         path=path,
         father_include=_header_path_from_pyi(path, source_root, export_name),
     )
@@ -896,7 +905,8 @@ def _candidate_parent_pyi_paths(
             module_name = first
             rest = variant[1:]
             _add_unique_path(
-                candidates, source_root.joinpath("Mod", module_name, *rest).with_suffix(".pyi")
+                candidates,
+                source_root.joinpath("Mod", module_name, *rest).with_suffix(".pyi"),
             )
             if rest[0] not in {"App", "Gui"}:
                 _add_unique_path(
@@ -1120,15 +1130,18 @@ def _parse_class(
         if source_dependencies is not None and (
             not export_decorator_kwargs.get("Father")
             or not export_decorator_kwargs.get("FatherInclude")
+            or not export_decorator_kwargs.get("FatherNamespace")
         ):
             _add_source_dependency(source_dependencies, father_info.path)
         father_native_python_class_name = father_info.export_name
         father_include = father_info.father_include
+        father_namespace = father_info.namespace
     else:
         father_native_python_class_name = _get_native_python_class_name(base_class_name)
         father_include = (
             _get_module_path(parent_module_name) + "/" + father_native_python_class_name + ".h"
         )
+        father_namespace = parent_module_name
 
     py_export = PythonExport(
         Documentation=doc_obj,
@@ -1141,7 +1154,7 @@ def _parse_class(
         TwinPointer=twin_pointer,
         Namespace=export_decorator_kwargs.get("Namespace", "") or module_name,
         FatherInclude=export_decorator_kwargs.get("FatherInclude", "") or father_include,
-        FatherNamespace=export_decorator_kwargs.get("FatherNamespace", "") or parent_module_name,
+        FatherNamespace=export_decorator_kwargs.get("FatherNamespace", "") or father_namespace,
         Constructor=export_decorator_kwargs.get("Constructor", False),
         NumberProtocol=export_decorator_kwargs.get("NumberProtocol", False),
         RichCompare=export_decorator_kwargs.get("RichCompare", False),

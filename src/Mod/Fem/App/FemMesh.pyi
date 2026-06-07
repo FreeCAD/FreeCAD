@@ -16,7 +16,6 @@ from Part.App.TopoShapeVertex import TopoShapeVertex
 
 @export(
     Namespace="Fem",
-    FatherNamespace="Data",
     Constructor=True,
 )
 class FemMesh(ComplexGeoData):

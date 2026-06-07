@@ -136,10 +136,52 @@ class GenerateModelPythonTests(unittest.TestCase):
 
         export = model.PythonExport[0]
         self.assertEqual(export.Father, "NativeParentPy")
+        self.assertEqual(export.FatherNamespace, Path(temp_dir).name)
         self.assertEqual(
             export.FatherInclude,
             f"Mod/{Path(temp_dir).name}/App/NativeParentPy.h",
         )
+
+    def test_father_namespace_is_inferred_from_parent_pyi(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Namespace="NativeParentNamespace")
+            class Parent(PyObjectBase):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export(Constructor=True)
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            parent_path = app_dir / "Parent.pyi"
+            parent_path.write_text(parent_source, encoding="utf-8")
+            child_path = app_dir / "Child.pyi"
+            child_path.write_text(child_source, encoding="utf-8")
+
+            model = parse_python_code(str(child_path))
+            self.assertEqual(
+                model.SourceDependencies,
+                [parent_path.resolve().as_posix()],
+            )
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.FatherNamespace, "NativeParentNamespace")
 
     def test_father_include_is_inferred_from_runtime_style_parent_import(self):
         parent_source = textwrap.dedent("""
@@ -477,7 +519,8 @@ class GenerateModelPythonTests(unittest.TestCase):
             path.write_text(source, encoding="utf-8")
 
             with self.assertRaisesRegex(
-                ValueError, "Module-level function 'ping' cannot use bound-method decorators"
+                ValueError,
+                "Module-level function 'ping' cannot use bound-method decorators",
             ):
                 parse(str(path))
 

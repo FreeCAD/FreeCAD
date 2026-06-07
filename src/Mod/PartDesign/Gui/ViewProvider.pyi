@@ -7,7 +7,6 @@ from Gui.ViewProviderPartExt import ViewProviderPartExt
 
 @export(
     Namespace="PartDesignGui",
-    FatherNamespace="PartGui",
 )
 class ViewProvider(ViewProviderPartExt):
     """

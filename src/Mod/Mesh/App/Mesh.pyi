@@ -11,7 +11,6 @@ from App.ComplexGeoData import ComplexGeoData
 @export(
     Twin="MeshObject",
     Namespace="Mesh",
-    FatherNamespace="Data",
     Constructor=True,
 )
 @class_declarations("""
