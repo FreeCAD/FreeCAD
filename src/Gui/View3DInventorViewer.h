@@ -489,9 +489,6 @@ public:
     void viewAll() override;
     void viewAll(float factor);
 
-    /// Breaks out a VR window for a Rift
-    void viewVR();
-
     /**
      * Returns the bounding box of the scene graph.
      */
