@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Part.App.GeometryExtension import GeometryExtension
 
 @export(
-    PythonName="SketcherGui.ViewProviderSketchGeometryExtension",
     Namespace="SketcherGui",
     Constructor=True,
 )

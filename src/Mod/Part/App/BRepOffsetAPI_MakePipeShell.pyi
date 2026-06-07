@@ -9,7 +9,6 @@ from TopoShape import TopoShape
 from typing import overload
 
 @export(
-    PythonName="Part.BRepOffsetAPI_MakePipeShell",
     Include="BRepOffsetAPI_MakePipeShell.hxx",
     Constructor=True,
     Delete=True,

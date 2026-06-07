@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Part.App.GeometryExtension import GeometryExtension
 
 @export(
-    PythonName="Sketcher.ExternalGeometryExtension",
     Constructor=True,
 )
 class ExternalGeometryExtension(GeometryExtension):

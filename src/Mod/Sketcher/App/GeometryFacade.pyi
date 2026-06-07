@@ -12,7 +12,6 @@ from App.DocumentObjectExtension import DocumentObjectExtension
 from typing import Final, List
 
 @export(
-    PythonName="Sketcher.GeometryFacade",
     Constructor=True,
     Delete=True,
 )

@@ -11,7 +11,6 @@ from Part.App.TopoShapeFace import TopoShapeFace
 from typing import overload
 
 @export(
-    PythonName="Part.BRepOffsetAPI_MakeFilling",
     Include="BRepOffsetAPI_MakeFilling.hxx",
     Constructor=True,
     Delete=True,

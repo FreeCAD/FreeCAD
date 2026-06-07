@@ -7,7 +7,6 @@ from Base.BaseClass import BaseClass
 from typing import Final, List
 
 @export(
-    PythonName="Sketcher.ExternalGeometryFacade",
     Constructor=True,
 )
 class ExternalGeometryFacade(BaseClass):
