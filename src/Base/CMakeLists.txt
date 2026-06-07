@@ -89,6 +89,7 @@ list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
 
 if(cpptrace_FOUND)
     list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAVE_CPPTRACE)
 endif()
 
 if (BUILD_DYNAMIC_LINK_PYTHON)

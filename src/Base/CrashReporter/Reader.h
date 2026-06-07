@@ -37,14 +37,13 @@ struct ParsedFrame
     // Raw Data
     std::uint64_t rawAddress = 0;
     std::uint64_t moduleOffset = 0;
-    std::string modulePath;
+    std::string modulePath;  // NOTE: Avoid PII here! Strip to only filename.
 
     // Symbolicated frame
-    std::optional<std::string> symbol;
-    std::optional<std::string> file;
+    std::string symbol;
+    std::string file;
     std::optional<std::uint32_t> line;
     bool isInline {false};
-    bool isFreeCAD {false};
 };
 
 struct ParsedCrashReport
