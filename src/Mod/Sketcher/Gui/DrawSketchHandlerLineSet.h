@@ -1670,7 +1670,6 @@ auto DSHPolyLineControllerBase::getState(int labelindex) const
             break;
         case OnViewParameter::Third:
         case OnViewParameter::Fourth:
-        case OnViewParameter::Fifth:
             return SelectMode::SeekSecond;
             break;
         default:
@@ -1764,13 +1763,6 @@ void DSHPolyLineController::configureToolWidget()
         Gui::EditableDatumLabel::Function::Dimensioning
     );
 
-    if (handler->constructionMethod() == ConstructionMethod::Arc) {
-        onViewParameters[OnViewParameter::Fifth]->setLabelType(
-            Gui::SoDatumLabel::ANGLE,
-            Gui::EditableDatumLabel::Function::Dimensioning
-        );
-    }
-
     toolWidget->setCheckboxChecked(WCheckbox::FirstBox, handler->fillet);
 }
 
@@ -1807,9 +1799,6 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                 handler->resetSeekSecond = false;
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());
-                if (handler->constructionMethod() == ConstructionMethod::Arc) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
-                }
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }
@@ -1889,15 +1878,6 @@ void DSHPolyLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSke
                     dir.Rotate(angle);
                     onSketchPos = center + dir * radius;
                 }
-                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    double angle = Base::toRadians(
-                        onViewParameters[OnViewParameter::Fifth]->getValue()
-                    );
-
-                    if (handler->angleToPrevious != angle) {
-                        handler->angleToPrevious = angle;
-                    }
-                }
             }
         } break;
         default:
@@ -1962,8 +1942,6 @@ void DSHPolyLineController::adaptParameters(Base::Vector2d onSketchPos)
                 fourthParam->setLabelRange(handler->dirChangeAngle);
             }
             else {
-                auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
-
                 Base::Vector3d start = toVector3d(handler->center);
                 Base::Vector3d end = toVector3d(onSketchPos);
                 Base::Vector3d vec = end - start;
@@ -1977,19 +1955,10 @@ void DSHPolyLineController::adaptParameters(Base::Vector2d onSketchPos)
                     setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
                 }
 
-                if (!fifthParam->isSet) {
-                    double angle = Base::toDegrees(handler->angleToPrevious);
-                    setOnViewParameterValue(OnViewParameter::Fifth, angle, Base::Unit::Angle);
-                }
-
                 thirdParam->setPoints(start, end);
                 fourthParam->setPoints(start, Base::Vector3d());
                 fourthParam->setLabelStartAngle(handler->startAngle);
                 fourthParam->setLabelRange(handler->range);
-
-                fifthParam->setPoints(toVector3d(prevPoint), Base::Vector3d());
-                fifthParam->setLabelStartAngle(handler->previousDirectionAngle);
-                fifthParam->setLabelRange(handler->angleToPrevious);
             }
         } break;
         default:
@@ -2020,9 +1989,6 @@ void DSHPolyLineController::computeNextDrawSketchHandlerMode()
 
                 unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
                 unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
-                if (handler->constructionMethod() == ConstructionMethod::Arc) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
-                }
             }
         } break;
         default:
