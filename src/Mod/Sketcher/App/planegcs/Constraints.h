@@ -88,6 +88,7 @@ enum ConstraintType
     P2PDistance3D = 37,
     Parallel3D = 38,
     L2LAngle3D = 39,
+    EqualLineLength3D = 40,
 };
 
 enum InternalAlignmentType
@@ -1591,6 +1592,21 @@ public:
     double grad(double*) override;
     double maxStep(MAP_pD_D& dir, double lim = 1.) override;
     void evaluate() override;
+};
+
+class ConstraintEqualLineLength3D: public Constraint
+{
+private:
+    Line3D l1;
+    Line3D l2;
+
+    // writes pointers in pvec to the parameters of line1, line2
+    void reconstructGeomPointers() override;
+    void errorgrad(double* err, double* grad, double* param) override;
+
+public:
+    ConstraintEqualLineLength3D(Line3D& l1, Line3D& l2);
+    ConstraintType getTypeId() override;
 };
 
 }  // namespace GCS

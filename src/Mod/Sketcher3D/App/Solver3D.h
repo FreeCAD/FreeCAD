@@ -73,6 +73,9 @@ public:
     /// Parallel constraint between two lines.
     void addConstraintParallel(int tagId, int lineHandleA, int lineHandleB);
 
+    /// Equal length constraint between two lines.
+    void addConstraintEqualLength(int tagId, int lineHandleA, int lineHandleB);
+
     /// Angle constraint between two lines.
     /// Angle is unsigned, in radians, in [0, pi].
     void addConstraintAngle(

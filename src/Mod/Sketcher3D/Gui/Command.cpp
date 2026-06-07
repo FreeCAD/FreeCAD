@@ -779,6 +779,59 @@ bool CmdSketcher3DConstrainParallel::isActive()
     return isSketch3DInEdit();
 }
 
+DEF_STD_CMD_A(CmdSketcher3DConstrainEqualLength)
+
+CmdSketcher3DConstrainEqualLength::CmdSketcher3DConstrainEqualLength()
+    : Command("Sketcher3D_ConstrainEqualLength")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain equal length");
+    sToolTipText = QT_TR_NOOP("Constrains the selected 3D lines to have equal length");
+    sWhatsThis = "Sketcher3D_ConstrainEqualLength";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_EqualLength";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainEqualLength::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    if (!sketch) {
+        return;
+    }
+
+    auto refs = collectSelectedLineRefs(sketch);
+
+    if (refs.size() < 2) {
+        Base::Console().warning("Sketcher3D: select at least two 3D sketch lines for Equal Length.\n");
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain equal length"));
+    for (std::size_t i = 0; i + 1 < refs.size(); ++i) {
+        Sketcher3D::Constraint3D c;
+        c.Type = Sketcher3D::Constraint3D::EqualLength3D;
+        c.setElements({refs[i], refs[i + 1]});
+        sketch->addConstraint(c);
+    }
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainEqualLength::isActive()
+{
+    return isSketch3DInEdit();
+}
+
 DEF_STD_CMD_A(CmdSketcher3DConstrainAngle)
 
 CmdSketcher3DConstrainAngle::CmdSketcher3DConstrainAngle()
@@ -1078,6 +1131,7 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongX());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongY());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongZ());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainEqualLength());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompDimensionTools());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompParallel());
 }

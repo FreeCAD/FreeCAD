@@ -1043,6 +1043,14 @@ int System::addConstraintL2LAngle3D(
     return addConstraint(constr);
 }
 
+int System::addConstraintEqualLength3D(Line3D& l1, Line3D& l2, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintEqualLineLength3D(l1, l2);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 // 3D derived constraints
 
 int System::addConstraintP2PCoincident3D(Point3D& p1, Point3D& p2, int tagId, bool driving)

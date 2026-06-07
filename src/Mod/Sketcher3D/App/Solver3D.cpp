@@ -105,6 +105,17 @@ void Solver3D::addConstraintParallel(int tagId, int lineHandleA, int lineHandleB
     GCSsys.addConstraintParallel3D(la.p1, la.p2, lb.p1, lb.p2, tagId);
 }
 
+void Solver3D::addConstraintEqualLength(int tagId, int lineHandleA, int lineHandleB)
+{
+    if (lineHandleA < 0 || lineHandleA >= static_cast<int>(lines.size()) || lineHandleB < 0
+        || lineHandleB >= static_cast<int>(lines.size())) {
+        throw Base::IndexError("Solver3D::addConstraintEqualLength handle out of range");
+    }
+    GCS::Line3D& la = lines[lineHandleA];
+    GCS::Line3D& lb = lines[lineHandleB];
+    GCSsys.addConstraintEqualLength3D(la, lb, tagId);
+}
+
 void Solver3D::addConstraintAngle(
     int tagId,
     int lineHandleA,

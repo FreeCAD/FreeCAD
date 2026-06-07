@@ -186,6 +186,19 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             solver.addConstraintParallel(tagId, a, b);
             return tagId;
         }
+        case Constraint3D::EqualLength3D: {
+            if (elements.size() != 2 || elements[0].Pos != PointPos::none
+                || elements[1].Pos != PointPos::none) {
+                return -1;
+            }
+            const int a = getLineId(elements[0]);
+            const int b = getLineId(elements[1]);
+            if (a < 0 || b < 0) {
+                return -1;
+            }
+            solver.addConstraintEqualLength(tagId, a, b);
+            return tagId;
+        }
         case Constraint3D::Angle3D: {
             if (elements.size() != 2) {
                 return -1;

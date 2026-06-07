@@ -3638,4 +3638,100 @@ void ConstraintL2LAngle3D::evaluate()
     *angle() = value();
 }
 
+// --------------------------------------------------------
+// EqualLineLength3D
+ConstraintEqualLineLength3D::ConstraintEqualLineLength3D(Line3D& l1, Line3D& l2)
+    : l1(l1)
+    , l2(l2)
+{
+    this->l1.PushOwnParams(pvec);
+    this->l2.PushOwnParams(pvec);
+    origpvec = pvec;
+    reconstructGeomPointers();
+    rescale();
+}
+
+void ConstraintEqualLineLength3D::reconstructGeomPointers()
+{
+    int i = 0;
+    l1.ReconstructOnNewPvec(pvec, i);
+    l2.ReconstructOnNewPvec(pvec, i);
+}
+
+ConstraintType ConstraintEqualLineLength3D::getTypeId()
+{
+    return EqualLineLength3D;
+}
+
+void ConstraintEqualLineLength3D::errorgrad(double* err, double* grad, double* param)
+{
+    DeriVector3 p1(l1.p1, param);
+    DeriVector3 p2(l1.p2, param);
+    DeriVector3 p3(l2.p1, param);
+    DeriVector3 p4(l2.p2, param);
+
+    DeriVector3 v1 = p1.subtr(p2);
+    DeriVector3 v2 = p3.subtr(p4);
+
+    double length1, dlength1;
+    length1 = v1.length(dlength1);
+
+    double length2, dlength2;
+    length2 = v2.length(dlength2);
+
+    if (err) {
+        *err = length2 - length1;
+    }
+
+    if (grad) {
+        *grad = dlength2 - dlength1;
+        // if the one of the lines gets vertical or horizontal, the gradients will become zero. this
+        // will affect the diagnose function and the detection of dependent/independent parameters.
+        //
+        // So here we maintain the very small derivative of 1e-10 when the gradient is under such
+        // value, such that the diagnose function with pivot threshold of 1e-13 treats the value as
+        // non-zero and correctly detects and can tell apart when a parameter is fully constrained
+        // or just locked into a maximum/minimum
+        if (fabs(*grad) < 1e-10) {
+            double surrogate = 1e-10;
+            if (param == l1.p1.x) {
+                *grad = v1.x > 0 ? surrogate : -surrogate;
+            }
+            if (param == l1.p1.y) {
+                *grad = v1.y > 0 ? surrogate : -surrogate;
+            }
+            if (param == l1.p1.z) {
+                *grad = v1.z > 0 ? surrogate : -surrogate;
+            }
+            if (param == l1.p2.x) {
+                *grad = v1.x > 0 ? -surrogate : surrogate;
+            }
+            if (param == l1.p2.y) {
+                *grad = v1.y > 0 ? -surrogate : surrogate;
+            }
+            if (param == l1.p2.z) {
+                *grad = v1.z > 0 ? -surrogate : surrogate;
+            }
+            if (param == l2.p1.x) {
+                *grad = v2.x > 0 ? surrogate : -surrogate;
+            }
+            if (param == l2.p1.y) {
+                *grad = v2.y > 0 ? surrogate : -surrogate;
+            }
+            if (param == l2.p1.z) {
+                *grad = v2.z > 0 ? surrogate : -surrogate;
+            }
+            if (param == l2.p2.x) {
+                *grad = v2.x > 0 ? -surrogate : surrogate;
+            }
+            if (param == l2.p2.y) {
+                *grad = v2.y > 0 ? -surrogate : surrogate;
+            }
+            if (param == l2.p2.z) {
+                *grad = v2.z > 0 ? -surrogate : surrogate;
+            }
+        }
+    }
+}
+
 }  // namespace GCS
