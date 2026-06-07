@@ -177,7 +177,6 @@ macro(InitializeFreeCADBuildOptions)
     option(BUILD_WEB "Build the FreeCAD Web module" ON)
     option(BUILD_SURFACE "Build the FreeCAD surface module" ON)
     option(BUILD_VR "Build the FreeCAD Oculus Rift support (need Oculus SDK 4.x or higher)" OFF)
-    option(BUILD_CLOUD "Build the FreeCAD cloud module" OFF)
     option(ENABLE_DEVELOPER_TESTS "Build the FreeCAD unit tests suit" ON)
 
     if(MSVC OR APPLE)
