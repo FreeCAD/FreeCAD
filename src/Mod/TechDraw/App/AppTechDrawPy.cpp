@@ -196,8 +196,8 @@ public:
         "nearestFraction(float) - returns the numerator and denominator of the nearest fraction as a tuple."
         );
         add_varargs_method("scrubEdges", &Module::scrubEdges,
-            "scubbedEdges = scrubEdges(edgeList) -- remove duplicate edges. Also converts partial overlaps into 3 edges as in: \
-             scrubEdges([A, B]) = [a shortened A, an edge for overlap region, a shortened B]."
+            "scrubbedEdges = scrubEdges(edgeList) -- remove duplicate edges. Also converts partial overlaps into 3 edges as in: "
+             "scrubEdges([A, B]) = [a shortened A, an edge for overlap region, a shortened B]."
         );
 
         initialize("This is a module for making drawings"); // register with Python
@@ -1410,7 +1410,6 @@ private:
 
         return cleanEdgeList;
     }
-
 
  };
 
