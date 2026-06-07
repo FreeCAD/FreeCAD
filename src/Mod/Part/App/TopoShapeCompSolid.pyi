@@ -10,7 +10,6 @@ from TopoShape import TopoShape
     Twin="TopoShape",
     Include="Mod/Part/App/TopoShape.h",
     Namespace="Part",
-    FatherNamespace="Part",
     Constructor=True,
 )
 class TopoShapeCompSolid(TopoShape):

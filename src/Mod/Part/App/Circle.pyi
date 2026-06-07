@@ -12,7 +12,6 @@ from typing import overload
     PythonName="Part.Circle",
     Twin="GeomCircle",
     Include="Mod/Part/App/Geometry.h",
-    FatherNamespace="Part",
     Constructor=True,
 )
 class Circle(Conic):

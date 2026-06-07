@@ -11,7 +11,6 @@ vtkAlgorithm: TypeAlias = object
 
 @export(
     Namespace="Fem",
-    FatherNamespace="Fem",
 )
 class FemPostFilter(FemPostObject):
     """

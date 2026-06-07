@@ -13,7 +13,6 @@ from typing import Final
     PythonName="Part.Toroid",
     Include="Mod/Part/App/Geometry.h",
     Father="GeometrySurfacePy",
-    FatherNamespace="Part",
     Constructor=True,
 )
 class Toroid(GeometrySurface):

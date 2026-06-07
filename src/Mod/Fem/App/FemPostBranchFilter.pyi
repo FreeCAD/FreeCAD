@@ -10,7 +10,6 @@ from Fem.FemPostFilter import FemPostFilter
 
 @export(
     Namespace="Fem",
-    FatherNamespace="Fem",
 )
 class FemPostBranchFilter(FemPostFilter):
     """

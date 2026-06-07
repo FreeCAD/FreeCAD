@@ -10,7 +10,6 @@ from typing import Final, overload
     PythonName="Part.ArcOfEllipse",
     Twin="GeomArcOfEllipse",
     Include="Mod/Part/App/Geometry.h",
-    FatherNamespace="Part",
     Constructor=True,
 )
 class ArcOfEllipse(ArcOfConic):

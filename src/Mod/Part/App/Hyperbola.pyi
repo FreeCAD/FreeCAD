@@ -13,7 +13,6 @@ from typing import Final, overload
     PythonName="Part.Hyperbola",
     Include="Mod/Part/App/Geometry.h",
     Father="ConicPy",
-    FatherNamespace="Part",
     Constructor=True,
 )
 class Hyperbola(Conic):

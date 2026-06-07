@@ -11,7 +11,6 @@ vtkDataSet: TypeAlias = object
 
 @export(
     Namespace="Fem",
-    FatherNamespace="App",
 )
 class FemPostObject(GeoFeature):
     """

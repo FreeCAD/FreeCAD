@@ -11,7 +11,6 @@ from Part.Geom2d import Curve2d
     PythonName="Part.Geom2d.OffsetCurve2d",
     Include="Mod/Part/App/Geometry2d.h",
     Father="Curve2dPy",
-    FatherNamespace="Part",
     Constructor=True,
 )
 class OffsetCurve2d(Curve2d):

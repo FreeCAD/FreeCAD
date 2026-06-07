@@ -12,7 +12,6 @@ from typing import Final
     Twin="GeomArcOfHyperbola",
     Include="Mod/Part/App/Geometry.h",
     Namespace="Part",
-    FatherNamespace="Part",
     Constructor=True,
 )
 class ArcOfHyperbola(ArcOfConic):

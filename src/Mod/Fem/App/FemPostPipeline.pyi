@@ -13,7 +13,6 @@ vtkAlgorithm: TypeAlias = object
 
 @export(
     Namespace="Fem",
-    FatherNamespace="Fem",
 )
 class FemPostPipeline(FemPostObject):
     """
