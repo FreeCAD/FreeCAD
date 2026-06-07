@@ -14,7 +14,6 @@ from typing import Final
     TwinPointer="GeomArcOfParabola",
     Include="Mod/Part/App/Geometry.h",
     Namespace="Part",
-    FatherInclude="Mod/Part/App/ArcOfConicPy.h",
     FatherNamespace="Part",
     Constructor=True,
 )

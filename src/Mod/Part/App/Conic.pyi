@@ -12,7 +12,6 @@ from typing import Final
     Twin="GeomConic",
     TwinPointer="GeomConic",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometryCurvePy.h",
     Constructor=True,
 )
 class Conic(GeometryCurve):

@@ -13,7 +13,6 @@ from typing import overload
     Twin="GeomCircle",
     TwinPointer="GeomCircle",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/ConicPy.h",
     FatherNamespace="Part",
     Constructor=True,
 )

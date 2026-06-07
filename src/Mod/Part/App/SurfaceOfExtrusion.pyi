@@ -11,7 +11,6 @@ from Base.Vector import Vector
     Twin="GeomSurfaceOfExtrusion",
     TwinPointer="GeomSurfaceOfExtrusion",
     PythonName="Part.SurfaceOfExtrusion",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

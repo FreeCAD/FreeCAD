@@ -10,7 +10,6 @@ from typing import Any, Final
     Twin="GeomBoundedCurve",
     TwinPointer="GeomBoundedCurve",
     PythonName="Part.BoundedCurve",
-    FatherInclude="Mod/Part/App/GeometryCurvePy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

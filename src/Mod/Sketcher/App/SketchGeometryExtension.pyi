@@ -9,7 +9,6 @@ from Part.App.GeometryExtension import GeometryExtension
     Name="SketchGeometryExtensionPy",
     PythonName="Sketcher.SketchGeometryExtension",
     Include="Mod/Sketcher/App/SketchGeometryExtension.h",
-    FatherInclude="Mod/Part/App/GeometryExtensionPy.h",
     Constructor=True,
 )
 class SketchGeometryExtension(GeometryExtension):

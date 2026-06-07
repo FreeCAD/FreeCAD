@@ -13,7 +13,6 @@ from typing import Final
     Twin="GeomCone",
     TwinPointer="GeomCone",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Constructor=True,
 )
 class Cone(GeometrySurface):

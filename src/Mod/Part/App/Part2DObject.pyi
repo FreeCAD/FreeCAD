@@ -9,7 +9,6 @@ from PartFeature import PartFeature
     Twin="Part2DObject",
     TwinPointer="Part2DObject",
     Include="Mod/Part/App/Part2DObject.h",
-    FatherInclude="Mod/Part/App/PartFeaturePy.h",
 )
 class Part2DObject(PartFeature):
     """

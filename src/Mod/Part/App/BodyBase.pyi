@@ -10,7 +10,6 @@ from PartFeature import PartFeature
     TwinPointer="BodyBase",
     Include="Mod/Part/App/BodyBase.h",
     Namespace="Part",
-    FatherInclude="Mod/Part/App/PartFeaturePy.h",
     FatherNamespace="Part",
 )
 class BodyBase(PartFeature):

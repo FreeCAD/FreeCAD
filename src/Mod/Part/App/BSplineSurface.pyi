@@ -11,7 +11,6 @@ from typing import Final, List, Any
     Twin="GeomBSplineSurface",
     TwinPointer="GeomBSplineSurface",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Constructor=True,
 )
 class BSplineSurface(GeometrySurface):

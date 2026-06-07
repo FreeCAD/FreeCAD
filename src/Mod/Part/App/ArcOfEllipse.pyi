@@ -11,7 +11,6 @@ from typing import Final, overload
     Twin="GeomArcOfEllipse",
     TwinPointer="GeomArcOfEllipse",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/ArcOfConicPy.h",
     FatherNamespace="Part",
     Constructor=True,
 )

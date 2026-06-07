@@ -9,7 +9,6 @@ from BoundedCurve import BoundedCurve
     Twin="GeomTrimmedCurve",
     TwinPointer="GeomTrimmedCurve",
     PythonName="Part.TrimmedCurve",
-    FatherInclude="Mod/Part/App/BoundedCurvePy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

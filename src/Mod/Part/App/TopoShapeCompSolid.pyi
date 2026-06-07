@@ -12,7 +12,6 @@ from TopoShape import TopoShape
     TwinPointer="TopoShape",
     Include="Mod/Part/App/TopoShape.h",
     Namespace="Part",
-    FatherInclude="Mod/Part/App/TopoShapePy.h",
     FatherNamespace="Part",
     Constructor=True,
 )

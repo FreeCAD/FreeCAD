@@ -11,7 +11,6 @@ from typing import Final
     Twin="GeomArcOfCircle",
     TwinPointer="GeomArcOfCircle",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/ArcOfConicPy.h",
     Constructor=True,
 )
 class ArcOfCircle(ArcOfConic):

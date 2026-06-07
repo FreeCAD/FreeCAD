@@ -11,7 +11,6 @@ from TechDraw.DrawView import DrawView
 @export(
     Include="Mod/TechDraw/App/DrawViewSymbol.h",
     Namespace="TechDraw",
-    FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
 )
 class DrawViewSymbol(DrawView):
     """

@@ -12,7 +12,6 @@ from typing import overload
     Twin="GeomPoint",
     TwinPointer="GeomPoint",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometryPy.h",
     Constructor=True,
 )
 class Point(Geometry):

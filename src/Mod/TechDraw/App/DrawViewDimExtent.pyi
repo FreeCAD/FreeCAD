@@ -11,7 +11,6 @@ from TechDraw.DrawViewDimension import DrawViewDimension
 @export(
     Include="Mod/TechDraw/App/DrawViewDimExtent.h",
     Namespace="TechDraw",
-    FatherInclude="Mod/TechDraw/App/DrawViewDimensionPy.h",
 )
 class DrawViewDimExtent(DrawViewDimension):
     """

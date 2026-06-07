@@ -9,7 +9,6 @@ from TechDraw.Drawview import DrawView
 @export(
     Include="Mod/TechDraw/App/DrawViewAnnotation.h",
     Namespace="TechDraw",
-    FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
 )
 class DrawViewAnnotation(DrawView):
     """

@@ -8,7 +8,6 @@ from typing import Final
 
 @export(
     Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h",
     Twin="Geom2dParabola",
     TwinPointer="Geom2dParabola",
     PythonName="Part.Geom2d.Parabola2d",

@@ -9,7 +9,6 @@ from Part.App.GeometryExtension import GeometryExtension
     PythonName="SketcherGui.ViewProviderSketchGeometryExtension",
     Include="Mod/Sketcher/Gui/ViewProviderSketchGeometryExtension.h",
     Namespace="SketcherGui",
-    FatherInclude="Mod/Part/App/GeometryExtensionPy.h",
     Constructor=True,
 )
 class ViewProviderSketchGeometryExtension(GeometryExtension):

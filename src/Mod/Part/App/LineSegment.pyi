@@ -13,7 +13,6 @@ from typing import overload
     Twin="GeomLineSegment",
     TwinPointer="GeomLineSegment",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/TrimmedCurvePy.h",
     Constructor=True,
 )
 class LineSegment(TrimmedCurve):

@@ -14,7 +14,6 @@ from typing import Final, Tuple, Dict, List, overload
     Twin="TopoShape",
     TwinPointer="TopoShape",
     Include="Mod/Part/App/TopoShape.h",
-    FatherInclude="Mod/Part/App/TopoShapePy.h",
     Constructor=True,
 )
 class TopoShapeEdge(TopoShape):

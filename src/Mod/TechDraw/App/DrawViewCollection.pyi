@@ -11,7 +11,6 @@ from TechDraw.DrawView import DrawView
 @export(
     Include="Mod/TechDraw/App/DrawViewCollection.h",
     Namespace="TechDraw",
-    FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
 )
 class DrawViewCollection(DrawView):
     """

@@ -11,7 +11,6 @@ from Base.Vector import Vector
     Twin="Geom2dBSplineCurve",
     TwinPointer="Geom2dBSplineCurve",
     PythonName="Part.Geom2d.BSplineCurve2d",
-    FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h",
     Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,
 )

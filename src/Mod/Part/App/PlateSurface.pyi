@@ -9,7 +9,6 @@ from GeometrySurface import GeometrySurface
     Twin="GeomPlateSurface",
     TwinPointer="GeomPlateSurface",
     PythonName="Part.PlateSurface",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

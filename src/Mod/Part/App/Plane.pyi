@@ -10,7 +10,6 @@ from GeometrySurface import GeometrySurface
     Twin="GeomPlane",
     TwinPointer="GeomPlane",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Constructor=True,
 )
 class Plane(GeometrySurface):

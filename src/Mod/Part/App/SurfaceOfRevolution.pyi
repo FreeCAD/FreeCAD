@@ -13,7 +13,6 @@ from typing import overload
     Twin="GeomSurfaceOfRevolution",
     TwinPointer="GeomSurfaceOfRevolution",
     PythonName="Part.SurfaceOfRevolution",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

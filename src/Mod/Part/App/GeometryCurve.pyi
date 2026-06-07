@@ -15,7 +15,6 @@ from typing import Final, overload, List, Union, Optional, Tuple
     Twin="GeomCurve",
     TwinPointer="GeomCurve",
     PythonName="Part.Curve",
-    FatherInclude="Mod/Part/App/GeometryPy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

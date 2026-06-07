@@ -10,7 +10,6 @@ from typing import Final, overload, List
 
 @export(
     Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/Geometry2dPy.h",
     Twin="Geom2dCurve",
     TwinPointer="Geom2dCurve",
     PythonName="Part.Geom2d.Curve2d",

@@ -11,7 +11,6 @@ from typing import Final, List
     Twin="GeomBezierCurve",
     TwinPointer="GeomBezierCurve",
     PythonName="Part.BezierCurve",
-    FatherInclude="Mod/Part/App/BoundedCurvePy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

@@ -10,7 +10,6 @@ from Part.Geom2d.Curve2d import Curve2d
     Twin="Geom2dLine",
     TwinPointer="Geom2dLine",
     Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h",
     Constructor=True,
 )
 class Line2d(Curve2d):

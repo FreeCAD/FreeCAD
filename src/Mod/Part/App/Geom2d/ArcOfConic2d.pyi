@@ -12,7 +12,6 @@ from Part.Geom2d import Curve2d
     TwinPointer="Geom2dArcOfConic",
     Include="Mod/Part/App/Geometry2d.h",
     Namespace="Part",
-    FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h",
     Constructor=True,
 )
 class ArcOfConic2d(Curve2d):

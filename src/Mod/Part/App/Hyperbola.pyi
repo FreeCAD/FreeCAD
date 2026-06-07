@@ -13,7 +13,6 @@ from typing import Final, overload
     Twin="GeomHyperbola",
     TwinPointer="GeomHyperbola",
     PythonName="Part.Hyperbola",
-    FatherInclude="Mod/Part/App/ConicPy.h",
     Include="Mod/Part/App/Geometry.h",
     Father="ConicPy",
     FatherNamespace="Part",

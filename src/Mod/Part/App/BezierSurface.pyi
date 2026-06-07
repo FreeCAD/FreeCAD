@@ -13,7 +13,6 @@ from typing import Final, Tuple, Any
     Twin="GeomBezierSurface",
     TwinPointer="GeomBezierSurface",
     PythonName="Part.BezierSurface",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

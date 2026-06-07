@@ -11,7 +11,6 @@ from Part.Geom2d import Curve2d
     Twin="Geom2dLineSegment",
     TwinPointer="Geom2dLineSegment",
     Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h",
     Constructor=True,
 )
 class Line2dSegment(Curve2d):

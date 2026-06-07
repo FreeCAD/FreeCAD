@@ -14,7 +14,6 @@ from typing import overload
     Twin="GeomTrimmedCurve",
     TwinPointer="GeomTrimmedCurve",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/TrimmedCurvePy.h",
     Constructor=True,
 )
 class Arc(TrimmedCurve):

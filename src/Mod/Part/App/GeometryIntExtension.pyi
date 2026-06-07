@@ -13,7 +13,6 @@ from Part.GeometryExtension import GeometryExtension
     TwinPointer="GeometryIntExtension",
     Include="Mod/Part/App/GeometryDefaultExtension.h",
     Namespace="Part",
-    FatherInclude="Mod/Part/App/GeometryExtensionPy.h",
     FatherNamespace="Part",
     Constructor=True,
 )

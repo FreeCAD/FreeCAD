@@ -17,7 +17,6 @@ from Part.App.TopoShapeVertex import TopoShapeVertex
 @export(
     Include="Mod/Fem/App/FemMesh.h",
     Namespace="Fem",
-    FatherInclude="App/ComplexGeoDataPy.h",
     FatherNamespace="Data",
     Constructor=True,
 )

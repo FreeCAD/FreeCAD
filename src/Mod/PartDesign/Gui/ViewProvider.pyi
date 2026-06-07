@@ -8,7 +8,6 @@ from Gui.ViewProviderPartExt import ViewProviderPartExt
 @export(
     Include="Mod/PartDesign/Gui/ViewProvider.h",
     Namespace="PartDesignGui",
-    FatherInclude="Mod/Part/Gui/ViewProviderPartExtPy.h",
     FatherNamespace="PartGui",
 )
 class ViewProvider(ViewProviderPartExt):

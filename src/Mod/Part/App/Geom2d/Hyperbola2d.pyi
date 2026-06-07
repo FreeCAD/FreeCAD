@@ -10,7 +10,6 @@ from typing import Final, overload
     Twin="Geom2dHyperbola",
     TwinPointer="Geom2dHyperbola",
     PythonName="Part.Geom2d.Hyperbola2d",
-    FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h",
     Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,
 )

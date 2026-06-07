@@ -12,7 +12,6 @@ vtkAlgorithm: TypeAlias = object
 @export(
     Include="Mod/Fem/App/FemPostFilter.h",
     Namespace="Fem",
-    FatherInclude="Mod/Fem/App/FemPostObjectPy.h",
     FatherNamespace="Fem",
 )
 class FemPostFilter(FemPostObject):

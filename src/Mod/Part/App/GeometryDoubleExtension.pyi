@@ -8,7 +8,6 @@ from GeometryExtension import GeometryExtension
 @export(
     PythonName="Part.GeometryDoubleExtension",
     Include="Mod/Part/App/GeometryDefaultExtension.h",
-    FatherInclude="Mod/Part/App/GeometryExtensionPy.h",
     Constructor=True,
 )
 class GeometryDoubleExtension(GeometryExtension):

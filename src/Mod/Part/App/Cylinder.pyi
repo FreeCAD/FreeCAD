@@ -13,7 +13,6 @@ from typing import overload
     Twin="GeomCylinder",
     TwinPointer="GeomCylinder",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Constructor=True,
 )
 class Cylinder(GeometrySurface):

@@ -8,7 +8,6 @@ from Part.App.GeometryExtension import GeometryExtension
 @export(
     PythonName="Sketcher.ExternalGeometryExtension",
     Include="Mod/Sketcher/App/ExternalGeometryExtension.h",
-    FatherInclude="Mod/Part/App/GeometryExtensionPy.h",
     Constructor=True,
 )
 class ExternalGeometryExtension(GeometryExtension):

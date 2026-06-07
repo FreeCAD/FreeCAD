@@ -11,7 +11,6 @@ from typing import Final
     Twin="GeomParabola",
     TwinPointer="GeomParabola",
     PythonName="Part.Parabola",
-    FatherInclude="Mod/Part/App/ConicPy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

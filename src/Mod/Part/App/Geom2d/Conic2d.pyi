@@ -11,7 +11,6 @@ from Part.Geom2d import Curve2d
     Twin="Geom2dConic",
     TwinPointer="Geom2dConic",
     Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h",
     Constructor=True,
 )
 class Conic2d(Curve2d):

@@ -11,7 +11,6 @@ from GeometryCurve import GeometryCurve
     Twin="GeomOffsetCurve",
     TwinPointer="GeomOffsetCurve",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometryCurvePy.h",
     Constructor=True,
 )
 class OffsetCurve(GeometryCurve):

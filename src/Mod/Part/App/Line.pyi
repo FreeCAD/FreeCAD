@@ -12,7 +12,6 @@ from typing import overload
     Twin="GeomLine",
     TwinPointer="GeomLine",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometryCurvePy.h",
     Constructor=True,
 )
 class Line(GeometryCurve):

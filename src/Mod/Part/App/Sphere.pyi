@@ -12,7 +12,6 @@ from typing import Final
     Twin="GeomSphere",
     TwinPointer="GeomSphere",
     PythonName="Part.Sphere",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

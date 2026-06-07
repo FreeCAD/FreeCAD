@@ -13,7 +13,6 @@ from typing import List, Tuple, Union, Final, overload
 
 @export(
     Include="Mod/Sketcher/App/SketchObject.h",
-    FatherInclude="Mod/Part/App/Part2DObjectPy.h",
 )
 class SketchObject(Part2DObject):
     """

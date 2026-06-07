@@ -11,7 +11,6 @@ from Fem.FemPostFilter import FemPostFilter
 @export(
     Include="Mod/Fem/App/FemPostBranchFilter.h",
     Namespace="Fem",
-    FatherInclude="Mod/Fem/App/FemPostFilterPy.h",
     FatherNamespace="Fem",
 )
 class FemPostBranchFilter(FemPostFilter):

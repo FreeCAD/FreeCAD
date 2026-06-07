@@ -13,7 +13,6 @@ from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
     TwinPointer="ViewProviderFemPostObject",
     Include="Mod/Fem/Gui/ViewProviderFemPostObject.h",
     Namespace="FemGui",
-    FatherInclude="Gui/ViewProviderDocumentObjectPy.h",
 )
 class ViewProviderFemPostFilter(ViewProviderDocumentObject):
     """

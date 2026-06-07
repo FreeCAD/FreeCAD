@@ -9,7 +9,6 @@ from GeometrySurface import GeometrySurface
     Twin="GeomOffsetSurface",
     TwinPointer="GeomOffsetSurface",
     PythonName="Part.OffsetSurface",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

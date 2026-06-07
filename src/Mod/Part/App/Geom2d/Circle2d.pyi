@@ -11,7 +11,6 @@ from Part.Geom2d import Conic2d
     Twin="Geom2dCircle",
     TwinPointer="Geom2dCircle",
     Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h",
     Constructor=True,
 )
 class Circle2d(Conic2d):

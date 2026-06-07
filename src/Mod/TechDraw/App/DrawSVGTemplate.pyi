@@ -11,7 +11,6 @@ from DrawTemplate import DrawTemplate
 @export(
     Include="Mod/TechDraw/App/DrawSVGTemplate.h",
     Namespace="TechDraw",
-    FatherInclude="DrawTemplatePy.h",
 )
 class DrawSVGTemplate(DrawTemplate):
     """

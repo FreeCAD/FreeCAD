@@ -14,7 +14,6 @@ from typing import Final, List, overload, Any
     Twin="GeomBSplineCurve",
     TwinPointer="GeomBSplineCurve",
     Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/BoundedCurvePy.h",
     Constructor=True,
 )
 class BSplineCurve(BoundedCurve):

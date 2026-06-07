@@ -13,7 +13,6 @@ from CAM.App.Command import Command
 
 @export(
     Include="Mod/CAM/PathSimulator/AppGL/CAMSim.h",
-    FatherInclude="Base/BaseClassPy.h",
     Namespace="CAMSimulator",
     Constructor=True,
     Delete=True,

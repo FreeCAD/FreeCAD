@@ -11,7 +11,6 @@ from Part import ArcOfConic2d
     Twin="Geom2dArcOfEllipse",
     TwinPointer="Geom2dArcOfEllipse",
     Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/ArcOfConic2dPy.h",
     Constructor=True,
 )
 class ArcOfEllipse2d(ArcOfConic2d):

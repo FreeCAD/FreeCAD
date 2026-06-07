@@ -13,7 +13,6 @@ from typing import Final
     Twin="GeomToroid",
     TwinPointer="GeomToroid",
     PythonName="Part.Toroid",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Include="Mod/Part/App/Geometry.h",
     Father="GeometrySurfacePy",
     FatherNamespace="Part",

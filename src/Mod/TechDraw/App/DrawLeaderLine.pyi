@@ -9,7 +9,6 @@ from DrawView import DrawView
 @export(
     Include="Mod/TechDraw/App/DrawLeaderLine.h",
     Namespace="TechDraw",
-    FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
 )
 class DrawLeaderLine(DrawView):
     """

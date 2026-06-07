@@ -10,7 +10,6 @@ from typing import Any, Final
     Twin="AttachExtension",
     TwinPointer="AttachExtension",
     Include="Mod/Part/App/AttachExtension.h",
-    FatherInclude="App/DocumentObjectExtensionPy.h",
 )
 class AttachExtension(DocumentObjectExtension):
     """

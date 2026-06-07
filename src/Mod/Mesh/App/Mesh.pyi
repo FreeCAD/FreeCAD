@@ -13,7 +13,6 @@ from App.ComplexGeoData import ComplexGeoData
     TwinPointer="MeshObject",
     Include="Mod/Mesh/App/Mesh.h",
     Namespace="Mesh",
-    FatherInclude="App/ComplexGeoDataPy.h",
     FatherNamespace="Data",
     Constructor=True,
 )

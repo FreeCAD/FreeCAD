@@ -10,7 +10,6 @@ from typing import Any, Final, Tuple
     Twin="GeomTrimmedSurface",
     TwinPointer="GeomTrimmedSurface",
     PythonName="Part.RectangularTrimmedSurface",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

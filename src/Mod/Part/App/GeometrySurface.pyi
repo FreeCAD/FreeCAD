@@ -14,7 +14,6 @@ from typing import Final, overload, Any, Tuple, List, Literal, Union
     Twin="GeomSurface",
     TwinPointer="GeomSurface",
     PythonName="Part.GeometrySurface",
-    FatherInclude="Mod/Part/App/GeometryPy.h",
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )

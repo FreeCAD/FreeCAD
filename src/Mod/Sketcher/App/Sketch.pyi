@@ -9,7 +9,6 @@ from typing import Final, Tuple
 
 @export(
     Include="Mod/Sketcher/App/Sketch.h",
-    FatherInclude="Base/PersistencePy.h",
     Constructor=True,
 )
 class Sketch(Persistence):

@@ -8,7 +8,6 @@ from Base.PyObjectBase import PyObjectBase
 @export(
     PythonName="Part.ShapeFix.SplitTool",
     Include="ShapeFix_SplitTool.hxx",
-    FatherInclude="Base/PyObjectBase.h",
     Constructor=True,
     Delete=True,
 )

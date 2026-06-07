@@ -10,7 +10,6 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
     Twin="ShapeFix_Shell",
     TwinPointer="ShapeFix_Shell",
     Include="ShapeFix_Shell.hxx",
-    FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
     Constructor=True,
 )
 class ShapeFix_Shell(ShapeFix_Root):

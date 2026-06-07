@@ -11,7 +11,6 @@ from typing import Final, List, Tuple, Union, overload
 
 @export(
     Include="Mod/Part/App/TopoShape.h",
-    FatherInclude="App/ComplexGeoDataPy.h",
     FatherNamespace="Data",
     Constructor=True,
 )

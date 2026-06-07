@@ -9,7 +9,6 @@ from Part.TopoShape import TopoShape
 @export(
     PythonName="Part.ShapeFix.Shape",
     Include="ShapeFix_Shape.hxx",
-    FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
     Constructor=True,
 )
 class ShapeFix_Shape(ShapeFix_Root):

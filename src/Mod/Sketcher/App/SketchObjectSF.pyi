@@ -7,7 +7,6 @@ from Part.App.Part2DObject import Part2DObject
 
 @export(
     Include="Mod/Sketcher/App/SketchObjectSF.h",
-    FatherInclude="Mod/Part/App/Part2DObjectPy.h",
 )
 class SketchObjectSF(Part2DObject):
     """

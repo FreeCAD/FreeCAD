@@ -11,7 +11,6 @@ from typing import Union
 @export(
     PythonName="Part.ShapeFix.Face",
     Include="ShapeFix_Face.hxx",
-    FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
     Constructor=True,
 )
 class ShapeFix_Face(ShapeFix_Root):

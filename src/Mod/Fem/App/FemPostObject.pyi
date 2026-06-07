@@ -13,7 +13,6 @@ vtkDataSet: TypeAlias = object
     Include="Mod/Fem/App/FemPostObject.h",
     Namespace="Fem",
     FatherNamespace="App",
-    FatherInclude="App/GeoFeaturePy.h",
 )
 class FemPostObject(GeoFeature):
     """

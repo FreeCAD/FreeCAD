@@ -10,7 +10,6 @@ from typing import Final
 @export(
     Include="Mod/Material/App/Materials.h",
     Namespace="Materials",
-    FatherInclude="Mod/Material/App/Model.h",
     FatherNamespace="Materials",
     Constructor=True,
     Delete=False,

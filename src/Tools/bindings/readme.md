@@ -71,7 +71,6 @@ from PyObjectBase import PyObjectBase
     TwinPointer="Precision",
     Include="Base/Precision.h",
     Namespace="Base",
-    FatherInclude="Base/PyObjectBase.h",
     FatherNamespace="Base",
 )
 class PrecisionPy(PyObjectBase):
@@ -193,7 +192,6 @@ from Metadata import export
     TwinPointer="Precision",
     Include="Base/Precision.h",
     Namespace="Base",
-    FatherInclude="Base/PyObjectBase.h",
     FatherNamespace="Base",
 )
 class PrecisionPy(PyObjectBase):
@@ -217,7 +215,7 @@ class PrecisionPy(PyObjectBase):
     * `TwinPointer`: The pointer type of the twin C++ class.
     * `Include`: The header file where the C++ class is declared.
     * `Namespace`: The C++ namespace of the class.
-    * `FatherInclude`: The header file for the parent class.
+    * `FatherInclude`: The header file for the parent class. For `.pyi` inputs this is inferred from the parent class stub when possible; specify it only for nonstandard includes.
     * `FatherNamespace`: The C++ namespace for the parent class.
 
     _(Additional keys can be added as required by the binding generator.)_
