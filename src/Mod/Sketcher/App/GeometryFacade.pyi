@@ -12,7 +12,6 @@ from App.DocumentObjectExtension import DocumentObjectExtension
 from typing import Final, List
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class GeometryFacade(BaseClass):
@@ -22,6 +21,8 @@ class GeometryFacade(BaseClass):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Id: int = ...
     """Sets/returns the Id of the SketchGeometryExtension."""

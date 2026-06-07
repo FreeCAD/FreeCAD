@@ -7,7 +7,6 @@ from Base.Persistence import Persistence
 from typing import Final
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class Constraint(Persistence):
@@ -17,6 +16,8 @@ class Constraint(Persistence):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Type: Final[str] = ""
     """Get the constraint type"""

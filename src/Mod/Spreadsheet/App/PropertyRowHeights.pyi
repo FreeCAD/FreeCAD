@@ -5,9 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.Persistence import Persistence
 
-@export(
-    Constructor=True,
-)
+@export()
 class PropertyRowHeights(Persistence):
     """
     Internal spreadsheet object
@@ -15,3 +13,5 @@ class PropertyRowHeights(Persistence):
     Author: Eivind Kvedalen (eivind@kvedalen.name)
     License: LGPL-2.1-or-later
     """
+
+    def __init__(self) -> None: ...

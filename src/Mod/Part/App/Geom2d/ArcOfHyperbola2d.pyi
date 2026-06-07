@@ -9,7 +9,6 @@ from Part.Geom2d import ArcOfConic2d
 @export(
     PythonName="Part.Geom2d.ArcOfHyperbola2d",
     Twin="Geom2dArcOfHyperbola",
-    Constructor=True,
 )
 class ArcOfHyperbola2d(ArcOfConic2d):
     """

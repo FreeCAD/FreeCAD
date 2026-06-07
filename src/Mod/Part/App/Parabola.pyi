@@ -10,12 +10,13 @@ from typing import Final
 @export(
     Twin="GeomParabola",
     PythonName="Part.Parabola",
-    Constructor=True,
 )
 class Parabola(Conic):
     """
     Describes a parabola in 3D space
     """
+
+    def __init__(self) -> None: ...
 
     Focal: float = ...
     """

@@ -7,13 +7,13 @@ from TopoShape import TopoShape
 
 @export(
     Twin="TopoShape",
-    Constructor=True,
 )
 class TopoShapeCompSolid(TopoShape):
     """
     TopoShapeCompSolid is the OpenCasCade topological compound solid wrapper
     """
 
+    def __init__(self) -> None: ...
     def add(self, solid: TopoShape, /) -> None:
         """
         Add a solid to the compound.

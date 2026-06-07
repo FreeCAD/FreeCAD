@@ -9,7 +9,6 @@ from Part.Geom2d import Conic2d
 @export(
     PythonName="Part.Geom2d.Circle2d",
     Twin="Geom2dCircle",
-    Constructor=True,
 )
 class Circle2d(Conic2d):
     """

@@ -12,7 +12,6 @@ from typing import Optional
     PythonName="Part.PolyHLRToShapePy",
     Twin="HLRBRep_PolyHLRToShape",
     Include="HLRBRep_PolyHLRToShape.hxx",
-    Constructor=True,
     Delete=True,
 )
 class PolyHLRToShape(PyObjectBase):
@@ -43,6 +42,7 @@ class PolyHLRToShape(PyObjectBase):
     new computation of the algorithm, but only reads its internal results.
     """
 
+    def __init__(self) -> None: ...
     def update(self, algo: HLRBRep_PolyAlgo, /) -> None:
         """
         update(algo: HLRBRep_PolyAlgo)

@@ -8,7 +8,6 @@ from Part.TopoShapePy import TopoShape
 
 @export(
     Include="HLRBRep_PolyAlgo.hxx",
-    Constructor=True,
 )
 @class_declarations("""
 private:
@@ -60,6 +59,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
       same shape.
     """
 
+    def __init__(self) -> None: ...
     def load(self, S: TopoShape, /) -> None:
         """
         load(S)

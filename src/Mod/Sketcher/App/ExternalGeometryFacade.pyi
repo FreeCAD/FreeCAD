@@ -6,9 +6,7 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Final, List
 
-@export(
-    Constructor=True,
-)
+@export()
 class ExternalGeometryFacade(BaseClass):
     """
     Describes a GeometryFacade
@@ -16,6 +14,8 @@ class ExternalGeometryFacade(BaseClass):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Ref: str = ""
     """Returns the reference string of this external geometry."""

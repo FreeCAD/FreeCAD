@@ -9,7 +9,6 @@ from typing import Final, overload
 @export(
     PythonName="Part.ArcOfEllipse",
     Twin="GeomArcOfEllipse",
-    Constructor=True,
 )
 class ArcOfEllipse(ArcOfConic):
     """

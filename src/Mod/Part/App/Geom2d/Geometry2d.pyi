@@ -8,7 +8,6 @@ from Base.PyObjectBase import PyObjectBase
 @export(
     PythonName="Part.Geom2d.Geometry2d",
     Include="Mod/Part/App/Geometry2d.h",
-    Constructor=True,
     Delete=True,
 )
 class Geometry2d(PyObjectBase):
@@ -22,6 +21,7 @@ class Geometry2d(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def mirror(self) -> None:
         """
         Performs the symmetrical transformation of this geometric object.

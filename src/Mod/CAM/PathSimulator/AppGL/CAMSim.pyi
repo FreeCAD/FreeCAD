@@ -13,7 +13,6 @@ from CAM.App.Command import Command
 
 @export(
     Namespace="CAMSimulator",
-    Constructor=True,
     Delete=True,
 )
 class CAMSim(BaseClass):
@@ -28,6 +27,7 @@ class CAMSim(BaseClass):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def BeginSimulation(self, stock: TopoShape, resolution: float) -> None:
         """
         Start a simulation process on a box shape stock with given resolution

@@ -7,7 +7,6 @@ from Base.Metadata import export
 
 @export(
     Namespace="Path",
-    Constructor=True,
     Delete=True,
 )
 class Area(BaseClass):
@@ -23,6 +22,7 @@ class Area(BaseClass):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def add(self, **kwargs) -> Any:
         """"""
         ...

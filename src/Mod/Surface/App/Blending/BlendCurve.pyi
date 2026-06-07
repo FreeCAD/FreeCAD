@@ -8,7 +8,6 @@ from Base.BaseClass import PyObjectBase
 from Base.Metadata import export
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class BlendCurve(PyObjectBase):
@@ -20,6 +19,7 @@ class BlendCurve(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def compute(self) -> Any:
         """
         Return the BezierCurve that interpolate the input BlendPoints.

@@ -9,7 +9,6 @@ from typing import overload, Sequence
 @export(
     TwinPointer="Vector3d",
     Include="Base/Vector3D.h",
-    Constructor=True,
     Delete=True,
     NumberProtocol=True,
     RichCompare=True,

@@ -8,7 +8,6 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 @export(
     PythonName="Part.ShapeFix.Wire",
     Include="ShapeFix_Wire.hxx",
-    Constructor=True,
 )
 class ShapeFix_Wire(ShapeFix_Root):
     """
@@ -18,6 +17,7 @@ class ShapeFix_Wire(ShapeFix_Root):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def init(self) -> None:
         """
         Initializes by wire, face, precision

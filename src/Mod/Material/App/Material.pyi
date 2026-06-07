@@ -6,11 +6,9 @@ from Base.Metadata import export, no_args, sequence_protocol
 from Base.BaseClass import BaseClass
 from typing import Final
 
-
 @export(
     Include="Mod/Material/App/Materials.h",
     Namespace="Materials",
-    Constructor=True,
     Delete=True,
 )
 @sequence_protocol(sq_length=True, sq_item=True, sq_contains=True, mp_subscript=True)
@@ -21,6 +19,8 @@ class Material(BaseClass):
     Author: David Carter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     LibraryName: Final[str] = ...
     """Material library name."""

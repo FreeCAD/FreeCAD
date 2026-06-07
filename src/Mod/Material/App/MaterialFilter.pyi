@@ -6,10 +6,8 @@ from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import List
 
-
 @export(
     Namespace="Materials",
-    Constructor=True,
     Delete=True,
 )
 class MaterialFilter(BaseClass):
@@ -19,6 +17,8 @@ class MaterialFilter(BaseClass):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Name: str = ...
     """Name of the filter used to select a filter in a list"""

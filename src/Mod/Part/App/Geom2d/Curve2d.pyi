@@ -11,7 +11,6 @@ from typing import Final, overload, List
 @export(
     Twin="Geom2dCurve",
     PythonName="Part.Geom2d.Curve2d",
-    Constructor=True,
 )
 class Curve2d(Geometry2d):
     """
@@ -19,6 +18,8 @@ class Curve2d(Geometry2d):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Continuity: Final[str] = ...
     """Returns the global continuity of the curve."""

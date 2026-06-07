@@ -10,7 +10,6 @@ from Part.PointPy import Point
 @export(
     PythonName="Part.ChFi2d.FilletAPI",
     Include="ChFi2d_FilletAPI.hxx",
-    Constructor=True,
     Delete=True,
 )
 class ChFi2d_FilletAPI(PyObjectBase):
@@ -21,6 +20,7 @@ class ChFi2d_FilletAPI(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def init(self) -> None:
         """
         Initializes a fillet algorithm: accepts a wire consisting of two edges in a plane

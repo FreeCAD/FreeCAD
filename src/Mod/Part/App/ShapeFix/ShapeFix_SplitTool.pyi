@@ -8,7 +8,6 @@ from Base.PyObjectBase import PyObjectBase
 @export(
     PythonName="Part.ShapeFix.SplitTool",
     Include="ShapeFix_SplitTool.hxx",
-    Constructor=True,
     Delete=True,
 )
 class ShapeFix_SplitTool(PyObjectBase):
@@ -19,6 +18,7 @@ class ShapeFix_SplitTool(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def splitEdge(self) -> None:
         """
         Split edge on two new edges using new vertex

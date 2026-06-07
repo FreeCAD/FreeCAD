@@ -6,9 +6,7 @@ from Base.Metadata import export
 
 from App.DocumentObject import DocumentObject
 
-@export(
-    Constructor=True,
-)
+@export()
 class MeasureBase(DocumentObject):
     """
     User documentation here
@@ -16,3 +14,5 @@ class MeasureBase(DocumentObject):
     Author: David Friedli(hlorus) (david@friedli-be.ch)
     License: LGPL-2.1-or-later
     """
+
+    def __init__(self) -> None: ...

@@ -8,7 +8,6 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class StepShape(PyObjectBase):
@@ -20,6 +19,7 @@ class StepShape(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def read(self) -> Any:
         """
         Read a STEP file into memory and make it accessible

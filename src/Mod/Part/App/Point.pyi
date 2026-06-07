@@ -10,7 +10,6 @@ from typing import overload
 @export(
     PythonName="Part.Point",
     Twin="GeomPoint",
-    Constructor=True,
 )
 class Point(Geometry):
     """

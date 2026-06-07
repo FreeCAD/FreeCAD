@@ -12,7 +12,6 @@ from typing import overload
 
 @export(
     Include="BRepOffsetAPI_MakeFilling.hxx",
-    Constructor=True,
     Delete=True,
 )
 class BRepOffsetAPI_MakeFilling(PyObjectBase):
@@ -23,6 +22,7 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def setConstrParam(
         self,
         *,

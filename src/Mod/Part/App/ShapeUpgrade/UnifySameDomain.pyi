@@ -9,7 +9,6 @@ from Base.PyObjectBase import PyObjectBase
     PythonName="Part.ShapeUpgrade.UnifySameDomain",
     Include="ShapeUpgrade_UnifySameDomain.hxx",
     Twin="ShapeUpgrade_UnifySameDomain",
-    Constructor=True,
     Delete=True,
 )
 class UnifySameDomain(PyObjectBase):
@@ -20,6 +19,7 @@ class UnifySameDomain(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def initialize(self, **kwargs) -> None:
         """
         Initializes with a shape and necessary flags

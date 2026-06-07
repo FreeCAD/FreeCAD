@@ -6,8 +6,7 @@ from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Final, List, Dict
 
-
-@export(Namespace="Materials", Constructor=True)
+@export(Namespace="Materials")
 class ModelManager(BaseClass):
     """
     Material model descriptions.
@@ -15,6 +14,8 @@ class ModelManager(BaseClass):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     ModelLibraries: Final[List] = ...
     """List of model libraries."""
@@ -25,13 +26,13 @@ class ModelManager(BaseClass):
     Models: Final[Dict] = ...
     """List of model libraries."""
 
-    def getModel(self) ->...:
+    def getModel(self) -> ...:
         """
         Get a model object by specifying its UUID
         """
         ...
 
-    def getModelByPath(self) ->...:
+    def getModelByPath(self) -> ...:
         """
         Get a model object by specifying its path
         """

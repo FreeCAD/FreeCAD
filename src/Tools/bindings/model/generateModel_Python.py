@@ -624,6 +624,8 @@ def _parse_methods(
     methods = []
 
     for func in functions.values():
+        if func.name == "__init__":
+            continue
         if func.typing_only_flag:
             continue
         if not allow_bound_decorators and (func.static_flag or func.class_flag or func.const_flag):
@@ -1219,6 +1221,12 @@ def _parse_class(
             case _:
                 pass
 
+    if "Constructor" in export_decorator_kwargs:
+        raise ValueError(
+            f"@export(Constructor=...) is no longer supported for class "
+            f"'{class_node.name}'; define __init__ in the pyi class instead."
+        )
+
     # Parse imports to compute module metadata
     module_name = _get_module_from_path(path)
 
@@ -1231,6 +1239,7 @@ def _parse_class(
     if constructor := functions.get("__init__"):
         if constructor.signature is None and constructor.docstring.strip():
             _append_user_doc(doc_obj, _constructor_user_doc(constructor, class_node.name))
+    has_constructor = "__init__" in functions
     class_attributes = _parse_class_attributes(class_node, source_code)
     class_methods = _parse_methods(
         functions,
@@ -1296,7 +1305,7 @@ def _parse_class(
         Namespace=export_decorator_kwargs.get("Namespace", "") or module_name,
         FatherInclude=export_decorator_kwargs.get("FatherInclude", "") or father_include,
         FatherNamespace=export_decorator_kwargs.get("FatherNamespace", "") or father_namespace,
-        Constructor=export_decorator_kwargs.get("Constructor", False),
+        Constructor=has_constructor,
         NumberProtocol=export_decorator_kwargs.get("NumberProtocol", False),
         RichCompare=export_decorator_kwargs.get("RichCompare", False),
         Delete=export_decorator_kwargs.get("Delete", False),

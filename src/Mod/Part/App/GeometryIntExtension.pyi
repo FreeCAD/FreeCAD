@@ -7,7 +7,6 @@ from Part.GeometryExtension import GeometryExtension
 
 @export(
     Include="Mod/Part/App/GeometryDefaultExtension.h",
-    Constructor=True,
 )
 class GeometryIntExtension(GeometryExtension):
     """
@@ -16,6 +15,8 @@ class GeometryIntExtension(GeometryExtension):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Value: int = ...
     """returns the value of the GeometryIntExtension."""

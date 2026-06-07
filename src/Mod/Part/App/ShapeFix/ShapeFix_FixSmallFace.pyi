@@ -9,7 +9,6 @@ from Part.App.TopoShape import TopoShape
 @export(
     PythonName="Part.ShapeFix.FixSmallFace",
     Include="ShapeFix_FixSmallFace.hxx",
-    Constructor=True,
 )
 class ShapeFix_FixSmallFace(ShapeFix_Root):
     """
@@ -19,6 +18,7 @@ class ShapeFix_FixSmallFace(ShapeFix_Root):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def init(self) -> None:
         """
         Initializes by shape

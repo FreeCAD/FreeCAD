@@ -9,13 +9,14 @@ from GeometryCurve import GeometryCurve
 @export(
     PythonName="Part.OffsetCurve",
     Twin="GeomOffsetCurve",
-    Constructor=True,
 )
 class OffsetCurve(GeometryCurve):
     """
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     OffsetValue: float = ...
     """Sets or gets the offset value to offset the underlying curve."""

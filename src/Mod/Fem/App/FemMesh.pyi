@@ -14,9 +14,7 @@ from Part.App.TopoShapeEdge import TopoShapeEdge
 from Part.App.TopoShapeSolid import TopoShapeSolid
 from Part.App.TopoShapeVertex import TopoShapeVertex
 
-@export(
-    Constructor=True,
-)
+@export()
 class FemMesh(ComplexGeoData):
     """
     FemMesh class
@@ -25,6 +23,7 @@ class FemMesh(ComplexGeoData):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def setShape(self, shape: TopoShape, /) -> None:
         """Set the Part shape to mesh"""
         ...

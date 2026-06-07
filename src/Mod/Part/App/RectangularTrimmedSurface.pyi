@@ -9,7 +9,6 @@ from typing import Any, Final, Tuple
 @export(
     Twin="GeomTrimmedSurface",
     PythonName="Part.RectangularTrimmedSurface",
-    Constructor=True,
 )
 class RectangularTrimmedSurface(GeometrySurface):
     """
@@ -28,6 +27,8 @@ class RectangularTrimmedSurface(GeometrySurface):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     BasisSurface: Final[Any] = None
     """Represents the basis surface from which the trimmed surface is derived."""

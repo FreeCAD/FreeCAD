@@ -8,7 +8,6 @@ from Base.PyObjectBase import PyObjectBase
 @export(
     PythonName="Part.ShapeFix.WireVertex",
     Include="ShapeFix_WireVertex.hxx",
-    Constructor=True,
     Delete=True,
 )
 class ShapeFix_WireVertex(PyObjectBase):
@@ -19,6 +18,7 @@ class ShapeFix_WireVertex(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def init(self) -> None:
         """
         Loads the wire, ininializes internal analyzer with the given precision

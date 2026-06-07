@@ -12,7 +12,6 @@ from .Command import Command
     Twin="Toolpath",
     Namespace="Path",
     Delete=True,
-    Constructor=True,
 )
 class Path(Persistence):
     """
@@ -23,6 +22,7 @@ class Path(Persistence):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @overload
     def addCommands(self, command: Command, /) -> Path: ...
     @overload

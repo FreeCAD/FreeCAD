@@ -10,12 +10,13 @@ from typing import Final
 @export(
     Twin="GeomToroid",
     PythonName="Part.Toroid",
-    Constructor=True,
 )
 class Toroid(GeometrySurface):
     """
     Describes a toroid in 3D space
     """
+
+    def __init__(self) -> None: ...
 
     MajorRadius: float = ...
     """The major radius of the toroid."""

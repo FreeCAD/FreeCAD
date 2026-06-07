@@ -10,7 +10,6 @@ from typing import Tuple
     PythonName="Part.GeomPlate.PointConstraintPy",
     Twin="GeomPlate_PointConstraint",
     Include="GeomPlate_PointConstraint.hxx",
-    Constructor=True,
     Delete=True,
 )
 class PointConstraint(PyObjectBase):
@@ -21,6 +20,7 @@ class PointConstraint(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def setOrder(self, order: str, /) -> None:
         """
         Allows you to set the order of continuity required for

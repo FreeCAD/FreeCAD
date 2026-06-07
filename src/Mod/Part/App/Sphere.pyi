@@ -11,7 +11,6 @@ from typing import Final
 @export(
     Twin="GeomSphere",
     PythonName="Part.Sphere",
-    Constructor=True,
 )
 class Sphere(GeometrySurface):
     """
@@ -20,6 +19,8 @@ class Sphere(GeometrySurface):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Radius: float = ...
     """The radius of the sphere."""

@@ -9,7 +9,6 @@ from typing import Final, List
 @export(
     Twin="Geom2dBezierCurve",
     PythonName="Part.Geom2d.BezierCurve2d",
-    Constructor=True,
 )
 class BezierCurve2d(Curve2d):
     """
@@ -20,6 +19,8 @@ class BezierCurve2d(Curve2d):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Degree: Final[int] = ...
     """Returns the polynomial degree of this Bezier curve, which is equal to the number of poles minus 1."""

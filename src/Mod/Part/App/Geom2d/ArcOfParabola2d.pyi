@@ -9,7 +9,6 @@ from Part.Geom2d import ArcOfConic2d
 @export(
     PythonName="Part.Geom2d.ArcOfParabola2d",
     Twin="Geom2dArcOfParabola",
-    Constructor=True,
 )
 class ArcOfParabola2d(ArcOfConic2d):
     """

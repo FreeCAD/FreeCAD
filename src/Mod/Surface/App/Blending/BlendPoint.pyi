@@ -8,7 +8,6 @@ from Base.BaseClass import PyObjectBase
 from Base.Metadata import constmethod, export
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class BlendPoint(PyObjectBase):
@@ -22,6 +21,7 @@ class BlendPoint(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def getSize(self) -> Any:
         """Return BlendPoint first derivative length."""

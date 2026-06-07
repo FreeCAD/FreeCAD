@@ -5,9 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from Part.App.GeometryExtension import GeometryExtension
 
-@export(
-    Constructor=True,
-)
+@export()
 class ExternalGeometryExtension(GeometryExtension):
     """
     Describes a ExternalGeometryExtension
@@ -16,6 +14,7 @@ class ExternalGeometryExtension(GeometryExtension):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def testFlag(self) -> bool:
         """

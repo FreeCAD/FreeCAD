@@ -9,12 +9,13 @@ from Base.BaseClass import BaseClass
 
 @export(
     Namespace="MatGui",
-    Constructor=True,
 )
 class MaterialTreeWidget(BaseClass):
     """
     Material tree widget.
     """
+
+    def __init__(self) -> None: ...
 
     UUID: str = ...
     """Material UUID."""

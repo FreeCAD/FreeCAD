@@ -10,7 +10,6 @@ from typing import Final, overload
 
 @export(
     Twin="TopoShape",
-    Constructor=True,
 )
 class TopoShapeVertex(TopoShape):
     """

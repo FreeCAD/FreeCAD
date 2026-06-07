@@ -10,7 +10,6 @@ from typing import Final, Tuple, overload
 @export(
     NumberProtocol=True,
     RichCompare=True,
-    Constructor=True,
     Delete=True,
 )
 class Unit(PyObjectBase):

@@ -10,7 +10,6 @@ from typing import Final, List
 @export(
     Twin="GeomBezierCurve",
     PythonName="Part.BezierCurve",
-    Constructor=True,
 )
 class BezierCurve(BoundedCurve):
     """
@@ -30,6 +29,8 @@ class BezierCurve(BoundedCurve):
         bc.setPoles([p1, p2, p3, p4])
         curveShape = bc.toShape()
     """
+
+    def __init__(self) -> None: ...
 
     Degree: Final[int] = 0
     """

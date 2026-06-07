@@ -9,7 +9,6 @@ from Base.Metadata import constmethod, export
 
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
-    Constructor=True,
     Delete=True,
 )
 class GeomFormat(PyObjectBase):
@@ -20,6 +19,7 @@ class GeomFormat(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def clone(self) -> Any:
         """Create a clone of this geomformat"""

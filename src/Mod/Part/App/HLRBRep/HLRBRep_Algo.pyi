@@ -7,7 +7,6 @@ from Base.PyObjectBase import PyObjectBase
 
 @export(
     Include="HLRBRep_Algo.hxx",
-    Constructor=True,
 )
 @class_declarations("""
 private:
@@ -61,6 +60,7 @@ class HLRBRep_Algo(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def add(self, S, nbIso: int = 0, /) -> None:
         """
         add(S, nbIso=0)

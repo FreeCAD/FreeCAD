@@ -8,7 +8,6 @@ from Base.Metadata import export
 from Base.Persistence import Persistence
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class Robot6Axis(Persistence):
@@ -19,6 +18,7 @@ class Robot6Axis(Persistence):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def check(self) -> Any:
         """Checks the shape and report errors in the shape structure.
         This is a more detailed check as done in isValid()."""

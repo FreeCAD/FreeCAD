@@ -9,7 +9,6 @@ from Base.Metadata import constmethod, export
 
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
-    Constructor=True,
     Delete=True,
 )
 class CosmeticVertex(PyObjectBase):
@@ -20,6 +19,7 @@ class CosmeticVertex(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def clone(self) -> Any:
         """Create a clone of this CosmeticVertex"""

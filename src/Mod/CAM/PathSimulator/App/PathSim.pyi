@@ -13,7 +13,6 @@ from CAM.App.Command import Command
 
 @export(
     Namespace="PathSimulator",
-    Constructor=True,
     Delete=True,
 )
 class PathSim(BaseClass):
@@ -28,6 +27,7 @@ class PathSim(BaseClass):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def BeginSimulation(self, stock: TopoShape, resolution: float) -> None:
         """
         Start a simulation process on a box shape stock with given resolution

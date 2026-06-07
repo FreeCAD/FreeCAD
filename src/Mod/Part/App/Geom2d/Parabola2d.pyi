@@ -9,7 +9,6 @@ from typing import Final
 @export(
     Twin="Geom2dParabola",
     PythonName="Part.Geom2d.Parabola2d",
-    Constructor=True,
 )
 class Parabola2d(Conic2d):
     """
@@ -18,6 +17,8 @@ class Parabola2d(Conic2d):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Focal: float = ...
     """

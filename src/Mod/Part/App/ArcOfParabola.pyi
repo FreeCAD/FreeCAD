@@ -9,7 +9,6 @@ from typing import Final
 @export(
     PythonName="Part.ArcOfParabola",
     Twin="GeomArcOfParabola",
-    Constructor=True,
 )
 class ArcOfParabola(ArcOfConic):
     """
@@ -18,6 +17,8 @@ class ArcOfParabola(ArcOfConic):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Focal: float = ...
     """The focal length of the parabola."""

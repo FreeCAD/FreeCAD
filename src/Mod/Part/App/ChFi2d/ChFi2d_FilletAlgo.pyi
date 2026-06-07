@@ -11,7 +11,6 @@ from Base.Vector import Vector
     PythonName="Part.ChFi2d.FilletAlgo",
     Twin="ChFi2d_FilletAlgo",
     Include="ChFi2d_FilletAlgo.hxx",
-    Constructor=True,
     Delete=True,
 )
 class FilletAlgo(PyObjectBase):
@@ -22,6 +21,7 @@ class FilletAlgo(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def init(self) -> None:
         """
         Initializes a fillet algorithm: accepts a wire consisting of two edges in a plane

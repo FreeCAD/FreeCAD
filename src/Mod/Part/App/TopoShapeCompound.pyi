@@ -8,7 +8,6 @@ from typing import Sequence, overload
 
 @export(
     Twin="TopoShape",
-    Constructor=True,
 )
 class TopoShapeCompound(TopoShape):
     """

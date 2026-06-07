@@ -7,7 +7,6 @@ from Base.PyObjectBase import PyObjectBase
 
 @export(
     Namespace="MeasureGui",
-    Constructor=True,
     Delete=True,
 )
 class QuickMeasure(PyObjectBase):
@@ -17,3 +16,5 @@ class QuickMeasure(PyObjectBase):
     Author: Ondsel (development@ondsel.com)
     License: LGPL-2.1-or-later
     """
+
+    def __init__(self) -> None: ...

@@ -10,7 +10,6 @@ from typing import overload
 @export(
     PythonName="Part.Line",
     Twin="GeomLine",
-    Constructor=True,
 )
 class Line(GeometryCurve):
     """

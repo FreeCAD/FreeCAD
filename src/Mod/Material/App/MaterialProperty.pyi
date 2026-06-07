@@ -9,7 +9,6 @@ from typing import Final
 @export(
     Include="Mod/Material/App/Materials.h",
     Namespace="Materials",
-    Constructor=True,
 )
 class MaterialProperty(ModelProperty):
     """
@@ -18,6 +17,8 @@ class MaterialProperty(ModelProperty):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Value: Final[object] = None
     """The value of the material property."""

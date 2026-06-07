@@ -6,10 +6,8 @@ from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Final, List, Dict
 
-
 @export(
     Namespace="Materials",
-    Constructor=True,
     Delete=True,
 )
 class Model(BaseClass):
@@ -19,6 +17,8 @@ class Model(BaseClass):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     LibraryName: Final[str] = ""
     """Model library name."""

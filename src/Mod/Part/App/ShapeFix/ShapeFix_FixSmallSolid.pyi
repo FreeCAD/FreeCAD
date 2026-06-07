@@ -8,7 +8,6 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 @export(
     PythonName="Part.ShapeFix.FixSmallSolid",
     Include="ShapeFix_FixSmallSolid.hxx",
-    Constructor=True,
 )
 class ShapeFix_FixSmallSolid(ShapeFix_Root):
     """
@@ -18,6 +17,7 @@ class ShapeFix_FixSmallSolid(ShapeFix_Root):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def setFixMode(self, theMode: int, /) -> None:
         """
         Set working mode for operator:

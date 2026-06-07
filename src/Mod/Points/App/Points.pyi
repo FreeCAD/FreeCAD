@@ -9,7 +9,6 @@ from App.ComplexGeoData import ComplexGeoData
 
 @export(
     Twin="PointKernel",
-    Constructor=True,
 )
 class Points(ComplexGeoData):
     """
@@ -22,6 +21,7 @@ class Points(ComplexGeoData):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def copy(self) -> Any:
         """Create a copy of this points object"""

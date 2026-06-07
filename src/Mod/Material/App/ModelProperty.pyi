@@ -6,11 +6,9 @@ from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Final
 
-
 @export(
     Include="Mod/Material/App/Model.h",
     Namespace="Materials",
-    Constructor=True,
     Delete=True,
 )
 class ModelProperty(BaseClass):
@@ -20,6 +18,8 @@ class ModelProperty(BaseClass):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Name: str = ...
     """Property name."""

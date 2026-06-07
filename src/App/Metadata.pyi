@@ -8,7 +8,6 @@ from typing import Any, List, Dict, overload, Optional
 
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 @class_declarations(

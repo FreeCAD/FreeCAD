@@ -9,7 +9,6 @@ from typing import Final, overload
 @export(
     Twin="Geom2dHyperbola",
     PythonName="Part.Geom2d.Hyperbola2d",
-    Constructor=True,
 )
 class Hyperbola2d(Conic2d):
     """

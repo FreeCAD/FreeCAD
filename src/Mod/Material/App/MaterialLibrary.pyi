@@ -5,10 +5,8 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
 
-
 @export(
     Namespace="Materials",
-    Constructor=True,
     Delete=True,
 )
 class MaterialLibrary(BaseClass):
@@ -18,6 +16,8 @@ class MaterialLibrary(BaseClass):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Name: str = ...
     """Name of the library"""

@@ -7,7 +7,6 @@ from Base.Metadata import constmethod, export
 
 @export(
     Namespace="Path",
-    Constructor=True,
     RichCompare=True,
     Delete=True,
 )
@@ -19,6 +18,7 @@ class VoronoiVertex(BaseClass):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def toPoint(self) -> Any:
         """Returns a Vector - or None if not possible"""

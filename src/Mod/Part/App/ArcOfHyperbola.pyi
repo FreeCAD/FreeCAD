@@ -9,12 +9,13 @@ from typing import Final
 @export(
     PythonName="Part.ArcOfHyperbola",
     Twin="GeomArcOfHyperbola",
-    Constructor=True,
 )
 class ArcOfHyperbola(ArcOfConic):
     """
     Describes a portion of an hyperbola
     """
+
+    def __init__(self) -> None: ...
 
     MajorRadius: float = 0.0
     """The major radius of the hyperbola."""

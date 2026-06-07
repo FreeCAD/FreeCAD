@@ -10,7 +10,6 @@ from typing import Final, overload
 @export(
     Twin="GeomEllipse",
     PythonName="Part.Ellipse",
-    Constructor=True,
 )
 class Ellipse(Conic):
     """

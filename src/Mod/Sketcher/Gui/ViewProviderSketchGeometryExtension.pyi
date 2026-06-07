@@ -7,7 +7,6 @@ from Part.App.GeometryExtension import GeometryExtension
 
 @export(
     Namespace="SketcherGui",
-    Constructor=True,
 )
 class ViewProviderSketchGeometryExtension(GeometryExtension):
     """
@@ -16,6 +15,8 @@ class ViewProviderSketchGeometryExtension(GeometryExtension):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     VisualLayerId: int = ...
     """Sets/returns this geometry's Visual Layer Id."""

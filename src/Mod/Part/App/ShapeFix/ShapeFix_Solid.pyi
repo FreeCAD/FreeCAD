@@ -8,7 +8,6 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 @export(
     PythonName="Part.ShapeFix.Solid",
     Include="ShapeFix_Solid.hxx",
-    Constructor=True,
 )
 class ShapeFix_Solid(ShapeFix_Root):
     """
@@ -17,6 +16,8 @@ class ShapeFix_Solid(ShapeFix_Root):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     FixShellMode: bool = ...
     """Mode for applying fixes of ShapeFix_Shell"""

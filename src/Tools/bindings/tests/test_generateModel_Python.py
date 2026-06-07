@@ -26,7 +26,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Base.PyObjectBase import PyObjectBase
 
 
-            @export(Constructor=True)
+            @export()
             class Example(PyObjectBase):
                 \"\"\"Example class doc.\"\"\"
 
@@ -47,6 +47,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             model = parse_python_code(str(path))
 
         export = model.PythonExport[0]
+        self.assertTrue(export.Constructor)
         self.assertEqual([method.Name for method in export.Methode], [])
         self.assertIn("Example class doc.", export.Documentation.UserDocu)
         self.assertIn("Example()", export.Documentation.UserDocu)
@@ -64,7 +65,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Base.PyObjectBase import PyObjectBase
 
 
-            @export(Constructor=True)
+            @export()
             class Example(PyObjectBase):
                 \"\"\"
                 Example class doc.
@@ -91,11 +92,75 @@ class GenerateModelPythonTests(unittest.TestCase):
             model = parse_python_code(str(path))
 
         export = model.PythonExport[0]
+        self.assertTrue(export.Constructor)
         user_doc = export.Documentation.UserDocu
         self.assertIn("The following constructors are supported:", user_doc)
         self.assertEqual(user_doc.count("Example()"), 1)
         self.assertEqual(user_doc.count("Example(value)"), 1)
         self.assertNotIn("--\n", user_doc)
+
+    def test_plain_constructor_is_not_exported_as_method(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Example(PyObjectBase):
+                def __init__(self) -> None: ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse_python_code(str(path))
+
+        export = model.PythonExport[0]
+        self.assertTrue(export.Constructor)
+        self.assertEqual([method.Name for method in export.Methode], [])
+
+    def test_constructor_is_not_inferred_without_init(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Example(PyObjectBase):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse_python_code(str(path))
+
+        export = model.PythonExport[0]
+        self.assertFalse(export.Constructor)
+
+    def test_constructor_export_keyword_is_rejected(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Constructor=True)
+            class Example(PyObjectBase):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "define __init__"):
+                parse_python_code(str(path))
 
     def test_father_include_is_inferred_from_same_directory_parent_pyi(self):
         parent_source = textwrap.dedent("""
@@ -116,7 +181,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Parent import Parent
 
 
-            @export(Constructor=True)
+            @export()
             class Child(Parent):
                 ...
             """)
@@ -161,7 +226,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Parent import Parent
 
 
-            @export(Constructor=True)
+            @export()
             class Child(Parent):
                 ...
             """)
@@ -208,7 +273,7 @@ class GenerateModelPythonTests(unittest.TestCase):
                     from {module_name}.Parent import Parent
 
 
-                    @export(Constructor=True)
+                    @export()
                     class Child(Parent):
                         ...
                     """),
@@ -242,7 +307,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Parent import Parent
 
 
-            @export(Constructor=True)
+            @export()
             class Child(Parent):
                 ...
             """)
@@ -282,7 +347,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Parent import Parent
 
 
-            @export(Constructor=True)
+            @export()
             class Child(Parent):
                 ...
             """)
@@ -328,7 +393,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Base.PyObjectBase import PyObjectBase
 
 
-            @export(Constructor=True)
+            @export()
             class Example(PyObjectBase):
                 Position: Annotated[Vector, cxx_type("Vector")]
             """)
@@ -357,12 +422,11 @@ class GenerateModelPythonTests(unittest.TestCase):
 
             import Base
             from Base.Vector import Vector
-
             from Base.Metadata import export
             from Base.PyObjectBase import PyObjectBase
 
 
-            @export(Constructor=True)
+            @export()
             class Example(PyObjectBase):
                 Position: Vector
                 Direction: Base.Vector
@@ -389,7 +453,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Base.PyObjectBase import PyObjectBase
 
 
-            @export(Constructor=True)
+            @export()
             class Example(PyObjectBase):
                 ...
             """)
@@ -429,7 +493,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Parent import Parent
 
 
-            @export(Constructor=True)
+            @export()
             class Child(Parent):
                 ...
             """)
@@ -483,7 +547,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Parent import Parent
 
 
-            @export(Constructor=True)
+            @export()
             class Child(Parent):
                 ...
             """)

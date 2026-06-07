@@ -5,9 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from Part.App.GeometryExtension import GeometryExtension
 
-@export(
-    Constructor=True,
-)
+@export()
 class SketchGeometryExtension(GeometryExtension):
     """
     Describes a SketchGeometryExtension
@@ -15,6 +13,8 @@ class SketchGeometryExtension(GeometryExtension):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Id: int = 0
     """Returns the Id of the SketchGeometryExtension."""

@@ -11,7 +11,6 @@ from typing import Optional
     PythonName="Part.HLRToShapePy",
     Twin="HLRBRep_HLRToShape",
     Include="HLRBRep_HLRToShape.hxx",
-    Constructor=True,
     Delete=True,
 )
 class HLRToShape(PyObjectBase):
@@ -44,6 +43,7 @@ class HLRToShape(PyObjectBase):
     class.
     """
 
+    def __init__(self) -> None: ...
     def vCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
         """
         vCompound(Shape=None) -> TopoShape

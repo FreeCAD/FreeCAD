@@ -147,7 +147,7 @@ The `@overload` variants are not used for method code generation and primarily e
 provide Python type hinting for type checkers like mypy. Overload-only constructors are the
 exception: when the overload set carries constructor documentation, that documentation is
 folded into the exported class documentation, because constructor bindings are generated
-through `Constructor=True` rather than a normal method stub.
+from the presence of `__init__` rather than as a normal method stub.
 
 ### Attributes and Read-Only Properties
 

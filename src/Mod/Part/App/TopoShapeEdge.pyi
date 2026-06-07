@@ -12,7 +12,6 @@ from typing import Final, Tuple, Dict, List, overload
 
 @export(
     Twin="TopoShape",
-    Constructor=True,
 )
 class TopoShapeEdge(TopoShape):
     """

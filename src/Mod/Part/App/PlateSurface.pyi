@@ -8,13 +8,13 @@ from GeometrySurface import GeometrySurface
 @export(
     Twin="GeomPlateSurface",
     PythonName="Part.PlateSurface",
-    Constructor=True,
 )
 class PlateSurface(GeometrySurface):
     """
     Represents a plate surface in FreeCAD. Plate surfaces can be defined by specifying points or curves as constraints, and they can also be approximated to B-spline surfaces using the makeApprox method. This class is commonly used in CAD modeling for creating surfaces that represent flat or curved plates, such as sheet metal components or structural elements.
     """
 
+    def __init__(self) -> None: ...
     def makeApprox(
         self,
         *,

@@ -10,7 +10,6 @@ from typing import Final
     PythonName="Part.GeomPlate.CurveConstraintPy",
     Twin="GeomPlate_CurveConstraint",
     Include="GeomPlate_CurveConstraint.hxx",
-    Constructor=True,
     Delete=True,
 )
 class CurveConstraint(PyObjectBase):
@@ -20,6 +19,8 @@ class CurveConstraint(PyObjectBase):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     NbPoints: int = ...
     """

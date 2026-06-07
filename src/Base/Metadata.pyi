@@ -15,6 +15,8 @@ _FuncT = TypeVar("_FuncT", bound=Callable[..., Any])
 def export(**kwargs: Any) -> Callable[[_ClassT], _ClassT]:
     """
     A decorator to attach metadata to a class.
+
+    Constructibility is inferred from __init__; do not pass Constructor.
     """
     ...
 

@@ -11,7 +11,6 @@ from Base import Vector
 
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
-    Constructor=True,
     Delete=True,
 )
 class CosmeticEdge(PyObjectBase):
@@ -21,6 +20,8 @@ class CosmeticEdge(PyObjectBase):
     Author: WandererFan (wandererfan@gmail.com)
     License: LGPL-2.1-or-later
     """
+
+    def __init__(self) -> None: ...
 
     Tag: Final[str]
     """Gives the tag of the CosmeticEdge as string."""

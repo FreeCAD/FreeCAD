@@ -9,9 +9,7 @@ from Base.BoundBox import BoundBox
 from App.ComplexGeoData import ComplexGeoData
 from typing import Final, List, Tuple, Union, overload
 
-@export(
-    Constructor=True,
-)
+@export()
 class TopoShape(ComplexGeoData):
     """
     TopoShape is the OpenCasCade topological shape wrapper.
@@ -20,6 +18,8 @@ class TopoShape(ComplexGeoData):
     * Edge#, where # is in range(1, number of edges)
     * Face#, where # is in range(1, number of faces)
     """
+
+    def __init__(self) -> None: ...
 
     ShapeType: Final[str] = ""
     """Returns the type of the shape."""

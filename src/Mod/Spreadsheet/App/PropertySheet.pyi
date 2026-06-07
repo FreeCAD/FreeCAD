@@ -5,9 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export, sequence_protocol
 from Base.Persistence import Persistence
 
-@export(
-    Constructor=True,
-)
+@export()
 @sequence_protocol(
     mp_subscript="true",
 )
@@ -18,3 +16,5 @@ class PropertySheet(Persistence):
     Author: Eivind Kvedalen (eivind@kvedalen.name)
     License: LGPL-2.1-or-later
     """
+
+    def __init__(self) -> None: ...

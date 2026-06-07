@@ -7,7 +7,6 @@ from GeometryExtension import GeometryExtension
 
 @export(
     Include="Mod/Part/App/GeometryDefaultExtension.h",
-    Constructor=True,
 )
 class GeometryDoubleExtension(GeometryExtension):
     """
@@ -16,6 +15,8 @@ class GeometryDoubleExtension(GeometryExtension):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Value: float = ...
     """Returns the value of the GeometryDoubleExtension."""

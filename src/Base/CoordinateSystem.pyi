@@ -11,7 +11,6 @@ from Rotation import Rotation
 from typing import Union
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class CoordinateSystem(PyObjectBase):
@@ -26,6 +25,8 @@ class CoordinateSystem(PyObjectBase):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Axis: AxisPy = None
     """Set or get axis."""

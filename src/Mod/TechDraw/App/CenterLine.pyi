@@ -8,7 +8,6 @@ from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class CenterLine(PyObjectBase):
@@ -19,6 +18,7 @@ class CenterLine(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def clone(self) -> Any:
         """Create a clone of this centerline"""

@@ -11,7 +11,6 @@ from typing import Final, List, Any
     Namespace="Materials",
     Include="Mod/Material/App/MaterialValue.h",
     Delete=True,
-    Constructor=True,
 )
 class Array2D(BaseClass):
     """
@@ -20,6 +19,8 @@ class Array2D(BaseClass):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Array: Final[List] = ...
     """The 2 dimensional array."""

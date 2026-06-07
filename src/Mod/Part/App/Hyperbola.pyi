@@ -10,7 +10,6 @@ from typing import Final, overload
 @export(
     Twin="GeomHyperbola",
     PythonName="Part.Hyperbola",
-    Constructor=True,
 )
 class Hyperbola(Conic):
     """

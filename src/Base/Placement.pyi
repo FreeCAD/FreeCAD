@@ -10,7 +10,6 @@ from Vector import Vector
 from typing import Sequence, overload
 
 @export(
-    Constructor=True,
     Delete=True,
     NumberProtocol=True,
     RichCompare=True,

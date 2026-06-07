@@ -8,7 +8,6 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class MeshPoint(PyObjectBase):
@@ -24,6 +23,7 @@ class MeshPoint(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def unbound(self) -> Any:
         """method unbound()
         Cut the connection to a MeshObject. The point becomes
