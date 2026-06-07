@@ -8,7 +8,6 @@ from typing import Sequence, overload
 
 @export(
     Twin="TopoShape",
-    Include="Mod/Part/App/TopoShape.h",
     Constructor=True,
 )
 class TopoShapeCompound(TopoShape):

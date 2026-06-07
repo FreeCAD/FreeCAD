@@ -10,7 +10,6 @@ from typing import Final
 @export(
     Twin="GeomParabola",
     PythonName="Part.Parabola",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class Parabola(Conic):

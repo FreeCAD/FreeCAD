@@ -49,8 +49,11 @@ class BindingClassInfo:
     export_name: str
     python_name: str | None
     namespace: str
+    include: str
+    is_exported: bool
     path: Path
     father_include: str
+    source_dependencies: tuple[Path, ...] = ()
 
 
 class FunctionSignature:
@@ -798,6 +801,14 @@ def _include_path_from_pyi(path: str | Path, module_name: str, native_class_name
     return _get_module_path(module_name) + "/" + native_class_name + ".h"
 
 
+def _source_header_exists(source_root: Path, include: str) -> bool:
+    return bool(include) and (source_root / include).is_file()
+
+
+def _is_exported_class(class_node: ast.ClassDef) -> bool:
+    return any(_decorator_name(decorator) == "export" for decorator in class_node.decorator_list)
+
+
 def _export_kwargs_from_class(class_node: ast.ClassDef) -> dict:
     for decorator in class_node.decorator_list:
         if _decorator_name(decorator) == "export":
@@ -805,39 +816,132 @@ def _export_kwargs_from_class(class_node: ast.ClassDef) -> dict:
     return {}
 
 
+def _inherited_include_parent_info(
+    class_node: ast.ClassDef,
+    path: Path,
+    source_root: Path,
+    imports_mapping: dict[str, str] | None,
+    default_include: str,
+    visited: frozenset[tuple[str, str]],
+) -> BindingClassInfo | None:
+    if not imports_mapping or not class_node.bases:
+        return None
+    if _source_header_exists(source_root, default_include):
+        return None
+
+    base_class_name = _extract_base_class_name(class_node.bases[0])
+    parent_info = _infer_binding_parent_info(
+        path,
+        imports_mapping.get(base_class_name, ""),
+        base_class_name,
+        visited=visited,
+    )
+    if not parent_info or not parent_info.is_exported:
+        return None
+    if not _source_header_exists(source_root, parent_info.include):
+        return None
+    return parent_info
+
+
+def _inherited_include_from_parent(
+    class_node: ast.ClassDef,
+    path: Path,
+    source_root: Path,
+    imports_mapping: dict[str, str] | None,
+    default_include: str,
+    visited: frozenset[tuple[str, str]],
+) -> str:
+    parent_info = _inherited_include_parent_info(
+        class_node,
+        path,
+        source_root,
+        imports_mapping,
+        default_include,
+        visited,
+    )
+    if not parent_info:
+        return ""
+    return parent_info.include
+
+
 def _binding_info_from_class(
-    class_node: ast.ClassDef, path: Path, source_root: Path
+    class_node: ast.ClassDef,
+    path: Path,
+    source_root: Path,
+    imports_mapping: dict[str, str] | None = None,
+    visited: frozenset[tuple[str, str]] | None = None,
+    infer_parent_include: bool = True,
 ) -> BindingClassInfo:
+    if visited is None:
+        visited = frozenset()
+    visited = visited | {(path.resolve().as_posix(), class_node.name)}
+
     export_kwargs = _export_kwargs_from_class(class_node)
     export_name = export_kwargs.get("Name", "") or _get_native_python_class_name(class_node.name)
     python_name = export_kwargs.get("PythonName", None)
     if not isinstance(python_name, str) or not python_name:
         python_name = None
-    module_name = _get_module_from_path(path.as_posix())
+    module_name = _get_module_from_path(path.as_posix()) or ""
+    default_include = _include_path_from_pyi(path, module_name, class_node.name)
+    include = export_kwargs.get("Include", "")
+    include_parent_info = None
+    if not include and infer_parent_include:
+        include_parent_info = _inherited_include_parent_info(
+            class_node,
+            path,
+            source_root,
+            imports_mapping,
+            default_include,
+            visited,
+        )
+        if include_parent_info:
+            include = include_parent_info.include
+    source_dependencies = ()
+    if include_parent_info:
+        source_dependencies = (
+            include_parent_info.path,
+            *include_parent_info.source_dependencies,
+        )
     return BindingClassInfo(
         class_name=class_node.name,
         export_name=export_name,
         python_name=python_name,
         namespace=export_kwargs.get("Namespace", "") or module_name or "",
+        include=include or default_include,
+        is_exported=_is_exported_class(class_node),
         path=path,
         father_include=_header_path_from_pyi(path, source_root, export_name),
+        source_dependencies=source_dependencies,
     )
 
 
 def _binding_info_from_file(
-    path: Path, source_root: Path, class_name: str
+    path: Path,
+    source_root: Path,
+    class_name: str,
+    visited: frozenset[tuple[str, str]] | None = None,
 ) -> BindingClassInfo | None:
     if not path.exists():
+        return None
+    key = (path.resolve().as_posix(), class_name)
+    if visited and key in visited:
         return None
 
     try:
         tree = ast.parse(path.read_text(encoding="utf-8"))
     except (OSError, SyntaxError):
         return None
+    imports_mapping = _parse_imports(tree)
 
     for node in tree.body:
         if isinstance(node, ast.ClassDef) and node.name == class_name:
-            return _binding_info_from_class(node, path, source_root)
+            return _binding_info_from_class(
+                node,
+                path,
+                source_root,
+                imports_mapping=imports_mapping,
+                visited=visited,
+            )
 
     return None
 
@@ -961,12 +1065,19 @@ def _binding_class_index(source_root: str) -> tuple[dict, dict, dict]:
             tree = ast.parse(pyi_path.read_text(encoding="utf-8"))
         except (OSError, SyntaxError):
             continue
+        imports_mapping = _parse_imports(tree)
 
         for node in tree.body:
             if not isinstance(node, ast.ClassDef):
                 continue
 
-            info = _binding_info_from_class(node, pyi_path, root)
+            info = _binding_info_from_class(
+                node,
+                pyi_path,
+                root,
+                imports_mapping=imports_mapping,
+                infer_parent_include=False,
+            )
             by_class.setdefault(info.class_name, []).append(info)
 
             directory_key = pyi_path.parent.relative_to(root).as_posix()
@@ -994,6 +1105,7 @@ def _binding_info_from_index(
     imported_from_module: str,
     class_name: str,
     source_root: Path,
+    visited: frozenset[tuple[str, str]] | None = None,
 ) -> BindingClassInfo | None:
     by_module_and_class, by_directory_module_and_class, by_class = _binding_class_index(
         source_root.as_posix()
@@ -1008,24 +1120,29 @@ def _binding_info_from_index(
             by_directory_module_and_class.get((current_dir_key, import_path, class_name))
         )
         if info:
-            return info
+            return _binding_info_from_file(info.path, source_root, class_name, visited) or info
 
     info = _single_info(by_module_and_class.get((import_path, class_name)))
     if info:
-        return info
+        return _binding_info_from_file(info.path, source_root, class_name, visited) or info
 
     if import_path.endswith("Py"):
         info = _single_info(by_module_and_class.get((import_path[: -len("Py")], class_name)))
         if info:
-            return info
+            return _binding_info_from_file(info.path, source_root, class_name, visited) or info
 
-    return _single_info(by_class.get(class_name))
+    info = _single_info(by_class.get(class_name))
+    if info:
+        return _binding_info_from_file(info.path, source_root, class_name, visited) or info
+    return None
 
 
 def _infer_binding_parent_info(
     path: str | Path,
     imported_from_module: str,
     class_name: str,
+    visited: frozenset[tuple[str, str]] | None = None,
+    use_index: bool = True,
 ) -> BindingClassInfo | None:
     source_root = _source_root_from_path(path)
     if source_root is None:
@@ -1034,11 +1151,13 @@ def _infer_binding_parent_info(
     for candidate in _candidate_parent_pyi_paths(
         path, imported_from_module, class_name, source_root
     ):
-        info = _binding_info_from_file(candidate, source_root, class_name)
+        info = _binding_info_from_file(candidate, source_root, class_name, visited)
         if info:
             return info
 
-    return _binding_info_from_index(path, imported_from_module, class_name, source_root)
+    if not use_index:
+        return None
+    return _binding_info_from_index(path, imported_from_module, class_name, source_root, visited)
 
 
 def _extract_base_class_name(base: ast.expr) -> str:
@@ -1122,6 +1241,19 @@ def _parse_class(
     native_class_name = _get_native_class_name(class_node.name)
     native_python_class_name = _get_native_python_class_name(class_node.name)
     include = _include_path_from_pyi(path, module_name, native_class_name)
+    source_root = _source_root_from_path(path)
+    include_parent_info = None
+    if source_root is not None:
+        include_parent_info = _inherited_include_parent_info(
+            class_node,
+            Path(path),
+            source_root,
+            imports_mapping,
+            include,
+            frozenset({(Path(path).resolve().as_posix(), class_node.name)}),
+        )
+        if include_parent_info:
+            include = include_parent_info.include
     twin = export_decorator_kwargs.get("Twin", "") or native_class_name
     twin_pointer = export_decorator_kwargs.get("TwinPointer", "") or twin
 
@@ -1131,6 +1263,7 @@ def _parse_class(
             not export_decorator_kwargs.get("Father")
             or not export_decorator_kwargs.get("FatherInclude")
             or not export_decorator_kwargs.get("FatherNamespace")
+            or not export_decorator_kwargs.get("Include")
         ):
             _add_source_dependency(source_dependencies, father_info.path)
         father_native_python_class_name = father_info.export_name
@@ -1142,6 +1275,14 @@ def _parse_class(
             _get_module_path(parent_module_name) + "/" + father_native_python_class_name + ".h"
         )
         father_namespace = parent_module_name
+    if (
+        source_dependencies is not None
+        and not export_decorator_kwargs.get("Include")
+        and include_parent_info
+    ):
+        _add_source_dependency(source_dependencies, include_parent_info.path)
+        for dependency in include_parent_info.source_dependencies:
+            _add_source_dependency(source_dependencies, dependency)
 
     py_export = PythonExport(
         Documentation=doc_obj,

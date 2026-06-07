@@ -11,7 +11,6 @@ from typing import overload
 @export(
     PythonName="Part.Cylinder",
     Twin="GeomCylinder",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class Cylinder(GeometrySurface):

@@ -12,7 +12,6 @@ from typing import Final, List, overload, Any
 @export(
     PythonName="Part.BSplineCurve",
     Twin="GeomBSplineCurve",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class BSplineCurve(BoundedCurve):

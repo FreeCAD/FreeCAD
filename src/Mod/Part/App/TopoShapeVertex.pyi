@@ -10,7 +10,6 @@ from typing import Final, overload
 
 @export(
     Twin="TopoShape",
-    Include="Mod/Part/App/TopoShape.h",
     Constructor=True,
 )
 class TopoShapeVertex(TopoShape):

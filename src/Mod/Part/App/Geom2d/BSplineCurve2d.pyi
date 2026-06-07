@@ -10,7 +10,6 @@ from Base.Vector import Vector
 @export(
     Twin="Geom2dBSplineCurve",
     PythonName="Part.Geom2d.BSplineCurve2d",
-    Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,
 )
 class BSplineCurve2d(Curve2d):

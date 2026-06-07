@@ -7,7 +7,6 @@ from Part.App.Geom2d.Conic2d import Conic2d
 from typing import Final
 
 @export(
-    Include="Mod/Part/App/Geometry2d.h",
     Twin="Geom2dParabola",
     PythonName="Part.Geom2d.Parabola2d",
     Constructor=True,

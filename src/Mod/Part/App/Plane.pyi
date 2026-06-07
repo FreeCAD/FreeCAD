@@ -8,7 +8,6 @@ from GeometrySurface import GeometrySurface
 @export(
     PythonName="Part.Plane",
     Twin="GeomPlane",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class Plane(GeometrySurface):

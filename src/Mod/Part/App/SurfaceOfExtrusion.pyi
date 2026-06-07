@@ -10,7 +10,6 @@ from Base.Vector import Vector
 @export(
     Twin="GeomSurfaceOfExtrusion",
     PythonName="Part.SurfaceOfExtrusion",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class SurfaceOfExtrusion(GeometrySurface):

@@ -9,7 +9,6 @@ from typing import Any, Final, Tuple
 @export(
     Twin="GeomTrimmedSurface",
     PythonName="Part.RectangularTrimmedSurface",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class RectangularTrimmedSurface(GeometrySurface):

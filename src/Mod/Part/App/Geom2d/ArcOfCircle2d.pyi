@@ -9,7 +9,6 @@ from Part.Geom2d import ArcOfConic2d
 @export(
     PythonName="Part.Geom2d.ArcOfCircle2d",
     Twin="Geom2dArcOfCircle",
-    Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,
 )
 class ArcOfCircle2d(ArcOfConic2d):

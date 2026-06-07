@@ -9,7 +9,6 @@ from Part.App.Geom2d.BSplineCurve import BSplineCurve
 from typing import Final, overload, List
 
 @export(
-    Include="Mod/Part/App/Geometry2d.h",
     Twin="Geom2dCurve",
     PythonName="Part.Geom2d.Curve2d",
     Constructor=True,

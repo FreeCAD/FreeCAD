@@ -9,7 +9,6 @@ from typing import Final
 @export(
     PythonName="Part.ArcOfParabola",
     Twin="GeomArcOfParabola",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class ArcOfParabola(ArcOfConic):

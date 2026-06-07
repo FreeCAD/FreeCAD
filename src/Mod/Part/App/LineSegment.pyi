@@ -11,7 +11,6 @@ from typing import overload
 @export(
     PythonName="Part.LineSegment",
     Twin="GeomLineSegment",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class LineSegment(TrimmedCurve):

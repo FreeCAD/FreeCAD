@@ -8,7 +8,6 @@ from typing import Dict, List, Final, overload, Optional, Sequence
 
 @export(
     Twin="TopoShape",
-    Include="Mod/Part/App/TopoShape.h",
     Constructor=True,
 )
 class TopoShapeWire(TopoShape):

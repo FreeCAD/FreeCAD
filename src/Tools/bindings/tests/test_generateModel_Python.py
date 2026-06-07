@@ -410,6 +410,108 @@ class GenerateModelPythonTests(unittest.TestCase):
         self.assertEqual(export.Include, f"Mod/{module_name}/App/Example.h")
         self.assertIn(f"#include <Mod/{module_name}/App/Example.h>", header_text)
 
+    def test_include_is_inherited_from_parent_pyi_when_child_header_is_missing(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Parent(PyObjectBase):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export(Constructor=True)
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            module_name = Path(temp_dir).name
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            parent_path = app_dir / "Parent.pyi"
+            parent_path.write_text(parent_source, encoding="utf-8")
+            (app_dir / "Parent.h").write_text("", encoding="utf-8")
+            child_path = app_dir / "Child.pyi"
+            child_path.write_text(child_source, encoding="utf-8")
+
+            model = parse_python_code(str(child_path))
+            self.assertEqual(
+                model.SourceDependencies,
+                [parent_path.resolve().as_posix()],
+            )
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.Include, f"Mod/{module_name}/App/Parent.h")
+
+    def test_include_inheritance_tracks_ancestor_pyi_dependencies(self):
+        ancestor_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Ancestor(PyObjectBase):
+                ...
+            """)
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Ancestor import Ancestor
+
+
+            @export()
+            class Parent(Ancestor):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export(Constructor=True)
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            module_name = Path(temp_dir).name
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            ancestor_path = app_dir / "Ancestor.pyi"
+            ancestor_path.write_text(ancestor_source, encoding="utf-8")
+            (app_dir / "Ancestor.h").write_text("", encoding="utf-8")
+            parent_path = app_dir / "Parent.pyi"
+            parent_path.write_text(parent_source, encoding="utf-8")
+            child_path = app_dir / "Child.pyi"
+            child_path.write_text(child_source, encoding="utf-8")
+
+            model = parse_python_code(str(child_path))
+            self.assertEqual(
+                model.SourceDependencies,
+                [
+                    parent_path.resolve().as_posix(),
+                    ancestor_path.resolve().as_posix(),
+                ],
+            )
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.Include, f"Mod/{module_name}/App/Ancestor.h")
+
     def test_twin_pointer_defaults_to_twin(self):
         source = textwrap.dedent("""
             from __future__ import annotations

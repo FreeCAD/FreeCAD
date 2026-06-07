@@ -8,7 +8,6 @@ from warnings import deprecated
 
 @export(
     Twin="PythonBaseWorkbench",
-    Include="Gui/Workbench.h",
 )
 class PythonWorkbench(Workbench):
     """

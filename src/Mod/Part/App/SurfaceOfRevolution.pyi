@@ -12,7 +12,6 @@ from typing import overload
 @export(
     Twin="GeomSurfaceOfRevolution",
     PythonName="Part.SurfaceOfRevolution",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class SurfaceOfRevolution(GeometrySurface):

@@ -10,7 +10,6 @@ from typing import Final
 @export(
     Twin="GeomToroid",
     PythonName="Part.Toroid",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class Toroid(GeometrySurface):

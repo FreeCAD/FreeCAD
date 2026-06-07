@@ -11,7 +11,6 @@ from typing import Final
 @export(
     Twin="GeomSphere",
     PythonName="Part.Sphere",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class Sphere(GeometrySurface):

@@ -12,7 +12,6 @@ from typing import Final, Tuple, Any
 @export(
     Twin="GeomBezierSurface",
     PythonName="Part.BezierSurface",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class BezierSurface(GeometrySurface):

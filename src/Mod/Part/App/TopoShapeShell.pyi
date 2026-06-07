@@ -8,7 +8,6 @@ from typing import Final, Dict
 
 @export(
     Twin="TopoShape",
-    Include="Mod/Part/App/TopoShape.h",
     Constructor=True,
 )
 class TopoShapeShell(TopoShape):

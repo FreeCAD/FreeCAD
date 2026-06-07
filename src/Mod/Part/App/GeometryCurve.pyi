@@ -14,7 +14,6 @@ from typing import Final, overload, List, Union, Optional, Tuple
 @export(
     Twin="GeomCurve",
     PythonName="Part.Curve",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class GeometryCurve(Geometry):

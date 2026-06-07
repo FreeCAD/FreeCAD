@@ -9,7 +9,6 @@ from typing import Final
 @export(
     PythonName="Part.ArcOfHyperbola",
     Twin="GeomArcOfHyperbola",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class ArcOfHyperbola(ArcOfConic):

@@ -8,7 +8,6 @@ from Part.Geom2d import Curve2d
 @export(
     Twin="Geom2dOffsetCurve",
     PythonName="Part.Geom2d.OffsetCurve2d",
-    Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,
 )
 class OffsetCurve2d(Curve2d):

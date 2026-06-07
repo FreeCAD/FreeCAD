@@ -10,7 +10,6 @@ from typing import Final, List
 @export(
     Twin="GeomBezierCurve",
     PythonName="Part.BezierCurve",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class BezierCurve(BoundedCurve):

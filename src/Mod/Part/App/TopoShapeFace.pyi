@@ -9,7 +9,6 @@ from typing import Final, Tuple, Dict, Optional, List, Sequence, overload
 
 @export(
     Twin="TopoShape",
-    Include="Mod/Part/App/TopoShape.h",
     Constructor=True,
 )
 class TopoShapeFace(TopoShape):

@@ -11,7 +11,6 @@ from typing import overload
 @export(
     PythonName="Part.Arc",
     Twin="GeomTrimmedCurve",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class Arc(TrimmedCurve):

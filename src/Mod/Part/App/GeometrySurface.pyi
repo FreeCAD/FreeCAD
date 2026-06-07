@@ -13,7 +13,6 @@ from typing import Final, overload, Any, Tuple, List, Literal, Union
 @export(
     Twin="GeomSurface",
     PythonName="Part.GeometrySurface",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class GeometrySurface(Geometry):

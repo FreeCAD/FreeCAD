@@ -10,7 +10,6 @@ from typing import overload
 @export(
     PythonName="Part.ArcOfConic",
     Twin="GeomArcOfConic",
-    Include="Mod/Part/App/Geometry.h",
     Constructor=True,
 )
 class ArcOfConic(TrimmedCurve):
