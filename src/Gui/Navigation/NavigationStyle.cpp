@@ -2020,6 +2020,10 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
 
     const float zoom = dir[2] * 0.0001;
     dir[2] = 0.0;
+    float zoomFactor = 1.0 + zoom;
+    if (zoomFactor < 0.1F) {
+        zoomFactor = 0.1F;
+    }
 
     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
         static_cast<SoOrthographicCamera*>(camera)->scaleHeight(1.0 + zoom);
@@ -2057,10 +2061,6 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
 
     if (camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
         const SbVec3f zoomPivot = useMotionRotationCenter ? motionRotationCenter : center;
-        float zoomFactor = 1.0 + zoom;
-        if (zoomFactor < 0.1F) {
-            zoomFactor = 0.1F;
-        }
         newPosition = zoomPivot + (newPosition - zoomPivot) * zoomFactor;
         camera->focalDistance.setValue(camera->focalDistance.getValue() * zoomFactor);
     }
