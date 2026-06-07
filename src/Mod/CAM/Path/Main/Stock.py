@@ -349,9 +349,15 @@ def SetupStockObject(obj, stockType):
         import Path.Base.Gui.IconViewProvider as PathIconViewProvider
 
         PathIconViewProvider.ViewProvider(obj.ViewObject, "Stock")
-        obj.ViewObject.Transparency = 90
-        obj.ViewObject.PointSize = 5
-        obj.ViewObject.DisplayMode = "Wireframe"
+        obj.ViewObject.ShapeColor = (0.792, 0.718, 0.537)
+        obj.ViewObject.Transparency = 95
+        obj.ViewObject.LineColor = (0.553, 0.502, 0.376)
+        obj.ViewObject.PointColor = (0.553, 0.502, 0.376)
+        obj.ViewObject.DrawStyle = "Dotted"
+        obj.ViewObject.DisplayMode = "Flat Lines"
+        obj.ViewObject.PointSize = 1
+        obj.ViewObject.LineWidth = 1
+        obj.ViewObject.Selectable = False
 
 
 class FakeJob(object):
