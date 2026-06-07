@@ -171,7 +171,11 @@ class PathDressupTagTaskPanel:
         self.form.lwTags.blockSignals(True)
         self.form.lwTags.clear()
         for i, pos in enumerate(self.Positions):
-            lbl = "%d: (%.2f, %.2f)" % (i, pos.x, pos.y)
+            lbl = "%d: (%s, %s)" % (
+                i,
+                FreeCAD.Units.Quantity(pos.x, FreeCAD.Units.Length).UserString,
+                FreeCAD.Units.Quantity(pos.y, FreeCAD.Units.Length).UserString,
+            )
             item = QtGui.QListWidgetItem(lbl)
             item.setData(self.DataX, pos.x)
             item.setData(self.DataY, pos.y)
