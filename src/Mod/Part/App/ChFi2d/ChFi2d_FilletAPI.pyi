@@ -9,7 +9,6 @@ from Part.PointPy import Point
 
 @export(
     PythonName="Part.ChFi2d.FilletAPI",
-    Twin="ChFi2d_FilletAPI",
     Include="ChFi2d_FilletAPI.hxx",
     Constructor=True,
     Delete=True,

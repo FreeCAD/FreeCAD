@@ -7,7 +7,6 @@ from Base.PyObjectBase import PyObjectBase
 from Part.TopoShapePy import TopoShape
 
 @export(
-    Twin="HLRBRep_PolyAlgo",
     Include="HLRBRep_PolyAlgo.hxx",
     Constructor=True,
 )

@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Twin="Geometry2d",
     PythonName="Part.Geom2d.Geometry2d",
     Include="Mod/Part/App/Geometry2d.h",
     Constructor=True,

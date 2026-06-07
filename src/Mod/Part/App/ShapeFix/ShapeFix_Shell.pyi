@@ -7,7 +7,6 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 
 @export(
     PythonName="Part.ShapeFix.Shell",
-    Twin="ShapeFix_Shell",
     Include="ShapeFix_Shell.hxx",
     Constructor=True,
 )

@@ -5,9 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from PartFeature import PartFeature
 
-@export(
-    Twin="BodyBase",
-)
+@export()
 class BodyBase(PartFeature):
     """
     Base class of all Body objects

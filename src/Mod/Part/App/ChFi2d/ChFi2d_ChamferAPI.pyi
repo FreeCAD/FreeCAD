@@ -9,7 +9,6 @@ from Base.PyObjectBase import PyObjectBase
 
 @export(
     PythonName="Part.ChFi2d.ChamferAPI",
-    Twin="ChFi2d_ChamferAPI",
     Include="ChFi2d_ChamferAPI.hxx",
     Constructor=True,
     Delete=True,

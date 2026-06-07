@@ -7,9 +7,7 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod
 from typing import Final, List, Any
 
-
 @export(
-    Twin="Array2D",
     Namespace="Materials",
     Include="Mod/Material/App/MaterialValue.h",
     Delete=True,

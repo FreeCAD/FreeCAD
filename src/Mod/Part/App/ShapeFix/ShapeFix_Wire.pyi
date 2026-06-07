@@ -7,7 +7,6 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 
 @export(
     PythonName="Part.ShapeFix.Wire",
-    Twin="ShapeFix_Wire",
     Include="ShapeFix_Wire.hxx",
     Constructor=True,
 )

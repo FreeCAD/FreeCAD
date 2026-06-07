@@ -6,7 +6,6 @@ from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Twin="HLRBRep_Algo",
     Include="HLRBRep_Algo.hxx",
     Constructor=True,
 )

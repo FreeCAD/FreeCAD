@@ -7,9 +7,7 @@ from Metadata import (
 )
 from Base.BaseClass import BaseClass
 
-
 @export(
-    Twin="MaterialTreeWidget",
     Namespace="MatGui",
     Constructor=True,
 )
