@@ -42,6 +42,7 @@ from Path.Tool.toolbit.ui.selector import ToolBitSelector
 from Machine.models import MachineFactory
 from Machine.ui.editor import MachineEditorDialog
 import math
+import os
 import traceback
 from PySide import QtWidgets
 
@@ -1142,10 +1143,13 @@ class TaskPanel:
         self.populateMachineCombo()
 
     def setPostProcessorOutputFile(self):
+        current = self.form.postProcessorOutputFile.text().strip()
+        if not os.path.exists(os.path.dirname(current)) and not os.path.exists(current):
+            current = os.path.dirname(FreeCAD.activeDocument().FileName)
         filename = QtGui.QFileDialog.getSaveFileName(
             self.form,
             translate("CAM_Job", "Select Output File"),
-            None,
+            current,
             translate("CAM_Job", "All Files (*.*)"),
         )
         if filename and filename[0]:
