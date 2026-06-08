@@ -231,7 +231,9 @@ class TestToolProcessing(unittest.TestCase):
                 "properties": {
                     "preamble": "G17 G54 G40 G49 G80 G90",
                     "postamble": "M05\nG17 G54 G90 G80 G40\nM2",
-                    "supported_commands": Constants.GCODE_SUPPORTED + Constants.GCODE_FIXTURES + Constants.MCODE_SUPPORTED,
+                    "supported_commands": Constants.GCODE_SUPPORTED
+                    + Constants.GCODE_FIXTURES
+                    + Constants.MCODE_SUPPORTED,
                 },
             },
             "processing": {"tool_change": True, "early_tool_prep": False},
