@@ -1225,6 +1225,9 @@ class gridTracker(Tracker):
         s.addChild(texts)
 
         super().__init__(children=[s], name="gridTracker")
+        self.runtime_config = {}
+        self.default_show_always = False
+        self.default_show_during_command = False
         self.show_during_command = False
         self.show_always = False
         self.reset()
@@ -1498,14 +1501,45 @@ class gridTracker(Tracker):
         self.mainlines = ml
         self.update()
 
+    def setVisibilityDefaults(self, show_always=False, show_during_command=False):
+        self.default_show_always = bool(show_always)
+        self.default_show_during_command = bool(show_during_command)
+        self.restoreDefaultVisibility()
+
+    def restoreDefaultVisibility(self):
+        self.show_always = self.default_show_always
+        self.show_during_command = self.default_show_during_command
+
+    def setRuntimeConfig(self, config=None):
+        self.runtime_config = dict(config or {})
+
+    def clearRuntimeConfig(self):
+        self.runtime_config = {}
+
+    def _getPreferenceConfig(self):
+        try:
+            spacing = FreeCAD.Units.Quantity(params.get_param("gridSpacing")).Value
+        except ValueError:
+            spacing = 1
+        return {
+            "space": spacing,
+            "mainlines": params.get_param("gridEvery"),
+            "numlines": params.get_param("gridSize"),
+        }
+
+    def _getResolvedConfig(self):
+        config = self._getPreferenceConfig()
+        for key, value in self.runtime_config.items():
+            if value is not None:
+                config[key] = value
+        return config
+
     def reset(self):
         """Reset the grid according to preferences settings."""
-        try:
-            self.space = FreeCAD.Units.Quantity(params.get_param("gridSpacing")).Value
-        except ValueError:
-            self.space = 1
-        self.mainlines = params.get_param("gridEvery")
-        self.numlines = params.get_param("gridSize")
+        config = self._getResolvedConfig()
+        self.space = config["space"]
+        self.mainlines = config["mainlines"]
+        self.numlines = config["numlines"]
         self.update()
 
     def set(self):
