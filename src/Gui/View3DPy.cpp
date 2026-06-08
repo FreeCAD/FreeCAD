@@ -64,9 +64,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtern.h"
 
-
 using namespace Gui;
-
 
 void View3DInventorPy::init_type()
 {
@@ -751,8 +749,16 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
             rot.setValue(q0, q1, q2, q3);
         }
 
-        SoCamera* cam = getView3DInventorPtr()->getViewer()->getCamera();
-        cam->orientation = rot;
+        auto* viewer = getView3DInventorPtr()->getViewer();
+        auto* navigation = viewer->navigationStyle();
+        if (!navigation
+            || !navigation->setCameraOrientationValue(
+                viewer->getCamera(),
+                rot,
+                NavigationStyle::OrientationChangeSource::Programmatic
+            )) {
+            return Py::None();
+        }
 
         if (scale < 0.0) {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -804,12 +810,20 @@ void View3DInventorPy::setDefaultCameraHeight(float scale)
 Py::Object View3DInventorPy::viewRotateLeft()
 {
     try {
-        SoCamera* cam = getView3DInventorPtr()->getViewer()->getSoRenderManager()->getCamera();
+        auto* viewer = getView3DInventorPtr()->getViewer();
+        auto* navigation = viewer->navigationStyle();
+        SoCamera* cam = viewer->getSoRenderManager()->getCamera();
         SbRotation rot = cam->orientation.getValue();
         SbVec3f vdir(0, 0, -1);
         rot.multVec(vdir, vdir);
         SbRotation nrot(vdir, (float)std::numbers::pi / 2);
-        cam->orientation.setValue(rot * nrot);
+        if (navigation) {
+            navigation->setCameraOrientationValue(
+                cam,
+                rot * nrot,
+                NavigationStyle::OrientationChangeSource::Programmatic
+            );
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -827,12 +841,20 @@ Py::Object View3DInventorPy::viewRotateLeft()
 Py::Object View3DInventorPy::viewRotateRight()
 {
     try {
-        SoCamera* cam = getView3DInventorPtr()->getViewer()->getSoRenderManager()->getCamera();
+        auto* viewer = getView3DInventorPtr()->getViewer();
+        auto* navigation = viewer->navigationStyle();
+        SoCamera* cam = viewer->getSoRenderManager()->getCamera();
         SbRotation rot = cam->orientation.getValue();
         SbVec3f vdir(0, 0, -1);
         rot.multVec(vdir, vdir);
         SbRotation nrot(vdir, (float)-std::numbers::pi / 2);
-        cam->orientation.setValue(rot * nrot);
+        if (navigation) {
+            navigation->setCameraOrientationValue(
+                cam,
+                rot * nrot,
+                NavigationStyle::OrientationChangeSource::Programmatic
+            );
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
