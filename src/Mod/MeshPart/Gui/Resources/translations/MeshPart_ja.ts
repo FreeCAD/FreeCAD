@@ -381,11 +381,6 @@ The smallest value is 0.</source>
       <translation>Netgen メッシャーを使用</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>細かさ:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>非常に粗い</translation>
@@ -436,6 +431,11 @@ The smallest value is 0.</source>
 A value in the range of 0.1-1.</source>
       <translation>このパラメータが小さい場合は、メッシュは細かくなります。
 値の範囲は0.1-1です。</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>細かさ</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

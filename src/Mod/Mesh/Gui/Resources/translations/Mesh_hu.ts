@@ -1571,6 +1571,10 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Idő</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Idő:</translation>
@@ -2259,8 +2263,8 @@ Kérjük, látogasson el ide: https://openscad.org a telepítéshez.</translatio
       <translation>Kijelzőszín</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
       <translation>Hagyja az info módot</translation>
     </message>
