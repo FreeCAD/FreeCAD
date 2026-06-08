@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-"""Typed public method signatures for the ``FreeCAD._ParameterGrp`` PyCXX type."""
+"""Typed public method signatures for the ``FreeCAD.ParameterGrp`` PyCXX type."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ class _ParameterObserver(Protocol):
 
     def onChange(
         self,
-        group: _ParameterGrp,
+        group: ParameterGrp,
         param_type: str,
         name: str,
         value: str,
@@ -29,7 +29,7 @@ class _ParameterManagerObserver(Protocol):
 
     def slotParamChanged(
         self,
-        group: _ParameterGrp,
+        group: ParameterGrp,
         param_type: str,
         name: str,
         value: str,
@@ -38,10 +38,10 @@ class _ParameterManagerObserver(Protocol):
         """Handle one manager-level parameter change notification."""
         ...
 
-class _ParameterGrp:
+class ParameterGrp:
     """Hierarchical parameter-group wrapper used for FreeCAD preferences."""
 
-    def GetGroup(self, name: str, /) -> _ParameterGrp:
+    def GetGroup(self, name: str, /) -> ParameterGrp:
         """Return one child parameter group by name."""
         ...
 
@@ -65,15 +65,15 @@ class _ParameterGrp:
         """Rename one child parameter group."""
         ...
 
-    def CopyTo(self, group: _ParameterGrp, /) -> None:
+    def CopyTo(self, group: ParameterGrp, /) -> None:
         """Copy this group's contents into another parameter group."""
         ...
 
-    def Manager(self) -> _ParameterGrp | None:
+    def Manager(self) -> ParameterGrp | None:
         """Return the manager group for this parameter group, if any."""
         ...
 
-    def Parent(self) -> _ParameterGrp | None:
+    def Parent(self) -> ParameterGrp | None:
         """Return the parent group, if any."""
         ...
 

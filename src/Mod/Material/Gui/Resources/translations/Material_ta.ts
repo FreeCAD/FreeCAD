@@ -1195,15 +1195,15 @@ If unchecked, they will be sorted by their name.</source>
       <translation>இல்லையெனில், அனைத்து மாற்றங்களும் இழக்கப்படும்.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="567"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>நீக்குவதை உறுதிப்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
       <translation>வரிசையை நீக்கவா?</translation>
     </message>

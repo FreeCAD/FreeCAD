@@ -149,7 +149,6 @@ Development file for OndselSolver
         -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
         -DRESOURCEDIR=%{_datadir}/%{name} \
         -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
-        -DFREECAD_USE_EXTERNAL_FMT=TRUE \
         -DFREECAD_USE_PCL:BOOL=OFF \
         -DFREECAD_QT_VERSION:STRING=6 \
         -DOpenGL_GL_PREFERENCE=GLVND \

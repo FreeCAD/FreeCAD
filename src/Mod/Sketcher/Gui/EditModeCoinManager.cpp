@@ -1006,6 +1006,47 @@ void EditModeCoinManager::drawEdit(
     editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
 }
 
+void EditModeCoinManager::drawLineExtensionAutoConstraintHint(
+    const std::vector<Base::Vector2d>& HintCurve
+)
+{
+    const int hintCurveSize = static_cast<int>(HintCurve.size());
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet->numVertices.setNum(1);
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet->numVertices.set1Value(0, hintCurveSize);
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate->point.setNum(hintCurveSize);
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials->diffuseColor.setNum(
+        hintCurveSize
+    );
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->lineWidth
+        = editModeScenegraphNodes.InformationDrawStyle->lineWidth;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->linePattern
+        = editModeScenegraphNodes.CurvesConstructionDrawStyle->linePattern;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->linePatternScaleFactor
+        = editModeScenegraphNodes.CurvesConstructionDrawStyle->linePatternScaleFactor;
+
+    int i = 0;
+    for (const auto& point : HintCurve) {
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate->point.set1Value(
+            i,
+            SbVec3f(
+                static_cast<float>(point.x),
+                static_cast<float>(point.y),
+                static_cast<float>(
+                    ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
+                    * drawingParameters.zEdit
+                )
+            )
+        );
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials->diffuseColor.set1Value(
+            i,
+            drawingParameters.InformationColor
+        );
+        ++i;
+    }
+}
+
 void EditModeCoinManager::setPositionText(const Base::Vector2d& Pos, const SbString& text)
 {
     editModeScenegraphNodes.textX->string = text;
@@ -1549,6 +1590,45 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditCurveSet = new SoLineSet;
     editModeScenegraphNodes.EditCurveSet->setName("EditCurveLineSet");
     editCurvesRoot->addChild(editModeScenegraphNodes.EditCurveSet);
+
+    SoSeparator* lineExtensionAutoConstraintHintRoot = new SoSeparator;
+    editModeScenegraphNodes.EditRoot->addChild(lineExtensionAutoConstraintHintRoot);
+
+    SoPickStyle* lineExtensionAutoConstraintHintPickStyle = new SoPickStyle;
+    lineExtensionAutoConstraintHintPickStyle->style = SoPickStyle::UNPICKABLE;
+    lineExtensionAutoConstraintHintRoot->addChild(lineExtensionAutoConstraintHintPickStyle);
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials = new SoMaterial;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials->setName(
+        "LineExtensionAutoConstraintHintMaterials"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials
+    );
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate = new SoCoordinate3;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate->setName(
+        "LineExtensionAutoConstraintHintCoordinate"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate
+    );
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle = new SoDrawStyle;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->setName(
+        "LineExtensionAutoConstraintHintDrawStyle"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle
+    );
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet = new SoLineSet;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet->setName(
+        "LineExtensionAutoConstraintHintLineSet"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintSet
+    );
 
     // stuff for the EditMarkers +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editMarkersRoot = new SoSeparator;

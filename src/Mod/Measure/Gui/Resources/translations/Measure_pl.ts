@@ -207,8 +207,8 @@ Kąt osi: %2</translation>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
-      <translation>Pomiar cech</translation>
+      <source>Measures a feature</source>
+      <translation>Wykonuje pomiar elementu</translation>
     </message>
   </context>
   <context>
@@ -516,6 +516,19 @@ w przeciwnym razie zostanie rozpoczęty nowy pomiar.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>Właściwości masowe</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>Oblicza właściwości masowe wybranych obiektów</translation>
+    </message>
+  </context>
+  <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="280"/>
@@ -561,19 +574,6 @@ w przeciwnym razie zostanie rozpoczęty nowy pomiar.</translation>
       <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
       <translation>(Przeciętne)</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>Właściwości masowe</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>Oblicza właściwości masowe wybranych obiektów</translation>
     </message>
   </context>
 </TS>

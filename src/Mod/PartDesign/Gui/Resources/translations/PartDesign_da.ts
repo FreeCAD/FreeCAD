@@ -931,8 +931,8 @@ så profilet ikke overlapper sig selv.</translation>
       <translation>Opret boolesk operation</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="224"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="224"/>
       <source>Add a Body</source>
       <translation>Tilføj emne</translation>
     </message>
@@ -1101,8 +1101,8 @@ Vælg et emne nedenfor eller opret et nyt emne.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="53"/>
-      <source>Please select</source>
-      <translation>Vælg venligst</translation>
+      <source>Select an active body</source>
+      <translation type="unfinished">Select an active body</translation>
     </message>
   </context>
   <context>
@@ -3175,11 +3175,11 @@ målt i den angivne retning</translation>
       <translation>Ingen gyldige konstruktionsplaner i dette dokument</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="137"/>
-      <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
-      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
+      <location filename="../../ViewProvider.cpp" line="137"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <source>A dialog is already open in the task panel</source>
       <translation>En dialog er allerede åben i opgavepanelet</translation>
     </message>
@@ -3204,6 +3204,11 @@ målt i den angivne retning</translation>
       <translation>Der er intet aktivt emne. Gør et emne aktivt, før du indsætter konstruktionselementer.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation>Ugyldigt valg</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="470"/>
       <source>Sub-shape binder</source>
       <translation>Undergeomtri-forbindelse</translation>
@@ -3219,11 +3224,16 @@ målt i den angivne retning</translation>
       <translation>Ingen skitse tilgængelig i dokumentet</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="138"/>
-      <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../SketchWorkflow.cpp" line="762"/>
+      <location filename="../../Command.cpp" line="2196"/>
+      <source>Select only one feature in an active body.</source>
+      <translation type="unfinished">Select only one feature in an active body.</translation>
+    </message>
+    <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../ViewProvider.cpp" line="138"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <source>Close this dialog?</source>
       <translation>Luk denne dialog?</translation>
     </message>
@@ -3255,11 +3265,6 @@ målt i den angivne retning</translation>
       <translation>Vælg en kant, en flade eller en komponent fra et aktivt emne.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid Selection</source>
-      <translation>Ugyldigt valg</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1026"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>Overvej at bruge en geometrisk forbindelse eller en basisgeometri for at referere til en ekstern geometri i et emne</translation>
@@ -3273,11 +3278,6 @@ målt i den angivne retning</translation>
       <location filename="../../Command.cpp" line="1848"/>
       <source>%1 works only on parts.</source>
       <translation>%1 virker kun på komponenter.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2196"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation>Vælg kun én geometri fra et aktivt emne.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
@@ -3361,6 +3361,11 @@ Dette kan føre til uventede resultater.</translation>
       <translation>Intet at overføre</translation>
     </message>
     <message>
+      <location filename="../../CommandBody.cpp" line="622"/>
+      <source>Edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
+      <translation type="unfinished">Edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</translation>
+    </message>
+    <message>
       <location filename="../../CommandBody.cpp" line="697"/>
       <source>Select exactly one Part Design feature or a body.</source>
       <translation>Vælg præcis én PartDesign-geometri eller et emne.</translation>
@@ -3384,11 +3389,6 @@ Dette kan føre til uventede resultater.</translation>
       <location filename="../../CommandBody.cpp" line="429"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
       <translation>Ingen Part-Design geometri uden emne blev fundet. Intet at overføre.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandBody.cpp" line="622"/>
-      <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Redigér '%1' og omdefiner den for at bruge en base- eller konstruktionsflade som skitseplan.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="696"/>
@@ -3461,14 +3461,14 @@ Dette kan føre til uventede resultater.</translation>
       <translation>Det er ikke muligt at oprette en subtraktiv geometri uden at have en basisgeometri</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <source>Vertical sketch axis</source>
       <translation>Lodret skitseakse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <location filename="../../TaskTransformedParameters.cpp" line="440"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <source>Horizontal sketch axis</source>
       <translation>Vandret skitseakse</translation>
     </message>
@@ -3522,10 +3522,10 @@ For ældre dokumenter med Part-Design objekter som mangler et emne, skal du brug
       <translation>For at kunne bruge denne funktion skal den tilhøre en komponent i dokumentet.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <source>Edit %1</source>
       <translation>Redigér %1</translation>
     </message>
@@ -4462,23 +4462,23 @@ over 90: større hulradius i bunden</translation>
       <translation>Kan ikke udføre booleske operationer med en ugyldig startgeometri</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <location filename="../../../App/FeaturePipe.cpp" line="537"/>
       <location filename="../../../App/FeaturePipe.cpp" line="571"/>
       <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Operationen resulterer i flere massive emner. Aktiver 'Tillad sammensatte emner' i det aktive emne.</translation>
     </message>
@@ -4513,10 +4513,10 @@ over 90: større hulradius i bunden</translation>
       <translation>Resultatet af den ekstruderingen er, at al geometri fjernes.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="370"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <source>Resulting shape is not a solid</source>
       <translation>Resulterende geometri er ikke et massivt emne</translation>
     </message>
@@ -4659,9 +4659,9 @@ Krydsende linjer i en skitse er ikke tilladt.</translation>
       <translation>Fejl: Fladen skal være plan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
       <source>Error: Result is not a solid</source>
       <translation>Fejl: Resultatet er ikke et massivt emne</translation>
     </message>
@@ -4814,8 +4814,8 @@ Krydsende skitselinjer eller flere flader i en skitse er ikke tilladt.</translat
       <translation>Transforming: Oprettelse af en flade fra skitsen mislykkedes</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="303"/>
       <location filename="../../../App/FeaturePipe.cpp" line="500"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="303"/>
       <source>Loft: Failed to create shell</source>
       <translation>Transformér: Kunne ikke oprette fladegeometri</translation>
     </message>
@@ -4922,14 +4922,14 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
       <translation>Kan ikke fjerne en basisgeometri uden en geometri at fjerne materiale fra</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
       <source>Unknown operation type</source>
       <translation>Ukendt operationstype</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="363"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="363"/>
       <source>Failed to perform boolean operation</source>
       <translation>Kunne ikke udføre boolesk operation</translation>
     </message>
@@ -5451,10 +5451,10 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
       <location filename="../../TaskFeatureParameters.cpp" line="264"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>Geometrien kunne ikke oprettes med de angivne parametre.
-Geometrien kan være ugyldig eller parametrene kan være uforenelige.
-Juster parametrene og prøv igen.</translation>
+Adjust the parameters and try again.</source>
+      <translation type="unfinished">The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Adjust the parameters and try again.</translation>
     </message>
   </context>
   <context>

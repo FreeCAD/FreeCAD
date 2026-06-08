@@ -674,7 +674,7 @@ def apply_setback(base_face, border_setback):
     # Shrink the outer boundary. makeOffset2D raises when the setback is too large to leave any
     # area; the null/zero-area check below catches any remaining degenerate cases.
     _setback_too_large = translate(
-        "Arch", "BorderSetback is too large and collapses the face. Setback ignored."
+        "Arch", "Border setback is too large and collapses the face. Setback ignored."
     )
     try:
         shrunk_outer_face = Part.Face(tiling_face.OuterWire).makeOffset2D(-border_setback)

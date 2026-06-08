@@ -67,6 +67,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode("MiterLimit", 2)
         obj.setEditorMode("JoinType", 2)
 
+    def execute(self, obj):
+        """execute(obj) ... override to handle 3+2 transformation for Area-based operations."""
+        # Call the base class execute() method which handles 3+2 transformation
+        return PathOp.ObjectOp.execute(self, obj)
+
     def initAreaOpProperties(self, obj, warn=False):
         """initAreaOpProperties(obj) ... create operation specific properties"""
         self.addNewProps = []
@@ -539,7 +544,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         """_preprocessBase(obj) ... returns envelope of selected shapes"""
         shapeTups = []
 
-        for base, subsList in obj.Base:
+        for base, subsList in self.baseShapes(obj):
             if subsList == ("",):
                 shapeTups.extend(self._processEachModel(base))
                 continue

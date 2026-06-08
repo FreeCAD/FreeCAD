@@ -870,8 +870,8 @@ SLOPEはそれぞれ時間 = T1とT2付近での、0とH1の間、またH2から
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>パーツが見つかりません？</translation>
+      <source>Cannot find the part?</source>
+      <translation type="unfinished">Cannot find the part?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -1543,27 +1543,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>クリックしてこれらの競合するジョイントを選択します。</translation>
+      <source>Selects these conflicting joints</source>
+      <translation type="unfinished">Selects these conflicting joints</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>クリックしてこれらの冗長なジョイントを選択します。</translation>
+      <source>Selects these redundant joints</source>
+      <translation type="unfinished">Selects these redundant joints</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation>アセンブリに自由度を生じさせる拘束されていないコンポーネントがあります。
-拘束されていないコンポーネントを選択するにはクリックしてください。
-注意：現在のところ、接続していなパーツのみ選択され、自由度の残る拘束されたパーツは選択されません。</translation>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Selects these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>クリックしてこれらの不正なジョイントを選択します。</translation>
+      <source>Selects these malformed joints</source>
+      <translation type="unfinished">Selects these malformed joints</translation>
     </message>
   </context>
   <context>
@@ -1575,8 +1575,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
-      <translation>リンクされたアセンブリに移動</translation>
+      <source>Go to Linked Assembly</source>
+      <translation type="unfinished">Go to Linked Assembly</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
@@ -1593,7 +1593,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
+      <source>Select Conflicting Constraints</source>
       <translation>競合する拘束を選択</translation>
     </message>
     <message>
@@ -1611,7 +1611,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
+      <source>Select Redundant Constraints</source>
       <translation>冗長な拘束を選択</translation>
     </message>
     <message>
@@ -1629,7 +1629,7 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
+      <source>Select Malformed Constraints</source>
       <translation>不正な拘束を選択</translation>
     </message>
     <message>
@@ -1647,8 +1647,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
-      <translation>自由度を持つコンポーネントを選択</translation>
+      <source>Select Components With DoFs</source>
+      <translation type="unfinished">Select Components With DoFs</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
@@ -1665,8 +1665,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
-      <translation>コンポーネントのジョイントを選択</translation>
+      <source>Select Component Joints</source>
+      <translation type="unfinished">Select Component Joints</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>
