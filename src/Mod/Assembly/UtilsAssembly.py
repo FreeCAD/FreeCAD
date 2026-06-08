@@ -1224,6 +1224,12 @@ def getComponentReference(assembly, root_obj, sub_string):
         return None, ""
 
     doc = assembly.Document
+    
+    # We do not need the full TNP string like :"Part.Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
+    # instead we need : "Part.Body.Pad.Face6"
+    resolved = root_obj.resolveSubElement(sub_string, True)
+    sub_string = resolved[2]
+    sub_string = fixBodyExtraFeatureInSub(doc.Name, sub_string)
 
     # 1. Reconstruct full path
     # e.g. ['Part', 'Assembly', 'Cylinder', 'Face1']
