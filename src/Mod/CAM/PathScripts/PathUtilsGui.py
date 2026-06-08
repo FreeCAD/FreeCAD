@@ -25,6 +25,7 @@ import FreeCADGui
 import FreeCAD
 import Path
 import Path.Main.Gui.JobCmd as PathJobCmd
+import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
 import PathScripts.PathUtils as PathUtils
 from PySide import QtGui
@@ -63,6 +64,15 @@ class PathUtilsUserInput(object):
     def chooseJob(self, jobs):
         job = None
         selected = FreeCADGui.Selection.getSelection()
+
+        jbs = [
+            sel
+            for sel in selected
+            if hasattr(sel, "Proxy") and isinstance(sel.Proxy, PathJob.ObjectJob)
+        ]
+        if len(jbs) == 1:
+            return jbs[0]
+
         if 1 == len(selected):
             found = PathUtils.findParentJob(selected[0])
             if found:

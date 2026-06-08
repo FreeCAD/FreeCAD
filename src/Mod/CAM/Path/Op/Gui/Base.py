@@ -875,6 +875,10 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         Path.Log.track(selection)
         added = False
         for sel in selection:
+            if not hasattr(sel.Object, "Shape"):
+                continue
+            if not getattr(sel.Object.ViewObject, "Selectable", False):
+                continue
             # check each selection
             if self.selectionSupportedAsBaseGeometry(sel, False):
                 added = True
