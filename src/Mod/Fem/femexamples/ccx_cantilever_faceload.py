@@ -74,7 +74,7 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
     geom_obj = doc.Box
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "ForceLoad")
     con_force.References = [(geom_obj, "Face2")]
     con_force.Force = "9000000.0 N"
     con_force.Direction = (geom_obj, ["Edge5"])

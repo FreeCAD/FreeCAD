@@ -99,12 +99,12 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
     analysis.addObject(solver_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "FemConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Face1")]
     analysis.addObject(con_fixed)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "FemConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "ForceLoad")
     con_force.References = [(geom_obj, "Face6")]
     con_force.Force = "40000.0 N"
     con_force.Direction = (geom_obj, ["Edge5"])
@@ -112,7 +112,7 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
     analysis.addObject(con_force)
 
     # constraint pressure
-    con_pressure = ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, name="PressureLoad")
     con_pressure.References = [(geom_obj, "Face2")]
     con_pressure.Pressure = "1000.0 MPa"
     con_pressure.Reversed = False
