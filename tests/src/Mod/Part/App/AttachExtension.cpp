@@ -4,6 +4,11 @@
 
 #include <src/App/InitApplication.h>
 #include <App/Document.h>
+#include <App/Origin.h>
+#include <App/Part.h>
+#include <Base/Precision.h>
+#include <Base/Tools.h>
+#include <Mod/Part/App/Datums.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
 
 
@@ -53,6 +58,43 @@ TEST_F(AttachExtensionTest, testPlanePlane)
 
     getDocument()->recompute();
     EXPECT_TRUE(true);
+}
+
+TEST_F(AttachExtensionTest, testTranslateAttachmentOffsetKeepsRotation)
+{
+    auto part = getDocument()->addObject<App::Part>("Part");
+    auto lcs = getDocument()->addObject<Part::LocalCoordinateSystem>("LCS");
+
+    ASSERT_TRUE(part);
+    ASSERT_TRUE(lcs);
+
+    part->addObject(lcs);
+
+    auto origin = part->getOrigin();
+    ASSERT_TRUE(origin);
+    auto originPoint = origin->getOrigin();
+    ASSERT_TRUE(originPoint);
+
+    const std::string originPointSubName = std::string(originPoint->getNameInDocument()) + ".";
+    lcs->AttachmentSupport.setValue(origin, originPointSubName.c_str());
+    lcs->MapMode.setValue("Translate");
+    lcs->AttachmentOffset.setValue(Base::Placement(
+        Base::Vector3d(100.0, 0.0, 0.0),
+        Base::Rotation(Base::Vector3d::UnitZ, Base::toRadians(90.0))
+    ));
+
+    getDocument()->recompute();
+
+    const auto placement = lcs->Placement.getValue();
+    EXPECT_NEAR(placement.getPosition().x, 100.0, Base::Precision::Confusion());
+    EXPECT_NEAR(placement.getPosition().y, 0.0, Base::Precision::Confusion());
+    EXPECT_NEAR(placement.getPosition().z, 0.0, Base::Precision::Confusion());
+
+    Base::Vector3d rotatedXAxis;
+    placement.getRotation().multVec(Base::Vector3d::UnitX, rotatedXAxis);
+    EXPECT_NEAR(rotatedXAxis.x, 0.0, Base::Precision::Confusion());
+    EXPECT_NEAR(rotatedXAxis.y, 1.0, Base::Precision::Confusion());
+    EXPECT_NEAR(rotatedXAxis.z, 0.0, Base::Precision::Confusion());
 }
 
 TEST_F(AttachExtensionTest, testAttacherEngineType)

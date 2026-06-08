@@ -1380,8 +1380,8 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(sh));
             Base::Placement plm = Base::Placement();
             plm.setPosition(Base::Vector3d(p.X(), p.Y(), p.Z()));
-            plm.setPosition(plm.getPosition() + this->attachmentOffset.getPosition());
             plm.setRotation(origPlacement.getRotation());
+            plm *= this->attachmentOffset;
             return plm;
         } break;
         case mmObjectXY:
