@@ -3557,6 +3557,54 @@ void ViewProviderSketch::drawEdit(const std::list<std::vector<Base::Vector2d>>& 
     editCoinManager->drawEdit(list, currentGeometryCreationMode());
 }
 
+void ViewProviderSketch::drawLineExtensionAutoConstraintHint(
+    const std::vector<Base::Vector2d>& HintCurve
+)
+{
+    editCoinManager->drawLineExtensionAutoConstraintHint(HintCurve);
+}
+
+void ViewProviderSketch::drawParallelPerpendicularHint(
+    const std::vector<Base::Vector2d>& HintLines
+)
+{
+    editCoinManager->drawParallelPerpendicularHint(HintLines);
+}
+
+bool ViewProviderSketch::isLineExtensionAutoConstraintHintVisible(
+    const std::vector<Base::Vector2d>& HintCurve
+) const
+{
+    Gui::MDIView* mdi = this->getActiveView();
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(mdi);
+    if (!view || !isInEditMode()) {
+        return false;
+    }
+
+    Gui::View3DInventorViewer* viewer = view->getViewer();
+    if (!viewer || !viewer->getGLWidget()) {
+        return false;
+    }
+
+    const int width = viewer->getGLWidget()->width();
+    const int height = viewer->getGLWidget()->height();
+    if (width <= 0 || height <= 0) {
+        return false;
+    }
+
+    for (const auto& point : HintCurve) {
+        const SbVec2f screenCoordinates = getScreenCoordinates(
+            SbVec2f(static_cast<float>(point.x), static_cast<float>(point.y))
+        );
+        if (screenCoordinates[0] < 0.0F || screenCoordinates[0] > width
+            || screenCoordinates[1] < 0.0F || screenCoordinates[1] > height) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
                                          unsigned int augmentationlevel)
 {

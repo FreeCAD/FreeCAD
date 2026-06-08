@@ -43,6 +43,7 @@
 #include "SnapManager.h"
 
 class QWidget;
+class QTimer;
 
 namespace Sketcher
 {
@@ -108,6 +109,18 @@ private:
     static inline void drawEdit(
         ViewProviderSketch& vp,
         const std::list<std::vector<Base::Vector2d>>& list
+    );
+    static inline void drawParallelPerpendicularHint(
+        ViewProviderSketch& vp,
+        const std::vector<Base::Vector2d>& HintLines
+    );
+    static inline void drawLineExtensionAutoConstraintHint(
+        ViewProviderSketch& vp,
+        const std::vector<Base::Vector2d>& HintCurve
+    );
+    static inline bool isLineExtensionAutoConstraintHintVisible(
+        const ViewProviderSketch& vp,
+        const std::vector<Base::Vector2d>& HintCurve
     );
     static inline void drawEditMarkers(
         ViewProviderSketch& vp,
@@ -273,12 +286,24 @@ protected:
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve) const;
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list) const;
     void drawEdit(const std::vector<Part::Geometry*>& geometries) const;
+    void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve) const;
+    bool isLineExtensionAutoConstraintHintVisible(const std::vector<Base::Vector2d>& HintCurve) const;
     void drawEditMarkers(
         const std::vector<Base::Vector2d>& EditMarkers,
         unsigned int augmentationlevel = 0
     ) const;
 
+    virtual bool getStartPointOfCurrentSegment(Base::Vector2d& point) const;
+    void drawParallelPerpendicularHint(const std::vector<Base::Vector2d>& HintLines) const;
+    void resetParallelPerpendicularHint();
+    void clearParallelPerpendicularHintDrawing() const;
+    void renderParallelPerpendicularHint() const;
+    void startHoverTimer();
+    void stopHoverTimer();
+    void onHoverTimeout();
+
     void clearEdit() const;
+    void clearLineExtensionAutoConstraintHintDrawing() const;
     void clearEditMarkers() const;
 
     void setAxisPickStyle(bool on);
@@ -317,7 +342,17 @@ protected:
         Base::Vector3d hitShapeDir = Base::Vector3d(0, 0, 0);
         bool isLine = false;
     };
+
+    struct LineExtensionAutoConstraintHint
+    {
+        bool isValid = false;
+        Base::Vector2d start;
+        Base::Vector2d end;
+    };
+
     PreselectionData getPreselectionData() const;
+
+    double getAutoConstraintSearchDistance() const;
 
     void seekPreselectionAutoConstraint(
         std::vector<AutoConstraint>& constraints,
@@ -325,6 +360,21 @@ protected:
         const Base::Vector2d& Dir,
         AutoConstraint::TargetType type
     );
+
+    bool seekLineExtensionAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Pos,
+        AutoConstraint::TargetType type
+    );
+
+    void resetLineExtensionAutoConstraintHint();
+    void renderLineExtensionAutoConstraintHint() const;
+
+    bool isLineExtensionAutoConstraintHintVisible(
+        const Base::Vector2d& start,
+        const Base::Vector2d& end
+    ) const;
+    bool getLineExtensionAutoConstraintSnapPoint(Base::Vector2d& point) const;
 
     bool isLineCenterAutoConstraint(int GeoId, const Base::Vector2d& Pos) const;
 
@@ -354,6 +404,12 @@ protected:
 
     QWidget* toolwidget;
     int currentTransactionID {0};
+
+private:
+    LineExtensionAutoConstraintHint lineExtensionAutoConstraintHint;
+    int parallelPerpendicularRefGeoId {Sketcher::GeoEnum::GeoUndef};
+    int lastHoveredGeoId {Sketcher::GeoEnum::GeoUndef};
+    QTimer* hoverTimer {nullptr};
 };
 
 

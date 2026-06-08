@@ -102,24 +102,28 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
-                toolWidgetManager.drawPositionAtCursor(onSketchPos);
-
-                startPoint = onSketchPos;
-
                 seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
+
+                Base::Vector2d snapPoint;
+                startPoint = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint
+                                                                                : onSketchPos;
+
+                toolWidgetManager.drawPositionAtCursor(startPoint);
             } break;
             case SelectMode::SeekSecond: {
-                toolWidgetManager.drawDirectionAtCursor(onSketchPos, startPoint);
+                seekAndRenderAutoConstraint(sugConstraints[1], onSketchPos, onSketchPos - startPoint);
 
-                endPoint = onSketchPos;
+                Base::Vector2d snapPoint;
+                endPoint = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint
+                                                                              : onSketchPos;
+
+                toolWidgetManager.drawDirectionAtCursor(endPoint, startPoint);
 
                 try {
                     CreateAndDrawShapeGeometry();
                 }
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
-
-                seekAndRenderAutoConstraint(sugConstraints[1], onSketchPos, onSketchPos - startPoint);
             } break;
             default:
                 break;
@@ -251,6 +255,15 @@ private:
         widthSign = 0;
         capturedDirection = Base::Vector2d(0.0, 0.0);
         toolWidgetManager.resetControls();
+    }
+
+    bool getStartPointOfCurrentSegment(Base::Vector2d& point) const override
+    {
+        if (state() == SelectMode::SeekSecond) {
+            point = startPoint;
+            return true;
+        }
+        return false;
     }
 
 private:

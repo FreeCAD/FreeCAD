@@ -1070,6 +1070,8 @@ private:
 
             commandAddShapeGeometryAndConstraints();
 
+            resetParallelPerpendicularHint();
+
             int geoId = getHighestCurveIndex();
             geoEltIds.push_back(GeoElementId(geoId, pos));
 
@@ -1367,6 +1369,16 @@ private:
 
             return;
         }
+    }
+
+    bool getStartPointOfCurrentSegment(Base::Vector2d& point) const override
+    {
+        if (constructionMethod() == ConstructionMethod::Line && state() == SelectMode::SeekSecond
+            && !points.empty()) {
+            point = points.back();
+            return true;
+        }
+        return false;
     }
 
 private:
