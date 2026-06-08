@@ -2157,7 +2157,7 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
     }
 
     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
-        static_cast<SoOrthographicCamera*>(camera)->scaleHeight(1.0 + zoom);
+        static_cast<SoOrthographicCamera*>(camera)->scaleHeight(zoomFactor);
     }
 
     // Use the active navigation rotation center mode for SpaceMouse rotations
