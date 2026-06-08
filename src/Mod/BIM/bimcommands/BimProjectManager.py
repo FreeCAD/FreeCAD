@@ -203,6 +203,7 @@ class BIM_ProjectManager:
                     doc.Label = self.form.projectName.text()
         if doc:
             FreeCAD.setActiveDocument(doc.Name)
+            Arch.mark_bim_document(doc)
 
         # Project creation
         if self.form.groupNewProject.isChecked():
