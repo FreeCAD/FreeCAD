@@ -1,45 +1,32 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2010 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
-
-#if defined(FC_OS_WIN32)
-# include <windows.h>
-#endif
-
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# include <GL/gl.h>
-#endif
 
 #include <sstream>
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -49,8 +36,11 @@
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFontStyle.h>
 #include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoScale.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoText2.h>
@@ -270,28 +260,105 @@ SoRegPoint::SoRegPoint()
     root = new SoSeparator();
     root->ref();
 
-    // translation
-    auto move = new SoTranslation();
-    move->translation.setValue(base.getValue() + normal.getValue() * length.getValue());
-    root->addChild(move);
+    auto* pickStyle = new SoPickStyle();
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+    root->addChild(pickStyle);
 
-    // sub-group
-    auto col = new SoBaseColor();
-    col->rgb.setValue(this->color.getValue());
+    const SbVec3f p1 = base.getValue();
+    const SbVec3f p2 = p1 + normal.getValue() * length.getValue();
 
-    auto font = new SoFontStyle;
+    geometryRoot = new SoSeparator();
+    root->addChild(geometryRoot);
+
+    geometryColor = new SoBaseColor();
+    geometryColor->rgb.setValue(this->color.getValue());
+    geometryRoot->addChild(geometryColor);
+
+    auto* lineStyle = new SoDrawStyle();
+    lineStyle->lineWidth = 1.0f;
+
+    lineCoordinates = new SoCoordinate3();
+    lineCoordinates->point.set1Value(0, p1);
+    lineCoordinates->point.set1Value(1, p2);
+
+    lineSet = new SoLineSet();
+    lineSet->numVertices.set1Value(0, 2);
+
+    auto* lineSep = new SoSeparator();
+    lineSep->addChild(lineStyle);
+    lineSep->addChild(lineCoordinates);
+    lineSep->addChild(lineSet);
+    geometryRoot->addChild(lineSep);
+
+    auto* basePointStyle = new SoDrawStyle();
+    basePointStyle->pointSize = 5.0f;
+
+    basePointCoordinates = new SoCoordinate3();
+    basePointCoordinates->point.set1Value(0, p1);
+
+    basePointSet = new SoPointSet();
+    basePointSet->numPoints = 1;
+
+    auto* basePointSep = new SoSeparator();
+    basePointSep->addChild(basePointStyle);
+    basePointSep->addChild(basePointCoordinates);
+    basePointSep->addChild(basePointSet);
+    geometryRoot->addChild(basePointSep);
+
+    auto* tipPointStyle = new SoDrawStyle();
+    tipPointStyle->pointSize = 2.0f;
+
+    tipPointCoordinates = new SoCoordinate3();
+    tipPointCoordinates->point.set1Value(0, p2);
+
+    tipPointSet = new SoPointSet();
+    tipPointSet->numPoints = 1;
+
+    auto* tipPointSep = new SoSeparator();
+    tipPointSep->addChild(tipPointStyle);
+    tipPointSep->addChild(tipPointCoordinates);
+    tipPointSep->addChild(tipPointSet);
+    geometryRoot->addChild(tipPointSep);
+
+    textRoot = new SoSeparator();
+    root->addChild(textRoot);
+
+    move = new SoTranslation();
+    move->translation.setValue(p2);
+    textRoot->addChild(move);
+
+    textColor = new SoBaseColor();
+    textColor->rgb.setValue(this->color.getValue());
+
+    auto* font = new SoFontStyle;
     font->size = 14;
 
-    auto sub = new SoSeparator();
-    sub->addChild(col);
+    label = new SoText2();
+    label->string = this->text.getValue();
+
+    auto* sub = new SoSeparator();
+    sub->addChild(textColor);
     sub->addChild(font);
-    sub->addChild(new SoText2());
-    root->addChild(sub);
+    sub->addChild(label);
+    textRoot->addChild(sub);
 }
 
 SoRegPoint::~SoRegPoint()
 {
     root->unref();
+    root = nullptr;
+    geometryRoot = nullptr;
+    geometryColor = nullptr;
+    lineCoordinates = nullptr;
+    lineSet = nullptr;
+    basePointCoordinates = nullptr;
+    basePointSet = nullptr;
+    tipPointCoordinates = nullptr;
+    tipPointSet = nullptr;
+    textRoot = nullptr;
+    move = nullptr;
+    textColor = nullptr;
+    label = nullptr;
 }
 
 /**
@@ -299,39 +366,29 @@ SoRegPoint::~SoRegPoint()
  */
 void SoRegPoint::GLRender(SoGLRenderAction* action)
 {
-    if (shouldGLRender(action)) {
-        SoState* state = action->getState();
-        state->push();
-        SoMaterialBundle mb(action);
-        SoTextureCoordinateBundle tb(action, true, false);
-        SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-        mb.sendFirst();  // make sure we have the correct material
-
-        SbVec3f p1 = base.getValue();
-        SbVec3f p2 = p1 + normal.getValue() * length.getValue();
-
-        glLineWidth(1.0f);
-        glColor3fv(color.getValue().getValue());
-        glBegin(GL_LINE_STRIP);
-        glVertex3d(p1[0], p1[1], p1[2]);
-        glVertex3d(p2[0], p2[1], p2[2]);
-        glEnd();
-        glPointSize(5.0f);
-        glBegin(GL_POINTS);
-        glVertex3fv(p1.getValue());
-        glEnd();
-        glPointSize(2.0f);
-        glBegin(GL_POINTS);
-        glVertex3fv(p2.getValue());
-        glEnd();
-
-        root->GLRender(action);
-        state->pop();
+    if (!shouldGLRender(action) || !action) {
+        return;
     }
+
+    SoState* state = action->getState();
+    if (!state || !root) {
+        return;
+    }
+
+    state->push();
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+    root->GLRender(action);
+    state->pop();
 }
 
-void SoRegPoint::generatePrimitives(SoAction* /*action*/)
-{}
+void SoRegPoint::generatePrimitives(SoAction* action)
+{
+    // This node is implemented as a small internal scenegraph; delegate to it.
+    // This is primarily useful for non-GL actions and keeps behavior consistent.
+    if (root && action) {
+        root->doAction(action);
+    }
+}
 
 /**
  * Sets the bounding box of the probe to \a box and its center to \a center.
@@ -356,18 +413,35 @@ void SoRegPoint::notify(SoNotList* node)
 {
     SoField* f = node->getLastField();
     if (f == &this->base || f == &this->normal || f == &this->length) {
-        auto move = static_cast<SoTranslation*>(root->getChild(0));
-        move->translation.setValue(base.getValue() + normal.getValue() * length.getValue());
+        const SbVec3f p1 = base.getValue();
+        const SbVec3f p2 = p1 + normal.getValue() * length.getValue();
+
+        if (move) {
+            move->translation.setValue(p2);
+        }
+        if (lineCoordinates) {
+            lineCoordinates->point.set1Value(0, p1);
+            lineCoordinates->point.set1Value(1, p2);
+        }
+        if (basePointCoordinates) {
+            basePointCoordinates->point.set1Value(0, p1);
+        }
+        if (tipPointCoordinates) {
+            tipPointCoordinates->point.set1Value(0, p2);
+        }
     }
     else if (f == &this->color) {
-        auto sub = static_cast<SoSeparator*>(root->getChild(1));
-        auto col = static_cast<SoBaseColor*>(sub->getChild(0));
-        col->rgb = this->color.getValue();
+        if (geometryColor) {
+            geometryColor->rgb = this->color.getValue();
+        }
+        if (textColor) {
+            textColor->rgb = this->color.getValue();
+        }
     }
     else if (f == &this->text) {
-        auto sub = static_cast<SoSeparator*>(root->getChild(1));
-        auto label = static_cast<SoText2*>(sub->getChild(2));
-        label->string = this->text.getValue();
+        if (label) {
+            label->string = this->text.getValue();
+        }
     }
 
     SoShape::notify(node);

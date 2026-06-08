@@ -1,52 +1,47 @@
-/***************************************************************************
- *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2009 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# include <GL/gl.h>
-#endif
-
-#include <algorithm>
-
+#include <QFont>
 #include <QFontMetrics>
-#include <QOpenGLContext>
-#include <QOpenGLPaintDevice>
+#include <QImage>
 #include <QPainter>
 #include <QPen>
+#include <QStringList>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/misc/SoState.h>
 
+#include <Inventor/SbVec2f.h>
 #include <Inventor/C/basic.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/elements/SoCullElement.h>
-#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
@@ -54,6 +49,10 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
+
+#include <cstdint>
+#include <cstring>
+#include <algorithm>
 
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
@@ -76,6 +75,25 @@ SoTextLabel::SoTextLabel()
     SO_NODE_ADD_FIELD(backgroundColor, (SbVec3f(1.0f, 1.0f, 1.0f)));
     SO_NODE_ADD_FIELD(background, (true));
     SO_NODE_ADD_FIELD(frameSize, (10.0f));
+
+    backgroundSwitch = new SoSwitch;
+    backgroundSwitch->ref();
+
+    backgroundSeparator = new SoSeparator;
+    auto* hints = new SoShapeHints;
+    hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    hints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    backgroundSeparator->addChild(hints);
+
+    backgroundVertexProperty = new SoVertexProperty;
+    backgroundVertexProperty->materialBinding = SoVertexProperty::PER_VERTEX;
+    backgroundFaceSet = new SoFaceSet;
+    backgroundFaceSet->vertexProperty.setValue(backgroundVertexProperty);
+    backgroundFaceSet->numVertices.set1Value(0, 4);
+    backgroundSeparator->addChild(backgroundFaceSet);
+
+    backgroundSwitch->addChild(backgroundSeparator);
+    backgroundSwitch->whichChild = SO_SWITCH_ALL;
 }
 
 /**
@@ -89,7 +107,14 @@ void SoTextLabel::GLRender(SoGLRenderAction* action)
 
     // only draw text without background
     if (!this->background.getValue()) {
+        if (backgroundSwitch) {
+            backgroundSwitch->whichChild = SO_SWITCH_NONE;
+        }
         inherited::GLRender(action);
+        return;
+    }
+
+    if (!backgroundSwitch) {
         return;
     }
 
@@ -105,21 +130,10 @@ void SoTextLabel::GLRender(SoGLRenderAction* action)
     if (!SoCullElement::cullTest(state, box, true)) {
         SoMaterialBundle mb(action);
         mb.sendFirst();
-        const SbMatrix& mat = SoModelMatrixElement::get(state);
-        const SbMatrix& projmatrix
-            = (mat * SoViewingMatrixElement::get(state) * SoProjectionMatrixElement::get(state));
         const SbViewportRegion& vp = SoViewportRegionElement::get(state);
         SbVec2s vpsize = vp.getViewportSizePixels();
 
-        // font stuff
-        SbName fontname = SoFontNameElement::get(state);
         int lines = this->string.getNum();
-
-        // get left bottom corner of the label
-        SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
-        projmatrix.multVecMatrix(nilpoint, nilpoint);
-        nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * vpsize[0];
-        nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * vpsize[1];
 
         // Unfortunately, the size of the label is stored in the pimpl class of
         // SoText2 which cannot be accessed directly. However, there is a trick
@@ -136,92 +150,179 @@ void SoTextLabel::GLRender(SoGLRenderAction* action)
         vv.ortho(-1, 1, -1, 1, -1, 1);
         SoViewVolumeElement::set(state, this, vv);
 
-        SbBox3f box;
-        SbVec3f center;
-        this->computeBBox(action, box, center);
+        SbBox3f textBox;
+        SbVec3f textCenter;
+        this->computeBBox(action, textBox, textCenter);
         state->pop();
 
-        float xmin, ymin, zmin, xmax, ymax, zmax;
-        box.getBounds(xmin, ymin, zmin, xmax, ymax, zmax);
-        SbVec3f v0(xmin, ymax, zmax);
-        SbVec3f v1(xmax, ymax, zmax);
-        SbVec3f v2(xmax, ymin, zmax);
-        SbVec3f v3(xmin, ymin, zmax);
-        vv.projectToScreen(v0, v0);
-        vv.projectToScreen(v1, v1);
-        vv.projectToScreen(v2, v2);
-        vv.projectToScreen(v3, v3);
-
-        float width, height;
-        width = (v1[0] - v0[0]) * vpsize[0];
-        height = (v1[1] - v3[1]) * vpsize[1];
-        switch (this->justification.getValue()) {
-            case SoText2::RIGHT:
-                nilpoint[0] -= width;
-                break;
-            case SoText2::CENTER:
-                nilpoint[0] -= 0.5f * width;
-                break;
-            default:
-                break;
-        }
-
-        if (lines > 1) {
-            nilpoint[1] -= (float(lines - 1) / (float)lines * height);
-        }
-
-        SbVec3f toppoint = nilpoint;
-        toppoint[0] += width;
-        toppoint[1] += height;
-
-        // Set new state.
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-        glMatrixMode(GL_PROJECTION);
-        glPushMatrix();
-        glLoadIdentity();
-        glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        ensureBackgroundGeometry(state, textBox, lines);
 
         state->push();
 
-        // disable textures for all units
-        SoGLTextureEnabledElement::set(state, this, false);
-        SoMultiTextureEnabledElement::set(state, this, false);
+        SbViewVolume orthoVolume;
+        orthoVolume.ortho(
+            0.0f,
+            static_cast<float>(vpsize[0]),
+            0.0f,
+            static_cast<float>(vpsize[1]),
+            -1.0f,
+            1.0f
+        );
+        SbMatrix affine;
+        SbMatrix projection;
+        orthoVolume.getMatrices(affine, projection);
 
-        glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
-        glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
+        SoModelMatrixElement::set(state, this, SbMatrix::identity());
+        SoViewingMatrixElement::set(state, this, SbMatrix::identity());
+        SoProjectionMatrixElement::set(state, this, projection);
+        SoViewVolumeElement::set(state, this, orthoVolume);
 
-        // color and frame size
-        SbColor color = this->backgroundColor.getValue();
-        float fs = this->frameSize.getValue();
+        SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+        SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+        SoGLTextureEnabledElement::set(state, this, FALSE);
+        SoMultiTextureEnabledElement::set(state, this, FALSE);
 
-        // draw background
-        glColor3f(color[0], color[1], color[2]);
-        glBegin(GL_QUADS);
-        glVertex3f(nilpoint[0] - fs, nilpoint[1] - fs, 0.0f);
-        glVertex3f(toppoint[0] + fs, nilpoint[1] - fs, 0.0f);
-        glVertex3f(toppoint[0] + fs, toppoint[1] + fs, 0.0f);
-        glVertex3f(nilpoint[0] - fs, toppoint[1] + fs, 0.0f);
-        glEnd();
+        backgroundSwitch->whichChild = 0;
+        backgroundSwitch->GLRender(action);
 
-        // pop old state
-        glPopClientAttrib();
-        glPopAttrib();
         state->pop();
-
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-        // Pop old GL matrix state.
-        glMatrixMode(GL_PROJECTION);
-        glPopMatrix();
-        glMatrixMode(GL_MODELVIEW);
-        glPopMatrix();
     }
 
     state->pop();
 
     inherited::GLRender(action);
+}
+
+SoTextLabel::~SoTextLabel()
+{
+    if (backgroundSwitch) {
+        backgroundSwitch->unref();
+        backgroundSwitch = nullptr;
+    }
+    backgroundSeparator = nullptr;
+    backgroundFaceSet = nullptr;
+    backgroundVertexProperty = nullptr;
+}
+
+void SoTextLabel::notify(SoNotList* list)
+{
+    if (list) {
+        SoField* f = list->getLastField();
+        if (f == &this->backgroundColor || f == &this->background || f == &this->frameSize
+            || f == &this->string || f == &this->justification) {
+            geometryDirty = true;
+        }
+    }
+
+    inherited::notify(list);
+}
+
+void SoTextLabel::ensureBackgroundGeometry(SoState* state, const SbBox3f& objectBounds, int lineCount)
+{
+    if (!state || !backgroundVertexProperty || !backgroundFaceSet) {
+        return;
+    }
+
+    const SbMatrix& model = SoModelMatrixElement::get(state);
+    const SbMatrix& viewing = SoViewingMatrixElement::get(state);
+    const SbMatrix& projection = SoProjectionMatrixElement::get(state);
+    const SbViewportRegion& viewport = SoViewportRegionElement::get(state);
+
+    SbVec2s viewportSize = viewport.getViewportSizePixels();
+
+    SbVec3f boundsMin;
+    SbVec3f boundsMax;
+    objectBounds
+        .getBounds(boundsMin[0], boundsMin[1], boundsMin[2], boundsMax[0], boundsMax[1], boundsMax[2]);
+
+    bool dirty = geometryDirty;
+    dirty = dirty || !model.equals(cachedModelMatrix, 0.0f)
+        || !viewing.equals(cachedViewingMatrix, 0.0f)
+        || !projection.equals(cachedProjectionMatrix, 0.0f) || cachedViewportSize != viewportSize
+        || cachedBBoxMin != boundsMin || cachedBBoxMax != boundsMax || cachedLineCount != lineCount;
+
+    const float frame = this->frameSize.getValue();
+    dirty = dirty || cachedFrameSize != frame;
+
+    SbColor color = this->backgroundColor.getValue();
+    dirty = dirty || cachedBackgroundColor != color;
+
+    if (!dirty) {
+        return;
+    }
+
+    geometryDirty = false;
+
+    cachedModelMatrix = model;
+    cachedViewingMatrix = viewing;
+    cachedProjectionMatrix = projection;
+    cachedViewportSize = viewportSize;
+    cachedBBoxMin = boundsMin;
+    cachedBBoxMax = boundsMax;
+    cachedLineCount = lineCount;
+    cachedFrameSize = frame;
+    cachedBackgroundColor = color;
+
+    SbMatrix combined = model * viewing * projection;
+
+    SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
+    combined.multVecMatrix(nilpoint, nilpoint);
+    nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * viewportSize[0];
+    nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * viewportSize[1];
+
+    SbViewVolume localVolume;
+    localVolume.ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+
+    SbVec3f v0(boundsMin[0], boundsMax[1], boundsMax[2]);
+    SbVec3f v1(boundsMax[0], boundsMax[1], boundsMax[2]);
+    SbVec3f v2(boundsMax[0], boundsMin[1], boundsMax[2]);
+    SbVec3f v3(boundsMin[0], boundsMin[1], boundsMax[2]);
+    localVolume.projectToScreen(v0, v0);
+    localVolume.projectToScreen(v1, v1);
+    localVolume.projectToScreen(v2, v2);
+    localVolume.projectToScreen(v3, v3);
+
+    float width = (v1[0] - v0[0]) * viewportSize[0];
+    float height = (v1[1] - v3[1]) * viewportSize[1];
+
+    switch (this->justification.getValue()) {
+        case SoText2::RIGHT:
+            nilpoint[0] -= width;
+            break;
+        case SoText2::CENTER:
+            nilpoint[0] -= 0.5f * width;
+            break;
+        default:
+            break;
+    }
+
+    if (lineCount > 1) {
+        nilpoint[1] -= (static_cast<float>(lineCount - 1) / static_cast<float>(lineCount) * height);
+    }
+
+    SbVec3f toppoint = nilpoint;
+    toppoint[0] += width;
+    toppoint[1] += height;
+
+    float left = nilpoint[0] - frame;
+    float right = toppoint[0] + frame;
+    float bottom = nilpoint[1] - frame;
+    float top = toppoint[1] + frame;
+
+    backgroundVertexProperty->vertex.setNum(4);
+    backgroundVertexProperty->vertex.set1Value(0, SbVec3f(left, bottom, 0.0f));
+    backgroundVertexProperty->vertex.set1Value(1, SbVec3f(right, bottom, 0.0f));
+    backgroundVertexProperty->vertex.set1Value(2, SbVec3f(right, top, 0.0f));
+    backgroundVertexProperty->vertex.set1Value(3, SbVec3f(left, top, 0.0f));
+
+    const uint32_t packedColor = color.getPackedValue();
+    backgroundVertexProperty->orderedRGBA.setNum(4);
+    backgroundVertexProperty->orderedRGBA.set1Value(0, packedColor);
+    backgroundVertexProperty->orderedRGBA.set1Value(1, packedColor);
+    backgroundVertexProperty->orderedRGBA.set1Value(2, packedColor);
+    backgroundVertexProperty->orderedRGBA.set1Value(3, packedColor);
+
+    backgroundFaceSet->numVertices.set1Value(0, 4);
 }
 
 // ------------------------------------------------------
@@ -267,6 +368,26 @@ SoStringLabel::SoStringLabel()
     SO_NODE_ADD_FIELD(textColor, (SbVec3f(1.0f, 1.0f, 1.0f)));
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (12));
+
+    textSwitch = new SoSwitch;
+    textSwitch->ref();
+
+    textSeparator = new SoSeparator;
+
+    textTexture = new SoTexture2;
+    textTexture->wrapS = SoTexture2::CLAMP;
+    textTexture->wrapT = SoTexture2::CLAMP;
+    textTexture->model = SoTexture2::MODULATE;
+    textSeparator->addChild(textTexture);
+
+    textVertexProperty = new SoVertexProperty;
+    textFaceSet = new SoFaceSet;
+    textFaceSet->vertexProperty.setValue(textVertexProperty);
+    textFaceSet->numVertices.set1Value(0, 4);
+    textSeparator->addChild(textFaceSet);
+
+    textSwitch->addChild(textSeparator);
+    textSwitch->whichChild.setValue(SO_SWITCH_NONE);
 }
 
 /**
@@ -274,93 +395,196 @@ SoStringLabel::SoStringLabel()
  */
 void SoStringLabel::GLRender(SoGLRenderAction* action)
 {
+    if (!action || !textSwitch) {
+        return;
+    }
+
     SoState* state = action->getState();
+    if (!state) {
+        return;
+    }
+
     state->push();
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    if (!QOpenGLContext::currentContext()) {
+
+    ensureTextGeometry(state);
+
+    if (textSwitch->whichChild.getValue() == SO_SWITCH_NONE) {
         state->pop();
         return;
     }
 
     const SbViewportRegion& vp = SoViewportRegionElement::get(state);
     SbVec2s vpsize = vp.getViewportSizePixels();
-    if (vpsize[0] <= 0 || vpsize[1] <= 0) {
-        state->pop();
+
+    SbViewVolume ortho;
+    ortho.ortho(0.0f, static_cast<float>(vpsize[0]), 0.0f, static_cast<float>(vpsize[1]), -1.0f, 1.0f);
+    SbMatrix affine;
+    SbMatrix projection;
+    ortho.getMatrices(affine, projection);
+
+    SoModelMatrixElement::set(state, this, SbMatrix::identity());
+    SoViewingMatrixElement::set(state, this, SbMatrix::identity());
+    SoProjectionMatrixElement::set(state, this, projection);
+    SoViewVolumeElement::set(state, this, ortho);
+
+    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+
+    SbColor white(1.0f, 1.0f, 1.0f);
+    SoLazyElement::setDiffuse(state, this, 1, &white, 0);
+    SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
+    SoGLTextureEnabledElement::set(state, this, TRUE);
+    SoMultiTextureEnabledElement::set(state, this, FALSE);
+
+    textSwitch->whichChild.setValue(0);
+    textSwitch->GLRender(action);
+
+    state->pop();
+}
+
+SoStringLabel::~SoStringLabel()
+{
+    if (textSwitch) {
+        textSwitch->unref();
+        textSwitch = nullptr;
+    }
+    textSeparator = nullptr;
+    textTexture = nullptr;
+    textFaceSet = nullptr;
+    textVertexProperty = nullptr;
+}
+
+void SoStringLabel::notify(SoNotList* list)
+{
+    if (list) {
+        SoField* f = list->getLastField();
+        if (f == &this->string || f == &this->textColor || f == &this->name || f == &this->size) {
+            textGeometryDirty = true;
+        }
+    }
+
+    inherited::notify(list);
+}
+
+void SoStringLabel::ensureTextGeometry(SoState* state)
+{
+    if (!state || !textTexture || !textVertexProperty || !textFaceSet || !textSwitch) {
         return;
     }
 
-    // Enter in 2D screen mode
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(-1, 1, -1, 1, -1, 1);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glPushAttrib(GL_ENABLE_BIT);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
+    const SbString* values = string.getValues(0);
+    const int count = string.getNum();
+    if (count <= 0) {
+        textSwitch->whichChild.setValue(SO_SWITCH_NONE);
+        textVertexProperty->vertex.setNum(0);
+        textVertexProperty->texCoord.setNum(0);
+        textFaceSet->numVertices.setNum(0);
+        textTexture->image.setValue(SbVec2s(0, 0), 0, nullptr);
+        cachedImageWidth = 0;
+        cachedImageHeight = 0;
+        textGeometryDirty = false;
+        return;
+    }
 
-    QFont font;
+    const SbMatrix& model = SoModelMatrixElement::get(state);
+    const SbMatrix& viewing = SoViewingMatrixElement::get(state);
+    const SbMatrix& projection = SoProjectionMatrixElement::get(state);
+    const SbViewportRegion& viewport = SoViewportRegionElement::get(state);
+    SbVec2s viewportSize = viewport.getViewportSizePixels();
+
+    bool dirty = textGeometryDirty || !model.equals(cachedModelMatrix, 0.0f)
+        || !viewing.equals(cachedViewingMatrix, 0.0f)
+        || !projection.equals(cachedProjectionMatrix, 0.0f) || cachedViewportSize != viewportSize;
+
+    if (!dirty) {
+        return;
+    }
+
+    cachedModelMatrix = model;
+    cachedViewingMatrix = viewing;
+    cachedProjectionMatrix = projection;
+    cachedViewportSize = viewportSize;
+    textGeometryDirty = false;
+
+    SbMatrix combined = model * viewing * projection;
+    SbVec3f anchor3(0.0f, 0.0f, 0.0f);
+    combined.multVecMatrix(anchor3, anchor3);
+    anchor3[0] = (anchor3[0] + 1.0f) * 0.5f * viewportSize[0];
+    anchor3[1] = (anchor3[1] + 1.0f) * 0.5f * viewportSize[1];
+    cachedAnchor.setValue(anchor3[0], anchor3[1]);
+
+    QStringList lines;
+    lines.reserve(count);
+    QString fontFamily = QString::fromLatin1(name.getValue().getString());
+    QFont font(fontFamily);
+    const int fontSize = std::max(1, size.getValue());
+    font.setPixelSize(fontSize);
     font.setStyleStrategy(QFont::NoAntialias);
-    font.setFamily(QLatin1String(this->name.getValue()));
-    font.setPixelSize(this->size.getValue());
 
-    glBlendFunc(GL_ONE, GL_SRC_ALPHA);
-
-    // text color
-    SbColor color = this->textColor.getValue();
-    glColor4f(color[0], color[1], color[2], 1);
-    const SbMatrix& mat = SoModelMatrixElement::get(state);
-    const SbMatrix& projmatrix
-        = (mat * SoViewingMatrixElement::get(state) * SoProjectionMatrixElement::get(state));
-    SbVec3f nil(0.0f, 0.0f, 0.0f);
-    projmatrix.multVecMatrix(nil, nil);
-    // Project to pixel coordinates. The resulting `nil` is in normalized device coordinates
-    // (-1..1). Map to viewport pixels, then convert to Qt's top-left coordinate system.
-    float px = (nil[0] + 1.0f) * 0.5f * vpsize[0];
-    float py = vpsize[1] - ((nil[1] + 1.0f) * 0.5f * vpsize[1]);
-    QStringList list;
-    for (int i = 0; i < this->string.getNum(); i++) {
-        list << QLatin1String(this->string[i].getString());
+    QFontMetrics metrics(font);
+    int maxWidth = 0;
+    for (int i = 0; i < count; ++i) {
+        QString line = QString::fromUtf8(values[i].getString());
+        maxWidth = std::max<int>(maxWidth, QtTools::horizontalAdvance(metrics, line));
+        lines << line;
     }
 
-    if (!list.isEmpty()) {
-        QFontMetrics fm(font);
-        int maxWidth = 0;
-        for (const auto& line : list) {
-            maxWidth = std::max(maxWidth, fm.horizontalAdvance(line));
-        }
-
-        // Center text horizontally on the projected point.
-        float x = px - 0.5f * float(maxWidth);
-        float y = py + float(fm.ascent());
-
-        QOpenGLPaintDevice device(vpsize[0], vpsize[1]);
-        QPainter painter(&device);
-        painter.setRenderHint(QPainter::Antialiasing, false);
-        painter.setRenderHint(QPainter::TextAntialiasing, false);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform, false);
-        painter.setFont(font);
-
-        QPen pen(QColor::fromRgbF(color[0], color[1], color[2], 1.0f));
-        painter.setPen(pen);
-        for (int i = 0; i < list.size(); i++) {
-            painter.drawText(QPointF(x, y + float(i) * float(fm.height())), list[i]);
-        }
-        painter.end();
+    if (maxWidth <= 0) {
+        maxWidth = 1;
     }
 
-    // Leave 2D screen mode
-    glPopAttrib();
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
+    const int lineHeight = std::max(1, metrics.height());
+    const int ascent = metrics.ascent();
+    const int descent = metrics.descent();
+    const int textHeight = std::max(1, ascent + descent + (count - 1) * lineHeight);
 
-    state->pop();
+    QImage image(maxWidth, textHeight, QImage::Format_ARGB32_Premultiplied);
+    image.fill(Qt::transparent);
+    QPainter painter(&image);
+    painter.setRenderHint(QPainter::TextAntialiasing);
+    painter.setFont(font);
+
+    const SbColor sbColor = this->textColor.getValue();
+    QColor colorQt;
+    colorQt.setRgbF(sbColor[0], sbColor[1], sbColor[2]);
+    painter.setPen(colorQt);
+
+    int baseline = ascent;
+    for (const QString& line : lines) {
+        painter.drawText(0, baseline, line);
+        baseline += lineHeight;
+    }
+    painter.end();
+
+    SoSFImage sfImage;
+    Gui::BitmapFactory().convert(image, sfImage);
+    textTexture->image = sfImage;
+
+    cachedImageWidth = maxWidth;
+    cachedImageHeight = textHeight;
+
+    const float anchorX = cachedAnchor[0];
+    const float anchorY = cachedAnchor[1];
+    // Anchor the text block at its projected top-center point.
+    const float left = anchorX - 0.5f * static_cast<float>(maxWidth);
+    const float right = left + static_cast<float>(maxWidth);
+    const float top = anchorY;
+    const float bottom = top - static_cast<float>(textHeight);
+
+    textVertexProperty->vertex.setNum(4);
+    textVertexProperty->vertex.set1Value(0, SbVec3f(left, bottom, 0.0f));
+    textVertexProperty->vertex.set1Value(1, SbVec3f(right, bottom, 0.0f));
+    textVertexProperty->vertex.set1Value(2, SbVec3f(right, top, 0.0f));
+    textVertexProperty->vertex.set1Value(3, SbVec3f(left, top, 0.0f));
+
+    textVertexProperty->texCoord.setNum(4);
+    textVertexProperty->texCoord.set1Value(0, SbVec2f(0.0f, 0.0f));
+    textVertexProperty->texCoord.set1Value(1, SbVec2f(1.0f, 0.0f));
+    textVertexProperty->texCoord.set1Value(2, SbVec2f(1.0f, 1.0f));
+    textVertexProperty->texCoord.set1Value(3, SbVec2f(0.0f, 1.0f));
+
+    textFaceSet->numVertices.set1Value(0, 4);
+    textSwitch->whichChild.setValue(0);
 }
 
 // ------------------------------------------------------

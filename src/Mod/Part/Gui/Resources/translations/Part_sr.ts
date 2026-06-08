@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Примени булове операције на изабране облике</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation>Примени булову операцију на изабране облике</translation>
     </message>
   </context>
   <context>

@@ -37,6 +37,7 @@ import unittest
 import FreeCAD
 import Part
 import Sketcher
+from SketcherTests.GuiTestCase import SketcherGuiTestCase
 
 try:
     import FreeCADGui
@@ -49,11 +50,10 @@ if GUI_AVAILABLE:
     from PySide import QtCore, QtGui
 
 
-class TestExternalFacePreselection(unittest.TestCase):
+class TestExternalFacePreselection(SketcherGuiTestCase):
 
     def setUp(self):
-        if not GUI_AVAILABLE:
-            self.skipTest("GUI not available")
+        super().setUp()
 
         FreeCADGui.activateWorkbench("PartDesignWorkbench")
         self.doc = FreeCAD.newDocument("TestExtFacePresel")
@@ -93,19 +93,26 @@ class TestExternalFacePreselection(unittest.TestCase):
         self.body = body
         self.pad = pad
 
-    def tearDown(self):
-        if not GUI_AVAILABLE:
-            return
-        gui_doc = FreeCADGui.ActiveDocument
-        if gui_doc is not None:
-            gui_doc.resetEdit()
-        if self.doc.Name in FreeCAD.listDocuments():
-            FreeCAD.closeDocument(self.doc.Name)
+    def hover_for_preselection(self, viewport, center_pos, span=6, step=2):
+        for dy in range(-span, span + 1, step):
+            for dx in range(-span, span + 1, step):
+                pos = QtCore.QPoint(center_pos.x() + dx, center_pos.y() + dy)
+                event = QtGui.QMouseEvent(
+                    QtCore.QEvent.MouseMove,
+                    pos,
+                    viewport.mapToGlobal(pos),
+                    QtCore.Qt.NoButton,
+                    QtCore.Qt.NoButton,
+                    QtCore.Qt.NoModifier,
+                )
+                QtGui.QApplication.sendEvent(viewport, event)
+                self.pump(100)
 
-    def pump(self, timeout_ms=50):
-        loop = QtCore.QEventLoop()
-        QtCore.QTimer.singleShot(timeout_ms, loop.quit)
-        loop.exec_()
+                presel = FreeCADGui.Selection.getPreselection()
+                if presel.ObjectName:
+                    return presel
+
+        return FreeCADGui.Selection.getPreselection()
 
     @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def testNoDepthBufferInEditRoot(self):
@@ -222,28 +229,14 @@ class TestExternalFacePreselection(unittest.TestCase):
         viewport = view.graphicsView().viewport()
         face_center_3d = FreeCAD.Vector(0, -20, 10)
         screen_pt = view.getPointOnScreen(face_center_3d)
-        hover_pos = QtCore.QPoint(int(screen_pt[0]), int(screen_pt[1]))
-
-        # Send mouse move events
-        for offset in [(0, 0), (1, 0), (0, 1)]:
-            pos = QtCore.QPoint(hover_pos.x() + offset[0], hover_pos.y() + offset[1])
-            event = QtGui.QMouseEvent(
-                QtCore.QEvent.MouseMove,
-                pos,
-                viewport.mapToGlobal(pos),
-                QtCore.Qt.NoButton,
-                QtCore.Qt.NoButton,
-                QtCore.Qt.NoModifier,
-            )
-            QtGui.QApplication.sendEvent(viewport, event)
-            self.pump(100)
-
-        presel = FreeCADGui.Selection.getPreselection()
+        hover_pos = self.viewport_to_qpoint(view, viewport, screen_pt)
+        presel = self.hover_for_preselection(viewport, hover_pos)
         self.assertNotEqual(
             presel.ObjectName,
             "",
             "No object was preselected — mouse hover did not produce a "
-            "pick. This may indicate the #28639 regression.",
+            f"pick near viewport point {hover_pos}. This may indicate "
+            "the #28639 regression.",
         )
         sub_names = presel.SubElementNames
         self.assertTrue(

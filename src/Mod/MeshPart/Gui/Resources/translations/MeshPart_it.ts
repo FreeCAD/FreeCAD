@@ -382,11 +382,6 @@ Il valore più piccolo è 0.</translation>
       <translation>Usa il mesher Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Finezza:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Molto grossa</translation>
@@ -437,6 +432,11 @@ Il valore più piccolo è 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Se questo parametro è più piccolo, la mesh diventa più precisa.
 Un valore nell'intervallo 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Finezza</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

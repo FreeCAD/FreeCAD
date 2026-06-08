@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Applica operazioni booleane alle forme selezionate</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation>Applica un'operazione booleana alle forme selezionate</translation>
     </message>
   </context>
   <context>

@@ -46,31 +46,6 @@ SET(Import_SRCS
     dxf/dxf.h
 )
 
-SET(SCL_Resources
-    SCL/__init__.py
-    SCL/AggregationDataTypes.py
-    SCL/BaseType.py
-    SCL/Builtin.py
-    SCL/ConstructedDataTypes.py
-    SCL/essa_par.py
-    SCL/Model.py
-    SCL/Part21.py
-    SCL/Rules.py
-    SCL/SCLBase.py
-    SCL/SimpleDataTypes.py
-    SCL/TypeChecker.py
-    SCL/Utils.py
-    SCL/SimpleReader.py
-    SCL/Aufspannung.stp
-    SCL/gasket1.p21
-    SCL/Product1.stp
-    SCL_output/automotive_design.py     # AP214e3
-    SCL_output/ifc2x3.py                # IFC
-    SCL_output/ifc4.py                  # IFC 4
-    PlmXmlParser.py
-)
-SOURCE_GROUP("SCL" FILES ${SCL_Resources})
-
 generate_from_py(StepShape)
 
 add_library(Import SHARED ${Import_SRCS})
@@ -99,13 +74,11 @@ if (FREECAD_WARN_ERROR)
 endif()
 
 ADD_CUSTOM_TARGET(ImportPy ALL
-    SOURCES ${SCL_Resources}
 )
 
 fc_target_copy_resource(ImportPy
     ${CMAKE_SOURCE_DIR}/src/Mod/Import/App
-    ${CMAKE_BINARY_DIR}/Mod/Import
-    ${SCL_Resources})
+    ${CMAKE_BINARY_DIR}/Mod/Import)
 
 SET_BIN_DIR(Import Import /Mod/Import)
 SET_PYTHON_PREFIX_SUFFIX(Import)

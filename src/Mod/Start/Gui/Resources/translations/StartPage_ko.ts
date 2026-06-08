@@ -34,7 +34,7 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
       <source>Unit System</source>
-      <translation>단위 체계</translation>
+      <translation>단위계</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="240"/>

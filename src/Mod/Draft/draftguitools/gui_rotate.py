@@ -96,6 +96,8 @@ class Rotate(gui_base_original.Modifier):
         self.arctrack = trackers.arcTracker()
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick rotation center"))
+        self.selection_done = True
+        self.update_hints()
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -197,6 +199,7 @@ class Rotate(gui_base_original.Modifier):
             ghost.center(self.center)
         self.step = 1
         _toolmsg(translate("draft", "Pick base angle"))
+        self.update_hints()
         if self.planetrack:
             self.planetrack.set(self.point)
 
@@ -216,6 +219,7 @@ class Rotate(gui_base_original.Modifier):
             ghost.on()
         self.step = 2
         _toolmsg(translate("draft", "Pick rotation angle"))
+        self.update_hints()
 
     def set_rotation_angle(self, arg):
         """Set the rotation angle."""
@@ -314,6 +318,7 @@ class Rotate(gui_base_original.Modifier):
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
         self.step = 1
         _toolmsg(translate("draft", "Pick base angle"))
+        self.update_hints()
 
     def numericRadius(self, rad):
         """Validate the radius entry field in the user interface.
@@ -337,10 +342,27 @@ class Rotate(gui_base_original.Modifier):
                 ghost.on()
             self.step = 2
             _toolmsg(translate("draft", "Pick rotation angle"))
+            self.update_hints()
         else:
             self.angle = math.radians(rad)
             self.rotate(self.ui.isCopy.isChecked())
             self.finish(cont=None)
+
+    def get_action_hints(self):
+        if self.step == 0:
+            label = translate("draft", "%1 pick rotation center")
+        elif self.step == 1:
+            label = translate("draft", "%1 pick base angle")
+        else:
+            label = translate("draft", "%1 pick rotation angle")
+        hints = [Gui.InputHint(label, Gui.UserInput.MouseLeft)]
+        return (
+            hints
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+            + gui_tool_utils._get_hint_mod_copy()
+        )
 
 
 Gui.addCommand("Draft_Rotate", Rotate())

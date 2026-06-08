@@ -1248,8 +1248,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Прымяняе лагічныя аперацыі з абранымі фігурамі</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation>Прымяняе лагічную аперацыю з абранымі фігурамі</translation>
     </message>
   </context>
   <context>

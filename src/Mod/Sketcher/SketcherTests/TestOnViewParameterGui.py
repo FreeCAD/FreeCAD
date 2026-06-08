@@ -92,7 +92,9 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         self.pump(100)
 
         viewport = view.graphicsView().viewport()
-        first_point = QtCore.QPoint(*view.getPointOnScreen(FreeCAD.Vector(0, 0, 0)))
+        first_point = self.viewport_to_qpoint(
+            view, viewport, view.getPointOnScreen(FreeCAD.Vector(0, 0, 0))
+        )
         self.assertTrue(
             viewport.rect().contains(first_point),
             f"Expected {first_point} to fall inside the sketch viewport {viewport.rect()}",

@@ -383,11 +383,6 @@ Det minsta värdet är 0.</translation>
       <translation>Använd Netgen-meshern</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Finhet:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Väldigt grov</translation>
@@ -438,6 +433,11 @@ Det minsta värdet är 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Om denna parameter är mindre blir maskningen finare.
 Ett värde i intervallet 0,1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Finhet</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

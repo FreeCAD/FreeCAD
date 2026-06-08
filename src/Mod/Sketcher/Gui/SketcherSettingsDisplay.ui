@@ -36,7 +36,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Font face used for labels and constraints</string>
+         <string>Font used for labels and constraints</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>EditSketcherFontName</cstring>

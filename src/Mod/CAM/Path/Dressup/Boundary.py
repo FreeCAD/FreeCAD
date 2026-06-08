@@ -21,6 +21,7 @@
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import Part
 import Path
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
@@ -101,6 +102,15 @@ class DressupPathBoundary(object):
                 "Apply boundary to Rest Machining.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyLength",
+            "Offset",
+            "Boundary",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Apply offset to stock shape.",
+            ),
+        )
 
         self.obj = obj
         self.safeHeight = None
@@ -148,6 +158,16 @@ class DressupPathBoundary(object):
                     "Apply boundary to Rest Machining.",
                 ),
             )
+        if not hasattr(obj, "Offset"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "Offset",
+                "Boundary",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Apply offset to stock shape.",
+                ),
+            )
 
     def onDelete(self, obj, args):
         if obj.Base:
@@ -165,13 +185,26 @@ class DressupPathBoundary(object):
     def execute(self, obj):
         if not hasattr(obj, "Stock") or obj.Stock is None:
             Path.Log.error("BoundaryStock (Stock) missing; cannot execute dressup.")
-            obj.Path = Path.Path([])
+            obj.Path = Path.Path()
             return
         if not hasattr(obj.Stock, "Shape") or obj.Stock.Shape is None:
             Path.Log.error("Boundary stock has no Shape; cannot execute dressup.")
-            obj.Path = Path.Path([])
+            obj.Path = Path.Path()
             return
-        pb = PathBoundary(obj.Base, obj.Stock.Shape, obj.Inside, obj.RetractThreshold)
+        if obj.Offset and obj.Stock and not obj.Stock.Shape.isNull():
+            offset = obj.Offset
+            if obj.Inside:
+                offset = -offset
+            stock = obj.Stock.Shape
+            if isinstance(stock, Part.Compound):
+                shapes = [sh for sh in stock.SubShapes]
+            else:
+                shapes = [stock]
+            shape = [sh.makeOffsetShape(offset, tolerance=0.1, join=2) for sh in shapes]
+        else:
+            shape = obj.Stock.Shape
+
+        pb = PathBoundary(obj.Base, shape, obj.Inside, obj.RetractThreshold)
         obj.Path = pb.execute()
 
 

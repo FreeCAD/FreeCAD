@@ -1276,8 +1276,8 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Applique une opération booléenne aux formes sélectionnées.</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation>Applique un opérateur booléen aux formes sélectionnées.</translation>
     </message>
   </context>
   <context>
