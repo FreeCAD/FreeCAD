@@ -40,12 +40,10 @@ def add_femelement_geometry(commtxt, ele_name, ca_writer):
         FreeCAD.Console.PrintError("Beams not yet supported for Code Aster\n")
 
     elif ca_writer.member.geos_shelllaminate:
-        commtxt, layups = add_shell_laminate(commtxt, mat_objs,
-                                             ele_name, ca_writer)
+        commtxt, layups = add_shell_laminate(commtxt, mat_objs, ele_name, ca_writer)
 
     elif ca_writer.member.geos_shellthickness:
-        commtxt, layups = add_shell2D(commtxt, mat_objs,
-                                      ele_name, ca_writer)
+        commtxt, layups = add_shell2D(commtxt, mat_objs, ele_name, ca_writer)
     return commtxt, layups
 
 
@@ -124,12 +122,12 @@ def add_shell_laminate(commtxt, mat_objs, ele_name, ca_writer):
         ), f"{len(thicknesses)} ply thicknesses given, {len(orientations)} orientation angles given, these should match (i.e provide one thickness and one angle for every ply"
 
         if len(shelllam_obj.Windall["elements"]) == 0:
-            commtxt, lam = apply_con_layup(commtxt, shelllam_obj, ele_name,
-                                           mat_objs, LU_id, ca_writer)
+            commtxt, lam = apply_con_layup(
+                commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer
+            )
             lams.append(lam)
         else:
-            commtxt, lams = apply_vari_layup(commtxt, shelllam_obj, ele_name,
-                                             mat_objs)
+            commtxt, lams = apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs)
         LU_id += 1
     return commtxt, lams
 
@@ -141,13 +139,14 @@ def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer)
     orientations = shelllam_obj.Orientations
     matnames = shelllam_obj.Materials
     if len(matnames) == 0:
-        assert len(mat_objs) == 1, "If Materials are not specified in Shell Laminate Geometry object then there must be only one Material specified in analysis"
+        assert (
+            len(mat_objs) == 1
+        ), "If Materials are not specified in Shell Laminate Geometry object then there must be only one Material specified in analysis"
         cardname = mat_objs[0].Material["CardName"]
         # Remove any spaces and replace hyphens as these will cause CA to fail
         cardname = cardname.replace(" ", "")
         cardname = cardname.replace("-", "_")
-        FreeCAD.Console.PrintMessage(
-            f"Single material, {cardname}, applied to all plies\n")
+        FreeCAD.Console.PrintMessage(f"Single material, {cardname}, applied to all plies\n")
         for i in range(len(thicknesses)):
             matnames.append(cardname)
     elif len(matnames) == len(thicknesses):
@@ -163,11 +162,15 @@ def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer)
             mn = mn.replace(" ", "")
             mn = mn.replace("-", "_")
             if mn not in mat_obj_names:
-                raise IndexError(f"Material named {mn} is in ply materials list but is not present in analysis")
+                raise IndexError(
+                    f"Material named {mn} is in ply materials list but is not present in analysis"
+                )
             mns.append(mn)
         matnames = mns
     else:
-        raise Exception("Number of plies in materials list not equal to number of plies in thickness list")
+        raise Exception(
+            "Number of plies in materials list not equal to number of plies in thickness list"
+        )
 
     shelllam_obj.Materials = matnames
     geoms = []

@@ -109,12 +109,13 @@ class FemInputWriterCodeAster(writerbase.FemInputWriter):
         )
         commtxt += f"{stress_name} = CALC_CHAMP(reuse={result_name},\n"
         commtxt += "                        CONTRAINTE=('EFGE_NOEU', 'SIGM_ELNO'),\n"
+        commtxt += "                        DEFORMATION=('DEGE_NOEU'),\n"
         commtxt += f"                        RESULTAT={result_name})\n\n"
 
-        commtxt += f"{post_name} = POST_CHAMP(EXTR_COQUE=_F(NIVE_COUCHE='INF',\n"
-        commtxt += "                                    NOM_CHAM=('SIGM_ELNO', ),\n"
-        commtxt += "                                    NUME_COUCHE=1),\n"
-        commtxt += f"                         RESULTAT={result_name})\n\n"
+        # commtxt += f"{post_name} = POST_CHAMP(EXTR_COQUE=_F(NIVE_COUCHE='INF',\n"
+        # commtxt += "                                    NOM_CHAM=('SIGM_ELNO', ),\n"
+        # commtxt += "                                    NUME_COUCHE=1),\n"
+        # commtxt += f"                         RESULTAT={result_name})\n\n"
 
         # commtxt += f"{stress2_name} = CALC_CHAMP(CONTRAINTE=('SIGM_NOEU', ),\n"
         # commtxt += f"                         RESULTAT={post_name})\n\n"

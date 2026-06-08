@@ -170,13 +170,14 @@ def read_med_resultVTK(medfile, grid):
                 disp.append(tup)
             disp = np.array(disp)
             # TODO: Not quite sure how units are handled, but it seems to assume m for displacements
-            disp_vtk = vtk_np.numpy_to_vtk(disp[:, 0:3]/1000, deep=True)
+            disp_vtk = vtk_np.numpy_to_vtk(disp[:, 0:3] / 1000, deep=True)
             disp_vtk.SetName("Displacement")
             grid.GetPointData().AddArray(disp_vtk)
             # set rotations in degrees here until we have a general method to set units
             disp_vtk = vtk_np.numpy_to_vtk(disp[:, 3:6] * 180 / np.pi, deep=True)
             disp_vtk.SetName("Rotation")
             grid.GetPointData().AddArray(disp_vtk)
+
         if "EFGE_NOEU" in fn:
             fieldname = fn
             q = mc.ReadField(medfile, fieldname).getArrays()[0]
@@ -185,22 +186,74 @@ def read_med_resultVTK(medfile, grid):
                 tup = q.getTuple(i)
                 stresses.append(tup)
             stresses = np.array(stresses)
-            disp_vtk = vtk_np.numpy_to_vtk(stresses[:, 0:3], deep=True)
-            disp_vtk.SetName("Stress_membrane")
-            disp_vtk.SetComponentName(0,"Nxx")
-            disp_vtk.SetComponentName(1,"Nyy")
-            disp_vtk.SetComponentName(2,"Nxy")
-            grid.GetPointData().AddArray(disp_vtk)
-            disp_vtk = vtk_np.numpy_to_vtk(stresses[:, 3:6], deep=True)
-            disp_vtk.SetName("Stress_bending")
-            disp_vtk.SetComponentName(0,"Mxx")
-            disp_vtk.SetComponentName(1,"Myy")
-            disp_vtk.SetComponentName(2,"Mxy")
-            grid.GetPointData().AddArray(disp_vtk)
-            disp_vtk = vtk_np.numpy_to_vtk(stresses[:, 6:8], deep=True)
-            disp_vtk.SetName("Stress_shear_outplane")
-            disp_vtk.SetComponentName(0,"Qx")
-            disp_vtk.SetComponentName(1,"Qy")
-            grid.GetPointData().AddArray(disp_vtk)
 
-            
+            compnames = []
+            for i in range(len(stresses[0])):
+                compnames.append(q.getInfoOnComponent(i))
+
+            N = stresses[:, 0:3]
+            add_vtk_array(grid, N, "Stress_membrane", compnames[0:3])
+            sigma_1, sigma_2, sigma_1_axis, sigma_2_axis = calc_principals(N)
+            add_vtk_array(grid, sigma_1, "Stress_membrane_major")
+            add_vtk_array(grid, sigma_2, "Stress_membrane_minor")
+            add_vtk_array(grid, sigma_1_axis, "Stress_membrane_major_axis")
+
+            N = stresses[:, 3:6]
+            add_vtk_array(grid, N, "Stress_bending", compnames[3:6])
+            sigma_1, sigma_2, sigma_1_axis, sigma_2_axis = calc_principals(N)
+            add_vtk_array(grid, sigma_1, "Stress_bending_major")
+            add_vtk_array(grid, sigma_2, "Stress_bending_minor")
+            add_vtk_array(grid, sigma_1_axis, "Stress_bending_major_axis")
+
+            N = stresses[:, 6:8]
+            add_vtk_array(grid, N, "Stress_shear_outplane", compnames[6:8])
+
+        if "DEGE_NOEU" in fn:
+            fieldname = fn
+            q = mc.ReadField(medfile, fieldname).getArrays()[0]
+            strains = []
+            for i in range(q.getNumberOfTuples()):
+                tup = q.getTuple(i)
+                strains.append(tup)
+            strains = np.array(strains)
+
+            compnames = []
+            for i in range(len(strains[0])):
+                compnames.append(q.getInfoOnComponent(i))
+
+            N = strains[:, 0:3]
+            add_vtk_array(grid, N, "Strain_membrane", compnames[0:3])
+            sigma_1, sigma_2, sigma_1_axis, sigma_2_axis = calc_principals(N)
+            add_vtk_array(grid, sigma_1, "Strain_membrane_major")
+            add_vtk_array(grid, sigma_2, "Strain_membrane_minor")
+            add_vtk_array(grid, sigma_1_axis, "Strain_membrane_major_axis")
+
+            N = strains[:, 3:6]
+            add_vtk_array(grid, N, "Strain_bending", compnames[3:6])
+            sigma_1, sigma_2, sigma_1_axis, sigma_2_axis = calc_principals(N)
+            add_vtk_array(grid, sigma_1, "Strain_bending_major")
+            add_vtk_array(grid, sigma_2, "Strain_bending_minor")
+            add_vtk_array(grid, sigma_1_axis, "Strain_bending_major_axis")
+
+            N = strains[:, 6:8]
+            add_vtk_array(grid, N, "Strain_shear_outplane", compnames[6:8])
+
+
+def calc_principals(N):
+    Nxx, Nyy, Nxy = N[:, 0], N[:, 1], N[:, 2]
+    sym_stress = np.array([Nxx, Nxy, Nxy, Nyy]).transpose().reshape(-1, 2, 2)
+    prin_val, prin_axes = np.linalg.eigh(sym_stress)
+    sigma_1 = prin_val[:, 1]
+    sigma_2 = prin_val[:, 0]
+    sigma_1_axis = prin_axes[:, :, 1]
+    sigma_2_axis = prin_axes[:, :, 0]
+    return sigma_1, sigma_2, sigma_1_axis, sigma_2_axis
+
+
+def add_vtk_array(g, data, dataname, compnames=[], deep=True):
+    disp_vtk = vtk_np.numpy_to_vtk(data, deep=deep)
+    disp_vtk.SetName(dataname)
+    g.GetPointData().AddArray(disp_vtk)
+    if len(compnames) > 0:
+        for i, cn in zip(range(len(compnames)), compnames):
+            disp_vtk.SetComponentName(i, cn)
