@@ -110,7 +110,8 @@ struct GeometryScreenPreselector
         SketcherGui::CoinMapping& coinMap,
         const SketcherGui::DrawingParameters& drawingParams,
         const SketcherGui::GeoList& geoListArg,
-        std::function<SbVec2f(const SbVec3f&)> screenProjectorArg
+        std::function<SbVec2f(const SbVec3f&)> screenProjectorArg,
+        Base::Placement sketchPlacementArg
     )
         : geometryLayerParameters(geometryLayerParams)
         , editModeScenegraphNodes(scenegraphNodes)
@@ -118,6 +119,8 @@ struct GeometryScreenPreselector
         , drawingParameters(drawingParams)
         , geolist(geoListArg)
         , projectToScreen(std::move(screenProjectorArg))
+        , sketchPlacement(std::move(sketchPlacementArg))
+
     {}
 
     bool detectHoveredPointPreselection(
@@ -287,13 +290,10 @@ struct GeometryScreenPreselector
                     result.clear();
                     result.Kind = SketcherGui::EditModeCoinManager::PreselectionResult::HitKind::Edge;
                     result.GeoIndex = geoIndex;
-                    result.setPickedPoint(
-                        Base::Vector3d(
-                            startPoint[0] + (endPoint[0] - startPoint[0]) * interpolation,
-                            startPoint[1] + (endPoint[1] - startPoint[1]) * interpolation,
-                            startPoint[2] + (endPoint[2] - startPoint[2]) * interpolation
-                        )
-                    );
+                    result.setPickedPoint(sketchPlanePointToWorld(
+                        startPoint[0] + (endPoint[0] - startPoint[0]) * interpolation,
+                        startPoint[1] + (endPoint[1] - startPoint[1]) * interpolation
+                    ));
                     bestDistanceSquared = bestCurveDistanceSquared;
                     found = true;
                 }
@@ -341,13 +341,16 @@ private:
         result.Kind = SketcherGui::EditModeCoinManager::PreselectionResult::HitKind::Point;
         result.PointIndex = coinMapping.getPointVertexId(pointIndex, layerIndex);
         result.setPickedPoint(
-            Base::Vector3d(
-                pointValues[pointIndex][0],
-                pointValues[pointIndex][1],
-                pointValues[pointIndex][2]
-            )
+            sketchPlanePointToWorld(pointValues[pointIndex][0], pointValues[pointIndex][1])
         );
         return true;
+    }
+
+    Base::Vector3d sketchPlanePointToWorld(double x, double y) const
+    {
+        Base::Vector3d point(x, y, 0.0);
+        sketchPlacement.getRotation().multVec(point, point);
+        return point + sketchPlacement.getPosition();
     }
 
     float getPointHitRadius(int pointIndex, int layerIndex, float extraRadiusPx) const
@@ -403,6 +406,7 @@ private:
     const SketcherGui::DrawingParameters& drawingParameters;
     const SketcherGui::GeoList& geolist;
     const std::function<SbVec2f(const SbVec3f&)> projectToScreen;
+    const Base::Placement sketchPlacement;
 };
 }  // namespace
 
@@ -1262,6 +1266,7 @@ bool EditModeCoinManager::detectGeometryPreselection(
     auto projectToScreen = [this](const SbVec3f& point) {
         return ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, point);
     };
+    Base::Placement sketchPlacement = ViewProviderSketchCoinAttorney::getEditingPlacement(viewProvider);
 
     GeometryScreenPreselector screenPreselector {
         geometryLayerParameters,
@@ -1269,7 +1274,8 @@ bool EditModeCoinManager::detectGeometryPreselection(
         coinMapping,
         drawingParameters,
         geolist,
-        projectToScreen
+        projectToScreen,
+        sketchPlacement
     };
 
     if (detectPointPreselection(points, result)) {
