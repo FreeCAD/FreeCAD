@@ -8712,8 +8712,8 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 2,
 4,
 45,
@@ -8810,8 +8810,8 @@ Evolumes
 
 ***********************************************************
 ** constraints transform node sets
-** ConstraintTransform
-*NSET,NSET=CylinConstraintTransform
+** Transform
+*NSET,NSET=CylinTransform
 3,
 4,
 58,
@@ -10979,8 +10979,8 @@ Evolumes
 
 ***********************************************************
 ** Transform Constraints
-** ConstraintTransform
-*TRANSFORM, NSET=CylinConstraintTransform, TYPE=C
+** Transform
+*TRANSFORM, NSET=CylinTransform, TYPE=C
 0,0,25,0,0,24
 
 ***********************************************************
@@ -10991,16 +10991,16 @@ Evolumes
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
+Fixed,1
+Fixed,2
+Fixed,3
 
 
 ***********************************************************
 ** constraints force node loads
-** ConstraintForce
+** ForceLoad
 *CLOAD
 ** node loads on shape: Cut:Face1
 3,2,-0
@@ -13160,7 +13160,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1
