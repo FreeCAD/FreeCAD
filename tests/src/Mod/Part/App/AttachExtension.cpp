@@ -78,10 +78,12 @@ TEST_F(AttachExtensionTest, testTranslateAttachmentOffsetKeepsRotation)
     const std::string originPointSubName = std::string(originPoint->getNameInDocument()) + ".";
     lcs->AttachmentSupport.setValue(origin, originPointSubName.c_str());
     lcs->MapMode.setValue("Translate");
-    lcs->AttachmentOffset.setValue(Base::Placement(
-        Base::Vector3d(100.0, 0.0, 0.0),
-        Base::Rotation(Base::Vector3d::UnitZ, Base::toRadians(90.0))
-    ));
+    lcs->AttachmentOffset.setValue(
+        Base::Placement(
+            Base::Vector3d(100.0, 0.0, 0.0),
+            Base::Rotation(Base::Vector3d::UnitZ, Base::toRadians(90.0))
+        )
+    );
 
     getDocument()->recompute();
 
