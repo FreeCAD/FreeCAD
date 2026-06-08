@@ -481,8 +481,8 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     // - - Part3
     // - - - Sketch
     // In this example it's not possible because Sketch has Part3 placement. So it should be
-    // rejected So we need to take the selection object and subname, and process them to get the
-    // correct obj/sub based on attached and attaching objects positions.
+    // rejected because we cannot guarantee attacher will find the correct placement. But we still
+    // allow because of some workflow see https://github.com/FreeCAD/FreeCAD/issues/29714
 
     std::vector<std::string> names = Base::Tools::splitSubName(sub);
     if (!rootObj || names.size() < 2) {
@@ -518,16 +518,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     for (size_t i = 0; i < names.size(); ++i) {
         App::DocumentObject* obj = doc->getObject(names[i].c_str());
         if (!obj) {
-            Base::Console().translatedUserError(
-                "TaskAttacher",
-                "Unsuitable selection: '%s' cannot be attached to '%s' from within it's group "
-                "'%s'.\n",
-                attachingObj->getFullLabel(),
-                subObj->getFullLabel(),
-                group->getFullLabel()
-            );
-            rootObj = nullptr;
-            return;
+            break;  // we reached the TNP string or the element name.
         }
 
         if (groupPassed) {
@@ -564,8 +555,7 @@ void TaskAttacher::findCorrectObjAndSubInThisContext(App::DocumentObject*& rootO
     // - - - Cube
     // - - Part3
     // - - - Sketch
-    // In this case the selection is not acceptable.
-    rootObj = nullptr;
+    // In this case the selection cannot guarantee the global placement that attacher will find.
 }
 
 void TaskAttacher::handleInitialSelection()
