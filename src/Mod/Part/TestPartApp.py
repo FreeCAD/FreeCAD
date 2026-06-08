@@ -36,8 +36,8 @@ from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
 from parttests.TopoShapeTest import TopoShapeTest
 from parttests.TestPartMirror import TestPartMirroringRegression
-from parttests.TestFaceMakerFishEyePlanar import *
-from parttests.TestFaceMakerFishEyeNonPlanar import *
+from parttests.TestFaceMakerUnifiedPlanar import *
+from parttests.TestFaceMakerUnifiedNonPlanar import *
 
 
 # ---------------------------------------------------------------------------

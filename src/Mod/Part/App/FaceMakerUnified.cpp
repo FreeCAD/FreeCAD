@@ -19,7 +19,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "FaceMakerFishEye.h"
+#include "FaceMakerUnified.h"
 
 #include <BOPTools_AlgoTools3D.hxx>
 #include <BRep_Tool.hxx>
@@ -42,18 +42,18 @@
 
 #include <Base/Console.h>
 
-FC_LOG_LEVEL_INIT("FaceMakerFishEye", true, true)
+FC_LOG_LEVEL_INIT("FaceMakerUnified", true, true)
 
 using namespace Part;
 
-TYPESYSTEM_SOURCE(Part::FaceMakerFishEye, Part::FaceMakerBuildFace)
+TYPESYSTEM_SOURCE(Part::FaceMakerUnified, Part::FaceMakerBuildFace)
 
-std::string FaceMakerFishEye::getUserFriendlyName() const
+std::string FaceMakerUnified::getUserFriendlyName() const
 {
-    return {tr("Fish-eye facemaker").toStdString()};
+    return {tr("Unified facemaker").toStdString()};
 }
 
-std::string FaceMakerFishEye::getBriefExplanation() const
+std::string FaceMakerUnified::getBriefExplanation() const
 {
     return {tr("Unified: handles nested holes, overlapping wires, and curved surfaces").toStdString()};
 }
@@ -173,7 +173,7 @@ TopoDS_Face fillNonPlanar(const TopoDS_Wire& wire)
 
 }  // namespace
 
-void FaceMakerFishEye::Build_Essence()
+void FaceMakerUnified::Build_Essence()
 {
     if (myWires.empty()) {
         return;

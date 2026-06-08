@@ -19,7 +19,7 @@
 #                                                                              #
 ################################################################################
 
-"""Planar tests for Part::FaceMakerFishEye.
+"""Planar tests for Part::FaceMakerUnified.
 
 All test geometry is defined on the XY plane, then transformed to the
 target plane via a class-level placement. Each test mixin is instantiated
@@ -89,7 +89,7 @@ def faces_overlap(faces):
 
 
 class _PlaneTestBase:
-    """Mixin providing fisheye() that transforms wires to a target plane.
+    """Mixin providing unified() that transforms wires to a target plane.
 
     Subclasses set ``placement`` as a class attribute. Areas and face counts
     are invariant under rigid transforms, so assertions stay the same.
@@ -97,12 +97,12 @@ class _PlaneTestBase:
 
     placement = FreeCAD.Placement()
 
-    def fisheye(self, wires):
+    def unified(self, wires):
         if isinstance(wires, Part.Wire):
             wires = [wires]
         mat = self.placement.toMatrix()
         transformed = [Part.Wire(w.transformed(mat).Edges) for w in wires]
-        return Part.makeFace(Part.Compound(transformed), "Part::FaceMakerFishEye").Faces
+        return Part.makeFace(Part.Compound(transformed), "Part::FaceMakerUnified").Faces
 
 
 # =========================================================================
@@ -113,17 +113,17 @@ class _PlaneTestBase:
 
 class _SingleShape(_PlaneTestBase):
     def test_rectangle(self):
-        faces = self.fisheye(rect_wire(0, 0, 10, 10))
+        faces = self.unified(rect_wire(0, 0, 10, 10))
         self.assertEqual(len(faces), 1)
         self.assertAlmostEqual(faces[0].Area, 100.0, places=3)
 
     def test_circle(self):
-        faces = self.fisheye(circle_wire(0, 0, 10))
+        faces = self.unified(circle_wire(0, 0, 10))
         self.assertEqual(len(faces), 1)
         self.assertAlmostEqual(faces[0].Area, math.pi * 100, places=1)
 
     def test_triangle(self):
-        faces = self.fisheye(triangle_wire((0, 0), (10, 0), (5, 10)))
+        faces = self.unified(triangle_wire((0, 0), (10, 0), (5, 10)))
         self.assertEqual(len(faces), 1)
         self.assertAlmostEqual(faces[0].Area, 50.0, places=3)
 
@@ -132,19 +132,19 @@ class _SingleShape(_PlaneTestBase):
         arc = Part.ArcOfCircle(Part.Circle(Vec(0, 0, 0), Vec(0, 0, 1), r), 0, math.pi)
         line = Part.LineSegment(Vec(-r, 0, 0), Vec(r, 0, 0))
         w = Part.Wire([arc.toShape(), line.toShape()])
-        faces = self.fisheye(w)
+        faces = self.unified(w)
         self.assertEqual(len(faces), 1)
         self.assertAlmostEqual(faces[0].Area, math.pi * r * r / 2, places=1)
 
 
 class _SeparateShapes(_PlaneTestBase):
     def test_two_rectangles(self):
-        faces = self.fisheye([rect_wire(0, 0, 5, 5), rect_wire(20, 20, 25, 25)])
+        faces = self.unified([rect_wire(0, 0, 5, 5), rect_wire(20, 20, 25, 25)])
         self.assertEqual(len(faces), 2)
         self.assertAlmostEqual(total_area(faces), 50.0, places=3)
 
     def test_three_mixed_shapes(self):
-        faces = self.fisheye(
+        faces = self.unified(
             [
                 rect_wire(0, 0, 5, 5),
                 circle_wire(20, 0, 3),
@@ -154,29 +154,29 @@ class _SeparateShapes(_PlaneTestBase):
         self.assertEqual(len(faces), 3)
 
     def test_shared_edge(self):
-        faces = self.fisheye([rect_wire(0, 0, 10, 10), rect_wire(10, 0, 20, 10)])
+        faces = self.unified([rect_wire(0, 0, 10, 10), rect_wire(10, 0, 20, 10)])
         self.assertEqual(len(faces), 2)
         self.assertAlmostEqual(total_area(faces), 200.0, places=3)
 
     def test_shared_corner(self):
-        faces = self.fisheye([rect_wire(0, 0, 10, 10), rect_wire(10, 10, 20, 20)])
+        faces = self.unified([rect_wire(0, 0, 10, 10), rect_wire(10, 10, 20, 20)])
         self.assertEqual(len(faces), 2)
         self.assertAlmostEqual(total_area(faces), 200.0, places=3)
 
 
 class _Nesting(_PlaneTestBase):
     def test_circle_inside_rectangle(self):
-        faces = self.fisheye([rect_wire(-20, -20, 20, 20), circle_wire(0, 0, 5)])
+        faces = self.unified([rect_wire(-20, -20, 20, 20), circle_wire(0, 0, 5)])
         self.assertEqual(len(faces), 1)
         self.assertAlmostEqual(total_area(faces), 1600.0 - math.pi * 25, places=1)
 
     def test_concentric_circles(self):
-        faces = self.fisheye([circle_wire(0, 0, 10), circle_wire(0, 0, 5)])
+        faces = self.unified([circle_wire(0, 0, 10), circle_wire(0, 0, 5)])
         self.assertEqual(len(faces), 1)
         self.assertAlmostEqual(total_area(faces), math.pi * 75, places=1)
 
     def test_triple_nesting(self):
-        faces = self.fisheye(
+        faces = self.unified(
             [rect_wire(0, 0, 30, 30), rect_wire(5, 5, 25, 25), rect_wire(10, 10, 20, 20)]
         )
         self.assertEqual(len(faces), 2)
@@ -184,7 +184,7 @@ class _Nesting(_PlaneTestBase):
 
     def test_four_concentric_circles(self):
         r1, r2, r3, r4 = 25.8, 15.4, 6.4, 2.5
-        faces = self.fisheye(
+        faces = self.unified(
             [
                 circle_wire(0, 0, r1),
                 circle_wire(0, 0, r2),
@@ -199,7 +199,7 @@ class _Nesting(_PlaneTestBase):
 class _TwoOverlapping(_PlaneTestBase):
     def test_two_circles(self):
         r, d = 10, 12
-        faces = self.fisheye([circle_wire(0, 0, r), circle_wire(d, 0, r)])
+        faces = self.unified([circle_wire(0, 0, r), circle_wire(d, 0, r)])
         self.assertEqual(len(faces), 3)
         cos_arg = d / (2 * r)
         lens = 2 * r * r * math.acos(cos_arg) - (d / 2) * math.sqrt(4 * r * r - d * d)
@@ -207,7 +207,7 @@ class _TwoOverlapping(_PlaneTestBase):
         self.assertFalse(faces_overlap(faces))
 
     def test_two_rectangles(self):
-        faces = self.fisheye([rect_wire(0, 0, 20, 20), rect_wire(10, 10, 30, 30)])
+        faces = self.unified([rect_wire(0, 0, 20, 20), rect_wire(10, 10, 30, 30)])
         expected = union_area(rect_face(0, 0, 20, 20), rect_face(10, 10, 30, 30))
         self.assertAlmostEqual(total_area(faces), expected, delta=1.0)
         self.assertFalse(faces_overlap(faces))
@@ -215,18 +215,18 @@ class _TwoOverlapping(_PlaneTestBase):
 
 class _Subdivision(_PlaneTestBase):
     def test_diagonal(self):
-        faces = self.fisheye([rect_wire(0, 0, 10, 10), line_wire((0, 0), (10, 10))])
+        faces = self.unified([rect_wire(0, 0, 10, 10), line_wire((0, 0), (10, 10))])
         self.assertEqual(len(faces), 2)
         self.assertAlmostEqual(total_area(faces), 100.0, places=3)
 
     def test_cross_pattern(self):
-        faces = self.fisheye([rect_wire(-5, -15, 5, 15), rect_wire(-15, -5, 15, 5)])
+        faces = self.unified([rect_wire(-5, -15, 5, 15), rect_wire(-15, -5, 15, 5)])
         self.assertEqual(len(faces), 5)
         self.assertAlmostEqual(total_area(faces), 500.0, places=2)
         self.assertFalse(faces_overlap(faces))
 
     def test_midpoint_cross(self):
-        faces = self.fisheye(
+        faces = self.unified(
             [rect_wire(0, 0, 10, 10), line_wire((0, 5), (10, 5)), line_wire((5, 0), (5, 10))]
         )
         self.assertEqual(len(faces), 4)
@@ -236,19 +236,19 @@ class _Subdivision(_PlaneTestBase):
             self.assertAlmostEqual(f.Area, 25.0, places=2)
 
     def test_incomplete_intersection(self):
-        faces = self.fisheye([rect_wire(0, 0, 10, 10), line_wire((5, 0), (5, 5))])
+        faces = self.unified([rect_wire(0, 0, 10, 10), line_wire((5, 0), (5, 5))])
         self.assertEqual(len(faces), 1)
         self.assertAlmostEqual(faces[0].Area, 100.0, places=3)
 
     def test_t_junction(self):
-        faces = self.fisheye(
+        faces = self.unified(
             [rect_wire(0, 0, 10, 10), line_wire((0, 0), (10, 10)), line_wire((5, 0), (5, 5))]
         )
         self.assertEqual(len(faces), 3)
         self.assertAlmostEqual(total_area(faces), 100.0, places=3)
 
     def test_dangling_chain(self):
-        faces = self.fisheye(
+        faces = self.unified(
             [
                 rect_wire(0, 0, 10, 10),
                 line_wire((5, 0), (5, 4)),
@@ -260,12 +260,12 @@ class _Subdivision(_PlaneTestBase):
         self.assertAlmostEqual(faces[0].Area, 100.0, places=3)
 
     def test_floating_line(self):
-        faces = self.fisheye([rect_wire(0, 0, 10, 10), line_wire((3, 3), (7, 7))])
+        faces = self.unified([rect_wire(0, 0, 10, 10), line_wire((3, 3), (7, 7))])
         self.assertEqual(len(faces), 1)
         self.assertAlmostEqual(faces[0].Area, 100.0, places=3)
 
     def test_diagonal_plus_dangling(self):
-        faces = self.fisheye(
+        faces = self.unified(
             [rect_wire(0, 0, 10, 10), line_wire((0, 0), (10, 10)), line_wire((10, 5), (7, 5))]
         )
         self.assertEqual(len(faces), 2)
@@ -275,7 +275,7 @@ class _Subdivision(_PlaneTestBase):
         """Circle + line from center to outside: dangling line should be
         pruned, producing 1 circular face with a single wire."""
         r = 10
-        faces = self.fisheye([circle_wire(0, 0, r), line_wire((0, 0), (r + 5, 0))])
+        faces = self.unified([circle_wire(0, 0, r), line_wire((0, 0), (r + 5, 0))])
         self.assertEqual(len(faces), 1)
         self.assertAlmostEqual(faces[0].Area, math.pi * r * r, places=1)
         # Face should have 1 clean wire — no internal dangling edges
@@ -286,7 +286,7 @@ class _Subdivision(_PlaneTestBase):
         crosses the boundary twice, creating a chord that splits the circle
         into 2 faces. No dangling segments should remain."""
         r = 10
-        faces = self.fisheye([circle_wire(0, 0, r), line_wire((-r - 5, 0), (r + 5, 0))])
+        faces = self.unified([circle_wire(0, 0, r), line_wire((-r - 5, 0), (r + 5, 0))])
         self.assertEqual(len(faces), 2)
         self.assertAlmostEqual(total_area(faces), math.pi * r * r, places=1)
 
@@ -294,7 +294,7 @@ class _Subdivision(_PlaneTestBase):
 class _MultipleOverlapping(_PlaneTestBase):
     def test_three_circles(self):
         r = 10
-        faces = self.fisheye([circle_wire(0, 0, r), circle_wire(8, 0, r), circle_wire(4, 7, r)])
+        faces = self.unified([circle_wire(0, 0, r), circle_wire(8, 0, r), circle_wire(4, 7, r)])
         self.assertEqual(len(faces), 7)
         c1 = Part.Face(circle_wire(0, 0, r))
         c2 = Part.Face(circle_wire(8, 0, r))
@@ -302,7 +302,7 @@ class _MultipleOverlapping(_PlaneTestBase):
         self.assertAlmostEqual(total_area(faces), union_area(c1, c2, c3), places=0)
 
     def test_four_circles(self):
-        faces = self.fisheye(
+        faces = self.unified(
             [
                 circle_wire(0, 0, 10),
                 circle_wire(8, 0, 10),
@@ -315,7 +315,7 @@ class _MultipleOverlapping(_PlaneTestBase):
 
 class _OverlapWithHoles(_PlaneTestBase):
     def test_overlapping_rects_with_hole(self):
-        faces = self.fisheye(
+        faces = self.unified(
             [rect_wire(0, 0, 90, 80), rect_wire(-30, -10, 30, 20), rect_wire(10, 20, 30, 40)]
         )
         large = rect_face(0, 0, 90, 80)
@@ -325,7 +325,7 @@ class _OverlapWithHoles(_PlaneTestBase):
         self.assertAlmostEqual(total_area(faces), expected, delta=1.0)
 
     def test_overlapping_with_hole_and_separate(self):
-        faces = self.fisheye(
+        faces = self.unified(
             [
                 rect_wire(-20, -20, 20, 20),
                 rect_wire(10, 10, 30, 30),
@@ -345,14 +345,14 @@ class _Degenerate(_PlaneTestBase):
         w = Part.Wire(
             Part.makePolygon([Vec(-10, -5), Vec(10, 5), Vec(10, -5), Vec(-10, 5), Vec(-10, -5)])
         )
-        faces = self.fisheye(w)
+        faces = self.unified(w)
         self.assertGreaterEqual(len(faces), 2)
         self.assertGreater(total_area(faces), 0)
 
     def test_bowtie(self):
         w1 = Part.Wire(Part.makePolygon([Vec(-10, -5), Vec(-10, 5), Vec(0, 0), Vec(-10, -5)]))
         w2 = Part.Wire(Part.makePolygon([Vec(0, 0), Vec(10, 5), Vec(10, -5), Vec(0, 0)]))
-        faces = self.fisheye([w1, w2])
+        faces = self.unified([w1, w2])
         self.assertEqual(len(faces), 2)
         self.assertAlmostEqual(total_area(faces), 100.0, places=1)
 
@@ -371,7 +371,7 @@ class _Degenerate(_PlaneTestBase):
         ]
         bs = Part.BSplineCurve(poles, None, None, False, 3, [1] * len(poles), False)
         separate_line = line_wire((500, 500), (600, 600))
-        faces = self.fisheye([Part.Wire([bs.toShape()]), separate_line])
+        faces = self.unified([Part.Wire([bs.toShape()]), separate_line])
         self.assertGreaterEqual(len(faces), 2)
         self.assertGreater(total_area(faces), 0)
 
@@ -390,7 +390,7 @@ class _Degenerate(_PlaneTestBase):
         ]
         bs = Part.BSplineCurve(poles, None, None, False, 3, [1] * len(poles), False)
         r = 10
-        faces = self.fisheye(
+        faces = self.unified(
             [Part.Wire([bs.toShape()]), circle_wire(0, 0, r), circle_wire(8, 0, r)]
         )
         # BSpline: 2 lobes + circles: 3 Venn regions = 5 total
@@ -418,7 +418,7 @@ class _Degenerate(_PlaneTestBase):
                 ]
             )
         )
-        faces = self.fisheye(w)
+        faces = self.unified(w)
         self.assertGreaterEqual(len(faces), 1)
 
     def test_figure_8_bspline(self):
@@ -435,7 +435,7 @@ class _Degenerate(_PlaneTestBase):
         ]
         bs = Part.BSplineCurve(poles, None, None, False, 3, [1] * len(poles), False)
         w = Part.Wire([bs.toShape()])
-        faces = self.fisheye(w)
+        faces = self.unified(w)
         self.assertGreaterEqual(len(faces), 2)
         self.assertGreater(total_area(faces), 0)
 
@@ -452,7 +452,7 @@ class TestDegenerateInput(unittest.TestCase):
             ValueError,
             Part.makeFace,
             Part.Compound([line_wire((0, 0), (10, 0))]),
-            "Part::FaceMakerFishEye",
+            "Part::FaceMakerUnified",
         )
 
     def test_empty_compound(self):
@@ -461,7 +461,7 @@ class TestDegenerateInput(unittest.TestCase):
             ValueError,
             Part.makeFace,
             Part.Compound([]),
-            "Part::FaceMakerFishEye",
+            "Part::FaceMakerUnified",
         )
 
 
@@ -475,7 +475,7 @@ _FONT_AVAILABLE = os.path.isfile(os.path.join(_FONT_PATH, _FONT_FILE))
 
 
 class TestTextGlyphs(unittest.TestCase):
-    """FishEye face making for actual font glyph wires."""
+    """Unified face making for actual font glyph wires."""
 
     def setUp(self):
         if not _FONT_AVAILABLE:
@@ -485,7 +485,7 @@ class TestTextGlyphs(unittest.TestCase):
         wires = Part.makeWireString(char, _FONT_PATH + "/", _FONT_FILE, 10.0, 0.0)
         self.assertEqual(len(wires), 1, f"Expected 1 character, got {len(wires)}")
         comp = Part.Compound(wires[0])
-        return Part.makeFace(comp, "Part::FaceMakerFishEye").Faces
+        return Part.makeFace(comp, "Part::FaceMakerUnified").Faces
 
     def test_letter_A(self):
         """Letter A has an outer outline and a triangular hole — 1 face."""
@@ -523,7 +523,7 @@ class TestTextGlyphs(unittest.TestCase):
             wires = Part.makeWireString(char, _FONT_PATH + "/", _FONT_FILE, 10.0, 0.0)
             self.assertEqual(len(wires), 1)
             comp = Part.Compound(wires[0])
-            faces = Part.makeFace(comp, "Part::FaceMakerFishEye").Faces
+            faces = Part.makeFace(comp, "Part::FaceMakerUnified").Faces
             self.assertGreater(len(faces), 0, f"No faces for '{char}'")
             self.assertGreater(total_area(faces), 0, f"Zero area for '{char}'")
 

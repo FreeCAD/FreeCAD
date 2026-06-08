@@ -57,7 +57,7 @@ public:
 protected:
     void Build_Essence() override;
 
-    // Helpers exposed to subclasses (e.g. FaceMakerFishEye) so the planar
+    // Helpers exposed to subclasses (e.g. FaceMakerUnified) so the planar
     // pipeline can be reused without duplicating the implementation.
     TopTools_ListOfShape collectEdgesFromWires() const;
     bool findPlane(const TopTools_ListOfShape& edges, gp_Pln& plane) const;

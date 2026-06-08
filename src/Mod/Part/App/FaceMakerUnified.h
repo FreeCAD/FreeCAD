@@ -38,7 +38,7 @@ namespace Part
  * - When no plane can be found, falls back to BRepFill_Filling
  *   (N-sided BSpline patch) for each closed wire individually.
  */
-class PartExport FaceMakerFishEye: public FaceMakerBuildFace
+class PartExport FaceMakerUnified: public FaceMakerBuildFace
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 

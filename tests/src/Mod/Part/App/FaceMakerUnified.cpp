@@ -24,7 +24,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Interpreter.h>
-#include "Mod/Part/App/FaceMakerFishEye.h"
+#include "Mod/Part/App/FaceMakerUnified.h"
 #include "Mod/Part/App/TopoShape.h"
 
 #include <BRepBuilderAPI_MakeEdge.hxx>
@@ -38,7 +38,7 @@
 
 using namespace Part;
 
-class FaceMakerFishEyeTest: public ::testing::Test
+class FaceMakerUnifiedTest: public ::testing::Test
 {
 protected:
     static void SetUpTestSuite()
@@ -96,7 +96,7 @@ protected:
         return BRepBuilderAPI_MakeWire(BRepBuilderAPI_MakeEdge(interp.Curve()).Edge()).Wire();
     }
 
-    TopoShape makeFishEyeFace(const std::vector<TopoDS_Wire>& wires)
+    TopoShape makeUnifiedFace(const std::vector<TopoDS_Wire>& wires)
     {
         auto hasher = _doc->getStringHasher();
         long tag = 1;
@@ -108,7 +108,7 @@ protected:
             sources.push_back(std::move(ts));
         }
         TopoShape result(tag, hasher);
-        result.makeElementFace(sources, nullptr, "Part::FaceMakerFishEye", nullptr);
+        result.makeElementFace(sources, nullptr, "Part::FaceMakerUnified", nullptr);
         return result;
     }
 
@@ -144,8 +144,8 @@ protected:
 
     void expectNamingStable(const std::vector<TopoDS_Wire>& wires)
     {
-        auto r1 = makeFishEyeFace(wires);
-        auto r2 = makeFishEyeFace(wires);
+        auto r1 = makeUnifiedFace(wires);
+        auto r2 = makeUnifiedFace(wires);
         int edgeCount = r1.countSubShapes(TopAbs_EDGE);
         ASSERT_EQ(edgeCount, r2.countSubShapes(TopAbs_EDGE));
         for (int i = 1; i <= edgeCount; ++i) {
@@ -167,58 +167,58 @@ protected:
 };
 
 // No splitting — baseline: names should exist even without edge modifications.
-TEST_F(FaceMakerFishEyeTest, singleRectangleNaming)
+TEST_F(FaceMakerUnifiedTest, singleRectangleNaming)
 {
-    auto result = makeFishEyeFace({makeRectWire(0, 0, 10, 10)});
+    auto result = makeUnifiedFace({makeRectWire(0, 0, 10, 10)});
     ASSERT_EQ(result.countSubShapes(TopAbs_FACE), 1);
     expectAllEdgesNamed(result);
     expectAllFacesNamed(result);
 }
 
 // Inter-edge splits via mySplitter (diagonal crosses rectangle edges).
-TEST_F(FaceMakerFishEyeTest, subdivisionNaming)
+TEST_F(FaceMakerUnifiedTest, subdivisionNaming)
 {
-    auto result = makeFishEyeFace({makeRectWire(0, 0, 10, 10), makeLineWire(0, 0, 10, 10)});
+    auto result = makeUnifiedFace({makeRectWire(0, 0, 10, 10), makeLineWire(0, 0, 10, 10)});
     ASSERT_GE(result.countSubShapes(TopAbs_FACE), 2);
     expectAllEdgesNamed(result);
     expectAllFacesNamed(result);
 }
 
 // Partially overlapping rectangles — group-aware even-odd classification.
-TEST_F(FaceMakerFishEyeTest, overlappingRectsNaming)
+TEST_F(FaceMakerUnifiedTest, overlappingRectsNaming)
 {
-    auto result = makeFishEyeFace({makeRectWire(0, 0, 20, 20), makeRectWire(10, 10, 30, 30)});
+    auto result = makeUnifiedFace({makeRectWire(0, 0, 20, 20), makeRectWire(10, 10, 30, 30)});
     ASSERT_GE(result.countSubShapes(TopAbs_FACE), 1);
     expectAllEdgesNamed(result);
     expectAllFacesNamed(result);
 }
 
 // Self-intersecting B-spline — myPreSplitHistory tracks fragments.
-TEST_F(FaceMakerFishEyeTest, selfIntersectingBSplineNaming)
+TEST_F(FaceMakerUnifiedTest, selfIntersectingBSplineNaming)
 {
-    auto result = makeFishEyeFace({makeFigure8Wire()});
+    auto result = makeUnifiedFace({makeFigure8Wire()});
     ASSERT_GE(result.countSubShapes(TopAbs_FACE), 2);
     expectAllEdgesNamed(result);
     expectAllFacesNamed(result);
 }
 
 // Stability tests — names must be identical across rebuilds.
-TEST_F(FaceMakerFishEyeTest, singleRectangleStable)
+TEST_F(FaceMakerUnifiedTest, singleRectangleStable)
 {
     expectNamingStable({makeRectWire(0, 0, 10, 10)});
 }
 
-TEST_F(FaceMakerFishEyeTest, subdivisionStable)
+TEST_F(FaceMakerUnifiedTest, subdivisionStable)
 {
     expectNamingStable({makeRectWire(0, 0, 10, 10), makeLineWire(0, 0, 10, 10)});
 }
 
-TEST_F(FaceMakerFishEyeTest, overlappingRectsStable)
+TEST_F(FaceMakerUnifiedTest, overlappingRectsStable)
 {
     expectNamingStable({makeRectWire(0, 0, 20, 20), makeRectWire(10, 10, 30, 30)});
 }
 
-TEST_F(FaceMakerFishEyeTest, selfIntersectingBSplineStable)
+TEST_F(FaceMakerUnifiedTest, selfIntersectingBSplineStable)
 {
     expectNamingStable({makeFigure8Wire()});
 }

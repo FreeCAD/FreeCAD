@@ -253,7 +253,7 @@ App::DocumentObjectExecReturn* Loft::execute()
                 "Part::FaceMakerBullseye",
                 "Part::FaceMakerCheese",
                 "Part::FaceMakerSimple",
-                "Part::FaceMakerFishEye",
+                "Part::FaceMakerUnified",
             };
             for (size_t i = 0; i < std::size(faceMaker); i++) {
                 try {

@@ -320,7 +320,7 @@ class ShapeString(DraftObject):
         # FaceMakerSimple:
         #     All fonts: overlapping faces in case of nested wires f.e. with: O.
         for maker in (
-            "Part::FaceMakerFishEye",
+            "Part::FaceMakerUnified",
             "Part::FaceMakerBullseye",
             "Part::FaceMakerCheese",
             "Part::FaceMakerSimple",

@@ -69,7 +69,7 @@
 #include "FaceMakerBullseye.h"
 #include "FaceMakerBuildFace.h"
 #include "FaceMakerCheese.h"
-#include "FaceMakerFishEye.h"
+#include "FaceMakerUnified.h"
 #include "WireJoiner.h"
 #include "FeatureChamfer.h"
 #include "FeatureCompound.h"
@@ -436,7 +436,7 @@ PyMOD_INIT_FUNC(Part)
     Part::FaceMakerBullseye     ::init();
     Part::FaceMakerRing         ::init();
     Part::FaceMakerBuildFace    ::init();
-    Part::FaceMakerFishEye      ::init();
+    Part::FaceMakerUnified      ::init();
 
     Attacher::AttachEngine        ::init();
     Attacher::AttachEngine3D      ::init();
