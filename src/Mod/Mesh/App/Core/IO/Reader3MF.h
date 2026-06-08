@@ -78,11 +78,15 @@ public:
     std::vector<int> GetMeshIds() const;
     const MeshKernel& GetMesh(int id) const
     {
-        return meshes.at(id).first;
+        return meshes.at(id).kernel;
     }
     const Base::Matrix4D& GetTransform(int id) const
     {
-        return meshes.at(id).second;
+        return meshes.at(id).transform;
+    }
+    const std::string& GetName(int id) const
+    {
+        return meshes.at(id).name;
     }
 
 private:
@@ -91,6 +95,7 @@ private:
         int id = -1;
         int objectId = -1;
         std::string path;
+        std::string name;
         Base::Matrix4D transform;
     };
     static std::unique_ptr<XERCES_CPP_NAMESPACE::XercesDOMParser> makeDomParser();
@@ -108,7 +113,7 @@ private:
     void LoadComponents(XERCES_CPP_NAMESPACE::DOMNodeList*, int id);
     void LoadComponent(XERCES_CPP_NAMESPACE::DOMNodeList*, int id);
     void LoadComponent(XERCES_CPP_NAMESPACE::DOMNamedNodeMap*, int id);
-    void LoadMesh(XERCES_CPP_NAMESPACE::DOMNodeList*, int id, const Component&);
+    void LoadMesh(XERCES_CPP_NAMESPACE::DOMNodeList*, int id, const Component&, const std::string& name);
     void LoadVertices(XERCES_CPP_NAMESPACE::DOMNodeList*, MeshPointArray&);
     void ReadVertices(XERCES_CPP_NAMESPACE::DOMNodeList*, MeshPointArray&);
     void LoadTriangles(XERCES_CPP_NAMESPACE::DOMNodeList*, MeshFacetArray&);
@@ -118,7 +123,12 @@ private:
 
 private:
     std::vector<Component> components;
-    using MeshKernelAndTransform = std::pair<MeshKernel, Base::Matrix4D>;
+    struct MeshKernelAndTransform
+    {
+        MeshKernel kernel;
+        Base::Matrix4D transform;
+        std::string name;
+    };
     std::unordered_map<int, MeshKernelAndTransform> meshes;
     std::unique_ptr<zipios::FileCollection> file;
     std::unique_ptr<std::istream> zip;

@@ -221,7 +221,7 @@ void Reader3MF::LoadItem(DOMNamedNodeMap* nodeMap)
             if (mat) {
                 auto it = meshes.find(idValue);
                 if (it != meshes.end()) {
-                    it->second.second = mat.value();
+                    it->second.transform = mat.value();
                 }
 
                 auto jt = std::find_if(
@@ -280,15 +280,19 @@ bool Reader3MF::LoadObject(DOMNodeList* nodes, const Component& comp)
     for (XMLSize_t i = 0; i < nodes->getLength(); i++) {
         DOMNode* objectNode = nodes->item(i);
         if (objectNode->getNodeType() == DOMNode::ELEMENT_NODE) {
-            DOMNode* idAttr = objectNode->getAttributes()->getNamedItem(
-                XStrLiteral("id").unicodeForm()
-            );
+            auto attrs = objectNode->getAttributes();
+            DOMNode* idAttr = attrs->getNamedItem(XStrLiteral("id").unicodeForm());
             auto elem = static_cast<DOMElement*>(objectNode);
             if (idAttr) {
                 int id = std::stoi(StrX(idAttr->getNodeValue()).c_str());
+                DOMNode* nameAttr = attrs->getNamedItem(XStrLiteral("name").unicodeForm());
+                std::string name;
+                if (nameAttr) {
+                    name = StrX(nameAttr->getNodeValue()).c_str();
+                }
                 DOMNodeList* meshNode = elem->getElementsByTagName(XStrLiteral("mesh").unicodeForm());
                 if (meshNode->getLength() > 0) {
-                    LoadMesh(meshNode, id, comp);
+                    LoadMesh(meshNode, id, comp, name);
                 }
                 else {
                     DOMNodeList* compNode = elem->getElementsByTagName(
@@ -373,7 +377,7 @@ void Reader3MF::LoadComponent(DOMNamedNodeMap* attr, int id)
     }
 }
 
-void Reader3MF::LoadMesh(DOMNodeList* nodes, int id, const Component& comp)
+void Reader3MF::LoadMesh(DOMNodeList* nodes, int id, const Component& comp, const std::string& name)
 {
     if (!nodes) {
         return;
@@ -393,10 +397,11 @@ void Reader3MF::LoadMesh(DOMNodeList* nodes, int id, const Component& comp)
             MeshPointFacetAdjacency meshAdj(points.size(), facets);
             meshAdj.SetFacetNeighbourhood();
 
-            Base::Matrix4D mat = comp.transform;
-            MeshKernel kernel;
-            kernel.Adopt(points, facets);
-            meshes.emplace(id, std::make_pair(kernel, mat));
+            MeshKernelAndTransform kernelTrsf;
+            kernelTrsf.transform = comp.transform;
+            kernelTrsf.kernel.Adopt(points, facets);
+            kernelTrsf.name = name;
+            meshes.emplace(id, kernelTrsf);
         }
     }
 }
