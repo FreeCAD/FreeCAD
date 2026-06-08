@@ -102,6 +102,7 @@ def create_document_object(document, filename=None, shapemode=0, strategy=0, sil
     """
 
     obj = add_object(document, otype="project")
+    Arch.mark_bim_document(document)
     ifcfile, project, full = setup_project(obj, filename, shapemode, silent)
     # populate according to strategy
     if strategy == 0:
@@ -135,6 +136,7 @@ def convert_document(document, filename=None, shapemode=0, strategy=0, silent=Fa
         document.addProperty("App::PropertyPythonObject", "Proxy", locked=True)
     document.setPropertyStatus("Proxy", "Transient")
     document.Proxy = ifc_objects.document_object()
+    Arch.mark_bim_document(document)
     ifcfile, project, full = setup_project(document, filename, shapemode, silent)
     if strategy == 0:
         create_children(document, ifcfile, recursive=False)
