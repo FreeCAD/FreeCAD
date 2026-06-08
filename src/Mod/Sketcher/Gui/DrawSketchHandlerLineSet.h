@@ -1329,7 +1329,7 @@ private:
                         points.back().y
                     );
 
-                    // Then transfert back the constraints
+                    // Then transfer back the constraints
                     if (pointWasCreated) {
                         int pointGeoId = getHighestCurveIndex();
                         // We must first remove the point on object constraint.
