@@ -34,7 +34,7 @@ from Path.Base.MachineState import MachineState
 EXPANDABLE_DRILL_CYCLES = {"G81", "G82", "G83", "G73"}
 
 
-debug = True
+debug = False
 if debug:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())

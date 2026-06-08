@@ -28,6 +28,7 @@ import unittest
 import FreeCAD
 from Path.Post.Processor import PostProcessorFactory
 from Machine.models.machine import Machine
+import Constants
 import Path
 import Path.Post.Command as PathCommand
 from Path.Post import PostList
@@ -178,7 +179,6 @@ class TestFileNameGenerator(unittest.TestCase):
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
 
-        print(os.path.normpath(filename))
         assertFilePathsEqual(self, filename, f"{self.testfilepath}/testfile.nc")
 
     def test015(self):
@@ -492,6 +492,7 @@ class TestExport2Integration(unittest.TestCase):
             max_rpm=24000,
             min_rpm=6000,
             tool_change="manual",
+            toolhead_wait=1.0,
         )
         machine.toolheads = [default_toolhead]
 
@@ -626,7 +627,7 @@ class TestExport2Integration(unittest.TestCase):
         return PathModifier(self, commands)
 
     @staticmethod
-    def _get_full_machine_config():
+    def _get_full_machine_config():  # FIXME: find other example that creates this correctly
         """Helper to get the complete machine config used in multiple tests."""
         return {
             "freecad_version": "1.2.0",
@@ -719,7 +720,9 @@ class TestExport2Integration(unittest.TestCase):
                 "file_name": "",
                 "properties": {
                     "supports_tool_radius_compensation": False,
-                    "supported_commands": "",
+                    "supported_commands": Constants.GCODE_SUPPORTED
+                    + Constants.GCODE_FIXTURES
+                    + Constants.MCODE_SUPPORTED,
                     "drill_cycles_to_translate": "",
                     "preamble": "(preamble)",
                     "postamble": "(postamble)",
@@ -1434,7 +1437,11 @@ class TestExport2Integration(unittest.TestCase):
         ):
             results = self._run_export2(machine)
             gcode = self._get_first_section_gcode(results)
-            self.assertIn("S1235", gcode, "Should have 0 decimal places for spindle speed")
+            self.assertIn(
+                "S1235",
+                gcode,
+                f"Should have 0 decimal places for spindle speed\n---\n{results}\n---",
+            )
 
     def test124_comment_symbol_formatting(self):
         """

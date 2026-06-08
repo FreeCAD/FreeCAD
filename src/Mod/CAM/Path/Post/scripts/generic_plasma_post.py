@@ -490,7 +490,7 @@ class GenericPlasma(PostProcessor):
         Path.Log.track("GenericPlasma.get_sanity_checks() called")
         squawks = []
 
-        # Test squawk.  Remove this.  It will always add a warning.
+        # Test squawk.  Remove this.  It will always add a warning. # FIXME: @sliptonic (rework test323_generic_plasma_sanity_checks_integration)
         Path.Log.track("Adding test squawk from GenericPlasma")
         squawks.append(self._create_squawk("WARNING", "This is a test warning message"))
 

@@ -557,8 +557,12 @@ class CAMSanity:
                             postprocessor.apply_configuration_bundle(overrides=overrides)
                         pp_squawks = postprocessor.get_sanity_checks(self.job)
                         all_squawks.extend(pp_squawks)
-            except Exception as e:
-                Path.Log.warning(f"Failed to get postprocessor sanity checks: {e}")
+            except FileNotFoundError as e:
+                if "Available machines:" in str(e):
+                    # a missing machine means "don't do sanity"
+                    Path.Log.warning(f"Failed to get postprocessor sanity checks: {e}")
+                else:
+                    raise e
 
         critical = [s for s in all_squawks if s["squawkType"] in ("WARNING", "CAUTION")]
         Path.Log.debug(f"get_all_squawks: {len(all_squawks)} squawks, {len(critical)} critical")
