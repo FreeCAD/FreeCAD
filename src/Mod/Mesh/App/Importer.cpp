@@ -67,6 +67,9 @@ void Importer::load(const std::string& fileName)
             feature->purgeTouched();
         }
     }
+    else {
+        Base::Console().error("Failed to load %s\n", fileName.c_str());
+    }
 }
 
 void Importer::addVertexColors(Feature* feature, const std::vector<Base::Color>& colors)
