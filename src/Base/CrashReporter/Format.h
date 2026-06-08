@@ -35,10 +35,10 @@
 
 #include "Base/Bitmask.h"
 
-#include <span>
-#include <cstdint>
-#include <type_traits>
+#include <array>
 #include <bit>
+#include <span>
+#include <type_traits>
 
 // This file defines the fcrash file format: it's very low-level because the file is written inside
 // signal handlers and structured event handlers and has to be async-signal-safe, which rules out
@@ -52,6 +52,10 @@
 // was all FreeCAD supported anyway. Make sure if that ever changes this dies and someone comes
 // looking.
 static_assert(std::endian::native == std::endian::little);
+
+// This code hand-packs a fixed binary buffer from an async-signal-safe context: C arrays,
+// computed indices, and raw permission/mask literals are intentional and required here.
+// NOLINTBEGIN(modernize-avoid-c-arrays,cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-pro-bounds-constant-array-index,readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers,clang-diagnostic-unsafe-buffer-usage)
 
 namespace Base::CrashReporter
 {
@@ -84,7 +88,7 @@ enum class Architecture : std::uint8_t {
     aarch64
 };
 
-static constexpr std::uint32_t NoString = 0xFFFFFFFFu;
+static constexpr std::uint32_t NoString = 0xFFFFFFFFU;
 
 
 static constexpr std::size_t HeaderSize = 128;
@@ -111,7 +115,6 @@ struct Header {
     std::uint32_t freecadVersionSuffixStringOffset = NoString;
     std::uint32_t minidumpPathStringOffset = NoString;
     std::uint32_t exceptionMessageStringOffset = NoString;
-    std::uint32_t freecadVersionRevision = 0;
 
     OS osID = OS::None;
     Architecture architectureID = Architecture::None;
@@ -119,8 +122,8 @@ struct Header {
     std::uint8_t freecadVersionMinor = 0;
     std::uint8_t freecadVersionPatch = 0;
 
-    // The real data above takes up 85 bytes: pad it out to the HeaderSize
-    std::uint8_t padding[HeaderSize-85] = {0};
+    // The real data above takes up 81 bytes: pad it out to the HeaderSize
+    std::array<std::uint8_t, HeaderSize-81> padding = {};
 };
 
 static_assert(sizeof(Header) == HeaderSize);
@@ -170,20 +173,19 @@ static_assert(std::is_trivially_copyable_v<Footer>);
         for (std::uint32_t i = 0; i < 256; ++i) {
             std::uint32_t c = i;
             for (int j = 0; j < 8; ++j) {
-                c = (c & 1u) ? (0xEDB88320u ^ (c >> 1)) : (c >> 1);
+                c = (c & 1U) ? (0xEDB88320U ^ (c >> 1)) : (c >> 1);
             }
             t[i] = c;
         }
         return t;
     }();
 
-    std::uint32_t crc = 0xFFFFFFFFu;
+    std::uint32_t crc = 0xFFFFFFFFU;
     for (const char b : data) {
-        crc = table[(crc ^ static_cast<unsigned char>(b)) & 0xFFu] ^ (crc >> 8);
+        crc = table[(crc ^ static_cast<unsigned char>(b)) & 0xFFU] ^ (crc >> 8);
     }
-    return crc ^ 0xFFFFFFFFu;
+    return crc ^ 0xFFFFFFFFU;
 }
-
 
 
 
@@ -196,6 +198,9 @@ static_assert(std::is_trivially_copyable_v<Footer>);
 // So give us a nice round cap to check against -- very small in the grand scheme of things, a
 // corrupted or malicious file this size will not cause any memory pressure.
 constexpr std::uint64_t MaxFileSize = 1U << 20;  // 1 MiB
+
+// NOLINTEND(modernize-avoid-c-arrays,cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-pro-bounds-constant-array-index,readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers,clang-diagnostic-unsafe-buffer-usage)
+
 
 }  // namespace Base::CrashReporter
 
