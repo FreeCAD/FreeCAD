@@ -66,22 +66,30 @@ using Base::Sequencer;
 using namespace Gui;
 namespace sp = std::placeholders;
 
-namespace {
-    class DelayedPopupAction : public Gui::Action {
-    public:
-        DelayedPopupAction(Gui::Command* cmd, QObject* parent) : Gui::Action(cmd, parent) {}
+namespace
+{
+class DelayedPopupAction: public Gui::Action
+{
+public:
+    DelayedPopupAction(Gui::Command* cmd, QObject* parent)
+        : Gui::Action(cmd, parent)
+    {}
 
-        void addTo(QWidget* widget) override {
-            Gui::Action::addTo(widget);
-            if (QToolBar* toolBar = qobject_cast<QToolBar*>(widget)) {
-                if (QToolButton* toolButton = qobject_cast<QToolButton*>(toolBar->widgetForAction(this->action()))) {
-                    toolButton->setPopupMode(QToolButton::DelayedPopup);
-                    toolButton->setStyleSheet("QToolButton::menu-indicator { image: none; width: 0px; padding: 0px; }");
-                }
+    void addTo(QWidget* widget) override
+    {
+        Gui::Action::addTo(widget);
+        if (QToolBar* toolBar = qobject_cast<QToolBar*>(widget)) {
+            if (QToolButton* toolButton
+                = qobject_cast<QToolButton*>(toolBar->widgetForAction(this->action()))) {
+                toolButton->setPopupMode(QToolButton::DelayedPopup);
+                toolButton->setStyleSheet(
+                    "QToolButton::menu-indicator { image: none; width: 0px; padding: 0px; }"
+                );
             }
         }
-    };
-}
+    }
+};
+}  // namespace
 //===========================================================================
 // Std_Workbench
 //===========================================================================
@@ -235,7 +243,11 @@ Action* StdCmdPreviousWorkbench::createAction()
 
             QObject::connect(itemAction, &QAction::triggered, [wbName]() {
                 WorkbenchManager::instance()->jumpInHistory(wbName.toStdString(), "backwards");
-                Gui::Command::doCommand(Gui::Command::Gui, "Gui.activateWorkbench(\"%s\")", wbName.toUtf8().constData());
+                Gui::Command::doCommand(
+                    Gui::Command::Gui,
+                    "Gui.activateWorkbench(\"%s\")",
+                    wbName.toUtf8().constData()
+                );
             });
         }
     });
@@ -323,7 +335,11 @@ Action* StdCmdNextWorkbench::createAction()
 
             QObject::connect(itemAction, &QAction::triggered, [wbName]() {
                 WorkbenchManager::instance()->jumpInHistory(wbName.toStdString(), "forward");
-                Gui::Command::doCommand(Gui::Command::Gui, "Gui.activateWorkbench(\"%s\")", wbName.toUtf8().constData());
+                Gui::Command::doCommand(
+                    Gui::Command::Gui,
+                    "Gui.activateWorkbench(\"%s\")",
+                    wbName.toUtf8().constData()
+                );
             });
         }
     });

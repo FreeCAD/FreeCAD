@@ -116,13 +116,14 @@ bool WorkbenchManager::activate(const std::string& name, std::string_view classN
     Workbench* wb = createWorkbench(name, className);
     if (wb) {
 
-        if (_activeWorkbench && !_isGoingToPreviousWorkbench && _activeWorkbench->name() != "NoneWorkbench") {
+        if (_activeWorkbench && !_isGoingToPreviousWorkbench
+            && _activeWorkbench->name() != "NoneWorkbench") {
             _previousWorkbenches.push_front(_activeWorkbench);
         }
         _isGoingToPreviousWorkbench = false;
 
         removeFromPreviousWorkbenches(wb);
-        
+
         _activeWorkbench = wb;
         wb->activate();
         return true;
@@ -214,40 +215,50 @@ void WorkbenchManager::jumpInHistory(const std::string& name, const std::string&
     }
     Workbench* tempActive = _activeWorkbench;
     if (direction == "backwards" || direction == "Past" || direction == "past") {
-        
+
         bool found = false;
         for (Workbench* wb : _previousWorkbenches) {
-            if (wb->name() == name) { found = true; break; }
+            if (wb->name() == name) {
+                found = true;
+                break;
+            }
         }
-        if (!found) return;
+        if (!found) {
+            return;
+        }
 
         while (!_previousWorkbenches.empty()) {
             Workbench* targetWb = _previousWorkbenches.front();
             _previousWorkbenches.pop_front();
-            
+
             _nextWorkbenches.push_front(tempActive);
             tempActive = targetWb;
-            
+
             if (tempActive->name() == name) {
                 break;
             }
         }
-    } 
+    }
     else if (direction == "forward" || direction == "Future" || direction == "future") {
-        
+
         bool found = false;
         for (Workbench* wb : _nextWorkbenches) {
-            if (wb->name() == name) { found = true; break; }
+            if (wb->name() == name) {
+                found = true;
+                break;
+            }
         }
-        if (!found) return;
+        if (!found) {
+            return;
+        }
 
         while (!_nextWorkbenches.empty()) {
             Workbench* targetWb = _nextWorkbenches.front();
             _nextWorkbenches.pop_front();
-            
+
             _previousWorkbenches.push_front(tempActive);
             tempActive = targetWb;
-            
+
             if (tempActive->name() == name) {
                 break;
             }
