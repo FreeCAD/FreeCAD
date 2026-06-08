@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>对选定形状应用布尔运算</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation>对选定的形状应用布尔运算</translation>
     </message>
   </context>
   <context>

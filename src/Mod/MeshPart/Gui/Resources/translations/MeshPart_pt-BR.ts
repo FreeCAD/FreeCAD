@@ -383,11 +383,6 @@ O menor valor possível é 0.</translation>
       <translation>Usar o gerador de malha Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Espessura:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Muito grosso</translation>
@@ -438,6 +433,11 @@ O menor valor possível é 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Se esse parâmetro for menor, a malha se torna mais fina.
 Um valor na amplitude de 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Precisão</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

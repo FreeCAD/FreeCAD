@@ -892,8 +892,8 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>Nie można znaleźć części? </translation>
+      <source>Cannot find the part?</source>
+      <translation>Nie można znaleźć części?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -1578,27 +1578,27 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Kliknij, aby wybrać te sprzeczne połączenia.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation>Zaznacza te konfliktowe połączenia</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Kliknij, aby wybrać te nadmiarowe połączenia.</translation>
+      <source>Selects these redundant joints</source>
+      <translation>Zaznacza te nadmiarowe połączenia</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation>Złożenie zawiera nieograniczone komponenty generujące te Stopnie Swobody.
-Kliknij, aby zaznaczyć te nieograniczone komponenty.
-Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone części, które nadal mają wolne stopnie swobody.</translation>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Selects these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Kliknij, aby zaznaczyć te niepoprawne połączenia.</translation>
+      <source>Selects these malformed joints</source>
+      <translation type="unfinished">Selects these malformed joints</translation>
     </message>
   </context>
   <context>
@@ -1610,7 +1610,7 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
+      <source>Go to Linked Assembly</source>
       <translation>Przejdź do połączonego złożenia</translation>
     </message>
     <message>
@@ -1628,8 +1628,8 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
-      <translation>Zaznacz sprzeczne wiązania</translation>
+      <source>Select Conflicting Constraints</source>
+      <translation>Zaznacz wiązania konfliktowe</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
@@ -1646,7 +1646,7 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
+      <source>Select Redundant Constraints</source>
       <translation>Zaznacz wiązania nadmiarowe</translation>
     </message>
     <message>
@@ -1664,8 +1664,8 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
-      <translation>Zaznacz nieprawidłowe wiązania</translation>
+      <source>Select Malformed Constraints</source>
+      <translation>Zaznacz niepoprawnie zdefiniowane wiązania</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
@@ -1682,7 +1682,7 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
+      <source>Select Components With DoFs</source>
       <translation>Zaznacz komponenty ze stopniami swobody</translation>
     </message>
     <message>
@@ -1700,7 +1700,7 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
+      <source>Select Component Joints</source>
       <translation>Zaznacz połączenia komponentu</translation>
     </message>
     <message>

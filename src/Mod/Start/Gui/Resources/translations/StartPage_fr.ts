@@ -240,7 +240,7 @@ Plusieurs dossiers peuvent être ajoutés en utilisant « ;; » pour séparer le
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation>Afficher les fichiers des exemples sur la page d'accueil</translation>
+      <translation>Affiche les fichiers des exemples sur la page d'accueil.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>

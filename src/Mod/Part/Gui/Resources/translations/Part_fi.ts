@@ -1066,7 +1066,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="20"/>
       <source>First Limit</source>
-      <translation type="unfinished">First Limit</translation>
+      <translation>Ensimmäinen Raja</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="40"/>
@@ -1114,7 +1114,7 @@
       <location filename="../../DlgBlock.ui" line="93"/>
       <location filename="../../DlgBlock.ui" line="254"/>
       <source>Limit</source>
-      <translation type="unfinished">Limit</translation>
+      <translation>Raja</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
@@ -1124,7 +1124,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="181"/>
       <source>Second Limit</source>
-      <translation type="unfinished">Second Limit</translation>
+      <translation>Toinen raja</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="83"/>
@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation type="unfinished">Applies a boolean operations with the selected shapes</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -1301,7 +1301,7 @@
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Creates a solid box</source>
-      <translation type="unfinished">Creates a solid box</translation>
+      <translation>Luo kiinteän laatikon</translation>
     </message>
   </context>
   <context>
@@ -1337,7 +1337,7 @@
     <message>
       <location filename="../../Command.cpp" line="1609"/>
       <source>Chamfers the selected edges of a shape</source>
-      <translation type="unfinished">Chamfers the selected edges of a shape</translation>
+      <translation>Viistä valittu reuna kappaleesta</translation>
     </message>
   </context>
   <context>
@@ -1368,7 +1368,7 @@
     <message>
       <location filename="../../Command.cpp" line="818"/>
       <source>Compound Tools</source>
-      <translation type="unfinished">Compound Tools</translation>
+      <translation>Yhdistämis työkalut</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="819"/>
@@ -1386,7 +1386,7 @@
     <message>
       <location filename="../../Command.cpp" line="569"/>
       <source>Join Shapes</source>
-      <translation type="unfinished">Join Shapes</translation>
+      <translation>Liity Muotoihin</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="571"/>
@@ -1422,7 +1422,7 @@
     <message>
       <location filename="../../Command.cpp" line="683"/>
       <source>Split Shapes</source>
-      <translation type="unfinished">Split Shapes</translation>
+      <translation>Jaa Muodot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="685"/>
@@ -1445,7 +1445,7 @@
     <message>
       <location filename="../../Command.cpp" line="936"/>
       <source>Compounds the selected shapes</source>
-      <translation type="unfinished">Compounds the selected shapes</translation>
+      <translation>Yhdistä valitut muodot</translation>
     </message>
   </context>
   <context>
@@ -1465,7 +1465,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="203"/>
       <source>Creates a solid cone</source>
-      <translation type="unfinished">Creates a solid cone</translation>
+      <translation>Luo umpinainen kartio</translation>
     </message>
   </context>
   <context>
@@ -1478,12 +1478,12 @@
     <message>
       <location filename="../../Command.cpp" line="1664"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Poikkileikkaus</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
       <source>Creates cross-sections</source>
-      <translation type="unfinished">Creates cross-sections</translation>
+      <translation>Luo poikkileikkaukset</translation>
     </message>
   </context>
   <context>
@@ -1501,7 +1501,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Cuts 2 selected shapes</source>
-      <translation type="unfinished">Cuts 2 selected shapes</translation>
+      <translation>Leikkaa 2 valittua muotoa</translation>
     </message>
   </context>
   <context>
@@ -1521,7 +1521,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="71"/>
       <source>Creates a solid cylinder</source>
-      <translation type="unfinished">Creates a solid cylinder</translation>
+      <translation>Luo umpinainen sylinteri</translation>
     </message>
   </context>
   <context>
@@ -1539,7 +1539,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="463"/>
       <source>Removes the selected features from a shape</source>
-      <translation type="unfinished">Removes the selected features from a shape</translation>
+      <translation>Poistaa valitut ominaisuudet muodosta</translation>
     </message>
   </context>
   <context>
@@ -1552,12 +1552,12 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="359"/>
       <source>Shape Element Copy</source>
-      <translation type="unfinished">Shape Element Copy</translation>
+      <translation>Kopio muodon elementistä</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="360"/>
       <source>Creates a non-parametric copy of the selected shape element</source>
-      <translation type="unfinished">Creates a non-parametric copy of the selected shape element</translation>
+      <translation>Luo ei-parametrinen kopio valitusta muotoelementistä</translation>
     </message>
   </context>
   <context>
@@ -1995,7 +1995,7 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Creates a solid cylinder</source>
-      <translation type="unfinished">Creates a solid cylinder</translation>
+      <translation>Luo umpinainen sylinteri</translation>
     </message>
   </context>
   <context>
@@ -2228,7 +2228,7 @@ of the projection.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
-      <translation type="unfinished">Change face colors</translation>
+      <translation>Muuta pintojen värejä</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="225"/>
@@ -2791,7 +2791,7 @@ Jos molemmat pituudet ovat nolla, suunnan suuruutta.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="306"/>
       <source>Taper angle against</source>
-      <translation type="unfinished">Taper angle against</translation>
+      <translation>Kartiokulma vasten</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="319"/>
@@ -2839,7 +2839,7 @@ Jos molemmat pituudet ovat nolla, suunnan suuruutta.</translation>
       <location filename="../../DlgExtrusion.cpp" line="575"/>
       <source>Creating Extrusion failed.
 %1</source>
-      <translation type="unfinished">Creating Extrusion failed.
+      <translation>Pursotuksen luonti epäonnistui.
 %1</translation>
     </message>
     <message>
@@ -2976,7 +2976,7 @@ Jos molemmat pituudet ovat nolla, suunnan suuruutta.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="293"/>
       <source>Equal distance</source>
-      <translation type="unfinished">Equal distance</translation>
+      <translation>Sama etäisyys</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="290"/>
@@ -2986,7 +2986,7 @@ Jos molemmat pituudet ovat nolla, suunnan suuruutta.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="294"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>Kaksi etäisyyttä</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="297"/>
@@ -3006,7 +3006,7 @@ Jos molemmat pituudet ovat nolla, suunnan suuruutta.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="302"/>
       <source>Fillet type</source>
-      <translation type="unfinished">Fillet type</translation>
+      <translation>Pyöristystyyppi</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="303"/>

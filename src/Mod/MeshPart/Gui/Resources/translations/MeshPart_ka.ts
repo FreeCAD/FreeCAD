@@ -383,11 +383,6 @@ The smallest value is 0.</source>
       <translation>Netget mesher-ის გამოყენება</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>სიწმინდე:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>ძალიან უხეში</translation>
@@ -438,6 +433,11 @@ The smallest value is 0.</source>
 A value in the range of 0.1-1.</source>
       <translation>ეს რიცხვი რაც უფრო მცირეა, ბადეც უფრო ზუსტია.
 მნიშვნელობის შესაძლო შუალედია 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>სიზუსტე</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
