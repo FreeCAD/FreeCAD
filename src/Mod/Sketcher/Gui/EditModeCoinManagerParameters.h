@@ -448,6 +448,14 @@ struct EditModeScenegraphNodes
     SoPickStyle* pickStyleAxes;
     //@}
 
+    /** @name Line-extension auto-constraint hint nodes */
+    //@{
+    SoMaterial* LineExtensionAutoConstraintHintMaterials;
+    SoCoordinate3* LineExtensionAutoConstraintHintCoordinate;
+    SoLineSet* LineExtensionAutoConstraintHintSet;
+    SoDrawStyle* LineExtensionAutoConstraintHintDrawStyle;
+    //@}
+
     /** @name Temporal edit markers nodes- For operation rendering, such as trimming green circles*/
     //@{
     SoMaterial* EditMarkersMaterials;
