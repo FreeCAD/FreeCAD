@@ -40,6 +40,27 @@ std::unique_ptr<UnitsSchemas> UnitsApi::schemas = std::make_unique<UnitsSchemas>
     UnitsSchemasData::unitSchemasDataPack
 );
 
+namespace
+{
+UnitsApi::MeasurementSystem getMeasurementSystemForSchemaName(const std::string& name)
+{
+    if (name == "Imperial" || name == "ImperialDecimal" || name == "ImperialBuilding"
+        || name == "ImperialCivil") {
+        return UnitsApi::MeasurementSystem::Imperial;
+    }
+
+    if (name == "MKS" || name == "Centimeter" || name == "MmMin" || name == "MeterDecimal") {
+        return UnitsApi::MeasurementSystem::Metric;
+    }
+
+    if (name == "Internal" || name == "FEM") {
+        return UnitsApi::MeasurementSystem::Internal;
+    }
+
+    return UnitsApi::MeasurementSystem::Other;
+}
+}  // namespace
+
 std::vector<std::string> UnitsApi::getDescriptions()
 {
     return schemas->descriptions();
@@ -63,6 +84,16 @@ bool UnitsApi::isMultiUnitAngle()
 bool UnitsApi::isMultiUnitLength()
 {
     return schemas->currentSchema()->isMultiUnitLength();
+}
+
+UnitsApi::MeasurementSystem UnitsApi::getMeasurementSystem()
+{
+    return getMeasurementSystemForSchemaName(schemas->currentSchema()->getName());
+}
+
+UnitsApi::MeasurementSystem UnitsApi::getMeasurementSystem(const std::size_t num)
+{
+    return getMeasurementSystemForSchemaName(schemas->spec(num).name);
 }
 
 std::string UnitsApi::getBasicLengthUnit()

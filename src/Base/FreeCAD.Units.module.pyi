@@ -8,12 +8,31 @@ small helper aliases and module data members those signatures need.
 
 from __future__ import annotations
 
+from enum import IntEnum
 from typing import Literal, TypeAlias, overload
 
 from FreeCAD.Base import Quantity
 
 _NumberFormat: TypeAlias = Literal["g", "f", "e"]
 Radian: Quantity
+
+class Scheme(IntEnum):
+    Internal = 0
+    MKS = 1
+    Imperial = 2
+    ImperialDecimal = 3
+    Centimeter = 4
+    ImperialBuilding = 5
+    MmMin = 6
+    ImperialCivil = 7
+    FEM = 8
+    MeterDecimal = 9
+
+class MeasurementSystem(IntEnum):
+    Other = -1
+    Internal = 0
+    Metric = 1
+    Imperial = 2
 
 # Schema helpers
 @overload
@@ -47,6 +66,16 @@ def getSchema() -> int:
 
 def setSchema(index: int, /) -> None:
     """Set the active unit-schema index."""
+    ...
+
+@overload
+def getMeasurementSystem() -> MeasurementSystem:
+    """Return the measurement-system classification for the active schema."""
+    ...
+
+@overload
+def getMeasurementSystem(index: int, /) -> MeasurementSystem:
+    """Return the measurement-system classification for one schema index."""
     ...
 
 def schemaTranslate(quantity: Quantity, schema: int, /) -> tuple[str, float, str]:
