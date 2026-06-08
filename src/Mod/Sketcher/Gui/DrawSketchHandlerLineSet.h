@@ -1141,8 +1141,8 @@ private:
                 obj->fillet(geoId1, geoId2, refPnt1, refPnt2, radius, true, true);
 
                 if (!obj->noRecomputes) {
-                    // obj->fillet calls obj->solve() at the end only if obj->noRecomputes
-                    // See cause an issue, we need the solve even if !obj->noRecomputes
+                    // obj->fillet() solves at the end only when obj->noRecomputes is set, but we
+                    // need the solve even when AutoRecompute is on or the fillet won't appear.
                     // See https://github.com/FreeCAD/FreeCAD/issues/30625
                     obj->solve();
                 }
