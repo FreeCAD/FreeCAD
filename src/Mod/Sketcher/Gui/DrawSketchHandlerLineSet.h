@@ -1333,8 +1333,7 @@ private:
                     if (pointWasCreated) {
                         int pointGeoId = getHighestCurveIndex();
                         // We must first remove the point on object constraint.
-                        const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues(
-                        );
+                        const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
                         for (int i = constraints.size() - 1; i >= 0; --i) {
                             if (constraints[i]->Type != PointOnObject) {
                                 continue;
