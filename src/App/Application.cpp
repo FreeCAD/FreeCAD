@@ -78,6 +78,7 @@
 #include <Base/AxisPy.h>
 #include <Base/BaseClass.h>
 #include <Base/BoundBoxPy.h>
+#include <Base/CrashReporter/Writer.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/ServiceProvider.h>
 #include <Base/CoordinateSystemPy.h>
@@ -2133,6 +2134,12 @@ void Application::init(int argc, char ** argv)
         initTypes();
 
         initConfig(argc,argv);
+
+        // Set up our crash reporting AFTER the call to initConfig, but BEFORE we start doing
+        // things that might crash...
+        Base::CrashReporter::Writer::prewarm();
+        Base::CrashReporter::Writer::install(getUserAppDataDir() + "CrashReports");
+
         initApplication();
         initExceptions();
     }
