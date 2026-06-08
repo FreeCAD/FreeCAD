@@ -1140,6 +1140,13 @@ private:
 
                 obj->fillet(geoId1, geoId2, refPnt1, refPnt2, radius, true, true);
 
+                if (!obj->noRecomputes) {
+                    // obj->fillet() solves at the end only when obj->noRecomputes is set, but we
+                    // need the solve even when AutoRecompute is on or the fillet won't appear.
+                    // See https://github.com/FreeCAD/FreeCAD/issues/30625
+                    obj->solve();
+                }
+
                 if (isConstructionMode()) {
                     int filletGeoId = geoId + 1;
                     Gui::cmdAppObjectArgs(obj, "toggleConstruction(%d) ", filletGeoId);
