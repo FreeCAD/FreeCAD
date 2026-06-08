@@ -84,8 +84,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         if obj.StartAt != str(self.form.startAt.currentData()):
             obj.StartAt = str(self.form.startAt.currentData())
 
-        if obj.StepOver != self.form.stepOverPercent.value():
-            obj.StepOver = self.form.stepOverPercent.value()
+        if obj.StepOver != self.form.stepOver.value():
+            obj.StepOver = self.form.stepOver.value()
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -95,7 +95,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         Path.Log.track()
         self.updateQuantitySpinBoxes()
 
-        self.form.stepOverPercent.setValue(obj.StepOver)
+        self.form.stepOver.setValue(obj.StepOver)
 
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.StartAt, self.form.startAt)
@@ -110,7 +110,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.helixMaxPitch.editingFinished)
         signals.append(self.form.helixMaxRampAngle.editingFinished)
         signals.append(self.form.radialStockToLeaveOuter.editingFinished)
-        signals.append(self.form.stepOverPercent.editingFinished)
+        signals.append(self.form.stepOver.editingFinished)
 
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startAt.currentIndexChanged)

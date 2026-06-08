@@ -515,7 +515,7 @@ class ObjectSurface(PathOp.ObjectOp):
             "HandleMultipleFeatures": "Collectively",
             "PatternCenterAt": "CenterOfMass",
             "GapSizes": "No gaps identified.",
-            "StepOver": 100.0,
+            "StepOver": 50.0,
             "CutPatternAngle": 0.0,
             "CutterTilt": 0.0,
             "StartIndex": 0.0,
