@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 
 #include <Base/CrashReporter/Reader.h>
+#include <Base/CrashReporter/Writer.h>
 #include <src/TempDirectory.h>
 
 #include <fstream>
@@ -42,7 +43,6 @@ std::vector<char> CrashReporterReaderTests::createGoodCrashReport()
     header.freecadVersionMajor = 5;
     header.freecadVersionMinor = 6;
     header.freecadVersionPatch = 7;
-    header.freecadVersionRevision = 0x000DEAD;
     header.osID = Base::CrashReporter::OS::Windows;
     header.architectureID = Base::CrashReporter::Architecture::x64;
 
@@ -264,3 +264,38 @@ TEST_F(CrashReporterReaderTests, TestBadCRC)
     // throw, instead it just sets the partialWrite flag.
     EXPECT_TRUE(parsedReport.partialWrite);
 }
+
+/// Given a directory that contains a single *.fcrash file, return the complete path to that file
+std::string findSoleFcrashIn(const std::string &path)
+{
+    Base::FileInfo info(path);
+    if (info.isDir()) {
+        auto content = info.getDirectoryContent();
+        for (const auto &item : content) {
+            if (item.isFile() && item.extension() == "fcrash") {
+                return item.filePath();
+            }
+        }
+    }
+    return {};
+}
+
+#if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+TEST_F(CrashReporterReaderTests, DISABLED_DeliberateSegfaultRoundTrip)
+{
+    const std::string dir = tempDir.path().string();
+    Base::CrashReporter::Writer::prewarm();
+    Base::CrashReporter::Writer::install(dir + "/CrashReports");
+    EXPECT_DEATH(
+        {
+            volatile int* p = nullptr;
+            *p = 13; // This should segfault
+        },
+        "");
+
+    auto path = findSoleFcrashIn(dir + "/CrashReports");
+    auto report = Base::CrashReporter::parse(path);
+    EXPECT_EQ(report.code, SIGSEGV);
+    EXPECT_FALSE(report.stackFrames.empty()); // Requires libunwind as part of cpptrace
+}
+#endif

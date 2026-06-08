@@ -1,18 +1,44 @@
-//
-// Created by chennes on 6/7/26.
-//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2026 The FreeCAD project association AISBL
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-#ifndef FREECAD_WRITER_H
-#define FREECAD_WRITER_H
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
 
-namespace Base {
-namespace CrashReporter {
 
-class Writer {
+#pragma once
 
+#include <FCGlobal.h>
+#include <string>
+
+namespace Base::CrashReporter
+{
+class BaseExport Writer
+{
+public:
+    /**
+     * Perform cpptrace init that isn't safe to do in the signal handler. If cpptrace is not install
+     * this is a no-op.
+     */
+    static void prewarm();
+
+    /**
+     * Install the signal handlers to capture crashes.
+     */
+    static void install(const std::string& crashReportDirectory);
 };
-
-} // CrashReporter
-} // Base
-
-#endif //FREECAD_WRITER_H
+} // namespace Base::CrashReporter

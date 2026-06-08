@@ -22,6 +22,8 @@
 #include "Reader.h"
 #include "Format.h"
 #include <cstring>
+#include <string>
+#include <string_view>
 #include <utility>
 
 #include "Base/Stream.h"
@@ -128,7 +130,6 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string &pathToRawReportF
     parsedReport.freecadVersionMajor = header.freecadVersionMajor;
     parsedReport.freecadVersionMinor = header.freecadVersionMinor;
     parsedReport.freecadVersionPatch = header.freecadVersionPatch;
-    parsedReport.freecadVersionRevision = header.freecadVersionRevision;
     parsedReport.freecadVersionSuffix = extractStringFromTable(stringTable, header.freecadVersionSuffixStringOffset);
 
     // Read the stack frames (with some error checking):
@@ -180,7 +181,7 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string &pathToRawReportF
         ParsedFrame parsedFrame;
         parsedFrame.rawAddress = rawFrame.rawAddress;
         parsedFrame.moduleOffset = rawFrame.moduleOffset;
-        std::string modulePath = extractStringFromTable(stringTable, rawFrame.moduleStringOffset);
+        std::string modulePath {extractStringFromTable(stringTable, rawFrame.moduleStringOffset)};
         parsedFrame.modulePath = Base::FileInfo(modulePath).fileName(); // Avoid PII!
 
         parsedReport.stackFrames.push_back(std::move(parsedFrame));

@@ -88,7 +88,7 @@ struct ParsedCrashReport
  * \returns a ParsedCrashReport with symbol information (depending on the availability of debug
  * symbols that symbolication may be more or less complete).
  */
-[[nodiscard]] ParsedCrashReport parse(const std::string &pathToRawReportFile);
+[[nodiscard]] ParsedCrashReport BaseExport parse(const std::string &pathToRawReportFile);
 
 }  // namespace Base::CrashReporter
 
