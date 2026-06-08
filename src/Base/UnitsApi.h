@@ -39,6 +39,14 @@ namespace Base
 class BaseExport UnitsApi
 {
 public:
+    enum class MeasurementSystem
+    {
+        Other = -1,
+        Internal = 0,
+        Metric = 1,
+        Imperial = 2
+    };
+
     static std::unique_ptr<UnitsSchema> createSchema(std::size_t num);
     static void setSchema(const std::string& name);
     static void setSchema(std::size_t num);
@@ -64,6 +72,8 @@ public:
 
     static bool isMultiUnitAngle();
     static bool isMultiUnitLength();
+    static MeasurementSystem getMeasurementSystem();
+    static MeasurementSystem getMeasurementSystem(std::size_t num);
     static std::string getBasicLengthUnit();
 
     static std::size_t getDefSchemaNum()
@@ -83,6 +93,7 @@ protected:
     static PyObject* sListSchemas(PyObject* self, PyObject* args);
     static PyObject* sGetSchema(PyObject* self, PyObject* args);
     static PyObject* sSetSchema(PyObject* self, PyObject* args);
+    static PyObject* sGetMeasurementSystem(PyObject* self, PyObject* args);
     static PyObject* sSchemaTranslate(PyObject* self, PyObject* args);
     static PyObject* sToNumber(PyObject* self, PyObject* args);
 };
