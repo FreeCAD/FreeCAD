@@ -1266,8 +1266,7 @@ bool EditModeCoinManager::detectGeometryPreselection(
     auto projectToScreen = [this](const SbVec3f& point) {
         return ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, point);
     };
-    Base::Placement sketchPlacement =
-        ViewProviderSketchCoinAttorney::getEditingPlacement(viewProvider);
+    Base::Placement sketchPlacement = ViewProviderSketchCoinAttorney::getEditingPlacement(viewProvider);
 
     GeometryScreenPreselector screenPreselector {
         geometryLayerParameters,
