@@ -980,6 +980,11 @@ Document::Document(const char* documentName)
         GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
     UnitSystem.setValue(hGrpu->GetInt("UserSchema", 0));
     ADD_PROPERTY_TYPE(Comment, (""), 0, Prop_None, "Additional tag to save a comment");
+    ADD_PROPERTY_TYPE(Context,
+                      (""),
+                      0,
+                      Prop_None,
+                      "Primary workflow context of the document");
     ADD_PROPERTY_TYPE(Meta, (), 0, Prop_None, "Map with additional meta information");
     ADD_PROPERTY_TYPE(Material, (), 0, Prop_None, "Map with material properties");
     // create the uuid for the document
