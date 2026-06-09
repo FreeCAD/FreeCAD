@@ -183,6 +183,9 @@ public:
      * @brief Signal that the property of this object has changed.
      *
      * Subscribers will get the current object and the property that has changed.
+     * This is a raw same-thread signal. It is not marshaled back to the GUI
+     * thread; GUI code should generally subscribe to App::Document's
+     * document-scoped MainThreadSignal notifications instead.
      *
      * @param[in] obj  The document object whose property just changed.
      * @param[in] prop The property that was changed.
@@ -193,6 +196,8 @@ public:
      * @brief Emitted immediately after any property of this object has changed.
      *
      * This is fired before the outer "document-scoped" change notification.
+     * It intentionally keeps same-thread semantics and is not suitable for GUI
+     * observers that require main-thread delivery.
      *
      * @param[in] obj  The document object whose property just changed.
      * @param[in] prop The property that was changed.
@@ -702,7 +707,7 @@ public:
     virtual std::string getElementMapVersion(const App::Property* prop,
                                              bool restored = false) const;
 
-    /** @brief Check the element map versionn of the property.
+    /** @brief Check the element map version of the property.
      *
      * This function checks whether the element map version of the given
      * property matches the given version string.  If the function returns
@@ -712,7 +717,7 @@ public:
      * @param[in] ver: the version string to compare with
      *
      * @return true if the element map version differs and the geometry element
-     * namess need to be recomputed.
+     * names need to be recomputed.
      */
     virtual bool checkElementMapVersion(const App::Property* prop, const char* ver) const;
 
@@ -1049,13 +1054,15 @@ public:
 
     bool renameDynamicProperty(Property *prop, const char *name) override;
 
-    App::Property* addDynamicProperty(const char* type,
-                                      const char* name = nullptr,
-                                      const char* group = nullptr,
-                                      const char* doc = nullptr,
-                                      short attr = 0,
-                                      bool ro = false,
-                                      bool hidden = false) override;
+    App::Property* addDynamicProperty(
+        std::string_view type,
+        const char* name = nullptr,
+        const char* group = nullptr,
+        const char* doc = nullptr,
+        short attr = 0,
+        bool ro = false,
+        bool hidden = false
+    ) override;
 
     /**
      * @brief Resolve the last document object referenced in the subname.
@@ -1186,6 +1193,20 @@ public:
     }
 
     /**
+     * @brief Whether this object's recompute path is safe to run on the worker thread.
+     *
+     * This is used by async recompute scheduling. Objects that can touch GUI or
+     * other thread-affine state during recompute must return false. Returning
+     * true means the recompute path is limited to worker-safe App/model work
+     * and does not depend on GUI, Qt event-loop state, or other thread-affine
+     * APIs.
+     */
+    virtual bool canRecomputeOnWorker() const
+    {
+        return true;
+    }
+
+    /**
      * @brief Called when an element reference is updated.
      *
      * @param[in] prop The property that was updated.
@@ -1251,6 +1272,23 @@ public:
 
     /// Returns the Placement property to use if any.
     virtual App::PropertyPlacement* getPlacementProperty() const;
+
+    /** Check whether a property can be referenced in an expression.
+     *
+     * @param prop: the property to check
+     *
+     * @return Return true if the property can be referenced in expressions.
+     */
+    static bool canPropBeReferenced(const App::Property* prop);
+
+    /** Get the object identifiers that reference the given property.
+     *
+     * @param prop: the property to check
+     *
+     * @return Return a set of object identifiers that reference the given
+     * property.
+     */
+    static std::set<ObjectIdentifier> getPropertyUses(const App::Property* prop);
 
 protected:
     /// Recompute only this object.

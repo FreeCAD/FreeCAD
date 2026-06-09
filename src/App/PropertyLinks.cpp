@@ -4032,9 +4032,9 @@ const char* PropertyXLink::getObjectName() const
 
 bool PropertyXLink::upgrade(Base::XMLReader& reader, const char* typeName)
 {
-    if (strcmp(typeName, App::PropertyLinkGlobal::getClassTypeId().getName()) == 0
-        || strcmp(typeName, App::PropertyLink::getClassTypeId().getName()) == 0
-        || strcmp(typeName, App::PropertyLinkChild::getClassTypeId().getName()) == 0) {
+    if (typeName == App::PropertyLinkGlobal::getClassTypeId().getName()
+        || typeName == App::PropertyLink::getClassTypeId().getName()
+        || typeName == App::PropertyLinkChild::getClassTypeId().getName()) {
         PropertyLink::Restore(reader);
         return true;
     }
@@ -4766,9 +4766,9 @@ PropertyXLinkSub::~PropertyXLinkSub() = default;
 
 bool PropertyXLinkSub::upgrade(Base::XMLReader& reader, const char* typeName)
 {
-    if (strcmp(typeName, PropertyLinkSubGlobal::getClassTypeId().getName()) == 0
-        || strcmp(typeName, PropertyLinkSub::getClassTypeId().getName()) == 0
-        || strcmp(typeName, PropertyLinkSubChild::getClassTypeId().getName()) == 0) {
+    if (typeName == PropertyLinkSubGlobal::getClassTypeId().getName()
+        || typeName == PropertyLinkSub::getClassTypeId().getName()
+        || typeName == PropertyLinkSubChild::getClassTypeId().getName()) {
         App::PropertyLinkSub linkProp;
         linkProp.setContainer(getContainer());
         linkProp.Restore(reader);
@@ -5555,18 +5555,20 @@ int PropertyXLinkSubList::checkRestore(std::string* msg) const
 
 bool PropertyXLinkSubList::upgrade(Base::XMLReader& reader, const char* typeName)
 {
-    if (strcmp(typeName, PropertyLinkListGlobal::getClassTypeId().getName()) == 0
-        || strcmp(typeName, PropertyLinkList::getClassTypeId().getName()) == 0
-        || strcmp(typeName, PropertyLinkListChild::getClassTypeId().getName()) == 0) {
+    if (typeName == PropertyLinkListGlobal::getClassTypeId().getName()
+        || typeName == PropertyLinkList::getClassTypeId().getName()
+        || typeName == PropertyLinkListChild::getClassTypeId().getName()) {
         PropertyLinkList linkProp;
         linkProp.setContainer(getContainer());
         linkProp.Restore(reader);
         setValues(linkProp.getValues());
         return true;
     }
-    else if (strcmp(typeName, PropertyLinkSubListGlobal::getClassTypeId().getName()) == 0
-             || strcmp(typeName, PropertyLinkSubList::getClassTypeId().getName()) == 0
-             || strcmp(typeName, PropertyLinkSubListChild::getClassTypeId().getName()) == 0) {
+    else if (
+        typeName == PropertyLinkSubListGlobal::getClassTypeId().getName()
+        || typeName == PropertyLinkSubList::getClassTypeId().getName()
+        || typeName == PropertyLinkSubListChild::getClassTypeId().getName()
+    ) {
         PropertyLinkSubList linkProp;
         linkProp.setContainer(getContainer());
         linkProp.Restore(reader);

@@ -164,6 +164,8 @@ public:
     virtual bool getCameraAlignmentDirection(Base::Vector3d& directionZ,
                                              Base::Vector3d& directionX,
                                              const char* subname = nullptr) const;
+    virtual bool getCameraAlignmentDirection(Base::Vector3d& directionZ,
+                                             const std::vector<std::string>& subnames) const;
     /** Search sub element using internal cached geometry
      *
      * @param element: element name

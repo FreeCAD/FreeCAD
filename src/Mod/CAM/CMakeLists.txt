@@ -76,6 +76,7 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/DogboneII.py
     Path/Dressup/Gui/Dragknife.py
     Path/Dressup/Gui/LeadInOut.py
+    Path/Dressup/Gui/Mirror.py
     Path/Dressup/Gui/Boundary.py
     Path/Dressup/Gui/Preferences.py
     Path/Dressup/Gui/RampEntry.py
@@ -178,6 +179,7 @@ SET(PathPythonMachineUiEditor_SRCS
     Machine/ui/editor/machine_editor.py
     Machine/ui/editor/postprocessor_properties.py
     Machine/ui/editor/__init__.py
+    Machine/ui/editor/output_options_layout.py
 )
 
 SET(PathPythonMachineModels_SRCS
@@ -321,23 +323,29 @@ SET(PathPythonPostGui_SRCS
 SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/__init__.py
     Path/Post/scripts/centroid_legacy_post.py
+    Path/Post/scripts/centroid_post.py
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_legacy_post.py
     Path/Post/scripts/dynapath_4060_legacy_post.py
     Path/Post/scripts/estlcam_legacy_post.py
+    Path/Post/scripts/fablin_legacy_post.py
     Path/Post/scripts/fanuc_legacy_post.py
     Path/Post/scripts/fangling_legacy_post.py
     Path/Post/scripts/gcode_pre.py
     Path/Post/scripts/generic_post.py
     Path/Post/scripts/generic_plasma_post.py
     Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/grbl_legacy_post.py
     Path/Post/scripts/heidenhain_legacy_post.py
     Path/Post/scripts/KineticNCBeamicon2_legacy_post.py
     Path/Post/scripts/linuxcnc_post.py
     Path/Post/scripts/linuxcnc_legacy_post.py
     Path/Post/scripts/jtech_legacy_post.py
     Path/Post/scripts/mach3_mach4_legacy_post.py
+    Path/Post/scripts/mach3_mach4_post.py
+    Path/Post/scripts/masso_g3_post.py
     Path/Post/scripts/marlin_legacy_post.py
+    Path/Post/scripts/marlin_post.py
     Path/Post/scripts/nccad_legacy_post.py
     Path/Post/scripts/opensbp_legacy_post.py
     Path/Post/scripts/opensbp_post.py
@@ -350,6 +358,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/smoothie_post.py
     Path/Post/scripts/snapmaker_legacy_post.py
     Path/Post/scripts/svg_post.py
+    Path/Post/scripts/uccnc_legacy_post.py
     Path/Post/scripts/wedm_legacy_post.py
 )
 
@@ -373,6 +382,7 @@ SET(PathPythonOp_SRCS
     Path/Op/PocketShape.py
     Path/Op/Probe.py
     Path/Op/Profile.py
+    Path/Op/RotarySurface.py
     Path/Op/Slot.py
     Path/Op/Surface.py
     Path/Op/SurfaceSupport.py
@@ -405,6 +415,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/PocketShape.py
     Path/Op/Gui/Probe.py
     Path/Op/Gui/Profile.py
+    Path/Op/Gui/RotarySurface.py
     Path/Op/Gui/Selection.py
     Path/Op/Gui/SimpleCopy.py
     Path/Op/Gui/Slot.py
@@ -434,6 +445,11 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/linking.py
+    Path/Base/Generator/rotary_dropcutter.py
+    Path/Base/Generator/rotary_parallel.py
+    Path/Base/Generator/rotary_rings.py
+    Path/Base/Generator/rotary_spiral.py
+    Path/Base/Generator/rotary_wrap.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/spiral.py
     Path/Base/Generator/tapping.py
@@ -516,17 +532,24 @@ SET(Tests_SRCS
     CAMTests/test_profile.fcstd
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
+    CAMTests/TestAreaOperations.py
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
+    CAMTests/TestCentroidPost.py
     CAMTests/TestDxfPost.py
     CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py
     CAMTests/TestGenericPlasma.py
+    CAMTests/TestGrblPost.py
     CAMTests/TestLinuxCNCPost.py
+    CAMTests/TestLinuxCNCLegacyPost.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
     CAMTests/TestMach3Mach4LegacyPost.py
+    CAMTests/TestMach3Mach4Post.py
     CAMTests/TestMassoG3Post.py
+    CAMTests/TestMarlinPost.py
+    CAMTests/TestOpenSBPPost.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
@@ -545,6 +568,7 @@ SET(Tests_SRCS
     CAMTests/TestPathHelixGenerator.py
     CAMTests/TestPathLanguage.py
     CAMTests/TestPathLog.py
+    CAMTests/TestPathLogNew.py
     CAMTests/TestPathOpDeburr.py
     CAMTests/TestPathOpUtil.py
     CAMTests/TestPostCore.py
@@ -554,6 +578,12 @@ SET(Tests_SRCS
     CAMTests/TestPathPreferences.py
     CAMTests/TestPathProfile.py
     CAMTests/TestPathPropertyBag.py
+    CAMTests/TestPathRotaryGenerators.py
+    CAMTests/TestPathRotaryParallel.py
+    CAMTests/TestPathRotaryRings.py
+    CAMTests/TestPathRotarySurface.py
+    CAMTests/TestPathRotaryPostRegression.py
+    CAMTests/TestPathRotaryWrap.py
     CAMTests/TestPathRotationGenerator.py
     CAMTests/TestPathSetupSheet.py
     CAMTests/TestPathSpiralGenerator.py

@@ -33,6 +33,8 @@
 #include <QStyledItemDelegate>
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
+#include <fmt/format.h>
+#include <fmt/ranges.h>
 #include <cmath>
 #include <cstring>
 #include <limits>
@@ -651,7 +653,7 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
 
     // This does the same as a double-click and thus it should be the first action and with bold
     // text
-    QAction* change = menu.addAction(tr("Change Value"), this, &ConstraintView::modifyCurrentItem);
+    QAction* change = menu.addAction(tr("Edit Value"), this, &ConstraintView::modifyCurrentItem);
     change->setEnabled(isQuantity);
     menu.setDefaultAction(change);
 
@@ -689,6 +691,9 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
     QAction* remove = menu.addAction(tr("Delete"), this, &ConstraintView::deleteSelectedItems);
     remove->setShortcut(QKeySequence(QKeySequence::Delete));
     remove->setEnabled(!items.isEmpty());
+
+    menu.addAction(tr("Delete All"), this, &ConstraintView::deleteAllItems);
+    menu.addAction(tr("Delete by Filter"), this, &ConstraintView::deleteFilterItems);
 
     QAction* swap = menu.addAction(
         tr("Swap Constraint Names"), this, &ConstraintView::swapNamedOfSelectedItems);
@@ -762,6 +767,23 @@ void ConstraintView::deleteSelectedItems()
         }
     }
     doc->commitTransaction();
+}
+
+void ConstraintView::deleteAllItems()
+{
+    Q_EMIT emitDeleteAllConstraints();
+}
+
+void ConstraintView::deleteFilterItems()
+{
+    QList<int> ids;
+    for (int index = 0; index < count(); index++) {
+        auto cit = static_cast<ConstraintItem*>(item(index));
+        if (!cit->isHidden()) {
+            ids.push_back(cit->ConstraintNbr);
+        }
+    }
+    Q_EMIT emitDeleteConstraints(ids);
 }
 
 void ConstraintView::swapNamedOfSelectedItems()
@@ -1012,6 +1034,14 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
         &ConstraintView::emitShowSelection3DVisibility,
         this,
         &TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibility);
+    QObject::connect(ui->listWidgetConstraints,
+                     &ConstraintView::emitDeleteAllConstraints,
+                     this,
+                     &TaskSketcherConstraints::onDeleteAllConstraints);
+    QObject::connect(ui->listWidgetConstraints,
+                     &ConstraintView::emitDeleteConstraints,
+                     this,
+                     &TaskSketcherConstraints::onDeleteConstraints);
 #if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
     QObject::connect(ui->filterBox,
                      &QCheckBox::checkStateChanged,
@@ -1194,6 +1224,37 @@ void TaskSketcherConstraints::onListWidgetConstraintsEmitHideSelection3DVisibili
 void TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibility()
 {
     changeFilteredVisibility(true, ActionTarget::Selected);
+}
+
+void TaskSketcherConstraints::onDeleteAllConstraints()
+{
+    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+    sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete all constraints"));
+    try {
+        Gui::cmdAppObjectArgs(sketch, "deleteAllConstraints()");
+        sketchView->getDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        sketchView->getDocument()->abortCommand();
+    }
+}
+
+void TaskSketcherConstraints::onDeleteConstraints(const QList<int>& ids)
+{
+    if (ids.isEmpty()) {
+        return;
+    }
+
+    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+    const std::string idList = fmt::format("[{}]", fmt::join(ids, ", "));
+    sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete constraints"));
+    try {
+        Gui::cmdAppObjectArgs(sketch, "delConstraints(%s)", idList.c_str());
+        sketchView->getDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        sketchView->getDocument()->abortCommand();
+    }
 }
 
 void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget target)

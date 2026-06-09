@@ -383,7 +383,7 @@ bool TaskDlgBooleanParameters::accept()
     try {
         std::vector<std::string> bodies = parameter->getBodies();
         if (bodies.empty()) {
-            QMessageBox::warning(parameter, tr("Empty body list"), tr("The body list cannot be empty"));
+            QMessageBox::warning(parameter, tr("Empty Body List"), tr("The body list cannot be empty"));
             return false;
         }
         std::stringstream str;

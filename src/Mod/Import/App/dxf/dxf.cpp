@@ -497,7 +497,7 @@ std::string CDxfWrite::getPlateFile(std::string fileSpec)
     }
     else {
         string line;
-        ifstream inFile(fi.filePath());
+        Base::ifstream inFile(fi);
 
         while (!inFile.eof()) {
             getline(inFile, line);
@@ -1880,7 +1880,7 @@ void CDxfWrite::writeObjectsSection()
 const DxfUnits DxfUnits::Instance;
 
 CDxfRead::CDxfRead(const std::string& filepath)
-    : m_ifs(new ifstream(filepath))
+    : m_ifs(new Base::ifstream(Base::FileInfo(filepath)))
 {
     if (!(*m_ifs)) {
         m_fail = true;

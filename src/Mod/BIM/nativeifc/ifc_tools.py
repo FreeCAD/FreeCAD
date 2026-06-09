@@ -32,6 +32,7 @@ import FreeCAD
 import Arch
 import ArchBuildingPart
 import Draft
+from . import report_missing_ifcopenshell
 
 from draftviewproviders import view_layer
 
@@ -49,17 +50,9 @@ try:
     import ifcopenshell.util.schema
     import ifcopenshell.util.unit
     import ifcopenshell.entity_instance
-except ImportError as e:
-    import FreeCAD
-
-    FreeCAD.Console.PrintError(
-        translate(
-            "BIM",
-            "IfcOpenShell was not found on this system. IFC support is disabled",
-        )
-        + "\n"
-    )
-    raise e
+except ImportError:
+    report_missing_ifcopenshell()
+    raise
 
 from . import ifc_objects
 from . import ifc_viewproviders
@@ -749,8 +742,11 @@ def add_properties(obj, ifcfile=None, ifcentity=None, links=False, shapemode=0, 
                                     classification_name += cref.ReferencedSource.Name + " "
 
                             # Add the Identification if present
-                            if cref.Identification:
-                                classification_name += cref.Identification
+                            ident = getattr(cref, "Identification", None)
+                            if not ident:
+                                ident = getattr(cref, "ItemReference", None)
+                            if ident:
+                                classification_name += ident
 
                             classification_name = classification_name.strip()
                             if classification_name:

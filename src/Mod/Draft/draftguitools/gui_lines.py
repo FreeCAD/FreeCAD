@@ -41,6 +41,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
+from draftgeoutils import geometry as geo_geometry
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftutils import gui_utils
@@ -277,9 +278,7 @@ class Line(gui_base_original.Creator):
     def orientWP(self):
         """Orient the working plane."""
         if len(self.node) > 1 and self.obj:
-            import DraftGeomUtils
-
-            n = DraftGeomUtils.getNormal(self.obj.Shape)
+            n = geo_geometry.get_normal(self.obj.Shape)
             if not n:
                 n = self.wp.axis
             p = self.node[-1]

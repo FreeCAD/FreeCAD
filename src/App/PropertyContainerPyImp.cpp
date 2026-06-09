@@ -153,7 +153,7 @@ PyObject* PropertyContainerPy::getTypeIdOfProperty(PyObject* args)
         return nullptr;
     }
 
-    Py::String str(prop->getTypeId().getName());
+    Py::String str = Base::toPyString(prop->getTypeId().getName());
     return Py::new_reference_to(str);
 }
 

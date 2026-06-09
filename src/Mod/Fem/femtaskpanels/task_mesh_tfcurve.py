@@ -56,7 +56,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         # geometry selection widget
         # only allow valid distance objects!
         self.selection_widget = selection_widgets.GeometryElementsSelection(
-            obj.References, ["Face", "Edge", "Vertex"], True, False
+            obj.References, ["Edge"], True, False
         )
         self.selection_widget.setWindowTitle("Reference Geometries")
         self.selection_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshDistance.svg"))
@@ -68,8 +68,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         ui = self.parameter_widget
 
-        # There is no known way to access the colors set by stylesheets. It is hence not posssible to make a universal
-        # correct desicion on which image to use. Workaround is to check stylesheet name if one ist set for "dark" and "ligth"
+        # There is no known way to access the colors set by stylesheets. It is hence not possible to make a universal
+        # correct decision on which image to use. Workaround is to check stylesheet name if one is set for "dark" and "light"
         stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString(
             "StyleSheet"
         )

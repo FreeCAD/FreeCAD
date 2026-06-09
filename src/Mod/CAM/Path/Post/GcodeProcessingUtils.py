@@ -127,6 +127,14 @@ def suppress_redundant_axes_words(gcode: List[str]) -> List[str]:
             result.append(line)
             continue
 
+        # Reset tracked state on tool change so post-change commands are not
+        # suppressed as redundant (the new tool may need the same position/feed).
+        if any(stripped.startswith(cmd) for cmd in ["M6", "M06"]):
+            current_pos = {k: None for k in current_pos}
+            current_feed = None
+            result.append(line)
+            continue
+
         # Check for drill cycle commands - these need ALL parameters, don't suppress
         # G80, G98, G99 have no parameters but should pass through
         is_parametric_drill_cycle = any(
@@ -421,6 +429,13 @@ def deduplicate_repeated_commands(gcode: List[str]) -> List[str]:
 
         # Keep comments and empty lines unchanged
         if not stripped or stripped.startswith("("):
+            result.append(line)
+            continue
+
+        # Reset modal command tracking on tool change so the first command
+        # after M6 is always output with its full command word.
+        if any(stripped.startswith(cmd) for cmd in ["M6", "M06"]):
+            last_cmd = None
             result.append(line)
             continue
 

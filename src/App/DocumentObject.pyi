@@ -7,7 +7,7 @@ from Base.Matrix import Matrix
 from Document import Document
 from DocumentObjectGroup import DocumentObjectGroup
 from ExtensionContainer import ExtensionContainer
-from typing import Any, Final, List, Optional, Union, Tuple
+from typing import TYPE_CHECKING, Any, Final, List, Optional, Union, Tuple
 
 
 class DocumentObject(ExtensionContainer):
@@ -16,6 +16,10 @@ class DocumentObject(ExtensionContainer):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
+
+    if TYPE_CHECKING:
+        Label: str = ...
+        Label2: str = ...
 
     OutList: Final[List["DocumentObject"]] = []
     """A list of all objects this object links to."""

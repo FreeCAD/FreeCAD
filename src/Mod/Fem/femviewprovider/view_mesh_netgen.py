@@ -152,7 +152,7 @@ class VPMeshNetgen(view_base_femobject.VPBaseFemObject):
         return True
 
     def claimChildren(self):
-        reg_childs = self.Object.MeshRegionList
+        reg_childs = self.Object.MeshRefinementList
         return reg_childs
 
     def dumps(self):

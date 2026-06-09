@@ -300,19 +300,18 @@ Changing this option requires a restart of the application.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_useVBO">
         <property name="toolTip">
-         <string>If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by the GPU.
+         <string>A VBO is an OpenGL feature that enables uploading geometry data
+to the graphics card, and is how efficient 3D rendering is done
+on modern hardware.
+This feature might not be used by default if you are running old
+hardware or drivers. By selecting this option its usage will be
+forcibly enabled.
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support.</string>
+Note: Turning this on is typically not required. If you do,
+remember to report this setting as enabled when seeking support.</string>
         </property>
         <property name="text">
-         <string>Use OpenGL VBO (Vertex Buffer Object)</string>
+         <string>Force use of OpenGL VBO (Vertex Buffer Object)</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>UseVBO</cstring>

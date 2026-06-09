@@ -77,19 +77,20 @@ class Arch_CurtainWall:
             self.doc.recompute()
         else:
             # interactive line drawing
-            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
-            self.points = []
             import WorkingPlane
 
-            WorkingPlane.get_working_plane()
-            if hasattr(FreeCADGui, "Snapper"):
-                FreeCADGui.Snapper.getPoint(callback=self.getPoint)
+            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+            self.wp = WorkingPlane.get_working_plane()
+            self.wp._save()
+            self.points = []
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint)
 
     def getPoint(self, point=None, obj=None):
         """Callback for clicks during interactive mode"""
 
         if point is None:
             # cancelled
+            self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             return
@@ -97,6 +98,7 @@ class Arch_CurtainWall:
         if len(self.points) == 1:
             FreeCADGui.Snapper.getPoint(last=self.points[0], callback=self.getPoint)
         elif len(self.points) == 2:
+            self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             FreeCADGui.Control.closeDialog()

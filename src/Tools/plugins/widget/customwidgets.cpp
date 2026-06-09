@@ -175,11 +175,11 @@ void FileChooser::chooseFile()
     QFileDialog::Options dlgOpt = QFileDialog::DontUseNativeDialog;
     QString fn;
     if (mode() == File) {
-        fn = QFileDialog::getOpenFileName(this, tr("Select a file"), lineEdit->text(), _filter, 0, dlgOpt);
+        fn = QFileDialog::getOpenFileName(this, tr("Select a File"), lineEdit->text(), _filter, 0, dlgOpt);
     }
     else {
         QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
-        fn = QFileDialog::getExistingDirectory(this, tr("Select a directory"), lineEdit->text(), option);
+        fn = QFileDialog::getExistingDirectory(this, tr("Select a Directory"), lineEdit->text(), option);
     }
 
     if (!fn.isEmpty()) {

@@ -125,6 +125,11 @@ protected:
     }
     //@}
 
+    void addStepControlConstraints()
+    {
+        toolWidgetManager.addStepConstraints();
+    }
+
 private:
     /** @name functions requiring specialisation */
     //@{
@@ -180,6 +185,7 @@ private:
 
     void onConstructionMethodChanged() override
     {
+        DrawSketchHandler::updateHint();
         toolWidgetManager.onConstructionMethodChanged();
     }
 

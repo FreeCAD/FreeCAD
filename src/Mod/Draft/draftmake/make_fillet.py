@@ -34,10 +34,9 @@ This creates a `Part::Part2DObjectPython`, and then assigns the Proxy class
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftobjects.fillet as fillet
-
+from draftgeoutils import fillets as geo_fillets
+from draftobjects import fillet
+from draftutils import gui_utils
 from draftutils.messages import _err
 from draftutils.translate import translate
 
@@ -46,7 +45,6 @@ if App.GuiUp:
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 ## \addtogroup draftmake
 # @{
@@ -78,7 +76,7 @@ def _preprocess(objs, radius, chamfer):
         _err(translate("draft", "2 edges are needed"))
         return None, None
 
-    edges = DraftGeomUtils.fillet(edges, radius, chamfer)
+    edges = geo_fillets.fillet(edges, radius, chamfer)
     if len(edges) < 3:
         _err(translate("draft", "Edges are not connected or radius is too large"))
         return None, None

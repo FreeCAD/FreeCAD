@@ -56,6 +56,26 @@ def add_arc(sketch, cx, cy, radius, start_angle, end_angle):
     return i
 
 
+def add_figure8_bspline(sketch):
+    """Add a self-intersecting figure-8 BSpline to the sketch. Returns the geometry index."""
+    i = int(sketch.GeometryCount)
+    pts = [
+        App.Vector(0, 0, 0),
+        App.Vector(5, 5, 0),
+        App.Vector(10, 0, 0),
+        App.Vector(5, -5, 0),
+        App.Vector(0, 0, 0),
+        App.Vector(-5, -5, 0),
+        App.Vector(-10, 0, 0),
+        App.Vector(-5, 5, 0),
+        App.Vector(0, 0, 0),
+    ]
+    bs = Part.BSplineCurve()
+    bs.interpolate(pts)
+    sketch.addGeometry(bs)
+    return i
+
+
 def get_internal_faces(sketch):
     """Get the list of faces from the InternalShape, or empty list if null."""
     shape = sketch.InternalShape
@@ -287,6 +307,7 @@ class TestSketchInternalFaces(unittest.TestCase):
         lens = 2 * r * r * math.acos(cos_arg) - (d / 2) * math.sqrt(4 * r * r - d * d)
         expected = 2 * math.pi * r * r - lens
         self.assertAlmostEqual(total_face_area(faces), expected, places=1)
+        self.assertFalse(faces_overlap(faces))
 
     def testTwoOverlappingRectangles(self):
         """Two overlapping rectangles: 3 faces, total area = union."""
@@ -297,15 +318,7 @@ class TestSketchInternalFaces(unittest.TestCase):
         faces = get_internal_faces(sk)
         self.assertEqual(len(faces), 3)
         self.assertAlmostEqual(total_face_area(faces), 175.0, places=2)
-
-    def testTwoOverlappingRectanglesNoOverlap(self):
-        """Faces from two overlapping rectangles must not share interior area."""
-        sk = self._make_sketch()
-        add_rectangle(sk, 0, 0, 10, 10)
-        add_rectangle(sk, 5, 5, 15, 15)
-        self.Doc.recompute()
-        faces = get_internal_faces(sk)
-        self.assertFalse(faces_overlap(faces), "Generated faces must not overlap")
+        self.assertFalse(faces_overlap(faces))
 
     def testCircleOverlappingRectangle(self):
         """Circle partially overlapping rectangle produces correct face count."""
@@ -331,6 +344,101 @@ class TestSketchInternalFaces(unittest.TestCase):
         self.assertEqual(len(faces), 2)
         self.assertAlmostEqual(total_face_area(faces), 100.0, places=3)
 
+    def testRectangleWithBothDiagonals(self):
+        """Rectangle with both diagonals should produce 4 triangular faces."""
+        sk = self._make_sketch()
+        add_rectangle(sk, 0, 0, 10, 10)
+        sk.addGeometry(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(10, 10, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(10, 0, 0), App.Vector(0, 10, 0)))
+        self.Doc.recompute()
+        faces = get_internal_faces(sk)
+        self.assertEqual(len(faces), 4)
+        self.assertAlmostEqual(total_face_area(faces), 100.0, places=3)
+
+    def testRectangleWithMidpointCross(self):
+        """Rectangle with horizontal and vertical midpoint lines: 4 equal faces."""
+        sk = self._make_sketch()
+        add_rectangle(sk, 0, 0, 10, 10)
+        sk.addGeometry(Part.LineSegment(App.Vector(0, 5, 0), App.Vector(10, 5, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(5, 0, 0), App.Vector(5, 10, 0)))
+        self.Doc.recompute()
+        faces = get_internal_faces(sk)
+        self.assertEqual(len(faces), 4)
+        self.assertAlmostEqual(total_face_area(faces), 100.0, places=3)
+        for f in faces:
+            self.assertAlmostEqual(f.Area, 25.0, places=2)
+
+    def testIncompleteIntersection(self):
+        """A line from one edge that stops inside the rectangle must not create
+        artifact faces — the dangling line should be ignored."""
+        sk = self._make_sketch()
+        add_rectangle(sk, 0, 0, 10, 10)
+        # Line from bottom edge going up but stopping at y=5 (doesn't reach top)
+        sk.addGeometry(Part.LineSegment(App.Vector(5, 0, 0), App.Vector(5, 5, 0)))
+        self.Doc.recompute()
+        faces = get_internal_faces(sk)
+        # Should still be 1 face (the rectangle), dangling line ignored
+        self.assertEqual(len(faces), 1)
+        self.assertAlmostEqual(faces[0].Area, 100.0, places=3)
+
+    def testTJunction(self):
+        """A line from the boundary to the diagonal midpoint creates a valid
+        T-junction subdivision: 3 faces (the lower triangle is split in two)."""
+        sk = self._make_sketch()
+        add_rectangle(sk, 0, 0, 10, 10)
+        # Diagonal divides rectangle into 2 triangles
+        sk.addGeometry(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(10, 10, 0)))
+        # Line from bottom edge to the diagonal midpoint — valid subdivision
+        sk.addGeometry(Part.LineSegment(App.Vector(5, 0, 0), App.Vector(5, 5, 0)))
+        self.Doc.recompute()
+        faces = get_internal_faces(sk)
+        # 3 faces: upper triangle + 2 sub-triangles from the lower half
+        self.assertEqual(len(faces), 3)
+        self.assertAlmostEqual(total_face_area(faces), 100.0, places=3)
+
+    def testMultipleDanglingLines(self):
+        """Multiple dangling lines from different edges should all be pruned."""
+        sk = self._make_sketch()
+        add_rectangle(sk, 0, 0, 10, 10)
+        # Dangling from bottom edge
+        sk.addGeometry(Part.LineSegment(App.Vector(3, 0, 0), App.Vector(3, 4, 0)))
+        # Dangling from right edge
+        sk.addGeometry(Part.LineSegment(App.Vector(10, 6, 0), App.Vector(6, 6, 0)))
+        # Dangling from top edge
+        sk.addGeometry(Part.LineSegment(App.Vector(7, 10, 0), App.Vector(7, 7, 0)))
+        self.Doc.recompute()
+        faces = get_internal_faces(sk)
+        self.assertEqual(len(faces), 1)
+        self.assertAlmostEqual(faces[0].Area, 100.0, places=3)
+
+    def testDanglingChain(self):
+        """A chain of connected dangling segments (polyline entering from the
+        boundary) should be fully pruned by iterative degree-1 removal."""
+        sk = self._make_sketch()
+        add_rectangle(sk, 0, 0, 10, 10)
+        i = int(sk.GeometryCount)
+        # 3-segment polyline entering from bottom edge, zig-zagging inside
+        sk.addGeometry(Part.LineSegment(App.Vector(5, 0, 0), App.Vector(5, 4, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(5, 4, 0), App.Vector(7, 6, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(7, 6, 0), App.Vector(4, 8, 0)))
+        sk.addConstraint(Sketcher.Constraint("Coincident", i, 2, i + 1, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", i + 1, 2, i + 2, 1))
+        self.Doc.recompute()
+        faces = get_internal_faces(sk)
+        self.assertEqual(len(faces), 1)
+        self.assertAlmostEqual(faces[0].Area, 100.0, places=3)
+
+    def testFloatingLine(self):
+        """A line entirely inside a rectangle, not touching any boundary,
+        should not create artifact faces."""
+        sk = self._make_sketch()
+        add_rectangle(sk, 0, 0, 10, 10)
+        sk.addGeometry(Part.LineSegment(App.Vector(3, 3, 0), App.Vector(7, 7, 0)))
+        self.Doc.recompute()
+        faces = get_internal_faces(sk)
+        self.assertEqual(len(faces), 1)
+        self.assertAlmostEqual(faces[0].Area, 100.0, places=3)
+
     def testCrossPattern(self):
         """Two perpendicular overlapping rectangles (+ shape): 5 faces."""
         sk = self._make_sketch()
@@ -342,6 +450,7 @@ class TestSketchInternalFaces(unittest.TestCase):
         self.assertEqual(len(faces), 5)
         # Total area = union = 2*(10*30) - 10*10 = 500
         self.assertAlmostEqual(total_face_area(faces), 500.0, places=2)
+        self.assertFalse(faces_overlap(faces))
 
     # ==================================================================
     # 9. Three overlapping shapes — the bug (issue #23406)
@@ -382,8 +491,6 @@ class TestSketchInternalFaces(unittest.TestCase):
         add_circle(sk, 4, 7, r)
         self.Doc.recompute()
         faces = get_internal_faces(sk)
-        if len(faces) == 0:
-            self.skipTest("Bug #23406: 3-circle face generation currently produces 0 faces")
         total = total_face_area(faces)
         # Compute union area via inclusion-exclusion (approximate: use shape boolean)
         c1 = Part.Face(Part.Wire(Part.makeCircle(r, App.Vector(0, 0, 0))))
@@ -418,30 +525,147 @@ class TestSketchInternalFaces(unittest.TestCase):
         self.assertGreaterEqual(len(faces), 9, "Four overlapping circles should produce >= 9 faces")
 
     # ==================================================================
-    # 10. Faces must not overlap (geometric correctness)
+    # 10. Self-intersecting BSplines
     # ==================================================================
 
-    def testTwoCirclesNoOverlap(self):
-        """Faces from two overlapping circles must not share interior area."""
+    def testFigure8BSpline(self):
+        """A single self-intersecting BSpline forming a figure-8 -> 2 faces."""
         sk = self._make_sketch()
-        add_circle(sk, 0, 0, 10)
-        add_circle(sk, 12, 0, 10)
+        add_figure8_bspline(sk)
         self.Doc.recompute()
         faces = get_internal_faces(sk)
-        self.assertFalse(faces_overlap(faces), "Faces must be non-overlapping")
+        self.assertEqual(len(faces), 2, "Figure-8 BSpline should produce 2 faces")
+        for f in faces:
+            self.assertGreater(f.Area, 1.0)
 
-    def testCrossPatternNoOverlap(self):
-        """Faces from cross pattern must not share interior area."""
+    def testBSplineWithSeparateLine(self):
+        """Self-intersecting BSpline + separate non-touching line:
+        the line should be pruned (dangling), BSpline produces 2 faces."""
         sk = self._make_sketch()
-        add_rectangle(sk, -5, -15, 5, 15)
-        add_rectangle(sk, -15, -5, 15, 5)
+        add_figure8_bspline(sk)
+        sk.addGeometry(Part.LineSegment(App.Vector(50, 0, 0), App.Vector(60, 0, 0)))
         self.Doc.recompute()
         faces = get_internal_faces(sk)
-        self.assertFalse(faces_overlap(faces), "Faces must be non-overlapping")
+        self.assertEqual(len(faces), 2)
 
     # ==================================================================
     # 11. Element naming
     # ==================================================================
+
+    def testSplitEdgesHaveMappedNames(self):
+        """When edges are split at intersections, the fragments must have
+        mapped names derived from the original sketch edges — not bare
+        indexed names like 'Edge1'.  This is the core of issue #29016."""
+        sk = self._make_sketch()
+        add_circle(sk, 0, 0, 10)
+        add_circle(sk, 12, 0, 10)
+        self.Doc.recompute()
+        shape = sk.InternalShape
+        self.assertFalse(shape.isNull())
+        erm = shape.ElementReverseMap
+        edge_names = {k: v for k, v in erm.items() if k.startswith("Edge")}
+        self.assertGreater(len(edge_names), 0)
+        for idx_name, mapped_name in edge_names.items():
+            self.assertNotEqual(
+                idx_name,
+                mapped_name,
+                f"{idx_name} has no mapped name (identity mapping = unnamed)",
+            )
+            # Mapped names from sketch edges should reference geometry IDs
+            # (like "g1;SKT"), not indexed names (like "Edge1")
+            self.assertFalse(
+                str(mapped_name).startswith("Edge"),
+                f"{idx_name} -> '{mapped_name}' references an indexed name, not a mapped name",
+            )
+
+    def testSplitFaceNamesReferenceSketchEdges(self):
+        """Face combo names from split geometry should reference sketch edge
+        mapped names, not indexed names.  A name like 'Edge1;;:H:1,F' is
+        fragile; it should be something like 'g1;SKT;FAC;:H:1,F'."""
+        sk = self._make_sketch()
+        add_circle(sk, 0, 0, 10)
+        add_circle(sk, 12, 0, 10)
+        self.Doc.recompute()
+        shape = sk.InternalShape
+        self.assertFalse(shape.isNull())
+        erm = shape.ElementReverseMap
+        face_names = {k: str(v) for k, v in erm.items() if k.startswith("Face")}
+        self.assertEqual(len(face_names), 3)
+        for idx_name, mapped_name in face_names.items():
+            # Face names should NOT start with "Edge<N>;" — that indicates
+            # the face was named from an unnamed (indexed-only) edge.
+            has_indexed_ref = any(mapped_name.startswith(f"Edge{i};") for i in range(1, 20))
+            self.assertFalse(
+                has_indexed_ref,
+                f"{idx_name} -> '{mapped_name}' references indexed edge name",
+            )
+
+    def testSplitBSplineEdgesHaveMappedNames(self):
+        """B-Spline variant of testSplitEdgesHaveMappedNames: a self-intersecting
+        B-spline with a dangling edge must produce split edges with mapped names."""
+        sk = self._make_sketch()
+        add_figure8_bspline(sk)
+        # Add a dangling edge that doesn't touch the B-spline
+        sk.addGeometry(Part.LineSegment(App.Vector(50, 0, 0), App.Vector(60, 0, 0)))
+        self.Doc.recompute()
+        shape = sk.InternalShape
+        self.assertFalse(shape.isNull())
+        erm = shape.ElementReverseMap
+        edge_names = {k: v for k, v in erm.items() if k.startswith("Edge")}
+        self.assertGreater(len(edge_names), 0)
+        for idx_name, mapped_name in edge_names.items():
+            self.assertNotEqual(
+                idx_name,
+                mapped_name,
+                f"{idx_name} has no mapped name (identity mapping = unnamed)",
+            )
+            self.assertFalse(
+                str(mapped_name).startswith("Edge"),
+                f"{idx_name} -> '{mapped_name}' references an indexed name, not a mapped name",
+            )
+
+    def testSplitBSplineFaceNamesReferenceSketchEdges(self):
+        """B-Spline variant of testSplitFaceNamesReferenceSketchEdges: face names
+        from a self-intersecting B-spline should reference mapped names."""
+        sk = self._make_sketch()
+        add_figure8_bspline(sk)
+        sk.addGeometry(Part.LineSegment(App.Vector(50, 0, 0), App.Vector(60, 0, 0)))
+        self.Doc.recompute()
+        shape = sk.InternalShape
+        self.assertFalse(shape.isNull())
+        erm = shape.ElementReverseMap
+        face_names = {k: str(v) for k, v in erm.items() if k.startswith("Face")}
+        self.assertEqual(len(face_names), 2, "Figure-8 BSpline should produce 2 faces")
+        for idx_name, mapped_name in face_names.items():
+            has_indexed_ref = any(mapped_name.startswith(f"Edge{i};") for i in range(1, 20))
+            self.assertFalse(
+                has_indexed_ref,
+                f"{idx_name} -> '{mapped_name}' references indexed edge name",
+            )
+
+    def testSplitBSplineEdgeNamingStableAfterRecompute(self):
+        """Split edge names for a self-intersecting B-spline with dangling edge
+        must be identical across recomputes."""
+        sk = self._make_sketch()
+        add_figure8_bspline(sk)
+        sk.addGeometry(Part.LineSegment(App.Vector(50, 0, 0), App.Vector(60, 0, 0)))
+        self.Doc.recompute()
+        names_before = sorted(sk.InternalShape.ElementReverseMap.items())
+        self.Doc.recompute()
+        names_after = sorted(sk.InternalShape.ElementReverseMap.items())
+        self.assertEqual(names_before, names_after)
+
+    def testSplitEdgeNamingStableAfterRecompute(self):
+        """Split edge names for overlapping geometry must be identical
+        across recomputes."""
+        sk = self._make_sketch()
+        add_circle(sk, 0, 0, 10)
+        add_circle(sk, 12, 0, 10)
+        self.Doc.recompute()
+        names_before = sorted(sk.InternalShape.ElementReverseMap.items())
+        self.Doc.recompute()
+        names_after = sorted(sk.InternalShape.ElementReverseMap.items())
+        self.assertEqual(names_before, names_after)
 
     def testInternalShapeHasEdgeNames(self):
         """InternalShape edges should have mapped element names."""

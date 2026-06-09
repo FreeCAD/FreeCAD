@@ -74,12 +74,15 @@ If left empty no template will be preselected.</string>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="Gui::InputField" name="geometryTolerance">
+             <widget class="Gui::QuantitySpinBox" name="geometryTolerance">
               <property name="toolTip">
                <string>Default value for new jobs, used for computing Paths. Smaller increases accuracy, but slows down computation</string>
               </property>
               <property name="minimum">
-               <number>0</number>
+               <double>0.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.001000000000000</double>
               </property>
              </widget>
             </item>
@@ -91,12 +94,15 @@ If left empty no template will be preselected.</string>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::InputField" name="curveAccuracy">
+             <widget class="Gui::QuantitySpinBox" name="curveAccuracy">
               <property name="toolTip">
                <string>Uses while calculates arcs. Smaller increases accuracy, but slows down computation</string>
               </property>
               <property name="minimum">
-               <number>0</number>
+               <double>0.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.001000000000000</double>
               </property>
              </widget>
             </item>

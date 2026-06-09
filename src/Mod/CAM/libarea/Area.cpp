@@ -11,6 +11,9 @@
 #include <limits>
 #include <map>
 
+namespace heeks
+{
+
 double CArea::m_accuracy = 0.01;
 double CArea::m_units = 1.0;
 bool CArea::m_clipper_simple = false;
@@ -962,3 +965,5 @@ void CArea::InsideCurves(const CCurve& curve, std::list<CCurve>& curves_inside) 
         }
     }
 }
+
+}  // namespace heeks

@@ -289,18 +289,17 @@ int main(int argc, char** argv)
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
         QString appName = QString::fromStdString(App::Application::getExecutableName());
-        QString msg;
-        msg = QObject::tr(
-                  "While initializing %1 the following exception occurred: '%2'\n\n"
-                  "Python is searching for its files in the following directories:\n%3\n\n"
-                  "Python version information:\n%4\n"
-        )
-                  .arg(
-                      appName,
-                      QString::fromUtf8(e.what()),
-                      QString::fromStdString(Base::Interpreter().getPythonPath()),
-                      QString::fromLatin1(Py_GetVersion())
-                  );
+        QString msg = QObject::tr("While initializing %1 the following exception occurred: '%2'\n\n")
+                          .arg(appName, QString::fromUtf8(e.what()));
+        if (Py_IsInitialized()) {
+            msg += QObject::tr("Python is searching for its files in the following directories:\n%1\n\n")
+                       .arg(QString::fromStdString(Base::Interpreter().getPythonPath()));
+        }
+        else {
+            msg += QObject::tr("Python has not initialized yet.\n\n");
+        }
+        msg += QObject::tr("Python version information:\n%1\n")
+                   .arg(QString::fromLatin1(Py_GetVersion()));
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {
             msg += QObject::tr("\nThe environment variable PYTHONHOME is set to '%1'.")

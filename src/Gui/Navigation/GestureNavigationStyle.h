@@ -49,6 +49,7 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent* const ev) override;
+    int selectionMoveThreshold() const override;
 
 public:
     /// calls processSoEvent of NavigationStyle.

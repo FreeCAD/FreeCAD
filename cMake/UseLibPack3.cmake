@@ -1,7 +1,18 @@
 set(ENV{PATH} "${FREECAD_LIBPACK_DIR};$ENV{PATH}")
 list(PREPEND CMAKE_PREFIX_PATH "${FREECAD_LIBPACK_DIR}")
 
-set (Python3_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/python.exe)
+# Make really, really, REALLY sure that CMake doesn't do that thing where it decides that the LibPack's Python isn't
+# good enough, and just finds some other one to use. If there is a problem with the LibPack's Python, that is a fatal
+# error and should stop generation.
+set (Python_FIND_REGISTRY NEVER)
+set (Python3_FIND_REGISTRY NEVER)
+set (Python_FIND_STRATEGY LOCATION)
+set (Python3_FIND_STRATEGY LOCATION)
+set (Python_ROOT_DIR    "${FREECAD_LIBPACK_DIR}/bin")
+set (Python3_ROOT_DIR   "${FREECAD_LIBPACK_DIR}/bin")
+set (Python_EXECUTABLE  "${FREECAD_LIBPACK_DIR}/bin/python.exe")
+set (Python3_EXECUTABLE "${FREECAD_LIBPACK_DIR}/bin/python.exe")
+
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 
 # Make sure we are using the shared versions of Boost here: the LibPack includes both
