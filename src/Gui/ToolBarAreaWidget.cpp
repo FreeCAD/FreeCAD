@@ -194,7 +194,7 @@ void ToolBarAreaWidget::saveState()
 
 void ToolBarAreaWidget::restoreState(
     const std::map<int, QToolBar*>& toolbars,
-    const ParameterGrp::handle& source
+    const QMap<QString, bool>& widgetVisibility
 )
 {
     for (const auto& [index, toolbar] : toolbars) {
@@ -205,16 +205,11 @@ void ToolBarAreaWidget::restoreState(
         toolbar->setVisible(visible);
     }
 
-    auto stateParams = source ? source : _hParam;
-    if (!stateParams) {
-        return;
-    }
-
-    for (const auto& [name, visible] : stateParams->GetBoolMap()) {
-        auto widget = findRestorableWidget(this, QString::fromUtf8(name.c_str()));
+    for (auto it = widgetVisibility.cbegin(); it != widgetVisibility.cend(); ++it) {
+        auto widget = findRestorableWidget(this, it.key());
 
         if (widget) {
-            widget->setVisible(visible);
+            widget->setVisible(it.value());
         }
     }
 }

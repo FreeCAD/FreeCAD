@@ -285,6 +285,10 @@ class TestToolbarPersistenceGui(unittest.TestCase):
 
         self.addCleanup(restore)
 
+    def layout_group_text(self, params, group_name):
+        group = params.GetGroup(group_name)
+        return ",".join(group.GetString(area) for area in ("Top", "Left", "Right", "Bottom"))
+
     def all_toolbars(self):
         return list(self.main_window().findChildren(QtGui.QToolBar))
 
@@ -385,6 +389,11 @@ class TestToolbarPersistenceGui(unittest.TestCase):
     def assert_toolbar_area(self, key, expected_area):
         toolbar = self.wait_for_toolbar(key)
         self.assertIsNotNone(toolbar, f"Expected toolbar {key} to exist")
+        self.wait_until(
+            lambda: self.toolbar_area_value(self.main_window().toolBarArea(toolbar))
+            == self.toolbar_area_value(expected_area),
+            f"toolbar {key} area to become {self.toolbar_area_value(expected_area)}",
+        )
         actual_area = self.main_window().toolBarArea(toolbar)
         self.assertEqual(
             self.toolbar_area_value(actual_area),
@@ -562,6 +571,34 @@ class TestToolbarPersistenceGui(unittest.TestCase):
         self.assert_toolbar_visibility("shared:View", True)
         self.assert_toolbar_visibility("ctx:SketcherWorkbench:edit:Geometries", True)
         self.leave_sketch_edit()
+
+    def test_scoped_layout_switch_saves_only_current_scope_toolbars(self):
+        layout_params = FreeCAD.ParamGet("User parameter:BaseApp/MainWindow/WorkbenchLayouts")
+        self.backup_group(
+            layout_params,
+            "SketcherWorkbench",
+            "__ToolbarScopeIsolationBackup__SketcherWorkbench",
+        )
+        self.backup_group(
+            layout_params,
+            "ctx:SketcherWorkbench:edit",
+            "__ToolbarScopeIsolationBackup__SketcherEdit",
+        )
+        layout_params.RemGroup("SketcherWorkbench")
+        layout_params.RemGroup("ctx:SketcherWorkbench:edit")
+
+        self.activate_workbench("SketcherWorkbench", "wb:SketcherWorkbench:")
+        self.wait_for_toolbar("wb:SketcherWorkbench:Sketcher")
+        for _ in range(2):
+            self.enter_sketch_edit()
+            self.wait_for_toolbar("ctx:SketcherWorkbench:edit:Geometries")
+            self.leave_sketch_edit()
+
+        workbench_layout = self.layout_group_text(layout_params, "SketcherWorkbench")
+        contextual_layout = self.layout_group_text(layout_params, "ctx:SketcherWorkbench:edit")
+        self.assertNotIn("ctx:SketcherWorkbench:edit:", workbench_layout)
+        self.assertNotIn("wb:SketcherWorkbench:", contextual_layout)
+        self.activate_workbench("PartWorkbench", "wb:PartWorkbench:")
 
     def test_custom_toolbar_tier_is_loaded_from_preferences(self):
         workbench_params = FreeCAD.ParamGet("User parameter:BaseApp/Workbench")

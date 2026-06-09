@@ -28,6 +28,7 @@
 #include <fastsignals/signal.h>
 
 #include <QStringList>
+#include <QMetaType>
 #include <QPointer>
 #include <QTimer>
 #include <QToolBar>
@@ -351,6 +352,7 @@ public:
 
 Q_SIGNALS:
     void toolbarLayoutContextChanged();
+    void toolbarLayoutScopeRestored(const ToolbarScopeId& context);
     void toolbarLayoutRestored(const QString& context);
 
 protected:
@@ -404,15 +406,13 @@ private:
     bool rememberToolbarLayoutByWorkbench() const;
     bool hasSavedWorkbenchToolBarLayout(const ToolbarScopeId& context) const;
     bool toolbarBelongsToLayoutContext(const QToolBar* toolbar, const ToolbarScopeId& context) const;
+    void activateToolbarLayoutContext(const ToolbarScopeId& context);
+    void moveToolBarToMainWindow(QToolBar* toolbar) const;
+    void deactivateToolBarForScope(QToolBar* toolbar) const;
     void initializeUnsavedToolbarLayoutContext(const ToolbarScopeId& context);
     void updateLayoutParameters(const ToolbarScopeId& context);
     ParameterGrp::handle workbenchLayoutGroup(const ToolbarScopeId& context) const;
-    ParameterGrp::handle toolbarAreaRestoreParameters(
-        const ParameterGrp::handle& current,
-        const ParameterGrp::handle& fallback
-    ) const;
     void saveWorkbenchToolBarLayout(const ToolbarScopeId& context) const;
-    void restoreWorkbenchToolBarLayout(const ToolbarScopeId& context) const;
     void resetMainWindowToolBarLayout() const;
     bool recommendedToolBarVisibility(const QToolBar* toolbar) const;
     void applyRecommendedToolBarPreferences();
@@ -455,3 +455,5 @@ private:
 };
 
 }  // namespace Gui
+
+Q_DECLARE_METATYPE(Gui::ToolBarManager::ToolbarScopeId)
