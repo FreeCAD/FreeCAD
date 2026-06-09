@@ -82,6 +82,7 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Inventor/SoDB.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
 
@@ -108,6 +109,7 @@
 #include "StatusBarLabel.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
+#include "Utilities.h"
 #include "Tree.h"
 #include "WaitCursor.h"
 #include "WorkbenchManager.h"
@@ -431,10 +433,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // the rightmost permanent widget.
     auto* toggleBottomPanelsButton = new QToolButton(statusBar());
     toggleBottomPanelsButton->setObjectName(QStringLiteral("toggleBottomPanelsButton"));
-    int iconSize = App::GetApplication()
-                       .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                       ->GetInt("ToolbarIconSize", 24);
-    toggleBottomPanelsButton->setIconSize(QSize(iconSize, iconSize));
+    //: A context menu action used to show or hide the Toggle Bottom Panels button in the status bar
+    toggleBottomPanelsButton->setWindowTitle(tr("Bottom Panel Toggle"));
+    toggleBottomPanelsButton->setIconSize(QSize(16, 16));
     toggleBottomPanelsButton->setIcon(BitmapFactory().pixmap("Std_ToggleBottomPanels"));
     toggleBottomPanelsButton->setCheckable(true);
     // Starts checked because FreeCAD shows bottom panels by default on first launch. On subsequent
@@ -523,6 +524,12 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
 MainWindow::~MainWindow()
 {
+    // QWidget teardown may still emit subWindowActivated while child MDI
+    // windows are being destroyed. Disconnect first so shutdown cannot re-enter
+    // MainWindow slots after derived destruction has started.
+    if (d->mdiArea) {
+        disconnect(d->mdiArea, &QMdiArea::subWindowActivated, this, &MainWindow::onWindowActivated);
+    }
     delete d->status;
     delete d;
     instance = nullptr;
@@ -1088,6 +1095,25 @@ void MainWindow::showDocumentation(const QString& help)
     }
 }
 
+static View3DInventorViewer* spaceballMotionEventTarget()
+{
+    // check if the active window has a 3d view
+
+    if (auto viewer = getMainWindow()->activeWindow()->findChild<View3DInventorViewer*>()) {
+        return viewer;
+    }
+
+    // check active view for the document
+
+    if (Gui::Document* doc = Application::Instance->activeDocument()) {
+        if (auto view = dynamic_cast<View3DInventor*>(doc->getActiveView())) {
+            return view->getViewer();
+        }
+    }
+
+    return nullptr;
+}
+
 bool MainWindow::event(QEvent* e)
 {
     if (e->type() == QEvent::EnterWhatsThisMode) {
@@ -1162,15 +1188,7 @@ bool MainWindow::event(QEvent* e)
             return true;
         }
         motionEvent->setHandled(true);
-        Gui::Document* doc = Application::Instance->activeDocument();
-        if (!doc) {
-            return true;
-        }
-        auto temp = dynamic_cast<View3DInventor*>(doc->getActiveView());
-        if (!temp) {
-            return true;
-        }
-        View3DInventorViewer* view = temp->getViewer();
+        View3DInventorViewer* view = spaceballMotionEventTarget();
         if (view) {
             Spaceball::MotionEvent anotherEvent(*motionEvent);
             qApp->sendEvent(view, &anotherEvent);
@@ -1422,7 +1440,6 @@ void MainWindow::setActiveWindow(MDIView* view)
     if (!view) {
         return;
     }
-
     // always update the focus and active sub window
 
     // We need the explicit call to setFocus because it seems the focus window and the
@@ -1432,8 +1449,16 @@ void MainWindow::setActiveWindow(MDIView* view)
     // switching from a 3d view to a spreadsheet using the "Windows..." dialog or when docking a
     // spreadsheet that was in top-level/fullscreen mode. Why this could only be reproduced with a
     // spreadsheet remains a mystery.
-
-    view->setFocus();
+    //
+    // However, only do this when the active view is actually changing. Calling setFocus
+    // unconditionally also stomps focus that the user has placed on a dock widget (e.g. the
+    // tree view): closing a modal popup triggers ActivationChange -> setActiveSubWindow ->
+    // setActiveWindow with the same view that is already active, which has no real reason
+    // to take focus.
+    // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+    if (view != d->activeView) {
+        view->setFocus();
+    }
 
     auto subwindow = qobject_cast<QMdiSubWindow*>(view->parentWidget());
     if (subwindow) {
@@ -1441,7 +1466,6 @@ void MainWindow::setActiveWindow(MDIView* view)
     }
 
     // if active view changed, notify rest of the application
-
     if (view == d->activeView) {
         return;
     }
@@ -1720,31 +1744,31 @@ void MainWindow::processMessages(const QList<QString>& msg)
 void MainWindow::delayedStartup()
 {
     // automatically run unit tests in Gui
-    if (App::Application::Config()["RunMode"] == "Internal") {
-        QTimer::singleShot(1000, this, [] {
-            try {
-                string command = "import sys\n"
-                                 "import FreeCAD\n"
-                                 "import QtUnitGui\n\n"
-                                 "testCase = FreeCAD.ConfigGet(\"TestCase\")\n"
-                                 "QtUnitGui.addTest(testCase)\n"
-                                 "QtUnitGui.setTest(testCase)\n"
-                                 "result = QtUnitGui.runTest()\n"
-                                 "sys.stdout.flush()\n";
-                if (App::Application::Config()["ExitTests"] == "yes") {
-                    command += "sys.exit(0 if result else 1)";
-                }
-                Base::Interpreter().runString(command.c_str());
+    if (Gui::isInternalGuiTestRun()) {
+        try {
+            // Command-line GUI tests should not depend on the interactive QtUnitGui
+            // dialog. In headless runs such as QT_QPA_PLATFORM=offscreen/minimal,
+            // that dialog path can hang before the test body executes. Run the
+            // embedded text-based GUI test script directly once startup reaches
+            // delayedStartup().
+            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiTest"));
+            if (App::Application::Config()["ExitTests"] == "yes") {
+                Base::Interpreter().runString(
+                    "import sys\n"
+                    "sys.exit(0 if test_result.wasSuccessful() else 1)\n"
+                );
             }
-            catch (const Base::SystemExitException&) {
-                // Properly quit the Qt event loop before propagating the exception
-                QApplication::quit();
-                throw;
-            }
-            catch (const Base::Exception& e) {
-                e.reportException();
-            }
-        });
+        }
+        catch (const Base::SystemExitException&) {
+            // Properly quit the Qt event loop before propagating the exception
+            QApplication::quit();
+            throw;
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+            QApplication::quit();
+            throw;
+        }
         return;
     }
 
@@ -2054,7 +2078,7 @@ void MainWindow::loadWindowSettings()
         winPos.setY(qMax(qMin(winPos.y(), screen.bottom() - winGeometry.height()), screen.y()));
     }
 
-    // Scale before move reducing, or vice versa, so a dpi change wont make window to be moved
+    // Scale before move reducing, or vice versa, so a dpi change wont force window to be moved
     resize(winSize.boundedTo(size()));
     move(winPos);
     resize(winSize);
@@ -2538,9 +2562,16 @@ void MainWindow::changeEvent(QEvent* e)
         App::GetApplication().retranslateExportTypes();
     }
     else if (e->type() == QEvent::ActivationChange) {
+        static SbTime savedRealTimeInterval = SoDB::getRealTimeInterval();
         if (isActiveWindow()) {
             QMdiSubWindow* mdi = d->mdiArea->currentSubWindow();
             setActiveSubWindow(mdi);
+            SoDB::enableRealTimeSensor(true);
+            SoDB::setRealTimeInterval(savedRealTimeInterval);
+        }
+        else {
+            savedRealTimeInterval = SoDB::getRealTimeInterval();
+            SoDB::enableRealTimeSensor(false);
         }
     }
     else {

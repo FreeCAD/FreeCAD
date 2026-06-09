@@ -35,9 +35,19 @@ class WriterMaterial(WriterList):
     def __init__(self, writer):
         super().__init__(writer, writer.member.mats_linear)
 
+    def write_items(self):
+        super().write_items()
+        self.writer.z88mat_rows = self.fill_default(self.writer.z88mat_rows, self.get_param)
+
     def write_item(self, item):
         obj = item["Object"]
+        if not obj.References:
+            return
 
+        mat_file = self.get_param(obj)
+        self.add_file_rows(item["MaterialElements"], self.writer.z88mat_rows, mat_file)
+
+    def get_param(self, obj):
         file_name = f"{obj.Name}.txt"
         mat_path = os.path.join(self.writer.solver_obj.WorkingDirectory, file_name)
         mat_file = open(mat_path, "w")
@@ -48,9 +58,4 @@ class WriterMaterial(WriterList):
         mat_file.write(f"{ym} {pr:.3f}\n")
         mat_file.close()
 
-        self.add_file_rows(item["MaterialElements"], self.writer.z88mat_rows, file_name)
-
-        # if there is only one material and without references, assign it to all elements.
-        if len(self.member_list) == 1 and not self.writer.z88mat_rows:
-            start, end = self.get_start_end_id()
-            self.writer.z88mat_rows.append(f"{start + 1} {end + 1} {file_name}\n")
+        return file_name

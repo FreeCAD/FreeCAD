@@ -38386,9 +38386,9 @@ DEPConstraintContact, INDConstraintContact
 ** Displacement constraint applied
 ** ConstraintDisplacement
 *BOUNDARY
-ConstraintDisplacement,1,1,0.0
-ConstraintDisplacement,2,2,0.0
-ConstraintDisplacement,3,3,0.0
+ConstraintDisplacement,1,1,0
+ConstraintDisplacement,2,2,0
+ConstraintDisplacement,3,3,0
 
 
 ***********************************************************

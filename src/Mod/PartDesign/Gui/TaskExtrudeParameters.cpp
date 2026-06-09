@@ -1395,6 +1395,7 @@ void TaskExtrudeParameters::setupGizmos()
     );
 
     setGizmoPositions();
+    showDraggerHints();
 }
 
 void TaskExtrudeParameters::setGizmoPositions()

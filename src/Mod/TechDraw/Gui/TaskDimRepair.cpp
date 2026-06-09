@@ -134,7 +134,7 @@ void TaskDimRepair::slotUseSelection()
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
     if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Incorrect Selection"),
                              QObject::tr("Cannot make dimension from selection"));
         return;
     }
@@ -145,7 +145,7 @@ void TaskDimRepair::slotUseSelection()
             dvp, references3d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
         if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect selection"),
+                                 QObject::tr("Incorrect Selection"),
                                  QObject::tr("Cannot make dimension from selection"));
             return;
         }

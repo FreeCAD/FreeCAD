@@ -148,6 +148,7 @@ SET(Document_CPP_SRCS
     Annotation.cpp
     BackupPolicy.cpp
     Document.cpp
+    RecoverySnapshot.cpp
     DocumentObject.cpp
     Extension.cpp
     ExtensionPyImp.cpp
@@ -203,6 +204,7 @@ SET(Document_HPP_SRCS
     Annotation.h
     BackupPolicy.h
     Document.h
+    RecoverySnapshot.h
     DocumentObject.h
     Extension.h
     ExtensionContainer.h
@@ -341,6 +343,7 @@ SET(FreeCADApp_HPP_SRCS
     ProgramInformation.h
     Services.h
     StringHasher.h
+    MainThreadSignal.h
 )
 
 # auto-generate resource file with all available translations

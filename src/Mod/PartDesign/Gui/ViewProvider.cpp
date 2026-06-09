@@ -485,6 +485,21 @@ ViewProviderBody* ViewProvider::getBodyViewProvider()
     return nullptr;
 }
 
+void ViewProvider::toggleVisibility()
+{
+    if (!PartDesign::Body::isSolidFeature(getObject())) {
+        Gui::ViewProvider::toggleVisibility();
+        return;
+    }
+    if (auto* bodyVp = getBodyViewProvider()) {
+        // When toggling via the global Std_ToggleVisibility shortcut (i.e. from
+        // the 3D view), always toggle the whole body
+        bodyVp->toggleVisibility();
+        return;
+    }
+    Gui::ViewProvider::toggleVisibility();
+}
+
 namespace Gui
 {
 /// @cond DOXERR

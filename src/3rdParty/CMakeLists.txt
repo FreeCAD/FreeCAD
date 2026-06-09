@@ -31,3 +31,4 @@ if (BUILD_TRACY_FRAME_PROFILER)
     set(TRACY_STATIC OFF)
     add_subdirectory(tracy)
 endif()
+

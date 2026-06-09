@@ -42,7 +42,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "pressure"],
-        "solvers": ["ccxtools"],
+        "solvers": ["ccxtools", "z88"],
         "material": "multimaterial",
         "equations": ["mechanical"],
     }
@@ -114,6 +114,8 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
         solver_obj.WorkingDir = ""
+    elif solvertype == "z88":
+        solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "

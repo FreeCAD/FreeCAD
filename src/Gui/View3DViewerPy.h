@@ -30,6 +30,7 @@ namespace Gui
 {
 
 class View3DInventorViewer;
+class EditableDatumLabelPy;
 
 /**
  * @brief Python interface for View3DInventorViewer
@@ -80,8 +81,14 @@ public:
     Py::Object setEnabledNaviCube(const Py::Tuple& args);
     Py::Object isEnabledNaviCube(const Py::Tuple& args);
     Py::Object setNaviCubeCorner(const Py::Tuple& args);
+    Py::Object isSpinning();
 
     Py::Object getNavigationStyle(const Py::Tuple&);
+
+    View3DInventorViewer* getView3DInventorViewerPtr() const
+    {
+        return _viewer;
+    }
 
 private:
     using method_varargs_handler = PyObject* (*)(PyObject * _self, PyObject* _args);
@@ -89,6 +96,7 @@ private:
     static PyObject* method_varargs_ext_handler(PyObject* _self, PyObject* _args);
 
 private:
+    friend class EditableDatumLabelPy;
     std::list<PyObject*> callbacks;
     View3DInventorViewer* _viewer;
     friend class View3DInventorViewer;

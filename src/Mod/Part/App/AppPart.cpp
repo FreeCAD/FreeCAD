@@ -27,6 +27,8 @@
 #include <IGESControl_Controller.hxx>
 #include <STEPControl_Controller.hxx>
 #include <Standard_Version.hxx>
+#include <Message.hxx>
+#include <Message_Messenger.hxx>
 
 #include <FCConfig.h>
 
@@ -92,6 +94,8 @@
 #include "FeaturePartSpline.h"
 #include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
+#include "LinearPatternExtension.h"
+#include "PolarPatternExtension.h"
 #include "Geometry.h"
 #include "Geometry2d.h"
 #include "GeometryBoolExtensionPy.h"
@@ -132,6 +136,7 @@
 #include "TopoShapeWirePy.h"
 #include "ToroidPy.h"
 #include "OCCError.h"
+#include "OCCTMessagePrinter.h"
 #include "PrismExtension.h"
 #include "PropertyGeometryList.h"
 #include "PropertyTopoShapeList.h"
@@ -443,6 +448,8 @@ PyMOD_INIT_FUNC(Part)
     Part::AttachExtensionPython ::init();
     Part::PreviewExtension      ::init();
     Part::PrismExtension        ::init();
+    Part::LinearPatternExtension::init();
+    Part::PolarPatternExtension ::init();
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
@@ -589,6 +596,10 @@ PyMOD_INIT_FUNC(Part)
     Base::registerServiceImplementation<App::CenterOfMassProvider>(new PartCenterOfMass);
     Base::registerServiceImplementation<App::CustomAttributeProvider>(new ShapeAttributeProvider);
     Base::registerServiceImplementation<App::PseudoShapeProvider>(new PartPseudoShapeProvider);
+
+    Handle(OCCTMessagePrinter) printer = new OCCTMessagePrinter();
+    printer->SetTraceLevel(Message_Trace);
+    Message::DefaultMessenger()->AddPrinter(printer);
 
     PyMOD_Return(partModule);
 }

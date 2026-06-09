@@ -148,6 +148,11 @@ public:
      */
     bool containsFile(const std::string& name) const;
     /**
+     * Retrieves the (uncompressed) file size of @a name, or 0 if it does not
+     * exist in the project file.
+     */
+    uint32_t sizeOfFile(const std::string& name) const;
+    /**
      * Retrieves a list of input file names referenced to the given object name.
      * This method does the same as @ref getPropertyFiles() unless that it only
      * returns the file names.
@@ -165,7 +170,7 @@ public:
     /**
      * Directly extracts the content of an input file of @a name.
      */
-    void readInputFileDirect(const std::string& name, std::ostream& str);
+    void readInputFileDirect(const std::string& name, std::ostream& str) const;
     /**
      * Replaces the input file @a name with the content of the given @a stream.
      * The method returns the file name of the newly created project file.

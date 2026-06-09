@@ -647,7 +647,7 @@
 		 <item>
 		  <widget class="QLabel" name="inertiaJxLabel">
 		   <property name="text">
-			<string>Jx</string>
+			<string>J1</string>
 		   </property>
 		  </widget>
 		 </item>
@@ -674,7 +674,7 @@
 		 <item>
 		  <widget class="QLabel" name="inertiaJyLabel">
 		   <property name="text">
-			<string>Jy</string>
+			<string>J2</string>
 		   </property>
 		  </widget>
 		 </item>
@@ -701,7 +701,7 @@
 		 <item>
 		  <widget class="QLabel" name="inertiaJzLabel">
 		   <property name="text">
-			<string>Jz</string>
+			<string>J3</string>
 		   </property>
 		  </widget>
 		 </item>

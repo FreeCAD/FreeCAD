@@ -649,14 +649,16 @@ If unchecked, they will be sorted by their name.</source>
       <translation>ஒரு படத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>படக் கோப்புகள் (*.jpg *.jpeg *.png *.bmp);; அனைத்து கோப்புகளும் (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation type="unfinished">Image files</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>படக் கோப்புகள் (*.svg); அனைத்து கோப்புகளும் (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>அனைத்து கோப்புகள்</translation>
     </message>
   </context>
   <context>
@@ -1193,9 +1195,9 @@ If unchecked, they will be sorted by their name.</source>
       <translation>இல்லையெனில், அனைத்து மாற்றங்களும் இழக்கப்படும்.</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>நீக்குவதை உறுதிப்படுத்தவும்</translation>
     </message>

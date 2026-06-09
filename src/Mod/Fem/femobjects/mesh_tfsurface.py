@@ -25,7 +25,7 @@ __url__ = "https://www.freecad.org"
 
 ## @package mesh_tfsurface
 #  \ingroup FEM
-#  \brief  object defining mesh size and strucutre by transfinite surface
+#  \brief  object defining mesh size and structure by transfinite surface
 
 from . import base_femmeshelement
 from . import base_fempythonobject

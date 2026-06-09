@@ -301,7 +301,7 @@ DlgAddProperty::SupportedTypes DlgAddProperty::getSupportedTypes()
     });
 
     std::ranges::sort(otherTypes, [](Base::Type a, Base::Type b) {
-        return strcmp(a.getName(), b.getName()) < 0;
+        return a.getName() < b.getName();
     });
 
     return {.commonTypes = std::move(commonTypes), .otherTypes = std::move(otherTypes)};
@@ -973,7 +973,7 @@ App::Property* DlgAddProperty::createProperty()
 
     try {
         App::Property* prop
-            = container->addDynamicProperty(type.c_str(), name.c_str(), group.c_str(), doc.c_str());
+            = container->addDynamicProperty(type, name.c_str(), group.c_str(), doc.c_str());
         MacroManager::MacroRedirector redirector(recordAddCommand);
         recordMacroAdd(container, type, name, group, doc);
         return prop;

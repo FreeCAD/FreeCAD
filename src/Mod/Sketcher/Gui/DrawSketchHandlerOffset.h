@@ -43,6 +43,7 @@
 #include <BRepBuilderAPI.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <TopoDS.hxx>
+#include <TopExp_Explorer.hxx>
 #include <gp_Pln.hxx>
 
 #include <Base/Exception.h>

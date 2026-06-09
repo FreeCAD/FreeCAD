@@ -37,8 +37,8 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/ProgressIndicator.h>
 #include <Base/Reader.h>
+#include <Base/Sequencer.h>
 #include <Mod/Part/App/modelRefine.h>
 
 #include "FeatureTransformed.h"
@@ -50,14 +50,12 @@
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
-#include "Mod/Part/App/OCCTProgressIndicator.h"
 
 
 using namespace PartDesign;
 
 namespace PartDesign
 {
-using Part::OCCTProgressIndicator;
 extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
@@ -371,7 +369,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
         auto transformIter = transformations.cbegin();
         transformIter++;
         for (; transformIter != transformations.end(); transformIter++) {
-            if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+            if (Base::Sequencer().wasCanceled()) {
                 return std::vector<TopoShape>();
             }
             auto opName = Data::indexSuffix(idx++);
@@ -416,14 +414,14 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 }
                 if (!fuseShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, fuseShape);
-                    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+                    if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementFuse(shapes);
                 }
                 if (!cutShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, cutShape);
-                    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+                    if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementCut(shapes);
@@ -432,7 +430,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
             break;
         case Mode::WholeShape: {
             auto shapes = getTransformedCompShape(supportShape, supportShape);
-            if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+            if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
             supportShape.makeElementFuse(shapes);
@@ -442,8 +440,13 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     supportShape = refineShapeIfActive((supportShape));
 
-    this->Shape.setValue(getSolid(supportShape));  // picking the first solid
-    rejected = getRemainingSolids(supportShape.getShape());
+    this->Shape.setValue(getSolid(supportShape));
+    if (singleSolidRuleMode() == SingleSolidRuleMode::Enforced) {
+        rejected = getRemainingSolids(supportShape.getShape());
+    }
+    else {
+        rejected.Nullify();
+    }
 
     return App::DocumentObject::StdReturn;
 }
@@ -455,7 +458,7 @@ TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
     builder.MakeCompound(compShape);
 
     if (shape.IsNull()) {
-        Standard_Failure::Raise("Shape is null");
+        throw Standard_Failure("Shape is null");
     }
     TopExp_Explorer xp;
     xp.Init(shape, TopAbs_SOLID);

@@ -74,6 +74,7 @@ ConstraintForce::ConstraintForce()
 
 App::DocumentObjectExecReturn* ConstraintForce::execute()
 {
+    Direction.touch();
     return Constraint::execute();
 }
 
@@ -102,7 +103,6 @@ void ConstraintForce::onChanged(const App::Property* prop)
     // Note: If we call this at the end, then the arrows are not oriented correctly initially
     // because the NormalDirection has not been calculated yet
     Constraint::onChanged(prop);
-
     if (prop == &Direction) {
         Base::Vector3d direction = getDirection(Direction);
         if (direction.Length() < Precision::Confusion()) {
@@ -139,4 +139,20 @@ void ConstraintForce::onChanged(const App::Property* prop)
             naturalDirectionVector = direction;
         }
     }
+}
+
+void ConstraintForce::slotChangedObject(const App::DocumentObject& obj, const App::Property& prop)
+{
+    if (obj.isDerivedFrom<App::GeoFeature>()
+        && (prop.isDerivedFrom<App::PropertyPlacement>() || obj.isRemoving())) {
+        const auto ref = Direction.getValue();
+        if (ref) {
+            auto v = ref->getInListEx(true);
+            if ((&obj == ref) || (std::ranges::find(v, &obj) != v.end())) {
+                Direction.touch();
+            }
+        }
+    }
+
+    Constraint::slotChangedObject(obj, prop);
 }

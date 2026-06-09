@@ -338,8 +338,8 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
-      <source>Input error</source>
-      <translation>Girdi hatası</translation>
+      <source>Input Error</source>
+      <translation>Giriş hatası</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="215"/>
@@ -381,8 +381,8 @@
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
-      <source>Input error</source>
-      <translation>Girdi hatası</translation>
+      <source>Input Error</source>
+      <translation>Giriş hatası</translation>
     </message>
   </context>
   <context>
@@ -721,8 +721,8 @@
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
       <location filename="../../FitBSplineCurve.cpp" line="89"/>
-      <source>Input error</source>
-      <translation>Girdi hatası</translation>
+      <source>Input Error</source>
+      <translation>Giriş hatası</translation>
     </message>
   </context>
 </TS>

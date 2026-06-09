@@ -47,8 +47,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     """Page controller class for Helix operations."""
 
     def initPage(self, obj):
-        self.helixPitchSpinBox = PathGuiUtil.QuantitySpinBox(
-            self.form.helixPitch, obj, "HelixPitch"
+        self.helixMaxPitchSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.helixMaxPitch, obj, "HelixMaxPitch"
+        )
+        self.helixMaxRampAngleSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.helixMaxRampAngle, obj, "HelixMaxRampAngle"
         )
         self.radialStockToLeaveOuterSpinBox = PathGuiUtil.QuantitySpinBox(
             self.form.radialStockToLeaveOuter, obj, "RadialStockToLeaveOuter"
@@ -65,13 +68,15 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         return form
 
     def updateQuantitySpinBoxes(self, index=None):
-        self.helixPitchSpinBox.updateWidget()
+        self.helixMaxPitchSpinBox.updateWidget()
+        self.helixMaxRampAngleSpinBox.updateWidget()
         self.radialStockToLeaveOuterSpinBox.updateWidget()
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         Path.Log.track()
-        self.helixPitchSpinBox.updateProperty()
+        self.helixMaxPitchSpinBox.updateProperty()
+        self.helixMaxRampAngleSpinBox.updateProperty()
         self.radialStockToLeaveOuterSpinBox.updateProperty()
 
         if obj.CutMode != str(self.form.cutMode.currentData()):
@@ -79,8 +84,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         if obj.StartAt != str(self.form.startAt.currentData()):
             obj.StartAt = str(self.form.startAt.currentData())
 
-        if obj.StepOver != self.form.stepOverPercent.value():
-            obj.StepOver = self.form.stepOverPercent.value()
+        if obj.StepOver != self.form.stepOver.value():
+            obj.StepOver = self.form.stepOver.value()
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -90,7 +95,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         Path.Log.track()
         self.updateQuantitySpinBoxes()
 
-        self.form.stepOverPercent.setValue(obj.StepOver)
+        self.form.stepOver.setValue(obj.StepOver)
 
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.StartAt, self.form.startAt)
@@ -102,9 +107,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
 
-        signals.append(self.form.helixPitch.editingFinished)
+        signals.append(self.form.helixMaxPitch.editingFinished)
+        signals.append(self.form.helixMaxRampAngle.editingFinished)
         signals.append(self.form.radialStockToLeaveOuter.editingFinished)
-        signals.append(self.form.stepOverPercent.editingFinished)
+        signals.append(self.form.stepOver.editingFinished)
 
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startAt.currentIndexChanged)

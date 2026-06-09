@@ -53,10 +53,7 @@ class ElmerTools(ObjectTools):
         w = writer.Writer(self.obj, self.obj.WorkingDirectory)
         w.write_solver_input()
 
-        mesh = w.getSingleMember("Fem::FemMeshObject")
-        if not mesh.FemMesh.Groups:
-            raise ValueError(f"Mesh object '{mesh.Label}' has no groups, please remesh\n")
-
+        mesh = w.getMesh()
         mesh_file = os.path.join(self.obj.WorkingDirectory, "mesh.unv")
         mesh.FemMesh.write(mesh_file)
 

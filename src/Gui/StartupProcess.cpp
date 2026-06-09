@@ -35,8 +35,6 @@
 #include <QOpenGLFunctions>
 #include <QProcess>
 #include <QStatusBar>
-#include <QThread>
-#include <QTimer>
 #include <QWindow>
 
 #include <Inventor/SoDB.h>

@@ -56,6 +56,7 @@ void MainWindowPy::init_type()
     add_varargs_method("removeWindow", &MainWindowPy::removeWindow, "removeWindow(MDIView)");
     add_varargs_method("showHint", &MainWindowPy::showHint, "showHint(hint)");
     add_varargs_method("hideHint", &MainWindowPy::hideHint, "hideHint()");
+    behaviors().readyType();
 }
 
 PyObject* MainWindowPy::extension_object_new(struct _typeobject* /*type*/, PyObject* /*args*/, PyObject* /*kwds*/)

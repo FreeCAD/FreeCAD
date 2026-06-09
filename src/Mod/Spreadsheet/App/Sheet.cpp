@@ -1513,6 +1513,16 @@ void Sheet::setForeground(CellAddress address, const Color& color)
 }
 
 /**
+ * @brief Clears foreground (text color) of cell at address \a address.
+ * @param address Address of cell
+ */
+
+void Sheet::clearForeground(CellAddress address)
+{
+    cells.clearForeground(address);
+}
+
+/**
  * @brief Set background color of cell at address \a address to \a color.
  * @param address Address of cell
  * @param color New color
@@ -1521,6 +1531,16 @@ void Sheet::setForeground(CellAddress address, const Color& color)
 void Sheet::setBackground(CellAddress address, const Color& color)
 {
     cells.setBackground(address, color);
+}
+
+/**
+ * @brief Clears background color of cell at address \a address.
+ * @param address Address of cell
+ */
+
+void Sheet::clearBackground(CellAddress address)
+{
+    cells.clearBackground(address);
 }
 
 /**

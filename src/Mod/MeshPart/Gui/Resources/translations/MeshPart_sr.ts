@@ -254,7 +254,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="122"/>
       <source>Continuity</source>
-      <translation>Континуалност</translation>
+      <translation>Континуитет</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="136"/>
@@ -383,11 +383,6 @@ The smallest value is 0.</source>
       <translation>Користи Netgen генератор мреже</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Финоћа:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Веома грубо</translation>
@@ -440,6 +435,11 @@ A value in the range of 0.1-1.</source>
 Вредност у опсегу од 0,1-1.</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation type="unfinished">Fineness</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -490,7 +490,7 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Нема активног документа</translation>
     </message>
     <message>

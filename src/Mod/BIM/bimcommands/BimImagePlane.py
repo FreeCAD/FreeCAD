@@ -45,12 +45,10 @@ class BIM_ImagePlane:
 
     def Activated(self):
         from PySide import QtGui
+        import WorkingPlane
         import draftguitools.gui_trackers as DraftTrackers
 
         self.doc = FreeCAD.ActiveDocument
-        self.tracker = DraftTrackers.rectangleTracker()
-        self.basepoint = None
-        self.opposite = None
         filename, _filter = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             translate("BIM", "Select Image"),
@@ -58,14 +56,17 @@ class BIM_ImagePlane:
             translate("BIM", "Image file (*.png *.jpg *.bmp)"),
         )
         if filename:
-            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
             self.filename = filename
             im = QtGui.QImage(self.filename)
             self.proportion = float(im.height()) / float(im.width())
-            if hasattr(FreeCADGui, "Snapper"):
-                FreeCADGui.Snapper.getPoint(
-                    callback=self.PointCallback, movecallback=self.MoveCallback
-                )
+
+            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+            self.wp = WorkingPlane.get_working_plane()
+            self.wp._save()
+            self.basepoint = None
+            self.opposite = None
+            self.tracker = DraftTrackers.rectangleTracker()
+            FreeCADGui.Snapper.getPoint(callback=self.PointCallback, movecallback=self.MoveCallback)
 
     def MoveCallback(self, point, snapinfo):
         import DraftVecUtils
@@ -85,7 +86,6 @@ class BIM_ImagePlane:
     def PointCallback(self, point, snapinfo):
         import os
         import DraftVecUtils
-        import WorkingPlane
 
         if not point:
             # cancelled
@@ -103,15 +103,15 @@ class BIM_ImagePlane:
             )
         else:
             # this is our second point
+            self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             self.tracker.off()
             midpoint = self.basepoint.add(self.opposite.sub(self.basepoint).multiply(0.5))
-            wp = WorkingPlane.get_working_plane()
-            rotation = wp.get_placement().Rotation
+            rotation = self.wp.get_placement().Rotation
             diagonal = self.opposite.sub(self.basepoint)
-            length = DraftVecUtils.project(diagonal, wp.u).Length
-            height = DraftVecUtils.project(diagonal, wp.v).Length
+            length = DraftVecUtils.project(diagonal, self.wp.u).Length
+            height = DraftVecUtils.project(diagonal, self.wp.v).Length
             self.doc.openTransaction("Create image plane")
             image = self.doc.addObject("Image::ImagePlane", "ImagePlane")
             image.Label = os.path.splitext(os.path.basename(self.filename))[0]
