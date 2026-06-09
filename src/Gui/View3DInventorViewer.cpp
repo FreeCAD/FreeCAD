@@ -4909,18 +4909,9 @@ void View3DInventorViewer::drawAxisCross()
     }
     overlay.axisTransform->rotation.setValue(inv);
     overlay.axisTransform->translation.setValue(0.0f, 0.0f, -3.5f);
-
-    const bool stereo = stereoMode() != Quarter::SoQTQuarterAdaptor::MONO;
-    if (stereo) {
-        overlay.xMaterial->diffuseColor.setValue(0.5f, 0.5f, 0.5f);
-        overlay.yMaterial->diffuseColor.setValue(0.4f, 0.4f, 0.4f);
-        overlay.zMaterial->diffuseColor.setValue(0.3f, 0.3f, 0.3f);
-    }
-    else {
-        overlay.xMaterial->diffuseColor.setValue(m_xColor.r, m_xColor.g, m_xColor.b);
-        overlay.yMaterial->diffuseColor.setValue(m_yColor.r, m_yColor.g, m_yColor.b);
-        overlay.zMaterial->diffuseColor.setValue(m_zColor.r, m_zColor.g, m_zColor.b);
-    }
+    overlay.xMaterial->diffuseColor.setValue(m_xColor.r, m_xColor.g, m_xColor.b);
+    overlay.yMaterial->diffuseColor.setValue(m_yColor.r, m_yColor.g, m_yColor.b);
+    overlay.zMaterial->diffuseColor.setValue(m_zColor.r, m_zColor.g, m_zColor.b);
 
     std::array<std::pair<float, SoNode*>, 3> axes = {
         std::pair<float, SoNode*> {xpos[2], overlay.xAxis},

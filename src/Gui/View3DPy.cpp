@@ -128,9 +128,6 @@ void View3DInventorPy::init_type()
     add_noargs_method("isPopupMenuEnabled", &View3DInventorPy::isPopupMenuEnabled, "isPopupMenuEnabled()");
     add_varargs_method("dump", &View3DInventorPy::dump, "dump(filename, [onlyVisible=False])");
     add_varargs_method("dumpNode", &View3DInventorPy::dumpNode, "dumpNode(node)");
-    add_varargs_method("setStereoType", &View3DInventorPy::setStereoType, "setStereoType()");
-    add_noargs_method("getStereoType", &View3DInventorPy::getStereoType, "getStereoType()");
-    add_noargs_method("listStereoTypes", &View3DInventorPy::listStereoTypes, "listStereoTypes()");
     add_varargs_method("saveImage", &View3DInventorPy::saveImage, "saveImage()");
     add_varargs_method("saveVectorGraphic", &View3DInventorPy::saveVectorGraphic, "saveVectorGraphic()");
     add_noargs_method("getCamera", &View3DInventorPy::getCamera, "getCamera()");
@@ -1400,96 +1397,6 @@ Py::Object View3DInventorPy::dumpNode(const Py::Tuple& args)
     }
     auto node = static_cast<SoNode*>(ptr);
     return Py::String(SoFCDB::writeNodesToString(node));
-}
-
-// FIXME: Once View3DInventor inherits from PropertyContainer we can use PropertyEnumeration.
-const char* StereoTypeEnums[]
-    = {"Mono", "Anaglyph", "QuadBuffer", "InterleavedRows", "InterleavedColumns", nullptr};
-
-Py::Object View3DInventorPy::setStereoType(const Py::Tuple& args)
-{
-    int stereomode = -1;
-    if (!PyArg_ParseTuple(args.ptr(), "i", &stereomode)) {
-        char* modename;
-        PyErr_Clear();
-        if (!PyArg_ParseTuple(args.ptr(), "s", &modename)) {
-            throw Py::Exception();
-        }
-        for (int i = 0; i < 5; i++) {
-            if (strncmp(StereoTypeEnums[i], modename, 20) == 0) {
-                stereomode = i;
-                break;
-            }
-        }
-
-        if (stereomode < 0) {
-            std::string s;
-            std::ostringstream s_out;
-            s_out << "Unknown stereo type '" << modename << "'";
-            throw Py::NameError(s_out.str());
-        }
-    }
-
-    try {
-        if (stereomode < 0 || stereomode > 4) {
-            throw Py::IndexError("Out of range");
-        }
-        Quarter::SoQTQuarterAdaptor::StereoMode mode = Quarter::SoQTQuarterAdaptor::StereoMode(
-            stereomode
-        );
-        getView3DInventorPtr()->getViewer()->setStereoMode(mode);
-        return Py::None();
-    }
-    catch (const Base::Exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch (const std::exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch (...) {
-        throw Py::RuntimeError("Unknown C++ exception");
-    }
-}
-
-Py::Object View3DInventorPy::getStereoType()
-{
-    try {
-        int mode = int(getView3DInventorPtr()->getViewer()->stereoMode());
-        if (mode < 0 || mode > 4) {
-            throw Py::ValueError("Invalid stereo mode");
-        }
-        return Py::String(StereoTypeEnums[mode]);
-    }
-    catch (const Base::Exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch (const std::exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch (...) {
-        throw Py::RuntimeError("Unknown C++ exception");
-    }
-}
-
-Py::Object View3DInventorPy::listStereoTypes()
-{
-    try {
-        Py::List list(5);
-        for (int i = 0; i < 5; i++) {
-            list[i] = Py::String(StereoTypeEnums[i]);
-        }
-
-        return list;
-    }
-    catch (const Base::Exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch (const std::exception& e) {
-        throw Py::RuntimeError(e.what());
-    }
-    catch (...) {
-        throw Py::RuntimeError("Unknown C++ exception");
-    }
 }
 
 Py::Object View3DInventorPy::getCursorPos()
