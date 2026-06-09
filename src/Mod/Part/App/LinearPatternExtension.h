@@ -51,7 +51,7 @@ enum class LinearPatternDirection : std::uint8_t
 
 class PartExport LinearPatternExtension: public App::DocumentObjectExtension
 {
-    EXTENSION_PROPERTY_HEADER(Part::LinearPatternExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::LinearPatternExtension);
 
 public:
     LinearPatternExtension();
