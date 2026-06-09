@@ -662,7 +662,12 @@ void DlgExpressionInput::acceptWithVarSet()
     if (const NumberExpression* ne = toNumberExpr(expr)) {
         // the value is a number: directly assign it to the property instead of
         // making it an expression in the variable set
-        Gui::cmdAppObjectArgs(obj, "%s = %f", prop->getName(), ne->getValue());
+        if (prop->isDerivedFrom<App::PropertyInteger>()) {
+            Gui::cmdAppObjectArgs(obj, "%s = %d", prop->getName(), std::lround(ne->getValue()));
+        }
+        else {
+            Gui::cmdAppObjectArgs(obj, "%s = %f", prop->getName(), ne->getValue());
+        }
     }
     else if (const StringExpression* se = toStringExpr(expr)) {
         // the value is a string: directly assign it to the property.
