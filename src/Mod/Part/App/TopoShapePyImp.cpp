@@ -73,7 +73,6 @@
 #include <Base/FileInfo.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
-#include <Base/OCCTTools.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Rotation.h>
 #include <Base/Stream.h>
@@ -502,11 +501,6 @@ PyObject* TopoShapePy::dumpToString(PyObject* args) const
         PyErr_SetString(PartExceptionOCCError, e.what());
         return nullptr;
     }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
 }
 
 PyObject* TopoShapePy::exportBrepToString(PyObject* args) const
@@ -527,10 +521,6 @@ PyObject* TopoShapePy::exportBrepToString(PyObject* args) const
     }
     catch (const std::exception& e) {
         PyErr_SetString(PartExceptionOCCError, e.what());
-        return nullptr;
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
 }
@@ -619,11 +609,6 @@ PyObject* TopoShapePy::importBrepFromString(PyObject* args)
         PyErr_SetString(PartExceptionOCCError, e.what());
         return nullptr;
     }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
-
     Py_Return;
 }
 
@@ -980,10 +965,10 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
     }
 
     try {
-        const TopoDS_Shape& containingShape = getTopoShapePtr()->getShape();
+        const TopoShape& containingShape = *getTopoShapePtr();
         const TopoDS_Shape& descendentShape
             = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
-        if (containingShape.IsNull() || descendentShape.IsNull()) {
+        if (containingShape.isNull() || descendentShape.IsNull()) {
             PyErr_SetString(PyExc_ValueError, "Shape is null");
             return nullptr;
         }
@@ -994,37 +979,20 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
             PyErr_SetString(PyExc_TypeError, "type must be a Shape subtype");
             return nullptr;
         }
-
-#if XYZZY
-        Py::List result;
         auto descendentType = descendentShape.ShapeType();
-        // Explore all the possible ancestors (having the desired type)
-        for (TopExp_Explorer exp(containingShape, desiredAncestorType); exp.More(); exp.Next()) {
-            // Explore the contents of each possible ancestor.
-            for (TopExp_Explorer exp2(exp.Current(), descendentType); exp2.More(); exp2.Next()) {
-                if (exp2.Current().IsSame(descendentShape)) {
-                    // ancestor is an ancestor of descendentShape; record it in the result.
-                    result.append(shape2pyshape(exp.Current()));
-                    // This quick exit eliminates duplicate ancestors like you would find looking
-                    // for the ancestor face of the longitudinal seam edge of a cylinder or the
-                    // ancestor vertex of a full-circle wire.
-                    break;
-                }
-            }
-        }
-        return Py::new_reference_to(result);
-#endif
-        std::vector<int> foundIndices = model.findAncestors(shape, shapetype);
-        std::unordered_set<int> appendedIndices = {};
 
-        Py::List list;
-        for (int idx : foundIndices) {
-            if (appendedIndices.count(idx)) {
-                continue;
-            }
+        std::vector<int> foundIndices
+            = containingShape.findAncestors(descendentShape, desiredAncestorType);
+        // findAncestors can return duplicates, for instance the single vertex on a closed sircle
+        // will return the circle twice as an ancestor; same for the longitudinal "seam" edge of a
+        // cylinder which will return the cylindrical face twice. Perhaps there should be a
+        // findUniqueAncestors method that already returns the set though most other callers to
+        // findAncestors seem to want the duplicates.
+        std::unordered_set<int> uniqueIndices(foundIndices.begin(), foundIndices.end());
 
-            list.append(shape2pyshape(model.getSubTopoShape(shapetype, idx)));
-            appendedIndices.emplace(idx);
+        Py::List list(uniqueIndices.size());
+        for (int idx : uniqueIndices) {
+            list.append(shape2pyshape(containingShape.getSubTopoShape(desiredAncestorType, idx)));
         }
         return Py::new_reference_to(list);
     }

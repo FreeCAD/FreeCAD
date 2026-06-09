@@ -50,7 +50,6 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/OCCTTools.h>
 #include <Mod/Part/App/FeatureCompound.h>
 
 #include "ImportOCAF.h"
