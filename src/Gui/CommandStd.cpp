@@ -214,7 +214,7 @@ void StdCmdPreviousWorkbench::activated(int iMsg)
 
 bool StdCmdPreviousWorkbench::isActive()
 {
-    return true;
+    return (WorkbenchManager::instance()->getPreviousWorkbenchList().size() != 0);
 }
 
 Action* StdCmdPreviousWorkbench::createAction()
@@ -306,7 +306,7 @@ void StdCmdNextWorkbench::activated(int iMsg)
 
 bool StdCmdNextWorkbench::isActive()
 {
-    return true;
+    return (WorkbenchManager::instance()->getNextWorkbenchList().size() != 0);
 }
 
 Action* StdCmdNextWorkbench::createAction()
