@@ -58,9 +58,18 @@ public:
     DrawComplexSection();
     ~DrawComplexSection() override = default;
 
+    enum ProjectionStrategyType : long
+    {
+        StrategyOffset = 0,
+        StrategyAligned = 1,
+        StrategyNoParallel = 2,
+        StrategyRemoved = 3,
+        StrategyRotated = 4,
+    };
+
 //NOLINTBEGIN
     App::PropertyLink CuttingToolWireObject;
-    App::PropertyEnumeration ProjectionStrategy;//Offset or Aligned
+    App::PropertyEnumeration ProjectionStrategy;
 //NOLINTEND
 
     TopoDS_Shape makeCuttingTool(double dMax) override;
@@ -106,6 +115,7 @@ public:
     ChangePointVector getChangePointsFromSectionLine() override;
 
     bool isBaseValid() const override;
+    short mustExecute() const override;
     bool validateProfilePosition(const TopoDS_Wire& profileWire, const gp_Ax2& sectionCS) const;
     bool validateSketchNormal(App::DocumentObject* sketchObject) const;
     bool validateProfileAlignment(const TopoDS_Wire& profileWire) const;
@@ -137,6 +147,10 @@ public Q_SLOTS:
     void onSectionCutFinished() override;
 
 private:
+    bool isOffsetStrategy() const;
+    bool isNoParallelStrategy() const;
+    bool isFaceOnlyStrategy() const;
+
     bool validateOffsetProfile(const TopoDS_Wire& profile,
                                Base::Vector3d direction,
                                double angleThresholdDeg) const;
@@ -167,6 +181,7 @@ private:
     std::vector<std::pair<int, Base::Vector3d> >
                     getSegmentViewDirections(const TopoDS_Wire& profileWire,
                                            Base::Vector3d sectionNormal) const;
+    TopoDS_Compound toolFaceIntersections(const TopoDS_Shape& shapeToIntersect);
     static gp_Dir getFaceNormal(TopoDS_Face& face);
     static bool faceContainsEndpoints(const TopoDS_Edge& edgeToMatch,
                                       const TopoDS_Face& faceToSearch);

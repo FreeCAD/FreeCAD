@@ -102,6 +102,7 @@
 #include <GeomLib_IsPlanarSurface.hxx>
 
 #include <cmath>
+#include <memory>
 
 #include <sstream>
 
@@ -135,8 +136,14 @@ using DU = DrawUtil;
 //NOLINTBEGIN
 PROPERTY_SOURCE(TechDraw::DrawComplexSection, TechDraw::DrawViewSection)
 
-const char* DrawComplexSection::ProjectionStrategyEnums[] = {"Offset", "Aligned", "NoParallel",
-                                                             nullptr};
+const char* DrawComplexSection::ProjectionStrategyEnums[] = {
+    "Offset",
+    "Aligned",
+    "NoParallel",
+    "Removed",
+    "Rotated",
+    nullptr
+};
 //NOLINTEND
 
 DrawComplexSection::DrawComplexSection() :
@@ -150,12 +157,43 @@ DrawComplexSection::DrawComplexSection() :
     CuttingToolWireObject.setScope(App::LinkScope::Global);
     ProjectionStrategy.setEnums(ProjectionStrategyEnums);
     ADD_PROPERTY_TYPE(ProjectionStrategy, ((long)0), fgroup, App::Prop_None,
-                      "Make a single cut, or use the profile in pieces");
+                      "Make a single cut, use the profile in pieces, or show only the cut face");
 //NOLINTEND
+}
+
+short DrawComplexSection::mustExecute() const
+{
+    if (isRestoring()) {
+        return DrawViewSection::mustExecute();
+    }
+
+    if (ProjectionStrategy.isTouched() || CuttingToolWireObject.isTouched()) {
+        return 1;
+    }
+
+    return DrawViewSection::mustExecute();
+}
+
+bool DrawComplexSection::isOffsetStrategy() const
+{
+    return ProjectionStrategy.getValue() == StrategyOffset;
+}
+
+bool DrawComplexSection::isNoParallelStrategy() const
+{
+    return ProjectionStrategy.getValue() == StrategyNoParallel;
+}
+
+bool DrawComplexSection::isFaceOnlyStrategy() const
+{
+    return ProjectionStrategy.getValue() == StrategyRemoved
+        || ProjectionStrategy.getValue() == StrategyRotated;
 }
 
 TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
 {
+    m_toolFaceShape.Nullify();
+
     TopoDS_Wire profileWire = makeProfileWire();
     if (profileWire.IsNull()) {
         throw Base::RuntimeError("Can not make wire from cutting tool (1)");
@@ -166,9 +204,9 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     }
 
     // use "canBuild(profile, sectionnormal)" or validateProfileDirection?
-    if (ProjectionStrategy.getValue() == 0) {
-        // Offset. Warn if profile is not quite aligned with section normal. if
-        // the profile and normal are misaligned, the check below for empty "solids"
+    if (isOffsetStrategy() || isFaceOnlyStrategy()) {
+        // These strategies use the complete profile as a single cutting tool.
+        // If the profile and normal are misaligned, the empty-solid checks below
         // will not be correct.
         constexpr double AngleThresholdDeg{5.0};
         // bool isOK =
@@ -214,7 +252,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
 
 TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 {
-    if (ProjectionStrategy.getValue() == 0) {
+    if (isOffsetStrategy() || isFaceOnlyStrategy()) {
         //Offset. Use regular section behaviour
         return DrawViewSection::getShapeToPrepare();
     }
@@ -225,9 +263,55 @@ TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 //get the shape ready for projection and cut surface finding
 TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, double shapeSize)
 {
-    if (ProjectionStrategy.getValue() == 0) {
+    if (isOffsetStrategy()) {
         //Offset. Use regular section behaviour
         return DrawViewSection::prepareShape(cutShape, shapeSize);
+    }
+
+    if (isFaceOnlyStrategy()) {
+        TopoDS_Shape preparedShape;
+        try {
+            TopoDS_Compound faceIntersections = toolFaceIntersections(m_saveShape);
+            if (isTrulyEmpty(faceIntersections)) {
+                m_cutShape.Nullify();
+                m_cutShapeRaw.Nullify();
+                m_preparedShape.Nullify();
+                return {};
+            }
+
+            Base::Vector3d origin(0.0, 0.0, 0.0);
+            m_projectionCS = getProjectionCS(origin);
+            gp_Pnt inputCenter = ShapeUtils::findCentroid(faceIntersections, m_projectionCS);
+            Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
+
+            m_cutShapeRaw = faceIntersections;
+            preparedShape = ShapeUtils::moveShape(faceIntersections, centroid * -1.0);
+            m_cutShape = preparedShape;
+            m_saveCentroid = centroid;
+
+            preparedShape = ShapeUtils::scaleShape(preparedShape, getScale());
+
+            if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
+                preparedShape =
+                    ShapeUtils::rotateShape(preparedShape, m_projectionCS, Rotation.getValue());
+            }
+        }
+        catch (Standard_Failure& e1) {
+            Base::Console().warning("DCS::prepareShape - failed to build face-only shape %s - %s **\n",
+                                    getNameInDocument(),
+                                    e1.GetMessageString());
+        }
+        catch (Base::Exception& e1) {
+            Base::Console().warning("DCS::prepareShape - failed to build face-only shape %s - %s **\n",
+                                    getNameInDocument(),
+                                    e1.what());
+        }
+
+        m_preparedShape = preparedShape;
+        if (debugSection()) {
+            BRepTools::Write(m_preparedShape, "DCSprepareShape_faceOnlyPreparedShape.brep");
+        }
+        return m_preparedShape;
     }
 
     //"Aligned" projection (Aligned Section)
@@ -253,9 +337,18 @@ TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, doub
 
 void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
-    if (ProjectionStrategy.getValue() == 0) {
-        //Offset. Use regular section behaviour
+    if (isOffsetStrategy()) {
+        // Offset uses regular section behaviour.
         return DrawViewSection::makeSectionCut(baseShape);
+    }
+
+    if (isFaceOnlyStrategy()) {
+        showProgressMessage(getNameInDocument(), "is preparing face-only section");
+        BRepBuilderAPI_Copy BuilderCopy(baseShape);
+        m_saveShape = BuilderCopy.Shape();
+        m_cutPieces = m_saveShape;
+        waitingForCut(false);
+        return;
     }
 
     try {
@@ -282,6 +375,43 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
 
 void DrawComplexSection::onSectionCutFinished()
 {
+    if (isFaceOnlyStrategy()) {
+        if (DU::isGuiUp()) {
+            QObject::disconnect(connectCutWatcher);
+            showProgressMessage(getNameInDocument(), "has finished preparing face-only section");
+        }
+        waitingForCut(false);
+
+        m_preparedShape = prepareShape(getShapeToPrepare(), m_shapeSize);
+        if (debugSection()) {
+            BRepTools::Write(m_preparedShape, "DCSPreparedFaceOnlyShape.brep");
+        }
+
+        if (m_preparedShape.IsNull()) {
+            geometryObject = std::make_shared<TechDraw::GeometryObject>(getNameInDocument(), this);
+            m_tempGeometryObject = nullptr;
+            m_sectionTopoDSFaces.Nullify();
+            m_tdSectionFaces.clear();
+            postSectionCutTasks();
+            bbox = geometryObject->calcBoundingBox();
+            waitingForHlr(false);
+            DrawViewPart::postHlrTasks();
+            if (auto* dvp = getBaseDVP()) {
+                dvp->requestPaint();
+            }
+            requestPaint();
+            return;
+        }
+
+        postSectionCutTasks();
+
+        m_tempGeometryObject = buildGeometryObject(m_preparedShape, getProjectionCS());
+        if (!DU::isGuiUp()) {
+            onHlrFinished();
+        }
+        return;
+    }
+
     if (m_cutFuture.isRunning() ||  //waitingForCut()
         m_alignFuture.isRunning()) {//waitingForAlign()
         //can not continue yet.  return until the other thread ends
@@ -465,11 +595,61 @@ DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape& shapeToInt
                                 getNameInDocument());
         return {};
     }
-    if (ProjectionStrategy.getValue() == 0) {//Offset
+    if (isOffsetStrategy()) {
         return singleToolIntersections(shapeToIntersect);
+    }
+    if (isFaceOnlyStrategy()) {
+        return toolFaceIntersections(m_saveShape);
     }
 
     return alignedToolIntersections(shapeToIntersect);
+}
+
+//Intersect the cutting tool face with the uncut source shape to produce the face-only view.
+TopoDS_Compound DrawComplexSection::toolFaceIntersections(const TopoDS_Shape& shapeToIntersect)
+{
+    TopoDS_Compound result;
+
+    if (m_toolFaceShape.IsNull() || shapeToIntersect.IsNull()) {
+        return result;
+    }
+
+    TopoDS_Shape intersect = shapeShapeIntersect(m_toolFaceShape, shapeToIntersect);
+    if (intersect.IsNull()) {
+        return result;
+    }
+
+    BRep_Builder builder;
+    builder.MakeCompound(result);
+    TopTools_IndexedMapOfShape faceEdges;
+    bool hasFaces = false;
+    TopExp_Explorer expFaces(intersect, TopAbs_FACE);
+    for (; expFaces.More(); expFaces.Next()) {
+        TopoDS_Face face = TopoDS::Face(expFaces.Current());
+        TopExp::MapShapes(face, TopAbs_EDGE, faceEdges);
+        builder.Add(result, face);
+        hasFaces = true;
+    }
+
+    TopExp_Explorer expEdges(intersect, TopAbs_EDGE);
+    for (; expEdges.More(); expEdges.Next()) {
+        TopoDS_Edge edge = TopoDS::Edge(expEdges.Current());
+        bool edgeBelongsToFace = false;
+        for (int iEdge = 1; iEdge <= faceEdges.Extent(); ++iEdge) {
+            if (edge.IsSame(faceEdges.FindKey(iEdge))) {
+                edgeBelongsToFace = true;
+                break;
+            }
+        }
+        if (edgeBelongsToFace) {
+            continue;
+        }
+        builder.Add(result, edge);
+    }
+    // Edge-only commons are tangent contacts, not actual section faces.  Keep
+    // loose edges only as supplements to real cut faces, for cases such as
+    // cylindrical holes whose axes lie in the section plane.
+    return hasFaces ? result : TopoDS_Compound();
 }
 
 //Intersect cutShape with each segment of the cutting tool
@@ -542,8 +722,8 @@ TopoDS_Compound DrawComplexSection::alignedToolIntersections(const TopoDS_Shape&
 
 TopoDS_Compound DrawComplexSection::alignSectionFaces(const TopoDS_Shape& faceIntersections)
 {
-    if (ProjectionStrategy.getValue() == 0) {
-        //Offset. Use regular section behaviour
+    if (isOffsetStrategy() || isFaceOnlyStrategy()) {
+        // Offset, Removed and Rotated use regular section-face placement.
         return DrawViewSection::alignSectionFaces(faceIntersections);
     }
 
@@ -552,7 +732,7 @@ TopoDS_Compound DrawComplexSection::alignSectionFaces(const TopoDS_Shape& faceIn
 
 TopoDS_Shape DrawComplexSection::getShapeToIntersect()
 {
-    if (ProjectionStrategy.getValue() == 0) {//Offset
+    if (isOffsetStrategy() || isFaceOnlyStrategy()) {
         return DrawViewSection::getShapeToIntersect();
     }
     //Aligned
@@ -561,10 +741,9 @@ TopoDS_Shape DrawComplexSection::getShapeToIntersect()
 
 TopoDS_Shape DrawComplexSection::getShapeForDetail() const
 {
-    if (ProjectionStrategy.getValue() == 0) {//Offset
+    if (isOffsetStrategy()) {
         return DrawViewSection::getShapeForDetail();
     }
-    //Aligned
     return m_preparedShape;
 }
 
@@ -858,7 +1037,7 @@ std::pair<Base::Vector3d, Base::Vector3d>
 //the regular sectionPlane for Offset.
 gp_Pln DrawComplexSection::getSectionPlane() const
 {
-    if (ProjectionStrategy.getValue() == 0) {
+    if (isOffsetStrategy() || isFaceOnlyStrategy()) {
         //Offset. Use regular section behaviour
         return DrawViewSection::getSectionPlane();
     }
@@ -935,8 +1114,7 @@ bool DrawComplexSection::validateProfilePosition(const TopoDS_Wire& profileWire,
 
 bool DrawComplexSection::showSegment(gp_Dir segmentNormal) const
 {
-    if (ProjectionStrategy.getValue() < 2) {
-        //Offset or Aligned are always true
+    if (!isNoParallelStrategy()) {
         return true;
     }
 
@@ -1008,20 +1186,32 @@ bool DrawComplexSection::boxesIntersect(TopoDS_Face& face, TopoDS_Shape& shape)
 TopoDS_Shape DrawComplexSection::shapeShapeIntersect(const TopoDS_Shape& shape0,
                                                      const TopoDS_Shape& shape1)
 {
-    FCBRepAlgoAPI_Common anOp;
-    anOp.SetFuzzyValue(EWTOLERANCE);
-    TopTools_ListOfShape anArg1;
-    TopTools_ListOfShape anArg2;
-    anArg1.Append(shape0);
-    anArg2.Append(shape1);
-    anOp.SetArguments(anArg1);
-    anOp.SetTools(anArg2);
-    anOp.Build();
-    TopoDS_Shape result = anOp.Shape();//always a compound
-    if (isTrulyEmpty(result)) {
-        return {};
+    try {
+        FCBRepAlgoAPI_Common anOp;
+        anOp.SetFuzzyValue(EWTOLERANCE);
+        TopTools_ListOfShape anArg1;
+        TopTools_ListOfShape anArg2;
+        anArg1.Append(shape0);
+        anArg2.Append(shape1);
+        anOp.SetArguments(anArg1);
+        anOp.SetTools(anArg2);
+        anOp.Build();
+        if (!anOp.IsDone()) {
+            return {};
+        }
+
+        TopoDS_Shape result = anOp.Shape();//always a compound
+        if (isTrulyEmpty(result)) {
+            return {};
+        }
+        return result;
     }
-    return result;
+    catch (Standard_Failure& e1) {
+        Base::Console().warning("DCS::shapeShapeIntersect - common failed in %s - %s **\n",
+                                getNameInDocument(),
+                                e1.GetMessageString());
+    }
+    return {};
 }
 
 //find all the intersecting regions of face and shape
@@ -1604,6 +1794,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingToolFromClosedProfile(const TopoDS_W
         Base::Console().error("%s could not make tool from closed profile\n", Label.getValue());
         return {};
     }
+    m_toolFaceShape = toolFace;
     gp_Dir gpNormal = getFaceNormal(toolFace);
     auto extrudeDir = 2 * dMax * gpNormal;
     TopoDS_Shape prism = BRepPrimAPI_MakePrism(toolFace, extrudeDir).Shape();
@@ -1614,9 +1805,9 @@ TopoDS_Shape DrawComplexSection::makeCuttingToolFromClosedProfile(const TopoDS_W
 bool DrawComplexSection::validateProfileAlignment(const TopoDS_Wire& profileWire) const
 {
     // use "canBuild(profile, sectionnormal)"?
-    if (ProjectionStrategy.getValue() == 0) {
-        // Offset. Warn if profile is not quite aligned with section normal. if
-        // the profile and normal are misaligned, the check below for empty "solids"
+    if (isOffsetStrategy() || isFaceOnlyStrategy()) {
+        // These strategies use the complete profile as a single cutting tool.
+        // If the profile and normal are misaligned, the empty-solid checks below
         // will not be correct.
         // just a warning here, so don't fail on this
         constexpr double AngleThresholdDeg{5.0};
@@ -1744,7 +1935,7 @@ TopoDS_Wire DrawComplexSection::closeSingleEdgeProfile(const TopoDS_Edge& single
 {
     std::pair<Base::Vector3d, Base::Vector3d> edgeEnds = getSegmentEnds(singleEdge);
 
-    Base::Vector3d midEdgePoint = (edgeEnds.first + edgeEnds.second / 2);
+    Base::Vector3d midEdgePoint = (edgeEnds.first + edgeEnds.second) / 2;
     Base::Vector3d SNPoint = SectionNormal.getValue() * dMax;
     Base::Vector3d awayDirection = SNPoint - midEdgePoint;   // from midpoint to snpoint
     awayDirection.Normalize();

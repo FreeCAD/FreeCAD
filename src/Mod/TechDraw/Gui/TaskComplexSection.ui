@@ -204,6 +204,16 @@
             <string>No parallel</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Removed</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Rotated</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item row="2" column="0">

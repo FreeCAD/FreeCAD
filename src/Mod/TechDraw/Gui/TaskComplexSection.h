@@ -110,6 +110,10 @@ private:
 
     void createComplexSection();
     void updateComplexSection();
+    bool isFaceOnlyStrategy(int strategy) const;
+    void positionFaceOnlySection(int strategy);
+    bool sectionLineBoundsOnBase(Base::Vector3d& center, Base::Vector3d& size) const;
+    bool sectionViewBounds(Base::Vector3d& size) const;
 
     QString sourcesToString();
     std::unique_ptr<Ui_TaskComplexSection> ui;
@@ -133,7 +137,11 @@ private:
     Base::Vector3d m_saveDirection;
     Base::Vector3d m_saveOrigin;
     double m_saveScale;
+    double m_saveX;
+    double m_saveY;
+    double m_saveRotation;
     int m_saveScaleType;
+    int m_saveProjectionStrategy;
     bool m_saved;
     bool m_createMode;
     Base::Vector3d m_normal;
@@ -143,6 +151,7 @@ private:
     double m_angle;
     VectorEditWidget* m_viewDirectionWidget;
     bool m_directionIsSet;
+    bool m_directionEdited;
     bool m_modelIsDirty;
 
     bool m_scaleEdited;

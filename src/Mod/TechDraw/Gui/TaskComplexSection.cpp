@@ -21,7 +21,13 @@
  ***************************************************************************/
 
 #include <QMessageBox>
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
 #include <gp_Pnt.hxx>
+#include <TopoDS_Wire.hxx>
+
+#include <algorithm>
+#include <cmath>
 
 #include <App/Document.h>
 #include <App/Link.h>
@@ -39,6 +45,7 @@
 #include "Widgets/VectorEditWidget.h"
 #include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/ShapeUtils.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Preferences.h>
@@ -72,6 +79,7 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawPage* page, TechDraw::DrawV
     m_applyDeferred(0),
     m_angle(0.0),
     m_directionIsSet(false),
+    m_directionEdited(false),
     m_modelIsDirty(false),
     m_scaleEdited(false)
 {
@@ -106,6 +114,7 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
     m_applyDeferred(0),
     m_angle(0.0),
     m_directionIsSet(true),
+    m_directionEdited(false),
     m_modelIsDirty(false),
     m_scaleEdited(false)
 {
@@ -249,6 +258,10 @@ void TaskComplexSection::saveSectionState()
         m_saveXDir = m_section->XDirection.getValue();
         m_saveOrigin = m_section->SectionOrigin.getValue();
         m_saveDirName = m_section->SectionDirection.getValueAsString();
+        m_saveProjectionStrategy = m_section->ProjectionStrategy.getValue();
+        m_saveX = m_section->X.getValue();
+        m_saveY = m_section->Y.getValue();
+        m_saveRotation = m_section->Rotation.getValue();
         m_saved = true;
     }
     if (m_baseView) {
@@ -272,6 +285,10 @@ void TaskComplexSection::restoreSectionState()
     m_section->XDirection.setValue(m_saveXDir);
     m_section->SectionOrigin.setValue(m_saveOrigin);
     m_section->SectionDirection.setValue(m_saveDirName.c_str());
+    m_section->ProjectionStrategy.setValue(m_saveProjectionStrategy);
+    m_section->X.setValue(m_saveX);
+    m_section->Y.setValue(m_saveY);
+    m_section->Rotation.setValue(m_saveRotation);
 }
 
 void TaskComplexSection::onSectionObjectsUseSelectionClicked()
@@ -304,6 +321,7 @@ void TaskComplexSection::slotViewDirectionChanged(Base::Vector3d newDirection)
     projectedViewDirection.Normalize();
     double viewAngle = atan2(projectedViewDirection.y, projectedViewDirection.x);
     m_compass->setDialAngle(Base::toDegrees(viewAngle));
+    m_directionEdited = true;
     checkAll(false);
     applyAligned();
 }
@@ -317,6 +335,7 @@ void TaskComplexSection::slotChangeAngle(double newAngle)
     double unitY = sin(angleRadians);
     Base::Vector3d localUnit(unitX, unitY, 0.0);
     m_viewDirectionWidget->setValueNoNotify(localUnit);
+    m_directionEdited = true;
     checkAll(false);
     applyAligned();
 }
@@ -326,6 +345,7 @@ void TaskComplexSection::onUpClicked()
     checkAll(false);
     m_compass->setToNorth();
     m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(0.0, 1.0, 0.0));
+    m_directionEdited = true;
     applyAligned();
 }
 
@@ -334,6 +354,7 @@ void TaskComplexSection::onDownClicked()
     checkAll(false);
     m_compass->setToSouth();
     m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(0.0, -1.0, 0.0));
+    m_directionEdited = true;
     applyAligned();
 }
 
@@ -342,6 +363,7 @@ void TaskComplexSection::onLeftClicked()
     checkAll(false);
     m_compass->setToWest();
     m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(-1.0, 0.0, 0.0));
+    m_directionEdited = true;
     applyAligned();
 }
 
@@ -350,6 +372,7 @@ void TaskComplexSection::onRightClicked()
     checkAll(false);
     m_compass->setToEast();
     m_viewDirectionWidget->setValueNoNotify(Base::Vector3d(1.0, 0.0, 0.0));
+    m_directionEdited = true;
     applyAligned();
 }
 
@@ -531,6 +554,8 @@ bool TaskComplexSection::apply(bool forceUpdate)
 
     wc.restoreCursor();
     m_applyDeferred = 0;
+    m_directionEdited = false;
+    m_scaleEdited = false;
     ui->lPendingUpdates->setText(QString());
     return true;
 }
@@ -633,6 +658,7 @@ void TaskComplexSection::createComplexSection()
         //NOLINTNEXTLINE
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
+        positionFaceOnlySection(projectionStrategy);
 
     }
     Gui::Command::commitCommand(tid);
@@ -666,12 +692,14 @@ void TaskComplexSection::updateComplexSection()
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);
         int projectionStrategy = ui->cmbStrategy->currentIndex();
+        int previousProjectionStrategy = m_section->ProjectionStrategy.getValue();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ProjectionStrategy = %d",
                            m_sectionName.c_str(), projectionStrategy);
         Command::doCommand(Command::Doc, "App.activeDocument().%s.SectionDirection = 'Aligned'",
                            m_sectionName.c_str());
         //NOLINTEND
 
+        App::DocumentObject* previousProfileObject = m_section->CuttingToolWireObject.getValue();
         m_section->CuttingToolWireObject.setValue(m_profileObject);
         m_section->SectionDirection.setValue("Aligned");
         Base::Vector3d localUnit = m_viewDirectionWidget->value();
@@ -693,6 +721,14 @@ void TaskComplexSection::updateComplexSection()
         //NOLINTNEXTLINE
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
+
+        if (isFaceOnlyStrategy(projectionStrategy)
+            && (projectionStrategy != previousProjectionStrategy
+                || m_profileObject != previousProfileObject
+                || m_directionEdited
+                || m_scaleEdited)) {
+            positionFaceOnlySection(projectionStrategy);
+        }
     }
     Gui::Command::commitCommand(tid);
 }
@@ -704,6 +740,138 @@ std::string TaskComplexSection::makeSectionLabel(const QString& symbol)
     std::string uniqueLabel = "Section" + uniqueSuffix;
     std::string temp = symbol.toStdString();
     return ( uniqueLabel + " " + temp + " - " + temp );
+}
+
+bool TaskComplexSection::isFaceOnlyStrategy(int strategy) const
+{
+    return strategy == TechDraw::DrawComplexSection::StrategyRemoved
+        || strategy == TechDraw::DrawComplexSection::StrategyRotated;
+}
+
+void TaskComplexSection::positionFaceOnlySection(int strategy)
+{
+    if (!m_section || !m_baseView || !isFaceOnlyStrategy(strategy)) {
+        return;
+    }
+
+    Base::Vector3d sectionLineCenter;
+    Base::Vector3d sectionLineSize;
+    if (!sectionLineBoundsOnBase(sectionLineCenter, sectionLineSize)) {
+        std::pair<Base::Vector3d, Base::Vector3d> lineEnds = m_section->sectionLineEnds();
+        sectionLineCenter = (lineEnds.first + lineEnds.second) / 2.0;
+        Base::Vector3d lineDelta = lineEnds.second - lineEnds.first;
+        sectionLineSize = Base::Vector3d(std::abs(lineDelta.x), std::abs(lineDelta.y), 0.0);
+    }
+    Base::Vector3d sectionPosition(m_baseView->X.getValue(), m_baseView->Y.getValue(), 0.0);
+    sectionPosition += sectionLineCenter;
+
+    if (strategy == TechDraw::DrawComplexSection::StrategyRemoved) {
+        Base::Vector3d removeDirection = m_section->SectionNormal.getValue() * -1.0;
+        Base::Vector3d removeDirectionOnBase = m_baseView->projectPoint(removeDirection, false);
+        if (removeDirectionOnBase.Length() > 0.000001) {
+            removeDirectionOnBase.Normalize();
+            constexpr double RemovedSectionGap = 10.0;
+            double baseHalfSize =
+                m_baseView->getSizeAlongVector(removeDirectionOnBase) * m_baseView->getScale() / 2.0;
+            double sectionHalfSize =
+                (std::abs(removeDirectionOnBase.x) * sectionLineSize.x
+                 + std::abs(removeDirectionOnBase.y) * sectionLineSize.y) / 2.0;
+            Base::Vector3d sectionViewSize;
+            if (sectionViewBounds(sectionViewSize)) {
+                double sectionViewHalfSize =
+                    (std::abs(removeDirectionOnBase.x) * sectionViewSize.x
+                     + std::abs(removeDirectionOnBase.y) * sectionViewSize.y) / 2.0;
+                sectionHalfSize = std::max(sectionHalfSize, sectionViewHalfSize);
+            }
+            sectionPosition +=
+                removeDirectionOnBase * (baseHalfSize + sectionHalfSize + RemovedSectionGap);
+        }
+    }
+
+    Command::doCommand(Command::Doc, "App.ActiveDocument.%s.X = %.6f",
+                       m_sectionName.c_str(), sectionPosition.x);
+    Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Y = %.6f",
+                       m_sectionName.c_str(), sectionPosition.y);
+}
+
+bool TaskComplexSection::sectionLineBoundsOnBase(Base::Vector3d& center, Base::Vector3d& size) const
+{
+    TopoDS_Wire lineWire = m_section->makeSectionLineWire();
+    if (!lineWire.IsNull()) {
+        TopoDS_Shape projectedWire =
+            GeometryObject::projectSimpleShape(lineWire, m_baseView->getProjectionCS());
+        if (!projectedWire.IsNull()) {
+            Bnd_Box lineBox;
+            lineBox.SetGap(0.0);
+            BRepBndLib::Add(projectedWire, lineBox);
+            if (!lineBox.IsVoid()) {
+                double xMin = 0.0;
+                double yMin = 0.0;
+                double zMin = 0.0;
+                double xMax = 0.0;
+                double yMax = 0.0;
+                double zMax = 0.0;
+                lineBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+                center = Base::Vector3d((xMin + xMax) / 2.0, (yMin + yMax) / 2.0, 0.0);
+                size = Base::Vector3d(xMax - xMin, yMax - yMin, 0.0);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool TaskComplexSection::sectionViewBounds(Base::Vector3d& size) const
+{
+    if (!m_section) {
+        return false;
+    }
+
+    try {
+        TopoDS_Shape sourceShape = m_section->getShapeToCut();
+        if (sourceShape.IsNull()) {
+            return false;
+        }
+
+        gp_Ax2 projectionCS = m_section->getProjectionCS();
+        gp_Pnt inputCenter = ShapeUtils::findCentroid(sourceShape, projectionCS);
+        Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
+
+        TopoDS_Shape preparedShape = ShapeUtils::moveShape(sourceShape, centroid * -1.0);
+        preparedShape = ShapeUtils::scaleShape(preparedShape, m_section->getScale());
+        if (!DrawUtil::fpCompare(m_section->Rotation.getValue(), 0.0)) {
+            preparedShape =
+                ShapeUtils::rotateShape(preparedShape, projectionCS, m_section->Rotation.getValue());
+        }
+
+        TopoDS_Shape projectedShape =
+            GeometryObject::projectSimpleShape(preparedShape, projectionCS);
+        if (projectedShape.IsNull()) {
+            return false;
+        }
+
+        Bnd_Box sectionBox;
+        sectionBox.SetGap(0.0);
+        BRepBndLib::Add(projectedShape, sectionBox);
+        if (sectionBox.IsVoid()) {
+            return false;
+        }
+
+        double xMin = 0.0;
+        double yMin = 0.0;
+        double zMin = 0.0;
+        double xMax = 0.0;
+        double yMax = 0.0;
+        double zMax = 0.0;
+        sectionBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+        size = Base::Vector3d(xMax - xMin, yMax - yMin, 0.0);
+        constexpr double MinimumSectionSize = 0.000001;
+        return size.x > MinimumSectionSize || size.y > MinimumSectionSize;
+    }
+    catch (...) {
+        Base::Console().warning("TaskComplexSection - could not estimate section view bounds\n");
+        return false;
+    }
 }
 
 void TaskComplexSection::failNoObject()
