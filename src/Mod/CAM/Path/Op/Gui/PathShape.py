@@ -65,6 +65,12 @@ class ObjectPathShape:
             ),
         )
         obj.addProperty(
+            "App::PropertyLinkSubListGlobal",
+            "Base",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"),
+        )
+        obj.addProperty(
             "App::PropertyString",
             "Comment",
             "Base",
@@ -75,12 +81,6 @@ class ObjectPathShape:
             "CycleTime",
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
-        )
-        obj.addProperty(
-            "App::PropertyLinkList",
-            "Sources",
-            "Base",
-            QT_TRANSLATE_NOOP("App::Property", "Sources of the shapes"),
         )
 
         # Tool properties group
@@ -517,7 +517,15 @@ class ObjectPathShape:
             obj.Path = Path.Path()
             return
 
-        edges = [e for s in obj.Sources for e in s.Shape.Edges]
+        edges = []
+        for base, subNames in obj.Base:
+            if subNames == ("",):
+                edges.extend(base.Shape.Edges)
+                continue
+            for subName in subNames:
+                sub = getattr(base.Shape, subName)
+                edges.extend(sub.Edges)
+
         wires = [Part.Wire(se) for se in Part.sortEdges(edges)]
 
         offsetVal = 0
@@ -852,62 +860,6 @@ Returns a Path object from a list of shapes
             obj.StartDepth = zmax + 1
 
 
-# Geometry for selected shapes
-class ObjectPartShape:
-    def __init__(self, obj, base):
-        self.Type = "PartShapeObject"
-        self.obj = obj
-        obj.Proxy = self
-        obj.addProperty(
-            "App::PropertyLinkSubListGlobal",
-            "Base",
-            "Base",
-            QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"),
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "FilterEdges",
-            "Base",
-            QT_TRANSLATE_NOOP("App::Property", "Exclude similar edges"),
-        )
-        obj.Base = base
-
-    def onDelete(self, obj, args):
-        return True
-
-    def dumps(self):
-        return
-
-    def loads(self, state):
-        return
-
-    def onDocumentRestored(self, obj):
-        self.obj = obj
-
-    def onChanged(self, obj, prop):
-        pass
-
-    def execute(self, obj):
-        edges = []
-        for base in obj.Base:
-            baseObj, subNames = base
-            shape = baseObj.Shape
-            if not subNames or subNames == ("",):
-                edges.extend(shape.Edges)
-            else:
-                edges.extend([shape.getElement(n) for n in subNames if n.startswith("Edge")])
-
-        if getattr(obj, "FilterEdges", False):
-            uEdges = []
-            for edge in edges:
-                if any(Path.Geom.edgesSimilar(eu, edge) for eu in uEdges):
-                    continue
-                uEdges.append(edge)
-            edges = uEdges
-
-        obj.Shape = Part.makeCompound(edges)
-
-
 class ViewProviderPathShape:
     def __init__(self, vobj):
         self.Object = vobj.Object
@@ -924,13 +876,9 @@ class ViewProviderPathShape:
         return
 
     def claimChildren(self):
-        return [base for base in self.Object.Sources]
+        return []
 
     def onDelete(self, vobj, args):
-        for shape in self.Object.Sources:
-            if "PartShape" in shape.Name:
-                # do not remove external link objects
-                shape.Document.removeObject(shape.Name)
         self.Object.Document.removeObject(self.Object.Name)
 
     def getIcon(self):
@@ -940,13 +888,13 @@ class ViewProviderPathShape:
             return ":/icons/CAM_OpActive.svg"
 
 
-class CommandPathShapeTC:
+class CommandPathShape:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ShapeTC",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_PathShapeTC", "Path from Shape TC"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_PathShape", "Path from Shape"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_PathShapeTC", "Creates path from selected shapes with tool controller"
+                "CAM_PathShape", "Creates path from selected shapes with tool controller"
             ),
         }
 
@@ -981,20 +929,16 @@ class CommandPathShapeTC:
             baseObj = sel.Object
             subNames = sel.SubElementNames if sel.SubElementNames else ("",)
             base.append([baseObj, subNames])
-        shapeObj = doc.addObject("Part::FeaturePython", "PartShape")
-        shapeObj.ViewObject.Proxy = 0
-        shapeObj.Visibility = False
-        ObjectPartShape(shapeObj, base)
 
         pathObj = doc.addObject("Path::FeaturePython", "PathShape")
         job = PathUtils.addToJob(pathObj)
         ObjectPathShape(pathObj, job)
         ViewProviderPathShape(pathObj.ViewObject)
-        pathObj.Sources = [shapeObj]
+        pathObj.Base = base
         FreeCAD.ActiveDocument.commitTransaction()
         doc.recompute()
 
 
 if FreeCAD.GuiUp:
     # Register the FreeCAD command
-    FreeCADGui.addCommand("CAM_PathShapeTC", CommandPathShapeTC())
+    FreeCADGui.addCommand("CAM_PathShape", CommandPathShape())
