@@ -727,7 +727,7 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
 
     std::vector<App::DocumentObject*> temp;
     std::set<App::DocumentObject*> objs;
-    
+
     for (auto& sel : context.info->selList) {
         if (App::DocumentObject* pObject = getObjectOfType(sel, typeId, resolve)) {
             auto ret = objs.insert(pObject);
@@ -736,7 +736,7 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
             }
         }
     }
-    
+
     return temp;
 }
 
