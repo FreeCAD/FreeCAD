@@ -72,7 +72,7 @@ setup_qt_module_test(TaskThicknessParametersTest
 )
 setup_qt_module_test(TaskHoleParametersTest
     MODULE_LIBS PartDesignGui
-    MODULE_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann
+    MODULE_INCLUDE_DIRS ${nlohmann_json_INCLUDE_DIRS}
     MODULE_DEPENDS ${_partdesign_material_resource_targets}
 )
 setup_qt_module_test(TaskHelixParametersTest
