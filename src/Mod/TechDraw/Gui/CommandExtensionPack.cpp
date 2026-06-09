@@ -27,9 +27,15 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 
+#include <algorithm>
+#include <cmath>
+#include <optional>
+#include <set>
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/PropertyStandard.h>
 #include <Base/Console.h>
 #include <Base/Type.h>
 #include <Gui/Action.h>
@@ -82,6 +88,16 @@ Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3
 void _createThreadCircle(const std::string Name, TechDraw::DrawViewPart* objFeat, double factor);
 void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::DrawViewPart* objFeat,
                         double factor, bool endLine);
+std::optional<Base::Vector3d> _getThreadDepthReference(const std::vector<std::string>& subNames,
+                                                       TechDraw::DrawViewPart* objFeat);
+std::optional<double> _getThreadDepthFraction(const Base::Vector3d& start,
+                                              const Base::Vector3d& end,
+                                              const std::optional<Base::Vector3d>& depthReference);
+std::optional<double> _getThreadDepthFractionFromSources(const std::vector<std::string>& subNames,
+                                                         TechDraw::DrawViewPart* objFeat,
+                                                         double selectedDepth);
+std::optional<double> _getThreadDepthFractionFromObject(App::DocumentObject* source,
+                                                        double selectedDepth);
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge);
 void _setLineAttributes(TechDraw::CenterLine* cosEdge);
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, Base::Color color);
@@ -403,7 +419,8 @@ CmdTechDrawExtensionThreadHoleSide::CmdTechDrawExtensionThreadHoleSide()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Cosmetic Thread Hole Side View");
-    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the side view of a hole or circle");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the side view of a hole or circle. "
+                              "Select a third edge or vertex to limit thread depth.");
     sWhatsThis = "TechDraw_ExtensionThreadHoleSide";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionThreadHoleSide";
@@ -455,7 +472,8 @@ CmdTechDrawExtensionThreadBoltSide::CmdTechDrawExtensionThreadBoltSide()
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Cosmetic Thread Bolt Side View");
     sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the side view of a "
-            "bolt/screw/rod between two selected parallel lines");
+            "bolt/screw/rod between two selected parallel lines. "
+            "Select a third edge or vertex to limit thread depth.");
     sWhatsThis = "TechDraw_ExtensionThreadBoltSide";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionThreadBoltSide";
@@ -589,7 +607,8 @@ CmdTechDrawExtensionThreadsGroup::CmdTechDrawExtensionThreadsGroup()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Cosmetic Thread Hole Side View");
-    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines. "
+                              "Select a third edge or vertex to limit thread depth.");
     sWhatsThis = "TechDraw_ExtensionThreadsGroup";
     sStatusTip = sMenuText;
 }
@@ -672,7 +691,8 @@ void CmdTechDrawExtensionThreadsGroup::languageChange()
                                           "Cosmetic Thread Hole Side View"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionThreadHoleSide",
                                              "Adds a cosmetic thread to the side view of a "
-                                             "selected hole between two selected parallel lines"));
+                                             "selected hole between two selected parallel lines. "
+                                             "Select a third edge or vertex to limit thread depth."));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = action[1];
     arc2->setText(QApplication::translate("CmdTechDrawExtensionThreadHoleBottom",
@@ -687,7 +707,8 @@ void CmdTechDrawExtensionThreadsGroup::languageChange()
     arc3->setToolTip(
         QApplication::translate("CmdTechDrawExtensionThreadBoltSide",
                                 "Adds a cosmetic thread to the side view of a bolt/screw/rod "
-                                "between two selected parallel lines"));
+                                "between two selected parallel lines. "
+                                "Select a third edge or vertex to limit thread depth."));
     arc3->setStatusTip(arc3->text());
     QAction* arc4 = action[3];
     arc4->setText(QApplication::translate("CmdTechDrawExtensionThreadBoltBottom",
@@ -2252,6 +2273,34 @@ void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::Draw
             start1 = help2;
             end1 = help1;
         }
+        const Base::Vector3d depthStart = (start0 + start1) / 2.0;
+        const Base::Vector3d depthEnd = (end0 + end1) / 2.0;
+        const std::optional<Base::Vector3d> depthReference = _getThreadDepthReference(SubNames, objFeat);
+        std::optional<double> depthFraction =
+            _getThreadDepthFraction(depthStart, depthEnd, depthReference);
+        const bool depthFractionFromSelectedReference = depthFraction.has_value();
+        if (!depthFraction && endLine) {
+            const double selectedDepth = (depthEnd - depthStart).Length();
+            depthFraction = _getThreadDepthFractionFromSources(SubNames, objFeat, selectedDepth);
+        }
+        if (depthFraction) {
+            const Base::Vector3d reference0 = start0 + (end0 - start0) * *depthFraction;
+            const Base::Vector3d reference1 = start1 + (end1 - start1) * *depthFraction;
+            // A selected reference is a point on the drawing, so keep the shorter side adjacent
+            // to that reference. A source ThreadDepth is already a length fraction and must not
+            // be mirrored, otherwise valid depths over half the selected side become too short.
+            if (!depthFractionFromSelectedReference || *depthFraction <= 0.5) {
+                end0 = reference0;
+                end1 = reference1;
+            }
+            else {
+                start0 = end0;
+                start1 = end1;
+                end0 = reference0;
+                end1 = reference1;
+            }
+        }
+
         float kernelDiam = (start1 - start0).Length();
         float kernelFactor = (kernelDiam * factor - kernelDiam) / 2;
         Base::Vector3d delta = (start1 - start0).Normalize() * kernelFactor;
@@ -2272,8 +2321,159 @@ void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::Draw
                 objFeat->addCosmeticEdge(end0 - delta, end1 + delta);
             TechDraw::CosmeticEdge* cosTag3 = objFeat->getCosmeticEdge(line3Tag);
             _setLineAttributes(cosTag3, solidStyle, graphicWeight, threadColor);
+
+            std::string centerLineTag = objFeat->addCenterLine(depthStart, depthEnd);
+            TechDraw::CenterLine* centerLine = objFeat->getCenterLine(centerLineTag);
+            if (centerLine) {
+                _setLineAttributes(centerLine,
+                                   Preferences::CenterLineStyle(),
+                                   thinWeight,
+                                   threadColor);
+            }
         }
     }
+}
+
+std::optional<Base::Vector3d> _getThreadDepthReference(const std::vector<std::string>& subNames,
+                                                       TechDraw::DrawViewPart* objFeat)
+{
+    if (subNames.size() < 3) {
+        return std::nullopt;
+    }
+
+    const std::string& depthName = subNames[2];
+    std::string depthType = TechDraw::DrawUtil::getGeomTypeFromName(depthName);
+    int depthId = TechDraw::DrawUtil::getIndexFromName(depthName);
+
+    if (depthType == "Vertex") {
+        TechDraw::VertexPtr vertex = objFeat->getProjVertexByIndex(depthId);
+        if (vertex) {
+            return CosmeticVertex::makeCanonicalPointInverted(objFeat, vertex->point());
+        }
+        return std::nullopt;
+    }
+
+    if (depthType != "Edge") {
+        return std::nullopt;
+    }
+
+    TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(depthId);
+    if (!geom) {
+        return std::nullopt;
+    }
+
+    if (geom->getGeomType() == GeomType::GENERIC) {
+        TechDraw::GenericPtr line = std::static_pointer_cast<TechDraw::Generic>(geom);
+        Base::Vector3d start = CosmeticVertex::makeCanonicalPointInverted(objFeat,
+                                                                          line->getStartPoint());
+        Base::Vector3d end = CosmeticVertex::makeCanonicalPointInverted(objFeat,
+                                                                        line->getEndPoint());
+        return (start + end) / 2.0;
+    }
+
+    if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
+        TechDraw::CirclePtr circle = std::static_pointer_cast<TechDraw::Circle>(geom);
+        return CosmeticVertex::makeCanonicalPointInverted(objFeat, circle->center);
+    }
+
+    return std::nullopt;
+}
+
+std::optional<double> _getThreadDepthFraction(const Base::Vector3d& start,
+                                              const Base::Vector3d& end,
+                                              const std::optional<Base::Vector3d>& depthReference)
+{
+    if (!depthReference) {
+        return std::nullopt;
+    }
+
+    Base::Vector3d axis = end - start;
+    const double axisLengthSquared = axis.Dot(axis);
+    if (axisLengthSquared <= Precision::Confusion()) {
+        return std::nullopt;
+    }
+
+    const double rawFraction = ((*depthReference - start).Dot(axis)) / axisLengthSquared;
+    const double clampedFraction = std::clamp(rawFraction, 0.0, 1.0);
+    if (clampedFraction <= Precision::Confusion()
+        || clampedFraction >= 1.0 - Precision::Confusion()) {
+        return std::nullopt;
+    }
+
+    return clampedFraction;
+}
+
+std::optional<double> _getThreadDepthFractionFromSources(const std::vector<std::string>& subNames,
+                                                         TechDraw::DrawViewPart* objFeat,
+                                                         double selectedDepth)
+{
+    if (subNames.size() != 2 || selectedDepth <= Precision::Confusion()) {
+        return std::nullopt;
+    }
+
+    std::optional<double> matchedFraction;
+    std::set<App::DocumentObject*> visited;
+    for (App::DocumentObject* source : objFeat->getAllSources()) {
+        if (!source) {
+            continue;
+        }
+
+        std::vector<App::DocumentObject*> candidates{source};
+        const std::vector<App::DocumentObject*> sourceChildren = source->getOutListRecursive();
+        candidates.insert(candidates.end(), sourceChildren.begin(), sourceChildren.end());
+
+        for (App::DocumentObject* candidate : candidates) {
+            if (!candidate || !visited.insert(candidate).second) {
+                continue;
+            }
+
+            std::optional<double> candidateFraction =
+                _getThreadDepthFractionFromObject(candidate, selectedDepth);
+            if (!candidateFraction) {
+                continue;
+            }
+
+            if (matchedFraction) {
+                return std::nullopt;
+            }
+            matchedFraction = candidateFraction;
+        }
+    }
+
+    return matchedFraction;
+}
+
+std::optional<double> _getThreadDepthFractionFromObject(App::DocumentObject* source,
+                                                        double selectedDepth)
+{
+    auto* threaded = dynamic_cast<App::PropertyBool*>(source->getPropertyByName("Threaded"));
+    auto* depth = dynamic_cast<App::PropertyLength*>(source->getPropertyByName("Depth"));
+    auto* threadDepth =
+        dynamic_cast<App::PropertyLength*>(source->getPropertyByName("ThreadDepth"));
+    if (!threaded || !depth || !threadDepth || !threaded->getValue()) {
+        return std::nullopt;
+    }
+
+    const double sourceDepth = depth->getValue();
+    const double sourceThreadDepth = threadDepth->getValue();
+    if (sourceDepth <= Precision::Confusion()
+        || sourceThreadDepth <= Precision::Confusion()
+        || sourceThreadDepth >= sourceDepth - Precision::Confusion()) {
+        return std::nullopt;
+    }
+
+    const double depthTolerance = std::max(Precision::Confusion(), sourceDepth * 0.02);
+    if (std::abs(sourceDepth - selectedDepth) > depthTolerance) {
+        return std::nullopt;
+    }
+
+    const double fraction = sourceThreadDepth / sourceDepth;
+    if (fraction <= Precision::Confusion()
+        || fraction >= 1.0 - Precision::Confusion()) {
+        return std::nullopt;
+    }
+
+    return std::clamp(fraction, 0.0, 1.0);
 }
 
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)

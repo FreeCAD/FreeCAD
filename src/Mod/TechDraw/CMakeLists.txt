@@ -186,6 +186,7 @@ SET(TDTest_SRCS
     TDTest/DrawViewSectionTest.py
     TDTest/DrawViewBalloonTest.py
     TDTest/DrawViewDetailTest.py
+    TDTest/DrawThreadExtensionTest.py
     TDTest/TechDrawTestUtilities.py
 )
 
@@ -211,4 +212,3 @@ fc_copy_sources(TDTestTarget "${CMAKE_BINARY_DIR}/Mod/TechDraw" ${TDAllTest})
 # install Python packages (for make install)
 INSTALL(FILES ${TDTest_SRCS} DESTINATION Mod/TechDraw/TDTest)
 INSTALL(FILES ${TDTestFile_SRCS} DESTINATION Mod/TechDraw/TDTest)
-
