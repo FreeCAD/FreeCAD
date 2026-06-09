@@ -107,8 +107,11 @@ private:
     bool LoadResourcesAndBuild(XERCES_CPP_NAMESPACE::DOMElement*, const Component&);
     bool LoadResources(XERCES_CPP_NAMESPACE::DOMNodeList*, const Component&);
     bool LoadBuild(XERCES_CPP_NAMESPACE::DOMNodeList*);
+    bool LoadBuildObject(XERCES_CPP_NAMESPACE::DOMNodeList*);
     bool LoadItems(XERCES_CPP_NAMESPACE::DOMNodeList*);
     void LoadItem(XERCES_CPP_NAMESPACE::DOMNamedNodeMap*);
+    bool LoadBuildItems(XERCES_CPP_NAMESPACE::DOMNodeList*);
+    void LoadBuildItem(XERCES_CPP_NAMESPACE::DOMNamedNodeMap*);
     bool LoadObject(XERCES_CPP_NAMESPACE::DOMNodeList*, const Component&);
     void LoadComponents(XERCES_CPP_NAMESPACE::DOMNodeList*, int id);
     void LoadComponent(XERCES_CPP_NAMESPACE::DOMNodeList*, int id);
@@ -128,8 +131,9 @@ private:
         MeshKernel kernel;
         Base::Matrix4D transform;
         std::string name;
+        int index;
     };
-    std::unordered_map<int, MeshKernelAndTransform> meshes;
+    std::vector<MeshKernelAndTransform> meshes;
     std::unique_ptr<zipios::FileCollection> file;
     std::unique_ptr<std::istream> zip;
 };
