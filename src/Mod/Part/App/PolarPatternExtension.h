@@ -45,7 +45,7 @@ enum class PolarPatternMode
 
 class PartExport PolarPatternExtension: public App::DocumentObjectExtension
 {
-    EXTENSION_PROPERTY_HEADER(Part::PolarPatternExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Part::PolarPatternExtension);
 
 public:
     PolarPatternExtension();
