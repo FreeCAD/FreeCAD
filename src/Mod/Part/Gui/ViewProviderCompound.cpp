@@ -67,7 +67,7 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string>& subNames)
         // so delete everything recursively
         bool inGroupDeletion = !subNames.empty() && subNames[0] == "group_recursive_deletion";
 
-        if (inGroupDeletion) {
+        auto deleteAllLinks = [&]() -> bool {
             for (auto pLink : pLinks) {
                 if (!pLink || !pLink->isAttachedToDocument() || pLink->isRemoving()) {
                     continue;
@@ -83,6 +83,11 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string>& subNames)
                 }
             }
             return true;
+        };
+
+        // Mirrors ViewProviderGroupExtension::extensionOnDelete()
+        if (inGroupDeletion) {
+            return deleteAllLinks();
         }
         QMessageBox::StandardButton choice = QMessageBox::question(
             Gui::getMainWindow(),
@@ -99,21 +104,7 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string>& subNames)
         }
 
         if (choice == QMessageBox::Yes) {
-            for (auto pLink : pLinks) {
-                if (!pLink || !pLink->isAttachedToDocument() || pLink->isRemoving()) {
-                    continue;
-                }
-                if (auto guiDoc = Gui::Application::Instance->getDocument(pLink->getDocument())) {
-                    if (auto vp = guiDoc->getViewProvider(pLink);
-                        vp && !vp->onDelete(groupDeletionMarker)) {
-                        return false;
-                    }
-                }
-                if (pLink->isAttachedToDocument() && !pLink->isRemoving()) {
-                    pLink->getDocument()->removeObject(pLink->getNameInDocument());
-                }
-            }
-            return true;
+            return deleteAllLinks();
         }
 
         for (auto pLink : pLinks) {
