@@ -60,6 +60,7 @@ _FONT_REL = Path("tests") / "visual" / "fonts"
 _DEFAULT_FONT_FAMILY = "Noto Sans"
 _DEFAULT_FONT_FILES = ("NotoSans-Regular.ttf",)
 _DEFAULT_FONT_SIZE = 18
+_SELECTION_ORANGE = (247.0 / 255.0, 103.0 / 255.0, 7.0 / 255.0)
 
 
 def _repo_root() -> Path | None:
@@ -493,6 +494,9 @@ def _make_scene_for_node(coin, type_name: str):
         "SoBrepFaceSet",
         "SoBrepFaceSetHighlight",
         "SoBrepFaceSetSelection",
+        "SoBrepFaceSetSelectionOrange",
+        "SoBrepFaceSetHighlightOrange",
+        "SoBrepFaceSetSelectionAndHighlightMixed",
         "SoFCControlPoints",
     ):
         # These are provided by PartGui, so ensure it is imported to register the Coin types.
@@ -812,7 +816,14 @@ def _make_scene_for_node(coin, type_name: str):
         root.addChild(pts)
         return root
 
-    if type_name in ("SoBrepFaceSet", "SoBrepFaceSetHighlight", "SoBrepFaceSetSelection"):
+    if type_name in (
+        "SoBrepFaceSet",
+        "SoBrepFaceSetHighlight",
+        "SoBrepFaceSetSelection",
+        "SoBrepFaceSetSelectionOrange",
+        "SoBrepFaceSetHighlightOrange",
+        "SoBrepFaceSetSelectionAndHighlightMixed",
+    ):
         # Simple cube: 6 parts (faces), 2 triangles each.
         coords = coin.SoCoordinate3()
         coords.point.setValues(
@@ -861,6 +872,22 @@ def _make_scene_for_node(coin, type_name: str):
             # Select a couple of faces to exercise the selection overlay.
             faces.selectionPartIndex.setValues(0, 2, [1, 5])
             faces.selectionColor.setValue(0.0, 0.6, 0.0)
+        elif type_name == "SoBrepFaceSetSelectionOrange":
+            # Selection should keep the configured hue with a limited emissive boost.
+            faces.selectionPartIndex.setValues(0, 2, [1, 5])
+            faces.selectionColor.setValue(*_SELECTION_ORANGE)
+        elif type_name == "SoBrepFaceSetHighlightOrange":
+            # Highlight should use the configured hue with the same limited emissive boost,
+            # preserving face shading.
+            faces.highlightPartIndex.setValues(0, 1, [2])
+            faces.highlightColor.setValue(*_SELECTION_ORANGE)
+        elif type_name == "SoBrepFaceSetSelectionAndHighlightMixed":
+            # Document the mixed explicit-overlay case where selected and highlighted faces
+            # are rendered in separate overlay passes.
+            faces.selectionPartIndex.setValues(0, 2, [1, 5])
+            faces.selectionColor.setValue(*_SELECTION_ORANGE)
+            faces.highlightPartIndex.setValues(0, 1, [2])
+            faces.highlightColor.setValue(*_SELECTION_ORANGE)
 
         root.addChild(coords)
         root.addChild(material)
@@ -1623,6 +1650,9 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                 "SoBrepFaceSet",
                 "SoBrepFaceSetHighlight",
                 "SoBrepFaceSetSelection",
+                "SoBrepFaceSetSelectionOrange",
+                "SoBrepFaceSetHighlightOrange",
+                "SoBrepFaceSetSelectionAndHighlightMixed",
                 "SoFCControlPoints",
                 "SoPolygon",
                 "SoPolygonOpen",

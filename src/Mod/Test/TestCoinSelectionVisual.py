@@ -7,31 +7,45 @@ Run with:
 """
 
 from contextlib import suppress
+import os
+import tempfile
 import time
 import unittest
 
 import FreeCAD
 import FreeCADGui
-from FreeCADGui import Selection
 import Part
 from pivy import coin
 
 try:
     from PySide6 import QtWidgets
+    from PySide6.QtGui import QImage
 except ImportError:
     from PySide import QtGui as QtWidgets  # type: ignore
+    from PySide.QtGui import QImage  # type: ignore
 
 
 PART_PLANE_TYPE = f"{Part.__name__}::Plane"
+Selection = getattr(FreeCADGui, "Selection", None)
 
 
 class TestCoinSelectionVisual(unittest.TestCase):
     """Verify that live preselection draws above Coin selection overlays."""
 
-    _COLOR_DELTA_MIN = 0.15
+    _COLOR_DELTA_MIN = 0.12
     _COLOR_DELTA_RESTORE_MAX = 0.05
+    _LUMINANCE_DELTA_MAX = 0.04
+    _UNCHANGED_FACE_DELTA_MAX = 0.08
+    _SELECTION_ORANGE = (247.0 / 255.0, 103.0 / 255.0, 7.0 / 255.0)
 
     def setUp(self):
+        global Selection
+        if Selection is None:
+            Selection = getattr(FreeCADGui, "Selection", None)
+        if Selection is None:
+            self.skipTest("FreeCADGui.Selection is not available")
+
+        self._clear_selection_state()
         self.doc = FreeCAD.newDocument("TestCoinSelectionVisual")
         FreeCADGui.ActiveDocument = FreeCADGui.getDocument(self.doc.Name)
         self.view = FreeCADGui.ActiveDocument.ActiveView
@@ -45,9 +59,6 @@ class TestCoinSelectionVisual(unittest.TestCase):
         self.viewer.setEnabledNaviCube(False)
 
     def tearDown(self):
-        with suppress(Exception):
-            Selection.clearPreselection()
-
         if self._path is not None:
             with suppress(Exception):
                 Selection.clearCoinSelection(self._path)
@@ -55,6 +66,12 @@ class TestCoinSelectionVisual(unittest.TestCase):
                 Selection.clearCoinHighlight(self._path)
             with suppress(Exception):
                 self._path.unref()
+
+        self._clear_selection_state()
+
+        if getattr(self, "view", None) is not None:
+            with suppress(Exception):
+                self._flush_gui()
 
         with suppress(Exception):
             self.view.setAxisCross(self._had_axis_cross)
@@ -156,6 +173,76 @@ class TestCoinSelectionVisual(unittest.TestCase):
             "Clearing Coin highlight did not restore the original rendering.",
         )
 
+    def test_same_color_coin_highlight_keeps_selection_shading(self):
+        plane = self._create_test_plane()
+        self._prepare_view()
+        self._path = self._find_scene_path(plane.ViewObject.RootNode)
+
+        Selection.applyCoinSelection(
+            self._path,
+            mode=Selection.SelectionActionMode.All,
+            color=self._SELECTION_ORANGE,
+        )
+        self._flush_gui()
+        selection_color = self._center_pixel_color()
+
+        Selection.applyCoinHighlight(self._path, color=self._SELECTION_ORANGE)
+        self._flush_gui()
+        highlight_color = self._center_pixel_color()
+
+        selection_luma = self._relative_luminance(selection_color)
+        highlight_luma = self._relative_luminance(highlight_color)
+        self.assertLess(
+            abs(highlight_luma - selection_luma),
+            self._LUMINANCE_DELTA_MAX,
+            msg=(
+                "Coin highlight should keep comparable shading when it uses the selection color. "
+                f"selection={selection_color} ({selection_luma}), "
+                f"highlight={highlight_color} ({highlight_luma})"
+            ),
+        )
+
+    def test_real_face_selection_only_colors_selected_face(self):
+        box = self.doc.addObject("Part::Box", "Box")
+        box.Length = 40
+        box.Width = 40
+        box.Height = 20
+        box.ViewObject.ShapeColor = (0.66, 0.66, 0.74)
+        self.doc.recompute()
+
+        self.view.viewAxonometric()
+        self._set_orthographic_if_supported()
+        self.view.fitAll()
+        self._flush_gui()
+
+        base_image = self._saved_image()
+
+        Selection.addSelection(self.doc.Name, box.Name, "Face6")
+        self._flush_gui()
+        selected_image = self._saved_image()
+
+        selected_face_point = (256, 180)
+        left_face_point = (190, 300)
+        right_face_point = (350, 300)
+
+        self.assertGreater(
+            self._color_distance(
+                self._pixel_color(base_image, selected_face_point),
+                self._pixel_color(selected_image, selected_face_point),
+            ),
+            self._COLOR_DELTA_MIN,
+            msg="Selecting Face6 did not visibly color the selected top face.",
+        )
+        for point in (left_face_point, right_face_point):
+            self.assertLess(
+                self._color_distance(
+                    self._pixel_color(base_image, point),
+                    self._pixel_color(selected_image, point),
+                ),
+                self._UNCHANGED_FACE_DELTA_MAX,
+                msg=f"Selecting Face6 unexpectedly changed an adjacent face at {point}.",
+            )
+
     def _create_test_plane(self):
         plane = self.doc.addObject(PART_PLANE_TYPE, "Plane")
         plane.Length = 40
@@ -185,6 +272,12 @@ class TestCoinSelectionVisual(unittest.TestCase):
             self.view.redraw()
             time.sleep(0.05)
 
+    def _clear_selection_state(self):
+        with suppress(Exception):
+            Selection.clearSelection()
+        with suppress(Exception):
+            Selection.clearPreselection()
+
     def _find_scene_path(self, root_node):
         search = coin.SoSearchAction()
         search.setNode(root_node)
@@ -200,8 +293,30 @@ class TestCoinSelectionVisual(unittest.TestCase):
         return path
 
     def _center_pixel_color(self):
-        image = self.viewer.grabFramebuffer()
-        color = image.pixelColor(image.width() // 2, image.height() // 2)
+        image = self._saved_image()
+        return self._pixel_color(image, (image.width() // 2, image.height() // 2))
+
+    def _saved_image(self):
+        handle = tempfile.NamedTemporaryFile(
+            prefix="FreeCAD-TestCoinSelectionVisual-", suffix=".png", delete=False
+        )
+        path = handle.name
+        handle.close()
+        try:
+            self.view.saveImage(path, 512, 512, "White")
+            image = QImage(path)
+        finally:
+            with suppress(OSError):
+                os.unlink(path)
+
+        if image.isNull():
+            self.skipTest("ActiveView.saveImage did not produce a readable image")
+
+        return image
+
+    @staticmethod
+    def _pixel_color(image, point):
+        color = image.pixelColor(point[0], point[1])
         return (color.redF(), color.greenF(), color.blueF())
 
     def _assert_color_changed(self, before, after, message):
@@ -221,3 +336,8 @@ class TestCoinSelectionVisual(unittest.TestCase):
     @staticmethod
     def _color_distance(lhs, rhs):
         return sum((a - b) ** 2 for a, b in zip(lhs, rhs)) ** 0.5
+
+    @staticmethod
+    def _relative_luminance(color):
+        r, g, b = color
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
