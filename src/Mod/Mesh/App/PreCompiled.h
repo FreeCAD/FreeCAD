@@ -42,6 +42,7 @@
 #include <list>
 #include <limits>
 #include <map>
+#include <numeric>
 #include <queue>
 #include <set>
 #include <sstream>
