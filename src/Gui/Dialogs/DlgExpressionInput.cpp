@@ -684,13 +684,18 @@ void DlgExpressionInput::acceptWithVarSet()
 
 void DlgExpressionInput::accept()
 {
-    if (varSetsVisible) {
-        if (needReportOnVarSet()) {
-            return;
+    try {
+        if (varSetsVisible) {
+            if (needReportOnVarSet()) {
+                return;
+            }
+            acceptWithVarSet();
         }
-        acceptWithVarSet();
+        QDialog::accept();
     }
-    QDialog::accept();
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
 }
 
 static App::Document* getPreselectedDocument()
