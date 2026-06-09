@@ -21,7 +21,10 @@
 
 #pragma once
 
+#include <map>
+
 #include <QLayout>
+#include <QMap>
 #include <QToolBar>
 #include <QPointer>
 #include <QWidget>
@@ -104,7 +107,10 @@ public:
     }
 
     void saveState();
-    void restoreState(const std::map<int, QToolBar*>& toolbars, const ParameterGrp::handle& source = {});
+    void restoreState(
+        const std::map<int, QToolBar*>& toolbars,
+        const QMap<QString, bool>& widgetVisibility = {}
+    );
 
 private:
     QHBoxLayout* _layout;

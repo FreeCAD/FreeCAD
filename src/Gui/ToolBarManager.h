@@ -28,6 +28,7 @@
 #include <fastsignals/signal.h>
 
 #include <QStringList>
+#include <QMetaType>
 #include <QPointer>
 #include <QTimer>
 #include <QToolBar>
@@ -351,6 +352,7 @@ public:
 
 Q_SIGNALS:
     void toolbarLayoutContextChanged();
+    void toolbarLayoutScopeRestored(const ToolbarScopeId& context);
     void toolbarLayoutRestored(const QString& context);
 
 protected:
@@ -407,12 +409,7 @@ private:
     void initializeUnsavedToolbarLayoutContext(const ToolbarScopeId& context);
     void updateLayoutParameters(const ToolbarScopeId& context);
     ParameterGrp::handle workbenchLayoutGroup(const ToolbarScopeId& context) const;
-    ParameterGrp::handle toolbarAreaRestoreParameters(
-        const ParameterGrp::handle& current,
-        const ParameterGrp::handle& fallback
-    ) const;
     void saveWorkbenchToolBarLayout(const ToolbarScopeId& context) const;
-    void restoreWorkbenchToolBarLayout(const ToolbarScopeId& context) const;
     void resetMainWindowToolBarLayout() const;
     bool recommendedToolBarVisibility(const QToolBar* toolbar) const;
     void applyRecommendedToolBarPreferences();
@@ -455,3 +452,5 @@ private:
 };
 
 }  // namespace Gui
+
+Q_DECLARE_METATYPE(Gui::ToolBarManager::ToolbarScopeId)

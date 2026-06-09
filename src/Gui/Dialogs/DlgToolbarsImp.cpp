@@ -50,13 +50,15 @@ using namespace Gui::Dialog;
 
 namespace
 {
+constexpr int ToolbarTierColumn = 2;
+
 QString customToolbarTierName(const QTreeWidgetItem* item)
 {
     if (!item) {
         return {};
     }
 
-    return item->data(2, Qt::UserRole).toString();
+    return item->data(ToolbarTierColumn, Qt::UserRole).toString();
 }
 }  // namespace
 
@@ -153,9 +155,12 @@ void DlgCustomToolbars::setupConnections()
     // clang-format on
 
     if (auto* manager = ToolBarManager::getInstance()) {
-        connect(manager, &ToolBarManager::toolbarLayoutRestored, this, [this](const QString&) {
-            updateToolbarLayoutControls();
-        });
+        connect(
+            manager,
+            &ToolBarManager::toolbarLayoutScopeRestored,
+            this,
+            [this](const ToolBarManager::ToolbarScopeId&) { updateToolbarLayoutControls(); }
+        );
     }
 }
 
@@ -424,11 +429,13 @@ QString DlgCustomToolbars::toolbarIdentityCollisionMessage(
             menuText = scopeInfo.workbench;
         }
 
-        detail = tr(" in %1").arg(menuText);
+        detail = tr(" in the '%1' workbench", "toolbar identity collision scope detail").arg(menuText);
     }
 
     return tr("The toolbar name '%1' collides with an existing %2 toolbar identity%3.")
-        .arg(toolbarName, scopeLabel.toLower(), detail);
+        .arg(toolbarName)
+        .arg(scopeLabel.toLower())
+        .arg(detail);
 }
 
 QString DlgCustomToolbars::selectedWorkbench() const
