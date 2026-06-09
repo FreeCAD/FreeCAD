@@ -1701,15 +1701,16 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
             if (style != SoFCSelectionRoot::Box) {
                 state->push();
                 auto& color = SelColorStack.back();
-                SoLazyElement::setEmissive(state, &color);
-                SoOverrideElement::setEmissiveColorOverride(state, this, true);
-                if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
-                    auto& packer = shapeColorPacker;
-                    SoLazyElement::setDiffuse(state, this, 1, &color, &packer);
-                    SoOverrideElement::setDiffuseColorOverride(state, this, true);
-                    SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::OVERALL);
-                    SoOverrideElement::setMaterialBindingOverride(state, this, true);
-                }
+                auto& packer = shapeColorPacker;
+                SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::OVERALL);
+                SoOverrideElement::setMaterialBindingOverride(state, this, true);
+                SelectionColors::applyMaterial(
+                    state,
+                    this,
+                    SelectionColors::VisualRole::Selection,
+                    color,
+                    &packer
+                );
             }
         }
 

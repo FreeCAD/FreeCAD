@@ -48,6 +48,7 @@
 
 #include <Gui/SoFCInteractiveElement.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Selection/SelectionColors.h>
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/So3DAnnotation.h>
@@ -118,6 +119,7 @@ static void renderOverlayFaces(
     SoIndexedFaceSet* faceSet,
     const std::vector<int32_t>& coordIndex,
     const SbColor& color,
+    Gui::SelectionColors::VisualRole role,
     bool onTop
 )
 {
@@ -128,8 +130,11 @@ static void renderOverlayFaces(
     auto state = action->getState();
     state->push();
 
-    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+    SoOverrideElement::setLightModelOverride(state, faceSet, false);
+    SoLazyElement::setLightModel(state, SoLazyElement::PHONG);
+    SoOverrideElement::setLightModelOverride(state, faceSet, true);
     SoTextureEnabledElement::set(state, faceSet, false);
+    SoOverrideElement::setMaterialBindingOverride(state, faceSet, false);
     SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
     SoOverrideElement::setMaterialBindingOverride(state, faceSet, true);
 
@@ -143,9 +148,8 @@ static void renderOverlayFaces(
         SoDepthBufferElement::set(state, TRUE, FALSE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0f, 1.0f));
     }
 
-    SoLazyElement::setEmissive(state, &color);
-    const uint32_t packed = color.getPackedValue(0.0f);
-    SoLazyElement::setPacked(state, faceSet, 1, &packed, false);
+    SoColorPacker packer;
+    Gui::SelectionColors::applyMaterial(state, faceSet, role, color, &packer);
 
     faceSet->coordIndex.setValues(0, static_cast<int32_t>(coordIndex.size()), coordIndex.data());
     faceSet->GLRender(action);
@@ -414,7 +418,14 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
     const bool onTop = Gui::Selection().isClarifySelectionActive()
         && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths;
 
-    renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->highlightColor, onTop);
+    renderOverlayFaces(
+        action,
+        overlayFaceSet,
+        overlayCoordIndex,
+        ctx->highlightColor,
+        Gui::SelectionColors::VisualRole::Preselection,
+        onTop
+    );
 }
 
 void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx, bool /*push*/)
@@ -431,7 +442,14 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
     if (ctx->isSelectAll()) {
         std::set<int> dummy;
         buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, dummy, true);
-        renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->selectionColor, false);
+        renderOverlayFaces(
+            action,
+            overlayFaceSet,
+            overlayCoordIndex,
+            ctx->selectionColor,
+            Gui::SelectionColors::VisualRole::Selection,
+            false
+        );
         return;
     }
 
@@ -447,7 +465,14 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
     }
 
     buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, parts, false);
-    renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->selectionColor, false);
+    renderOverlayFaces(
+        action,
+        overlayFaceSet,
+        overlayCoordIndex,
+        ctx->selectionColor,
+        Gui::SelectionColors::VisualRole::Selection,
+        false
+    );
 }
 
 bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2)
@@ -531,7 +556,29 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
         SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
         SoOverrideElement::setMaterialBindingOverride(state, this, true);
         packedColors.push_back(diffuseColor);
-        SoLazyElement::setPacked(state, this, 1, packedColors.data(), hasBaseTransparency);
+        if (ctx && ctx->isHighlightAll()) {
+            Gui::SelectionColors::applyPackedMaterial(
+                state,
+                this,
+                Gui::SelectionColors::VisualRole::Preselection,
+                ctx->highlightColor,
+                diffuseColor,
+                hasBaseTransparency
+            );
+        }
+        else if (ctx && ctx->isSelectAll()) {
+            Gui::SelectionColors::applyPackedMaterial(
+                state,
+                this,
+                Gui::SelectionColors::VisualRole::Selection,
+                ctx->selectionColor,
+                diffuseColor,
+                hasBaseTransparency
+            );
+        }
+        else {
+            SoLazyElement::setPacked(state, this, 1, packedColors.data(), hasBaseTransparency);
+        }
         SoTextureEnabledElement::set(state, this, false);
         return true;
     }
