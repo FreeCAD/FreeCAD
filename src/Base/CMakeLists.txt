@@ -267,7 +267,6 @@ SET(FreeCADBase_HPP_SRCS
     Interpreter.h
     Matrix.h
     Observer.h
-    OCCTTools.h
     Parameter.h
     Persistence.h
     Placement.h
