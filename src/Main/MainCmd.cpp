@@ -36,6 +36,7 @@
 
 // FreeCAD Base header
 #include <Base/Console.h>
+#include <Base/CrashReporter/WindowsMiniDump.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 
@@ -83,6 +84,9 @@ int main(int argc, char** argv)
 
         // Inits the Application
         App::Application::init(argc, argv);
+#ifdef _MSC_VER
+        Base::CrashReporter::WindowsCrashReporter::install(App::Application::getUserAppDataDir() + "CrashReports");
+#endif
     }
     catch (const Base::UnknownProgramOption& e) {
         std::cerr << e.what();

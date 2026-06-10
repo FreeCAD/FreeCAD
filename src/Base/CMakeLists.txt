@@ -51,6 +51,7 @@ if(MSVC)
         optimized MSVCPRT.LIB
         Rpcrt4.lib
         version.lib
+        dbghelp.lib
     )
 
     #Universal C runtime introduced in VS 2015 (cl version 19)
@@ -335,7 +336,10 @@ IF (MSVC)
         ${FreeCADBase_SRCS}
         StackWalker.cpp
         StackWalker.h
+        CrashReporter/WindowsMiniDump.cpp
+        CrashReporter/WindowsMiniDump.h
     )
+
 ENDIF(MSVC)
 
 if(FREECAD_USE_EXTERNAL_ZIPIOS)
