@@ -191,6 +191,90 @@ bool CmdSketcher3DCreatePolyline::isActive()
 }
 
 // ---------------------------------------------------------------------------
+// Selection helpers
+// ---------------------------------------------------------------------------
+
+struct Sketch3DCollectedSelection
+{
+    std::vector<Sketcher3D::GeoElementId3D> points;
+    std::vector<Sketcher3D::GeoElementId3D> lines;
+};
+
+Sketch3DCollectedSelection collectSketch3DSelection(
+    Sketcher3D::Sketch3DObject* sketch,
+    bool wantPoints,
+    bool wantLines
+)
+{
+    Sketch3DCollectedSelection result;
+    if (!sketch || (!wantPoints && !wantLines)) {
+        return result;
+    }
+
+    auto& geos = sketch->Geometry.getValues();
+    auto sels = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
+    auto shape = sketch->Shape.getShape();
+    for (auto& s : sels) {
+        if (s.getObject() != sketch) {
+            continue;
+        }
+        for (auto& subname : s.getSubNames()) {
+            TopoDS_Shape sub;
+            try {
+                sub = shape.getSubShape(subname.c_str(), /*silent=*/true);
+            }
+            catch (const Standard_Failure&) {
+                continue;
+            }
+            if (sub.IsNull()) {
+                continue;
+            }
+            auto id = sketch->resolveSubName(subname);
+            if (!id.isValid()) {
+                continue;
+            }
+
+            if (wantPoints && sub.ShapeType() == TopAbs_VERTEX) {
+                result.points.push_back(id);
+            }
+            else if (wantLines && sub.ShapeType() == TopAbs_EDGE) {
+                if (id.GeoId >= 0 && id.GeoId < static_cast<int>(geos.size())
+                    && dynamic_cast<const Part::GeomLineSegment*>(geos[id.GeoId])) {
+                    result.lines.push_back(id);
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+std::vector<Sketcher3D::GeoElementId3D> collectSelectedPointRefs(Sketcher3D::Sketch3DObject* sketch)
+{
+    return collectSketch3DSelection(sketch, true, false).points;
+}
+
+std::vector<Sketcher3D::GeoElementId3D> collectSelectedLineRefs(Sketcher3D::Sketch3DObject* sketch)
+{
+    return collectSketch3DSelection(sketch, false, true).lines;
+}
+
+bool collectSelectedPointAndLineRefs(
+    Sketcher3D::Sketch3DObject* sketch,
+    Sketcher3D::GeoElementId3D& pointRef,
+    Sketcher3D::GeoElementId3D& lineRef
+)
+{
+    auto sel = collectSketch3DSelection(sketch, true, true);
+    if (sel.points.size() != 1 || sel.lines.size() != 1) {
+        return false;
+    }
+    pointRef = sel.points[0];
+    lineRef = sel.lines[0];
+    return true;
+}
+
+// ---------------------------------------------------------------------------
 // Constraints
 // ---------------------------------------------------------------------------
 
@@ -333,35 +417,7 @@ void addAxisDistanceConstraint(
         return;
     }
 
-    std::vector<Sketcher3D::GeoElementId3D> refs;
-    std::vector<Base::Vector3d> positions;
-    const auto sels
-        = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
-    const Part::TopoShape& shape = sketch->Shape.getShape();
-    for (const auto& s : sels) {
-        if (s.getObject() != sketch) {
-            continue;
-        }
-        for (const std::string& subname : s.getSubNames()) {
-            TopoDS_Shape sub;
-            try {
-                sub = shape.getSubShape(subname.c_str(), /*silent=*/true);
-            }
-            catch (const Standard_Failure&) {
-                continue;
-            }
-            if (sub.IsNull() || sub.ShapeType() != TopAbs_VERTEX) {
-                continue;
-            }
-            const TopoDS_Vertex v = TopoDS::Vertex(sub);
-            auto id = sketch->resolveSubName(subname);
-            if (id.isValid()) {
-                refs.push_back(id);
-                const gp_Pnt p = BRep_Tool::Pnt(v);
-                positions.emplace_back(p.X(), p.Y(), p.Z());
-            }
-        }
-    }
+    const auto refs = collectSelectedPointRefs(sketch);
 
     if (refs.empty() || refs.size() > 2) {
         Base::Console().warning("Sketcher3D: select one or two 3D sketch points for Distance%c.\n", axis);
@@ -370,6 +426,16 @@ void addAxisDistanceConstraint(
     if (refs.size() == 2 && refs[0] == refs[1]) {
         Base::Console().warning("Sketcher3D: Distance%c needs two distinct points.\n", axis);
         return;
+    }
+
+    std::vector<Base::Vector3d> positions;
+    positions.reserve(refs.size());
+    for (const auto& ref : refs) {
+        Base::Vector3d point;
+        if (!sketch->getPointAt(ref, point)) {
+            return;
+        }
+        positions.push_back(point);
     }
 
     // One point: seed from the absolute coordinate (distance to the corresponding global plane).
@@ -551,33 +617,7 @@ void CmdSketcher3DConstrainCoincident::activated(int iMsg)
         return;
     }
 
-    // Collect selected vertex refs.
-    std::vector<Sketcher3D::GeoElementId3D> refs;
-    const auto sels
-        = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
-    const Part::TopoShape& shape = sketch->Shape.getShape();
-    for (const auto& s : sels) {
-        if (s.getObject() != sketch) {
-            continue;
-        }
-        for (const std::string& subname : s.getSubNames()) {
-            TopoDS_Shape sub;
-            try {
-                sub = shape.getSubShape(subname.c_str(), /*silent=*/true);
-            }
-            catch (const Standard_Failure&) {
-                continue;
-            }
-            if (sub.IsNull() || sub.ShapeType() != TopAbs_VERTEX) {
-                continue;
-            }
-            // Convert the selected subshape name to a sketch geometry reference.
-            auto id = sketch->resolveSubName(subname);
-            if (id.isValid()) {
-                refs.push_back(id);
-            }
-        }
-    }
+    const auto refs = collectSelectedPointRefs(sketch);
 
     if (refs.size() != 2) {
         Base::Console().warning("Sketcher3D: select exactly two 3D sketch points for Coincident.\n");
@@ -607,44 +647,6 @@ void CmdSketcher3DConstrainCoincident::activated(int iMsg)
 bool CmdSketcher3DConstrainCoincident::isActive()
 {
     return isSketch3DInEdit();
-}
-
-// helper function to collect selected line refs for the parallel, angle, and Along constraints
-std::vector<Sketcher3D::GeoElementId3D> collectSelectedLineRefs(Sketcher3D::Sketch3DObject* sketch)
-{
-    std::vector<Sketcher3D::GeoElementId3D> refs;
-    if (!sketch) {
-        return refs;
-    }
-    const auto& geos = sketch->Geometry.getValues();
-
-    const auto sels
-        = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
-    const Part::TopoShape& shape = sketch->Shape.getShape();
-    for (const auto& s : sels) {
-        if (s.getObject() != sketch) {
-            continue;
-        }
-        for (const std::string& subname : s.getSubNames()) {
-            TopoDS_Shape sub;
-            try {
-                sub = shape.getSubShape(subname.c_str(), /*silent=*/true);
-            }
-            catch (const Standard_Failure&) {
-                continue;
-            }
-            if (sub.IsNull() || sub.ShapeType() != TopAbs_EDGE) {
-                continue;
-            }
-            auto id = sketch->resolveSubName(subname);
-            if (id.isValid() && id.GeoId >= 0 && id.GeoId < static_cast<int>(geos.size())
-                && dynamic_cast<const Part::GeomLineSegment*>(geos[id.GeoId])) {
-                refs.push_back(id);
-            }
-        }
-    }
-
-    return refs;
 }
 
 // Finds the closest pair of endpoints between the two lines, sets
@@ -828,6 +830,112 @@ void CmdSketcher3DConstrainEqualLength::activated(int iMsg)
 }
 
 bool CmdSketcher3DConstrainEqualLength::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainPointOnLine)
+
+CmdSketcher3DConstrainPointOnLine::CmdSketcher3DConstrainPointOnLine()
+    : Command("Sketcher3D_ConstrainPointOnLine")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain point on line");
+    sToolTipText = QT_TR_NOOP("Force a 3D point to lie on a 3D line");
+    sWhatsThis = "Sketcher3D_ConstrainPointOnLine";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_PointOnObject";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainPointOnLine::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    if (!sketch) {
+        return;
+    }
+
+    Sketcher3D::GeoElementId3D pointRef;
+    Sketcher3D::GeoElementId3D lineRef;
+    if (!collectSelectedPointAndLineRefs(sketch, pointRef, lineRef)) {
+        Base::Console().warning(
+            "Sketcher3D: select exactly one 3D point and one 3D line for Point on line.\n"
+        );
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain point on line"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::PointOnLine3D;
+    c.setElements({pointRef, lineRef});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainPointOnLine::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainMidpoint)
+
+CmdSketcher3DConstrainMidpoint::CmdSketcher3DConstrainMidpoint()
+    : Command("Sketcher3D_ConstrainMidpoint")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain midpoint");
+    sToolTipText = QT_TR_NOOP("Force a 3D point to be the midpoint of a 3D line");
+    sWhatsThis = "Sketcher3D_ConstrainMidpoint";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Symmetric";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainMidpoint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    if (!sketch) {
+        return;
+    }
+
+    Sketcher3D::GeoElementId3D pointRef;
+    Sketcher3D::GeoElementId3D lineRef;
+    if (!collectSelectedPointAndLineRefs(sketch, pointRef, lineRef)) {
+        Base::Console().warning(
+            "Sketcher3D: select exactly one 3D point and one 3D line for Midpoint.\n"
+        );
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain midpoint"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Midpoint3D;
+    c.setElements({pointRef, lineRef});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainMidpoint::isActive()
 {
     return isSketch3DInEdit();
 }
@@ -1132,6 +1240,8 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongY());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongZ());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainEqualLength());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointOnLine());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainMidpoint());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompDimensionTools());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompParallel());
 }

@@ -83,5 +83,7 @@ void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
             << "Sketcher3D_CompDimensionTools"
             << "Sketcher3D_ConstrainCoincident"
             << "Sketcher3D_CompParallel"
-            << "Sketcher3D_ConstrainEqualLength";
+            << "Sketcher3D_ConstrainEqualLength"
+            << "Sketcher3D_ConstrainPointOnLine"
+            << "Sketcher3D_ConstrainMidpoint";
 }

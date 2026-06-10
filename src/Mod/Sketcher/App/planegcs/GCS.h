@@ -544,6 +544,20 @@ public:
     int addConstraintLineAlongY3D(Line3D& l, int tagId = 0, bool driving = true);
     int addConstraintLineAlongZ3D(Line3D& l, int tagId = 0, bool driving = true);
 
+    // Point lies on lines
+    int addConstraintPointOnLine3D(Point3D& p, Line3D& l, int tagId = 0, bool driving = true);
+    int addConstraintPointOnLine3D(
+        Point3D& p,
+        Point3D& lp1,
+        Point3D& lp2,
+        int tagId = 0,
+        bool driving = true
+    );
+
+    // Point is the midpoint of the line segment
+    int addConstraintMidpoint3D(Point3D& p, Line3D& l, int tagId = 0, bool driving = true);
+    int addConstraintMidpoint3D(Point3D& p, Point3D& lp1, Point3D& lp2, int tagId = 0, bool driving = true);
+
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(
         Ellipse& e,

@@ -239,6 +239,38 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             }
             return tagId;
         }
+        case Constraint3D::PointOnLine3D:
+        case Constraint3D::Midpoint3D: {
+            if (elements.size() != 2) {
+                return -1;
+            }
+            int lineIdx = -1;
+            int line = -1;
+            for (int x = 0; x < 2; ++x) {
+                if (elements[x].Pos == PointPos::none) {
+                    const int candidate = getLineId(elements[x]);
+                    if (candidate >= 0) {
+                        lineIdx = x;
+                        line = candidate;
+                        break;
+                    }
+                }
+            }
+            if (lineIdx < 0) {
+                return -1;
+            }
+            const int point = getPointId(elements[1 - lineIdx]);
+            if (point < 0) {
+                return -1;
+            }
+            if (constraint.Type == Constraint3D::PointOnLine3D) {
+                solver.addConstraintPointOnLine(tagId, point, line);
+            }
+            else {
+                solver.addConstraintMidpoint(tagId, point, line);
+            }
+            return tagId;
+        }
         default:
             return -1;
     }

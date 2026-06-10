@@ -76,6 +76,12 @@ public:
     /// Equal length constraint between two lines.
     void addConstraintEqualLength(int tagId, int lineHandleA, int lineHandleB);
 
+    /// Pointonline constraint
+    void addConstraintPointOnLine(int tagId, int pointHandle, int lineHandle);
+
+    /// Midpoint constraint
+    void addConstraintMidpoint(int tagId, int pointHandle, int lineHandle);
+
     /// Angle constraint between two lines.
     /// Angle is unsigned, in radians, in [0, pi].
     void addConstraintAngle(

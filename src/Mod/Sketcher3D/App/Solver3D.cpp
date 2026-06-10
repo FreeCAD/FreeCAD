@@ -116,6 +116,24 @@ void Solver3D::addConstraintEqualLength(int tagId, int lineHandleA, int lineHand
     GCSsys.addConstraintEqualLength3D(la, lb, tagId);
 }
 
+void Solver3D::addConstraintPointOnLine(int tagId, int pointHandle, int lineHandle)
+{
+    if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size()) || lineHandle < 0
+        || lineHandle >= static_cast<int>(lines.size())) {
+        throw Base::IndexError("Solver3D::addConstraintPointOnLine handle out of range");
+    }
+    GCSsys.addConstraintPointOnLine3D(points[pointHandle], lines[lineHandle], tagId);
+}
+
+void Solver3D::addConstraintMidpoint(int tagId, int pointHandle, int lineHandle)
+{
+    if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size()) || lineHandle < 0
+        || lineHandle >= static_cast<int>(lines.size())) {
+        throw Base::IndexError("Solver3D::addConstraintMidpoint handle out of range");
+    }
+    GCSsys.addConstraintMidpoint3D(points[pointHandle], lines[lineHandle], tagId);
+}
+
 void Solver3D::addConstraintAngle(
     int tagId,
     int lineHandleA,

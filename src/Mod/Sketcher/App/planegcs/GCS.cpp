@@ -1093,6 +1093,35 @@ int System::addConstraintLineAlongZ3D(Line3D& l, int tagId, bool driving)
     return addConstraintEqual(l.p1.y, l.p2.y, tagId, driving);
 }
 
+int System::addConstraintPointOnLine3D(Point3D& p, Line3D& l, int tagId, bool driving)
+{
+    return addConstraintPointOnLine3D(p, l.p1, l.p2, tagId, driving);
+}
+
+int System::addConstraintPointOnLine3D(Point3D& p, Point3D& lp1, Point3D& lp2, int tagId, bool driving)
+{
+    // Used cross product to check if (p - lp1) is parallel to (lp2 - lp1).
+    return addConstraintParallel3D(p, lp1, lp2, lp1, tagId, driving);
+}
+
+int System::addConstraintMidpoint3D(Point3D& p, Line3D& l, int tagId, bool driving)
+{
+    return addConstraintMidpoint3D(p, l.p1, l.p2, tagId, driving);
+}
+
+int System::addConstraintMidpoint3D(Point3D& p, Point3D& lp1, Point3D& lp2, int tagId, bool driving)
+{
+    addConstraintPointOnLine3D(p, lp1, lp2, tagId, driving);
+
+    Line3D halfA;
+    halfA.p1 = p;
+    halfA.p2 = lp1;
+    Line3D halfB;
+    halfB.p1 = p;
+    halfB.p2 = lp2;
+    return addConstraintEqualLength3D(halfA, halfB, tagId, driving);
+}
+
 int System::addConstraintArcRules(Arc& a, int tagId, bool driving)
 {
     addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);
