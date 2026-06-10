@@ -27,6 +27,8 @@
 #include <limits>
 #include <numbers>
 
+#include <QWidget>
+
 #include <Precision.hxx>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/Geometry.h>
@@ -52,13 +54,19 @@ bool DrawSketchHandlerDragAutoConstraint::canSuggestFor(const std::vector<GeoEle
 
 void DrawSketchHandlerDragAutoConstraint::initDragging(const std::vector<GeoElementId>& dragged)
 {
-    clear();
+    suggestedConstraints.clear();
 
-    if (!canSuggestFor(dragged)) {
+    if (QWidget* widget = getCursorWidget()) {
+        oldCursor = widget->cursor();
+    }
+
+    SketchObject* obj = getSketchObject();
+    if (!obj || !canSuggestFor(dragged)) {
         return;
     }
 
-    startPos = toVector2d(getSketchObject()->getPoint(dragged.front().GeoId, dragged.front().Pos));
+    updateCursor();
+    startPos = toVector2d(obj->getPoint(dragged.front().GeoId, dragged.front().Pos));
 }
 
 void DrawSketchHandlerDragAutoConstraint::addAutoConstraint(ConstraintType type, int geoId, PointPos posId)

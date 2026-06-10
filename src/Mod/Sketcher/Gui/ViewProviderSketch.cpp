@@ -1963,7 +1963,6 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
     if (!dragAutoConstraintHandler) {
         dragAutoConstraintHandler = std::make_unique<DrawSketchHandlerDragAutoConstraint>();
         dragAutoConstraintHandler->setSketchGui(this);
-        dragAutoConstraintHandler->updateCursor();
     }
     dragAutoConstraintHandler->initDragging(drag.Dragged);
 
