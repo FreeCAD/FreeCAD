@@ -112,7 +112,7 @@ Real CylinderFit3<Real>::UpdateDirection (int iQuantity,
 
     // compute direction of steepest descent
     Vector3<Real> kVDir = Vector3<Real>::ZERO;
-    Real fAMean = (Real)0.0, fAAMean = (Real)0.0;
+    [[maybe_unused]] Real fAMean = (Real)0.0, fAAMean = (Real)0.0;
     for (i = 0; i < iQuantity; i++)
     {
         kDelta = akPoint[i] - rkC;
