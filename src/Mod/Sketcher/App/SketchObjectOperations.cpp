@@ -2157,8 +2157,7 @@ int SketchObject::addCopy(
             currentrowfirstgeoid = cgeoid;
         }
 
-        int index = 0;
-        for (auto it = newgeoIdList.cbegin(); it != newgeoIdList.cend(); ++it, ++index) {
+        for (auto it = newgeoIdList.cbegin(); it != newgeoIdList.cend(); ++it) {
             const Part::Geometry* geo = getGeometry(*it);
 
             Part::Geometry* geocopy;

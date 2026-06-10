@@ -131,10 +131,9 @@ bool Writer3MF::SaveObject(std::ostream& str, int id, const MeshKernel& mesh, co
 
     // vertices
     str << Base::blanks(4) << "<vertices>\n";
-    std::size_t index = 0;
-    for (auto it = rPoints.begin(); it != rPoints.end(); ++it, ++index) {
-        str << Base::blanks(5) << "<vertex x=\"" << it->x << "\" y=\"" << it->y << "\" z=\""
-            << it->z << "\" />\n";
+    for (const auto& rPoint : rPoints) {
+        str << Base::blanks(5) << "<vertex x=\"" << rPoint.x << "\" y=\"" << rPoint.y << "\" z=\""
+            << rPoint.z << "\" />\n";
     }
     str << Base::blanks(4) << "</vertices>\n";
 
