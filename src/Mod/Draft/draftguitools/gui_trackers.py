@@ -1145,8 +1145,8 @@ class wireTracker(Tracker):
 class gridTracker(Tracker):
     """A grid tracker."""
 
-    def __init__(self):
-
+    def __init__(self, doc_name=None):
+        self.doc_name = doc_name
         col, red, green, blue, gtrans = self.getGridColors()
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
@@ -1501,11 +1501,13 @@ class gridTracker(Tracker):
     def reset(self):
         """Reset the grid according to preferences settings."""
         try:
-            self.space = FreeCAD.Units.Quantity(params.get_param("gridSpacing")).Value
+            self.space = FreeCAD.Units.Quantity(
+                params.get_grid_param("gridSpacing", self.doc_name)
+            ).Value
         except ValueError:
             self.space = 1
-        self.mainlines = params.get_param("gridEvery")
-        self.numlines = params.get_param("gridSize")
+        self.mainlines = params.get_grid_param("gridEvery", self.doc_name)
+        self.numlines = params.get_grid_param("gridSize", self.doc_name)
         self.update()
 
     def set(self):
