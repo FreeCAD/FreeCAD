@@ -363,8 +363,6 @@ struct type_traits<std::string>
     using value_type = ParameterObserver::String;
 };
 
-}  // namespace Base
-
 template<typename T>
 struct type_from_member;
 
@@ -379,6 +377,8 @@ constexpr bool is_getter = std::is_same<T, R (type_from_member<T>::type::*)() co
 
 template<typename T, typename A>
 constexpr bool is_setter = std::is_same<T, void (type_from_member<T>::type::*)(A)>::value;
+
+}  // namespace Base
 
 #define FC_PARAM_GETSET_IMP(_class, _name, _ctype) \
     _ctype _class::get##_name() const \

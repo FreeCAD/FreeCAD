@@ -29,272 +29,272 @@ using namespace Gui;
 void ViewParams::setup()
 {
     static_assert(
-        is_getter<decltype(&ViewParams::getUseNewSelection), Bool::value_type>,
+        Base::is_getter<decltype(&ViewParams::getUseNewSelection), Bool::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setUseNewSelection), Bool::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getUseSelectionRoot), Bool::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setUseSelectionRoot), Bool::value_type>,
+        Base::is_setter<decltype(&ViewParams::setUseNewSelection), Bool::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getEnableSelection), Bool::value_type>,
+        Base::is_getter<decltype(&ViewParams::getUseSelectionRoot), Bool::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setEnableSelection), Bool::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getRenderCache), Int::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setRenderCache), Int::value_type>,
+        Base::is_setter<decltype(&ViewParams::setUseSelectionRoot), Bool::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getRandomColor), Bool::value_type>,
+        Base::is_getter<decltype(&ViewParams::getEnableSelection), Bool::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setRandomColor), Bool::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getBoundingBoxColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setBoundingBoxColor), Unsigned::value_type>,
+        Base::is_setter<decltype(&ViewParams::setEnableSelection), Bool::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getAnnotationTextColor), Unsigned::value_type>,
+        Base::is_getter<decltype(&ViewParams::getRenderCache), Int::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setAnnotationTextColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getMarkerSize), Int::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setMarkerSize), Int::value_type>,
+        Base::is_setter<decltype(&ViewParams::setRenderCache), Int::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getDefaultLinkColor), Unsigned::value_type>,
+        Base::is_getter<decltype(&ViewParams::getRandomColor), Bool::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setDefaultLinkColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getDefaultShapeLineColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setDefaultShapeLineColor), Unsigned::value_type>,
+        Base::is_setter<decltype(&ViewParams::setRandomColor), Bool::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getDefaultShapeVertexColor), Unsigned::value_type>,
+        Base::is_getter<decltype(&ViewParams::getBoundingBoxColor), Unsigned::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setDefaultShapeVertexColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getDefaultShapeColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setDefaultShapeColor), Unsigned::value_type>,
+        Base::is_setter<decltype(&ViewParams::setBoundingBoxColor), Unsigned::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getDefaultShapeTransparency), Int::value_type>,
+        Base::is_getter<decltype(&ViewParams::getAnnotationTextColor), Unsigned::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setDefaultShapeTransparency), Int::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getDefaultShapeLineWidth), Int::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setDefaultShapeLineWidth), Int::value_type>,
+        Base::is_setter<decltype(&ViewParams::setAnnotationTextColor), Unsigned::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getDefaultShapePointSize), Int::value_type>,
+        Base::is_getter<decltype(&ViewParams::getMarkerSize), Int::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setDefaultShapePointSize), Int::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getCoinCycleCheck), Bool::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setCoinCycleCheck), Bool::value_type>,
+        Base::is_setter<decltype(&ViewParams::setMarkerSize), Int::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getEnablePropertyViewForInactiveDocument), Bool::value_type>,
+        Base::is_getter<decltype(&ViewParams::getDefaultLinkColor), Unsigned::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setEnablePropertyViewForInactiveDocument), Bool::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getShowSelectionBoundingBox), Bool::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setShowSelectionBoundingBox), Bool::value_type>,
+        Base::is_setter<decltype(&ViewParams::setDefaultLinkColor), Unsigned::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getPropertyViewTimer), Unsigned::value_type>,
+        Base::is_getter<decltype(&ViewParams::getDefaultShapeLineColor), Unsigned::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setPropertyViewTimer), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getAxisXColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setAxisXColor), Unsigned::value_type>,
+        Base::is_setter<decltype(&ViewParams::setDefaultShapeLineColor), Unsigned::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getAxisYColor), Unsigned::value_type>,
+        Base::is_getter<decltype(&ViewParams::getDefaultShapeVertexColor), Unsigned::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setAxisYColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getAxisZColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setAxisZColor), Unsigned::value_type>,
+        Base::is_setter<decltype(&ViewParams::setDefaultShapeVertexColor), Unsigned::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getOriginColor), Unsigned::value_type>,
+        Base::is_getter<decltype(&ViewParams::getDefaultShapeColor), Unsigned::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setOriginColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getNeutralColor), Unsigned::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setNeutralColor), Unsigned::value_type>,
+        Base::is_setter<decltype(&ViewParams::setDefaultShapeColor), Unsigned::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getPlacementIndicatorScale), Double::value_type>,
+        Base::is_getter<decltype(&ViewParams::getDefaultShapeTransparency), Int::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setPlacementIndicatorScale), Double::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getDraggerScale), Double::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setDraggerScale), Double::value_type>,
+        Base::is_setter<decltype(&ViewParams::setDefaultShapeTransparency), Int::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getDatumScale), Double::value_type>,
+        Base::is_getter<decltype(&ViewParams::getDefaultShapeLineWidth), Int::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setDatumScale), Double::value_type>,
-        "Mismatching signature"
-    );
-
-    static_assert(
-        is_getter<decltype(&ViewParams::getDatumPlaneSize), Double::value_type>,
-        "Mismatching signature"
-    );
-    static_assert(
-        is_setter<decltype(&ViewParams::setDatumPlaneSize), Double::value_type>,
+        Base::is_setter<decltype(&ViewParams::setDefaultShapeLineWidth), Int::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getDatumLineSize), Double::value_type>,
+        Base::is_getter<decltype(&ViewParams::getDefaultShapePointSize), Int::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setDatumLineSize), Double::value_type>,
+        Base::is_setter<decltype(&ViewParams::setDefaultShapePointSize), Int::value_type>,
         "Mismatching signature"
     );
 
     static_assert(
-        is_getter<decltype(&ViewParams::getDatumTemporaryScaleFactor), Double::value_type>,
+        Base::is_getter<decltype(&ViewParams::getCoinCycleCheck), Bool::value_type>,
         "Mismatching signature"
     );
     static_assert(
-        is_setter<decltype(&ViewParams::setDatumTemporaryScaleFactor), Double::value_type>,
+        Base::is_setter<decltype(&ViewParams::setCoinCycleCheck), Bool::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getEnablePropertyViewForInactiveDocument), Bool::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setEnablePropertyViewForInactiveDocument), Bool::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getShowSelectionBoundingBox), Bool::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setShowSelectionBoundingBox), Bool::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getPropertyViewTimer), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setPropertyViewTimer), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getAxisXColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setAxisXColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getAxisYColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setAxisYColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getAxisZColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setAxisZColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getOriginColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setOriginColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getNeutralColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setNeutralColor), Unsigned::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getPlacementIndicatorScale), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setPlacementIndicatorScale), Double::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getDraggerScale), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setDraggerScale), Double::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getDatumScale), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setDatumScale), Double::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getDatumPlaneSize), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setDatumPlaneSize), Double::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getDatumLineSize), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setDatumLineSize), Double::value_type>,
+        "Mismatching signature"
+    );
+
+    static_assert(
+        Base::is_getter<decltype(&ViewParams::getDatumTemporaryScaleFactor), Double::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&ViewParams::setDatumTemporaryScaleFactor), Double::value_type>,
         "Mismatching signature"
     );
 

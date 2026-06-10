@@ -48,9 +48,12 @@ namespace sp = std::placeholders;
 SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
     : QAbstractTableModel(parent)
     , sheet(_sheet)
-    , rows(1000)
-    , cols(26)
+    , rows(0)
+    , cols(0)
 {
+    auto param = SheetParameter::instance();
+    rows = static_cast<int>(param->getMaximumRowCount());
+    cols = static_cast<int>(param->getMaximumColumnCount());
     containSheetDataInView();
 
     // NOLINTBEGIN
@@ -62,14 +65,10 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
     );
     // NOLINTEND
 
-    auto param = SheetParameter::instance();
     aliasBgColor = QColor(QString::fromStdString(param->getAliasedCellBackgroundColor()));
     textFgColor = QColor(QString::fromStdString(param->getTextColor()));
     positiveFgColor = QColor(QString::fromStdString(param->getPositiveNumberColor()));
     negativeFgColor = QColor(QString::fromStdString(param->getNegativeNumberColor()));
-
-    maxRowCount = int(param->getMaximumRowCount());
-    maxColumnCount = int(param->getMaximumColumnCount());
 }
 
 SheetModel::~SheetModel()

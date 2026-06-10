@@ -397,21 +397,6 @@ ProjectFile::Metadata ProjectFile::parseMetadata() const
     return meta;
 }
 
-bool ProjectFile::isValid() const
-{
-    if (xmlDocument) {
-        return true;  // already loaded
-    }
-
-    auto project = ZipTools::open(stdFile);
-    if (!project) {
-        return false;
-    }
-
-    std::unique_ptr<std::istream> str(project->getInputStream("Document.xml"));
-    return static_cast<bool>(str);
-}
-
 ProjectFile::Metadata ProjectFile::getMetadata() const
 {
     if (!xmlDocument) {
