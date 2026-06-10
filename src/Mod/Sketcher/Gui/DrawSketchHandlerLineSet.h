@@ -1140,6 +1140,13 @@ private:
 
                 obj->fillet(geoId1, geoId2, refPnt1, refPnt2, radius, true, true);
 
+                if (!obj->noRecomputes) {
+                    // obj->fillet() solves at the end only when obj->noRecomputes is set, but we
+                    // need the solve even when AutoRecompute is on or the fillet won't appear.
+                    // See https://github.com/FreeCAD/FreeCAD/issues/30625
+                    obj->solve();
+                }
+
                 if (isConstructionMode()) {
                     int filletGeoId = geoId + 1;
                     Gui::cmdAppObjectArgs(obj, "toggleConstruction(%d) ", filletGeoId);
@@ -1306,42 +1313,57 @@ private:
 
             // Start by removing last edge and fillet arc if any
             if (filletWasCreated) {
-                obj->delGeometries({delGeoId, delGeoId + 1});
-            }
-            else {
-                obj->delGeometry(delGeoId);
-            }
+                Gui::cmdAppObjectArgs(obj, "delGeometries([%d, %d])", delGeoId, delGeoId + 1);
 
-            if (!geoEltIds.empty()) {
-                // Move back the previous edge point
-                int prevGeoId = geoEltIds.back().GeoId;
-                PointPos prevPos = geoEltIds.back().Pos;
-                obj->moveGeometry(prevGeoId, prevPos, toVector3d(points.back()));
-
-                // Then transfer back the constraints
-                if (pointWasCreated) {
-                    int pointGeoId = getHighestCurveIndex();
-                    // We must first remove the point on object constraint.
-                    const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
-                    for (int i = constraints.size() - 1; i >= 0; --i) {
-                        if (constraints[i]->Type != PointOnObject) {
-                            continue;
-                        }
-                        int first = constraints[i]->getGeoId(0);
-                        int second = constraints[i]->getGeoId(1);
-                        bool case1 = first == pointGeoId && second == prevGeoId;
-                        bool case2 = first == prevGeoId && second == pointGeoId;
-                        if (case1 || case2) {
-                            obj->delConstraint(i);
-                            break;
-                        }
+                if (!geoEltIds.empty()) {
+                    if (!obj->noRecomputes) {
+                        // delGeometries do not call solve if !obj->noRecomputes (AutoRecompute =
+                        // True) But we need to call solve before trying to moveGeometry or it cause
+                        // the deleted geometry to reappear. See
+                        // https://github.com/FreeCAD/FreeCAD/issues/30626
+                        obj->solve();
                     }
 
-                    obj->transferConstraints(pointGeoId, PointPos::start, prevGeoId, prevPos);
+                    // Move back the previous edge point
+                    int prevGeoId = geoEltIds.back().GeoId;
+                    PointPos prevPos = geoEltIds.back().Pos;
+                    Gui::cmdAppObjectArgs(
+                        obj,
+                        "moveGeometry(%d,%d,App.Vector(%f,%f,0.0),0)",
+                        prevGeoId,
+                        static_cast<int>(prevPos),
+                        points.back().x,
+                        points.back().y
+                    );
 
-                    // Delete the point
-                    obj->delGeometry(delGeoId);
+                    // Then transfer back the constraints
+                    if (pointWasCreated) {
+                        int pointGeoId = getHighestCurveIndex();
+                        // We must first remove the point on object constraint.
+                        const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
+                        for (int i = constraints.size() - 1; i >= 0; --i) {
+                            if (constraints[i]->Type != PointOnObject) {
+                                continue;
+                            }
+                            int first = constraints[i]->getGeoId(0);
+                            int second = constraints[i]->getGeoId(1);
+                            bool case1 = first == pointGeoId && second == prevGeoId;
+                            bool case2 = first == prevGeoId && second == pointGeoId;
+                            if (case1 || case2) {
+                                Gui::cmdAppObjectArgs(obj, "delConstraint(%d)", i);
+                                break;
+                            }
+                        }
+
+                        obj->transferConstraints(pointGeoId, PointPos::start, prevGeoId, prevPos);
+
+                        // Delete the point
+                        Gui::cmdAppObjectArgs(obj, "delGeometry(%d)", delGeoId);
+                    }
                 }
+            }
+            else {
+                Gui::cmdAppObjectArgs(obj, "delGeometry(%d)", delGeoId);
             }
 
             obj->solve();
