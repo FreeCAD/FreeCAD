@@ -2629,8 +2629,8 @@ std::vector<App::DocumentObject*> ViewProviderLink::claimChildren() const
     if (ext && !ext->_getShowElementValue() && ext->_getElementCountValue()) {
         // in array mode without element objects, we'd better not show the
         // linked object's children to avoid inconsistent behavior on selection.
-        // We claim the linked object instead
-        if (ext) {
+        // Claim the linked object only if requested.
+        if (ext->getLinkClaimChildValue()) {
             auto obj = ext->getLinkedObjectValue();
             if (obj) {
                 ret.push_back(obj);
