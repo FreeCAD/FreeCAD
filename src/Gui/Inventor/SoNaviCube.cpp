@@ -1751,6 +1751,7 @@ void SoNaviCube::addButtonFace(PickId pickId) const
             verts.push_back(transform(pts[i * 2], pts[i * 2 + 1]));
             outline.push_back(base + i);
         }
+        outline.push_back(base);
         outline.push_back(-1);
         return base;
     };
@@ -1835,10 +1836,11 @@ void SoNaviCube::addButtonFace(PickId pickId) const
     }
 
     if (outline.empty() && !verts.empty()) {
-        outline.reserve(verts.size() + 1);
+        outline.reserve(verts.size() + 2);
         for (std::int32_t i = 0; i < static_cast<std::int32_t>(verts.size()); ++i) {
             outline.push_back(i);
         }
+        outline.push_back(0);
         outline.push_back(-1);
     }
 
