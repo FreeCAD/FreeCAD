@@ -43,6 +43,7 @@
 #include <climits>
 #include <csignal>
 #include <cstring>
+#include <fstream>
 #include <string>
 #include <string_view>
 
@@ -55,12 +56,14 @@
 #include <cpptrace/cpptrace.hpp>
 #endif
 
+static std::atomic_flag writing;
+
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
 #include <fcntl.h>
 #include <pthread.h>
 #include <unistd.h>
 constexpr size_t MaxPathLength = PATH_MAX;
-static std::atomic_flag writing = ATOMIC_FLAG_INIT;
+static char crashReportFilePOSIX[MaxPathLength];
 static char alternateStack[64 * 1024]; // Used in the event of a SIGSEGV stack overrun
 #else
 #ifndef WIN32_LEAN_AND_MEAN
@@ -69,8 +72,9 @@ static char alternateStack[64 * 1024]; // Used in the event of a SIGSEGV stack o
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
-#include <Windows.h>
+#include <windows.h>
 constexpr size_t MaxPathLength = MAX_PATH;
+static std::wstring crashReportFileWindows;
 #endif
 
 
@@ -81,7 +85,6 @@ static Header header;
 static char fileBuffer[MaxFileSize];
 static char stringTable[MaxFileSize];
 static uint32_t stringTablePosition = 0;
-static char crashReportFile[MaxPathLength];
 
 namespace
 {
@@ -108,8 +111,44 @@ std::uint32_t addToStringTable(std::string_view string)
     return stringPosition;
 }
 
+std::uint32_t finishHeader(std::uint32_t frameCount)
+{
+    header.frameCount = frameCount;
+
+    header.frameTableOffset  = sizeof(Header);
+    header.stringTableOffset = sizeof(Header) + frameCount * sizeof(Frame);
+    std::uint32_t fileSize = header.stringTableOffset + stringTablePosition + sizeof(Footer);
+    if (fileSize > MaxFileSize) {
+        return 0;
+    }
+    header.fileSize = fileSize;
+    std::memcpy(&fileBuffer[0], &header, sizeof(Header));
+    std::memcpy(&fileBuffer[header.stringTableOffset], stringTable, stringTablePosition);
+    std::uint32_t crc = crc32({fileBuffer, fileSize - sizeof(Footer)});
+    std::memcpy(&fileBuffer[fileSize - sizeof(Footer)], &crc, sizeof(crc));
+    return fileSize;
+}
+}
+
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
 extern "C" {
+
+void writeRawBufferPOSIX(std::uint32_t fileSize) {
+    // Raw syscalls only!!
+    int fd = open(crashReportFilePOSIX, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+    if (fd != -1) {
+        ssize_t written = 0;
+        while (written < fileSize) {
+            ssize_t r = write(fd, fileBuffer + written, fileSize - written);
+            if (r <= 0) {
+                break;  // Bail out, we're dying anyway
+            }
+            written += static_cast<std::size_t>(r);
+        }
+        close(fd);
+    }
+}
+
 // NOTE: *ALL* Calls in crashHandler must be async-signal-safe. Verify before changing anything in
 // this function.
 void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
@@ -126,7 +165,7 @@ void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
     std::uint32_t frameCount = 0;
 #ifdef FC_HAVE_CPPTRACE
     cpptrace::frame_ptr rawFrames[MaxFrames];
-    constexpr std::size_t skip {2}; // A guess for how many frames the handler itself occupies
+    constexpr std::size_t skip {0};  // Don't skip any frames at this stage
     std::size_t nFrames = cpptrace::safe_generate_raw_trace(rawFrames, MaxFrames, skip);
     cpptrace::safe_object_frame objectFrame;
     for (std::uint32_t frame = 0; frame < nFrames && frameCount < MaxFrames; ++frame) {
@@ -140,42 +179,76 @@ void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
         ++frameCount;
     }
 #endif
-    header.frameCount = frameCount;
-
-    header.frameTableOffset  = sizeof(Header);
-    header.stringTableOffset = sizeof(Header) + frameCount * sizeof(Frame);
-    std::uint32_t fileSize = header.stringTableOffset + stringTablePosition + sizeof(Footer);
-    if (fileSize > MaxFileSize) {
-        // Just bail out, we're dying anyway...
-        return;
-    }
-    header.fileSize = fileSize;
-    std::memcpy(&fileBuffer[0], &header, sizeof(Header));
-    std::memcpy(&fileBuffer[header.stringTableOffset], stringTable, stringTablePosition);
-    std::uint32_t crc = crc32({fileBuffer, fileSize - sizeof(Footer)});
-    std::memcpy(&fileBuffer[fileSize - sizeof(Footer)], &crc, sizeof(crc));
-
-    // Raw syscalls only!!
-    int fd = open(crashReportFile, O_WRONLY | O_CREAT | O_TRUNC, 0600);
-    if (fd != -1) {
-        std::size_t written = 0;
-        while (written < fileSize) {
-            ssize_t r = write(fd, fileBuffer + written, fileSize - written);
-            if (r <= 0) {
-                break;  // Bail out, we're dying anyway
-            }
-            written += static_cast<std::size_t>(r);
-        }
-        close(fd);
+    std::uint32_t fileSize = finishHeader(frameCount);
+    if (fileSize > 0) {
+        writeRawBufferPOSIX(fileSize);
     }
 
     std::signal(sig, SIG_DFL);  // Make sure to reset, or we infinite loop
     std::raise(sig);
 }
 } // extern "C"
+#elif defined(FC_OS_WIN32)
+namespace
+{
+void writeRawBufferWindows(std::uint32_t fileSize)
+{
+    // This does NOT have to be async-signal-safe, it only runs on Windows
+    std::ofstream fcrashFile(crashReportFileWindows, std::ios::binary);
+    if (!fcrashFile) {
+        return;
+    }
+    fcrashFile.write(fileBuffer, fileSize);
+    fcrashFile.close();
+}
+}
+
+void Writer::handleException(_EXCEPTION_POINTERS* exceptionInfo)
+{
+    if (writing.test_and_set()) {
+        return;
+    }
+    header.code = exceptionInfo->ExceptionRecord->ExceptionCode;
+    header.faultAddress = reinterpret_cast<uint64_t>(exceptionInfo->ExceptionRecord->ExceptionAddress);
+    header.threadID = GetCurrentThreadId();
+    header.timestamp = std::time(nullptr);
+
+    std::uint32_t frameCount = 0;
+#ifdef FC_HAVE_CPPTRACE
+    // Windows SEH is NOT async-signal-safe anyway, so no need to take the long path we do on POSIX:
+    constexpr std::size_t skip {0};  // Don't skip any frames at this stage
+    auto trace = cpptrace::generate_object_trace(skip);
+    for (const auto &objectFrame : trace) {
+        Frame extractedFrame;
+        extractedFrame.rawAddress = objectFrame.raw_address;
+        extractedFrame.moduleOffset = objectFrame.object_address;
+        extractedFrame.moduleStringOffset = addToStringTable(objectFrame.object_path);
+        std::memcpy(&fileBuffer[sizeof(Header) + frameCount * sizeof(Frame)],
+            &extractedFrame, sizeof(Frame));
+        ++frameCount;
+        if (frameCount >= MaxFrames) {
+            break;
+        }
+    }
+#endif
+    std::uint32_t fileSize = finishHeader(frameCount);
+    if (fileSize == 0) {
+        return;
+    }
+    writeRawBufferWindows(fileSize);
+}
+
+void Writer::setMinidumpPath(const std::string& path)
+{
+    if (path.length() > MaxPathLength) {
+        Console().warning("CrashReporter: Path too long: %s\n", path);
+        return;
+    }
+    header.minidumpPathStringOffset = addToStringTable(path);
+}
+
 #endif
 
-}
 
 void Writer::prewarm()
 {
@@ -185,6 +258,9 @@ void Writer::prewarm()
     // any needed dynamic loading mechanism is run (we can't let those loads run during a signal
     // handler).
 
+#ifdef FC_OS_WIN32
+    [[maybe_unused]] auto trace = cpptrace::generate_object_trace();
+#else
     cpptrace::frame_ptr buffer[MaxFrames];
     auto frameCount = cpptrace::safe_generate_raw_trace(buffer, MaxFrames, 0);
 
@@ -197,6 +273,7 @@ void Writer::prewarm()
     if (cpptrace::can_signal_safe_unwind() && cpptrace::can_get_safe_object_frame()) {
         header.flags |= Flags::CaptureWasSignalSafe;
     }
+#endif
 #endif
 }
 
@@ -246,8 +323,14 @@ void Writer::install(const std::string& crashReportDirectory)
         Console().warning("CrashReporter: Crash file path too long: %s\n", fcrash);
         return;
     }
-    std::memcpy(crashReportFile, fcrash.data(), fcrash.length());
-    crashReportFile[fcrash.length()] = '\0';
+
+#ifdef FC_OS_WIN32
+    Base::FileInfo fi(fcrash);
+    crashReportFileWindows = fi.toStdWString();
+#else
+    std::memcpy(crashReportFilePOSIX, fcrash.data(), fcrash.length());
+    crashReportFilePOSIX[fcrash.length()] = '\0';
+#endif
 
     // On POSIX systems, if a SEGFAULT was triggered because we ran out of space on the stack,
     // it's possible to use an alternate stack for the signal handler. If we don't then, the attempt
