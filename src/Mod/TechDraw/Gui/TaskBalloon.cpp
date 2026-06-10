@@ -29,6 +29,10 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Control.h>
+#include <QComboBox>
+#include <QPlainTextEdit>
+#include <QPushButton>
+#include <QTextCursor>
 
 #include "TaskBalloon.h"
 #include "ui_TaskBalloon.h"
@@ -61,10 +65,33 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
 
     std::string value = parent->getBalloonFeat()->Text.getValue();
     QString qs = QString::fromUtf8(value.data(), value.size());
-    ui->leText->setText(qs);
+    ui->leText->setPlainText(qs);
     ui->leText->selectAll();
-    connect(ui->leText, &QLineEdit::textChanged, this, &TaskBalloon::onTextChanged);
-    QTimer::singleShot(0, ui->leText, qOverload<>(&QLineEdit::setFocus));
+    connect(ui->leText, &QPlainTextEdit::textChanged, this, &TaskBalloon::onTextChanged);
+    QTimer::singleShot(0, ui->leText, [this]() {
+        ui->leText->setFocus();
+    });
+
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("⏤ Straightness"), QString::fromUtf8("⏤"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("⏥ Flatness"), QString::fromUtf8("⏥"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("○ Circularity"), QString::fromUtf8("○"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("⌭ Cylindricity"), QString::fromUtf8("⌭"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("⌒ Profile of a line"), QString::fromUtf8("⌒"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("⌓ Profile of a surface"), QString::fromUtf8("⌓"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("∥ Parallelism"), QString::fromUtf8("∥"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("⟂ Perpendicularity"), QString::fromUtf8("⟂"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("∠ Angularity"), QString::fromUtf8("∠"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("⌖ Position"), QString::fromUtf8("⌖"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("◎ Concentricity/coaxiality"), QString::fromUtf8("◎"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("⌯ Symmetry"), QString::fromUtf8("⌯"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("↗ Circular run-out"), QString::fromUtf8("↗"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("⌰ Total run-out"), QString::fromUtf8("⌰"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("Ⓜ Maximum material condition"), QString::fromUtf8("Ⓜ"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("Ⓛ Least material condition"), QString::fromUtf8("Ⓛ"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("Ⓢ Regardless of feature size"), QString::fromUtf8("Ⓢ"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("Ⓟ Projected tolerance zone"), QString::fromUtf8("Ⓟ"));
+    ui->comboIsoGpsSymbol->addItem(QString::fromUtf8("Ⓔ Envelope requirement"), QString::fromUtf8("Ⓔ"));
+    connect(ui->buttonInsertSymbol, &QPushButton::clicked, this, &TaskBalloon::onInsertSymbolClicked);
 
     DrawGuiUtil::loadArrowBox(ui->comboEndSymbol);
     i = parent->getBalloonFeat()->EndType.getValue();
@@ -162,8 +189,21 @@ void TaskBalloon::recomputeFeature()
 
 void TaskBalloon::onTextChanged()
 {
-    m_parent->getBalloonFeat()->Text.setValue(ui->leText->text().toUtf8().constData());
+    m_parent->getBalloonFeat()->Text.setValue(ui->leText->toPlainText().toUtf8().constData());
     recomputeFeature();
+}
+
+void TaskBalloon::onInsertSymbolClicked()
+{
+    const QString symbol = ui->comboIsoGpsSymbol->currentData().toString();
+    if (symbol.isEmpty()) {
+        return;
+    }
+
+    QTextCursor cursor = ui->leText->textCursor();
+    cursor.insertText(symbol);
+    ui->leText->setTextCursor(cursor);
+    ui->leText->setFocus();
 }
 
 void TaskBalloon::onColorChanged()

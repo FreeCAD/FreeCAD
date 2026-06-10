@@ -21,7 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
+# include <algorithm>
 # include <cmath>
+# include <numeric>
 # include <string>
 
 # include <QGuiApplication>
@@ -30,7 +32,10 @@
 # include <QPaintDevice>
 # include <QPainter>
 # include <QPainterPath>
+# include <QStringList>
 # include <QSvgGenerator>
+# include <QTextDocument>
+# include <QTextOption>
 
 #include <App/Application.h>
 #include <Base/Parameter.h>
@@ -65,6 +70,92 @@ using namespace TechDrawGui;
 using DU = DrawUtil;
 using DGU = DrawGuiUtil;
 
+namespace
+{
+struct BalloonTableText
+{
+    QString text;
+    QString html;
+    std::vector<double> separators;
+    int rowCount = 1;
+    double width = 0.0;
+};
+
+BalloonTableText makeBalloonTableText(const QString& source, const QFont& font)
+{
+    BalloonTableText result;
+    result.text = source;
+
+    if (!source.contains(QLatin1Char('|'))) {
+        return result;
+    }
+
+    const QFontMetrics fm(font);
+    const QStringList lines = source.split(QLatin1Char('\n'), Qt::KeepEmptyParts);
+    std::vector<QStringList> rows;
+    rows.reserve(lines.size());
+
+    qsizetype columnCount = 0;
+    for (const QString& line : lines) {
+        rows.push_back(line.split(QLatin1Char('|'), Qt::KeepEmptyParts));
+        columnCount = std::max(columnCount, rows.back().size());
+    }
+
+    if (columnCount <= 1) {
+        return result;
+    }
+
+    std::vector<double> widths(static_cast<std::size_t>(columnCount), 0.0);
+    const double symbolCellPadding = Gui::QtTools::horizontalAdvance(fm, QStringLiteral(" "));
+    const double valueCellPadding = Gui::QtTools::horizontalAdvance(fm, QStringLiteral("    "));
+    for (const auto& row : rows) {
+        for (qsizetype column = 0; column < columnCount; ++column) {
+            const QString cell = column < row.size() ? row.at(column).trimmed() : QString();
+            const double padding = column == 0 ? symbolCellPadding : valueCellPadding;
+            widths[static_cast<std::size_t>(column)] = std::max(
+                widths[static_cast<std::size_t>(column)],
+                static_cast<double>(Gui::QtTools::horizontalAdvance(fm, cell)) + padding);
+        }
+    }
+
+    // GD&T/ISO-GPS feature control frames conventionally use a square symbol cell.
+    widths.front() = std::max(widths.front(), static_cast<double>(fm.lineSpacing()));
+
+    result.text.clear();
+    QString html = QStringLiteral("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
+    for (std::size_t rowIndex = 0; rowIndex < rows.size(); ++rowIndex) {
+        const auto& row = rows[rowIndex];
+        QString displayRow;
+        html += QStringLiteral("<tr>");
+        for (qsizetype column = 0; column < columnCount; ++column) {
+            const QString cell = column < row.size() ? row.at(column).trimmed() : QString();
+            displayRow += cell;
+            html += QStringLiteral("<td width=\"%1\" align=\"center\" valign=\"middle\">%2</td>")
+                    .arg(std::ceil(widths[static_cast<std::size_t>(column)]))
+                    .arg(cell.toHtmlEscaped());
+        }
+        html += QStringLiteral("</tr>");
+        if (rowIndex + 1 < rows.size()) {
+            displayRow += QLatin1Char('\n');
+        }
+        result.text += displayRow;
+    }
+    html += QStringLiteral("</table>");
+
+    result.html = html;
+    result.rowCount = static_cast<int>(std::max<qsizetype>(1, rows.size()));
+    result.width = std::accumulate(widths.begin(), widths.end(), 0.0);
+
+    double separator = 0.0;
+    for (qsizetype column = 0; column < columnCount - 1; ++column) {
+        separator += widths[static_cast<std::size_t>(column)];
+        result.separators.push_back(separator);
+    }
+
+    return result;
+}
+}
+
 QGIBalloonLabel::QGIBalloonLabel()
 {
     m_originDrag = false;
@@ -78,9 +169,15 @@ QGIBalloonLabel::QGIBalloonLabel()
 
     m_labelText = new QGCustomText();
     m_labelText->setTightBounding(true);
+    m_labelText->document()->setDocumentMargin(0.0);
+    QTextOption textOption = m_labelText->document()->defaultTextOption();
+    textOption.setAlignment(Qt::AlignCenter);
+    m_labelText->document()->setDefaultTextOption(textOption);
     m_labelText->setParentItem(this);
 
     verticalSep = false;
+    rowCount = 1;
+    tableWidth = 0.0;
     hasHover = false;
     parent = nullptr;
 }
@@ -227,6 +324,13 @@ void QGIBalloonLabel::setDimString(QString text, qreal maxWidth)
     prepareGeometryChange();
     m_labelText->setPlainText(text);
     m_labelText->setTextWidth(maxWidth);
+}
+
+void QGIBalloonLabel::setDimHtml(QString html)
+{
+    prepareGeometryChange();
+    m_labelText->setTextWidth(-1);
+    m_labelText->setHtml(html);
 }
 
 void QGIBalloonLabel::setPrettySel() { m_labelText->setPrettySel(); }
@@ -431,22 +535,30 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
     balloonLabel->setFont(font);
 
     QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
+    QString labelHtml;
     balloonLabel->setVerticalSep(false);
-    balloonLabel->setSeps(std::vector<int>());
+    balloonLabel->setSeps(std::vector<double>());
+    balloonLabel->setRowCount(1);
+    balloonLabel->setTableWidth(0.0);
 
     if (strcmp(balloon->BubbleShape.getValueAsString(), "Rectangle") == 0) {
-        std::vector<int> newSeps;
-        while (labelText.contains(QStringLiteral("|"))) {
-            int pos = labelText.indexOf(QStringLiteral("|"));
-            labelText.replace(pos, 1, QStringLiteral("   "));
-            QFontMetrics fm(balloonLabel->getFont());
-            newSeps.push_back(Gui::QtTools::horizontalAdvance(fm, labelText.left(pos + 2)));
+        const auto tableText = makeBalloonTableText(labelText, balloonLabel->getFont());
+        if (!tableText.separators.empty()) {
+            labelText = tableText.text;
+            labelHtml = tableText.html;
             balloonLabel->setVerticalSep(true);
+            balloonLabel->setSeps(tableText.separators);
+            balloonLabel->setRowCount(tableText.rowCount);
+            balloonLabel->setTableWidth(tableText.width);
         }
-        balloonLabel->setSeps(newSeps);
     }
 
-    balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
+    if (labelHtml.isEmpty()) {
+        balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
+    }
+    else {
+        balloonLabel->setDimHtml(labelHtml);
+    }
     float x = Rez::guiX(balloon->X.getValue() * refObj->getScale());
     float y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
     balloonLabel->setPosFromCenter(x, -y);
@@ -664,6 +776,11 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
     float scale = balloon->ShapeScale.getValue();
     double offsetLR = 0;
     double offsetUD = 0;
+    bool useRectAnchor = false;
+    bool useCircleAnchor = false;
+    double anchorHalfWidth = 0.0;
+    double anchorHalfHeight = 0.0;
+    double anchorRadius = 0.0;
     QPainterPath balloonPath;
 
     if (strcmp(balloonType, "Circular") == 0) {
@@ -673,27 +790,45 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
         balloonPath.addEllipse(lblCenter.x - balloonRadius, lblCenter.y - balloonRadius,
                                balloonRadius * 2, balloonRadius * 2);
         offsetLR = balloonRadius;
+        useCircleAnchor = true;
+        anchorRadius = balloonRadius;
     }
     else if (strcmp(balloonType, "None") == 0) {
         balloonPath = QPainterPath();
         offsetLR = (textWidth / 2.0) + Rez::guiX(2.0);
+        useRectAnchor = true;
+        anchorHalfWidth = offsetLR;
+        anchorHalfHeight = (textHeight / 2.0) + Rez::guiX(1.0);
     }
     else if (strcmp(balloonType, "Rectangle") == 0) {
         //Add some room
         textHeight = (textHeight * scale) + Rez::guiX(1.0);
-        // we add some textWidth later because we first need to handle the text separators
+        const double tableWidth = balloonLabel->getTableWidth() * scale;
+        const double frameWidth = std::max((textWidth * scale) + Rez::guiX(2.0),
+                                           tableWidth + Rez::guiX(2.0));
         if (balloonLabel->getVerticalSep()) {
-            for (auto& sep : balloonLabel->getSeps()) {
-                balloonPath.moveTo(lblCenter.x - (textWidth / 2.0) + sep,
-                                   lblCenter.y - (textHeight / 2.0));
-                balloonPath.lineTo(lblCenter.x - (textWidth / 2.0) + sep,
-                                   lblCenter.y + (textHeight / 2.0));
+            const double frameLeft = lblCenter.x - (frameWidth / 2.0);
+            const double frameTop = lblCenter.y - (textHeight / 2.0);
+            const double tableOffset = (frameWidth - tableWidth) / 2.0;
+            for (const auto sep : balloonLabel->getSeps()) {
+                const double sepX = frameLeft + tableOffset + (sep * scale);
+                balloonPath.moveTo(sepX, frameTop);
+                balloonPath.lineTo(sepX, frameTop + textHeight);
+            }
+            const int rowCount = balloonLabel->getRowCount();
+            for (int row = 1; row < rowCount; ++row) {
+                const double sepY = frameTop + (textHeight * row / rowCount);
+                balloonPath.moveTo(frameLeft, sepY);
+                balloonPath.lineTo(frameLeft + frameWidth, sepY);
             }
         }
-        textWidth = (textWidth * scale) + Rez::guiX(2.0);
+        textWidth = frameWidth;
         balloonPath.addRect(lblCenter.x - (textWidth / 2.0), lblCenter.y - (textHeight / 2.0),
                             textWidth, textHeight);
         offsetLR = (textWidth / 2.0);
+        useRectAnchor = true;
+        anchorHalfWidth = textWidth / 2.0;
+        anchorHalfHeight = textHeight / 2.0;
     }
     else if (strcmp(balloonType, "Triangle") == 0) {
         double radius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));
@@ -725,6 +860,9 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
         balloonPath.arcTo(textBoxCorner.x() - (textHeight / 2), textBoxCorner.y(), textHeight,
                           textHeight, -90, -180);
         offsetLR = (textWidth / 2.0) + (textHeight / 2.0);
+        useRectAnchor = true;
+        anchorHalfWidth = offsetLR;
+        anchorHalfHeight = textHeight / 2.0;
     }
     else if (strcmp(balloonType, "Square") == 0) {
         //Add some room
@@ -733,6 +871,9 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
         double max = std::max(textWidth, textHeight);
         balloonPath.addRect(lblCenter.x - (max / 2.0), lblCenter.y - (max / 2.0), max, max);
         offsetLR = (max / 2.0);
+        useRectAnchor = true;
+        anchorHalfWidth = max / 2.0;
+        anchorHalfHeight = max / 2.0;
     }
     else if (strcmp(balloonType, "Hexagon") == 0) {
         double radius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));
@@ -769,6 +910,29 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
     // avoid starting the line inside the balloon
     dLineStart.y = lblCenter.y + offsetUD;
     dLineStart.x = lblCenter.x + offsetLR;
+    Base::Vector3d centerToArrow = arrowTipPosInParent - lblCenter;
+    if (useCircleAnchor) {
+        double length = centerToArrow.Length();
+        if (!DrawUtil::fpCompare(length, 0.0)) {
+            dLineStart = lblCenter + (centerToArrow / length * anchorRadius);
+        }
+    }
+    else if (useRectAnchor) {
+        const double dx = centerToArrow.x;
+        const double dy = centerToArrow.y;
+        if (!DrawUtil::fpCompare(dx, 0.0) || !DrawUtil::fpCompare(dy, 0.0)) {
+            if (std::abs(dx) * anchorHalfHeight > std::abs(dy) * anchorHalfWidth) {
+                const double side = (dx >= 0.0) ? anchorHalfWidth : -anchorHalfWidth;
+                dLineStart.x = lblCenter.x + side;
+                dLineStart.y = lblCenter.y + dy * std::abs(side / dx);
+            }
+            else {
+                const double side = (dy >= 0.0) ? anchorHalfHeight : -anchorHalfHeight;
+                dLineStart.x = lblCenter.x + dx * std::abs(side / dy);
+                dLineStart.y = lblCenter.y + side;
+            }
+        }
+    }
 
     if (DrawUtil::fpCompare(kinkLength, 0.0)
         && strcmp(balloonType,

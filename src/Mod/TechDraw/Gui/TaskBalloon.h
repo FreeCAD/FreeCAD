@@ -57,6 +57,7 @@ public:
 
 private Q_SLOTS:
     void onTextChanged();
+    void onInsertSymbolClicked();
     void onColorChanged();
     void onFontsizeChanged();
     void onBubbleShapeChanged();

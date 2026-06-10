@@ -95,6 +95,7 @@ public:
     }
     void setDimString(QString text);
     void setDimString(QString text, qreal maxWidth);
+    void setDimHtml(QString html);
     void setPrettySel();
     void setPrettyPre();
     void setPrettyNormal();
@@ -124,13 +125,29 @@ public:
     {
         verticalSep = sep;
     }
-    std::vector<int> getSeps() const
+    std::vector<double> getSeps() const
     {
         return seps;
     }
-    void setSeps(std::vector<int> newSeps)
+    void setSeps(std::vector<double> newSeps)
     {
         seps = newSeps;
+    }
+    int getRowCount() const
+    {
+        return rowCount;
+    }
+    void setRowCount(int rows)
+    {
+        rowCount = rows;
+    }
+    double getTableWidth() const
+    {
+        return tableWidth;
+    }
+    void setTableWidth(double width)
+    {
+        tableWidth = width;
     }
     QGCustomText* m_labelText;
 
@@ -152,7 +169,9 @@ private:
 
     QGIViewBalloon* parent;
     bool verticalSep;
-    std::vector<int> seps;
+    std::vector<double> seps;
+    int rowCount;
+    double tableWidth;
 
     QColor m_colNormal;
 
