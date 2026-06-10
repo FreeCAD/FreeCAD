@@ -364,6 +364,10 @@ bool View3DInventor::onMsg(const char* pMsg)
         _viewer->viewAll();
         return true;
     }
+    else if (strcmp("ViewHome", pMsg) == 0) {
+        _viewer->viewHome();
+        return true;
+    }
     else if (strcmp("ViewVR", pMsg) == 0) {
         // call the VR portion of the viewer
         _viewer->viewVR();
@@ -506,6 +510,9 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
     }
     else if (strcmp("ViewFit", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ViewHome", pMsg) == 0) {
         return true;
     }
     else if (strcmp("ViewVR", pMsg) == 0) {

@@ -1071,9 +1071,8 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
                 return true;
             }
             else if (pickId == PickId::Home) {
-                CommandManager& rcCmdMgr = Application::Instance->commandManager();
-                rcCmdMgr.runCommandByName("Std_ViewHome");
-
+                resetClickState();
+                viewer->viewHome();
                 return true;
             }
 

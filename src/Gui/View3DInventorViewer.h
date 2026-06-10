@@ -485,6 +485,10 @@ public:
      */
     void scale(float factor);
     /**
+     * Move the camera to the configured home orientation and fit the scene.
+     */
+    void viewHome();
+    /**
      * Reposition the current camera so we can see the complete scene.
      */
     void viewAll() override;
