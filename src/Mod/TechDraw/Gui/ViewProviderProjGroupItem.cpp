@@ -143,6 +143,7 @@ bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &)
     // get child views
     auto viewSection = dpgi->getSectionRefs();
     auto viewDetail = dpgi->getDetailRefs();
+    auto viewAuxiliary = dpgi->getAuxiliaryRefs();
     auto viewLeader = dpgi->getLeaders();
 
    if (isAnchor)
@@ -167,6 +168,14 @@ bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &)
    else if (!viewDetail.empty()) {
        bodyMessageStream << qApp->translate("Std_Delete",
            "You cannot delete this view because it has a detail view that would become broken.");
+       QMessageBox::warning(Gui::getMainWindow(),
+           qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+           QMessageBox::Ok);
+       return false;
+   }
+   else if (!viewAuxiliary.empty()) {
+       bodyMessageStream << qApp->translate("Std_Delete",
+           "You cannot delete this view because it has an auxiliary view that would become broken.");
        QMessageBox::warning(Gui::getMainWindow(),
            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
            QMessageBox::Ok);

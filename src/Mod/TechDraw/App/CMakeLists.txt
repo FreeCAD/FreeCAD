@@ -46,6 +46,8 @@ generate_from_py(DrawBrokenView)
 SET(Draw_SRCS
     DrawPage.cpp
     DrawPage.h
+    DrawAuxiliaryView.cpp
+    DrawAuxiliaryView.h
     DrawComplexSection.cpp
     DrawComplexSection.h
     DrawView.cpp

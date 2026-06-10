@@ -39,6 +39,7 @@
 
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawAuxiliaryView.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
@@ -56,6 +57,7 @@
 #include "PreferencesGui.h"
 #include "QGIView.h"
 #include "TaskDetail.h"
+#include "TaskAuxiliaryView.h"
 #include "TaskProjGroup.h"
 #include "ViewProviderViewPart.h"
 #include "ViewProviderPage.h"
@@ -294,6 +296,17 @@ bool ViewProviderViewPart::setEdit(int ModNum)
         }
         return setDetailEdit(ModNum, dvd);
     }
+    auto* dav = dynamic_cast<TechDraw::DrawAuxiliaryView*>(dvp);
+    if (dav) {
+        if (!dav->BaseView.getValue()) {
+            Base::Console().error("DrawAuxiliaryView - %s - has no BaseView!\n", dav->getNameInDocument());
+            return false;
+        }
+        Gui::Control().showDialog(new TaskDlgAuxiliaryView(dav));
+        Gui::Selection().clearSelection();
+        Gui::Selection().addSelection(dav->getDocument()->getName(), dav->getNameInDocument());
+        return true;
+    }
     auto* view = getObject<TechDraw::DrawView>();
     Gui::Control().showDialog(new TaskDlgProjGroup(view, false));
 
@@ -384,12 +397,26 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
             return false;
         }
     }
+    auto* dlgAuxiliary = dynamic_cast<TaskDlgAuxiliaryView*>(dlg);
+    if (dlgAuxiliary) {
+        std::string dlgAuxiliaryTarget = dlgAuxiliary->getAuxiliaryName();
+        if (getViewObject()->getNameInDocument() == dlgAuxiliaryTarget) {
+            bodyMessageStream << qApp->translate("Std_Delete",
+            "Close open dialog before deleting auxiliary view object");
+            bodyMessage = bodyMessageStream.readLine();
+            QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+            return false;
+        }
+    }
 
     // get child views
     auto viewSection = getViewObject()->getSectionRefs();
     auto viewDetail = getViewObject()->getDetailRefs();
+    auto viewAuxiliary = getViewObject()->getAuxiliaryRefs();
 
-    if (!viewSection.empty() || !viewDetail.empty()) {
+    if (!viewSection.empty() || !viewDetail.empty() || !viewAuxiliary.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
             "You cannot delete this view because it has one or more dependent views that would become broken.");
         bodyMessage = bodyMessageStream.readLine();

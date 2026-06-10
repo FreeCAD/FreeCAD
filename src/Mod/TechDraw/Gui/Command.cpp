@@ -24,6 +24,7 @@
 #include <QMessageBox>
 #include <QCheckBox>
 #include <QPushButton>
+#include <set>
 #include <vector>
 
 
@@ -49,6 +50,8 @@
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 
+#include <Mod/TechDraw/App/CosmeticVertex.h>
+#include <Mod/TechDraw/App/DrawAuxiliaryView.h>
 #include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
@@ -60,6 +63,7 @@
 #include <Mod/TechDraw/App/DrawViewDraft.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
+#include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
 
@@ -81,6 +85,7 @@
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
+void execAuxiliaryView(Gui::Command* cmd);
 void getSelectedShapes(Gui::Command* cmd,
                       std::vector<App::DocumentObject*>& shapes,
                       std::vector<App::DocumentObject*>& xShapes,
@@ -88,6 +93,167 @@ void getSelectedShapes(Gui::Command* cmd,
                       std::string& faceName);
 
 std::pair<App::DocumentObject*, std::string> faceFromSelection();
+
+namespace
+{
+
+struct AuxiliaryReference
+{
+    TechDraw::DrawViewPart* baseView = nullptr;
+    Base::Vector3d start;
+    Base::Vector3d end;
+    Base::Vector3d direction;
+};
+
+void showWrongAuxiliarySelection(const QString& message)
+{
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"), message);
+}
+
+std::string nextAuxiliaryLabel(TechDraw::DrawViewPart* baseView)
+{
+    if (!baseView) {
+        return "A";
+    }
+
+    std::set<std::string> usedLabels;
+    const auto refs = baseView->getAuxiliaryRefs();
+    for (auto* ref : refs) {
+        if (ref) {
+            usedLabels.insert(ref->ReferenceLabel.getValue());
+        }
+    }
+
+    for (char label = 'A'; label <= 'Z'; ++label) {
+        std::string candidate(1, label);
+        if (usedLabels.find(candidate) == usedLabels.end()) {
+            return candidate;
+        }
+    }
+
+    std::size_t index = refs.size() + 1;
+    while (true) {
+        std::string candidate = std::string("A") + std::to_string(index);
+        if (usedLabels.find(candidate) == usedLabels.end()) {
+            return candidate;
+        }
+        ++index;
+    }
+}
+
+bool getCanonicalPointFromVertexName(TechDraw::DrawViewPart* baseView,
+                                     const std::string& vertexName,
+                                     Base::Vector3d& point)
+{
+    const int index = TechDraw::DrawUtil::getIndexFromName(vertexName);
+    TechDraw::VertexPtr vertex = baseView->getProjVertexByIndex(index);
+    if (!vertex) {
+        return false;
+    }
+
+    point = TechDraw::CosmeticVertex::makeCanonicalPointInverted(baseView, vertex->point());
+    point.z = 0.0;
+    return true;
+}
+
+bool collectAuxiliaryReference(Gui::Command* cmd, AuxiliaryReference& reference)
+{
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    if (selection.empty()) {
+        showWrongAuxiliarySelection(QObject::tr("Select one straight edge or two vertices in a base view."));
+        return false;
+    }
+
+    std::vector<std::string> edgeNames;
+    std::vector<std::string> vertexNames;
+
+    for (auto& selected : selection) {
+        App::DocumentObject* obj = selected.getObject();
+        if (!obj || !obj->isDerivedFrom<TechDraw::DrawViewPart>()) {
+            continue;
+        }
+
+        if (obj->isDerivedFrom<TechDraw::DrawAuxiliaryView>()) {
+            showWrongAuxiliarySelection(QObject::tr("Select geometry from a base view, not an auxiliary view."));
+            return false;
+        }
+
+        auto* candidateBase = static_cast<TechDraw::DrawViewPart*>(obj);
+        if (reference.baseView && reference.baseView != candidateBase) {
+            showWrongAuxiliarySelection(QObject::tr("Select reference geometry from only one base view."));
+            return false;
+        }
+        reference.baseView = candidateBase;
+
+        for (const auto& subName : selected.getSubNames()) {
+            const std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(subName);
+            if (geomType == "Edge") {
+                edgeNames.push_back(subName);
+            }
+            else if (geomType == "Vertex") {
+                vertexNames.push_back(subName);
+            }
+            else {
+                showWrongAuxiliarySelection(QObject::tr("Select only straight edges or vertices."));
+                return false;
+            }
+        }
+    }
+
+    if (!reference.baseView) {
+        showWrongAuxiliarySelection(QObject::tr("Select geometry from a TechDraw view."));
+        return false;
+    }
+
+    if (edgeNames.size() == 1 && vertexNames.empty()) {
+        const int index = TechDraw::DrawUtil::getIndexFromName(edgeNames.front());
+        TechDraw::BaseGeomPtr geom = reference.baseView->getGeomByIndex(index);
+        if (!geom || geom->getGeomType() != TechDraw::GeomType::GENERIC) {
+            showWrongAuxiliarySelection(QObject::tr("Select a straight edge for the auxiliary reference."));
+            return false;
+        }
+
+        reference.start =
+            TechDraw::CosmeticVertex::makeCanonicalPointInverted(reference.baseView, geom->getStartPoint());
+        reference.end =
+            TechDraw::CosmeticVertex::makeCanonicalPointInverted(reference.baseView, geom->getEndPoint());
+    }
+    else if (vertexNames.size() == 2 && edgeNames.empty()) {
+        if (!getCanonicalPointFromVertexName(reference.baseView, vertexNames.front(), reference.start)
+            || !getCanonicalPointFromVertexName(reference.baseView, vertexNames.back(), reference.end)) {
+            showWrongAuxiliarySelection(QObject::tr("Could not resolve the selected vertices."));
+            return false;
+        }
+    }
+    else {
+        showWrongAuxiliarySelection(QObject::tr("Select exactly one straight edge or exactly two vertices."));
+        return false;
+    }
+
+    reference.start.z = 0.0;
+    reference.end.z = 0.0;
+    reference.direction = reference.end - reference.start;
+    reference.direction.z = 0.0;
+    if (reference.direction.Length() < 1.0e-7) {
+        showWrongAuxiliarySelection(QObject::tr("The auxiliary reference direction is zero length."));
+        return false;
+    }
+
+    return true;
+}
+
+Base::Vector3d defaultAuxiliaryPlacementDirection(const Base::Vector3d& referenceDirection)
+{
+    Base::Vector3d result(-referenceDirection.y, referenceDirection.x, 0.0);
+    if (result.Length() < 1.0e-7) {
+        return Base::Vector3d(1.0, 0.0, 0.0);
+    }
+    result.Normalize();
+    return result;
+}
+
+}  // namespace
+
 std::pair<Base::Vector3d, Base::Vector3d> viewDirection();
 Base::Vector3d checkDirectionVsBasis(Base::Vector3d dir);
 
@@ -1003,6 +1169,144 @@ void execComplexSection(Gui::Command* cmd)
 
     Gui::Control().showDialog(
         new TaskDlgComplexSection(page, baseView, shapes, xShapes, profileObject, profileSubs));
+}
+
+//===========================================================================
+// TechDraw_AuxiliaryView
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawAuxiliaryView)
+
+CmdTechDrawAuxiliaryView::CmdTechDrawAuxiliaryView() : Command("TechDraw_AuxiliaryView")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Auxiliary View");
+    sToolTipText = QT_TR_NOOP("Inserts an auxiliary view from a selected straight edge or two vertices");
+    sWhatsThis = "TechDraw_AuxiliaryView";
+    sStatusTip = sToolTipText;
+    sPixmap = "actions/TechDraw_View";
+}
+
+void CmdTechDrawAuxiliaryView::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
+                             QObject::tr("Close active task dialog and try again"));
+        return;
+    }
+
+    execAuxiliaryView(this);
+}
+
+bool CmdTechDrawAuxiliaryView::isActive()
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    bool taskInProgress = false;
+    if (havePage) {
+        taskInProgress = Gui::Control().activeDialog();
+    }
+    return (havePage && haveView && !taskInProgress);
+}
+
+void execAuxiliaryView(Gui::Command* cmd)
+{
+    AuxiliaryReference reference;
+    if (!collectAuxiliaryReference(cmd, reference)) {
+        return;
+    }
+
+    TechDraw::DrawPage* page = reference.baseView->findParentPage();
+    if (!page) {
+        page = DrawGuiUtil::findPage(cmd);
+    }
+    if (!page) {
+        return;
+    }
+
+    Base::Vector3d placementDirection = defaultAuxiliaryPlacementDirection(reference.direction);
+    const double placementOffset =
+        std::max(reference.baseView->getBoxX(), reference.baseView->getBoxY()) * 1.25 + 20.0;
+    const double newX = reference.baseView->X.getValue() + placementDirection.x * placementOffset;
+    const double newY = reference.baseView->Y.getValue() + placementDirection.y * placementOffset;
+
+    const std::string auxiliaryName = cmd->getUniqueObjectName("AuxiliaryView");
+    const std::string pageName = page->getNameInDocument();
+    const std::string baseName = reference.baseView->getNameInDocument();
+    const std::string referenceLabel = nextAuxiliaryLabel(reference.baseView);
+
+    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Create Auxiliary View"));
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().addObject('TechDraw::DrawAuxiliaryView', '%s')",
+                   auxiliaryName.c_str());
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.addView(App.activeDocument().%s)",
+                   pageName.c_str(),
+                   auxiliaryName.c_str());
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.BaseView = App.activeDocument().%s",
+                   auxiliaryName.c_str(),
+                   baseName.c_str());
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.Source = App.activeDocument().%s.Source",
+                   auxiliaryName.c_str(),
+                   baseName.c_str());
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.XSource = App.activeDocument().%s.XSource",
+                   auxiliaryName.c_str(),
+                   baseName.c_str());
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.ReferenceStart = FreeCAD.Vector(%.6f, %.6f, %.6f)",
+                   auxiliaryName.c_str(),
+                   reference.start.x,
+                   reference.start.y,
+                   reference.start.z);
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.ReferenceEnd = FreeCAD.Vector(%.6f, %.6f, %.6f)",
+                   auxiliaryName.c_str(),
+                   reference.end.x,
+                   reference.end.y,
+                   reference.end.z);
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.AuxiliaryDirection = FreeCAD.Vector(%.6f, %.6f, %.6f)",
+                   auxiliaryName.c_str(),
+                   reference.direction.x,
+                   reference.direction.y,
+                   reference.direction.z);
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.ReferenceLabel = '%s'",
+                   auxiliaryName.c_str(),
+                   referenceLabel.c_str());
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.ProjectionMode = 'Across'",
+                   auxiliaryName.c_str());
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+                   auxiliaryName.c_str(),
+                   baseName.c_str());
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.ScaleType = %d",
+                   auxiliaryName.c_str(),
+                   static_cast<int>(reference.baseView->ScaleType.getValue()));
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.X = %.6f",
+                   auxiliaryName.c_str(),
+                   newX);
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.Y = %.6f",
+                   auxiliaryName.c_str(),
+                   newY);
+    cmd->doCommand(Gui::Command::Doc,
+                   "App.activeDocument().%s.recompute()",
+                   auxiliaryName.c_str());
+
+    reference.baseView->requestPaint();
+    cmd->getSelection().clearSelection();
+    cmd->updateActive();
+    cmd->commitCommand();
 }
 
 //===========================================================================
@@ -1961,6 +2265,7 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawSectionGroup());
     rcCmdMgr.addCommand(new CmdTechDrawSectionView());
     rcCmdMgr.addCommand(new CmdTechDrawComplexSection());
+    rcCmdMgr.addCommand(new CmdTechDrawAuxiliaryView());
     rcCmdMgr.addCommand(new CmdTechDrawDetailView());
     rcCmdMgr.addCommand(new CmdTechDrawProjectionGroup());
     rcCmdMgr.addCommand(new CmdTechDrawClipGroup());
@@ -2107,4 +2412,3 @@ Base::Vector3d checkDirectionVsBasis(Base::Vector3d dir)
     return dir;
 
 }
-

@@ -35,6 +35,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/DrawAuxiliaryView.h>
 #include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
@@ -51,6 +52,7 @@
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGIArrow.h"
+#include "QGIAuxiliaryMarker.h"
 #include "QGICMark.h"
 #include "QGICenterLine.h"
 #include "QGIEdge.h"
@@ -279,6 +281,7 @@ void QGIViewPart::draw()
     //this is old C/L
     drawCenterLines(true);//have to draw centerlines after border to get size correct.
     drawAllSectionLines();//same for section lines
+    drawAllAuxiliaryMarkers();
 
     prepareGeometryChange();
 }
@@ -899,6 +902,75 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     sectionLine->draw();
 }
 
+void QGIViewPart::drawAllAuxiliaryMarkers()
+{
+    TechDraw::DrawViewPart* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
+    if (!viewPart) {
+        return;
+    }
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(viewPart));
+    if (!vp) {
+        return;
+    }
+
+    if (!vp->ShowSectionLine.getValue()) {
+        return;
+    }
+
+    auto refs = viewPart->getAuxiliaryRefs();
+    for (auto& auxiliaryView : refs) {
+        drawAuxiliaryMarker(auxiliaryView, true);
+    }
+}
+
+void QGIViewPart::drawAuxiliaryMarker(TechDraw::DrawAuxiliaryView* auxiliaryView, bool b)
+{
+    Q_UNUSED(b);
+
+    TechDraw::DrawViewPart* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
+    if (!viewPart || !auxiliaryView) {
+        return;
+    }
+
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(viewPart));
+    if (!vp) {
+        return;
+    }
+
+    const double scale = viewPart->getScale();
+    Base::Vector3d start = Rez::guiX(auxiliaryView->ReferenceStart.getValue()) * scale;
+    Base::Vector3d end = Rez::guiX(auxiliaryView->ReferenceEnd.getValue()) * scale;
+    if (start.IsEqual(end, EWTOLERANCE)) {
+        Base::Console().message("QGIVP::drawAuxiliaryMarker - marker endpoints are equal. No marker created.\n");
+        return;
+    }
+
+    auto marker = new QGIAuxiliaryMarker();
+    addToGroupWithoutUpdate(marker);
+    marker->setPos(0.0, 0.0);
+    marker->setEnds(start, end);
+    marker->setDirection(auxiliaryView->getAuxiliaryLocalDirection());
+    marker->setLabel(QString::fromUtf8(auxiliaryView->ReferenceLabel.getValue()));
+
+    Base::Color color = Preferences::getAccessibleColor(vp->SectionLineColor.getValue());
+    QPen markerPen = m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
+                                                       vp->HiddenWidth.getValue());
+    markerPen.setColor(color.asValue<QColor>());
+    markerPen.setWidthF(Rez::guiX(vp->HiddenWidth.getValue()));
+    marker->setLinePen(markerPen);
+    marker->setMarkerColor(color.asValue<QColor>());
+
+    QFont markerFont = PreferencesGui::labelFontQFont();
+    markerFont.setPixelSize(
+        exactFontSize(Preferences::labelFont(), std::max(1.0, Preferences::labelFontSizeMM())));
+    marker->setFont(markerFont);
+    marker->setArrowSize(QGIArrow::getPrefArrowSize());
+    marker->setZValue(ZVALUE::SECTIONLINE);
+    marker->setRotation(-viewPart->Rotation.getValue());
+    marker->draw();
+}
+
 //TODO: use Cosmetic::CenterLine object for this to make it usable for dims.
 // these are the view center lines (ie x,y axes)
 void QGIViewPart::drawCenterLines(bool b)
@@ -1505,5 +1577,3 @@ void QGIViewPart::setMovableFlagProjGroupItem()
     // not locked, not autoDistribute
     setFlag(QGraphicsItem::ItemIsMovable, true);
 }
-
-

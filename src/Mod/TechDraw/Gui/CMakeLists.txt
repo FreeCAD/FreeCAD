@@ -189,6 +189,8 @@ SET(TechDrawGui_SRCS
     TaskDetail.ui
     TaskDetail.cpp
     TaskDetail.h
+    TaskAuxiliaryView.cpp
+    TaskAuxiliaryView.h
     PreferencesGui.cpp
     PreferencesGui.h
     TaskCosmeticLine.cpp
@@ -250,6 +252,8 @@ SET(TechDrawGuiView_SRCS
     QGIView.h
     QGIArrow.cpp
     QGIArrow.h
+    QGIAuxiliaryMarker.cpp
+    QGIAuxiliaryMarker.h
     QGIDatumLabel.cpp
     QGIDatumLabel.h
     QGIEdge.cpp
