@@ -91,11 +91,11 @@ private:
     void setup()
     {
         // NOLINTBEGIN
-        addParameter("BoolParameter", Bool{true});
-        addParameter("LongParameter", Int{23});
-        addParameter("UnsignedParameter", Unsigned{12345});
-        addParameter("FloatParameter", Double{1.2345});
-        addParameter("StringParameter", String{"Hello"});
+        addParameter("BoolParameter", Bool {true});
+        addParameter("LongParameter", Int {23});
+        addParameter("UnsignedParameter", Unsigned {12345});
+        addParameter("FloatParameter", Double {1.2345});
+        addParameter("StringParameter", String {"Hello"});
         // NOLINTEND
     }
 };
@@ -114,8 +114,7 @@ protected:
     }
 
     void TearDown() override
-    {
-    }
+    {}
 
     Base::Reference<ParameterManager> getCreateConfig()
     {
