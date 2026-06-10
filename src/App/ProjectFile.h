@@ -116,10 +116,6 @@ public:
      */
     bool loadDocument();
     /**
-     * If the project starts with a Document.xml file it's considered as valid.
-     */
-    bool isValid() const;
-    /**
      * Return the meta data of the loaded document.
      */
     Metadata getMetadata() const;

@@ -39,8 +39,6 @@ DlgSettingsImp::DlgSettingsImp(QWidget* parent)
     , ui(new Ui_DlgSettings)
 {
     ui->setupUi(this);
-    ui->dZLSpinBox->setDisabled(true);
-
     for (int row : {256, 512, 1024, 2048, 4096, 8192, 16384}) {
         ui->comboBoxRows->addItem(QString::number(row), QVariant(row));
     }

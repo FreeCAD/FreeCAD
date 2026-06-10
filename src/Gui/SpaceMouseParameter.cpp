@@ -29,24 +29,29 @@ using namespace Gui;
 
 void SpaceMouseParameter::setup()
 {
-    static_assert(is_getter<decltype(&SpaceMouseParameter::getLegacySpaceMouseDevices),
-                            Bool::value_type>, "Mismatching signature");
-    static_assert(is_setter<decltype(&SpaceMouseParameter::setLegacySpaceMouseDevices),
-                            Bool::value_type>, "Mismatching signature");
+    static_assert(
+        Base::is_getter<decltype(&SpaceMouseParameter::getLegacySpaceMouseDevices), Bool::value_type>,
+        "Mismatching signature"
+    );
+    static_assert(
+        Base::is_setter<decltype(&SpaceMouseParameter::setLegacySpaceMouseDevices), Bool::value_type>,
+        "Mismatching signature"
+    );
 
 #if defined(SPNAV_FOUND)
-    addParameter("LegacySpaceMouseDevices", Bool{true});
+    addParameter("LegacySpaceMouseDevices", Bool {true});
 #else
-    addParameter("LegacySpaceMouseDevices", Bool{false});
+    addParameter("LegacySpaceMouseDevices", Bool {false});
 #endif
 }
 
 SpaceMouseParameter::SpaceMouseParameter()
 {
-  attachToParameter(App::GetApplication().GetParameterGroupByPath(
-      "User parameter:BaseApp/Preferences/View"));
-  setup();
-  initParameters();
+    attachToParameter(
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+    );
+    setup();
+    initParameters();
 }
 
 SpaceMouseParameter* SpaceMouseParameter::instance()
