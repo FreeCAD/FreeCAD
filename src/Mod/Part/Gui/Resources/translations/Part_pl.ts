@@ -1257,8 +1257,8 @@ Płaszczyzna XY będzie wyrównana do składania pierwszej krawędzi.</translati
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Wykonuje operacje logiczne na wybranych kształtach</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -2238,7 +2238,7 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
       <translation>Edytuj dołączenie</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="488"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
       <translation>Zmień kolory ściany</translation>
     </message>
@@ -2279,7 +2279,7 @@ Widok ujęcie widoku określa kierunek rzutu.</translation>
       <translation>Wyciągnięcie po ścieżce</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1613"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
       <source>Project on surface</source>
       <translation>Rzut na powierzchnię</translation>
     </message>
@@ -4165,17 +4165,17 @@ Opcja przydatna w przypadku niektórych starszych plików STEP, z nieistotnymi a
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
       <source>Projection object</source>
       <translation>Obiekt do rzutowania</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
       <translation>Nie można utworzyć obiektu projekcji</translation>
     </message>
@@ -5847,7 +5847,7 @@ Pojedyncze kontrole operacji logicznych:</translation>
       <translation>2x%1 zaznacz i potwierdź</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1654"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Datum dialog: input error</source>
       <translation>Dialog punktu odniesienia: Błąd wejściowy</translation>
     </message>
@@ -6744,10 +6744,10 @@ Czy chcesz je również usunąć?</translation>
       <translation>Nieprawidłowy wybór</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Kontynuuj</translation>
     </message>
@@ -7177,12 +7177,12 @@ Wybrano coś innego.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="332"/>
+      <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
       <translation>Proste</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="337"/>
+      <location filename="../../../App/FaceMaker.cpp" line="343"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Tworzy osobną płaszczyznę ściany z każdej polilinii oddzielnie.
 Bez wsparcia dla otworów.
@@ -7361,7 +7361,7 @@ Polilinie mogą znajdować się na różnych płaszczyznach.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6698"/>
+      <location filename="../../../App/Geometry.cpp" line="6701"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nie można ustalić przecięcia krzywych. Spróbuj dodać wiązanie zbieżności między wierzchołkami krzywych, które zamierzasz zaokrąglić.</translation>
     </message>

@@ -81,6 +81,7 @@
 #include <Base/UnitsApi.h>
 
 #include "SoFCUnifiedSelection.h"
+#include "SelectionColors.h"
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObserver.h"
@@ -189,8 +190,8 @@ SoFCUnifiedSelection::SoFCUnifiedSelection()
 {
     SO_NODE_CONSTRUCTOR(SoFCUnifiedSelection);
 
-    SO_NODE_ADD_FIELD(colorHighlight, (SbColor(1.0f, 0.6f, 0.0f)));
-    SO_NODE_ADD_FIELD(colorSelection, (SbColor(0.1f, 0.8f, 0.1f)));
+    SO_NODE_ADD_FIELD(colorHighlight, (SelectionColors::highlightFallbackColor()));
+    SO_NODE_ADD_FIELD(colorSelection, (SelectionColors::selectionFallbackColor()));
     SO_NODE_ADD_FIELD(preselectionMode, (AUTO));
     SO_NODE_ADD_FIELD(selectionMode, (ON));
     SO_NODE_ADD_FIELD(selectionEnabled, (true));
@@ -249,19 +250,13 @@ bool SoFCUnifiedSelection::hasHighlight()
 
 void SoFCUnifiedSelection::applySettings()
 {
-    float transparency;
     ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
     bool enablePreselection = hGrp->GetBool("EnablePreselection", true);
     if (!enablePreselection) {
         this->preselectionMode = SoFCUnifiedSelection::OFF;
     }
     else {
-        // Search for a user defined value with the current color as default
-        SbColor highlightColor = this->colorHighlight.getValue();
-        auto highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        this->colorHighlight.setValue(highlightColor);
+        this->colorHighlight.setValue(SelectionColors::defaultHighlightColor());
     }
 
     bool enableSelection = hGrp->GetBool("EnableSelection", true);
@@ -269,12 +264,7 @@ void SoFCUnifiedSelection::applySettings()
         this->selectionMode = SoFCUnifiedSelection::OFF;
     }
     else {
-        // Do the same with the selection color
-        SbColor selectionColor = this->colorSelection.getValue();
-        auto selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = hGrp->GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        this->colorSelection.setValue(selectionColor);
+        this->colorSelection.setValue(SelectionColors::defaultSelectionColor());
     }
 }
 

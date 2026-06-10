@@ -413,16 +413,6 @@
       <translation>清除单元格</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
-      <source>Setup conf table</source>
-      <translation>设置配置表</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
-      <source>Unsetup conf table</source>
-      <translation>取消配置表设置</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>绑定单元格：</translation>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>解绑单元格</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation>设置配置表</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation>取消配置表设置</translation>
     </message>
   </context>
   <context>

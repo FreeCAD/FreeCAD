@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1489"/>
+      <location filename="../../Command.cpp" line="1487"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1490"/>
+      <location filename="../../Command.cpp" line="1488"/>
       <source>Bounding Box Info</source>
       <translation>Afficher les informations sur la boîte englobante</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1491"/>
+      <location filename="../../Command.cpp" line="1489"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
       <translation>Affiche les coordonnées de la boîte englobante du maillage sélectionné.</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1544"/>
+      <location filename="../../Command.cpp" line="1542"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1545"/>
+      <location filename="../../Command.cpp" line="1543"/>
       <source>Regular Solid</source>
       <translation>Solide régulier</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1546"/>
+      <location filename="../../Command.cpp" line="1544"/>
       <source>Builds a regular solid</source>
       <translation>Construire un solide régulier</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="994"/>
+      <location filename="../../Command.cpp" line="992"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="995"/>
+      <location filename="../../Command.cpp" line="993"/>
       <source>Cross-Sections</source>
       <translation>Créer des coupes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="996"/>
+      <location filename="../../Command.cpp" line="994"/>
       <source>Creates cross-sections of the mesh</source>
       <translation>Crée des coupes du maillage.</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="1379"/>
+      <location filename="../../Command.cpp" line="1377"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1380"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Decimate</source>
       <translation>Décimer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1381"/>
+      <location filename="../../Command.cpp" line="1379"/>
       <source>Decimates a mesh</source>
       <translation>Décimer un maillage</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1127"/>
+      <location filename="../../Command.cpp" line="1125"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1128"/>
+      <location filename="../../Command.cpp" line="1126"/>
       <source>Face Info</source>
       <translation>Informer sur la face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="1127"/>
       <source>Displays information about the selected faces</source>
       <translation>Affiche des informations sur les faces sélectionnées.</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1308"/>
+      <location filename="../../Command.cpp" line="1306"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1309"/>
+      <location filename="../../Command.cpp" line="1307"/>
       <source>Evaluate Solid</source>
       <translation>Vérifier si le maillage est un solide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1310"/>
+      <location filename="../../Command.cpp" line="1308"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>Vérifie si le maillage est un solide.</translation>
     </message>
@@ -148,17 +148,17 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1081"/>
+      <location filename="../../Command.cpp" line="1079"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1083"/>
+      <location filename="../../Command.cpp" line="1081"/>
       <source>Evaluate and Repair</source>
       <translation>Évaluer et réparer</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1084"/>
+      <location filename="../../Command.cpp" line="1082"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>Ouvrir une fenêtre de dialogue pour analyser et réparer un maillage</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1631"/>
+      <location filename="../../Command.cpp" line="1629"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1632"/>
+      <location filename="../../Command.cpp" line="1630"/>
       <source>Close Hole</source>
       <translation>Boucher un trou</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1633"/>
+      <location filename="../../Command.cpp" line="1631"/>
       <source>Closes a hole interactively in the mesh</source>
       <translation>Bouche un trou de manière interactive dans le maillage.</translation>
     </message>
@@ -202,17 +202,17 @@
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1576"/>
+      <location filename="../../Command.cpp" line="1574"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1577"/>
+      <location filename="../../Command.cpp" line="1575"/>
       <source>Fill Holes</source>
       <translation>Remplir des trous</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1578"/>
+      <location filename="../../Command.cpp" line="1576"/>
       <source>Fills holes in the mesh</source>
       <translation>Remplis les trous du maillage.</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1450"/>
+      <location filename="../../Command.cpp" line="1448"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1451"/>
+      <location filename="../../Command.cpp" line="1449"/>
       <source>Flip Normals</source>
       <translation>Inverser des normales‏‎</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1452"/>
+      <location filename="../../Command.cpp" line="1450"/>
       <source>Flips the normals of the selected mesh</source>
       <translation>Inverse les normales du maillage sélectionné.</translation>
     </message>
@@ -274,17 +274,17 @@
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1411"/>
+      <location filename="../../Command.cpp" line="1409"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1412"/>
+      <location filename="../../Command.cpp" line="1410"/>
       <source>Harmonize Normals</source>
       <translation>Harmoniser les normales‎</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1413"/>
+      <location filename="../../Command.cpp" line="1411"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>Harmoniser les normales du maillage</translation>
     </message>
@@ -328,17 +328,17 @@
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1753"/>
+      <location filename="../../Command.cpp" line="1751"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1754"/>
+      <location filename="../../Command.cpp" line="1752"/>
       <source>Merge</source>
       <translation>Fusionner</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1755"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Merges selected meshes into one</source>
       <translation>Fusionner les maillages sélectionnés en un seul</translation>
     </message>
@@ -346,17 +346,17 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="802"/>
+      <location filename="../../Command.cpp" line="800"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="801"/>
       <source>Cut</source>
       <translation>Couper</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="804"/>
+      <location filename="../../Command.cpp" line="802"/>
       <source>Cuts the mesh with a selected polygon</source>
       <translation>Coupe le maillage par un polygone sélectionné.</translation>
     </message>
@@ -382,17 +382,17 @@
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="1022"/>
+      <location filename="../../Command.cpp" line="1020"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1023"/>
+      <location filename="../../Command.cpp" line="1021"/>
       <source>Split</source>
       <translation>Scinder</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1024"/>
+      <location filename="../../Command.cpp" line="1022"/>
       <source>Splits a mesh into 2 meshes</source>
       <translation>Divise un maillage en deux maillages.</translation>
     </message>
@@ -400,22 +400,22 @@
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="869"/>
+      <location filename="../../Command.cpp" line="867"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="870"/>
+      <location filename="../../Command.cpp" line="868"/>
       <source>Trim</source>
       <translation>Découper</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="871"/>
+      <location filename="../../Command.cpp" line="869"/>
       <source>Trims a mesh with a selected polygon</source>
       <translation>Découpe le maillage par un polygone sélectionné.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="873"/>
+      <location filename="../../Command.cpp" line="871"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>Découpe un maillage par un polygone sélectionné.</translation>
     </message>
@@ -423,17 +423,17 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1224"/>
+      <location filename="../../Command.cpp" line="1222"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1225"/>
+      <location filename="../../Command.cpp" line="1223"/>
       <source>Refinement</source>
       <translation>Remailler</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1226"/>
+      <location filename="../../Command.cpp" line="1224"/>
       <source>Refines an existing mesh</source>
       <translation>Remaille un maillage existant.</translation>
     </message>
@@ -441,17 +441,17 @@
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1256"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1259"/>
+      <location filename="../../Command.cpp" line="1257"/>
       <source>Remove Components Manually</source>
       <translation>Supprimer manuellement des composants</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1260"/>
+      <location filename="../../Command.cpp" line="1258"/>
       <source>Marks a component to remove it from the mesh</source>
       <translation>Marque un composant pour le supprimer du maillage.</translation>
     </message>
@@ -459,17 +459,17 @@
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1176"/>
+      <location filename="../../Command.cpp" line="1174"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1177"/>
+      <location filename="../../Command.cpp" line="1175"/>
       <source>Remove Components</source>
       <translation>Supprimer des composants</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../Command.cpp" line="1176"/>
       <source>Removes topologically independent components from the mesh</source>
       <translation>Supprime des composants topologiquement indépendants du maillage.</translation>
     </message>
@@ -477,17 +477,17 @@
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1848"/>
+      <location filename="../../Command.cpp" line="1846"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1849"/>
+      <location filename="../../Command.cpp" line="1847"/>
       <source>Scale</source>
       <translation>Échelle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1850"/>
+      <location filename="../../Command.cpp" line="1848"/>
       <source>Scales the selected mesh objects</source>
       <translation>Met à l'échelle les maillages sélectionnés.</translation>
     </message>
@@ -495,17 +495,17 @@
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="963"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../Command.cpp" line="964"/>
       <source>Section From Plane</source>
       <translation>Créer une coupe par un plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="967"/>
+      <location filename="../../Command.cpp" line="965"/>
       <source>Sections the mesh with the selected plane</source>
       <translation>Crée une coupe d'un maillage par un plan sélectionné.</translation>
     </message>
@@ -513,17 +513,17 @@
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1679"/>
+      <location filename="../../Command.cpp" line="1677"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1680"/>
+      <location filename="../../Command.cpp" line="1678"/>
       <source>Segmentation</source>
       <translation>Segmenter le maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1681"/>
+      <location filename="../../Command.cpp" line="1679"/>
       <source>Creates new mesh segments from the mesh</source>
       <translation>Crée de nouveaux segments de maillage à partir du maillage.</translation>
     </message>
@@ -531,17 +531,17 @@
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1716"/>
+      <location filename="../../Command.cpp" line="1714"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1717"/>
+      <location filename="../../Command.cpp" line="1715"/>
       <source>Segmentation From Best-Fit Surfaces</source>
       <translation>Segmenter le maillage à partir des surfaces les mieux adaptées</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1718"/>
+      <location filename="../../Command.cpp" line="1716"/>
       <source>Creates new mesh segments from the best-fit surfaces</source>
       <translation>Crée de nouveaux segments de maillage à partir des surfaces les mieux adaptées.</translation>
     </message>
@@ -549,17 +549,17 @@
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1351"/>
+      <location filename="../../Command.cpp" line="1349"/>
       <source>Smooth</source>
       <translation>Lisser</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1352"/>
+      <location filename="../../Command.cpp" line="1350"/>
       <source>Smoothes the selected meshes</source>
       <translation>Lisse les maillages sélectionnés.</translation>
     </message>
@@ -567,17 +567,17 @@
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1799"/>
+      <location filename="../../Command.cpp" line="1797"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1800"/>
+      <location filename="../../Command.cpp" line="1798"/>
       <source>Split by Components</source>
       <translation>Éclater en composants</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1801"/>
+      <location filename="../../Command.cpp" line="1799"/>
       <source>Splits the selected mesh into its components</source>
       <translation>Éclate le maillage sélectionné en ses composants.</translation>
     </message>
@@ -585,17 +585,17 @@
   <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="936"/>
+      <location filename="../../Command.cpp" line="934"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="937"/>
+      <location filename="../../Command.cpp" line="935"/>
       <source>Trim With Plane</source>
       <translation>Découper par un plan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="938"/>
+      <location filename="../../Command.cpp" line="936"/>
       <source>Trims a mesh by removing faces on one side of a selected plane</source>
       <translation>Découpe un maillage en supprimant les faces d'un côté du plan sélectionné.</translation>
     </message>
@@ -687,32 +687,32 @@
       <translation>Lisser un maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1424"/>
+      <location filename="../../Command.cpp" line="1422"/>
       <source>Harmonize mesh normals</source>
       <translation>Harmoniser les normales du maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1463"/>
+      <location filename="../../Command.cpp" line="1461"/>
       <source>Flip mesh normals</source>
       <translation>Inverser les normales du maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1604"/>
+      <location filename="../../Command.cpp" line="1602"/>
       <source>Fill up holes</source>
       <translation>Remplir des trous</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1768"/>
+      <location filename="../../Command.cpp" line="1766"/>
       <source>Mesh merge</source>
       <translation>Fusionner des maillages</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1814"/>
+      <location filename="../../Command.cpp" line="1812"/>
       <source>Mesh split</source>
       <translation>Scinder un maillage</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1879"/>
+      <location filename="../../Command.cpp" line="1877"/>
       <source>Mesh scale</source>
       <translation>Mettre à l'échelle le maillage</translation>
     </message>
@@ -729,7 +729,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="666"/>
       <source>Remove non-manifolds</source>
-      <translation>Supprimer les maillages non-manifolds</translation>
+      <translation>Supprimer des maillages non-manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="773"/>
@@ -1029,7 +1029,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="688"/>
       <source>Cannot remove non-manifolds</source>
-      <translation>Impossible de supprimer les non-manifolds</translation>
+      <translation>Il n'est pas possible de supprimer les non-manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="728"/>
@@ -1567,6 +1567,10 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Temps</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Temps :</translation>
@@ -1590,22 +1594,27 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="394"/>
+      <location filename="../../MeshEditor.cpp" line="255"/>
+      <source>Cannot add triangle to avoid non-manifolds.</source>
+      <translation>Il n'est pas possible d'ajouter des triangles pour éviter les non-manifolds.</translation>
+    </message>
+    <message>
+      <location filename="../../MeshEditor.cpp" line="407"/>
       <source>Add Triangle</source>
       <translation>Ajouter un triangle</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="395"/>
+      <location filename="../../MeshEditor.cpp" line="408"/>
       <source>Flip Normal</source>
       <translation>Inverser une normale</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="396"/>
+      <location filename="../../MeshEditor.cpp" line="409"/>
       <source>Clear</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="413"/>
+      <location filename="../../MeshEditor.cpp" line="426"/>
       <source>Finish</source>
       <translation>Terminer</translation>
     </message>
@@ -1613,7 +1622,7 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="765"/>
+      <location filename="../../MeshEditor.cpp" line="778"/>
       <source>Finish</source>
       <translation>Terminer</translation>
     </message>
@@ -2018,7 +2027,7 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1516"/>
+      <location filename="../../Command.cpp" line="1514"/>
       <source>Boundings of %1:</source>
       <translation>Limites de %1 :</translation>
     </message>
@@ -2189,42 +2198,42 @@ Visit https://openscad.org/ to install it.</source>
       <translation>Saisir la tolérance pour la géométrie maillée :</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1325"/>
+      <location filename="../../Command.cpp" line="1323"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>Le maillage '%1' n'est pas un solide.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1329"/>
+      <location filename="../../Command.cpp" line="1327"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>Le maillage '%1' est un solide.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1332"/>
+      <location filename="../../Command.cpp" line="1330"/>
       <source>Solid Mesh</source>
       <translation>Maillage solide</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1525"/>
+      <location filename="../../Command.cpp" line="1523"/>
       <source>Boundings</source>
       <translation>Limites englobantes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1592"/>
+      <location filename="../../Command.cpp" line="1590"/>
       <source>Fill Holes</source>
       <translation>Remplir des trous</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1591"/>
       <source>Fill holes with maximum number of edges</source>
       <translation>Remplir les trous avec un nombre maximum de contours</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1866"/>
+      <location filename="../../Command.cpp" line="1864"/>
       <source>Scaling</source>
       <translation>Mettre à l'échelle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1867"/>
+      <location filename="../../Command.cpp" line="1865"/>
       <source>Enter scaling factor:</source>
       <translation>Entrer le facteur d’échelle :</translation>
     </message>
@@ -2249,8 +2258,8 @@ Visit https://openscad.org/ to install it.</source>
       <translation>Afficher les couleurs</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
       <translation>Quitter le mode Information</translation>
     </message>

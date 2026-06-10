@@ -302,6 +302,9 @@ TaskView::TaskView(QWidget* parent)
     connectApplicationInEdit = Gui::Application::Instance->signalInEdit.connect(
         std::bind(&Gui::TaskView::TaskView::slotInEdit, this, sp::_1)
     );
+    connectApplicationResetEdit = Gui::Application::Instance->signalResetEdit.connect(
+        std::bind(&Gui::TaskView::TaskView::slotResetEdit, this, sp::_1)
+    );
     // NOLINTEND
 
     setShowTaskWatcher(hGrp->GetBool("ShowTaskWatcher", true));
@@ -324,6 +327,7 @@ TaskView::~TaskView()
     connectApplicationUndoDocument.disconnect();
     connectApplicationRedoDocument.disconnect();
     connectApplicationInEdit.disconnect();
+    connectApplicationResetEdit.disconnect();
     connectShowTaskWatcherSetting.disconnect();
     Gui::Selection().Detach(this);
 
@@ -502,13 +506,38 @@ void TaskView::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
     }
 }
 
+void TaskView::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
+{
+    App::Document* doc = vp.getDocument()->getDocument();
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+    bool hasDialog = foundTaskInfo != taskInfos.end();
+
+    if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnResetEdit()) {
+        foundTaskInfo->ActiveDialog->autoClosedOnResetEdit();
+
+        auto refreshedTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+        if (refreshedTaskInfo != taskInfos.end()) {
+            removeDialog(refreshedTaskInfo);
+        }
+        hasDialog = false;
+    }
+
+    if (!hasDialog) {
+        updateWatcher();
+    }
+}
+
 void TaskView::slotDeletedDocument(const App::Document& doc)
 {
     auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
     bool hasDialog = foundTaskInfo != taskInfos.end();
     if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
         foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
-        removeDialog(foundTaskInfo);
+
+        auto refreshedTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
+        if (refreshedTaskInfo != taskInfos.end()) {
+            removeDialog(refreshedTaskInfo);
+        }
         hasDialog = false;
     }
 
@@ -525,8 +554,13 @@ void TaskView::slotViewClosed(const Gui::MDIView* view)
     bool hasDialog = foundTaskInfo != taskInfos.end();
     // It can happen that only a view is closed an not the document
     if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnClosedView()) {
+        App::Document* doc = foundTaskInfo->Document;
         foundTaskInfo->ActiveDialog->autoClosedOnClosedView();
-        removeDialog(foundTaskInfo);
+
+        auto refreshedTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
+        if (refreshedTaskInfo != taskInfos.end()) {
+            removeDialog(refreshedTaskInfo);
+        }
         hasDialog = false;
     }
 
@@ -549,8 +583,13 @@ void TaskView::transactionChangeOnDocument(const App::Document& doc, bool undo)
         }
 
         if (foundTaskInfo->ActiveDialog->isAutoCloseOnTransactionChange()) {
+            App::Document* docPtr = foundTaskInfo->Document;
             foundTaskInfo->ActiveDialog->autoClosedOnTransactionChange();
-            removeDialog(foundTaskInfo);
+
+            auto refreshedTaskInfo = std::ranges::find(taskInfos, docPtr, &TaskInfo::Document);
+            if (refreshedTaskInfo != taskInfos.end()) {
+                removeDialog(refreshedTaskInfo);
+            }
             hasDialog = false;
         }
     }

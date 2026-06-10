@@ -413,16 +413,6 @@
       <translation>セルをクリア</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
-      <source>Setup conf table</source>
-      <translation>設定テーブルのセットアップ</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
-      <source>Unsetup conf table</source>
-      <translation>設定テーブルのセットアップ解除</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>セルのバインド</translation>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>セルのバインドを解除</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation>設定テーブルのセットアップ</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation>設定テーブルのセットアップ解除</translation>
     </message>
   </context>
   <context>

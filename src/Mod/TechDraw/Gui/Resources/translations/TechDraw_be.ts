@@ -51,24 +51,24 @@
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
-      <source>Add a cosmetic line that passes through 2 selected points</source>
-      <translation>Дадаць касметычную лінію, якая праходзіць праз дзве выбраныя кропкі</translation>
+      <source>Adds a cosmetic line that passes through 2 selected points</source>
+      <translation>Дадае касметычную лінію, якая праходзіць праз дзве выбраныя кропкі</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1771"/>
+      <location filename="../../CommandCreateDims.cpp" line="1777"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1772"/>
+      <location filename="../../CommandCreateDims.cpp" line="1778"/>
       <source>Angle Dimension From 3 Points</source>
       <translation>Вымярэнне вугла з трох кропак</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1773"/>
+      <location filename="../../CommandCreateDims.cpp" line="1779"/>
       <source>Inserts an angle dimension between 3 selected points</source>
       <translation>Устаўляе вымярэнне вугла паміж трох абраных кропак</translation>
     </message>
@@ -89,17 +89,17 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1724"/>
+      <location filename="../../CommandCreateDims.cpp" line="1730"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1725"/>
+      <location filename="../../CommandCreateDims.cpp" line="1731"/>
       <source>Angle Dimension</source>
       <translation>Вымярэнне вугла</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1726"/>
+      <location filename="../../CommandCreateDims.cpp" line="1732"/>
       <source>Inserts an angle dimension between two edges</source>
       <translation>Устаўляе вымярэнне вугла паміж двух рэбраў</translation>
     </message>
@@ -1475,8 +1475,8 @@ Left clicking on empty space will validate the current dimension. Right clicking
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="592"/>
-      <source>Add a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation>Дадаць касметычную разьбу да выгляду збоку абранай адтуліны паміж дзвюма абранымі паралельнымі лініямі</translation>
+      <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
+      <translation>Дадае касметычную разьбу да выгляду збоку абранай адтуліны паміж дзвюма абранымі паралельнымі лініямі</translation>
     </message>
   </context>
   <context>
@@ -1500,27 +1500,27 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1866"/>
+      <location filename="../../CommandCreateDims.cpp" line="1872"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1867"/>
+      <location filename="../../CommandCreateDims.cpp" line="1873"/>
       <source>Extent Dimension</source>
       <translation>Габарытнае вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1868"/>
+      <location filename="../../CommandCreateDims.cpp" line="1874"/>
       <source>Inserts a dimension showing the extent (overall length) of an object or feature</source>
       <translation>Устаўляе памер, які паказвае працягласць (агульную даўжыню) аб'екта ці характарыстыкі</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1934"/>
+      <location filename="../../CommandCreateDims.cpp" line="1940"/>
       <source>Horizontal extent</source>
       <translation>Гарызантальны габарытнае вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1939"/>
+      <location filename="../../CommandCreateDims.cpp" line="1945"/>
       <source>Vertical extent</source>
       <translation>Вертыкальны габарытнае вымярэнне</translation>
     </message>
@@ -1600,19 +1600,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1960"/>
+      <location filename="../../CommandCreateDims.cpp" line="1966"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1961"/>
+      <location filename="../../CommandCreateDims.cpp" line="1967"/>
       <source>Horizontal Extent Dimension</source>
       <translation>Гарызантальнае вымярэнне даўжыні</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1962"/>
-      <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature.</source>
-      <translation>Устаўляе памер, які паказвае гарызантальную працягласць (агульную даўжыню) аб'екта ці характарыстыкі.</translation>
+      <location filename="../../CommandCreateDims.cpp" line="1968"/>
+      <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature</source>
+      <translation>Устаўляе памер, які паказвае гарызантальную працягласць (агульную даўжыню) аб'екта ці характарыстыкі</translation>
     </message>
   </context>
   <context>
@@ -2085,17 +2085,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1676"/>
+      <location filename="../../CommandCreateDims.cpp" line="1679"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1677"/>
+      <location filename="../../CommandCreateDims.cpp" line="1680"/>
       <source>Vertical Length Dimension</source>
       <translation>Вымярэнне вертыкальнай даўжыні</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1678"/>
+      <location filename="../../CommandCreateDims.cpp" line="1681"/>
       <source>Inserts a vertical length dimension of an edge or distance between two points</source>
       <translation>Устаўляе вертыкальнае вымярэнне даўжыні рабра ці адлегласць паміж дзвюма кропкамі</translation>
     </message>
@@ -2103,19 +2103,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2085"/>
+      <location filename="../../CommandCreateDims.cpp" line="2091"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2086"/>
+      <location filename="../../CommandCreateDims.cpp" line="2092"/>
       <source>Vertical Extent Dimension</source>
       <translation>Вымярэнне вертыкальнай працягласці</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2087"/>
-      <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature.</source>
-      <translation>Устаўляе памер, які паказвае вертыкальную працягласць (агульную даўжыню) аб'екта ці характарыстыкі.</translation>
+      <location filename="../../CommandCreateDims.cpp" line="2093"/>
+      <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature</source>
+      <translation>Устаўляе памер, які паказвае вертыкальную працягласць (агульную даўжыню) аб'екта ці характарыстыкі</translation>
     </message>
   </context>
   <context>
@@ -2423,17 +2423,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1992"/>
+      <location filename="../../CommandCreateDims.cpp" line="1998"/>
       <source>Create Dimension DistanceX</source>
       <translation>Стварыць вымярэнне DistanceX</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1994"/>
+      <location filename="../../CommandCreateDims.cpp" line="2000"/>
       <source>Create Dimension DistanceY</source>
       <translation>Стварыць вымярэнне DistanceY</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2287"/>
+      <location filename="../../CommandCreateDims.cpp" line="2293"/>
       <source>Create dimension</source>
       <translation>Стварыць вымярэнне</translation>
     </message>
@@ -2473,7 +2473,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Перацягнуць вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="610"/>
+      <location filename="../../QGSPage.cpp" line="585"/>
       <source>Create Balloon</source>
       <translation>Стварыць пазіцыйную зноску</translation>
     </message>
@@ -3107,8 +3107,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1354"/>
       <location filename="../../CommandAnnotate.cpp" line="1361"/>
       <location filename="../../CommandAnnotate.cpp" line="1425"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="638"/>
       <location filename="../../Command.cpp" line="648"/>
       <location filename="../../Command.cpp" line="865"/>
@@ -3127,6 +3125,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1705"/>
       <location filename="../../Command.cpp" line="1711"/>
       <location filename="../../Command.cpp" line="1770"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
@@ -3187,22 +3187,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>FreeCAD не атрымалася знайсці старонку для экспартавання</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1903"/>
-      <source>Save DXF file</source>
-      <translation>Захаваць файл у DXF</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2093"/>
-      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation>Зваротны напрамак знаходзіцца ў межах %1 градуса ад стандартнага напрамку.
-Ці заменіць абраны напрамак на %2?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2098"/>
-      <source>Direction is close to standard</source>
-      <translation>Напрамак блізка да стандартнага</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="600"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>Абярыце аб'екты для разбіўкі ці асноўны выгляд і аб'екты вызначэння разбіўкі</translation>
@@ -3219,6 +3203,18 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Без фігур, суполак ці сувязяў у абраным</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="310"/>
+      <location filename="../../CommandExtensionDims.cpp" line="519"/>
+      <location filename="../../CommandExtensionDims.cpp" line="807"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
+      <location filename="../../CommandExtensionPack.cpp" line="299"/>
+      <location filename="../../CommandExtensionPack.cpp" line="602"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1222"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1467"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="161"/>
       <location filename="../../CommandAnnotate.cpp" line="213"/>
@@ -3234,40 +3230,35 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1260"/>
       <location filename="../../CommandAnnotate.cpp" line="1341"/>
       <location filename="../../CommandAnnotate.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="748"/>
+      <location filename="../../Command.cpp" line="841"/>
+      <location filename="../../Command.cpp" line="904"/>
       <location filename="../../CommandCreateDims.cpp" line="1499"/>
       <location filename="../../CommandCreateDims.cpp" line="1547"/>
       <location filename="../../CommandCreateDims.cpp" line="1595"/>
       <location filename="../../CommandCreateDims.cpp" line="1643"/>
-      <location filename="../../CommandCreateDims.cpp" line="1691"/>
-      <location filename="../../CommandCreateDims.cpp" line="1738"/>
-      <location filename="../../CommandCreateDims.cpp" line="1785"/>
-      <location filename="../../CommandCreateDims.cpp" line="1832"/>
-      <location filename="../../CommandCreateDims.cpp" line="1879"/>
-      <location filename="../../CommandCreateDims.cpp" line="1975"/>
-      <location filename="../../CommandCreateDims.cpp" line="2100"/>
-      <location filename="../../CommandExtensionDims.cpp" line="310"/>
-      <location filename="../../CommandExtensionDims.cpp" line="519"/>
-      <location filename="../../CommandExtensionDims.cpp" line="807"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
+      <location filename="../../CommandCreateDims.cpp" line="1694"/>
+      <location filename="../../CommandCreateDims.cpp" line="1744"/>
+      <location filename="../../CommandCreateDims.cpp" line="1791"/>
+      <location filename="../../CommandCreateDims.cpp" line="1838"/>
+      <location filename="../../CommandCreateDims.cpp" line="1885"/>
+      <location filename="../../CommandCreateDims.cpp" line="1981"/>
+      <location filename="../../CommandCreateDims.cpp" line="2106"/>
       <location filename="../../CommandStack.cpp" line="73"/>
       <location filename="../../CommandStack.cpp" line="189"/>
       <location filename="../../CommandStack.cpp" line="249"/>
       <location filename="../../CommandStack.cpp" line="309"/>
-      <location filename="../../CommandExtensionPack.cpp" line="299"/>
-      <location filename="../../CommandExtensionPack.cpp" line="602"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1222"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1467"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
-      <location filename="../../Command.cpp" line="748"/>
-      <location filename="../../Command.cpp" line="841"/>
-      <location filename="../../Command.cpp" line="904"/>
       <source>Task in progress</source>
       <translation>Задача ў працэсе</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="311"/>
+      <location filename="../../CommandExtensionDims.cpp" line="520"/>
+      <location filename="../../CommandExtensionDims.cpp" line="808"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <location filename="../../CommandAnnotate.cpp" line="101"/>
       <location filename="../../CommandAnnotate.cpp" line="162"/>
       <location filename="../../CommandAnnotate.cpp" line="214"/>
@@ -3283,13 +3274,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../CommandExtensionDims.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="520"/>
-      <location filename="../../CommandExtensionDims.cpp" line="808"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <location filename="../../Command.cpp" line="749"/>
       <location filename="../../Command.cpp" line="842"/>
       <location filename="../../Command.cpp" line="905"/>
@@ -3313,14 +3297,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Без асноўнага выгляду, суполак ці сувязяў у абраным</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2365"/>
       <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../CommandCreateDims.cpp" line="2371"/>
       <source>Select an object first</source>
       <translation>Спачатку абярыце аб'ект</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2373"/>
       <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../CommandCreateDims.cpp" line="2379"/>
       <source>Too many objects selected</source>
       <translation>Абрана зашмат аб'ектаў</translation>
     </message>
@@ -3344,6 +3328,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>Старонка ўтрымлівае выгляд BIM, які не будзе экспартаваны.
 Ці працягнуць?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1903"/>
+      <source>Save DXF file</source>
+      <translation>Захаваць файл у DXF</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2093"/>
+      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
+      <translation>Зваротны напрамак знаходзіцца ў межах %1 градуса ад стандартнага напрамку.
+Ці заменіць абраны напрамак на %2?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2098"/>
+      <source>Direction is close to standard</source>
+      <translation>Напрамак блізка да стандартнага</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1421"/>
@@ -3395,74 +3395,74 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1548"/>
       <location filename="../../CommandCreateDims.cpp" line="1596"/>
       <location filename="../../CommandCreateDims.cpp" line="1644"/>
-      <location filename="../../CommandCreateDims.cpp" line="1692"/>
-      <location filename="../../CommandCreateDims.cpp" line="1739"/>
-      <location filename="../../CommandCreateDims.cpp" line="1786"/>
-      <location filename="../../CommandCreateDims.cpp" line="1833"/>
-      <location filename="../../CommandCreateDims.cpp" line="1880"/>
-      <location filename="../../CommandCreateDims.cpp" line="1976"/>
-      <location filename="../../CommandCreateDims.cpp" line="2101"/>
+      <location filename="../../CommandCreateDims.cpp" line="1695"/>
+      <location filename="../../CommandCreateDims.cpp" line="1745"/>
+      <location filename="../../CommandCreateDims.cpp" line="1792"/>
+      <location filename="../../CommandCreateDims.cpp" line="1839"/>
+      <location filename="../../CommandCreateDims.cpp" line="1886"/>
+      <location filename="../../CommandCreateDims.cpp" line="1982"/>
+      <location filename="../../CommandCreateDims.cpp" line="2107"/>
       <source>Close the active task dialog and try again</source>
       <translation>Зачыніць дыялогавае акно бягучай задачы і паўтарыць спробу</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2002"/>
-      <location filename="../../CommandCreateDims.cpp" line="2192"/>
+      <location filename="../../CommandCreateDims.cpp" line="2008"/>
+      <location filename="../../CommandCreateDims.cpp" line="2198"/>
       <source>No view of a part in selection.</source>
       <translation>Без выгляду дэталі ў абраным.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2044"/>
+      <location filename="../../CommandCreateDims.cpp" line="2050"/>
       <source>Cannot make 2D extent dimension from selection</source>
       <translation>Не атрымалася зрабіць двухмернае габарытнае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2060"/>
+      <location filename="../../CommandCreateDims.cpp" line="2066"/>
       <source>Cannot make 3D extent dimension from selection</source>
       <translation>Не атрымалася зрабіць трохмернае габарытнае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2140"/>
+      <location filename="../../CommandCreateDims.cpp" line="2146"/>
       <source>There is no dimension in your selection</source>
       <translation>У выбары няма вымярэння</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2207"/>
+      <location filename="../../CommandCreateDims.cpp" line="2213"/>
       <source>Cannot make 2D dimension from selection</source>
       <translation>Не атрымалася зрабіць двухмернае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2214"/>
+      <location filename="../../CommandCreateDims.cpp" line="2220"/>
       <source>Cannot make 3D dimension without 3d references</source>
       <translation>Не атрымалася стварыць трохмернае вымярэнне без трохмерных спасылак</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2229"/>
+      <location filename="../../CommandCreateDims.cpp" line="2235"/>
       <source>Cannot make 3D dimension from selection</source>
       <translation>Не атрымалася зрабіць трохмернае вымярэнне з абранага</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2242"/>
+      <location filename="../../CommandCreateDims.cpp" line="2248"/>
       <source>Ellipse curve warning</source>
       <translation>Папярэджанне крывой эліпса</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2253"/>
+      <location filename="../../CommandCreateDims.cpp" line="2259"/>
       <source>B-spline curve warning</source>
       <translation>Папярэджанне крывой B-сплайна</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2264"/>
+      <location filename="../../CommandCreateDims.cpp" line="2270"/>
       <source>B-spline curve error</source>
       <translation>Памылка крывой B-сплайна</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2265"/>
+      <location filename="../../CommandCreateDims.cpp" line="2271"/>
       <source>Selected edge is a B-spline and a radius/diameter cannot be calculated.</source>
       <translation>Абранае рабро ўяўляе сабой B-сплайн, і таму дыяметр/дыяметр вылічыць не атрымалася.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2382"/>
+      <location filename="../../CommandCreateDims.cpp" line="2388"/>
       <source>Create a page first.</source>
       <translation>Спачатку стварыць старонку.</translation>
     </message>
@@ -3472,19 +3472,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Абраць файл SVG, каб адчыніць</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2001"/>
-      <location filename="../../CommandCreateDims.cpp" line="2017"/>
-      <location filename="../../CommandCreateDims.cpp" line="2043"/>
-      <location filename="../../CommandCreateDims.cpp" line="2059"/>
-      <location filename="../../CommandCreateDims.cpp" line="2139"/>
-      <location filename="../../CommandCreateDims.cpp" line="2191"/>
-      <location filename="../../CommandCreateDims.cpp" line="2206"/>
-      <location filename="../../CommandCreateDims.cpp" line="2213"/>
-      <location filename="../../CommandCreateDims.cpp" line="2228"/>
-      <location filename="../../CommandCreateDims.cpp" line="2364"/>
-      <location filename="../../CommandCreateDims.cpp" line="2372"/>
-      <location filename="../../CommandCreateDims.cpp" line="2381"/>
-      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandExtensionPack.cpp" line="1878"/>
       <location filename="../../CommandExtensionPack.cpp" line="2002"/>
       <location filename="../../CommandDecorate.cpp" line="418"/>
@@ -3492,13 +3479,26 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandDecorate.cpp" line="432"/>
       <location filename="../../CommandDecorate.cpp" line="439"/>
       <location filename="../../CommandDecorate.cpp" line="445"/>
-      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../Command.cpp" line="1200"/>
       <location filename="../../Command.cpp" line="1207"/>
       <location filename="../../Command.cpp" line="1215"/>
       <location filename="../../Command.cpp" line="1227"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
+      <location filename="../../CommandCreateDims.cpp" line="2007"/>
+      <location filename="../../CommandCreateDims.cpp" line="2023"/>
+      <location filename="../../CommandCreateDims.cpp" line="2049"/>
+      <location filename="../../CommandCreateDims.cpp" line="2065"/>
+      <location filename="../../CommandCreateDims.cpp" line="2145"/>
+      <location filename="../../CommandCreateDims.cpp" line="2197"/>
+      <location filename="../../CommandCreateDims.cpp" line="2212"/>
+      <location filename="../../CommandCreateDims.cpp" line="2219"/>
+      <location filename="../../CommandCreateDims.cpp" line="2234"/>
+      <location filename="../../CommandCreateDims.cpp" line="2370"/>
+      <location filename="../../CommandCreateDims.cpp" line="2378"/>
+      <location filename="../../CommandCreateDims.cpp" line="2387"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <source>Incorrect Selection</source>
       <translation>Няправільны выбар</translation>
     </message>
@@ -3510,21 +3510,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
 </translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2243"/>
+      <location filename="../../CommandCreateDims.cpp" line="2249"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
       <translation>Абранае рабро ўяўляе сабой эліпс.
 Значэнне будзе прыблізным.
 Ці працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2254"/>
+      <location filename="../../CommandCreateDims.cpp" line="2260"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation>Абранае рабро ўяўляе сабой B-сплайн.
 Значэнне будзе прыблізным.
 Ці працягнуць?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2018"/>
+      <location filename="../../CommandCreateDims.cpp" line="2024"/>
       <source>Selection contains both 2D and 3D geometry</source>
       <translation>Вылучэнне змяшчае дзвюхмерную і трохмерную геаметрыю</translation>
     </message>
@@ -3537,8 +3537,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Зачыніце дыялогавае акно бягучай задачы і паўтарыце спробу.</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="369"/>
       <location filename="../../CommandExtensionPack.cpp" line="998"/>
+      <location filename="../../CommandStack.cpp" line="369"/>
       <source>Task In Progress</source>
       <translation>Задача ў працэсе</translation>
     </message>
@@ -3547,17 +3547,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="127"/>
       <source>TechDraw hole circle</source>
       <translation>Тэхнічны чарцёж: акружнасць адтуліны</translation>
-    </message>
-    <message>
-      <location filename="../../CommandStack.cpp" line="370"/>
-      <location filename="../../CommandExtensionPack.cpp" line="300"/>
-      <location filename="../../CommandExtensionPack.cpp" line="603"/>
-      <location filename="../../CommandExtensionPack.cpp" line="999"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1223"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1468"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
-      <source>Close active task dialog and try again.</source>
-      <translation>Зачыніце дыялогавае акно бягучай задачы і паўтарыце спробу.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="120"/>
@@ -3576,6 +3565,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Не атрымалася стварыць восевыя лініі для %1</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="300"/>
+      <location filename="../../CommandExtensionPack.cpp" line="603"/>
+      <location filename="../../CommandExtensionPack.cpp" line="999"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1223"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1468"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
+      <location filename="../../CommandStack.cpp" line="370"/>
+      <source>Close active task dialog and try again.</source>
+      <translation>Зачыніце дыялогавае акно бягучай задачы і паўтарыце спробу.</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="898"/>
       <source>Selection is empty.</source>
       <translation>Выбар пусты.</translation>
@@ -3592,8 +3592,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="979"/>
-      <source>Please select a center for the circle.</source>
-      <translation>Абярыце цэнтр для акружнасці.</translation>
+      <source>Select a center for the circle.</source>
+      <translation>Абраць цэнтр для акружнасці.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1672"/>
@@ -3631,12 +3631,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Абраць дзьве прамыя лініі</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="768"/>
-      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <location filename="../../CommandExtensionPack.cpp" line="897"/>
       <location filename="../../CommandExtensionPack.cpp" line="920"/>
       <location filename="../../CommandExtensionPack.cpp" line="942"/>
       <location filename="../../CommandExtensionPack.cpp" line="978"/>
+      <location filename="../../CommandAnnotate.cpp" line="768"/>
+      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <source>Wrong Selection</source>
       <translation>Няправільны выбар</translation>
     </message>
@@ -3862,9 +3862,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
 Магчыма, файл адчынены ў іншай праграме.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
-      <location filename="../../ViewProviderPage.cpp" line="219"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
+      <location filename="../../ViewProviderPage.cpp" line="219"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ці сапраўды працягнуць?</translation>
     </message>
@@ -3997,8 +3997,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Змяніць вынасны элемент</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="137"/>
       <location filename="../../ViewProviderBalloon.cpp" line="86"/>
+      <location filename="../../ViewProviderDimension.cpp" line="139"/>
       <source>Edit %1</source>
       <translation>Змяніць %1</translation>
     </message>
@@ -4132,9 +4132,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Тэхнічны чарцёж: Налады фармату</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1022"/>
       <location filename="../../CommandExtensionDims.cpp" line="2329"/>
       <location filename="../../CommandExtensionPack.cpp" line="2143"/>
+      <location filename="../../CommandAnnotate.cpp" line="1022"/>
       <source>Selection is empty</source>
       <translation>Выбар пусты</translation>
     </message>
@@ -4328,19 +4328,19 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Сродак стварэння адфарматаванага тэксту</translation>
     </message>
     <message>
+      <location filename="../../QGIRichAnno.cpp" line="400"/>
+      <source>Resize Rich Annotation</source>
+      <translation>Змяніць памер адфарматаванага тэксту заметкі</translation>
+    </message>
+    <message>
       <location filename="../../TemplateTextField.cpp" line="54"/>
-      <source>Click to update text</source>
-      <translation>Націснуць, каб абнавіць тэкст</translation>
+      <source>Updates the text</source>
+      <translation>Абнаўляе тэкст</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.cpp" line="59"/>
       <source>Select a Symbol</source>
       <translation>Абраць знак</translation>
-    </message>
-    <message>
-      <location filename="../../QGIRichAnno.cpp" line="400"/>
-      <source>Resize Rich Annotation</source>
-      <translation>Змяніць памер адфарматаванага тэксту заметкі</translation>
     </message>
   </context>
   <context>
@@ -4362,18 +4362,18 @@ it has a weld symbol that would become broken.</source>
       <translation>Вы не можаце выдаліць выгляд, бо ў ім ёсць адзін ці некалькі залежных выглядаў, якія могуць стаць пашкоджанымі.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderPage.cpp" line="222"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
+      <location filename="../../ViewProviderPage.cpp" line="222"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <source>Object dependencies</source>
       <translation>Залежнасці аб'екта</translation>
     </message>
@@ -5690,38 +5690,80 @@ This affects only the toolbar; all tools remain available via the menu and short
 'Радыус': інструмент прыменіць радыус да ўсяго.</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="595"/>
+      <source>Snapping</source>
+      <translation>Прывязка</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="627"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>Калі птушка, новыя памеры будуць прывязаныя да зададзенага становішча.
+Калі не птушка, новыя памеры прывязвацца не будуць.
+Прывязку для асобных памераў можна наладзіць з дапамогай уласцівасці "Дазволіць прывязку" (AllowSnapping).</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="630"/>
+      <source>Snap dimensions</source>
+      <translation>Прывязаць да вымярэнняў</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="658"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>Частка даўжыні тэксту вымярэння, у межах якой тэкст фіксуецца ў сваім цэнтральным становішчы.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="677"/>
+      <source>Dimension text factor</source>
+      <translation>Каэфіцыент тэксту вымярэння</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="684"/>
+      <source>Chain factor</source>
+      <translation>Каэфіцыент ланцуга</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="697"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>Частка адлегласці паміж вымярэннямі, у межах якога яны злучаюцца ў выглядзе ланцуга ці ардынатных вымярэнняў.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="737"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>Заўвага: налады прывязкі для выглядаў знаходзяцца на агульнай укладцы.</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="529"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Заўвага: элементы, якія выдзеленыя 'курсівам' з'яўляюцца першапачатковымі значэннямі для новых аб'ектаў.
 Яны не аказваюць аніякага ўплыву на існуючыя аб'екты.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="161"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="164"/>
       <source>Single tool</source>
       <translation>Адзінкавы інструмент</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="162"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="165"/>
       <source>Separated tools</source>
       <translation>Асобныя інструменты</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="163"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="166"/>
       <source>Both</source>
       <translation>Абодва</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="181"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="184"/>
       <source>Auto</source>
       <translation>Аўтаматычнае</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="182"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="185"/>
       <source>Diameter</source>
       <translation>Дыяметр</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="183"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="186"/>
       <source>Radius</source>
       <translation>Радыус</translation>
     </message>
@@ -5965,50 +6007,17 @@ can override the global &apos;Update with 3D&apos; parameter</source>
       <translation>Ужываць напрамак трохмернай камеры</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Кіруйце адлюстраваннем межаў і надпісаў, якія абмяжоўваюць выгляд.
-Аўтаматычна: паказваць пры навядзенні паказальніка;
-Уключана: заўсёды паказваць;
-Выключана: ніколі не паказваць</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="863"/>
-      <source>Auto</source>
-      <translation>Аўтаматычнае</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="868"/>
-      <source>On</source>
-      <translation>Уключыць</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="873"/>
-      <source>Off</source>
-      <translation>Выключыць</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="878"/>
-      <source>Manual</source>
-      <translation>Уручную</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="886"/>
-      <source>View frames mode</source>
-      <translation>Рэжым выгляду кадраў</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="936"/>
       <source>Snaps views into alignment when being dragged</source>
       <translation>Прывязвае выгляды пры выраўнованні, калі перацягваць</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="913"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="939"/>
       <source>Snap view alignment</source>
       <translation>Прывязка выгляду пры выраўноўванні</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="932"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="958"/>
       <source>Snap detail highlights</source>
       <translation>Прывязаць дэталі вылучэння</translation>
     </message>
@@ -6053,33 +6062,71 @@ can override the global &apos;Update with 3D&apos; parameter</source>
       <translation>Прывязка</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="955"/>
       <source>Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</source>
       <translation>Птушка, калі неабходна, каб пры вылучэнні вынаснога элементу прывязваліся да бліжэйшай вяршыні пры перацягванні.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="948"/>
-      <source>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</source>
-      <translation>Пры перацягванні выгляду, калі ён знаходзіцца ў межах гэтай долі памеру выгляду ад правільнага выраўноўвання, ён будзе выраўнаваны з прывязкай.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="980"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="974"/>
       <source>View snapping factor</source>
       <translation>Каэфіцыент прывязкі да выгляду</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="987"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>
       <source>Highlight snapping factor</source>
       <translation>Каэфіцыент прывязкі вылучэння</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="994"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>Кіруйце адлюстраваннем межаў і надпісаў, якія абмяжоўваюць выгляд.
+Аўтаматычна: паказваць пры навядзенні паказальніка;
+Уключана: заўсёды паказваць;
+Выключана: ніколі не паказваць</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="863"/>
+      <source>Auto</source>
+      <translation>Аўтаматычнае</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="868"/>
+      <source>On</source>
+      <translation>Уключыць</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="873"/>
+      <source>Off</source>
+      <translation>Выключыць</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="878"/>
+      <source>Manual</source>
+      <translation>Уручную</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="886"/>
+      <source>View frames mode</source>
+      <translation>Рэжым выгляду кадраў</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
+      <source>Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</source>
+      <translation>Прывязвае выгляд да яго выраўнаванага становішча, калі ён знаходзіцца ў межах гэтай часткі памеру выгляду ад мэтавага значэння выраўноўвання.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="981"/>
       <source>Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</source>
       <translation>Кіруе радыусам прывязкі для вылучэння.
 Вяршыня павінна быць у межах каэфіцыента, які памножаны на памер вылучэння, каб быць мэтай прывязкі.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1042"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1035"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>Заўвага: налады прывязкі для вымярэнняў знаходзяцца на ўкладцы вымярэнняў.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1071"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Заўвага: элементы, якія выдзеленыя 'курсівам' з'яўляюцца першапачатковымі значэннямі для новых аб'ектаў.
 Яны не аказваюць аніякага ўплыву на існуючыя аб'екты.</translation>
@@ -9072,17 +9119,17 @@ using the given X/Y spacings</source>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2123"/>
+      <location filename="../../CommandCreateDims.cpp" line="2129"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2124"/>
+      <location filename="../../CommandCreateDims.cpp" line="2130"/>
       <source>Repair Dimension References</source>
       <translation>Аднавіць спасылкі на вымярэнні</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2125"/>
+      <location filename="../../CommandCreateDims.cpp" line="2131"/>
       <source>Repairs broken or incorrect dimension references</source>
       <translation>Аднаўляе пашкоджаныя ці няправільныя спасылкі на вымярэнні</translation>
     </message>
@@ -9898,13 +9945,13 @@ there is an open task dialog.</source>
   <context>
     <name>TaskDimension</name>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="323"/>
+      <location filename="../../ViewProviderDimension.cpp" line="326"/>
       <source>You cannot delete this dimension now because
 there is an open task dialog.</source>
       <translation>Цяпер вы не можаце выдаліць вымярэнне, бо адчынена дыялогавае акно задачы.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="326"/>
+      <location filename="../../ViewProviderDimension.cpp" line="329"/>
       <source>Can Not Delete</source>
       <translation>Не атрымалася выдаліць</translation>
     </message>
@@ -9966,17 +10013,17 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawAreaDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1818"/>
+      <location filename="../../CommandCreateDims.cpp" line="1824"/>
       <source>TechDraw</source>
       <translation>Тэхнічны чарцёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1819"/>
+      <location filename="../../CommandCreateDims.cpp" line="1825"/>
       <source>Area Annotation</source>
       <translation>Вобласць заметкі</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1820"/>
+      <location filename="../../CommandCreateDims.cpp" line="1826"/>
       <source>Inserts an annotation showing the area of a selected face</source>
       <translation>Устаўляе заметкі, якія паказваюць вобласць абранай грані</translation>
     </message>
@@ -10200,7 +10247,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1936"/>
+      <location filename="../../CommandCreateDims.cpp" line="1942"/>
       <source>Insert horizontal extent dimension</source>
       <translation>Уставіць гарызантальнае габарытнае вымярэнне</translation>
     </message>
@@ -10208,7 +10255,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1940"/>
+      <location filename="../../CommandCreateDims.cpp" line="1946"/>
       <source>Insert vertical extent dimension</source>
       <translation>Уставіць вертыкальнае габарытнае вымярэнне</translation>
     </message>
@@ -10285,22 +10332,6 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>Cmd2LineCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="653"/>
-      <source>Centerline Between 2 Lines</source>
-      <translation>Цэнтральная лінія паміж дзвюма лініямі</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2PointCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="657"/>
-      <source>Centerline Between 2 Points</source>
-      <translation>Цэнтральная лінія паміж дзвюма кропкамі</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
       <location filename="../../CommandDecorate.cpp" line="75"/>
@@ -10334,6 +10365,22 @@ there is an open task dialog.</source>
       <location filename="../../CommandDecorate.cpp" line="140"/>
       <source>Toggles the grid on the active page</source>
       <translation>Пераключае сетку на бягучай старонцы</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2LineCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="653"/>
+      <source>Centerline Between 2 Lines</source>
+      <translation>Цэнтральная лінія паміж дзвюма лініямі</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2PointCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="657"/>
+      <source>Centerline Between 2 Points</source>
+      <translation>Цэнтральная лінія паміж дзвюма кропкамі</translation>
     </message>
   </context>
   <context>

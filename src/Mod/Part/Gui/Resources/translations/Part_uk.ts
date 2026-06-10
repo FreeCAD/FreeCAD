@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation type="unfinished">Applies a boolean operations with the selected shapes</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -1972,7 +1972,7 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="240"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>Проста копія</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="241"/>
@@ -2226,7 +2226,7 @@ of the projection.</translation>
       <translation>Редагувати приєднання</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="488"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
       <translation>Змінити кольори грані</translation>
     </message>
@@ -2267,7 +2267,7 @@ of the projection.</translation>
       <translation>Розгортка</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1613"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
       <source>Project on surface</source>
       <translation type="unfinished">Project on surface</translation>
     </message>
@@ -3534,7 +3534,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="470"/>
       <source>Radius of the cylinder</source>
-      <translation type="unfinished">Radius of the cylinder</translation>
+      <translation>Радіус циліндра</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="493"/>
@@ -3611,7 +3611,7 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1124"/>
       <location filename="../../DlgPrimitives.ui" line="1328"/>
       <source>U parameter</source>
-      <translation type="unfinished">U parameter</translation>
+      <translation>Параметр U</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="901"/>
@@ -3621,7 +3621,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="917"/>
       <source>V parameters</source>
-      <translation type="unfinished">V parameters</translation>
+      <translation>Параметри V</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="924"/>
@@ -3646,7 +3646,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1072"/>
       <source>Radius 3</source>
-      <translation type="unfinished">Radius 3</translation>
+      <translation>Радіус 3</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1079"/>
@@ -3662,7 +3662,7 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1147"/>
       <location filename="../../DlgPrimitives.ui" line="1351"/>
       <source>V parameter</source>
-      <translation type="unfinished">V parameter</translation>
+      <translation>Параметр V</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1154"/>
@@ -3714,7 +3714,7 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1486"/>
       <location filename="../../DlgPrimitives.ui" line="2642"/>
       <source>Circumradius</source>
-      <translation type="unfinished">Circumradius</translation>
+      <translation>Описаний радіус</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1493"/>
@@ -3739,7 +3739,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1611"/>
       <source>X min/max</source>
-      <translation type="unfinished">X min/max</translation>
+      <translation>X мін/макс</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1618"/>
@@ -3754,7 +3754,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1647"/>
       <source>Y min/max</source>
-      <translation type="unfinished">Y min/max</translation>
+      <translation>Y мін/макс</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1654"/>
@@ -3769,7 +3769,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1683"/>
       <source>Z min/max</source>
-      <translation type="unfinished">Z min/max</translation>
+      <translation>Z мін/макс</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1690"/>
@@ -3784,7 +3784,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1719"/>
       <source>X2 min/max</source>
-      <translation type="unfinished">X2 min/max</translation>
+      <translation>X2 мін/макс</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1726"/>
@@ -3799,7 +3799,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1758"/>
       <source>Z2 min/max</source>
-      <translation type="unfinished">Z2 min/max</translation>
+      <translation>Z2 мін/макс</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1765"/>
@@ -3839,7 +3839,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1937"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>Система координат</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1944"/>
@@ -3859,7 +3859,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2035"/>
       <source>Number of rotations</source>
-      <translation type="unfinished">Number of rotations</translation>
+      <translation>Кількість обертів</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2042"/>
@@ -3880,7 +3880,7 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="2140"/>
       <location filename="../../DlgPrimitives.ui" line="2277"/>
       <source>Angle 1</source>
-      <translation type="unfinished">Angle 1</translation>
+      <translation>Кут 1</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2147"/>
@@ -3891,7 +3891,7 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="2160"/>
       <location filename="../../DlgPrimitives.ui" line="2297"/>
       <source>Angle 2</source>
-      <translation type="unfinished">Angle 2</translation>
+      <translation>Кут 2</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2167"/>
@@ -3906,12 +3906,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2203"/>
       <source>From 3 Points</source>
-      <translation type="unfinished">From 3 Points</translation>
+      <translation>Через 3 точки</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2231"/>
       <source>Major radius</source>
-      <translation type="unfinished">Major radius</translation>
+      <translation>Великий радіус</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2238"/>
@@ -3921,7 +3921,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2254"/>
       <source>Minor radius</source>
-      <translation type="unfinished">Minor radius</translation>
+      <translation>Малий радіус</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2261"/>
@@ -4145,17 +4145,17 @@ Check one or more edge entities first.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
       <source>Projection object</source>
       <translation type="unfinished">Projection object</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
       <translation>Немає активного документу</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
       <translation type="unfinished">Cannot create a projection object</translation>
     </message>
@@ -4593,7 +4593,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Shape Appearance</source>
-      <translation type="unfinished">Shape Appearance</translation>
+      <translation>Вигляд форми</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
@@ -4828,7 +4828,7 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="155"/>
       <source>X-component of direction vector</source>
-      <translation type="unfinished">X-component of direction vector</translation>
+      <translation>Компонент X вектора напрямку</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="177"/>
@@ -4838,7 +4838,7 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="187"/>
       <source>Y-component of direction vector</source>
-      <translation type="unfinished">Y-component of direction vector</translation>
+      <translation>Компонент Y вектора напрямку</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="209"/>
@@ -4848,7 +4848,7 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="219"/>
       <source>Z-component of direction vector</source>
-      <translation type="unfinished">Z-component of direction vector</translation>
+      <translation>Компонент Z вектора напрямку</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="133"/>
@@ -4952,12 +4952,12 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="106"/>
       <source>XY-plane</source>
-      <translation>XY-площина</translation>
+      <translation>Площина XY</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="111"/>
       <source>XZ-plane</source>
-      <translation>XZ-площина</translation>
+      <translation>Площина XZ</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="116"/>
@@ -5819,7 +5819,7 @@ Individual boolean operation checks:</translation>
       <translation type="unfinished">2x%1 select and confirm</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1654"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Datum dialog: input error</source>
       <translation type="unfinished">Datum dialog: input error</translation>
     </message>
@@ -5873,7 +5873,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>Двосторонній</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
@@ -6465,12 +6465,12 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="307"/>
       <source>Edit Fillet</source>
-      <translation type="unfinished">Edit Fillet</translation>
+      <translation>Редагувати заокруглення</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="428"/>
       <source>Edit Chamfer</source>
-      <translation type="unfinished">Edit Chamfer</translation>
+      <translation>Редагувати фаску</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="568"/>
@@ -6604,7 +6604,7 @@ Continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean Tools</source>
-      <translation type="unfinished">Boolean Tools</translation>
+      <translation>Булеві інструменти</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -6714,10 +6714,10 @@ Continue?</translation>
       <translation type="unfinished">Bad Selection</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Продовжити</translation>
     </message>
@@ -7142,12 +7142,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="332"/>
+      <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
       <translation>Простий</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="337"/>
+      <location filename="../../../App/FaceMaker.cpp" line="343"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
     </message>
@@ -7216,7 +7216,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="74"/>
       <source>Custom appearance</source>
-      <translation type="unfinished">Custom appearance</translation>
+      <translation>Користувацький вигляд</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="88"/>
@@ -7324,7 +7324,7 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6698"/>
+      <location filename="../../../App/Geometry.cpp" line="6701"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
     </message>
@@ -7339,7 +7339,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2563"/>
       <source>Datum Plane</source>
-      <translation type="unfinished">Datum Plane</translation>
+      <translation>Опорна площина</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2564"/>
@@ -7357,7 +7357,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2596"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>Опорна лінія</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2597"/>
@@ -7375,7 +7375,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2629"/>
       <source>Datum Point</source>
-      <translation type="unfinished">Datum Point</translation>
+      <translation>Опорна точка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2630"/>
@@ -7657,7 +7657,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="29"/>
       <source>Direction 2</source>
-      <translation type="unfinished">Direction 2</translation>
+      <translation>Напрямок 2</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="36"/>

@@ -127,7 +127,7 @@
             <widget class="QFrame" name="stockFromBase">
              <layout class="QGridLayout" name="gridLayout_9">
               <property name="columnStretch">
-               <string>0,0,1,1</string>
+               <string notr="true">0,0,1,1</string>
               </property>
               <item row="0" column="1">
                <widget class="QLabel" name="stockExtXLabel">
@@ -1611,7 +1611,7 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
          <item>
           <widget class="QToolButton" name="operationUp">
            <property name="text">
-            <string notr="true">...</string>
+            <string notr="true">…</string>
            </property>
            <property name="icon">
             <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -1622,7 +1622,7 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
          <item>
           <widget class="QToolButton" name="operationDown">
            <property name="text">
-            <string notr="true">...</string>
+            <string notr="true">…</string>
            </property>
            <property name="icon">
             <iconset resource="../../../../../Gui/Icons/resource.qrc">

@@ -916,6 +916,8 @@ using DrawSketchHandlerPolyLineBase = DrawSketchControllableHandler<DSHPolyLineC
 
 class DrawSketchHandlerPolyLine: public DrawSketchHandlerPolyLineBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerPolyLine)
+
     friend DSHPolyLineController;
     friend DSHPolyLineControllerBase;
 
@@ -927,9 +929,9 @@ public:
         , resetEdge(true)
         , fillet(false)
         , previousDirectionAngle(0.0)
+        , dirChangeAngle(0.0)
         , startAngle(0.0)
         , range(0.0)
-        , dirChangeAngle(0.0)
         , angleToPrevious(0.0)
         , pos(PointPos::end)
         , capturedDirection(0.0, 0.0) {};
@@ -1005,6 +1007,38 @@ private:
         return QStringLiteral("Sketcher_Pointer_Create_Lineset");
     }
 
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        const Gui::InputHint switchModeHint {
+            constructionMethod() == ConstructionMethod::Line ? tr("%1 switch to arc")
+                                                             : tr("%1 switch to line"),
+            {KeyM}
+        };
+        const Gui::InputHint filletHint {tr("%1 toggle fillet"), {KeyF}};
+        const Gui::InputHint undoHint {tr("%1 undo last point"), {KeyR}};
+
+        return Gui::lookupHints<SelectMode>(
+            state(),
+            {
+                {.state = SelectMode::SeekFirst,
+                 .hints =
+                     {
+                         {tr("%1 pick first point"), {MouseLeft}},
+                     }},
+                {.state = SelectMode::SeekSecond,
+                 .hints =
+                     {
+                         {tr("%1 pick next point"), {MouseLeft}},
+                         {tr("%1 finish"), {MouseRight}},
+                         switchModeHint,
+                         filletHint,
+                         undoHint,
+                     }},
+            });
+    }
+
     std::unique_ptr<QWidget> createWidget() const override
     {
         return std::make_unique<SketcherToolDefaultWidget>();
@@ -1022,7 +1056,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Polyline parameters"));
+        return QString(QObject::tr("Polyline Parameters"));
     }
 
     bool canGoToNextMode() override
@@ -1105,6 +1139,13 @@ private:
                 getFilletData(refPnt1, refPnt2, radius, newGeo, prevGeo, newGeoPos, prevGeoPos);
 
                 obj->fillet(geoId1, geoId2, refPnt1, refPnt2, radius, true, true);
+
+                if (!obj->noRecomputes) {
+                    // obj->fillet() solves at the end only when obj->noRecomputes is set, but we
+                    // need the solve even when AutoRecompute is on or the fillet won't appear.
+                    // See https://github.com/FreeCAD/FreeCAD/issues/30625
+                    obj->solve();
+                }
 
                 if (isConstructionMode()) {
                     int filletGeoId = geoId + 1;
@@ -1272,42 +1313,57 @@ private:
 
             // Start by removing last edge and fillet arc if any
             if (filletWasCreated) {
-                obj->delGeometries({delGeoId, delGeoId + 1});
-            }
-            else {
-                obj->delGeometry(delGeoId);
-            }
+                Gui::cmdAppObjectArgs(obj, "delGeometries([%d, %d])", delGeoId, delGeoId + 1);
 
-            if (!geoEltIds.empty()) {
-                // Move back the previous edge point
-                int prevGeoId = geoEltIds.back().GeoId;
-                PointPos prevPos = geoEltIds.back().Pos;
-                obj->moveGeometry(prevGeoId, prevPos, toVector3d(points.back()));
-
-                // Then transfert back the constraints
-                if (pointWasCreated) {
-                    int pointGeoId = getHighestCurveIndex();
-                    // We must first remove the point on object constraint.
-                    const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
-                    for (int i = constraints.size() - 1; i >= 0; --i) {
-                        if (constraints[i]->Type != PointOnObject) {
-                            continue;
-                        }
-                        int first = constraints[i]->getGeoId(0);
-                        int second = constraints[i]->getGeoId(1);
-                        bool case1 = first == pointGeoId && second == prevGeoId;
-                        bool case2 = first == prevGeoId && second == pointGeoId;
-                        if (case1 || case2) {
-                            obj->delConstraint(i);
-                            break;
-                        }
+                if (!geoEltIds.empty()) {
+                    if (!obj->noRecomputes) {
+                        // delGeometries do not call solve if !obj->noRecomputes (AutoRecompute =
+                        // True) But we need to call solve before trying to moveGeometry or it cause
+                        // the deleted geometry to reappear. See
+                        // https://github.com/FreeCAD/FreeCAD/issues/30626
+                        obj->solve();
                     }
 
-                    obj->transferConstraints(pointGeoId, PointPos::start, prevGeoId, prevPos);
+                    // Move back the previous edge point
+                    int prevGeoId = geoEltIds.back().GeoId;
+                    PointPos prevPos = geoEltIds.back().Pos;
+                    Gui::cmdAppObjectArgs(
+                        obj,
+                        "moveGeometry(%d,%d,App.Vector(%f,%f,0.0),0)",
+                        prevGeoId,
+                        static_cast<int>(prevPos),
+                        points.back().x,
+                        points.back().y
+                    );
 
-                    // Delete the point
-                    obj->delGeometry(delGeoId);
+                    // Then transfer back the constraints
+                    if (pointWasCreated) {
+                        int pointGeoId = getHighestCurveIndex();
+                        // We must first remove the point on object constraint.
+                        const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
+                        for (int i = constraints.size() - 1; i >= 0; --i) {
+                            if (constraints[i]->Type != PointOnObject) {
+                                continue;
+                            }
+                            int first = constraints[i]->getGeoId(0);
+                            int second = constraints[i]->getGeoId(1);
+                            bool case1 = first == pointGeoId && second == prevGeoId;
+                            bool case2 = first == prevGeoId && second == pointGeoId;
+                            if (case1 || case2) {
+                                Gui::cmdAppObjectArgs(obj, "delConstraint(%d)", i);
+                                break;
+                            }
+                        }
+
+                        obj->transferConstraints(pointGeoId, PointPos::start, prevGeoId, prevPos);
+
+                        // Delete the point
+                        Gui::cmdAppObjectArgs(obj, "delGeometry(%d)", delGeoId);
+                    }
                 }
+            }
+            else {
+                Gui::cmdAppObjectArgs(obj, "delGeometry(%d)", delGeoId);
             }
 
             obj->solve();
@@ -1506,8 +1562,6 @@ private:
                 angleToPrevious = std::round(angleToPrevious / (pi * 0.5)) * (pi * 0.5);
             }
 
-            Base::Vector2d Tangent = getCurrentInitialDirection();
-            double theta = Tangent.GetAngle(currentDir);
             double radius = getArcCenter(center, prevCursorPos);
 
             if (radius == 0.0) {
@@ -1663,11 +1717,6 @@ template<>
 void DSHPolyLineController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        toolWidget->setNoticeVisible(true);
-        toolWidget->setNoticeText(
-            QApplication::translate("TaskSketcherTool_c1_PolyLine", "R undoes the last point")
-        );
-
         QStringList names = {
             QApplication::translate("Sketcher_CreatePolyline", "Line"),
             QApplication::translate("Sketcher_CreatePolyline", "Arc")
@@ -2014,7 +2063,7 @@ void DSHPolyLineController::doConstructionMethodChanged()
         }
     }
 
-    // Since line has 4 OVP but arc has 5, and because we are not reseting the whole tool,
+    // Since line has 4 OVP but arc has 5, and because we are not resetting the whole tool,
     // we need to reset the OVP to have the correct number.
     resetOnViewParameters();
 

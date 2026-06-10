@@ -63,7 +63,7 @@
 #include <Mod/Part/App/Tools.h>
 
 #include "FeatureHole.h"
-#include "json.hpp"
+#include "nlohmann/json.hpp"
 
 #include <numbers>
 

@@ -13,7 +13,7 @@
       <location filename="../../AttacherTexts.cpp" line="843"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>꼭짓점</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="844"/>
@@ -115,7 +115,7 @@
       <location filename="../../AttacherTexts.cpp" line="863"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation>솔리드</translation>
+      <translation>고체</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="864"/>
@@ -202,13 +202,13 @@
       <location filename="../../AttacherTexts.cpp" line="784"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>무게중심</translation>
+      <translation>질량중심</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="785"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>모든 참조의 무게중심(밀도가 같다고 가정).</translation>
+      <translation>모든 참조의 질량 중심(밀도가 같다고 가정).</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="793"/>
@@ -226,7 +226,7 @@
       <location filename="../../AttacherTexts.cpp" line="798"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>꼭지점</translation>
+      <translation>꼭짓점</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="799"/>
@@ -441,7 +441,7 @@
       <location filename="../../AttacherTexts.cpp" line="671"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>두 면의 교차.</translation>
+      <translation>두 면의 교차영역.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="675"/>
@@ -540,7 +540,7 @@
       <location filename="../../AttacherTexts.cpp" line="317"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>평면은 연결된 객체의 로컬 XY 평면에 정렬됩니다.</translation>
+      <translation>평면은 연결된 대상체의 지역 XY평면에 정렬됩니다.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="325"/>
@@ -552,7 +552,7 @@
       <location filename="../../AttacherTexts.cpp" line="326"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>평면은 연결된 객체의 로컬 XZ 평면에 정렬됩니다.</translation>
+      <translation>평면은 연결된 대상체의 지역 XZ 평면에 정렬됩니다.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="334"/>
@@ -564,7 +564,7 @@
       <location filename="../../AttacherTexts.cpp" line="335"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>평면은 연결된 객체의 로컬 YZ 평면에 정렬됩니다.</translation>
+      <translation>평면은 연결된 대상체의 지역 YZ 평면에 정렬됩니다.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="343"/>
@@ -737,7 +737,7 @@
       <location filename="../../AttacherTexts.cpp" line="65"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>원점은 꼭지점과 일치하도록 정렬됩니다. 방향은 배치 속성으로 조절됩니다.</translation>
+      <translation>원점은 꼭짓점과 일치하도록 정렬됩니다. 방향은 배치 속성으로 제어됩니다.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
@@ -755,7 +755,7 @@
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Object's X Z Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>객체의 X Z Y</translation>
+      <translation>대상체의 X Z Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>선택한 형상에 부울 연산을 적용합니다</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -1534,12 +1534,12 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="462"/>
       <source>Defeaturing</source>
-      <translation>피처 제거</translation>
+      <translation>도형특징 제거</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="463"/>
       <source>Removes the selected features from a shape</source>
-      <translation>형상에서 선택한 피처를 제거합니다</translation>
+      <translation>선택한 도형특징을 형상에서 제거합니다</translation>
     </message>
   </context>
   <context>
@@ -1647,7 +1647,7 @@
     <message>
       <location filename="../../Command.cpp" line="1069"/>
       <source>Imports a CAD file</source>
-      <translation>CAD 파일 가져오기</translation>
+      <translation>CAD 파일을 가져옵니다</translation>
     </message>
   </context>
   <context>
@@ -1848,8 +1848,8 @@
 onto a face of another shape.
 The camera view determines the direction
 of the projection.</source>
-      <translation>한 형상의 에지, 와이어 또는 면을 다른 형상의 면 위로 투영합니다.
-카메라 뷰가 투영 방향을 결정합니다.</translation>
+      <translation>하나의 대상체의 모서리, 철사, 또는 면을 다른 대상체의 표면으로 투상합니다.
+카메라의 시점이 투상의 방향을 결정합니다.</translation>
     </message>
   </context>
   <context>
@@ -2026,12 +2026,12 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1762"/>
       <source>Sweep</source>
-      <translation>스윕</translation>
+      <translation>쓸기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1763"/>
       <source>Sweeps profiles along a wire</source>
-      <translation>와이어를 따라 윤곽을 스윕합니다</translation>
+      <translation>철사를 따라 윤곽을 쓸어나갑니다</translation>
     </message>
   </context>
   <context>
@@ -2181,7 +2181,7 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2574"/>
       <source>Add datum plane</source>
-      <translation>기준 평면 추가</translation>
+      <translation>기준평면 추가</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2607"/>
@@ -2211,7 +2211,7 @@ of the projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="475"/>
       <source>Defeaturing</source>
-      <translation>피처 제거</translation>
+      <translation>도형특징 제거</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.cpp" line="76"/>
@@ -2224,7 +2224,7 @@ of the projection.</source>
       <translation>부착 편집</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="488"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
       <translation>면 색상 변경</translation>
     </message>
@@ -2257,15 +2257,15 @@ of the projection.</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="540"/>
       <source>Solid</source>
-      <translation>솔리드</translation>
+      <translation>고체</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="423"/>
       <source>Sweep</source>
-      <translation>스윕</translation>
+      <translation>쓸기</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1613"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
       <source>Project on surface</source>
       <translation>표면에 투상</translation>
     </message>
@@ -2406,7 +2406,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>위치</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
@@ -2583,7 +2583,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgExportStep.ui" line="23"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>내보내기</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="36"/>
@@ -2732,7 +2732,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
       <source>Custom direction</source>
-      <translation>사용자 정의 방향</translation>
+      <translation>사용자 지정 방향</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="99"/>
@@ -2947,7 +2947,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
       <source>Constant radius</source>
-      <translation>등 반지름</translation>
+      <translation>고정 반지름</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="123"/>
@@ -2972,7 +2972,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="293"/>
       <source>Equal distance</source>
-      <translation>등간격</translation>
+      <translation>같은 거리</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="290"/>
@@ -4040,7 +4040,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2102"/>
       <source>Vertex</source>
-      <translation>꼭지점</translation>
+      <translation>꼭짓점</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2297"/>
@@ -4139,17 +4139,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
       <source>Projection object</source>
       <translation>투상 객체</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
       <translation>활성 문서가 없습니다</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
       <translation>투상 객체를 생성할 수 없습니다</translation>
     </message>
@@ -4887,7 +4887,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>요소 개수 부족</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
@@ -5254,12 +5254,12 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>요소 개수 부족</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="382"/>
       <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
+      <translation>잘못된 선택</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="393"/>
@@ -5306,7 +5306,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="526"/>
       <source>Sweep</source>
-      <translation>스윕</translation>
+      <translation>쓸기</translation>
     </message>
   </context>
   <context>
@@ -5465,7 +5465,7 @@ of the object being attached.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="954"/>
       <source>Vertex</source>
-      <translation>꼭지점</translation>
+      <translation>꼭짓점</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1043"/>
@@ -5802,7 +5802,7 @@ Individual boolean operation checks:</source>
       <translation>2회 %1 선택 후 확인</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1654"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Datum dialog: input error</source>
       <translation>기준 대화 상자: 입력 오류</translation>
     </message>
@@ -5969,7 +5969,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>스윕</translation>
+      <translation>쓸기</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
@@ -6162,7 +6162,7 @@ Continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
-      <translation>꼭지점</translation>
+      <translation>꼭짓점</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -6177,7 +6177,7 @@ Continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Solid</source>
-      <translation>솔리드</translation>
+      <translation>고체</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
@@ -6591,7 +6591,7 @@ Continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Primitives</source>
-      <translation>기본 형상</translation>
+      <translation>기초 도형</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -6696,10 +6696,10 @@ Continue?</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>계속</translation>
     </message>
@@ -6972,7 +6972,7 @@ for collision or distance filtering.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="131"/>
       <source>Center of mass</source>
-      <translation>무게중심</translation>
+      <translation>질량중심</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="152"/>
@@ -7121,12 +7121,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="332"/>
+      <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
       <translation>단순</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="337"/>
+      <location filename="../../../App/FaceMaker.cpp" line="343"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>각 와이어로부터 독립적으로 별도의 평면을 생성합니다. 구멍은 지원하지 않으며, 와이어는 서로 다른 평면에 있을 수 있습니다.</translation>
     </message>
@@ -7303,7 +7303,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6698"/>
+      <location filename="../../../App/Geometry.cpp" line="6701"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>곡선의 교점을 추정할 수 없습니다. 모깎기하려는 곡선의 꼭짓점 사이에 일치 구속을 추가해 보세요.</translation>
     </message>
@@ -7710,7 +7710,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="940"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>간격 재설정</translation>
     </message>
   </context>
   <context>

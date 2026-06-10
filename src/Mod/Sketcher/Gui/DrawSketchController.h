@@ -679,6 +679,11 @@ protected:
                 &Gui::EditableDatumLabel::editingFinished,
                 handleParameterValueChanged
             );
+            QObject::connect(parameter, &Gui::EditableDatumLabel::editingCanceled, [this](double) {
+                if (handler) {
+                    handler->cancelCurrentAction();
+                }
+            });
 
             // this gets triggered whenever user deletes content in OVP, we remove the
             // constraints and unset everything to give user another change to select stuff

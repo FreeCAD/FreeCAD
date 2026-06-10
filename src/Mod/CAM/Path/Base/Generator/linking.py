@@ -52,7 +52,7 @@ def check_collision(
     - if no tool_shape and tool_diameter uses simple wire (fast computation)
     """
 
-    if start_position == target_position:
+    if Path.Geom.pointsCoincide(start_position, target_position):
         return False
 
     # Build collision model
@@ -77,15 +77,18 @@ def check_collision(
         # attempt to skip long time computation for simple model
         return False
 
-    shape = None
     if tool_shape:
         shape = _create_tool_path_shape(wire, tool_shape)
     elif tool_diameter:
         shape = _create_horizontal_face(wire, tool_diameter)
-    if shape:
-        distance = shape.distToShape(collision_model)[0]
     else:
-        distance = wire.distToShape(collision_model)[0]
+        shape = wire
+
+    if not shape:
+        return False
+
+    distance = shape.distToShape(collision_model)[0]
+
     return distance < collision_clearance and not Path.Geom.isRoughly(distance, collision_clearance)
 
 
@@ -113,7 +116,7 @@ def get_linking_moves(
     - tool_diameter: uses horizontal face with width of the tool diameter (middle computation)
     - if no tool_shape and tool_diameter uses simple wire (fast computation)
     """
-    if start_position == target_position:
+    if Path.Geom.pointsCoincide(start_position, target_position):
         return []
 
     # For canned cycles: if we're already at a safe height and can move directly, skip linking
@@ -152,43 +155,32 @@ def get_linking_moves(
         if is_travel_collision_free(
             wire, collision_model, tool_shape, tool_diameter, collision_clearance
         ):
-            cmds = Path.fromShape(wire).Commands
-            # Ensure all commands have complete XYZ coordinates
-            # Path.fromShape() may omit coordinates that don't change
-            current_pos = start_position
-            complete_cmds = []
-            for i, cmd in enumerate(cmds):
-                params = dict(cmd.Parameters)
-                # Fill in missing coordinates from current position
-                x = params.get("X", current_pos.x)
-                y = params.get("Y", current_pos.y)
-                # For the last command (plunge to target), use target.z if Z is missing
-                if "Z" not in params and i == len(cmds) - 1:
-                    z = target_position.z
-                else:
-                    z = params.get("Z", current_pos.z)
-                complete_cmds.append(Path.Command("G0", {"X": x, "Y": y, "Z": z}))
-                current_pos = Vector(x, y, z)
-            return complete_cmds
+            commands = []
+            for e in wire.Edges:
+                cmd = Path.Geom.cmdsForEdge(e)[0]
+                cmd.Name = "G0"
+                commands.append(cmd)
+            return commands
 
     raise RuntimeError("No collision-free path found between start and target positions")
 
 
 def make_linking_wire(start: Vector, target: Vector, z: float) -> Part.Wire:
+    """Returns a wire connecting start and target points"""
     p1 = Vector(start.x, start.y, z)
     p2 = Vector(target.x, target.y, z)
     edges = []
 
     # Only add retract edge if there's actual movement
-    if not start.isEqual(p1, 1e-6):
+    if not Path.Geom.pointsCoincide(start, p1):
         edges.append(Part.makeLine(start, p1))
 
     # Only add traverse edge if there's actual movement
-    if not p1.isEqual(p2, 1e-6):
+    if not Path.Geom.pointsCoincide(p1, p2):
         edges.append(Part.makeLine(p1, p2))
 
     # Only add plunge edge if there's actual movement
-    if not p2.isEqual(target, 1e-6):
+    if not Path.Geom.pointsCoincide(p2, target):
         edges.append(Part.makeLine(p2, target))
 
     return Part.Wire(edges) if edges else Part.Wire([Part.makeLine(start, target)])
@@ -215,15 +207,18 @@ def is_travel_collision_free(
         # attempt to skip long time computation for simple model
         return True
 
-    shape = None
     if tool_shape:
         shape = _create_tool_path_shape(wire, tool_shape)
     elif tool_diameter:
         shape = _create_horizontal_face(wire, tool_diameter)
-    if shape:
-        distance = shape.distToShape(solid)[0]
     else:
-        distance = wire.distToShape(solid)[0]
+        shape = _get_hor_edge(wire)
+
+    if not shape:
+        return True
+
+    distance = shape.distToShape(solid)[0]
+
     return distance >= collision_clearance or Path.Geom.isRoughly(distance, collision_clearance)
 
 
@@ -231,11 +226,7 @@ def _create_horizontal_face(wire, width):
     """Return a rectangular horizontal face sweeping the wire's horizontal
     edge laterally by `width` (tool diameter). Used for tool-diameter
     collision checks. Returns None if the wire has no horizontal edge."""
-    edge = None
-    for e in wire.Edges:
-        if Path.Geom.isHorizontal(e):
-            edge = e
-            break
+    edge = _get_hor_edge(wire)
     if not edge:
         return None
     direction = edge.Vertexes[1].Point - edge.Vertexes[0].Point
@@ -255,11 +246,7 @@ def _create_tool_path_shape(wire, tool_shape):
     cross-section along the wire's horizontal edge. Used for full
     tool-shape collision checks. Returns None if there is no
     horizontal edge or the slice is empty."""
-    edge = None
-    for e in wire.Edges:
-        if Path.Geom.isHorizontal(e):
-            edge = e
-            break
+    edge = _get_hor_edge(wire)
     if not edge:
         return None
     p0 = edge.Vertexes[0].Point
@@ -271,3 +258,12 @@ def _create_tool_path_shape(wire, tool_shape):
     section[0].translate(p0)
 
     return section[0].extrude(direction)
+
+
+def _get_hor_edge(wire):
+    """Returns horizontal edge from wire which connect start and target positions"""
+    for e in wire.Edges:
+        if Path.Geom.isHorizontal(e):
+            return e
+
+    return None

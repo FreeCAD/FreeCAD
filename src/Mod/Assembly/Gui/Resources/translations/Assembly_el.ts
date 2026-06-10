@@ -23,8 +23,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>Εξάρτημα</translation>
+      <source>Insert Component</source>
+      <translation>Εισαγωγή Εξαρτήματος</translation>
     </message>
   </context>
   <context>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1876"/>
+      <location filename="../../../JointObject.py" line="1888"/>
       <source>Distance</source>
       <translation>Απόσταση</translation>
     </message>
@@ -175,22 +175,22 @@
       <translation>Σπασμένος σύνδεσμος στο: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1695"/>
+      <location filename="../../../JointObject.py" line="1696"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Επιλέξτε 2 στοιχεία από 2 ξεχωριστά μέρη</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1878"/>
+      <location filename="../../../JointObject.py" line="1890"/>
       <source>Radius 1</source>
       <translation>Ακτίνα 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1880"/>
+      <location filename="../../../JointObject.py" line="1892"/>
       <source>Thread pitch</source>
       <translation>Βήμα Σπειρώματος</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1882"/>
+      <location filename="../../../JointObject.py" line="1894"/>
       <source>Pitch radius</source>
       <translation>Ακτίνα βήματος</translation>
     </message>
@@ -806,42 +806,52 @@ H2 είναι το ύψος στο T2, στο τέλος της κλίσης.
       <translation>Καθορίζει τη μετατόπιση προσάρτησης (offset) του δεύτερου δείκτη (σύστημα συντεταγμένων) της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="237"/>
       <source>Reverse the direction of the joint</source>
       <translation>Αντιστρέφη την κατεύθυνση σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="240"/>
       <source>Reverse</source>
       <translation>Αντιστροφή</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
+      <source>Rotate the joint 90 degrees</source>
+      <translation type="unfinished">Rotate the joint 90 degrees</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
+      <source>Rotate</source>
+      <translation>Περιστροφή</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="291"/>
       <source>Limits</source>
       <translation>Όρια</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min length</source>
       <translation>Ελάχιστο Μήκος</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="320"/>
       <source>Max length</source>
       <translation>Μέγιστο μήκος</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="343"/>
       <source>Min angle</source>
       <translation>Ελάχιστη Γωνία</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="372"/>
       <source>Max angle</source>
       <translation>Μέγιστη Γωνία</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="404"/>
       <source>Reverse rotation</source>
       <translation>Αντιστροφή Περιστροφής</translation>
     </message>
@@ -860,8 +870,8 @@ H2 είναι το ύψος στο T2, στο τέλος της κλίσης.
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>Δεν βρίσκετε το εξάρτημα?</translation>
+      <source>Cannot find the part?</source>
+      <translation type="unfinished">Cannot find the part?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -1256,27 +1266,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>0.00 s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="256"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="278"/>
       <source>Step backward</source>
       <translation>Βήμα προς τα πίσω</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="276"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="310"/>
       <source>Play backward</source>
       <translation>Αναπαραγωγή προς τα πίσω</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="296"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="348"/>
       <source>Stop</source>
       <translation>Διακοπή</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="316"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="380"/>
       <source>Play forward</source>
       <translation>Αναπαραγωγή προς τα εμπρός</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="336"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="412"/>
       <source>Step forward</source>
       <translation>Βήμα προς τα εμπρός</translation>
     </message>
@@ -1535,27 +1545,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Κάντε κλικ για να επιλέξετε αυτές τις συνδέσεις που έρχονται σε σύγκρουση περιορισμών μεταξύ τους.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation type="unfinished">Selects these conflicting joints</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Κάντε κλικ για να επιλέξετε αυτές τις πλεονάζουσες συνδέσεις.</translation>
+      <source>Selects these redundant joints</source>
+      <translation type="unfinished">Selects these redundant joints</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
       <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Κάντε κλικ για να επιλέξετε αυτές τις ελαττωματικές συνδέσεις.</translation>
+      <source>Selects these malformed joints</source>
+      <translation type="unfinished">Selects these malformed joints</translation>
     </message>
   </context>
   <context>
@@ -1567,8 +1577,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
-      <translation type="unfinished">Go to linked Assembly</translation>
+      <source>Go to Linked Assembly</source>
+      <translation type="unfinished">Go to Linked Assembly</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
@@ -1585,8 +1595,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <source>Select Conflicting Constraints</source>
+      <translation>Επιλογή Συγκρουόμενων Περιορισμών</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
@@ -1603,8 +1613,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
-      <translation type="unfinished">Select redundant constraints</translation>
+      <source>Select Redundant Constraints</source>
+      <translation>Επιλογή Περιττών Περιορισμών</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
@@ -1621,8 +1631,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <source>Select Malformed Constraints</source>
+      <translation>Επιλογή Ελαττωματικών Περιορισμών</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
@@ -1639,8 +1649,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
-      <translation type="unfinished">Select components with DoFs</translation>
+      <source>Select Components With DoFs</source>
+      <translation type="unfinished">Select Components With DoFs</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
@@ -1657,8 +1667,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
-      <translation type="unfinished">Select component joints</translation>
+      <source>Select Component Joints</source>
+      <translation type="unfinished">Select Component Joints</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>

@@ -9,7 +9,7 @@ add_executable(Zipios_tests_run
 target_link_libraries(Zipios_tests_run PRIVATE
     GTest::gtest_main
     GTest::gmock_main
-    ${Google_Tests_LIBS}
+    ${Python3_LIBRARIES}
     FreeCADApp
 )
 

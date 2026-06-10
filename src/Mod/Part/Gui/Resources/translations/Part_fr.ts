@@ -1276,8 +1276,8 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Applique une opération booléenne aux formes sélectionnées.</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation>Applique un opérateur booléen aux formes sélectionnées.</translation>
     </message>
   </context>
   <context>
@@ -2256,7 +2256,7 @@ projection.</translation>
       <translation>Modifier l'ancrage</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="488"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
       <translation>Changer les couleurs des faces</translation>
     </message>
@@ -2297,7 +2297,7 @@ projection.</translation>
       <translation>Balayage</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1613"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
       <source>Project on surface</source>
       <translation>Projeter sur une surface</translation>
     </message>
@@ -4170,17 +4170,17 @@ transformations. Cela allonge la durée de l'importation, mais n'affecte ni la p
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
       <source>Projection object</source>
       <translation>Objet de projection</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
       <translation>Aucun document actif</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
       <translation>Impossible de créer un objet de projection</translation>
     </message>
@@ -4612,7 +4612,7 @@ fonction en cours d'édition par le glisser-déposer.</translation>
       <location filename="../../DlgSettingsGeneral.cpp" line="57"/>
       <source>Coarse</source>
       <extracomment>Part/PartDesign settings: drag behavior mode when not holding the snap modifier key</extracomment>
-      <translation>Grossier</translation>
+      <translation>Important</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.cpp" line="58"/>
@@ -5854,7 +5854,7 @@ Valeur par défaut : true</translation>
       <translation>2x %1 sélectionner et confirmer</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1654"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Datum dialog: input error</source>
       <translation>Boîte de dialogue de la référence : erreur de saisie</translation>
     </message>
@@ -6523,7 +6523,7 @@ Continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="185"/>
       <source>Distance in Parameter Space</source>
-      <translation>Distance dans l'espace des paramètres</translation>
+      <translation>Distance entre les points</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="186"/>
@@ -6747,10 +6747,10 @@ Continue?</source>
       <translation>Mauvaise sélection</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Continuer</translation>
     </message>
@@ -7174,12 +7174,12 @@ volumes se chevauchant seront supprimés.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="332"/>
+      <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
       <translation>Simple</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="337"/>
+      <location filename="../../../App/FaceMaker.cpp" line="343"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Construit des faces planes séparées à partir de chaque polyligne indépendamment. Les trous ne sont pas pris en charge. Les polylignes peuvent être sur différents plans.</translation>
     </message>
@@ -7356,7 +7356,7 @@ volumes se chevauchant seront supprimés.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6698"/>
+      <location filename="../../../App/Geometry.cpp" line="6701"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Il n'est pas possible de déterminer l'intersection des courbes. Essayer d'ajouter une
 contrainte de coïncidence entre les sommets des courbes là où il est prévu des congés.</translation>

@@ -413,16 +413,6 @@
       <translation>Cellák törlése</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
-      <source>Setup conf table</source>
-      <translation>Konfigurációs táblázat beállítása</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
-      <source>Unsetup conf table</source>
-      <translation>Konfigurációs táblázat visszaállítása</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>Cellák összekötése</translation>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>Cellák szétbontása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation>Konfigurációs táblázat beállítása</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation>Konfigurációs táblázat visszaállítása</translation>
     </message>
   </context>
   <context>

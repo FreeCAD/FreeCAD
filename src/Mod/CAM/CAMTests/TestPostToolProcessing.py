@@ -22,6 +22,7 @@
 # * *************************************************************************
 
 import FreeCAD
+import Constants
 import Path
 import unittest
 from Path.Post.Processor import PostProcessor
@@ -230,7 +231,9 @@ class TestToolProcessing(unittest.TestCase):
                 "properties": {
                     "preamble": "G17 G54 G40 G49 G80 G90",
                     "postamble": "M05\nG17 G54 G90 G80 G40\nM2",
-                    "supported_commands": "G0\nG00\nG1\nG01\nG2\nG02\nG3\nG03\nG73\nG74\nG81\nG82\nG83\nG84\nG38.2\nG54\nG55\nG56\nG57\nG58\nG59\nG59.1\nG59.2\nG59.3\nG59.4\nG59.5\nG59.6\nG59.7\nG59.8\nG59.9\nM0\nM00\nM1\nM01\nM3\nM03\nM4\nM04\nM6\nM06",
+                    "supported_commands": Constants.GCODE_SUPPORTED
+                    + Constants.GCODE_FIXTURES
+                    + Constants.MCODE_SUPPORTED,
                 },
             },
             "processing": {"tool_change": True, "early_tool_prep": False},

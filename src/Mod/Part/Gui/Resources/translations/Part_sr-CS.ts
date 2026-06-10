@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Primeni bulove operacije na izabrane oblike</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation>Primeni bulovu operaciju na izabrane oblike</translation>
     </message>
   </context>
   <context>
@@ -2226,7 +2226,7 @@ projekcije.</translation>
       <translation>Uredi pridruživanje</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="488"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
       <translation>Promeni boju stranice</translation>
     </message>
@@ -2267,7 +2267,7 @@ projekcije.</translation>
       <translation>Po putanji</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1613"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
       <source>Project on surface</source>
       <translation>Projiciraj na površinu</translation>
     </message>
@@ -4141,17 +4141,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
       <source>Projection object</source>
       <translation>Objekat koji se projicira</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
       <translation>Ne mogu napraviti projicirani objekat</translation>
     </message>
@@ -5609,7 +5609,7 @@ Provera pojedinačnih bulovih operacija:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1335"/>
       <source>Continuity</source>
-      <translation>Kontinualnost</translation>
+      <translation>Kontinuitet</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1347"/>
@@ -5813,7 +5813,7 @@ Provera pojedinačnih bulovih operacija:</translation>
       <translation type="unfinished">2x%1 select and confirm</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1654"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Datum dialog: input error</source>
       <translation>Dijalog pomoćnih elemenata: ulazna greška</translation>
     </message>
@@ -6707,10 +6707,10 @@ Da li želiš da nastaviš?</translation>
       <translation>Loš izbor</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Nastavi</translation>
     </message>
@@ -6980,7 +6980,7 @@ za filtriranje kolizije ili udaljenosti.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="124"/>
       <source>Continuity</source>
-      <translation>Kontinualnost</translation>
+      <translation>Kontinuitet</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="131"/>
@@ -7135,12 +7135,12 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="332"/>
+      <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
       <translation>Jednostavno</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="337"/>
+      <location filename="../../../App/FaceMaker.cpp" line="343"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Pravi posebnu ravnu stranicu od svakog žičanog okvira nezavisno. Ne podržava rupe; žičani elementi mogu biti na različitim ravnima.</translation>
     </message>
@@ -7317,7 +7317,7 @@ Delovi oblika koji se preklapaju biće uklonjeni.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6698"/>
+      <location filename="../../../App/Geometry.cpp" line="6701"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Nije moguće odrediti presečnu tačku krivih. Pokušaj da dodaš ograničenje podudarnosti između tačaka krivih gde nameravaš da napraviš zaobljenje.</translation>
     </message>

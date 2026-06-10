@@ -31,6 +31,9 @@ packages=(
   libboost-thread-dev
   libcoin-dev
   libeigen3-dev
+  libgtest-dev
+  libgmock-dev
+  libfmt-dev
   libkdtree++-dev
   libmedc-dev
   libocct-data-exchange-dev
@@ -53,6 +56,7 @@ packages=(
   ninja-build
   occt-draw
   pyside6-tools
+  python3-cxx-dev
   python3-dev
   python3-defusedxml
   python3-git

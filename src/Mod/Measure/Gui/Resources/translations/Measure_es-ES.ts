@@ -43,12 +43,12 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="166"/>
       <source>Arrow Radius</source>
-      <translation type="unfinished">Arrow Radius</translation>
+      <translation>Radio de flecha</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="198"/>
       <source>Arrow Height</source>
-      <translation type="unfinished">Arrow Height</translation>
+      <translation>Altura de flecha</translation>
     </message>
   </context>
   <context>
@@ -195,99 +195,99 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
-      <translation>Medir una característica</translation>
+      <source>Measures a feature</source>
+      <translation type="unfinished">Measures a feature</translation>
     </message>
   </context>
   <context>
     <name>MeasureGui::TaskMeasure</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="103"/>
+      <location filename="../../TaskMeasure.cpp" line="137"/>
       <source>Measurement</source>
       <translation>Medición</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="119"/>
+      <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Show Delta</source>
       <translation>Mostrar delta</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="125"/>
+      <location filename="../../TaskMeasure.cpp" line="159"/>
       <source>Auto Save</source>
       <translation>Autoguardar</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="129"/>
+      <location filename="../../TaskMeasure.cpp" line="163"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
       <translation>Guardado automático de la última medición al iniciar una nueva medición. Utilice la tecla Mayús para invertir temporalmente el comportamiento.</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <location filename="../../TaskMeasure.cpp" line="168"/>
       <source>Additive Selection</source>
       <translation>Selección aditiva</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="140"/>
+      <location filename="../../TaskMeasure.cpp" line="174"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
       <translation>Si está marcado, se añadirá una nueva selección a la medida. Si no está marcado, la tecla Ctrl debe ser presionada para agregar una selección a la medición actual. De lo contrario, se iniciará una nueva medición</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="153"/>
+      <location filename="../../TaskMeasure.cpp" line="187"/>
       <source>Settings</source>
       <translation>Configuración</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="165"/>
+      <location filename="../../TaskMeasure.cpp" line="199"/>
       <source>Auto</source>
       <translation>Automático</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="197"/>
+      <location filename="../../TaskMeasure.cpp" line="231"/>
       <source>Mode</source>
       <translation>Modo</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="211"/>
+      <location filename="../../TaskMeasure.cpp" line="245"/>
       <source>Result</source>
       <translation>Resultado</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="577"/>
+      <location filename="../../TaskMeasure.cpp" line="551"/>
       <source>%1 auto-save</source>
       <translation>%1 auto guardado</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="581"/>
+      <location filename="../../TaskMeasure.cpp" line="555"/>
       <source>%1 start new measurement</source>
       <translation>%1 empieza una nueva medida</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="581"/>
+      <location filename="../../TaskMeasure.cpp" line="555"/>
       <source>%1 add to measurement</source>
       <translation type="unfinished">%1 add to measurement</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="811"/>
+      <location filename="../../TaskMeasure.cpp" line="780"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation type="unfinished">%1 new measurement, %2 toggle auto-save</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="816"/>
+      <location filename="../../TaskMeasure.cpp" line="785"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation type="unfinished">%1 add to measurement, %2 toggle auto-save</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="247"/>
+      <location filename="../../TaskMeasure.cpp" line="281"/>
       <source>Saves the measurement in the active document</source>
       <translation>Guarda la medición en el documento activo</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="253"/>
+      <location filename="../../TaskMeasure.cpp" line="287"/>
       <source>Close</source>
       <translation>Cerrar</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="254"/>
+      <location filename="../../TaskMeasure.cpp" line="288"/>
       <source>Close the measurement task.</source>
       <translation>Cerrar la tarea de medición.</translation>
     </message>
@@ -295,7 +295,7 @@
   <context>
     <name>QPlatformTheme</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="246"/>
+      <location filename="../../TaskMeasure.cpp" line="280"/>
       <source>Save</source>
       <translation>Guardar</translation>
     </message>
@@ -501,6 +501,19 @@
     </message>
   </context>
   <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>Propiedades de masa</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>Calcula las propiedades de masa de los objetos seleccionados</translation>
+    </message>
+  </context>
+  <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="280"/>
@@ -546,19 +559,6 @@
       <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
       <translation> (Promedio)</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>Propiedades de masa</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>Calcula las propiedades de masa de los objetos seleccionados</translation>
     </message>
   </context>
 </TS>

@@ -2572,148 +2572,6 @@ bool StdCmdViewExample3::isActive()
 
 
 //===========================================================================
-// Std_ViewIvStereoOff
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoOff)
-
-StdCmdViewIvStereoOff::StdCmdViewIvStereoOff()
-    : Command("Std_ViewIvStereoOff")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo &Off");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing off");
-    sWhatsThis = "Std_ViewIvStereoOff";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoOff";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoOff::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"Mono\")");
-}
-
-bool StdCmdViewIvStereoOff::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoOff");
-}
-
-
-//===========================================================================
-// Std_ViewIvStereoRedGreen
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoRedGreen)
-
-StdCmdViewIvStereoRedGreen::StdCmdViewIvStereoRedGreen()
-    : Command("Std_ViewIvStereoRedGreen")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Re&d/Cyan");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to red/cyan");
-    sWhatsThis = "Std_ViewIvStereoRedGreen";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoRedGreen";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoRedGreen::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"Anaglyph\")");
-}
-
-bool StdCmdViewIvStereoRedGreen::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoRedGreen");
-}
-
-//===========================================================================
-// Std_ViewIvStereoQuadBuff
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoQuadBuff)
-
-StdCmdViewIvStereoQuadBuff::StdCmdViewIvStereoQuadBuff()
-    : Command("Std_ViewIvStereoQuadBuff")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo &Quad Buffer");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to quad buffer");
-    sWhatsThis = "Std_ViewIvStereoQuadBuff";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoQuadBuff";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoQuadBuff::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"QuadBuffer\")");
-}
-
-bool StdCmdViewIvStereoQuadBuff::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoQuadBuff");
-}
-
-//===========================================================================
-// Std_ViewIvStereoInterleavedRows
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedRows)
-
-StdCmdViewIvStereoInterleavedRows::StdCmdViewIvStereoInterleavedRows()
-    : Command("Std_ViewIvStereoInterleavedRows")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Interleaved &Rows");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to interleaved rows");
-    sWhatsThis = "Std_ViewIvStereoInterleavedRows";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoInterleavedRows";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoInterleavedRows::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"InterleavedRows\")");
-}
-
-bool StdCmdViewIvStereoInterleavedRows::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoInterleavedRows");
-}
-
-//===========================================================================
-// Std_ViewIvStereoInterleavedColumns
-//===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedColumns)
-
-StdCmdViewIvStereoInterleavedColumns::StdCmdViewIvStereoInterleavedColumns()
-    : Command("Std_ViewIvStereoInterleavedColumns")
-{
-    sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("Stereo Interleaved &Columns");
-    sToolTipText = QT_TR_NOOP("Switches stereo viewing to interleaved columns");
-    sWhatsThis = "Std_ViewIvStereoInterleavedColumns";
-    sStatusTip = sToolTipText;
-    sPixmap = "Std_ViewIvStereoInterleavedColumns";
-    eType = Alter3DView;
-}
-
-void StdCmdViewIvStereoInterleavedColumns::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.activeDocument().activeView().setStereoType(\"InterleavedColumns\")");
-}
-
-bool StdCmdViewIvStereoInterleavedColumns::isActive()
-{
-    return getGuiApplication()->sendHasMsgToActiveView("SetStereoInterleavedColumns");
-}
-
-
-//===========================================================================
 // Std_ViewIvIssueCamPos
 //===========================================================================
 DEF_STD_CMD_A(StdCmdViewIvIssueCamPos)
@@ -3760,7 +3618,7 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
 {
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Toggle Overl&ay for All Panels");
-    sToolTipText = QT_TR_NOOP("Toggled overlay mode for all docked panels");
+    sToolTipText = QT_TR_NOOP("Toggles overlay mode for all docked panels");
     sWhatsThis = "Std_DockOverlayAll";
     sStatusTip = sToolTipText;
     eType = 0;
@@ -4335,6 +4193,33 @@ void StdCmdClarifySelection::activated(int iMsg)
         };
 
         selections.push_back(pickData);
+
+        // Split a dotted container path (e.g. "Body.Pad.Face1") so getRelatedElements
+        // dispatches on the leaf object's view provider, not the outer container's.
+        std::string subObjPath;
+        std::string pickedElement = pickData.subName;
+        auto lastDot = pickData.subName.find_last_of('.');
+        if (lastDot != std::string::npos) {
+            subObjPath = pickData.subName.substr(0, lastDot + 1);
+            pickedElement = pickData.subName.substr(lastDot + 1);
+        }
+        auto* subObj = obj->getSubObject(subObjPath.c_str());
+        auto* subVP = subObj ? Application::Instance->getViewProvider(subObj) : nullptr;
+        if (!subVP) {
+            subVP = vp;
+        }
+        for (const auto& [relElement, relSubName] :
+             subVP->getRelatedElements(pickedElement, pp->getPoint())) {
+            selections.push_back(
+                PickData {
+                    .obj = obj,
+                    .element = relElement,
+                    .docName = obj->getDocument()->getName(),
+                    .objName = obj->getNameInDocument(),
+                    .subName = subObjPath + relSubName
+                }
+            );
+        }
     }
 
     if (selections.empty()) {
@@ -4403,12 +4288,6 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
     rcCmdMgr.addCommand(new StdCmdViewExample3());
-
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoQuadBuff());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoRedGreen());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoInterleavedColumns());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoInterleavedRows());
-    rcCmdMgr.addCommand(new StdCmdViewIvStereoOff());
 
     rcCmdMgr.addCommand(new StdCmdViewIvIssueCamPos());
 

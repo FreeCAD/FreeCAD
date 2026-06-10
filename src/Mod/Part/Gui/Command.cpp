@@ -1402,7 +1402,7 @@ CmdPartBoolean::CmdPartBoolean()
     sAppModule = "Part";
     sGroup = QT_TR_NOOP("Part");
     sMenuText = QT_TR_NOOP("Boolean Operation");
-    sToolTipText = QT_TR_NOOP("Applies a boolean operations with the selected shapes");
+    sToolTipText = QT_TR_NOOP("Applies a boolean operation with the selected shapes");
     sWhatsThis = "Part_Boolean";
     sStatusTip = sToolTipText;
     sPixmap = "Part_Booleans";

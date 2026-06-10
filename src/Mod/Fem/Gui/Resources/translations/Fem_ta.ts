@@ -884,14 +884,34 @@
       <translation>கால அளவு</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="243"/>
+      <source>Overwrite CCX defaults</source>
+      <translation type="unfinished">Overwrite CCX defaults</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="266"/>
+      <source>3D output, unchecked for 2D output</source>
+      <translation type="unfinished">3D output, unchecked for 2D output</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="282"/>
       <source>Number of threads used for analysis</source>
       <translation>பகுப்பாய்விற்குப் பயன்படுத்தப்படும் நூல்களின் எண்ணிக்கை</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="350"/>
+      <source>Geometrical nonlinearity</source>
+      <translation type="unfinished">Geometrical nonlinearity</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="419"/>
       <source>Matrix solver</source>
       <translation>மேட்ரிக்ச் தீர்வு</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="426"/>
+      <source>Advanced solver controls</source>
+      <translation type="unfinished">Advanced solver controls</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="446"/>
@@ -904,9 +924,24 @@
       <translation>குறைந்தபட்ச நேர அதிகரிப்பு</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="504"/>
+      <source>Use geometrical nonlinearity</source>
+      <translation type="unfinished">Use geometrical nonlinearity</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="551"/>
+      <source>1D and 2D element output format</source>
+      <translation type="unfinished">1D and 2D element output format</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="583"/>
       <source>Maximum time increment</source>
       <translation>அதிகபட்ச நேர அதிகரிப்பு</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
+      <source>No legacy results (use enhanced solver)</source>
+      <translation type="unfinished">No legacy results (use enhanced solver)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="649"/>
@@ -917,6 +952,21 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="685"/>
       <source>Frequency Defaults</source>
       <translation>மீடிறன், மீள்திறன், நிகழ்வெண், நிகழ்வு Defaults</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="718"/>
+      <source>Upper frequency bound</source>
+      <translation type="unfinished">Upper frequency bound</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="725"/>
+      <source>Number of eigenmodes</source>
+      <translation type="unfinished">Number of eigenmodes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="779"/>
+      <source>Lower frequency bound</source>
+      <translation type="unfinished">Lower frequency bound</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="795"/>
@@ -964,44 +1014,14 @@
       <translation>மறுநிகழ்வு அளவிடுதல்</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="350"/>
-      <source>Non-linear geometry</source>
-      <translation>நேரியல் அல்லாத வடிவியல்</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="504"/>
-      <source>Use non-linear geometry</source>
-      <translation>நேரியல் அல்லாத வடிவவியலைப் பயன்படுத்தவும்</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="426"/>
-      <source>Time incrementation control parameter</source>
-      <translation>நேர அதிகரிப்பு கட்டுப்பாட்டு அளவுரு</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="46"/>
       <source>CalculiX path</source>
       <translation>கால்குலிஎக்ச் பாதை</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="243"/>
-      <source>Use non ccx defaults</source>
-      <translation>ccx அல்லாத இயல்புநிலைகளைப் பயன்படுத்தவும்</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="266"/>
-      <source>3D Output, unchecked for 2D</source>
-      <translation>3D வெளியீடு, 2Dக்கு தேர்வு செய்யப்படவில்லை</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="590"/>
       <source>Result object</source>
       <translation>முடிவு பொருள்</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
-      <source>Pipeline only</source>
-      <translation>குழாய் மட்டுமே</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="600"/>
@@ -1041,26 +1061,6 @@ Only takes effect if 'Pipeline only' is enabled</source>
       <location filename="../../DlgSettingsFemCcx.ui" line="342"/>
       <source>Cholesky iterative solver</source>
       <translation>கோலச்கி மறுநிகழ்வு தீர்க்கும்</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="551"/>
-      <source>Beam, shell element 3D output format</source>
-      <translation>பீம், செல் உறுப்பு 3D வெளியீடு வடிவம்</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="725"/>
-      <source>Eigenmode number</source>
-      <translation>ஈசென்மோட் எண்</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="718"/>
-      <source>High frequency limit</source>
-      <translation>அதிக அதிர்வெண் வரம்பு</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="779"/>
-      <source>Low frequency limit</source>
-      <translation>குறைந்த அதிர்வெண் வரம்பு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="130"/>
@@ -2753,9 +2753,9 @@ Cholesky தீர்வு மற்றும் பிழை செய்த�
       <translation>நுழைவாயில் அழுத்தம்</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>அழுத்தம்</translation>
     </message>
@@ -2885,12 +2885,12 @@ Cholesky தீர்வு மற்றும் பிழை செய்த�
       <translation>நொடிக்கு புரட்சிகள்</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <source>Parameter</source>
       <translation>கூறளவு</translation>
     </message>
@@ -3015,16 +3015,6 @@ Note: has no effect if a solid was selected</source>
       <translation>எல்லை நிலை ஒரு நிலையான திறனை வரையறுக்கிறதா</translation>
     </message>
     <message>
-      <location filename="../ui/Electromagnetic.ui" line="348"/>
-      <source>Far field approximation assuming spherical symmetry</source>
-      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="351"/>
-      <source>Far field</source>
-      <translation type="unfinished">Far field</translation>
-    </message>
-    <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
       <translation>சாத்தியமான மாறிலி</translation>
@@ -3038,6 +3028,59 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
       <translation>மின்சார இடப்பெயர்ச்சி புலத்தின் இயல்பான கூறு</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="608"/>
+      <source>Capacitance</source>
+      <translation>கொள்ளளவு</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="39"/>
+      <source>Dirichlet</source>
+      <translation>டிரிச்லெட்</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="81"/>
+      <source>To define scalar potential and magnetic vector potential</source>
+      <translation>அளவிடல் திறன் மற்றும் காந்த திசையன் திறனை வரையறுக்க</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="113"/>
+      <location filename="../ui/Electromagnetic.ui" line="432"/>
+      <location filename="../ui/CurrentDensity.ui" line="61"/>
+      <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <source>Real</source>
+      <translation>உண்மையான</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="123"/>
+      <location filename="../ui/Electromagnetic.ui" line="442"/>
+      <location filename="../ui/CurrentDensity.ui" line="71"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <source>Imaginary</source>
+      <translation>கற்பனை</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="130"/>
+      <source>Scalar</source>
+      <translation>அளவெண்</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="162"/>
+      <source>Imaginary part of scalar potential</source>
+      <translation>அளவிடல் சாத்தியத்தின் கற்பனை பகுதி</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="348"/>
+      <source>Far field approximation assuming spherical symmetry</source>
+      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="351"/>
+      <source>Far field</source>
+      <translation type="unfinished">Far field</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
@@ -3078,49 +3121,6 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
       <source>Imaginary part of magnetic flux density z-component</source>
       <translation type="unfinished">Imaginary part of magnetic flux density z-component</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="608"/>
-      <source>Capacitance</source>
-      <translation>கொள்ளளவு</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="39"/>
-      <source>Dirichlet</source>
-      <translation>டிரிச்லெட்</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="81"/>
-      <source>To define scalar potential and magnetic vector potential</source>
-      <translation>அளவிடல் திறன் மற்றும் காந்த திசையன் திறனை வரையறுக்க</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="61"/>
-      <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/Electromagnetic.ui" line="113"/>
-      <location filename="../ui/Electromagnetic.ui" line="432"/>
-      <source>Real</source>
-      <translation>உண்மையான</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="71"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/Electromagnetic.ui" line="123"/>
-      <location filename="../ui/Electromagnetic.ui" line="442"/>
-      <source>Imaginary</source>
-      <translation>கற்பனை</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="130"/>
-      <source>Scalar</source>
-      <translation>அளவெண்</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="162"/>
-      <source>Imaginary part of scalar potential</source>
-      <translation>அளவிடல் சாத்தியத்தின் கற்பனை பகுதி</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="624"/>
@@ -3188,8 +3188,8 @@ Note: has no effect if a solid was selected</source>
       <translation>பீம் பிரிவு அளவுரு</translation>
     </message>
     <message>
-      <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <location filename="../ui/ElementGeometry1D.ui" line="20"/>
+      <location filename="../ui/ElementRotation1D.ui" line="20"/>
       <source>Cross-Section Parameter</source>
       <translation>குறுக்கு வெட்டு அளவுரு</translation>
     </message>
@@ -3200,13 +3200,13 @@ Note: has no effect if a solid was selected</source>
       <translation>அகலம்</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
       <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <source>mm</source>
       <translation>மிமீ</translation>
@@ -3228,8 +3228,8 @@ Note: has no effect if a solid was selected</source>
       <translation>வெளிப்புற விட்டம்</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="37"/>
       <location filename="../ui/ElementGeometry1D.ui" line="167"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="37"/>
       <location filename="../ui/MeshShape.ui" line="109"/>
       <source>Thickness</source>
       <translation>தடிமன்</translation>
@@ -3308,14 +3308,14 @@ Note: has no effect if a solid was selected</source>
       <translation>இயல்பிலிருந்து எல்லை வரை</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/Electromagnetic.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>பகுப்பாய்வு நற்பொருத்தம் பண்புகள்</translation>
     </message>
@@ -3325,9 +3325,9 @@ Note: has no effect if a solid was selected</source>
       <translation>வெப்ப சான்று</translation>
     </message>
     <message>
+      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
-      <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <source>Mode</source>
       <translation>பயன்முறை</translation>
     </message>
@@ -3416,12 +3416,111 @@ with harmonic/oscillating driving current</source>
       <translation>திசையன் மின்னோட்ட அடர்த்தியை இயக்க தனிப்பயன் பயன்முறையைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
+      <location filename="../ui/Electromagnetic.ui" line="181"/>
+      <location filename="../ui/Electromagnetic.ui" line="449"/>
+      <location filename="../ui/MeshManipulate.ui" line="594"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
+      <source>X</source>
+      <translation>ஓ</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="88"/>
+      <source>Real part of current density x-component</source>
+      <translation>தற்போதைய அடர்த்தி x-கூறுகளின் உண்மையான பகுதி</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="110"/>
+      <source>Imaginary part of current density x-component</source>
+      <translation>தற்போதைய அடர்த்தி x-கூறுகளின் கற்பனைப் பகுதி</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="234"/>
+      <location filename="../ui/Electromagnetic.ui" line="500"/>
+      <location filename="../ui/MeshManipulate.ui" line="599"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
+      <source>Y</source>
+      <translation>ஔ</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="139"/>
+      <source>Real part of current density y-component</source>
+      <translation>தற்போதைய அடர்த்தி y-கூறுகளின் உண்மையான பகுதி</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="161"/>
+      <source>Imaginary part of current density y-component</source>
+      <translation>தற்போதைய அடர்த்தி y-கூறுகளின் கற்பனைப் பகுதி</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="287"/>
+      <location filename="../ui/Electromagnetic.ui" line="551"/>
+      <location filename="../ui/MeshManipulate.ui" line="604"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
+      <source>Z</source>
+      <translation>ஃ</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="190"/>
+      <source>Real part of current density z-component</source>
+      <translation>தற்போதைய அடர்த்தி z-கூறுகளின் உண்மையான பகுதி</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="212"/>
+      <source>Imaginary part of current density z-component</source>
+      <translation>தற்போதைய அடர்த்தி z-கூறுகளின் கற்பனைப் பகுதி</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="237"/>
+      <source>Current density normal to surface</source>
+      <translation>தற்போதைய அடர்த்தி மேற்பரப்புக்கு இயல்பானது</translation>
+    </message>
+    <message>
+      <location filename="../ui/CurrentDensity.ui" line="263"/>
+      <source>Normal</source>
+      <translation>இயல்பானது</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElementGeometry2D.ui" line="14"/>
+      <source>Shell Thickness Parameter</source>
+      <translation>செல் தடிமன் அளவுரு</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshRegion.ui" line="14"/>
+      <source>Mesh Refinement</source>
+      <translation>கண்ணி சுத்திகரிப்பு</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshRegion.ui" line="37"/>
+      <source>Maximum element size</source>
+      <translation>அதிகபட்ச உறுப்பு அளவு</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshShape.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/MeshPreview.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <source>Form</source>
+      <translation>படிவம்</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
       <location filename="../ui/MeshAdvanced.ui" line="121"/>
       <location filename="../ui/MeshAdvanced.ui" line="526"/>
       <location filename="../ui/MeshAdvanced.ui" line="646"/>
       <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
       <source>Icon</source>
       <translation>படவுரு</translation>
@@ -3433,8 +3532,9 @@ with harmonic/oscillating driving current</source>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="70"/>
-      <source>Type:</source>
-      <translation type="unfinished">Type:</translation>
+      <location filename="../ui/MeshAdvanced.ui" line="34"/>
+      <source>Type</source>
+      <translation>வகை</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
@@ -3531,8 +3631,8 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="434"/>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
-      <location filename="../ui/MeshAdvanced.ui" line="257"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
       <location filename="../ui/MeshDistance.ui" line="266"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
       <source>Diagram</source>
@@ -3596,229 +3696,6 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <location filename="../ui/MeshManipulate.ui" line="580"/>
       <source>Kind</source>
       <translation type="unfinished">Kind</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="594"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/Magnetization.ui" line="56"/>
-      <location filename="../ui/Electromagnetic.ui" line="181"/>
-      <location filename="../ui/Electromagnetic.ui" line="449"/>
-      <source>X</source>
-      <translation>ஓ</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="88"/>
-      <source>Real part of current density x-component</source>
-      <translation>தற்போதைய அடர்த்தி x-கூறுகளின் உண்மையான பகுதி</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="110"/>
-      <source>Imaginary part of current density x-component</source>
-      <translation>தற்போதைய அடர்த்தி x-கூறுகளின் கற்பனைப் பகுதி</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="599"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/Magnetization.ui" line="107"/>
-      <location filename="../ui/Electromagnetic.ui" line="234"/>
-      <location filename="../ui/Electromagnetic.ui" line="500"/>
-      <source>Y</source>
-      <translation>ஔ</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="139"/>
-      <source>Real part of current density y-component</source>
-      <translation>தற்போதைய அடர்த்தி y-கூறுகளின் உண்மையான பகுதி</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="161"/>
-      <source>Imaginary part of current density y-component</source>
-      <translation>தற்போதைய அடர்த்தி y-கூறுகளின் கற்பனைப் பகுதி</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="604"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/Magnetization.ui" line="158"/>
-      <location filename="../ui/Electromagnetic.ui" line="287"/>
-      <location filename="../ui/Electromagnetic.ui" line="551"/>
-      <source>Z</source>
-      <translation>ஃ</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="190"/>
-      <source>Real part of current density z-component</source>
-      <translation>தற்போதைய அடர்த்தி z-கூறுகளின் உண்மையான பகுதி</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="212"/>
-      <source>Imaginary part of current density z-component</source>
-      <translation>தற்போதைய அடர்த்தி z-கூறுகளின் கற்பனைப் பகுதி</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="237"/>
-      <source>Current density normal to surface</source>
-      <translation>தற்போதைய அடர்த்தி மேற்பரப்புக்கு இயல்பானது</translation>
-    </message>
-    <message>
-      <location filename="../ui/CurrentDensity.ui" line="263"/>
-      <source>Normal</source>
-      <translation>இயல்பானது</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="14"/>
-      <source>Shell Thickness Parameter</source>
-      <translation>செல் தடிமன் அளவுரு</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshRegion.ui" line="14"/>
-      <source>Mesh Refinement</source>
-      <translation>கண்ணி சுத்திகரிப்பு</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshRegion.ui" line="37"/>
-      <source>Maximum element size</source>
-      <translation>அதிகபட்ச உறுப்பு அளவு</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="14"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshShape.ui" line="14"/>
-      <location filename="../ui/MeshDistance.ui" line="14"/>
-      <location filename="../ui/MeshPreview.ui" line="14"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
-      <source>Form</source>
-      <translation>படிவம்</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
-      <location filename="../ui/MeshAdvanced.ui" line="971"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
-      <source>Field</source>
-      <translation>புலம்</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
-      <source>Frames</source>
-      <translation>சட்டங்கள்</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
-      <source>One field for each frame</source>
-      <translation>ஒவ்வொரு சட்டத்திற்கும் ஒரு புலம்</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
-      <source>Index</source>
-      <translation>குறியெண்</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
-      <source>X field</source>
-      <translation>ஃச் புலம்</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
-      <source>Y field</source>
-      <translation>ஒய் புலம்</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
-      <source>One Y field for each frame</source>
-      <translation>ஒவ்வொரு சட்டத்திற்கும் ஒரு ஒய் புலம்</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
-      <source>Global refinement preview settings:</source>
-      <translation type="unfinished">Global refinement preview settings:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
-      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
-      <source>Auto enable on open</source>
-      <translation type="unfinished">Auto enable on open</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
-      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
-      <source>Preview mesh fineness</source>
-      <translation type="unfinished">Preview mesh fineness</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
-      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
-      <source>Number of nodes on the edge</source>
-      <translation type="unfinished">Number of nodes on the edge</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
-      <source>Progression</source>
-      <translation type="unfinished">Progression</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
-      <source>Invert</source>
-      <translation>தலைகீழாக மாற்றவும்</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
-      <source>Nodes</source>
-      <translation>முனைகள்</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
-      <source>Bump</source>
-      <translation type="unfinished">Bump</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
-      <source>Constant</source>
-      <translation>மாறா, மாறிலி</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
-      <source>Coefficient</source>
-      <translation type="unfinished">Coefficient</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
-      <source>Coefficient for bump/progression growth rate</source>
-      <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="34"/>
-      <source>Type</source>
-      <translation>வகை</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
@@ -3980,6 +3857,147 @@ Example: "F2 + Sin(z)"</translation>
       <translation type="unfinished">Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
     </message>
     <message>
+      <location filename="../ui/MeshAdvanced.ui" line="971"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <source>Field</source>
+      <translation>புலம்</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <source>Frames</source>
+      <translation>சட்டங்கள்</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
+      <source>One field for each frame</source>
+      <translation>ஒவ்வொரு சட்டத்திற்கும் ஒரு புலம்</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
+      <source>Index</source>
+      <translation>குறியெண்</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
+      <source>X field</source>
+      <translation>ஃச் புலம்</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <source>Y field</source>
+      <translation>ஒய் புலம்</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
+      <source>One Y field for each frame</source>
+      <translation>ஒவ்வொரு சட்டத்திற்கும் ஒரு ஒய் புலம்</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="38"/>
+      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
+      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="54"/>
+      <location filename="../ui/MeshShape.ui" line="70"/>
+      <source>Mesh size within the shape</source>
+      <translation type="unfinished">Mesh size within the shape</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="57"/>
+      <source>Size inside</source>
+      <translation type="unfinished">Size inside</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="80"/>
+      <location filename="../ui/MeshShape.ui" line="96"/>
+      <source>Mesh size outside of the shape</source>
+      <translation type="unfinished">Mesh size outside of the shape</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="83"/>
+      <source>Size outside</source>
+      <translation type="unfinished">Size outside</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="106"/>
+      <location filename="../ui/MeshShape.ui" line="122"/>
+      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
+      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="145"/>
+      <source>Box</source>
+      <translation>பெட்டி</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="150"/>
+      <source>Sphere</source>
+      <translation>கோளம்</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="155"/>
+      <source>Cylinder</source>
+      <translation>கலன்</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
+      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
+      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <source>Number of nodes on the edge</source>
+      <translation type="unfinished">Number of nodes on the edge</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <source>Progression</source>
+      <translation type="unfinished">Progression</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
+      <source>Invert</source>
+      <translation>தலைகீழாக மாற்றவும்</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <source>Nodes</source>
+      <translation>முனைகள்</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <source>Bump</source>
+      <translation type="unfinished">Bump</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <source>Constant</source>
+      <translation>மாறா, மாறிலி</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
+      <source>Coefficient</source>
+      <translation type="unfinished">Coefficient</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <source>Coefficient for bump/progression growth rate</source>
+      <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
       <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
       <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
@@ -4049,52 +4067,77 @@ Notes:
       <translation type="unfinished">Recombine</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="38"/>
-      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+      <location filename="../ui/MeshPreview.ui" line="96"/>
+      <location filename="../ui/MeshPreview.ui" line="109"/>
+      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
+      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="54"/>
-      <location filename="../ui/MeshShape.ui" line="70"/>
-      <source>Mesh size within the shape</source>
-      <translation type="unfinished">Mesh size within the shape</translation>
+      <location filename="../ui/MeshPreview.ui" line="99"/>
+      <source>Min</source>
+      <translation type="unfinished">Min</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="57"/>
-      <source>Size inside</source>
-      <translation type="unfinished">Size inside</translation>
+      <location filename="../ui/MeshPreview.ui" line="112"/>
+      <source>1.00e+02</source>
+      <translation type="unfinished">1.00e+02</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="80"/>
-      <location filename="../ui/MeshShape.ui" line="96"/>
-      <source>Mesh size outside of the shape</source>
-      <translation type="unfinished">Mesh size outside of the shape</translation>
+      <location filename="../ui/MeshPreview.ui" line="138"/>
+      <location filename="../ui/MeshPreview.ui" line="151"/>
+      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
+      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="83"/>
-      <source>Size outside</source>
-      <translation type="unfinished">Size outside</translation>
+      <location filename="../ui/MeshPreview.ui" line="141"/>
+      <source>Max</source>
+      <translation type="unfinished">Max</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="106"/>
-      <location filename="../ui/MeshShape.ui" line="122"/>
-      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+      <location filename="../ui/MeshPreview.ui" line="154"/>
+      <source>1.00e+03</source>
+      <translation type="unfinished">1.00e+03</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="145"/>
-      <source>Box</source>
-      <translation>பெட்டி</translation>
+      <location filename="../ui/MeshPreview.ui" line="184"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="150"/>
-      <source>Sphere</source>
-      <translation>கோளம்</translation>
+      <location filename="../ui/MeshPreview.ui" line="187"/>
+      <source>Visualize</source>
+      <translation type="unfinished">Visualize</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="155"/>
-      <source>Cylinder</source>
-      <translation>கலன்</translation>
+      <location filename="../ui/MeshPreview.ui" line="197"/>
+      <source>…</source>
+      <translation>…</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings</source>
+      <translation type="unfinished">Global refinement preview settings</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation type="unfinished">Auto enable on open</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation type="unfinished">Preview mesh fineness</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="41"/>
@@ -4125,53 +4168,6 @@ Notes:
       <location filename="../ui/MeshDistance.ui" line="329"/>
       <source>Linear</source>
       <translation type="unfinished">Linear</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="96"/>
-      <location filename="../ui/MeshPreview.ui" line="109"/>
-      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
-      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="99"/>
-      <source>Min:</source>
-      <translation type="unfinished">Min:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="112"/>
-      <source>1.00e+02</source>
-      <translation type="unfinished">1.00e+02</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="138"/>
-      <location filename="../ui/MeshPreview.ui" line="151"/>
-      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
-      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="141"/>
-      <source>Max:</source>
-      <translation type="unfinished">Max:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="154"/>
-      <source>1.00e+03</source>
-      <translation type="unfinished">1.00e+03</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="184"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="187"/>
-      <source>Visualize</source>
-      <translation type="unfinished">Visualize</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="197"/>
-      <source>...</source>
-      <translation type="unfinished">...</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
@@ -6689,8 +6685,8 @@ No matching module was found in the current Python path.</source>
       <translation>ஒய் அச்சுக்கு ஒய் புல திசையன் எந்தப் பகுதியைப் பயன்படுத்த வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>கிடைக்கக்கூடிய ஒவ்வொரு சட்டத்திற்கும் புலம் பிரித்தெடுக்கப்பட வேண்டுமா என்பதைக் குறிப்பிடவும்</translation>
     </message>
@@ -6710,14 +6706,14 @@ No matching module was found in the current Python path.</source>
       <translation>திருத்து {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
       <translation>சதித்திட்டத்தைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
       <translation>தரவைக் காட்டு</translation>
     </message>
@@ -6960,8 +6956,8 @@ No matching module was found in the current Python path.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2554"/>
-      <source>Define/create a contours filter which displays iso contours</source>
-      <translation>ஐசோ வரையறைகளைக் காண்பிக்கும் வரையறைகள் வடிகட்டியை வரையறுக்கவும்/உருவாக்கவும்</translation>
+      <source>Defines a contours filter that displays iso contours</source>
+      <translation type="unfinished">Defines a contours filter that displays iso contours</translation>
     </message>
   </context>
   <context>
@@ -7391,8 +7387,8 @@ No matching module was found in the current Python path.</source>
       <translation>கூறுகளை அழிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="241"/>
-      <location filename="../../TaskCreateElementSet.cpp" line="252"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="244"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="255"/>
       <location filename="../../TaskCreateElementSet.cpp" line="515"/>
       <location filename="../../TaskCreateElementSet.cpp" line="612"/>
       <location filename="../../Command.cpp" line="1479"/>
@@ -7400,12 +7396,12 @@ No matching module was found in the current Python path.</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="242"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="245"/>
       <source>Cannot copy ResultMesh to ResultMesh</source>
       <translation>ResultMesh க்கு ResultMesh ஐ நகலெடுக்க முடியாது</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="253"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="256"/>
       <source>Mesh must be a ResultMesh</source>
       <translation>Mesh ஒரு ResultMesh ஆக இருக்க வேண்டும்</translation>
     </message>
@@ -8493,35 +8489,35 @@ Leave blank to use default Python executable</source>
   <context>
     <name>PostHistogramEdit</name>
     <message>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>படிவம்</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation>அவுட்லைன் டிரா பாணி ​​(எதுவும் அவுட்லைன் வரையவில்லை)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <source>None</source>
       <translation>எதுவுமில்லை</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation>அனைத்து வரிகளின் அகலம் (அவுட்லைன் மற்றும் அட்ச்)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <source>Hatch pattern</source>
       <translation>அட்ச் பேட்டர்ன்</translation>
     </message>
@@ -8541,8 +8537,8 @@ Leave blank to use default Python executable</source>
       <translation>பார்கள்</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <source>Legend</source>
       <translation>புராணக்கதை</translation>
     </message>
@@ -8552,8 +8548,8 @@ Leave blank to use default Python executable</source>
       <translation>அனைத்து வரிகளின் நிறம் (பார் அவுட்லைன் மற்றும் ஏட்சுகள்)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <source>Color of the bars in histogram</source>
       <translation>இச்டோகிராமில் உள்ள பார்களின் நிறம்</translation>
     </message>
@@ -8713,6 +8709,125 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
+    <name>SolverZ88</name>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="14"/>
+      <source>Solver Z88 Control</source>
+      <translation type="unfinished">Solver Z88 Control</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>வேலை அடைவு</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="35"/>
+      <source>Write</source>
+      <translation>எழுது</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="45"/>
+      <source>Edit</source>
+      <translation>திருத்து</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>தீர்வு அளவுருக்கள்</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="82"/>
+      <source>Solver type</source>
+      <translation type="unfinished">Solver type</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="122"/>
+      <source>Time</source>
+      <translation>நேரம்</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>தீர்வு பதிப்பு</translation>
+    </message>
+  </context>
+  <context>
+    <name>SolverElmer</name>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="14"/>
+      <source>Solver Elmer Control</source>
+      <translation>கரைப்பான் எல்மர் கட்டுப்பாடு</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>வேலை அடைவு</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="35"/>
+      <source>Write</source>
+      <translation>எழுது</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="45"/>
+      <source>Edit</source>
+      <translation>திருத்து</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>தீர்வு அளவுருக்கள்</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="82"/>
+      <source>Simulation type</source>
+      <translation>உருவகப்படுத்துதல் வகை</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="122"/>
+      <source>Time</source>
+      <translation>நேரம்</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverElmer.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>தீர்வு பதிப்பு</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="419"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>இல்லை அல்லது தவறான CalculiX பைனரி ccx</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="453"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>FEM: wrong ccx இருமம்</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="466"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>FEM: CalculiX பைனரி ccx '{}' கிடைக்கவில்லை. FEM விருப்பத்தேர்வுகள் தாவலில் CalculiX பைனரி ccx பாதையை அமைக்கவும்.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="478"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>FEM: CalculiX ccx '{}' வெளியீடு '{}' இல் எதிர்பார்க்கப்படும் சொற்றொடர் '{}' இல்லை. ccx பைனரியை இயக்கும்போது சில சிக்கல்கள் உள்ளன. FreeCAD இல்லாமல் ccx தனியாக இயங்குகிறதா எனச் சரிபார்க்கவும்.</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_ConstraintElectromagnetic</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="268"/>
@@ -8859,192 +8974,9 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>SolverZ88</name>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../ui/SolverZ88.ui" line="14"/>
-      <source>Solver Z88 Control</source>
-      <translation type="unfinished">Solver Z88 Control</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>வேலை அடைவு</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="35"/>
-      <source>Write</source>
-      <translation>எழுது</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="45"/>
-      <source>Edit</source>
-      <translation>திருத்து</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>தீர்வு அளவுருக்கள்</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="82"/>
-      <source>Solver type</source>
-      <translation type="unfinished">Solver type</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="122"/>
-      <source>Time</source>
-      <translation>நேரம்</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>தீர்வு பதிப்பு</translation>
-    </message>
-  </context>
-  <context>
-    <name>SolverElmer</name>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="14"/>
-      <source>Solver Elmer Control</source>
-      <translation>கரைப்பான் எல்மர் கட்டுப்பாடு</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>வேலை அடைவு</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="35"/>
-      <source>Write</source>
-      <translation>எழுது</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="45"/>
-      <source>Edit</source>
-      <translation>திருத்து</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>தீர்வு அளவுருக்கள்</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="82"/>
-      <source>Simulation type</source>
-      <translation>உருவகப்படுத்துதல் வகை</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="122"/>
-      <source>Time</source>
-      <translation>நேரம்</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverElmer.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>தீர்வு பதிப்பு</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemToolsCcx</name>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="419"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation>இல்லை அல்லது தவறான CalculiX பைனரி ccx</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="453"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation>FEM: wrong ccx இருமம்</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="466"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation>FEM: CalculiX பைனரி ccx '{}' கிடைக்கவில்லை. FEM விருப்பத்தேர்வுகள் தாவலில் CalculiX பைனரி ccx பாதையை அமைக்கவும்.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="478"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation>FEM: CalculiX ccx '{}' வெளியீடு '{}' இல் எதிர்பார்க்கப்படும் சொற்றொடர் '{}' இல்லை. ccx பைனரியை இயக்கும்போது சில சிக்கல்கள் உள்ளன. FreeCAD இல்லாமல் ccx தனியாக இயங்குகிறதா எனச் சரிபார்க்கவும்.</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
-      <source>Input Error</source>
-      <translation>உள்ளீடு பிழை</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintForce</name>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
-      <source>Input Error</source>
-      <translation>உள்ளீடு பிழை</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
-      <source>Input Error</source>
-      <translation>உள்ளீடு பிழை</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
-      <source>Input Error</source>
-      <translation>உள்ளீடு பிழை</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
-      <source>Input Error</source>
-      <translation>உள்ளீடு பிழை</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgPost</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="403"/>
-      <source>Input Error</source>
-      <translation>உள்ளீடு பிழை</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
-      <source>Input Error</source>
-      <translation>உள்ளீடு பிழை</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
-      <source>Input Error</source>
-      <translation>உள்ளீடு பிழை</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
-    <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
       <source>Input Error</source>
       <translation>உள்ளீடு பிழை</translation>
     </message>
@@ -9063,25 +8995,25 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintPressure</name>
+    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
       <source>Input Error</source>
       <translation>உள்ளீடு பிழை</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
       <source>Input Error</source>
       <translation>உள்ளீடு பிழை</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
       <source>Input Error</source>
       <translation>உள்ளீடு பிழை</translation>
     </message>
@@ -9095,9 +9027,9 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
       <source>Input Error</source>
       <translation>உள்ளீடு பிழை</translation>
     </message>
@@ -9106,6 +9038,70 @@ Leave blank to use default Python executable</source>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPressure</name>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <message>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
+    <message>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgPost</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
       <source>Input Error</source>
       <translation>உள்ளீடு பிழை</translation>
     </message>

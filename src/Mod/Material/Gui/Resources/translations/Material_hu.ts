@@ -1195,9 +1195,9 @@ Ha le van tiltva, név szerint vannak rendezve.</translation>
       <translation>Ellenkező esetben minden változás elveszik.</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Törlés megerősítése</translation>
     </message>

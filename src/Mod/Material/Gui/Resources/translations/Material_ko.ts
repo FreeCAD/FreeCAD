@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="204"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>빛이 비추어질 때 표면의 기본 색상을 정의합니다. 이는 보는 사람의 각도와 관계없이 물체가 빛을 모든 방향으로 고르게 산란시키는 방식을 나타냅니다. 이 속성은 재질의 색상에 가장 큰 영향을 미칩니다.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="215"/>
@@ -349,7 +349,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to Clipboard</source>
-      <translation>클립보드에 복사</translation>
+      <translation>오림판에 복사</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
@@ -1195,9 +1195,9 @@ If unchecked, they will be sorted by their name.</source>
       <translation>그렇지 않으면 모든 변경 사항이 손실됩니다.</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>삭제 확인</translation>
     </message>

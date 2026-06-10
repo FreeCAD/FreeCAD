@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Cuireann sé oibríochtaí booléacha i bhfeidhm leis na cruthanna roghnaithe</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation>Cuireann sé oibríocht Booleánach i bhfeidhm leis na cruthanna roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -2226,7 +2226,7 @@ teilgean.</translation>
       <translation>Cuir an ceangaltán in eagar</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="488"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
       <translation>Athraigh dathanna aghaidhe</translation>
     </message>
@@ -2267,7 +2267,7 @@ teilgean.</translation>
       <translation>Scuab</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1613"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
       <source>Project on surface</source>
       <translation>Tionscadal ar dhromchla</translation>
     </message>
@@ -4143,17 +4143,17 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
       <source>Projection object</source>
       <translation>Réad teilgean</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
       <translation>Gan aon doiciméad gníomhach</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
       <translation>Ní féidir réad teilgean a chruthú</translation>
     </message>
@@ -5818,7 +5818,7 @@ Seiceálacha oibríochta booléan aonair:</translation>
       <translation>Roghnaigh agus deimhnigh 2x%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1654"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Datum dialog: input error</source>
       <translation>Dialóg sonraí: earráid ionchuir</translation>
     </message>
@@ -6713,10 +6713,10 @@ Leanúint ar aghaidh?</translation>
       <translation>Droch-Roghnú</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Lean ar aghaidh</translation>
     </message>
@@ -7141,12 +7141,12 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="332"/>
+      <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
       <translation>Simplí</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="337"/>
+      <location filename="../../../App/FaceMaker.cpp" line="343"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Déanann sé aghaidh phlána ar leithligh ó gach sreang go neamhspleách. Gan tacaíocht do phoill; is féidir sreanga a bheith ar phlánaí difriúla.</translation>
     </message>
@@ -7323,7 +7323,7 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6698"/>
+      <location filename="../../../App/Geometry.cpp" line="6701"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Ní féidir trasnú na gcuar a thomhas. Bain triail as srian comhthráthach a chur idir buaicphointí na gcuar atá beartaithe agat a líonadh.</translation>
     </message>

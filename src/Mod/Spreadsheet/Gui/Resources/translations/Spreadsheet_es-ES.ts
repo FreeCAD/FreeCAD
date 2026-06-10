@@ -281,7 +281,7 @@
     <message>
       <location filename="../../qtcolorpicker.cpp" line="558"/>
       <source>Custom Colors</source>
-      <translation type="unfinished">Custom Colors</translation>
+      <translation>Colores personalizados</translation>
     </message>
     <message>
       <location filename="../../qtcolorpicker.cpp" line="653"/>
@@ -369,7 +369,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="206"/>
       <source>Clear text color</source>
-      <translation type="unfinished">Clear text color</translation>
+      <translation>Borrar color de texto</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="243"/>
@@ -379,7 +379,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="283"/>
       <source>Clear background color</source>
-      <translation type="unfinished">Clear background color</translation>
+      <translation>Borrar color de fondo</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="224"/>
@@ -413,16 +413,6 @@
       <translation>Limpiar celdas</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="204"/>
-      <source>Setup conf table</source>
-      <translation>Configurar tabla de config.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="309"/>
-      <source>Unsetup conf table</source>
-      <translation>Desconfigurar tabla de config.</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>Enlazar celdas</translation>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>Desvincular celdas</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="204"/>
+      <source>Setup conf table</source>
+      <translation>Configurar tabla de config.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="309"/>
+      <source>Unsetup conf table</source>
+      <translation>Desconfigurar tabla de config.</translation>
     </message>
   </context>
   <context>

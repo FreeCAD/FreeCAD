@@ -1195,9 +1195,9 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
       <translation type="unfinished">Otherwise, all changes will be lost.</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Confirmar a exclusão</translation>
     </message>

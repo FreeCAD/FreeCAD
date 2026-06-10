@@ -652,7 +652,7 @@ Ako nije potvrđeno, biće sortirani po imenima.</translation>
       <location filename="../../ImageEdit.cpp" line="207"/>
       <location filename="../../ImageEdit.cpp" line="223"/>
       <source>Image files</source>
-      <translation type="unfinished">Image files</translation>
+      <translation>Slikovne datoteke</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="208"/>
@@ -1195,9 +1195,9 @@ Ako nije potvrđeno, biće sortirani po imenima.</translation>
       <translation>U suprotnom, sve promene će biti izgubljene.</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Potvrdi brisanje</translation>
     </message>
@@ -1444,7 +1444,7 @@ Ako nije potvrđeno, biće sortirani po imenima.</translation>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="263"/>
       <source>Set Material</source>
-      <translation type="unfinished">Set Material</translation>
+      <translation>Zadaj materijal</translation>
     </message>
   </context>
 </TS>

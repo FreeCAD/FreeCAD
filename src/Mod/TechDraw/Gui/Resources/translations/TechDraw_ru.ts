@@ -51,24 +51,24 @@
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
-      <source>Add a cosmetic line that passes through 2 selected points</source>
-      <translation>Добавляет косметическую линию оформления, проходящую через 2 выбранных точки</translation>
+      <source>Adds a cosmetic line that passes through 2 selected points</source>
+      <translation type="unfinished">Adds a cosmetic line that passes through 2 selected points</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1771"/>
+      <location filename="../../CommandCreateDims.cpp" line="1777"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1772"/>
+      <location filename="../../CommandCreateDims.cpp" line="1778"/>
       <source>Angle Dimension From 3 Points</source>
       <translation>Размер угла через 3 точки</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1773"/>
+      <location filename="../../CommandCreateDims.cpp" line="1779"/>
       <source>Inserts an angle dimension between 3 selected points</source>
       <translation>Вставляет размер угла между 3 выбранными точками</translation>
     </message>
@@ -89,17 +89,17 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1724"/>
+      <location filename="../../CommandCreateDims.cpp" line="1730"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1725"/>
+      <location filename="../../CommandCreateDims.cpp" line="1731"/>
       <source>Angle Dimension</source>
       <translation>Размер угла</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1726"/>
+      <location filename="../../CommandCreateDims.cpp" line="1732"/>
       <source>Inserts an angle dimension between two edges</source>
       <translation>Вставляет размер угла между двумя рёбрами</translation>
     </message>
@@ -1445,7 +1445,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="592"/>
-      <source>Add a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
+      <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
       <translation>Добавляет косметическую боковую проекцию резьбы для выбранного отверстия снаружи двух выделенных параллельных линий</translation>
     </message>
   </context>
@@ -1470,27 +1470,27 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1866"/>
+      <location filename="../../CommandCreateDims.cpp" line="1872"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1867"/>
+      <location filename="../../CommandCreateDims.cpp" line="1873"/>
       <source>Extent Dimension</source>
       <translation>Размер развёртки</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1868"/>
+      <location filename="../../CommandCreateDims.cpp" line="1874"/>
       <source>Inserts a dimension showing the extent (overall length) of an object or feature</source>
       <translation>Вставляет размер, показывающий протяжённость (общую длину) объекта или элемента</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1934"/>
+      <location filename="../../CommandCreateDims.cpp" line="1940"/>
       <source>Horizontal extent</source>
       <translation>Горизонтальная развёртка</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1939"/>
+      <location filename="../../CommandCreateDims.cpp" line="1945"/>
       <source>Vertical extent</source>
       <translation>Вертикальная развёртка</translation>
     </message>
@@ -1570,19 +1570,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1960"/>
+      <location filename="../../CommandCreateDims.cpp" line="1966"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1961"/>
+      <location filename="../../CommandCreateDims.cpp" line="1967"/>
       <source>Horizontal Extent Dimension</source>
       <translation>Горизонтальный размер развёртки</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1962"/>
-      <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature.</source>
-      <translation>Вставляет размер по горизонтали, показывающий протяжённость (общую длину) объекта или элемента.</translation>
+      <location filename="../../CommandCreateDims.cpp" line="1968"/>
+      <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature</source>
+      <translation type="unfinished">Inserts a dimension showing the horizontal extent (overall length) of an object or feature</translation>
     </message>
   </context>
   <context>
@@ -2055,17 +2055,17 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1676"/>
+      <location filename="../../CommandCreateDims.cpp" line="1679"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1677"/>
+      <location filename="../../CommandCreateDims.cpp" line="1680"/>
       <source>Vertical Length Dimension</source>
       <translation>Вертикальный линейный размер</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1678"/>
+      <location filename="../../CommandCreateDims.cpp" line="1681"/>
       <source>Inserts a vertical length dimension of an edge or distance between two points</source>
       <translation>Вставляет вертикальный размер длины ребра или расстояние по вертикали между двумя точками</translation>
     </message>
@@ -2073,19 +2073,19 @@ Left clicking on empty space will validate the current dimension. Right clicking
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2085"/>
+      <location filename="../../CommandCreateDims.cpp" line="2091"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2086"/>
+      <location filename="../../CommandCreateDims.cpp" line="2092"/>
       <source>Vertical Extent Dimension</source>
       <translation>Вертикальный габаритный размер</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2087"/>
-      <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature.</source>
-      <translation>Вставляет размер, показывающий вертикальную протяжённость (общую длину) объекта или элемента.</translation>
+      <location filename="../../CommandCreateDims.cpp" line="2093"/>
+      <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature</source>
+      <translation type="unfinished">Inserts a dimension showing the vertical extent (overall length) of an object or feature</translation>
     </message>
   </context>
   <context>
@@ -2393,17 +2393,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Размер</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1992"/>
+      <location filename="../../CommandCreateDims.cpp" line="1998"/>
       <source>Create Dimension DistanceX</source>
       <translation>Создать размер Расстояние по Х</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1994"/>
+      <location filename="../../CommandCreateDims.cpp" line="2000"/>
       <source>Create Dimension DistanceY</source>
       <translation>Создать размер Расстояние по Y</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2287"/>
+      <location filename="../../CommandCreateDims.cpp" line="2293"/>
       <source>Create dimension</source>
       <translation>Создать размер</translation>
     </message>
@@ -2443,7 +2443,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Переместить размер</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="610"/>
+      <location filename="../../QGSPage.cpp" line="585"/>
       <source>Create Balloon</source>
       <translation>Создать позиционную выноску</translation>
     </message>
@@ -3077,8 +3077,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1354"/>
       <location filename="../../CommandAnnotate.cpp" line="1361"/>
       <location filename="../../CommandAnnotate.cpp" line="1425"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="638"/>
       <location filename="../../Command.cpp" line="648"/>
       <location filename="../../Command.cpp" line="865"/>
@@ -3097,6 +3095,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1705"/>
       <location filename="../../Command.cpp" line="1711"/>
       <location filename="../../Command.cpp" line="1770"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Неправильный выбор</translation>
     </message>
@@ -3156,21 +3156,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>FreeCAD не может найти страницу для экспорта</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1903"/>
-      <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2093"/>
-      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
-      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2098"/>
-      <source>Direction is close to standard</source>
-      <translation type="unfinished">Direction is close to standard</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="600"/>
       <source>Select objects to break or a base view and break definition objects</source>
       <translation>Выберите объекты для разрыва или базовый вид и объекты определяющие разрыв</translation>
@@ -3187,6 +3172,18 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Не выделено фигур, групп или ссылок</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="310"/>
+      <location filename="../../CommandExtensionDims.cpp" line="519"/>
+      <location filename="../../CommandExtensionDims.cpp" line="807"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
+      <location filename="../../CommandExtensionPack.cpp" line="299"/>
+      <location filename="../../CommandExtensionPack.cpp" line="602"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1222"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1467"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
       <location filename="../../CommandAnnotate.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="161"/>
       <location filename="../../CommandAnnotate.cpp" line="213"/>
@@ -3202,40 +3199,35 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1260"/>
       <location filename="../../CommandAnnotate.cpp" line="1341"/>
       <location filename="../../CommandAnnotate.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="748"/>
+      <location filename="../../Command.cpp" line="841"/>
+      <location filename="../../Command.cpp" line="904"/>
       <location filename="../../CommandCreateDims.cpp" line="1499"/>
       <location filename="../../CommandCreateDims.cpp" line="1547"/>
       <location filename="../../CommandCreateDims.cpp" line="1595"/>
       <location filename="../../CommandCreateDims.cpp" line="1643"/>
-      <location filename="../../CommandCreateDims.cpp" line="1691"/>
-      <location filename="../../CommandCreateDims.cpp" line="1738"/>
-      <location filename="../../CommandCreateDims.cpp" line="1785"/>
-      <location filename="../../CommandCreateDims.cpp" line="1832"/>
-      <location filename="../../CommandCreateDims.cpp" line="1879"/>
-      <location filename="../../CommandCreateDims.cpp" line="1975"/>
-      <location filename="../../CommandCreateDims.cpp" line="2100"/>
-      <location filename="../../CommandExtensionDims.cpp" line="310"/>
-      <location filename="../../CommandExtensionDims.cpp" line="519"/>
-      <location filename="../../CommandExtensionDims.cpp" line="807"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1135"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1506"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1875"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
+      <location filename="../../CommandCreateDims.cpp" line="1694"/>
+      <location filename="../../CommandCreateDims.cpp" line="1744"/>
+      <location filename="../../CommandCreateDims.cpp" line="1791"/>
+      <location filename="../../CommandCreateDims.cpp" line="1838"/>
+      <location filename="../../CommandCreateDims.cpp" line="1885"/>
+      <location filename="../../CommandCreateDims.cpp" line="1981"/>
+      <location filename="../../CommandCreateDims.cpp" line="2106"/>
       <location filename="../../CommandStack.cpp" line="73"/>
       <location filename="../../CommandStack.cpp" line="189"/>
       <location filename="../../CommandStack.cpp" line="249"/>
       <location filename="../../CommandStack.cpp" line="309"/>
-      <location filename="../../CommandExtensionPack.cpp" line="299"/>
-      <location filename="../../CommandExtensionPack.cpp" line="602"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1222"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1467"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
-      <location filename="../../Command.cpp" line="748"/>
-      <location filename="../../Command.cpp" line="841"/>
-      <location filename="../../Command.cpp" line="904"/>
       <source>Task in progress</source>
       <translation>Задача обрабатывается</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionDims.cpp" line="311"/>
+      <location filename="../../CommandExtensionDims.cpp" line="520"/>
+      <location filename="../../CommandExtensionDims.cpp" line="808"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <location filename="../../CommandAnnotate.cpp" line="101"/>
       <location filename="../../CommandAnnotate.cpp" line="162"/>
       <location filename="../../CommandAnnotate.cpp" line="214"/>
@@ -3251,13 +3243,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../CommandExtensionDims.cpp" line="311"/>
-      <location filename="../../CommandExtensionDims.cpp" line="520"/>
-      <location filename="../../CommandExtensionDims.cpp" line="808"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1136"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1507"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1876"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <location filename="../../Command.cpp" line="749"/>
       <location filename="../../Command.cpp" line="842"/>
       <location filename="../../Command.cpp" line="905"/>
@@ -3281,14 +3266,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Не выделено базового вида, фигур, групп или ссылок</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2365"/>
       <location filename="../../Command.cpp" line="1201"/>
+      <location filename="../../CommandCreateDims.cpp" line="2371"/>
       <source>Select an object first</source>
       <translation>Сначала выберите объект</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2373"/>
       <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../CommandCreateDims.cpp" line="2379"/>
       <source>Too many objects selected</source>
       <translation>Выбрано слишком много объектов</translation>
     </message>
@@ -3311,6 +3296,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1889"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
       <translation>Лист содержит вид объекта из BIM, который не будет экспортирован. Продолжить?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1903"/>
+      <source>Save DXF file</source>
+      <translation type="unfinished">Save DXF file</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2093"/>
+      <source>Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</source>
+      <translation type="unfinished">Selected Direction is within %1 degrees of a standard direction. Replace selected Direction with %2?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2098"/>
+      <source>Direction is close to standard</source>
+      <translation type="unfinished">Direction is close to standard</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1421"/>
@@ -3362,74 +3362,74 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="1548"/>
       <location filename="../../CommandCreateDims.cpp" line="1596"/>
       <location filename="../../CommandCreateDims.cpp" line="1644"/>
-      <location filename="../../CommandCreateDims.cpp" line="1692"/>
-      <location filename="../../CommandCreateDims.cpp" line="1739"/>
-      <location filename="../../CommandCreateDims.cpp" line="1786"/>
-      <location filename="../../CommandCreateDims.cpp" line="1833"/>
-      <location filename="../../CommandCreateDims.cpp" line="1880"/>
-      <location filename="../../CommandCreateDims.cpp" line="1976"/>
-      <location filename="../../CommandCreateDims.cpp" line="2101"/>
+      <location filename="../../CommandCreateDims.cpp" line="1695"/>
+      <location filename="../../CommandCreateDims.cpp" line="1745"/>
+      <location filename="../../CommandCreateDims.cpp" line="1792"/>
+      <location filename="../../CommandCreateDims.cpp" line="1839"/>
+      <location filename="../../CommandCreateDims.cpp" line="1886"/>
+      <location filename="../../CommandCreateDims.cpp" line="1982"/>
+      <location filename="../../CommandCreateDims.cpp" line="2107"/>
       <source>Close the active task dialog and try again</source>
       <translation>Закройте окно активной задачи и попробуйте снова</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2002"/>
-      <location filename="../../CommandCreateDims.cpp" line="2192"/>
+      <location filename="../../CommandCreateDims.cpp" line="2008"/>
+      <location filename="../../CommandCreateDims.cpp" line="2198"/>
       <source>No view of a part in selection.</source>
       <translation>Нет видов детали в выбранном.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2044"/>
+      <location filename="../../CommandCreateDims.cpp" line="2050"/>
       <source>Cannot make 2D extent dimension from selection</source>
       <translation>Невозможно определить двумерные габаритные размеры для выбранных объектов</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2060"/>
+      <location filename="../../CommandCreateDims.cpp" line="2066"/>
       <source>Cannot make 3D extent dimension from selection</source>
       <translation>Невозможно определить трёхмерные габаритные размеры для выбранных объектов</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2140"/>
+      <location filename="../../CommandCreateDims.cpp" line="2146"/>
       <source>There is no dimension in your selection</source>
       <translation>Нет размеров в выбранных объектах</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2207"/>
+      <location filename="../../CommandCreateDims.cpp" line="2213"/>
       <source>Cannot make 2D dimension from selection</source>
       <translation>Невозможно создать двумерный размер из выделенного</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2214"/>
+      <location filename="../../CommandCreateDims.cpp" line="2220"/>
       <source>Cannot make 3D dimension without 3d references</source>
       <translation type="unfinished">Cannot make 3D dimension without 3d references</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2229"/>
+      <location filename="../../CommandCreateDims.cpp" line="2235"/>
       <source>Cannot make 3D dimension from selection</source>
       <translation>Невозможно создать трёхмерный размер из выделенного</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2242"/>
+      <location filename="../../CommandCreateDims.cpp" line="2248"/>
       <source>Ellipse curve warning</source>
       <translation>Предупреждение о кривой эллипса</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2253"/>
+      <location filename="../../CommandCreateDims.cpp" line="2259"/>
       <source>B-spline curve warning</source>
       <translation>Предупреждение о кривой B-сплайна</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2264"/>
+      <location filename="../../CommandCreateDims.cpp" line="2270"/>
       <source>B-spline curve error</source>
       <translation>Ошибка кривой B-сплайна</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2265"/>
+      <location filename="../../CommandCreateDims.cpp" line="2271"/>
       <source>Selected edge is a B-spline and a radius/diameter cannot be calculated.</source>
       <translation>Выбранное ребро - это B-сплайн, поэтому радиус/диаметр не может быть рассчитан.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2382"/>
+      <location filename="../../CommandCreateDims.cpp" line="2388"/>
       <source>Create a page first.</source>
       <translation>Сначала создайте страницу.</translation>
     </message>
@@ -3439,19 +3439,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Выберите SVG файл для открытия</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2001"/>
-      <location filename="../../CommandCreateDims.cpp" line="2017"/>
-      <location filename="../../CommandCreateDims.cpp" line="2043"/>
-      <location filename="../../CommandCreateDims.cpp" line="2059"/>
-      <location filename="../../CommandCreateDims.cpp" line="2139"/>
-      <location filename="../../CommandCreateDims.cpp" line="2191"/>
-      <location filename="../../CommandCreateDims.cpp" line="2206"/>
-      <location filename="../../CommandCreateDims.cpp" line="2213"/>
-      <location filename="../../CommandCreateDims.cpp" line="2228"/>
-      <location filename="../../CommandCreateDims.cpp" line="2364"/>
-      <location filename="../../CommandCreateDims.cpp" line="2372"/>
-      <location filename="../../CommandCreateDims.cpp" line="2381"/>
-      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandExtensionPack.cpp" line="1878"/>
       <location filename="../../CommandExtensionPack.cpp" line="2002"/>
       <location filename="../../CommandDecorate.cpp" line="418"/>
@@ -3459,13 +3446,26 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandDecorate.cpp" line="432"/>
       <location filename="../../CommandDecorate.cpp" line="439"/>
       <location filename="../../CommandDecorate.cpp" line="445"/>
-      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../Command.cpp" line="1200"/>
       <location filename="../../Command.cpp" line="1207"/>
       <location filename="../../Command.cpp" line="1215"/>
       <location filename="../../Command.cpp" line="1227"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
+      <location filename="../../CommandCreateDims.cpp" line="2007"/>
+      <location filename="../../CommandCreateDims.cpp" line="2023"/>
+      <location filename="../../CommandCreateDims.cpp" line="2049"/>
+      <location filename="../../CommandCreateDims.cpp" line="2065"/>
+      <location filename="../../CommandCreateDims.cpp" line="2145"/>
+      <location filename="../../CommandCreateDims.cpp" line="2197"/>
+      <location filename="../../CommandCreateDims.cpp" line="2212"/>
+      <location filename="../../CommandCreateDims.cpp" line="2219"/>
+      <location filename="../../CommandCreateDims.cpp" line="2234"/>
+      <location filename="../../CommandCreateDims.cpp" line="2370"/>
+      <location filename="../../CommandCreateDims.cpp" line="2378"/>
+      <location filename="../../CommandCreateDims.cpp" line="2387"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <source>Incorrect Selection</source>
       <translation>Некорректный выбор</translation>
     </message>
@@ -3477,17 +3477,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
 </translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2243"/>
+      <location filename="../../CommandCreateDims.cpp" line="2249"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
       <translation>Выбранное ребро — Эллипс. Значение будет приблизительным. Продолжить?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2254"/>
+      <location filename="../../CommandCreateDims.cpp" line="2260"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation>Выбранное ребро — B-сплайн. Значение будет приблизительным. Продолжить?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2018"/>
+      <location filename="../../CommandCreateDims.cpp" line="2024"/>
       <source>Selection contains both 2D and 3D geometry</source>
       <translation>Выборка содержит одновременно двумерный и трехмерный объект</translation>
     </message>
@@ -3500,8 +3500,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Закройте окно активной задачи и попробуйте снова.</translation>
     </message>
     <message>
-      <location filename="../../CommandStack.cpp" line="369"/>
       <location filename="../../CommandExtensionPack.cpp" line="998"/>
+      <location filename="../../CommandStack.cpp" line="369"/>
       <source>Task In Progress</source>
       <translation>Задача обрабатывается</translation>
     </message>
@@ -3510,17 +3510,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="127"/>
       <source>TechDraw hole circle</source>
       <translation>Чертёж Отверстие для оформления</translation>
-    </message>
-    <message>
-      <location filename="../../CommandStack.cpp" line="370"/>
-      <location filename="../../CommandExtensionPack.cpp" line="300"/>
-      <location filename="../../CommandExtensionPack.cpp" line="603"/>
-      <location filename="../../CommandExtensionPack.cpp" line="999"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1223"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1468"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
-      <source>Close active task dialog and try again.</source>
-      <translation>Закройте окно активной задачи и попробуйте снова.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="120"/>
@@ -3539,6 +3528,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Can not make centerlines for %1</translation>
     </message>
     <message>
+      <location filename="../../CommandExtensionPack.cpp" line="300"/>
+      <location filename="../../CommandExtensionPack.cpp" line="603"/>
+      <location filename="../../CommandExtensionPack.cpp" line="999"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1223"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1468"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
+      <location filename="../../CommandStack.cpp" line="370"/>
+      <source>Close active task dialog and try again.</source>
+      <translation>Закройте окно активной задачи и попробуйте снова.</translation>
+    </message>
+    <message>
       <location filename="../../CommandExtensionPack.cpp" line="898"/>
       <source>Selection is empty.</source>
       <translation>Ничего не выбрано.</translation>
@@ -3555,8 +3555,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="979"/>
-      <source>Please select a center for the circle.</source>
-      <translation>Пожалуйста, выберите центр для окружности.</translation>
+      <source>Select a center for the circle.</source>
+      <translation type="unfinished">Select a center for the circle.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1672"/>
@@ -3594,12 +3594,12 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Выберите 2 прямые линии</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="768"/>
-      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <location filename="../../CommandExtensionPack.cpp" line="897"/>
       <location filename="../../CommandExtensionPack.cpp" line="920"/>
       <location filename="../../CommandExtensionPack.cpp" line="942"/>
       <location filename="../../CommandExtensionPack.cpp" line="978"/>
+      <location filename="../../CommandAnnotate.cpp" line="768"/>
+      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <source>Wrong Selection</source>
       <translation>Неправильный выбор</translation>
     </message>
@@ -3822,9 +3822,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">FreeCAD is unable to open file %1 for writing.  The file may be open in another program.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
-      <location filename="../../ViewProviderPage.cpp" line="219"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
+      <location filename="../../ViewProviderPage.cpp" line="219"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Вы уверены, что хотите продолжить?</translation>
     </message>
@@ -3957,8 +3957,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Изменить выносной элемент</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="137"/>
       <location filename="../../ViewProviderBalloon.cpp" line="86"/>
+      <location filename="../../ViewProviderDimension.cpp" line="139"/>
       <source>Edit %1</source>
       <translation>Изменить %1</translation>
     </message>
@@ -4092,9 +4092,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>TechDraw Настройка формата</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1022"/>
       <location filename="../../CommandExtensionDims.cpp" line="2329"/>
       <location filename="../../CommandExtensionPack.cpp" line="2143"/>
+      <location filename="../../CommandAnnotate.cpp" line="1022"/>
       <source>Selection is empty</source>
       <translation>Ничего не выбрано</translation>
     </message>
@@ -4285,19 +4285,19 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation type="unfinished">Rich text creator</translation>
     </message>
     <message>
+      <location filename="../../QGIRichAnno.cpp" line="400"/>
+      <source>Resize Rich Annotation</source>
+      <translation type="unfinished">Resize Rich Annotation</translation>
+    </message>
+    <message>
       <location filename="../../TemplateTextField.cpp" line="54"/>
-      <source>Click to update text</source>
-      <translation>Нажмите, чтобы обновить текст</translation>
+      <source>Updates the text</source>
+      <translation type="unfinished">Updates the text</translation>
     </message>
     <message>
       <location filename="../../SymbolChooser.cpp" line="59"/>
       <source>Select a Symbol</source>
       <translation type="unfinished">Select a Symbol</translation>
-    </message>
-    <message>
-      <location filename="../../QGIRichAnno.cpp" line="400"/>
-      <source>Resize Rich Annotation</source>
-      <translation type="unfinished">Resize Rich Annotation</translation>
     </message>
   </context>
   <context>
@@ -4320,18 +4320,18 @@ it has a weld symbol that would become broken.</source>
       <translation>Вы не можете удалить этот вид, потому что это повредит один или более других зависимых от него видов.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderPage.cpp" line="222"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
+      <location filename="../../ViewProviderPage.cpp" line="222"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <source>Object dependencies</source>
       <translation>Зависимости объекта</translation>
     </message>
@@ -5639,37 +5639,77 @@ This affects only the toolbar; all tools remain available via the menu and short
 &apos;Радиус&apos;: Инструмент применит радиус для всех.</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="595"/>
+      <source>Snapping</source>
+      <translation>Привязка</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="627"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this is checked, new dimensions will be set to snap to position.  If not checked, new dimensions will not snap.  Snapping for individual dimensions may be adjusted with the &amp;quot;AllowSnapping&amp;quot; property.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="630"/>
+      <source>Snap dimensions</source>
+      <translation type="unfinished">Snap dimensions</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="658"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the dimension text length within which the text snaps to its centered position.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="677"/>
+      <source>Dimension text factor</source>
+      <translation type="unfinished">Dimension text factor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="684"/>
+      <source>Chain factor</source>
+      <translation type="unfinished">Chain factor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="697"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fraction of the spacing between dimensions within which they snap as chain or ordinate dimensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="737"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for views are on the general tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="529"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Примечание:&lt;/span&gt; Элементы выделенные &lt;span style=&quot; font-style:italic;&quot;&gt;курсивом&lt;/span&gt; являются значениями по умолчанию для новых объектов. Они не влияют на существующие объекты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="161"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="164"/>
       <source>Single tool</source>
       <translation>Один инструмент</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="162"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="165"/>
       <source>Separated tools</source>
       <translation>Разделенные инструменты</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="163"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="166"/>
       <source>Both</source>
       <translation>Оба варианта одновременно (три панели)</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="181"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="184"/>
       <source>Auto</source>
       <translation>Автоматически</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="182"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="185"/>
       <source>Diameter</source>
       <translation>Диаметр</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="183"/>
+      <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="186"/>
       <source>Radius</source>
       <translation>Радиус</translation>
     </message>
@@ -5911,47 +5951,17 @@ can override the global &apos;Update with 3D&apos; parameter</source>
       <translation>Использовать направление 3D-камеры</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Контроль при отображении границ кадров и меток.&lt;/p&gt;&lt;p&gt;Авто: Показывать снаружи: Всегда показывать: Никогда не показывать.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&lt;head/&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="863"/>
-      <source>Auto</source>
-      <translation>Авто</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="868"/>
-      <source>On</source>
-      <translation>Включено</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="873"/>
-      <source>Off</source>
-      <translation>Выкл</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="878"/>
-      <source>Manual</source>
-      <translation>Руководство</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="886"/>
-      <source>View frames mode</source>
-      <translation>Режим просмотра рамок</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="936"/>
       <source>Snaps views into alignment when being dragged</source>
       <translation>Выравнивает виды при перетаскивании</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="913"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="939"/>
       <source>Snap view alignment</source>
       <translation>Выравнивание вида по привязке</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="932"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="958"/>
       <source>Snap detail highlights</source>
       <translation>Подсвечивать привязку детального вида</translation>
     </message>
@@ -5996,32 +6006,67 @@ can override the global &apos;Update with 3D&apos; parameter</source>
       <translation>Привязка</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="955"/>
       <source>Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</source>
       <translation>Установите этот флажок, если вы хотите, чтобы детальный вид привязывался к ближайшей вершине при перетаскивании.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="948"/>
-      <source>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</source>
-      <translation>При перетаскивании вида, если он находится в пределах этой доли приближения к возможному положению выравнивания, он будет привязываться к выравниванию.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="980"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="974"/>
       <source>View snapping factor</source>
       <translation>Фактор привязки вида</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="987"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>
       <source>Highlight snapping factor</source>
       <translation>Выделить фактор привязки</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="994"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Контроль при отображении границ кадров и меток.&lt;/p&gt;&lt;p&gt;Авто: Показывать снаружи: Всегда показывать: Никогда не показывать.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&lt;head/&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="863"/>
+      <source>Auto</source>
+      <translation>Авто</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="868"/>
+      <source>On</source>
+      <translation>Включено</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="873"/>
+      <source>Off</source>
+      <translation>Выкл</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="878"/>
+      <source>Manual</source>
+      <translation>Руководство</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="886"/>
+      <source>View frames mode</source>
+      <translation>Режим просмотра рамок</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
+      <source>Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</source>
+      <translation type="unfinished">Snaps a view into its aligned position when it is within this fraction of the view size from the alignment target.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="981"/>
       <source>Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</source>
       <translation>Управляет радиусом привязки для выделения. Вершина должна быть в пределах этого коэффициента, умноженного на размер выделения, чтобы стать объектом привязки.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1042"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1035"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Note: Snapping settings for dimensions are on the dimensions tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1071"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Примечание:&lt;/span&gt; Элементы выделенные &lt;span style=&quot; font-style:italic;&quot;&gt;курсивом&lt;/span&gt; являются значениями по умолчанию для новых объектов. Они не влияют на существующие объекты.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -9009,17 +9054,17 @@ using the given X/Y spacings</source>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2123"/>
+      <location filename="../../CommandCreateDims.cpp" line="2129"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2124"/>
+      <location filename="../../CommandCreateDims.cpp" line="2130"/>
       <source>Repair Dimension References</source>
       <translation>Исправить ссылки на измеряемые объекты</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2125"/>
+      <location filename="../../CommandCreateDims.cpp" line="2131"/>
       <source>Repairs broken or incorrect dimension references</source>
       <translation>Восстанавливает повреждённые или неправильные ссылки на размеры</translation>
     </message>
@@ -9834,13 +9879,13 @@ there is an open task dialog.</source>
   <context>
     <name>TaskDimension</name>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="323"/>
+      <location filename="../../ViewProviderDimension.cpp" line="326"/>
       <source>You cannot delete this dimension now because
 there is an open task dialog.</source>
       <translation>Вы не можете сейчас удалить этот размер, потому что открыт диалог задачи.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="326"/>
+      <location filename="../../ViewProviderDimension.cpp" line="329"/>
       <source>Can Not Delete</source>
       <translation>Невозможно удалить</translation>
     </message>
@@ -9902,17 +9947,17 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawAreaDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1818"/>
+      <location filename="../../CommandCreateDims.cpp" line="1824"/>
       <source>TechDraw</source>
       <translation>Технический чертёж</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1819"/>
+      <location filename="../../CommandCreateDims.cpp" line="1825"/>
       <source>Area Annotation</source>
       <translation>Аннотация площади</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1820"/>
+      <location filename="../../CommandCreateDims.cpp" line="1826"/>
       <source>Inserts an annotation showing the area of a selected face</source>
       <translation>Вставляет аннотацию с указанием площади выбранной грани</translation>
     </message>
@@ -10136,7 +10181,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1936"/>
+      <location filename="../../CommandCreateDims.cpp" line="1942"/>
       <source>Insert horizontal extent dimension</source>
       <translation>Вставить горизонтальный размер габарита</translation>
     </message>
@@ -10144,7 +10189,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1940"/>
+      <location filename="../../CommandCreateDims.cpp" line="1946"/>
       <source>Insert vertical extent dimension</source>
       <translation>Вставить вертикальный размер габарита</translation>
     </message>
@@ -10221,22 +10266,6 @@ there is an open task dialog.</source>
     </message>
   </context>
   <context>
-    <name>Cmd2LineCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="653"/>
-      <source>Centerline Between 2 Lines</source>
-      <translation>Осевая между 2 линиями</translation>
-    </message>
-  </context>
-  <context>
-    <name>Cmd2PointCenterLine</name>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="657"/>
-      <source>Centerline Between 2 Points</source>
-      <translation>Осевая между 2 точками</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
       <location filename="../../CommandDecorate.cpp" line="75"/>
@@ -10270,6 +10299,22 @@ there is an open task dialog.</source>
       <location filename="../../CommandDecorate.cpp" line="140"/>
       <source>Toggles the grid on the active page</source>
       <translation type="unfinished">Toggles the grid on the active page</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2LineCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="653"/>
+      <source>Centerline Between 2 Lines</source>
+      <translation>Осевая между 2 линиями</translation>
+    </message>
+  </context>
+  <context>
+    <name>Cmd2PointCenterLine</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="657"/>
+      <source>Centerline Between 2 Points</source>
+      <translation>Осевая между 2 точками</translation>
     </message>
   </context>
   <context>

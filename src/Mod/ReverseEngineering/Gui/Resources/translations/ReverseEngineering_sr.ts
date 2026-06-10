@@ -237,8 +237,8 @@
       <translation>Положај</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="138"/>
+      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
       <translation>Уклопи Б-Сплајн</translation>
     </message>
@@ -626,7 +626,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
       <source>Continuity</source>
-      <translation>Континуалност</translation>
+      <translation>Континуитет</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="88"/>

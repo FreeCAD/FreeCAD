@@ -1200,9 +1200,9 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
       <translation>Si ce n'est pas fait, toutes les modifications seront perdues.</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Confirmer la suppression</translation>
     </message>

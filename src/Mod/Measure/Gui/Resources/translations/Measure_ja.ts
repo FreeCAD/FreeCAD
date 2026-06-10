@@ -195,99 +195,99 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
-      <translation>フィーチャーを測定</translation>
+      <source>Measures a feature</source>
+      <translation type="unfinished">Measures a feature</translation>
     </message>
   </context>
   <context>
     <name>MeasureGui::TaskMeasure</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="103"/>
+      <location filename="../../TaskMeasure.cpp" line="137"/>
       <source>Measurement</source>
       <translation>測定</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="119"/>
+      <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Show Delta</source>
       <translation>差分を表示</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="125"/>
+      <location filename="../../TaskMeasure.cpp" line="159"/>
       <source>Auto Save</source>
       <translation>自動保存</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="129"/>
+      <location filename="../../TaskMeasure.cpp" line="163"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
       <translation>新しい測定を開始したときに最後の測定結果を自動保存します。Shiftキーを使用すると、動作を一時的に反転します。</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <location filename="../../TaskMeasure.cpp" line="168"/>
       <source>Additive Selection</source>
       <translation>追加選択</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="140"/>
+      <location filename="../../TaskMeasure.cpp" line="174"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
       <translation>チェックした場合、新しい選択対象が測定に追加されます。 チェックされていない場合、現在の測定に選択対象を追加するにはCtrlキーを押す必要があり、押されていない場合は新しい測定が開始されます。</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="153"/>
+      <location filename="../../TaskMeasure.cpp" line="187"/>
       <source>Settings</source>
       <translation>設定</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="165"/>
+      <location filename="../../TaskMeasure.cpp" line="199"/>
       <source>Auto</source>
       <translation>自動</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="197"/>
+      <location filename="../../TaskMeasure.cpp" line="231"/>
       <source>Mode</source>
       <translation>モード</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="211"/>
+      <location filename="../../TaskMeasure.cpp" line="245"/>
       <source>Result</source>
       <translation>結果</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="577"/>
+      <location filename="../../TaskMeasure.cpp" line="551"/>
       <source>%1 auto-save</source>
       <translation>%1 自動保存</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="581"/>
+      <location filename="../../TaskMeasure.cpp" line="555"/>
       <source>%1 start new measurement</source>
       <translation>%1 新しい測定を開始</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="581"/>
+      <location filename="../../TaskMeasure.cpp" line="555"/>
       <source>%1 add to measurement</source>
       <translation>%1 測定に追加</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="811"/>
+      <location filename="../../TaskMeasure.cpp" line="780"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation>%1 新しい測定、 %2 自動保存の切り替え</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="816"/>
+      <location filename="../../TaskMeasure.cpp" line="785"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation>%1 測定に追加、 %2 自動保存の切り替え</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="247"/>
+      <location filename="../../TaskMeasure.cpp" line="281"/>
       <source>Saves the measurement in the active document</source>
       <translation>測定値をアクティブなドキュメントに保存します。</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="253"/>
+      <location filename="../../TaskMeasure.cpp" line="287"/>
       <source>Close</source>
       <translation>閉じる</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="254"/>
+      <location filename="../../TaskMeasure.cpp" line="288"/>
       <source>Close the measurement task.</source>
       <translation>測定タスクを閉じます。</translation>
     </message>
@@ -295,7 +295,7 @@
   <context>
     <name>QPlatformTheme</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="246"/>
+      <location filename="../../TaskMeasure.cpp" line="280"/>
       <source>Save</source>
       <translation>保存</translation>
     </message>
@@ -501,6 +501,19 @@
     </message>
   </context>
   <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>質量プロパティ</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>選択したオブジェクトの質量プロパティを計算</translation>
+    </message>
+  </context>
+  <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="280"/>
@@ -546,19 +559,6 @@
       <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
       <translation> (平均)</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>質量プロパティ</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>選択したオブジェクトの質量プロパティを計算</translation>
     </message>
   </context>
 </TS>

@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>தேர்ந்தெடுக்கப்பட்ட வடிவங்களுடன் பூலியன் செயல்பாடுகளைப் பயன்படுத்துகிறது</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -2226,7 +2226,7 @@ of the projection.</source>
       <translation>இணைப்பைத் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="488"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
       <translation>முகத்தின் நிறங்களை மாற்றவும்</translation>
     </message>
@@ -2267,7 +2267,7 @@ of the projection.</source>
       <translation>துடைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1613"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
       <source>Project on surface</source>
       <translation>மேற்பரப்பில் திட்டம்</translation>
     </message>
@@ -4144,17 +4144,17 @@ Check one or more edge entities first.</source>
       <translation>சட்</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
       <source>Projection object</source>
       <translation>திட்ட பொருள்</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
       <translation>செயலில் உள்ள ஆவணம் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
       <translation>திட்டப் பொருளை உருவாக்க முடியாது</translation>
     </message>
@@ -5816,7 +5816,7 @@ Individual boolean operation checks:</source>
       <translation type="unfinished">2x%1 select and confirm</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1654"/>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Datum dialog: input error</source>
       <translation>தரவு உரையாடல்: உள்ளீடு பிழை</translation>
     </message>
@@ -6711,10 +6711,10 @@ Continue?</source>
       <translation>தவறான தேர்வு</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>தொடரவும்</translation>
     </message>
@@ -7139,12 +7139,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="332"/>
+      <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
       <translation>எளிமையானது</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="337"/>
+      <location filename="../../../App/FaceMaker.cpp" line="343"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>ஒவ்வொரு கம்பியிலிருந்தும் தனித்தனி விமான முகத்தை சுயாதீனமாக உருவாக்குகிறது. துளைகளுக்கு உதவி இல்லை; கம்பிகள் வெவ்வேறு விமானங்களில் இருக்கலாம்.</translation>
     </message>
@@ -7321,7 +7321,7 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6698"/>
+      <location filename="../../../App/Geometry.cpp" line="6701"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>வளைவுகளின் குறுக்குவெட்டை யூகிக்க முடியவில்லை. நீங்கள் ஃபில்லட் செய்ய விரும்பும் வளைவுகளின் செங்குத்துகளுக்கு இடையில் ஒரு தற்செயல் தடையைச் சேர்க்க முயற்சிக்கவும்.</translation>
     </message>

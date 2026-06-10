@@ -77,7 +77,7 @@ i.e. counter-clockwise when moving along its axis.</source>
       <location filename="../../../App/FeatureHelix.cpp" line="198"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation>如果是假的，该工具将基于轮廓边界框为螺距提出初始值，，从而避免自相交。</translation>
+      <translation>如果取消勾选，工具会根据轮廓的边界框自动提供一个初始的螺距值，以此来避免模型发生自相交。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="210"/>
@@ -92,7 +92,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="120"/>
       <source>Pressure angle of gear teeth</source>
-      <translation>压力角</translation>
+      <translation>齿轮压力角</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="114"/>
@@ -500,7 +500,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2450"/>
       <source>Multi-Transform</source>
-      <translation>多变形</translation>
+      <translation>多重变换</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2451"/>
@@ -572,7 +572,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1260"/>
       <source>Pocket</source>
-      <translation>凹坑</translation>
+      <translation>凹槽</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1261"/>
@@ -909,18 +909,18 @@ so that self intersection is avoided.</source>
       <translation>转换为多重变换特征</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="265"/>
+      <location filename="../../SketchWorkflow.cpp" line="266"/>
       <source>Sketch on Face</source>
       <translation>在面上创建草图</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="326"/>
+      <location filename="../../SketchWorkflow.cpp" line="327"/>
       <source>Make copy</source>
       <translation>制作副本</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="528"/>
-      <location filename="../../SketchWorkflow.cpp" line="804"/>
+      <location filename="../../SketchWorkflow.cpp" line="529"/>
+      <location filename="../../SketchWorkflow.cpp" line="805"/>
       <source>New Sketch</source>
       <translation>新建草图</translation>
     </message>
@@ -930,8 +930,8 @@ so that self intersection is avoided.</source>
       <translation>创建布尔变量</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="224"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="224"/>
       <source>Add a Body</source>
       <translation>添加实体</translation>
     </message>
@@ -1100,8 +1100,8 @@ Select a body from below, or create a new body.</source>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="53"/>
-      <source>Please select</source>
-      <translation>请选择</translation>
+      <source>Select an active body</source>
+      <translation>选择一个活动实体</translation>
     </message>
   </context>
   <context>
@@ -2712,12 +2712,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from the selected face at which the pocket will end on side 1</source>
-      <translation>从选定的面偏移，口袋将在侧面 1 结束</translation>
+      <translation>凹槽在侧面 1 终止的位置，距离所选面的偏移量</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="46"/>
       <source>Offset from the selected face at which the pocket will end on side 2</source>
-      <translation>从选定的面偏移，口袋将在侧面 2 结束</translation>
+      <translation>凹槽在侧面 2 终止的位置，距离所选面的偏移量</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="48"/>
@@ -2904,7 +2904,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="204"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="210"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -3133,51 +3133,51 @@ measured along the specified direction</source>
       <translation>错误</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="841"/>
+      <location filename="../../SketchWorkflow.cpp" line="842"/>
       <source>Several sub-elements selected</source>
       <translation>若干子元素被选择</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="842"/>
+      <location filename="../../SketchWorkflow.cpp" line="843"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>选择单个面作为草图的支撑！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="849"/>
+      <location filename="../../SketchWorkflow.cpp" line="850"/>
       <source>Select a face as support for a sketch!</source>
       <translation>选择一个面作为草图的支撑！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="856"/>
+      <location filename="../../SketchWorkflow.cpp" line="857"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>需要一个平面作为草图的支撑！</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="863"/>
+      <location filename="../../SketchWorkflow.cpp" line="864"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>首先创建一个平面或选择一个面进行草图绘制</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="848"/>
+      <location filename="../../SketchWorkflow.cpp" line="849"/>
       <source>No support face selected</source>
       <translation>未选中支持面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="855"/>
+      <location filename="../../SketchWorkflow.cpp" line="856"/>
       <source>No planar support</source>
       <translation>无支持平面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="862"/>
+      <location filename="../../SketchWorkflow.cpp" line="863"/>
       <source>No valid planes in this document</source>
       <translation>文档中无有效平面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="760"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <source>A dialog is already open in the task panel</source>
       <translation>一个对话框已在任务面板打开</translation>
     </message>
@@ -3202,6 +3202,11 @@ measured along the specified direction</source>
       <translation>当前没有激活的实体。请在插入基准实体之前激活一个实体。</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation>无效选区</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="470"/>
       <source>Sub-shape binder</source>
       <translation>子形状绑定器</translation>
@@ -3217,11 +3222,16 @@ measured along the specified direction</source>
       <translation>文档无可用草图</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="761"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="2196"/>
+      <source>Select only one feature in an active body.</source>
+      <translation>在活动实体中仅选择一个特征。</translation>
+    </message>
+    <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <source>Close this dialog?</source>
       <translation>关闭此对话框？</translation>
     </message>
@@ -3253,11 +3263,6 @@ measured along the specified direction</source>
       <translation>从活动实体中选择边、面或体。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid Selection</source>
-      <translation>无效选区</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1026"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>考虑使用形状绑定器或基准特征在实体中引用外部几何体</translation>
@@ -3271,11 +3276,6 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1848"/>
       <source>%1 works only on parts.</source>
       <translation>%1 仅能运作于零件上。</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2196"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation>请在一个活动的实体中仅选择一个特征。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
@@ -3359,6 +3359,11 @@ This may lead to unexpected results.</source>
       <translation>没有可迁移的对象</translation>
     </message>
     <message>
+      <location filename="../../CommandBody.cpp" line="622"/>
+      <source>Edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
+      <translation>编辑“%1”并将其重新定义为使用基准面或参考平面作为草图平面。</translation>
+    </message>
+    <message>
       <location filename="../../CommandBody.cpp" line="697"/>
       <source>Select exactly one Part Design feature or a body.</source>
       <translation>请准确选择一个零件设计特征或一个实体。</translation>
@@ -3382,11 +3387,6 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="429"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
       <translation>未找到没有实体的零件设计特征，无需迁移。</translation>
-    </message>
-    <message>
-      <location filename="../../CommandBody.cpp" line="622"/>
-      <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>请编辑 '%1'并使用基面或基准平面作为草绘平面来重新定义它。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="696"/>
@@ -3459,14 +3459,14 @@ This may lead to unexpected results.</source>
       <translation>如果没有可用的基础特征, 就不可能创建减料特征</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <source>Vertical sketch axis</source>
       <translation>垂直草绘轴</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <location filename="../../TaskTransformedParameters.cpp" line="440"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <source>Horizontal sketch axis</source>
       <translation>水平草绘轴</translation>
     </message>
@@ -3520,10 +3520,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>要使用此特征, 它需隶属于文档中的零件对象。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>编辑 %1</translation>
     </message>
@@ -3689,7 +3689,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="47"/>
       <source>Edit Pocket</source>
-      <translation>编辑口袋</translation>
+      <translation>编辑凹槽</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="40"/>
@@ -4459,22 +4459,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>无法对无效的基础形状进行布尔操作</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="482"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="531"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>结果有多个实体：在活动实体中启用“允许复合”</translation>
     </message>
@@ -4496,7 +4497,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="358"/>
       <source>Cannot create a pocket with a total length of zero.</source>
-      <translation>无法创建总长度为零的口袋。</translation>
+      <translation>无法创建总长度为零的凹槽。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="706"/>
@@ -4509,10 +4510,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>结果融合的拉伸为 null。</translation>
     </message>
     <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="523"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>结果形状不是实体</translation>
     </message>
@@ -4589,8 +4590,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>创建失败，方向与草图的法线矢量正交</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <source>Creating a face from sketch failed</source>
       <translation>从草图创建面失败</translation>
     </message>
@@ -4657,7 +4658,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
       <source>Error: Result is not a solid</source>
       <translation>错误：结果不是实体</translation>
     </message>
@@ -4757,13 +4758,13 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>孔错误：查找轴失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2073"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2081"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2071"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>轮廓边缘布尔运算失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2088"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2078"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>在轮廓边缘的布尔运算产生了非实体</translation>
     </message>
@@ -4773,23 +4774,23 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>布尔操作失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2114"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2104"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>无法从草图创建面。不允许使用相交的草图实体、或草图中的多个面来制作凹槽。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
       <source>Thread type out of range</source>
       <translation>螺线类型超出范围</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2283"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
       <source>Thread size out of range</source>
       <translation>螺线大小超出范围</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2431"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
       <source>Error: Thread could not be built</source>
       <translation>错误：无法构建螺纹</translation>
     </message>
@@ -4809,8 +4810,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>拉伸：从草图创建面失败</translation>
     </message>
     <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <location filename="../../../App/FeatureLoft.cpp" line="303"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="446"/>
       <source>Loft: Failed to create shell</source>
       <translation>拉伸：创建外壳失败</translation>
     </message>
@@ -4822,97 +4823,92 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 草图中不允许有相交的实体或多个面。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="205"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Could not obtain profile shape</source>
       <translation>管道：无法获取轮廓形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="212"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="218"/>
       <source>No spine linked</source>
       <translation>没链接到骨架</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="227"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="233"/>
       <source>No auxiliary spine linked.</source>
       <translation>没链接到辅助骨架。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="250"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>管道：在使用带有孤立点的草图作为截面时，只需要一个孤立点。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="259"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="264"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
       <translation>管道：当使用单点轮廓时，至少需要一个截面</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="277"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: All sections need to be Part features</source>
       <translation>管道：所有截面都需要是零件特征</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="285"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Could not obtain section shape</source>
       <translation>管道：无法获取截面形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="295"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="298"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
       <translation>管道：只有轮廓和最后一个截面可以作为顶点</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="308"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="311"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
       <translation>多重截面需要有与基本截面相同数量的内部线</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="341"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="344"/>
       <source>Path must not be a null shape</source>
       <translation>路径不能是空形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="381"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="384"/>
       <source>Pipe could not be built</source>
       <translation>无法构建管道</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="438"/>
-      <source>Result is not a solid</source>
-      <translation>结果不是实体</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="477"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="532"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>错误: 没有可减少的内容</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="545"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="584"/>
+      <source>Pipe: Invalid Boolean Type</source>
+      <translation>管道：无效的布尔类型</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="614"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>制作管道时发生致命错误</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="674"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="741"/>
       <source>Invalid element in spine.</source>
       <translation>骨架中有无效元素。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="679"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="746"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>骨架中的元素既不是边线也不是连线。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="700"/>
-      <source>Spine is not connected.</source>
-      <translation>骨架未连接</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="706"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="759"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>骨架既不是边线也不是连线。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="711"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="764"/>
       <source>Invalid spine.</source>
       <translation>无效骨架。</translation>
     </message>
@@ -4922,16 +4918,14 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>没有基础特征时无法减去原始特征</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="507"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
       <source>Unknown operation type</source>
       <translation>未知操作类型</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="515"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="363"/>
       <source>Failed to perform boolean operation</source>
       <translation>执行布尔操作失败</translation>
     </message>
@@ -5435,14 +5429,6 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>输入错误</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -5461,10 +5447,18 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <location filename="../../TaskFeatureParameters.cpp" line="264"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>无法使用给定的参数创建该特征。
-几何图形可能无效或参数可能不兼容。
+Adjust the parameters and try again.</source>
+      <translation>无法使用给定参数创建该特征。
+几何图形可能无效，或者参数可能不兼容。
 请调整参数并重试。</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>输入错误</translation>
     </message>
   </context>
 </TS>

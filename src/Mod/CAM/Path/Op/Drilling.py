@@ -293,7 +293,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             edgelist.append(Part.makeLine(v1, v2))
 
         # Prepare linking parameters
-        solids = [base.Shape for base in self.job.Model.Group]
+        # Use self.model which is transformed when 3+2 workplane is active
+        solids = [base.Shape for base in self.model]
         linkingArgs = {
             "start_position": None,
             "target_position": None,
@@ -397,10 +398,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Set RetractMode annotation for each command
             for command in drillcommands:
-                annotations = command.Annotations
-                annotations["RetractMode"] = mode
-                annotations["operation"] = "drilling"
-                command.Annotations = annotations
+                command.addAnnotations({"RetractMode": mode, "operation": "drilling"})
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
 
@@ -532,10 +530,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Set RetractMode annotation for each command
             for command in tappingcommands:
-                annotations = command.Annotations
-                annotations["RetractMode"] = mode
-                annotations["operation"] = "tapping"
-                command.Annotations = annotations
+                command.addAnnotations({"RetractMode": mode, "operation": "tapping"})
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
 
@@ -568,7 +563,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("Strategy")
     setup.append("PeckDepth")
     setup.append("PeckEnabled")

@@ -910,18 +910,18 @@ az önmetszés elkerülése érdekében.</translation>
       <translation>Többszörös átalakító jellemzők átalakítása</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="265"/>
+      <location filename="../../SketchWorkflow.cpp" line="266"/>
       <source>Sketch on Face</source>
       <translation>Rajz a felületen</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="326"/>
+      <location filename="../../SketchWorkflow.cpp" line="327"/>
       <source>Make copy</source>
       <translation>Másolat készítése</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="528"/>
-      <location filename="../../SketchWorkflow.cpp" line="804"/>
+      <location filename="../../SketchWorkflow.cpp" line="529"/>
+      <location filename="../../SketchWorkflow.cpp" line="805"/>
       <source>New Sketch</source>
       <translation>Vázlat készítése</translation>
     </message>
@@ -931,8 +931,8 @@ az önmetszés elkerülése érdekében.</translation>
       <translation>Logikai érték létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="224"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="224"/>
       <source>Add a Body</source>
       <translation>Test hozzáadás</translation>
     </message>
@@ -1101,8 +1101,8 @@ Válasszon egy testet alulról, vagy hozzon létre újat.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="53"/>
-      <source>Please select</source>
-      <translation>Kérjük, válassza ki</translation>
+      <source>Select an active body</source>
+      <translation type="unfinished">Select an active body</translation>
     </message>
   </context>
   <context>
@@ -2905,7 +2905,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="204"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="210"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
@@ -3134,51 +3134,51 @@ measured along the specified direction</source>
       <translation>Hiba</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="841"/>
+      <location filename="../../SketchWorkflow.cpp" line="842"/>
       <source>Several sub-elements selected</source>
       <translation>Több al-elemet jelölt ki</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="842"/>
+      <location filename="../../SketchWorkflow.cpp" line="843"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>Válasszon egyetlen felületet a vázlat létrehozásához!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="849"/>
+      <location filename="../../SketchWorkflow.cpp" line="850"/>
       <source>Select a face as support for a sketch!</source>
       <translation>Válassz egy felületet, amelyre vázlatot készíthetsz!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="856"/>
+      <location filename="../../SketchWorkflow.cpp" line="857"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>Szükséges egy sík felület a vázlat készítéséhez!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="863"/>
+      <location filename="../../SketchWorkflow.cpp" line="864"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Először hozz létre egy síkot vagy válassz ki egy felületet, hogy rajta vázlatot készíts</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="848"/>
+      <location filename="../../SketchWorkflow.cpp" line="849"/>
       <source>No support face selected</source>
       <translation>A kijelölt  felület nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="855"/>
+      <location filename="../../SketchWorkflow.cpp" line="856"/>
       <source>No planar support</source>
       <translation>Nem támogatott sík</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="862"/>
+      <location filename="../../SketchWorkflow.cpp" line="863"/>
       <source>No valid planes in this document</source>
       <translation>Ebben a dokumentumban nincs érvényes sík</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="760"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Egy párbeszédablak már nyitva van a feladat panelen</translation>
     </message>
@@ -3203,6 +3203,11 @@ measured along the specified direction</source>
       <translation>Nincs aktív test. Kérjük, aktiváljon egy testet, mielőtt egy referencia elemet beszúrna.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="470"/>
       <source>Sub-shape binder</source>
       <translation>Rész forma kötése</translation>
@@ -3218,11 +3223,16 @@ measured along the specified direction</source>
       <translation>Nincs elérhető vázlat a dokumentumban</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="761"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="2196"/>
+      <source>Select only one feature in an active body.</source>
+      <translation type="unfinished">Select only one feature in an active body.</translation>
+    </message>
+    <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <source>Close this dialog?</source>
       <translation>Lezárja ezt a párbeszédet?</translation>
     </message>
@@ -3254,11 +3264,6 @@ measured along the specified direction</source>
       <translation>Az aktív testből jelöljön ki egy élet, felszínt vagy testet.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1026"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>Próbálja meg a forma csatoló vagy az alap jellemzők használatát testen belüli külső geometriára hivatkozáshoz</translation>
@@ -3272,11 +3277,6 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1848"/>
       <source>%1 works only on parts.</source>
       <translation>%1 működik csak az alkatrészeken.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2196"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation>Az aktív testben csak egyetlen jellemzőt jelöljön ki.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
@@ -3360,6 +3360,11 @@ Ez nem várt eredményekhez vezethet.</translation>
       <translation>Nincs mit áttelepíteni</translation>
     </message>
     <message>
+      <location filename="../../CommandBody.cpp" line="622"/>
+      <source>Edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
+      <translation type="unfinished">Edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</translation>
+    </message>
+    <message>
       <location filename="../../CommandBody.cpp" line="697"/>
       <source>Select exactly one Part Design feature or a body.</source>
       <translation>Válasszon ki pontosan egy Alkatrész Tervezés szolgáltatást vagy egy testet.</translation>
@@ -3383,11 +3388,6 @@ Ez nem várt eredményekhez vezethet.</translation>
       <location filename="../../CommandBody.cpp" line="429"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
       <translation>Nem találhatók test nélküli Alkatrész tervezési jellemzők. Nincs mit áttelepíteni.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandBody.cpp" line="622"/>
-      <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Szerkessze meg a '%1' nevet, és határozza meg újra, hogy egy alap- vagy dátumsíkot használjon vázlatsíkként.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="696"/>
@@ -3460,14 +3460,14 @@ Ez nem várt eredményekhez vezethet.</translation>
       <translation>Nincs lehetőség kivonandó tulajdonság létrehozására az alap tulajdonság nélkül</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <source>Vertical sketch axis</source>
       <translation>Vázlat függőleges tengelye</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <location filename="../../TaskTransformedParameters.cpp" line="440"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <source>Horizontal sketch axis</source>
       <translation>Vázlat vízszintes tengelye</translation>
     </message>
@@ -3521,10 +3521,10 @@ Az örökölt dokumentumok esetében, amelyek Alkatrész tervezés objektumokat 
       <translation>Tulajdonság használatához szükséges, hogy az egy alkatrész objektumhoz tartozzon a dokumentumban.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>%1 szerkesztése</translation>
     </message>
@@ -4461,22 +4461,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>Nem lehet logikai műveletet végrehajtani érvénytelen elsődleges alakzattal</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="482"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="531"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2101"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Az eredmény több szilárd testet tartalmaz: engedélyezze a 'Többszörös test engedélyezése' lehetőséget az aktív testnél.</translation>
     </message>
@@ -4511,10 +4512,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>A létrejövő egybeolvasztott kihúzás nulla.</translation>
     </message>
     <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="523"/>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
       <source>Resulting shape is not a solid</source>
       <translation>Az eredmény alakzat nem szilárd test</translation>
     </message>
@@ -4590,8 +4591,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>Létrehozás meghiúsult, mert az irány merőleges a vázlat aktuális vektorához</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="479"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <source>Creating a face from sketch failed</source>
       <translation>Nem sikerült felületet létrehozni vázlatból</translation>
     </message>
@@ -4658,7 +4659,7 @@ A vázlatelemek metszése egy vázlatban nem engedélyezett.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2457"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
       <source>Error: Result is not a solid</source>
       <translation>Hiba: Az eredmény nem szilárd test</translation>
     </message>
@@ -4758,13 +4759,13 @@ A vázlatelemek metszése egy vázlatban nem engedélyezett.</translation>
       <translation>Hiba a furatnál: a tengely keresése sikertelen volt</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2073"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2081"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2071"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>A logikai művelet sikertelen a profil élén</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2088"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2078"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>A logikai művelet nem eredményezett szilárd elemeket az élprofilon</translation>
     </message>
@@ -4774,24 +4775,24 @@ A vázlatelemek metszése egy vázlatban nem engedélyezett.</translation>
       <translation>A logikai művelet sikertelen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2114"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2104"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Nem sikerült felületet létrehozni vázlatból.
 A vázlatelemek vagy több felület metszése egy vázlatban nem engedélyezett a zseb felületté alakításához.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
       <source>Thread type out of range</source>
       <translation>A menet típusa tartományon kívül esik</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2283"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
       <source>Thread size out of range</source>
       <translation>A menet méret tartományon kívül esik</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2431"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
       <source>Error: Thread could not be built</source>
       <translation>Hiba: A menet nem hozható létre</translation>
     </message>
@@ -4811,8 +4812,8 @@ A vázlatelemek vagy több felület metszése egy vázlatban nem engedélyezett 
       <translation>Formázás: Felület létrehozása vázlatból sikertelen</translation>
     </message>
     <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <location filename="../../../App/FeatureLoft.cpp" line="303"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="446"/>
       <source>Loft: Failed to create shell</source>
       <translation>Formázás: hiba a héj létrehozásakor</translation>
     </message>
@@ -4824,97 +4825,92 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem engedélyezett.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="205"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="211"/>
       <source>Pipe: Could not obtain profile shape</source>
       <translation>Cső: Nem kap szelvény alakzatot</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="212"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="218"/>
       <source>No spine linked</source>
       <translation>Nincsenek összekötött segédvonalak</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="227"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="233"/>
       <source>No auxiliary spine linked.</source>
       <translation>Nincsenek összekötött külső segédgörbék.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="250"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="255"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
       <translation>Kiemelés a görbe mentén: csak egy elkülönített pontra van szükség, ha egy szakaszhoz elkülönített pontokat tartalmazó vázlatot használ</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="259"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="264"/>
       <source>Pipe: At least one section is needed when using a single point for profile</source>
       <translation>Kiemelés az útvonal mentén: legalább egy szakasz szükséges, ha egyetlen pontot használ a hossz-szelvényhez</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="277"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: All sections need to be Part features</source>
       <translation>Cső: Minden szakasznak az alkatrész jellemzőinek kell lennie</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="285"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="290"/>
       <source>Pipe: Could not obtain section shape</source>
       <translation>Cső: Nem kap szakasz alakzatot</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="295"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="298"/>
       <source>Pipe: Only the profile and last section can be vertices</source>
       <translation>Cső: Csak a szelvény és az utolsó szakasz lehet csúcspont</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="308"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="311"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
       <translation>Több szelvénynek ugyanannyi belső vonallánccal kell rendelkeznie, mint az alapkeresztszelvénynek</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="341"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="344"/>
       <source>Path must not be a null shape</source>
       <translation>Útvonal nem lehet üres alakzat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="381"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="384"/>
       <source>Pipe could not be built</source>
       <translation>A cső nem hozható létre</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="438"/>
-      <source>Result is not a solid</source>
-      <translation>Az eredmény nem szilárd test</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="477"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="532"/>
       <source>Pipe: There is nothing to subtract from</source>
       <translation>Cső: Nincs mit kivonni</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="545"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="584"/>
+      <source>Pipe: Invalid Boolean Type</source>
+      <translation>Cső: Érvénytelen logikai típus</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeaturePipe.cpp" line="614"/>
       <source>A fatal error occurred when making the pipe</source>
       <translation>Végzetes hiba történt a cső készítésekor</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="674"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="741"/>
       <source>Invalid element in spine.</source>
       <translation>A segédvonal érvénytelen elemet tartalmaz.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="679"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="746"/>
       <source>Element in spine is neither an edge nor a wire.</source>
       <translation>A segédgörbe elemei nem élek és nem is dróthálók.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="700"/>
-      <source>Spine is not connected.</source>
-      <translation>A segédgörbe nincs csatlakoztatva.</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="706"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="759"/>
       <source>Spine is neither an edge nor a wire.</source>
       <translation>A segédgörbe elemei nem élek és nem is dróthálók.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="711"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="764"/>
       <source>Invalid spine.</source>
       <translation>Érvénytelen segédgörbe.</translation>
     </message>
@@ -4924,16 +4920,14 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
       <translation>Nem vonható ki az alaptest jellemzője az alapjellemző nélkül</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="507"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
       <source>Unknown operation type</source>
       <translation>Ismeretlen művelettípus</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="363"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="515"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="363"/>
       <source>Failed to perform boolean operation</source>
       <translation>Logikai művelet végrehajtása sikertelen</translation>
     </message>
@@ -5437,14 +5431,6 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -5463,10 +5449,18 @@ A vázlatelemek vagy többszörös felületek metszése egy vázlatban nem enged
       <location filename="../../TaskFeatureParameters.cpp" line="264"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>A jellemzőket nem sikerült létrehozni a megadott paraméterekkel.
-Lehet, hogy a geometria érvénytelen, vagy a változók inkompatibilisek.
-Állítsa be a változókat, és próbálja újra.</translation>
+Adjust the parameters and try again.</source>
+      <translation type="unfinished">The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Adjust the parameters and try again.</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
     </message>
   </context>
 </TS>
