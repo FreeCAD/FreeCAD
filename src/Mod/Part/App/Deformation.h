@@ -79,42 +79,8 @@ public:
     );
     static gp_Pnt bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, double factor);
 
-    static TopoDS_Edge deform(
-        const TopoDS_Edge& edge,
-        const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
-        int samples
-    );
-    static TopoDS_Wire deform(
-        const TopoDS_Wire& wire,
-        const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
-        int samples
-    );
-    static TopoDS_Face deform(
-        const TopoDS_Face& face,
-        const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
-        int samples
-    );
-    static TopoDS_Shell deform(
-        const TopoDS_Shell& shell,
-        const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
-        int samples
-    );
-    static TopoDS_Solid deform(
-        const TopoDS_Solid& solid,
-        const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
-        int samples
-    );
-    static TopoDS_Compound deform(
-        const TopoDS_Compound& solid,
-        const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
-        int samples
-    );
-
-    static TopoDS_Shape deform(
-        const TopoDS_Shape& shape,
-        const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
-        int samples
-    );
+    template<typename T>
+    static T deform(const T& shape, const std::function<gp_Pnt(gp_Pnt)>& deformFunction, int samples);
 };
 
 }  // namespace Part

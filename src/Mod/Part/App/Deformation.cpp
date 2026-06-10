@@ -113,19 +113,41 @@ gp_Pnt Deformation::bendAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, 
 
 gp_Pnt Deformation::bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve, double factor)
 {
-    auto u = curve.FirstParameter()
+    const auto u = curve.FirstParameter()
         + from.X() * factor * (curve.LastParameter() - curve.FirstParameter());
+
+    // compute Frenet vectors
     gp_Pnt ptCurve;
-    gp_Vec axCurve;
-    curve.D1(u, ptCurve, axCurve);
-    axCurve.Normalize();
-    auto x = ptCurve.X() - axCurve.Y() * from.Y() - axCurve.Z() * from.Z();
-    auto y = from.Y() + ptCurve.Y();
-    auto z = from.Z() + ptCurve.Z();
+    gp_Vec T;
+    curve.D1(u, ptCurve, T);
+    T.Normalize();
+    const gp_Vec Ox(1., 0., 0.);
+    auto B = Ox.Crossed(T);  // normal to the curve plane
+    B.Normalize();
+
+    // compute vector at curve start
+    // and check for a normal return
+    gp_Pnt p0;
+    gp_Vec T0;
+    curve.D1(curve.FirstParameter(), p0, T0);
+    T0.Normalize();
+    auto B0 = Ox.Crossed(T0);
+    B0.Normalize();
+    if (B.Dot(B0) < 0.5) {
+        B.Reverse();
+    }
+
+    auto N = B.Crossed(T);  // in the curve plane
+    N.Normalize();
+
+    const auto x = ptCurve.X() + N.X() * from.Y() + B.X() * from.Z();
+    const auto y = ptCurve.Y() + N.Y() * from.Y();
+    const auto z = ptCurve.Z() + B.Z() * from.Z();
 
     return {x, y, z};
 }
 
+template<>
 TopoDS_Edge Deformation::deform(
     const TopoDS_Edge& edge,
     const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
@@ -171,6 +193,7 @@ TopoDS_Edge Deformation::deform(
     return ne;
 }
 
+template<>
 TopoDS_Wire Deformation::deform(
     const TopoDS_Wire& wire,
     const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
@@ -195,6 +218,7 @@ TopoDS_Wire Deformation::deform(
     return newWire;
 }
 
+template<>
 TopoDS_Face Deformation::deform(
     const TopoDS_Face& face,
     const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
@@ -316,6 +340,7 @@ TopoDS_Face Deformation::deform(
     return fFixer.Face();
 }
 
+template<>
 TopoDS_Shell Deformation::deform(
     const TopoDS_Shell& shell,
     const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
@@ -350,6 +375,7 @@ TopoDS_Shell Deformation::deform(
     return resultShell;
 }
 
+template<>
 TopoDS_Solid Deformation::deform(
     const TopoDS_Solid& solid,
     const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
@@ -377,6 +403,7 @@ TopoDS_Solid Deformation::deform(
     return TopoDS::Solid(result);
 }
 
+template<>
 TopoDS_Compound Deformation::deform(
     const TopoDS_Compound& compound,
     const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
@@ -399,6 +426,7 @@ TopoDS_Compound Deformation::deform(
     return result;
 }
 
+template<>
 TopoDS_Shape Deformation::deform(
     const TopoDS_Shape& shape,
     const std::function<gp_Pnt(gp_Pnt)>& deformFunction,
