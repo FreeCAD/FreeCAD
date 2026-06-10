@@ -19,37 +19,26 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #pragma once
+
+#ifdef _MSC_VER
 
 #include <FCGlobal.h>
 #include <string>
 
 namespace Base::CrashReporter
 {
-class BaseExport Writer
+class BaseExport WindowsCrashReporter
 {
-public:
+    public:
     /**
-     * Perform cpptrace init that isn't safe to do in the signal handler. If cpptrace is not install
-     * this is a no-op.
-     */
-    static void prewarm();
-
-    /**
-     * Install the signal handlers to capture crashes.
+     * Resolve the .dmp path and register the SEH filter. Call once **after**
+     * App::Application::init().
+     *
+     * \param crashReportDirectory The location to place the crash report
      */
     static void install(const std::string& crashReportDirectory);
-
-#ifdef FC_OS_WIN32
-    static void handleException(_EXCEPTION_POINTERS* exceptionInfo);
-
-    /**
-     * Set the path to a minidump file, if one was created.
-     *
-     * @param path The path to the minidump file
-     */
-    static void setMinidumpPath(const std::string& path);
-#endif
 };
-} // namespace Base::CrashReporter
+}
+
+#endif  // _MSC_VER
