@@ -27,9 +27,10 @@
 
 #include <Base/ParameterObserver.h>
 
-namespace Gui {
+namespace Gui
+{
 
-class GuiExport SpaceMouseParameter : public Base::ParameterObserver
+class GuiExport SpaceMouseParameter: public Base::ParameterObserver
 {
 public:
     SpaceMouseParameter();
@@ -42,6 +43,6 @@ private:
     void setup();
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_SPACEMOUSE_PARAMS_H
+#endif  // GUI_SPACEMOUSE_PARAMS_H

@@ -30,14 +30,15 @@ using namespace PartDesign;
 void PartDesignParameter::setup()
 {
     // NOLINTBEGIN
-    addParameter("AllowCompoundDefault", Bool{true});
+    addParameter("AllowCompoundDefault", Bool {true});
     // NOLINTEND
 }
 
 PartDesignParameter::PartDesignParameter()
 {
-    attachToParameter(App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/PartDesign"));
+    attachToParameter(
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/PartDesign")
+    );
     setup();
     initParameters();
 }

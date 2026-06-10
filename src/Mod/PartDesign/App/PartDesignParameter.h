@@ -35,7 +35,7 @@ namespace PartDesign
  *
  * The parameters are under group "User parameter:BaseApp/Preferences/Mod/PartDesign"
  */
-class PartDesignExport PartDesignParameter : public Base::ParameterObserver
+class PartDesignExport PartDesignParameter: public Base::ParameterObserver
 {
 public:
     PartDesignParameter();
@@ -48,6 +48,6 @@ private:
     void setup();
 };
 
-} // namespace PartDesign
+}  // namespace PartDesign
 
-#endif // PARTDESIGN_PARAMETER_H
+#endif  // PARTDESIGN_PARAMETER_H
