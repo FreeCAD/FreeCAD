@@ -94,6 +94,7 @@ list(APPEND FreeCADApp_LIBS
 
 generate_from_py(ApplicationDirectories)
 generate_from_py(Document)
+generate_from_py(DocumentSettings)
 generate_from_py(DocumentObject)
 generate_from_py(Extension)
 generate_from_py(ExtensionContainer)
@@ -128,6 +129,7 @@ SET(FreeCADApp_Pyi_SRCS
     Metadata.pyi
     DocumentObjectGroup.pyi
     DocumentObject.pyi
+    DocumentSettings.pyi
     GeoFeature.pyi
     GeoFeatureGroupExtension.pyi
     OriginGroupExtension.pyi
@@ -167,6 +169,8 @@ SET(Document_CPP_SRCS
     DocumentObserver.cpp
     DocumentObserverPython.cpp
     DocumentPyImp.cpp
+    DocumentSettings.cpp
+    DocumentSettingsPyImp.cpp
     Expression.cpp
     ExpressionTokenizer.cpp
     FeaturePython.cpp
@@ -214,6 +218,7 @@ SET(Document_HPP_SRCS
     DocumentObjectGroup.h
     DocumentObserver.h
     DocumentObserverPython.h
+    DocumentSettings.h
     Expression.h
     ExpressionParser.h
     ExpressionTokenizer.h

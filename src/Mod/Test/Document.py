@@ -699,6 +699,133 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument("CreateTest")
 
 
+class DocumentSettingsCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("DocumentSettingsTests")
+
+    def tearDown(self):
+        if FreeCAD.getDocument(self.Doc.Name) is not None:
+            FreeCAD.closeDocument(self.Doc.Name)
+
+    def testStringSettingUpdatesOnlyNamespacedMetaKey(self):
+        self.Doc.Meta = {
+            "Unrelated": "keep",
+            "Draft.Other": "old",
+            "BIM.GridSpacing": "1 m",
+        }
+
+        settings = self.Doc.settings("Draft")
+        settings.setString("GridSpacing", "0.1 m")
+
+        self.assertEqual(settings.getString("GridSpacing", ""), "0.1 m")
+        self.assertEqual(self.Doc.Meta["Draft.GridSpacing"], "0.1 m")
+        self.assertEqual(self.Doc.Meta["Unrelated"], "keep")
+        self.assertEqual(self.Doc.Meta["Draft.Other"], "old")
+        self.assertEqual(self.Doc.Meta["BIM.GridSpacing"], "1 m")
+
+    def testTypedGettersParseValidValuesAndDefaultInvalidValues(self):
+        self.Doc.Meta = {
+            "Draft.GridMainlines": "10",
+            "Draft.GridSize": "12.5",
+            "Draft.ShowGrid": "true",
+            "Draft.InvalidInt": "10 lines",
+            "Draft.InvalidFloat": "12,5",
+            "Draft.InvalidBool": "sometimes",
+        }
+
+        settings = self.Doc.settings("Draft")
+
+        self.assertEqual(settings.getInt("GridMainlines", 1), 10)
+        self.assertAlmostEqual(settings.getFloat("GridSize", 1.0), 12.5)
+        self.assertTrue(settings.getBool("ShowGrid", False))
+        self.assertEqual(settings.getInt("InvalidInt", 7), 7)
+        self.assertAlmostEqual(settings.getFloat("InvalidFloat", 2.5), 2.5)
+        self.assertTrue(settings.getBool("InvalidBool", True))
+        self.assertEqual(settings.getString("Missing", "fallback"), "fallback")
+        self.assertEqual(settings.getInt("Missing", 3), 3)
+        self.assertAlmostEqual(settings.getFloat("Missing", 4.5), 4.5)
+        self.assertTrue(settings.getBool("Missing", True))
+
+    def testTypedSettersStoreStringBackedCanonicalValues(self):
+        settings = self.Doc.settings("Draft")
+
+        settings.setInt("GridMainlines", 10)
+        settings.setFloat("GridSize", 12.5)
+        settings.setFloat("FineStep", 0.1)
+        settings.setBool("ShowGrid", True)
+
+        self.assertEqual(self.Doc.Meta["Draft.GridMainlines"], "10")
+        self.assertEqual(self.Doc.Meta["Draft.GridSize"], "12.5")
+        self.assertEqual(self.Doc.Meta["Draft.FineStep"], "0.1")
+        self.assertEqual(self.Doc.Meta["Draft.ShowGrid"], "true")
+
+    def testKeysAreScopedAndRemoveDeletesOnlySelectedKey(self):
+        self.Doc.Meta = {
+            "Draft.GridSpacing": "0.1 m",
+            "Draft.GridSize": "100",
+            "Draft.Bad.Key": "hidden",
+            "BIM.GridSpacing": "1 m",
+            "Draft_Style_Default": "{}",
+        }
+
+        settings = self.Doc.settings("Draft")
+
+        self.assertEqual(settings.keys(), ["GridSize", "GridSpacing"])
+        settings.remove("GridSize")
+
+        self.assertNotIn("Draft.GridSize", self.Doc.Meta)
+        self.assertEqual(self.Doc.Meta["Draft.GridSpacing"], "0.1 m")
+        self.assertEqual(self.Doc.Meta["BIM.GridSpacing"], "1 m")
+        self.assertEqual(self.Doc.Meta["Draft_Style_Default"], "{}")
+
+    def testDottedNamespacesAreScoped(self):
+        self.Doc.Meta = {
+            "Draft.Grid.Spacing": "0.1 m",
+            "Draft.Grid.Mainlines": "10",
+            "Draft.Grid.Nested.Key": "hidden",
+            "Draft.GridSize": "100",
+            "Draft.Other": "keep",
+            "BIM.Grid.Spacing": "1 m",
+        }
+
+        draftSettings = self.Doc.settings("Draft")
+        gridSettings = self.Doc.settings("Draft.Grid")
+
+        self.assertEqual(draftSettings.keys(), ["GridSize", "Other"])
+        self.assertEqual(gridSettings.keys(), ["Mainlines", "Spacing"])
+        self.assertEqual(gridSettings.getString("Spacing", ""), "0.1 m")
+
+        gridSettings.setFloat("Size", 100.0)
+        gridSettings.remove("Spacing")
+
+        self.assertEqual(self.Doc.Meta["Draft.Grid.Size"], "100")
+        self.assertNotIn("Draft.Grid.Spacing", self.Doc.Meta)
+        self.assertEqual(self.Doc.Meta["Draft.Grid.Mainlines"], "10")
+        self.assertEqual(self.Doc.Meta["Draft.Other"], "keep")
+        self.assertEqual(self.Doc.Meta["BIM.Grid.Spacing"], "1 m")
+
+    def testNamespaceAndKeyValidation(self):
+        for namespace in ("", ".Draft", "Draft.", "Draft..Grid", "Draft-Grid"):
+            with self.subTest(namespace=namespace):
+                with self.assertRaises(ValueError):
+                    self.Doc.settings(namespace)
+
+        settings = self.Doc.settings("Draft.Grid")
+        for key in ("", "Grid.Spacing", "Grid-Spacing"):
+            with self.subTest(key=key):
+                with self.assertRaises(ValueError):
+                    settings.setString(key, "0.1 m")
+
+    def testBoolArgumentsRequireBoolValues(self):
+        settings = self.Doc.settings("Draft")
+
+        with self.assertRaises(TypeError):
+            settings.getBool("ShowGrid", "false")
+
+        with self.assertRaises(TypeError):
+            settings.setBool("ShowGrid", "false")
+
+
 # class must be defined in global scope to allow it to be reloaded on document open
 class SaveRestoreSpecialGroup:
     def __init__(self, obj):
