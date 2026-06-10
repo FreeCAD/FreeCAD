@@ -828,6 +828,10 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     }
 
     auto dcs = static_cast<DrawComplexSection*>(viewSection);
+    if (dcs->ProjectionStrategy.isValue("BrokenOut")) {
+        return;
+    }
+
     std::pair<Base::Vector3d, Base::Vector3d> ends = dcs->sectionLineEnds();
     Base::Vector3d vStart = Rez::guiX(ends.first);//already scaled by dcs
     Base::Vector3d vEnd = Rez::guiX(ends.second);
@@ -1505,5 +1509,4 @@ void QGIViewPart::setMovableFlagProjGroupItem()
     // not locked, not autoDistribute
     setFlag(QGraphicsItem::ItemIsMovable, true);
 }
-
 

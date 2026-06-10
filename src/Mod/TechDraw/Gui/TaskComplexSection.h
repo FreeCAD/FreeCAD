@@ -98,6 +98,8 @@ protected Q_SLOTS:
     void onRightClicked();
     void onIdentifierChanged();
     void onScaleChanged();
+    void onStrategyChanged();
+    void onBrokenOutDepthChanged();
     void scaleTypeChanged(int index);
     void liveUpdateClicked();
     void updateNowClicked();
@@ -130,6 +132,8 @@ private:
     std::string m_savePageName;
     std::string m_saveSymbol;
     std::string m_saveDirName;
+    long m_saveProjectionStrategy;
+    double m_saveBrokenOutDepth;
     Base::Vector3d m_saveDirection;
     Base::Vector3d m_saveOrigin;
     double m_saveScale;

@@ -64,6 +64,7 @@
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepGProp.hxx>
 #include <BRepLProp_SLProps.hxx>
 #include <BRepLib.hxx>
@@ -101,6 +102,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
 
+#include <algorithm>
 #include <cmath>
 
 #include <sstream>
@@ -128,6 +130,26 @@ using namespace TechDraw;
 using namespace std;
 using DU = DrawUtil;
 
+namespace
+{
+constexpr long StrategyOffset = 0;
+constexpr long StrategyAligned = 1;
+constexpr long StrategyBrokenOut = 3;
+constexpr double BrokenOutToolOffsetFactor = 1.0e-7;
+
+bool directionsAreParallel(Base::Vector3d first, Base::Vector3d second)
+{
+    if (first.Length() <= Precision::Confusion() ||
+        second.Length() <= Precision::Confusion()) {
+        return false;
+    }
+
+    first.Normalize();
+    second.Normalize();
+    return DU::fpCompare(std::fabs(first.Dot(second)), 1.0, EWTOLERANCE);
+}
+}
+
 //===========================================================================
 // DrawComplexSection
 //===========================================================================
@@ -135,7 +157,7 @@ using DU = DrawUtil;
 //NOLINTBEGIN
 PROPERTY_SOURCE(TechDraw::DrawComplexSection, TechDraw::DrawViewSection)
 
-const char* DrawComplexSection::ProjectionStrategyEnums[] = {"Offset", "Aligned", "NoParallel",
+const char* DrawComplexSection::ProjectionStrategyEnums[] = {"Offset", "Aligned", "NoParallel", "BrokenOut",
                                                              nullptr};
 //NOLINTEND
 
@@ -151,11 +173,33 @@ DrawComplexSection::DrawComplexSection() :
     ProjectionStrategy.setEnums(ProjectionStrategyEnums);
     ADD_PROPERTY_TYPE(ProjectionStrategy, ((long)0), fgroup, App::Prop_None,
                       "Make a single cut, or use the profile in pieces");
+    ADD_PROPERTY_TYPE(BrokenOutDepth, (10.0), fgroup, App::Prop_None,
+                      "Depth for broken-out section cuts");
 //NOLINTEND
+}
+
+short DrawComplexSection::mustExecute() const
+{
+    if (isRestoring()) {
+        return DrawViewSection::mustExecute();
+    }
+
+    if (CuttingToolWireObject.isTouched()
+        || ProjectionStrategy.isTouched()) {
+        return 1;
+    }
+
+    if (ProjectionStrategy.getValue() == StrategyBrokenOut && BrokenOutDepth.isTouched()) {
+        return 1;
+    }
+
+    return DrawViewSection::mustExecute();
 }
 
 TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
 {
+    m_toolFaceShape = {};
+
     TopoDS_Wire profileWire = makeProfileWire();
     if (profileWire.IsNull()) {
         throw Base::RuntimeError("Can not make wire from cutting tool (1)");
@@ -166,7 +210,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     }
 
     // use "canBuild(profile, sectionnormal)" or validateProfileDirection?
-    if (ProjectionStrategy.getValue() == 0) {
+    if (ProjectionStrategy.getValue() == StrategyOffset) {
         // Offset. Warn if profile is not quite aligned with section normal. if
         // the profile and normal are misaligned, the check below for empty "solids"
         // will not be correct.
@@ -184,7 +228,16 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     }
 
     if (BRep_Tool::IsClosed(profileWire)) {
+        if (ProjectionStrategy.getValue() == StrategyBrokenOut) {
+            return makeBrokenOutCuttingTool(profileWire, dMax);
+        }
         return makeCuttingToolFromClosedProfile(profileWire, dMax);
+    }
+
+    if (ProjectionStrategy.getValue() == StrategyBrokenOut) {
+        Base::Console().warning("%s requires a closed profile for broken-out section\n",
+                                Label.getValue());
+        return {};
     }
 
     TopoDS_Shape cuttingTool = cuttingToolFromProfile(profileWire, dMax);
@@ -214,8 +267,9 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
 
 TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 {
-    if (ProjectionStrategy.getValue() == 0) {
-        //Offset. Use regular section behaviour
+    if (ProjectionStrategy.getValue() == StrategyOffset ||
+        ProjectionStrategy.getValue() == StrategyBrokenOut) {
+        // Offset and BrokenOut use regular section behaviour.
         return DrawViewSection::getShapeToPrepare();
     }
     //Aligned (or NoParallel) strategy
@@ -225,9 +279,41 @@ TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 //get the shape ready for projection and cut surface finding
 TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, double shapeSize)
 {
-    if (ProjectionStrategy.getValue() == 0) {
-        //Offset. Use regular section behaviour
+    if (ProjectionStrategy.getValue() == StrategyOffset) {
+        // Offset uses regular section behaviour.
         return DrawViewSection::prepareShape(cutShape, shapeSize);
+    }
+    if (ProjectionStrategy.getValue() == StrategyBrokenOut) {
+        (void)shapeSize;
+        TopoDS_Shape preparedShape;
+        try {
+            Base::Vector3d origin(0.0, 0.0, 0.0);
+            m_projectionCS = getProjectionCS(origin);
+
+            gp_Pnt inputCenter = ShapeUtils::findCentroid(m_saveShape, m_projectionCS);
+            Base::Vector3d centroid(inputCenter.X(), inputCenter.Y(), inputCenter.Z());
+
+            m_cutShapeRaw = cutShape;
+            preparedShape = ShapeUtils::moveShape(cutShape, centroid * -1.0);
+            m_cutShape = preparedShape;
+            m_saveCentroid = centroid;
+
+            preparedShape = ShapeUtils::scaleShape(preparedShape, getScale());
+
+            if (!DrawUtil::fpCompare(Rotation.getValue(), 0.0)) {
+                preparedShape =
+                    ShapeUtils::rotateShape(preparedShape, m_projectionCS, Rotation.getValue());
+            }
+            if (debugSection()) {
+                BRepTools::Write(m_cutShape, "DCSBrokenOutCutShape.brep");
+            }
+        }
+        catch (Standard_Failure& e1) {
+            Base::Console().warning("DCS::prepareShape - failed to build broken-out shape %s - %s **\n",
+                                    getNameInDocument(),
+                                    e1.GetMessageString());
+        }
+        return preparedShape;
     }
 
     //"Aligned" projection (Aligned Section)
@@ -253,8 +339,17 @@ TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, doub
 
 void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
-    if (ProjectionStrategy.getValue() == 0) {
-        //Offset. Use regular section behaviour
+    if (ProjectionStrategy.getValue() == StrategyOffset ||
+        ProjectionStrategy.getValue() == StrategyBrokenOut) {
+        if (ProjectionStrategy.getValue() == StrategyBrokenOut && m_cuttingTool.IsNull()) {
+            BRep_Builder builder;
+            TopoDS_Compound emptyCut;
+            builder.MakeCompound(emptyCut);
+            m_cutPieces = emptyCut;
+            waitingForCut(false);
+            return;
+        }
+        // Offset and BrokenOut use regular section behaviour.
         return DrawViewSection::makeSectionCut(baseShape);
     }
 
@@ -282,6 +377,33 @@ void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
 
 void DrawComplexSection::onSectionCutFinished()
 {
+    if (ProjectionStrategy.getValue() == StrategyBrokenOut && m_cuttingTool.IsNull()) {
+        if (DU::isGuiUp()) {
+            QObject::disconnect(connectCutWatcher);
+            showProgressMessage(getNameInDocument(), "has finished making section cut");
+        }
+
+        geometryObject = std::make_shared<TechDraw::GeometryObject>(getNameInDocument(), this);
+        m_tempGeometryObject = nullptr;
+        m_preparedShape = {};
+        m_cutShape = {};
+        m_cutShapeRaw = {};
+
+        BRep_Builder builder;
+        builder.MakeCompound(m_sectionTopoDSFaces);
+        m_tdSectionFaces.clear();
+
+        waitingForCut(false);
+        waitingForHlr(false);
+
+        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(BaseView.getValue());
+        if (dvp) {
+            dvp->requestPaint();
+        }
+        requestPaint();
+        return;
+    }
+
     if (m_cutFuture.isRunning() ||  //waitingForCut()
         m_alignFuture.isRunning()) {//waitingForAlign()
         //can not continue yet.  return until the other thread ends
@@ -465,7 +587,8 @@ DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape& shapeToInt
                                 getNameInDocument());
         return {};
     }
-    if (ProjectionStrategy.getValue() == 0) {//Offset
+    if (ProjectionStrategy.getValue() == StrategyOffset ||
+        ProjectionStrategy.getValue() == StrategyBrokenOut) {
         return singleToolIntersections(shapeToIntersect);
     }
 
@@ -542,8 +665,9 @@ TopoDS_Compound DrawComplexSection::alignedToolIntersections(const TopoDS_Shape&
 
 TopoDS_Compound DrawComplexSection::alignSectionFaces(const TopoDS_Shape& faceIntersections)
 {
-    if (ProjectionStrategy.getValue() == 0) {
-        //Offset. Use regular section behaviour
+    if (ProjectionStrategy.getValue() == StrategyOffset ||
+        ProjectionStrategy.getValue() == StrategyBrokenOut) {
+        // Offset and BrokenOut use regular section behaviour.
         return DrawViewSection::alignSectionFaces(faceIntersections);
     }
 
@@ -552,7 +676,8 @@ TopoDS_Compound DrawComplexSection::alignSectionFaces(const TopoDS_Shape& faceIn
 
 TopoDS_Shape DrawComplexSection::getShapeToIntersect()
 {
-    if (ProjectionStrategy.getValue() == 0) {//Offset
+    if (ProjectionStrategy.getValue() == StrategyOffset ||
+        ProjectionStrategy.getValue() == StrategyBrokenOut) {
         return DrawViewSection::getShapeToIntersect();
     }
     //Aligned
@@ -561,7 +686,8 @@ TopoDS_Shape DrawComplexSection::getShapeToIntersect()
 
 TopoDS_Shape DrawComplexSection::getShapeForDetail() const
 {
-    if (ProjectionStrategy.getValue() == 0) {//Offset
+    if (ProjectionStrategy.getValue() == StrategyOffset ||
+        ProjectionStrategy.getValue() == StrategyBrokenOut) {
         return DrawViewSection::getShapeForDetail();
     }
     //Aligned
@@ -858,8 +984,9 @@ std::pair<Base::Vector3d, Base::Vector3d>
 //the regular sectionPlane for Offset.
 gp_Pln DrawComplexSection::getSectionPlane() const
 {
-    if (ProjectionStrategy.getValue() == 0) {
-        //Offset. Use regular section behaviour
+    if (ProjectionStrategy.getValue() == StrategyOffset ||
+        ProjectionStrategy.getValue() == StrategyBrokenOut) {
+        // Offset and BrokenOut use regular section behaviour.
         return DrawViewSection::getSectionPlane();
     }
 
@@ -935,8 +1062,10 @@ bool DrawComplexSection::validateProfilePosition(const TopoDS_Wire& profileWire,
 
 bool DrawComplexSection::showSegment(gp_Dir segmentNormal) const
 {
-    if (ProjectionStrategy.getValue() < 2) {
-        //Offset or Aligned are always true
+    if (ProjectionStrategy.getValue() == StrategyOffset ||
+        ProjectionStrategy.getValue() == StrategyAligned ||
+        ProjectionStrategy.getValue() == StrategyBrokenOut) {
+        // Offset, Aligned, and BrokenOut are always true.
         return true;
     }
 
@@ -1611,10 +1740,152 @@ TopoDS_Shape DrawComplexSection::makeCuttingToolFromClosedProfile(const TopoDS_W
     return prism;
 }
 
+TopoDS_Shape DrawComplexSection::makeBrokenOutCuttingTool(const TopoDS_Wire& profileWire, double dMax)
+{
+    TopoDS_Face toolFace;
+    try {
+        BRepBuilderAPI_MakeFace mkFace(profileWire);
+        toolFace = mkFace.Face();
+        if (toolFace.IsNull()) {
+            return {};
+        }
+    }
+    catch (...) {
+        Base::Console().error("%s could not make broken-out tool from closed profile\n",
+                              Label.getValue());
+        return {};
+    }
+
+    double cutDepth = BrokenOutDepth.getValue();
+    if (cutDepth <= Precision::Confusion()) {
+        Base::Console().warning("%s broken-out depth should be positive\n",
+                                Label.getValue());
+        return {};
+    }
+    cutDepth = std::min(cutDepth, dMax);
+
+    const double toolOffset = std::max(Precision::Confusion(), dMax * BrokenOutToolOffsetFactor);
+    auto makePrism = [&](Base::Vector3d direction) {
+        direction.Normalize();
+        TopoDS_Shape startFace = ShapeUtils::moveShape(toolFace, direction * -toolOffset);
+        gp_Vec prismVector = Base::convertTo<gp_Vec>(direction * (cutDepth + toolOffset));
+        return BRepPrimAPI_MakePrism(startFace, prismVector).Shape();
+    };
+
+    Base::Vector3d faceNormal = Base::convertTo<Base::Vector3d>(getFaceNormal(toolFace));
+    faceNormal.Normalize();
+
+    auto* baseDvp = getBaseDVP();
+    if (baseDvp) {
+        Base::Vector3d baseDirection = baseDvp->Direction.getValue();
+        if (baseDirection.Length() > Precision::Confusion()) {
+            baseDirection.Normalize();
+            if (!directionsAreParallel(Direction.getValue(), baseDirection) ||
+                !directionsAreParallel(SectionNormal.getValue(), baseDirection)) {
+                Base::Console().warning("%s broken-out view direction should match the base view direction\n",
+                                        Label.getValue());
+                return {};
+            }
+
+            double alignment = std::fabs(faceNormal.Dot(baseDirection));
+            if (!DU::fpCompare(alignment, 1.0, EWTOLERANCE)) {
+                Base::Console().warning("%s broken-out profile should be parallel to the base view plane\n",
+                                        Label.getValue());
+                return {};
+            }
+        }
+    }
+
+    Base::Vector3d oppositeNormal = faceNormal * -1.0;
+    TopoDS_Shape prismAlongNormal = makePrism(faceNormal);
+    TopoDS_Shape prismOppositeNormal = makePrism(oppositeNormal);
+
+    auto intersectionVolume = [&](const TopoDS_Shape& prism) {
+        if (m_saveShape.IsNull() || prism.IsNull()) {
+            return 0.0;
+        }
+        TopoDS_Shape common = shapeShapeIntersect(m_saveShape, prism);
+        if (common.IsNull()) {
+            return 0.0;
+        }
+        GProp_GProps props;
+        BRepGProp::VolumeProperties(common, props);
+        return props.Mass();
+    };
+
+    double volumeAlongNormal = intersectionVolume(prismAlongNormal);
+    double volumeOppositeNormal = intersectionVolume(prismOppositeNormal);
+
+    Base::Vector3d cutDirection = faceNormal;
+    TopoDS_Shape prism = prismAlongNormal;
+    if (volumeOppositeNormal > volumeAlongNormal + EWTOLERANCE) {
+        cutDirection = oppositeNormal;
+        prism = prismOppositeNormal;
+    }
+    else if (std::fabs(volumeAlongNormal - volumeOppositeNormal) <= EWTOLERANCE && baseDvp) {
+        Base::Vector3d inwardDirection = baseDvp->Direction.getValue() * -1.0;
+        if (inwardDirection.Length() > Precision::Confusion()) {
+            inwardDirection.Normalize();
+            if (oppositeNormal.Dot(inwardDirection) > faceNormal.Dot(inwardDirection)) {
+                cutDirection = oppositeNormal;
+                prism = prismOppositeNormal;
+            }
+        }
+    }
+
+    if (!m_saveShape.IsNull()) {
+        const double pointOffset = std::max(Precision::Confusion() * 10.0,
+                                            dMax * BrokenOutToolOffsetFactor);
+        BRepClass3d_SolidClassifier classifier(m_saveShape);
+        bool allVerticesStartOnSurface = true;
+        for (TopExp_Explorer exp(profileWire, TopAbs_VERTEX); exp.More(); exp.Next()) {
+            const TopoDS_Vertex vertex = TopoDS::Vertex(exp.Current());
+            const gp_Pnt point = BRep_Tool::Pnt(vertex);
+            classifier.Perform(point, pointOffset);
+            const TopAbs_State pointState = classifier.State();
+
+            if (pointState == TopAbs_IN) {
+                allVerticesStartOnSurface = false;
+                break;
+            }
+
+            gp_Pnt pointInward = point.Translated(
+                Base::convertTo<gp_Vec>(cutDirection * pointOffset));
+            gp_Pnt pointOutward = point.Translated(
+                Base::convertTo<gp_Vec>(cutDirection * -pointOffset));
+
+            classifier.Perform(pointInward, pointOffset);
+            const TopAbs_State inwardState = classifier.State();
+            classifier.Perform(pointOutward, pointOffset);
+            const TopAbs_State outwardState = classifier.State();
+
+            const bool hasSolidInward = inwardState == TopAbs_IN || inwardState == TopAbs_ON;
+            const bool hasAirOutward = outwardState == TopAbs_OUT || outwardState == TopAbs_ON;
+            if (pointState != TopAbs_ON && !(hasSolidInward && hasAirOutward)) {
+                allVerticesStartOnSurface = false;
+                break;
+            }
+        }
+
+        if (!allVerticesStartOnSurface) {
+            Base::Console().warning("%s broken-out profile should lie on the source surface\n",
+                                    Label.getValue());
+            return {};
+        }
+    }
+
+    m_toolFaceShape = ShapeUtils::moveShape(toolFace, cutDirection * cutDepth);
+    if (debugSection()) {
+        BRepTools::Write(m_toolFaceShape, "DCSBrokenOutDepthFace.brep");
+    }
+
+    return prism;
+}
+
 bool DrawComplexSection::validateProfileAlignment(const TopoDS_Wire& profileWire) const
 {
     // use "canBuild(profile, sectionnormal)"?
-    if (ProjectionStrategy.getValue() == 0) {
+    if (ProjectionStrategy.getValue() == StrategyOffset) {
         // Offset. Warn if profile is not quite aligned with section normal. if
         // the profile and normal are misaligned, the check below for empty "solids"
         // will not be correct.

@@ -32,6 +32,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
+#include <Gui/QuantitySpinBox.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
 
@@ -52,6 +53,11 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 using DU = DrawUtil;
+
+namespace
+{
+constexpr int BrokenOutStrategyIndex = 3;
+}
 
 //ctor for creation
 TaskComplexSection::TaskComplexSection(TechDraw::DrawPage* page, TechDraw::DrawViewPart* baseView,
@@ -143,6 +149,7 @@ void TaskComplexSection::setUiPrimary()
         ui->cmbScaleType->setCurrentIndex(Preferences::scaleType());
     }
     ui->cmbStrategy->setCurrentIndex(0);
+    ui->sbBrokenOutDepth->setValue(10.0);
 
     setUiCommon();
 
@@ -180,6 +187,7 @@ void TaskComplexSection::setUiEdit()
         ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
     }
     ui->cmbStrategy->setCurrentIndex(m_section->ProjectionStrategy.getValue());
+    ui->sbBrokenOutDepth->setValue(m_section->BrokenOutDepth.getValue());
     ui->leSymbol->setText(QString::fromStdString(m_section->SectionSymbol.getValue()));
     ui->sbScale->setValue(m_section->Scale.getValue());
     ui->cmbScaleType->setCurrentIndex(m_section->getScaleType());
@@ -206,6 +214,7 @@ void TaskComplexSection::setUiCommon()
     ui->leProfileObject->setText(QString::fromStdString(m_profileObject->getNameInDocument())
                                  + QStringLiteral(" / ")
                                  + QString::fromStdString(m_profileObject->Label.getValue()));
+    ui->sbBrokenOutDepth->setUnit(Base::Unit::Length);
 
     m_compass = new CompassWidget(this);
     auto layout = ui->compassLayout;
@@ -227,6 +236,10 @@ void TaskComplexSection::setUiCommon()
 
     connect(ui->pbUpdateNow, &QPushButton::clicked, this, &TaskComplexSection::updateNowClicked);
     connect(ui->cbLiveUpdate, &QCheckBox::clicked, this, &TaskComplexSection::liveUpdateClicked);
+    connect(ui->cmbStrategy, qOverload<int>(&QComboBox::currentIndexChanged), this,
+            &TaskComplexSection::onStrategyChanged);
+    connect(ui->sbBrokenOutDepth, qOverload<double>(&QuantitySpinBox::valueChanged), this,
+            &TaskComplexSection::onBrokenOutDepthChanged);
 
     connect(ui->pbSectionObjects, &QPushButton::clicked, this,
             &TaskComplexSection::onSectionObjectsUseSelectionClicked);
@@ -235,6 +248,7 @@ void TaskComplexSection::setUiCommon()
 
     connect(m_viewDirectionWidget, &VectorEditWidget::valueChanged, this,
             &TaskComplexSection::slotViewDirectionChanged);
+    updateUi();
 }
 
 //save the start conditions
@@ -249,6 +263,8 @@ void TaskComplexSection::saveSectionState()
         m_saveXDir = m_section->XDirection.getValue();
         m_saveOrigin = m_section->SectionOrigin.getValue();
         m_saveDirName = m_section->SectionDirection.getValueAsString();
+        m_saveProjectionStrategy = m_section->ProjectionStrategy.getValue();
+        m_saveBrokenOutDepth = m_section->BrokenOutDepth.getValue();
         m_saved = true;
     }
     if (m_baseView) {
@@ -272,6 +288,8 @@ void TaskComplexSection::restoreSectionState()
     m_section->XDirection.setValue(m_saveXDir);
     m_section->SectionOrigin.setValue(m_saveOrigin);
     m_section->SectionDirection.setValue(m_saveDirName.c_str());
+    m_section->ProjectionStrategy.setValue(m_saveProjectionStrategy);
+    m_section->BrokenOutDepth.setValue(m_saveBrokenOutDepth);
 }
 
 void TaskComplexSection::onSectionObjectsUseSelectionClicked()
@@ -364,6 +382,34 @@ void TaskComplexSection::onScaleChanged()
     m_scaleEdited = true;
     checkAll(false);
     apply();
+}
+
+void TaskComplexSection::onStrategyChanged()
+{
+    updateUi();
+    checkAll(false);
+    apply();
+}
+
+void TaskComplexSection::onBrokenOutDepthChanged()
+{
+    checkAll(false);
+    apply();
+}
+
+void TaskComplexSection::updateUi()
+{
+    const bool showBrokenOutDepth = ui->cmbStrategy->currentIndex() == BrokenOutStrategyIndex;
+    ui->labelBrokenOutDepth->setVisible(showBrokenOutDepth);
+    ui->sbBrokenOutDepth->setVisible(showBrokenOutDepth);
+    ui->sbBrokenOutDepth->setEnabled(showBrokenOutDepth);
+
+    ui->pbUp->setEnabled(!showBrokenOutDepth);
+    ui->pbDown->setEnabled(!showBrokenOutDepth);
+    ui->pbLeft->setEnabled(!showBrokenOutDepth);
+    ui->pbRight->setEnabled(!showBrokenOutDepth);
+    m_compass->setEnabled(!showBrokenOutDepth);
+    m_viewDirectionWidget->setEnabled(!showBrokenOutDepth);
 }
 
 void TaskComplexSection::onProfileObjectsUseSelectionClicked()
@@ -480,9 +526,12 @@ bool TaskComplexSection::apply(bool forceUpdate)
     }
 
     Base::Vector3d localUnit = m_viewDirectionWidget->value();
+    const bool isBrokenOut = ui->cmbStrategy->currentIndex() == BrokenOutStrategyIndex;
     if (m_baseView) {
-        if (!DrawComplexSection::canBuild(m_baseView->localVectorToCS(localUnit),
-                                          m_profileObject)) {
+        gp_Ax2 sectionCS = isBrokenOut ?
+            m_baseView->getProjectionCS() :
+            m_baseView->localVectorToCS(localUnit);
+        if (!DrawComplexSection::canBuild(sectionCS, m_profileObject)) {
             Base::Console().error(
                 "Cannot build complex section with this profile and direction (1)\n");
             return false;
@@ -584,6 +633,10 @@ void TaskComplexSection::createComplexSection()
         int projectionStrategy = ui->cmbStrategy->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ProjectionStrategy = %d",
                            m_sectionName.c_str(), projectionStrategy);
+        if (projectionStrategy == BrokenOutStrategyIndex) {
+            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.BrokenOutDepth = %0.7f",
+                               m_sectionName.c_str(), ui->sbBrokenOutDepth->value().getValue());
+        }
 
         Command::doCommand(Command::Doc,
                            "App.activeDocument().%s.SectionOrigin = FreeCAD.Vector(0.0, 0.0, 0.0)",
@@ -603,7 +656,14 @@ void TaskComplexSection::createComplexSection()
             Command::doCommand(Command::Doc,
                                "App.ActiveDocument.%s.BaseView = App.ActiveDocument.%s",
                                m_sectionName.c_str(), m_baseView->getNameInDocument());
-            m_section->setCSFromBase(localUnit * -1.0);
+            if (projectionStrategy == BrokenOutStrategyIndex) {
+                m_section->SectionNormal.setValue(m_baseView->Direction.getValue());
+                m_section->Direction.setValue(m_baseView->Direction.getValue());
+                m_section->XDirection.setValue(m_baseView->getXDirection());
+            }
+            else {
+                m_section->setCSFromBase(localUnit * -1.0);
+            }
             m_section->Source.setValues(m_baseView->Source.getValues());
             m_section->XSource.setValues(m_baseView->XSource.getValues());
         }
@@ -628,8 +688,11 @@ void TaskComplexSection::createComplexSection()
         m_section->XSource.setValues(m_xShapes);
 
         //auto orientation of view relative to base view
-        double viewDirectionAngle = m_compass->positiveValue();
-        double rotation = requiredRotation(viewDirectionAngle);
+        double rotation = 0.0;
+        if (projectionStrategy != BrokenOutStrategyIndex) {
+            double viewDirectionAngle = m_compass->positiveValue();
+            rotation = requiredRotation(viewDirectionAngle);
+        }
         //NOLINTNEXTLINE
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
@@ -668,6 +731,10 @@ void TaskComplexSection::updateComplexSection()
         int projectionStrategy = ui->cmbStrategy->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ProjectionStrategy = %d",
                            m_sectionName.c_str(), projectionStrategy);
+        if (projectionStrategy == BrokenOutStrategyIndex) {
+            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.BrokenOutDepth = %0.7f",
+                               m_sectionName.c_str(), ui->sbBrokenOutDepth->value().getValue());
+        }
         Command::doCommand(Command::Doc, "App.activeDocument().%s.SectionDirection = 'Aligned'",
                            m_sectionName.c_str());
         //NOLINTEND
@@ -675,8 +742,15 @@ void TaskComplexSection::updateComplexSection()
         m_section->CuttingToolWireObject.setValue(m_profileObject);
         m_section->SectionDirection.setValue("Aligned");
         Base::Vector3d localUnit = m_viewDirectionWidget->value();
-        m_section->setCSFromBase(localUnit * -1.0);
         if (m_baseView) {
+            if (projectionStrategy == BrokenOutStrategyIndex) {
+                m_section->SectionNormal.setValue(m_baseView->Direction.getValue());
+                m_section->Direction.setValue(m_baseView->Direction.getValue());
+                m_section->XDirection.setValue(m_baseView->getXDirection());
+            }
+            else {
+                m_section->setCSFromBase(localUnit * -1.0);
+            }
             m_section->Source.setValues(m_baseView->Source.getValues());
             m_section->XSource.setValues(m_baseView->XSource.getValues());
         }
@@ -687,8 +761,11 @@ void TaskComplexSection::updateComplexSection()
         }
 
         //auto orientation of view relative to base view
-        double viewDirectionAngle = m_compass->positiveValue();
-        double rotation = requiredRotation(viewDirectionAngle);
+        double rotation = 0.0;
+        if (projectionStrategy != BrokenOutStrategyIndex) {
+            double viewDirectionAngle = m_compass->positiveValue();
+            rotation = requiredRotation(viewDirectionAngle);
+        }
 
         //NOLINTNEXTLINE
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
