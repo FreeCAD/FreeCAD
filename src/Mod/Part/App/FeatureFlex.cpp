@@ -180,7 +180,7 @@ bool Flex::fetchCurveLink(const App::PropertyLinkSub& curveLink, BRepAdaptor_Cur
     auto linked = curveLink.getValue();
 
     TopoDS_Shape crvEdge;
-    if (!curveLink.getSubValues().empty() && curveLink.getSubValues()[0].empty()) {
+    if (!curveLink.getSubValues().empty() && !curveLink.getSubValues()[0].empty()) {
         crvEdge = Feature::getTopoShape(
                       linked,
                       ShapeOption::NeedSubElement | ShapeOption::ResolveLink | ShapeOption::Transform,
@@ -249,7 +249,7 @@ TopoShape Flex::FlexShape(const TopoShape& source, Flex::FlexParameters& params)
 
 TopoShape Flex::bend(const TopoShape& source, const Flex::FlexParameters& params)
 {
-    const TopoDS_Shape& shape = source.getShape();
+    auto shape = source.getShape();
 
     auto curve = params.curve;
     auto factor = params.factor;
