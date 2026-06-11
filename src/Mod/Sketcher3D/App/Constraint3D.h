@@ -67,7 +67,8 @@ public:
         Angle3D,
         EqualLength3D,
         PointOnLine3D,
-        Midpoint3D,
+        PointAtLineMidpoint3D,
+        Collinear3D,
         NumConstraintTypes
     };
 
@@ -110,7 +111,8 @@ private:
         "Angle3D",
         "EqualLength3D",
         "PointOnLine3D",
-        "Midpoint3D",
+        "PointAtLineMidpoint3D",
+        "Collinear3D",
     }};
 
     std::vector<GeoElementId3D> elements;

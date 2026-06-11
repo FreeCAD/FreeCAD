@@ -199,8 +199,10 @@ QIcon iconForConstraint(Sketcher3D::Constraint3D::Constraint3DType type)
             return Gui::BitmapFactory().iconFromTheme("Constraint_Length");
         case Sketcher3D::Constraint3D::PointOnLine3D:
             return Gui::BitmapFactory().iconFromTheme("Constraint_PointOnObject");
-        case Sketcher3D::Constraint3D::Midpoint3D:
+        case Sketcher3D::Constraint3D::PointAtLineMidpoint3D:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Symmetric");
+        case Sketcher3D::Constraint3D::Collinear3D:
+            return Gui::BitmapFactory().iconFromTheme("Constraint_Tangent");
         case Sketcher3D::Constraint3D::Distance3D:
         default:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Length");

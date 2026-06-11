@@ -887,10 +887,10 @@ bool CmdSketcher3DConstrainPointOnLine::isActive()
     return isSketch3DInEdit();
 }
 
-DEF_STD_CMD_A(CmdSketcher3DConstrainMidpoint)
+DEF_STD_CMD_A(CmdSketcher3DConstrainPointAtLineMidpoint)
 
-CmdSketcher3DConstrainMidpoint::CmdSketcher3DConstrainMidpoint()
-    : Command("Sketcher3D_ConstrainMidpoint")
+CmdSketcher3DConstrainPointAtLineMidpoint::CmdSketcher3DConstrainPointAtLineMidpoint()
+    : Command("Sketcher3D_ConstrainPointAtLineMidpoint")
 {
     sAppModule = "Sketcher3D";
     sGroup = QT_TR_NOOP("Sketcher3D");
@@ -902,7 +902,7 @@ CmdSketcher3DConstrainMidpoint::CmdSketcher3DConstrainMidpoint()
     eType = ForEdit;
 }
 
-void CmdSketcher3DConstrainMidpoint::activated(int iMsg)
+void CmdSketcher3DConstrainPointAtLineMidpoint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
@@ -919,14 +919,14 @@ void CmdSketcher3DConstrainMidpoint::activated(int iMsg)
     Sketcher3D::GeoElementId3D lineRef;
     if (!collectSelectedPointAndLineRefs(sketch, pointRef, lineRef)) {
         Base::Console().warning(
-            "Sketcher3D: select exactly one 3D point and one 3D line for Midpoint.\n"
+            "Sketcher3D: select exactly one 3D point and one 3D line for Point at line midpoint.\n"
         );
         return;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain midpoint"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain point at line midpoint"));
     Sketcher3D::Constraint3D c;
-    c.Type = Sketcher3D::Constraint3D::Midpoint3D;
+    c.Type = Sketcher3D::Constraint3D::PointAtLineMidpoint3D;
     c.setElements({pointRef, lineRef});
     sketch->addConstraint(c);
     sketch->recomputeFeature();
@@ -935,7 +935,64 @@ void CmdSketcher3DConstrainMidpoint::activated(int iMsg)
     Gui::Selection().clearSelection();
 }
 
-bool CmdSketcher3DConstrainMidpoint::isActive()
+bool CmdSketcher3DConstrainPointAtLineMidpoint::isActive()
+{
+    return isSketch3DInEdit();
+}
+
+DEF_STD_CMD_A(CmdSketcher3DConstrainCollinear)
+
+CmdSketcher3DConstrainCollinear::CmdSketcher3DConstrainCollinear()
+    : Command("Sketcher3D_ConstrainCollinear")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain collinear");
+    sToolTipText = QT_TR_NOOP("Force two 3D lines to be collinear");
+    sWhatsThis = "Sketcher3D_ConstrainCollinear";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Tangent";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainCollinear::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    ViewProviderSketch3D* vp = getActiveSketch3DVP();
+    if (!vp) {
+        return;
+    }
+    Sketcher3D::Sketch3DObject* sketch = vp->getSketch3DObject();
+    if (!sketch) {
+        return;
+    }
+
+    auto refs = collectSelectedLineRefs(sketch);
+    if (refs.size() != 2) {
+        Base::Console().warning("Sketcher3D: select exactly two 3D sketch lines for Collinear.\n");
+        return;
+    }
+    if (refs[0] == refs[1]) {
+        Base::Console().warning("Sketcher3D: Collinear needs two distinct lines.\n");
+        return;
+    }
+
+    refs[0].Pos = Sketcher3D::PointPos::none;
+    refs[1].Pos = Sketcher3D::PointPos::none;
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain collinear"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Collinear3D;
+    c.setElements(refs);
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainCollinear::isActive()
 {
     return isSketch3DInEdit();
 }
@@ -1241,7 +1298,8 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAlongZ());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainEqualLength());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointOnLine());
-    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainMidpoint());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointAtLineMidpoint());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainCollinear());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompDimensionTools());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompParallel());
 }

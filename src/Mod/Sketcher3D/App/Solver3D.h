@@ -79,8 +79,11 @@ public:
     /// Pointonline constraint
     void addConstraintPointOnLine(int tagId, int pointHandle, int lineHandle);
 
-    /// Midpoint constraint
-    void addConstraintMidpoint(int tagId, int pointHandle, int lineHandle);
+    /// Point at the midpoint of a line segment.
+    void addConstraintPointAtLineMidpoint(int tagId, int pointHandle, int lineHandle);
+
+    /// Collinear constraint between two lines.
+    void addConstraintCollinear(int tagId, int lineHandleA, int lineHandleB);
 
     /// Angle constraint between two lines.
     /// Angle is unsigned, in radians, in [0, pi].

@@ -1104,12 +1104,12 @@ int System::addConstraintPointOnLine3D(Point3D& p, Point3D& lp1, Point3D& lp2, i
     return addConstraintParallel3D(p, lp1, lp2, lp1, tagId, driving);
 }
 
-int System::addConstraintMidpoint3D(Point3D& p, Line3D& l, int tagId, bool driving)
+int System::addConstraintPointAtLineMidpoint3D(Point3D& p, Line3D& l, int tagId, bool driving)
 {
-    return addConstraintMidpoint3D(p, l.p1, l.p2, tagId, driving);
+    return addConstraintPointAtLineMidpoint3D(p, l.p1, l.p2, tagId, driving);
 }
 
-int System::addConstraintMidpoint3D(Point3D& p, Point3D& lp1, Point3D& lp2, int tagId, bool driving)
+int System::addConstraintPointAtLineMidpoint3D(Point3D& p, Point3D& lp1, Point3D& lp2, int tagId, bool driving)
 {
     addConstraintPointOnLine3D(p, lp1, lp2, tagId, driving);
 
@@ -1120,6 +1120,12 @@ int System::addConstraintMidpoint3D(Point3D& p, Point3D& lp1, Point3D& lp2, int 
     halfB.p1 = p;
     halfB.p2 = lp2;
     return addConstraintEqualLength3D(halfA, halfB, tagId, driving);
+}
+
+int System::addConstraintCollinear3D(Line3D& l1, Line3D& l2, int tagId, bool driving)
+{
+    addConstraintPointOnLine3D(l2.p1, l1, tagId, driving);
+    return addConstraintPointOnLine3D(l2.p2, l1, tagId, driving);
 }
 
 int System::addConstraintArcRules(Arc& a, int tagId, bool driving)

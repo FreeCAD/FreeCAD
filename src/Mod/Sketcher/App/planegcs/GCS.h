@@ -554,9 +554,18 @@ public:
         bool driving = true
     );
 
-    // Point is the midpoint of the line segment
-    int addConstraintMidpoint3D(Point3D& p, Line3D& l, int tagId = 0, bool driving = true);
-    int addConstraintMidpoint3D(Point3D& p, Point3D& lp1, Point3D& lp2, int tagId = 0, bool driving = true);
+    // Point lies at the midpoint of a line segment.
+    int addConstraintPointAtLineMidpoint3D(Point3D& p, Line3D& l, int tagId = 0, bool driving = true);
+    int addConstraintPointAtLineMidpoint3D(
+        Point3D& p,
+        Point3D& lp1,
+        Point3D& lp2,
+        int tagId = 0,
+        bool driving = true
+    );
+
+    // Two lines share the same infinite line.
+    int addConstraintCollinear3D(Line3D& l1, Line3D& l2, int tagId = 0, bool driving = true);
 
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(

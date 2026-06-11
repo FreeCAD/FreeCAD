@@ -240,7 +240,7 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             return tagId;
         }
         case Constraint3D::PointOnLine3D:
-        case Constraint3D::Midpoint3D: {
+        case Constraint3D::PointAtLineMidpoint3D: {
             if (elements.size() != 2) {
                 return -1;
             }
@@ -267,8 +267,21 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
                 solver.addConstraintPointOnLine(tagId, point, line);
             }
             else {
-                solver.addConstraintMidpoint(tagId, point, line);
+                solver.addConstraintPointAtLineMidpoint(tagId, point, line);
             }
+            return tagId;
+        }
+        case Constraint3D::Collinear3D: {
+            if (elements.size() != 2 || elements[0].Pos != PointPos::none
+                || elements[1].Pos != PointPos::none) {
+                return -1;
+            }
+            const int a = getLineId(elements[0]);
+            const int b = getLineId(elements[1]);
+            if (a < 0 || b < 0) {
+                return -1;
+            }
+            solver.addConstraintCollinear(tagId, a, b);
             return tagId;
         }
         default:

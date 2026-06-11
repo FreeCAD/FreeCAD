@@ -125,13 +125,22 @@ void Solver3D::addConstraintPointOnLine(int tagId, int pointHandle, int lineHand
     GCSsys.addConstraintPointOnLine3D(points[pointHandle], lines[lineHandle], tagId);
 }
 
-void Solver3D::addConstraintMidpoint(int tagId, int pointHandle, int lineHandle)
+void Solver3D::addConstraintPointAtLineMidpoint(int tagId, int pointHandle, int lineHandle)
 {
     if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size()) || lineHandle < 0
         || lineHandle >= static_cast<int>(lines.size())) {
-        throw Base::IndexError("Solver3D::addConstraintMidpoint handle out of range");
+        throw Base::IndexError("Solver3D::addConstraintPointAtLineMidpoint handle out of range");
     }
-    GCSsys.addConstraintMidpoint3D(points[pointHandle], lines[lineHandle], tagId);
+    GCSsys.addConstraintPointAtLineMidpoint3D(points[pointHandle], lines[lineHandle], tagId);
+}
+
+void Solver3D::addConstraintCollinear(int tagId, int lineHandleA, int lineHandleB)
+{
+    if (lineHandleA < 0 || lineHandleA >= static_cast<int>(lines.size()) || lineHandleB < 0
+        || lineHandleB >= static_cast<int>(lines.size())) {
+        throw Base::IndexError("Solver3D::addConstraintCollinear handle out of range");
+    }
+    GCSsys.addConstraintCollinear3D(lines[lineHandleA], lines[lineHandleB], tagId);
 }
 
 void Solver3D::addConstraintAngle(
