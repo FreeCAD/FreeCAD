@@ -71,20 +71,24 @@ using Attacher::AttachEnginePlane;
 // From:
 // https://github.com/Celemation/FreeCAD/blob/joel_selection_summary_demo/src/Gui/Selection/SelectionSummary.cpp
 
+namespace
+{
 // Should work with edges and wires
-static float getLength(TopoDS_Shape& wire)
+float getLength(TopoDS_Shape& wire)
 {
     GProp_GProps gprops;
     BRepGProp::LinearProperties(wire, gprops);
     return gprops.Mass();
 }
 
-static float getFaceArea(TopoDS_Shape& face)
+float getFaceArea(TopoDS_Shape& face)
 {
     GProp_GProps gprops;
     BRepGProp::SurfaceProperties(face, gprops);
     return gprops.Mass();
 }
+
+}  // namespace
 
 TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat = nullptr)
 {
@@ -230,24 +234,6 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
     }
 }
 
-
-bool getShapeFromStrings(TopoDS_Shape& shapeOut, const App::SubObjectT& subject, Base::Matrix4D* mat)
-{
-    App::DocumentObject* obj = subject.getObject();
-    if (!obj) {
-        return {};
-    }
-    shapeOut = Part::Feature::getShape(
-        obj,
-        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
-            | Part::ShapeOption::Transform,
-        subject.getElementName(),
-        mat
-    );
-    return !shapeOut.IsNull();
-}
-
-
 Part::VectorAdapter buildAdapter(const App::SubObjectT& subject)
 {
     Base::Matrix4D mat;
@@ -299,7 +285,6 @@ Part::VectorAdapter buildAdapter(const App::SubObjectT& subject)
 
     return {};
 }
-
 
 MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
 {
@@ -437,7 +422,6 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
     return std::make_shared<MeasureRadiusInfo>(true, radius, centerPoint, placement);
 }
 
-
 MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
 {
     TopoDS_Shape shape = getLocatedShape(subject);
@@ -469,7 +453,6 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
     return std::make_shared<MeasureAreaInfo>(true, getFaceArea(shape), placement);
 }
 
-
 MeasurePositionInfoPtr MeasurePositionHandler(const App::SubObjectT& subject)
 {
     TopoDS_Shape shape = getLocatedShape(subject);
@@ -492,7 +475,6 @@ MeasurePositionInfoPtr MeasurePositionHandler(const App::SubObjectT& subject)
     auto point = BRep_Tool::Pnt(vertex);
     return std::make_shared<MeasurePositionInfo>(true, Base::Vector3d(point.X(), point.Y(), point.Z()));
 }
-
 
 MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
 {
@@ -534,7 +516,6 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
     auto info = std::make_shared<MeasureAngleInfo>(vAdapt.isValid(), (Base::Vector3d)vAdapt, position);
     return info;
 }
-
 
 MeasureDistanceInfoPtr MeasureDistanceHandler(const App::SubObjectT& subject)
 {
