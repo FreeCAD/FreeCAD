@@ -378,9 +378,7 @@ def apply_canonical_contract(obj, contract):
     if not ifcfile or not element:
         return False
 
-    classification = _upsert_classification_root(
-        ifcfile, contract.get("dictionary_metadata", {})
-    )
+    classification = _upsert_classification_root(ifcfile, contract.get("dictionary_metadata", {}))
     reference = _upsert_classification_reference(
         ifcfile, classification, contract.get("class_metadata", {})
     )

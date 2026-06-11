@@ -302,9 +302,7 @@ class BIM_Classification:
             self.form.bsddDictionaryContainerLayout.setContentsMargins(0, 0, 0, 0)
 
             self.form.bsddDictionaryList = QtWidgets.QListWidget(self.form.bsddDictionaryContainer)
-            self.form.bsddDictionaryList.setSelectionMode(
-                QtWidgets.QAbstractItemView.NoSelection
-            )
+            self.form.bsddDictionaryList.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
             self.form.bsddDictionaryList.setMinimumHeight(110)
             self.form.bsddDictionaryContainerLayout.addWidget(self.form.bsddDictionaryList)
             self.form.bsddPanelLayout.addWidget(self.form.bsddDictionaryContainer)
@@ -312,13 +310,9 @@ class BIM_Classification:
 
             self.form.bsddSplitter = QtWidgets.QSplitter(QtCore.Qt.Vertical, self.form.bsddPanel)
             self.form.bsddResultsTree = QtWidgets.QTreeView(self.form.bsddSplitter)
-            self.form.bsddResultsTree.setEditTriggers(
-                QtWidgets.QAbstractItemView.NoEditTriggers
-            )
+            self.form.bsddResultsTree.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.form.bsddResultsTree.setAlternatingRowColors(True)
-            self.form.bsddResultsTree.setSelectionBehavior(
-                QtWidgets.QAbstractItemView.SelectRows
-            )
+            self.form.bsddResultsTree.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
             self.form.bsddResultsTree.setUniformRowHeights(True)
 
             self.form.bsddPropertyTable = QtWidgets.QTableWidget(self.form.bsddSplitter)
@@ -326,12 +320,8 @@ class BIM_Classification:
             self.form.bsddPropertyTable.setHorizontalHeaderLabels(
                 [translate("BIM", "Property"), translate("BIM", "Value")]
             )
-            self.form.bsddPropertyTable.setEditTriggers(
-                QtWidgets.QAbstractItemView.NoEditTriggers
-            )
-            self.form.bsddPropertyTable.setSelectionBehavior(
-                QtWidgets.QAbstractItemView.SelectRows
-            )
+            self.form.bsddPropertyTable.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.form.bsddPropertyTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
             self.form.bsddPropertyTable.setWordWrap(True)
             self.form.bsddPropertyTable.verticalHeader().setVisible(False)
             self.form.bsddPropertyTable.horizontalHeader().setStretchLastSection(True)
@@ -351,7 +341,9 @@ class BIM_Classification:
             self.form.bsddPanel.hide()
 
             provider = PARAMS.GetString(BSDD_PROVIDER_MODE_KEY, "Legacy")
-            self.form.comboProvider.setCurrentText(provider if provider in ["Legacy", "bSDD"] else "Legacy")
+            self.form.comboProvider.setCurrentText(
+                provider if provider in ["Legacy", "bSDD"] else "Legacy"
+            )
             (
                 self._has_saved_bsdd_dictionary_state,
                 self._restored_bsdd_dictionary_uris,
@@ -841,7 +833,14 @@ class BIM_Classification:
             if not payload:
                 return
             rows = []
-            for key in ["name", "referenceCode", "dictionaryName", "classType", "uri", "description"]:
+            for key in [
+                "name",
+                "referenceCode",
+                "dictionaryName",
+                "classType",
+                "uri",
+                "description",
+            ]:
                 value = payload.get(key)
                 if value:
                     rows.append((key, value))
@@ -916,9 +915,7 @@ class BIM_Classification:
             if not FreeCAD.ActiveDocument:
                 return False, set()
             meta = FreeCAD.ActiveDocument.Meta
-            has_saved = (
-                BSDD_DICTIONARY_META_PRESENT_KEY in meta or BSDD_DICTIONARY_META_KEY in meta
-            )
+            has_saved = BSDD_DICTIONARY_META_PRESENT_KEY in meta or BSDD_DICTIONARY_META_KEY in meta
             value = meta.get(BSDD_DICTIONARY_META_KEY, "")
             if not value:
                 return has_saved, set()
@@ -949,8 +946,8 @@ class BIM_Classification:
             contract = self._bsdd_contract_module.build_canonical_contract(
                 concept, self._bsdd_contract_detail_payload, active_object
             )
-            contract["legacy_string"] = self._bsdd_contract_module.build_legacy_classification_string(
-                contract
+            contract["legacy_string"] = (
+                self._bsdd_contract_module.build_legacy_classification_string(contract)
             )
             self._bsdd_contract = contract
         except Exception as err:
@@ -1448,7 +1445,9 @@ class BIM_Classification:
                     return
                 if self.form.checkPrefix.isChecked() and prefix:
                     code = prefix + " " + code
-                contract = self._get_current_bsdd_contract() if self._is_bsdd_provider_active() else None
+                contract = (
+                    self._get_current_bsdd_contract() if self._is_bsdd_provider_active() else None
+                )
                 for m in self.form.treeObjects.selectedItems():
                     if m.toolTip(0):
                         m.setText(1, code)

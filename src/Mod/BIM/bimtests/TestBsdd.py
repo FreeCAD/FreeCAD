@@ -100,7 +100,9 @@ class TestBsdd(unittest.TestCase):
         manager = _FakeNetworkManager()
         client = BimBsdd.BsddNetworkClient(network_manager=manager)
         received = []
-        client.conceptReady.connect(lambda concept_uri, payload: received.append((concept_uri, payload)))
+        client.conceptReady.connect(
+            lambda concept_uri, payload: received.append((concept_uri, payload))
+        )
 
         concept_uri = "https://example.org/class/IfcWall"
         client.fetch_concept(concept_uri)
@@ -148,7 +150,9 @@ class TestBsdd(unittest.TestCase):
         event_loop = QtCore.QEventLoop()
         timeout = QtCore.QTimer()
         timeout.setSingleShot(True)
-        timeout.timeout.connect(lambda: (state.__setitem__("error", "request timeout"), event_loop.quit()))
+        timeout.timeout.connect(
+            lambda: (state.__setitem__("error", "request timeout"), event_loop.quit())
+        )
 
         reply = network_manager.get(request)
 
@@ -184,13 +188,21 @@ class TestBsdd(unittest.TestCase):
 
         ifc_dictionary = None
         for item in dictionaries:
-            if item.get("name") == "IFC" or "identifier.buildingsmart.org/uri/buildingsmart/ifc" in item.get("uri", ""):
+            if item.get(
+                "name"
+            ) == "IFC" or "identifier.buildingsmart.org/uri/buildingsmart/ifc" in item.get(
+                "uri", ""
+            ):
                 ifc_dictionary = item
                 break
 
-        self.assertIsNotNone(ifc_dictionary, "IFC dictionary not found in live bSDD dictionary response.")
+        self.assertIsNotNone(
+            ifc_dictionary, "IFC dictionary not found in live bSDD dictionary response."
+        )
         self.assertEqual(ifc_dictionary.get("name"), "IFC")
-        self.assertIn("identifier.buildingsmart.org/uri/buildingsmart/ifc", ifc_dictionary.get("uri", ""))
+        self.assertIn(
+            "identifier.buildingsmart.org/uri/buildingsmart/ifc", ifc_dictionary.get("uri", "")
+        )
 
     @unittest.skipUnless(
         os.environ.get("FREECAD_RUN_LIVE_BSDD_TESTS") == "1",
@@ -280,7 +292,9 @@ class TestBsdd(unittest.TestCase):
             "?ClassUri=https%3A%2F%2Fidentifier.buildingsmart.org%2Furi%2Fbuildingsmart%2Fifc%2Flatest%2Fclass%2FIfcWall"
         )
         class_properties = payload.get("classProperties") or payload.get("properties") or []
-        self.assertTrue(class_properties, "Live bSDD properties response returned no properties for IfcWall.")
+        self.assertTrue(
+            class_properties, "Live bSDD properties response returned no properties for IfcWall."
+        )
 
         property_names = {item.get("name") for item in class_properties}
         self.assertIn("IsExternal", property_names)
