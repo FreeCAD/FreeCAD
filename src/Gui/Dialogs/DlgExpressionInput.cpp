@@ -680,7 +680,7 @@ void DlgExpressionInput::accept()
         QDialog::accept();
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
