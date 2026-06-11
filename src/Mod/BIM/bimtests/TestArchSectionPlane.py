@@ -23,6 +23,7 @@
 # ***************************************************************************
 
 import Arch
+import ArchSectionPlane
 import Draft
 import os
 import FreeCAD as App
@@ -30,6 +31,14 @@ from bimtests import TestArchBase
 
 
 class TestArchSectionPlane(TestArchBase.TestArchBase):
+
+    def _makeBox(self, length=1000, width=2000, height=3000):
+        box = self.document.addObject("Part::Box", "SectionPlaneFitBox")
+        box.Length = length
+        box.Width = width
+        box.Height = height
+        self.document.recompute()
+        return box
 
     def test_makeSectionPlane(self):
         """Test the makeSectionPlane function."""
@@ -43,6 +52,42 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         self.assertEqual(
             section_plane.Label, "TestSectionPlane", "Section plane label is incorrect."
         )
+
+    def testSectionPlaneFitUsesLocalAxesAfterRotateY(self):
+        """Resize-to-fit dimensions follow the rotated section plane axes."""
+
+        box = self._makeBox()
+        placement = App.Placement(App.Vector(0, 0, 0), App.Rotation(App.Vector(0, 1, 0), 90))
+
+        length, height = ArchSectionPlane.getSectionPlaneFit([box], placement)
+
+        self.assertAlmostEqual(length, 3300)
+        self.assertAlmostEqual(height, 2300)
+
+    def testSectionPlaneFitUsesLocalAxesAfterRotateZ(self):
+        """Resize-to-fit handles in-plane rotations without swapping axes."""
+
+        box = self._makeBox()
+        placement = App.Placement(App.Vector(0, 0, 0), App.Rotation(App.Vector(0, 0, 1), 90))
+
+        length, height = ArchSectionPlane.getSectionPlaneFit([box], placement)
+
+        self.assertAlmostEqual(length, 2200)
+        self.assertAlmostEqual(height, 1200)
+
+    def testSectionPlaneCenterRecentersLocalBounds(self):
+        """Recenter moves the placement base to the local bound-box center."""
+
+        box = self._makeBox()
+        placement = App.Placement(App.Vector(500, -250, 125), App.Rotation(App.Vector(0, 1, 0), 90))
+        center = ArchSectionPlane.getSectionPlaneCenter([box], placement)
+        recentered = App.Placement(center, placement.Rotation)
+
+        local_boundbox = ArchSectionPlane.getSectionPlaneLocalBoundBox([box], recentered)
+
+        self.assertAlmostEqual(local_boundbox.Center.x, 0)
+        self.assertAlmostEqual(local_boundbox.Center.y, 0)
+        self.assertAlmostEqual(local_boundbox.Center.z, 0)
 
     def testTechDrawViewGeneration(self):
         """Tests the whole TD view generation workflow"""
