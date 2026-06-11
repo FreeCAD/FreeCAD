@@ -275,6 +275,8 @@ class OpenSBPPost(PostProcessor):
     def _convert_move(self, command):
         # FIXME: use Path.Command world _add_line_numbers when implemented
         gcode = super()._convert_move(command)
+        if gcode is None or "" == gcode.strip():
+            return None
 
         if self.values["OUTPUT_LINE_NUMBERS"]:
             # It will be taken care of later (everything line-numbered)
@@ -320,8 +322,8 @@ class OpenSBPPost(PostProcessor):
 
         params = command.Parameters
 
-        # We may be axis-modal
-        machine_state_params = self._modal_state  # FIXME self.machine_state.getState()
+        # We may be axis-modal, restore "missing" params
+        machine_state_params = self.machine_state.previous
         params.update(
             {
                 p: machine_state_params[p]
@@ -346,14 +348,13 @@ class OpenSBPPost(PostProcessor):
         RequiredState = "XYZ"
         if modal_missing := [p for p in RequiredState if machine_state_params[p] is None]:
             raise ValueError(
-                f"Arcs require a previous {''.join(modal_missing)} (from some movement) for {command}"
+                f"Arcs require a previous {''.join(modal_missing)} (from some movement) for {command}, previous machine-state = {machine_state_params}"
             )
 
         # GCODE if no dZ
 
-        if (
-            params["Z"] == machine_state_params["Z"]
-        ):  # nb: works ok if Z is omitted, and state.Z is None (never seen)
+        if params["Z"] == machine_state_params["Z"]:
+            # nb: works ok if Z is omitted, and state.Z is None (never seen)
             return super()._convert_arc_move(command)
 
         # HELIX, requires opensbp CG, command
@@ -424,7 +425,7 @@ class OpenSBPPost(PostProcessor):
 
             #
             z_distance = abs(start_position[2] - end_position[2])
-            xy_distance, total_distance = arc_length_3d(
+            xy_distance, _ = arc_length_3d(
                 center,
                 start_position,
                 end_position,
@@ -445,7 +446,7 @@ class OpenSBPPost(PostProcessor):
             # format_parameter is going to *60 so we have to /60
             return f"VS,{self.format_parameter('F', vs_speeds[0]/60)},{self.format_parameter('F', vs_speeds[1]/60)}"
 
-        last_position = self._modal_state  # FIXME: self.machine_state.getState()
+        last_position = self.machine_state.previous
         speed_command = calculate_arc_speed(command.Name, params, last_position=last_position)
         if speed_command:
             output.append(speed_command)
