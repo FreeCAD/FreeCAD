@@ -47,6 +47,7 @@
 #include <GeomLib_IsPlanarSurface.hxx>
 
 #include <DatumFeature.h>
+#include <Datums.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -88,6 +89,18 @@ float getFaceArea(TopoDS_Shape& face)
     return gprops.Mass();
 }
 
+bool isDatum(const App::SubObjectT& subject)
+{
+    App::DocumentObject* obj = subject.getSubObjectList().back();
+    return obj->isDerivedFrom<Part::DatumPlane>() || obj->isDerivedFrom<Part::DatumLine>()
+        || obj->isDerivedFrom<Part::DatumPoint>();
+}
+
+Base::Placement getPlacement(const App::SubObjectT& subject)
+{
+    App::DocumentObject* obj = subject.getSubObjectList().back();
+    return App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName());
+}
 }  // namespace
 
 TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat = nullptr)
@@ -145,6 +158,9 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
     }
     TopAbs_ShapeEnum shapeType = shape.ShapeType();
 
+    App::SubObjectT subject {ob, subName};
+    App::DocumentObject* subObject = subject.getSubObjectList().back();
+
     switch (shapeType) {
         case TopAbs_VERTEX: {
             return App::MeasureElementType::POINT;
@@ -155,8 +171,9 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
 
             switch (curve.GetType()) {
                 case GeomAbs_Line: {
-                    return ob->isDerivedFrom<Part::Datum>() ? App::MeasureElementType::LINE
-                                                            : App::MeasureElementType::LINESEGMENT;
+                    return subObject->isDerivedFrom<Part::DatumLine>()
+                        ? App::MeasureElementType::LINE
+                        : App::MeasureElementType::LINESEGMENT;
                 }
                 case GeomAbs_Circle: {
                     return App::MeasureElementType::CIRCLE;
@@ -435,6 +452,19 @@ MeasureAreaInfoPtr MeasureAreaHandler(const App::SubObjectT& subject)
         );
         return std::make_shared<MeasureAreaInfo>(false, 0.0, Base::Matrix4D());
     }
+
+    if (isDatum(subject)) {
+        return std::make_shared<MeasureAreaInfo>(
+            true,
+            0.0,
+            App::GeoFeature::getGlobalPlacement(
+                subject.getSubObjectList().back(),
+                subject.getObject(),
+                subject.getSubName()
+            )
+        );
+    }
+
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
     if (sType != TopAbs_FACE && sType != TopAbs_SHELL && sType != TopAbs_SOLID) {
@@ -491,6 +521,11 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
     }
 
     TopAbs_ShapeEnum sType = shape.ShapeType();
+    if (isDatum(subject) && sType != TopAbs_VERTEX) {
+        Base::Placement placement = getPlacement(subject);
+        Base::Vector3d orientation = placement.getRotation().multVec(Base::Vector3d(0, 0, -1));
+        return std::make_shared<MeasureAngleInfo>(true, orientation, placement.getPosition());
+    }
 
     Part::VectorAdapter vAdapt = buildAdapter(subject);
 
