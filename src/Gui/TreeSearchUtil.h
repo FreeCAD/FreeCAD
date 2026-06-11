@@ -25,7 +25,7 @@
 #include <QString>
 #include <QRegularExpression>
 
-#include "GuiExport.h"
+#include <FCGlobal.h>
 
 namespace Gui::TreeSearchUtil
 {
