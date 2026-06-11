@@ -25,11 +25,13 @@
 #include <QString>
 #include <QRegularExpression>
 
+#include "GuiExport.h"
+
 namespace Gui::TreeSearchUtil
 {
 
 // Internal GUI utility for model tree search; not part of the public API.
-QRegularExpression wildcardToRegex(const QString& pattern);
-bool regexMatches(const QRegularExpression& re, const QString& haystack);
+GuiExport QRegularExpression wildcardToRegex(const QString& pattern);
+GuiExport bool regexMatches(const QRegularExpression& re, const QString& haystack);
 
 }  // namespace Gui::TreeSearchUtil
