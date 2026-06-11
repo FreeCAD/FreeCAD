@@ -382,6 +382,10 @@ constexpr float OVERLAY_ORTHO_EXTENT = 2.1F;
 constexpr float OVERLAY_FOV_SCALE = 1.1F;
 constexpr float OVERLAY_CUBE_Z = -5.1F;
 constexpr float OVERLAY_BUTTON_Z = -4.0F;  // in front of the cube (cube is centered at z≈-5.1)
+constexpr float BACKSIDE_HIT_LEFT = 0.79F;
+constexpr float BACKSIDE_HIT_TOP = 0.0F;
+constexpr float BACKSIDE_HIT_RIGHT = 1.0F;
+constexpr float BACKSIDE_HIT_BOTTOM = 0.16F;
 
 }  // namespace
 
@@ -1388,6 +1392,18 @@ SoNaviCube::PickId SoNaviCube::pickAt(const SbVec2s& point) const
         return PickId::None;
     }
 
+    const SbVec2f overlayPoint(
+        (static_cast<float>(localPoint[0]) + 0.5F) / viewportWidth,
+        1.0F - ((static_cast<float>(localPoint[1]) + 0.5F) / viewportHeight)
+    );
+    for (PickId pickId : kButtonPickIds) {
+        const ButtonHitRect& rect = buttonHitRects[pickIndex(pickId)];
+        if (rect.active && overlayPoint[0] >= rect.left && overlayPoint[0] <= rect.right
+            && overlayPoint[1] >= rect.top && overlayPoint[1] <= rect.bottom) {
+            return pickId;
+        }
+    }
+
     const SbViewportRegion vp(static_cast<int>(viewportWidth), static_cast<int>(viewportHeight));
     SoRayPickAction pick(vp);
     pick.setPoint(localPoint);
@@ -1704,6 +1720,9 @@ void SoNaviCube::rebuildButtonFaces() const
     for (auto& outline : buttonOutlineIndices) {
         outline.clear();
     }
+    for (auto& rect : buttonHitRects) {
+        rect = {};
+    }
     addButtonFace(PickId::ArrowNorth);
     addButtonFace(PickId::ArrowSouth);
     addButtonFace(PickId::ArrowEast);
@@ -1720,9 +1739,11 @@ void SoNaviCube::addButtonFace(PickId pickId) const
     auto& verts = buttonOverlayVerts[pickIndex(pickId)];
     auto& outline = buttonOutlineIndices[pickIndex(pickId)];
     auto& tris = buttonTriangleIndices[pickIndex(pickId)];
+    auto& hitRect = buttonHitRects[pickIndex(pickId)];
     verts.clear();
     outline.clear();
     tris.clear();
+    hitRect = {};
     float scale = 0.005F;
     float offx = 0.5F;
     float offy = 0.5F;
@@ -1802,6 +1823,9 @@ void SoNaviCube::addButtonFace(PickId pickId) const
         case PickId::Backside: {
             offx = 0.80F;
             offy = 0.0F;
+            // The icon has two disconnected arrow loops; keep the center gap clickable.
+            hitRect
+                = {true, BACKSIDE_HIT_LEFT, BACKSIDE_HIT_TOP, BACKSIDE_HIT_RIGHT, BACKSIDE_HIT_BOTTOM};
             const auto loop1 = appendLoop(
                 {24.0F, 21.5F, 17.0F, 29.1F, 16.7F, 25.6F, 12.0F, 25.3F, 8.2F,  24.0F, 4.0F,
                  22.0F, 1.2F,  19.0F, 0.0F,  15.0F, 0.0F,  10.0F, 1.5F,  8.1F,  4.4F,  6.1F,
