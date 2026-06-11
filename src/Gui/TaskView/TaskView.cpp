@@ -391,7 +391,8 @@ bool TaskView::event(QEvent* event)
 
 void TaskView::keyPressEvent(QKeyEvent* ke)
 {
-    if (currentIndex() != -1 && taskInfos[currentIndex()].ActiveCtrl && taskInfos[currentIndex()].ActiveDialog) {
+    if (currentIndex() != -1 && taskInfos[currentIndex()].ActiveCtrl
+        && taskInfos[currentIndex()].ActiveDialog) {
         TaskInfo taskInfo = taskInfos[currentIndex()];
 
         if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter) {
@@ -481,7 +482,7 @@ QSize TaskView::minimumSizeHint() const
         if (QLayout* layout = currentWidget()->layout()) {
             spacing = 2 * layout->spacing();
         }
-    
+
         ms.setWidth(ms.width() + spacing);
     }
     return ms;
@@ -508,7 +509,7 @@ void TaskView::slotActiveDocument(const App::Document& doc)
         // at this point, active object of the active view returns None.
         // which is a problem if shouldShow of a watcher rely on the presence
         // of an active object (example Assembly).
-        QTimer::singleShot(100, [this, initIndex]() { 
+        QTimer::singleShot(100, [this, initIndex]() {
             if (initIndex != -1) {
                 removeTaskWatcher(initIndex);
             }
@@ -564,7 +565,7 @@ void TaskView::slotDeletedDocument(const App::Document& doc)
             delete refreshedTaskInfo->taskPanel;
             taskInfos.erase(refreshedTaskInfo);
         }
-        
+
         hasDialog = false;
     }
 
@@ -669,8 +670,9 @@ bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
             removeDialog(taskInfo);
         }
         removeTaskWatcher();
-    } else {
-        taskInfos.push_back(TaskInfo {.taskPanel=new TaskPanel(this), .Document=doc});
+    }
+    else {
+        taskInfos.push_back(TaskInfo {.taskPanel = new TaskPanel(this), .Document = doc});
         taskInfo = std::prev(taskInfos.end());
     }
 
@@ -1081,7 +1083,9 @@ void TaskView::clearActionStyle()
     if (currentIndex() == -1) {
         return;
     }
-    taskInfos[currentIndex()].taskPanel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
+    taskInfos[currentIndex()].taskPanel->actionPanel->setScheme(
+        QSint::ActionPanelScheme::defaultScheme()
+    );
 }
 
 void TaskView::restoreActionStyle()
@@ -1091,7 +1095,9 @@ void TaskView::restoreActionStyle()
     if (currentIndex() == -1) {
         return;
     }
-    taskInfos[currentIndex()].taskPanel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
+    taskInfos[currentIndex()].taskPanel->actionPanel->setScheme(
+        QSint::ActionPanelScheme::defaultScheme()
+    );
 }
 
 void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)

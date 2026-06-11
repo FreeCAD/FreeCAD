@@ -201,7 +201,7 @@ public:
 
     void setShownTaskInfo(std::vector<TaskInfo>::iterator infoIt);
     void setShownTaskInfo(size_t index);
-    
+
 Q_SIGNALS:
     void taskUpdate();
 
