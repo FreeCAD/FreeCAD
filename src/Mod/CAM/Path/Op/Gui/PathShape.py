@@ -18,19 +18,18 @@
 #                                                                              #
 ################################################################################
 
+import Constants
 import FreeCAD
 import FreeCADGui
 import Part
 import Path
 import Path.Op.Base as OpBase
 import Path.Op.Util as PathOpUtil
+import Path.Base.MachineState as PathMachineState
 import Path.Base.Util as PathUtil
-
 import PathScripts.PathUtils as PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
-import math
 
 __title__ = "CAM Path from Shape with Tool Controller"
 __author__ = "tarman3"
@@ -122,7 +121,7 @@ class ObjectPathShape:
         )
         obj.addProperty(
             "App::PropertyBool",
-            "EnableStartPoint",
+            "UseStartPoint",
             "StartPoint",
             QT_TRANSLATE_NOOP("App::Property", "Enable feed start position"),
         )
@@ -141,7 +140,8 @@ class ObjectPathShape:
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Arc drawing plane, corresponding to G17, G18 and G19.\n"
-                "\nIf not 'None', the output wires will be transformed to align with the selected plane,\n"
+                "\nIf not 'None', the output wires will be transformed"
+                " to align with the selected plane,\n"
                 "and the corresponding GCode will be inserted.\n"
                 "\n'Auto' means the plane is determined by the first encountered arc plane.\n"
                 "If the found plane does not align to any GCode plane, XY plane is used.\n"
@@ -260,10 +260,13 @@ class ObjectPathShape:
                 "Wire sorting mode to optimize travel distance.\n"
                 "\n'2D5' explode shapes into wires, and groups the shapes by its plane.\n"
                 "The 'start' position chooses the first plane to start.\n"
-                "The algorithm will then sort within the plane and then move on to the next nearest plane.\n"
+                "The algorithm will then sort within the plane"
+                " and then move on to the next nearest plane.\n"
                 "\n'3D' makes no assumption of planarity. The sorting is done across 3D space.\n"
-                "\n'Greedy' like '2D5' but will try to minimize travel by searching for nearest path below the current milling layer.\n"
-                "The path in lower layer is only selected if the moving distance is within the value given in 'threshold'.",
+                "\n'Greedy' like '2D5' but will try to minimize travel"
+                " by searching for nearest path below the current milling layer.\n"
+                "The path in lower layer is only selected if the moving distance"
+                " is within the value given in 'threshold'.",
             ),
         )
         obj.addProperty(
@@ -310,35 +313,16 @@ class ObjectPathShape:
 
         # Retract and Depth properties group
         obj.addProperty(
-            "App::PropertyBool",
-            "EnableStepDepth",
-            "Depth",
-            QT_TRANSLATE_NOOP("App::Property", "Apply incremental change step depth"),
-        )
-        obj.addProperty(
             "App::PropertyDistance",
             "StartDepth",
             "Depth",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Start depth with step depth.\nUsing with 'EnableStepDepth'."
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Start depth with step depth."),
         )
         obj.addProperty(
             "App::PropertyLength",
             "StepDepth",
             "Depth",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Max depth of each step depth.\nUsing only with 'EnableStepDepth'."
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyLength",
-            "RapidOffset",
-            "Depth",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Offset for rapid move for path which already processed at previous step depth",
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Incremental Step Down of Tool."),
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -427,7 +411,7 @@ class ObjectPathShape:
 
         self.setDefaultValues(obj)
         self.setEditorMode(obj)
-        self.addToolController()
+        self.setToolController()
         self.setSafetyZ()
 
     def setDefaultValues(self, obj):
@@ -467,13 +451,11 @@ class ObjectPathShape:
 
     def setEditorMode(self, obj):
         obj.setEditorMode("CycleTime", 1)  # read-only
-        # obj.setEditorMode("ToolController", 2)  # hidden
         obj.setEditorMode("PathParams", 2)  # hidden
 
-        startPointMode = 0 if obj.EnableStartPoint else 2
+        startPointMode = 0 if obj.UseStartPoint else 2
         offsetMode = 0 if obj.EnableOffset else 2
         offsetMode2 = 0 if obj.EnableOffset and obj.OffsetType == "makeOffset2D" else 2
-        stepDepthMode = 0 if obj.EnableStepDepth else 2
         dualDirectionMode = 0 if obj.HandleMultipleFeatures == "Individually" else 2
 
         obj.setEditorMode("StartPoint", startPointMode)
@@ -483,10 +465,43 @@ class ObjectPathShape:
         obj.setEditorMode("OffsetType", offsetMode)
         obj.setEditorMode("OffsetJoin", offsetMode2)
         obj.setEditorMode("OffsetOpenResult", offsetMode2)
-        obj.setEditorMode("StartDepth", stepDepthMode)
-        obj.setEditorMode("StepDepth", stepDepthMode)
-        obj.setEditorMode("RapidOffset", stepDepthMode)
         obj.setEditorMode("DualDirection", dualDirectionMode)
+
+    def setToolController(self):
+        job = self.job
+        obj = self.obj
+        for op in job.Operations.Group[-2::-1]:
+            toolController = PathUtil.toolControllerForOp(op)
+            if toolController:
+                break
+        else:
+            toolController = PathUtils.findToolController(obj, self)
+
+        if toolController:
+            obj.ToolController = toolController
+            obj.setExpression("HorizFeed", "ToolController.HorizFeed")
+            obj.setExpression("VertFeed", "ToolController.VertFeed")
+            obj.StepDepth = obj.ToolController.Tool.Diameter / 2
+        else:
+            Path.Log.warning(
+                translate("PathShape", "Tool controller not selected for operation %s") % obj.Label
+            )
+
+    # Set safety depth parameters
+    def setSafetyZ(self):
+        job = self.job
+        obj = self.obj
+        if job:
+            bbStock = job.Stock.Shape.BoundBox
+            zmax = bbStock.ZMax
+            obj.ClearanceHeight = zmax + 30
+            obj.setExpression("ClearanceHeightOut", "ClearanceHeight")
+            obj.SafeHeight = zmax + 10
+            obj.StartDepth = zmax + 1
+
+    # This method must return True and needed for PathUtils.findToolController()
+    def isToolSupported(self, obj, tool):
+        return True
 
     def dumps(self):
         return
@@ -497,9 +512,8 @@ class ObjectPathShape:
     def onChanged(self, obj, prop):
         if prop in (
             "EnableOffset",
-            "EnableStartPoint",
+            "UseStartPoint",
             "OffsetType",
-            "EnableStepDepth",
             "HandleMultipleFeatures",
         ):
             self.setEditorMode(obj)
@@ -527,6 +541,9 @@ class ObjectPathShape:
                 edges.extend(sub.Edges)
 
         wires = [Part.Wire(se) for se in Part.sortEdges(edges)]
+        if not wires:
+            obj.Path = Path.Path()
+            return
 
         offsetVal = 0
         if obj.EnableOffset:
@@ -556,57 +573,113 @@ class ObjectPathShape:
         else:
             shapes = wires
 
-        params = {}
-        if obj.EnableStartPoint:
-            params["start"] = obj.StartPoint
-        params["return_end"] = False
-        params["arc_plane"] = obj.getEnumerationsOfProperty("ArcPlane").index(obj.ArcPlane)
-        params["sort_mode"] = obj.getEnumerationsOfProperty("SortMode").index(obj.SortMode)
-        params["min_dist"] = obj.MinDistance
-        params["abscissa"] = obj.SortAbscissa
-        params["nearest_k"] = obj.NearestK
-        params["orientation"] = obj.getEnumerationsOfProperty("Orientation").index(obj.Orientation)
-        params["direction"] = obj.getEnumerationsOfProperty("Direction").index(obj.Direction)
-        params["threshold"] = obj.RetractThreshold
-        params["retract_axis"] = obj.getEnumerationsOfProperty("RetractAxis").index(obj.RetractAxis)
-        params["retraction"] = obj.ClearanceHeight
-        params["resume_height"] = obj.SafeHeight
-        params["segmentation"] = obj.Segmentation
-        params["feedrate"] = obj.HorizFeed.Value
-        params["feedrate_v"] = obj.VertFeed.Value
-        params["verbose"] = obj.Verbose
-        params["abs_center"] = obj.AbsoluteArcCenter
-        params["preamble"] = obj.EmitPreamble
-        params["deflection"] = obj.Deflection
+        rAxis = obj.RetractAxis
+        pathParams = {}
+        if obj.UseStartPoint:
+            pathParams["start"] = obj.StartPoint
+        pathParams["return_end"] = False
+        pathParams["arc_plane"] = obj.getEnumerationsOfProperty("ArcPlane").index(obj.ArcPlane)
+        pathParams["sort_mode"] = obj.getEnumerationsOfProperty("SortMode").index(obj.SortMode)
+        pathParams["min_dist"] = obj.MinDistance
+        pathParams["abscissa"] = obj.SortAbscissa
+        pathParams["nearest_k"] = obj.NearestK
+        pathParams["orientation"] = obj.getEnumerationsOfProperty("Orientation").index(
+            obj.Orientation
+        )
+        pathParams["direction"] = obj.getEnumerationsOfProperty("Direction").index(obj.Direction)
+        pathParams["threshold"] = obj.RetractThreshold
+        pathParams["retract_axis"] = obj.getEnumerationsOfProperty("RetractAxis").index(rAxis)
+        pathParams["retraction"] = obj.ClearanceHeight
+        pathParams["resume_height"] = obj.SafeHeight
+        pathParams["segmentation"] = obj.Segmentation
+        pathParams["feedrate"] = obj.HorizFeed.Value
+        pathParams["feedrate_v"] = obj.VertFeed.Value
+        pathParams["verbose"] = obj.Verbose
+        pathParams["abs_center"] = obj.AbsoluteArcCenter
+        pathParams["preamble"] = obj.EmitPreamble
+        pathParams["deflection"] = obj.Deflection
 
-        obj.PathParams = str({key: value for key, value in params.items()})
-
+        obj.PathParams = str({key: value for key, value in pathParams.items()})
+        bidir = obj.DualDirection and obj.HandleMultipleFeatures == "Individually"
         commands = []
+        machinestate = PathMachineState.MachineState()
+        machinestate.getPosition()
+        # machinestate.addCommand(cmd)
         for shape in shapes:
-            params["shapes"] = shape
+            pathParams["shapes"] = shape
+            pp = Path.fromShapes(**pathParams)
+            while pp.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
+                pp.deleteCommand(0)  # remove rapid moves
 
-            path = Path.fromShapes(**params)
-            pathReversed = Path.Path()
-            if obj.EnableStepDepth:
-                if obj.DualDirection and obj.HandleMultipleFeatures == "Individually":
-                    # get path with inverted direction
-                    for dir in (1, 2, 3, 4, 5, 6):
-                        params["direction"] = dir
-                        pathReversed = Path.fromShapes(**params)
-                        if pathReversed.Length != path.Length:
-                            # if length of the path is different, the path is inverted
-                            break
-                commands.extend(self.processStepDepth(obj, path, pathReversed))
-            else:
-                commands.extend(path.Commands)
+            pathParams["start"] = Path.Geom.commandEndPoint(pp.Commands[-1])
+            ppReversed = Path.fromShapes(**pathParams)  # path with alternate direction
+            while ppReversed.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
+                ppReversed.deleteCommand(0)  # remove rapid moves
+
+            depthParams = {
+                "clearance_height": obj.ClearanceHeight.Value,
+                "safe_height": obj.SafeHeight.Value,
+                "start_depth": obj.StartDepth.Value,
+                "step_down": obj.StepDepth.Value,
+                "z_finish_step": 0,
+                "final_depth": None,
+                "user_depths": None,
+            }
+            if rAxis == "X":
+                depthParams["final_depth"] = shape.BoundBox.XMin
+            elif rAxis == "Y":
+                depthParams["final_depth"] = shape.BoundBox.YMin
+            else:  # rAxis == "Z":
+                depthParams["final_depth"] = shape.BoundBox.ZMin
+
+            depths = [i for i in PathUtils.depth_params(**depthParams)]
+            for i in range(len(depths)):
+                depth = depths[i]
+                if i % 2 and bidir and not shape.Wires[0].isClosed():
+                    path = ppReversed
+                else:
+                    path = pp
+                p = Path.Geom.commandEndPoint(path.Commands[0])
+                print("  ", depth, p)
+
+                if i == 0 or not bidir:
+                    if rAxis == "X":
+                        commands.append(Path.Command("G0", {"Z": p.z}))
+                        commands[-1].Annotations = {"move": "init1"}
+                        commands.append(Path.Command("G0", {"X": obj.ClearanceHeight.Value}))
+                        commands[-1].Annotations = {"move": "init1"}
+                        commands.append(Path.Command("G0", {"Y": p.y}))
+                        commands[-1].Annotations = {"move": "init1"}
+                    elif rAxis == "Y":
+                        commands.append(Path.Command("G0", {"Z": p.z}))
+                        commands[-1].Annotations = {"move": "init1"}
+                        commands.append(Path.Command("G0", {"Y": obj.ClearanceHeight.Value}))
+                        commands[-1].Annotations = {"move": "init1"}
+                        commands.append(Path.Command("G0", {"X": p.x}))
+                        commands[-1].Annotations = {"move": "init1"}
+                    elif rAxis == "Z":
+                        commands.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+                        commands[-1].Annotations = {"move": "init1"}
+                        commands.append(Path.Command("G0", {"X": p.x, "Y": p.y}))
+                        commands[-1].Annotations = {"move": "init1"}
+
+                    commands.append(Path.Command("G0", {rAxis: obj.SafeHeight.Value}))
+                    commands[-1].Annotations = {"move": "init2"}
+
+                rAxisIndex = obj.getEnumerationsOfProperty("RetractAxis").index(rAxis)
+                d = max(depth, p[rAxisIndex])
+                feed = obj.VertFeed.Value if rAxis == "Z" else obj.HorizFeed.Value
+                commands.append(Path.Command("G1", {rAxis: d, "F": feed}))
+                commands[-1].Annotations = {"move": "plunge"}
+
+                for cmd in path.Commands:
+                    d = cmd.__getattribute__(rAxis)
+                    if d is not None and d < depth:
+                        cmd.__setattr__(rAxis, depth)
+                    commands.append(cmd)
 
         if obj.SafetyFinish:
-            if hasattr(obj, "ClearanceHeightOut"):
-                height = obj.ClearanceHeightOut.Value
-            else:
-                height = obj.ClearanceHeight.Value
-
-            commands.append(Path.Command("G0", {obj.RetractAxis: height}))
+            commands.append(Path.Command("G0", {rAxis: obj.ClearanceHeightOut.Value}))
 
         obj.Path = Path.Path(commands)
 
@@ -665,199 +738,6 @@ Returns a Path object from a list of shapes
 * preamble(true): Emit preambles
 * deflection(0.01): Deflection for non circular curve discretization.
     It also also used for discretizing circular wires when you Explode the shape for wire operations"""
-
-    # Get coordinates of each axis from path commands
-    def getPoint(self, commands):
-        x = y = z = None
-        for cmd in commands:
-            x = cmd.x if x is None and cmd.x is not None else x
-            y = cmd.y if y is None and cmd.y is not None else y
-            z = cmd.z if z is None and cmd.z is not None else z
-            if x is not None and y is not None and z is not None:
-                return FreeCAD.Vector(x, y, z)
-
-        if x is None:
-            Path.Log.warning(translate("PathShape", "Can not determinate X"))
-        if y is None:
-            Path.Log.warning(translate("PathShape", "Can not determinate Y"))
-        if z is None:
-            Path.Log.warning(translate("PathShape", "Can not determinate Z"))
-
-        return None
-
-    def isClosedPath(self, point1, point2):
-        if point1 is None or point2 is None:
-            return False
-        if not Path.Geom.pointsCoincide(point1, point2):
-            return False
-
-        return True
-
-    def isDeeper(self, axis, cmd, limitDepth):
-        depth = cmd.__getattribute__(axis)
-        if depth is None or limitDepth is None:
-            return False
-        if Path.Geom.isRoughly(depth, limitDepth):
-            return False
-        if (not self.invertAxis and depth > limitDepth) or (self.invertAxis and depth < limitDepth):
-            return False
-
-        return True
-
-    def getStepDepthRepeats(self, axis, path, startDepth, stepDepth):
-        minDepth = None
-        for cmd in path.Commands:
-            depth = cmd.__getattribute__(axis)
-            if depth is not None:
-                if minDepth is None:
-                    minDepth = depth
-                elif (not self.invertAxis and depth < minDepth) or (
-                    self.invertAxis and depth > minDepth
-                ):
-                    minDepth = depth
-
-        if minDepth is not None:
-            repeats = abs(math.ceil((startDepth - minDepth) / stepDepth))
-            return repeats
-
-        return 1
-
-    # Add several passes with step down
-    def processStepDepth(self, obj, path, pathReversed):
-        commands = []
-        startPoint = self.getPoint(path.Commands)
-        endPoint = self.getPoint(reversed(path.Commands))
-        rAxis = obj.RetractAxis
-        # slaveAxis = "Y" if rAxis == "X" else "X"
-
-        if obj.ClearanceHeight > obj.SafeHeight:
-            self.invertAxis = False
-            stepDepth = obj.StepDepth.Value
-            rapidOffset = obj.RapidOffset.Value
-        else:
-            self.invertAxis = True
-            stepDepth = -obj.StepDepth.Value
-            rapidOffset = -obj.RapidOffset.Value
-
-        startDepth = obj.StartDepth.Value
-        limitDepth = startDepth
-        iter = 0
-        changeDir = False
-
-        stepDepthRepeats = self.getStepDepthRepeats(rAxis, path, startDepth, stepDepth)
-        print(f"stepDepthRepeats={stepDepthRepeats}  stepDepth={stepDepth}")
-
-        while iter < stepDepthRepeats:
-            iter += 1
-            lastStep = True if iter == stepDepthRepeats else False
-            limitDepth -= stepDepth
-
-            skipRetract = (iter > 1) and (
-                self.isClosedPath(startPoint, endPoint)
-                or (obj.DualDirection and obj.HandleMultipleFeatures == "Individually")
-            )
-            print(f"  iter={iter}  limitDepth={round(limitDepth,1)}  skipRetract={skipRetract}")
-
-            if not skipRetract:
-                # add safety moves to start point before next step down
-                if rAxis == "X":
-                    commands.append(Path.Command("G0", {"Z": startPoint.z}))
-                    commands.append(Path.Command("G0", {"X": startPoint.x}))
-                    commands.append(Path.Command("G0", {"Y": startPoint.y}))
-                elif rAxis == "Y":
-                    commands.append(Path.Command("G0", {"Z": startPoint.z}))
-                    commands.append(Path.Command("G0", {"Y": startPoint.y}))
-                    commands.append(Path.Command("G0", {"X": startPoint.x}))
-                elif rAxis == "Z":
-                    commands.append(Path.Command("G0", {"Z": startPoint.z}))
-                    commands.append(Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y}))
-
-            currentPath = pathReversed if changeDir else path
-
-            for cmd in currentPath.Commands:
-                if skipRetract:
-                    if (
-                        rAxis == "X"
-                        and cmd.y is None
-                        and cmd.z is None
-                        and (cmd.x == obj.ClearanceHeight or cmd.x == obj.SafeHeight)
-                    ):
-                        # skip start move
-                        continue
-                    if (
-                        rAxis == "Y"
-                        and cmd.x is None
-                        and cmd.z is None
-                        and (cmd.y == obj.ClearanceHeight or cmd.y == obj.SafeHeight)
-                    ):
-                        # skip start move
-                        continue
-                    elif (
-                        rAxis == "Z"
-                        and cmd.x is None
-                        and cmd.y is None
-                        and (cmd.z == obj.ClearanceHeight or cmd.z == obj.SafeHeight)
-                    ):
-                        # skip start move
-                        continue
-
-                if cmd.__getattribute__(rAxis) is not None:
-                    if self.isDeeper(rAxis, cmd, limitDepth):
-                        cmd.__setattr__(rAxis, limitDepth)
-                    elif (
-                        cmd.Name not in Path.Geom.CmdMoveRapid
-                        and iter > 1
-                        and rapidOffset
-                        and not lastStep
-                        and not self.isDeeper(rAxis, cmd, limitDepth + stepDepth + rapidOffset)
-                    ):
-                        rapidFeed = obj.ToolController.HorizRapid.Value
-                        cmd.F = rapidFeed
-                        cmd.__setattr__(rAxis, cmd.Parameters[rAxis] + rapidOffset)
-
-                commands.append(cmd)
-
-            if obj.DualDirection and obj.HandleMultipleFeatures == "Individually":
-                # change direction after on each step down
-                changeDir = not changeDir
-
-        return commands
-
-    # This method must return True and needed for PathUtils.findToolController()
-    def isToolSupported(self, obj, tool):
-        return True
-
-    def addToolController(self):
-        job = self.job
-        obj = self.obj
-        for op in job.Operations.Group[-2::-1]:
-            toolController = PathUtil.toolControllerForOp(op)
-            if toolController:
-                break
-        else:
-            toolController = PathUtils.findToolController(obj, self)
-
-        if toolController:
-            obj.ToolController = toolController
-            obj.setExpression("HorizFeed", "ToolController.HorizFeed")
-            obj.setExpression("VertFeed", "ToolController.VertFeed")
-            obj.StepDepth = obj.ToolController.Tool.Diameter / 2
-        else:
-            Path.Log.warning(
-                translate("PathShape", "Tool controller not selected for operation %s") % obj.Label
-            )
-
-    # Set safety depth parameters
-    def setSafetyZ(self):
-        job = self.job
-        obj = self.obj
-        if job:
-            bbStock = job.Stock.Shape.BoundBox
-            zmax = bbStock.ZMax
-            obj.ClearanceHeight = zmax + 30
-            obj.setExpression("ClearanceHeightOut", "ClearanceHeight")
-            obj.SafeHeight = zmax + 10
-            obj.StartDepth = zmax + 1
 
 
 class ViewProviderPathShape:
