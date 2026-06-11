@@ -725,14 +725,19 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
         return {};
     }
 
+    std::vector<App::DocumentObject*> temp;
     std::set<App::DocumentObject*> objs;
+
     for (auto& sel : context.info->selList) {
         if (App::DocumentObject* pObject = getObjectOfType(sel, typeId, resolve)) {
-            objs.insert(pObject);
+            auto ret = objs.insert(pObject);
+            if (ret.second) {
+                temp.push_back(pObject);
+            }
         }
     }
 
-    return std::vector<App::DocumentObject*>(objs.begin(), objs.end());
+    return temp;
 }
 
 std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
