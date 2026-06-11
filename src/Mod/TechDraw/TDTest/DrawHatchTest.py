@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-
-
 import FreeCAD
 import os
 import unittest
