@@ -37,6 +37,8 @@ else:
 
 
 class MachineState:
+
+    # State we track, available as .$key, or [$key]
     Tracked = [
         "X",
         "Y",
@@ -54,7 +56,11 @@ class MachineState:
         "G0F",  # F for G0's, distinct from all other move F. all G0's should have an F now.
     ]
 
-    def __init__(self, initial: None | dict = None):
+    class _NoArg:
+        # unique object distinguishable from None
+        pass
+
+    def __init__(self, initial: None | dict = _NoArg):
         """an initial state is optional, and doesn't have to set all Tracked properties"""
         self.WCSLIST = [
             "G53",
@@ -89,37 +95,50 @@ class MachineState:
         self.G0F = 0.0  #: float = field(default=None)
         self.S = 0  #: int = field(default=0)
         self.T = None  #: int = field(default=None)
+
+        # sanity
         if missing := [k for k in self.Tracked if k not in dir(self)]:
             raise Exception(f"Internal: didn't initialize a Tracked Parameter {missing}")
 
-        if initial:
+        if initial is not self._NoArg:
             self.setState(initial)
+
+        self.previous = {}
+
+    def __getitem__(self, key):
+        """Support [k] for Tracked keys (state"""
+        if key in self.Tracked:
+            return getattr(self, key)
+        else:
+            raise AttributeError(obj=self, name=key)
 
     def addCommand(self, command):
         """Processes a command and updates the internal state of the machine.
         Returns true if the command has alterned the machine state"""
-        oldstate = self.getState()
+        self.previous = self.getState()
         if command.Name == "M6":
             self.T = int(command.Parameters["T"])
-            return not oldstate == self.getState()
+            return not self.previous == self.getState()
 
         if command.Name in ["M3", "M4"]:
-            self.S = command.Parameters["S"]
+            self.S = command.Parameters.get(
+                "S", None
+            )  # e.g. Plasma may omit S during post-processing
             self.Spindle = "CW" if command.Name == "M3" else "CCW"
-            return not oldstate == self.getState()
+            return not self.previous == self.getState()
 
         if command.Name in ["G98", "G99"]:
             self.ReturnMode = "R" if command.Name == "G99" else "Z"
-            return not oldstate == self.getState()
+            return not self.previous == self.getState()
 
         if command.Name in ["M2", "M5"]:
             self.S = 0
             self.Spindle = "off"
-            return not oldstate == self.getState()
+            return not self.previous == self.getState()
 
         if command.Name in self.WCSLIST:
             self.WCS = command.Name
-            return not oldstate == self.getState()
+            return not self.previous == self.getState()
 
         if command.Name in Path.Geom.CmdMoveDrill:
             # Special logic for drill: old-Z or R
@@ -145,7 +164,7 @@ class MachineState:
                 else:
                     self.Z = max(oldZ, r)
 
-            return not oldstate == self.getState()
+            return not self.previous == self.getState()
 
         # just the usual GCode Parameters (except G0's F)
         for p in self.Tracked:
@@ -158,7 +177,7 @@ class MachineState:
             else:
                 self.__setattr__(p, command.Parameters[p])
 
-        return not oldstate == self.getState()
+        return not self.previous == self.getState()
 
     def addCommands(self, commands):
         """Processes a command or list of commands and updates the internal state of the machine"""
@@ -173,15 +192,37 @@ class MachineState:
     def copy(self):
         return MachineState(self.getState())
 
+    def _save(self):
+        # save current state as .previous as a dict
+        self.previous = self.getState()
+
     def setState(self, state: dict | None):
-        """Set the state from a dict
+        """Sets the state from a dict
         Convenience mode: None causes all parameters=None
         """
+        self._save()
+
         for s in self.Tracked:
             if state is None:
                 setattr(self, s, None)
             elif s in state:
                 setattr(self, s, state[s])
+            else:
+                # un-mentioned are set to None ("set" not "update")
+                setattr(self, s, None)
+
+    def updateState(self, state: dict | None):
+        """Updates the state from a dict
+        Convenience mode: None causes all parameters=None
+        """
+        self._save()
+
+        for s in self.Tracked:
+            if state is None:
+                setattr(self, s, None)
+            elif s in state:
+                setattr(self, s, state[s])
+            # un-mentioned are left alone
 
     def getState(self):
         """
