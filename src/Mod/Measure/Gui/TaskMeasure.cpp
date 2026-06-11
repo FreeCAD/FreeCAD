@@ -2,6 +2,7 @@
 
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
+ *   Copyright (c) 2026 Loke S. Haugsnes <lokesh[at]live.no>               *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -41,7 +42,6 @@
 
 using enum Gui::InputHint::UserInput;
 
-#include <QFormLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
 #include <QSettings>
@@ -199,7 +199,7 @@ TaskMeasure::TaskMeasure()
     modeSwitch->addItem(tr("Auto"));
 
     for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()) {
-        modeSwitch->addItem(tr(mType->label.c_str()));
+        modeSwitch->addItem(tr(mType->label.c_str()), QString::fromStdString(mType->identifier));
     }
 
     // Connect dropdown's change signal to our onModeChange slot
@@ -217,7 +217,7 @@ TaskMeasure::TaskMeasure()
     // Main layout
     QBoxLayout* layout = taskbox->groupLayout();
 
-    QFormLayout* formLayout = new QFormLayout();
+    formLayout = new QFormLayout();
     formLayout->setHorizontalSpacing(10);
     formLayout->setVerticalSpacing(6);
     // Note: How can the split between columns be kept in the middle?
@@ -370,7 +370,10 @@ void TaskMeasure::tryUpdate()
         }
     }
 
-    valueResult->setText(QString::asprintf("-"));
+    valueResult->setText(QLatin1String("-"));
+    if (typeInfo) {
+        typeInfo->resetUIState();
+    }
 
     std::string mode = explicitMode ? modeSwitch->currentText().toStdString() : "";
 
@@ -398,6 +401,7 @@ void TaskMeasure::tryUpdate()
         // Reset measure object
         if (!explicitMode) {
             setModeSilent(nullptr);
+            createTypeInfo("");
         }
         removeObject();
         enableAnnotateButton(false);
@@ -414,6 +418,7 @@ void TaskMeasure::tryUpdate()
         // we don't already have a measureobject or it isn't the same type as the new one
         removeObject();
         createObject(measureType);
+        createTypeInfo(measureType->identifier);
     }
 
     // we have a valid measure object so we can enable the annotate button
@@ -480,6 +485,9 @@ void TaskMeasure::refreshResult()
     valueResult->setText(
         QString::fromStdString(Base::UnitsApi::toUnicodeSuperscript(_mMeasureObject->getResultString()))
     );
+    if (typeInfo) {
+        typeInfo->update(*_mMeasureObject);
+    }
 }
 
 
@@ -722,6 +730,11 @@ void TaskMeasure::onModeChanged(int index)
 {
     explicitMode = (index != 0);
 
+    if (explicitMode) {
+        std::string type = modeSwitch->itemData(index).toString().toStdString();
+        createTypeInfo(type);
+    }
+
     this->update();
 }
 
@@ -810,4 +823,22 @@ App::MeasureType* TaskMeasure::getMeasureType()
         }
     }
     return nullptr;
+}
+
+void TaskMeasure::createTypeInfo(const std::string& type)
+{
+    typeInfo.reset();
+}
+
+
+TaskMeasureTypeInfo::TaskMeasureTypeInfo(QFormLayout& parentFormLayout)
+    : _parentFormLayout(parentFormLayout)
+    , _container(new QWidget())
+{
+    _parentFormLayout.addRow(_container);
+}
+
+TaskMeasureTypeInfo::~TaskMeasureTypeInfo()
+{
+    _parentFormLayout.removeRow(_container);
 }

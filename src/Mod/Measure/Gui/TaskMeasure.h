@@ -2,6 +2,7 @@
 
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
+ *   Copyright (c) 2026 Loke S. Haugsnes <lokesh[at]live.no>               *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -29,6 +30,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QCheckBox>
+#include <QFormLayout>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -47,6 +49,7 @@
 
 namespace MeasureGui
 {
+class TaskMeasureTypeInfo;
 
 class TaskMeasure: public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
 {
@@ -86,6 +89,7 @@ private:
 
     Measure::MeasureBase* _mMeasureObject = nullptr;
 
+    QFormLayout* formLayout {nullptr};
     QLineEdit* valueResult {nullptr};
     QComboBox* modeSwitch {nullptr};
     QComboBox* unitSwitch {nullptr};
@@ -94,6 +98,8 @@ private:
     QAction* autoSaveAction {nullptr};
     QAction* newMeasurementBehaviourAction {nullptr};
     QToolButton* mSettings {nullptr};
+
+    std::unique_ptr<TaskMeasureTypeInfo> typeInfo;
 
     fastsignals::connection m_deletedConnection;
 
@@ -113,6 +119,7 @@ private:
     void initViewObject(Measure::MeasureBase* measure);
     void syncDisplayUnit();
     void refreshResult();
+    void createTypeInfo(const std::string& type);
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
@@ -122,6 +129,22 @@ private:
     bool mAutoSave = false;
     bool mGreedySelection = false;
     Gui::Document* mTargetDoc;
+};
+
+// When creating a new TaskMeasureTypeInfo, remember to add it to TaskMeasure::createTypeInfo
+class TaskMeasureTypeInfo: public QObject
+{
+    Q_OBJECT
+public:
+    explicit TaskMeasureTypeInfo(QFormLayout& parentFormLayout);
+    virtual ~TaskMeasureTypeInfo();
+    virtual void resetUIState() = 0;
+    virtual void update(Measure::MeasureBase& measureObject) = 0;
+
+protected:
+    QFormLayout& _parentFormLayout;
+    // Every Qt object created by derived classes must have _container as a parent
+    QWidget* _container {nullptr};
 };
 
 }  // namespace MeasureGui
