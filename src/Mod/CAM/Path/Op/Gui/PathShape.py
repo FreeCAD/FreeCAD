@@ -642,35 +642,30 @@ class ObjectPathShape:
                 p = Path.Geom.commandEndPoint(path.Commands[0])
                 print("  ", depth, p)
 
-                if i == 0 or not bidir:
+                if i == 0 or not bidir:  # add retract moves
+                    retract = obj.SafeHeight.Value if i else obj.ClearanceHeight.Value
                     if rAxis == "X":
                         commands.append(Path.Command("G0", {"Z": p.z}))
                         commands[-1].Annotations = {"move": "init1"}
-                        commands.append(Path.Command("G0", {"X": obj.ClearanceHeight.Value}))
+                        commands.append(Path.Command("G0", {"X": retract}))
                         commands[-1].Annotations = {"move": "init1"}
                         commands.append(Path.Command("G0", {"Y": p.y}))
                         commands[-1].Annotations = {"move": "init1"}
                     elif rAxis == "Y":
                         commands.append(Path.Command("G0", {"Z": p.z}))
                         commands[-1].Annotations = {"move": "init1"}
-                        commands.append(Path.Command("G0", {"Y": obj.ClearanceHeight.Value}))
+                        commands.append(Path.Command("G0", {"Y": retract}))
                         commands[-1].Annotations = {"move": "init1"}
                         commands.append(Path.Command("G0", {"X": p.x}))
                         commands[-1].Annotations = {"move": "init1"}
                     elif rAxis == "Z":
-                        commands.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+                        commands.append(Path.Command("G0", {"Z": retract}))
                         commands[-1].Annotations = {"move": "init1"}
                         commands.append(Path.Command("G0", {"X": p.x, "Y": p.y}))
                         commands[-1].Annotations = {"move": "init1"}
 
                     commands.append(Path.Command("G0", {rAxis: obj.SafeHeight.Value}))
                     commands[-1].Annotations = {"move": "init2"}
-
-                rAxisIndex = obj.getEnumerationsOfProperty("RetractAxis").index(rAxis)
-                d = max(depth, p[rAxisIndex])
-                feed = obj.VertFeed.Value if rAxis == "Z" else obj.HorizFeed.Value
-                commands.append(Path.Command("G1", {rAxis: d, "F": feed}))
-                commands[-1].Annotations = {"move": "plunge"}
 
                 for cmd in path.Commands:
                     d = cmd.__getattribute__(rAxis)
