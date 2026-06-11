@@ -35,18 +35,7 @@ import Constants
 from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
-from Path.Base.MachineState import MachineState
 from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
-
-
-# FIXME: use import when implemented
-# from Path.Post.Processor import PPMachineState
-def PPMachineState(init: dict):
-    # FIXME: while still _modal_state
-    return init
-
-
-PPMachineState.Tracked = list("XYZABCUVWFS")
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
@@ -313,32 +302,33 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         """
 
         # arc's need a previous Z, so psuedo track Z
-        # FIXME: replace _modal_state when .machine_state implemented
-        self.post._modal_state = PPMachineState({k: None for k in MachineState.Tracked})
-        self.post._modal_state.update({"X": 0, "Y": 0, "Z": 0})
-        # self.post.machine_state.addCommand( Path.Command("G0", {"X":0, "Y":0, "Z": 0}) )
+        with self.post.use_machine_state():
+            self.post.machine_state.setState({"X": 0, "Y": 0, "Z": 0})
 
-        command = Path.Command("G2", {"F": 50, "X": 10.0, "Y": 0.0, "I": 5.0, "J": 0.0, "Z": -5.0})
+            command = Path.Command(
+                "G2", {"F": 50, "X": 10.0, "Y": 0.0, "I": 5.0, "J": 0.0, "Z": -5.0}
+            )
+            self.post.machine_state.addCommand(command)
 
-        result = self.post._convert_arc_move(command)
+            result = self.post._convert_arc_move(command)
 
-        lines = result.strip().splitlines()
-        cg_line = next(l for l in lines if l.startswith("CG"))
-        self.assertEqual("CG,,10.000,0.000,5.000,0.000,T,1,5.000", cg_line)
+            lines = result.strip().splitlines()
+            cg_line = next(l for l in lines if l.startswith("CG"))
+            self.assertEqual("CG,,10.000,0.000,5.000,0.000,T,1,5.000", cg_line)
 
     def test_arc_no_gcode_in_output(self):
         """Helix output must not contain G2 or G3."""
 
-        # arc's need a previous Z, so psuedo track Z
-        self.post._modal_state = PPMachineState({k: None for k in PPMachineState.Tracked})
-        self.post._modal_state.update({"X": 0, "Y": 0, "Z": 0})
-        # self.post.machine_state.addCommand( Path.Command("G0", {"X":0, "Y":0, "Z": 0}) )
-
         command = Path.Command("G2", {"F": 50, "X": 10.0, "Y": 0.0, "I": 5.0, "J": 0.0, "Z": -1.0})
 
-        result = self.post._convert_arc_move(command)
-        self.assertNotIn("G2", result)
-        self.assertNotIn("G3", result)
+        with self.post.use_machine_state():
+            # need previous and this one as current machinestate
+            self.post.machine_state.addCommand(Path.Command("G0", {"X": 0, "Y": 0, "Z": 0}))
+            self.post.machine_state.addCommand(command)
+
+            result = self.post._convert_arc_move(command)
+            self.assertNotIn("G2", result)
+            self.assertNotIn("G3", result)
 
     def test_helix_required_params(self):
         """Helix requires all params, either explicit or modal"""
@@ -346,68 +336,76 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         # Remember that Helix's need a previous state Z to plunge from, and XY for speed calc
 
         # Explicit is ok
-        state = {k: None for k in PPMachineState.Tracked}
-        state.update({"X": 1, "Y": 2, "Z": 0})
-        self.post.machine_state = PPMachineState(state)
         command = Path.Command("G2 X10 Y9 I5 J4 Z-1 F50")
         # no exception
-        self.post._convert_arc_move(command)
+        with self.post.use_machine_state():
+            self.post.machine_state.setState({"X": 1, "Y": 2, "Z": 0})
+            self.post.machine_state.addCommand(command)
+
+            # no exception
+            self.post._convert_arc_move(command)
 
         # Modal XYF is ok
-        state = {k: None for k in PPMachineState.Tracked}
-        state.update({"Z": 0, "X": 10, "Y": 9, "F": 50})
-        self.post._modal_state = PPMachineState(state)
-        command = Path.Command("G2 I5 J4 Z-1")
-        # no exception
-        self.post._convert_arc_move(command)
+        with self.post.use_machine_state():
+            self.post.machine_state.setState({"Z": 0, "X": 10, "Y": 9, "F": 50})
+            command = Path.Command("G2 I5 J4 Z-1")
+            self.post.machine_state.addCommand(command)
+
+            # no exception
+            self.post._convert_arc_move(command)
 
         # No previous XYZ: exception
-        for required in "XYZ":
-            state = {k: None for k in PPMachineState.Tracked}
-            state.update({k: i / 10 for i, k in enumerate("XYZ") if k != required})
-            self.post._modal_state = PPMachineState(state)
-            command = Path.Command("G2 X10 Y9 I5 J4 Z-1 F50")
-            self.assertRaisesRegex(
-                ValueError,
-                r"Arcs require a previous " + required,
-                self.post._convert_arc_move,
-                command,
-            )
+        with self.post.use_machine_state():
+            for required in "XYZ":
+                self.post.machine_state.setState(
+                    {k: i / 10 for i, k in enumerate("XYZ") if k != required}
+                )
+                command = Path.Command("G2 X10 Y9 I5 J4 Z-1 F50")
+                self.post.machine_state.addCommand(command)
+
+                # exception
+                self.assertRaisesRegex(
+                    ValueError,
+                    r"Arcs require a previous " + required,
+                    self.post._convert_arc_move,
+                    command,
+                )
 
         # Each required XYIJF (explicit)
-        for missing in "XYIJF":
-            state = {k: None for k in PPMachineState.Tracked}
-            state.update({"Z": 0})
-            self.post._modal_state = PPMachineState(state)
-            command = Path.Command("G2 X10 Y9 I5 J4 Z-1 F50")
-            # rebuild w/o missing
-            command = Path.Command(
-                command.Name, {p: v for p, v in command.Parameters.items() if p != missing}
-            )
-            self.assertRaisesRegex(
-                ValueError,
-                r"missing \['" + missing + r"'\]",
-                self.post._convert_arc_move,
-                command,
-                # "failed to detect required Z in state"
-            )
+        with self.post.use_machine_state():
+            # leave machine_state as None's
+            for missing in "XYIJF":
+                self.post.machine_state.setState({"Z": 0})  # , "X": 0, "Y": 0})
+                command = Path.Command("G2 X10 Y9 I5 J4 Z-1 F50")
+                # rebuild w/o missing
+                command = Path.Command(
+                    command.Name, {p: v for p, v in command.Parameters.items() if p != missing}
+                )
+                self.post.machine_state.addCommand(command)
+
+                self.assertRaisesRegex(
+                    ValueError,
+                    r"missing \['" + missing + r"'\]",
+                    self.post._convert_arc_move,
+                    command,
+                    # "failed to detect required Z in state"
+                )
 
     def test_helix_bad_z(self):
         """Helix in negative direction is ok"""
 
         # Explicit is ok
-        state = {k: None for k in PPMachineState.Tracked}
-        state.update({"X": 0, "Y": 0, "Z": 0})
-        self.post._modal_state = PPMachineState(state)
         command = Path.Command("G2 X10 Y9 I5 J4 Z1 F50")
-        self.post._convert_arc_move(command)
-        self.assertTrue(True, "No Crash")
+
+        with self.post.use_machine_state():
+            self.post.machine_state.addCommand(Path.Command("G0", {"X": 0, "Y": 0, "Z": 0}))
+            self.post.machine_state.addCommand(command)
+
+            self.post._convert_arc_move(command)
+            self.assertTrue(True, "No Crash")
 
     def test_helix_units(self):
         """Helix has to use units"""
-
-        # arc's need a previous Z, so psuedo track Z
-        state = {k: None for k in PPMachineState.Tracked}
 
         # convenient numbers: 1,10
         # a quarter arc, of arc-length 1
@@ -432,93 +430,94 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
         # mm
 
-        self.post._modal_state = PPMachineState(state)
-        self.post._machine.output.units = OutputUnits.METRIC
-        self.post._modal_state.update(start.Parameters)
-        self.post.apply_configuration_bundle()
+        with self.post.use_machine_state():
+            self.post.machine_state.addCommand(start)
+            self.post.machine_state.addCommand(helix)
 
-        # self.post.machine_state.addCommand( start )
-        result = self.post._convert_arc_move(helix)
-        lines = result.split("\n")
-        speed_line = next((l for l in lines if l.startswith("VS,")), None)
-        self.assertIsNotNone(speed_line, "speed-line (VS) not found")
-        helix_line = next((l for l in lines if l.startswith("CG,")), None)
-        self.assertIsNotNone(speed_line, "helix-line (CG) not found")
+            self.post._machine.output.units = OutputUnits.METRIC
+            self.post.apply_configuration_bundle()
 
-        self.assertEqual(f"VS,{f:.3f},{f:.3f}", speed_line, "in mm/sec")
-        self.assertEqual(expected_distance(mm=True), helix_line, "still in mm")
+            result = self.post._convert_arc_move(helix)
+            lines = result.split("\n")
+            speed_line = next((l for l in lines if l.startswith("VS,")), None)
+            self.assertIsNotNone(speed_line, "speed-line (VS) not found")
+            helix_line = next((l for l in lines if l.startswith("CG,")), None)
+            self.assertIsNotNone(speed_line, "helix-line (CG) not found")
+
+            self.assertEqual(f"VS,{f:.3f},{f:.3f}", speed_line, "in mm/sec")
+            self.assertEqual(expected_distance(mm=True), helix_line, "still in mm")
 
         # inch
+        with self.post.use_machine_state():
+            self.post.machine_state.addCommand(start)
+            self.post.machine_state.addCommand(helix)
 
-        self.post._modal_state = PPMachineState(state)
-        self.post._machine.output.units = OutputUnits.IMPERIAL
-        self.post.apply_configuration_bundle()
+            self.post._machine.output.units = OutputUnits.IMPERIAL
+            self.post.apply_configuration_bundle()
 
-        self.post._modal_state.update(start.Parameters)
-        # self.post.machine_state.addCommand( start )
-        result = self.post._convert_arc_move(helix)
-        lines = result.split("\n")
-        speed_line = next((l for l in lines if l.startswith("VS,")), None)
-        self.assertIsNotNone(speed_line, "speed-line (VS) not found")
-        helix_line = next((l for l in lines if l.startswith("CG,")), None)
-        self.assertIsNotNone(speed_line, "helix-line (CG) not found")
+            result = self.post._convert_arc_move(helix)
+            lines = result.split("\n")
+            speed_line = next((l for l in lines if l.startswith("VS,")), None)
+            self.assertIsNotNone(speed_line, "speed-line (VS) not found")
+            helix_line = next((l for l in lines if l.startswith("CG,")), None)
+            self.assertIsNotNone(speed_line, "helix-line (CG) not found")
 
-        self.assertEqual(f"VS,{f/25.4:.3f},{f/25.4:.3f}", speed_line, "in in/sec")
-        self.assertEqual(expected_distance(mm=False), helix_line, "changed to inch")
+            self.assertEqual(f"VS,{f/25.4:.3f},{f/25.4:.3f}", speed_line, "in in/sec")
+            self.assertEqual(expected_distance(mm=False), helix_line, "changed to inch")
 
         # 3/4 of circle
-        # which just swaps start and end
-        start = Path.Command(f"G0 X{center['X']} Y{center['Y']+radius} Z10 F999")
-        helix = Path.Command(f"G2 X{center['X']-radius} Y{center['Y']-0} I0 J{-radius} Z9 F{f}")
+        with self.post.use_machine_state():
+            start = Path.Command(f"G0 X{center['X']} Y{center['Y']+radius} Z10 F999")
+            self.post.machine_state.addCommand(start)
+            self.post.machine_state.addCommand(helix)
 
-        self.post._modal_state = PPMachineState(state)
-        self.post._machine.output.units = OutputUnits.METRIC
-        self.post._modal_state.update(start.Parameters)
-        # self.post.machine_state.addCommand( start )
-        self.post.apply_configuration_bundle()
+            # which just swaps start and end
+            helix = Path.Command(f"G2 X{center['X']-radius} Y{center['Y']-0} I0 J{-radius} Z9 F{f}")
 
-        result = self.post._convert_arc_move(helix)
-        lines = result.split("\n")
-        speed_line = next((l for l in lines if l.startswith("VS,")), None)
-        self.assertIsNotNone(speed_line, "speed-line (VS) not found")
-        helix_line = next((l for l in lines if l.startswith("CG,")), None)
-        self.assertIsNotNone(speed_line, "helix-line (CG) not found")
+            self.post._machine.output.units = OutputUnits.METRIC
+            self.post.apply_configuration_bundle()
 
-        self.assertEqual(f"VS,{f:.3f},{f:.3f}", speed_line, "in in/sec")
-        plunge = (
-            start.Parameters["Z"] - helix.Parameters["Z"]
-        )  # plunge down is positive for opensbp
-        cg = (
-            f"CG,,{center['X']-radius:.3f},{(center['Y']):.3f},0.000,{-radius:.3f},T,1,{plunge:.3f}"
-        )
-        # self.assertEqual("CG,,0.363,2.000,0.000,-0.637,T,1,1.000", helix_line, "changed to inch")
-        self.assertEqual(cg, helix_line, "changed to inch")
+            result = self.post._convert_arc_move(helix)
+            lines = result.split("\n")
+            speed_line = next((l for l in lines if l.startswith("VS,")), None)
+            self.assertIsNotNone(speed_line, "speed-line (VS) not found")
+            helix_line = next((l for l in lines if l.startswith("CG,")), None)
+            self.assertIsNotNone(speed_line, "helix-line (CG) not found")
+
+            self.assertEqual(f"VS,{f:.3f},{f:.3f}", speed_line, "in in/sec")
+            plunge = (
+                start.Parameters["Z"] - helix.Parameters["Z"]
+            )  # plunge down is positive for opensbp
+            cg = f"CG,,{center['X']-radius:.3f},{(center['Y']):.3f},0.000,{-radius:.3f},T,1,{plunge:.3f}"
+            # self.assertEqual("CG,,0.363,2.000,0.000,-0.637,T,1,1.000", helix_line, "changed to inch")
+            self.assertEqual(cg, helix_line, "changed to inch")
 
         # CCW
         # which just swaps start and end (and change direction)
-        start = Path.Command(f"G0 X{center['X']} Y{center['Y']+radius} Z10 F999")
-        helix = Path.Command(f"G3 X{center['X']-radius} Y{center['Y']-0} I0 J{-radius} Z9 F{f}")
+        with self.post.use_machine_state():
+            start = Path.Command(f"G0 X{center['X']} Y{center['Y']+radius} Z10 F999")
+            self.post.machine_state.addCommand(start)
+            self.post.machine_state.addCommand(helix)
 
-        self.post._modal_state = PPMachineState(state)
-        self.post._machine.output.units = OutputUnits.METRIC
-        self.post._modal_state.update(start.Parameters)
-        # self.post.machine_state.addCommand( start )
-        self.post.apply_configuration_bundle()
+            helix = Path.Command(f"G3 X{center['X']-radius} Y{center['Y']-0} I0 J{-radius} Z9 F{f}")
 
-        result = self.post._convert_arc_move(helix)
-        lines = result.split("\n")
-        speed_line = next((l for l in lines if l.startswith("VS,")), None)
-        self.assertIsNotNone(speed_line, "speed-line (VS) not found")
-        helix_line = next((l for l in lines if l.startswith("CG,")), None)
-        self.assertIsNotNone(speed_line, "helix-line (CG) not found")
+            self.post._machine.output.units = OutputUnits.METRIC
+            self.post.apply_configuration_bundle()
 
-        self.assertEqual(f"VS,{f:.3f},{f:.3f}", speed_line, "in in/sec")
-        plunge = (
-            start.Parameters["Z"] - helix.Parameters["Z"]
-        )  # plunge down is positive for opensbp
-        cg = f"CG,,{center['X']-radius:.3f},{(center['Y']):.3f},0.000,{-radius:.3f},T,-1,{plunge:.3f}"
-        # self.assertEqual("CG,,0.363,2.000,0.000,-0.637,T,1,1.000", helix_line, "changed to inch")
-        self.assertEqual(cg, helix_line, "changed to inch")
+            result = self.post._convert_arc_move(helix)
+            lines = result.split("\n")
+            speed_line = next((l for l in lines if l.startswith("VS,")), None)
+            self.assertIsNotNone(speed_line, "speed-line (VS) not found")
+            helix_line = next((l for l in lines if l.startswith("CG,")), None)
+            self.assertIsNotNone(speed_line, "helix-line (CG) not found")
+
+            self.assertEqual(f"VS,{f:.3f},{f:.3f}", speed_line, "in in/sec")
+            plunge = (
+                start.Parameters["Z"] - helix.Parameters["Z"]
+            )  # plunge down is positive for opensbp
+            cg = f"CG,,{center['X']-radius:.3f},{(center['Y']):.3f},0.000,{-radius:.3f},T,-1,{plunge:.3f}"
+            # self.assertEqual("CG,,0.363,2.000,0.000,-0.637,T,1,1.000", helix_line, "changed to inch")
+            self.assertEqual(cg, helix_line, "changed to inch")
 
     # -------------------------------------------------------------------------
     # Tool change (M6)
@@ -846,8 +845,8 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         self.post._machine.output.output_header = True
         self.post._machine.output.duplicates.commands = False
         self.post._machine.output.duplicates.parameters = False
-        self.post._machine.processing.filter_inefficient_moves = True
-        self.post._machine.output.formatting.line_numbers = True
+        self.post._machine.processing.filter_inefficient_moves = False
+        self.post._machine.output.formatting.line_numbers = False
         self.post.apply_configuration_bundle()
 
         # basic stuff, + something that is shopbot specific
@@ -1082,8 +1081,8 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
         # First probe open
         file = "probe_results.txt"
-        open = Path.Command("(begin probe ...)", {}, {"probe_open": file})
-        gcode = self.post._convert_probe_open(open)
+        open_cmd = Path.Command("(begin probe ...)", {}, {"probe_open": file})
+        gcode = self.post._convert_probe_open(open_cmd)
 
         self.assertIn("CaptureZPos:", gcode, "Has subroutines once/job")
         self.assertRegex(
@@ -1094,8 +1093,8 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
         # Second probe open (check subroutines added only once)
         file = "probe_results2.txt"
-        open = Path.Command("(begin probe ...)", {}, {"probe_open": file})
-        _ = self.post._convert_probe_open(open)
+        open_cmd = Path.Command("(begin probe ...)", {}, {"probe_open": file})
+        _ = self.post._convert_probe_open(open_cmd)
         subroutine_markers = [
             line for line in self.post.values["POST_JOB"].split("\n") if line in "CaptureZPos:"
         ]
