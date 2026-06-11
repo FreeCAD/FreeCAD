@@ -746,12 +746,6 @@ G0 X1.000 Y2.000
 G0 Z8.000
 G90
 G0 X1.000 Y2.000 Z5.000
-G1 X1.000 Y2.000 Z3.500 F7380.000
-G0 X1.000 Y2.000 Z3.575
-G1 X1.000 Y2.000 Z2.000 F7380.000
-G0 X1.000 Y2.000 Z2.075
-G1 X1.000 Y2.000 Z0.500 F7380.000
-G0 X1.000 Y2.000 Z0.575
 G1 X1.000 Y2.000 Z0.000 F7380.000
 G0 X1.000 Y2.000 Z5.000
 G90
@@ -778,12 +772,6 @@ G90
 (G99)
 (G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
 G0 X1.000 Y2.000 Z5.000
-G1 X1.000 Y2.000 Z3.500 F7380.000
-G0 X1.000 Y2.000 Z3.575
-G1 X1.000 Y2.000 Z2.000 F7380.000
-G0 X1.000 Y2.000 Z2.075
-G1 X1.000 Y2.000 Z0.500 F7380.000
-G0 X1.000 Y2.000 Z0.575
 G1 X1.000 Y2.000 Z0.000 F7380.000
 G0 X1.000 Y2.000 Z5.000
 (G80)
@@ -793,12 +781,14 @@ G90
 """,
             "--comments --translate_drill",
         )
+
+    def test10731(self):
+        """Test translate_drill with G73 and G91."""
         #
         # reinitialize the postprocessor data structures before doing more tests
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G73 and G91.
         #
         path = [
             Path.Command("G0 X1 Y2"),
@@ -834,12 +824,6 @@ G0 Z8.000
 G91
 G90
 G0 X1.000 Y2.000 Z5.000
-G1 X1.000 Y2.000 Z3.500 F7380.000
-G0 X1.000 Y2.000 Z3.575
-G1 X1.000 Y2.000 Z2.000 F7380.000
-G0 X1.000 Y2.000 Z2.075
-G1 X1.000 Y2.000 Z0.500 F7380.000
-G0 X1.000 Y2.000 Z0.575
 G1 X1.000 Y2.000 Z0.000 F7380.000
 G0 X1.000 Y2.000 Z5.000
 G91
@@ -868,12 +852,6 @@ G91
 (G73 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
 G90
 G0 X1.000 Y2.000 Z5.000
-G1 X1.000 Y2.000 Z3.500 F7380.000
-G0 X1.000 Y2.000 Z3.575
-G1 X1.000 Y2.000 Z2.000 F7380.000
-G0 X1.000 Y2.000 Z2.075
-G1 X1.000 Y2.000 Z0.500 F7380.000
-G0 X1.000 Y2.000 Z0.575
 G1 X1.000 Y2.000 Z0.000 F7380.000
 G0 X1.000 Y2.000 Z5.000
 G91
@@ -959,12 +937,14 @@ G90
 """,
             "--comments --translate_drill",
         )
+
+    def test10811(self):
+        """Test translate_drill with G81 and G91"""
         #
         # reinitialize the postprocessor data structures before doing more tests
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G81 and G91.
         #
         path = [
             Path.Command("G0 X1 Y2"),
@@ -1079,7 +1059,6 @@ G0 Z8.000
 G90
 G0 X1.000 Y2.000 Z5.000
 G1 X1.000 Y2.000 Z0.000 F7380.000
-G4 P1.23456
 G0 X1.000 Y2.000 Z5.000
 G90
 """,
@@ -1106,7 +1085,6 @@ G90
 (G82 X1.000 Y2.000 Z0.000 R5.000 P1.23456 F7380.000)
 G0 X1.000 Y2.000 Z5.000
 G1 X1.000 Y2.000 Z0.000 F7380.000
-G4 P1.23456
 G0 X1.000 Y2.000 Z5.000
 (G80)
 G90
@@ -1115,12 +1093,14 @@ G90
 """,
             "--comments --translate_drill",
         )
+
+    def test10821(self):
+        """Test translate_drill with G82 and G91."""
         #
         # reinitialize the postprocessor data structures before doing more tests
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G82 and G91.
         #
         path = [
             Path.Command("G0 X1 Y2"),
@@ -1157,7 +1137,6 @@ G91
 G90
 G0 X1.000 Y2.000 Z5.000
 G1 X1.000 Y2.000 Z0.000 F7380.000
-G4 P1.23456
 G0 X1.000 Y2.000 Z5.000
 G91
 G90
@@ -1186,7 +1165,6 @@ G91
 G90
 G0 X1.000 Y2.000 Z5.000
 G1 X1.000 Y2.000 Z0.000 F7380.000
-G4 P1.23456
 G0 X1.000 Y2.000 Z5.000
 G91
 (G80)
@@ -1236,15 +1214,6 @@ G0 X1.000 Y2.000
 G0 Z8.000
 G90
 G0 X1.000 Y2.000 Z5.000
-G1 X1.000 Y2.000 Z3.500 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z3.575
-G1 X1.000 Y2.000 Z2.000 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z2.075
-G1 X1.000 Y2.000 Z0.500 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z0.575
 G1 X1.000 Y2.000 Z0.000 F7380.000
 G0 X1.000 Y2.000 Z5.000
 G90
@@ -1271,15 +1240,6 @@ G90
 (G99)
 (G83 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
 G0 X1.000 Y2.000 Z5.000
-G1 X1.000 Y2.000 Z3.500 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z3.575
-G1 X1.000 Y2.000 Z2.000 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z2.075
-G1 X1.000 Y2.000 Z0.500 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z0.575
 G1 X1.000 Y2.000 Z0.000 F7380.000
 G0 X1.000 Y2.000 Z5.000
 (G80)
@@ -1289,12 +1249,14 @@ G90
 """,
             "--comments --translate_drill",
         )
+
+    def test10831(self):
+        """Test translate_drill with G83 and G91."""
         #
         # reinitialize the postprocessor data structures before doing more tests
         #
         self.post.reinitialize()
         #
-        # Test translate_drill with G83 and G91.
         #
         path = [
             Path.Command("G0 X1 Y2"),
@@ -1330,15 +1292,6 @@ G0 Z8.000
 G91
 G90
 G0 X1.000 Y2.000 Z5.000
-G1 X1.000 Y2.000 Z3.500 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z3.575
-G1 X1.000 Y2.000 Z2.000 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z2.075
-G1 X1.000 Y2.000 Z0.500 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z0.575
 G1 X1.000 Y2.000 Z0.000 F7380.000
 G0 X1.000 Y2.000 Z5.000
 G91
@@ -1367,15 +1320,6 @@ G91
 (G83 X1.000 Y2.000 Z0.000 R5.000 Q1.500 F7380.000)
 G90
 G0 X1.000 Y2.000 Z5.000
-G1 X1.000 Y2.000 Z3.500 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z3.575
-G1 X1.000 Y2.000 Z2.000 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z2.075
-G1 X1.000 Y2.000 Z0.500 F7380.000
-G0 X1.000 Y2.000 Z5.000
-G0 X1.000 Y2.000 Z0.575
 G1 X1.000 Y2.000 Z0.000 F7380.000
 G0 X1.000 Y2.000 Z5.000
 G91
