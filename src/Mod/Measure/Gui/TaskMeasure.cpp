@@ -143,19 +143,10 @@ TaskMeasure::TaskMeasure()
 
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
     mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave).toBool();
     mGreedySelection = settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool();
     settings.endGroup();
 
-    showDelta = new QCheckBox();
-    showDelta->setChecked(delta);
-    showDeltaLabel = new QLabel(tr("Show Delta"));
-#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
-    connect(showDelta, &QCheckBox::checkStateChanged, this, &TaskMeasure::showDeltaChanged);
-#else
-    connect(showDelta, &QCheckBox::stateChanged, this, &TaskMeasure::showDeltaChanged);
-#endif
     autoSaveAction = new QAction(tr("Auto Save"));
     autoSaveAction->setCheckable(true);
     autoSaveAction->setChecked(mAutoSave);
@@ -230,20 +221,11 @@ TaskMeasure::TaskMeasure()
     formLayout->addRow(QLatin1String(), settingsLayout);
     formLayout->addRow(tr("Mode"), modeSwitch);
 
-    auto* deltaLayout = new QHBoxLayout();
-    deltaLayout->setContentsMargins(0, 0, 0, 0);
-    deltaLayout->setSpacing(8);
-    deltaLayout->addWidget(showDelta, 0, Qt::AlignVCenter | Qt::AlignLeft);
-    deltaLayout->addWidget(showDeltaLabel, 0, Qt::AlignVCenter | Qt::AlignLeft);
-    deltaLayout->addStretch(1);
-
-
     auto* resultLayout = new QHBoxLayout();
     resultLayout->setSpacing(8);
     resultLayout->addWidget(valueResult, 65);
     resultLayout->addWidget(unitSwitch, 30);
     formLayout->addRow(tr("Result"), resultLayout);
-    formLayout->addRow(deltaLayout);
     layout->addLayout(formLayout);
 
     Content.emplace_back(taskbox);
@@ -430,9 +412,6 @@ void TaskMeasure::tryUpdate()
 
         syncDisplayUnit();
         refreshResult();
-
-        // Initialite the measurement's viewprovider
-        initViewObject(_mMeasureObject);
     }
     _mMeasureObject->purgeTouched();
 }
@@ -485,36 +464,11 @@ void TaskMeasure::refreshResult()
     valueResult->setText(
         QString::fromStdString(Base::UnitsApi::toUnicodeSuperscript(_mMeasureObject->getResultString()))
     );
+
     if (typeInfo) {
         typeInfo->update(*_mMeasureObject);
     }
 }
-
-
-void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
-{
-    Gui::Document* guiDoc = Gui::Application::Instance->activeDocument();
-    if (!guiDoc) {
-        return;
-    }
-
-    Gui::ViewProvider* viewObject = guiDoc->getViewProvider(measure);
-    if (!viewObject) {
-        return;
-    }
-
-    // Init the position of the annotation
-    dynamic_cast<MeasureGui::ViewProviderMeasureBase*>(viewObject)->positionAnno(measure);
-
-    // Set the ShowDelta Property if it exists on the measurements view object
-    auto* prop = viewObject->getPropertyByName<App::PropertyBool>("ShowDelta");
-    setDeltaPossible(prop != nullptr);
-    if (prop) {
-        prop->setValue(showDelta->isChecked());
-        viewObject->update(prop);
-    }
-}
-
 
 void TaskMeasure::closeDialog()
 {
@@ -720,12 +674,6 @@ void TaskMeasure::onObjectDeleted(const App::DocumentObject& obj)
     }
 }
 
-void TaskMeasure::setDeltaPossible(bool possible)
-{
-    showDelta->setVisible(possible);
-    showDeltaLabel->setVisible(possible);
-}
-
 void TaskMeasure::onModeChanged(int index)
 {
     explicitMode = (index != 0);
@@ -743,19 +691,6 @@ void TaskMeasure::onUnitChanged(int index)
     Q_UNUSED(index);
     syncDisplayUnit();
     refreshResult();
-}
-
-void TaskMeasure::showDeltaChanged(int checkState)
-{
-    delta = checkState == Qt::CheckState::Checked;
-
-    QSettings settings;
-    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    settings.setValue(QLatin1String(taskMeasureShowDeltaSettingsName), delta);
-    settings.endGroup();
-    settings.sync();  // immediate write to the settings file
-
-    this->update();
 }
 
 void TaskMeasure::autoSaveChanged(bool checked)
@@ -814,20 +749,14 @@ void TaskMeasure::setModeSilent(App::MeasureType* mode)
     modeSwitch->blockSignals(false);
 }
 
-// Get explicitly set measure type from the mode switch
-App::MeasureType* TaskMeasure::getMeasureType()
-{
-    for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()) {
-        if (mType->label.c_str() == modeSwitch->currentText().toLatin1()) {
-            return mType;
-        }
-    }
-    return nullptr;
-}
-
 void TaskMeasure::createTypeInfo(const std::string& type)
 {
-    typeInfo.reset();
+    if (type == "DISTANCE" || type == "DISTANCEFREE") {
+        typeInfo = std::make_unique<TaskMeasureDistanceInfo>(*formLayout);
+    }
+    else {
+        typeInfo.reset();
+    }
 }
 
 
@@ -841,4 +770,117 @@ TaskMeasureTypeInfo::TaskMeasureTypeInfo(QFormLayout& parentFormLayout)
 TaskMeasureTypeInfo::~TaskMeasureTypeInfo()
 {
     _parentFormLayout.removeRow(_container);
+}
+
+TaskMeasureDistanceInfo::TaskMeasureDistanceInfo(QFormLayout& formLayout)
+    : TaskMeasureTypeInfo(formLayout)
+{
+    QSettings settings;
+    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
+    _delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), _delta).toBool();
+    settings.endGroup();
+
+    _showDelta = new QCheckBox();
+    _showDelta->setChecked(_delta);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+    connect(_showDelta, &QCheckBox::checkStateChanged, this, &TaskMeasureDistanceInfo::showDeltaChanged);
+#else
+    connect(_showDelta, &QCheckBox::stateChanged, this, &TaskMeasureDistanceInfo::showDeltaChanged);
+#endif
+
+    auto* showDeltaLayout = new QHBoxLayout();
+    showDeltaLayout->setContentsMargins(0, 0, 0, 0);
+    showDeltaLayout->setSpacing(8);
+    showDeltaLayout->addWidget(_showDelta, 0, Qt::AlignVCenter | Qt::AlignLeft);
+    showDeltaLayout->addWidget(new QLabel(tr("Show Delta")), 0, Qt::AlignVCenter | Qt::AlignLeft);
+    showDeltaLayout->addStretch(1);
+
+    _deltaXResult = new QLineEdit();
+    _deltaYResult = new QLineEdit();
+    _deltaZResult = new QLineEdit();
+    _deltaXResult->setReadOnly(true);
+    _deltaYResult->setReadOnly(true);
+    _deltaZResult->setReadOnly(true);
+
+    _deltaResult = new QWidget();
+    auto* deltaLayout = new QFormLayout(_deltaResult);
+    deltaLayout->addRow(QStringLiteral("Δx"), _deltaXResult);
+    deltaLayout->addRow(QStringLiteral("Δy"), _deltaYResult);
+    deltaLayout->addRow(QStringLiteral("Δz"), _deltaZResult);
+
+    auto* containerLayout = new QFormLayout(_container);
+    containerLayout->addRow(showDeltaLayout);
+    containerLayout->addRow(_deltaResult);
+
+    _deltaResult->setVisible(_delta);
+}
+
+void TaskMeasureDistanceInfo::resetUIState()
+{
+    _deltaXResult->setText(QLatin1String("-"));
+    _deltaYResult->setText(QLatin1String("-"));
+    _deltaZResult->setText(QLatin1String("-"));
+}
+
+void TaskMeasureDistanceInfo::update(Measure::MeasureBase& measureObject)
+{
+    _measureObject = &measureObject;
+    const Gui::Document* guiDoc = Gui::Application::Instance->activeDocument();
+    if (!guiDoc) {
+        return;
+    }
+
+    Gui::ViewProvider* viewObject = guiDoc->getViewProvider(&measureObject);
+    if (!viewObject) {
+        return;
+    }
+
+    // Init the position of the annotation
+    dynamic_cast<ViewProviderMeasureBase*>(viewObject)->positionAnno(&measureObject);
+
+    auto* prop = viewObject->getPropertyByName<App::PropertyBool>("ShowDelta");
+    assert(
+        prop && "A measure view provider that uses the TaskMeasureDistanceInfo must define ShowDelta"
+    );
+    prop->setValue(_delta);
+    viewObject->update(prop);
+
+    if (!_delta) {
+        return;
+    }
+
+    const auto* deltaXProp = measureObject.getPropertyByName<App::PropertyDistance>("DistanceX");
+    const auto* deltaYProp = measureObject.getPropertyByName<App::PropertyDistance>("DistanceY");
+    const auto* deltaZProp = measureObject.getPropertyByName<App::PropertyDistance>("DistanceZ");
+    assert(
+        (deltaXProp && deltaYProp && deltaZProp) && "A measure type that uses the TaskMeasureDistanceInfo must define the delta values to conform to the above code"
+    );
+
+    auto getDeltaText = [&measureObject](const App::PropertyDistance* deltaValue) {
+        return QString::fromStdString(
+            Base::UnitsApi::toUnicodeSuperscript(
+                (measureObject.formatQuantity(deltaValue->getQuantityValue()))
+            )
+        );
+    };
+
+    _deltaXResult->setText(getDeltaText(deltaXProp));
+    _deltaYResult->setText(getDeltaText(deltaYProp));
+    _deltaZResult->setText(getDeltaText(deltaZProp));
+}
+
+void TaskMeasureDistanceInfo::showDeltaChanged(int checkState)
+{
+    _delta = checkState == Qt::CheckState::Checked;
+
+    QSettings settings;
+    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
+    settings.setValue(QLatin1String(taskMeasureShowDeltaSettingsName), _delta);
+    settings.endGroup();
+    settings.sync();  // immediate write to the settings file
+
+    _deltaResult->setVisible(_delta);
+    if (_measureObject) {
+        update(*_measureObject);
+    }
 }
