@@ -126,7 +126,7 @@ gp_Pnt Deformation::bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve,
     B.Normalize();
 
     // compute vector at curve start
-    // and check for a normal return
+    // and check for a normal reverse
     gp_Pnt p0;
     gp_Vec T0;
     curve.D1(curve.FirstParameter(), p0, T0);
@@ -235,16 +235,19 @@ TopoDS_Face Deformation::deform(
     }
 
     // get the surface
-    BRepBuilderAPI_NurbsConvert nurbs_convert;
-    nurbs_convert.Perform(face);
-    TopoDS_Shape face_shape;
-    if (nurbs_convert.IsDone()) {
-        face_shape = nurbs_convert.Shape();
+    Handle(Geom_Surface) surf = BRep_Tool::Surface(TopoDS::Face(face));
+    Base::Console().log(surf->DynamicType()->Name());
+
+    if (!surf->IsKind("Geom_BSplineSurface")) {
+        // Convert to BSpline
+        BRepBuilderAPI_NurbsConvert nurbs_convert;
+        nurbs_convert.Perform(face);
+        TopoDS_Shape face_shape;
+        if (nurbs_convert.IsDone()) {
+            face_shape = nurbs_convert.Shape();
+            surf = BRep_Tool::Surface(TopoDS::Face(face_shape));
+        }
     }
-    else {
-        face_shape = face;
-    }
-    auto surf = BRep_Tool::Surface(TopoDS::Face(face_shape));
 
     // deform the surface
     double u1, u2, v1, v2;

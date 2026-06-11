@@ -174,7 +174,7 @@ void Flex::onChanged(const App::Property* prop)
 bool Flex::fetchCurveLink(const App::PropertyLinkSub& curveLink, BRepAdaptor_Curve& curve) const
 {
     if (!curveLink.getValue()) {
-        return false;
+        throw Base::ValueError("No curve selected");
     }
 
     auto linked = curveLink.getValue();
