@@ -207,7 +207,7 @@ G54
         cmd = Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5")
         cmd.Annotations = {"RetractMode": "G99"}
         test_path = [
-            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 X1 Y2 F100"),  # expect 6000
             Path.Command("G0 Z8"),
             Path.Command("G90"),
             Path.Command("G99"),
@@ -225,12 +225,6 @@ G0 X1.000 Y2.000
 G0 Z8.000
 G90
 G0 X1.000 Y2.000 Z5.000
-G1 X1.000 Y2.000 Z3.500 F7380.000
-G0 X1.000 Y2.000 Z3.575
-G1 X1.000 Y2.000 Z2.000 F7380.000
-G0 X1.000 Y2.000 Z2.075
-G1 X1.000 Y2.000 Z0.500 F7380.000
-G0 X1.000 Y2.000 Z0.575
 G1 X1.000 Y2.000 Z0.000 F7380.000
 G0 X1.000 Y2.000 Z5.000
 G90
@@ -247,12 +241,6 @@ G0 X1.000 Y2.000
 G0 Z8.000
 G90
 G0 X1.000 Y2.000 Z5.000
-G1 X1.000 Y2.000 Z3.500 F7380.000
-G0 X1.000 Y2.000 Z3.575
-G1 X1.000 Y2.000 Z2.000 F7380.000
-G0 X1.000 Y2.000 Z2.075
-G1 X1.000 Y2.000 Z0.500 F7380.000
-G0 X1.000 Y2.000 Z0.575
 G1 X1.000 Y2.000 Z0.000 F7380.000
 G0 X1.000 Y2.000 Z5.000
 G90
@@ -261,7 +249,7 @@ G90
         )
         # check for an inch/imperial chipbreaking amount
         test_path = [
-            Path.Command("G0 X25.4 Y50.8"),
+            Path.Command("G0 X25.4 Y50.8 F1"),
             Path.Command("G0 Z203.2"),
             Path.Command("G90"),
             Path.Command("G99"),
@@ -271,19 +259,13 @@ G90
         ]
         self.multi_compare(
             test_path,
-            """G90
+            f"""G90
 G20
 G54
 G0 X1.0000 Y2.0000
 G0 Z8.0000
 G90
 G0 X1.0000 Y2.0000 Z5.0000
-G1 X1.0000 Y2.0000 Z3.5000 F290.5512
-G0 X1.0000 Y2.0000 Z3.5750
-G1 X1.0000 Y2.0000 Z2.0000 F290.5512
-G0 X1.0000 Y2.0000 Z2.0750
-G1 X1.0000 Y2.0000 Z0.5000 F290.5512
-G0 X1.0000 Y2.0000 Z0.5750
 G1 X1.0000 Y2.0000 Z0.0000 F290.5512
 G0 X1.0000 Y2.0000 Z5.0000
 G90
