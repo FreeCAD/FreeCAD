@@ -411,7 +411,9 @@ bool QGSPage::attachView(App::DocumentObject* obj)
         return true;
     }
 
-    if (qview) {
+    // Balloons position their label and leader relative to the source view.
+    // Moving the graphics container as well would apply their X/Y offset twice.
+    if (qview && !dynamic_cast<QGIViewBalloon*>(qview)) {
         qview->updatePositionFromFeatureXY();
     }
 
