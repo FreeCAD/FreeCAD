@@ -316,7 +316,8 @@ bool DrawSketchHandler::isWidgetVisible() const
     return false;
 };
 
-bool DrawSketchHandler::isConstructionMode() const {
+bool DrawSketchHandler::isConstructionMode() const
+{
     return sketchgui->isConstructionMode();
 }
 
