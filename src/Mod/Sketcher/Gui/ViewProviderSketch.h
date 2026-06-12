@@ -556,6 +556,14 @@ public:
     void purgeHandler();
     //@}
 
+    // the active sketch GeometryCreationMode
+    GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
+
+    // set the current GeometryCreationMode mode
+    void setGeometryCreationMode(GeometryCreationMode geometryCreationMode);
+
+    // gets the GeometryCreationMode
+    GeometryCreationMode getGeometryCreationMode();
 
     // TODO: SketchMode should be refactored. DrawSketchHandler, its inheritance and free functions
     // should access this mode via the DrawSketchHandler Attorney. I will not refactor this at this
