@@ -25,7 +25,6 @@ import Part
 import Path
 import Path.Op.Base as OpBase
 import Path.Op.Util as PathOpUtil
-import Path.Base.MachineState as PathMachineState
 import Path.Base.Util as PathUtil
 import PathScripts.PathUtils as PathUtils
 
@@ -565,7 +564,6 @@ class ObjectPathShape:
                 else:
                     offset = PathOpUtil.offsetWire(wire, base, offsetVal, forward=True)
                 offsets.append(offset)
-
             wires = offsets
 
         if obj.HandleMultipleFeatures == "Collectively" and len(wires) > 1:
@@ -574,73 +572,73 @@ class ObjectPathShape:
             shapes = wires
 
         rAxis = obj.RetractAxis
-        pathParams = {}
-        if obj.UseStartPoint:
-            pathParams["start"] = obj.StartPoint
-        pathParams["return_end"] = False
-        pathParams["arc_plane"] = obj.getEnumerationsOfProperty("ArcPlane").index(obj.ArcPlane)
-        pathParams["sort_mode"] = obj.getEnumerationsOfProperty("SortMode").index(obj.SortMode)
-        pathParams["min_dist"] = obj.MinDistance
-        pathParams["abscissa"] = obj.SortAbscissa
-        pathParams["nearest_k"] = obj.NearestK
-        pathParams["orientation"] = obj.getEnumerationsOfProperty("Orientation").index(
-            obj.Orientation
-        )
-        pathParams["direction"] = obj.getEnumerationsOfProperty("Direction").index(obj.Direction)
-        pathParams["threshold"] = obj.RetractThreshold
-        pathParams["retract_axis"] = obj.getEnumerationsOfProperty("RetractAxis").index(rAxis)
-        pathParams["retraction"] = obj.ClearanceHeight
-        pathParams["resume_height"] = obj.SafeHeight
-        pathParams["segmentation"] = obj.Segmentation
-        pathParams["feedrate"] = obj.HorizFeed.Value
-        pathParams["feedrate_v"] = obj.VertFeed.Value
-        pathParams["verbose"] = obj.Verbose
-        pathParams["abs_center"] = obj.AbsoluteArcCenter
-        pathParams["preamble"] = obj.EmitPreamble
-        pathParams["deflection"] = obj.Deflection
-
-        obj.PathParams = str({key: value for key, value in pathParams.items()})
         bidir = obj.DualDirection and obj.HandleMultipleFeatures == "Individually"
+        depthParams = {
+            "clearance_height": obj.ClearanceHeight.Value,
+            "safe_height": obj.SafeHeight.Value,
+            "start_depth": obj.StartDepth.Value,
+            "step_down": obj.StepDepth.Value,
+            "z_finish_step": 0,
+            "final_depth": None,
+            "user_depths": None,
+        }
+        pathParams = {
+            "return_end": False,
+            "arc_plane": obj.getEnumerationsOfProperty("ArcPlane").index(obj.ArcPlane),
+            "sort_mode": obj.getEnumerationsOfProperty("SortMode").index(obj.SortMode),
+            "min_dist": obj.MinDistance,
+            "abscissa": obj.SortAbscissa,
+            "nearest_k": obj.NearestK,
+            "orientation": obj.getEnumerationsOfProperty("Orientation").index(obj.Orientation),
+            "direction": obj.getEnumerationsOfProperty("Direction").index(obj.Direction),
+            "threshold": obj.RetractThreshold,
+            "retract_axis": obj.getEnumerationsOfProperty("RetractAxis").index(rAxis),
+            "retraction": obj.ClearanceHeight,
+            "resume_height": obj.SafeHeight,
+            "segmentation": obj.Segmentation,
+            "feedrate": obj.HorizFeed.Value,
+            "feedrate_v": obj.VertFeed.Value,
+            "verbose": obj.Verbose,
+            "abs_center": obj.AbsoluteArcCenter,
+            "preamble": obj.EmitPreamble,
+            "deflection": obj.Deflection,
+        }
+        obj.PathParams = str({key: value for key, value in pathParams.items()})
+
         commands = []
-        machinestate = PathMachineState.MachineState()
-        machinestate.getPosition()
-        # machinestate.addCommand(cmd)
-        for shape in shapes:
-            pathParams["shapes"] = shape
-            pp = Path.fromShapes(**pathParams)
-            while pp.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
-                pp.deleteCommand(0)  # remove rapid moves
-
-            pathParams["start"] = Path.Geom.commandEndPoint(pp.Commands[-1])
-            ppReversed = Path.fromShapes(**pathParams)  # path with alternate direction
-            while ppReversed.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
-                ppReversed.deleteCommand(0)  # remove rapid moves
-
-            depthParams = {
-                "clearance_height": obj.ClearanceHeight.Value,
-                "safe_height": obj.SafeHeight.Value,
-                "start_depth": obj.StartDepth.Value,
-                "step_down": obj.StepDepth.Value,
-                "z_finish_step": 0,
-                "final_depth": None,
-                "user_depths": None,
-            }
+        for sIndex, shape in enumerate(shapes):
             if rAxis == "X":
                 depthParams["final_depth"] = shape.BoundBox.XMin
             elif rAxis == "Y":
                 depthParams["final_depth"] = shape.BoundBox.YMin
             else:  # rAxis == "Z":
                 depthParams["final_depth"] = shape.BoundBox.ZMin
-
             depths = [i for i in PathUtils.depth_params(**depthParams)]
+
+            if sIndex == 0 and obj.UseStartPoint:
+                pathParams["start"] = obj.StartPoint
+            else:
+                pathParams.pop("start", None)
+
+            pathParams["shapes"] = shape
+            pp = Path.fromShapes(**pathParams)
+            while pp.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
+                pp.deleteCommand(0)  # remove rapid moves
+
+            if len(depths) > 1 and bidir and not shape.Wires[0].isClosed():
+                pathParams["start"] = Path.Geom.commandEndPoint(pp.Commands[-1])
+                ppReversed = Path.fromShapes(**pathParams)  # path with alternate direction
+                while ppReversed.Commands[0].Name in Constants.GCODE_MOVE_RAPID:
+                    ppReversed.deleteCommand(0)  # remove rapid moves
+
             for i in range(len(depths)):
                 depth = depths[i]
                 if i % 2 and bidir and not shape.Wires[0].isClosed():
                     path = ppReversed
                 else:
                     path = pp
+
                 p = Path.Geom.commandEndPoint(path.Commands[0])
-                print("  ", depth, p)
 
                 if i == 0 or not bidir:  # add retract moves
                     retract = obj.SafeHeight.Value if i else obj.ClearanceHeight.Value
