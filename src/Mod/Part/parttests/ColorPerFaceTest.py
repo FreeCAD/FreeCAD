@@ -129,6 +129,46 @@ class ColorPerFaceTest(unittest.TestCase):
         mat = paths.get(1).getTail()
         self.assertEqual(mat.diffuseColor.getNum(), 6)
 
+    def testTooFewFaceColorsSaveRestore(self):
+        """
+        If the shape has more faces than stored colors then restore must use
+        the first stored color, matching the live recompute fallback.
+        """
+        box = self.doc.addObject("Part::Box", "Box")
+        self.doc.recompute()
+
+        box.ViewObject.DiffuseColor = [
+            (1.0, 0.0, 0.0, 1.0),
+            (0.0, 0.0, 1.0, 1.0),
+        ]
+
+        self.doc.saveAs(self.fileName)
+        App.closeDocument(self.doc.Name)
+
+        self.doc = App.openDocument(self.fileName)
+        box = self.doc.Box
+        self.assertEqual(len(box.Shape.Faces), 6)
+        self.assertEqual(len(box.ViewObject.DiffuseColor), 2)
+
+        sa = coin.SoSearchAction()
+        sa.setType(coin.SoMaterialBinding.getClassTypeId())
+        sa.setInterest(coin.SoSearchAction.ALL)
+        sa.apply(box.ViewObject.RootNode)
+        paths = sa.getPaths()
+
+        bind = paths.get(1).getTail()
+        self.assertEqual(bind.value.getValue(), bind.OVERALL)
+
+        sa = coin.SoSearchAction()
+        sa.setType(coin.SoMaterial.getClassTypeId())
+        sa.setInterest(coin.SoSearchAction.ALL)
+        sa.apply(box.ViewObject.RootNode)
+        paths = sa.getPaths()
+
+        mat = paths.get(1).getTail()
+        self.assertEqual(mat.diffuseColor.getNum(), 1)
+        self.assertEqual(mat.diffuseColor[0].getValue(), (1.0, 0.0, 0.0))
+
     def testMultiFuse(self):
         """
         Both input objects are red. So, it's expected that the output object is red, too.

@@ -100,6 +100,32 @@ using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 
+namespace
+{
+
+enum class FaceMaterialMode
+{
+    Unchanged,
+    Overall,
+    PerPart,
+};
+
+FaceMaterialMode getFaceMaterialMode(int materialCount, int faceCount)
+{
+    if (materialCount <= 0) {
+        return FaceMaterialMode::Unchanged;
+    }
+
+    // Per-face binding is valid only when every rendered face can map to a material.
+    if (materialCount > 1 && faceCount > 0 && materialCount >= faceCount) {
+        return FaceMaterialMode::PerPart;
+    }
+
+    return FaceMaterialMode::Overall;
+}
+
+}  // namespace
+
 
 //**************************************************************************
 // Construction/Destruction
@@ -680,17 +706,19 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
     Gui::SoUpdateVBOAction action;
     action.apply(this->faceset);
 
-    int size = static_cast<int>(materials.size());
-    if (size > 1 && size == this->faceset->partIndex.getNum()) {
+    const int materialCount = static_cast<int>(materials.size());
+    const int faceCount = this->faceset->partIndex.getNum();
+    const auto mode = getFaceMaterialMode(materialCount, faceCount);
+    if (mode == FaceMaterialMode::PerPart) {
         pcFaceBind->value = SoMaterialBinding::PER_PART;
         texture.activateMaterial();
 
-        pcShapeMaterial->diffuseColor.setNum(size);
-        pcShapeMaterial->ambientColor.setNum(size);
-        pcShapeMaterial->specularColor.setNum(size);
-        pcShapeMaterial->emissiveColor.setNum(size);
-        pcShapeMaterial->shininess.setNum(size);
-        pcShapeMaterial->transparency.setNum(size);
+        pcShapeMaterial->diffuseColor.setNum(materialCount);
+        pcShapeMaterial->ambientColor.setNum(materialCount);
+        pcShapeMaterial->specularColor.setNum(materialCount);
+        pcShapeMaterial->emissiveColor.setNum(materialCount);
+        pcShapeMaterial->shininess.setNum(materialCount);
+        pcShapeMaterial->transparency.setNum(materialCount);
 
         SbColor* dc = pcShapeMaterial->diffuseColor.startEditing();
         SbColor* ac = pcShapeMaterial->ambientColor.startEditing();
@@ -699,7 +727,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
         float* sh = pcShapeMaterial->shininess.startEditing();
         float* tr = pcShapeMaterial->transparency.startEditing();
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < materialCount; i++) {
             dc[i].setValue(
                 materials[i].diffuseColor.r,
                 materials[i].diffuseColor.g,
@@ -731,7 +759,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
         pcShapeMaterial->shininess.finishEditing();
         pcShapeMaterial->transparency.finishEditing();
     }
-    else if (size == 1) {
+    else if (mode == FaceMaterialMode::Overall) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
         setCoinAppearance(materials[0]);
     }
@@ -962,7 +990,10 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
         }
 
         if (!VisualTouched) {
-            if (this->faceset->partIndex.getNum() > this->pcShapeMaterial->diffuseColor.getNum()) {
+            const int materialCount = this->pcShapeMaterial->diffuseColor.getNum();
+            const int faceCount = this->faceset->partIndex.getNum();
+            const auto mode = getFaceMaterialMode(materialCount, faceCount);
+            if (mode == FaceMaterialMode::Overall) {
                 this->pcFaceBind->value = SoMaterialBinding::OVERALL;
             }
         }
