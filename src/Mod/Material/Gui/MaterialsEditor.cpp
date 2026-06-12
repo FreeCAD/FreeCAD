@@ -1030,7 +1030,7 @@ bool MaterialsEditor::updateMaterialPreview() const
     }
     if (_material->hasAppearanceProperty(QStringLiteral("Transparency"))) {
         double value = _material->getAppearanceValue(QStringLiteral("Transparency")).toDouble();
-        _rendered->setTransparency(value);
+        _rendered->setTransparency(value / 100.0);
     }
     else {
         _rendered->resetTransparency();

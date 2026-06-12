@@ -1650,7 +1650,7 @@ Material& Material::operator=(const App::Material& other)
     getAppearanceProperty(QStringLiteral("SpecularColor"))->setColor(other.specularColor);
     getAppearanceProperty(QStringLiteral("EmissiveColor"))->setColor(other.emissiveColor);
     getAppearanceProperty(QStringLiteral("Shininess"))->setFloat(other.shininess);
-    getAppearanceProperty(QStringLiteral("Transparency"))->setFloat(other.transparency);
+    getAppearanceProperty(QStringLiteral("Transparency"))->setFloat(other.transparency * 100.0F);
 
     if (!other.image.empty() || !other.imagePath.empty()) {
         if (!hasAppearanceModel(ModelUUIDs::ModelUUID_Rendering_Texture)) {
@@ -1770,7 +1770,8 @@ App::Material Material::getMaterialAppearance() const
         custom = true;
     }
     if (hasAppearanceProperty(QStringLiteral("Transparency"))) {
-        material.transparency = getAppearanceProperty(QStringLiteral("Transparency"))->getFloat();
+        material.transparency =
+            getAppearanceProperty(QStringLiteral("Transparency"))->getFloat() / 100.0F;
         custom = true;
     }
     if (hasAppearanceProperty(QStringLiteral("TextureImage"))) {

@@ -345,6 +345,20 @@ TEST_F(TestMaterial, TestCalculiXSteel)
     EXPECT_EQ(steel->getPhysicalQuantity(QStringLiteral("ThermalExpansionCoefficient")).getUserString(), parseQuantity("12.00 µm/m/K").toStdString());
 }
 
+TEST_F(TestMaterial, TestTransparencyUnits)
+{
+    Materials::Material material;
+    material.addAppearance(Materials::ModelUUIDs::ModelUUID_Rendering_Basic);
+    material.getAppearanceProperty(QStringLiteral("Transparency"))->setFloat(80.0);
+
+    auto appearance = material.getMaterialAppearance();
+    EXPECT_NEAR(appearance.transparency, 0.8F, 1e-6);
+
+    appearance.transparency = 0.35F;
+    material = appearance;
+    EXPECT_NEAR(material.getAppearanceValue(QStringLiteral("Transparency")).toDouble(), 35.0, 1e-6);
+}
+
 TEST_F(TestMaterial, TestColumns)
 {
     // Start with an empty material
