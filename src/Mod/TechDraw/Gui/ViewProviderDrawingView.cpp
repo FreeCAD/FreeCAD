@@ -259,8 +259,7 @@ void ViewProviderDrawingView::updateData(const App::Property* prop)
     if (prop == &obj->X ||
         prop == &obj->Y) {
 
-        if (qgiv->isSnapping() ||
-            obj->LockPosition.getValue()) {
+        if (qgiv->isSnapping()) {
             Gui::ViewProviderDocumentObject::updateData(prop);
             return;
         }
