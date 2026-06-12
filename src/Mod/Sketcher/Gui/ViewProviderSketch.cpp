@@ -3191,6 +3191,16 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     updateColor();
 }
 
+void ViewProviderSketch::setGeometryCreationMode(GeometryCreationMode newMode)
+{
+    geometryCreationMode = newMode;
+}
+
+GeometryCreationMode ViewProviderSketch::getGeometryCreationMode()
+{
+    return geometryCreationMode;
+}
+
 void ViewProviderSketch::updateColor()
 {
     assert(isInEditMode());
@@ -3587,12 +3597,12 @@ bool ViewProviderSketch::getIsShownVirtualSpace() const
 
 void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
 {
-    editCoinManager->drawEdit(EditCurve, currentGeometryCreationMode());
+    editCoinManager->drawEdit(EditCurve, geometryCreationMode);
 }
 
 void ViewProviderSketch::drawEdit(const std::list<std::vector<Base::Vector2d>>& list)
 {
-    editCoinManager->drawEdit(list, currentGeometryCreationMode());
+    editCoinManager->drawEdit(list, geometryCreationMode);
 }
 
 void ViewProviderSketch::drawLineExtensionAutoConstraintHint(

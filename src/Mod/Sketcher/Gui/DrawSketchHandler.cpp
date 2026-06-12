@@ -316,6 +316,15 @@ bool DrawSketchHandler::isWidgetVisible() const
     return false;
 };
 
+bool DrawSketchHandler::isConstructionMode() const {
+    return sketchgui->geometryCreationMode == GeometryCreationMode::Construction;
+}
+
+const char* DrawSketchHandler::constructionModeAsBooleanText()
+{
+    return sketchgui->geometryCreationMode == GeometryCreationMode::Construction ? "True" : "False";
+}
+
 QPixmap DrawSketchHandler::getToolIcon() const
 {
     return QPixmap();
