@@ -3413,7 +3413,10 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     // If we are restoring, don't set the Label object now; it will be restored later. This is to
     // avoid potential duplicate label conflicts later.
     if (options.testFlag(AddObjectOption::SetNewStatus) && !d->StatusBits.test(Restoring)) {
-        pcObject->Label.setValue(ObjectName);
+        const std::string labelName = Base::Tools::isNullOrEmpty(pObjectName)
+            ? ObjectName
+            : Base::Tools::getIdentifier(pObjectName);
+        pcObject->Label.setValue(labelName);
     }
 
     // Call the object-specific initialization
