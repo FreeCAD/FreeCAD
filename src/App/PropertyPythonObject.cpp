@@ -25,6 +25,7 @@
 
 
 #include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <ranges>
 #include <string>
@@ -37,41 +38,73 @@
 #include <Base/Writer.h>
 
 #include <App/Application.h>
+#include <App/PropertyContainer.h>
 #include "PropertyPythonObject.h"
-#include "App/PropertyContainer.h"
 
 
 using namespace App;
 
 namespace {
 
-bool isNotEmpty(const std::string& str)
+/**
+ * @brief Check whether a string is empty, blank or pure separators.
+ */
+bool isBlank(const std::string& str)
 {
-    return std::ranges::any_of(str, [](unsigned char c) { return !std::isspace(c); });
+    return !std::ranges::any_of(str, [](unsigned char c) { return !std::isspace(c) && c != '/' && c != '\\'; });
+}
+
+enum class PathType : char8_t
+{
+    File,
+    Dir
+};
+
+/**
+ * @brief Collapse repeated slashes (e.g. home path "build/debug//" + "Mod").
+ */
+void normalizePath(std::string& path, PathType type = PathType::Dir)
+{
+    std::ranges::replace(path, '\\', '/');
+    auto out = path.begin();
+    for (auto it = path.begin(); it != path.end(); ++it) {
+        if (*it == '/' && out != path.begin() && *(out - 1) == '/') {
+            continue;
+        }
+        *out++ = *it;
+    }
+    path.erase(out, path.end());
+    if (type == PathType::Dir && !path.empty() && path.back() != '/') {
+        path.push_back('/');
+    }
 }
 
 /**
- * @brief Get user defined Macros directory from preferences.
- *
- * @return User defined Macro dir if any, otherwise empty string.
+ * @brief Add user defined Macros directory from preferences.
  */
 void addUserMacroDir(Py::List& validDirs)
 {
     static constexpr auto GROUP = "User parameter:BaseApp/Preferences/Macro";
     static const auto group = App::GetApplication().GetParameterGroupByPath(GROUP);
-    static const auto defaultMacroDir = App::Application::getUserMacroDir();
+    static const auto defaultMacroDir = []() {
+        auto path = App::Application::getUserMacroDir();
+        normalizePath(path);
+        return path;
+    }();
 
     validDirs.append(Py::String(defaultMacroDir));
-    const auto path = group->GetASCII("MacroPath", defaultMacroDir.c_str());
-    if (isNotEmpty(path) && path != defaultMacroDir) {
-        validDirs.append(Py::String(path));
+    auto path = group->GetASCII("MacroPath", defaultMacroDir.c_str());
+    normalizePath(path);
+
+    if (isBlank(path) || path == defaultMacroDir) {
+        return;
     }
+
+    validDirs.append(Py::String(path));
 }
 
 /**
- * @brief Get user system Macros directory from install dir.
- *
- * @return System Macro dir.
+ * @brief Add user system Macros directory from install dir.
  */
 void addSystemMacroDir(Py::List& validDirs)
 {
@@ -84,11 +117,17 @@ void addSystemMacroDir(Py::List& validDirs)
  */
 void addAdditionalMacroDirs(Py::List& validDirs)
 {
-    const std::string additional = App::Application::Config()["AdditionalMacroPaths"];
-    auto paths = additional | std::ranges::views::split(';');
+    auto& conf = App::Application::Config();
+    auto additional = conf.find("AdditionalMacroPaths");
+    if (additional == conf.end()) {
+        return;
+    }
+
+    auto paths = additional->second | std::ranges::views::split(';');
     for (auto&& path : paths) {
-        const std::string dir {path.begin(), path.end()};
-        if (isNotEmpty(dir)) {
+        std::string dir {path.begin(), path.end()};
+        normalizePath(dir);
+        if (!isBlank(dir)) {
             validDirs.append(Py::String(dir));
         }
     }
@@ -103,24 +142,8 @@ void addAdditionalMacroDirs(Py::List& validDirs)
  */
 bool isUnderDirectory(std::string filePath, std::string directory)
 {
-    std::ranges::replace(filePath, '\\', '/');
-    std::ranges::replace(directory, '\\', '/');
-    // Collapse repeated slashes (e.g. home path "build/debug//" + "Mod")
-    auto collapseSlashes = [](std::string& s) {
-        auto out = s.begin();
-        for (auto it = s.begin(); it != s.end(); ++it) {
-            if (*it == '/' && out != s.begin() && *(out - 1) == '/') {
-                continue;
-            }
-            *out++ = *it;
-        }
-        s.erase(out, s.end());
-    };
-    collapseSlashes(filePath);
-    collapseSlashes(directory);
-    if (!directory.empty() && directory.back() != '/') {
-        directory += '/';
-    }
+    normalizePath(filePath, PathType::File);
+    normalizePath(directory);
     return filePath.starts_with(directory);
 }
 
