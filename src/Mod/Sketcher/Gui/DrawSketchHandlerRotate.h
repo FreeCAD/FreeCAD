@@ -359,8 +359,9 @@ private:
         individualAngle = shapeAngle / angleDivisor;
 
         std::vector<int> copyFactors;
-        copyFactors.reserve(symmetric && numberOfCopies > 0 ? 2 * numberOfCopiesToMake
-                                                            : numberOfCopiesToMake);
+        copyFactors.reserve(
+            symmetric && numberOfCopies > 0 ? 2 * numberOfCopiesToMake : numberOfCopiesToMake
+        );
         for (int i = 1; i <= numberOfCopiesToMake; i++) {
             copyFactors.push_back(i);
         }
