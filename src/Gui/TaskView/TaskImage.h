@@ -57,6 +57,8 @@ public:
         return active;
     }
     double getScaleFactor() const;
+    double getAngleDegrees() const;
+    // Point is expected to be in image plane coordinates
     double getDistance(const SbVec3f&) const;
     void setPlacement(const Base::Placement& plc);
 
@@ -65,10 +67,11 @@ private:
     static void getMousePosition(void* ud, SoEventCallback* ecb);
     void findPointOnImagePlane(SoEventCallback* ecb);
     void collectPoint(const SbVec3f&);
+    // Point is expected to be in image plane coordinates
     void setDistance(const SbVec3f&);
 
-    /// give the coordinates of a line on the image plane in imagePlane (2D) coordinates
-    SbVec3f getCoordsOnImagePlane(const SbVec3f& point);
+    /// Convert a world-space point into the image plane coordinate system
+    SbVec3f getCoordsOnImagePlane(const SbVec3f& point) const;
 
 Q_SIGNALS:
     void scaleRequired();
@@ -81,8 +84,8 @@ private:
     EditableDatumLabel* measureLabel;
     QPointer<Gui::View3DInventorViewer> viewer;
     ViewProvider* viewProv;
+    // 2D coordinates on the image plane, in its coordinate system
     std::vector<SbVec3f> points;
-    SbVec3f midPoint;
 };
 
 class Ui_TaskImage;
@@ -108,6 +111,7 @@ private:
     void scaleImage(double);
     void startScale();
     void acceptScale();
+    void applyOrientation();
     void rejectScale();
     void enableApplyBtn();
 

@@ -218,9 +218,30 @@ void TaskImage::startScale()
 void TaskImage::acceptScale()
 {
     if (scale) {
+        if (ui->checkBoxOrient->isChecked()) {
+            applyOrientation();
+        }
         scaleImage(scale->getScaleFactor());
         rejectScale();
     }
+}
+
+void TaskImage::applyOrientation()
+{
+    // Get the display angle we'll use as the snap base
+    double placementAngle = ui->spinBoxRotation->value().getValue();
+    float lineAngle = scale->getAngleDegrees();
+    float displayAngle = placementAngle + lineAngle;
+
+    // Figure out where to snap the measured angle and the adjustment we'll apply
+    const float snapSize = 45.0;
+    float snapTarget = snapSize * std::round(displayAngle / snapSize);
+    float adjustment = snapTarget - displayAngle;
+
+    float newAngle = placementAngle + adjustment;
+
+    ui->spinBoxRotation->setValue(newAngle);
+    updatePlacement();
 }
 
 void TaskImage::enableApplyBtn()
@@ -469,7 +490,6 @@ InteractiveScale::InteractiveScale(
     , placement(plc)
     , viewer(view)
     , viewProv(vp)
-    , midPoint(SbVec3f(0, 0, 0))
 {
     measureLabel = new EditableDatumLabel(viewer, placement);  // NOLINT
     measureLabel->setActivatedColor();
@@ -527,6 +547,16 @@ double InteractiveScale::getScaleFactor() const
     return measureLabel->getValue() / (points[0] - points[1]).length();
 }
 
+double InteractiveScale::getAngleDegrees() const
+{
+    if (points.size() < 2) {
+        return 0.0;
+    }
+
+    SbVec3f delta = points[1] - points[0];
+    return std::atan2(delta[1], delta[0]) * 180.0 / M_PI;
+}
+
 double InteractiveScale::getDistance(const SbVec3f& pt) const
 {
     if (points.empty()) {
@@ -548,7 +578,7 @@ void InteractiveScale::setDistance(const SbVec3f& pos3d)
     std::string valueStr;
     valueStr = quantity.getUserString(factor, unitStr);
     measureLabel->label->string = SbString(valueStr.c_str());
-    measureLabel->label->setPoints(getCoordsOnImagePlane(points[0]), getCoordsOnImagePlane(pos3d));
+    measureLabel->label->setPoints(points[0], pos3d);
 }
 
 void InteractiveScale::findPointOnImagePlane(SoEventCallback* ecb)
@@ -565,20 +595,19 @@ void InteractiveScale::findPointOnImagePlane(SoEventCallback* ecb)
 
 void InteractiveScale::collectPoint(const SbVec3f& pos3d)
 {
+    SbVec3f planePoint = getCoordsOnImagePlane(pos3d);
     if (points.empty()) {
-        points.push_back(pos3d);
+        points.push_back(planePoint);
 
-        measureLabel->label->setPoints(getCoordsOnImagePlane(pos3d), getCoordsOnImagePlane(pos3d));
+        measureLabel->label->setPoints(planePoint, planePoint);
         measureLabel->activate();
     }
     else if (points.size() == 1) {
-        double distance = getDistance(pos3d);
+        double distance = getDistance(planePoint);
         if (distance > Base::Precision::Confusion()) {
-            points.push_back(pos3d);
+            points.push_back(planePoint);
 
-            midPoint = (points[0] + points[1]) / 2;
-
-            measureLabel->startEdit(getDistance(points[1]), this, true);
+            measureLabel->startEdit(distance, this, true);
 
             Q_EMIT enableApplyBtn();
         }
@@ -602,7 +631,7 @@ void InteractiveScale::getMousePosition(void* ud, SoEventCallback* ecb)
 
         std::unique_ptr<SoPickedPoint> pp(view->getPointOnRay(l2e->getPosition(), scale->viewProv));
         if (pp) {
-            SbVec3f pos3d = pp->getPoint();
+            SbVec3f pos3d = scale->getCoordsOnImagePlane(pp->getPoint());
             scale->setDistance(pos3d);
         }
     }
@@ -664,7 +693,7 @@ void InteractiveScale::setPlacement(const Base::Placement& plc)
     measureLabel->setPlacement(plc);
 }
 
-SbVec3f InteractiveScale::getCoordsOnImagePlane(const SbVec3f& point)
+SbVec3f InteractiveScale::getCoordsOnImagePlane(const SbVec3f& point) const
 {
     // Plane form
     Base::Vector3d RX(1, 0, 0);
