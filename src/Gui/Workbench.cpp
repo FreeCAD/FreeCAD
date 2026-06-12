@@ -722,13 +722,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
               << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight" << "Separator"
               << "Std_StoreWorkingView" << "Std_RecallWorkingView";
 
-    // stereo
-    auto view3d = new MenuItem;
-    view3d->setCommand("&Stereo");
-    *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff"
-            << "Std_ViewIvStereoInterleavedRows" << "Std_ViewIvStereoInterleavedColumns"
-            << "Std_ViewIvStereoOff" << "Separator" << "Std_ViewIvIssueCamPos";
-
     // zoom
     auto zoom = new MenuItem;
     zoom->setCommand("&Zoom");
@@ -748,7 +741,9 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera"
           << "Std_MainFullscreen" << "Separator" << stdviews << "Std_FreezeViews" << "Std_DrawStyle"
           << "Std_SelBoundingBox"
-          << "Separator" << view3d << zoom << "Std_ViewDockUndockFullscreen" << "Std_AxisCross"
+          << "Separator" << zoom << "Std_ViewDockUndockFullscreen"
+          << "Std_ViewIvIssueCamPos"
+          << "Std_AxisCross"
           << "Std_ToggleClipPlane"
           << "Std_TextureMapping"
 #ifdef BUILD_VR

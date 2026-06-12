@@ -220,6 +220,7 @@ void AssemblyLink::onChanged(const App::Property* prop)
                 propPlc->setValue(movePlc);
             }
         }
+        updateParentJoints();
         return;
     }
     App::Part::onChanged(prop);
