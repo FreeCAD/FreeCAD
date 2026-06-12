@@ -54,6 +54,7 @@
 //    - align and distribute the intersections along an "effective" section plane
 //      which is a flattened version of the profile
 
+#include <BOPTools_AlgoTools.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
@@ -78,6 +79,7 @@
 #include <GProp_GProps.hxx>
 #include <Geom_Plane.hxx>
 #include <HLRAlgo_Projector.hxx>
+#include <IntTools_Context.hxx>
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentRun>
@@ -1449,6 +1451,64 @@ DrawComplexSection::getSegmentViewDirections(const TopoDS_Wire& profileWire,
     std::sort(normalKV.begin(), normalKV.end(), DrawComplexSection::normalLess);
 
     return normalKV;
+}
+
+void DrawComplexSection::assignFaceRepresentations(const std::vector<TechDraw::FacePtr>& faces,
+                                                   const std::vector<TopoDS_Face>& occFaces)
+{
+    showProgressMessage(getNameInDocument(), "is mapping face representations");
+
+    // Take the projector used for HLR when building the geometry
+    HLRAlgo_Projector projector = geometryObject->getProjector(getProjectionCS());
+
+    // Collect all 3D faces of the source shape we have projected
+    TopoDS_Shape shape = getShapeForGeometryBuild();
+    std::vector<TopoDS_Face> shapeFaces;
+    for (TopExp_Explorer explorer(shape, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        shapeFaces.push_back(TopoDS::Face(explorer.Current()));
+    }
+
+    // Map the drawing 2D faces to shape 3D faces with discovering the topmost ones
+    auto mapping = ShapeUtils::mapImageFacesToModelFaces(occFaces, shapeFaces, projector, true);
+
+    // Process all 2D faces, mark them correctly and add the faces identified as sections to the section compound
+    Handle(IntTools_Context) context = new IntTools_Context();
+    BRep_Builder builder;
+    builder.MakeCompound(m_sectionTopoDSFaces);
+
+    for (unsigned int i = 0; i < faces.size(); ++i) {
+        auto it = mapping.find(i);
+        if (it == mapping.end()) {
+            // This 2D face has no corresponding 3D face, thus it is a void
+            faces[i]->setRepresentation(FaceRepresentation::Hollow);
+        }
+        else if (it->second < 0) {
+            // Mapping failed for this face, just mark it as such
+            faces[i]->setRepresentation(FaceRepresentation::Failed);
+        }
+        else {
+            // This 2D face is a result of projecting a solid 3D face, but let's check if it is a section face
+            faces[i]->setRepresentation(FaceRepresentation::Opaque);
+            for (TopExp_Explorer explorer(unprojectedSectionFaces, TopAbs_FACE); explorer.More(); explorer.Next()) {
+                if (BOPTools_AlgoTools::AreFacesSameDomain(TopoDS::Face(explorer.Current()),
+                                                           shapeFaces[it->second], context)) {
+                    // This 2D face is a result of mapping a 3D section face
+                    faces[i]->setRepresentation(FaceRepresentation::Sliced);
+                    builder.Add(m_sectionTopoDSFaces, occFaces[i]);
+                    break;
+                }
+            }
+        }
+    }
+
+    // Clear the unprojected 3D faces compound, we won't need it anymore
+    unprojectedSectionFaces.Nullify();
+
+    // As last step build the geometry section faces from the OCC section faces
+    for (TopExp_Explorer explorer(m_sectionTopoDSFaces, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        TechDraw::FacePtr sectionFace = std::make_shared<TechDraw::Face>(TopoDS::Face(explorer.Current()));
+        m_tdSectionFaces.push_back(sectionFace);
+    }
 }
 
 //! true if the endpoints of edgeToMatch are vertexes of faceToSearch

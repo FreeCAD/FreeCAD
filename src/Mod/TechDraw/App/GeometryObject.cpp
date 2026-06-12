@@ -136,6 +136,16 @@ void GeometryObject::clear()
     edgeGeom.clear();
 }
 
+HLRAlgo_Projector GeometryObject::getProjector(const gp_Ax2& viewAxis) const
+{
+    if (m_isPersp) {
+        double fLength = std::max(Precision::Confusion(), m_focus);
+        return HLRAlgo_Projector(viewAxis, fLength);
+    }
+
+    return HLRAlgo_Projector(viewAxis);
+}
+
 void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& viewAxis)
 {
     clear();
@@ -145,15 +155,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
         brep_hlr = new HLRBRep_Algo();
         //        brep_hlr->Debug(true);
         brep_hlr->Add(inShape, m_isoCount);
-        if (m_isPersp) {
-            double fLength = std::max(Precision::Confusion(), m_focus);
-            HLRAlgo_Projector projector(viewAxis, fLength);
-            brep_hlr->Projector(projector);
-        }
-        else {
-            HLRAlgo_Projector projector(viewAxis);
-            brep_hlr->Projector(projector);
-        }
+        brep_hlr->Projector(getProjector(viewAxis));
         brep_hlr->Update();
         brep_hlr->Hide();
     }
