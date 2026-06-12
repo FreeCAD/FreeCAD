@@ -3472,19 +3472,27 @@ void Document::removeObject(const char* sName)
         return;
     }
 
-    if (pos->second->testStatus(ObjectStatus::Remove)) {
-        FC_LOG("Avoid recursive deletion of " << pos->second->getFullName());
+    auto object = pos->second;
+    if (object->testStatus(ObjectStatus::Remove)) {
+        FC_LOG("Avoid recursive deletion of " << object->getFullName());
         return;
     }
 
-    if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
+    if (object->testStatus(ObjectStatus::PendingRecompute)) {
         // TODO: shall we allow removal if there is active undo transaction?
+        if (object->testStatus(ObjectStatus::PendingRemoval)) {
+            FC_LOG("Object " << object->getFullName() << " is already pending removal");
+            return;
+        }
         FC_MSG("pending remove of " << sName << " after recomputing document " << getName());
-        d->pendingRemove.emplace_back(pos->second);
+        object->setStatus(ObjectStatus::PendingRemoval, true);
+        d->pendingRemove.emplace_back(object);
         return;
     }
 
-    _removeObject(pos->second, RemoveObjectOption::MayRemoveWhileRecomputing | RemoveObjectOption::MayDestroyOutOfTransaction);
+    _removeObject(object,
+                  RemoveObjectOption::MayRemoveWhileRecomputing
+                      | RemoveObjectOption::MayDestroyOutOfTransaction);
 }
 void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions options)
 {
@@ -3531,6 +3539,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
     }
 
     // Mark the object as about to be removed
+    pcObject->setStatus(ObjectStatus::PendingRemoval, false);
     pcObject->setStatus(ObjectStatus::Remove, true);
     if (!d->undoing && !d->rollback) {
         pcObject->unsetupObject();
