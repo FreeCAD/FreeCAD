@@ -25,7 +25,9 @@ class TestArchBuildingPartGui(TestArchBaseGui):
         with (
             mock.patch.object(first.ViewObject.Proxy, "setWorkingPlane"),
             mock.patch.object(second.ViewObject.Proxy, "setWorkingPlane"),
-            mock.patch.object(third.ViewObject.Proxy, "setWorkingPlane", side_effect=restore_second),
+            mock.patch.object(
+                third.ViewObject.Proxy, "setWorkingPlane", side_effect=restore_second
+            ),
         ):
             first.ViewObject.Proxy.activate()
             second.ViewObject.Proxy.activate()
