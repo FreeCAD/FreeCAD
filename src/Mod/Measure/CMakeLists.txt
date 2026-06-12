@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+disable_occt8_deprecation_warnings()
+
 add_subdirectory(App)
 
 set(Measure_Scripts
