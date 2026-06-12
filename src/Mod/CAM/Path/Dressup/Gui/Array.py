@@ -35,6 +35,8 @@ class DressupArrayViewProvider(object):
         return True
 
     def setEdit(self, vobj, mode=0):
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
         return True
 
     def unsetEdit(self, vobj, mode=0):
