@@ -317,12 +317,12 @@ bool DrawSketchHandler::isWidgetVisible() const
 };
 
 bool DrawSketchHandler::isConstructionMode() const {
-    return sketchgui->geometryCreationMode == GeometryCreationMode::Construction;
+    return sketchgui->isConstructionMode();
 }
 
 const char* DrawSketchHandler::constructionModeAsBooleanText()
 {
-    return sketchgui->geometryCreationMode == GeometryCreationMode::Construction ? "True" : "False";
+    return sketchgui->isConstructionMode() ? "True" : "False";
 }
 
 QPixmap DrawSketchHandler::getToolIcon() const

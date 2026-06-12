@@ -559,14 +559,13 @@ public:
     void purgeHandler();
     //@}
 
-    // the active sketch GeometryCreationMode
-    GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
+    bool isConstructionMode() const;
 
     // set the current GeometryCreationMode mode
     void setGeometryCreationMode(GeometryCreationMode geometryCreationMode);
 
     // gets the GeometryCreationMode
-    GeometryCreationMode getGeometryCreationMode();
+    GeometryCreationMode getGeometryCreationMode() const;
 
     // TODO: SketchMode should be refactored. DrawSketchHandler, its inheritance and free functions
     // should access this mode via the DrawSketchHandler Attorney. I will not refactor this at this
@@ -881,6 +880,9 @@ private:
     void commitDragMove(double x, double y);
 
     //@}
+
+    // the active sketch GeometryCreationMode
+    GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
 
     /** @name Selection functions */
     //@{
