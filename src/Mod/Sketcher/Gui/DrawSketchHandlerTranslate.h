@@ -27,6 +27,7 @@
 
 #include <QApplication>
 #include <map>
+#include <utility>
 
 #include <Base/Tools.h>
 
@@ -59,7 +60,7 @@ using DSHTranslateController = DrawSketchDefaultWidgetController<
     /*PAutoConstraintSize =*/0,
     /*OnViewParametersT =*/OnViewParameters<6>,  // NOLINT
     /*WidgetParametersT =*/WidgetParameters<2>,  // NOLINT
-    /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<2>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<0>,  // NOLINT
     /*WidgetLineEditsT =*/WidgetLineEdits<0>>;   // NOLINT
 
@@ -79,6 +80,8 @@ public:
         : listOfGeoIds(listOfGeoIds)
         , deleteOriginal(false)
         , cloneConstraints(false)
+        , firstDirectionSymmetric(false)
+        , secondDirectionSymmetric(false)
         , numberOfCopies(0)
         , secondNumberOfCopies(1)
     {}
@@ -204,6 +207,9 @@ private:
             setState(SelectMode::End);
         }
         else {
+            if (state() == SelectMode::SeekSecond) {
+                secondDirectionSymmetric = firstDirectionSymmetric;
+            }
             this->moveToNextMode();
         }
     }
@@ -244,7 +250,7 @@ private:
     Base::Vector2d referencePoint, firstTranslationPoint, secondTranslationPoint;
     Base::Vector3d firstTranslationVector, secondTranslationVector;
 
-    bool deleteOriginal, cloneConstraints;
+    bool deleteOriginal, cloneConstraints, firstDirectionSymmetric, secondDirectionSymmetric;
     int numberOfCopies, secondNumberOfCopies;
 
     SketcherTransformationExpressionHelper expressionHelper;
@@ -279,63 +285,105 @@ private:
             deleteOriginal = 0;
         }
 
+        std::vector<int> firstFactors;
+        firstFactors.reserve(
+            numberOfCopiesToMake + 1
+            + (firstDirectionSymmetric && numberOfCopies > 0 ? numberOfCopiesToMake : 0)
+        );
+
+        for (int i = 0; i <= numberOfCopiesToMake; i++) {
+            firstFactors.push_back(i);
+        }
+
+        if (firstDirectionSymmetric && numberOfCopies > 0) {
+            for (int i = 1; i <= numberOfCopiesToMake; i++) {
+                firstFactors.push_back(-i);
+            }
+        }
+
+        std::vector<int> secondFactors;
+        secondFactors.reserve(
+            secondNumberOfCopies
+            + (secondDirectionSymmetric && secondNumberOfCopies > 1 ? secondNumberOfCopies - 1 : 0)
+        );
+
         for (int k = 0; k < secondNumberOfCopies; k++) {
-            for (int i = 0; i <= numberOfCopiesToMake; i++) {
-                if ((k == 0 && i == 0)) {
+            secondFactors.push_back(k);
+        }
+
+        if (secondDirectionSymmetric && secondNumberOfCopies > 1) {
+            for (int k = 1; k < secondNumberOfCopies; k++) {
+                secondFactors.push_back(-k);
+            }
+        }
+
+        std::vector<std::pair<int, int>> copyOffsets;
+        if (!firstFactors.empty() && !secondFactors.empty()) {
+            copyOffsets.reserve(firstFactors.size() * secondFactors.size() - 1);
+        }
+
+        for (int secondFactor : secondFactors) {
+            for (int firstFactor : firstFactors) {
+                if (firstFactor == 0 && secondFactor == 0) {
                     continue;
                 }
-                Base::Vector3d vec = firstTranslationVector * i + secondTranslationVector * k;
+                copyOffsets.emplace_back(firstFactor, secondFactor);
+            }
+        }
 
-                for (auto& geoId : listOfGeoIds) {
-                    const Part::Geometry* pGeo = Obj->getGeometry(geoId);
-                    auto geoUniquePtr = std::unique_ptr<Part::Geometry>(pGeo->copy());
-                    Part::Geometry* geo = geoUniquePtr.get();
+        for (auto [firstFactor, secondFactor] : copyOffsets) {
+            Base::Vector3d vec = firstTranslationVector * firstFactor
+                + secondTranslationVector * secondFactor;
 
-                    if (isCircle(*geo)) {
-                        Part::GeomCircle* circle = static_cast<Part::GeomCircle*>(geo);  // NOLINT
-                        circle->setCenter(circle->getCenter() + vec);
-                    }
-                    else if (isArcOfCircle(*geo)) {
-                        Part::GeomArcOfCircle* arc = static_cast<Part::GeomArcOfCircle*>(geo);  // NOLINT
-                        arc->setCenter(arc->getCenter() + vec);
-                    }
-                    else if (isEllipse(*geo)) {
-                        Part::GeomEllipse* ellipse = static_cast<Part::GeomEllipse*>(geo);  // NOLINT
-                        ellipse->setCenter(ellipse->getCenter() + vec);
-                    }
-                    else if (isArcOfEllipse(*geo)) {
-                        Part::GeomArcOfEllipse* aoe = static_cast<Part::GeomArcOfEllipse*>(geo);  // NOLINT
-                        aoe->setCenter(aoe->getCenter() + vec);
-                    }
-                    else if (isArcOfHyperbola(*geo)) {
-                        Part::GeomArcOfHyperbola* aoh = static_cast<Part::GeomArcOfHyperbola*>(
-                            geo
-                        );  // NOLINT
-                        aoh->setCenter(aoh->getCenter() + vec);
-                    }
-                    else if (isArcOfParabola(*geo)) {
-                        Part::GeomArcOfParabola* aop = static_cast<Part::GeomArcOfParabola*>(geo);  // NOLINT
-                        aop->setCenter(aop->getCenter() + vec);
-                    }
-                    else if (isLineSegment(*geo)) {
-                        auto* line = static_cast<Part::GeomLineSegment*>(geo);  // NOLINT
-                        line->setPoints(line->getStartPoint() + vec, line->getEndPoint() + vec);
-                    }
-                    else if (isBSplineCurve(*geo)) {
-                        auto* bSpline = static_cast<Part::GeomBSplineCurve*>(geo);  // NOLINT
-                        std::vector<Base::Vector3d> poles = bSpline->getPoles();
-                        for (size_t p = 0; p < poles.size(); p++) {
-                            poles[p] = poles[p] + vec;
-                        }
-                        bSpline->setPoles(poles);
-                    }
-                    else if (isPoint(*geo)) {
-                        auto* point = static_cast<Part::GeomPoint*>(geo);  // NOLINT
-                        point->setPoint(point->getPoint() + vec);
-                    }
+            for (auto& geoId : listOfGeoIds) {
+                const Part::Geometry* pGeo = Obj->getGeometry(geoId);
+                auto geoUniquePtr = std::unique_ptr<Part::Geometry>(pGeo->copy());
+                Part::Geometry* geo = geoUniquePtr.get();
 
-                    ShapeGeometry.emplace_back(std::move(geoUniquePtr));
+                if (isCircle(*geo)) {
+                    Part::GeomCircle* circle = static_cast<Part::GeomCircle*>(geo);  // NOLINT
+                    circle->setCenter(circle->getCenter() + vec);
                 }
+                else if (isArcOfCircle(*geo)) {
+                    Part::GeomArcOfCircle* arc = static_cast<Part::GeomArcOfCircle*>(geo);  // NOLINT
+                    arc->setCenter(arc->getCenter() + vec);
+                }
+                else if (isEllipse(*geo)) {
+                    Part::GeomEllipse* ellipse = static_cast<Part::GeomEllipse*>(geo);  // NOLINT
+                    ellipse->setCenter(ellipse->getCenter() + vec);
+                }
+                else if (isArcOfEllipse(*geo)) {
+                    Part::GeomArcOfEllipse* aoe = static_cast<Part::GeomArcOfEllipse*>(geo);  // NOLINT
+                    aoe->setCenter(aoe->getCenter() + vec);
+                }
+                else if (isArcOfHyperbola(*geo)) {
+                    Part::GeomArcOfHyperbola* aoh = static_cast<Part::GeomArcOfHyperbola*>(
+                        geo
+                    );  // NOLINT
+                    aoh->setCenter(aoh->getCenter() + vec);
+                }
+                else if (isArcOfParabola(*geo)) {
+                    Part::GeomArcOfParabola* aop = static_cast<Part::GeomArcOfParabola*>(geo);  // NOLINT
+                    aop->setCenter(aop->getCenter() + vec);
+                }
+                else if (isLineSegment(*geo)) {
+                    auto* line = static_cast<Part::GeomLineSegment*>(geo);  // NOLINT
+                    line->setPoints(line->getStartPoint() + vec, line->getEndPoint() + vec);
+                }
+                else if (isBSplineCurve(*geo)) {
+                    auto* bSpline = static_cast<Part::GeomBSplineCurve*>(geo);  // NOLINT
+                    std::vector<Base::Vector3d> poles = bSpline->getPoles();
+                    for (size_t p = 0; p < poles.size(); p++) {
+                        poles[p] = poles[p] + vec;
+                    }
+                    bSpline->setPoles(poles);
+                }
+                else if (isPoint(*geo)) {
+                    auto* point = static_cast<Part::GeomPoint*>(geo);  // NOLINT
+                    point->setPoint(point->getPoint() + vec);
+                }
+
+                ShapeGeometry.emplace_back(std::move(geoUniquePtr));
             }
         }
 
@@ -371,82 +419,76 @@ private:
                 int secondIndex = indexOfGeoId(listOfGeoIds, cstr->Second);
                 int thirdIndex = indexOfGeoId(listOfGeoIds, cstr->Third);
 
-                for (int k = 0; k < secondNumberOfCopies; k++) {
-                    for (int i = 0; i <= numberOfCopiesToMake; i++) {
-                        if (k == 0 && i == 0) {
-                            continue;
-                        }
+                for (size_t copyIndex = 0; copyIndex < copyOffsets.size(); copyIndex++) {
+                    int firstIndexi = firstCurveCreated + firstIndex
+                        + size * static_cast<int>(copyIndex);
+                    int secondIndexi = firstCurveCreated + secondIndex
+                        + size * static_cast<int>(copyIndex);
+                    int thirdIndexi = firstCurveCreated + thirdIndex
+                        + size * static_cast<int>(copyIndex);
 
-                        int firstIndexi = firstCurveCreated + firstIndex + size * (i - 1)
-                            + size * (numberOfCopiesToMake + 1) * k;
-                        int secondIndexi = firstCurveCreated + secondIndex + size * (i - 1)
-                            + size * (numberOfCopiesToMake + 1) * k;
-                        int thirdIndexi = firstCurveCreated + thirdIndex + size * (i - 1)
-                            + size * (numberOfCopiesToMake + 1) * k;
+                    auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
+                    newConstr->First = firstIndexi;
 
-                        auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
-                        newConstr->First = firstIndexi;
-
-                        if ((cstr->Type == Symmetric || cstr->Type == Tangent
-                             || cstr->Type == Perpendicular || cstr->Type == Angle)
-                            && firstIndex >= 0 && secondIndex >= 0 && thirdIndex >= 0) {
-                            newConstr->Second = secondIndexi;
-                            newConstr->Third = thirdIndexi;
-                        }
-                        else if (
-                            (cstr->Type == Coincident || cstr->Type == Tangent
-                             || cstr->Type == Symmetric || cstr->Type == Perpendicular
-                             || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
-                             || cstr->Type == PointOnObject || cstr->Type == Horizontal
-                             || cstr->Type == Vertical || cstr->Type == InternalAlignment)
-                            && firstIndex >= 0 && secondIndex >= 0 && thirdIndex == GeoEnum::GeoUndef
-                        ) {
-                            newConstr->Second = secondIndexi;
-                        }
-                        else if (
-                            (cstr->Type == Radius || cstr->Type == Diameter || cstr->Type == Weight)
-                            && firstIndex >= 0
-                        ) {
-                            if (deleteOriginal || !cloneConstraints) {
-                                newConstr->setValue(cstr->getValue());
-                            }
-                            else {
-                                newConstr->Type = Equal;
-                                newConstr->First = cstr->First;
-                                newConstr->Second = firstIndexi;
-                            }
-                        }
-                        else if (
-                            (cstr->Type == Distance || cstr->Type == DistanceX
-                             || cstr->Type == DistanceY)
-                            && firstIndex >= 0 && secondIndex >= 0
-                        ) {
-                            if (!deleteOriginal && cloneConstraints
-                                && cstr->First == cstr->Second) {  // only line distances
-                                if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, secondIndexi) != -1) {
-                                    continue;
-                                }
-                                newConstr->Type = Equal;
-                                newConstr->First = cstr->First;
-                                newConstr->Second = secondIndexi;
-                                geoIdsWhoAlreadyHasEqual.push_back(secondIndexi);
-                            }
-                            else {
-                                newConstr->Second = secondIndexi;
-                            }
-                        }
-                        else if (
-                            (cstr->Type == Block || cstr->Type == Horizontal || cstr->Type == Vertical)
-                            && firstIndex >= 0
-                        ) {
-                            newConstr->First = firstIndexi;
+                    if ((cstr->Type == Symmetric || cstr->Type == Tangent
+                         || cstr->Type == Perpendicular || cstr->Type == Angle)
+                        && firstIndex >= 0 && secondIndex >= 0 && thirdIndex >= 0) {
+                        newConstr->Second = secondIndexi;
+                        newConstr->Third = thirdIndexi;
+                    }
+                    else if (
+                        (cstr->Type == Coincident || cstr->Type == Tangent
+                         || cstr->Type == Symmetric || cstr->Type == Perpendicular
+                         || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
+                         || cstr->Type == PointOnObject || cstr->Type == Horizontal
+                         || cstr->Type == Vertical || cstr->Type == InternalAlignment)
+                        && firstIndex >= 0 && secondIndex >= 0 && thirdIndex == GeoEnum::GeoUndef
+                    ) {
+                        newConstr->Second = secondIndexi;
+                    }
+                    else if (
+                        (cstr->Type == Radius || cstr->Type == Diameter || cstr->Type == Weight)
+                        && firstIndex >= 0
+                    ) {
+                        if (deleteOriginal || !cloneConstraints) {
+                            newConstr->setValue(cstr->getValue());
                         }
                         else {
-                            continue;
+                            newConstr->Type = Equal;
+                            newConstr->First = cstr->First;
+                            newConstr->Second = firstIndexi;
                         }
-
-                        ShapeConstraints.push_back(std::move(newConstr));
                     }
+                    else if (
+                        (cstr->Type == Distance || cstr->Type == DistanceX
+                         || cstr->Type == DistanceY)
+                        && firstIndex >= 0 && secondIndex >= 0
+                    ) {
+                        if (!deleteOriginal && cloneConstraints
+                            && cstr->First == cstr->Second) {  // only line distances
+                            if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, secondIndexi) != -1) {
+                                continue;
+                            }
+                            newConstr->Type = Equal;
+                            newConstr->First = cstr->First;
+                            newConstr->Second = secondIndexi;
+                            geoIdsWhoAlreadyHasEqual.push_back(secondIndexi);
+                        }
+                        else {
+                            newConstr->Second = secondIndexi;
+                        }
+                    }
+                    else if (
+                        (cstr->Type == Block || cstr->Type == Horizontal || cstr->Type == Vertical)
+                        && firstIndex >= 0
+                    ) {
+                        newConstr->First = firstIndexi;
+                    }
+                    else {
+                        continue;
+                    }
+
+                    ShapeConstraints.push_back(std::move(newConstr));
                 }
             }
         }
@@ -542,6 +584,17 @@ void DSHTranslateController::configureToolWidget()
                 "objects and their copies."
             )
         );
+        toolWidget->setCheckboxLabel(
+            WCheckbox::SecondBox,
+            QApplication::translate("TaskSketcherTool_c2_translate", "Symmetric")
+        );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::SecondBox,
+            QApplication::translate(
+                "TaskSketcherTool_c2_translate",
+                "Create additional copies in the opposite translation direction."
+            )
+        );
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
@@ -578,7 +631,7 @@ void DSHTranslateController::configureToolWidget()
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
     toolWidget->configureParameterUnit(OnViewParameter::Second, Base::Unit());
     toolWidget->configureParameterMin(OnViewParameter::First, 0.0);      // NOLINT
-    toolWidget->configureParameterMin(OnViewParameter::Second, 0.0);     // NOLINT
+    toolWidget->configureParameterMin(OnViewParameter::Second, 1.0);     // NOLINT
     toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);   // NOLINT
     toolWidget->configureParameterMax(OnViewParameter::Second, 9999.0);  // NOLINT
     toolWidget->configureParameterDecimals(OnViewParameter::First, 0);
@@ -594,6 +647,9 @@ void DSHTranslateController::adaptDrawingToParameterChange(int parameterindex, d
             break;
         case WParameter::Second:
             handler->secondNumberOfCopies = floor(abs(value));
+            if (handler->secondNumberOfCopies < 1) {
+                handler->secondNumberOfCopies = 1;
+            }
             break;
     }
 }
@@ -604,6 +660,14 @@ void DSHTranslateController::adaptDrawingToCheckboxChange(int checkboxindex, boo
     switch (checkboxindex) {
         case WCheckbox::FirstBox: {
             handler->cloneConstraints = value;
+        } break;
+        case WCheckbox::SecondBox: {
+            if (handler->state() == SelectMode::SeekThird) {
+                handler->secondDirectionSymmetric = value;
+            }
+            else {
+                handler->firstDirectionSymmetric = value;
+            }
         } break;
     }
 }
@@ -783,6 +847,7 @@ void DSHTranslateController::computeNextDrawSketchHandlerMode()
                     handler->setNextState(SelectMode::End);
                 }
                 else {
+                    handler->secondDirectionSymmetric = handler->firstDirectionSymmetric;
                     handler->setNextState(SelectMode::SeekThird);
                 }
             }
