@@ -3153,12 +3153,17 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     updateColor();
 }
 
+bool ViewProviderSketch::isConstructionMode() const
+{
+    return geometryCreationMode == GeometryCreationMode::Construction;
+}
+
 void ViewProviderSketch::setGeometryCreationMode(GeometryCreationMode newMode)
 {
     geometryCreationMode = newMode;
 }
 
-GeometryCreationMode ViewProviderSketch::getGeometryCreationMode()
+GeometryCreationMode ViewProviderSketch::getGeometryCreationMode() const
 {
     return geometryCreationMode;
 }
