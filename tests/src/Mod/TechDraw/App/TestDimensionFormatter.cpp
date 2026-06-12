@@ -53,16 +53,15 @@ TEST_F(TestDimensionFormatter, TolerancesUseDimensionDisplayUnit)
     dimension->UnderTolerance.setValue(-0.55);
 
     const auto tolerances = dimension->getFormattedToleranceValues(
-        TechDraw::DimensionFormatter::Format::FORMATTED);
+        TechDraw::DimensionFormatter::Format::FORMATTED
+    );
 
     bool parsed = false;
-    const double underTolerance =
-        QLocale().toDouble(QString::fromStdString(tolerances.first), &parsed);
+    const double underTolerance = QLocale().toDouble(QString::fromStdString(tolerances.first), &parsed);
     ASSERT_TRUE(parsed);
     EXPECT_NEAR(underTolerance, -0.55, 1e-6);
 
-    const double overTolerance =
-        QLocale().toDouble(QString::fromStdString(tolerances.second), &parsed);
+    const double overTolerance = QLocale().toDouble(QString::fromStdString(tolerances.second), &parsed);
     ASSERT_TRUE(parsed);
     EXPECT_NEAR(overTolerance, 0.05, 1e-6);
 
@@ -71,12 +70,14 @@ TEST_F(TestDimensionFormatter, TolerancesUseDimensionDisplayUnit)
         dimension->getDimValue(),
         QStringLiteral("%.2f"),
         TechDraw::DimensionFormatter::Format::UNIT,
-        true);
+        true
+    );
     const auto toleranceUnit = dimension->formatValue(
         dimension->OverTolerance.getValue(),
         QStringLiteral("%+.2f"),
         TechDraw::DimensionFormatter::Format::UNIT,
-        false);
+        false
+    );
     EXPECT_EQ(toleranceUnit, dimensionUnit);
 }
 
