@@ -1,47 +1,43 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# include <GL/gl.h>
-#endif
 #include <algorithm>
 #include <limits>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoPointSizeElement.h>
+#include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoIndexedPointSet.h>
 
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/So3DAnnotation.h>
@@ -54,6 +50,71 @@ using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepPointSet)
 
+static void applyOverlayPrimitiveState(SoState* state, SoNode* node)
+{
+    if (!state || !node) {
+        return;
+    }
+
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+    SoTextureEnabledElement::set(state, node, false);
+    SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
+    SoOverrideElement::setMaterialBindingOverride(state, node, true);
+}
+
+static void renderOverlayPoints(
+    SoGLRenderAction* action,
+    SoIndexedPointSet* pointSet,
+    const int32_t* indices,
+    int numIndices,
+    const SbColor& color
+)
+{
+    if (!action || !pointSet || !indices || numIndices <= 0) {
+        return;
+    }
+
+    std::vector<int32_t> pointIndices;
+    pointIndices.reserve(static_cast<size_t>(numIndices) + 1);
+
+    for (int i = 0; i < numIndices; i++) {
+        const int32_t idx = indices[i];
+        if (idx >= 0) {
+            pointIndices.push_back(idx);
+        }
+    }
+    pointIndices.push_back(-1);
+
+    if (pointIndices.size() <= 1) {
+        return;
+    }
+
+    auto state = action->getState();
+    state->push();
+
+    applyOverlayPrimitiveState(state, pointSet);
+    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+
+    SoLazyElement::setEmissive(state, &color);
+    uint32_t packedColor = color.getPackedValue(0.0);
+    SoLazyElement::setPacked(state, pointSet, 1, &packedColor, false);
+
+    float ps = SoPointSizeElement::get(state);
+    if (ps < 4.0f) {
+        SoPointSizeElement::set(state, pointSet, 4.0f);
+    }
+
+    // setValues() does not shrink the field, so rewrite the overlay index array
+    // to the exact size to avoid stale points from the previous overlay render.
+    pointSet->coordIndex.setNum(static_cast<int>(pointIndices.size()));
+    int32_t* coordIndex = pointSet->coordIndex.startEditing();
+    std::copy(pointIndices.begin(), pointIndices.end(), coordIndex);
+    pointSet->coordIndex.finishEditing();
+    pointSet->GLRender(action);
+
+    state->pop();
+}
+
 void SoBrepPointSet::initClass()
 {
     SO_NODE_INIT_CLASS(SoBrepPointSet, SoPointSet, "PointSet");
@@ -64,6 +125,23 @@ SoBrepPointSet::SoBrepPointSet()
     , selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepPointSet);
+    SO_NODE_ADD_FIELD(highlightCoordIndex, (0));
+    SO_NODE_ADD_FIELD(selectionCoordIndex, (0));
+    SO_NODE_ADD_FIELD(highlightColor, (SbColor(1.0f, 0.0f, 0.0f)));
+    SO_NODE_ADD_FIELD(selectionColor, (SbColor(0.0f, 0.6f, 0.0f)));
+
+    highlightCoordIndex.setNum(0);
+    selectionCoordIndex.setNum(0);
+    overlayPointSet = new SoIndexedPointSet;
+    overlayPointSet->ref();
+}
+
+SoBrepPointSet::~SoBrepPointSet()
+{
+    if (overlayPointSet) {
+        overlayPointSet->unref();
+        overlayPointSet = nullptr;
+    }
 }
 
 void SoBrepPointSet::GLRender(SoGLRenderAction* action)
@@ -157,10 +235,10 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
         renderSelection(action, ctx2, false);
     }
     else if (Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
-        glPushAttrib(GL_DEPTH_BUFFER_BIT);
-        glDepthFunc(GL_ALWAYS);
+        state->push();
+        SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
         inherited::GLRender(action);
-        glPopAttrib();
+        state->pop();
     }
     else {
         inherited::GLRender(action);
@@ -178,6 +256,28 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
         renderHighlight(action, ctx);
     }
     // #endif
+
+    // Optional overlay rendering for deterministic tests (and programmatic usage).
+    const int hlNum = highlightCoordIndex.getNum();
+    if (hlNum > 0) {
+        renderOverlayPoints(
+            action,
+            overlayPointSet,
+            highlightCoordIndex.getValues(0),
+            hlNum,
+            highlightColor.getValue()
+        );
+    }
+    const int selNum = selectionCoordIndex.getNum();
+    if (selNum > 0) {
+        renderOverlayPoints(
+            action,
+            overlayPointSet,
+            selectionCoordIndex.getValues(0),
+            selNum,
+            selectionColor.getValue()
+        );
+    }
 }
 
 void SoBrepPointSet::GLRenderBelowPath(SoGLRenderAction* action)
@@ -222,97 +322,87 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx
         return;
     }
 
-    SoState* state = action->getState();
-    state->push();
-    float ps = SoPointSizeElement::get(state);
-    if (ps < 4.0f) {
-        SoPointSizeElement::set(state, this, 4.0f);
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
+    if (!coords) {
+        return;
     }
-
-    SoLazyElement::setEmissive(state, &ctx->highlightColor);
-    packedColor = ctx->highlightColor.getPackedValue(0.0);
-    SoLazyElement::setPacked(state, this, 1, &packedColor, false);
-
-    const SoCoordinateElement* coords;
-    const SbVec3f* normals;
-
-    this->getVertexData(state, coords, normals, false);
-
-    SoMaterialBundle mb(action);
-    mb.sendFirst();  // make sure we have the correct material
 
     int id = ctx->highlightIndex;
-    const SbVec3f* coords3d = coords->getArrayPtr3();
-    if (coords3d) {
-        if (id == std::numeric_limits<int>::max()) {
-            glBegin(GL_POINTS);
-            for (int idx = startIndex.getValue(); idx < coords->getNum(); ++idx) {
-                glVertex3fv((const GLfloat*)(coords3d + idx));
-            }
-            glEnd();
+    if (id == std::numeric_limits<int>::max()) {
+        std::vector<int32_t> pointIndices;
+        pointIndices.reserve(coords->getNum() - startIndex.getValue());
+        for (int idx = startIndex.getValue(); idx < coords->getNum(); ++idx) {
+            pointIndices.push_back(static_cast<int32_t>(idx));
         }
-        else if (id < this->startIndex.getValue() || id >= coords->getNum()) {
-            SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
-        }
-        else {
-            glBegin(GL_POINTS);
-            glVertex3fv((const GLfloat*)(coords3d + id));
-            glEnd();
-        }
+        renderOverlayPoints(
+            action,
+            overlayPointSet,
+            pointIndices.data(),
+            static_cast<int>(pointIndices.size()),
+            ctx->highlightColor
+        );
+        return;
     }
-    state->pop();
+    if (id < this->startIndex.getValue() || id >= coords->getNum()) {
+        SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
+        return;
+    }
+
+    const int32_t pointIndices[1] = {static_cast<int32_t>(id)};
+    renderOverlayPoints(action, overlayPointSet, pointIndices, 1, ctx->highlightColor);
 }
 
-void SoBrepPointSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx, bool push)
+void SoBrepPointSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx, bool /*push*/)
 {
-    SoState* state = action->getState();
-    if (push) {
-        state->push();
-        float ps = SoPointSizeElement::get(state);
-        if (ps < 4.0f) {
-            SoPointSizeElement::set(state, this, 4.0f);
-        }
-
-        SoLazyElement::setEmissive(state, &ctx->selectionColor);
-        packedColor = ctx->selectionColor.getPackedValue(0.0);
-        SoLazyElement::setPacked(state, this, 1, &packedColor, false);
+    if (!ctx) {
+        return;
     }
 
-    const SoCoordinateElement* coords;
-    const SbVec3f* normals;
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
+    if (!coords) {
+        return;
+    }
 
-    this->getVertexData(state, coords, normals, false);
-
-    SoMaterialBundle mb(action);
-    mb.sendFirst();  // make sure we have the correct material
-
-    bool warn = false;
     int startIndex = this->startIndex.getValue();
-    const SbVec3f* coords3d = coords->getArrayPtr3();
-    if (coords3d) {
-        glBegin(GL_POINTS);
-        if (ctx->isSelectAll()) {
-            for (int idx = startIndex; idx < coords->getNum(); ++idx) {
-                glVertex3fv((const GLfloat*)(coords3d + idx));
+    if (ctx->isSelectAll()) {
+        std::vector<int32_t> pointIndices;
+        pointIndices.reserve(coords->getNum() - startIndex);
+        for (int idx = startIndex; idx < coords->getNum(); ++idx) {
+            pointIndices.push_back(static_cast<int32_t>(idx));
+        }
+        renderOverlayPoints(
+            action,
+            overlayPointSet,
+            pointIndices.data(),
+            static_cast<int>(pointIndices.size()),
+            ctx->selectionColor
+        );
+    }
+    else {
+        std::vector<int32_t> pointIndices;
+        pointIndices.reserve(ctx->selectionIndex.size());
+        bool warn = false;
+
+        for (auto idx : ctx->selectionIndex) {
+            if (idx >= startIndex && idx < coords->getNum()) {
+                pointIndices.push_back(static_cast<int32_t>(idx));
+            }
+            else {
+                warn = true;
             }
         }
-        else {
-            for (auto idx : ctx->selectionIndex) {
-                if (idx >= startIndex && idx < coords->getNum()) {
-                    glVertex3fv((const GLfloat*)(coords3d + idx));
-                }
-                else {
-                    warn = true;
-                }
-            }
+
+        renderOverlayPoints(
+            action,
+            overlayPointSet,
+            pointIndices.data(),
+            static_cast<int>(pointIndices.size()),
+            ctx->selectionColor
+        );
+
+        if (warn) {
+            SoDebugError::postWarning("SoBrepPointSet::renderSelection", "selectionIndex out of range");
         }
-        glEnd();
-    }
-    if (warn) {
-        SoDebugError::postWarning("SoBrepPointSet::renderSelection", "selectionIndex out of range");
-    }
-    if (push) {
-        state->pop();
     }
 }
 

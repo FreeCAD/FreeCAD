@@ -27,6 +27,7 @@
 #include <boost/smart_ptr/scoped_ptr.hpp>
 
 #include <Inventor/SoRenderManager.h>
+#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
 #include <QMetaObject>
@@ -44,8 +45,8 @@
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 
+#include "EditModeCoinManager.h"
 #include "PropertyVisualLayerList.h"
-
 #include "ShortcutListener.h"
 #include "Utils.h"
 
@@ -58,6 +59,7 @@ class TopoDS_Face;
 class SoSeparator;
 class SbLine;
 class SbVec2f;
+class SbVec2s;
 class SbVec3f;
 class SoCoordinate3;
 class SoInfo;
@@ -66,6 +68,7 @@ class SoTransform;
 class SoLineSet;
 class SoMarkerSet;
 class SoPickedPoint;
+class SoPickedPointList;
 class SoRayPickAction;
 
 class SoImage;
@@ -100,6 +103,7 @@ namespace SketcherGui
 class EditModeCoinManager;
 class SnapManager;
 class DrawSketchHandler;
+class ViewProviderSketchCommandConstraintsAttorney;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
@@ -477,6 +481,9 @@ private:
         bool isShownVirtualSpace = false;  // indicates whether the present virtual space view is the
                                            // Real Space or the Virtual Space (virtual space 1 or 2)
         bool buttonPress = false;
+        bool hasLastPreselectionResult = false;
+        SbVec2s lastPreselectionCursorPos;
+        EditModeCoinManager::PreselectionResult lastPreselectionResult;
 
         int stdCountSegments = 50;  // preferences controlled default geometry sampling for selection
     };
@@ -663,6 +670,8 @@ public:
     void attach(App::DocumentObject*) override;
     void updateData(const App::Property*) override;
 
+    void setActive(bool active) override;
+
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     /// is called when the Provider is in edit and a deletion request occurs
     bool onDelete(const std::vector<std::string>&) override;
@@ -727,12 +736,23 @@ public:
     }
     //@}
 
+    bool getPreselectionAtViewportPos(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer,
+        std::vector<std::string>& subElementNames,
+        Base::Vector3d& pickedPoint
+    );
+
     /** @name Attorneys for collaboration with helper classes */
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
     friend class ViewProviderSketchCoinAttorney;
     friend class ViewProviderSketchSnapAttorney;
+    friend class ViewProviderSketchCommandConstraintsAttorney;
     //@}
+
+    bool editingCancelled;
+
 protected:
     /** @name enter/exit edit mode */
     //@{
@@ -752,7 +772,7 @@ protected:
     /// get called if a subelement is double clicked while editing
     void editDoubleClicked();
     /// get called when an edge is double clicked to select/unselect the whole wire
-    void toggleWireSelelection(int geoId);
+    void toggleWireSelection(int geoId);
     //@}
 
     /** @name Solver Information */
@@ -789,6 +809,10 @@ protected:
     void finishRestoring() override;
 
     bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    std::vector<std::pair<std::string, std::string>> getRelatedElements(
+        const std::string& subname,
+        const SbVec3f& pickPoint
+    ) const override;
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 
 private:
@@ -809,8 +833,25 @@ private:
 
     /** @name preselection functions */
     //@{
+    SoPickedPointList getPickedPointsOnRay(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
+    EditModeCoinManager::PreselectionResult getPreselectionResultAtViewportPos(
+        const SbVec2s& pos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
+    void cachePreselectionResult(
+        const SbVec2s& pos,
+        const EditModeCoinManager::PreselectionResult& result
+    );
+    EditModeCoinManager::PreselectionResult resolveClickPreselectionResult(
+        const EditModeCoinManager::PreselectionResult& clickResult,
+        const SbVec2s& cursorPos,
+        const Gui::View3DInventorViewer* viewer
+    ) const;
     /// helper to detect preselection
-    bool detectAndShowPreselection(SoPickedPoint* Point);
+    bool detectAndShowPreselection(const EditModeCoinManager::PreselectionResult& result);
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
@@ -843,11 +884,7 @@ private:
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints();
 
-    void preselectToSelection(
-        const std::stringstream& ss,
-        boost::scoped_ptr<SoPickedPoint>& pp,
-        bool toggle
-    );
+    void preselectToSelection(const std::stringstream& ss, const Base::Vector3d& pickedPoint, bool toggle);
     //@}
 
     /** @name miscelanea utilities */
@@ -861,6 +898,10 @@ private:
         OffsetMode offset = NoOffset
     );
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
+    //@}
+
+    void setupActiveAndInEdit();
+    void unsetupActiveAndInEdit();
 
     /** @name signals*/
     //@{
@@ -871,6 +912,7 @@ private:
     void slotToolWidgetChanged(QWidget* newwidget);
 
     void updateColorPropertiesVisibility();
+    void updateAutomaticColorProperties();
 
     /** @name Attorney functions*/
     //@{
@@ -901,6 +943,7 @@ private:
     std::unique_ptr<SoRayPickAction> getRayPickAction() const;
 
     SbVec2f getScreenCoordinates(SbVec2f sketchcoordinates) const;
+    SbVec2f getScreenCoordinates(SbVec3f sketchcoordinates) const;
 
     QFont getApplicationFont() const;
 
@@ -941,6 +984,8 @@ private:
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
+    void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve);
+    bool isLineExtensionAutoConstraintHintVisible(const std::vector<Base::Vector2d>& HintCurve) const;
     /// draw the edit markers
     void drawEditMarkers(
         const std::vector<Base::Vector2d>& EditMarkers,
@@ -1018,6 +1063,7 @@ private:
     int viewOrientationFactor;  // stores if sketch viewed from front or back
 
     bool blockContextMenu;
+    std::stringstream sketchBackup;
 };
 
 }  // namespace SketcherGui

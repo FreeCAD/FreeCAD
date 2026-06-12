@@ -33,7 +33,7 @@
 
 
 ** Face elements
-*Element, TYPE=S4, ELSET=Efaces
+*Element, TYPE=S4R, ELSET=Efaces
 21, 14, 17, 22, 21
 22, 6, 21, 22, 9
 23, 1, 9, 22, 5

@@ -29,6 +29,7 @@
 The Line class is used by other Gui Commands that behave in a similar way
 like Wire, BSpline, and BezCurve.
 """
+
 ## @package gui_lines
 # \ingroup draftguitools
 # \brief Provides GUI tools to create straight Line and Wire objects.
@@ -40,6 +41,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
+from draftgeoutils import geometry as geo_geometry
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftutils import gui_utils
@@ -276,9 +278,7 @@ class Line(gui_base_original.Creator):
     def orientWP(self):
         """Orient the working plane."""
         if len(self.node) > 1 and self.obj:
-            import DraftGeomUtils
-
-            n = DraftGeomUtils.getNormal(self.obj.Shape)
+            n = geo_geometry.get_normal(self.obj.Shape)
             if not n:
                 n = self.wp.axis
             p = self.node[-1]

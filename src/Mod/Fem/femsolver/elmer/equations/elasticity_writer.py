@@ -418,7 +418,7 @@ class ElasticityWriter:
         # temperature
         tempObj = self.write.getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
-            refTemp = float(tempObj.initialTemperature.getValueAs("K"))
+            refTemp = float(tempObj.InitialTemperature.getValueAs("K"))
             for name in bodies:
                 self.write.material(name, "Reference Temperature", refTemp)
         # get the material data for all bodies

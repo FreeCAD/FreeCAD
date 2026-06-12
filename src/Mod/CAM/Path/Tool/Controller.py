@@ -31,7 +31,6 @@ from Path.Tool.toolbit import ToolBit
 import Path.Base.Generator.toolchange as toolchange
 import Path.Dressup.Utils as PathDressup
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -274,6 +273,7 @@ class ToolController:
                 "Feed",
                 QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp moves"),
             )
+            obj.setExpression("RampFeed", "HorizFeed")
             _migrateRampDressups(obj)
             needsRecompute = True
 

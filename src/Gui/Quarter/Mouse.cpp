@@ -91,6 +91,28 @@ using namespace SIM::Coin3D::Quarter;
 #define PRIVATE(obj) obj->pimpl
 #define PUBLIC(obj) obj->publ
 
+namespace {
+
+QPointF getLocalPosition(const QMouseEvent* event)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+  return event->position();
+#else
+  return event->localPos();
+#endif
+}
+
+QPointF getLocalPosition(const QWheelEvent* event)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+  return event->position();
+#else
+  return event->posF();
+#endif
+}
+
+}
+
 Mouse::Mouse(QuarterWidget* quarter) :
   InputDevice(quarter)
 {
@@ -141,9 +163,10 @@ MouseP::mouseMoveEvent(QMouseEvent * event)
   PUBLIC(this)->setModifiers(this->location2, event);
 
   assert(this->windowsize[1] != -1);
-  SbVec2s pos(event->pos().x(), this->windowsize[1] - event->pos().y() - 1);
-  // the following corrects for high-dpi displays (e.g. mac retina)
-  pos *= publ->quarter->devicePixelRatio();
+  SbVec2s pos = InputDevice::toDevicePixelPosition(
+      getLocalPosition(event),
+      this->windowsize,
+      publ->quarter->devicePixelRatio());
   this->location2->setPosition(pos);
   this->mousebutton->setPosition(pos);
   return this->location2;
@@ -153,10 +176,10 @@ const SoEvent *
 MouseP::mouseWheelEvent(QWheelEvent * event)
 {
   PUBLIC(this)->setModifiers(this->wheel, event);
-  QPoint pnt = event->position().toPoint();
-  SbVec2s pos(pnt.x(), PUBLIC(this)->windowsize[1] - pnt.y() - 1);
-  // the following corrects for high-dpi displays (e.g. mac retina)
-  pos *= publ->quarter->devicePixelRatio();
+  SbVec2s pos = InputDevice::toDevicePixelPosition(
+      getLocalPosition(event),
+      PUBLIC(this)->windowsize,
+      publ->quarter->devicePixelRatio());
   this->location2->setPosition(pos); //I don't know why location2 is assigned here, I assumed it important  --DeepSOIC
   this->wheel->setPosition(pos);
 
@@ -175,9 +198,10 @@ const SoEvent *
 MouseP::mouseButtonEvent(QMouseEvent * event)
 {
   PUBLIC(this)->setModifiers(this->mousebutton, event);
-  SbVec2s pos(event->pos().x(), PUBLIC(this)->windowsize[1] - event->pos().y() - 1);
-  // the following corrects for high-dpi displays (e.g. mac retina)
-  pos *= publ->quarter->devicePixelRatio();
+  SbVec2s pos = InputDevice::toDevicePixelPosition(
+      getLocalPosition(event),
+      PUBLIC(this)->windowsize,
+      publ->quarter->devicePixelRatio());
   this->location2->setPosition(pos);
   this->mousebutton->setPosition(pos);
 

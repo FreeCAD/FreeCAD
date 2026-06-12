@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create WorkingPlaneProxy objects."""
+
 ## @package gui_planeproxy
 # \ingroup draftguitools
 # \brief Provides GUI tools to create WorkingPlaneProxy objects.

@@ -136,7 +136,7 @@ WorkbenchTabWidget::WorkbenchTabWidget(WorkbenchGroup* aGroup, QWidget* parent)
         // previous implementation saved that information to user settings and
         // restored last layout but this creates issues when default workbench has
         // different layout than last visited one
-        QTimer::singleShot(500, [this]() { updateLayout(); });
+        QTimer::singleShot(500, this, [this]() { updateLayout(); });
     }
 
     tabBar->setDocumentMode(true);
@@ -324,7 +324,7 @@ void WorkbenchTabWidget::updateWorkbenchList()
         addWorkbenchTab(action);
     }
 
-    if (temporaryWorkbenchAction != nullptr) {
+    if (temporaryWorkbenchAction) {
         setTemporaryWorkbenchTab(temporaryWorkbenchAction);
     }
 

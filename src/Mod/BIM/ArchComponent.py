@@ -66,13 +66,22 @@ else:
     # \endcond
 
 
-def addToComponent(compobject, addobject, mod=None):
-    """Add an object to a component's properties.
+def _make_projected_horizontal_area_face(projected_faces):
+    """Build one transient XY face from projected coplanar analysis faces."""
 
-    Does not run if the addobject already exists in the component's properties.
-    Adds the object to the first property found of Base, Group, or Hosts.
+    if not projected_faces:
+        return None
 
-    If mod is provided, adds the object to that property instead.
+    fused_face = projected_faces[0].copy(noElementMap=True)
+    for face in projected_faces[1:]:
+        fused_face = fused_face.fuse(face, noElementMap=True)
+    return fused_face.removeSplitter()
+
+
+def addToComponent(compobject, addobject, prop):
+    """Add an object to a component's property.
+
+    Does not run if the addobject already exists in the component's OutListRecursive.
 
     Parameters
     ----------
@@ -80,52 +89,31 @@ def addToComponent(compobject, addobject, mod=None):
         The component object to add the object to.
     addobject: <App::DocumentObject>
         The object to add to the component.
-    mod: str, optional
+    prop: str
         The property to add the object to.
     """
 
     import Draft
 
+    if not hasattr(compobject, prop):
+        return
     if compobject == addobject:
         return
-    # first check zis already there
-    found = False
-    attribs = ["Additions", "Objects", "Components", "Subtractions", "Base", "Group", "Hosts"]
-    for a in attribs:
-        if hasattr(compobject, a):
-            if a == "Base":
-                if addobject == getattr(compobject, a):
-                    found = True
-            else:
-                if addobject in getattr(compobject, a):
-                    found = True
-    if not found:
-        if mod:
-            if hasattr(compobject, mod):
-                if mod == "Base":
-                    setattr(compobject, mod, addobject)
-                    addobject.ViewObject.hide()
-                elif mod == "Axes":
-                    if Draft.getType(addobject) == "Axis":
-                        l = getattr(compobject, mod)
-                        l.append(addobject)
-                        setattr(compobject, mod, l)
-                else:
-                    l = getattr(compobject, mod)
-                    l.append(addobject)
-                    setattr(compobject, mod, l)
-                    if mod != "Objects":
-                        addobject.ViewObject.hide()
-                        if Draft.getType(compobject) == "PanelSheet":
-                            addobject.Placement.move(compobject.Placement.Base.negative())
-        else:
-            for a in attribs[:3]:
-                if hasattr(compobject, a):
-                    l = getattr(compobject, a)
-                    l.append(addobject)
-                    setattr(compobject, a, l)
-                    addobject.ViewObject.hide()
-                    break
+    if addobject in compobject.OutListRecursive:
+        return
+
+    if prop == "Base":
+        setattr(compobject, prop, addobject)
+        addobject.Visibility = False
+    elif prop == "Axes":
+        if Draft.getType(addobject) == "Axis":
+            setattr(compobject, prop, getattr(compobject, prop) + [addobject])
+    else:
+        setattr(compobject, prop, getattr(compobject, prop) + [addobject])
+        if prop not in ("Hosts", "Objects"):
+            addobject.Visibility = False
+            if Draft.getType(compobject) == "PanelSheet":
+                addobject.Placement.move(compobject.Placement.Base.negative())
 
 
 def removeFromComponent(compobject, subobject):
@@ -200,6 +188,10 @@ class Component(ArchIFC.IfcProduct):
     obj: <App::FeaturePython>
         The object to turn into an Arch Component
     """
+
+    # List of properties to override in App::Link.
+    # Subclasses which require overrides (e.g. Window, Rebar) should populate the overrides list.
+    LinkOverrideProperties = []
 
     def __init__(self, obj):
         obj.Proxy = self
@@ -279,12 +271,24 @@ class Component(ArchIFC.IfcProduct):
             )
         if not "Material" in pl:
             obj.addProperty(
-                "App::PropertyLink",
+                "App::PropertyLinkGlobal",
                 "Material",
                 "Component",
                 QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
                 locked=True,
             )
+        elif obj.getTypeIdOfProperty("Material") == "App::PropertyLink":
+            mat = obj.Material
+            obj.setPropertyStatus("Material", "-LockDynamic")
+            obj.removeProperty("Material")
+            obj.addProperty(
+                "App::PropertyLinkGlobal",
+                "Material",
+                "Component",
+                QT_TRANSLATE_NOOP("App::Property", "A material for this object"),
+                locked=True,
+            )
+            obj.Material = mat
         if "BaseMaterial" in pl:
             obj.Material = obj.BaseMaterial
             obj.removeProperty("BaseMaterial")
@@ -395,13 +399,12 @@ class Component(ArchIFC.IfcProduct):
 
         if self.clone(obj):
             return
-        if self.ensureBase(obj) is False:
-            # This will fall through if the Component object has no base, allowing the base shapeto
-            # be cleared
+        if getattr(obj, "Base", None) is None:
+            # Do not modify Arch_Components without a Base object.
             return
 
-        # Only proceed if a Base object is linked and contains valid geometry.
-        if obj.Base and hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
+        if hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
+            # The Base object contains valid geometry.
             # Create a standalone shape as a deep copy of the base geometry, to avoid modifying
             # the original source.
             base_shape = Part.Shape(obj.Base.Shape)
@@ -418,8 +421,7 @@ class Component(ArchIFC.IfcProduct):
             final_shape = self.processSubShapes(obj, base_shape, obj.Placement)
             self.applyShape(obj, final_shape, obj.Placement, allownosolid=True)
         else:
-            # Clear the shape if the base has been removed. This avoids leaving a stale shape that
-            # is not updated when the base is removed.
+            # Clear the shape to avoid leaving a stale shape.
             obj.Shape = Part.Shape()
 
     def dumps(self):
@@ -504,30 +506,33 @@ class Component(ArchIFC.IfcProduct):
             List of child objects set to move with their host.
         """
 
-        ilist = obj.Additions + obj.Subtractions
+        child_list = obj.Additions + obj.Subtractions
         for o in obj.InList:
             if hasattr(o, "Hosts"):
                 if obj in o.Hosts:
-                    ilist.append(o)
+                    child_list.append(o)
             elif hasattr(o, "Host"):
                 if obj == o.Host:
-                    ilist.append(o)
+                    child_list.append(o)
 
         # Stairs railings should be considered as children
         # (RailingLeft and RailingRight property)
         if hasattr(obj, "RailingLeft") and obj.RailingLeft:
-            ilist.append(obj.RailingLeft)
+            child_list.append(obj.RailingLeft)
         if hasattr(obj, "RailingRight") and obj.RailingRight:
-            ilist.append(obj.RailingRight)
+            child_list.append(obj.RailingRight)
 
-        ilist2 = []
-        for o in ilist:
+        child_set = set()
+        for o in child_list:
             if hasattr(o, "MoveWithHost"):
                 if o.MoveWithHost:
-                    ilist2.append(o)
+                    if getattr(o, "MoveBase", False) and self.ensureBase(o):
+                        child_set.add(o.Base)
+                    else:
+                        child_set.add(o)
             else:
-                ilist2.append(o)
-        return ilist2
+                child_set.add(o)
+        return list(child_set)
 
     def getParentHeight(self, obj):
         """Get a height value from hosts.
@@ -1326,6 +1331,20 @@ class Component(ArchIFC.IfcProduct):
                 return True
         return False
 
+    def appLinkExecute(self, obj, linkObj, index, linkElement):
+        """
+        App::Link hook: called when a link to a BIM object is created.
+        Used to setup shadow properties for lightweight instancing.
+        """
+        # Shadow the given property so multiple links can have independent values without triggering
+        # a deep copy of the BIM object geometry.
+        if self.LinkOverrideProperties:
+            ArchCommands.override_link_properties(linkObj, self.LinkOverrideProperties)
+
+        # Execute features in the SketchArch External Add-on, if present
+        if hasattr(self, "executeSketchArchFeatures"):
+            self.executeSketchArchFeatures(obj, linkObj, index, linkElement)
+
 
 class AreaCalculator:
     """Helper class to compute vertical area, horizontal area, and perimeter length.
@@ -1478,9 +1497,10 @@ class AreaCalculator:
     def _computeHorizontalAreaAndPerimeter(self, horizontalAreaFaces):
         """Compute the horizontal area and perimeter length.
 
-        Projects the given faces onto the XY plane, fuses them, and calculates:
-        - The total horizontal area.
-        - The perimeter length of the fused horizontal area.
+        Projects the given faces onto the XY plane, combines the projected
+        areas into one transient union shape, and calculates:
+        - the total horizontal area
+        - the perimeter length of the combined horizontal outline
 
         Parameters
         ----------
@@ -1518,12 +1538,20 @@ class AreaCalculator:
                         self.resetAreas()
                         return
                     wire = TechDraw.findShapeOutline(face, 1, direction)
-                    projectedFace = Part.makeFace([wire], "Part::FaceMakerSimple")
+                    projectedFace = Part.makeFace(
+                        [wire],
+                        "Part::FaceMakerSimple",
+                        noElementMap=True,
+                    )
                 else:
                     edges = TechDraw.project(face, direction)[0].Edges
                     wires = DraftGeomUtils.findWires(edges)
                     # Using "Part::FaceMakerCheese" as the face can have holes
-                    projectedFace = Part.makeFace(wires, "Part::FaceMakerCheese")
+                    projectedFace = Part.makeFace(
+                        wires,
+                        "Part::FaceMakerCheese",
+                        noElementMap=True,
+                    )
                 # Part.show(projectedFace)
                 projectedFaces.append(projectedFace)
             except Part.OCCError:
@@ -1543,13 +1571,22 @@ class AreaCalculator:
         else:
             param_grp.SetBool("allowCrazyEdge", old_allow_crazy_edge)
 
+        fusedFace = None
         if projectedFaces:
-            fusedFace = projectedFaces.pop()
-            for face in projectedFaces:
-                fusedFace = fusedFace.fuse(face)
-            fusedFace = fusedFace.removeSplitter()
-            # Part.show(fusedFace)
+            try:
+                fusedFace = _make_projected_horizontal_area_face(projectedFaces)
+            except Part.OCCError:
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "Arch",
+                        f"Error computing areas for {self.obj.Label}: unable to combine "
+                        "projected horizontal faces. Area values will be reset to 0.\n",
+                    )
+                )
+                self.resetAreas()
+                return
 
+        if fusedFace:
             if self.obj.HorizontalArea.Value != fusedFace.Area:
                 self.obj.HorizontalArea = fusedFace.Area
 
@@ -2332,23 +2369,21 @@ class ComponentTaskPanel:
     def addElement(self):
         """This method is run as a callback when the user selects the add button.
 
-        Get the object selected in the 3D view, and get the attribute folder
+        Get the objects selected in the 3D view, and get the attribute folder
         selected in the tree widget.
 
-        Add the object selected in the 3D view to the attribute associated with
+        Add the objects selected in the 3D view to the attribute associated with
         the selected folder, by using function addToComponent().
         """
-
         it = self.tree.currentItem()
         if it:
-            mod = None
-            for a in self.attribs:
-                if it.text(0) == getattr(self, "tree" + a).text(0):
-                    mod = a
-            for o in FreeCADGui.Selection.getSelection():
-                addToComponent(self.obj, o, mod)
-            self.obj.recompute()
-        self.update()
+            for prop in self.attribs:
+                if it.text(0) == getattr(self, "tree" + prop).text(0):
+                    for o in FreeCADGui.Selection.getSelection():
+                        addToComponent(self.obj, o, prop)
+                    self.obj.recompute()
+                    self.update()
+                    break
 
     def removeElement(self):
         """
@@ -2471,7 +2506,7 @@ class ComponentTaskPanel:
         ]
         self.psetdefs = {}
         psetspath = os.path.join(
-            FreeCAD.getResourceDir(), "Mod", "Arch", "Presets", "pset_definitions.csv"
+            FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "pset_definitions.csv"
         )
         if os.path.exists(psetspath):
             with open(psetspath, "r") as csvfile:
@@ -2512,7 +2547,7 @@ class ComponentTaskPanel:
         self.ifcEditor.comboPset.addItems(
             [
                 QtGui.QApplication.translate("Arch", "Add property set", None),
-                QtGui.QApplication.translate("Arch", "New...", None),
+                QtGui.QApplication.translate("Arch", "New…", None),
             ]
             + self.psetkeys
         )

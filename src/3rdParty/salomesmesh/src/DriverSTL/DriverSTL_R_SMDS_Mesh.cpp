@@ -306,7 +306,7 @@ Driver_Mesh::Status DriverSTL_R_SMDS_Mesh::readBinary(SMESH_File& file) const
   if ( (filesize - HEADER_SIZE) % SIZEOF_STL_FACET !=0 
       // Commented to allow reading small files (ex: 1 face)
       /*|| (filesize < STL_MIN_FILE_SIZE)*/) {
-    Standard_NoMoreObject::Raise("DriverSTL_R_SMDS_MESH::readBinary (wrong file size)");
+      throw Standard_NoMoreObject("DriverSTL_R_SMDS_MESH::readBinary (wrong file size)");
   }
 
   // don't trust the number of triangles which is coded in the file

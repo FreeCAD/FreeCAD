@@ -96,7 +96,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         """circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations."""
         return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
-    def onDocumentRestored(self, obj):
+    def opOnDocumentRestored(self, obj):
         # Add Strategy property if missing (old drilling operations)
         if not hasattr(obj, "Strategy"):
             obj.addProperty(
@@ -292,11 +292,31 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             v2 = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value - endoffset)
             edgelist.append(Part.makeLine(v1, v2))
 
-        # build list of solids for collision detection.
-        # Include base objects from job
-        solids = []
-        for base in self.job.Model.Group:
-            solids.append(base.Shape)
+        # Prepare linking parameters
+        # Use self.model which is transformed when 3+2 workplane is active
+        solids = [base.Shape for base in self.model]
+        linkingArgs = {
+            "start_position": None,
+            "target_position": None,
+            "local_clearance": safe_height,
+            "global_clearance": obj.ClearanceHeight.Value,
+            "solids": None,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "collision_clearance": obj.CollisionClearance.Value,
+        }
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["local_clearance"] = obj.ClearanceHeight.Value
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_diameter"] = obj.ToolController.Tool.Diameter.Value
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
 
@@ -337,30 +357,19 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 # For G99 mode, tool is at StartDepth (R-plane) after previous hole
                 # Check if direct move at retract plane would collide with model
                 current_pos = machinestate.getPosition()
-                target_at_retract_plane = FreeCAD.Vector(startPoint.x, startPoint.y, current_pos.z)
+                target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
+                linkingArgs["start_position"] = current_pos
+                linkingArgs["target_position"] = target_at_safe_height
+                linking_moves = linking.get_linking_moves(**linkingArgs)
 
-                # Check collision at the retract plane (current Z height)
-                collision_detected = linking.check_collision(
-                    start_position=current_pos,
-                    target_position=target_at_retract_plane,
-                    solids=solids,
-                )
-
-                if collision_detected:
+                """if linking_moves contains only 2 commands this means
+                it not contains vertical moves to clearance height
+                and this commands should be skipped"""
+                if len(linking_moves) > 2:
                     # Cannot traverse at retract plane - need to break cycle group
                     # Retract to safe height, traverse, then plunge to safe height for new cycle
-                    target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
-                    linking_moves = linking.get_linking_moves(
-                        start_position=current_pos,
-                        target_position=target_at_safe_height,
-                        local_clearance=safe_height,
-                        global_clearance=obj.ClearanceHeight.Value,
-                        tool_shape=self.tool.Shape,
-                        solids=solids,
-                    )
                     self.commandlist.extend(linking_moves)
-                    for move in linking_moves:
-                        machinestate.addCommand(move)
+                    machinestate.addCommands(linking_moves)
                 # else: no collision - G99 cycle continues, tool stays at retract plane
 
             # Perform drilling
@@ -389,10 +398,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Set RetractMode annotation for each command
             for command in drillcommands:
-                annotations = command.Annotations
-                annotations["RetractMode"] = mode
-                annotations["operation"] = "drilling"
-                command.Annotations = annotations
+                command.addAnnotations({"RetractMode": mode, "operation": "drilling"})
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
 
@@ -524,10 +530,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Set RetractMode annotation for each command
             for command in tappingcommands:
-                annotations = command.Annotations
-                annotations["RetractMode"] = mode
-                annotations["operation"] = "tapping"
-                command.Annotations = annotations
+                command.addAnnotations({"RetractMode": mode, "operation": "tapping"})
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
 
@@ -560,7 +563,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("Strategy")
     setup.append("PeckDepth")
     setup.append("PeckEnabled")
@@ -576,9 +579,5 @@ def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Drilling operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-
     obj.Proxy = ObjectDrilling(obj, name, parentJob)
-    if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
-
     return obj

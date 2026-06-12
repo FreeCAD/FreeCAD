@@ -61,7 +61,7 @@ def moveViews():
         print("Select 1 drawing page and 1 TechDraw page")
         return
 
-    for o in dPage.OutList:
+    for i, o in enumerate(dPage.OutList):
         newName = "DraftView" + str(i).zfill(3)
         print("moving " + o.Name + " to " + newName)
         svg = svgHead + o.ViewResult + svgTail

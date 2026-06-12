@@ -30,6 +30,8 @@ from .property import BasePropertyEditorWidget
 
 def _get_label_text(prop_name, keep_case=False, preserve_consecutive_caps=False):
     """Generate a human-readable label from a property name."""
+    # First, replace underscores and hyphens with spaces
+    prop_name = prop_name.replace("_", " ").replace("-", " ")
     # Add space before capital letters (CamelCase splitting)
     if preserve_consecutive_caps:
         s1 = re.sub(r"(?<![A-Z])([A-Z][a-z]+)", r" \1", prop_name)
@@ -41,8 +43,8 @@ def _get_label_text(prop_name, keep_case=False, preserve_consecutive_caps=False)
         s2 = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", s1)
     # Add space before sequences of capitals followed by end of string
     s3 = re.sub(r"([A-Z]+)$", r" \1", s2)
-    # Remove leading/trailing spaces
-    result = s3.strip()
+    # Remove leading/trailing spaces and collapse multiple spaces
+    result = " ".join(s3.split())
     if not keep_case:
         return result.capitalize()
     return result.title()

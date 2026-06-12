@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to set up the working plane and its grid."""
+
 ## @package gui_selectplane
 # \ingroup draftguitools
 # \brief Provides GUI tools to set up the working plane and its grid.

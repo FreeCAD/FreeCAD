@@ -29,6 +29,7 @@
 #include "LinkViewPy.h"
 #include "LinkViewPy.cpp"
 
+#include "SoFullPathHelper.h"
 #include "ViewProviderDocumentObjectPy.h"
 
 using namespace Gui;
@@ -367,7 +368,7 @@ PyObject* LinkViewPy::getDetailPath(PyObject* args)
     PY_TRY
     {
         SoDetail* det = nullptr;
-        getLinkViewPtr()->linkGetDetailPath(sub, static_cast<SoFullPath*>(pPath), det);
+        getLinkViewPtr()->linkGetDetailPath(sub, Gui::toFullPath(pPath), det);
         if (!det) {
             Py_Return;
         }

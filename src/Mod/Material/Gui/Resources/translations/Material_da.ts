@@ -249,29 +249,59 @@
       <translation>Diffus farve</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="211"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="204"/>
+      <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
+      <translation>Definerer grundfarven for en overflade, når den belyses, og repræsenterer hvordan objekter spreder lyset jævnt i alle retninger, uafhængigt af synsvinklen. Denne egenskab vil påvirke materialets farve mest.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="215"/>
       <source>Ambient color</source>
       <translation>Baggrundsfarve</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="220"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="217"/>
+      <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
+      <translation>Definerer farven for en overflade den belyses af et indirekte, ensartet lys, og repræsenterer hvordan objekter vises, når de kun belyses af baggrundsbelysningen i en scene uden direkte lys, skygger eller genskin</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="228"/>
       <source>Emissive color</source>
       <translation>Fluorescerende farve</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="229"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="230"/>
+      <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
+      <translation>Definerer farven på en overflade, der synes at udsende lys uafhængig af ekstern belysning, og får objekter til at virke selvlysende. Sæt til farven til sort til hvis der ikke ønskes en fluorescerende farve.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="241"/>
       <source>Specular color</source>
       <translation>Blank farve</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="238"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="243"/>
+      <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
+      <translation>Definerer farven og intensiteten på de lyse, spejllignende refleksioner, der optræder på skinnende eller reflekterende overflader, når lys rammer dem direkte. Vælg lyse farver til skinnende objekter.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="254"/>
       <source>Shininess</source>
       <translation>Glans</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="248"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="256"/>
+      <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
+      <translation>Definerer størrelsen og skarpheden af skinnende refleksioner på en overflade. Højere værdier producerer små, skarpe refleksioner, mens lavere værdier skaber store, bløde refleksioner. Bemærk at intensiteten defineres af den blanke farve.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="268"/>
       <source>Transparency</source>
       <translation>Transparens</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="269"/>
+      <source>Defines how much light passes through an object, making it partially or fully see-through</source>
+      <translation>Definerer hvor meget lys der passerer gennem et objekt, og gør det delvist eller fuldstændigt gennemsigtigt</translation>
     </message>
   </context>
   <context>
@@ -619,14 +649,16 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <translation>Vælg et bllede</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Billedfiler (*.jpg *.jpeg *.png *.bmp);;Alle filer (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation>Billedfiler</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>Billedfiler (*.svg);;Alle filer (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>Alle filer</translation>
     </message>
   </context>
   <context>
@@ -1102,7 +1134,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgMaterialImp.cpp" line="56"/>
+      <location filename="../../DlgMaterialImp.cpp" line="57"/>
       <source>Material</source>
       <translation>Materiale</translation>
     </message>
@@ -1163,15 +1195,15 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <translation>Ellers vil alle ændringer gå tabt.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="567"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>Bekræft sletning</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
       <translation>Slet rækken?</translation>
     </message>
@@ -1405,6 +1437,14 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="190"/>
       <source>All materials</source>
       <translation>Alle materialer</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../DlgMaterialImp.cpp" line="263"/>
+      <source>Set Material</source>
+      <translation>Gem materiale</translation>
     </message>
   </context>
 </TS>

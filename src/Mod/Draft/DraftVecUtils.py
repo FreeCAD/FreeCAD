@@ -26,6 +26,7 @@
 Vector math utilities used primarily in the Draft workbench
 but which can also be used in other workbenches and in macros.
 """
+
 ## \defgroup DRAFTVECUTILS DraftVecUtils
 #  \ingroup UTILITIES
 #  \brief Vector math utilities used in Draft workbench

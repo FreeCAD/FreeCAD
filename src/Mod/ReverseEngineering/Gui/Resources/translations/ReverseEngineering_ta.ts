@@ -237,8 +237,8 @@
       <translation>இடவமைவு</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="138"/>
+      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
       <translation>ஃபிட் பி-ச்ப்லைன்</translation>
     </message>
@@ -338,7 +338,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>உள்ளீடு பிழை</translation>
     </message>
     <message>
@@ -381,8 +381,8 @@
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
-      <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
     </message>
   </context>
   <context>
@@ -721,8 +721,8 @@
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
       <location filename="../../FitBSplineCurve.cpp" line="89"/>
-      <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <source>Input Error</source>
+      <translation>உள்ளீடு பிழை</translation>
     </message>
   </context>
 </TS>

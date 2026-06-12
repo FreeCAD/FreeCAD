@@ -29,7 +29,6 @@ import Path
 import Path.Dressup.Utils as PathDressup
 import math
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -697,6 +696,7 @@ class ObjectDressup:
 class ViewProviderDressup:
     def __init__(self, vobj):
         self.obj = vobj.Object
+        vobj.Proxy = self
 
     def attach(self, vobj):
         self.obj = vobj.Object
@@ -710,7 +710,6 @@ class ViewProviderDressup:
                         if g.Name == self.obj.Base.Name:
                             group.remove(g)
                     i.Group = group
-                    print(i.Group)
         # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.obj.Base]
 
@@ -750,26 +749,12 @@ class CommandPathDressupRampEntry:
         }
 
     def IsActive(self):
-        op = PathDressup.selection()
-        if op:
-            return not PathDressup.hasEntryMethod(op)
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            Path.Log.error(translate("CAM_DressupRampEntry", "Select one toolpath object") + "\n")
-            return
-        baseObject = selection[0]
-        if not baseObject.isDerivedFrom("Path::Feature"):
-            Path.Log.error(
-                translate("CAM_DressupRampEntry", "The selected object is not a toolpath") + "\n"
-            )
-            return
-        if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(translate("CAM_DressupRampEntry", "Select a Profile object"))
+        op = PathDressup.selection(verbose=True)
+        if not op:
             return
 
         # everything ok!
@@ -780,13 +765,11 @@ class CommandPathDressupRampEntry:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "RampEntryDressup")'
         )
         FreeCADGui.doCommand("dbo = Path.Dressup.Gui.RampEntry.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + op.Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
-        FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = Path.Dressup.Gui.RampEntry.ViewProviderDressup(obj.ViewObject)"
-        )
+        FreeCADGui.doCommand("Path.Dressup.Gui.RampEntry.ViewProviderDressup(obj.ViewObject)")
         FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
         FreeCADGui.doCommand("dbo.setup(obj)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()

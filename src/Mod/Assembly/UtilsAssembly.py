@@ -226,7 +226,7 @@ def process_body(body, returnObj, names, i):
 def isBodySubObject(obj):
     return (
         obj.isDerivedFrom("Sketcher::SketchObject")
-        or obj.isDerivedFrom("PartDesign::Datum")
+        or obj.isDerivedFrom("Part::Datum")
         or obj.isDerivedFrom("App::DatumElement")
         or obj.isDerivedFrom("App::LocalCoordinateSystem")
     )
@@ -380,6 +380,9 @@ def getGlobalPlacement(ref, targetObj=None):
 
 
 def isThereOneRootAssembly():
+    if Gui.activeDocument() is None:
+        return False
+
     for part in Gui.activeDocument().TreeRootObjects:
         if part.TypeId == "Assembly::AssemblyObject":
             return True
@@ -790,7 +793,7 @@ def getObjMassAndCom(obj, containingPart=None):
         obj = obj.getLinkedObject()
 
     if obj.TypeId == "PartDesign::Body":
-        part = part.Tip
+        obj = obj.Tip
 
     if obj.isDerivedFrom("Part::Feature"):
         mass = obj.Shape.Volume
@@ -1256,7 +1259,11 @@ def getComponentReference(assembly, root_obj, sub_string):
 
         if isLink(obj):
             linkedObj = obj.getLinkedObject()
-            if linkedObj and not linkedObj.isDerivedFrom("App::GeoFeature"):
+            if (
+                linkedObj
+                and not isLink(linkedObj)
+                and not linkedObj.isDerivedFrom("App::GeoFeature")
+            ):
                 continue
         elif not obj.isDerivedFrom("App::GeoFeature"):
             continue

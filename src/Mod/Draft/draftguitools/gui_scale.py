@@ -33,6 +33,7 @@ The subelements operations only really work with polylines (Wires)
 because internally the functions `scale_vertex` and `scale_edge`
 only work with polylines that have a `Points` property.
 """
+
 ## @package gui_scale
 # \ingroup draftguitools
 # \brief Provides GUI tools to scale objects in the 3D space.
@@ -104,6 +105,8 @@ class Scale(gui_base_original.Modifier):
         self.task = None
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick base point"))
+        self.selection_done = True
+        self.update_hints()
 
     def set_ghosts(self):
         """Set the ghost to display."""
@@ -163,6 +166,7 @@ class Scale(gui_base_original.Modifier):
             self.node = self.node[:1]  # remove previous picks
         _toolmsg(translate("draft", "Pick reference distance from base point"))
         self.call = self.view.addEventCallback("SoEvent", self.action)
+        self.update_hints()
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -255,6 +259,7 @@ class Scale(gui_base_original.Modifier):
                 ghost.on()
         elif len(self.node) == 2:
             _toolmsg(translate("draft", "Pick new distance from base point"))
+            self.update_hints()
         elif len(self.node) == 3:
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.off()
@@ -274,6 +279,22 @@ class Scale(gui_base_original.Modifier):
         for ghost in self.ghosts:
             ghost.finalize()
         super().finish()
+
+    def get_action_hints(self):
+        if not self.node:
+            label = translate("draft", "%1 pick base point")
+        elif self.pickmode and len(self.node) == 1:
+            label = translate("draft", "%1 pick reference distance")
+        elif self.pickmode and len(self.node) == 2:
+            label = translate("draft", "%1 pick new distance")
+        else:
+            return []
+        return (
+            [Gui.InputHint(label, Gui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
 
 Gui.addCommand("Draft_Scale", Scale())

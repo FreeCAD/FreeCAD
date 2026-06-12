@@ -77,7 +77,7 @@ public:
         , refGeoId(Sketcher::GeoEnum::GeoUndef)
         , refPosId(Sketcher::PointPos::none)
         , deleteOriginal(false)
-        , createSymConstraints(false)
+        , createSymConstraints(true)
     {}
 
     DrawSketchHandlerSymmetry(const DrawSketchHandlerSymmetry&) = delete;
@@ -114,8 +114,10 @@ private:
                     refGeoId = Sketcher::GeoEnum::VAxis;
                     refPosId = Sketcher::PointPos::none;
                 }
-                else if ((CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt)
-                         && isLineSegment(*obj->getGeometry(CrvId))) {  // Curves
+                else if (
+                    (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt)
+                    && isLineSegment(*obj->getGeometry(CrvId))
+                ) {  // Curves
                     refGeoId = CrvId;
                     refPosId = Sketcher::PointPos::none;
                 }
@@ -135,7 +137,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Symmetry geometries"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Symmetry geometries"));
 
             SketchObject* Obj = sketchgui->getSketchObject();
             createSymConstraints = !deleteOriginal && createSymConstraints;
@@ -146,7 +148,7 @@ private:
             }
             tryAutoRecomputeIfNotSolve(Obj);
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -156,7 +158,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to create symmetry")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -300,6 +302,8 @@ void DSHSymmetryController::configureToolWidget()
             )
         );
     }
+
+    syncCheckboxToHandler(WCheckbox::SecondBox, handler->createSymConstraints);
 }
 
 template<>

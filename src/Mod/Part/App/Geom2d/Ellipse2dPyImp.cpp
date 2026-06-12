@@ -56,9 +56,8 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
 {
     static const std::array<const char*, 1> keywords_n {nullptr};
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(
-            getGeom2dEllipsePtr()->handle()
-        );
+        Handle(Geom2d_Ellipse)
+            ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
         ellipse->SetMajorRadius(2.0);
         ellipse->SetMinorRadius(1.0);
         return 0;
@@ -67,14 +66,14 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
     static const std::array<const char*, 2> keywords_e {"Ellipse", nullptr};
     PyErr_Clear();
     PyObject* pElips;
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_e, &(Ellipse2dPy::Type), &pElips)) {
+    if (
+        Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_e, &(Ellipse2dPy::Type), &pElips)
+    ) {
         Ellipse2dPy* pEllipse = static_cast<Ellipse2dPy*>(pElips);
-        Handle(Geom2d_Ellipse) Elips1 = Handle(Geom2d_Ellipse)::DownCast(
-            pEllipse->getGeom2dEllipsePtr()->handle()
-        );
-        Handle(Geom2d_Ellipse) Elips2 = Handle(Geom2d_Ellipse)::DownCast(
-            this->getGeom2dEllipsePtr()->handle()
-        );
+        Handle(Geom2d_Ellipse)
+            Elips1 = Handle(Geom2d_Ellipse)::DownCast(pEllipse->getGeom2dEllipsePtr()->handle());
+        Handle(Geom2d_Ellipse)
+            Elips2 = Handle(Geom2d_Ellipse)::DownCast(this->getGeom2dEllipsePtr()->handle());
         Elips2->SetElips2d(Elips1->Elips2d());
         return 0;
     }
@@ -103,9 +102,8 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(
-            getGeom2dEllipsePtr()->handle()
-        );
+        Handle(Geom2d_Ellipse)
+            ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
         ellipse->SetElips2d(me.Value()->Elips2d());
         return 0;
     }
@@ -131,9 +129,8 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(
-            getGeom2dEllipsePtr()->handle()
-        );
+        Handle(Geom2d_Ellipse)
+            ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
         ellipse->SetElips2d(me.Value()->Elips2d());
         return 0;
     }
@@ -151,44 +148,51 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
 
 Py::Float Ellipse2dPy::getMajorRadius() const
 {
-    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse)
+        ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     return Py::Float(ellipse->MajorRadius());
 }
 
 void Ellipse2dPy::setMajorRadius(Py::Float arg)
 {
-    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse)
+        ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     ellipse->SetMajorRadius((double)arg);
 }
 
 Py::Float Ellipse2dPy::getMinorRadius() const
 {
-    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse)
+        ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     return Py::Float(ellipse->MinorRadius());
 }
 
 void Ellipse2dPy::setMinorRadius(Py::Float arg)
 {
-    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse)
+        ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     ellipse->SetMinorRadius((double)arg);
 }
 
 Py::Float Ellipse2dPy::getFocal() const
 {
-    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse)
+        ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     return Py::Float(ellipse->Focal());
 }
 
 Py::Object Ellipse2dPy::getFocus1() const
 {
-    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse)
+        ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     gp_Pnt2d loc = ellipse->Focus1();
     return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
 Py::Object Ellipse2dPy::getFocus2() const
 {
-    Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
+    Handle(Geom2d_Ellipse)
+        ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     gp_Pnt2d loc = ellipse->Focus2();
     return Base::Vector2dPy::create(loc.X(), loc.Y());
 }

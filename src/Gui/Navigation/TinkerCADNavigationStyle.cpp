@@ -116,6 +116,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
         switch (button) {
             case SoMouseButtonEvent::BUTTON1:
                 this->button1down = press;
+                updateSelectionStartPosition(press, pos);
                 if (press && (curmode == NavigationStyle::SEEK_WAIT_MODE)) {
                     newmode = NavigationStyle::SEEK_MODE;
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
@@ -180,7 +181,11 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         const auto event = (const SoLocation2Event*)ev;
-        if (curmode == NavigationStyle::PANNING) {
+        if (curmode == NavigationStyle::SELECTION && this->button1down
+            && tryStartBoxSelection(event, this->ctrldown)) {
+            processed = true;
+        }
+        else if (curmode == NavigationStyle::PANNING) {
             float ratio = vp.getViewportAspectRatio();
             panCamera(
                 viewer->getSoRenderManager()->getCamera(),
@@ -228,6 +233,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
             newmode = NavigationStyle::IDLE;
             break;
         case BUTTON1DOWN:
+        case CTRLDOWN | BUTTON1DOWN:
             newmode = NavigationStyle::SELECTION;
             break;
         case BUTTON2DOWN:

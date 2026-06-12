@@ -25,6 +25,7 @@
 #include "clipper.hpp"
 #include <vector>
 #include <list>
+#include <optional>
 #include <time.h>
 
 #pragma once
@@ -50,7 +51,7 @@ enum MotionType
     mtCutting = 0,
     mtLinkClear = 1,
     mtLinkNotClear = 2,
-    mtLinkClearAtPrevPass = 3
+    mtLinkClearAtPrevPass = 3  // unused
 };
 
 enum OperationType
@@ -77,6 +78,16 @@ struct AdaptiveOutput
     DPoint StartPoint;
     TPaths AdaptivePaths;
     int ReturnMotionType;  // MotionType enum, problem with serialization if enum is used
+    double ClearedArea;    // Total area cleared in this operation
+
+    // Warning/error flags
+    bool StartPointNotFound = false;
+    bool LeadPathFailed = false;
+    bool UnexpectedRotateIterations = false;
+    bool TooManyFailedEngagements = false;
+    bool UnclearedAreaRemains = false;
+    bool FailedToSetUpFinishingPass = false;
+    bool FinishingLeadInFailed = false;
 };
 
 // used to isolate state -> enable potential adding of multi-threaded processing of separate regions
@@ -99,6 +110,7 @@ public:
     std::list<AdaptiveOutput> Execute(
         const DPaths& stockPaths,
         const DPaths& paths,
+        const DPaths& clearedPaths,
         std::function<bool(TPaths)> progressCallbackFn
     );
 
@@ -113,7 +125,6 @@ private:
     std::list<AdaptiveOutput> results;
     Paths inputPaths;
     Paths stockInputPaths;
-    int polyTreeNestingLimit = 0;
     long scaleFactor = 100;
     double stepOverScaled = 1;
     long toolRadiusScaled = 10;
@@ -129,7 +140,12 @@ private:
     std::function<bool(TPaths)>* progressCallback = NULL;
     Path toolGeometry;  // tool geometry at coord 0,0, should not be modified
 
-    void ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths);
+    void ProcessPolyNode(
+        Paths boundPaths,
+        Paths toolBoundPaths,
+        Paths finishingPaths,
+        const Paths& initialClearedPaths
+    );
     bool FindEntryPoint(
         TPaths& progressPaths,
         const Paths& toolBoundPaths,
@@ -138,30 +154,23 @@ private:
         IntPoint& entryPoint /*output*/,
         IntPoint& toolPos,
         DoublePoint& toolDir,
-        long& helixRadiusScaled
+        long& helixRadiusScaled,
+        AdaptiveOutput& adaptiveOutput
     );
-    bool FindEntryPointOutside(
-        TPaths& progressPaths,
+    std::pair<double, double> CalcCutArea(IntPoint toolPos, IntPoint newToolPos, ClearedArea& clearedArea);
+    std::optional<TPaths> FindLinkPath(
+        const std::optional<IntPoint>& prevPoint,
+        const IntPoint& pathStart,
+        const DoublePoint& pathDir,
+        ClearedArea& cleared,
         const Paths& toolBoundPaths,
-        const Paths& bound,
-        ClearedArea& cleared /*output*/,
-        IntPoint& entryPoint /*output*/,
-        IntPoint& toolPos,
-        DoublePoint& toolDir
+        AdaptiveOutput& adaptiveOutput
     );
-    double CalcCutArea(
-        Clipper& clip,
-        const IntPoint& toolPos,
-        const IntPoint& newToolPos,
-        ClearedArea& clearedArea,
-        bool preventConventionalMode = true
-    );
-    void AppendToolPath(
-        TPaths& progressPaths,
+    std::optional<std::pair<IntPoint, DoublePoint>> AppendToolPath(
         AdaptiveOutput& output,
         const Path& passToolPath,
-        ClearedArea& clearedAreaBefore,
-        ClearedArea& clearedAreaAfter,
+        TPaths& linkPath,
+        ClearedArea& cleared,
         const Paths& toolBoundPaths
     );
     bool IsClearPath(const Path& path, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
@@ -177,10 +186,11 @@ private:
         bool leadIn,
         const IntPoint& startPoint,
         const DoublePoint& startDir,
-        const IntPoint& beaconPoint,
+        IntPoint beaconPoint,
         ClearedArea& clearedArea,
         const Paths& toolBoundPaths,
-        Path& output
+        Path& output,
+        AdaptiveOutput& adaptiveOutput
     );
 
     bool ResolveLinkPath(
@@ -189,8 +199,6 @@ private:
         ClearedArea& clearedArea,
         Path& output
     );
-
-    friend class EngagePoint;  // for CalcCutArea
 
     void CheckReportProgress(TPaths& progressPaths, bool force = false);
     void AddPathsToProgress(
@@ -223,7 +231,7 @@ private:
     // a^2 = 2*R*x - x^2  (Eq2)
     // a ~= sqrt(2*R*x)  (Eq3; x<<R)
     //
-    // Construct right traingle with (R-x) of vertical radius from C2 and (R-y)
+    // Construct right triangle with (R-x) of vertical radius from C2 and (R-y)
     // of Llong. Third length is MSC - a (horizontal).
     // (MSC-a)^2 + (R-x)^2 = (R-y)^2
     // MSC^2 - 2*a*MSC + a^2 + R^2 - 2*R*x + x^2 = R^2 - 2*R*y + y^2
@@ -236,7 +244,7 @@ private:
     // MSC*sqrt(2*stepoverFactor/5) = y
     // MSC = y/sqrt(2*stepoverFactor/5)   (Eq4)
     //
-    // To ensure we don't evaluate a postive cut area as zero, we need y to
+    // To ensure we don't evaluate a positive cut area as zero, we need y to
     // measure > 1. The endpoints of y may be perturbed by up to sqrt(2)/2 each
     // due to integer rounding, so the true value of y must be at least 1+sqrt(2) ~= 2.4.
     // StepoverFactor may be as small as 1% = 0.01. Evaluating Eq4 with these values:
@@ -246,20 +254,18 @@ private:
     //
     // Historically we have used MSC = 16. It might be convenient that MSC is
     // many-times divisible by 2, so I have chosen 16*3 (>38) for its new value.
+
     const double MIN_STEP_CLIPPER = 16.0 * 3;
-    const int MAX_ITERATIONS = 10;
+    const int MAX_ITERATIONS = 30;
     const double AREA_ERROR_FACTOR = 0.05;     /* how precise to match the cut area to optimal,
                                                   reasonable value: 0.05 = 5%*/
     const size_t ANGLE_HISTORY_POINTS = 3;     // used for angle prediction
     const int DIRECTION_SMOOTHING_BUFLEN = 3;  // gyro points - used for angle smoothing
 
 
-    const double MIN_CUT_AREA_FACTOR = 0.1;          // used for filtering out of insignificant cuts
-    const double ENGAGE_AREA_THR_FACTOR = .3;        // influences minimal engage area
-    const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.2;  // influences the engage scan/stepping distance
-
-    const double CLEAN_PATH_TOLERANCE = 1.41;            // should be >1
-    const double FINISHING_CLEAN_PATH_TOLERANCE = 1.41;  // should be >1
+    const double CLEAN_PATH_TOLERANCE = 1.415;            // should be >sqrt(2)
+    const double FINISHING_CLEAN_PATH_TOLERANCE = 1.415;  // should be >sqrt(2)
+    const double FINISHING_THICKNESS_SCALE = 1 / 10.;     // finish at this fraction of stepover
 
     const long PASSES_LIMIT = __LONG_MAX__;              // limit used while debugging
     const long POINTS_PER_PASS_LIMIT = __LONG_MAX__;     // limit used while debugging

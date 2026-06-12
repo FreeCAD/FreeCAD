@@ -702,8 +702,10 @@ void FemPostPipeline::handleChangedPropertyName(
         group.insert(group.end(), group_filter.begin(), group_filter.end());
         Group.setValues(group);
     }
-    else if (strcmp(propName, "Functions") == 0
-             && Base::Type::fromName(typeName) == App::PropertyLink::getClassTypeId()) {
+    else if (
+        strcmp(propName, "Functions") == 0
+        && Base::Type::fromName(typeName) == App::PropertyLink::getClassTypeId()
+    ) {
 
         // add the formerly Functions values to the group
         App::PropertyLink functions;

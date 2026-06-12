@@ -106,8 +106,7 @@ protected:
     QColor m_colNormalFill;                     //current Normal fill color def or plain fill
     Qt::BrushStyle m_fillNormal;               //current Normal fill style
 
-private:
-
+    double m_edgeFuzz;
 };
 
 } // namespace MDIViewPageGui

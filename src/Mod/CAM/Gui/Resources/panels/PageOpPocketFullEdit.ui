@@ -166,30 +166,33 @@ The latter can be used to face of the entire stock area to ensure uniform height
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="zigZagAngle_label">
+       <widget class="QLabel" name="angle_label">
         <property name="text">
          <string>Angle</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::InputField" name="zigZagAngle">
+       <widget class="Gui::InputField" name="angle">
         <property name="toolTip">
          <string>Angle in which the pattern is applied</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="stepOverPercent_label">
+       <widget class="QLabel" name="stepOver_label">
         <property name="text">
-         <string>Step over percent</string>
+         <string>Step over</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QSpinBox" name="stepOverPercent">
+       <widget class="QSpinBox" name="stepOver">
         <property name="toolTip">
-         <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter. A step over of 100% results in no overlap between two different cycles</string>
+         <string>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool's diameter).</string>
+        </property>
+        <property name="suffix">
+         <string>%</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -198,10 +201,10 @@ The latter can be used to face of the entire stock area to ensure uniform height
          <number>100</number>
         </property>
         <property name="singleStep">
-         <number>10</number>
+         <number>5</number>
         </property>
         <property name="value">
-         <number>100</number>
+         <number>50</number>
         </property>
        </widget>
       </item>
@@ -226,16 +229,6 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <widget class="QWidget" name="pocketWidget">
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
-       <widget class="QCheckBox" name="useStartPoint">
-        <property name="toolTip">
-         <string>Specify if this operation uses a starting point</string>
-        </property>
-        <property name="text">
-         <string>Use start point</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
        <widget class="QCheckBox" name="useOutline">
         <property name="toolTip">
          <string>If selected the operation uses the outline of the selected base geometry and ignores all holes</string>
@@ -269,10 +262,35 @@ The latter can be used to face of the entire stock area to ensure uniform height
         </property>
        </widget>
       </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="useStartPoint">
+        <property name="toolTip">
+         <string>Specify if this operation uses a starting point</string>
+        </property>
+        <property name="text">
+         <string>Use start point</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QToolButton" name="setStartPoint">
+        <property name="toolTip">
+         <string>Set picked point as start point</string>
+        </property>
+        <property name="text">
+         <string notr="true">…</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg
+         </iconset>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="5" column="0">
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

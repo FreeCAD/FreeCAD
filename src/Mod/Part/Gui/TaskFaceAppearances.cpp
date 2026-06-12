@@ -264,9 +264,9 @@ FaceAppearances::FaceAppearances(ViewProviderPartExt* vp, QWidget* parent)
 
     d->ui->groupBox->setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->buttonCustomAppearance->setDisabled(true);
+    d->ui->widgetMaterial->setEnabled(false);
 
-    FaceSelection* gate = new FaceSelection(d->vp->getObject());
-    Gui::Selection().addSelectionGate(gate);
+    setSelectionGate();
 
     // NOLINTBEGIN
     d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(
@@ -317,21 +317,21 @@ void FaceAppearances::slotUndoDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
         d->doc->resetEdit();
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
 void FaceAppearances::slotDeleteDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
 void FaceAppearances::slotDeleteObject(const Gui::ViewProvider& obj)
 {
     if (d->vp == &obj) {
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
@@ -375,8 +375,10 @@ void FaceAppearances::onDefaultButtonClicked()
 void FaceAppearances::onMaterialSelected(const std::shared_ptr<Materials::Material>& material)
 {
     if (!d->index.isEmpty()) {
+        App::Material appearance = material->getMaterialAppearance();
+        appearance.uuid = material->getUUID().toStdString();
         for (int it : d->index) {
-            d->perface[it] = material->getMaterialAppearance();
+            d->perface[it] = appearance;
         }
         d->vp->ShapeAppearance.setValues(d->perface);
         // new color has been applied, unselect so that users can see this
@@ -448,6 +450,38 @@ void FaceAppearances::updatePanel()
 
     d->ui->labelElement->setText(faces);
     d->ui->buttonCustomAppearance->setDisabled(d->index.isEmpty());
+    d->ui->widgetMaterial->setEnabled(!d->index.isEmpty());
+
+    syncMaterialWidget();
+}
+
+/* Synchronizes the material widget with the currently selected faces. */
+void FaceAppearances::syncMaterialWidget()
+{
+    std::string materialUuid;
+    if (!d->index.isEmpty()) {
+        bool allSame = true;
+        for (int it : d->index) {
+            const std::string& uuid = d->perface[it].uuid;
+            if (uuid.empty()) {
+                allSame = false;
+                break;
+            }
+            if (materialUuid.empty()) {
+                materialUuid = uuid;
+            }
+            else if (uuid != materialUuid) {
+                allSame = false;
+                break;
+            }
+        }
+        if (!allSame) {
+            materialUuid.clear();
+        }
+    }
+    // Block signals to prevent triggering onMaterialSelected during widget synchronization
+    QSignalBlocker blocker(d->ui->widgetMaterial);
+    d->ui->widgetMaterial->setMaterial(QString::fromStdString(materialUuid));
 }
 
 int FaceAppearances::getFirstIndex() const
@@ -511,6 +545,11 @@ void FaceAppearances::changeEvent(QEvent* e)
     if (e->type() == QEvent::LanguageChange) {
         d->ui->retranslateUi(this);
     }
+}
+void FaceAppearances::setSelectionGate()
+{
+    FaceSelection* gate = new FaceSelection(d->vp->getObject());
+    Gui::Selection().addSelectionGate(gate);
 }
 
 

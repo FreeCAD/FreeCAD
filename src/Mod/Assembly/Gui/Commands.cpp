@@ -99,7 +99,7 @@ CmdAssemblyLinkSelectLinked::CmdAssemblyLinkSelectLinked()
     : Command("Assembly_LinkSelectLinked")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Go to linked Assembly");
+    sMenuText = QT_TR_NOOP("Go to Linked Assembly");
     sToolTipText = QT_TR_NOOP("Selects the linked assembly and switches to its original document");
     sWhatsThis = "Assembly_LinkSelectLinked";
     sStatusTip = sToolTipText;
@@ -163,7 +163,7 @@ CmdAssemblySelectConflictingConstraints::CmdAssemblySelectConflictingConstraints
     : Command("Assembly_SelectConflictingConstraints")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Select conflicting constraints");
+    sMenuText = QT_TR_NOOP("Select Conflicting Constraints");
     sToolTipText = QT_TR_NOOP("Selects conflicting joints in the active assembly");
     sWhatsThis = "Assembly_SelectConflictingConstraints";
     sStatusTip = sToolTipText;
@@ -198,7 +198,7 @@ CmdAssemblySelectRedundantConstraints::CmdAssemblySelectRedundantConstraints()
     : Command("Assembly_SelectRedundantConstraints")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Select redundant constraints");
+    sMenuText = QT_TR_NOOP("Select Redundant Constraints");
     sToolTipText = QT_TR_NOOP("Selects redundant joints in the active assembly");
     sWhatsThis = "Assembly_SelectRedundantConstraints";
     sStatusTip = sToolTipText;
@@ -231,7 +231,7 @@ CmdAssemblySelectMalformedConstraints::CmdAssemblySelectMalformedConstraints()
     : Command("Assembly_SelectMalformedConstraints")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Select malformed constraints");
+    sMenuText = QT_TR_NOOP("Select Malformed Constraints");
     sToolTipText = QT_TR_NOOP("Selects malformed joints in the active assembly");
     sWhatsThis = "Assembly_SelectMalformedConstraints";
     sStatusTip = sToolTipText;
@@ -265,7 +265,7 @@ CmdAssemblySelectComponentsWithDoFs::CmdAssemblySelectComponentsWithDoFs()
     : Command("Assembly_SelectComponentsWithDoFs")
 {
     sGroup = QT_TR_NOOP("Assembly");
-    sMenuText = QT_TR_NOOP("Select components with DoFs");
+    sMenuText = QT_TR_NOOP("Select Components With DoFs");
     sToolTipText = QT_TR_NOOP("Selects unconstrained components in the active assembly");
     sWhatsThis = "Assembly_SelectComponentsWithDoFs";
     sStatusTip = sToolTipText;
@@ -298,6 +298,70 @@ bool CmdAssemblySelectComponentsWithDoFs::isActive()
     return getActiveAssembly() != nullptr;
 }
 
+// ================================================================================
+// Select Joints of Component
+// ================================================================================
+
+DEF_STD_CMD_A(CmdAssemblySelectJointsOfComponent)
+
+CmdAssemblySelectJointsOfComponent::CmdAssemblySelectJointsOfComponent()
+    : Command("Assembly_SelectJointsOfComponent")
+{
+    sGroup = QT_TR_NOOP("Assembly");
+    sMenuText = QT_TR_NOOP("Select Component Joints");
+    sToolTipText = QT_TR_NOOP("Selects all joints referencing the selected component");
+    sWhatsThis = "Assembly_SelectJointsOfComponent";
+    sStatusTip = sToolTipText;
+    sPixmap = "Assembly_SelectJointsOfComponent";
+    eType = ForEdit;
+}
+
+void CmdAssemblySelectJointsOfComponent::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    AssemblyObject* assembly = getActiveAssembly();
+    if (!assembly) {
+        return;
+    }
+
+    auto selection = Gui::Selection().getSelectionEx(
+        "",
+        App::DocumentObject::getClassTypeId(),
+        Gui::ResolveMode::NoResolve
+    );
+    if (selection.empty()) {
+        return;
+    }
+
+    std::set<App::DocumentObject*> components;
+
+    for (auto& sel : selection) {
+        const std::vector<std::string> subs = sel.getSubNames();
+        std::string sub = subs.empty() ? "" : subs.front();
+
+        if (App::DocumentObject* comp = getMovingPartFromSel(assembly, sel.getObject(), sub)) {
+            components.insert(comp);
+        }
+    }
+
+    if (components.empty()) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> jointsToSelect;
+    for (auto* comp : components) {
+        std::vector<App::DocumentObject*> partJoints = assembly->getJointsOfPart(comp);
+        jointsToSelect.insert(jointsToSelect.end(), partJoints.begin(), partJoints.end());
+    }
+
+    selectObjects(jointsToSelect);
+}
+
+bool CmdAssemblySelectJointsOfComponent::isActive()
+{
+    return getActiveAssembly() != nullptr && !Gui::Selection().getSelection().empty();
+}
+
 
 // ================================================================================
 // Command Creation
@@ -312,4 +376,5 @@ void AssemblyGui::CreateAssemblyCommands()
     rcCmdMgr.addCommand(new CmdAssemblySelectRedundantConstraints());
     rcCmdMgr.addCommand(new CmdAssemblySelectMalformedConstraints());
     rcCmdMgr.addCommand(new CmdAssemblySelectComponentsWithDoFs());
+    rcCmdMgr.addCommand(new CmdAssemblySelectJointsOfComponent());
 }

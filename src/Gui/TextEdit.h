@@ -71,7 +71,7 @@ private Q_SLOTS:
     void complete();
 
 Q_SIGNALS:
-    void showSearchBar();
+    void showSearchBar(const QString& prefill);
     void findNext();
     void findPrevious();
 
@@ -84,6 +84,7 @@ private:
     void createListBox();
 
 private:
+    QString selectionForSearch() const;
     QString wordPrefix;
     int cursorPosition;
     CompletionList* listBox;

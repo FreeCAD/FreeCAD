@@ -374,7 +374,7 @@ void Cell::setContent(const char* value)
                             }
                         }
                     }
-                    else if (const auto number = freecad_cast<NumberExpression*>(parsedExpr.get())) {
+                    else if (freecad_cast<NumberExpression*>(parsedExpr.get())) {
                         // NumbersExpressions can accept more than can be parsed with strtod.
                         //   Example: 12.34 and 12,34 are both valid NumberExpressions
                         newExpr = std::move(parsedExpr);
@@ -467,15 +467,27 @@ bool Cell::getStyle(std::set<std::string>& _style) const
 
 void Cell::setForeground(const Base::Color& color)
 {
-    if (color != foregroundColor) {
+    if (!isUsed(FOREGROUND_COLOR_SET) || color != foregroundColor) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
         foregroundColor = color;
-        setUsed(FOREGROUND_COLOR_SET, foregroundColor != Base::Color(0, 0, 0, 1));
+        setUsed(FOREGROUND_COLOR_SET);
         setDirty();
 
         signaller.tryInvoke();
     }
+}
+
+/**
+ * Clears foreground color of the cell.
+ *
+ */
+
+void Cell::clearForeground()
+{
+    PropertySheet::AtomicPropertyChange signaller(*owner);
+    setUsed(FOREGROUND_COLOR_SET, false);
+    signaller.tryInvoke();
 }
 
 /**
@@ -496,15 +508,27 @@ bool Cell::getForeground(Base::Color& color) const
 
 void Cell::setBackground(const Base::Color& color)
 {
-    if (color != backgroundColor) {
+    if (!isUsed(BACKGROUND_COLOR_SET) || color != backgroundColor) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
         backgroundColor = color;
-        setUsed(BACKGROUND_COLOR_SET, backgroundColor != Base::Color(1, 1, 1, 0));
+        setUsed(BACKGROUND_COLOR_SET);
         setDirty();
 
         signaller.tryInvoke();
     }
+}
+
+/**
+ * Clears background color of the cell.
+ *
+ */
+
+void Cell::clearBackground()
+{
+    PropertySheet::AtomicPropertyChange signaller(*owner);
+    setUsed(BACKGROUND_COLOR_SET, false);
+    signaller.tryInvoke();
 }
 
 /**

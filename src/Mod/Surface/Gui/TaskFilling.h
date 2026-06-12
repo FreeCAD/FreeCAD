@@ -98,6 +98,8 @@ public:
     void setEditedObject(Surface::Filling* obj);
     void appendButtons(Gui::ButtonGroup*);
 
+    void setSelectionGate();
+
 protected:
     void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
@@ -150,6 +152,7 @@ private:
     FillingPanel* widget1;
     FillingEdgePanel* widget2;
     FillingVertexPanel* widget3;
+    Surface::Filling* editedObj;
 };
 
 }  // namespace SurfaceGui

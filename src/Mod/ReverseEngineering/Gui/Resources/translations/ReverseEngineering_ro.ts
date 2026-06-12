@@ -237,8 +237,8 @@
       <translation>Amplasare</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="138"/>
+      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
       <translation type="unfinished">Fit B-spline</translation>
     </message>
@@ -338,8 +338,8 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
-      <source>Input error</source>
-      <translation>Eroare de intrare</translation>
+      <source>Input Error</source>
+      <translation>Eroarea de introducere a datelor</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="215"/>
@@ -381,8 +381,8 @@
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
-      <source>Input error</source>
-      <translation>Eroare de intrare</translation>
+      <source>Input Error</source>
+      <translation>Eroarea de introducere a datelor</translation>
     </message>
   </context>
   <context>
@@ -721,8 +721,8 @@
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
       <location filename="../../FitBSplineCurve.cpp" line="89"/>
-      <source>Input error</source>
-      <translation>Eroare de intrare</translation>
+      <source>Input Error</source>
+      <translation>Eroarea de introducere a datelor</translation>
     </message>
   </context>
 </TS>

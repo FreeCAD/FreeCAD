@@ -1,76 +1,92 @@
-/***************************************************************************
- *   Copyright (c) 2017 Kustaa Nyholm  <kustaa.nyholm@sparetimelabs.com>   *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2017 Kustaa Nyholm  <kustaa.nyholm@sparetimelabs.com>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
 
 #include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
+#include <memory>
 #include <numbers>
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# include <GL/gl.h>
-#endif
+#include <set>
+#include <vector>
+
 #include <boost/math/constants/constants.hpp>
-#include <Inventor/nodes/SoOrthographicCamera.h>
+
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbVec4f.h>
+#include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoCallback.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoSeparator.h>
+
 #include <QApplication>
 #include <QCursor>
+#include <QElapsedTimer>
 #include <QImage>
 #include <QMenu>
-#include <QOpenGLFramebufferObject>
-#include <QOpenGLTexture>
-#include <QOpenGLWidget>
 #include <QPainterPath>
 
 #include <Base/Color.h>
 #include <Base/Tools.h>
-#include <Eigen/Dense>
-
 #include "NaviCube.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Command.h"
 #include "Action.h"
 #include "MainWindow.h"
 #include "Navigation/NavigationAnimation.h"
+#include "Inventor/SoNaviCube.h"
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
 #include "ViewParams.h"
 
 
-using namespace Eigen;
 using namespace std;
 using namespace Gui;
+
+using PickId = Gui::SoNaviCube::PickId;
+
+enum class FaceType
+{
+    None,
+    Main,
+    Edge,
+    Corner,
+    Button
+};
 
 class NaviCubeImplementation
 {
 public:
     explicit NaviCubeImplementation(Gui::View3DInventorViewer*);
     ~NaviCubeImplementation();
-    void drawNaviCube();
     void createContextMenu(const std::vector<std::string>& cmd);
     void createCubeFaceTextures();
 
@@ -79,76 +95,15 @@ public:
 
     bool processSoEvent(const SoEvent* ev);
     void setSize(int size);
+    SoNode* getCoinNode() const;
+    void requestRedraw(bool touchNode = true);
 
 private:
-    enum class PickId
-    {
-        None,
-        Front,
-        Top,
-        Right,
-        Rear,
-        Bottom,
-        Left,
-        FrontTop,
-        FrontBottom,
-        FrontRight,
-        FrontLeft,
-        RearTop,
-        RearBottom,
-        RearRight,
-        RearLeft,
-        TopRight,
-        TopLeft,
-        BottomRight,
-        BottomLeft,
-        FrontTopRight,
-        FrontTopLeft,
-        FrontBottomRight,
-        FrontBottomLeft,
-        RearTopRight,
-        RearTopLeft,
-        RearBottomRight,
-        RearBottomLeft,
-        ArrowNorth,
-        ArrowSouth,
-        ArrowEast,
-        ArrowWest,
-        ArrowRight,
-        ArrowLeft,
-        DotBackside,
-        ViewMenu
-    };
-    enum class DirId
-    {
-        Custom,
-        Up,
-        Right,
-        Out
-    };
-    enum class ShapeId
-    {
-        None,
-        Main,
-        Edge,
-        Corner,
-        Button
-    };
-    struct Face
-    {
-        ShapeId type;
-        vector<Vector3f> vertexArray;
-        // The rotation is the standard orientation for the faces of the cube
-        // For the flat buttons the rotation contains the direction of the rotation
-        // The standard orientation is the desired camera orientation when a face is selected and
-        // rotate to nearest is disabled
-        SbRotation rotation;
-    };
+    void resetClickState();
+    void setHiliteWithHysteresis(PickId);
     struct LabelTexture
     {
-        vector<Vector3f> vertexArray;
-        qreal fontSize;
-        QOpenGLTexture* texture = nullptr;
+        qreal fontSize = 0.0;
         string label;
     };
     bool mousePressed(short x, short y);
@@ -158,260 +113,530 @@ private:
     bool inDragZone(short x, short y);
 
     void prepare();
-    void handleResize();
+    void handleResize(const SbVec2s& viewSize);
     void handleMenu();
 
     void setHilite(PickId);
 
-    void addCubeFace(const Vector3f&, const Vector3f&, ShapeId, PickId, float rotZ = 0.0);
-    void addButtonFace(PickId, const SbVec3f& direction = SbVec3f(0, 0, 0));
+    FaceType getFaceType(PickId) const;
+    SbRotation getFaceRotation(PickId) const;
 
     QString str(const char* str);
     QMenu* createNaviCubeMenu();
-    void drawNaviCube(bool picking, float opacity);
-    bool isFramebufferValid() const;
-    void ensureFramebufferValid();
+    bool readyToRender();
+    bool populateRenderParams(
+        float opacity,
+        int viewportX,
+        int viewportY,
+        int viewportWidth,
+        int viewportHeight
+    );
 
     SbRotation getNearestOrientation(PickId pickId);
     qreal getPhysicalCubeWidgetSize();
 
 public:
-    static int m_CubeWidgetSize;
-    QColor m_BaseColor;
-    QColor m_EmphaseColor;
-    QColor m_HiliteColor;
-    bool m_ShowCS = true;
-    PickId m_HiliteId = PickId::None;
-    double m_BorderWidth = 1.1;
-    bool m_RotateToNearest = true;
-    int m_NaviStepByTurn = 8;
-    float m_FontZoom = 0.3F;
-    float m_Chamfer = 0.12F;
-    std::string m_TextFont;
-    int m_FontWeight = 0;
-    int m_FontStretch = 0;
-    float m_InactiveOpacity = 0.5;
-    SbVec2s m_PosOffset = SbVec2s(0, 0);
+    static int cubeWidgetSize;
+    QColor baseColor;
+    QColor emphaseColor;
+    QColor hiliteColor;
+    bool showCS = true;
+    PickId hiliteId = PickId::None;
+    double borderWidth = 1.1;
+    bool rotateToNearest = true;
+    int naviStepByTurn = 8;
+    float fontZoom = 0.3F;
+    float chamfer = 0.12F;
+    std::string textFont;
+    int fontWeight = 0;
+    int fontStretch = 0;
+    float inactiveOpacity = 0.5;
+    SbVec2s posOffset = SbVec2s(0, 0);
 
-    Base::Color m_xColor;
-    Base::Color m_yColor;
-    Base::Color m_zColor;
+    Base::Color xColor;
+    Base::Color yColor;
+    Base::Color zColor;
 
-    bool m_Prepared = false;
-    static vector<string> m_commands;
-    bool m_Draggable = false;
-    SbVec2s m_ViewSize = SbVec2s(0, 0);
+    bool prepared = false;
+    static vector<string> commands;
+    bool draggable = false;
+    SbVec2s viewSize = SbVec2s(0, 0);
 
 private:
-    bool m_MouseDown = false;
-    bool m_Dragging = false;
-    bool m_MightDrag = false;
-    bool m_Hovering = false;
+    bool mouseDown = false;
+    bool dragging = false;
+    bool mightDrag = false;
+    bool hovering = false;
+    QElapsedTimer clickTimer;
+    PickId lastClickPickId = PickId::None;
+    PickId pendingHiliteId = PickId::None;
+    int pendingHiliteCount = 0;
 
-    SbVec2f m_RelPos = SbVec2f(1.0f, 1.0f);
-    SbVec2s m_PosAreaBase = SbVec2s(0, 0);
-    SbVec2s m_PosAreaSize = SbVec2s(0, 0);
-    qreal m_DevicePixelRatio = 1.0;
+    SbVec2f relPos = SbVec2f(1.0f, 1.0f);
+    SbVec2s posAreaBase = SbVec2s(0, 0);
+    SbVec2s posAreaSize = SbVec2s(0, 0);
+    qreal devicePixelRatio = 1.0;
 
-    QOpenGLFramebufferObject* m_PickingFramebuffer;
-    Gui::View3DInventorViewer* m_View3DInventorViewer;
+    Gui::View3DInventorViewer* viewer;
 
-    map<PickId, Face> m_Faces;
-    map<PickId, LabelTexture> m_LabelTextures;
+    Gui::SoNaviCube* soNaviCube = nullptr;
 
-    QMenu* m_Menu;
+    map<PickId, LabelTexture> labelTextures;
 
-    std::shared_ptr<NavigationAnimation> m_flatButtonAnimation;
-    SbRotation m_flatButtonTargetOrientation;
+    QMenu* menu;
+
+    std::shared_ptr<NavigationAnimation> flatButtonAnimation;
+    SbRotation flatButtonTargetOrientation;
+
+    void syncNodeState(SoAction* action);
+    static void traversalCallback(void* userdata, SoAction* action);
+
+    SoSeparator* coinRoot = nullptr;
+    SoCallback* actionSync = nullptr;
 };
 
-int NaviCubeImplementation::m_CubeWidgetSize = 132;
+int NaviCubeImplementation::cubeWidgetSize = 132;
 
 int NaviCube::getNaviCubeSize()
 {
-    return NaviCubeImplementation::m_CubeWidgetSize;
+    return NaviCubeImplementation::cubeWidgetSize;
+}
+
+SoNode* NaviCube::getCoinNode() const
+{
+    return naviCubeImplementation->getCoinNode();
 }
 
 NaviCube::NaviCube(Gui::View3DInventorViewer* viewer)
 {
-    m_NaviCubeImplementation = new NaviCubeImplementation(viewer);
+    naviCubeImplementation = new NaviCubeImplementation(viewer);
     updateColors();
 }
 
 NaviCube::~NaviCube()
 {
-    delete m_NaviCubeImplementation;
-}
-
-void NaviCube::drawNaviCube()
-{
-    m_NaviCubeImplementation->drawNaviCube();
+    delete naviCubeImplementation;
 }
 
 void NaviCube::createContextMenu(const std::vector<std::string>& cmd)
 {
-    m_NaviCubeImplementation->createContextMenu(cmd);
+    naviCubeImplementation->createContextMenu(cmd);
 }
 
 bool NaviCube::processSoEvent(const SoEvent* ev)
 {
-    return m_NaviCubeImplementation->processSoEvent(ev);
+    return naviCubeImplementation->processSoEvent(ev);
 }
 
-vector<string> NaviCubeImplementation::m_commands;
+vector<string> NaviCubeImplementation::commands;
 
 void NaviCube::setCorner(Corner c)
 {
-    m_NaviCubeImplementation->moveToCorner(c);
+    naviCubeImplementation->moveToCorner(c);
 }
 
 void NaviCube::setOffset(int x, int y)
 {
-    m_NaviCubeImplementation->m_PosOffset = SbVec2s(x, y);
-    m_NaviCubeImplementation->m_ViewSize = SbVec2s(0, 0);
+    naviCubeImplementation->posOffset = SbVec2s(x, y);
+    naviCubeImplementation->viewSize = SbVec2s(0, 0);
+    naviCubeImplementation->requestRedraw();
 }
 
 bool NaviCube::isDraggable()
 {
-    return m_NaviCubeImplementation->m_Draggable;
+    return naviCubeImplementation->draggable;
 }
 
 void NaviCube::setDraggable(bool draggable)
 {
-    m_NaviCubeImplementation->m_Draggable = draggable;
+    naviCubeImplementation->draggable = draggable;
 }
 
 void NaviCube::setSize(int size)
 {
-    m_NaviCubeImplementation->setSize(size);
+    naviCubeImplementation->setSize(size);
 }
 
 void NaviCube::setChamfer(float chamfer)
 {
-    m_NaviCubeImplementation->m_Chamfer = min(max(0.05f, chamfer), 0.18f);
-    m_NaviCubeImplementation->m_Prepared = false;
+    naviCubeImplementation->chamfer = min(max(0.05f, chamfer), 0.18f);
+    naviCubeImplementation->prepared = false;
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setNaviRotateToNearest(bool toNearest)
 {
-    m_NaviCubeImplementation->m_RotateToNearest = toNearest;
+    naviCubeImplementation->rotateToNearest = toNearest;
 }
 
 void NaviCube::setNaviStepByTurn(int steps)
 {
-    m_NaviCubeImplementation->m_NaviStepByTurn = steps;
+    naviCubeImplementation->naviStepByTurn = steps;
 }
 
 void NaviCube::setFont(std::string font)
 {
-    m_NaviCubeImplementation->m_TextFont = font;
-    m_NaviCubeImplementation->m_Prepared = false;
+    naviCubeImplementation->textFont = font;
+    naviCubeImplementation->prepared = false;
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setFontWeight(int weight)
 {
-    m_NaviCubeImplementation->m_FontWeight = weight;
-    m_NaviCubeImplementation->m_Prepared = false;
+    naviCubeImplementation->fontWeight = weight;
+    naviCubeImplementation->prepared = false;
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setFontStretch(int stretch)
 {
-    m_NaviCubeImplementation->m_FontStretch = stretch;
-    m_NaviCubeImplementation->m_Prepared = false;
+    naviCubeImplementation->fontStretch = stretch;
+    naviCubeImplementation->prepared = false;
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setFontZoom(float zoom)
 {
-    m_NaviCubeImplementation->m_FontZoom = zoom;
-    m_NaviCubeImplementation->m_Prepared = false;
+    naviCubeImplementation->fontZoom = zoom;
+    naviCubeImplementation->prepared = false;
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setBaseColor(QColor bColor)
 {
-    m_NaviCubeImplementation->m_BaseColor = bColor;
+    naviCubeImplementation->baseColor = bColor;
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setEmphaseColor(QColor eColor)
 {
-    m_NaviCubeImplementation->m_EmphaseColor = eColor;
-    m_NaviCubeImplementation->m_Prepared = false;
+    naviCubeImplementation->emphaseColor = eColor;
+    naviCubeImplementation->prepared = false;
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setHiliteColor(QColor HiliteColor)
 {
-    m_NaviCubeImplementation->m_HiliteColor = HiliteColor;
+    naviCubeImplementation->hiliteColor = HiliteColor;
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setBorderWidth(double BorderWidth)
 {
-    m_NaviCubeImplementation->m_BorderWidth = BorderWidth;
+    naviCubeImplementation->borderWidth = BorderWidth;
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setShowCS(bool showCS)
 {
-    m_NaviCubeImplementation->m_ShowCS = showCS;
+    naviCubeImplementation->showCS = showCS;
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setNaviCubeLabels(const std::vector<std::string>& labels)
 {
-    m_NaviCubeImplementation->setLabels(labels);
+    naviCubeImplementation->setLabels(labels);
 }
 
 void NaviCube::setInactiveOpacity(float opacity)
 {
-    m_NaviCubeImplementation->m_InactiveOpacity = opacity;
+    naviCubeImplementation->inactiveOpacity = opacity;
+    naviCubeImplementation->requestRedraw();
 }
 
 qreal NaviCubeImplementation::getPhysicalCubeWidgetSize()
 {
-    return m_CubeWidgetSize * m_DevicePixelRatio;
+    return cubeWidgetSize * devicePixelRatio;
 }
 
 void NaviCubeImplementation::setLabels(const std::vector<std::string>& labels)
 {
-    m_LabelTextures[PickId::Front].label = labels[0];
-    m_LabelTextures[PickId::Top].label = labels[1];
-    m_LabelTextures[PickId::Right].label = labels[2];
-    m_LabelTextures[PickId::Rear].label = labels[3];
-    m_LabelTextures[PickId::Bottom].label = labels[4];
-    m_LabelTextures[PickId::Left].label = labels[5];
-    m_Prepared = false;
+    labelTextures[PickId::Front].label = labels[0];
+    labelTextures[PickId::Top].label = labels[1];
+    labelTextures[PickId::Right].label = labels[2];
+    labelTextures[PickId::Rear].label = labels[3];
+    labelTextures[PickId::Bottom].label = labels[4];
+    labelTextures[PickId::Left].label = labels[5];
+    prepared = false;
+    requestRedraw();
 }
 
 NaviCubeImplementation::NaviCubeImplementation(Gui::View3DInventorViewer* viewer)
-    : m_BaseColor {226, 232, 239}
-    , m_HiliteColor {170, 226, 255}
+    : baseColor {226, 232, 239}
+    , hiliteColor {170, 226, 255}
 {
-    m_View3DInventorViewer = viewer;
-    m_PickingFramebuffer = nullptr;
-    m_Menu = createNaviCubeMenu();
+    soNaviCube = new Gui::SoNaviCube();
+    soNaviCube->ref();
+
+    coinRoot = new SoSeparator();
+    coinRoot->ref();
+    coinRoot->setName("naviCubeRoot");
+
+    actionSync = new SoCallback();
+    actionSync->setCallback(NaviCubeImplementation::traversalCallback, this);
+    coinRoot->addChild(actionSync);
+    coinRoot->addChild(soNaviCube);
+
+    this->viewer = viewer;
+    menu = createNaviCubeMenu();
 }
 
 NaviCubeImplementation::~NaviCubeImplementation()
 {
-    delete m_Menu;
-    if (m_PickingFramebuffer) {
-        delete m_PickingFramebuffer;
+    delete menu;
+    if (coinRoot) {
+        coinRoot->unref();
+        coinRoot = nullptr;
     }
-    for (auto tex : m_LabelTextures) {
-        delete tex.second.texture;
+    actionSync = nullptr;
+    if (soNaviCube) {
+        soNaviCube->clearLabelTextures();
+        soNaviCube->unref();
+        soNaviCube = nullptr;
+    }
+}
+
+SoNode* NaviCubeImplementation::getCoinNode() const
+{
+    return coinRoot;
+}
+
+void NaviCubeImplementation::traversalCallback(void* userdata, SoAction* action)
+{
+    if (!userdata) {
+        return;
+    }
+    static_cast<NaviCubeImplementation*>(userdata)->syncNodeState(action);
+}
+
+void NaviCubeImplementation::syncNodeState(SoAction* action)
+{
+    if (!action) {
+        return;
+    }
+
+    const SoType type = action->getTypeId();
+    const bool isGLRender = type.isDerivedFrom(SoGLRenderAction::getClassTypeId());
+
+    if (isGLRender) {
+        if (!readyToRender()) {
+            return;
+        }
+    }
+    else if (!prepared) {
+        return;
+    }
+
+    SoState* state = action->getState();
+    if (!state) {
+        return;
+    }
+
+    const SbViewportRegion& region = SoViewportRegionElement::get(state);
+    const SbVec2s viewSize = region.getViewportSizePixels();
+    if (viewSize[0] <= 0 || viewSize[1] <= 0) {
+        return;
+    }
+
+    handleResize(viewSize);
+
+    const qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
+    if (physicalCubeWidgetSize <= 0) {
+        return;
+    }
+
+    const int viewportWidth = static_cast<int>(physicalCubeWidgetSize);
+    const int viewportHeight = static_cast<int>(physicalCubeWidgetSize);
+    const int posX = static_cast<int>(relPos[0] * posAreaSize[0]) + posAreaBase[0]
+        - viewportWidth / 2;
+    const int posY = static_cast<int>(relPos[1] * posAreaSize[1]) + posAreaBase[1]
+        - viewportHeight / 2;
+
+    if (
+        !populateRenderParams(hovering ? 1.0F : inactiveOpacity, posX, posY, viewportWidth, viewportHeight)
+    ) {
+        return;
+    }
+
+    if (!isGLRender) {
+        soNaviCube->touch();
+    }
+}
+
+void NaviCubeImplementation::requestRedraw(bool touchNode)
+{
+    if (touchNode && soNaviCube) {
+        soNaviCube->touch();
+    }
+    if (viewer) {
+        if (auto* rm = viewer->getSoRenderManager()) {
+            rm->scheduleRedraw();
+        }
+    }
+}
+
+FaceType NaviCubeImplementation::getFaceType(PickId id) const
+{
+    switch (id) {
+        default:
+            return FaceType::None;
+        case PickId::Front:
+        case PickId::Top:
+        case PickId::Right:
+        case PickId::Rear:
+        case PickId::Bottom:
+        case PickId::Left:
+            return FaceType::Main;
+        case PickId::FrontTop:
+        case PickId::FrontBottom:
+        case PickId::FrontRight:
+        case PickId::FrontLeft:
+        case PickId::RearTop:
+        case PickId::RearBottom:
+        case PickId::RearRight:
+        case PickId::RearLeft:
+        case PickId::TopRight:
+        case PickId::TopLeft:
+        case PickId::BottomRight:
+        case PickId::BottomLeft:
+            return FaceType::Edge;
+        case PickId::FrontTopRight:
+        case PickId::FrontTopLeft:
+        case PickId::FrontBottomRight:
+        case PickId::FrontBottomLeft:
+        case PickId::RearTopRight:
+        case PickId::RearTopLeft:
+        case PickId::RearBottomRight:
+        case PickId::RearBottomLeft:
+            return FaceType::Corner;
+        case PickId::ArrowNorth:
+        case PickId::ArrowSouth:
+        case PickId::ArrowEast:
+        case PickId::ArrowWest:
+        case PickId::ArrowRight:
+        case PickId::ArrowLeft:
+        case PickId::Backside:
+        case PickId::Home:
+        case PickId::ViewMenu:
+            return FaceType::Button;
+    }
+}
+
+SbRotation NaviCubeImplementation::getFaceRotation(PickId id) const
+{
+    const auto makeFaceRotation = [](SbVec3f x, SbVec3f z, float rotZ) {
+        SbVec3f y = x.cross(-z);
+        x.normalize();
+        y.normalize();
+        z.normalize();
+
+        SbMatrix R(x[0], y[0], z[0], 0, x[1], y[1], z[1], 0, x[2], y[2], z[2], 0, 0, 0, 0, 1);
+        return (SbRotation(R) * SbRotation(SbVec3f(0, 0, 1), rotZ)).inverse();
+    };
+
+    const SbVec3f x(1.0F, 0.0F, 0.0F);
+    const SbVec3f y(0.0F, 1.0F, 0.0F);
+    const SbVec3f z(0.0F, 0.0F, 1.0F);
+    constexpr float pi = std::numbers::pi_v<float>;
+
+    switch (id) {
+        default:
+            return SbRotation();
+
+        // Main faces
+        case PickId::Top:
+            return makeFaceRotation(x, z, 0.0F);
+        case PickId::Front:
+            return makeFaceRotation(x, -y, 0.0F);
+        case PickId::Left:
+            return makeFaceRotation(-y, -x, 0.0F);
+        case PickId::Rear:
+            return makeFaceRotation(-x, y, 0.0F);
+        case PickId::Right:
+            return makeFaceRotation(y, x, 0.0F);
+        case PickId::Bottom:
+            return makeFaceRotation(x, -z, 0.0F);
+
+        // Corner faces
+        case PickId::FrontTopRight:
+            return makeFaceRotation(-x - y, x - y + z, pi);
+        case PickId::FrontTopLeft:
+            return makeFaceRotation(-x + y, -x - y + z, pi);
+        case PickId::FrontBottomRight:
+            return makeFaceRotation(x + y, x - y - z, 0.0F);
+        case PickId::FrontBottomLeft:
+            return makeFaceRotation(x - y, -x - y - z, 0.0F);
+        case PickId::RearTopRight:
+            return makeFaceRotation(x - y, x + y + z, pi);
+        case PickId::RearTopLeft:
+            return makeFaceRotation(x + y, -x + y + z, pi);
+        case PickId::RearBottomRight:
+            return makeFaceRotation(-x + y, x + y - z, 0.0F);
+        case PickId::RearBottomLeft:
+            return makeFaceRotation(-x - y, -x + y - z, 0.0F);
+
+        // Edge faces
+        case PickId::FrontTop:
+            return makeFaceRotation(x, z - y, 0.0F);
+        case PickId::FrontBottom:
+            return makeFaceRotation(x, -z - y, 0.0F);
+        case PickId::RearBottom:
+            return makeFaceRotation(x, y - z, pi);
+        case PickId::RearTop:
+            return makeFaceRotation(x, y + z, pi);
+        case PickId::RearRight:
+            return makeFaceRotation(z, x + y, pi / 2.0F);
+        case PickId::FrontRight:
+            return makeFaceRotation(z, x - y, pi / 2.0F);
+        case PickId::FrontLeft:
+            return makeFaceRotation(z, -x - y, pi / 2.0F);
+        case PickId::RearLeft:
+            return makeFaceRotation(z, y - x, pi / 2.0F);
+        case PickId::TopLeft:
+            return makeFaceRotation(y, z - x, pi);
+        case PickId::TopRight:
+            return makeFaceRotation(y, x + z, 0.0F);
+        case PickId::BottomRight:
+            return makeFaceRotation(y, x - z, 0.0F);
+        case PickId::BottomLeft:
+            return makeFaceRotation(y, -z - x, pi);
+
+        // Buttons (axis rotations; angle is scaled by caller)
+        case PickId::ArrowNorth:
+            return SbRotation(SbVec3f(-1, 0, 0), 1).inverse();
+        case PickId::ArrowSouth:
+            return SbRotation(SbVec3f(1, 0, 0), 1).inverse();
+        case PickId::ArrowEast:
+            return SbRotation(SbVec3f(0, 1, 0), 1).inverse();
+        case PickId::ArrowWest:
+            return SbRotation(SbVec3f(0, -1, 0), 1).inverse();
+        case PickId::ArrowLeft:
+            return SbRotation(SbVec3f(0, 0, 1), 1).inverse();
+        case PickId::ArrowRight:
+            return SbRotation(SbVec3f(0, 0, -1), 1).inverse();
+        case PickId::Backside:
+            return SbRotation(SbVec3f(0, 1, 0), 1).inverse();
+        case PickId::Home:
+        case PickId::ViewMenu:
+            return SbRotation();
     }
 }
 
 void NaviCubeImplementation::moveToCorner(NaviCube::Corner c)
 {
     if (c == NaviCube::TopLeftCorner) {
-        m_RelPos = SbVec2f(0.0f, 1.0f);
+        relPos = SbVec2f(0.0f, 1.0f);
     }
     else if (c == NaviCube::TopRightCorner) {
-        m_RelPos = SbVec2f(1.0f, 1.0f);
+        relPos = SbVec2f(1.0f, 1.0f);
     }
     else if (c == NaviCube::BottomLeftCorner) {
-        m_RelPos = SbVec2f(0.0f, 0.0f);
+        relPos = SbVec2f(0.0f, 0.0f);
     }
     else if (c == NaviCube::BottomRightCorner) {
-        m_RelPos = SbVec2f(1.0f, 0.0f);
+        relPos = SbVec2f(1.0f, 0.0f);
     }
+    requestRedraw();
 }
 
 auto convertWeights = [](int weight) -> QFont::Weight {
@@ -477,18 +702,18 @@ void NaviCubeImplementation::createCubeFaceTextures()
 {
     int texSize = 192;  // Works well for the max cube size 1024
     QFont font;
-    if (m_TextFont.empty()) {
+    if (textFont.empty()) {
         font.fromString(QStringLiteral("Arial"));
     }
     else {
-        font.fromString(QString::fromStdString(m_TextFont));
+        font.fromString(QString::fromStdString(textFont));
     }
     font.setStyleHint(QFont::SansSerif);
-    if (m_FontWeight > 0) {
-        font.setWeight(convertWeights(m_FontWeight));
+    if (fontWeight > 0) {
+        font.setWeight(convertWeights(fontWeight));
     }
-    if (m_FontStretch > 0) {
-        font.setStretch(m_FontStretch);
+    if (fontStretch > 0) {
+        font.setStretch(fontStretch);
     }
     font.setPointSizeF(texSize);
     QFontMetrics fm(font);
@@ -497,32 +722,32 @@ void NaviCubeImplementation::createCubeFaceTextures()
     vector<PickId> mains
         = {PickId::Front, PickId::Top, PickId::Right, PickId::Rear, PickId::Bottom, PickId::Left};
     for (PickId pickId : mains) {
-        auto t = QString::fromUtf8(m_LabelTextures[pickId].label.c_str());
+        auto t = QString::fromUtf8(labelTextures[pickId].label.c_str());
         QRect br = fm.boundingRect(t);
         float scale = (float)texSize / max(br.width(), br.height());
-        m_LabelTextures[pickId].fontSize = texSize * scale;
-        minFontSize = std::min(minFontSize, m_LabelTextures[pickId].fontSize);
-        maxFontSize = std::max(maxFontSize, m_LabelTextures[pickId].fontSize);
+        labelTextures[pickId].fontSize = texSize * scale;
+        minFontSize = std::min(minFontSize, labelTextures[pickId].fontSize);
+        maxFontSize = std::max(maxFontSize, labelTextures[pickId].fontSize);
     }
-    if (m_FontZoom > 0.0) {
-        maxFontSize = minFontSize + (maxFontSize - minFontSize) * m_FontZoom;
+    if (fontZoom > 0.0) {
+        maxFontSize = minFontSize + (maxFontSize - minFontSize) * fontZoom;
     }
     else {
-        maxFontSize = minFontSize * std::pow(2.0, m_FontZoom);
+        maxFontSize = minFontSize * std::pow(2.0, fontZoom);
     }
     for (PickId pickId : mains) {
         QImage image(texSize, texSize, QImage::Format_ARGB32);
         image.fill(qRgba(255, 255, 255, 0));
-        if (m_LabelTextures[pickId].fontSize > 0.5) {
+        if (labelTextures[pickId].fontSize > 0.5) {
             // 5% margin looks nice and prevents some artifacts
-            font.setPointSizeF(std::min(m_LabelTextures[pickId].fontSize, maxFontSize) * 0.9);
+            font.setPointSizeF(std::min(labelTextures[pickId].fontSize, maxFontSize) * 0.9);
             QPainter paint;
             paint.begin(&image);
             paint.setRenderHints(
                 QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform
             );
             paint.setPen(Qt::white);
-            QString text = QString::fromUtf8(m_LabelTextures[pickId].label.c_str());
+            QString text = QString::fromUtf8(labelTextures[pickId].label.c_str());
             paint.setFont(font);
             paint.drawText(QRect(0, 0, texSize, texSize), Qt::AlignCenter, text);
             int offset = imageVerticalBalance(image, font.pointSize());
@@ -531,541 +756,158 @@ void NaviCubeImplementation::createCubeFaceTextures()
             paint.end();
         }
 
-        if (m_LabelTextures[pickId].texture) {
-            delete m_LabelTextures[pickId].texture;
+        // Coin backend: store as a Coin-managed texture (SoTexture2).
+        // Mirror to match the OpenGL texture coordinate origin (bottom-left).
+        const QImage rgba = image.mirrored().convertToFormat(QImage::Format_RGBA8888);
+        const int w = rgba.width();
+        const int h = rgba.height();
+        std::vector<unsigned char> pixels(static_cast<size_t>(w) * static_cast<size_t>(h) * 4U);
+        for (int y = 0; y < h; ++y) {
+            const unsigned char* src = rgba.constScanLine(y);
+            unsigned char* dst = pixels.data() + static_cast<size_t>(y) * static_cast<size_t>(w) * 4U;
+            std::memcpy(dst, src, static_cast<size_t>(w) * 4U);
         }
-#if QT_VERSION < QT_VERSION_CHECK(6, 9, 0)
-        m_LabelTextures[pickId].texture = new QOpenGLTexture(image.mirrored());
-#else
-        m_LabelTextures[pickId].texture = new QOpenGLTexture(image.flipped(Qt::Vertical));
-#endif
-        m_LabelTextures[pickId].texture->setMaximumAnisotropy(4.0);
-        m_LabelTextures[pickId].texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
-        m_LabelTextures[pickId].texture->setMagnificationFilter(QOpenGLTexture::Linear);
-        m_LabelTextures[pickId].texture->generateMipMaps();
-    }
-}
 
-void NaviCubeImplementation::addButtonFace(PickId pickId, const SbVec3f& direction)
-{
-    if (m_Faces[pickId].vertexArray.size()) {
-        m_Faces[pickId].vertexArray.clear();
-    }
-    float scale = 0.005F;
-    float offx = 0.5F;
-    float offy = 0.5F;
-    vector<float> pointData;
-
-    switch (pickId) {
-        default:
-            break;
-        case PickId::ArrowRight:
-        case PickId::ArrowLeft: {
-            pointData = {66.6F,  -66.6F,  // outer curve
-                         58.3F,  -74.0F, 49.2F,  -80.3F, 39.4F,
-                         -85.5F, 29.0F,  -89.5F, 25.3F,  -78.1F,  // inner curve
-                         34.3F,  -74.3F, 42.8F,  -69.9F, 50.8F,
-                         -64.4F, 58.1F,  -58.1F, 53.8F,  -53.8F,  // arrowhead
-                         74.7F,  -46.8F, 70.7F,  -70.4F};
-            break;
-        }
-        case PickId::ArrowWest:
-        case PickId::ArrowNorth:
-        case PickId::ArrowSouth:
-        case PickId::ArrowEast: {
-            pointData = {100., 0., 80., -18., 80., 18.};
-            break;
-        }
-        case PickId::ViewMenu: {
-            offx = 0.84F;
-            offy = 0.84F;
-            pointData = {0.,   0.,                                  // top rhombus
-                         15.,  -6., 0.,   -12., -15., -6., 0., 0.,  // left rhombus
-                         -15., -6., -15., 12.,  0.,   18., 0., 0.,  // right rhombus
-                         0.,   18., 15.,  12.,  15.,  -6.};
-            break;
-        }
-        case PickId::DotBackside: {
-            int steps = 16;
-            for (int i = 0; i < steps; i++) {
-                float angle = 2.0f * std::numbers::pi_v<float> * ((float)i + 0.5) / (float)steps;
-                pointData.emplace_back(10. * cos(angle) + 87.);
-                pointData.emplace_back(10. * sin(angle) - 87.);
-            }
-            break;
-        }
-    }
-
-    int count = static_cast<int>(pointData.size()) / 2;
-    m_Faces[pickId].vertexArray.reserve(count);
-    for (int i = 0; i < count; i++) {
-        float x = pointData[i * 2] * scale + offx;
-        float y = pointData[i * 2 + 1] * scale + offy;
-        if (pickId == PickId::ArrowNorth || pickId == PickId::ArrowWest
-            || pickId == PickId::ArrowLeft) {
-            x = 1.0 - x;
-        }
-        if (pickId == PickId::ArrowSouth || pickId == PickId::ArrowNorth) {
-            m_Faces[pickId].vertexArray.emplace_back(Vector3f(y, x, 0.0));
-        }
-        else {
-            m_Faces[pickId].vertexArray.emplace_back(Vector3f(x, y, 0.0));
-        }
-    }
-    m_Faces[pickId].type = ShapeId::Button;
-    m_Faces[pickId].rotation = SbRotation(direction, 1).inverse();
-}
-
-void NaviCubeImplementation::addCubeFace(
-    const Vector3f& x,
-    const Vector3f& z,
-    ShapeId shapeType,
-    PickId pickId,
-    float rotZ
-)
-{
-    m_Faces[pickId].vertexArray.clear();
-    m_Faces[pickId].type = shapeType;
-
-    Vector3f y = x.cross(-z);
-
-    // Determine the standard orientations based on vector x and vector z
-    // Rotate by an additional rotZ if vector x and vector z are not already the standard orientation
-
-    // Create normalized vectors for x, y and z
-    SbVec3f xN(x.x(), x.y(), x.z());
-    SbVec3f yN(y.x(), y.y(), y.z());
-    SbVec3f zN(z.x(), z.y(), z.z());
-    xN.normalize();
-    yN.normalize();
-    zN.normalize();
-
-    // Create a rotation matrix
-    SbMatrix R(xN[0], yN[0], zN[0], 0, xN[1], yN[1], zN[1], 0, xN[2], yN[2], zN[2], 0, 0, 0, 0, 1);
-
-    // Store the standard orientation
-    m_Faces[pickId].rotation = (SbRotation(R) * SbRotation(SbVec3f(0, 0, 1), rotZ)).inverse();
-
-    if (shapeType == ShapeId::Corner) {
-        auto xC = x * m_Chamfer;
-        auto yC = y * m_Chamfer;
-        auto zC = (1 - 2 * m_Chamfer) * z;
-        m_Faces[pickId].vertexArray.reserve(6);
-        m_Faces[pickId].vertexArray.emplace_back(zC - 2 * xC);
-        m_Faces[pickId].vertexArray.emplace_back(zC - xC - yC);
-        m_Faces[pickId].vertexArray.emplace_back(zC + xC - yC);
-        m_Faces[pickId].vertexArray.emplace_back(zC + 2 * xC);
-        m_Faces[pickId].vertexArray.emplace_back(zC + xC + yC);
-        m_Faces[pickId].vertexArray.emplace_back(zC - xC + yC);
-    }
-    else if (shapeType == ShapeId::Edge) {
-        auto x4 = x * (1 - m_Chamfer * 4);
-        auto yE = y * m_Chamfer;
-        auto zE = z * (1 - m_Chamfer);
-        m_Faces[pickId].vertexArray.reserve(4);
-        m_Faces[pickId].vertexArray.emplace_back(zE - x4 - yE);
-        m_Faces[pickId].vertexArray.emplace_back(zE + x4 - yE);
-        m_Faces[pickId].vertexArray.emplace_back(zE + x4 + yE);
-        m_Faces[pickId].vertexArray.emplace_back(zE - x4 + yE);
-    }
-    else if (shapeType == ShapeId::Main) {
-        auto x2 = x * (1 - m_Chamfer * 2);
-        auto y2 = y * (1 - m_Chamfer * 2);
-        auto x4 = x * (1 - m_Chamfer * 4);
-        auto y4 = y * (1 - m_Chamfer * 4);
-        m_Faces[pickId].vertexArray.reserve(8);
-        m_Faces[pickId].vertexArray.emplace_back(z - x2 - y4);
-        m_Faces[pickId].vertexArray.emplace_back(z - x4 - y2);
-        m_Faces[pickId].vertexArray.emplace_back(z + x4 - y2);
-        m_Faces[pickId].vertexArray.emplace_back(z + x2 - y4);
-
-        m_Faces[pickId].vertexArray.emplace_back(z + x2 + y4);
-        m_Faces[pickId].vertexArray.emplace_back(z + x4 + y2);
-        m_Faces[pickId].vertexArray.emplace_back(z - x4 + y2);
-        m_Faces[pickId].vertexArray.emplace_back(z - x2 + y4);
-
-        m_LabelTextures[pickId].vertexArray.clear();
-        m_LabelTextures[pickId].vertexArray.emplace_back(z - x2 - y2);
-        m_LabelTextures[pickId].vertexArray.emplace_back(z + x2 - y2);
-        m_LabelTextures[pickId].vertexArray.emplace_back(z + x2 + y2);
-        m_LabelTextures[pickId].vertexArray.emplace_back(z - x2 + y2);
+        soNaviCube->setLabelImage(pickId, SbVec2s(w, h), 4, pixels.data());
     }
 }
 
 void NaviCubeImplementation::setSize(int size)
 {
-    m_CubeWidgetSize = size;
-    m_ViewSize = SbVec2s(0, 0);
-    m_Prepared = false;
+    cubeWidgetSize = size;
+    viewSize = SbVec2s(0, 0);
+    prepared = false;
+    requestRedraw();
 }
 
 void NaviCubeImplementation::prepare()
 {
-    constexpr float pi = std::numbers::pi_v<float>;
-    constexpr float pi1_2 = pi / 2;
-
-    createCubeFaceTextures();
-
-    Vector3f x(1, 0, 0);
-    Vector3f y(0, 1, 0);
-    Vector3f z(0, 0, 1);
-
-    // create the main faces
-    addCubeFace(x, z, ShapeId::Main, PickId::Top);
-    addCubeFace(x, -y, ShapeId::Main, PickId::Front);
-    addCubeFace(-y, -x, ShapeId::Main, PickId::Left);
-    addCubeFace(-x, y, ShapeId::Main, PickId::Rear);
-    addCubeFace(y, x, ShapeId::Main, PickId::Right);
-    addCubeFace(x, -z, ShapeId::Main, PickId::Bottom);
-
-    // create corner faces
-    addCubeFace(-x - y, x - y + z, ShapeId::Corner, PickId::FrontTopRight, pi);
-    addCubeFace(-x + y, -x - y + z, ShapeId::Corner, PickId::FrontTopLeft, pi);
-    addCubeFace(x + y, x - y - z, ShapeId::Corner, PickId::FrontBottomRight);
-    addCubeFace(x - y, -x - y - z, ShapeId::Corner, PickId::FrontBottomLeft);
-    addCubeFace(x - y, x + y + z, ShapeId::Corner, PickId::RearTopRight, pi);
-    addCubeFace(x + y, -x + y + z, ShapeId::Corner, PickId::RearTopLeft, pi);
-    addCubeFace(-x + y, x + y - z, ShapeId::Corner, PickId::RearBottomRight);
-    addCubeFace(-x - y, -x + y - z, ShapeId::Corner, PickId::RearBottomLeft);
-
-    // create edge faces
-    addCubeFace(x, z - y, ShapeId::Edge, PickId::FrontTop);
-    addCubeFace(x, -z - y, ShapeId::Edge, PickId::FrontBottom);
-    addCubeFace(x, y - z, ShapeId::Edge, PickId::RearBottom, pi);
-    addCubeFace(x, y + z, ShapeId::Edge, PickId::RearTop, pi);
-    addCubeFace(z, x + y, ShapeId::Edge, PickId::RearRight, pi1_2);
-    addCubeFace(z, x - y, ShapeId::Edge, PickId::FrontRight, pi1_2);
-    addCubeFace(z, -x - y, ShapeId::Edge, PickId::FrontLeft, pi1_2);
-    addCubeFace(z, y - x, ShapeId::Edge, PickId::RearLeft, pi1_2);
-    addCubeFace(y, z - x, ShapeId::Edge, PickId::TopLeft, pi);
-    addCubeFace(y, x + z, ShapeId::Edge, PickId::TopRight);
-    addCubeFace(y, x - z, ShapeId::Edge, PickId::BottomRight);
-    addCubeFace(y, -z - x, ShapeId::Edge, PickId::BottomLeft, pi);
-
-    // create the flat buttons
-    addButtonFace(PickId::ArrowNorth, SbVec3f(-1, 0, 0));
-    addButtonFace(PickId::ArrowSouth, SbVec3f(1, 0, 0));
-    addButtonFace(PickId::ArrowEast, SbVec3f(0, 1, 0));
-    addButtonFace(PickId::ArrowWest, SbVec3f(0, -1, 0));
-    addButtonFace(PickId::ArrowLeft, SbVec3f(0, 0, 1));
-    addButtonFace(PickId::ArrowRight, SbVec3f(0, 0, -1));
-    addButtonFace(PickId::DotBackside, SbVec3f(0, 1, 0));
-    addButtonFace(PickId::ViewMenu);
-
-    if (m_PickingFramebuffer) {
-        delete m_PickingFramebuffer;
-        m_PickingFramebuffer = nullptr;
+    if (prepared || !viewer->viewport()) {
+        return;
     }
 
-    ensureFramebufferValid();
-    m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
+    soNaviCube->setChamfer(chamfer);
+
+    createCubeFaceTextures();
+    prepared = true;
+    requestRedraw();
 }
 
-void NaviCubeImplementation::drawNaviCube()
+bool NaviCubeImplementation::readyToRender()
 {
-    ensureFramebufferValid();
-    handleResize();
-    qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
-    int posX = (int)(m_RelPos[0] * m_PosAreaSize[0]) + m_PosAreaBase[0] - physicalCubeWidgetSize / 2;
-    int posY = (int)(m_RelPos[1] * m_PosAreaSize[1]) + m_PosAreaBase[1] - physicalCubeWidgetSize / 2;
-    glViewport(posX, posY, physicalCubeWidgetSize, physicalCubeWidgetSize);
-    drawNaviCube(false, m_Hovering ? 1.f : m_InactiveOpacity);
+    prepare();
+    return prepared;
+}
+
+bool NaviCubeImplementation::populateRenderParams(
+    float opacity,
+    int viewportX,
+    int viewportY,
+    int viewportWidth,
+    int viewportHeight
+)
+{
+    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
+    if (!cam) {
+        return false;
+    }
+
+    soNaviCube->size = static_cast<float>(cubeWidgetSize);
+    soNaviCube->opacity = opacity;
+    soNaviCube->borderWidth = static_cast<float>(borderWidth);
+    soNaviCube->showCoordinateSystem = showCS;
+    soNaviCube->hiliteId = static_cast<int>(hiliteId);
+    soNaviCube->baseColor.setValue(baseColor.redF(), baseColor.greenF(), baseColor.blueF());
+    soNaviCube->baseAlpha = static_cast<float>(baseColor.alphaF());
+    soNaviCube->emphaseColor.setValue(emphaseColor.redF(), emphaseColor.greenF(), emphaseColor.blueF());
+    soNaviCube->emphaseAlpha = static_cast<float>(emphaseColor.alphaF());
+    soNaviCube->hiliteColor.setValue(hiliteColor.redF(), hiliteColor.greenF(), hiliteColor.blueF());
+    soNaviCube->hiliteAlpha = static_cast<float>(hiliteColor.alphaF());
+    soNaviCube->axisXColor.setValue(
+        static_cast<float>(xColor.r),
+        static_cast<float>(xColor.g),
+        static_cast<float>(xColor.b)
+    );
+    soNaviCube->axisYColor.setValue(
+        static_cast<float>(yColor.r),
+        static_cast<float>(yColor.g),
+        static_cast<float>(yColor.b)
+    );
+    soNaviCube->axisZColor.setValue(
+        static_cast<float>(zColor.r),
+        static_cast<float>(zColor.g),
+        static_cast<float>(zColor.b)
+    );
+
+    SbVec4f rect(
+        static_cast<float>(viewportX),
+        static_cast<float>(viewportY),
+        static_cast<float>(viewportWidth),
+        static_cast<float>(viewportHeight)
+    );
+    soNaviCube->viewportRect = rect;
+    soNaviCube->cameraOrientation = cam->orientation.getValue();
+    soNaviCube->cameraIsOrthographic = cam->getTypeId().isDerivedFrom(
+        SoOrthographicCamera::getClassTypeId()
+    );
+
+    return true;
 }
 
 void NaviCubeImplementation::createContextMenu(const std::vector<std::string>& cmd)
 {
     CommandManager& rcCmdMgr = Application::Instance->commandManager();
-    m_Menu->clear();
+    menu->clear();
 
     for (const auto& i : cmd) {
         Command* cmd = rcCmdMgr.getCommandByName(i.c_str());
         if (cmd) {
-            cmd->addTo(m_Menu);
+            cmd->addTo(menu);
         }
     }
 }
 
-void NaviCubeImplementation::handleResize()
+void NaviCubeImplementation::handleResize(const SbVec2s& viewSize)
 {
-    qreal devicePixelRatio = m_View3DInventorViewer->devicePixelRatio();
-    SbVec2s viewSize = m_View3DInventorViewer->getSoRenderManager()->getSize();
-    if (viewSize != m_ViewSize || devicePixelRatio != m_DevicePixelRatio) {
-        m_DevicePixelRatio = devicePixelRatio;
+    qreal currentDevicePixelRatio = viewer->devicePixelRatio();
+    if (viewSize != this->viewSize || currentDevicePixelRatio != devicePixelRatio) {
+        devicePixelRatio = currentDevicePixelRatio;
         qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
-        m_PosAreaBase[0]
-            = std::min((int)(m_PosOffset[0] + physicalCubeWidgetSize * 0.55), viewSize[0] / 2);
-        m_PosAreaBase[1]
-            = std::min((int)(m_PosOffset[1] + physicalCubeWidgetSize * 0.55), viewSize[1] / 2);
-        m_PosAreaSize[0] = viewSize[0] - 2 * m_PosAreaBase[0];
-        m_PosAreaSize[1] = viewSize[1] - 2 * m_PosAreaBase[1];
-        m_ViewSize = viewSize;
+        posAreaBase[0] = std::min((int)(posOffset[0] + physicalCubeWidgetSize * 0.55), viewSize[0] / 2);
+        posAreaBase[1] = std::min((int)(posOffset[1] + physicalCubeWidgetSize * 0.55), viewSize[1] / 2);
+        posAreaSize[0] = viewSize[0] - 2 * posAreaBase[0];
+        posAreaSize[1] = viewSize[1] - 2 * posAreaBase[1];
+        this->viewSize = viewSize;
     }
 }
 
-void NaviCubeImplementation::drawNaviCube(bool pickMode, float opacity)
+PickId NaviCubeImplementation::pickFace(short x, short y)
 {
-    if (!m_Prepared) {
-        if (!m_View3DInventorViewer->viewport()) {
-            return;
-        }
-        prepare();
-        m_Prepared = true;
-        m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
-        return;
+    if (!readyToRender()) {
+        return PickId::None;
     }
 
-    ensureFramebufferValid();
-
-    SoCamera* cam = m_View3DInventorViewer->getSoRenderManager()->getCamera();
-    if (!cam) {
-        return;
-    }
-
-    // Store GL state.
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-
-    // configure
-    glEnable(GL_DEPTH_TEST);
-    glDepthMask(GL_TRUE);
-    glDepthRange(0.f, 1.f);
-    glClearDepth(1.f);
-    glClear(GL_DEPTH_BUFFER_BIT);
-    glDepthFunc(GL_LEQUAL);
-
-    glDisable(GL_LIGHTING);
-
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CCW);
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-    if (pickMode) {
-        glDisable(GL_BLEND);
-        glShadeModel(GL_FLAT);
-        glDisable(GL_DITHER);
-        glDisable(GL_POLYGON_SMOOTH);
-        glClearColor(0, 0, 0, 1);
-        glClear(GL_COLOR_BUFFER_BIT);
-    }
-    else {
-        glEnable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset(1.0f, 1.0f);
-        glEnable(GL_BLEND);
-        glShadeModel(GL_SMOOTH);
-    }
-
-    // mimic 3d view projection
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    const float NEARVAL = 0.1f;
-    const float FARVAL = 10.1f;
-    if (cam->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
-        glOrtho(-2.1, 2.1, -2.1, 2.1, NEARVAL, FARVAL);
-    }
-    else {
-        const float dim = NEARVAL * float(tan(std::numbers::pi / 8.0)) * 1.1;
-        glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
-    }
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    SbMatrix mx;
-    mx = cam->orientation.getValue();
-    mx = mx.inverse();
-    mx[3][2] = -5.1F;
-    glLoadMatrixf((float*)mx);
-
-    glEnableClientState(GL_VERTEX_ARRAY);
-    QColor& cb = m_EmphaseColor;
-
-    // Draw coordinate system
-    if (!pickMode && m_ShowCS) {
-        glLineWidth(m_BorderWidth * 2.f);
-        glPointSize(m_BorderWidth * 2.f);
-        float a = -1.1f;
-        float b = -1.05f;
-        float c = 0.5f;
-
-        float pointData[] = {
-            b, a, a,  // X1
-            c, a, a,  // X2
-            a, b, a,  // Y1
-            a, c, a,  // Y2
-            a, a, b,  // Z1
-            a, a, c,  // Z2
-            a, a, a   // 0
-        };
-        glVertexPointer(3, GL_FLOAT, 0, pointData);
-
-        glColor4f(m_xColor.r, m_xColor.g, m_xColor.b, opacity);
-        glDrawArrays(GL_LINES, 0, 2);
-        glDrawArrays(GL_POINTS, 0, 2);
-
-        glColor4f(m_yColor.r, m_yColor.g, m_yColor.b, opacity);
-        glDrawArrays(GL_LINES, 2, 2);
-        glDrawArrays(GL_POINTS, 2, 2);
-
-        glColor4f(m_zColor.r, m_zColor.g, m_zColor.b, opacity);
-        glDrawArrays(GL_LINES, 4, 2);
-        glDrawArrays(GL_POINTS, 4, 2);
-    }
-
-    // cube faces
-    for (const auto& pair : m_Faces) {
-        auto f = pair.second;
-        if (f.type == ShapeId::Button) {
-            continue;
-        }
-        auto pickId = pair.first;
-        if (pickMode) {
-            glColor3ub(static_cast<GLubyte>(pickId), 0, 0);
-        }
-        else {
-            QColor& c = m_HiliteId == pickId ? m_HiliteColor : m_BaseColor;
-            glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF() * opacity);
-        }
-        glVertexPointer(3, GL_FLOAT, 0, f.vertexArray.data());
-        glDrawArrays(GL_TRIANGLE_FAN, 0, f.vertexArray.size());
-    }
-    if (!pickMode) {
-        // cube borders
-        glLineWidth(m_BorderWidth);
-        for (const auto& pair : m_Faces) {
-            auto f = pair.second;
-            if (f.type == ShapeId::Button) {
-                continue;
-            }
-            glColor4f(cb.redF(), cb.greenF(), cb.blueF(), cb.alphaF() * opacity);
-            glVertexPointer(3, GL_FLOAT, 0, f.vertexArray.data());
-            glDrawArrays(GL_LINES, 0, f.vertexArray.size());
-        }
-
-        // Label textures
-        glDisable(GL_POLYGON_OFFSET_FILL);  // make sure labels are on top
-        glEnable(GL_TEXTURE_2D);
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        float texCoords[] = {0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 1.f};
-        glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
-        QColor& c = m_EmphaseColor;
-        glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF() * opacity);
-        for (const auto& pair : m_LabelTextures) {
-            auto f = pair.second;
-            PickId pickId = pair.first;
-            glVertexPointer(3, GL_FLOAT, 0, m_LabelTextures[pickId].vertexArray.data());
-            glBindTexture(GL_TEXTURE_2D, f.texture->textureId());
-            glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-        }
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        glDisable(GL_TEXTURE_2D);
-        glEnable(GL_POLYGON_OFFSET_FILL);
-    }
-
-    // Draw the flat buttons
-    glDisable(GL_CULL_FACE);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0.0, 1.0, 1.0, 0.0, 0.0, 1.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    for (const auto& pair : m_Faces) {
-        auto f = pair.second;
-        if (f.type != ShapeId::Button) {
-            continue;
-        }
-        PickId pickId = pair.first;
-        if (pickMode) {
-            glColor3ub(static_cast<GLubyte>(pickId), 0, 0);
-        }
-        else {
-            QColor& c = m_HiliteId == pickId ? m_HiliteColor : m_BaseColor;
-            glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF() * opacity);
-        }
-        glVertexPointer(3, GL_FLOAT, 0, f.vertexArray.data());
-        glDrawArrays(GL_TRIANGLE_FAN, 0, f.vertexArray.size());
-        if (!pickMode) {
-            glColor4f(cb.redF(), cb.greenF(), cb.blueF(), cb.alphaF() * opacity);
-            glDrawArrays(GL_LINE_LOOP, 0, f.vertexArray.size());
-        }
-    }
-
-    // Restore original state.
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glPopAttrib();
-}
-
-bool NaviCubeImplementation::isFramebufferValid() const
-{
-    return m_PickingFramebuffer && m_PickingFramebuffer->isValid();
-}
-
-
-void NaviCubeImplementation::ensureFramebufferValid()
-{
-    if (!isFramebufferValid()) {
-        if (m_PickingFramebuffer) {
-
-            if (!m_PickingFramebuffer->isValid()) {
-                Base::Console().developerWarning(
-                    "NaviCube",
-                    "The frame buffer has become invalid, a new frame buffer will be created\n"
-                );
-            }
-
-            delete m_PickingFramebuffer;
-            m_PickingFramebuffer = nullptr;
-        }
-
-        qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
-        m_PickingFramebuffer = new QOpenGLFramebufferObject(
-            2 * physicalCubeWidgetSize,
-            2 * physicalCubeWidgetSize,
-            QOpenGLFramebufferObject::CombinedDepthStencil
-        );
-    }
-}
-
-NaviCubeImplementation::PickId NaviCubeImplementation::pickFace(short x, short y)
-{
     qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
-    GLubyte pixels[4] = {0};
-    ensureFramebufferValid();
-    if (m_PickingFramebuffer && std::abs(x) <= physicalCubeWidgetSize / 2
-        && std::abs(y) <= physicalCubeWidgetSize / 2) {
-        static_cast<QOpenGLWidget*>(m_View3DInventorViewer->viewport())->makeCurrent();
-        m_PickingFramebuffer->bind();
-
-        glViewport(0, 0, physicalCubeWidgetSize * 2, physicalCubeWidgetSize * 2);
-
-        drawNaviCube(true, 1.f);
-
-        glFinish();
-        glReadPixels(
-            2 * x + physicalCubeWidgetSize,
-            2 * y + physicalCubeWidgetSize,
-            1,
-            1,
-            GL_RGBA,
-            GL_UNSIGNED_BYTE,
-            &pixels
-        );
-        m_PickingFramebuffer->release();
-        static_cast<QOpenGLWidget*>(m_View3DInventorViewer->viewport())->doneCurrent();
+    if (std::abs(x) > physicalCubeWidgetSize / 2 || std::abs(y) > physicalCubeWidgetSize / 2) {
+        return PickId::None;
     }
-    return pixels[3] == 255 ? static_cast<PickId>(pixels[0]) : PickId::None;
+
+    const int viewportSize = static_cast<int>(physicalCubeWidgetSize * 2.0);
+    if (!populateRenderParams(1.0F, 0, 0, viewportSize, viewportSize)) {
+        return PickId::None;
+    }
+
+    const int center = viewportSize / 2;
+    const SbVec2s point(static_cast<short>(2 * x + center), static_cast<short>(2 * y + center));
+    const PickId picked = soNaviCube->pickAt(point);
+
+    return picked;
 }
 
 bool NaviCubeImplementation::mousePressed(short x, short y)
 {
-    m_MouseDown = true;
-    m_MightDrag = inDragZone(x, y);
+    mouseDown = true;
+    mightDrag = inDragZone(x, y);
     PickId pick = pickFace(x, y);
     setHilite(pick);
     return pick != PickId::None;
@@ -1073,13 +915,19 @@ bool NaviCubeImplementation::mousePressed(short x, short y)
 
 void NaviCubeImplementation::handleMenu()
 {
-    m_Menu->exec(QCursor::pos());
+    menu->exec(QCursor::pos());
+}
+
+void NaviCubeImplementation::resetClickState()
+{
+    lastClickPickId = PickId::None;
+    clickTimer.invalidate();
 }
 
 SbRotation NaviCubeImplementation::getNearestOrientation(PickId pickId)
 {
-    SbRotation cameraOrientation = m_View3DInventorViewer->getCameraOrientation();
-    SbRotation standardOrientation = m_Faces[pickId].rotation;
+    SbRotation cameraOrientation = viewer->getCameraOrientation();
+    SbRotation standardOrientation = getFaceRotation(pickId);
 
     SbVec3f cameraZ;
     cameraOrientation.multVec(SbVec3f(0, 0, 1), cameraZ);
@@ -1122,9 +970,10 @@ SbRotation NaviCubeImplementation::getNearestOrientation(PickId pickId)
     // compared to +90 and -90 degree orientations and the +90 and -90 degree orientations are
     // preferred compared to an upside down standard orientation
     float f = 0.00001F;
+    FaceType faceType = getFaceType(pickId);
 
     // Find the angle to rotate to the nearest orientation
-    if (m_Faces[pickId].type == ShapeId::Corner) {
+    if (faceType == FaceType::Corner) {
         // 6 possible orientations for the corners
         if (angle <= (pi / 6 + f)) {
             angle = 0;
@@ -1178,39 +1027,60 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
     static const float pi = boost::math::constants::pi<float>();
 
     setHilite(PickId::None);
-    m_MouseDown = false;
+    mouseDown = false;
 
-    if (m_Dragging) {
-        m_Dragging = false;
+    if (dragging) {
+        dragging = false;
+        resetClickState();
     }
     else {
         PickId pickId = pickFace(x, y);
-        long step = Base::clamp(long(m_NaviStepByTurn), 4L, 36L);
+        long step = Base::clamp(long(naviStepByTurn), 4L, 36L);
         float rotStepAngle = (2 * std::numbers::pi) / step;
 
-        if (m_Faces[pickId].type == ShapeId::Main || m_Faces[pickId].type == ShapeId::Edge
-            || m_Faces[pickId].type == ShapeId::Corner) {
+        FaceType faceType = getFaceType(pickId);
+        if (faceType == FaceType::Main || faceType == FaceType::Edge || faceType == FaceType::Corner) {
+            // FIXME: Quarter currently flattens Qt double-clicks into ordinary Coin button
+            // presses, so NaviCube has to detect the recenter gesture locally.
+            bool moveToCenter = clickTimer.isValid() && lastClickPickId == pickId
+                && clickTimer.elapsed() < QApplication::doubleClickInterval();
+
             // Handle the cube faces
             SbRotation orientation;
-            if (m_RotateToNearest) {
+            if (rotateToNearest) {
                 orientation = getNearestOrientation(pickId);
             }
             else {
-                orientation = m_Faces[pickId].rotation;
+                orientation = getFaceRotation(pickId);
             }
-            m_View3DInventorViewer->setCameraOrientation(orientation);
-        }
-        else if (m_Faces[pickId].type == ShapeId::Button) {
+            viewer->setCameraOrientation(orientation, moveToCenter);
 
+            if (moveToCenter) {
+                resetClickState();
+            }
+            else {
+                lastClickPickId = pickId;
+                clickTimer.start();
+            }
+        }
+        else if (faceType == FaceType::Button) {
             // Handle the menu
             if (pickId == PickId::ViewMenu) {
+                resetClickState();
                 handleMenu();
+                return true;
+            }
+            else if (pickId == PickId::Home) {
+                CommandManager& rcCmdMgr = Application::Instance->commandManager();
+                rcCmdMgr.runCommandByName("Std_ViewHome");
+
                 return true;
             }
 
             // Handle the flat buttons
-            SbRotation rotation = m_Faces[pickId].rotation;
-            if (pickId == PickId::DotBackside) {
+            resetClickState();
+            SbRotation rotation = getFaceRotation(pickId);
+            if (pickId == PickId::Backside) {
                 rotation.scaleAngle(pi);
             }
             else {
@@ -1220,20 +1090,18 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
             // If the previous flat button animation is still active then apply the rotation to the
             // previous target orientation, otherwise apply the rotation to the current camera
             // orientation
-            if (m_flatButtonAnimation != nullptr
-                && m_flatButtonAnimation->state() == QAbstractAnimation::Running) {
-                m_flatButtonTargetOrientation = rotation * m_flatButtonTargetOrientation;
+            if (flatButtonAnimation != nullptr
+                && flatButtonAnimation->state() == QAbstractAnimation::Running) {
+                flatButtonTargetOrientation = rotation * flatButtonTargetOrientation;
             }
             else {
-                m_flatButtonTargetOrientation = rotation
-                    * m_View3DInventorViewer->getCameraOrientation();
+                flatButtonTargetOrientation = rotation * viewer->getCameraOrientation();
             }
 
-            m_flatButtonAnimation = m_View3DInventorViewer->setCameraOrientation(
-                m_flatButtonTargetOrientation
-            );
+            flatButtonAnimation = viewer->setCameraOrientation(flatButtonTargetOrientation);
         }
         else {
+            resetClickState();
             return false;
         }
     }
@@ -1242,9 +1110,12 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
 
 void NaviCubeImplementation::setHilite(PickId hilite)
 {
-    if (hilite != m_HiliteId) {
-        m_HiliteId = hilite;
-        m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
+    if (hilite != hiliteId) {
+        hiliteId = hilite;
+        if (soNaviCube) {
+            soNaviCube->hiliteId = static_cast<int>(hiliteId);
+        }
+        viewer->getSoRenderManager()->scheduleRedraw();
     }
 }
 
@@ -1261,31 +1132,90 @@ bool NaviCubeImplementation::mouseMoved(short x, short y)
     bool hovering = std::abs(x) <= physicalCubeWidgetSize / 2
         && std::abs(y) <= physicalCubeWidgetSize / 2;
 
-    if (hovering != m_Hovering) {
-        m_Hovering = hovering;
-        m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
+    if (hovering != this->hovering) {
+        this->hovering = hovering;
+        viewer->getSoRenderManager()->scheduleRedraw();
     }
 
-    if (!m_Dragging) {
-        setHilite(pickFace(x, y));
+    if (!dragging) {
+        PickId pick = pickFace(x, y);
+        if (!mouseDown) {
+            setHiliteWithHysteresis(pick);
+        }
+        else {
+            setHilite(pick);
+        }
     }
 
-    if (m_MouseDown && m_Draggable) {
-        if (m_MightDrag && !m_Dragging) {
-            m_Dragging = true;
+    if (mouseDown && draggable) {
+        if (mightDrag && !dragging) {
+            dragging = true;
             setHilite(PickId::None);
         }
-        if (m_Dragging && (std::abs(x) || std::abs(y))) {
-            float newX = m_RelPos[0] + (float)(x) / m_PosAreaSize[0];
-            float newY = m_RelPos[1] + (float)(y) / m_PosAreaSize[1];
-            m_RelPos[0] = std::min(std::max(newX, 0.0f), 1.0f);
-            m_RelPos[1] = std::min(std::max(newY, 0.0f), 1.0f);
+        if (dragging && (std::abs(x) || std::abs(y))) {
+            float newX = relPos[0] + (float)(x) / posAreaSize[0];
+            float newY = relPos[1] + (float)(y) / posAreaSize[1];
+            relPos[0] = std::min(std::max(newX, 0.0f), 1.0f);
+            relPos[1] = std::min(std::max(newY, 0.0f), 1.0f);
 
-            m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
+            viewer->getSoRenderManager()->scheduleRedraw();
             return true;
         }
     }
     return false;
+}
+
+void NaviCubeImplementation::setHiliteWithHysteresis(PickId hilite)
+{
+    static const int stableFrames = []() -> int {
+        const char* env = std::getenv("FREECAD_NAVICUBE_PICK_STABLE_FRAMES");
+        if (!env || !*env) {
+            return 0;
+        }
+        char* end = nullptr;
+        long v = std::strtol(env, &end, 10);
+        if (end == env) {
+            return 0;
+        }
+        if (v < 0) {
+            v = 0;
+        }
+        if (v > 16) {
+            v = 16;
+        }
+        return static_cast<int>(v);
+    }();
+
+    if (stableFrames <= 1) {
+        setHilite(hilite);
+        return;
+    }
+
+    if (hilite == PickId::None) {
+        pendingHiliteId = PickId::None;
+        pendingHiliteCount = 0;
+        setHilite(PickId::None);
+        return;
+    }
+
+    if (hilite == hiliteId) {
+        pendingHiliteId = PickId::None;
+        pendingHiliteCount = 0;
+        return;
+    }
+
+    if (hilite != pendingHiliteId) {
+        pendingHiliteId = hilite;
+        pendingHiliteCount = 1;
+        return;
+    }
+
+    ++pendingHiliteCount;
+    if (pendingHiliteCount >= stableFrames) {
+        pendingHiliteId = PickId::None;
+        pendingHiliteCount = 0;
+        setHilite(hilite);
+    }
 }
 
 bool NaviCubeImplementation::processSoEvent(const SoEvent* ev)
@@ -1293,8 +1223,8 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev)
     short x, y;
     ev->getPosition().getValue(x, y);
     // translate to internal cube center based coordinates
-    short rx = x - (short)(m_PosAreaSize[0] * m_RelPos[0]) - m_PosAreaBase[0];
-    short ry = y - (short)(m_PosAreaSize[1] * m_RelPos[1]) - m_PosAreaBase[1];
+    short rx = x - (short)(posAreaSize[0] * relPos[0]) - posAreaBase[0];
+    short ry = y - (short)(posAreaSize[1] * relPos[1]) - posAreaBase[1];
     if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
         const auto mbev = static_cast<const SoMouseButtonEvent*>(ev);
         if (mbev->isButtonPressEvent(mbev, SoMouseButtonEvent::BUTTON1)) {
@@ -1320,16 +1250,17 @@ void NaviCube::updateColors()
     unsigned long colorLong;
 
     colorLong = Gui::ViewParams::instance()->getAxisXColor();
-    m_NaviCubeImplementation->m_xColor = Base::Color(static_cast<uint32_t>(colorLong));
+    naviCubeImplementation->xColor = Base::Color(static_cast<uint32_t>(colorLong));
     colorLong = Gui::ViewParams::instance()->getAxisYColor();
-    m_NaviCubeImplementation->m_yColor = Base::Color(static_cast<uint32_t>(colorLong));
+    naviCubeImplementation->yColor = Base::Color(static_cast<uint32_t>(colorLong));
     colorLong = Gui::ViewParams::instance()->getAxisZColor();
-    m_NaviCubeImplementation->m_zColor = Base::Color(static_cast<uint32_t>(colorLong));
+    naviCubeImplementation->zColor = Base::Color(static_cast<uint32_t>(colorLong));
+    naviCubeImplementation->requestRedraw();
 }
 
 void NaviCube::setNaviCubeCommands(const std::vector<std::string>& cmd)
 {
-    NaviCubeImplementation::m_commands = cmd;
+    NaviCubeImplementation::commands = cmd;
 }
 
 DEF_STD_CMD_AC(NaviCubeDraggableCmd)
@@ -1339,7 +1270,7 @@ NaviCubeDraggableCmd::NaviCubeDraggableCmd()
 {
     sGroup = "";
     sMenuText = QT_TR_NOOP("Movable Navigation Cube");
-    sToolTipText = QT_TR_NOOP("Drag and place NaviCube");
+    sToolTipText = QT_TR_NOOP("Drags and places the NaviCube");
     sWhatsThis = "";
     sStatusTip = sToolTipText;
     eType = Alter3DView;
@@ -1383,20 +1314,20 @@ QMenu* NaviCubeImplementation::createNaviCubeMenu()
         rcCmdMgr.addCommand(new NaviCubeDraggableCmd);
     }
 
-    vector<string> commands = NaviCubeImplementation::m_commands;
-    if (commands.empty()) {
-        commands.emplace_back("Std_OrthographicCamera");
-        commands.emplace_back("Std_PerspectiveCamera");
-        commands.emplace_back("Std_ViewIsometric");
-        commands.emplace_back("Separator");
-        commands.emplace_back("Std_ViewFitAll");
-        commands.emplace_back("Std_ViewFitSelection");
-        commands.emplace_back("Std_AlignToSelection");
-        commands.emplace_back("Separator");
-        commands.emplace_back("NaviCubeDraggableCmd");
+    vector<string> menuCommands = NaviCubeImplementation::commands;
+    if (menuCommands.empty()) {
+        menuCommands.emplace_back("Std_OrthographicCamera");
+        menuCommands.emplace_back("Std_PerspectiveCamera");
+        menuCommands.emplace_back("Std_ViewIsometric");
+        menuCommands.emplace_back("Separator");
+        menuCommands.emplace_back("Std_ViewFitAll");
+        menuCommands.emplace_back("Std_ViewFitSelection");
+        menuCommands.emplace_back("Std_AlignToSelection");
+        menuCommands.emplace_back("Separator");
+        menuCommands.emplace_back("NaviCubeDraggableCmd");
     }
 
-    for (const auto& command : commands) {
+    for (const auto& command : menuCommands) {
         if (command == "Separator") {
             menu->addSeparator();
         }

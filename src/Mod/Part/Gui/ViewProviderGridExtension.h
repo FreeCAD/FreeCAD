@@ -52,7 +52,7 @@ public:
     ViewProviderGridExtension();
     ~ViewProviderGridExtension() override;
 
-    void setGridEnabled(bool enable);
+    void setGridEnabled(Gui::View3DInventor* view);
 
     void drawGrid(bool cameraUpdate);
 
@@ -80,6 +80,7 @@ protected:
     void setGridDivLineWidth(int width);
     void setGridLineColor(const Base::Color& color);
     void setGridDivLineColor(const Base::Color& color);
+    void setGridTransparency(float transparency);
 
     bool extensionHandleChangedPropertyType(
         Base::XMLReader& reader,

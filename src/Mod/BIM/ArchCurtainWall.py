@@ -79,6 +79,11 @@ ANGLETOLERANCE = 0.67  # vectors with angles below this are considered going in 
 class CurtainWall(ArchComponent.Component):
     "The curtain wall object"
 
+    # Configure App::Link shadowing, so that linked curtain walls can have independent Host
+    # properties without triggering a deep copy of the geometry. See
+    # ArchComponent.Component.appLinkExecute()
+    LinkOverrideProperties = ["Host"]
+
     def __init__(self, obj):
 
         ArchComponent.Component.__init__(self, obj)

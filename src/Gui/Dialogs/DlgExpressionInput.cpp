@@ -30,8 +30,6 @@
 #include <QTreeWidget>
 #include <QStyledItemDelegate>
 
-#include <fmt/format.h>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -582,6 +580,39 @@ static const App::OperatorExpression* toUnitNumberExpr(const App::Expression* ex
     return nullptr;
 }
 
+void DlgExpressionInput::applyImpliedUnit()
+{
+    if (!expression || impliedUnit == Base::Unit::One) {
+        return;
+    }
+
+    std::unique_ptr<App::Expression> evaluated(expression->eval());
+    const auto* numberExpr = toNumberExpr(evaluated.get());
+    if (!numberExpr || !numberExpr->getQuantity().isDimensionless()) {
+        return;
+    }
+
+    double factor = 1.0;
+    std::string unitString;
+    Base::Quantity(1.0, impliedUnit).getUserString(factor, unitString);
+    if (unitString.empty()) {
+        return;
+    }
+
+    auto left = expression->copy();
+    auto right = std::make_unique<App::UnitExpression>(
+        path.getDocumentObject(),
+        Base::Quantity(factor, impliedUnit),
+        unitString
+    );
+    expression = std::make_shared<App::OperatorExpression>(
+        path.getDocumentObject(),
+        left.release(),
+        App::OperatorExpression::Operator::UNIT,
+        right.release()
+    );
+}
+
 void DlgExpressionInput::createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet)
 {
     ObjectIdentifier varSetId(*propVarSet);
@@ -676,6 +707,8 @@ void DlgExpressionInput::acceptWithVarSet()
 
 void DlgExpressionInput::accept()
 {
+    applyImpliedUnit();
+
     if (varSetsVisible) {
         if (needReportOnVarSet()) {
             return;
@@ -842,7 +875,7 @@ void DlgExpressionInput::setupVarSets()
 
 std::string DlgExpressionInput::getType()
 {
-    return determineTypeVarSet().getName();
+    return std::string {determineTypeVarSet().getName()};
 }
 
 void DlgExpressionInput::onCheckVarSets(int state)

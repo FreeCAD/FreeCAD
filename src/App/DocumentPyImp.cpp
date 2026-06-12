@@ -181,6 +181,15 @@ PyObject* DocumentPy::saveCopy(PyObject* args)
     PY_CATCH
 }
 
+PyObject* DocumentPy::canWriteRecoverySnapshot(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    return Py::new_reference_to(Py::Boolean(getDocumentPtr()->canWriteRecoverySnapshot()));
+}
+
 PyObject* DocumentPy::load(PyObject* args)
 {
     char* filename = nullptr;
@@ -882,7 +891,7 @@ PyObject* DocumentPy::supportedTypes(PyObject* args)
     Base::Type::getAllDerivedFrom(App::DocumentObject::getClassTypeId(), ary);
     Py::List res;
     for (const auto& it : ary) {
-        res.append(Py::String(it.getName()));
+        res.append(Base::toPyString(it.getName()));
     }
     return Py::new_reference_to(res);
 }
@@ -1175,6 +1184,15 @@ PyObject* DocumentPy::getDependentDocuments(PyObject* args)
     }
     PY_CATCH;
 }
+PyObject* DocumentPy::getBookedTransactionID(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    int tid = getDocumentPtr()->getBookedTransactionID();
+    return Py::new_reference_to(Py::Long(tid));
+}
+
 
 Py::Boolean DocumentPy::getRestoring() const
 {

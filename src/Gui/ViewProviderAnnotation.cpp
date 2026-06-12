@@ -48,6 +48,7 @@
 #include <Base/Parameter.h>
 
 #include "ViewProviderAnnotation.h"
+#include "Selection/SelectionColors.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
@@ -195,18 +196,9 @@ void ViewProviderAnnotation::attach(App::DocumentObject* f)
     auto textsep = new SoFCSelection();
 
     // set selection/highlight colors
-    float transparency;
-    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-    SbColor highlightColor = textsep->colorHighlight.getValue();
-    auto highlight = (unsigned long)(highlightColor.getPackedValue());
-    highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-    highlightColor.setPackedValue((uint32_t)highlight, transparency);
+    SbColor highlightColor = SelectionColors::defaultHighlightColor();
     textsep->colorHighlight.setValue(highlightColor);
-    // Do the same with the selection color
-    SbColor selectionColor = textsep->colorSelection.getValue();
-    auto selection = (unsigned long)(selectionColor.getPackedValue());
-    selection = hGrp->GetUnsigned("SelectionColor", selection);
-    selectionColor.setPackedValue((uint32_t)selection, transparency);
+    SbColor selectionColor = SelectionColors::defaultSelectionColor();
     textsep->colorSelection.setValue(selectionColor);
 
     textsep->objectName = pcObject->getNameInDocument();

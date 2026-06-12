@@ -27,6 +27,8 @@
 #include <memory>
 #include <vector>
 
+#include <QtCore/Qt>
+
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -35,6 +37,7 @@
 
 #include <Base/Placement.h>
 #include <Gui/DocumentObserver.h>
+#include <Gui/InputHint.h>
 
 #include <FCGlobal.h>
 
@@ -238,6 +241,15 @@ public:
 
     // Checks if the gizmos are enabled in the preferences
     static bool isEnabled();
+    // Checks if coarse snapping is enabled in the preferences
+    static bool isCoarseSnapEnabled();
+    // Returns the modifier key used for fine snapping (Shift or Ctrl)
+    static Qt::KeyboardModifier getFineSnapModifier();
+    // Returns the InputHint key for the fine snap modifier
+    static InputHint::UserInput getFineSnapKey();
+    // Returns true when coarse dragging is the default behavior
+    static bool isCoarseByDefault();
+
     static std::unique_ptr<GizmoContainer> create(
         std::initializer_list<Gui::Gizmo*> gizmos,
         ViewProviderDragger* vp

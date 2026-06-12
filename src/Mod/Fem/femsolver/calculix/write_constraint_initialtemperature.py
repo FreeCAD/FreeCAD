@@ -69,7 +69,7 @@ def write_constraint(f, femobj, inittemp_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
 
-    initialtemp = inittemp_obj.initialTemperature.getValueAs("K")
+    initialtemp = inittemp_obj.InitialTemperature.getValueAs("K")
 
     if inittemp_obj.References and len(inittemp_obj.References) > 0:
         f.write(f"{inittemp_obj.Name},{initialtemp}\n")

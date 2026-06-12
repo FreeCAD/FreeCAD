@@ -21,6 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
@@ -71,10 +72,14 @@ bool TaskDlgCreateElementSet::accept()
         param->MeshViewProvider->resetHighlightNodes();
         FemSetElementNodesObject->Label.setValue(name->name);
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+        FemSetElementNodesObject->getDocument()
+            ->commitTransaction();  // Opened in ViewProviderDocumentObject::startDefaultEditMode()
 
         return true;
     }
     catch (const Base::Exception& e) {
+        FemSetElementNodesObject->getDocument()
+            ->abortTransaction();  // Opened in ViewProviderDocumentObject::startDefaultEditMode()
         Base::Console().warning("TaskDlgCreateElementSet::accept(): %s\n", e.what());
     }
 
@@ -85,7 +90,8 @@ bool TaskDlgCreateElementSet::reject()
 {
     FemSetElementNodesObject->execute();
     param->MeshViewProvider->resetHighlightNodes();
-    Gui::Command::abortCommand();
+    FemSetElementNodesObject->getDocument()
+        ->abortTransaction();  // Opened in ViewProviderDocumentObject::startDefaultEditMode()
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;
@@ -93,5 +99,14 @@ bool TaskDlgCreateElementSet::reject()
 
 void TaskDlgCreateElementSet::helpRequested()
 {}
+
+void TaskDlgCreateElementSet::activate()
+{
+    param->attachSelection();
+}
+void TaskDlgCreateElementSet::deactivate()
+{
+    param->detachSelection();
+}
 
 #include "moc_TaskDlgCreateElementSet.cpp"

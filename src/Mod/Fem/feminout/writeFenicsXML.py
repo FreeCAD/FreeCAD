@@ -78,7 +78,7 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
     elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
     Console.PrintMessage(f"Elements appearing in mesh: {str(elements_in_mesh)}\n")
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
-    (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
+    num_cells, cellname_fc, dim_cell = celltype_in_mesh
     cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
     num_verts_cell = XML_Number_of_Nodes_dict[cellname_fenics]
     Console.PrintMessage(

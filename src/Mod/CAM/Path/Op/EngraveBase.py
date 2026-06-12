@@ -22,12 +22,12 @@
 # ***************************************************************************
 
 from lazy_loader.lazy_loader import LazyLoader
+import FreeCAD
 import Path
+import Path.Base.Generator.linking as linking
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
-
-# import copy
 
 __doc__ = "Base class for all ops in the engrave family."
 
@@ -40,6 +40,8 @@ if False:
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+translate = FreeCAD.Qt.translate
 
 
 class ObjectOp(PathOp.ObjectOp):
@@ -65,6 +67,44 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.track(obj.Label, len(wires), zValues)
 
         tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
+        biDir = getattr(obj, "CutPattern", None) == "Bidirectional"
+
+        # Prepare linking arguments for wire-to-wire collision-aware transitions
+        solids = []
+        if getattr(self, "job", None) and hasattr(self.job, "Model"):
+            solids = [base.Shape for base in self.job.Model.Group if hasattr(base, "Shape")]
+        linking_kwargs = {
+            "start_position": None,
+            "target_position": None,
+            "local_clearance": obj.SafeHeight.Value,
+            "global_clearance": obj.ClearanceHeight.Value,
+            "solids": None,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "collision_clearance": obj.CollisionClearance.Value,
+        }
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linking_kwargs["local_clearance"] = obj.ClearanceHeight.Value
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linking_kwargs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linking_kwargs["solids"] = solids
+            linking_kwargs["tool_diameter"] = obj.ToolController.Tool.Diameter.Value
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linking_kwargs["solids"] = solids
+            linking_kwargs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+
+        if getattr(obj, "Approximation", False):
+            wires = [PathOpUtil.approximateWire(w, tolerance=tol) for w in wires]
+
+        # decompose and orient wires to get edges in right order
+        wires = [
+            PathOpUtil.orientWire(Part.Wire(se), forward=forward)
+            for wire in wires
+            for se in Part.sortEdges(wire.Edges)
+        ]
 
         # sort wires, adapted from Area.py
         if len(wires) > 1:
@@ -75,94 +115,67 @@ class ObjectOp(PathOp.ObjectOp):
             locations = PathUtils.sort_locations(locations, ["x", "y"])
             wires = [j["wire"] for j in locations]
 
-        decomposewires = []
-        for wire in wires:
-            decomposewires.extend(PathOpUtil.makeWires(wire.Edges))
+        tool_pos = None  # tracks tool position between entry moves
 
-        wires = decomposewires
         for wire in wires:
-            # offset = wire
-
-            # reorder the wire
-            if hasattr(obj, "StartVertex"):
-                start_idx = obj.StartVertex
+            reverseDir = False
             edges = wire.Edges
+            startIdx = min(start_idx, len(wire.Edges) - 1)
+            if wire.isClosed() and startIdx:
+                edges = edges[startIdx:] + edges[:startIdx]
 
-            # edges = copy.copy(PathOpUtil.orientWire(offset, forward).Edges)
-            # Path.Log.track("wire: {} offset: {}".format(len(wire.Edges), len(edges)))
-            # edges = Part.sortEdges(edges)[0]
-            # Path.Log.track("edges: {}".format(len(edges)))
+            startPoint = edges[0].valueAt(edges[0].FirstParameter)
 
-            last = None
-
-            for z in zValues:
+            for indexZ, z in enumerate(zValues):
                 Path.Log.debug(z)
-                if last and wire.isClosed():
-                    # Add step down to next Z for closed profile
-                    self.appendCommand(
-                        Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
-                        z,
-                        relZ,
-                        self.vertFeed,
-                    )
 
-                first = True
-                if start_idx > len(edges) - 1:
-                    start_idx = len(edges) - 1
-
-                edges = edges[start_idx:] + edges[:start_idx]
-                for edge in edges:
-                    Path.Log.debug(
-                        "points: {} -> {}".format(edge.Vertexes[0].Point, edge.Vertexes[-1].Point)
-                    )
-                    Path.Log.debug(
-                        "valueat {} -> {}".format(
-                            edge.valueAt(edge.FirstParameter),
-                            edge.valueAt(edge.LastParameter),
-                        )
-                    )
-                    if first and (not last or not wire.isClosed()):
-                        Path.Log.debug("processing first edge entry")
-                        # Add moves to first point of wire
-                        last = edge.Vertexes[0].Point
-
+                if indexZ == 0 or (not wire.isClosed() and not biDir):
+                    Path.Log.debug("processing first edge entry")
+                    if tool_pos is None:
+                        # Very first entry in the operation: retract to clearance height
                         self.commandlist.append(
-                            Path.Command(
-                                "G0",
-                                {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid},
-                            )
+                            Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
                         )
                         self.commandlist.append(
-                            Path.Command("G0", {"X": last.x, "Y": last.y, "F": self.horizRapid})
+                            Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y})
                         )
-                        self.commandlist.append(
-                            Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-                        )
-                        self.appendCommand(
-                            Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
-                            z,
-                            relZ,
-                            self.vertFeed,
-                        )
-                    first = False
-
-                    if Path.Geom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
-                        # if Path.Geom.pointsCoincide(last, edge.Vertexes[0].Point):
-                        # Edge not reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge, flip=False, tol=tol):
-                            # Add gcode for edge
-                            self.appendCommand(cmd, z, relZ, self.horizFeed)
-                        last = edge.Vertexes[-1].Point
+                        self.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
                     else:
-                        # Edge reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge, flip=True, tol=tol):
-                            # Add gcode for reversed edge
-                            self.appendCommand(cmd, z, relZ, self.horizFeed)
-                        last = edge.Vertexes[0].Point
+                        # Subsequent entries: use linking generator to find optimal retract height
+                        target = FreeCAD.Vector(startPoint.x, startPoint.y, obj.SafeHeight.Value)
+                        linking_kwargs["start_position"] = tool_pos
+                        linking_kwargs["target_position"] = target
+                        moves = linking.get_linking_moves(**linking_kwargs)
+                        self.commandlist.extend(moves)
+                    lastPoint = startPoint
 
-            self.commandlist.append(
-                Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-            )
+                self.appendCommand(Path.Command("G1", {"Z": startPoint.z}), z, relZ, self.vertFeed)
+
+                for edge in (reversed(edges) if reverseDir and indexZ else edges):
+                    if len(edges) == 1:
+                        # wire with one edge
+                        flip = reverseDir
+                    elif Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edge.FirstParameter)):
+                        flip = False
+                        lastPoint = edge.valueAt(edge.LastParameter)
+                    elif Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edge.LastParameter)):
+                        flip = True
+                        lastPoint = edge.valueAt(edge.FirstParameter)
+                    else:
+                        Path.Log.warning("Error while checks points coincide")
+                        return
+
+                    for cmd in Path.Geom.cmdsForEdge(edge, flip=flip, tol=tol):
+                        # Add gcode for edge
+                        self.appendCommand(cmd, z, relZ, self.horizFeed)
+
+                # Track tool position for the next entry move.
+                # Use SafeHeight so the linking check only evaluates the horizontal
+                # traverse, not the retract from cutting depth through the stock.
+                tool_pos = FreeCAD.Vector(lastPoint.x, lastPoint.y, obj.SafeHeight.Value)
+
+                if biDir and not wire.isClosed():
+                    reverseDir = not reverseDir
 
     def appendCommand(self, cmd, z, relZ, feed):
         params = cmd.Parameters
@@ -174,9 +187,15 @@ class ObjectOp(PathOp.ObjectOp):
     def opSetDefaultValues(self, obj, job):
         """opSetDefaultValues(obj) ... set depths for engraving"""
         if PathOp.FeatureDepths & self.opFeatures(obj):
-            if job and len(job.Model.Group) > 0:
-                bb = job.Proxy.modelBoundBox(job)
-                obj.OpStartDepth = bb.ZMax
-                obj.OpFinalDepth = bb.ZMax - max(obj.StepDown.Value, 0.1)
-            else:
-                obj.OpFinalDepth = -0.1
+            if job and job.Stock:
+                obj.OpStartDepth = job.Stock.Shape.BoundBox.ZMax
+                obj.OpFinalDepth = job.Stock.Shape.BoundBox.ZMax
+
+            if obj.Base:
+                obj.OpFinalDepth = max(
+                    sh.BoundBox.ZMax for base, sub in obj.Base for sh in base.getSubObject(sub)
+                )
+            elif obj.BaseShapes:
+                obj.OpFinalDepth = max(base.Shape.BoundBox.ZMax for base in obj.BaseShapes)
+
+            obj.OpStartDepth = max(obj.OpStartDepth, obj.OpFinalDepth)

@@ -407,6 +407,7 @@ void PyResource::init_type()
     add_varargs_method("setValue", &PyResource::setValue);
     add_varargs_method("show", &PyResource::show);
     add_varargs_method("connect", &PyResource::connect);
+    behaviors().readyType();
 }
 
 PyResource::PyResource()
@@ -577,14 +578,14 @@ Py::Object PyResource::value(const Py::Tuple& args)
             int nSize = str.count();
             Py::List slist(nSize);
             for (int i = 0; i < nSize; ++i) {
-                slist.setItem(i, Py::String(str[i].toLatin1()));
+                slist.setItem(i, Py::String(str[i].toStdString()));
             }
             item = slist;
         } break;
         case QMetaType::QByteArray:
             break;
         case QMetaType::QString:
-            item = Py::String(v.toString().toLatin1());
+            item = Py::String(v.toString().toStdString());
             break;
         case QMetaType::Double:
             item = Py::Float(v.toDouble());

@@ -35,6 +35,7 @@ updateObject(obj, nodeIndex, v): update the give object according to the
 TODO: Abstract the code that handles the preview and move the object specific
     code to this module from main Draft_Edit module
 """
+
 ## @package gui_edit_draft_objects
 # \ingroup draftguitools
 # \brief Provides support functions to edit Draft objects.

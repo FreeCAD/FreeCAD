@@ -65,24 +65,12 @@ class IfcContextView:
         menu.addAction(actionEdit)
 
         # The default Part::FeaturePython context menu contains a `Set colors`
-        # option. This option does not makes sense here. We therefore
-        # override this menu and have to add our own `Transform` item.
+        # option. This option does not makes sense here.
         # To override the default menu this function must return `True`.
-        actionTransform = QtGui.QAction(
-            FreeCADGui.getIcon("Std_TransformManip.svg"),
-            translate("Command", "Transform"),  # Context `Command` instead of `Arch`.
-            menu,
-        )
-        QtCore.QObject.connect(actionTransform, QtCore.SIGNAL("triggered()"), self.transform)
-        menu.addAction(actionTransform)
-
         return True
 
     def edit(self):
         FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
-
-    def transform(self):
-        FreeCADGui.ActiveDocument.setEdit(self.Object, 1)
 
     def dumps(self):
         return None

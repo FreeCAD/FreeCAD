@@ -1103,8 +1103,8 @@ bool MeshInput::LoadNastran(std::istream& input)
                 // GRID    1               1.2345671.2345671.234567
                 // GRID    112             6.0000000.5000000.00E+00
 
-                // Element type(8), id(8), cp(8), x(8), y(8), z(at least 1)
-                if (line.length() < 41) {
+                // Element type(8), id(8), cp(8), x(8), y(8), z(8)
+                if (line.length() < 48) {
                     badElementCounter++;
                     continue;
                 }

@@ -237,8 +237,8 @@
       <translation>放置</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="138"/>
+      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
       <translation>适用于贝塞尔曲线</translation>
     </message>
@@ -338,7 +338,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>输入错误</translation>
     </message>
     <message>
@@ -381,7 +381,7 @@
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>输入错误</translation>
     </message>
   </context>
@@ -721,7 +721,7 @@
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
       <location filename="../../FitBSplineCurve.cpp" line="89"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>输入错误</translation>
     </message>
   </context>

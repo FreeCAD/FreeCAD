@@ -32,7 +32,6 @@ from PySide.QtCore import QMimeData
 from ..models.base import ToolBit
 from .tablecell import TwoLineTableCell, CompactTwoLineTableCell
 
-
 # Role for storing the ToolBit URI string
 ToolBitUriRole = QtCore.Qt.UserRole + 1
 ToolBitUriListMimeType = "application/x-freecad-toolbit-uri-list-yaml"

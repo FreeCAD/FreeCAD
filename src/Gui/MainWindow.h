@@ -313,8 +313,6 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
-    bool checkFirstRun();
-    void moveToDefaultPosition(QRect rect, QPoint pos);
     void setupDockWindows();
     bool setupTaskView();
     bool setupSelectionView();
@@ -389,6 +387,7 @@ Q_SIGNALS:
     void windowStateChanged(QWidget*);
     void workbenchActivated(const QString&);
     void mainWindowClosed();
+    void recentFileAdded(const QString& filename);
 
 private:
     /// some kind of singleton

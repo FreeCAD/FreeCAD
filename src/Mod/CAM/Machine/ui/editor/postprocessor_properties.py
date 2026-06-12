@@ -22,6 +22,7 @@
 """
 Helper module for managing postprocessor properties in the machine editor.
 """
+
 from PySide import QtGui
 from typing import Dict, Any
 

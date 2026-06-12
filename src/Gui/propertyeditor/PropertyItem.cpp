@@ -61,6 +61,7 @@
 #include <Gui/SpinBox.h>
 #include <Gui/VectorListEditor.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/Document.h>
 
 // NOLINTBEGIN(cppcoreguidelines-pro-*,cppcoreguidelines-prefer-member-initializer)
 using namespace Gui::PropertyEditor;
@@ -853,9 +854,9 @@ QWidget* PropertyStringItem::createEditor(
     FrameOption frameOption
 ) const
 {
+    Q_UNUSED(method);
     auto le = new ExpLineEdit(parent);
     le->setFrame(static_cast<bool>(frameOption));
-    QObject::connect(le, &ExpLineEdit::textChanged, method);
     if (isBound()) {
         le->bind(getPath());
         le->setAutoApply(autoApply());
@@ -2650,12 +2651,14 @@ PlacementEditor::~PlacementEditor() = default;
 
 void PlacementEditor::browse()
 {
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(
+        Gui::Application::Instance->activeDocument()->getDocument()
+    );
     Gui::Dialog::TaskPlacement* task {};
     task = qobject_cast<Gui::Dialog::TaskPlacement*>(dlg);
     if (dlg && !task) {
         // there is already another task dialog which must be closed first
-        Gui::Control().showDialog(dlg);
+        Gui::Control().showDialog(dlg, Gui::Application::Instance->activeDocument()->getDocument());
         return;
     }
     if (!task) {
@@ -2669,7 +2672,7 @@ void PlacementEditor::browse()
     task->setPropertyName(propertyname);
     task->setSelection(Gui::Selection().getSelectionEx());
     task->bindObject();
-    Gui::Control().showDialog(task);
+    Gui::Control().showDialog(task, Gui::Application::Instance->activeDocument()->getDocument());
 }
 
 void PlacementEditor::showValue(const QVariant& d)
@@ -4721,8 +4724,8 @@ void LinkLabel::updatePropertyLink()
                        "</p></body></html>"
             )
                        .arg(
-                           QLatin1String(sobj.getDocumentName().c_str()),
-                           QLatin1String(sobj.getObjectName().c_str()),
+                           QString::fromStdString(sobj.getDocumentName()),
+                           QString::fromStdString(sobj.getObjectName()),
                            QString::fromUtf8(sobj.getSubName().c_str()),
                            linkcolor,
                            DlgPropertyLink::formatObject(

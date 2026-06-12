@@ -41,6 +41,7 @@ and an outer circle.
 - http://mathworld.wolfram.com/InnerSoddyCenter.html
 - http://mathworld.wolfram.com/OuterSoddyCenter.html
 """
+
 ## @package circles_apollonius
 # \ingroup draftgeoutils
 # \brief Provides various functions for Apollonius and Soddy circles.

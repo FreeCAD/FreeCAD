@@ -76,9 +76,11 @@ public:
     bool getStyle(std::set<std::string>& style) const;
 
     void setForeground(const Base::Color& color);
+    void clearForeground();
     bool getForeground(Base::Color& color) const;
 
     void setBackground(const Base::Color& color);
+    void clearBackground();
     bool getBackground(Base::Color& color) const;
 
     void setDisplayUnit(const std::string& unit);

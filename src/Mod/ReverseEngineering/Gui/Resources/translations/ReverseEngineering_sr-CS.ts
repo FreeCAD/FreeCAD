@@ -237,8 +237,8 @@
       <translation>Položaj</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="138"/>
+      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
       <translation>Uklopi B-Splajn</translation>
     </message>
@@ -338,8 +338,8 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
-      <source>Input error</source>
-      <translation>Greška pri unosu</translation>
+      <source>Input Error</source>
+      <translation>Greška prilikom unosa</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="215"/>
@@ -381,8 +381,8 @@
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
-      <source>Input error</source>
-      <translation>Greška pri unosu</translation>
+      <source>Input Error</source>
+      <translation>Greška prilikom unosa</translation>
     </message>
   </context>
   <context>
@@ -626,7 +626,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
       <source>Continuity</source>
-      <translation>Kontinualnost</translation>
+      <translation>Kontinuitet</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="88"/>
@@ -721,8 +721,8 @@
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
       <location filename="../../FitBSplineCurve.cpp" line="89"/>
-      <source>Input error</source>
-      <translation>Greška pri unosu</translation>
+      <source>Input Error</source>
+      <translation>Greška prilikom unosa</translation>
     </message>
   </context>
 </TS>

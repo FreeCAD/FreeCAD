@@ -299,8 +299,10 @@ class ToolControllerEditor(object):
     def updateToolController(self):
         tc = self.obj
         try:
-            tc.Label = self.controller.tcName.text()
-            tc.ToolNumber = self.controller.tcNumber.value()
+            if tc.Label != self.controller.tcName.text():
+                tc.Label = self.controller.tcName.text()
+            if tc.ToolNumber != self.controller.tcNumber.value():
+                tc.ToolNumber = self.controller.tcNumber.value()
             self.horizFeed.updateProperty()
             self.vertFeed.updateProperty()
             self.leadInFeed.updateProperty()
@@ -308,12 +310,15 @@ class ToolControllerEditor(object):
             self.rampFeed.updateProperty()
             self.horizRapid.updateProperty()
             self.vertRapid.updateProperty()
-            tc.SpindleSpeed = self.controller.spindleSpeed.value()
-            tc.SpindleDir = self.controller.spindleDirection.currentData()
+            if tc.SpindleSpeed != self.controller.spindleSpeed.value():
+                tc.SpindleSpeed = self.controller.spindleSpeed.value()
+            if tc.SpindleDir != self.controller.spindleDirection.currentData():
+                tc.SpindleDir = self.controller.spindleDirection.currentData()
 
             if self.editor:
                 self.editor.updateTool()
-                tc.Tool = self.editor.tool
+                if tc.Tool != self.editor.tool:
+                    tc.Tool = self.editor.tool
 
         except Exception as e:
             Path.Log.error("Error updating TC: {}".format(e))

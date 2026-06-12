@@ -34,11 +34,21 @@
 #include <list>
 #include <set>
 #include <map>
+#include <memory>
 #include <string>
+#include <optional>
+
+#include <functional>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <atomic>
+
+#include <Base/Exception.h>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
-#include <Base/ProgressIndicator.h>
+#include "TransactionDefs.h"
 
 // forward declarations
 using PyObject = struct _object;
@@ -84,6 +94,50 @@ enum class MessageOption {
 struct DocumentInitFlags {
     bool createView {true}; ///< Whether to hide the document in the tree view.
     bool temporary {false}; ///< Whether the document should be a temporary one.
+};
+
+/**
+ * @brief Failure category for async recompute processing.
+ */
+enum class RecomputeFailure
+{
+    None,
+    DependencyCycle,
+    Exception
+};
+
+/// Result returned by processing a recompute request.
+struct AppExport RecomputeResult
+{
+    bool success {true};
+    RecomputeFailure failure {RecomputeFailure::None};
+    std::unique_ptr<Base::Exception> exception;
+};
+
+/// Stable, queueable work item for document or object recompute.
+struct AppExport RecomputeRequest
+{
+    static RecomputeRequest fromDocument(const Document& document, bool force = false, int options = 0);
+    static RecomputeRequest fromDocumentObject(
+        const DocumentObject& documentObject,
+        bool recursive = false
+    );
+
+    Document* resolveDocument() const;
+    DocumentObject* resolveDocumentObject() const;
+
+    // Stable identifiers are queued instead of raw pointers so worker-side
+    // resolution cannot dereference destroyed documents or objects. The
+    // internal document name is assigned once at creation time and does not
+    // change afterwards, so queued requests do not need to track
+    // signalRenameDocument.
+    std::string documentName;
+    std::string documentObjectName;
+    bool force {false};
+    int options {0};
+    bool recursive {false};
+    // Callback to be invoked when recompute is complete.
+    std::function<void(RecomputeRequest&, RecomputeResult&)> callback {};
 };
 
 /**
@@ -144,7 +198,6 @@ public:
      * @return Returns true if the document was found and closed, false otherwise.
      */
     bool closeDocument(const char* name);
-
     /**
      * @brief Acquire a unique document name from a proposed name.
      *
@@ -202,6 +255,8 @@ public:
      * @return Return the document with the given name, or `nullptr` if not found.
      */
     App::Document* getDocument(const char *Name) const;
+
+    App::Document* getDocumentOrActive(const char *Name) const;
 
     /// %Path matching modes for getDocumentByPath()
     enum class PathMatchMode
@@ -289,9 +344,11 @@ public:
     /**
      * @brief Setup a pending application-wide active transaction.
      *
-     * Call this function to setup an application-wide transaction. All current
-     * pending transactions of opening documents will be committed first.
-     * However, no new transaction is created by this call. Any subsequent
+     * Call this function to setup a transaction in the currently active document
+     * if no document is active, a global transaction is created. If the current 
+     * active document already has a transaction setup it will either commit the
+     * current transaction or rename it, depending on the tmpName flag of the 
+     * currently setup transaction. No new transaction is created by this call. Any subsequent
      * changes in any current opening document will auto create a transaction
      * with the given name and ID. If more than one document is changed, the
      * transactions will share the same ID, and will be undo/redo together.
@@ -303,32 +360,43 @@ public:
      *
      * @return The new transaction ID.
      */
-    int setActiveTransaction(const char* name, bool persist = false);
+    int setActiveTransaction(TransactionName name);
+    int openGlobalTransaction(TransactionName name);
+    int getGlobalTransaction() const;
+    bool transactionIsActive(int tid) const;
+    std::string getTransactionName(int tid) const;
+    bool transactionTmpName(int tid) const;
+    Document* transactionInitiator(int tid) const;
+    std::optional<TransactionDescription> transactionDescription(int tid) const;
+    void setTransactionDescription(int tid, const TransactionDescription& desc);
+    void setTransactionName(int tid, const TransactionName& name);
 
-    /**
-     * @brief Get the current active transaction name and ID.
+    /** Commit/abort current active transactions
      *
      * If there is no active transaction, an empty string is returned.
      *
-     * @param[out] tid If not `nullptr`, the current active transaction ID is
-     * returned through this pointer.
-     * @return The current active transaction name.
-     */
-    const char* getActiveTransaction(int* tid = nullptr) const;
-
-    /**
-     * @brief Commit/abort current active transactions.
-     *
      * @param[in] abort: whether to abort or commit the transactions
-     * @param[in] id: by default 0 meaning that the current active transaction ID is used.
-     *
-     * Besides calling this function directly, it will be called by
-     * automatically if 1) any new transaction is created with a different ID,
-     * or 2) any transaction with the current active transaction ID is either
-     * committed or aborted.
+     * @param[in] id: by default 0 meaning that the current global transaction ID is used.
+     * 
+     * Bsides calling this function directly, it will be called by automatically
+     * if 1) any new transaction is created with a different ID, or 2) any
+     * transaction with the current active transaction ID is either committed or
+     * aborted
+     * returns true if it succeeded in closing the transaction
      */
-    void closeActiveTransaction(bool abort=false, int id=0);
-    /// @}
+    bool closeActiveTransaction(TransactionCloseMode mode = TransactionCloseMode::Commit, int id=0);
+
+    /// Internally call closeActiveTransaction(), but it makes the call site clearer
+    bool commitTransaction(int tid);
+    bool abortTransaction(int tid);
+    //@}
+
+    // Returns if document and object recomputes should be done async.
+    bool isAsyncRecomputeEnabled();
+    bool canRecomputeRequestOnWorker(const RecomputeRequest& req) const;
+
+    // Adds a recompute request to the processing queue.
+    void queueRecomputeRequest(RecomputeRequest req);
 
     // NOLINTBEGIN
     // clang-format off
@@ -707,8 +775,8 @@ public:
     /// Get the argument values that were provided at the start of the application.
     static char** GetARGV(){return _argv;}
 
-    /// Get the application process id.
-    static int64_t applicationPid();
+    /// Get a constant unique ID specific to this application instance.
+    static int64_t uniqueInstanceId();
     /// @}
 
     /**
@@ -790,59 +858,6 @@ public:
     /// @}
 
     /**
-     * @name Verbosity Information
-     *
-     * @{
-     */
-
-    /**
-     * @brief Get verbose information about the application.
-     *
-     * @param[in,out] str The text stream to write the information to.
-     * @param[in] mConfig The application configuration.
-     */
-    static void getVerboseCommonInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
-
-    /**
-     * @brief Get verbose information about add-ons.
-     *
-     * @copydetails getVerboseCommonInfo
-     */
-    static void getVerboseAddOnsInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
-
-    /**
-     * @brief Add module info to the verbose output.
-     *
-     * This function is used to add information about a single add-on.
-     *
-     * @param[in,out] str The text stream to write the information to.
-     * @param[in] modPath The path of the module.
-     * @param[in,out] firstMod Whether this is the first module being added.
-     */
-    static void addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod);
-
-    /// Get a pretty formatted product information string.
-    static QString prettyProductInfoWrapper();
-
-    /**
-     * @brief Get a value from a map or an empty string.
-     *
-     * @param[in] map The map to search.
-     * @param[in] key The key to search for.
-     * @return Returns the value if found, or an empty string otherwise.
-     */
-    static QString getValueOrEmpty(const std::map<std::string, std::string>& map, const std::string& key);
-
-    /**
-     * Constant that request verbose version information to be printed.
-     *
-     * If an exception has this message, it means that we will print verbosee
-     * version information.
-     */
-    static constexpr const char* verboseVersionEmitMessage{"verbose_version"};
-    /// @}
-
-    /**
      * @name Link handling
      *
      * @{
@@ -878,9 +893,6 @@ public:
     /// Check if there is any link to the given object
     bool hasLinksTo(const DocumentObject *obj) const;
     /// @}
-
-    /// Gets the base progress indicator instance.
-    Base::ProgressIndicator& getProgressIndicator() { return _progressIndicator; }
 
     friend class App::Document;
 
@@ -1031,6 +1043,26 @@ private:
     // missing object
     std::map<std::string,std::set<std::string> > _docReloadAttempts;
 
+    // Worker thread for processing pending recompute requests
+    std::thread _recomputeThread;
+    // Protects the queued/in-progress recompute state below
+    std::mutex _recomputeMutex;
+    std::deque<RecomputeRequest> _recomputeRequests;
+    std::set<std::string> _recomputeDocumentsInProgress;
+    std::condition_variable _recomputeRequestAvailable;
+    std::condition_variable _recomputeStateChanged;
+    // Separate from the mutex-protected queue state so shutdown can request a
+    // worker stop and wake waiters without first taking _recomputeMutex.
+    std::atomic<bool> _stopRecomputeThread{false};
+
+    // Worker thread function that processes _recomputeRequests
+    void recomputeWorker();
+    // Helper to notify the worker thread when new requests are available
+    void notifyRecomputeWorker();
+    // Drop queued requests for a document and wait for any active recompute of
+    // that document to finish before closing it
+    void cancelRecomputeRequestsForDocument(const std::string& documentName);
+
     bool _isRestoring{false};
     bool _allowPartial{false};
     bool _isClosingAll{false};
@@ -1040,12 +1072,16 @@ private:
 
     friend class AutoTransaction;
 
-    std::string _activeTransactionName;
-    int _activeTransactionID{0};
-    int _activeTransactionGuard{0};
-    bool _activeTransactionTmpName{false};
+    std::map<int, TransactionDescription> _activeTransactionDescriptions; // Maps transaction ID to transaction name
+    
+    int currentlyClosingID {0};
 
-    Base::ProgressIndicator _progressIndicator;
+    // This is the transaction ID for a global transaction
+    // Documents will take this ID if it is non-zero
+    // and generate their own otherwise
+    int _globalTransactionID { 0 };
+    bool _globalTransactionTmpName {false};
+    std::string _globalTransactionName;
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;

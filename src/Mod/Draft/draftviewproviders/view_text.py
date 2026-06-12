@@ -26,6 +26,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the Text object."""
+
 ## @package view_text
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Text object.
@@ -192,9 +193,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
             # If the last element is an empty string "" we remove it
             if not txt[-1]:
                 txt.pop()
-            t_list = ['"' + l + '"' for l in txt]
-            list_as_text = ", ".join(t_list)
-            string = "[" + list_as_text + "]"
+            string = "[" + ", ".join(repr(l) for l in txt) + "]"
             Gui.doCommand("FreeCAD.ActiveDocument." + self.Object.Name + ".Text = " + string)
             App.ActiveDocument.recompute()
             self.finish()

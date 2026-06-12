@@ -67,6 +67,7 @@ public:
     App::DocumentObjectExecReturn* recompute() override;
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
+    bool canRecomputeOnWorker() const override { return false; }
     void onDocumentRestored() override;
     short mustExecute() const override;
     //@}

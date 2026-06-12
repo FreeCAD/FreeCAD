@@ -70,7 +70,9 @@ TextEdit::TextEdit(QWidget* parent)
     auto shortcutFind = new QShortcut(this);
     shortcutFind->setKey(QKeySequence::Find);
     shortcutFind->setContext(Qt::WidgetShortcut);
-    connect(shortcutFind, &QShortcut::activated, this, &TextEdit::showSearchBar);
+    connect(shortcutFind, &QShortcut::activated, this, [this]() {
+        Q_EMIT showSearchBar(selectionForSearch());
+    });
 
     auto shortcutNext = new QShortcut(this);
     shortcutNext->setKey(QKeySequence::FindNext);
@@ -141,6 +143,25 @@ int TextEdit::getInputStringPosition()
 QString TextEdit::getInputString()
 {
     return textCursor().block().text();
+}
+
+/**
+ * Return selected text or word under cursor if none. Normalize line breaks.
+ */
+QString TextEdit::selectionForSearch() const
+{
+    QTextCursor cursor = textCursor();
+    QString text = cursor.selectedText();
+
+    if (text.isEmpty()) {
+        cursor.select(QTextCursor::WordUnderCursor);
+        text = cursor.selectedText();
+    }
+
+    // Qt replaces line breaks with U+2029 in selectedText
+    text.replace(QChar::ParagraphSeparator, QLatin1Char('\n'));
+
+    return text;
 }
 
 void TextEdit::wheelEvent(QWheelEvent* e)

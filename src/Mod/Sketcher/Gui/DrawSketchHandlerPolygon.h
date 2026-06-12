@@ -108,7 +108,7 @@ private:
     {
         unsetCursor();
         resetPositionText();
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
 
         try {
             Gui::Command::doCommand(
@@ -125,7 +125,7 @@ private:
                 constructionModeAsBooleanText()
             );
 
-            Gui::Command::commitCommand();
+            commitCommand();
 
             tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
         }
@@ -136,7 +136,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add polygon")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -275,14 +275,14 @@ private:
                  .hints =
                      {
                          {tr("%1 pick polygon center"), {MouseLeft}},
-                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1/%2 increase/decrease number of sides"), {KeyU, KeyJ}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
                          {tr("%1 pick rotation and size"), {MouseMove}},
                          {tr("%1 confirm"), {MouseLeft}},
-                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1/%2 increase/decrease number of sides"), {KeyU, KeyJ}},
                      }},
             });
     }

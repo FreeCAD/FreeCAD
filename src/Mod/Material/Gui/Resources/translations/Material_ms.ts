@@ -5,11 +5,15 @@
     <name>CmdInspectAppearance</name>
     <message>
       <location filename="../../Command.cpp" line="146"/>
-      <source>Inspect Appearance...</source>
-      <translation>Periksa Penampilan...</translation>
+      <source>Inspect Appearance</source>
+      <translation type="unfinished">Inspect Appearance</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="147"/>
+      <source>Inspects the appearance properties of the selected object</source>
+      <translation type="unfinished">Inspects the appearance properties of the selected object</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
       <translation>Periksa sifat rupa objek yang dipilih</translation>
@@ -19,11 +23,15 @@
     <name>CmdInspectMaterial</name>
     <message>
       <location filename="../../Command.cpp" line="173"/>
-      <source>Inspect Material...</source>
-      <translation>Periksa Bahan...</translation>
+      <source>Inspect Material</source>
+      <translation type="unfinished">Inspect Material</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
+      <source>Inspects the material properties of the selected object</source>
+      <translation type="unfinished">Inspects the material properties of the selected object</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
       <translation>Periksa sifat rupa objek yang dipilih</translation>
@@ -37,14 +45,14 @@
       <translation>Tatasusunan 2D</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="78"/>
-      <source>Delete row</source>
+      <location filename="../../Array2D.cpp" line="79"/>
+      <source>Delete Row</source>
       <translation>Padam Baris</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="140"/>
-      <source>Context menu</source>
-      <translation>Menu konteks</translation>
+      <location filename="../../Array2D.cpp" line="138"/>
+      <source>Context Menu</source>
+      <translation type="unfinished">Context Menu</translation>
     </message>
   </context>
   <context>
@@ -57,14 +65,14 @@
     <message>
       <location filename="../../Array3D.cpp" line="77"/>
       <location filename="../../Array3D.cpp" line="81"/>
-      <source>Delete row</source>
+      <source>Delete Row</source>
       <translation>Padam Baris</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="231"/>
       <location filename="../../Array3D.cpp" line="302"/>
-      <source>Context menu</source>
-      <translation>Menu konteks</translation>
+      <source>Context Menu</source>
+      <translation type="unfinished">Context Menu</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="263"/>
@@ -75,8 +83,8 @@
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
       <location filename="../../Array3D.cpp" line="337"/>
-      <source>Are you sure you want to delete the row?</source>
-      <translation>Adakah anda pasti mahu memadamkan baris ini?</translation>
+      <source>Delete the row?</source>
+      <translation type="unfinished">Delete the row?</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
@@ -100,12 +108,12 @@
   <context>
     <name>MatGui::BaseDelegate</name>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="439"/>
+      <location filename="../../BaseDelegate.cpp" line="430"/>
       <source>False</source>
       <translation>Salah</translation>
     </message>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="440"/>
+      <location filename="../../BaseDelegate.cpp" line="431"/>
       <source>True</source>
       <translation>Benar</translation>
     </message>
@@ -114,23 +122,23 @@
     <name>MatGui::DlgDisplayProperties</name>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
-      <source>Display properties</source>
-      <translation>Paparkan sifat</translation>
+      <source>Display Properties</source>
+      <translation type="unfinished">Display Properties</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
-      <source>Viewing mode</source>
-      <translation>Mod tontonan</translation>
+      <source>Viewing Mode</source>
+      <translation type="unfinished">Viewing Mode</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
-      <source>Document window:</source>
-      <translation>Tetingkap dokumen:</translation>
+      <source>Document window</source>
+      <translation type="unfinished">Document window</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
-      <source>Plot mode:</source>
-      <translation>Mod plot:</translation>
+      <source>Plot mode</source>
+      <translation type="unfinished">Plot mode</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
@@ -139,66 +147,48 @@
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="144"/>
-      <source>Point size:</source>
-      <translation>Saiz huruf:</translation>
+      <source>Point size</source>
+      <translation>Saiz huruf</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="199"/>
-      <source>Line width:</source>
-      <translation>Lebar garisan:</translation>
+      <source>Line width</source>
+      <translation>Lebar garisan</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="237"/>
-      <source>Transparency:</source>
+      <source>Transparency</source>
       <translation>Ketelusan</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="289"/>
-      <source>Line transparency:</source>
-      <translation>Ketelusan talian:</translation>
+      <source>Line transparency</source>
+      <translation>Ketelusan talian</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="365"/>
+      <source>Color plot</source>
+      <translation type="unfinished">Color plot</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="372"/>
+      <source>Custom appearance</source>
+      <translation type="unfinished">Custom appearance</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="382"/>
+      <source>Point color</source>
+      <translation>Warna titik</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayProperties.ui" line="389"/>
+      <source>Line color</source>
+      <translation>Warna Garisan</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
       <source>Material</source>
       <translation>Bahan</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="365"/>
-      <source>Color plot:</source>
-      <translation>Plot warna:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="372"/>
-      <source>Custom appearance:</source>
-      <translation>Penampilan tersuai:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="382"/>
-      <source>Point color:</source>
-      <translation>Warna mata:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayProperties.ui" line="389"/>
-      <source>Line color:</source>
-      <translation>Warna Garisan:</translation>
-    </message>
-  </context>
-  <context>
-    <name>MatGui::DlgDisplayPropertiesImp</name>
-    <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
-      <source>Basic Appearance</source>
-      <translation>Penampilan Asas</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
-      <source>Texture Appearance</source>
-      <translation>Penampilan Tekstur</translation>
-    </message>
-    <message>
-      <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
-      <source>All Materials</source>
-      <translation>Semua Bahan</translation>
     </message>
   </context>
   <context>
@@ -214,19 +204,19 @@
       <translation>Dokumen</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.ui" line="50"/>
-      <source>Document Name</source>
-      <translation>Nama Dokumen</translation>
-    </message>
-    <message>
       <location filename="../../DlgInspectAppearance.ui" line="57"/>
       <source>Name of the active document</source>
       <translation>Nama dokumen aktif</translation>
     </message>
     <message>
+      <location filename="../../DlgInspectAppearance.ui" line="50"/>
+      <source>Document name</source>
+      <translation type="unfinished">Document name</translation>
+    </message>
+    <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
-      <source>Label / Internal Name</source>
-      <translation>Label / Nama Dalaman</translation>
+      <source>Label / internal name</source>
+      <translation type="unfinished">Label / internal name</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
@@ -255,23 +245,23 @@
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="202"/>
-      <source>Diffuse Color</source>
-      <translation>Warna Meresap</translation>
+      <source>Diffuse color</source>
+      <translation type="unfinished">Diffuse color</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="211"/>
-      <source>Ambient Color</source>
-      <translation>Warna persekitaran</translation>
+      <source>Ambient color</source>
+      <translation type="unfinished">Ambient color</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="220"/>
-      <source>Emissive Color</source>
-      <translation>Warna pemancar</translation>
+      <source>Emissive color</source>
+      <translation type="unfinished">Emissive color</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="229"/>
-      <source>Specular Color</source>
-      <translation>Warna specular</translation>
+      <source>Specular color</source>
+      <translation type="unfinished">Specular color</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="238"/>
@@ -297,19 +287,19 @@
       <translation>Dokumen</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectMaterial.ui" line="50"/>
-      <source>Document Name</source>
-      <translation>Nama Dokumen</translation>
-    </message>
-    <message>
       <location filename="../../DlgInspectMaterial.ui" line="57"/>
       <source>Name of the active document</source>
       <translation>Nama dokumen aktif</translation>
     </message>
     <message>
+      <location filename="../../DlgInspectMaterial.ui" line="50"/>
+      <source>Document name</source>
+      <translation type="unfinished">Document name</translation>
+    </message>
+    <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
-      <source>Label / Internal Name</source>
-      <translation>Label / Nama Dalaman</translation>
+      <source>Label / internal name</source>
+      <translation type="unfinished">Label / internal name</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
@@ -328,8 +318,8 @@
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
-      <source>Copy to clipboard</source>
-      <translation>Salin ke papan keratan</translation>
+      <source>Copy to Clipboard</source>
+      <translation type="unfinished">Copy to Clipboard</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
@@ -343,8 +333,8 @@
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
-      <source>Internal Name: </source>
-      <translation>Nama bahan: </translation>
+      <source>Internal name: </source>
+      <translation type="unfinished">Internal name: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
@@ -389,14 +379,38 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
-      <source>Library Directory: </source>
-      <translation>Direktori Perpustakaan: </translation>
+      <source>Library directory: </source>
+      <translation type="unfinished">Library directory: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
+      <source>Subdirectory: </source>
+      <translation type="unfinished">Subdirectory: </translation>
+    </message>
+    <message>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
-      <source>Sub Directory: </source>
-      <translation>Sub Direktori: </translation>
+      <source>Sub directory: </source>
+      <translation type="unfinished">Sub directory: </translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="365"/>
+      <source>Appearance models:</source>
+      <translation type="unfinished">Appearance models:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="371"/>
+      <source>Physical models:</source>
+      <translation type="unfinished">Physical models:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="377"/>
+      <source>Appearance properties:</source>
+      <translation type="unfinished">Appearance properties:</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectMaterial.cpp" line="383"/>
+      <source>Physical properties:</source>
+      <translation type="unfinished">Physical properties:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="279"/>
@@ -424,26 +438,6 @@
       <source>Yes</source>
       <translation>Ya</translation>
     </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="365"/>
-      <source>Appearance Models:</source>
-      <translation>Model Penampilan:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="371"/>
-      <source>Physical Models:</source>
-      <translation>Model Fizikal:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="377"/>
-      <source>Appearance Properties:</source>
-      <translation>Model Fizikal:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgInspectMaterial.cpp" line="383"/>
-      <source>Physical Properties:</source>
-      <translation>Sifat Fizikal:</translation>
-    </message>
   </context>
   <context>
     <name>MatGui::DlgMaterial</name>
@@ -462,7 +456,7 @@
       <translation>Bahan Lalai</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="51"/>
+      <location filename="../../DlgSettingsDefaultMaterial.cpp" line="52"/>
       <source>Physical</source>
       <translation>Fizikal</translation>
     </message>
@@ -475,24 +469,9 @@
       <translation>Umum</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="23"/>
-      <source>Card resources</source>
-      <translation>Sumber kad</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="31"/>
-      <source>The cards built-in to FreeCAD will be listed as available.</source>
-      <translation>Kad terbina dalam FreeCAD akan disenaraikan sebagai tersedia.</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsMaterial.ui" line="34"/>
       <source>Use built-in materials</source>
       <translation>Gunakan bahan terbina dalam</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="50"/>
-      <source>Use materials added by external workbenches.</source>
-      <translation>Gunakan bahan yang ditambah oleh meja kerja luaran.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="53"/>
@@ -500,96 +479,109 @@
       <translation>Gunakan bahan daripada bengkel luaran</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="69"/>
-      <source>Also cards from FreeCAD&apos;s preferences directory will be listed as available.</source>
-      <translation>Kad dari direktori pilihan FreeCAD juga akan disenaraikan sebagai tersedia.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="72"/>
-      <source>Use materials from Materials directory in user&apos;s FreeCAD preference directory</source>
-      <translation>Gunakan bahan daripada direktori Bahan dalam direktori keutamaan FreeCAD pengguna</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="88"/>
-      <source>Also material cards also from the specified directory
-will be listed as available.</source>
-      <translation>Juga kad bahan juga dari direktori yang ditentukan
-akan disenaraikan sebagai tersedia.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="92"/>
-      <source>Use materials from user defined directory</source>
-      <translation>Gunakan bahan daripada direktori yang ditentukan pengguna</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="119"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="118"/>
       <source>User directory</source>
       <translation>Direktori pengguna</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="155"/>
-      <source>Card sorting and duplicates</source>
-      <translation>Pengisihan dan pendua kad</translation>
+      <location filename="../../DlgSettingsMaterial.ui" line="23"/>
+      <source>Card Resources</source>
+      <translation type="unfinished">Card Resources</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="161"/>
-      <source>Duplicate cards will be deleted from the displayed material card list.</source>
-      <translation>Kad pendua akan dipadamkan daripada senarai kad bahan yang dipaparkan.</translation>
+      <location filename="../../DlgSettingsMaterial.ui" line="31"/>
+      <source>The cards built-in to FreeCAD will be listed as available</source>
+      <translation type="unfinished">The cards built-in to FreeCAD will be listed as available</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="164"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="50"/>
+      <source>Use materials added by external workbenches</source>
+      <translation type="unfinished">Use materials added by external workbenches</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="69"/>
+      <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
+      <translation type="unfinished">Cards from FreeCAD’s preferences directory are also listed as available</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="72"/>
+      <source>Use materials from the Materials preference directory</source>
+      <translation type="unfinished">Use materials from the Materials preference directory</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="88"/>
+      <source>Material cards from the specified directory will also be listed as available</source>
+      <translation type="unfinished">Material cards from the specified directory will also be listed as available</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="91"/>
+      <source>Use materials from user-defined directory</source>
+      <translation type="unfinished">Use materials from user-defined directory</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="154"/>
+      <source>Card Sorting and Duplicates</source>
+      <translation type="unfinished">Card Sorting and Duplicates</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="160"/>
+      <source>Duplicate cards will be deleted from the displayed material card list</source>
+      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMaterial.ui" line="163"/>
       <source>Delete card duplicates</source>
       <translation>Padamkan pendua kad</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="180"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="179"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
       <translation>Kad bahan kelihatan disusun mengikut sumbernya (lokasi).
 Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="184"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="183"/>
       <source>Sort by resources</source>
       <translation>Susun mengikut sumber</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="203"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="202"/>
       <source>Material Selector</source>
       <translation>Pemilih Bahan</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="209"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="292"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="208"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="291"/>
       <source>Show favorites</source>
       <translation>Tunjukkan kegemaran</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="225"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="308"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="224"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="307"/>
       <source>Show recent</source>
       <translation>Tunjukkan hasil</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="241"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="324"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="240"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="323"/>
       <source>Show empty libraries</source>
       <translation>Tunjukkan perpustakaan kosong</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="257"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="340"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="256"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="339"/>
       <source>Show empty folders</source>
       <translation>Tunjukkan folder kosong</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="270"/>
-      <location filename="../../DlgSettingsMaterial.ui" line="353"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="269"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="352"/>
       <source>Show legacy files</source>
       <translation>Tunjukkan fail warisan</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMaterial.ui" line="286"/>
+      <location filename="../../DlgSettingsMaterial.ui" line="285"/>
       <source>Material Editor</source>
       <translation>Editor bahan</translation>
     </message>
@@ -608,8 +600,8 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="95"/>
-      <source>File...</source>
-      <translation>Fail...</translation>
+      <source>File</source>
+      <translation>Fail</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="104"/>
@@ -653,12 +645,12 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
   <context>
     <name>MatGui::MaterialDelegate</name>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="475"/>
+      <location filename="../../MaterialDelegate.cpp" line="474"/>
       <source>False</source>
       <translation>Salah</translation>
     </message>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="476"/>
+      <location filename="../../MaterialDelegate.cpp" line="475"/>
       <source>True</source>
       <translation>Benar</translation>
     </message>
@@ -672,103 +664,107 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
-      <source>Library:</source>
-      <translation>Perpustakaan:</translation>
+      <source>Library</source>
+      <translation type="unfinished">Library</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.ui" line="70"/>
+      <source>Filename</source>
+      <translation>Nama fail</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.ui" line="104"/>
+      <source>Save as inherited</source>
+      <translation type="unfinished">Save as inherited</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
-      <location filename="../../MaterialSave.cpp" line="485"/>
-      <location filename="../../MaterialSave.cpp" line="495"/>
       <source>New Folder</source>
       <translation>Folder baru</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.ui" line="70"/>
-      <source>Filename:</source>
-      <translation>Nama fail:</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.ui" line="104"/>
-      <source>Save as Inherited</source>
-      <translation>Simpan sebagai Diwarisi</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="92"/>
+      <location filename="../../MaterialSave.cpp" line="96"/>
       <source>Delete</source>
       <translation>Padam</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="192"/>
-      <source>Are you sure you want to save over &apos;%1&apos;?</source>
-      <translation>Adakah anda pasti mahu menyimpan lebih &apos;%1&apos;?</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="195"/>
+      <location filename="../../MaterialSave.cpp" line="198"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Menyimpan fail asal boleh menyebabkan dokumen lain rosak. Ini tidak digalakkan.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="217"/>
-      <source>Confirm Save As New Material</source>
-      <translation>Sahkan Simpan Sebagai Bahan Baru</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialSave.cpp" line="219"/>
+      <location filename="../../MaterialSave.cpp" line="222"/>
       <source>Save as new material</source>
       <translation>Simpan sebagai bahan baru</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="222"/>
-      <source>This material already exists in this library. Would you like to save as a new material?</source>
-      <translation>Bahan ini telah pun wujud di perpustakaan ini. Adakah anda ingin menyimpan sebagai bahan baru?</translation>
+      <location filename="../../MaterialSave.cpp" line="195"/>
+      <source>Save over &apos;%1&apos;?</source>
+      <translation type="unfinished">Save over &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="244"/>
-      <source>Confirm Save As Copy</source>
-      <translation>Sahkan Simpan Sebagai Salin</translation>
+      <location filename="../../MaterialSave.cpp" line="220"/>
+      <source>Confirm Save as New Material</source>
+      <translation type="unfinished">Confirm Save as New Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="246"/>
-      <source>Save as Copy</source>
-      <translation>Simpan sebagai Salinan</translation>
+      <location filename="../../MaterialSave.cpp" line="225"/>
+      <source>This material already exists in this library. Save as a new material?</source>
+      <translation type="unfinished">This material already exists in this library. Save as a new material?</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="247"/>
+      <source>Confirm Save as Copy</source>
+      <translation type="unfinished">Confirm Save as Copy</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="249"/>
-      <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
-      <translation>Menyimpan salinan tidak disyorkan kerana ia boleh memecahkan dokumen lain. Kami mengesyorkan anda menyimpan sebagai bahan baru.</translation>
+      <source>Save as copy</source>
+      <translation type="unfinished">Save as copy</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="252"/>
+      <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
+      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="255"/>
       <source>Save Copy</source>
       <translation>Simpan Salin</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="253"/>
+      <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save As New</source>
       <translation>Simpan Sebagai Baru</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="535"/>
-      <source>Context menu</source>
-      <translation>Menu konteks</translation>
+      <location filename="../../MaterialSave.cpp" line="488"/>
+      <location filename="../../MaterialSave.cpp" line="498"/>
+      <source>New folder</source>
+      <translation type="unfinished">New folder</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialSave.cpp" line="538"/>
+      <source>Context Menu</source>
+      <translation type="unfinished">Context Menu</translation>
     </message>
   </context>
   <context>
     <name>MatGui::MaterialTreeWidget</name>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="142"/>
-      <source>Launch editor</source>
-      <translation>Pelancaran editor</translation>
+      <location filename="../../MaterialTreeWidget.cpp" line="139"/>
+      <source>Launch Editor</source>
+      <translation type="unfinished">Launch Editor</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="545"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="312"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="533"/>
       <source>Favorites</source>
       <translation>Kegemaran</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="315"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="552"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="312"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="540"/>
       <source>Recent</source>
       <translation>Semasa</translation>
     </message>
@@ -817,8 +813,18 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
-      <source>Source Reference</source>
-      <translation>Rujukan Sumber</translation>
+      <source>Source reference</source>
+      <translation type="unfinished">Source reference</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="202"/>
+      <source>Adds or removes to/from favorites</source>
+      <translation type="unfinished">Adds or removes to/from favorites</translation>
+    </message>
+    <message>
+      <location filename="../../MaterialsEditor.ui" line="205"/>
+      <source>Toggle Favorite</source>
+      <translation type="unfinished">Toggle Favorite</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
@@ -834,11 +840,6 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
       <location filename="../../MaterialsEditor.ui" line="195"/>
       <source>Inherit New</source>
       <translation>Warisi Baru</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialsEditor.ui" line="202"/>
-      <source>Add to favorites</source>
-      <translation>Tambah ke kegemaran</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
@@ -871,78 +872,78 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
       <translation>Padamkan model penampilan</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="485"/>
+      <location filename="../../MaterialsEditor.cpp" line="484"/>
       <source>Unnamed</source>
       <translation>Tidak dinamakan</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="607"/>
+      <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
       <translation>Bahan Format Lama</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="609"/>
+      <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
       <translation>Fail ini dalam format kad bahan lama.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="695"/>
+      <location filename="../../MaterialsEditor.cpp" line="694"/>
       <source>This card uses the old format and must be saved before use</source>
       <translation>Kad ini menggunakan format lama dan mesti disimpan sebelum digunakan</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="755"/>
-      <location filename="../../MaterialsEditor.cpp" line="787"/>
-      <location filename="../../MaterialsEditor.cpp" line="1088"/>
-      <location filename="../../MaterialsEditor.cpp" line="1150"/>
+      <location filename="../../MaterialsEditor.cpp" line="754"/>
+      <location filename="../../MaterialsEditor.cpp" line="786"/>
+      <location filename="../../MaterialsEditor.cpp" line="1086"/>
+      <location filename="../../MaterialsEditor.cpp" line="1148"/>
       <source>Property</source>
       <translation>Sifat</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="756"/>
-      <location filename="../../MaterialsEditor.cpp" line="788"/>
-      <location filename="../../MaterialsEditor.cpp" line="1089"/>
-      <location filename="../../MaterialsEditor.cpp" line="1151"/>
+      <location filename="../../MaterialsEditor.cpp" line="755"/>
+      <location filename="../../MaterialsEditor.cpp" line="787"/>
+      <location filename="../../MaterialsEditor.cpp" line="1087"/>
+      <location filename="../../MaterialsEditor.cpp" line="1149"/>
       <source>Value</source>
       <translation>Nilai</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="757"/>
-      <location filename="../../MaterialsEditor.cpp" line="789"/>
-      <location filename="../../MaterialsEditor.cpp" line="1090"/>
-      <location filename="../../MaterialsEditor.cpp" line="1152"/>
+      <location filename="../../MaterialsEditor.cpp" line="756"/>
+      <location filename="../../MaterialsEditor.cpp" line="788"/>
+      <location filename="../../MaterialsEditor.cpp" line="1088"/>
+      <location filename="../../MaterialsEditor.cpp" line="1150"/>
       <source>Type</source>
       <translation>Taip</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="880"/>
+      <location filename="../../MaterialsEditor.cpp" line="879"/>
       <source>Favorites</source>
       <translation>Kegemaran</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="887"/>
+      <location filename="../../MaterialsEditor.cpp" line="886"/>
       <source>Recent</source>
       <translation>Semasa</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1153"/>
+      <location filename="../../MaterialsEditor.cpp" line="1151"/>
       <source>Units</source>
       <translation>Unit</translation>
     </message>
     <message>
+      <location filename="../../MaterialsEditor.cpp" line="1318"/>
+      <source>Context Menu</source>
+      <translation type="unfinished">Context Menu</translation>
+    </message>
+    <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
-      <source>Context menu</source>
-      <translation>Menu konteks</translation>
+      <source>Inherit From</source>
+      <translation type="unfinished">Inherit From</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1322"/>
-      <source>Inherit from</source>
-      <translation>Warisan Dari</translation>
-    </message>
-    <message>
-      <location filename="../../MaterialsEditor.cpp" line="1326"/>
-      <source>Inherit new material</source>
-      <translation>Mewarisi bahan baru</translation>
+      <location filename="../../MaterialsEditor.cpp" line="1324"/>
+      <source>Inherit New Material</source>
+      <translation type="unfinished">Inherit New Material</translation>
     </message>
   </context>
   <context>
@@ -981,8 +982,13 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
-      <source>Add to favorites</source>
-      <translation>Tambah ke kegemaran</translation>
+      <source>Adds or removes to/from favorites</source>
+      <translation type="unfinished">Adds or removes to/from favorites</translation>
+    </message>
+    <message>
+      <location filename="../../ModelSelect.ui" line="162"/>
+      <source>Toggle Favorites</source>
+      <translation type="unfinished">Toggle Favorites</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
@@ -1039,8 +1045,8 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
-      <source>Material card</source>
-      <translation>Kad bahan</translation>
+      <source>Material Card</source>
+      <translation type="unfinished">Material Card</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
@@ -1059,44 +1065,44 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
-      <source>Open...</source>
-      <translation>Terbuka...</translation>
+      <source>Open…</source>
+      <translation type="unfinished">Open…</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="80"/>
+      <source>Save As…</source>
+      <translation type="unfinished">Save As…</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="96"/>
+      <source>Material Parameter</source>
+      <translation type="unfinished">Material Parameter</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="115"/>
+      <source>Add/Remove Parameter</source>
+      <translation type="unfinished">Add/Remove Parameter</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="126"/>
+      <source>Add Property</source>
+      <translation type="unfinished">Add Property</translation>
+    </message>
+    <message>
+      <location filename="../ui/materials-editor.ui" line="133"/>
+      <source>Delete Property</source>
+      <translation type="unfinished">Delete Property</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
       <translation>Menyimpan bahan ini sebagai kad</translation>
     </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="80"/>
-      <source>Save as...</source>
-      <translation>Simpan sebagai...</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="96"/>
-      <source>Material parameter</source>
-      <translation>Parameter bahan</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="115"/>
-      <source>Add / remove parameter</source>
-      <translation>Tambah / alih keluar parameter</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="126"/>
-      <source>Add property</source>
-      <translation>Tambah pencirian</translation>
-    </message>
-    <message>
-      <location filename="../ui/materials-editor.ui" line="133"/>
-      <source>Delete property</source>
-      <translation>Padamkan harta</translation>
-    </message>
   </context>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgMaterialImp.cpp" line="57"/>
+      <location filename="../../DlgMaterialImp.cpp" line="56"/>
       <source>Material</source>
       <translation>Bahan</translation>
     </message>
@@ -1104,78 +1110,78 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMatGui.cpp" line="110"/>
-      <source>Material workbench</source>
-      <translation>Tambah / alih keluar parameter</translation>
+      <location filename="../../AppMatGui.cpp" line="108"/>
+      <source>Material Workbench</source>
+      <translation type="unfinished">Material Workbench</translation>
     </message>
     <message>
+      <location filename="../../AppMatGui.cpp" line="110"/>
       <location filename="../../AppMatGui.cpp" line="112"/>
-      <location filename="../../AppMatGui.cpp" line="114"/>
-      <location filename="../../AppMatGui.cpp" line="117"/>
+      <location filename="../../AppMatGui.cpp" line="115"/>
       <source>Material</source>
       <translation>Bahan</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="189"/>
+      <location filename="../../MaterialSave.cpp" line="192"/>
       <source>Confirm Overwrite</source>
       <translation>Sahkan Tulis Ganti</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="379"/>
-      <location filename="../../MaterialSave.cpp" line="380"/>
+      <location filename="../../MaterialSave.cpp" line="382"/>
+      <location filename="../../MaterialSave.cpp" line="383"/>
       <source>No writeable library</source>
       <translation>Tidak boleh tulis perpustakaan</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="567"/>
-      <source>Are you sure you want to delete &apos;%1&apos;?</source>
-      <translation>Adakah anda pasti mahu memadamkan &apos;%1&apos;?</translation>
+      <location filename="../../MaterialSave.cpp" line="570"/>
+      <source>Delete &apos;%1&apos;?</source>
+      <translation type="unfinished">Delete &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="571"/>
+      <location filename="../../MaterialSave.cpp" line="574"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Mengalih keluar ini juga akan mengalih keluar semua kandungan.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="610"/>
-      <source>You must save the material before using it.</source>
-      <translation>Anda mesti menyimpan bahan sebelum menggunakannya.</translation>
+      <location filename="../../MaterialsEditor.cpp" line="609"/>
+      <source>Save the material before using it.</source>
+      <translation type="unfinished">Save the material before using it.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1347"/>
+      <location filename="../../MaterialsEditor.cpp" line="1345"/>
       <source>Unsaved Material</source>
       <translation>Bahan Tidak Disimpan</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1348"/>
-      <source>Do you want to save your changes to the material before closing?</source>
-      <translation>Adakah anda ingin menyimpan perubahan anda pada bahan sebelum ditutup?</translation>
+      <location filename="../../MaterialsEditor.cpp" line="1346"/>
+      <source>Save changes to the material before closing?</source>
+      <translation type="unfinished">Save changes to the material before closing?</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1350"/>
-      <source>If you don&apos;t save, your changes will be lost.</source>
-      <translation>Jika anda tidak menyimpan, perubahan anda akan hilang.</translation>
+      <location filename="../../MaterialsEditor.cpp" line="1347"/>
+      <source>Otherwise, all changes will be lost.</source>
+      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="564"/>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Pasti untuk menghapuskan</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="174"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
-      <source>Are you sure you want to delete the row?</source>
-      <translation>Adakah anda pasti mahu memadamkan baris ini?</translation>
+      <source>Delete the row?</source>
+      <translation type="unfinished">Delete the row?</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
       <location filename="../../Command.cpp" line="88"/>
-      <source>&amp;Appearance...</source>
-      <translation>&amp;Penampilan...</translation>
+      <source>&amp;Appearance</source>
+      <translation type="unfinished">&amp;Appearance</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="89"/>
@@ -1188,8 +1194,8 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
     <name>StdCmdSetMaterial</name>
     <message>
       <location filename="../../Command.cpp" line="117"/>
-      <source>&amp;Material...</source>
-      <translation type="unfinished">&amp;Material...</translation>
+      <source>&amp;Material</source>
+      <translation type="unfinished">&amp;Material</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
@@ -1201,12 +1207,12 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="34"/>
+      <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Materials</source>
       <translation>&amp;Bahan</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="35"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>Materials</source>
       <translation>Bahan</translation>
     </message>
@@ -1219,19 +1225,19 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
       <translation type="unfinished">Materials Migration</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.ui" line="20"/>
-      <source>Select Material Libraries</source>
-      <translation type="unfinished">Select Material Libraries</translation>
-    </message>
-    <message>
       <location filename="../../TaskMigrateExternal.ui" line="27"/>
       <source>Select material libraries to migrate. Existing materials will not be overwritten.</source>
       <translation type="unfinished">Select material libraries to migrate. Existing materials will not be overwritten.</translation>
     </message>
     <message>
+      <location filename="../../TaskMigrateExternal.ui" line="20"/>
+      <source>Select material libraries</source>
+      <translation type="unfinished">Select material libraries</translation>
+    </message>
+    <message>
       <location filename="../../TaskMigrateExternal.ui" line="34"/>
-      <source>Select Model Libraries</source>
-      <translation type="unfinished">Select Model Libraries</translation>
+      <source>Select model libraries</source>
+      <translation type="unfinished">Select model libraries</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="41"/>
@@ -1244,7 +1250,7 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
       <translation type="unfinished">Status</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="180"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="178"/>
       <source>&amp;Migrate</source>
       <translation type="unfinished">&amp;Migrate</translation>
     </message>
@@ -1253,7 +1259,6 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
     <name>MatGui::DlgSettingsExternal</name>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="14"/>
-      <location filename="../../DlgSettingsExternal.ui" line="29"/>
       <source>External Interface</source>
       <translation type="unfinished">External Interface</translation>
     </message>
@@ -1263,28 +1268,33 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
       <translation type="unfinished">Use External Interface</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsExternal.ui" line="29"/>
+      <source>External interface</source>
+      <translation type="unfinished">External interface</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsExternal.ui" line="65"/>
       <source>Cache</source>
       <translation>Cache</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
-      <source>Model Cache Size</source>
-      <translation type="unfinished">Model Cache Size</translation>
+      <source>Model cache size</source>
+      <translation type="unfinished">Model cache size</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
-      <source>Hit Rate</source>
-      <translation type="unfinished">Hit Rate</translation>
+      <source>Hit rate</source>
+      <translation type="unfinished">Hit rate</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
-      <source>Material Cache Size</source>
-      <translation type="unfinished">Material Cache Size</translation>
+      <source>Material cache size</source>
+      <translation type="unfinished">Material cache size</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsExternal.cpp" line="97"/>
+      <location filename="../../DlgSettingsExternal.cpp" line="95"/>
       <source>None</source>
       <translation>Tiada</translation>
     </message>
@@ -1292,55 +1302,55 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
   <context>
     <name>MatGui::DlgMigrateExternal</name>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="77"/>
-      <source>Migrating Models...</source>
-      <translation type="unfinished">Migrating Models...</translation>
+      <location filename="../../TaskMigrateExternal.cpp" line="75"/>
+      <source>Migrating models…</source>
+      <translation type="unfinished">Migrating models…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="83"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="95"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="107"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="119"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="81"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="93"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="105"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="117"/>
       <source>  Library: </source>
       <translation type="unfinished">  Library: </translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="87"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="99"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="111"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="123"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="85"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="97"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="109"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="121"/>
       <source>done</source>
       <translation type="unfinished">done</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="89"/>
-      <source>Validating Models...</source>
-      <translation type="unfinished">Validating Models...</translation>
+      <location filename="../../TaskMigrateExternal.cpp" line="87"/>
+      <source>Validating models…</source>
+      <translation type="unfinished">Validating models…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="101"/>
-      <source>Migrating Materials...</source>
-      <translation type="unfinished">Migrating Materials...</translation>
+      <location filename="../../TaskMigrateExternal.cpp" line="99"/>
+      <source>Migrating materials…</source>
+      <translation type="unfinished">Migrating materials…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="113"/>
-      <source>Validating Materials...</source>
-      <translation type="unfinished">Validating Materials...</translation>
+      <location filename="../../TaskMigrateExternal.cpp" line="111"/>
+      <source>Validating materials…</source>
+      <translation type="unfinished">Validating materials…</translation>
     </message>
     <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="127"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="131"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="135"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="139"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="143"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="145"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="148"/>
+      <source>Unknown exception - aborted</source>
+      <translation type="unfinished">Unknown exception - aborted</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="125"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="129"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="133"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="137"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="141"/>
       <source>Aborted</source>
       <translation type="unfinished">Aborted</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMigrateExternal.cpp" line="147"/>
-      <location filename="../../TaskMigrateExternal.cpp" line="150"/>
-      <source>Unknown exception - Aborted</source>
-      <translation type="unfinished">Unknown exception - Aborted</translation>
     </message>
   </context>
   <context>
@@ -1352,31 +1362,49 @@ Jika tidak ditandai, mereka akan susun mengikut nama mereka.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <source>Edit</source>
+      <translation>Sunting</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>
-      <source>Edit material properties</source>
-      <translation type="unfinished">Edit material properties</translation>
+      <source>Edits material properties</source>
+      <translation type="unfinished">Edits material properties</translation>
     </message>
   </context>
   <context>
     <name>CmdMigrateToExternal</name>
     <message>
       <location filename="../../Command.cpp" line="202"/>
-      <source>Migrate...</source>
-      <translation type="unfinished">Migrate...</translation>
+      <source>Migrate</source>
+      <translation type="unfinished">Migrate</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
-      <source>Migrate the materials to the external materials manager</source>
-      <translation type="unfinished">Migrate the materials to the external materials manager</translation>
+      <source>Migrates the materials to the external materials manager</source>
+      <translation type="unfinished">Migrates the materials to the external materials manager</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <source>Migrate existing materials to the external materials manager</source>
       <translation type="unfinished">Migrate existing materials to the external materials manager</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgDisplayPropertiesImp</name>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="180"/>
+      <source>Basic appearance</source>
+      <translation type="unfinished">Basic appearance</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="185"/>
+      <source>Texture appearance</source>
+      <translation type="unfinished">Texture appearance</translation>
+    </message>
+    <message>
+      <location filename="../../DlgDisplayPropertiesImp.cpp" line="190"/>
+      <source>All materials</source>
+      <translation type="unfinished">All materials</translation>
     </message>
   </context>
 </TS>

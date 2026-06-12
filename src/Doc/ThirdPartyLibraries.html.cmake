@@ -115,6 +115,9 @@
       <tr>
          <th align = 'left' > <a href = 'https://github.com/danielfalck/libarea' > LibArea </a> </th>
          <td> <code> </code> </td>
+         <th colspan = '5' ></th>
+         <th align = 'left' > <a href = 'https://github.com/AngusJohnson/Clipper2' > Clipper2 </a> </th>
+         <td> <code> ${Clipper2_VERSION} </code> </td>
       </tr>
 
    </tbody>

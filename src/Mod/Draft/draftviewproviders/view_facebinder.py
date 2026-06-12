@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the Facebinder object."""
+
 ## @package view_facebinder
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Facebinder object.

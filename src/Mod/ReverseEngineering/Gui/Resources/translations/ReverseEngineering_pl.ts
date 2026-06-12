@@ -237,8 +237,8 @@
       <translation>Umiejscowienie</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <location filename="../../FitBSplineCurve.cpp" line="138"/>
+      <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
       <translation>Dopasuj krzywą złożoną</translation>
     </message>
@@ -338,7 +338,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
     <message>
@@ -381,7 +381,7 @@
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
   </context>
@@ -721,7 +721,7 @@
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
       <location filename="../../FitBSplineCurve.cpp" line="89"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
   </context>

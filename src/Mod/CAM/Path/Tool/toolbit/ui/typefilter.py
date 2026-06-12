@@ -48,17 +48,16 @@ class ToolBitTypeFilterMixin:
         Returns:
             List of tuples: (display_text, actual_value)
         """
-        # Build a mapping: {ParentType: {actual_subtype: display_subtype}}
+        # Build a mapping: {ParentType: {subtype_value}}
         type_map = {}
         for asset in assets:
             parent = asset.get_shape_name()  # Preserve original case (e.g., "Probe")
             subtype = asset.get_subtype()
             if subtype:
-                # Preserve underscores/hyphens but make displayable
-                subtype_disp = subtype.replace("_", " ").replace("-", " ").title()
-                type_map.setdefault(parent, {})[subtype] = subtype_disp
+                # Store the subtype value
+                type_map.setdefault(parent, set()).add(subtype)
             else:
-                type_map.setdefault(parent, {})
+                type_map.setdefault(parent, set())
 
         # Flatten for combo: parent, then indented subtypes
         # Return tuples of (display, value)
@@ -66,7 +65,7 @@ class ToolBitTypeFilterMixin:
         for parent in sorted(type_map):
             parent_display = _get_label_text(parent, keep_case=True, preserve_consecutive_caps=True)
             result.append((parent_display, parent))  # Parent with formatted display
-            for subtype_val, subtype_disp in sorted(type_map[parent].items()):
+            for subtype_val in sorted(type_map[parent]):
                 subtype_display = _get_label_text(
                     subtype_val, keep_case=True, preserve_consecutive_caps=True
                 )

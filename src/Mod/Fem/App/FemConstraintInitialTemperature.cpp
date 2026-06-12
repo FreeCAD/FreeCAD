@@ -33,7 +33,7 @@ PROPERTY_SOURCE(Fem::ConstraintInitialTemperature, Fem::Constraint)
 
 ConstraintInitialTemperature::ConstraintInitialTemperature()
 {
-    ADD_PROPERTY(initialTemperature, (300.0));
+    ADD_PROPERTY(InitialTemperature, (300.0));
     ADD_PROPERTY(EnableFinalTemperature, (false));
     ADD_PROPERTY(FinalTemperature, (300.0));
     ADD_PROPERTY_TYPE(
@@ -62,21 +62,21 @@ const char* ConstraintInitialTemperature::getViewProviderName() const
     return "FemGui::ViewProviderFemConstraintInitialTemperature";
 }
 
-void ConstraintInitialTemperature::handleChangedPropertyType(
+void ConstraintInitialTemperature::handleChangedPropertyName(
     Base::XMLReader& reader,
-    const char* TypeName,
-    App::Property* prop
+    const char* typeName,
+    const char* propName
 )
 {
-    // property initialTemperature had App::PropertyFloat, was changed to App::PropertyTemperature
-    if (prop == &initialTemperature && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat initialTemperatureProperty;
-        // restore the PropertyFloat to be able to set its value
-        initialTemperatureProperty.Restore(reader);
-        initialTemperature.setValue(initialTemperatureProperty.getValue());
+    if (strcmp(propName, "initialTemperature") == 0
+        && (strcmp(typeName, "App::PropertyTemperature") == 0
+            || strcmp(typeName, "App::PropertyFloat") == 0)) {
+        App::PropertyTemperature initialTemp;
+        initialTemp.Restore(reader);
+        InitialTemperature.setValue(initialTemp.getValue());
     }
     else {
-        Constraint::handleChangedPropertyType(reader, TypeName, prop);
+        Constraint::handleChangedPropertyName(reader, typeName, propName);
     }
 }
 

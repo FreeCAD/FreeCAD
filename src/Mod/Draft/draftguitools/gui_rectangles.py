@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create Rectangle objects."""
+
 ## @package gui_rectangles
 # \ingroup draftguitools
 # \brief Provides GUI tools to create Rectangle objects.

@@ -32,6 +32,7 @@ Essentially, the points of the original object are extracted
 and passed to the `make_wire` or `make_bspline` functions,
 depending on the desired result.
 """
+
 ## @package gui_wire2spline
 # \ingroup draftguitools
 # \brief Provides GUI tools to convert polylines to B-splines and back.

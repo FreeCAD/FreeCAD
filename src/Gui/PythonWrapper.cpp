@@ -406,7 +406,7 @@ public:
         const auto PyW_uniqueName = QString::number(reinterpret_cast<quintptr>(pyobj));
         auto PyW_invalidator = findChild<QObject*>(PyW_uniqueName, Qt::FindDirectChildrenOnly);
 
-        if (PyW_invalidator == nullptr) {
+        if (!PyW_invalidator) {
             PyW_invalidator = new QObject(this);
             PyW_invalidator->setObjectName(PyW_uniqueName);
 
@@ -420,7 +420,7 @@ public:
         auto destroyedFun = [pyobj]() {
             Base::PyGILStateLocker lock;
 
-            if (auto sbkPtr = reinterpret_cast<SbkObject*>(pyobj); sbkPtr != nullptr) {
+            if (auto sbkPtr = reinterpret_cast<SbkObject*>(pyobj); sbkPtr) {
                 Shiboken::Object::setValidCpp(sbkPtr, false);
             }
             else {

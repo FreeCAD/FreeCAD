@@ -85,6 +85,16 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* 
     ui->groupBox_AngleSearch->setEnabled(false);
 }
 
+void TaskCreateNodeSet::setSelectionGate()
+{
+    if (selectionMode == none) {
+        Gui::Selection().rmvSelectionGate();
+    }
+    else if (selectionMode == PickElement) {
+        Gui::Selection().addSelectionGate(new FemSelectionGate(FemSelectionGate::Element));
+    }
+}
+
 void TaskCreateNodeSet::Poly()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
@@ -102,7 +112,7 @@ void TaskCreateNodeSet::Pick()
     if (selectionMode == none) {
         selectionMode = PickElement;
         Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate(new FemSelectionGate(FemSelectionGate::Element));
+        setSelectionGate();
     }
 }
 
@@ -221,7 +231,7 @@ void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         selectionMode = none;
-        Gui::Selection().rmvSelectionGate();
+        setSelectionGate();
 
         MeshViewProvider->setHighlightNodes(tempSet);
     }

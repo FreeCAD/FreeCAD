@@ -79,11 +79,13 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
-                toolWidgetManager.drawPositionAtCursor(onSketchPos);
-
-                editPoint = onSketchPos;
-
                 seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
+
+                Base::Vector2d snapPoint;
+                editPoint = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint
+                                                                               : onSketchPos;
+
+                toolWidgetManager.drawPositionAtCursor(editPoint);
             } break;
             default:
                 break;
@@ -93,7 +95,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
             Gui::cmdAppObjectArgs(
                 sketchgui->getObject(),
                 "addGeometry(Part.Point(App.Vector(%f,%f,0)), %s)",
@@ -102,7 +104,7 @@ private:
                 isConstructionMode() ? "True" : "False"
             );
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -111,7 +113,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add point")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
         }
     }
 

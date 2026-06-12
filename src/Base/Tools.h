@@ -36,6 +36,10 @@
 
 class QString;
 
+#include <string_view>
+#include <vector>
+#include <fastsignals/signal.h>
+
 namespace Base
 {
 
@@ -341,7 +345,7 @@ struct BaseExport Tools
      * @param String to be checked and sanitized.
      * @return A std::string that is a valid Python 3 identifier.
      */
-    static std::string getIdentifier(const std::string& name);
+    static std::string getIdentifier(std::string_view name);
     static std::wstring widen(const std::string& str);
 
     /**
@@ -364,9 +368,7 @@ struct BaseExport Tools
     static std::string escapedUnicodeToUtf8(const std::string& s);
     static std::string escapeQuotesFromString(const std::string& s);
 
-    static QString escapeEncodeString(const QString& s);
     static std::string escapeEncodeString(const std::string& s);
-    static QString escapeEncodeFilename(const QString& s);
     static std::string escapeEncodeFilename(const std::string& s);
 
     /**
@@ -396,7 +398,16 @@ struct BaseExport Tools
      */
     static std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
 
+    /**
+     * @brief currentDateTimeString
+     * @return Current time formatted as an ISO 8601 UTC timestamp, ending in 'Z'.
+     */
     static std::string currentDateTimeString();
+
+    static bool isCLocaleName(std::string_view localeName);
+    static void setOperatingSystemNumericLocale(std::string_view localeName);
+    static std::string getOperatingSystemNumericLocale();
+    static void setIcuDefaultLocale(std::string_view icuLocaleId);
 
     static std::vector<std::string> splitSubName(const std::string& subname);
 };

@@ -1,25 +1,25 @@
-/***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2004 Jürgen Riegel <juergen.riegel@web.de>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -31,6 +31,7 @@
 
 #include <QCursor>
 #include <QImage>
+#include <QLabel>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/nodes/SoEnvironment.h>
@@ -65,6 +66,7 @@ class QSurfaceFormat;
 class SoTranslation;
 class SoTransform;
 class SoText2;
+class SoAnnotation;
 
 class SoSeparator;
 class SoShapeHints;
@@ -90,6 +92,7 @@ class BoundBox2d;
 namespace Gui
 {
 class NavigationAnimation;
+class View3DInventor;
 class ViewProvider;
 class SoFCBackgroundGradient;
 class NavigationStyle;
@@ -132,6 +135,15 @@ public:
         DisallowZooming = 32, /**< switch off the zooming. */
     };
     //@}
+
+    /// Declares why the viewer scene is being traversed so screen-only
+    /// decorations can be excluded from capture and export paths.
+    enum class RenderIntent
+    {
+        LiveInteractive,
+        RasterCapture,
+        VectorExport
+    };
 
     /** @name Render mode
      */
@@ -212,7 +224,14 @@ public:
     RenderType getRenderType() const;
     void renderToFramebuffer(QOpenGLFramebufferObject*);
     QImage grabFramebuffer();
-    void imageFromFramebuffer(int width, int height, int samples, const QColor& bgcolor, QImage& img);
+    void imageFromFramebuffer(
+        int width,
+        int height,
+        int samples,
+        const QColor& bgcolor,
+        QImage& img,
+        RenderIntent intent = RenderIntent::LiveInteractive
+    );
 
     void setViewing(bool enable) override;
     virtual void setCursorEnabled(bool enable);
@@ -275,8 +294,20 @@ public:
      * Creates an image with width \a width and height \a height of the current scene graph
      * using a multi-sampling of \a sample and exports the rendered scenegraph to an image.
      */
-    void savePicture(int width, int height, int sample, const QColor& bg, QImage& img) const;
-    void saveGraphic(int pagesize, const QColor&, SoVectorizeAction* va) const;
+    void savePicture(
+        int width,
+        int height,
+        int sample,
+        const QColor& bg,
+        QImage& img,
+        RenderIntent intent = RenderIntent::LiveInteractive
+    ) const;
+    void saveGraphic(
+        int pagesize,
+        const QColor&,
+        SoVectorizeAction* va,
+        RenderIntent intent = RenderIntent::VectorExport
+    ) const;
     //@}
     /**
      * Writes the current scenegraph to an Inventor file, either in ascii or binary.
@@ -443,6 +474,7 @@ public:
         bool moveToCenter = false
     ) const;
     void setCameraType(SoType type) override;
+    bool setCamera(const char* pCamera);
     void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
      * Zooms the viewport to the size of the bounding box.
@@ -506,7 +538,7 @@ public:
 
     void getDimensions(float& fHeight, float& fWidth) const;
     float getMaxDimension() const;
-    SbVec3f getCenterPointOnFocalPlane() const;
+    SbVec3f getFocalPoint() const;
 
     NavigationStyle* navigationStyle() const;
 
@@ -514,6 +546,9 @@ public:
     Gui::Document* getDocument();
 
     virtual PyObject* getPyObject();
+
+Q_SIGNALS:
+    void cameraChanged();
 
 protected:
     static GLenum getInternalTextureFormat();
@@ -543,19 +578,29 @@ private:
     static void interactionLoggerCB(void* ud, SoAction* action);
 
 private:
+    class ScopedRenderIntent;
     static void selectCB(void* viewer, SoPath* path);
+    // A small intent stack lets nested export/capture code paths temporarily
+    // override the default live-view traversal behavior.
+    void pushRenderIntentOverride(RenderIntent intent) const;
+    void popRenderIntentOverride() const;
+    RenderIntent currentRenderIntent() const;
+    static bool shouldRenderDecorations(RenderIntent intent);
+
     static void deselectCB(void* viewer, SoPath* path);
     static SoPath* pickFilterCB(void* viewer, const SoPickedPoint* pp);
     void initialize();
+    void syncNaviCubeVisibility();
     void drawAxisCross();
-    static void drawArrow();
-    static void drawSingleBackground(const QColor&);
+    void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
     void createStandardCursors();
+    bool applyCameraState(const SoCamera& camera);
 
 private:
     NaviCube* naviCube;
+    SoAnnotation* naviCubeAnnotation;
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
@@ -563,6 +608,9 @@ private:
     SoFCBackgroundGradient* pcBackGround;
     SoSeparator* backgroundroot;
     SoSeparator* foregroundroot;
+    // Dedicated root for viewer-owned HUD/decorations that should not be
+    // treated as model content during capture/export traversals.
+    SoSeparator* decorationroot;
 
     SoDirectionalLight* backlight;
     SoDirectionalLight* fillLight;
@@ -603,8 +651,13 @@ private:
 
     // stuff needed to draw the fps counter
     bool fpsEnabled;
+    QLabel* fpsCounter = nullptr;
+    unsigned long previousAxisLetterColor = 0;
     bool vboEnabled;
     bool naviCubeEnabled;
+    // Screen-only viewer decorations such as the navicube are rendered only
+    // when the active render intent allows them.
+    mutable std::vector<RenderIntent> renderIntentOverrideStack;
 
     Base::Color m_xColor;
     Base::Color m_yColor;

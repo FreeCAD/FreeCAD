@@ -29,6 +29,7 @@
 It currently only works for a line in the XY plane, it changes the height
 of one of its points in the Z direction to create a sloped line.
 """
+
 ## @package gui_lineslope
 # \ingroup draftguitools
 # \brief Provides GUI tools to change the slope of a line.

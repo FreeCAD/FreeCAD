@@ -198,7 +198,7 @@ void GmshWidget::accept()
         d->gmsh.start(proc, args);
 
         d->time.start();
-        d->ui.labelTime->setText(tr("Time:"));
+        d->ui.labelTime->setText(tr("Time"));
     }
     // clang-format on
 }

@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2025 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2026 Alan Grover <awgrover@gmail.com>
 
 # ***************************************************************************
-# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2026 Alan Grover <awgrover@gmail.com>                   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -23,354 +25,542 @@
 # *                                                                         *
 # ***************************************************************************
 
-import datetime
-import Path.Post.Utils as PostUtils
-import PathScripts.PathUtils as PathUtils
-from builtins import open as pyopen
+"""
+OpenSBP Post Processor for ShopBot Controllers, "machine" based
+"""
 
+import operator
+import math
+from typing import Any, Dict
 
-TOOLTIP = """
-This is an postprocessor file for the Path workbench. It will output path data
-in a format suitable for OpenSBP controllers like shopbot.  This postprocessor,
-once placed in the appropriate PathScripts folder, can be used directly from
-inside FreeCAD, via the GUI importer or via python scripts with:
-
+import FreeCAD
 import Path
-Path.write(object,"/path/to/file.ncc","post_opensbp")
-"""
 
-"""
-DONE:
-    uses native commands
-    handles feed and jog moves
-    handles XY, Z, and XYZ feed speeds
-    handles arcs
-    support for inch output
-ToDo
-    comments may not format correctly
-    drilling.  Haven't looked at it.
-    many other things
+Path.Log.debug(f"### RELOADED {__file__}")
+import Constants
 
-"""
+from Path.Post.Processor import PostProcessor
+from Path.Post.GcodeProcessingUtils import insert_line_numbers
 
-TOOLTIP_ARGS = """
-Arguments for opensbp:
-    --comments          ... insert comments - mostly for debugging
-    --inches            ... convert output to inches
-    --no-header         ... suppress header output
-    --no-show-editor    ... don't show editor, just save result
-"""
+translate = FreeCAD.Qt.translate
 
-now = datetime.datetime.now()
-
-OUTPUT_COMMENTS = False
-OUTPUT_HEADER = True
-SHOW_EDITOR = True
-COMMAND_SPACE = ","
-
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """"""
-# Postamble text will appear following the last operation.
-POSTAMBLE = """"""
-
-# Pre operation text will be inserted before every operation
-PRE_OPERATION = """"""
-
-# Post operation text will be inserted after every operation
-POST_OPERATION = """"""
-
-# Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = """"""
+DEBUG = False
 
 
-CurrentState = {}
-
-
-def getMetricValue(val):
-    return val
-
-
-def getImperialValue(val):
-    return val / 25.4
-
-
-GetValue = getMetricValue
-
-
-def export(objectslist, filename, argstring):
-    global OUTPUT_COMMENTS
-    global OUTPUT_HEADER
-    global SHOW_EDITOR
-    global CurrentState
-    global GetValue
-
-    for arg in argstring.split():
-        if arg == "--comments":
-            OUTPUT_COMMENTS = True
-        if arg == "--inches":
-            GetValue = getImperialValue
-        if arg == "--no-header":
-            OUTPUT_HEADER = False
-        if arg == "--no-show-editor":
-            SHOW_EDITOR = False
-
-    for obj in objectslist:
-        if not hasattr(obj, "Path"):
-            s = "the object " + obj.Name
-            s += " is not a path. Please select only path and Compounds."
-            print(s)
-            return
-
-    CurrentState = {
-        "X": 0,
-        "Y": 0,
-        "Z": 0,
-        "F": 0,
-        "S": 0,
-        "JSXY": 0,
-        "JSZ": 0,
-        "MSXY": 0,
-        "MSZ": 0,
-    }
-    print("postprocessing...")
-    gcode = ""
-
-    # write header
-    if OUTPUT_HEADER:
-        gcode += linenumber() + "'Exported by FreeCAD\n"
-        gcode += linenumber() + "'Post Processor: " + __name__ + "\n"
-        gcode += linenumber() + "'Output Time:" + str(now) + "\n"
-
-    # Write the preamble
-    if OUTPUT_COMMENTS:
-        gcode += linenumber() + "'(begin preamble)\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
-
-    for obj in objectslist:
-
-        # do the pre_op
-        if OUTPUT_COMMENTS:
-            gcode += linenumber() + "'(begin operation: " + obj.Label + ")\n"
-        for line in PRE_OPERATION.splitlines(True):
-            gcode += linenumber() + line
-
-        gcode += parse(obj)
-
-        # do the post_op
-        if OUTPUT_COMMENTS:
-            gcode += linenumber() + "'(finish operation: " + obj.Label + ")\n"
-        for line in POST_OPERATION.splitlines(True):
-            gcode += linenumber() + line
-
-    # do the post_amble
-    if OUTPUT_COMMENTS:
-        gcode += "'(begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
-
-    if SHOW_EDITOR:
-        dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setPlainText(gcode)
-        result = dia.exec_()
-        if result:
-            final = dia.editor.toPlainText()
-        else:
-            final = gcode
+# Set logging level based on DEBUG flag
+def _setup_logging():
+    if DEBUG:
+        Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+        Path.Log.trackModule(Path.Log.thisModule())
     else:
-        final = gcode
-
-    print("done postprocessing.")
-
-    # Write the output
-    if not filename == "-":
-        gfile = pyopen(filename, "w")
-        gfile.write(final)
-        gfile.close()
-
-    return final
+        Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def move(command):
-    txt = ""
+_setup_logging()
 
-    # if 'F' in command.Parameters:
-    #     txt += feedrate(command)
+# Define types
+Values = Dict[str, Any]
 
-    axis = ""
-    for p in ["X", "Y", "Z"]:
-        if p in command.Parameters:
-            if command.Parameters[p] != CurrentState[p]:
-                axis += p
-
-    if "F" in command.Parameters:
-        speed = command.Parameters["F"]
-        if command.Name in ["G1", "G01"]:  # move
-            movetype = "MS"
-        else:  # jog
-            movetype = "JS"
-        zspeed = ""
-        xyspeed = ""
-        if "Z" in axis:
-            speedKey = "{}Z".format(movetype)
-            speedVal = GetValue(speed)
-            if CurrentState[speedKey] != speedVal:
-                CurrentState[speedKey] = speedVal
-                zspeed = "{:f}".format(speedVal)
-        if ("X" in axis) or ("Y" in axis):
-            speedKey = "{}XY".format(movetype)
-            speedVal = GetValue(speed)
-            if CurrentState[speedKey] != speedVal:
-                CurrentState[speedKey] = speedVal
-                xyspeed = "{:f}".format(speedVal)
-        if zspeed or xyspeed:
-            txt += "{},{},{}\n".format(movetype, xyspeed, zspeed)
-
-    if command.Name in ["G0", "G00"]:
-        pref = "J"
-    else:
-        pref = "M"
-
-    if axis == "X":
-        txt += pref + "X"
-        txt += "," + format(GetValue(command.Parameters["X"]), ".4f")
-        txt += "\n"
-    elif axis == "Y":
-        txt += pref + "Y"
-        txt += "," + format(GetValue(command.Parameters["Y"]), ".4f")
-        txt += "\n"
-    elif axis == "Z":
-        txt += pref + "Z"
-        txt += "," + format(GetValue(command.Parameters["Z"]), ".4f")
-        txt += "\n"
-    elif axis == "XY":
-        txt += pref + "2"
-        txt += "," + format(GetValue(command.Parameters["X"]), ".4f")
-        txt += "," + format(GetValue(command.Parameters["Y"]), ".4f")
-        txt += "\n"
-    elif axis == "XZ":
-        txt += pref + "3"
-        txt += "," + format(GetValue(command.Parameters["X"]), ".4f")
-        txt += ","
-        txt += "," + format(GetValue(command.Parameters["Z"]), ".4f")
-        txt += "\n"
-    elif axis == "XYZ":
-        txt += pref + "3"
-        txt += "," + format(GetValue(command.Parameters["X"]), ".4f")
-        txt += "," + format(GetValue(command.Parameters["Y"]), ".4f")
-        txt += "," + format(GetValue(command.Parameters["Z"]), ".4f")
-        txt += "\n"
-    elif axis == "YZ":
-        txt += pref + "3"
-        txt += ","
-        txt += "," + format(GetValue(command.Parameters["Y"]), ".4f")
-        txt += "," + format(GetValue(command.Parameters["Z"]), ".4f")
-        txt += "\n"
-    elif axis == "":
-        print("warning: skipping duplicate move.")
-    else:
-        print(CurrentState)
-        print(command)
-        print("I don't know how to handle '{}' for a move.".format(axis))
-
-    return txt
+POST_TYPE = "machine"
 
 
-def arc(command):
-    if command.Name == "G2":  # CW
-        dirstring = "1"
-    else:  # G3 means CCW
-        dirstring = "-1"
-    txt = "CG,,"
-    txt += format(GetValue(command.Parameters["X"]), ".4f") + ","
-    txt += format(GetValue(command.Parameters["Y"]), ".4f") + ","
-    txt += format(GetValue(command.Parameters["I"]), ".4f") + ","
-    txt += format(GetValue(command.Parameters["J"]), ".4f") + ","
-    txt += "T" + ","
-    txt += dirstring
-    txt += "\n"
-    return txt
+class OpenSBPPost(PostProcessor):
+    """
+    OpenSBP postprocessor for ShopBot controllers.
 
+    OpenSBP can use most gcodes (see GCodeKnow), with a few translated to opensbp
+    """
 
-def tool_change(command):
-    txt = ""
-    if OUTPUT_COMMENTS:
-        txt += "'a tool change happens now\n"
-    for line in TOOL_CHANGE.splitlines(True):
-        txt += line
-    txt += "&ToolName=" + str(int(command.Parameters["T"]))
-    txt += "\n"
-    txt += "&Tool=" + str(int(command.Parameters["T"]))
-    txt += "\n"
-    return txt
+    # This list is specific to shopbot, not from Mod/CAM/Constants.py
+    # from https://shopbottools.com/wp-content/uploads/2024/01/SBG-00142-User-Guide-20150317.pdf
+    # We want to translate some of the natively-supported gcodes (e.g. M2), so we omit them here.
+    # It includes commands that Operations shouldn't generate (cf. Constants.GCODE_NON_CONFORMING)
+    # It may include commands that Post/Processor.py shouldn't generate (cf. Constants.GCODE_SUPPORTED and Constants.MCODE_SUPPORTED and Constants.GCODE_NON_CONFORMING)
+    # Compatible should just pass-through
+    GCodeNative = set(
+        # M10/M11 is clamp-on/clamp-off
+        "G0 G00 G1 G01 G4 G04 G20 G21 G28 G29 G38.2 G92 M0 M00 M1 M01 M03 M5 M05 M8 M08 M9 M09 M10 M11".split(
+            " "
+        )
+    )
+    # NB: these are the generated strings, e.g. if an M02 generates to "M2", it counts
+    GCodeLineNumberRequired = set("M2 M3 M4 M5".split(" "))
+    GCodeLineNumberRequiredParameters = set("Z".split(" "))  # if modal, the parameter is first
 
+    # Suppressed/Tolerated
+    # because G54 is a default Job value, but shopbot has no concept
+    # G98/G99/G80 should have been consumed by drillcycleexpander FIXME
+    GCodeSuppressed = set("G54".split(" "))
 
-def comment(command):
-    print("a comment", command)
-    return
+    # Unsupported
+    GCodeUnsupported = set(
+        "G40 G41 G42 G43 "
+        "G55 G56 G57 G58 G59 G59.1 G59.2 G59.3 G59.4 G59.5 G59.6 G59.7 G59.8 G59.9 "  # work-offsets
+        "G74 "
+        "G93 G94 G95 "  # opensbp only does units/sec
+        "G96 G97 "  # spindle control?
+        "M4 ".rstrip().split(  # ccw speed. We could support this, requires spindle-control on the machine
+            " "
+        )
+    )
 
+    # Others require translation
+    # FIXME: is M2/M30 program-end supposed to be in GCODE_SUPPORTED?
+    GCodeTranslate = set(
+        "G2 G02 G3 G03 G73 G80 G81 G83 G98 G99 M2 M02 M3 M03 M5 M05 M6 M06 M30".split(" ")
+    )
+    GCodeKnown = GCodeTranslate | GCodeNative | GCodeSuppressed
+    if GCodeKnown & GCodeUnsupported:
+        raise Exception(
+            f"Internal: you screwed up and have a value in both GCodeKnown & GCodeUnsupported: {GCodeKnown & GCodeUnsupported}"
+        )
 
-def spindle(command):
-    txt = ""
-    if command.Name == "M3":  # CW
-        pass
-    else:
-        pass
-    txt += "TR," + str(command.Parameters["S"]) + "\n"
-    txt += "C6\n"
-    txt += "PAUSE 2\n"
-    return txt
+    # gcodes that are supported but shouldn't be used by CAM or Post/Processing
+    GCodeDontUse = GCodeKnown - set(
+        Constants.GCODE_SUPPORTED + Constants.MCODE_SUPPORTED + Constants.GCODE_NON_CONFORMING
+    )
 
+    # What we should support
+    GCodeSupported = GCodeKnown - GCodeDontUse - GCodeUnsupported
 
-# Supported Commands
-scommands = {
-    "G0": move,
-    "G1": move,
-    "G2": arc,
-    "G3": arc,
-    "M6": tool_change,
-    "M3": spindle,
-    "G00": move,
-    "G01": move,
-    "G02": arc,
-    "G03": arc,
-    "M06": tool_change,
-    "M03": spindle,
-    "message": comment,
-}
+    @classmethod
+    def get_common_property_schema(cls):
+        """Override .values common properties with OpenSBP-specific defaults.
+        Which only apply if .values is not set by a machine-field, or dialog, etc.
+        To override a property, use _merge_machine_config()
+        """
+        common_props = super().get_common_property_schema()
 
+        # Override defaults for OpenSBP
+        for prop in common_props:
+            if prop["name"] == "file_extension":
+                prop["default"] = "sbp"
 
-def parse(pathobj):
-    output = ""
-    # Above list controls the order of parameters
+            # FIXME: show but don't allow edit in UI
 
-    if hasattr(pathobj, "Group"):  # We have a compound or project.
-        if OUTPUT_COMMENTS:
-            output += linenumber() + "'(compound: " + pathobj.Label + ")\n"
-        for p in pathobj.Group:
-            output += parse(p)
-    else:  # parsing simple path
-        # groups might contain non-path things like stock.
-        if not hasattr(pathobj, "Path"):
-            return output
-        if OUTPUT_COMMENTS:
-            output += linenumber() + "'(Path: " + pathobj.Label + ")\n"
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
-            command = c.Name
-            if command in scommands:
-                output += scommands[command](c)
-                if c.Parameters:
-                    CurrentState.update(c.Parameters)
-            elif command.startswith("("):
-                output += "' " + command + "\n"
+            elif prop["name"] == "supported_commands":
+                # actually, we could allow reducing this list, but not expanding it
+                prop["default"] = "\n".join(cls.GCodeSupported)
+            elif prop["name"] == "drill_cycles_to_translate":
+                prop["default"] = "\n".join(
+                    Constants.GCODE_DRILL_EXTENDED + Constants.GCODE_MOVE_DRILL
+                )
+            elif prop["name"] == "translate_drill_cycles":
+                prop["default"] = True
+            elif prop["name"] == "output_tool_length_offset":
+                prop["default"] = False
+
+        return common_props
+
+    @classmethod
+    def get_property_schema(cls):
+        """Return schema for OpenSBP-specific configurable properties."""
+        return [
+            {
+                "name": "automatic_tool_changer",
+                "type": "bool",
+                "label": translate("CAM", "Automatic Tool Changer"),
+                "default": False,
+                "help": translate(
+                    "CAM",
+                    "Enable if machine has automatic tool changer. "
+                    "If disabled, tool changes will pause for manual intervention.",
+                ),
+            },
+            {
+                "name": "automatic_spindle",
+                "type": "bool",
+                "label": translate("CAM", "Automatic Spindle Control"),
+                "default": False,
+                "help": translate(
+                    "CAM",
+                    "Enable if machine has automatic spindle speed control. "
+                    "If disabled, spindle commands will prompt for manual adjustment.",
+                ),
+            },
+            # FIXME: should be a general option
+            {
+                "name": "suppressed_commands",
+                "type": "text",
+                "label": translate("CAM", "Suppressed (tolerated) G-code Commands"),
+                "default": "\n".join(cls.GCodeSuppressed),
+                "help": translate(
+                    "CAM",
+                    "List of G-code commands tolerated but suppressed by this post-processor (one per line). "
+                    "Commands this list will be filtered out",
+                ),
+            },
+        ]
+
+    def __init__(
+        self,
+        job,
+        tooltip=translate("CAM", "OpenSBP post processor for ShopBot controllers"),
+        tooltipargs=[],
+        units="Metric",
+    ) -> None:
+        super().__init__(
+            job=job,
+            tooltip=tooltip,
+            tooltipargs=tooltipargs,
+            units=units,
+        )
+        Path.Log.debug("OpenSBP post processor initialized.")
+
+        # Track current speeds for OpenSBP (separate XY and Z speeds)
+        self._current_move_speed_xy = None
+        self._current_move_speed_z = None
+        self._current_jog_speed_xy = None
+        self._current_jog_speed_z = None
+
+    def init_values(self, values: Values) -> None:
+        """Initialize values that are used throughout the postprocessor."""
+        super().init_values(values)
+
+        # OpenSBP-specific settings
+        values["MACHINE_NAME"] = "ShopBot"
+        values["POSTPROCESSOR_FILE_NAME"] = __name__
+
+    def _merge_machine_config(self):
+        """Override .values initial setup, and .postprocessor_properties"""
+
+        # Override ._machine so far (bundle has copied to .postprocessor_properties)
+
+        # .values & custom initial setup
+        super()._merge_machine_config()
+
+        # Override .values
+
+        self.values["COMMENT_SYMBOL"] = "'"
+
+        # schema by [name]
+        schema = {x["name"]: x for x in self.get_common_property_schema()}
+
+        # These schema defaults are r/o: force them
+        for property_name in (
+            "supported_commands drill_cycles_to_translate"
+            " translate_drill_cycles output_tool_length_offset".split(" ")
+        ):
+            self.values[property_name.upper()] = schema[property_name]["default"]
+
+    def convert_command_to_gcode(self, command: Path.Command) -> str:
+
+        # FIXME: should be in Processor class
+        if command.Name in self.values["SUPPRESSED_COMMANDS"].split("\n"):
+            Path.Log.debug(f"opensbp suppressed {command}")
+            return None
+
+        # FIXME: optional blockdelete emulation w/"if somevariable"
+        if command.Annotations.get("blockdelete", False):
+            raise ValueError(f"opensbp does not support blockdelete, at {command.toGCode()}")
+
+        return super().convert_command_to_gcode(command)
+
+    def _convert_move(self, command):
+        # FIXME: use Path.Command world _add_line_numbers when implemented
+        gcode = super()._convert_move(command)
+
+        if self.values["OUTPUT_LINE_NUMBERS"]:
+            # It will be taken care of later (everything line-numbered)
+            return gcode
+
+        # We have to do this in string world
+        result = []
+        gcode_lines = gcode.split("\n")
+        for line in gcode_lines:
+            command_name, *_ = line.split(" ", 1)
+
+            if (
+                command_name in self.GCodeLineNumberRequired
+                # modal can omit the command, leaving a Zn... as the first parameter -> head of string
+                or command_name[0] in self.GCodeLineNumberRequiredParameters
+            ):
+                # Line-numbering can't work properly, the progress isn't saved anywhere after
+                # calling insert_line_numbers()
+                start = self.values["LINE_NUMBER_START"]
+                increment = self.values["LINE_INCREMENT"]
+                result.append("' LN required")
+                result.extend(insert_line_numbers(gcode.split("\n"), start, increment))
             else:
-                print("I don't know what the hell the command: ", end="")
-                print(command + " means.  Maybe I should support it.")
-    return output
+                result.append(line)
+
+        return "\n".join(result)
+
+    def _convert_arc_move(self, command):
+        """
+        Convert arc moves (G2/G3) that change Z to OpenSBP CG command.
+        Non-changing-Z is passed through as G2/G3.
+
+        OpenSBP CG format: CG,,X,Y,I,J,"T",direction[,plunge]
+        where:
+        - direction is 1 for CW (G2) or -1 for CCW (G3)
+        - T is literal
+        - plunge is optional Z movement (relative, sign inverted)
+
+        Note: ShopBot only supports arcs in XY plane with I,J offsets.
+        If Z is present, it's converted to a helical arc with plunge parameter.
+        NB: Plunge is relative, so we need the current Z position
+        """
+
+        params = command.Parameters
+
+        # We may be axis-modal
+        machine_state_params = self._modal_state  # FIXME self.machine_state.getState()
+        params.update(
+            {
+                p: machine_state_params[p]
+                for p in "XYZF"
+                if params.get(p, None) is None and machine_state_params[p] is not None
+            }
+        )
+
+        # notably, not R format, and no repetitions (P)
+        AllowedParameters = set("XYZIJFN")
+
+        if illegal := [x for x in params if x not in AllowedParameters]:
+            # FIXME: what is the right way to report error? How to include context?
+            raise ValueError(
+                f"Only {''.join(AllowedParameters)} allowed for {command.Name}, saw {illegal} in {command}"
+            )
+        if missing := [x for x in AllowedParameters - {"N"} if x not in params]:
+            raise ValueError(
+                f"Requires XYZIFJ for a {command.Name}, missing {missing} in {command} (and in machine-state {machine_state_params})"
+            )
+
+        RequiredState = "XYZ"
+        if modal_missing := [p for p in RequiredState if machine_state_params[p] is None]:
+            raise ValueError(
+                f"Arcs require a previous {''.join(modal_missing)} (from some movement) for {command}"
+            )
+
+        # GCODE if no dZ
+
+        if (
+            params["Z"] == machine_state_params["Z"]
+        ):  # nb: works ok if Z is omitted, and state.Z is None (never seen)
+            return super()._convert_arc_move(command)
+
+        # HELIX, requires opensbp CG, command
+
+        # We'll work in internal mm units till the final stringification
+
+        direction = "1" if command.Name in ["G2", "G02"] else "-1"
+        x_val, y_val = params["X"], params["Y"]
+        i_val, j_val = params["I"], params["J"]
+        z_val = params["Z"]
+        # shopbot helical is relative-Z, inverted sign
+        plunge = machine_state_params["Z"] - z_val
+
+        output = []
+
+        def arc_length_3d(center, start, end, clockwise):
+            # FIXME: is there an existing fn for this?
+            """center, start, end: (x, y, z) tuples
+            clockwise: True for G2, False for G3
+            Returns length-in-xy-plane, total_length
+            """
+
+            # FIXME: reverse direction if ccw, and test
+
+            cx, cy, cz = center
+            sx, sy, sz = start
+            ex, ey, ez = end
+
+            # ---- XY arc angle ----
+
+            a0 = math.atan2(sy - cy, sx - cx)
+            a1 = math.atan2(ey - cy, ex - cx)
+
+            dtheta = abs(a1 - a0)
+
+            r = math.hypot(sx - cx, sy - cy)
+
+            arc_xy = abs(r * dtheta)
+
+            # ---- total length is just as-if a triangle of a=arc_yx, b=dz, c=hypot
+            dz = ez - sz
+
+            # ---- true helical arc length ----
+            result = (arc_xy, math.hypot(arc_xy, dz))
+            return result
+
+        def calculate_arc_speed(command_name, command_params, last_position):
+            """Have to project F onto XY plane, and Z axis
+            last_position is some dict with X,Y,Z,F
+            command_params is some dict with XYZIJF
+
+            return vs-speed_command
+            """
+            # On at least some shopbots, issuing a VS with a Z value will stutter
+            # But, it seems that a CG with plunge also stutters
+            # So, we issue VS...\nCG... anyway
+            # It is possible to track the VS(XY,Z) and not issue the VS if no change
+            # would require machine_state that holds VS(XY,Z), and only tracks runs of VS
+            #   ( any other command invalidates VS(XY,Z) )
+            # FIXME: ABC speeds not handled
+
+            # we use vectors [x,y,z] so we can `map` (instead of a dict)
+            start_position = [last_position[a] for a in "XYZ"]
+            center_offset = [command_params[a] for a in "IJ"]
+            center_offset.append(0)  # Z offset, as if K=0
+            center = list(map(operator.add, start_position, center_offset))
+            end_position = [command_params[a] for a in "XYZ"]
+
+            #
+            z_distance = abs(start_position[2] - end_position[2])
+            xy_distance, total_distance = arc_length_3d(
+                center,
+                start_position,
+                end_position,
+                command_name == "G02",  # is it clockwise
+            )
+
+            # Nothing to do
+            if abs(xy_distance) < 1e-5:
+                return None
+
+            distances_for_speed = [xy_distance, z_distance]
+
+            # now we just need proportion of F in xy, and proportion of F in Z
+            vs_speeds = [command_params["F"] / d for d in distances_for_speed]
+
+            # opensbp native commands are units/sec, and Path.Command is too
+            # but opensbp gcode is units/min (as is self._machine.feedrate_per_second)
+            # format_parameter is going to *60 so we have to /60
+            return f"VS,{self.format_parameter('F', vs_speeds[0]/60)},{self.format_parameter('F', vs_speeds[1]/60)}"
+
+        last_position = self._modal_state  # FIXME: self.machine_state.getState()
+        speed_command = calculate_arc_speed(command.Name, params, last_position=last_position)
+        if speed_command:
+            output.append(speed_command)
+
+        output.append(
+            f"CG,,{self.format_parameter('X',x_val)},{self.format_parameter('Y',y_val)},{self.format_parameter('X',i_val)},{self.format_parameter('Y',j_val)},T,{direction},{self.format_parameter('Z',plunge)}"
+        )
+
+        return "\n".join(output) if output else None
+
+    def _convert_tool_change(self, command):
+        """
+        Convert tool change (M6) to OpenSBP tool commands.
+
+        Supports both automatic and manual tool changers based on configuration.
+        """
+        params = command.Parameters
+        tool_num = int(params.get("T", 0))
+
+        output = []
+
+        # Check if automatic tool changer is enabled
+        has_atc = self.values["AUTOMATIC_TOOL_CHANGER"]
+
+        # If the toolchange was generated by a ToolController, we have the name
+        # but, if it was elsewhere, we may not
+        # FIXME: can we look up the Tool name?
+        tool_name = command.Annotations.get(
+            "tool_name", str(tool_num)
+        )  # FIXME: we want the Tool name, not tc name
+        # FIXME: sanitize tool_name for string
+
+        if has_atc:
+            # Automatic tool changer
+            output.append(f"&ToolName={tool_name}")
+            output.append(f"&Tool={tool_num}")  # FIXME: we want the Tool name, not tc name
+        else:
+            # Manual tool change - pause and prompt
+            output.append(f"'Manual tool change to T{tool_num}: {tool_name}")
+            output.append(f"&ToolName={tool_name}")
+            output.append(f"&Tool={tool_num}")
+            output.append("PAUSE")
+
+        return "\n".join(output)
+
+    def _convert_spindle_command(self, command):
+        """
+        Convert spindle commands (M3/M4/M5) to OpenSBP TR command.
+
+        Supports both automatic and manual spindle control based on configuration.
+        """
+        params = command.Parameters
+        has_auto_spindle = self.values["AUTOMATIC_SPINDLE"]
+
+        if command.Name in ["M5", "M05"]:
+            # Spindle off
+            if has_auto_spindle:
+                return "TR,0"
+            else:
+                return "'Turn spindle OFF manually\nPAUSE"
+
+        # Spindle on (M3/M4)
+        rpm = int(params.get("S", 0))
+
+        output = []
+
+        if has_auto_spindle:
+            # Automatic spindle control
+            formatted = self.format_parameter(
+                "S", rpm
+            )  # .rstrip('0').rstrip('.') # FIXME: example trailing zero
+            output.append(f"TR,{formatted}")
+
+            # FIXME: the default behavior is no delay unless spindle_wait is specified, default delay?
+            spindle = self._machine.get_spindle_by_index(0)
+            if not (spindle and spindle.spindle_wait > 0):
+                output.append("PAUSE 2")  # Wait for spindle to reach speed
+        else:
+            # Manual spindle control - prompt user
+            output.append(f"'Set spindle to {rpm} RPM ({rpm/60:.1f}Hz) and start manually")
+            output.append("PAUSE")
+
+        return "\n".join(output)
+
+    def _convert_program_control(self, command: Path.Command) -> str:
+        if command.Name in (Constants.MCODE_END + Constants.MCODE_END_RESET):
+            return "END"
+        else:
+            return super()._convert_program_control(command)
+
+    def _optimize_gcode(self, header_lines, gcode_lines) -> str:
+        # There may be opensbp in the stream
+        # so, you can't know the state for modal and axis-modal
+        # FIXME: this override goes away when Processor's does
+
+        disable = "OUTPUT_DUPLICATE_COMMANDS FILTER_INEFFICIENT_MOVES OUTPUT_LINE_NUMBERS".split(
+            " "
+        )
+        was = {k: self.values[k] for k in disable}
+
+        for k in disable:
+            self.values[k] = False
+        self.values["OUTPUT_DUPLICATE_COMMANDS"] = True
+
+        try:
+            return super()._optimize_gcode(header_lines, gcode_lines)
+        finally:
+            for k in disable:
+                self.values[k] = was[k]
+
+    @property
+    def tooltip(self):
+        tooltip: str = """
+        This is a postprocessor file for the CAM workbench.
+        It is used to take a pseudo-gcode fragment from a CAM object
+        and output OpenSBP code suitable for ShopBot CNC controllers.
+
+        OpenSBP use GCode for most moves, native for some functionality
+        CG for arcs, TR for spindle speed, etc.
+        """
+        return tooltip
 
 
-def linenumber():
-    return ""
+# Class alias for PostProcessorFactory
+# The factory looks for a class with title-cased postname (e.g., "Opensbp")
+Opensbp = OpenSBPPost
 
 
-# print(__name__ + " gcode postprocessor loaded.")
+# Factory function for creating the postprocessor
+def create(job, **kwargs):
+    """
+    Factory function to create an OpenSBP postprocessor instance.
+    """
+    return OpenSBPPost(job, **kwargs)

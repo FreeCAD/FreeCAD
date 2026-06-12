@@ -303,34 +303,6 @@ std::vector<QGIView*> QGSPage::getViews() const
     return result;
 }
 
-int QGSPage::addQView(QGIView* view)
-{
-    QGIView* existing = getQGIVByName(view->getViewName());
-    if (!existing) { //don't add twice!
-        addItem(view);
-
-        TechDraw::DrawView *viewObj = view->getViewObject();
-        // Preserve the desired position, as addToGroup() adjusts the child view's position
-        QPointF viewPos(Rez::guiX(viewObj->X.getValue()), -Rez::guiX(viewObj->Y.getValue()));
-        // Find if it belongs to a parent
-        QGIView *parent = findParent(view);
-        if (parent) {
-            parent->addToGroup(view);
-        }
-        view->setPos(viewPos);
-
-        auto viewProvider = dynamic_cast<ViewProviderDrawingView *>(QGIView::getViewProvider(viewObj));
-        if (viewProvider) {
-            view->setZValue(viewProvider->StackOrder.getValue());
-        }
-
-        view->updateView(true);
-    } else {
-        Base::Console().message("QGSP::addQView - qview already exists\n");
-    }
-    return 0;
-}
-
 int QGSPage::removeQView(QGIView* view)
 {
     if (view) {
@@ -437,6 +409,10 @@ bool QGSPage::attachView(App::DocumentObject* obj)
     else if (freecad_cast<TechDraw::DrawHatch*>(obj)) {
         //Hatch is not attached like other Views (since it isn't really a View)
         return true;
+    }
+
+    if (qview) {
+        qview->updatePositionFromFeatureXY();
     }
 
     return (qview != nullptr);
@@ -558,7 +534,6 @@ QGIView* QGSPage::addDrawViewClip(TechDraw::DrawViewClip* view)
     auto qview(new QGIViewClip);
     qview->setViewFeature(view);
     addItemToScene(qview);
-    qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
     qview->installSceneEventFilter(qview);
     return qview;
 }
@@ -607,7 +582,8 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     std::string featName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
     std::string pageName = getDrawPage()->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
+
     Command::doCommand(Command::Doc,
                        "App.activeDocument().addObject('TechDraw::DrawViewBalloon', '%s')",
                        featName.c_str());
@@ -643,7 +619,7 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                        pageName.c_str(), featName.c_str());
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     // Touch the parent feature so the balloon in tree view appears as a child
     parent->touch(true);

@@ -165,6 +165,10 @@ class DraftWorkbench(FreeCADGui.Workbench):
 
     def Activated(self):
         """When entering the workbench."""
+
+        import WorkingPlane
+        from draftutils import grid_observer
+
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
@@ -172,16 +176,29 @@ class DraftWorkbench(FreeCADGui.Workbench):
             from draftutils import init_draft_statusbar
 
             init_draft_statusbar.show_draft_statusbar()
-        import WorkingPlane
+        if hasattr(WorkingPlane, "_view_observer_start"):
+            WorkingPlane._view_observer_start()  # Updates the draftToolBar when switching views.
+        else:
+            FreeCAD.Console.PrintWarning(
+                "Improper loading of WorkingPlane code. "
+                "The Draft Workbench will not work correctly.\n"
+            )
+        if hasattr(grid_observer, "_view_observer_setup"):
+            grid_observer._view_observer_setup()
+        else:
+            FreeCAD.Console.PrintWarning(
+                "Improper loading of grid_observer code. "
+                "The Draft Workbench will not work correctly.\n"
+            )
 
-        WorkingPlane._view_observer_start()  # Updates the draftToolBar when switching views.
-        from draftutils import grid_observer
-
-        grid_observer._view_observer_setup()
         FreeCAD.Console.PrintLog("Draft workbench activated.\n")
 
     def Deactivated(self):
         """When quitting the workbench."""
+
+        import WorkingPlane
+        from draftutils import grid_observer
+
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
@@ -189,12 +206,11 @@ class DraftWorkbench(FreeCADGui.Workbench):
             from draftutils import init_draft_statusbar
 
             init_draft_statusbar.hide_draft_statusbar()
-        import WorkingPlane
+        if hasattr(WorkingPlane, "_view_observer_stop"):
+            WorkingPlane._view_observer_stop()
+        if hasattr(grid_observer, "_view_observer_setup"):
+            grid_observer._view_observer_setup()
 
-        WorkingPlane._view_observer_stop()
-        from draftutils import grid_observer
-
-        grid_observer._view_observer_setup()
         FreeCAD.Console.PrintLog("Draft workbench deactivated.\n")
 
     def ContextMenu(self, recipient):

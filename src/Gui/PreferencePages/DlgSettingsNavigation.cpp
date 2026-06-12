@@ -164,8 +164,10 @@ void DlgSettingsNavigation::loadSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    std::string model
-        = hGrp->GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
+    std::string model = hGrp->GetASCII(
+        "NavigationStyle",
+        std::string {CADNavigationStyle::getClassTypeId().getName()}.c_str()
+    );
     int index = ui->comboNavigationStyle->findData(QByteArray(model.c_str()));
     if (index > -1) {
         ui->comboNavigationStyle->setCurrentIndex(index);
@@ -200,6 +202,10 @@ void DlgSettingsNavigation::loadSettings()
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
 #endif
     ui->naviCubeFontName->addItems(familyNames);
+
+    // mark this combobox to be excluded from preference search
+    // users do not search for specific font names aka. font family like "droid sans"
+    ui->naviCubeFontName->setProperty("doNotSearch", true);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
     int indexFamilyNames = familyNames.indexOf(QString::fromStdString(hGrp->GetASCII("FontString")));
@@ -354,7 +360,10 @@ void DlgSettingsNavigation::retranslate()
     std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
     for (const auto& style : styles) {
         QByteArray data(style.first.getName());
-        QString name = QApplication::translate(style.first.getName(), style.second.c_str());
+        QString name = QApplication::translate(
+            std::string {style.first.getName()}.c_str(),
+            style.second.c_str()
+        );
 
         ui->comboNavigationStyle->addItem(name, data);
     }

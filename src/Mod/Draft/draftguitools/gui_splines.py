@@ -28,6 +28,7 @@
 
 See https://en.wikipedia.org/wiki/B-spline
 """
+
 ## @package gui_splines
 # \ingroup draftguitools
 # \brief Provides GUI tools to create BSpline objects.

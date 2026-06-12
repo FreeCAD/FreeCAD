@@ -70,13 +70,11 @@ int PointPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         // Copy point
         PointPy* pcPoint = static_cast<PointPy*>(pPoint);
         // get Geom_CartesianPoint of that point
-        Handle(Geom_CartesianPoint) that_point = Handle(Geom_CartesianPoint)::DownCast(
-            pcPoint->getGeomPointPtr()->handle()
-        );
+        Handle(Geom_CartesianPoint)
+            that_point = Handle(Geom_CartesianPoint)::DownCast(pcPoint->getGeomPointPtr()->handle());
         // get Geom_CartesianPoint of this point
-        Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast(
-            this->getGeomPointPtr()->handle()
-        );
+        Handle(Geom_CartesianPoint)
+            this_point = Handle(Geom_CartesianPoint)::DownCast(this->getGeomPointPtr()->handle());
 
         // Assign the coordinates
         this_point->SetPnt(that_point->Pnt());
@@ -87,9 +85,8 @@ int PointPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject* pV;
     if (PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type), &pV)) {
         Base::Vector3d v = static_cast<Base::VectorPy*>(pV)->value();
-        Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast(
-            this->getGeomPointPtr()->handle()
-        );
+        Handle(Geom_CartesianPoint)
+            this_point = Handle(Geom_CartesianPoint)::DownCast(this->getGeomPointPtr()->handle());
         this_point->SetCoord(v.x, v.y, v.z);
         return 0;
     }
@@ -106,9 +103,8 @@ int PointPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 PyObject* PointPy::toShape(PyObject* args) const
 {
-    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast(
-        this->getGeomPointPtr()->handle()
-    );
+    Handle(Geom_CartesianPoint)
+        this_point = Handle(Geom_CartesianPoint)::DownCast(this->getGeomPointPtr()->handle());
     try {
         if (!this_point.IsNull()) {
             if (!PyArg_ParseTuple(args, "")) {
@@ -132,17 +128,15 @@ PyObject* PointPy::toShape(PyObject* args) const
 
 Py::Float PointPy::getX() const
 {
-    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast(
-        this->getGeomPointPtr()->handle()
-    );
+    Handle(Geom_CartesianPoint)
+        this_point = Handle(Geom_CartesianPoint)::DownCast(this->getGeomPointPtr()->handle());
     return Py::Float(this_point->X());
 }
 
 void PointPy::setX(Py::Float X)
 {
-    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast(
-        this->getGeomPointPtr()->handle()
-    );
+    Handle(Geom_CartesianPoint)
+        this_point = Handle(Geom_CartesianPoint)::DownCast(this->getGeomPointPtr()->handle());
 
     try {
         this_point->SetX(double(X));
@@ -154,17 +148,15 @@ void PointPy::setX(Py::Float X)
 
 Py::Float PointPy::getY() const
 {
-    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast(
-        this->getGeomPointPtr()->handle()
-    );
+    Handle(Geom_CartesianPoint)
+        this_point = Handle(Geom_CartesianPoint)::DownCast(this->getGeomPointPtr()->handle());
     return Py::Float(this_point->Y());
 }
 
 void PointPy::setY(Py::Float Y)
 {
-    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast(
-        this->getGeomPointPtr()->handle()
-    );
+    Handle(Geom_CartesianPoint)
+        this_point = Handle(Geom_CartesianPoint)::DownCast(this->getGeomPointPtr()->handle());
 
     try {
         this_point->SetY(double(Y));
@@ -176,17 +168,15 @@ void PointPy::setY(Py::Float Y)
 
 Py::Float PointPy::getZ() const
 {
-    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast(
-        this->getGeomPointPtr()->handle()
-    );
+    Handle(Geom_CartesianPoint)
+        this_point = Handle(Geom_CartesianPoint)::DownCast(this->getGeomPointPtr()->handle());
     return Py::Float(this_point->Z());
 }
 
 void PointPy::setZ(Py::Float Z)
 {
-    Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast(
-        this->getGeomPointPtr()->handle()
-    );
+    Handle(Geom_CartesianPoint)
+        this_point = Handle(Geom_CartesianPoint)::DownCast(this->getGeomPointPtr()->handle());
 
     try {
         this_point->SetZ(double(Z));
