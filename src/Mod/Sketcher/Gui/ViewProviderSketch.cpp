@@ -96,7 +96,6 @@
 #include <TopExp.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
 
 #include <Mod/Part/Gui/SoFCShapeObject.h>
 

@@ -1259,20 +1259,14 @@ bool InventorLoader::isValid() const
 
 namespace Base
 {
-BaseExport Vector3f stringToVector(std::string str)
+BaseExport Vector3f stringToVector(const std::string& str)
 {
-    std::string_view view = str;
-    if (!boost::starts_with(view, "(") || !boost::ends_with(str, ")")) {
+    if (!boost::starts_with(str, "(") || !boost::ends_with(str, ")")) {
         throw std::runtime_error("string is not a tuple");
     }
 
-    view.remove_prefix(1);
-    view.remove_suffix(1);
-
-    str = std::string {view};
-
     boost::char_separator<char> sep(" ,");
-    boost::tokenizer<boost::char_separator<char>> tokens(str, sep);
+    boost::tokenizer<boost::char_separator<char>> tokens(str.begin() + 1, str.end() - 1, sep);
     std::vector<std::string> token_results;
     token_results.assign(tokens.begin(), tokens.end());
 

@@ -48,16 +48,9 @@
 
 #include "ImportStep.h"
 #include "encodeFilename.h"
-#include "ShapeMapHasher.h"
 #include "PartFeature.h"
 
 FC_LOG_LEVEL_INIT("Part")
-
-namespace Part
-{
-bool ReadColors(const Handle(XSControl_WorkSession) & WS, std::map<int, Quantity_Color>& hash_col);
-bool ReadNames(const Handle(XSControl_WorkSession) & WS);
-}  // namespace Part
 
 int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
 {
@@ -97,9 +90,6 @@ int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
         throw Base::FileException("No shapes found in file ");
     }
     else {
-
-        std::map<int, Quantity_Color> hash_col;
-
         for (Standard_Integer i = 1; i <= nbs; i++) {
             Base::Console().log("STEP:   Transferring Shape %d\n", i);
             aShape = aReader.Shape(i);
@@ -119,25 +109,6 @@ int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
                 Part::Feature* pcFeature;
                 pcFeature = pcDoc->addObject<Part::Feature>(name.c_str());
                 pcFeature->Shape.setValue(aSolid);
-
-                // This is a trick to access the GUI via Python and set the color property
-                // of the associated view provider. If no GUI is up an exception is thrown
-                // and cleared immediately
-                std::map<int, Quantity_Color>::iterator it = hash_col.find(ShapeMapHasher {}(aSolid));
-                if (it != hash_col.end()) {
-                    try {
-                        Py::Object obj(pcFeature->getPyObject(), true);
-                        Py::Object vp(obj.getAttr("ViewObject"));
-                        Py::Tuple col(3);
-                        col.setItem(0, Py::Float(it->second.Red()));
-                        col.setItem(1, Py::Float(it->second.Green()));
-                        col.setItem(2, Py::Float(it->second.Blue()));
-                        vp.setAttr("ShapeAppearance", col);
-                    }
-                    catch (Py::Exception& e) {
-                        e.clear();
-                    }
-                }
             }
             // load all non-solids now
             for (ex.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); ex.More(); ex.Next()) {
@@ -192,18 +163,4 @@ int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
     }
 
     return 0;
-}
-
-
-bool Part::ReadColors(const Handle(XSControl_WorkSession) & WS, std::map<int, Quantity_Color>& hash_col)
-{
-    (void)WS;
-    (void)hash_col;
-    return Standard_False;
-}
-
-bool Part::ReadNames(const Handle(XSControl_WorkSession) & WS)
-{
-    (void)WS;
-    return Standard_False;
 }

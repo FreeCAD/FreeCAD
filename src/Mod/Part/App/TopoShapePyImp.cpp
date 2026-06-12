@@ -97,7 +97,6 @@
 
 #include "OCCError.h"
 #include "PartPyCXX.h"
-#include "ShapeMapHasher.h"
 #include "TopoShapeMapper.h"
 
 
@@ -502,11 +501,6 @@ PyObject* TopoShapePy::dumpToString(PyObject* args) const
         PyErr_SetString(PartExceptionOCCError, e.what());
         return nullptr;
     }
-    catch (Standard_Failure& e) {
-
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
 }
 
 PyObject* TopoShapePy::exportBrepToString(PyObject* args) const
@@ -527,10 +521,6 @@ PyObject* TopoShapePy::exportBrepToString(PyObject* args) const
     }
     catch (const std::exception& e) {
         PyErr_SetString(PartExceptionOCCError, e.what());
-        return nullptr;
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
 }
@@ -619,11 +609,6 @@ PyObject* TopoShapePy::importBrepFromString(PyObject* args)
         PyErr_SetString(PartExceptionOCCError, e.what());
         return nullptr;
     }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
-
     Py_Return;
 }
 
@@ -980,31 +965,34 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
     }
 
     try {
-        const TopoShape& model = *getTopoShapePtr();
-        const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
-        if (model.isNull() || shape.IsNull()) {
+        const TopoShape& containingShape = *getTopoShapePtr();
+        const TopoDS_Shape& descendentShape
+            = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+        if (containingShape.isNull() || descendentShape.IsNull()) {
             PyErr_SetString(PyExc_ValueError, "Shape is null");
             return nullptr;
         }
 
         PyTypeObject* pyType = reinterpret_cast<PyTypeObject*>(type);
-        TopAbs_ShapeEnum shapetype = ShapeTypeFromPyType(pyType);
+        TopAbs_ShapeEnum desiredAncestorType = ShapeTypeFromPyType(pyType);
         if (!PyType_IsSubtype(pyType, &TopoShapePy::Type)) {
             PyErr_SetString(PyExc_TypeError, "type must be a Shape subtype");
             return nullptr;
         }
+        auto descendentType = descendentShape.ShapeType();
 
-        std::vector<int> foundIndices = model.findAncestors(shape, shapetype);
-        std::unordered_set<int> appendedIndices = {};
+        std::vector<int> foundIndices
+            = containingShape.findAncestors(descendentShape, desiredAncestorType);
+        // findAncestors can return duplicates, for instance the single vertex on a closed sircle
+        // will return the circle twice as an ancestor; same for the longitudinal "seam" edge of a
+        // cylinder which will return the cylindrical face twice. Perhaps there should be a
+        // findUniqueAncestors method that already returns the set though most other callers to
+        // findAncestors seem to want the duplicates.
+        std::unordered_set<int> uniqueIndices(foundIndices.begin(), foundIndices.end());
 
-        Py::List list;
-        for (int idx : foundIndices) {
-            if (appendedIndices.count(idx)) {
-                continue;
-            }
-
-            list.append(shape2pyshape(model.getSubTopoShape(shapetype, idx)));
-            appendedIndices.emplace(idx);
+        Py::List list(uniqueIndices.size());
+        for (int idx : uniqueIndices) {
+            list.append(shape2pyshape(containingShape.getSubTopoShape(desiredAncestorType, idx)));
         }
         return Py::new_reference_to(list);
     }
@@ -1724,9 +1712,7 @@ PyObject* TopoShapePy::hashCode(PyObject* args) const
     if (!PyArg_ParseTuple(args, "|i", &upper)) {
         return nullptr;
     }
-
-    int hc = ShapeMapHasher {}(getTopoShapePtr()->getShape());
-    return Py_BuildValue("i", hc);
+    return Py_BuildValue("i", std::hash<TopoDS_Shape> {}(getTopoShapePtr()->getShape()));
 }
 
 PyObject* TopoShapePy::tessellate(PyObject* args) const

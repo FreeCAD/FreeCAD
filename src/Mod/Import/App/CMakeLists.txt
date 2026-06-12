@@ -17,8 +17,6 @@ SET(Import_SRCS
     ImportOCAF.h
     ImportOCAF2.cpp
     ImportOCAF2.h
-    #ImportOCAFAssembly.cpp
-    #ImportOCAFAssembly.h
     ReaderGltf.cpp
     ReaderGltf.h
     ReaderIges.cpp

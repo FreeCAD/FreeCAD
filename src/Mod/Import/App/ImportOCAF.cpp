@@ -51,11 +51,11 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Mod/Part/App/FeatureCompound.h>
-#include <Mod/Part/App/ShapeMapHasher.h>
 
 #include "ImportOCAF.h"
 #include "Tools.h"
 
+#include <unordered_map>
 
 #ifdef HAVE_TBB
 # include <tbb/blocked_range.h>
@@ -90,14 +90,10 @@ void ImportOCAF::tryPlacementFromLoc(App::GeoFeature* part, const TopLoc_Locatio
     }
 
     Part::TopoShape::convertToMatrix(trf, mtrx);
-    tryPlacementFromMatrix(part, mtrx);
-}
 
-void ImportOCAF::tryPlacementFromMatrix(App::GeoFeature* part, const Base::Matrix4D& mat)
-{
     try {
         Base::Placement pl;
-        pl.fromMatrix(mat);
+        pl.fromMatrix(mtrx);
         part->Placement.setValue(pl);
     }
     catch (const Base::ValueError& e) {
@@ -107,10 +103,20 @@ void ImportOCAF::tryPlacementFromMatrix(App::GeoFeature* part, const Base::Matri
 
 void ImportOCAF::loadShapes()
 {
-    std::vector<App::DocumentObject*> lValue;
     myRefShapes.clear();
-    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false, lValue);
-    lValue.clear();
+    // Build the mapping from shapes to Labels, used to obtain the colours of the elements of the
+    // model. This is necessary because XCAFDoc_ColorTool::GetLabel(TopoDS_Shape) is dismally slow,
+    // taking time proportional to the number of Labels in the whole document.
+    TDF_ChildIterator labelIterator(pDoc->Main(), true);
+    TopoDS_Shape sh;
+    while (labelIterator.More()) {
+        TDF_Label l(labelIterator.Value());
+        if (aShapeTool->GetShape(l, sh)) {
+            shapeToLabelMap.emplace(sh, l);
+        }
+        labelIterator.Next();
+    }
+    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false);
 }
 
 void ImportOCAF::setMerge(bool merge)
@@ -118,28 +124,18 @@ void ImportOCAF::setMerge(bool merge)
     this->merge = merge;
 }
 
-void ImportOCAF::loadShapes(
+App::DocumentObject* ImportOCAF::loadShapes(
     const TDF_Label& label,
     const TopLoc_Location& loc,
     const std::string& defaultname,
     const std::string& assembly,
-    bool isRef,
-    std::vector<App::DocumentObject*>& lValue
+    bool isRef
 )
 {
-    int hash = 0;
 #ifdef HAVE_TBB
     using namespace tbb;
     task_group g;
 #endif
-    TopoDS_Shape aShape;
-
-    std::vector<App::DocumentObject*> localValue;
-
-    if (aShapeTool->GetShape(label, aShape)) {
-        hash = Part::ShapeMapHasher {}(aShape);
-    }
-
     Handle(TDataStd_Name) name;
     std::string part_name = defaultname;
     if (label.FindAttribute(TDataStd_Name::GetID(), name)) {
@@ -177,6 +173,8 @@ void ImportOCAF::loadShapes(
     }
 
 #ifdef FC_DEBUG
+    TopoDS_Shape debugShape;
+    int hash = aShapeTool->GetShape(label, debugShape) ? std::hash(debugShape) : 0;
     Base::Console().log(
         "H:%d, N:%s, T:%d, A:%d, S:%d, C:%d, SS:%d, F:%d, R:%d, C:%d, SS:%d\n",
         hash,
@@ -205,76 +203,72 @@ void ImportOCAF::loadShapes(
 
     TDF_Label ref;
     if (aShapeTool->IsReference(label) && aShapeTool->GetReferredShape(label, ref)) {
-        loadShapes(ref, part_loc, part_name, asm_name, true, lValue);
+        return loadShapes(ref, part_loc, part_name, asm_name, true);
     }
 
-    if (isRef || myRefShapes.find(hash) == myRefShapes.end()) {
-        TopoDS_Shape aShape;
-        if (isRef && aShapeTool->GetShape(label, aShape)) {
-            myRefShapes.insert(Part::ShapeMapHasher {}(aShape));
+    TopoDS_Shape aShape;
+    bool foundaShape = aShapeTool->GetShape(label, aShape);
+
+    if (isRef || !foundaShape || !myRefShapes.contains(aShape)) {
+        if (isRef && foundaShape) {
+            myRefShapes.insert(aShape);
         }
 
-        if (aShapeTool->IsSimpleShape(label) && (isRef || aShapeTool->IsFree(label))) {
-            if (!asm_name.empty()) {
-                part_name = asm_name;
+        if (aShapeTool->IsSimpleShape(label)) {
+            if (isRef || aShapeTool->IsFree(label)) {
+                if (!asm_name.empty()) {
+                    part_name = asm_name;
+                }
+                App::DocumentObject* created = createShape(label, loc, part_name);
+                // If !isRef then the label is a Free label which means there are no references to
+                // it, so we want it as a top-level object in the FC drawing, so we do not return it
+                // to be included in some larger object.
+                return isRef ? created : nullptr;
             }
+            // A simple shape that does not have a Free Label and is not reached through a ref.
+            // This means the shape is reachable through a ref elsewhere in the drawing.
 
-            // TODO: The merge parameter (last one from createShape) should become an
-            // Importer/Exporter option within the FreeCAD preference menu Currently it is merging
-            // STEP Compound Shape into a single Shape Part::Feature which is an OpenCascade
-            // computed Compound
-            if (isRef) {
-                createShape(label, loc, part_name, lValue, this->merge);
-            }
-            else {
-                createShape(label, part_loc, part_name, localValue, this->merge);
-            }
+            // We are not creating a list of Part::Feature in that case but just
+            // a single Part::Feature which has as a Shape a Compound of the Subshapes contained
+            // within the global shape
+            // This is standard behavior of many STEP reader and avoid to register a crazy
+            // amount of Shape within the Tree as STEP file do mostly contain large assemblies
         }
         else {
-            if (aShapeTool->IsSimpleShape(label)) {
-                // We are not creating a list of Part::Feature in that case but just
-                // a single Part::Feature which has as a Shape a Compound of the Subshapes contained
-                // within the global shape
-                // This is standard behavior of many STEP reader and avoid to register a crazy
-                // amount of Shape within the Tree as STEP file do mostly contain large assemblies
-                return;
-            }
+            // This IsComponent (or not IsShape), probably an Assembly. Either way we create its
+            // contents, and if it turns out to be an Assembly, we will create a Part and place all
+            // the contents in that Part. Otherwise they will be left as top-level document objects.
+            std::vector<App::DocumentObject*> localValue;
 
-            // This is probably an Assembly let's try to create a Compound with the name
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
-                if (isRef) {
-                    loadShapes(it.Value(), part_loc, part_name, asm_name, false, localValue);
-                }
-                else {
-                    loadShapes(it.Value(), part_loc, part_name, asm_name, isRef, localValue);
+                App::DocumentObject* createdDocObj
+                    = loadShapes(it.Value(), part_loc, part_name, asm_name, false);
+                if (createdDocObj != nullptr) {
+                    localValue.push_back(createdDocObj);
                 }
             }
 
-            if (!localValue.empty()) {
-                if (aShapeTool->IsAssembly(label)) {
-                    App::Part* pcPart = nullptr;
-                    pcPart = doc->addObject<App::Part>(asm_name.c_str());
-                    pcPart->Label.setValue(asm_name);
-                    pcPart->addObjects(localValue);
+            if (!localValue.empty() && aShapeTool->IsAssembly(label)) {
+                App::Part* pcPart = doc->addObject<App::Part>(asm_name.c_str());
+                pcPart->Label.setValue(asm_name);
+                pcPart->addObjects(localValue);
 
-                    // STEP reader is now a hierarchical reader. Node and leaf must have
-                    // there local placement updated and relative to the STEP file content
-                    // standard FreeCAD placement was absolute we are now moving to relative
+                // STEP reader is now a hierarchical reader. Node and leaf must have
+                // there local placement updated and relative to the STEP file content
+                // standard FreeCAD placement was absolute we are now moving to relative
 
-                    tryPlacementFromLoc(pcPart, part_loc);
-                    lValue.push_back(pcPart);
-                }
+                tryPlacementFromLoc(pcPart, part_loc);
+                return pcPart;
             }
         }
     }
+    return nullptr;
 }
 
-void ImportOCAF::createShape(
+App::DocumentObject* ImportOCAF::createShape(
     const TDF_Label& label,
     const TopLoc_Location& loc,
-    const std::string& name,
-    std::vector<App::DocumentObject*>& lValue,
-    bool mergeShape
+    const std::string& name
 )
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
@@ -283,108 +277,114 @@ void ImportOCAF::createShape(
     task_group g;
 #endif
 
-    if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
+    if (aShape.IsNull()) {
+        return nullptr;
+    }
+    if (aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
-        int ctSolids = 0, ctShells = 0, ctVertices = 0, ctEdges = 0;
-        std::vector<App::DocumentObject*> localValue;
-        App::Part* pcPart = nullptr;
 
-        if (mergeShape) {
-
-            // We should do that only if there is more than a single shape inside
-            // Computing Compounds takes time
-            // We must keep track of the Color. If there is more than 1 Color into
-            // a STEP Compound then the Merge can't be done and we cancel the operation
-
+        if (this->merge) {
+            // Combine all the SOLID, SHELL, EDGE, and VERTEX subshapes into a new compound as a
+            // single Part::Feature.
+            // It may seem strange to pick apart a compound only to make a new compound but perhaps
+            // aShape contains topology other than the solids, hollow shells, edges, and vertices
+            // that we transfer to the new compound. (perhaps a Solid from the STEP file also has a
+            // Shell that we don't want???)
             BRep_Builder builder;
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
 
-            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
+            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next()) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
                     builder.Add(comp, sh);
                 }
             }
 
-            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
+            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
                     builder.Add(comp, sh);
                 }
             }
 
-            for (xp.Init(aShape, TopAbs_EDGE); xp.More(); xp.Next(), ctEdges++) {
+            for (xp.Init(aShape, TopAbs_EDGE); xp.More(); xp.Next()) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
                     builder.Add(comp, sh);
                 }
             }
 
-            for (xp.Init(aShape, TopAbs_VERTEX); xp.More(); xp.Next(), ctVertices++) {
+            for (xp.Init(aShape, TopAbs_VERTEX); xp.More(); xp.Next()) {
                 const TopoDS_Shape& sh = xp.Current();
                 if (!sh.IsNull()) {
                     builder.Add(comp, sh);
                 }
             }
 
-            // Ok we got a Compound which is computed
-            // Just need to add it to a Part::Feature and push it to lValue
-            if (!comp.IsNull() && (ctSolids || ctShells || ctEdges || ctVertices)) {
-                Part::Feature* part = doc->addObject<Part::Feature>();
-                // Let's allocate the relative placement of the Compound from the STEP file
-                tryPlacementFromLoc(part, loc);
-                if (!loc.IsIdentity()) {
-                    part->Shape.setValue(comp.Moved(loc));
-                }
-                else {
-                    part->Shape.setValue(comp);
-                }
-
-                part->Label.setValue(name);
-                lValue.push_back(part);
-
-                loadColors(part, aShape);
-            }
+            // Create the single compound shape, setting its Placement from loc.
+            // We pass the Label of the original compound so if it has any colour applied that will
+            // be used.
+            return comp.IsNull() ? nullptr : createShape(comp, label, loc, true, name);
         }
         else {
-            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
-                createShape(xp.Current(), loc, name, localValue);
+            // Create a new Part::Feature for each subshape, and nest them all into an App::Part
+            std::vector<App::DocumentObject*> partComponents;
+            // We pass empty labels to createShape, making it find the shape's Label itself.
+            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+                partComponents.push_back(createShape(xp.Current(), TDF_Label(), loc, false, name));
             }
-            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
-                createShape(xp.Current(), loc, name, localValue);
+            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
+                partComponents.push_back(createShape(xp.Current(), TDF_Label(), loc, false, name));
             }
-        }
-
-        if (!localValue.empty() && !mergeShape) {
-            pcPart = doc->addObject<App::Part>(name.c_str());
+            if (partComponents.empty()) {
+                return nullptr;
+            }
+            App::Part* pcPart = doc->addObject<App::Part>(name.c_str());
             pcPart->Label.setValue(name);
+            pcPart->addObjects(partComponents);
 
-            // localValue contain the objects that  must added to the local Part
-            // We must add the PartOrigin and the Part itself
-            pcPart->addObjects(localValue);
-
-            lValue.push_back(pcPart);
-        }
-
-        if (ctSolids > 0 || ctShells > 0) {
-            return;
+            return pcPart;
         }
     }
-    else if (!aShape.IsNull()) {
-        createShape(aShape, loc, name, lValue);
+    else {
+        // aShape is not a Compound Shape, make a single Part::Feature for it
+        // By passing the shape's Label, ceateShape does not have to look it up.
+        return createShape(aShape, label, loc, false, name);
     }
 }
 
-void ImportOCAF::createShape(
+bool ImportOCAF::getShapeColour(const TopoDS_Shape& shape, TDF_Label labelHint, Base::Color& foundColour)
+{
+    TDF_Label shapeLabel = labelHint;
+    if (shapeLabel.IsNull() && shapeToLabelMap.contains(shape)) {
+        shapeLabel = shapeToLabelMap[shape];
+    }
+    if (!shapeLabel.IsNull()) {
+        Quantity_ColorRGBA aColor;
+        if (aColorTool->GetColor(shapeLabel, XCAFDoc_ColorGen, aColor)
+            || aColorTool->GetColor(shapeLabel, XCAFDoc_ColorSurf, aColor)
+            || aColorTool->GetColor(shapeLabel, XCAFDoc_ColorCurv, aColor)) {
+            foundColour = Tools::convertColor(aColor);
+            return true;
+        }
+    }
+    return false;
+}
+
+App::DocumentObject* ImportOCAF::createShape(
     const TopoDS_Shape& aShape,
+    const TDF_Label& labelHint,
     const TopLoc_Location& loc,
-    const std::string& name,
-    std::vector<App::DocumentObject*>& lvalue
+    bool setPlacementFromLocation,
+    const std::string& name
 )
 {
     Part::Feature* part = doc->addObject<Part::Feature>();
 
+    if (setPlacementFromLocation) {
+        tryPlacementFromLoc(part, loc);
+    }
     if (!loc.IsIdentity()) {
         part->Shape.setValue(aShape.Moved(loc));
     }
@@ -393,233 +393,43 @@ void ImportOCAF::createShape(
     }
 
     part->Label.setValue(name);
-    lvalue.push_back(part);
 
-    loadColors(part, aShape);
-}
-
-void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
-{
+    // Find and apply colours to the created part.
+    // There may be a colour for the overall Part, and/or some of the topology that makes up the
+    // shape may have their own colours.
+    std::vector<Base::Color> faceColors;
     Quantity_ColorRGBA aColor;
     Base::Color color(0.8f, 0.8f, 0.8f);
-    if (aColorTool->GetColor(aShape, XCAFDoc_ColorGen, aColor)
-        || aColorTool->GetColor(aShape, XCAFDoc_ColorSurf, aColor)
-        || aColorTool->GetColor(aShape, XCAFDoc_ColorCurv, aColor)) {
-        color = Tools::convertColor(aColor);
-        std::vector<Base::Color> colors;
-        colors.push_back(color);
-        applyColors(part, colors);
+    if (getShapeColour(aShape, labelHint, color)) {
+        faceColors.push_back(color);
     }
 
-    TopTools_IndexedMapOfShape faces;
+    // Obtain a vector of face colors parallel with the TopExp_Explorer iteration order
+    // This code assumes consistent iteration order each time, and that this
+    // order also matches the ordering expected in the color vector we are creating.
+    size_t face_index = 0;
     TopExp_Explorer xp(aShape, TopAbs_FACE);
-    while (xp.More()) {
-        faces.Add(xp.Current());
-        xp.Next();
-    }
-
-    bool found_face_color = false;
-    std::vector<Base::Color> faceColors;
-    faceColors.resize(faces.Extent(), color);
-    xp.Init(aShape, TopAbs_FACE);
-    while (xp.More()) {
-        if (aColorTool->GetColor(xp.Current(), XCAFDoc_ColorGen, aColor)
-            || aColorTool->GetColor(xp.Current(), XCAFDoc_ColorSurf, aColor)
-            || aColorTool->GetColor(xp.Current(), XCAFDoc_ColorCurv, aColor)) {
-            int index = faces.FindIndex(xp.Current());
-            color = Tools::convertColor(aColor);
-            faceColors[index - 1] = color;
-            found_face_color = true;
+    for (; xp.More(); xp.Next(), ++face_index) {
+        Base::Color faceColor;
+        if (getShapeColour(xp.Current(), TDF_Label(), faceColor)) {
+            if (face_index >= faceColors.size()) {
+                // We've just realized we need per-element colours. Make the colour vector large
+                // enough for all the elements. First count the number of faces in aShape
+                int n_faces = 0;
+                TopExp_Explorer xp2(aShape, TopAbs_FACE);
+                while (xp2.More()) {
+                    ++n_faces;
+                    xp2.Next();
+                }
+                faceColors.resize(n_faces, color);
+            }
+            faceColors[face_index] = faceColor;
         }
-        xp.Next();
     }
 
-    if (found_face_color) {
+    if (!faceColors.empty()) {
         applyColors(part, faceColors);
     }
-}
 
-// ----------------------------------------------------------------------------
-
-ImportOCAFCmd::ImportOCAFCmd(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-    : ImportOCAF(h, d, name)
-{}
-
-void ImportOCAFCmd::applyColors(Part::Feature* part, const std::vector<Base::Color>& colors)
-{
-    partColors[part] = colors;
-}
-
-// ----------------------------------------------------------------------------
-
-ImportXCAF::ImportXCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-    : hdoc(h)
-    , doc(d)
-    , default_name(name)
-{
-    aShapeTool = XCAFDoc_DocumentTool::ShapeTool(hdoc->Main());
-    hColors = XCAFDoc_DocumentTool::ColorTool(hdoc->Main());
-}
-
-ImportXCAF::~ImportXCAF() = default;
-
-void ImportXCAF::loadShapes()
-{
-    // collect sequence of labels to display
-    TDF_LabelSequence shapeLabels, colorLabels;
-    aShapeTool->GetFreeShapes(shapeLabels);
-    hColors->GetColors(colorLabels);
-
-    // set presentations and show
-    for (Standard_Integer i = 1; i <= shapeLabels.Length(); i++) {
-        // get the shapes and attributes
-        const TDF_Label& label = shapeLabels.Value(i);
-        loadShapes(label);
-    }
-    std::map<Standard_Integer, TopoDS_Shape>::iterator it;
-    // go through solids
-    for (it = mySolids.begin(); it != mySolids.end(); ++it) {
-        createShape(it->second, true, true);
-    }
-    // go through shells
-    for (it = myShells.begin(); it != myShells.end(); ++it) {
-        createShape(it->second, true, true);
-    }
-    // go through compounds
-    for (it = myCompds.begin(); it != myCompds.end(); ++it) {
-        createShape(it->second, true, true);
-    }
-    // do the rest
-    if (!myShapes.empty()) {
-        BRep_Builder builder;
-        TopoDS_Compound comp;
-        builder.MakeCompound(comp);
-        for (it = myShapes.begin(); it != myShapes.end(); ++it) {
-            builder.Add(comp, it->second);
-        }
-        createShape(comp, true, false);
-    }
-}
-
-void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setname) const
-{
-    Part::Feature* part;
-    part = doc->addObject<Part::Feature>(default_name.c_str());
-    part->Label.setValue(default_name);
-    part->Shape.setValue(shape);
-    std::map<Standard_Integer, Quantity_ColorRGBA>::const_iterator jt;
-    jt = myColorMap.find(Part::ShapeMapHasher {}(shape));
-
-    Base::Color partColor(0.8f, 0.8f, 0.8f);
-
-
-    // set label name if defined
-    if (setname && !myNameMap.empty()) {
-        std::map<Standard_Integer, std::string>::const_iterator jt;
-        jt = myNameMap.find(Part::ShapeMapHasher {}(shape));
-        if (jt != myNameMap.end()) {
-            part->Label.setValue(jt->second);
-        }
-    }
-
-    // check for colors per face
-    if (perface && !myColorMap.empty()) {
-        TopTools_IndexedMapOfShape faces;
-        TopExp_Explorer xp(shape, TopAbs_FACE);
-        while (xp.More()) {
-            faces.Add(xp.Current());
-            xp.Next();
-        }
-
-        std::vector<Base::Color> faceColors;
-        faceColors.resize(faces.Extent(), partColor);
-        xp.Init(shape, TopAbs_FACE);
-        while (xp.More()) {
-            jt = myColorMap.find(Part::ShapeMapHasher {}(xp.Current()));
-            if (jt != myColorMap.end()) {
-                int index = faces.FindIndex(xp.Current());
-                faceColors[index - 1] = Tools::convertColor(jt->second);
-            }
-            xp.Next();
-        }
-    }
-}
-
-void ImportXCAF::loadShapes(const TDF_Label& label)
-{
-    TopoDS_Shape aShape;
-    if (aShapeTool->GetShape(label, aShape)) {
-        if (aShapeTool->IsTopLevel(label)) {
-            int ctSolids = 0, ctShells = 0, ctComps = 0;
-            // add the shapes
-            TopExp_Explorer xp;
-            for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
-                this->mySolids[Part::ShapeMapHasher {}(xp.Current())] = (xp.Current());
-            }
-            for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
-                this->myShells[Part::ShapeMapHasher {}(xp.Current())] = (xp.Current());
-            }
-            // if no solids and no shells were found then go for compounds
-            if (ctSolids == 0 && ctShells == 0) {
-                for (xp.Init(aShape, TopAbs_COMPOUND); xp.More(); xp.Next(), ctComps++) {
-                    this->myCompds[Part::ShapeMapHasher {}(xp.Current())] = (xp.Current());
-                }
-            }
-            if (ctComps == 0) {
-                for (xp.Init(aShape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
-                    this->myShapes[Part::ShapeMapHasher {}(xp.Current())] = (xp.Current());
-                }
-                for (xp.Init(aShape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
-                    this->myShapes[Part::ShapeMapHasher {}(xp.Current())] = (xp.Current());
-                }
-                for (xp.Init(aShape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
-                    this->myShapes[Part::ShapeMapHasher {}(xp.Current())] = (xp.Current());
-                }
-                for (xp.Init(aShape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
-                    this->myShapes[Part::ShapeMapHasher {}(xp.Current())] = (xp.Current());
-                }
-            }
-        }
-
-        // getting color
-        Quantity_ColorRGBA col;
-        if (hColors->GetColor(label, XCAFDoc_ColorGen, col)
-            || hColors->GetColor(label, XCAFDoc_ColorSurf, col)
-            || hColors->GetColor(label, XCAFDoc_ColorCurv, col)) {
-            // add defined color
-            myColorMap[Part::ShapeMapHasher {}(aShape)] = col;
-        }
-        else {
-            // http://www.opencascade.org/org/forum/thread_17107/
-            TopoDS_Iterator it;
-            for (it.Initialize(aShape); it.More(); it.Next()) {
-                if (hColors->GetColor(it.Value(), XCAFDoc_ColorGen, col)
-                    || hColors->GetColor(it.Value(), XCAFDoc_ColorSurf, col)
-                    || hColors->GetColor(it.Value(), XCAFDoc_ColorCurv, col)) {
-                    // add defined color
-                    myColorMap[Part::ShapeMapHasher {}(it.Value())] = col;
-                }
-            }
-        }
-
-        // getting names
-        Handle(TDataStd_Name) name;
-        if (label.FindAttribute(TDataStd_Name::GetID(), name)) {
-            TCollection_ExtendedString extstr = name->Get();
-            char* str = new char[extstr.LengthOfCString() + 1];
-            extstr.ToUTF8CString(str);
-            std::string labelName(str);
-            if (!labelName.empty()) {
-                myNameMap[Part::ShapeMapHasher {}(aShape)] = labelName;
-            }
-            delete[] str;
-        }
-
-        if (label.HasChild()) {
-            TDF_ChildIterator it;
-            for (it.Initialize(label); it.More(); it.Next()) {
-                loadShapes(it.Value());
-            }
-        }
-    }
+    return part;
 }

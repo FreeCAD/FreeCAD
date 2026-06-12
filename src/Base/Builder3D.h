@@ -852,7 +852,7 @@ private:
  * If it fails then a std::exception is thrown.
  * Supported type names are float or double
  */
-BaseExport Base::Vector3f stringToVector(std::string);
+BaseExport Base::Vector3f stringToVector(const std::string&);
 
 /*!
  * Expects a string of the form "(x,y,z)" and creates a vector from it.
