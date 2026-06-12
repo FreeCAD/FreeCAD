@@ -23,6 +23,8 @@
 
 # include <QPainterPath>
 # include <QPainterPathStroker>
+# include <QStyleOptionGraphicsItem>
+
 # include <cmath>
 
 
