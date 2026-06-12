@@ -136,9 +136,8 @@ class TestBsdd(unittest.TestCase):
         self.assertEqual(merged_payload["classProperties"][0]["name"], "IsExternal")
 
     def _run_live_json_request(self, url):
-        app = QtCore.QCoreApplication.instance()
-        if app is None:
-            app = QtCore.QCoreApplication([])
+        if QtCore.QCoreApplication.instance() is None:
+            QtCore.QCoreApplication([])
 
         network_manager = QtNetwork.QNetworkAccessManager()
         request = QtNetwork.QNetworkRequest(QtCore.QUrl(url))
@@ -209,9 +208,8 @@ class TestBsdd(unittest.TestCase):
         "Set FREECAD_RUN_LIVE_BSDD_TESTS=1 to run live bSDD integration tests.",
     )
     def test_live_wall_search_returns_ifc_wall_data(self):
-        app = QtCore.QCoreApplication.instance()
-        if app is None:
-            app = QtCore.QCoreApplication([])
+        if QtCore.QCoreApplication.instance() is None:
+            QtCore.QCoreApplication([])
 
         client = BimBsdd.BsddNetworkClient()
         received = {}

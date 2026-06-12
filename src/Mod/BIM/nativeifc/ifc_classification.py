@@ -22,8 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCAD
 
-from . import ifc_psets  # lazy import
 from . import ifc_tools  # lazy import
 
 
@@ -207,8 +207,10 @@ def _ensure_project_classification_relation(ifcfile, classification):
     owner_history = None
     try:
         owner_history = ifc_tools.ifcopenshell.api.owner.create_owner_history(ifcfile)
-    except Exception:
-        pass
+    except Exception as err:
+        FreeCAD.Console.PrintLog(
+            "IFC classification: proceeding without project owner history: {}\n".format(err)
+        )
     ifcfile.create_entity(
         "IfcRelAssociatesClassification",
         GlobalId=ifc_tools.ifcopenshell.guid.new(),
@@ -322,8 +324,10 @@ def _ensure_reference_relation(ifcfile, reference, element):
     owner_history = None
     try:
         owner_history = ifc_tools.ifcopenshell.api.owner.create_owner_history(ifcfile)
-    except Exception:
-        pass
+    except Exception as err:
+        FreeCAD.Console.PrintLog(
+            "IFC classification: proceeding without reference owner history: {}\n".format(err)
+        )
     ifcfile.create_entity(
         "IfcRelAssociatesClassification",
         GlobalId=ifc_tools.ifcopenshell.guid.new(),
@@ -335,6 +339,8 @@ def _ensure_reference_relation(ifcfile, reference, element):
 
 
 def _upsert_extended_properties(obj, contract, ifcfile, element):
+    from . import ifc_psets  # lazy import
+
     for prop in contract.get("extended_properties", []):
         pset_name = prop.get("property_set", "")
         prop_name = prop.get("name", "")
@@ -356,8 +362,12 @@ def _upsert_extended_properties(obj, contract, ifcfile, element):
         )
     try:
         ifc_psets.show_psets(obj)
-    except Exception:
-        pass
+    except Exception as err:
+        FreeCAD.Console.PrintLog(
+            "IFC classification: failed to refresh psets UI for {}: {}\n".format(
+                getattr(obj, "Label", "<unnamed>"), err
+            )
+        )
 
 
 def apply_canonical_contract(obj, contract):
