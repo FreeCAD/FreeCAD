@@ -323,7 +323,7 @@ bool ViewProviderAssembly::setEdit(int mode)
             [this](const QString& name) { this->onWorkbenchActivated(name); }
         );
 
-        assembly->solve();
+        assembly->recomputeFeature(true);
 
         return true;
     }
