@@ -116,35 +116,22 @@ gp_Pnt Deformation::bendXAlongCurve(gp_Pnt from, const BRepAdaptor_Curve& curve,
     const auto u = curve.FirstParameter()
         + from.X() * factor * (curve.LastParameter() - curve.FirstParameter());
 
-    // compute Frenet vectors
+    // compute tangent vector
     gp_Pnt ptCurve;
     gp_Vec T;
     curve.D1(u, ptCurve, T);
     T.Normalize();
+
+    // compute section rotation
     const gp_Vec Ox(1., 0., 0.);
-    auto B = Ox.Crossed(T);  // normal to the curve plane
-    B.Normalize();
+    gp_Quaternion q(Ox, T);
+    gp_Vec v;
+    double a;
+    q.GetVectorAndAngle(v, a);
 
-    // compute vector at curve start
-    // and check for a normal reverse
-    gp_Pnt p0;
-    gp_Vec T0;
-    curve.D1(curve.FirstParameter(), p0, T0);
-    T0.Normalize();
-    auto B0 = Ox.Crossed(T0);
-    B0.Normalize();
-    if (B.Dot(B0) < 0.5) {
-        B.Reverse();
-    }
-
-    auto N = B.Crossed(T);  // in the curve plane
-    N.Normalize();
-
-    const auto x = ptCurve.X() + N.X() * from.Y() + B.X() * from.Z();
-    const auto y = ptCurve.Y() + N.Y() * from.Y();
-    const auto z = ptCurve.Z() + B.Z() * from.Z();
-
-    return {x, y, z};
+    // apply transformation
+    gp_Pnt res = from.Rotated({{from.X(), 0, 0}, v}, a);
+    return res.Translated({ptCurve.X() - from.X(), ptCurve.Y(), ptCurve.Z()});
 }
 
 template<>
