@@ -153,6 +153,10 @@ Function .onInit
   ${If} ${Silent}
     Call PostMultiUserPageInit
   ${endif}
+  # if installer runs silent the post directory page routine has to be called here
+  ${If} ${Silent}
+    Call ValidateInstallDir
+  ${EndIf}
 
 FunctionEnd
 

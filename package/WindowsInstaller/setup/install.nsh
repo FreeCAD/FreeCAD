@@ -11,17 +11,14 @@ Installation of program files, dictionaries and external components
 !include LogicLib.nsh
 
 Section -ProgramFiles SecProgramFiles
+  ${If} $RemoveInstDir == "true"
+    RMDir /r "$INSTDIR"
+    ${If} ${Errors}
+      MessageBox MB_OK|MB_ICONSTOP "$(RMInstDirFailed)" /SD IDOK
+      Abort
+    ${EndIf}
+  ${EndIf}
 
-  # if the $INSTDIR does not contain "FreeCAD" we must add a subfolder to avoid that FreeCAD will e.g.
-  # be installed directly to C:\programs - the uninstaller will then delete the whole
-  # C:\programs directory
-  StrCpy $String "$INSTDIR"
-  StrCpy $Search "${APP_NAME}"
-  Call StrPoint # function from Utils.nsh
-  ${if} $Pointer == "-1"
-   StrCpy $INSTDIR "$INSTDIR\${APP_DIR}"
-  ${endif}
-  
   # turn on logging
   # Note that this can first be done here since the log file is written to $INSTDIR
   # to $INSTDIR must have a valid path before logging can be turned on

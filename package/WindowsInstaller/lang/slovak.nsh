@@ -39,9 +39,6 @@ ${LangFileString} SecDesktopDescription "Ikona FreeCADa na pracovnej ploche."
 #${LangFileString} RunConfigureFailed "Nedal sa spustiť konfiguračný skript"
 ${LangFileString} InstallRunning "Inštalačný program už beží!"
 ${LangFileString} AlreadyInstalled "FreeCAD ${APP_SERIES_KEY2} je už inštalovaný!$\r$\n\
-				Inštalovať ponad existujúce inštalácie sa nedoporučuje keď inštalovaná verzia$\r$\n\
-				je testovné vydanie alebo keď máte problémy s existujúcou inštaláciou.$\r$\n\
-				V takýchto prípadoch je lepšie reinštalovať FreeCAD.$\r$\n\
 				Napriek tomu chcete inštalovať FreeCAD ponad existujúcu verziu?"
 ${LangFileString} NewerInstalled "Pokúšate sa inštalovať verziu FreeCADu ktorá je staršia ako tá ktorá je inštalovaná.$\r$\n\
 				  Keď to naozaj chcete, odinštalujte najprv existujúci FreeCAD $OldVersionNumber."
@@ -68,3 +65,8 @@ ${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user con
 						This will also delete all installed FreeCAD addons.$\r$\n\
 						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "Odinštaluj FreeCAD a všetky jeho súčiastky."
+
+${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty.$\r$\n\
+                        The installer will remove all it's content before installing. Continue?"
+${LangFileString} RMInstDirFailed "Failed to remove '$INSTDIR'.$\r$\n\
+                        Make sure you have sufficient permissions and that no files are in use."

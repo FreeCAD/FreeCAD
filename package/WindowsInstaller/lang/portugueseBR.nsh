@@ -39,9 +39,6 @@ ${LangFileString} SecDesktopDescription "Um ícone do FreeCAD na área de trabal
 #${LangFileString} RunConfigureFailed "Não foi possível executar o script de configuração"
 ${LangFileString} InstallRunning "O instalador já está em execução!"
 ${LangFileString} AlreadyInstalled "O FreeCAD ${APP_SERIES_KEY2} já está instalado!$\r$\n\
-				Não é recomendado instalar sobre uma instalação existente se a versão já instalada$\r$\n\
-				for uma versão de teste ou se houver algum problema com a instalação existente do FreeCAD.$\r$\n\
-				Nesses casos é melhor reinstalar o FreeCAD.$\r$\n\
 				Deseja instalar sobre a versão existente mesmo assim?"
 ${LangFileString} NewerInstalled "A versão que você está tentando instalar é mais antiga que aquela que já está instalada.$\r$\n\
 				  Se isso for realmente o que deseja, primeiro desinstale o FreeCAD $OldVersionNumber."
@@ -68,3 +65,8 @@ ${LangFileString} DialogUnPreferences 'You chose to delete the FreeCADs user con
 						This will also delete all installed FreeCAD addons.$\r$\n\
 						Do you agree with this?'
 ${LangFileString} SecUnProgramFilesDescription "Desinstalar o FreeCAD e todos os seus componentes."
+
+${LangFileString} DirNotEmptyWarning "The selected folder '$INSTDIR' is not empty.$\r$\n\
+                        The installer will remove all it's content before installing. Continue?"
+${LangFileString} RMInstDirFailed "Failed to remove '$INSTDIR'.$\r$\n\
+                        Make sure you have sufficient permissions and that no files are in use."
