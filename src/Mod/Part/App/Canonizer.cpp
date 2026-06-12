@@ -106,8 +106,9 @@ TopoDS_Edge Canonizer::canonize(const TopoDS_Edge& edge, float tol)
     if (mkBuilder.IsDone()) {
         result = TopoDS::Edge(mkBuilder.Shape());
         result.Orientation(edge.Orientation());
+        return result;
     }
-    return result;
+    return edge;
 }
 
 /*
