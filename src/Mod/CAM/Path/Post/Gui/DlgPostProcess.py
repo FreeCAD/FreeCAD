@@ -33,6 +33,7 @@ import FreeCADGui
 import Path
 import Path.Preferences as PathPref
 from PySide import QtCore, QtGui
+import os
 
 translate = FreeCAD.Qt.translate
 
@@ -1266,7 +1267,9 @@ class PostProcessDialog:
 
     def _browse_output_location(self):
         dlg = self.dialog
-        current = dlg.lineEditOutputLocation.text().strip() or ""
+        current = dlg.lineEditOutputLocation.text().strip()
+        if not os.path.exists(os.path.dirname(current)) and not os.path.exists(current):
+            current = os.path.dirname(FreeCAD.activeDocument().FileName)
         folder = QtGui.QFileDialog.getExistingDirectory(
             dlg,
             translate("CAM_Post", "Select Output Folder"),

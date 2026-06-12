@@ -310,10 +310,13 @@ class TaskPanel:
         self.form.SetProbePointFileName.clicked.connect(self.SetProbePointFileName)
 
     def SetProbePointFileName(self):
+        dirname = os.path.dirname(self.obj.probefile)
+        if not dirname:
+            dirname = os.path.dirname(FreeCAD.activeDocument().FileName)
         filename = QtGui.QFileDialog.getOpenFileName(
             self.form,
             translate("CAM_Probe", "Select Probe Point File"),
-            None,
+            dirname,
             translate("CAM_Probe", "All Files (*.*)"),
         )
         if filename and filename[0]:
