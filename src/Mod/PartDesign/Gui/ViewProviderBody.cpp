@@ -23,10 +23,12 @@
  ***************************************************************************/
 
 
+#include <cstdlib>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <QMenu>
 
 #include <App/Document.h>
+#include <App/MainThreadSignal.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <App/VarSet.h>
@@ -49,6 +51,22 @@
 
 using namespace PartDesignGui;
 namespace sp = std::placeholders;
+
+namespace
+{
+
+bool issue29844DiagnosticsEnabled()
+{
+    static const bool enabled = []() {
+        if (const char* value = std::getenv("FC_ISSUE_29844_DIAGNOSTICS")) {
+            return value[0] != '\0' && value[0] != '0';
+        }
+        return true;
+    }();
+    return enabled;
+}
+
+}  // namespace
 
 const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through", "Tip", nullptr};
 
@@ -112,12 +130,29 @@ void ViewProviderBody::onChangedObject(const Gui::ViewProvider& vp, const App::P
         || (std::ranges::find(features, changedObj) != features.end());
 
     if (isRelevantChange) {
+        if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().log(
+                "issue-29844 diagnostics: ViewProviderBody::onChangedObject off-thread body=%s "
+                "changed=%s prop=%s\n",
+                body->getFullName().c_str(),
+                changedObj->getFullName().c_str(),
+                prop.getName() ? prop.getName() : "<null>"
+            );
+        }
         refreshOverlays();
     }
 }
 
 void ViewProviderBody::afterRecompute(const App::Document& /* doc */, const std::vector<App::DocumentObject*>& /* recomputedObjs */)
 {
+    if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+        if (auto* body = getObject<PartDesign::Body>()) {
+            Base::Console().log(
+                "issue-29844 diagnostics: ViewProviderBody::afterRecompute off-thread body=%s\n",
+                body->getFullName().c_str()
+            );
+        }
+    }
     refreshOverlays();
 }
 
@@ -126,6 +161,12 @@ void ViewProviderBody::refreshOverlays()
     auto* body = getObject<PartDesign::Body>();
     if (!body) {
         return;
+    }
+    if (issue29844DiagnosticsEnabled() && !App::MainThreadSignalConfig::isMainThread()) {
+        Base::Console().log(
+            "issue-29844 diagnostics: ViewProviderBody::refreshOverlays off-thread body=%s\n",
+            body->getFullName().c_str()
+        );
     }
     for (auto* obj : body->Group.getValues()) {
         Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(obj);

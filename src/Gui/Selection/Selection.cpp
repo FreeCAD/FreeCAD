@@ -40,9 +40,9 @@
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
 #include <App/Link.h>
+#include <App/MainThreadSignal.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/UnitsApi.h>
@@ -70,6 +70,15 @@ FC_LOG_LEVEL_INIT("Selection", false, true, true)
 using namespace Gui;
 using namespace std;
 namespace sp = std::placeholders;
+
+namespace
+{
+template<typename Fn>
+decltype(auto) invokeOnMainThread(Fn&& fn)
+{
+    return App::MainThreadSignalConfig::callOnMainThreadSync(std::forward<Fn>(fn));
+}
+}  // namespace
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -562,6 +571,10 @@ SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(
 
 void SelectionSingleton::enablePickedList(bool enable, const char* pDocName)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() { enablePickedList(enable, pDocName); });
+    }
+
     auto context = getSelectionContext(pDocName);
     if (!context.info) {
         return;
@@ -911,6 +924,12 @@ int SelectionSingleton::setPreselect(
     SelectionChanges::MsgSource signal
 )
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() {
+            return setPreselect(pDocName, pObjectName, pSubName, x, y, z, signal);
+        });
+    }
+
     if (!pDocName || !pObjectName) {
         rmvPreselect();  // Invalid request
         return 0;
@@ -1102,6 +1121,10 @@ void printPreselectionInfo(
 
 void SelectionSingleton::setPreselectCoord(float x, float y, float z)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() { setPreselectCoord(x, y, z); });
+    }
+
     // if nothing is in preselect ignore
     if (CurrentPreselection.Object.getObjectName().empty()) {
         return;
@@ -1124,6 +1147,10 @@ void SelectionSingleton::setPreselectCoord(float x, float y, float z)
 
 void SelectionSingleton::rmvPreselect(bool signal)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() { rmvPreselect(signal); });
+    }
+
     if (DocName.empty()) {
         return;
     }
@@ -1300,6 +1327,12 @@ bool SelectionSingleton::addSelection(
     bool clearPreselect
 )
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() {
+            return addSelection(pDocName, pObjectName, pSubName, x, y, z, pickedList, clearPreselect);
+        });
+    }
+
     auto context = getSelectionContext(pDocName);
     if (!context.info) {
         return false;
@@ -1394,6 +1427,10 @@ bool SelectionSingleton::addSelection(
 
 void SelectionSingleton::selStackPush(bool clearForward, bool overwrite, const char* pDocName)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() { selStackPush(clearForward, overwrite, pDocName); });
+    }
+
     auto context = getSelectionContext(pDocName);
     if (!context.info) {
         return;
@@ -1429,6 +1466,10 @@ void SelectionSingleton::selStackPush(bool clearForward, bool overwrite, const c
 
 void SelectionSingleton::selStackGoBack(int count, const char* pDocName)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() { selStackGoBack(count, pDocName); });
+    }
+
     auto context = getSelectionContext(pDocName);
     if (!context.info) {
         return;
@@ -1477,6 +1518,10 @@ void SelectionSingleton::selStackGoBack(int count, const char* pDocName)
 
 void SelectionSingleton::selStackGoForward(int count, const char* pDocName)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() { selStackGoForward(count, pDocName); });
+    }
+
     auto context = getSelectionContext(pDocName);
     if (!context.info) {
         return;
@@ -1571,6 +1616,12 @@ bool SelectionSingleton::addSelections(
     const std::vector<std::string>& pSubNames
 )
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([&, this]() {
+            return addSelections(pDocName, pObjectName, pSubNames);
+        });
+    }
+
     auto context = getSelectionContext(pDocName);
     if (!context.info) {
         return false;
@@ -1650,6 +1701,12 @@ bool SelectionSingleton::updateSelection(
     const char* pSubName
 )
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() {
+            return updateSelection(show, pDocName, pObjectName, pSubName);
+        });
+    }
+
     if (!pDocName || !pObjectName) {
         return false;
     }
@@ -1698,6 +1755,12 @@ bool SelectionSingleton::updateSelection(
 
 bool SelectionSingleton::addSelection(const SelectionObject& obj, bool clearPreselect)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([&obj, clearPreselect, this]() {
+            return addSelection(obj, clearPreselect);
+        });
+    }
+
     const std::vector<std::string>& subNames = obj.getSubNames();
     const std::vector<Base::Vector3d> points = obj.getPickedPoints();
     if (!subNames.empty() && subNames.size() == points.size()) {
@@ -1738,6 +1801,12 @@ void SelectionSingleton::rmvSelection(
     const std::vector<SelObj>* pickedList
 )
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() {
+            rmvSelection(pDocName, pObjectName, pSubName, pickedList);
+        });
+    }
+
     auto context = getSelectionContext(pDocName);
     if (!context.info) {
         return;
@@ -1832,6 +1901,10 @@ struct SelInfo
 
 void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() { setVisible(vis, pDocName); });
+    }
+
     std::set<std::pair<App::DocumentObject*, App::DocumentObject*>> filter;
     int visible;
     switch (vis) {
@@ -1965,6 +2038,10 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
 
 void SelectionSingleton::setSelection(const char* pDocName, const std::vector<App::DocumentObject*>& sel)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([&, this]() { setSelection(pDocName, sel); });
+    }
+
     auto context = getSelectionContext(pDocName);
     if (!context.info) {
         return;
@@ -1999,6 +2076,10 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
 
 void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelect)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() { clearSelection(pDocName, clearPreSelect); });
+    }
+
     // Because the introduction of external editing, it is best to make
     // clearSelection(0) behave as clearCompleteSelection(), which is the same
     // behavior of python Selection.clearSelection(None)
@@ -2053,6 +2134,10 @@ void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelec
 
 void SelectionSingleton::clearCompleteSelection(const char* pDocName, bool clearPreSelect)
 {
+    if (Q_UNLIKELY(!App::MainThreadSignalConfig::isMainThread())) {
+        return invokeOnMainThread([=, this]() { clearCompleteSelection(pDocName, clearPreSelect); });
+    }
+
     auto context = getSelectionContext(pDocName);
     if (!context.info) {
         return;

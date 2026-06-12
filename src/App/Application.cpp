@@ -2405,6 +2405,14 @@ void Application::initTypes()
 
 namespace {
 
+bool issue29844DiagnosticsEnabled()
+{
+    if (auto value = getenvUTF8("FC_ISSUE_29844_DIAGNOSTICS")) {
+        return !value->empty() && value->front() != '0';
+    }
+    return true;
+}
+
 void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::program_options::variables_map& vm)
 {
     // Declare a group of options that will be
@@ -2650,6 +2658,13 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
     if (vm.contains("log-file")) {
         mConfig["LoggingFile"] = "1";
         mConfig["LoggingFileName"] = vm["log-file"].as<std::string>();
+    }
+
+    if (mConfig["LoggingFile"] != "1" && mConfig["RunMode"] == "Gui"
+        && issue29844DiagnosticsEnabled())
+    {
+        mConfig["LoggingFile"] = "1";
+        mConfig["LoggingFileName"] = mConfig["UserAppData"] + "issue-29844.log";
     }
 
     if (vm.contains("user-cfg")) {

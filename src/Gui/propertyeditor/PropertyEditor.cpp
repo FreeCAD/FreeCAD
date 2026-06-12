@@ -761,11 +761,15 @@ void PropertyEditor::setEditorMode(const QModelIndex& parent, int start, int end
     }
 }
 
-void PropertyEditor::removeProperty(const App::Property& prop)
+void PropertyEditor::removeProperty(const App::Property* prop)
 {
+    if (!prop) {
+        return;
+    }
+
     for (auto it = propList.begin(); it != propList.end(); ++it) {
         // find the given property in the list and remove it if it's there
-        auto pos = std::ranges::find(it->second, &prop);
+        auto pos = std::ranges::find(it->second, prop);
         if (pos != it->second.end()) {
             it->second.erase(pos);
             // if the last property of this name is removed then also remove the whole group
@@ -779,11 +783,15 @@ void PropertyEditor::removeProperty(const App::Property& prop)
     blockCollapseAll();
 }
 
-void PropertyEditor::renameProperty(const App::Property& prop)
+void PropertyEditor::renameProperty(const App::Property* prop)
 {
+    if (!prop) {
+        return;
+    }
+
     for (auto& it : propList) {
         // find the given property in the list and rename it if it's there
-        auto pos = std::ranges::find(it.second, &prop);
+        auto pos = std::ranges::find(it.second, prop);
         if (pos != it.second.end()) {
             propertyModel->renameProperty(prop);
             break;

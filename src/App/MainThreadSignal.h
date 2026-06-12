@@ -76,6 +76,53 @@ public:
         }
     }
 
+    // Synchronously run a callable on the main thread. If already on the
+    // main thread, invoke it directly.
+    template<typename Fn>
+    static std::invoke_result_t<Fn> callOnMainThreadSync(Fn&& fn)
+    {
+        using Result = std::invoke_result_t<Fn>;
+
+        if (isMainThread()) {
+            return std::forward<Fn>(fn)();
+        }
+
+        std::optional<Base::PyGILStateRelease> release;
+        if (Py_IsInitialized() && PyGILState_Check()) {
+            release.emplace();
+        }
+
+        using StoredFn = std::decay_t<Fn>;
+
+        if constexpr (std::is_void_v<Result>) {
+            invoke(
+                [fn = StoredFn(std::forward<Fn>(fn))]() mutable { fn(); },
+                /*blocking=*/true
+            );
+        }
+        else if constexpr (std::is_reference_v<Result>) {
+            using Referent = std::remove_reference_t<Result>;
+            std::optional<std::reference_wrapper<Referent>> result;
+            invoke(
+                [fn = StoredFn(std::forward<Fn>(fn)), &result]() mutable {
+                    result = std::ref(fn());
+                },
+                /*blocking=*/true
+            );
+            return result->get();
+        }
+        else {
+            std::optional<Result> result;
+            invoke(
+                [fn = StoredFn(std::forward<Fn>(fn)), &result]() mutable {
+                    result.emplace(fn());
+                },
+                /*blocking=*/true
+            );
+            return std::move(*result);
+        }
+    }
+
 private:
     static IsMainThreadFn& isMainThreadSlot()
     {

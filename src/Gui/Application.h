@@ -35,6 +35,11 @@ class QCloseEvent;
 class SoNode;
 class NavlibInterface;
 
+namespace App
+{
+class PropertyContainer;
+}
+
 namespace Gui
 {
 GuiExport void requireMainThread(const char* api);
@@ -50,6 +55,23 @@ class MenuItem;
 class PreferencePackManager;
 class ViewProvider;
 class ViewProviderDocumentObject;
+
+struct GuiExport DynamicPropertyChangeEvent
+{
+    enum class Kind
+    {
+        Add,
+        Remove,
+        Rename
+    };
+
+    Kind kind {Kind::Add};
+    const App::PropertyContainer* container {};
+    const App::Property* property {};
+    std::string name;
+    std::string oldName;
+    bool hidden {};
+};
 
 /** The Application main class
  * This is the central class of the GUI
@@ -156,6 +178,8 @@ public:
     fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     /// signal on changing user edit mode
     fastsignals::signal<void(int)> signalUserEditModeChanged;
+    /// signal on dynamic property structure changes
+    fastsignals::signal<void(const Gui::DynamicPropertyChangeEvent&)> signalDynamicPropertyChanged;
     //@}
 
     /** @name methods for Document handling */
@@ -175,6 +199,9 @@ protected:
     void slotActivatedObject(const ViewProvider&);
     void slotInEdit(const Gui::ViewProviderDocumentObject&);
     void slotResetEdit(const Gui::ViewProviderDocumentObject&);
+    void slotAppendDynamicProperty(const App::Property&);
+    void slotRemoveDynamicProperty(const App::Property&);
+    void slotRenameDynamicProperty(const App::Property&, const char* oldName);
 
 public:
     /// message when a GuiDocument is about to vanish
