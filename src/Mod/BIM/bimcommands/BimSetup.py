@@ -46,6 +46,7 @@ class BIM_Setup:
         }
 
     def Activated(self):
+        from draftutils import params
 
         # only raise the dialog if it is already open
         if getattr(self, "form", None):
@@ -474,7 +475,7 @@ class BIM_Setup:
             )
             tsize = FreeCAD.Units.Quantity(tsize, FreeCAD.Units.Length).UserString
             font = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString(
-                "textfont", "Sans"
+                "textfont", params.get_param("textfont")
             )
             linewidth = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetInt(
                 "DefaultShapeLineWidth", 2

@@ -603,9 +603,11 @@ class BIM_ProjectManager:
                 "textheight", 10
             )
         )
+        from draftutils import params
+
         values["textfont"] = str(
             FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString(
-                "textfont", "Sans"
+                "textfont", params.get_param("textfont")
             )
         )
         values["dimstyle"] = str(

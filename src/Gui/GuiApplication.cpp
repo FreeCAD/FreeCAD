@@ -35,6 +35,7 @@
 #include <QAbstractSpinBox>
 #include <QByteArray>
 #include <QComboBox>
+#include <QFont>
 #include <QTextStream>
 #include <QFileInfo>
 #include <QFileOpenEvent>
@@ -61,6 +62,14 @@ using namespace Gui;
 GUIApplication::GUIApplication(int& argc, char** argv)
     : GUIApplicationNativeEventAware(argc, argv)
 {
+#ifdef FC_OS_MACOSX
+    QFont appFont = QApplication::font();
+    if (appFont.family().startsWith(QLatin1String(".Apple"))) {
+        appFont.setFamily(QStringLiteral("Helvetica"));
+        QApplication::setFont(appFont);
+    }
+#endif
+
     connect(
         this,
         &GUIApplication::commitDataRequest,

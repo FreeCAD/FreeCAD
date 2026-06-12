@@ -12,7 +12,7 @@
   </property>
   <property name="font">
    <font>
-    <family>.AppleSystemUIFont</family>
+    <family>Helvetica</family>
    </font>
   </property>
   <property name="windowTitle">

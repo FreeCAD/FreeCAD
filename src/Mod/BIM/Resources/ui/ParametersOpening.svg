@@ -79,17 +79,17 @@
        id="path3867-8-7" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:Helvetica;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none"
        x="133.08107"
        y="1044.5293"
        id="text4070"><tspan
          id="tspan4072"
          x="133.08107"
          y="1044.5293"
-         style="font-weight:bold;font-size:10px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'Sans Bold'">WIDTH</tspan></text>
+         style="font-weight:bold;font-size:10px;line-height:1.25;font-family:Helvetica;-inkscape-font-specification:'Sans Bold'">WIDTH</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;line-height:0%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-weight:normal;line-height:0%;font-family:Helvetica;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none"
        x="-1003.166"
        y="90.64502"
        id="text4070-5"
@@ -97,7 +97,7 @@
          id="tspan4072-7"
          x="-1003.166"
          y="90.64502"
-         style="font-weight:bold;font-size:10px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'Sans Bold'">HEIGHT</tspan></text>
+         style="font-weight:bold;font-size:10px;line-height:1.25;font-family:Helvetica;-inkscape-font-specification:'Sans Bold'">HEIGHT</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 14.897753,1021.2025 36.785714,0 0,13.5714"

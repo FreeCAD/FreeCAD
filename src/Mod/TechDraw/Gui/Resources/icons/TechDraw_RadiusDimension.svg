@@ -193,7 +193,7 @@
       <path
          id="path3770-1"
          d="m 27.634355,25.104874 2.659865,2.696146 -14.629254,14.8288 -2.654761,0.762471 c 0,4.044219 -0.670068,3.955782 -1.335035,5.977892 l -0.664965,2.022108 1.994897,-0.674035 C 15,50.044219 16.020408,48.392291 20.010205,48.392291 l -0.355442,-1.718254 14.629252,-14.828799 2.659865,2.696146 1.994897,-11.458618 z"
-         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#edd400;fill-opacity:1;fill-rule:nonzero;stroke:none;enable-background:accumulate" />
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:Helvetica;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#edd400;fill-opacity:1;fill-rule:nonzero;stroke:none;enable-background:accumulate" />
       <path
          id="path3864"
          d="m 35.613947,25.104874 -5.603742,1.287417"
@@ -209,7 +209,7 @@
       <path
          id="path3770-9"
          d="m 27.867349,24.535147 2.857144,2.857144 -15.714289,15.714287 10e-7,0.285713 c 0,4.285716 -3.571428,4.714286 -4.285715,6.857144 l 2.285715,0.142856 -0.857143,1.285716 c 2.142857,-0.714287 1.571427,-4.285716 5.857143,-4.285716 h 1.285715 l 15.714286,-15.714286 2.857144,2.857144 2.142856,-12.142858 z"
-         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:accumulate" />
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:Helvetica;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;enable-background:accumulate" />
       <path
          transform="translate(8.010205,3.392291)"
          d="m 13,44 c 0,3.313708 -2.686292,6 -6,6 -3.3137085,0 -6,-2.686292 -6,-6 0,-3.313708 2.6862915,-6 6,-6 3.313708,0 6,2.686292 6,6 z"

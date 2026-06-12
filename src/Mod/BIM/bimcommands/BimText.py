@@ -59,6 +59,7 @@ class BIM_Text:
 
     def createObject(self):
         import TechDraw
+        from draftutils import params
 
         if self.text:
             page = self.view.getPage()
@@ -70,7 +71,7 @@ class BIM_Text:
             page.addView(anno)
             param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
             anno.TextSize = param.GetFloat("textheight", 10) * pagescale
-            anno.Font = param.GetString("textfont", "Sans")
+            anno.Font = param.GetString("textfont", params.get_param("textfont"))
             c = param.GetUnsigned("DefaultTextColor", 255)
             r = ((c >> 24) & 0xFF) / 255.0
             g = ((c >> 16) & 0xFF) / 255.0
