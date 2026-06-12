@@ -381,7 +381,7 @@ class BIM_Classification:
             self._bsdd_client.conceptReady.disconnect(self._on_bsdd_concept_ready)
             self._bsdd_client.requestFailed.disconnect(self._on_bsdd_request_failed)
         except (RuntimeError, TypeError):
-            pass
+            return
         except Exception as err:
             _print_ui_error("_disconnect_bsdd_signals", err)
         finally:
@@ -745,8 +745,8 @@ class BIM_Classification:
             self._updating_bsdd_dictionaries = False
             try:
                 self.form.bsddDictionaryList.blockSignals(False)
-            except Exception:
-                pass
+            except Exception as block_err:
+                _print_ui_error("_on_bsdd_dictionaries_ready.blockSignals", block_err)
             _print_ui_error("_on_bsdd_dictionaries_ready", err)
 
     def _on_bsdd_search_ready(self, search_key, payload):
@@ -1530,8 +1530,8 @@ class BIM_Classification:
                     ):
                         try:
                             FreeCAD.ActiveDocument.abortTransaction()
-                        except Exception:
-                            pass
+                        except Exception as err:
+                            _print_ui_error("accept.abortTransaction", err)
                         return self.reject()
                 if self.form.checkPrefix.isChecked() and prefix:
                     code = prefix + " " + code
