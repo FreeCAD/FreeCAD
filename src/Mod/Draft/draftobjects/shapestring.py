@@ -320,10 +320,10 @@ class ShapeString(DraftObject):
         # FaceMakerSimple:
         #     All fonts: overlapping faces in case of nested wires f.e. with: O.
         for maker in (
-            "Part::FaceMakerUnified",
             "Part::FaceMakerBullseye",
             "Part::FaceMakerCheese",
             "Part::FaceMakerSimple",
+            "Part::FaceMakerUnified",
         ):
             try:
                 faces = Part.makeFace(wirelist, maker).Faces

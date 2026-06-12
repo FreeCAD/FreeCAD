@@ -165,7 +165,7 @@ TopoDS_Face fillNonPlanar(const TopoDS_Wire& wire)
     }
     catch (const Standard_Failure& e) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("fillNonPlanar: " << e.GetMessageString());
+            FC_LOG("fillNonPlanar: " << e.GetMessageString());
         }
     }
     return {};
