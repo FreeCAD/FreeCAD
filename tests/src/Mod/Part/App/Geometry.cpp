@@ -86,3 +86,59 @@ TEST_F(GeometryTest, testTrimBSpline)
     EXPECT_DOUBLE_EQ(nonPeriodicBSpline1.getFirstParameter(), param1);
     EXPECT_DOUBLE_EQ(nonPeriodicBSpline1.getLastParameter(), param2);
 }
+
+TEST_F(GeometryTest, testRestrictedCurve)
+{
+    // Arrange
+    Part::GeomCircle origCurve;
+
+    // Act
+    // Just create the curve first and see if it happens
+    Part::GeomRestrictedCurve restrCurve(origCurve, 0., 1.);
+
+    // Assert
+    // TODO: Ensure the bounds are exactly what they are supposed to be
+    EXPECT_EQ(restrCurve.getFirstParameter(), 0.);
+    EXPECT_EQ(restrCurve.getLastParameter(), 1.);
+    // TODO: Ensure the original curve is not touched
+}
+
+TEST_F(GeometryTest, testRestrictedCurveWhenModifyingOriginal)
+{
+    // Arrange
+    Part::GeomArcOfCircle arcOfCircle;
+    Base::Vector3d coordsCenter(1.0, 2.0, 0.0);
+    double radius = 3.0;
+    double startParam = std::numbers::pi / 3, endParam = std::numbers::pi * 1.5;
+    arcOfCircle.setCenter(coordsCenter);
+    arcOfCircle.setRadius(radius);
+    arcOfCircle.setRange(startParam, endParam, true);
+
+    // Act
+    Part::GeomRestrictedCurve restrCurve(arcOfCircle, 0., 1.);
+    Base::Vector3d startOfRestrCurve {restrCurve.getStartPoint()};
+    Base::Vector3d endOfRestrCurve {restrCurve.getEndPoint()};
+    // TODO: Modify `arcOfCircle`
+    arcOfCircle.setRadius(2 * radius);
+
+    // Assert
+    // TODO: Ensure the first/last parameters are exactly what they are supposed to be
+    EXPECT_EQ(restrCurve.getFirstParameter(), 0.);
+    EXPECT_EQ(restrCurve.getLastParameter(), 1.);
+    // TODO: Ensure the physical points do still follow `arcOfCircle`
+    EXPECT_NE(restrCurve.getStartPoint(), startOfRestrCurve);
+    EXPECT_NE(restrCurve.getEndPoint(), endOfRestrCurve);
+}
+
+TEST_F(GeometryTest, testRestrictedCurveWhenDeletingOriginal)
+{
+    // Arrange
+    Part::GeomArcOfCircle origCurve;
+
+    // Act
+    auto* restrCurve = new Part::GeomRestrictedCurve(origCurve, 0., 1.);
+    // TODO: Delete `origCurve`
+
+    // Assert
+    // TODO: Ensure any activity with restricted curve throws an appropriate exception
+}

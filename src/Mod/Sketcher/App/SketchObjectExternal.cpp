@@ -1613,12 +1613,14 @@ void processEdge2(TopoDS_Edge& projEdge, std::vector<std::unique_ptr<Part::Geome
         }
     }
     else if (projCurve.GetType() == GeomAbs_BezierCurve) {
+        // this will match the shape but technically is a different type
         Handle(Geom_BSplineCurve) hBSpline = GeomConvert::CurveToBSplineCurve(projCurve.Bezier());
         auto* bspline = new Part::GeomBSplineCurve(hBSpline);
         GeometryFacade::setConstruction(bspline, true);
         geos.emplace_back(bspline);
     }
     else if (projCurve.GetType() == GeomAbs_OffsetCurve) {
+        // this will only be an approximation
         Handle(Geom_BSplineCurve) hBSpline = GeomConvert::CurveToBSplineCurve(projCurve.OffsetCurve());
         auto* bspline = new Part::GeomBSplineCurve(hBSpline);
         GeometryFacade::setConstruction(bspline, true);

@@ -1144,4 +1144,125 @@ void BSpline::setupFlattenedKnots()
     }
 }
 
+DeriVector2 OffsetCurve::Value(double u, double du, const double* derivparam) const
+{
+    if (basis == nullptr) {
+        return {};
+    }
+
+    // TODO: implement properly. recall how du is involved
+    // normalDir = (basis->CalculateNormal(u, derivParam)).normalized()
+    // return basis->Value(u, du, derivparam) + normalDir * (*offset);
+    return {};
+}
+
+DeriVector2 OffsetCurve::CalculateNormal(const Point& p, const double* derivparam) const
+{
+    if (basis == nullptr) {
+        return {};
+    }
+
+    return basis->CalculateNormal(p, derivparam);
+}
+
+int OffsetCurve::PushOwnParams(VEC_pD& pvec)
+{
+    std::size_t cnt = 0;
+
+    pvec.push_back(offset);
+    cnt++;
+
+    pvec.push_back(start.x);
+    cnt++;
+    pvec.push_back(start.y);
+    cnt++;
+    pvec.push_back(end.x);
+    cnt++;
+    pvec.push_back(end.y);
+    cnt++;
+
+    return static_cast<int>(cnt);
+}
+
+void OffsetCurve::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    offset = pvec[cnt];
+    cnt++;
+
+    start.x = pvec[cnt];
+    cnt++;
+    start.y = pvec[cnt];
+    cnt++;
+    end.x = pvec[cnt];
+    cnt++;
+    end.y = pvec[cnt];
+    cnt++;
+}
+
+OffsetCurve* OffsetCurve::Copy()
+{
+    return new OffsetCurve(*this);
+}
+
+DeriVector2 RestrictedCurve::Value(double u, double du, const double* derivparam) const
+{
+    if (basis == nullptr) {
+        return {};
+    }
+
+    return basis->Value(u, du, derivparam);
+}
+
+DeriVector2 RestrictedCurve::CalculateNormal(const Point& p, const double* derivparam) const
+{
+    if (basis == nullptr) {
+        return {};
+    }
+
+    return basis->CalculateNormal(p, derivparam);
+}
+
+int RestrictedCurve::PushOwnParams(VEC_pD& pvec)
+{
+    std::size_t cnt = 0;
+
+    pvec.push_back(firstParam);
+    cnt++;
+    pvec.push_back(lastParam);
+    cnt++;
+
+    pvec.push_back(start.x);
+    cnt++;
+    pvec.push_back(start.y);
+    cnt++;
+    pvec.push_back(end.x);
+    cnt++;
+    pvec.push_back(end.y);
+    cnt++;
+
+    return static_cast<int>(cnt);
+}
+
+void RestrictedCurve::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    firstParam = pvec[cnt];
+    cnt++;
+    lastParam = pvec[cnt];
+    cnt++;
+
+    start.x = pvec[cnt];
+    cnt++;
+    start.y = pvec[cnt];
+    cnt++;
+    end.x = pvec[cnt];
+    cnt++;
+    end.y = pvec[cnt];
+    cnt++;
+}
+
+RestrictedCurve* RestrictedCurve::Copy()
+{
+    return new RestrictedCurve(*this);
+}
+
 }  // namespace GCS
