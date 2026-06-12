@@ -42,10 +42,14 @@ class SoFontStyle;
 class SoBaseColor;
 class SoText2;
 class SoTranslation;
+class SoTransform;
 class SoPickStyle;
 class SoCoordinate3;
+class SoIndexedFaceSet;
 class SoIndexedLineSet;
 class SoTranslate2Dragger;
+class SoSwitch;
+class SoMarkerSet;
 // NOLINTEND
 
 
@@ -202,10 +206,16 @@ protected:
 
     virtual Base::Vector3d getBasePosition();
     virtual Base::Vector3d getTextPosition();
+    bool isSavedMeasurement() const;
 
 private:
     SoCoordinate3* pCoords;
     SoIndexedLineSet* pLines;
+    SoMarkerSet* pBaseMarker;
+    SoSwitch* pArrowSwitch;
+    SoTransform* pArrowTransform;
+    SoIndexedFaceSet* pArrow;
+    SoIndexedLineSet* pArrowOutline;
 };
 
 
@@ -254,6 +264,9 @@ public:
     {
         sPixmap = "Measurement-Radius";
     }
+
+protected:
+    Base::Vector3d getTextPosition() override;
 };
 
 class ViewProviderMeasureDiameter: public ViewProviderMeasure
@@ -265,6 +278,9 @@ public:
     {
         sPixmap = "Measurement-Diameter";
     }
+
+protected:
+    Base::Vector3d getTextPosition() override;
 };
 
 class ViewProviderMeasureCOM: public ViewProviderMeasure

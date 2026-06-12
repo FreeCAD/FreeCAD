@@ -24,6 +24,7 @@
 #include "Gui/Application.h"
 #include "Gui/MDIView.h"
 
+#include <algorithm>
 #include <functional>
 
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -32,17 +33,23 @@
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoMarkerSet.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/engines/SoComposeMatrix.h>
+#include <Inventor/engines/SoComposeRotationFromTo.h>
 #include <Inventor/engines/SoTransformVec3f.h>
+#include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/SbViewportRegion.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
 #include <Gui/BitmapFactory.h>
@@ -53,6 +60,8 @@
 #include <Gui/View3DInventorViewer.h>
 
 #include <Mod/Measure/App/Preferences.h>
+#include <Mod/Measure/App/MeasureRadius.h>
+#include <Mod/Measure/App/MeasureDiameter.h>
 #include "ViewProviderMeasureBase.h"
 
 using namespace MeasureGui;
@@ -704,19 +713,70 @@ ViewProviderMeasure::ViewProviderMeasure()
     auto lineSep = pLineSeparator;
     lineSep->addChild(pCoords);
     lineSep->addChild(pLines);
-    auto points = new SoMarkerSet();
-    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
+    pBaseMarker = new SoMarkerSet();
+    pBaseMarker->ref();
+    pBaseMarker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex(
         "CROSS",
         Gui::ViewParams::instance()->getMarkerSize()
     );
-    points->numPoints = 1;
-    lineSep->addChild(points);
+    pBaseMarker->numPoints = 1;
+    lineSep->addChild(pBaseMarker);
+
+    // Arrowhead at the measured endpoint (local origin) for unified measurements.
+    auto arrowCalculator = new SoCalculator();
+    arrowCalculator->A.connectFrom(&pLabelTranslation->translation);
+    arrowCalculator->expression.set1Value(0, "oB = normalize(A)");
+    arrowCalculator->expression.set1Value(1, "oC = -oB");
+
+    auto arrowRotation = new SoComposeRotationFromTo();
+    // Local model arrow points along -X from base edge to tip at origin.
+    arrowRotation->from.setValue(SbVec3f(-1.0f, 0.0f, 0.0f));
+    arrowRotation->to.connectFrom(&arrowCalculator->oC);
+
+    pArrowTransform = new SoTransform();
+    pArrowTransform->ref();
+    pArrowTransform->rotation.connectFrom(&arrowRotation->rotation);
+
+    auto arrowSeparator = new SoSeparator();
+    arrowSeparator->addChild(pArrowTransform);
+
+    auto arrowCoords = new SoCoordinate3();
+    // Tip at origin, base behind it -> classic filled arrowhead.
+    arrowCoords->point.set1Value(0, 0.0f, 0.0f, 0.0f);
+    arrowCoords->point.set1Value(1, 1.0f, 0.32f, 0.0f);
+    arrowCoords->point.set1Value(2, 1.0f, -0.32f, 0.0f);
+
+    pArrow = new SoIndexedFaceSet();
+    pArrow->ref();
+    // Double-sided triangle so it stays visible from either side.
+    static const int32_t arrowFaces[] = {0, 1, 2, -1, 0, 2, 1, -1};
+    pArrow->coordIndex.setValues(0, 8, arrowFaces);
+
+    pArrowOutline = new SoIndexedLineSet();
+    pArrowOutline->ref();
+    // Explicit outline keeps the arrow visible even when face-fill path is culled by GPU/driver.
+    static const int32_t arrowOutlineIdx[] = {0, 1, -1, 0, 2, -1, 1, 2, -1};
+    pArrowOutline->coordIndex.setValues(0, 9, arrowOutlineIdx);
+    arrowSeparator->addChild(arrowCoords);
+    arrowSeparator->addChild(pArrow);
+    arrowSeparator->addChild(pArrowOutline);
+
+    pArrowSwitch = new SoSwitch();
+    pArrowSwitch->ref();
+    pArrowSwitch->whichChild = SO_SWITCH_NONE;
+    pArrowSwitch->addChild(arrowSeparator);
+    lineSep->addChild(pArrowSwitch);
 }
 
 ViewProviderMeasure::~ViewProviderMeasure()
 {
     pCoords->unref();
     pLines->unref();
+    pBaseMarker->unref();
+    pArrowSwitch->unref();
+    pArrowTransform->unref();
+    pArrow->unref();
+    pArrowOutline->unref();
 }
 
 void ViewProviderMeasure::positionAnno(const Measure::MeasureBase* measureObject)
@@ -750,6 +810,27 @@ void ViewProviderMeasure::redrawAnnotation()
 
     setLabelValue(getMeasureObject()->getResultString());
 
+    const bool isSaved = isSavedMeasurement();
+    const bool isRadiusOrDiameter = (dynamic_cast<Measure::MeasureRadius*>(getMeasureObject())
+                                     != nullptr)
+        || (dynamic_cast<Measure::MeasureDiameter*>(getMeasureObject()) != nullptr);
+    bool enableArrow = isSaved || isRadiusOrDiameter;
+    const float leaderLength = pLabelTranslation->translation.getValue().length();
+    enableArrow = enableArrow && (leaderLength > defaultTolerance);
+    if (enableArrow) {
+        // Keep arrow readable for very small measurements (eg. 2 mm radius).
+        const float viewScale = getViewScale();
+        const float minArrowPx = 5.0f;
+        const float maxArrowPx = 12.0f;
+        const float minArrowWorld = (viewScale > 0.0f) ? (minArrowPx / viewScale) : 0.0f;
+        const float maxArrowWorld = (viewScale > 0.0f) ? (maxArrowPx / viewScale) : leaderLength;
+        const float baseArrowWorld = leaderLength * 0.20f;
+        const float arrowSize = std::clamp(baseArrowWorld, minArrowWorld, maxArrowWorld);
+        pArrowTransform->scaleFactor.setValue(arrowSize, arrowSize, arrowSize);
+    }
+    pBaseMarker->numPoints = enableArrow ? 0 : 1;
+    pArrowSwitch->whichChild = enableArrow ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+
     ViewProviderMeasureBase::redrawAnnotation();
     ViewProviderDocumentObject::updateView();
 }
@@ -781,6 +862,62 @@ Base::Vector3d ViewProviderMeasure::getTextPosition()
     Base::Vector3d textPos(vec[0], vec[1], vec[2]);
 
     return textPos - basePoint;
+}
+
+bool ViewProviderMeasure::isSavedMeasurement() const
+{
+    if (!pcObject || !pcObject->getDocument()) {
+        return false;
+    }
+
+    auto* group = dynamic_cast<App::DocumentObjectGroup*>(
+        pcObject->getDocument()->getObject("Measurements")
+    );
+    if (!group) {
+        return false;
+    }
+
+    return group->hasObject(pcObject, false);
+}
+
+Base::Vector3d ViewProviderMeasureRadius::getTextPosition()
+{
+    if (isSavedMeasurement()) {
+        // Saved: use clear leader distance away from geometry.
+        return ViewProviderMeasure::getTextPosition() * 2.2;
+    }
+
+    auto* radiusObj = dynamic_cast<Measure::MeasureRadius*>(getMeasureObject());
+    if (!radiusObj) {
+        return ViewProviderMeasure::getTextPosition();
+    }
+
+    // Temporary: keep old radial style from perimeter toward center.
+    Base::Vector3d radial = getBasePosition() - radiusObj->getPointOnCurve();
+    if (radial.Length() < defaultTolerance) {
+        return ViewProviderMeasure::getTextPosition();
+    }
+    return radial;
+}
+
+Base::Vector3d ViewProviderMeasureDiameter::getTextPosition()
+{
+    if (isSavedMeasurement()) {
+        // Saved: use clear leader distance away from geometry.
+        return ViewProviderMeasure::getTextPosition() * 2.2;
+    }
+
+    auto* diameterObj = dynamic_cast<Measure::MeasureDiameter*>(getMeasureObject());
+    if (!diameterObj) {
+        return ViewProviderMeasure::getTextPosition();
+    }
+
+    // Temporary: keep old radial style from perimeter toward center.
+    Base::Vector3d radial = getBasePosition() - diameterObj->getPointOnCurve();
+    if (radial.Length() < defaultTolerance) {
+        return ViewProviderMeasure::getTextPosition();
+    }
+    return radial;
 }
 
 //! called by the system when it is time to display this measure
