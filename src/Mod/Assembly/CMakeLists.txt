@@ -1,5 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+if(OCC_VERSION_STRING VERSION_GREATER_EQUAL "8.0.0")
+    add_definitions(-DOCCT_NO_DEPRECATED)
+endif()
+
 if (NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
 include_directories(
     ${CMAKE_SOURCE_DIR}/src/3rdParty/OndselSolver
