@@ -75,6 +75,7 @@ Var CreateFileAssociations
 Var OldVersionNumber
 Var OriginalCmdInstDir
 Var Pointer
+Var RemoveInstDir
 Var Search
 Var StartmenuFolder
 Var String

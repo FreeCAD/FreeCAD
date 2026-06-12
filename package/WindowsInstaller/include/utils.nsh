@@ -269,3 +269,31 @@ FunctionEnd
   Pop ${Output}
 !macroend
 !define TrimQuotes `!insertmacro _TrimQuotes`
+
+Function ValidateInstallDir
+  # if the $INSTDIR does not contain "FreeCAD" we must add a subfolder to avoid that FreeCAD will e.g.
+  # be installed directly to C:\programs - the uninstaller will then delete the whole
+  # C:\programs directory
+  StrCpy $String "$INSTDIR"
+  StrCpy $Search "${APP_NAME}"
+  Call StrPoint # function from Utils.nsh
+  ${if} $Pointer == "-1"
+    StrCpy $INSTDIR "$INSTDIR\${APP_DIR}"
+  ${endif}
+  # Make sure install dir is empty, avoids library conflicts from mixed installs
+  Push $R0
+  ${DirState} "$INSTDIR" $R0
+  ${If} $R0 == 1
+    MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(DirNotEmptyWarning)" /SD IDYES IDYES SetRemoveInstDir IDNO RejectDir
+
+    SetRemoveInstDir:
+      StrCpy $RemoveInstDir "true"
+      Goto EndCheck
+
+    RejectDir:
+      Abort
+
+    EndCheck:
+  ${EndIf}
+  Pop $R0
+FunctionEnd

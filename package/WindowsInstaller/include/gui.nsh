@@ -44,6 +44,7 @@ BrandingText " "
 !insertmacro MULTIUSER_PAGE_INSTALLMODE
 
 # Specify the installation directory.
+!define MUI_PAGE_CUSTOMFUNCTION_LEAVE ValidateInstallDir
 !insertmacro MUI_PAGE_DIRECTORY
 
 # Define which components to install.
