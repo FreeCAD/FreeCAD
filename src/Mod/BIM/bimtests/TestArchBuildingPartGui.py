@@ -1,13 +1,38 @@
+from unittest import mock
+
 import FreeCAD as App
 import FreeCADGui
 import Arch
 import Draft
 import Part
 import Sketcher
+
 from bimtests.TestArchBaseGui import TestArchBaseGui
 
 
 class TestArchBuildingPartGui(TestArchBaseGui):
+
+    def testDeactivationDoesNotRestorePreviousContainer(self):
+        first = Arch.makeBuildingPart(name="First")
+        second = Arch.makeBuildingPart(name="Second")
+        third = Arch.makeBuildingPart(name="Third")
+        active_view = FreeCADGui.ActiveDocument.ActiveView
+
+        def restore_second(restore=False):
+            if restore:
+                active_view.setActiveObject("Arch", second)
+
+        with (
+            mock.patch.object(first.ViewObject.Proxy, "setWorkingPlane"),
+            mock.patch.object(second.ViewObject.Proxy, "setWorkingPlane"),
+            mock.patch.object(third.ViewObject.Proxy, "setWorkingPlane", side_effect=restore_second),
+        ):
+            first.ViewObject.Proxy.activate()
+            second.ViewObject.Proxy.activate()
+            third.ViewObject.Proxy.activate()
+            third.ViewObject.Proxy.activate()
+
+        self.assertIsNone(active_view.getActiveObject("Arch"))
 
     def testBuildingPart(self):
         """Create a BuildingPart from a wall with a window and check its shape."""

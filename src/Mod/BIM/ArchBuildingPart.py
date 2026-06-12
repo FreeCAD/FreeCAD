@@ -1197,7 +1197,7 @@ class ViewProviderBuildingPart:
         vobj = self.Object.ViewObject
 
         if (not hasattr(vobj, "DoubleClickActivates")) or vobj.DoubleClickActivates:
-            if toggle_working_plane(self.Object, action, restore=True):
+            if toggle_working_plane(self.Object, action):
                 print("Setting active working plane to: ", self.Object.Label)
             else:
                 print("Deactivating working plane from: ", self.Object.Label)

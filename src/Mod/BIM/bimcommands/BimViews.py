@@ -526,7 +526,7 @@ class BIM_Views:
                 item = vm.tree.selectedItems()[-1]
                 obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
                 if obj:
-                    toggle_working_plane(obj, None, restore=True, dialog=dialog)
+                    toggle_working_plane(obj, None, dialog=dialog)
                     FreeCADGui.Selection.clearSelection()
 
     def editObject(self, item, column):

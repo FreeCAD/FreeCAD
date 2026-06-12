@@ -1042,7 +1042,7 @@ def toggle_working_plane(obj, action=None, restore=False, dialog=None):
         if is_active_ifc:
             Gui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
 
-        if (
+        if restore and (
             hasattr(obj, "ViewObject")
             and hasattr(obj.ViewObject, "Proxy")
             and hasattr(obj.ViewObject.Proxy, "setWorkingPlane")
