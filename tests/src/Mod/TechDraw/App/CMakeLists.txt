@@ -2,4 +2,5 @@
 
 add_executable(TechDraw_tests_run
         LineFormat.cpp
+        TestDimensionFormatter.cpp
 )

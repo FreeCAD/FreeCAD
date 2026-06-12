@@ -168,7 +168,7 @@ If 'Equal tolerance' is checked this is also
 the negated value for 'Undertolerance'.</string>
           </property>
           <property name="singleStep" stdset="0">
-           <double>0.100000000000000</double>
+           <double>0.010000000000000</double>
           </property>
           <property name="value" stdset="0">
            <double>0.000000000000000</double>
@@ -196,7 +196,7 @@ If 'Equal tolerance' is checked it will be replaced
 by negative value of 'Overtolerance'.</string>
           </property>
           <property name="singleStep" stdset="0">
-           <double>0.100000000000000</double>
+           <double>0.010000000000000</double>
           </property>
           <property name="value" stdset="0">
            <double>0.000000000000000</double>

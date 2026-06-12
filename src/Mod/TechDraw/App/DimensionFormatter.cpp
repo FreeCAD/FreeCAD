@@ -103,7 +103,8 @@ std::string DimensionFormatter::formatValue(const qreal value,
 
     double factor{1.0};
     std::string unitText{""};
-    asQuantity.getUserString(factor, unitText);
+    Base::Quantity unitQuantity {isDim ? value : m_dimension->getDimValue(), unit};
+    unitQuantity.getUserString(factor, unitText);
     std::string squareTag{"^2"};
 
     if (unitText.empty()) {
