@@ -80,6 +80,7 @@ public:
     static void initCurrentLineFormat();
     static LineFormat& getCurrentLineFormat();
     static void setCurrentLineFormat(LineFormat& newformat);
+    static bool isEqual(const LineFormat& lf0, const LineFormat& lf1);
 
 private:
     int m_style;

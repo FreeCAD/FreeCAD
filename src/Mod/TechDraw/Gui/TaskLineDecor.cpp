@@ -50,10 +50,10 @@ TaskLineDecor::TaskLineDecor(TechDraw::DrawViewPart* partFeat,
     ui(new Ui_TaskLineDecor),
     m_partFeat(partFeat),
     m_edges(edgeNames),
-    m_apply(true)
+    m_apply(true),
+    m_lineGenerator(new TechDraw::LineGenerator)
 {
     initializeRejectArrays();
-    m_lineGenerator = new TechDraw::LineGenerator;
 
     ui->setupUi(this);
 
@@ -122,20 +122,25 @@ TechDraw::LineFormat *TaskLineDecor::getFormatAccessPtr(const std::string &edgeN
             if (gf) {
                 return &gf->m_format;
             }
-            else {
-                ViewProviderViewPart *viewPart = dynamic_cast<ViewProviderViewPart *>(QGIView::getViewProvider(m_partFeat));
-                if (viewPart) {
-                    TechDraw::LineFormat lineFormat(Qt::SolidLine, viewPart->LineWidth.getValue(), LineFormat::getDefEdgeColor(), true);
-                    TechDraw::GeomFormat geomFormat(DrawUtil::getIndexFromName(edgeName), lineFormat);
+            ViewProviderViewPart *viewPart = dynamic_cast<ViewProviderViewPart *>(QGIView::getViewProvider(m_partFeat));
+            if (viewPart) {
+                // this gives any selected edge w/o a format a persistent format?
+                constexpr bool Visible{true};
+                TechDraw::LineFormat lineFormat(Qt::DotLine,
+                                                LineFormat::getCurrentLineFormat().getWidth(),
+                                                LineFormat::getCurrentLineFormat().getColor(),
+                                                Visible,
+                                                LineFormat::getCurrentLineFormat().getLineNumber());
+                TechDraw::GeomFormat geomFormat(DrawUtil::getIndexFromName(edgeName), lineFormat);
 
-                    std::string formatTag = m_partFeat->addGeomFormat(&geomFormat);
-                    if (newFormatTag) {
-                        *newFormatTag = formatTag;
-                    }
-
-                    return &m_partFeat->getGeomFormat(formatTag)->m_format;
+                std::string formatTag = m_partFeat->addGeomFormat(&geomFormat);
+                if (newFormatTag) {
+                    *newFormatTag = formatTag;
                 }
+
+                return &m_partFeat->getGeomFormat(formatTag)->m_format;
             }
+
         }
     }
     return {};
@@ -162,14 +167,16 @@ void TaskLineDecor::initializeRejectArrays()
 // get the current line tool appearance default
 void TaskLineDecor::getDefaults()
 {
-//    Base::Console().message("TLD::getDefaults()\n");
     m_color = LineFormat::getCurrentLineFormat().getColor();
     m_weight = LineFormat::getCurrentLineFormat().getWidth();
     m_visible = LineFormat::getCurrentLineFormat().getVisible();
     m_lineNumber = LineFormat::getCurrentLineFormat().getLineNumber();
 
     //set defaults to format of 1st edge
-    if (!m_originalFormats.empty()) {
+    // this is never empty. getFormatAccessPtr() creates a default GeomFormat
+    // for any edge in the selelction that doesn't already have one.
+    if (!m_originalFormats.empty()  &&
+        !LineFormat::isEqual(m_originalFormats.front(), LineFormat::getCurrentLineFormat())) {
         LineFormat &lf = m_originalFormats.front();
         m_style = lf.getStyle();
         m_color = lf.getColor();
@@ -304,7 +311,6 @@ void TaskRestoreLines::initUi()
 
 void TaskRestoreLines::onAllPressed()
 {
-//    Base::Console().message("TRL::onAllPressed()\n");
     onGeometryPressed();
     onCosmeticPressed();
     onCenterPressed();
@@ -312,7 +318,6 @@ void TaskRestoreLines::onAllPressed()
 
 void TaskRestoreLines::onGeometryPressed()
 {
-//    Base::Console().message("TRL::onGeometryPressed()\n");
     restoreInvisibleGeoms();
     ui->l_Geometry->setText(QString::number(0));
     ui->l_All->setText(QString::number(countInvisibleLines()));
@@ -320,7 +325,6 @@ void TaskRestoreLines::onGeometryPressed()
 
 void TaskRestoreLines::onCosmeticPressed()
 {
-//    Base::Console().message("TRL::onCosmeticPressed()\n");
     restoreInvisibleCosmetics();
     ui->l_Cosmetic->setText(QString::number(0));
     ui->l_All->setText(QString::number(countInvisibleLines()));
@@ -328,7 +332,6 @@ void TaskRestoreLines::onCosmeticPressed()
 
 void TaskRestoreLines::onCenterPressed()
 {
-//    Base::Console().message("TRL::onCenterPressed()\n");
     restoreInvisibleCenters();
     ui->l_Center->setText(QString::number(0));
     ui->l_All->setText(QString::number(countInvisibleLines()));
@@ -425,13 +428,11 @@ void TaskRestoreLines::restoreInvisibleCenters()
 
 bool TaskRestoreLines::accept()
 {
-//    Base::Console().message("TRL::accept()\n");
     return true;
 }
 
 bool TaskRestoreLines::reject()
 {
-//    Base::Console().message("TRL::reject()\n");
     return false;
 }
 
@@ -483,14 +484,12 @@ void TaskDlgLineDecor::clicked(int i)
 
 bool TaskDlgLineDecor::accept()
 {
-//    Base::Console().message("TDLD::accept()\n");
     widget->accept();
     return true;
 }
 
 bool TaskDlgLineDecor::reject()
 {
-//    Base::Console().message("TDLD::reject()\n");
     widget->reject();
     return true;
 }

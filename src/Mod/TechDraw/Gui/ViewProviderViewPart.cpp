@@ -135,6 +135,8 @@ ViewProviderViewPart::ViewProviderViewPart()
                         "Adjusts the type of break line depiction on broken views");
     ADD_PROPERTY_TYPE(BreakLineStyle, (Preferences::BreakLineStyle()), bvgroup, App::Prop_None,
                         "Set break line style if applicable");
+    ADD_PROPERTY_TYPE(BreakLineColor, (PreferencesGui::breaklineColor()), bvgroup, App::Prop_None,
+                      "Set break line  color if applicable");
 
     ADD_PROPERTY_TYPE(ShowAllEdges ,(false),dgroup, App::Prop_None, "Temporarily show invisible lines");
 
@@ -197,6 +199,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(FaceColor) ||
         prop == &(FaceTransparency)  ||
         prop == &(BreakLineType)   ||
+        prop == &(BreakLineColor)   ||
         prop == &(BreakLineStyle) ) {
         // redraw QGIVP
         QGIView* qgiv = getQView();
@@ -218,6 +221,13 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
         sPixmap = "TechDraw_TreeMulti";
     } else if (dvd) {
         sPixmap = "actions/TechDraw_DetailView";
+        // these properties apply to the base view, not the detail
+        HighlightLineStyle.setStatus(App::Property::ReadOnly, true);
+        HighlightLineStyle.setStatus(App::Property::Hidden, true);
+        HighlightLineColor.setStatus(App::Property::ReadOnly, true);
+        HighlightLineColor.setStatus(App::Property::Hidden, true);
+        HighlightAdjust.setStatus(App::Property::ReadOnly, true);
+        HighlightAdjust.setStatus(App::Property::Hidden, true);
     }
 
     ViewProviderDrawingView::attach(pcFeat);
@@ -425,6 +435,7 @@ int ViewProviderViewPart::prefHighlightStyle()
 {
     return Preferences::getPreferenceGroup("Decorations")->GetInt("HighlightStyle", 2);
 }
+
 
 // it can happen that Dimensions/Balloons/etc can lose their parent item if the
 // the parent is deleted, then undo is invoked.  The linkages on the App side are
