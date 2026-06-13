@@ -6,11 +6,7 @@ from typing import Any
 from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
-
-@export(
-    Include="Mod/TechDraw/App/DrawHatch.h",
-    Namespace="TechDraw",
-)
+@export()
 class DrawHatch(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing Hatch areas

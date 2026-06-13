@@ -11,11 +11,7 @@ from typing import overload
 
 @export(
     Twin="GeomSurfaceOfRevolution",
-    TwinPointer="GeomSurfaceOfRevolution",
     PythonName="Part.SurfaceOfRevolution",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
-    Include="Mod/Part/App/Geometry.h",
-    Constructor=True,
 )
 class SurfaceOfRevolution(GeometrySurface):
     """

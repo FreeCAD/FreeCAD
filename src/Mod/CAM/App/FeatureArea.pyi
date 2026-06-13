@@ -7,7 +7,6 @@ from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
 @export(
-    Include="Mod/CAM/App/FeatureArea.h",
     Namespace="Path",
 )
 class FeatureArea(DocumentObject):

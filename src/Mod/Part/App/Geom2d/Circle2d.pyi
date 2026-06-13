@@ -9,10 +9,6 @@ from Part.Geom2d import Conic2d
 @export(
     PythonName="Part.Geom2d.Circle2d",
     Twin="Geom2dCircle",
-    TwinPointer="Geom2dCircle",
-    Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h",
-    Constructor=True,
 )
 class Circle2d(Conic2d):
     """
@@ -50,7 +46,10 @@ class Circle2d(Conic2d):
     def __init__(self, Center: Tuple[float, float], Radius: float) -> None: ...
     @overload
     def __init__(
-        self, Point1: Tuple[float, float], Point2: Tuple[float, float], Point3: Tuple[float, float]
+        self,
+        Point1: Tuple[float, float],
+        Point2: Tuple[float, float],
+        Point3: Tuple[float, float],
     ) -> None: ...
     @overload
     def __init__(self, *args, **kwargs) -> None:

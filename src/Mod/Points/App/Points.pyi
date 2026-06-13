@@ -5,19 +5,12 @@ from __future__ import annotations
 from typing import Any, Final
 
 from Base.Metadata import constmethod, export
-from Data import object
+from App.ComplexGeoData import ComplexGeoData
 
 @export(
-    Father="ComplexGeoDataPy",
     Twin="PointKernel",
-    TwinPointer="PointKernel",
-    Include="Mod/Points/App/Points.h",
-    Namespace="Points",
-    FatherInclude="App/ComplexGeoDataPy.h",
-    FatherNamespace="Data",
-    Constructor=True,
 )
-class Points(object):
+class Points(ComplexGeoData):
     """
     Points() -- Create an empty points object.
 
@@ -28,6 +21,7 @@ class Points(object):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def copy(self) -> Any:
         """Create a copy of this points object"""

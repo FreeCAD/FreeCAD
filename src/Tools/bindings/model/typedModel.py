@@ -183,6 +183,7 @@ class PythonExport:
     CustomAttributes: Optional[str] = ""  # To match the original XML model
     ClassDeclarations: str = ""
     ForwardDeclarations: str = ""
+    HeaderIncludes: List[str] = field(default_factory=list)
     NoArgs: bool = False
 
     # Attributes
@@ -319,6 +320,7 @@ class GenerateModel:
     Module: List[Module] = field(default_factory=list)
     PythonExport: List[PythonExport] = field(default_factory=list)
     PythonModule: List[PythonModuleExport] = field(default_factory=list)
+    SourceDependencies: List[str] = field(default_factory=list)
 
     def dump(self):
         # Print or process the resulting GenerateModel object

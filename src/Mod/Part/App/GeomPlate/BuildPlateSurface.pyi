@@ -9,9 +9,7 @@ from typing import List
 @export(
     PythonName="Part.GeomPlate.BuildPlateSurfacePy",
     Twin="GeomPlate_BuildPlateSurface",
-    TwinPointer="GeomPlate_BuildPlateSurface",
     Include="GeomPlate_BuildPlateSurface.hxx",
-    Constructor=True,
     Delete=True,
 )
 class BuildPlateSurface(PyObjectBase):
@@ -22,6 +20,7 @@ class BuildPlateSurface(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def init(self) -> None:
         """
         Resets all constraints

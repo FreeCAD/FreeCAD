@@ -9,7 +9,6 @@ from Base.Metadata import export
 from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 
 @export(
-    Include="Mod/Fem/Gui/ViewProviderFemConstraint.h",
     Namespace="FemGui",
 )
 class ViewProviderFemConstraint(ViewProviderGeometryObject):

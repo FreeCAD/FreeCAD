@@ -7,11 +7,7 @@ from Base.PyObjectBase import PyObjectBase
 from Part.TopoShapePy import TopoShape
 
 @export(
-    PythonName="Part.HLRBRep_PolyAlgo",
-    Twin="HLRBRep_PolyAlgo",
-    TwinPointer="HLRBRep_PolyAlgo",
     Include="HLRBRep_PolyAlgo.hxx",
-    Constructor=True,
 )
 @class_declarations("""
 private:
@@ -63,6 +59,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
       same shape.
     """
 
+    def __init__(self) -> None: ...
     def load(self, S: TopoShape, /) -> None:
         """
         load(S)

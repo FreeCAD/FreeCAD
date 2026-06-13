@@ -9,7 +9,6 @@ from Placement import Placement
 from typing import overload
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class Axis(PyObjectBase):

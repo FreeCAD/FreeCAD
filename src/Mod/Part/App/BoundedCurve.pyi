@@ -8,11 +8,7 @@ from typing import Any, Final
 
 @export(
     Twin="GeomBoundedCurve",
-    TwinPointer="GeomBoundedCurve",
     PythonName="Part.BoundedCurve",
-    FatherInclude="Mod/Part/App/GeometryCurvePy.h",
-    Include="Mod/Part/App/Geometry.h",
-    Constructor=True,
 )
 class BoundedCurve(GeometryCurve):
     """
@@ -21,6 +17,8 @@ class BoundedCurve(GeometryCurve):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     StartPoint: Final[Any] = ...
     """Returns the starting point of the bounded curve."""

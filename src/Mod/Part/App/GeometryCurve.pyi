@@ -13,11 +13,7 @@ from typing import Final, overload, List, Union, Optional, Tuple
 
 @export(
     Twin="GeomCurve",
-    TwinPointer="GeomCurve",
     PythonName="Part.Curve",
-    FatherInclude="Mod/Part/App/GeometryPy.h",
-    Include="Mod/Part/App/Geometry.h",
-    Constructor=True,
 )
 class GeometryCurve(Geometry):
     """
@@ -26,6 +22,8 @@ class GeometryCurve(Geometry):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Continuity: Final[str] = ""
     """Returns the global continuity of the curve."""

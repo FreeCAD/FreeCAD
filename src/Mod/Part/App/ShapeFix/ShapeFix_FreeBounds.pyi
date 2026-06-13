@@ -10,7 +10,6 @@ from Part.App.TopoShape import TopoShape
 @export(
     PythonName="Part.ShapeFix.FreeBounds",
     Include="ShapeFix_FreeBounds.hxx",
-    Constructor=True,
     Delete=True,
 )
 class ShapeFix_FreeBounds(PyObjectBase):
@@ -21,6 +20,7 @@ class ShapeFix_FreeBounds(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def closedWires(self) -> TopoShapeCompound:
         """
         Returns compound of closed wires out of free edges

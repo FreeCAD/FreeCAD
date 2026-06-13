@@ -11,11 +11,6 @@ from typing import overload
 @export(
     PythonName="Part.Circle",
     Twin="GeomCircle",
-    TwinPointer="GeomCircle",
-    Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/ConicPy.h",
-    FatherNamespace="Part",
-    Constructor=True,
 )
 class Circle(Conic):
     """

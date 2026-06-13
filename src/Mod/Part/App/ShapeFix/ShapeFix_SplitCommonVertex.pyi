@@ -8,8 +8,6 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 @export(
     PythonName="Part.ShapeFix.SplitCommonVertex",
     Include="ShapeFix_SplitCommonVertex.hxx",
-    FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
-    Constructor=True,
 )
 class ShapeFix_SplitCommonVertex(ShapeFix_Root):
     """
@@ -19,6 +17,7 @@ class ShapeFix_SplitCommonVertex(ShapeFix_Root):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def init(self) -> None:
         """
         Initializes by shape

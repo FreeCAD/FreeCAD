@@ -11,7 +11,6 @@ from typing import Final, Optional
 @export(
     Include="Mod/Part/App/Attacher.h",
     Namespace="Attacher",
-    Constructor=True,
     Delete=True,
 )
 class AttachEngine(BaseClass):
@@ -22,6 +21,8 @@ class AttachEngine(BaseClass):
     Licence: LGPL
     DeveloperDocu: AttachEngine abstract class
     """
+
+    def __init__(self) -> None: ...
 
     AttacherType: Final[str] = ""
     """Type of engine: 3d, plane, line, or point."""

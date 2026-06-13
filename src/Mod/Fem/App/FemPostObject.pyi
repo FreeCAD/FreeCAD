@@ -9,12 +9,7 @@ from App.GeoFeature import GeoFeature
 
 vtkDataSet: TypeAlias = object
 
-@export(
-    Include="Mod/Fem/App/FemPostObject.h",
-    Namespace="Fem",
-    FatherNamespace="App",
-    FatherInclude="App/GeoFeaturePy.h",
-)
+@export()
 class FemPostObject(GeoFeature):
     """
     The FemPostObject class.

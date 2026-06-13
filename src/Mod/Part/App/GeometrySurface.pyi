@@ -12,11 +12,7 @@ from typing import Final, overload, Any, Tuple, List, Literal, Union
 
 @export(
     Twin="GeomSurface",
-    TwinPointer="GeomSurface",
     PythonName="Part.GeometrySurface",
-    FatherInclude="Mod/Part/App/GeometryPy.h",
-    Include="Mod/Part/App/Geometry.h",
-    Constructor=True,
 )
 class GeometrySurface(Geometry):
     """
@@ -25,6 +21,8 @@ class GeometrySurface(Geometry):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Continuity: Final[str] = ""
     """Returns the global continuity of the surface."""

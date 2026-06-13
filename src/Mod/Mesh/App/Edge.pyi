@@ -8,9 +8,6 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Include="Mod/Mesh/App/Edge.h",
-    Namespace="Mesh",
-    Constructor=True,
     Delete=True,
 )
 class Edge(PyObjectBase):
@@ -23,6 +20,7 @@ class Edge(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def intersectWithEdge(self) -> Any:
         """intersectWithEdge(Edge) -> list
         Get a list of intersection points with another edge."""

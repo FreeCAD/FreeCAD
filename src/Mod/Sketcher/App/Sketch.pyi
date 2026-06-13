@@ -7,11 +7,7 @@ from Base.Persistence import Persistence
 from Base.Vector import Vector
 from typing import Final, Tuple
 
-@export(
-    Include="Mod/Sketcher/App/Sketch.h",
-    FatherInclude="Base/PersistencePy.h",
-    Constructor=True,
-)
+@export()
 class Sketch(Persistence):
     """
     With this objects you can handle constraint sketches
@@ -19,6 +15,8 @@ class Sketch(Persistence):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Constraint: Final[int] = 0
     """0: exactly constraint, -1 under-constraint, 1 over-constraint"""

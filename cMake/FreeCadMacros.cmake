@@ -147,6 +147,82 @@ macro(generate_from_xml BASE_NAME)
     )
 endmacro(generate_from_xml)
 
+function(_freecad_initialize_pyi_dependency_cache)
+    get_property(PYI_DEPENDENCY_CACHE_READY GLOBAL PROPERTY FREECAD_PYI_DEPENDENCY_CACHE_READY SET)
+    if(PYI_DEPENDENCY_CACHE_READY)
+        return()
+    endif()
+    set_property(GLOBAL PROPERTY FREECAD_PYI_DEPENDENCY_CACHE_READY TRUE)
+
+    set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py")
+    file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
+
+    set(PYI_CMAKE_LISTS "${CMAKE_SOURCE_DIR}/CMakeLists.txt")
+    file(GLOB_RECURSE PYI_SUBDIRECTORY_CMAKE_LISTS "${CMAKE_SOURCE_DIR}/*/CMakeLists.txt")
+    list(APPEND PYI_CMAKE_LISTS ${PYI_SUBDIRECTORY_CMAKE_LISTS})
+
+    set(PYI_SOURCE_PATHS)
+    foreach(PYI_CMAKE_LIST ${PYI_CMAKE_LISTS})
+        get_filename_component(PYI_CMAKE_LIST_DIR "${PYI_CMAKE_LIST}" DIRECTORY)
+        file(READ "${PYI_CMAKE_LIST}" CURRENT_CMAKE_LISTS)
+        string(REGEX MATCHALL "generate_from_py_?\\([ \t\r\n]*\"?([^\" \t\r\n\\)]+)" PYI_GENERATOR_CALLS "${CURRENT_CMAKE_LISTS}")
+
+        foreach(PYI_GENERATOR_CALL ${PYI_GENERATOR_CALLS})
+            string(REGEX REPLACE "^generate_from_py_?\\([ \t\r\n]*\"?([^\" \t\r\n\\)]+).*" "\\1" PYI_BASE_NAME "${PYI_GENERATOR_CALL}")
+            set(PYI_SOURCE_PATH "${PYI_CMAKE_LIST_DIR}/${PYI_BASE_NAME}.pyi")
+            if(EXISTS "${PYI_SOURCE_PATH}")
+                file(TO_NATIVE_PATH "${PYI_SOURCE_PATH}" PYI_SOURCE_NATIVE_PATH)
+                list(APPEND PYI_SOURCE_PATHS "${PYI_SOURCE_NATIVE_PATH}")
+            endif()
+        endforeach()
+    endforeach()
+
+    if(NOT PYI_SOURCE_PATHS)
+        return()
+    endif()
+    list(REMOVE_DUPLICATES PYI_SOURCE_PATHS)
+
+    execute_process(
+        COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --print-dependency-map ${PYI_SOURCE_PATHS}
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        OUTPUT_VARIABLE PYI_DEPENDENCY_MAP
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+
+    string(JSON PYI_DEPENDENCY_RECORD_COUNT LENGTH "${PYI_DEPENDENCY_MAP}")
+    if(PYI_DEPENDENCY_RECORD_COUNT EQUAL 0)
+        return()
+    endif()
+
+    math(EXPR PYI_DEPENDENCY_RECORD_LAST "${PYI_DEPENDENCY_RECORD_COUNT} - 1")
+    foreach(PYI_DEPENDENCY_RECORD_INDEX RANGE 0 ${PYI_DEPENDENCY_RECORD_LAST})
+        string(JSON PYI_SOURCE_PATH GET "${PYI_DEPENDENCY_MAP}" ${PYI_DEPENDENCY_RECORD_INDEX} source)
+        string(JSON PYI_DEPENDENCY_COUNT LENGTH "${PYI_DEPENDENCY_MAP}" ${PYI_DEPENDENCY_RECORD_INDEX} dependencies)
+
+        set(PYI_SOURCE_DEPENDENCIES)
+        if(PYI_DEPENDENCY_COUNT GREATER 0)
+            math(EXPR PYI_DEPENDENCY_LAST "${PYI_DEPENDENCY_COUNT} - 1")
+            foreach(PYI_DEPENDENCY_INDEX RANGE 0 ${PYI_DEPENDENCY_LAST})
+                string(JSON PYI_DEPENDENCY GET "${PYI_DEPENDENCY_MAP}" ${PYI_DEPENDENCY_RECORD_INDEX} dependencies ${PYI_DEPENDENCY_INDEX})
+                list(APPEND PYI_SOURCE_DEPENDENCIES "${PYI_DEPENDENCY}")
+            endforeach()
+        endif()
+
+        string(MD5 PYI_SOURCE_KEY "${PYI_SOURCE_PATH}")
+        set_property(GLOBAL PROPERTY "FREECAD_PYI_SOURCE_DEPENDENCIES_${PYI_SOURCE_KEY}" "${PYI_SOURCE_DEPENDENCIES}")
+    endforeach()
+endfunction()
+
+function(_freecad_get_pyi_source_dependencies BASE_NAME OUT_VAR)
+    _freecad_initialize_pyi_dependency_cache()
+
+    file(REAL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.pyi" PYI_SOURCE_PATH)
+    string(MD5 PYI_SOURCE_KEY "${PYI_SOURCE_PATH}")
+    get_property(PYI_SOURCE_DEPENDENCIES GLOBAL PROPERTY "FREECAD_PYI_SOURCE_DEPENDENCIES_${PYI_SOURCE_KEY}")
+    set(${OUT_VAR} "${PYI_SOURCE_DEPENDENCIES}" PARENT_SCOPE)
+endfunction()
+
 macro(generate_from_py_impl BASE_NAME SUFFIX)
     set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/bindings/generate.py")
     file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
@@ -154,15 +230,20 @@ macro(generate_from_py_impl BASE_NAME SUFFIX)
 
     set(SOURCE_CPP_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}Py${SUFFIX}.cpp")
     set(SOURCE_H_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}Py${SUFFIX}.h")
+    set(SOURCE_DEPFILE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${BASE_NAME}Py${SUFFIX}.d")
 
     # BASE_NAME may include also a path name
     GET_FILENAME_COMPONENT(OUTPUT_PATH "${SOURCE_CPP_PATH}" PATH)
     file(TO_NATIVE_PATH "${OUTPUT_PATH}" OUTPUT_NATIVE_PATH)
+    file(TO_NATIVE_PATH "${SOURCE_DEPFILE_PATH}" SOURCE_DEPFILE_NATIVE_PATH)
+
+    _freecad_get_pyi_source_dependencies("${BASE_NAME}" PYI_SOURCE_DEPENDENCIES)
+
     if(NOT EXISTS "${SOURCE_CPP_PATH}")
         # Ensure the source files are generated at least once.
         message(STATUS "${SOURCE_CPP_PATH}")
         execute_process(
-            COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
+            COMMAND "${Python3_EXECUTABLE}" "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" --depfile "${SOURCE_DEPFILE_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}"
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
             COMMAND_ERROR_IS_FATAL ANY
         )
@@ -170,11 +251,13 @@ macro(generate_from_py_impl BASE_NAME SUFFIX)
 
     add_custom_command(
         OUTPUT "${SOURCE_H_PATH}" "${SOURCE_CPP_PATH}"
-        COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" ${BASE_NAME}.pyi
+        COMMAND ${Python3_EXECUTABLE} "${TOOL_NATIVE_PATH}" --outputPath "${OUTPUT_NATIVE_PATH}" --depfile "${SOURCE_DEPFILE_NATIVE_PATH}" ${BASE_NAME}.pyi
         MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${BASE_NAME}.pyi"
         DEPENDS
             "${CMAKE_SOURCE_DIR}/src/Tools/bindings/templates/templateClassPyExport.py"
             "${TOOL_PATH}"
+            ${PYI_SOURCE_DEPENDENCIES}
+        DEPFILE "${SOURCE_DEPFILE_PATH}"
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
         COMMENT "Building ${BASE_NAME}Py${SUFFIX}.h/.cpp out of ${BASE_NAME}.pyi"
     )

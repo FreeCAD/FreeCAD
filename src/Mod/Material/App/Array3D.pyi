@@ -6,14 +6,10 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Any, Final, List
 
-
 @export(
-    Twin="Array3D",
-    TwinPointer="Array3D",
     Namespace="Materials",
     Include="Mod/Material/App/MaterialValue.h",
     Delete=True,
-    Constructor=True,
 )
 class Array3D(BaseClass):
     """
@@ -22,6 +18,8 @@ class Array3D(BaseClass):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Array: Final[List] = ...
     """The 3 dimensional array."""

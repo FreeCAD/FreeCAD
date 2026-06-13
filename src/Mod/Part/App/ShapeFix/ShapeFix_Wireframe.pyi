@@ -7,11 +7,7 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 
 @export(
     PythonName="Part.ShapeFix.Wireframe",
-    Twin="ShapeFix_Wireframe",
-    TwinPointer="ShapeFix_Wireframe",
     Include="ShapeFix_Wireframe.hxx",
-    FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
-    Constructor=True,
 )
 class ShapeFix_Wireframe(ShapeFix_Root):
     """
@@ -20,6 +16,8 @@ class ShapeFix_Wireframe(ShapeFix_Root):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     ModeDropSmallEdges: bool = ...
     """Returns mode managing removing small edges"""

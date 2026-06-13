@@ -8,10 +8,6 @@ from GeometrySurface import GeometrySurface
 @export(
     PythonName="Part.Plane",
     Twin="GeomPlane",
-    TwinPointer="GeomPlane",
-    Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
-    Constructor=True,
 )
 class Plane(GeometrySurface):
     """
@@ -36,6 +32,8 @@ class Plane(GeometrySurface):
         Creates a plane from its cartesian equation
         Ax+By+Cz+D=0
     """
+
+    def __init__(self) -> None: ...
 
     Position: object = ...
     """Returns the position point of this plane."""

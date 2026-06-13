@@ -7,11 +7,7 @@ from BoundedCurve import BoundedCurve
 
 @export(
     Twin="GeomTrimmedCurve",
-    TwinPointer="GeomTrimmedCurve",
     PythonName="Part.TrimmedCurve",
-    FatherInclude="Mod/Part/App/BoundedCurvePy.h",
-    Include="Mod/Part/App/Geometry.h",
-    Constructor=True,
 )
 class TrimmedCurve(BoundedCurve):
     """
@@ -21,6 +17,7 @@ class TrimmedCurve(BoundedCurve):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def setParameterRange(self, first: float, last: float, /) -> None:
         """
         Re-trims this curve to the provided parameter range ([Float=First, Float=Last])

@@ -6,9 +6,7 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Include="Mod/Measure/Gui/QuickMeasure.h",
     Namespace="MeasureGui",
-    Constructor=True,
     Delete=True,
 )
 class QuickMeasure(PyObjectBase):
@@ -18,3 +16,5 @@ class QuickMeasure(PyObjectBase):
     Author: Ondsel (development@ondsel.com)
     License: LGPL-2.1-or-later
     """
+
+    def __init__(self) -> None: ...

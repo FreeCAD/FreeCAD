@@ -10,8 +10,6 @@ from Base.Matrix import Matrix
 from typing import Final, List, Optional
 
 @export(
-    Include="Mod/Part/App/Geometry.h",
-    Constructor=True,
     Delete=True,
 )
 class Geometry(Persistence):
@@ -21,6 +19,8 @@ class Geometry(Persistence):
     - applying geometric transformations to objects, and
     - constructing objects by geometric transformation (including copying).
     """
+
+    def __init__(self) -> None: ...
 
     Tag: Final[str]
     """Gives the tag of the geometry as string."""

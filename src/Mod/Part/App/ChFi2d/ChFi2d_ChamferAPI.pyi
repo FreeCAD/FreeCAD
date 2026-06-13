@@ -9,10 +9,7 @@ from Base.PyObjectBase import PyObjectBase
 
 @export(
     PythonName="Part.ChFi2d.ChamferAPI",
-    Twin="ChFi2d_ChamferAPI",
-    TwinPointer="ChFi2d_ChamferAPI",
     Include="ChFi2d_ChamferAPI.hxx",
-    Constructor=True,
     Delete=True,
 )
 class ChFi2d_ChamferAPI(PyObjectBase):
@@ -23,6 +20,7 @@ class ChFi2d_ChamferAPI(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def init(self) -> None:
         """
         Initializes a chamfer algorithm: accepts a wire consisting of two edges in a plane

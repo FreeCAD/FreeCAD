@@ -5,10 +5,8 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from PropertyContainer import PropertyContainer
 
-
 @export(
     Initialization=True,
-    Constructor=True,
 )
 class ExtensionContainer(PropertyContainer):
     """
@@ -17,6 +15,7 @@ class ExtensionContainer(PropertyContainer):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def addExtension(self, identifier: str, /) -> None:
         """
         Adds an extension to the object. Requires the string identifier for the python extension as argument

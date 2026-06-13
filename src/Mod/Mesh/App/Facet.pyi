@@ -8,9 +8,6 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Include="Mod/Mesh/App/Facet.h",
-    Namespace="Mesh",
-    Constructor=True,
     Delete=True,
 )
 class Facet(PyObjectBase):
@@ -26,6 +23,7 @@ class Facet(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def unbound(self) -> Any:
         """method unbound()
         Cut the connection to a MeshObject. The facet becomes

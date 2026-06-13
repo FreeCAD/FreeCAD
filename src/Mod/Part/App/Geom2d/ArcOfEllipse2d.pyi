@@ -9,10 +9,6 @@ from Part import ArcOfConic2d
 @export(
     PythonName="Part.Geom2d.ArcOfEllipse2d",
     Twin="Geom2dArcOfEllipse",
-    TwinPointer="Geom2dArcOfEllipse",
-    Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/ArcOfConic2dPy.h",
-    Constructor=True,
 )
 class ArcOfEllipse2d(ArcOfConic2d):
     """

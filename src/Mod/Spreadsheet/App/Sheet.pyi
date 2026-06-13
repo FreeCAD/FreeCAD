@@ -8,11 +8,7 @@ from Base.Metadata import export
 
 from App.DocumentObject import DocumentObject
 
-@export(
-    Include="Mod/Spreadsheet/App/Sheet.h",
-    Namespace="Spreadsheet",
-    Constructor=True,
-)
+@export()
 class Sheet(DocumentObject):
     """
     With this object you can manipulate spreadsheets
@@ -21,6 +17,7 @@ class Sheet(DocumentObject):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def set(self) -> Any:
         """Set data into a cell"""
         ...

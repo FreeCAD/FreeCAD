@@ -10,12 +10,6 @@ from App.ComplexGeoData import ComplexGeoData
 
 @export(
     Twin="MeshObject",
-    TwinPointer="MeshObject",
-    Include="Mod/Mesh/App/Mesh.h",
-    Namespace="Mesh",
-    FatherInclude="App/ComplexGeoDataPy.h",
-    FatherNamespace="Data",
-    Constructor=True,
 )
 @class_declarations("""
     private:
@@ -42,6 +36,7 @@ class Mesh(ComplexGeoData):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def read(self, **kwargs) -> Any:
         """Read in a mesh object from file.
         mesh.read(Filename='mymesh.stl')

@@ -9,10 +9,6 @@ from typing import Final
 @export(
     PythonName="Part.ArcOfCircle",
     Twin="GeomArcOfCircle",
-    TwinPointer="GeomArcOfCircle",
-    Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/ArcOfConicPy.h",
-    Constructor=True,
 )
 class ArcOfCircle(ArcOfConic):
     """
@@ -20,6 +16,8 @@ class ArcOfCircle(ArcOfConic):
     Licence: LGPL
     Describes a portion of a circle
     """
+
+    def __init__(self) -> None: ...
 
     Radius: float = ...
     """The radius of the circle."""

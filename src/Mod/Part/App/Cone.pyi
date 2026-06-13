@@ -11,10 +11,6 @@ from typing import Final
 @export(
     PythonName="Part.Cone",
     Twin="GeomCone",
-    TwinPointer="GeomCone",
-    Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
-    Constructor=True,
 )
 class Cone(GeometrySurface):
     """
@@ -50,6 +46,8 @@ class Cone(GeometrySurface):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Apex: Final[Vector] = Vector()
     """Compute the apex of the cone."""

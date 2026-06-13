@@ -8,10 +8,6 @@ from typing import Dict, List, Final, overload, Optional, Sequence
 
 @export(
     Twin="TopoShape",
-    TwinPointer="TopoShape",
-    FatherInclude="Mod/Part/App/TopoShapePy.h",
-    Include="Mod/Part/App/TopoShape.h",
-    Constructor=True,
 )
 class TopoShapeWire(TopoShape):
     """

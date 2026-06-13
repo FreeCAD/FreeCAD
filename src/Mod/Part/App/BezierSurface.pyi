@@ -11,11 +11,7 @@ from typing import Final, Tuple, Any
 
 @export(
     Twin="GeomBezierSurface",
-    TwinPointer="GeomBezierSurface",
     PythonName="Part.BezierSurface",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
-    Include="Mod/Part/App/Geometry.h",
-    Constructor=True,
 )
 class BezierSurface(GeometrySurface):
     """
@@ -23,6 +19,8 @@ class BezierSurface(GeometrySurface):
     -- A non-rational Bezier surface is defined by a table of poles (also known as control points).
     -- A rational Bezier surface is defined by a table of poles with varying associated weights.
     """
+
+    def __init__(self) -> None: ...
 
     UDegree: Final[int]
     """

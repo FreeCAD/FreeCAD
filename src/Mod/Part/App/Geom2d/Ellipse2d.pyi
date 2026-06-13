@@ -8,11 +8,7 @@ from Part.Conic2d import Conic2d
 
 @export(
     Twin="Geom2dEllipse",
-    TwinPointer="Geom2dEllipse",
     PythonName="Part.Geom2d.Ellipse2d",
-    FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h",
-    Include="Mod/Part/App/Geometry2d.h",
-    Constructor=True,
 )
 class Ellipse2d(Conic2d):
     """

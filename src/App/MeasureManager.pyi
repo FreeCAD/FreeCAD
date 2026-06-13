@@ -10,7 +10,6 @@ MeasureType: TypeAlias = object
 
 
 @export(
-    Constructor=False,
     Delete=True,
 )
 class MeasureManager(PyObjectBase):

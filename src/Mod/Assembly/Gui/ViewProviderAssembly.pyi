@@ -10,7 +10,7 @@ from Gui.ViewProvider import ViewProvider
 
 SoTransformDragger: TypeAlias = Any
 
-@export(Include="Mod/Assembly/Gui/ViewProviderAssembly.h", Namespace="AssemblyGui")
+@export(Namespace="AssemblyGui")
 class ViewProviderAssembly(ViewProvider):
     """
     This is the ViewProviderAssembly class

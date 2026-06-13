@@ -6,8 +6,6 @@ from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Include="Mod/Part/App/GeometryExtension.h",
-    Constructor=True,
     Delete=True,
 )
 class GeometryExtension(PyObjectBase):
@@ -16,6 +14,8 @@ class GeometryExtension(PyObjectBase):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Name: str = ""
     """Sets/returns the name of this extension."""

@@ -7,11 +7,7 @@ from typing import Any
 from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
-@export(
-    Include="Mod/Measure/App/Measurement.h",
-    Namespace="Measure",
-    Constructor=True,
-)
+@export()
 class Measurement(BaseClass):
     """
     Make a measurement
@@ -20,6 +16,7 @@ class Measurement(BaseClass):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def addReference3D(self) -> Any:
         """add a geometric reference"""
         ...

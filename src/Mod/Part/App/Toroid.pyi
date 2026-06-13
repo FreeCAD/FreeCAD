@@ -8,21 +8,15 @@ from Base.Vector import Vector
 from typing import Final
 
 @export(
-    Name="ToroidPy",
-    Namespace="Part",
     Twin="GeomToroid",
-    TwinPointer="GeomToroid",
     PythonName="Part.Toroid",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
-    Include="Mod/Part/App/Geometry.h",
-    Father="GeometrySurfacePy",
-    FatherNamespace="Part",
-    Constructor=True,
 )
 class Toroid(GeometrySurface):
     """
     Describes a toroid in 3D space
     """
+
+    def __init__(self) -> None: ...
 
     MajorRadius: float = ...
     """The major radius of the toroid."""

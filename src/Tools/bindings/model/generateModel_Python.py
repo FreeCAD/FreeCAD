@@ -4,6 +4,8 @@
 
 from dataclasses import dataclass
 from enum import Enum
+from functools import lru_cache
+from pathlib import Path
 import ast
 import re
 from typing import List
@@ -39,6 +41,19 @@ class FuncArgument:
     name: str
     annotation: str
     kind: ArgumentKind
+
+
+@dataclass(frozen=True)
+class BindingClassInfo:
+    class_name: str
+    export_name: str
+    python_name: str | None
+    namespace: str
+    include: str
+    is_exported: bool
+    path: Path
+    father_include: str
+    source_dependencies: tuple[Path, ...] = ()
 
 
 class FunctionSignature:
@@ -135,7 +150,13 @@ class FunctionSignature:
         self.annotated_text = SELF_CLS_ARG.sub("(", f"{func.name}({parameters}) -> {returns}", 1)
 
         # Not Annotated signatures (supported by __text_signature__)
-        all_args = [*args.posonlyargs, *args.args, args.vararg, *args.kwonlyargs, args.kwarg]
+        all_args = [
+            *args.posonlyargs,
+            *args.args,
+            args.vararg,
+            *args.kwonlyargs,
+            args.kwarg,
+        ]
         for item in all_args:
             if item:
                 item.annotation = None
@@ -416,6 +437,53 @@ def _get_type_str(node):
             return "object"
 
 
+def _subscript_items(node: ast.AST) -> list[ast.AST]:
+    if isinstance(node, ast.Tuple):
+        return list(node.elts)
+    return [node]
+
+
+def _is_type_name(node: ast.AST, *names: str) -> bool:
+    type_name = _get_type_str(node).lower()
+    return type_name in {name.lower() for name in names}
+
+
+def _cxx_type_from_annotation(node: ast.AST) -> str | None:
+    if not isinstance(node, ast.Subscript) or not _is_type_name(
+        node.value, "Annotated", "typing.Annotated"
+    ):
+        return None
+
+    for metadata in _subscript_items(node.slice)[1:]:
+        if not isinstance(metadata, ast.Call) or not _is_type_name(metadata.func, "cxx_type"):
+            continue
+        if metadata.args and isinstance(metadata.args[0], ast.Constant):
+            value = metadata.args[0].value
+            if isinstance(value, str):
+                return value
+    return None
+
+
+def _cxx_type_to_parameter_type(cxx_type: str) -> ParameterType:
+    if cxx_type == "Vector":
+        return ParameterType.VECTOR
+    return ParameterType.OBJECT
+
+
+def _annotation_to_parameter_type(node: ast.AST) -> ParameterType:
+    if cxx_type := _cxx_type_from_annotation(node):
+        return _cxx_type_to_parameter_type(cxx_type)
+
+    if isinstance(node, ast.Subscript) and _is_type_name(
+        node.value, "Annotated", "typing.Annotated"
+    ):
+        items = _subscript_items(node.slice)
+        if items:
+            return _annotation_to_parameter_type(items[0])
+
+    return _python_type_to_parameter_type(_get_type_str(node))
+
+
 def _python_type_to_parameter_type(py_type: str) -> ParameterType:
     """
     Map a Python type annotation (as a string) to the ParameterType enum if possible.
@@ -441,10 +509,29 @@ def _python_type_to_parameter_type(py_type: str) -> ParameterType:
             return ParameterType.SEQUENCE
         case _ if py_type.startswith(("tuple", "typing.tuple")):
             return ParameterType.TUPLE
-        case _ if py_type.startswith(("pycxxvector")):
+        case _ if py_type.startswith("pycxxvector"):
             return ParameterType.VECTOR
         case _:
             return ParameterType.OBJECT
+
+
+_PARAMETER_TYPE_HEADER_INCLUDES = {
+    ParameterType.VECTOR: "Base/GeometryPyCXX.h",
+}
+
+
+def _attribute_header_includes(attributes: list[Attribute]) -> list[str]:
+    includes = []
+    for attr in attributes:
+        include = _PARAMETER_TYPE_HEADER_INCLUDES.get(attr.Parameter.Type)
+        if include and include not in includes:
+            includes.append(include)
+    return includes
+
+
+def _filter_header_includes(includes: list[str], *excluded_includes: str) -> list[str]:
+    excluded = set(excluded_includes)
+    return [include for include in includes if include not in excluded]
 
 
 def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[Attribute]:
@@ -460,32 +547,20 @@ def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[
         if isinstance(stmt, ast.AnnAssign):
             # e.g.: `TypeId: Final[str] = ""`
             name = stmt.target.id if isinstance(stmt.target, ast.Name) else "unknown"
-            # Evaluate the type annotation and detect Final for read-only attributes
-            if isinstance(stmt.annotation, ast.Name):
-                # e.g. `str`
-                type_name = stmt.annotation.id
-                readonly = False
-            elif isinstance(stmt.annotation, ast.Subscript):
-                # Check if this is a Final type hint, e.g. Final[int] or typing.Final[int]
+            # Evaluate the type annotation and detect Final for read-only attributes.
+            annotation = stmt.annotation
+            readonly = False
+            if isinstance(annotation, ast.Subscript):
                 is_final = (
-                    isinstance(stmt.annotation.value, ast.Name)
-                    and stmt.annotation.value.id == "Final"
+                    isinstance(annotation.value, ast.Name) and annotation.value.id == "Final"
                 ) or (
-                    isinstance(stmt.annotation.value, ast.Attribute)
-                    and stmt.annotation.value.attr == "Final"
+                    isinstance(annotation.value, ast.Attribute) and annotation.value.attr == "Final"
                 )
                 if is_final:
                     readonly = True
-                    # Extract the inner type from the Final[...] annotation
-                    type_name = _get_type_str(stmt.annotation.slice)
-                else:
-                    type_name = _get_type_str(stmt.annotation)
-                    readonly = False
-            else:
-                type_name = "object"
-                readonly = False
+                    annotation = annotation.slice
 
-            param_type = _python_type_to_parameter_type(type_name)
+            param_type = _annotation_to_parameter_type(annotation)
 
             # Look for a docstring immediately following the attribute definition.
             attr_doc = default_doc
@@ -549,6 +624,8 @@ def _parse_methods(
     methods = []
 
     for func in functions.values():
+        if func.name == "__init__":
+            continue
         if func.typing_only_flag:
             continue
         if not allow_bound_decorators and (func.static_flag or func.class_flag or func.const_flag):
@@ -705,6 +782,386 @@ def _get_native_python_class_name(klass: str) -> str:
     return klass + "Py"
 
 
+def _source_root_from_path(path: str | Path) -> Path | None:
+    file_path = Path(path).resolve()
+    parts = file_path.parts
+    try:
+        src_index = len(parts) - 1 - list(reversed(parts)).index("src")
+    except ValueError:
+        return None
+    return Path(*parts[: src_index + 1])
+
+
+def _header_path_from_pyi(path: Path, source_root: Path, header_stem: str) -> str:
+    return (path.resolve().parent.relative_to(source_root) / f"{header_stem}.h").as_posix()
+
+
+def _include_path_from_pyi(path: str | Path, module_name: str, native_class_name: str) -> str:
+    source_root = _source_root_from_path(path)
+    if source_root is not None:
+        return _header_path_from_pyi(Path(path), source_root, native_class_name)
+    return _get_module_path(module_name) + "/" + native_class_name + ".h"
+
+
+def _source_header_exists(source_root: Path, include: str) -> bool:
+    return bool(include) and (source_root / include).is_file()
+
+
+def _is_exported_class(class_node: ast.ClassDef) -> bool:
+    return any(_decorator_name(decorator) == "export" for decorator in class_node.decorator_list)
+
+
+def _export_kwargs_from_class(class_node: ast.ClassDef) -> dict:
+    for decorator in class_node.decorator_list:
+        if _decorator_name(decorator) == "export":
+            return _extract_decorator_kwargs(decorator)
+    return {}
+
+
+def _inherited_include_parent_info(
+    class_node: ast.ClassDef,
+    path: Path,
+    source_root: Path,
+    imports_mapping: dict[str, str] | None,
+    default_include: str,
+    visited: frozenset[tuple[str, str]],
+) -> BindingClassInfo | None:
+    if not imports_mapping or not class_node.bases:
+        return None
+    if _source_header_exists(source_root, default_include):
+        return None
+
+    base_class_name = _extract_base_class_name(class_node.bases[0])
+    parent_info = _infer_binding_parent_info(
+        path,
+        imports_mapping.get(base_class_name, ""),
+        base_class_name,
+        visited=visited,
+    )
+    if not parent_info or not parent_info.is_exported:
+        return None
+    if not _source_header_exists(source_root, parent_info.include):
+        return None
+    return parent_info
+
+
+def _inherited_include_from_parent(
+    class_node: ast.ClassDef,
+    path: Path,
+    source_root: Path,
+    imports_mapping: dict[str, str] | None,
+    default_include: str,
+    visited: frozenset[tuple[str, str]],
+) -> str:
+    parent_info = _inherited_include_parent_info(
+        class_node,
+        path,
+        source_root,
+        imports_mapping,
+        default_include,
+        visited,
+    )
+    if not parent_info:
+        return ""
+    return parent_info.include
+
+
+def _binding_info_from_class(
+    class_node: ast.ClassDef,
+    path: Path,
+    source_root: Path,
+    imports_mapping: dict[str, str] | None = None,
+    visited: frozenset[tuple[str, str]] | None = None,
+    infer_parent_include: bool = True,
+) -> BindingClassInfo:
+    if visited is None:
+        visited = frozenset()
+    visited = visited | {(path.resolve().as_posix(), class_node.name)}
+
+    export_kwargs = _export_kwargs_from_class(class_node)
+    export_name = export_kwargs.get("Name", "") or _get_native_python_class_name(class_node.name)
+    python_name = export_kwargs.get("PythonName", None)
+    if not isinstance(python_name, str) or not python_name:
+        python_name = None
+    module_name = _get_module_from_path(path.as_posix()) or ""
+    default_include = _include_path_from_pyi(path, module_name, class_node.name)
+    include = export_kwargs.get("Include", "")
+    include_parent_info = None
+    if not include and infer_parent_include:
+        include_parent_info = _inherited_include_parent_info(
+            class_node,
+            path,
+            source_root,
+            imports_mapping,
+            default_include,
+            visited,
+        )
+        if include_parent_info:
+            include = include_parent_info.include
+    source_dependencies = ()
+    if include_parent_info:
+        source_dependencies = (
+            include_parent_info.path,
+            *include_parent_info.source_dependencies,
+        )
+    return BindingClassInfo(
+        class_name=class_node.name,
+        export_name=export_name,
+        python_name=python_name,
+        namespace=export_kwargs.get("Namespace", "") or module_name or "",
+        include=include or default_include,
+        is_exported=_is_exported_class(class_node),
+        path=path,
+        father_include=_header_path_from_pyi(path, source_root, export_name),
+        source_dependencies=source_dependencies,
+    )
+
+
+def _binding_info_from_file(
+    path: Path,
+    source_root: Path,
+    class_name: str,
+    visited: frozenset[tuple[str, str]] | None = None,
+) -> BindingClassInfo | None:
+    if not path.exists():
+        return None
+    key = (path.resolve().as_posix(), class_name)
+    if visited and key in visited:
+        return None
+
+    try:
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+    except (OSError, SyntaxError):
+        return None
+    imports_mapping = _parse_imports(tree)
+
+    for node in tree.body:
+        if isinstance(node, ast.ClassDef) and node.name == class_name:
+            return _binding_info_from_class(
+                node,
+                path,
+                source_root,
+                imports_mapping=imports_mapping,
+                visited=visited,
+            )
+
+    return None
+
+
+def _add_unique_path(paths: list[Path], path: Path) -> None:
+    if path not in paths:
+        paths.append(path)
+
+
+def _add_source_dependency(dependencies: list[str], path: Path) -> None:
+    dependency = path.resolve().as_posix()
+    if dependency not in dependencies:
+        dependencies.append(dependency)
+
+
+def _module_path_variants(import_path: str, class_name: str) -> list[tuple[str, ...]]:
+    module_parts = tuple(part for part in import_path.strip(".").split(".") if part)
+    if not module_parts:
+        return [(class_name,)]
+
+    variants = [
+        module_parts,
+        (*module_parts, class_name),
+    ]
+
+    last = module_parts[-1]
+    if last.endswith("Py"):
+        variants.append((*module_parts[:-1], last[: -len("Py")]))
+    if last != class_name:
+        variants.append((*module_parts[:-1], class_name))
+
+    result = []
+    for variant in variants:
+        if variant and variant not in result:
+            result.append(variant)
+    return result
+
+
+def _candidate_parent_pyi_paths(
+    path: str | Path,
+    imported_from_module: str,
+    class_name: str,
+    source_root: Path,
+) -> list[Path]:
+    current_path = Path(path).resolve()
+    candidates = []
+
+    import_path = imported_from_module.strip(".")
+    if import_path and "." not in import_path:
+        _add_unique_path(candidates, current_path.parent / f"{import_path}.pyi")
+        if import_path.endswith("Py"):
+            _add_unique_path(candidates, current_path.parent / f"{import_path[:-2]}.pyi")
+
+    for variant in _module_path_variants(import_path, class_name):
+        first = variant[0]
+        if first == "Mod" and len(variant) > 2:
+            _add_unique_path(candidates, source_root.joinpath(*variant).with_suffix(".pyi"))
+            continue
+
+        if first in {"Base", "App", "Gui"}:
+            _add_unique_path(candidates, source_root.joinpath(*variant).with_suffix(".pyi"))
+            continue
+
+        if len(variant) > 1:
+            module_name = first
+            rest = variant[1:]
+            _add_unique_path(
+                candidates,
+                source_root.joinpath("Mod", module_name, *rest).with_suffix(".pyi"),
+            )
+            if rest[0] not in {"App", "Gui"}:
+                _add_unique_path(
+                    candidates,
+                    source_root.joinpath("Mod", module_name, "App", *rest).with_suffix(".pyi"),
+                )
+                _add_unique_path(
+                    candidates,
+                    source_root.joinpath("Mod", module_name, "Gui", *rest).with_suffix(".pyi"),
+                )
+
+    return candidates
+
+
+def _module_name_candidates(info: BindingClassInfo, source_root: Path) -> set[str]:
+    rel_path = info.path.relative_to(source_root)
+    stem = rel_path.stem
+    dirs = rel_path.parts[:-1]
+    candidates = {stem}
+
+    if dirs:
+        candidates.add(".".join((*dirs, stem)))
+        candidates.add(".".join((*dirs, info.export_name)))
+
+    if dirs and dirs[0] == "Mod" and len(dirs) >= 2:
+        module_name = dirs[1]
+        rest = dirs[2:]
+        candidates.add(".".join((module_name, *rest, stem)))
+        candidates.add(".".join((module_name, *rest, info.export_name)))
+
+        collapsed_rest = tuple(part for part in rest if part not in {"App", "Gui"})
+        candidates.add(".".join((module_name, *collapsed_rest, stem)))
+        candidates.add(".".join((module_name, *collapsed_rest, info.export_name)))
+
+    if info.python_name:
+        candidates.add(info.python_name)
+        python_name_parts = tuple(info.python_name.split("."))
+        candidates.add(".".join((*python_name_parts[:-1], info.export_name)))
+
+    return {candidate for candidate in candidates if candidate}
+
+
+@lru_cache(maxsize=None)
+def _binding_class_index(source_root: str) -> tuple[dict, dict, dict]:
+    root = Path(source_root)
+    by_module_and_class = {}
+    by_directory_module_and_class = {}
+    by_class = {}
+
+    for pyi_path in root.rglob("*.pyi"):
+        try:
+            tree = ast.parse(pyi_path.read_text(encoding="utf-8"))
+        except (OSError, SyntaxError):
+            continue
+        imports_mapping = _parse_imports(tree)
+
+        for node in tree.body:
+            if not isinstance(node, ast.ClassDef):
+                continue
+
+            info = _binding_info_from_class(
+                node,
+                pyi_path,
+                root,
+                imports_mapping=imports_mapping,
+                infer_parent_include=False,
+            )
+            by_class.setdefault(info.class_name, []).append(info)
+
+            directory_key = pyi_path.parent.relative_to(root).as_posix()
+            by_directory_module_and_class.setdefault(
+                (directory_key, pyi_path.stem, info.class_name), []
+            ).append(info)
+            by_directory_module_and_class.setdefault(
+                (directory_key, info.export_name, info.class_name), []
+            ).append(info)
+
+            for module_name in _module_name_candidates(info, root):
+                by_module_and_class.setdefault((module_name, info.class_name), []).append(info)
+
+    return by_module_and_class, by_directory_module_and_class, by_class
+
+
+def _single_info(items: list[BindingClassInfo] | None) -> BindingClassInfo | None:
+    if items and len(items) == 1:
+        return items[0]
+    return None
+
+
+def _binding_info_from_index(
+    path: str | Path,
+    imported_from_module: str,
+    class_name: str,
+    source_root: Path,
+    visited: frozenset[tuple[str, str]] | None = None,
+) -> BindingClassInfo | None:
+    by_module_and_class, by_directory_module_and_class, by_class = _binding_class_index(
+        source_root.as_posix()
+    )
+
+    current_path = Path(path).resolve()
+    current_dir_key = current_path.parent.relative_to(source_root).as_posix()
+    import_path = imported_from_module.strip(".")
+
+    if import_path and "." not in import_path:
+        info = _single_info(
+            by_directory_module_and_class.get((current_dir_key, import_path, class_name))
+        )
+        if info:
+            return _binding_info_from_file(info.path, source_root, class_name, visited) or info
+
+    info = _single_info(by_module_and_class.get((import_path, class_name)))
+    if info:
+        return _binding_info_from_file(info.path, source_root, class_name, visited) or info
+
+    if import_path.endswith("Py"):
+        info = _single_info(by_module_and_class.get((import_path[: -len("Py")], class_name)))
+        if info:
+            return _binding_info_from_file(info.path, source_root, class_name, visited) or info
+
+    info = _single_info(by_class.get(class_name))
+    if info:
+        return _binding_info_from_file(info.path, source_root, class_name, visited) or info
+    return None
+
+
+def _infer_binding_parent_info(
+    path: str | Path,
+    imported_from_module: str,
+    class_name: str,
+    visited: frozenset[tuple[str, str]] | None = None,
+    use_index: bool = True,
+) -> BindingClassInfo | None:
+    source_root = _source_root_from_path(path)
+    if source_root is None:
+        return None
+
+    for candidate in _candidate_parent_pyi_paths(
+        path, imported_from_module, class_name, source_root
+    ):
+        info = _binding_info_from_file(candidate, source_root, class_name, visited)
+        if info:
+            return info
+
+    if not use_index:
+        return None
+    return _binding_info_from_index(path, imported_from_module, class_name, source_root, visited)
+
+
 def _extract_base_class_name(base: ast.expr) -> str:
     """
     Extract the base class name from an AST node using ast.unparse.
@@ -721,7 +1178,13 @@ def _extract_base_class_name(base: ast.expr) -> str:
     return base_str
 
 
-def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict) -> PythonExport:
+def _parse_class(
+    class_node,
+    source_code: str,
+    path: str,
+    imports_mapping: dict,
+    source_dependencies: list[str] | None = None,
+) -> PythonExport:
     base_class_name = None
     for base in class_node.bases:
         base_class_name = _extract_base_class_name(base)
@@ -758,10 +1221,16 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
             case _:
                 pass
 
+    if "Constructor" in export_decorator_kwargs:
+        raise ValueError(
+            f"@export(Constructor=...) is no longer supported for class "
+            f"'{class_node.name}'; define __init__ in the pyi class instead."
+        )
+
     # Parse imports to compute module metadata
     module_name = _get_module_from_path(path)
 
-    imported_from_module = imports_mapping[base_class_name]
+    imported_from_module = imports_mapping.get(base_class_name, "")
     parent_module_name = _extract_module_name(imported_from_module, module_name)
 
     functions = _collect_functions(class_node)
@@ -770,6 +1239,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
     if constructor := functions.get("__init__"):
         if constructor.signature is None and constructor.docstring.strip():
             _append_user_doc(doc_obj, _constructor_user_doc(constructor, class_node.name))
+    has_constructor = "__init__" in functions
     class_attributes = _parse_class_attributes(class_node, source_code)
     class_methods = _parse_methods(
         functions,
@@ -779,12 +1249,49 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
 
     native_class_name = _get_native_class_name(class_node.name)
     native_python_class_name = _get_native_python_class_name(class_node.name)
-    include = _get_module_path(module_name) + "/" + native_class_name + ".h"
+    include = _include_path_from_pyi(path, module_name, native_class_name)
+    source_root = _source_root_from_path(path)
+    include_parent_info = None
+    if source_root is not None:
+        include_parent_info = _inherited_include_parent_info(
+            class_node,
+            Path(path),
+            source_root,
+            imports_mapping,
+            include,
+            frozenset({(Path(path).resolve().as_posix(), class_node.name)}),
+        )
+        if include_parent_info:
+            include = include_parent_info.include
+    twin = export_decorator_kwargs.get("Twin", "") or native_class_name
+    twin_pointer = export_decorator_kwargs.get("TwinPointer", "") or twin
 
-    father_native_python_class_name = _get_native_python_class_name(base_class_name)
-    father_include = (
-        _get_module_path(parent_module_name) + "/" + father_native_python_class_name + ".h"
-    )
+    father_info = _infer_binding_parent_info(path, imported_from_module, base_class_name)
+    if father_info:
+        if source_dependencies is not None and (
+            not export_decorator_kwargs.get("Father")
+            or not export_decorator_kwargs.get("FatherInclude")
+            or not export_decorator_kwargs.get("FatherNamespace")
+            or not export_decorator_kwargs.get("Include")
+        ):
+            _add_source_dependency(source_dependencies, father_info.path)
+        father_native_python_class_name = father_info.export_name
+        father_include = father_info.father_include
+        father_namespace = father_info.namespace
+    else:
+        father_native_python_class_name = _get_native_python_class_name(base_class_name)
+        father_include = (
+            _get_module_path(parent_module_name) + "/" + father_native_python_class_name + ".h"
+        )
+        father_namespace = parent_module_name
+    if (
+        source_dependencies is not None
+        and not export_decorator_kwargs.get("Include")
+        and include_parent_info
+    ):
+        _add_source_dependency(source_dependencies, include_parent_info.path)
+        for dependency in include_parent_info.source_dependencies:
+            _add_source_dependency(source_dependencies, dependency)
 
     py_export = PythonExport(
         Documentation=doc_obj,
@@ -793,12 +1300,12 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
         PythonName=export_decorator_kwargs.get("PythonName", "") or None,
         Include=export_decorator_kwargs.get("Include", "") or include,
         Father=export_decorator_kwargs.get("Father", "") or father_native_python_class_name,
-        Twin=export_decorator_kwargs.get("Twin", "") or native_class_name,
-        TwinPointer=export_decorator_kwargs.get("TwinPointer", "") or native_class_name,
+        Twin=twin,
+        TwinPointer=twin_pointer,
         Namespace=export_decorator_kwargs.get("Namespace", "") or module_name,
         FatherInclude=export_decorator_kwargs.get("FatherInclude", "") or father_include,
-        FatherNamespace=export_decorator_kwargs.get("FatherNamespace", "") or parent_module_name,
-        Constructor=export_decorator_kwargs.get("Constructor", False),
+        FatherNamespace=export_decorator_kwargs.get("FatherNamespace", "") or father_namespace,
+        Constructor=has_constructor,
         NumberProtocol=export_decorator_kwargs.get("NumberProtocol", False),
         RichCompare=export_decorator_kwargs.get("RichCompare", False),
         Delete=export_decorator_kwargs.get("Delete", False),
@@ -807,6 +1314,11 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
         DisableNotify=export_decorator_kwargs.get("DisableNotify", False),
         DescriptorGetter=export_decorator_kwargs.get("DescriptorGetter", False),
         DescriptorSetter=export_decorator_kwargs.get("DescriptorSetter", False),
+        HeaderIncludes=_filter_header_includes(
+            _attribute_header_includes(class_attributes),
+            export_decorator_kwargs.get("FatherInclude", "") or father_include,
+            export_decorator_kwargs.get("Include", "") or include,
+        ),
         ForwardDeclarations=forward_declarations_text,
         ClassDeclarations=class_declarations_text,
         IsExplicitlyExported=is_exported,
@@ -902,24 +1414,34 @@ def parse_python_code(path: str) -> GenerateModel:
     imports_mapping = _parse_imports(tree)
 
     explicit_exports = []
+    explicit_source_dependencies = []
     non_explicit_exports = []
 
     for node in tree.body:
         if isinstance(node, ast.ClassDef):
-            py_export = _parse_class(node, source_code, path, imports_mapping)
+            class_source_dependencies = []
+            py_export = _parse_class(
+                node, source_code, path, imports_mapping, class_source_dependencies
+            )
             if py_export.IsExplicitlyExported:
                 explicit_exports.append(py_export)
+                for dependency in class_source_dependencies:
+                    if dependency not in explicit_source_dependencies:
+                        explicit_source_dependencies.append(dependency)
             else:
-                non_explicit_exports.append(py_export)
+                non_explicit_exports.append((py_export, class_source_dependencies))
 
     model = GenerateModel()
     if explicit_exports:
         # Use only explicitly exported classes.
         model.PythonExport.extend(explicit_exports)
+        model.SourceDependencies.extend(explicit_source_dependencies)
     else:
         # No explicit exports; allow only one non-exported class.
         if len(non_explicit_exports) == 1:
-            model.PythonExport.append(non_explicit_exports[0])
+            py_export, source_dependencies = non_explicit_exports[0]
+            model.PythonExport.append(py_export)
+            model.SourceDependencies.extend(source_dependencies)
         elif len(non_explicit_exports) > 1:
             raise Exception(
                 "Multiple non explicitly-exported classes were found, please use @export."

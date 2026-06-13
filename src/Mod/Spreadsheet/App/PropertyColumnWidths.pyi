@@ -5,11 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.Persistence import Persistence
 
-@export(
-    Include="Mod/Spreadsheet/App/PropertyColumnWidths.h",
-    Namespace="Spreadsheet",
-    Constructor=True,
-)
+@export()
 class PropertyColumnWidths(Persistence):
     """
     Internal spreadsheet object
@@ -17,3 +13,5 @@ class PropertyColumnWidths(Persistence):
     Author: Eivind Kvedalen (eivind@kvedalen.name)
     License: LGPL-2.1-or-later
     """
+
+    def __init__(self) -> None: ...

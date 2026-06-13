@@ -8,13 +8,8 @@ from TrimmedCurve import TrimmedCurve
 from typing import overload
 
 @export(
-    Father="TrimmedCurvePy",
     PythonName="Part.ArcOfConic",
     Twin="GeomArcOfConic",
-    TwinPointer="GeomArcOfConic",
-    Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/TrimmedCurvePy.h",
-    Constructor=True,
 )
 class ArcOfConic(TrimmedCurve):
     """

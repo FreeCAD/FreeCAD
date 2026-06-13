@@ -7,12 +7,7 @@ from typing import Any
 from Base.Metadata import export
 from TechDraw.DrawViewPart import DrawViewPart
 
-
-@export(
-    Include="Mod/TechDraw/App/DrawProjGroupItem.h",
-    Namespace="TechDraw",
-    FatherInclude="Mod/TechDraw/App/DrawViewPartPy.h",
-)
+@export()
 class DrawProjGroupItem(DrawViewPart):
     """
     Feature for creating and manipulating component Views Technical Drawing Projection Groups

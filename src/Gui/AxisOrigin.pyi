@@ -7,7 +7,6 @@ from Base.BaseClass import BaseClass
 from typing import Any, Final, Tuple, Dict
 
 @export(
-    Constructor=True,
     Delete=True,
 )
 class AxisOrigin(BaseClass):
@@ -20,6 +19,7 @@ class AxisOrigin(BaseClass):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def getElementPicked(self, pickedPoint: Any, /) -> str:
         """
