@@ -21,6 +21,7 @@
 #                                                                           *
 # **************************************************************************/
 
+import json
 import math
 
 import FreeCAD as App
@@ -1260,6 +1261,187 @@ class ViewProviderJoint:
 
     def canDelete(self, _obj):
         return True
+
+
+class RigidGroupJoint:
+    def __init__(self, joint, objects_to_rigid_group):
+        joint.Proxy = self
+        self.joint = joint
+
+        joint.addExtension("App::SuppressibleExtensionPython")
+
+        joint.addProperty(
+            "App::PropertyLinkList",
+            "ObjectsToRigidGroup",
+            "RigidGroup",
+            QT_TRANSLATE_NOOP("App::Property", "List of references to compnents to group together"),
+        )
+        joint.ObjectsToRigidGroup = objects_to_rigid_group
+
+        joint.addProperty(
+            "App::PropertyString",
+            "RigidSnapshot",
+            "RigidGroup",
+            "Serialized relative transforms for restore",
+        )
+        joint.setPropertyStatus("RigidSnapshot", "Hidden")
+        joint.setPropertyStatus("RigidSnapshot", "ReadOnly")
+
+        self.updateStoredPositions(joint, True)
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def getAssembly(self, joint):
+        for obj in joint.InList:
+            if obj.isDerivedFrom("Assembly::AssemblyObject"):
+                return obj
+            elif obj.isDerivedFrom("Assembly::AssemblyLink"):
+                return self.getAssembly(obj)
+        return None
+
+    def _validMembers(self, fp):
+        members = []
+        seen = set()
+
+        for obj in getattr(fp, "ObjectsToRigidGroup", ()) or ():
+            name = getattr(obj, "Name", None)
+
+            if not obj or not name or name in seen:
+                continue
+
+            if not hasattr(obj, "Placement") or obj.getPropertyByName("Placement") is None:
+                continue
+
+            seen.add(name)
+            members.append(obj)
+
+        return members
+
+    def updateStoredPositions(self, fp, force=False):
+        if getattr(self, "_busy", False):
+            return
+
+        if not force and (not hasattr(fp, "Suppressed") or not fp.Suppressed):
+            App.Console.PrintWarning(
+                "Assembly: 'updateStoredPositions' is only available while suppressed.\n"
+            )
+            return
+
+        members = self._validMembers(fp)
+        if len(members) < 2:
+            App.Console.PrintError("Assembly: Rigid group needs at least 2 valid components.\n")
+            return
+
+        anchor = members[0]
+        anchorPlc = anchor.Placement
+
+        data = {
+            "version": 1,
+            "anchor": anchor.Name,
+            "members": [],
+        }
+
+        for member in members:
+            rel = anchorPlc.inverse() * member.Placement
+            q = rel.Rotation.Q
+            data["members"].append(
+                {
+                    "name": member.Name,
+                    "pos": [rel.Base.x, rel.Base.y, rel.Base.z],
+                    "rot_q": list(q[:4]),
+                }
+            )
+
+        fp.RigidSnapshot = json.dumps(data, separators=(",", ":"))
+        App.Console.PrintMessage("Assembly: Rigid group positions updated.\n")
+
+    def restoreFromSnapshot(self, fp):
+        snapshot = getattr(fp, "RigidSnapshot", "")
+        if not snapshot:
+            return
+
+        try:
+            data = json.loads(snapshot)
+        except Exception:
+            App.Console.PrintWarning(
+                "Assembly: Invalid rigid group snapshot, skipping restore. Possible Rigid Group corruption?\n"
+            )
+            return
+
+        if data.get("version") != 1:
+            App.Console.PrintWarning("Assembly: Unsupported rigid group snapshot version.\n")
+            return
+
+        membersNow = {obj.Name: obj for obj in self._validMembers(fp)}
+        if len(membersNow) < 2:
+            return
+
+        anchor = membersNow.get(data.get("anchor"))
+        if not anchor:
+            anchor = next(iter(membersNow.values()), None)
+            if not anchor:
+                return
+            App.Console.PrintWarning(
+                "Assembly: Rigid group snapshot anchor missing, using first available component instead.\n"
+            )
+
+        anchorPlcNow = anchor.Placement
+        for member in data.get("members", []):
+            name = member.get("name")
+            obj = membersNow.get(name)
+            if not obj:
+                continue
+
+            pos = member.get("pos", [0.0, 0.0, 0.0])
+            rotq = member.get("rot_q", [1.0, 0.0, 0.0, 0.0])
+            if len(pos) != 3 or len(rotq) != 4:
+                continue
+
+            rel = App.Placement(
+                App.Vector(float(pos[0]), float(pos[1]), float(pos[2])),
+                App.Rotation(float(rotq[0]), float(rotq[1]), float(rotq[2]), float(rotq[3])),
+            )
+            obj.Placement = anchorPlcNow * rel
+
+    def onChanged(self, fp, prop):
+        """Do something when a property has changed"""
+        if getattr(self, "_busy", False):
+            return
+
+        if prop == "Suppressed" and hasattr(fp, "Suppressed") and not fp.Suppressed:
+            self._busy = True
+            try:
+                self.restoreFromSnapshot(fp)
+                assembly = self.getAssembly(fp)
+                if assembly:
+                    solveIfAllowed(assembly)
+            finally:
+                self._busy = False
+
+    def execute(self, fp):
+        """Do something when doing a recomputation, this method is mandatory"""
+        pass
+
+
+class ViewProviderRigidGroupJoint:
+    def __init__(self, vobj):
+        vobj.Proxy = self
+        vobj.addExtension("Gui::ViewProviderSuppressibleExtensionPython")
+
+    def getIcon(self):
+        return ":/icons/Assembly_CreateJointRigidGroup.svg"
+
+    def setupContextMenu(self, vobj, menu):
+        action = menu.addAction(App.Qt.translate("Assembly", "Update Stored Positions"))
+        action.triggered.connect(lambda: self._updateStoredPositions(vobj.Object))
+
+    def _updateStoredPositions(self, obj):
+        if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "updateStoredPositions"):
+            obj.Proxy.updateStoredPositions(obj)
 
 
 ################ Grounded Joint object #################

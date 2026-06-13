@@ -23,8 +23,11 @@
 
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
+#include <algorithm>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
+#include <ranges>
 
 
 #include <App/Application.h>
@@ -153,6 +156,8 @@ int AssemblyObject::solve(bool enableRedo)
 
     mbdAssembly = makeMbdAssembly();
     objectPartMap.clear();
+    rebuildRigidClusters();
+    syncActiveRigidGroupPlacements();
     motions.clear();
 
     auto groundedObjs = fixGroundedParts();
@@ -189,6 +194,7 @@ int AssemblyObject::solve(bool enableRedo)
     }
 
     setNewPlacements();
+    updateRigidPlacementCache();
 
     redrawJointPlacements(joints);
 
@@ -345,6 +351,15 @@ size_t Assembly::AssemblyObject::numberOfFrames()
     return mbdAssembly->numberOfFrames();
 }
 
+bool AssemblyObject::requiresRigidSolveForMove(const std::vector<App::DocumentObject*>& movedParts)
+{
+    rebuildRigidClusters();
+
+    return std::ranges::any_of(movedParts, [&](App::DocumentObject* part) {
+        return getRigidRepresentative(part) != nullptr;
+    });
+}
+
 void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 {
     bundleFixed = true;
@@ -353,17 +368,24 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 
     draggedParts.clear();
     for (auto part : dragParts) {
+        const bool isRigidClustered = getRigidRepresentative(part) != nullptr;
+
         // make sure no duplicate
         if (std::ranges::find(draggedParts, part) != draggedParts.end()) {
             continue;
         }
 
-        // Free-floating parts should not be added since they are ignored by the solver!
-        if (!isPartConnected(part)) {
+        // Active rigid-cluster members are solver-connected through the shared MbD part.
+        if (!isRigidClustered && !isPartConnected(part)) {
             continue;
         }
 
-        // Some objects have been bundled, we don't want to add these to dragged parts
+        // Rigid-cluster members stay draggable because they share one MbD part.
+        if (isRigidClustered) {
+            draggedParts.push_back(part);
+            continue;
+        }
+
         Base::Placement plc;
         for (auto& pair : objectPartMap) {
             App::DocumentObject* parti = pair.first;
@@ -387,6 +409,7 @@ void AssemblyObject::doDragStep()
 {
     try {
         std::vector<std::shared_ptr<MbD::ASMTPart>> dragMbdParts;
+        std::unordered_set<ASMTPart*> seenMbdParts;
 
         for (auto& part : draggedParts) {
             if (!part) {
@@ -394,16 +417,26 @@ void AssemblyObject::doDragStep()
             }
 
             auto mbdPart = getMbDPart(part);
+            if (!mbdPart) {
+                continue;
+            }
+
+            if (!seenMbdParts.insert(mbdPart.get()).second) {
+                continue;
+            }
+
             dragMbdParts.push_back(mbdPart);
 
-            // Update the MBD part's position
             Base::Placement plc = getPlacementFromProp(part, "Placement");
+            if (auto it = objectPartMap.find(part);
+                it != objectPartMap.end() && !it->second.offsetPlc.isIdentity()) {
+                plc = plc * it->second.offsetPlc.inverse();
+            }
             Base::Vector3d pos = plc.getPosition();
             mbdPart->updateMbDFromPosition3D(
                 std::make_shared<FullColumn<double>>(ListD {pos.x, pos.y, pos.z})
             );
 
-            // Update the MBD part's rotation
             Base::Rotation rot = plc.getRotation();
             Base::Matrix4D mat;
             rot.getValue(mat);
@@ -420,6 +453,7 @@ void AssemblyObject::doDragStep()
         // Timing the validation and placement setting
         if (validateNewPlacements()) {
             setNewPlacements();
+            updateRigidPlacementCache();
 
             auto joints = getJoints();
             for (auto* joint : joints) {
@@ -550,6 +584,7 @@ void AssemblyObject::exportAsASMT(std::string fileName)
 {
     mbdAssembly = makeMbdAssembly();
     objectPartMap.clear();
+    rebuildRigidClusters();
     fixGroundedParts();
 
     std::vector<App::DocumentObject*> joints = getJoints();
@@ -557,6 +592,208 @@ void AssemblyObject::exportAsASMT(std::string fileName)
     jointParts(joints);
 
     mbdAssembly->outputFile(fileName);
+}
+
+void AssemblyObject::rebuildRigidClusters()
+{
+    rigidRepByPart.clear();
+    rigidMembersByRep.clear();
+
+    std::unordered_map<App::DocumentObject*, App::DocumentObject*> parent;
+
+    auto findRoot = [&](App::DocumentObject* node, auto& self) -> App::DocumentObject* {
+        auto [it, inserted] = parent.emplace(node, node);
+        if (inserted || it->second == node) {
+            return it->second;
+        }
+
+        it->second = self(it->second, self);
+        return it->second;
+    };
+
+    auto unite = [&](App::DocumentObject* a, App::DocumentObject* b) {
+        if (!a || !b) {
+            return;
+        }
+
+        auto* const rootA = findRoot(a, findRoot);
+        auto* const rootB = findRoot(b, findRoot);
+
+        if (rootA != rootB) {
+            parent[rootB] = rootA;
+        }
+    };
+
+    for (auto* const rigidGroup : getRigidGroups()) {
+        if (!rigidGroup) {
+            continue;
+        }
+
+        auto* const prop = dynamic_cast<App::PropertyLinkList*>(
+            rigidGroup->getPropertyByName("ObjectsToRigidGroup")
+        );
+        if (!prop) {
+            continue;
+        }
+
+        const auto members = prop->getValues();
+        if (members.size() < 2) {
+            continue;
+        }
+
+        auto* const first = members.front();
+        for (auto* const member : members | std::views::drop(1)) {
+            unite(first, member);
+        }
+    }
+
+    std::unordered_map<App::DocumentObject*, std::vector<App::DocumentObject*>> clusters;
+
+    for (const auto& [node, _] : parent) {
+        boost::ignore_unused(_);
+        const auto root = findRoot(node, findRoot);
+        clusters[root].push_back(node);
+    }
+
+    for (auto& [_, members] : clusters) {
+        boost::ignore_unused(_);
+
+        if (members.size() < 2) {
+            continue;
+        }
+
+        const auto repIt = std::ranges::min_element(members, {}, [](App::DocumentObject* obj) {
+            return obj ? std::string(obj->getNameInDocument()) : std::string();
+        });
+
+        if (repIt == members.end() || !*repIt) {
+            continue;
+        }
+
+        auto* const rep = *repIt;
+
+        for (auto* const member : members) {
+            rigidRepByPart[member] = rep;
+        }
+
+        rigidMembersByRep[rep] = std::move(members);
+    }
+}
+
+App::DocumentObject* AssemblyObject::getRigidRepresentative(App::DocumentObject* part) const
+{
+    if (!part) {
+        return nullptr;
+    }
+
+    if (auto it = rigidRepByPart.find(part); it != rigidRepByPart.end()) {
+        return it->second;
+    }
+
+    return nullptr;
+}
+
+const std::vector<App::DocumentObject*>* AssemblyObject::getRigidMembers(App::DocumentObject* part) const
+{
+    if (auto* rep = getRigidRepresentative(part); rep) {
+        if (auto it = rigidMembersByRep.find(rep); it != rigidMembersByRep.end()) {
+            return &it->second;
+        }
+    }
+
+    return nullptr;
+}
+
+void AssemblyObject::syncActiveRigidGroupPlacements()
+{
+    for (const auto& [rep, members] : rigidMembersByRep) {
+        if (!rep || members.size() < 2) {
+            continue;
+        }
+
+        bool hasCompleteCache = true;
+        std::vector<App::DocumentObject*> movedMembers;
+
+        for (auto* member : members) {
+            if (!member) {
+                hasCompleteCache = false;
+                break;
+            }
+
+            auto cacheIt = rigidPlacementCache.find(member);
+            if (cacheIt == rigidPlacementCache.end()) {
+                hasCompleteCache = false;
+                break;
+            }
+
+            Base::Placement currentPlc = getPlacementFromProp(member, "Placement");
+            if (!cacheIt->second.isSame(currentPlc)) {
+                movedMembers.push_back(member);
+            }
+        }
+
+        if (!hasCompleteCache) {
+            for (auto* member : members) {
+                if (!member) {
+                    continue;
+                }
+                rigidPlacementCache[member] = getPlacementFromProp(member, "Placement");
+            }
+            continue;
+        }
+
+        if (movedMembers.empty()) {
+            continue;
+        }
+
+        App::DocumentObject* driver = movedMembers.front();
+        const Base::Placement oldDriverPlc = rigidPlacementCache.at(driver);
+        const Base::Placement newDriverPlc = getPlacementFromProp(driver, "Placement");
+        const Base::Placement delta = newDriverPlc * oldDriverPlc.inverse();
+
+        for (auto* member : members) {
+            if (!member || member == driver) {
+                continue;
+            }
+
+            if (auto cacheIt = rigidPlacementCache.find(member);
+                cacheIt != rigidPlacementCache.end()) {
+                Base::Placement targetPlc = delta * cacheIt->second;
+                auto* propPlacement = member->getPlacementProperty();
+                if (propPlacement && !propPlacement->getValue().isSame(targetPlc)) {
+                    propPlacement->setValue(targetPlc);
+                    member->purgeTouched();
+                }
+            }
+        }
+
+        for (auto* member : members) {
+            if (!member) {
+                continue;
+            }
+            rigidPlacementCache[member] = getPlacementFromProp(member, "Placement");
+        }
+    }
+}
+
+void AssemblyObject::updateRigidPlacementCache()
+{
+    std::unordered_set<App::DocumentObject*> activeMembers;
+
+    for (const auto& [rep, members] : rigidMembersByRep) {
+        boost::ignore_unused(rep);
+        for (auto* member : members) {
+            if (!member) {
+                continue;
+            }
+            activeMembers.insert(member);
+            rigidPlacementCache[member] = getPlacementFromProp(member, "Placement");
+        }
+    }
+
+    std::erase_if(rigidPlacementCache, [&](const auto& entry) {
+        return !activeMembers.contains(entry.first);
+    });
 }
 
 void AssemblyObject::setNewPlacements()
@@ -795,6 +1032,68 @@ std::vector<App::DocumentObject*> AssemblyObject::getGroundedJoints()
     return joints;
 }
 
+std::vector<App::DocumentObject*> AssemblyObject::getRigidGroups()
+{
+    std::vector<App::DocumentObject*> rigid_groups {};
+
+    JointGroup* jointGroup = getJointGroup();
+    if (!jointGroup) {
+        return {};
+    }
+
+    Base::PyGILStateLocker lock;
+    for (auto const obj : jointGroup->getObjects()) {
+        if (!obj || obj->isError()) {
+            continue;
+        }
+
+        if (auto* prop = dynamic_cast<App::PropertyBool*>(obj->getPropertyByName("Suppressed"));
+            prop == nullptr || prop->getValue()) {
+            continue;
+        }
+
+        if (auto* prop
+            = dynamic_cast<App::PropertyLinkList*>(obj->getPropertyByName("ObjectsToRigidGroup"));
+            prop) {
+            const std::vector<App::DocumentObject*> rawMembers = prop->getValues();
+            std::vector<App::DocumentObject*> validMembers;
+            validMembers.reserve(rawMembers.size());
+            std::unordered_set<App::DocumentObject*> seen;
+
+            for (auto* const member : rawMembers) {
+                if (!member || member->isError()) {
+                    continue;
+                }
+
+                // Keep only parts that belong to this assembly and have placement.
+                if (!hasObject(member) || member->getPropertyByName("Placement") == nullptr) {
+                    continue;
+                }
+
+                // Ignore duplicates.
+                if (!seen.insert(member).second) {
+                    continue;
+                }
+
+                validMembers.push_back(member);
+            }
+
+            // Ignore entire rigid group if it has less than 2 members remaining.
+            if (validMembers.size() < 2) {
+                continue;
+            }
+
+            if (validMembers.size() != rawMembers.size()) {
+                prop->setValue(validMembers);
+            }
+
+            rigid_groups.emplace_back(obj);
+        }
+    }
+
+    return rigid_groups;
+}
+
 std::vector<App::DocumentObject*> AssemblyObject::getJointsOfObj(App::DocumentObject* obj)
 {
     if (!obj) {
@@ -866,6 +1165,22 @@ std::unordered_set<App::DocumentObject*> AssemblyObject::getGroundedParts()
 
     // Origin is not in Group so we add it separately
     groundedSet.insert(Origin.getValue());
+
+    // Propagate grounding through active rigid clusters.
+    std::vector<App::DocumentObject*> groundedSnapshot(groundedSet.begin(), groundedSet.end());
+    for (auto* groundedObj : groundedSnapshot) {
+        if (!groundedObj) {
+            continue;
+        }
+
+        if (const auto* members = getRigidMembers(groundedObj)) {
+            for (auto* member : *members) {
+                if (member) {
+                    groundedSet.insert(member);
+                }
+            }
+        }
+    }
 
     return groundedSet;
 }
@@ -1081,6 +1396,17 @@ std::vector<ObjRef> AssemblyObject::getConnectedParts(
             connectedParts.push_back({obj1, ref});
         }
     }
+
+    // Add rigid-cluster neighbors as fixed-like connectivity edges.
+    if (const auto* members = getRigidMembers(part)) {
+        for (auto* member : *members) {
+            if (!member || member == part || isObjInSetOfObjRefs(member, connectedParts)) {
+                continue;
+            }
+            connectedParts.push_back({member, nullptr});
+        }
+    }
+
     return connectedParts;
 }
 
@@ -1862,6 +2188,39 @@ AssemblyObject::MbDPartData AssemblyObject::getMbDData(App::DocumentObject* part
     if (it != objectPartMap.end()) {
         // part has been associated with an ASMTPart before
         return it->second;
+    }
+
+    // Associate objects that belong to an active rigid cluster.
+    if (auto* rep = getRigidRepresentative(part)) {
+        Base::Placement repPlc = getPlacementFromProp(rep, "Placement");
+
+        std::shared_ptr<ASMTPart> mbdPart;
+        const auto repMapped = objectPartMap.find(rep);
+        if (repMapped != objectPartMap.end()) {
+            mbdPart = repMapped->second.part;
+        }
+        else {
+            std::string repName = rep->getFullName();
+            mbdPart = makeMbdPart(repName, repPlc);
+            mbdAssembly->addPart(mbdPart);
+            objectPartMap[rep] = {mbdPart, Base::Placement()};
+        }
+
+        if (const auto* members = getRigidMembers(rep)) {
+            for (auto* member : *members) {
+                if (!member || objectPartMap.find(member) != objectPartMap.end()) {
+                    continue;
+                }
+
+                Base::Placement memberPlc = getPlacementFromProp(member, "Placement");
+                objectPartMap[member] = {mbdPart, repPlc.inverse() * memberPlc};
+            }
+        }
+
+        auto mapped = objectPartMap.find(part);
+        if (mapped != objectPartMap.end()) {
+            return mapped->second;
+        }
     }
 
     // part has not been associated with an ASMTPart before
