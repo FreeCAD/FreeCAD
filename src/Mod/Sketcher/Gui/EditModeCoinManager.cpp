@@ -110,7 +110,8 @@ struct GeometryScreenPreselector
         SketcherGui::CoinMapping& coinMap,
         const SketcherGui::DrawingParameters& drawingParams,
         const SketcherGui::GeoList& geoListArg,
-        std::function<SbVec2f(const SbVec3f&)> screenProjectorArg
+        std::function<SbVec2f(const SbVec3f&)> screenProjectorArg,
+        Base::Placement sketchPlacementArg
     )
         : geometryLayerParameters(geometryLayerParams)
         , editModeScenegraphNodes(scenegraphNodes)
@@ -118,6 +119,8 @@ struct GeometryScreenPreselector
         , drawingParameters(drawingParams)
         , geolist(geoListArg)
         , projectToScreen(std::move(screenProjectorArg))
+        , sketchPlacement(std::move(sketchPlacementArg))
+
     {}
 
     bool detectHoveredPointPreselection(
@@ -287,13 +290,10 @@ struct GeometryScreenPreselector
                     result.clear();
                     result.Kind = SketcherGui::EditModeCoinManager::PreselectionResult::HitKind::Edge;
                     result.GeoIndex = geoIndex;
-                    result.setPickedPoint(
-                        Base::Vector3d(
-                            startPoint[0] + (endPoint[0] - startPoint[0]) * interpolation,
-                            startPoint[1] + (endPoint[1] - startPoint[1]) * interpolation,
-                            startPoint[2] + (endPoint[2] - startPoint[2]) * interpolation
-                        )
-                    );
+                    result.setPickedPoint(sketchPlanePointToWorld(
+                        startPoint[0] + (endPoint[0] - startPoint[0]) * interpolation,
+                        startPoint[1] + (endPoint[1] - startPoint[1]) * interpolation
+                    ));
                     bestDistanceSquared = bestCurveDistanceSquared;
                     found = true;
                 }
@@ -341,13 +341,16 @@ private:
         result.Kind = SketcherGui::EditModeCoinManager::PreselectionResult::HitKind::Point;
         result.PointIndex = coinMapping.getPointVertexId(pointIndex, layerIndex);
         result.setPickedPoint(
-            Base::Vector3d(
-                pointValues[pointIndex][0],
-                pointValues[pointIndex][1],
-                pointValues[pointIndex][2]
-            )
+            sketchPlanePointToWorld(pointValues[pointIndex][0], pointValues[pointIndex][1])
         );
         return true;
+    }
+
+    Base::Vector3d sketchPlanePointToWorld(double x, double y) const
+    {
+        Base::Vector3d point(x, y, 0.0);
+        sketchPlacement.getRotation().multVec(point, point);
+        return point + sketchPlacement.getPosition();
     }
 
     float getPointHitRadius(int pointIndex, int layerIndex, float extraRadiusPx) const
@@ -403,6 +406,7 @@ private:
     const SketcherGui::DrawingParameters& drawingParameters;
     const SketcherGui::GeoList& geolist;
     const std::function<SbVec2f(const SbVec3f&)> projectToScreen;
+    const Base::Placement sketchPlacement;
 };
 }  // namespace
 
@@ -1006,6 +1010,47 @@ void EditModeCoinManager::drawEdit(
     editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
 }
 
+void EditModeCoinManager::drawLineExtensionAutoConstraintHint(
+    const std::vector<Base::Vector2d>& HintCurve
+)
+{
+    const int hintCurveSize = static_cast<int>(HintCurve.size());
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet->numVertices.setNum(1);
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet->numVertices.set1Value(0, hintCurveSize);
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate->point.setNum(hintCurveSize);
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials->diffuseColor.setNum(
+        hintCurveSize
+    );
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->lineWidth
+        = editModeScenegraphNodes.InformationDrawStyle->lineWidth;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->linePattern
+        = editModeScenegraphNodes.CurvesConstructionDrawStyle->linePattern;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->linePatternScaleFactor
+        = editModeScenegraphNodes.CurvesConstructionDrawStyle->linePatternScaleFactor;
+
+    int i = 0;
+    for (const auto& point : HintCurve) {
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate->point.set1Value(
+            i,
+            SbVec3f(
+                static_cast<float>(point.x),
+                static_cast<float>(point.y),
+                static_cast<float>(
+                    ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
+                    * drawingParameters.zEdit
+                )
+            )
+        );
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials->diffuseColor.set1Value(
+            i,
+            drawingParameters.InformationColor
+        );
+        ++i;
+    }
+}
+
 void EditModeCoinManager::setPositionText(const Base::Vector2d& Pos, const SbString& text)
 {
     editModeScenegraphNodes.textX->string = text;
@@ -1221,6 +1266,7 @@ bool EditModeCoinManager::detectGeometryPreselection(
     auto projectToScreen = [this](const SbVec3f& point) {
         return ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, point);
     };
+    Base::Placement sketchPlacement = ViewProviderSketchCoinAttorney::getEditingPlacement(viewProvider);
 
     GeometryScreenPreselector screenPreselector {
         geometryLayerParameters,
@@ -1228,7 +1274,8 @@ bool EditModeCoinManager::detectGeometryPreselection(
         coinMapping,
         drawingParameters,
         geolist,
-        projectToScreen
+        projectToScreen,
+        sketchPlacement
     };
 
     if (detectPointPreselection(points, result)) {
@@ -1549,6 +1596,45 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditCurveSet = new SoLineSet;
     editModeScenegraphNodes.EditCurveSet->setName("EditCurveLineSet");
     editCurvesRoot->addChild(editModeScenegraphNodes.EditCurveSet);
+
+    SoSeparator* lineExtensionAutoConstraintHintRoot = new SoSeparator;
+    editModeScenegraphNodes.EditRoot->addChild(lineExtensionAutoConstraintHintRoot);
+
+    SoPickStyle* lineExtensionAutoConstraintHintPickStyle = new SoPickStyle;
+    lineExtensionAutoConstraintHintPickStyle->style = SoPickStyle::UNPICKABLE;
+    lineExtensionAutoConstraintHintRoot->addChild(lineExtensionAutoConstraintHintPickStyle);
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials = new SoMaterial;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials->setName(
+        "LineExtensionAutoConstraintHintMaterials"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintMaterials
+    );
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate = new SoCoordinate3;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate->setName(
+        "LineExtensionAutoConstraintHintCoordinate"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintCoordinate
+    );
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle = new SoDrawStyle;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle->setName(
+        "LineExtensionAutoConstraintHintDrawStyle"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintDrawStyle
+    );
+
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet = new SoLineSet;
+    editModeScenegraphNodes.LineExtensionAutoConstraintHintSet->setName(
+        "LineExtensionAutoConstraintHintLineSet"
+    );
+    lineExtensionAutoConstraintHintRoot->addChild(
+        editModeScenegraphNodes.LineExtensionAutoConstraintHintSet
+    );
 
     // stuff for the EditMarkers +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editMarkersRoot = new SoSeparator;

@@ -122,18 +122,6 @@ class _View3DInventor:
         """Return a textual dump of one scene-graph node."""
         ...
 
-    def setStereoType(self, stereo_type: int | str, /) -> None:
-        """Set the stereo rendering mode."""
-        ...
-
-    def getStereoType(self) -> str:
-        """Return the active stereo rendering mode."""
-        ...
-
-    def listStereoTypes(self) -> list[str]:
-        """Return the supported stereo rendering modes."""
-        ...
-
     def saveImage(
         self,
         filename: str,

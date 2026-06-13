@@ -314,12 +314,11 @@ class ObjectMillFacing(PathOp.ObjectOp):
         )
         Path.Log.debug(f"Depth params object: {depthparams}")
 
-        # Always use the stock object top face for facing operations
-        job = PathUtils.findParentJob(obj)
-        Path.Log.debug(f"Job: {job.Label if job else 'None'}")
-        if job and job.Stock:
-            Path.Log.debug(f"Stock: {job.Stock.Label}")
-            stock_faces = job.Stock.Shape.Faces
+        # Use self.stock which the base class wraps with transformed geometry
+        # when a 3+2 workplane is active.
+        if self.stock and hasattr(self.stock, "Shape") and self.stock.Shape:
+            Path.Log.debug(f"Stock: {self.stock.Label}")
+            stock_faces = self.stock.Shape.Faces
             Path.Log.debug(f"Number of stock faces: {len(stock_faces)}")
 
             # Find faces with normal pointing toward Z+ (upward)
@@ -427,9 +426,6 @@ class ObjectMillFacing(PathOp.ObjectOp):
         except Exception as e:
             Path.Log.error(f"Error generating toolpath: {e}")
             raise
-
-        # clear commandlist
-        self.commandlist = []
 
         # Be safe. Add first G0 to clearance height
         targetZ = obj.ClearanceHeight.Value

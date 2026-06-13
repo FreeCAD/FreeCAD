@@ -456,11 +456,6 @@ class DraftToolBar:
             "chainedModeCmd", self.layout, checked=self.chainedMode
         )
 
-        self.chainedModeCmd.setEnabled(
-            not (hasattr(self.sourceCmd, "contMode") and self.continueMode)
-        )
-        self.continueCmd.setEnabled(not (hasattr(self.sourceCmd, "chain") and self.chainedMode))
-
         # update checkboxes without parameters and without internal modes:
         self.occOffset = self._checkbox("occOffset", self.layout, checked=False)
 
@@ -1145,16 +1140,10 @@ class DraftToolBar:
             "Mod/Draft/ContinueMode",
         )
         self.continueMode = bool(getattr(val, "value", val))
-        self.chainedModeCmd.setEnabled(not bool(getattr(val, "value", val)))
 
     def setChainedMode(self, val):
         params.set_param("ChainedMode", bool(getattr(val, "value", val)))
         self.chainedMode = bool(getattr(val, "value", val))
-        self.continueCmd.setEnabled(not bool(getattr(val, "value", val)))
-        if bool(getattr(val, "value", val)) == False:
-            # If user has deselected the checkbox, reactive the command
-            # which will result in closing it
-            FreeCAD.activeDraftCommand.Activated()
 
     # val=-1 is used to temporarily switch to relativeMode and disable the checkbox.
     # val=-2 is used to switch back.

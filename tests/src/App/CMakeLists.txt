@@ -33,6 +33,6 @@ target_compile_definitions(App_tests_run PRIVATE DATADIR="${CMAKE_SOURCE_DIR}/da
 target_link_libraries(App_tests_run PRIVATE
     GTest::gtest_main
     GTest::gmock_main
-    ${Google_Tests_LIBS}
+    ${Python3_LIBRARIES}
     FreeCADApp
 )

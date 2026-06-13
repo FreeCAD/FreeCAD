@@ -275,14 +275,14 @@ private:
                  .hints =
                      {
                          {tr("%1 pick polygon center"), {MouseLeft}},
-                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1/%2 increase/decrease number of sides"), {KeyU, KeyJ}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
                          {tr("%1 pick rotation and size"), {MouseMove}},
                          {tr("%1 confirm"), {MouseLeft}},
-                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1/%2 increase/decrease number of sides"), {KeyU, KeyJ}},
                      }},
             });
     }

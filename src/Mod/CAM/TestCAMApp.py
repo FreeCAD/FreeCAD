@@ -54,7 +54,11 @@ from CAMTests.TestPathHelixGenerator import TestPathHelixGenerator
 from CAMTests.TestPathSpiralGenerator import TestPathSpiralGenerator
 from CAMTests.TestPathLog import TestPathLog
 from CAMTests.TestPathLogNew import TestPathLogNew
-from CAMTests.TestPathOpUtil import TestPathOpUtil
+from CAMTests.TestPathOpUtil import (
+    TestPathOpUtil,
+    TestGetClearedAreasWorkplane,
+    TestStripRotaryAxes,
+)
 from CAMTests.TestPostToolProcessing import TestToolLengthOffset, TestToolProcessing
 
 # Post-processing tests split into 3 files for better organization
@@ -128,6 +132,7 @@ from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
 from CAMTests.TestMarlinPost import TestMarlinPost
 from CAMTests.TestDxfPost import TestDxfPost
 from CAMTests.TestFanucPost import TestFanucPost
+from CAMTests.TestOpenSBPPost import TestOpenSBPPost
 
 from CAMTests.TestGrblPost import TestGrblPost
 from CAMTests.TestMassoG3Post import TestMassoG3Post

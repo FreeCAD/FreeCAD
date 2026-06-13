@@ -18,6 +18,7 @@ requirements:
     - cmake
     - compilers>=1.10,<1.11
     - doxygen
+    - gtest
     - ninja
     - noqt5
     - python>=3.11,<3.12

@@ -383,11 +383,6 @@ Pienin arvo on 0.</translation>
       <translation>Käytä Netgen verkkopinnan tekijää</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Hienous:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Hyvin karkea</translation>
@@ -438,6 +433,11 @@ Pienin arvo on 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Jos tämä parametri on pienempi, verkkopinnasta tulee hienompi.
 Arvo välillä 0,1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation type="unfinished">Fineness</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
