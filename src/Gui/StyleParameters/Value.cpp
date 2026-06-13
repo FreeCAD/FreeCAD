@@ -121,9 +121,24 @@ std::string Value::toString() const
 namespace
 {
 
+TupleKind resolveKind(TupleKind lhs, TupleKind rhs)
+{
+    if (lhs == rhs || rhs == TupleKind::Generic) {
+        return lhs;
+    }
+    if (lhs == TupleKind::Generic) {
+        return rhs;
+    }
+    THROWM(
+        Base::ExpressionError,
+        fmt::format("Cannot combine {} and {} tuples", tupleKindName(lhs), tupleKindName(rhs))
+    );
+}
+
 Tuple elementWise(const Tuple& lhs, const Tuple& rhs, auto op)
 {
     Tuple result;
+    result.kind = resolveKind(lhs.kind, rhs.kind);
     std::vector<bool> rhsUsed(rhs.size(), false);
 
     // Phase 1: LHS named elements — match by name in RHS
@@ -196,6 +211,7 @@ Tuple elementWise(const Tuple& lhs, const Tuple& rhs, auto op)
 Tuple scalarBroadcast(const Tuple& tuple, const Value& scalar, auto op)
 {
     Tuple result;
+    result.kind = tuple.kind;
     for (size_t i = 0; i < tuple.size(); ++i) {
         result.elements.emplace_back(
             tuple.elements[i].name,
@@ -264,6 +280,7 @@ Value Value::operator-() const
     if (holds<Tuple>()) {
         Tuple result;
         const auto& tuple = get<Tuple>();
+        result.kind = tuple.kind;
         for (size_t i = 0; i < tuple.size(); ++i) {
             result.elements.emplace_back(
                 tuple.elements[i].name,
@@ -299,6 +316,25 @@ size_t Tuple::size() const
 {
     return elements.size();
 }
+
+Tuple::Element Tuple::Element::named(std::string name, Value val)
+{
+    return {.name = std::move(name), .value = std::make_shared<const Value>(std::move(val))};
+}
+
+Tuple::Element Tuple::Element::unnamed(Value val)
+{
+    return {.name = std::nullopt, .value = std::make_shared<const Value>(std::move(val))};
+}
+
+Tuple::Tuple(std::initializer_list<Element> elements)
+    : elements(elements)
+{}
+
+Tuple::Tuple(std::initializer_list<Element> elements, TupleKind kind)
+    : kind(kind)
+    , elements(elements)
+{}
 
 ArgumentParser::ArgumentParser(std::initializer_list<ParamDef> params)
     : params_(params)
