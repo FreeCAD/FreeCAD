@@ -39,12 +39,15 @@ the TechDraw Workbench.
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
 import Draft_rc
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-
+import TechDrawGui  # For TechDraw_TreePageUnsync.svg
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftutils import gui_utils
+from draftutils import utils
 from draftutils.messages import _msg
 from draftutils.translate import translate
 
@@ -125,5 +128,39 @@ class Shape2DView(gui_base_original.Modifier):
 
 
 Gui.addCommand("Draft_Shape2DView", Shape2DView())
+
+
+class UpdateShape2DView:
+    """Gui Command to force the update of Shape2DViews."""
+
+    def GetResources(self):
+        return {
+            "Pixmap": "TechDraw_TreePageUnsync",
+            "Accel": "V,T",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_UpdateShape2DView", "Force 2D View Update"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_UpdateShape2DView",
+                "Forces an update of the selected 2D Views or all 2D Views in the document.\nThe 'Auto Update' property of the views is ignored.",
+            ),
+        }
+
+    def IsActive(self):
+        """Return True when this command should be available."""
+        return bool(gui_utils.get_3d_view())
+
+    def Activated(self):
+        doc = App.ActiveDocument
+        sel = Gui.Selection.getSelection()
+        if not sel:
+            sel = doc.findObjects(Type="Part::Part2DObjectPython")
+        doc.openTransaction(translate("draft", "Update"))
+        for obj in sel:
+            if utils.get_type(obj) == "Shape2DView":
+                obj.Proxy.execute(obj, force_update=True)
+                obj.purgeTouched()
+        doc.commitTransaction()
+
+
+Gui.addCommand("Draft_UpdateShape2DView", UpdateShape2DView())
 
 ## @}

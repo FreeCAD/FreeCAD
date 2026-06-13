@@ -170,6 +170,7 @@ from draftguitools.gui_trimex import Trimex
 from draftguitools.gui_scale import Scale
 from draftguitools.gui_wire2spline import WireToBSpline
 from draftguitools.gui_shape2dview import Shape2DView
+from draftguitools.gui_shape2dview import UpdateShape2DView
 from draftguitools.gui_draft2sketch import Draft2Sketch
 from draftguitools.gui_patharray import PathArray
 from draftguitools.gui_patharray import PathLinkArray
