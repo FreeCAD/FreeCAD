@@ -58,6 +58,7 @@ public:
     static int getDenominator();
 
     static std::vector<std::string> getDescriptions();
+    static std::vector<std::string> getAbbreviations();
     static std::vector<std::string> getNames();
 
     static std::size_t count();

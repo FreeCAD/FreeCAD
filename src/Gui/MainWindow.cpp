@@ -31,6 +31,7 @@
 #include <QDesktopServices>
 #include <QDockWidget>
 #include <QFontMetrics>
+#include <QGuiApplication>
 #include <QKeySequence>
 #include <QLabel>
 #include <QMdiSubWindow>
@@ -44,6 +45,8 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QScreen>
+#include <QStyle>
+#include <QStyleOptionComboBox>
 #include <QSettings>
 #include <QSignalMapper>
 #include <QStatusBar>
@@ -54,6 +57,7 @@
 #include <QWhatsThis>
 #include <QWindow>
 #include <QPushButton>
+#include <QStyleOptionButton>
 #include <string>
 
 
@@ -188,6 +192,8 @@ private:
 class DimensionWidget: public QPushButton, WindowParameter
 {
     Q_OBJECT
+    int fixedWidthValue = 0;
+    QMenu* unitMenu = nullptr;
 
 public:
     explicit DimensionWidget(QWidget* parent)
@@ -195,15 +201,13 @@ public:
         , WindowParameter("Units")
     {
         setFlat(true);
-        setText(qApp->translate("Gui::MainWindow", "Dimension"));
-        setMinimumWidth(120);
-
+        setStyleSheet("QPushButton { text-align: left; padding-left: 6px; padding-right: 6px; }");
         // create the action buttons
-        auto* menu = new QMenu(this);
-        auto* actionGrp = new QActionGroup(menu);
+        unitMenu = new QMenu(this);
+        auto* actionGrp = new QActionGroup(unitMenu);
 
         auto setAction = [&, index {0}](const std::string&) mutable {
-            QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(index));
+            QAction* action = unitMenu->addAction(QStringLiteral("UnitSchema%1").arg(index));
             actionGrp->addAction(action);
             action->setCheckable(true);
             action->setData(index++);
@@ -222,10 +226,33 @@ public:
                 view->setShowAll(show);
             }
         });
-        setMenu(menu);
+
+        QObject::connect(unitMenu, &QMenu::aboutToShow, this, [this]() {
+            /* Defer repositioning until the next event loop iteration so Qt has already
+               calculated the final menu geometry/sizeHint for the current style/font.*/
+            QTimer::singleShot(0, this, [this]() { positionUnitMenuPopup(); });
+        });
+
+        setMenu(unitMenu);
         retranslateUi();
         unitChanged();
         getWindowParameter()->Attach(this);
+
+        auto updateUnitLabel = [this](const Gui::Document&) {
+            unitChanged();
+        };
+
+        Gui::Application::Instance->signalActiveDocument.connect(updateUnitLabel);
+        Gui::Application::Instance->signalDeleteDocument.connect(updateUnitLabel);
+        updateFixedWidth();
+        setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    }
+
+    QSize sizeHint() const override
+    {
+        QSize s = QPushButton::sizeHint();
+        s.setWidth(fixedWidthValue);
+        return s;
     }
 
     ~DimensionWidget() override
@@ -236,19 +263,36 @@ public:
     void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override
     {
         Q_UNUSED(rCaller)
-        if (strcmp(sReason, "UserSchema") == 0) {
-            unitChanged();
+
+        // Preferences change triggers these
+        if (strcmp(sReason, "UserSchema") == 0 || strcmp(sReason, "Units") == 0
+            || strcmp(sReason, "IgnoreProjectSchema") == 0) {
+            QTimer::singleShot(0, this, [this]() {
+                retranslateUi();
+                unitChanged();
+            });
         }
     }
-
     void changeEvent(QEvent* event) override
     {
         if (event->type() == QEvent::LanguageChange) {
             retranslateUi();
+            unitChanged();
+        }
+        else if (
+            event->type() == QEvent::FontChange || event->type() == QEvent::ApplicationFontChange
+            || event->type() == QEvent::StyleChange
+        ) {
+            QPushButton::changeEvent(event);
+            updateFixedWidth();
+            return;
         }
         else {
             QPushButton::changeEvent(event);
+            return;
         }
+
+        QPushButton::changeEvent(event);
     }
 
     void setUserSchema(int userSchema)
@@ -270,33 +314,116 @@ public:
     }
 
 private:
+    // Position the unit menu popup above the status-bar button (like the nav style popup).
+    // Clamp horizontally to the current screen; if there is no room above, show it below instead.
+    void positionUnitMenuPopup()
+    {
+        if (!unitMenu) {
+            return;
+        }
+
+        const QSize menuSize = unitMenu->sizeHint();
+        QPoint menuPos = mapToGlobal(rect().topLeft());
+        menuPos.setY(menuPos.y() - menuSize.height());
+
+        QScreen* screen = QGuiApplication::screenAt(mapToGlobal(rect().center()));
+        if (!screen) {
+            screen = QGuiApplication::primaryScreen();
+        }
+        if (screen) {
+            const QRect available = screen->availableGeometry();
+            const int minX = available.left();
+            const int maxX = available.right() - menuSize.width() + 1;
+            menuPos.setX(std::clamp(menuPos.x(), minX, maxX));
+            if (menuPos.y() < available.top()) {
+                menuPos.setY(mapToGlobal(rect().bottomLeft()).y());
+            }
+        }
+
+        unitMenu->move(menuPos);
+    }
+
+    void updateFixedWidth()
+    {
+        QFontMetrics fm(font());
+        int maxTextWidth = 0;
+
+        const auto abbreviations = Base::UnitsApi::getAbbreviations();
+        for (const auto& abbr : abbreviations) {
+            maxTextWidth = std::max(maxTextWidth, fm.horizontalAdvance(QString::fromStdString(abbr)));
+        }
+
+        QStyleOptionButton opt;
+        opt.initFrom(this);
+        opt.text = text();
+
+        // Ask the style how wide a push button must be to fit this content.
+        fixedWidthValue
+            = style()
+                  ->sizeFromContents(QStyle::CT_PushButton, &opt, QSize(maxTextWidth, fm.height()), this)
+                  .width();
+
+        setMinimumWidth(fixedWidthValue);
+        setMaximumWidth(fixedWidthValue);
+    }
+
     void unitChanged()
     {
-        ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Units"
-        );
-        bool ignore = hGrpu->GetBool("IgnoreProjectSchema", false);
-        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (!unitMenu) {
+            return;
+        }
+
+        auto actions = unitMenu->actions();
+        if (actions.empty()) {
+            return;
+        }
+
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
-        if (doc && !ignore) {
+
+        App::Document* doc = App::GetApplication().getActiveDocument();
+
+        if (doc) {
             userSchema = doc->UnitSystem.getValue();
         }
-        auto actions = menu()->actions();
-        if (Q_UNLIKELY(userSchema < 0 || userSchema >= actions.size())) {
+
+        // clamp safely
+        if (userSchema < 0 || userSchema >= actions.size()) {
             userSchema = 0;
         }
+
         actions[userSchema]->setChecked(true);
+        QAction* act = actions[userSchema];
+        QString abbreviation = act ? act->property("abbreviation").toString() : QString();
+        if (!act || abbreviation.isEmpty()) {
+            setText("Units");
+            setToolTip(QString());
+            return;
+        }
+
+        setText(abbreviation);
+        setToolTip(act->toolTip());
     }
 
     void retranslateUi()
     {
-        auto actions = menu()->actions();
-        auto addAction = [&, index {0}](const std::string& action) mutable {
-            actions[index++]->setText(QString::fromStdString(action));
-        };
+        if (!unitMenu) {
+            return;
+        }
+
+        auto actions = unitMenu->actions();
+        auto abbreviations = Base::UnitsApi::getAbbreviations();
         auto descriptions = Base::UnitsApi::getDescriptions();
+
+        assert(actions.size() <= static_cast<qsizetype>(abbreviations.size()));
         assert(actions.size() <= static_cast<qsizetype>(descriptions.size()));
-        std::for_each(descriptions.begin(), descriptions.end(), addAction);
+        for (qsizetype i = 0; i < actions.size(); ++i) {
+            const QString desc = QString::fromStdString(descriptions[i]);
+            actions[i]->setText(desc);
+            actions[i]->setToolTip(desc);
+            actions[i]->setStatusTip(desc);
+            actions[i]->setProperty("abbreviation", QString::fromStdString(abbreviations[i]));
+        }
+        updateFixedWidth();
     }
 };
 
@@ -2544,8 +2671,6 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
 void MainWindow::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        d->sizeLabel->setText(tr("Dimension"));
-
         CommandManager& rclMan = Application::Instance->commandManager();
         std::vector<Command*> cmd = rclMan.getAllCommands();
         for (auto& it : cmd) {

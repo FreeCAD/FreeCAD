@@ -72,6 +72,11 @@ std::vector<std::string> UnitsSchemas::descriptions()
     });
 }
 
+std::vector<std::string> UnitsSchemas::abbreviations()
+{
+    return getVec([](const UnitsSchemaSpec& spec) { return spec.abbreviation; });
+}
+
 std::size_t UnitsSchemas::getDecimals() const
 {
     return pack.defDecimals;
