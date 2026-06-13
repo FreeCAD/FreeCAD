@@ -264,6 +264,83 @@ class PartDesignGuiTestCases(unittest.TestCase):
         FreeCAD.closeDocument("SketchGuiTest")
 
 
+class TestFeatureEditVisibility(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignEditVisibility")
+        Gui.activateView("Gui::View3DInventor", True)
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.Doc.Name)
+
+    def _create_offset_plane(self, body, name, offset):
+        plane = body.newObject("PartDesign::Plane", name)
+        plane.AttachmentSupport = (self.Doc.XZ_Plane, [""])
+        plane.MapMode = "FlatFace"
+        plane.AttachmentOffset.Base.z = offset
+        self.Doc.recompute()
+        return plane
+
+    def _create_circle_sketch(self, body, name, support, radius):
+        sketch = body.newObject("Sketcher::SketchObject", name)
+        sketch.AttachmentSupport = (support, [""])
+        sketch.MapMode = "FlatFace"
+        self.Doc.recompute()
+        sketch.addGeometry(
+            Part.Circle(App.Vector(0.0, 0.0, 0.0), App.Vector(0.0, 0.0, 1.0), radius),
+            False,
+        )
+        self.Doc.recompute()
+        return sketch
+
+    def testLoftEditRestoresBorrowedVisibilityOnClose(self):
+        """Issue #25356: closing Loft edit must not leave the hidden Loft visible."""
+
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        Gui.activeView().setActiveObject("pdbody", body)
+
+        top_plane = self._create_offset_plane(body, "DatumPlane", 20.0)
+        mid_plane = self._create_offset_plane(body, "DatumPlane001", 10.0)
+
+        profile = self._create_circle_sketch(body, "Sketch", self.Doc.XZ_Plane, 5.0)
+        upper = self._create_circle_sketch(body, "Sketch001", top_plane, 4.0)
+        middle = self._create_circle_sketch(body, "Sketch003", mid_plane, 5.5)
+
+        loft = body.newObject("PartDesign::AdditiveLoft", "AdditiveLoft")
+        loft.Profile = profile
+        loft.Sections = [middle, upper]
+        self.Doc.recompute()
+
+        pocket_sketch = self._create_circle_sketch(body, "Sketch004", top_plane, 2.0)
+        pocket = body.newObject("PartDesign::Pocket", "Pocket")
+        pocket.Profile = pocket_sketch
+        pocket.Length = 5.0
+        self.Doc.recompute()
+
+        for sketch in [profile, upper, middle, pocket_sketch]:
+            sketch.Visibility = False
+
+        Gui.updateGui()
+
+        self.assertFalse(loft.Visibility)
+        self.assertTrue(pocket.Visibility)
+        self.assertFalse(loft.ViewObject.isVisible())
+        self.assertTrue(pocket.ViewObject.isVisible())
+
+        self.assertTrue(Gui.ActiveDocument.setEdit(loft.Name, 0))
+        Gui.updateGui()
+
+        self.assertIsNotNone(Gui.Control.activeDialog())
+        self.assertTrue(loft.ViewObject.isVisible())
+
+        Gui.ActiveDocument.resetEdit()
+        Gui.updateGui()
+
+        self.assertFalse(loft.Visibility)
+        self.assertTrue(pocket.Visibility)
+        self.assertFalse(loft.ViewObject.isVisible())
+        self.assertTrue(pocket.ViewObject.isVisible())
+
+
 class PartDesignTransformed(unittest.TestCase):
     def setUp(self):
         self.Doc = App.newDocument("PartDesignTransformed")

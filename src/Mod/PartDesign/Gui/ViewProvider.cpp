@@ -123,6 +123,8 @@ bool ViewProvider::setEdit(int ModNum)
         return forwardedViewProvider->startEditing(ModNum);
     }
     else if (ModNum == ViewProvider::Default) {
+        restoreTemporaryVisibilityOnEditClose = false;
+
         // When double-clicking on the item for this feature the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -189,6 +191,11 @@ TaskDlgFeatureParameters* ViewProvider::getEditDialog()
 
 void ViewProvider::unsetEdit(int ModNum)
 {
+    if (restoreTemporaryVisibilityOnEditClose && !Visibility.getValue()) {
+        Gui::ViewProvider::hide();
+    }
+    restoreTemporaryVisibilityOnEditClose = false;
+
     showPreview(false);
 
     // return to the WB we were in before editing the PartDesign feature
@@ -451,6 +458,9 @@ void ViewProvider::makeTemporaryVisible(bool onoff)
 {
     // make sure to not use the overridden versions, as they change properties
     if (onoff) {
+        if (!Visibility.getValue() && !isShow()) {
+            restoreTemporaryVisibilityOnEditClose = true;
+        }
         if (VisualTouched) {
             updateVisual();
         }
