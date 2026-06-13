@@ -29,6 +29,7 @@
 
 #include <map>
 
+#include <App/PropertyLinkSubValueMap.h>
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderTextureExtension.h>
@@ -91,6 +92,8 @@ public:
     App::PropertyColor LineColor;
     App::PropertyMaterial LineMaterial;
     App::PropertyColorList LineColorArray;
+    App::PropertyLinkSubMaterialMapHidden FaceAppearanceMaterials;
+    App::PropertyMaterial FaceAppearanceDefaultMaterial;
 
     void attach(App::DocumentObject*) override;
     void setDisplayMode(const char* ModeName) override;
@@ -153,6 +156,13 @@ public:
      */
     //@{
     std::map<std::string, Base::Color> getElementColors(const char* element = nullptr) const override;
+    /// Synchronize legacy face-appearance state with topology-aware face references.
+    ///
+    /// Rebuilds ShapeAppearance and the rendered face material binding from
+    /// FaceAppearanceMaterials when topology remapping has changed the current face indices.
+    /// This is idempotent and exists for legacy/rendering entry points that still consume
+    /// positional face-appearance arrays.
+    void ensureCurrentFaceAppearances();
     //@}
 
     bool isUpdateForced() const override
@@ -206,9 +216,24 @@ protected:
     //@}
 
 protected:
+    enum class FaceAppearanceSyncMode
+    {
+        /// Update only when tracked face appearances already exist.
+        ExistingOnly,
+        /// Create tracked face appearances from the legacy positional list.
+        CreateIfMissing,
+        /// Replace tracked face appearances after an explicit legacy edit.
+        Reset,
+    };
+
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
     bool loadParameter();
+    int getCurrentFaceCount() const;
+    std::vector<App::Material> getResolvedFaceAppearances() const;
+    /// Update the unmapped-face fallback when ShapeAppearance represents one overall material.
+    void syncFaceAppearanceDefaultMaterial();
+    void syncFaceAppearanceMap(FaceAppearanceSyncMode mode = FaceAppearanceSyncMode::ExistingOnly);
     void updateVisual();
     void handleChangedPropertyName(
         Base::XMLReader& reader,
@@ -236,6 +261,7 @@ protected:
     bool VisualTouched;
     bool NormalsFromUV;
     bool faceHighlightActive = false;
+    bool syncingFaceAppearanceMap = false;
 
 private:
     Gui::ViewProviderFaceTexture texture;
