@@ -117,7 +117,7 @@ def setStatusIcons(show=True):
 
                 bimviewsbutton.setText("")
                 bimviewsbutton.setToolTip(
-                    translate("BIM", "Toggles the BIM Views Manager on/off (Ctrl+9)")
+                    translate("BIM", "Toggles the BIM Views Manager on/off")
                 )
                 bimviewsbutton.setCheckable(True)
                 if BimViews.findWidget():
