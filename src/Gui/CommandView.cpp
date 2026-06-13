@@ -4058,15 +4058,21 @@ StdCmdAlignToSelection::StdCmdAlignToSelection()
     eType = Alter3DView;
 }
 
-void StdCmdAlignToSelection::activated(int iMsg)
+void StdCmdAlignToSelection::activated(int /*iMsg*/)
 {
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"AlignToSelection\")");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (view && view->getViewer()) {
+        view->getViewer()->alignToSelection();
+    }
+    else {
+        Base::Console().developerError("StdCmdAlignToSelection", "active view is not a 3D view");
+    }
 }
 
 bool StdCmdAlignToSelection::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("AlignToSelection");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    return view && view->getViewer();
 }
 
 //===========================================================================
