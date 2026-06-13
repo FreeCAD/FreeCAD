@@ -76,7 +76,6 @@ void TaskLineDecor::initUi()
     std::string viewName = m_partFeat->getNameInDocument();
     ui->le_View->setText(QString::fromStdString(viewName));
 
-    int n = m_edges.size();
     ui->le_Lines->setText(tr("%n line(s)", "", static_cast<int>(m_edges.size())));
 
     ui->cc_Color->setColor(m_color.asValue<QColor>());
