@@ -1761,43 +1761,37 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     }
 
     // 6) Compute toolBounds = offset(input paths, -(toolRadius + finishingThickness)).
-    // ...but clipper 1 drops Z value when doing offsets, so I need to do the offset per-curve to
-    // preserve Z value
-    Paths toolBounds;
-    for (const Path& path : inputPaths) {
-        bool orientation = Orientation(path);
-        int direction = (getPathNestingLevel(path, inputPaths) % 2 == 1) ? 1 : -1;
-        bool z1 = false;
-        for (const IntPoint& p : path) {
-            if (p.Z == 1) {
-                z1 = true;
-                break;
-            }
+    // Z is used to indicate which paths need a finish pass. Clipper1 doesn't
+    // preserve Z with operations, so convert to Clipper2, perform the offset,
+    // then back to Clipper1 for subsequent operations
+    Clipper2Lib::Paths64 inputPaths2;
+    inputPaths2.reserve(inputPaths.size());
+    for (const auto& path : inputPaths) {
+        Clipper2Lib::Path64 p;
+        p.reserve(path.size());
+        for (const auto& pt : path) {
+            p.emplace_back(pt.X, pt.Y, pt.Z);  // IntPoint -> Point64
         }
-
-        Paths out;
-        clipof.Clear();
-        clipof.AddPath(path, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(out, -(toolRadiusScaled + finishPassOffsetScaled) * direction);
-
-        for (Path& p : out) {
-            if (Orientation(p) != orientation) {
-                ReversePath(p);
-            }
-            if (z1) {
-                for (IntPoint& pp : p) {
-                    pp.Z = 1;
-                }
-            }
-            toolBounds.push_back(p);
-        }
+        inputPaths2.emplace_back(p);
     }
-    // these 3 lines should work instead of the above if clipper 1 handled Z-values for offsets,
-    // like clipper 2 does:
-    //
-    // clipof.Clear();
-    // clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
-    // clipof.Execute(toolBounds, -(toolRadiusScaled + finishPassOffsetScaled));
+    Clipper2Lib::Paths64 toolBounds2 = Clipper2Lib::InflatePaths(
+        inputPaths2,
+        -(toolRadiusScaled + finishPassOffsetScaled),
+        Clipper2Lib::JoinType::Round,
+        Clipper2Lib::EndType::Polygon
+    );
+
+    /* Convert results back to clipper1 */
+    Paths toolBounds;
+    toolBounds.reserve(toolBounds2.size());
+    for (const auto& path : toolBounds2) {
+        Path p;
+        p.reserve(path.size());
+        for (const auto& pt : path) {
+            p.emplace_back(pt.x, pt.y, pt.z);  // Point64 -> IntPoint
+        }
+        toolBounds.emplace_back(p);
+    }
 
     // 7) Loop over connected components using nesting level.
     for (const auto& current : toolBounds) {
