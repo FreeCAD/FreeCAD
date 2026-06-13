@@ -50,6 +50,7 @@
 
 #include <QAction>
 #include <QMenu>
+#include <cstring>
 #include <sstream>
 
 #include <Inventor/SoPickedPoint.h>
@@ -71,6 +72,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/TimeInfo.h>
@@ -107,7 +109,7 @@ enum class FaceMaterialMode
 {
     Unchanged,
     Overall,
-    PerPart,
+    PerFace,
 };
 
 FaceMaterialMode getFaceMaterialMode(int materialCount, int faceCount)
@@ -118,10 +120,36 @@ FaceMaterialMode getFaceMaterialMode(int materialCount, int faceCount)
 
     // Per-face binding is valid only when every rendered face can map to a material.
     if (materialCount > 1 && faceCount > 0 && materialCount >= faceCount) {
-        return FaceMaterialMode::PerPart;
+        return FaceMaterialMode::PerFace;
     }
 
     return FaceMaterialMode::Overall;
+}
+
+Base::Color materialDiffuseColor(const App::Material& material)
+{
+    auto color = material.diffuseColor;
+    color.setTransparency(material.transparency);
+    return color;
+}
+
+Data::IndexedName faceIndexedNameFromSubName(const std::string& subName)
+{
+    const char* element = Data::findElementName(subName.c_str());
+    if (!element) {
+        return Data::IndexedName();
+    }
+
+    Data::IndexedName index(element);
+    if (index && std::strcmp(index.getType(), "Face") == 0) {
+        return index;
+    }
+
+    if (const char* dot = std::strrchr(element, '.')) {
+        return Data::IndexedName(dot + 1);
+    }
+
+    return Data::IndexedName();
 }
 
 }  // namespace
@@ -195,6 +223,20 @@ ViewProviderPartExt::ViewProviderPartExt()
 
     ADD_PROPERTY_TYPE(LineMaterial, (lmat), osgroup, App::Prop_None, "Object line material.");
     ADD_PROPERTY_TYPE(PointMaterial, (vmat), osgroup, App::Prop_None, "Object point material.");
+    ADD_PROPERTY_TYPE(
+        FaceAppearanceMaterials,
+        (),
+        osgroup,
+        App::Prop_Hidden,
+        "Tracked face appearances by topological face reference."
+    );
+    ADD_PROPERTY_TYPE(
+        FaceAppearanceDefaultMaterial,
+        (ShapeAppearance[0]),
+        osgroup,
+        App::Prop_Hidden,
+        "Default face appearance used when a face has no topological material match."
+    );
     ADD_PROPERTY_TYPE(LineColor, (lmat.diffuseColor), osgroup, App::Prop_None, "Set object line color.");
     ADD_PROPERTY_TYPE(PointColor, (vmat.diffuseColor), osgroup, App::Prop_None, "Set object point color");
     ADD_PROPERTY_TYPE(
@@ -414,8 +456,14 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     else if (prop == &LineColorArray) {
         setHighlightedEdges(LineColorArray.getValues());
     }
+    else if (prop == &FaceAppearanceMaterials) {
+        if (!syncingFaceAppearanceMap) {
+            ensureCurrentFaceAppearances();
+        }
+    }
     else if (prop == &_diffuseColor) {
         // Used to load the old DiffuseColor values asynchronously
+        syncFaceAppearanceDefaultMaterial();
         std::vector<Base::Color> colors = _diffuseColor.getValues();
         std::vector<float> transparencies;
         transparencies.resize(static_cast<int>(colors.size()));
@@ -427,7 +475,11 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         ShapeAppearance.setTransparencies(transparencies);
     }
     else if (prop == &ShapeAppearance) {
-        setHighlightedFaces(ShapeAppearance);
+        if (!syncingFaceAppearanceMap) {
+            syncFaceAppearanceDefaultMaterial();
+            syncFaceAppearanceMap(FaceAppearanceSyncMode::Reset);
+        }
+        setHighlightedFaces(getResolvedFaceAppearances());
         ViewProviderGeometryObject::onChanged(prop);
     }
     else if (prop == &Transparency) {
@@ -435,6 +487,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         long value = Base::toPercent(Mat.transparency);
         if (value != Transparency.getValue()) {
             float trans = Base::fromPercent(Transparency.getValue());
+            FaceAppearanceDefaultMaterial.setTransparency(trans);
             ShapeAppearance.setTransparency(trans);
         }
     }
@@ -709,7 +762,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
     const int materialCount = static_cast<int>(materials.size());
     const int faceCount = this->faceset->partIndex.getNum();
     const auto mode = getFaceMaterialMode(materialCount, faceCount);
-    if (mode == FaceMaterialMode::PerPart) {
+    if (mode == FaceMaterialMode::PerFace) {
         pcFaceBind->value = SoMaterialBinding::PER_PART;
         texture.activateMaterial();
 
@@ -770,6 +823,142 @@ void ViewProviderPartExt::setHighlightedFaces(const App::PropertyMaterialList& a
     setHighlightedFaces(appearance.getValues());
 }
 
+int ViewProviderPartExt::getCurrentFaceCount() const
+{
+    if (const auto* feature = freecad_cast<const Part::Feature*>(getObject())) {
+        const int shapeFaceCount = static_cast<int>(
+            feature->Shape.getShape().countSubShapes(TopAbs_FACE)
+        );
+        if (shapeFaceCount > 0) {
+            return shapeFaceCount;
+        }
+    }
+
+    try {
+        const int shapeFaceCount = static_cast<int>(getRenderedShape().countSubShapes(TopAbs_FACE));
+        if (shapeFaceCount > 0) {
+            return shapeFaceCount;
+        }
+    }
+    catch (...) {
+        // Fall back to the last rendered scene graph when the shape is not available.
+    }
+
+    return this->faceset->partIndex.getNum();
+}
+
+void ViewProviderPartExt::syncFaceAppearanceMap(FaceAppearanceSyncMode mode)
+{
+    if (syncingFaceAppearanceMap || isRestoring()) {
+        return;
+    }
+
+    const int faceCount = getCurrentFaceCount();
+    auto materials = ShapeAppearance.getValues();
+    if (faceCount <= 0 || static_cast<int>(materials.size()) != faceCount) {
+        if (mode == FaceAppearanceSyncMode::Reset && FaceAppearanceMaterials.getSize() > 0) {
+            Base::FlagToggler<> guard(syncingFaceAppearanceMap);
+            FaceAppearanceMaterials.clear();
+        }
+        return;
+    }
+
+    const bool reset = mode == FaceAppearanceSyncMode::Reset;
+    if (!reset && FaceAppearanceMaterials.getSize() > 0) {
+        return;
+    }
+    if (mode == FaceAppearanceSyncMode::ExistingOnly && FaceAppearanceMaterials.getSize() == 0) {
+        return;
+    }
+
+    auto* object = getObject();
+    if (!object) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> objects;
+    std::vector<std::string> elements;
+    objects.reserve(materials.size());
+    elements.reserve(materials.size());
+    for (int i = 0; i < faceCount; ++i) {
+        objects.push_back(object);
+        elements.push_back("Face" + std::to_string(i + 1));
+    }
+
+    Base::FlagToggler<> guard(syncingFaceAppearanceMap);
+    FaceAppearanceMaterials.setValues(std::move(objects), std::move(elements), std::move(materials));
+}
+
+void ViewProviderPartExt::syncFaceAppearanceDefaultMaterial()
+{
+    if (ShapeAppearance.getSize() == 1) {
+        FaceAppearanceDefaultMaterial.setValue(ShapeAppearance[0]);
+    }
+}
+
+std::vector<App::Material> ViewProviderPartExt::getResolvedFaceAppearances() const
+{
+    const int faceCount = getCurrentFaceCount();
+    if (faceCount <= 0) {
+        return ShapeAppearance.getValues();
+    }
+
+    const auto entries = FaceAppearanceMaterials.getEntries();
+    if (entries.empty()) {
+        return ShapeAppearance.getValues();
+    }
+
+    const App::Material defaultMaterial = FaceAppearanceDefaultMaterial.getValue();
+    std::vector<App::Material> resolved(static_cast<size_t>(faceCount), defaultMaterial);
+    std::vector<bool> assigned(static_cast<size_t>(faceCount), false);
+    bool hasResolvedFace = false;
+
+    auto assignFace = [&](const Data::IndexedName& index, const App::Material& material) {
+        if (!index || std::strcmp(index.getType(), "Face") != 0) {
+            return;
+        }
+
+        const int faceIndex = index.getIndex() - 1;
+        if (faceIndex < 0 || faceIndex >= faceCount) {
+            return;
+        }
+
+        const auto pos = static_cast<size_t>(faceIndex);
+        if (!assigned[pos]) {
+            resolved[pos] = material;
+            assigned[pos] = true;
+            hasResolvedFace = true;
+        }
+    };
+
+    auto* object = getObject();
+    for (const auto& entry : entries) {
+        if (entry.object != object || Data::hasMissingElement(entry.subName.c_str())) {
+            // Leave unresolved old faces at the default material.
+            continue;
+        }
+
+        assignFace(faceIndexedNameFromSubName(entry.subName), entry.value);
+    }
+
+    if (!hasResolvedFace) {
+        return ShapeAppearance.getValues();
+    }
+
+    return resolved;
+}
+
+void ViewProviderPartExt::ensureCurrentFaceAppearances()
+{
+    auto appearances = getResolvedFaceAppearances();
+    if (ShapeAppearance.getValues() != appearances) {
+        Base::FlagToggler<> guard(syncingFaceAppearanceMap);
+        ShapeAppearance.setValues(appearances);
+    }
+
+    setHighlightedFaces(appearances);
+}
+
 std::map<std::string, Base::Color> ViewProviderPartExt::getElementColors(const char* element) const
 {
     std::map<std::string, Base::Color> ret;
@@ -784,22 +973,21 @@ std::map<std::string, Base::Color> ViewProviderPartExt::getElementColors(const c
     }
 
     if (boost::starts_with(element, "Face")) {
-        auto size = ShapeAppearance.getSize();
+        const auto appearances = getResolvedFaceAppearances();
+        const auto size = static_cast<int>(appearances.size());
         if (element[4] == '*') {
             auto color = ShapeAppearance.getDiffuseColor();
             color.setTransparency(Base::fromPercent(Transparency.getValue()));
             bool singleColor = true;
             for (int i = 0; i < size; ++i) {
-                auto color_i = ShapeAppearance.getDiffuseColor(i);
-                color_i.setTransparency(ShapeAppearance.getTransparency(i));
+                const auto color_i = materialDiffuseColor(appearances[i]);
                 if (color_i != color) {
                     ret[std::string(element, 4) + std::to_string(i + 1)] = color_i;
                 }
                 singleColor = singleColor && color == color_i;
             }
             if (size > 0 && singleColor) {
-                color = ShapeAppearance.getDiffuseColor(0);
-                color.setTransparency(ShapeAppearance.getTransparency());
+                color = materialDiffuseColor(appearances.front());
                 ret.clear();
             }
             ret["Face"] = color;
@@ -807,9 +995,7 @@ std::map<std::string, Base::Color> ViewProviderPartExt::getElementColors(const c
         else {
             int idx = atoi(element + 4);
             if (idx > 0 && idx <= size) {
-                auto color_i = ShapeAppearance.getDiffuseColor(idx - 1);
-                color_i.setTransparency(ShapeAppearance.getTransparency(idx - 1));
-                ret[element] = color_i;
+                ret[element] = materialDiffuseColor(appearances[static_cast<size_t>(idx - 1)]);
             }
             else {
                 auto color_i = ShapeAppearance.getDiffuseColor();
@@ -979,6 +1165,7 @@ void ViewProviderPartExt::reload()
 
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
+    bool applyFaceAppearances = false;
     const char* propName = prop->getName();
     if (propName && (strcmp(propName, "Shape") == 0 || strstr(propName, "Touched"))) {
         // calculate the visual only if visible
@@ -996,9 +1183,13 @@ void ViewProviderPartExt::updateData(const App::Property* prop)
             if (mode == FaceMaterialMode::Overall) {
                 this->pcFaceBind->value = SoMaterialBinding::OVERALL;
             }
+            applyFaceAppearances = true;
         }
     }
     Gui::ViewProviderGeometryObject::updateData(prop);
+    if (applyFaceAppearances) {
+        ensureCurrentFaceAppearances();
+    }
 }
 
 void ViewProviderPartExt::startRestoring()
@@ -1015,6 +1206,8 @@ void ViewProviderPartExt::finishRestoring()
     if (_diffuseColor.getSize() > 1) {
         onChanged(&_diffuseColor);
     }
+    syncFaceAppearanceMap(FaceAppearanceSyncMode::CreateIfMissing);
+    ensureCurrentFaceAppearances();
     Gui::ViewProviderGeometryObject::finishRestoring();
 }
 
@@ -1497,7 +1690,8 @@ void ViewProviderPartExt::updateVisual()
         haction.apply(this->faceset);
         haction.apply(this->lineset);
         haction.apply(this->nodeset);
-        setHighlightedFaces(ShapeAppearance.getValues());
+        syncFaceAppearanceMap(FaceAppearanceSyncMode::CreateIfMissing);
+        ensureCurrentFaceAppearances();
         setHighlightedEdges(LineColorArray.getValues());
         setHighlightedPoints(PointColorArray.getValue());
         return;
@@ -1546,7 +1740,8 @@ void ViewProviderPartExt::updateVisual()
     }
 
     // The material has to be checked again
-    setHighlightedFaces(ShapeAppearance.getValues());
+    syncFaceAppearanceMap(FaceAppearanceSyncMode::CreateIfMissing);
+    ensureCurrentFaceAppearances();
     setHighlightedEdges(LineColorArray.getValues());
     setHighlightedPoints(PointColorArray.getValue());
 }
