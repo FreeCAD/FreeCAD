@@ -108,6 +108,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
 #include <Base/Profiler.h>
 #include <Base/Tools.h>
@@ -1274,6 +1275,7 @@ View3DInventorViewer::~View3DInventorViewer()
     delete viewerEventFilter;
 
     if (_viewerPy) {
+        Base::PyGILStateLocker lock;
         static_cast<View3DInventorViewerPy*>(_viewerPy)->_viewer = nullptr;
     }
 
