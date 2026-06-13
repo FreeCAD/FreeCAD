@@ -139,7 +139,81 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
         Base::Console().error("Error - Could not load Symbol into SVG renderer for %s\n",
                               getViewName());
     }
-    m_svgItem->centerAt(0., 0.);
+
+    // Placement rules for Draft/Arch views (other symbol views use the
+    // legacy centerAt(0,0) below):
+    //
+    //   * LockPosition = true            -> anchor the SVG on a point captured
+    //                                       when lock was enabled (current
+    //                                       bbox centre at that moment), so
+    //                                       adding new objects later grows the
+    //                                       bounding box around the anchor
+    //                                       without shifting already-visible
+    //                                       content (issue #27812).
+    //
+    //   * LockPosition = false (after a
+    //     preceding locked session)      -> KEEP the captured anchor for this
+    //                                       single redraw so the unlock
+    //                                       transition itself is seamless.
+    //                                       The anchor is then cleared; the
+    //                                       NEXT unlocked redraw (e.g. from a
+    //                                       content change) goes back to
+    //                                       centerAt(0,0) = legacy auto-recentre.
+    //
+    //   * LockPosition = false (no prior
+    //     lock in this session)          -> legacy centerAt(0,0).
+    auto* dv = getViewObject();
+    const bool isDraftArch = dv &&
+        (dynamic_cast<TechDraw::DrawViewDraft*>(dv) ||
+         dynamic_cast<TechDraw::DrawViewArch*>(dv));
+    const bool locked = dv && dv->LockPosition.getValue();
+    const bool unlockTransition = isDraftArch && !locked && m_wasLocked;
+    m_wasLocked = locked;
+
+    QRectF vb = isDraftArch ? m_svgItem->renderer()->viewBox() : QRectF();
+    QRectF br = isDraftArch ? m_svgItem->boundingRect() : QRectF();
+    const bool geometryValid = isDraftArch && vb.isValid()
+            && br.width() > 0 && br.height() > 0
+            && vb.width() > 0 && vb.height() > 0;
+
+    const bool useAnchor = isDraftArch && geometryValid && (locked || unlockTransition);
+
+    if (useAnchor) {
+        // On lock->draw: capture the current bbox centre as the anchor the
+        // first time (equivalent to centerAt at that moment, so no jump).
+        if (locked && !m_lockedSvgAnchor) {
+            m_lockedSvgAnchor = QPointF(vb.x() + vb.width()  / 2.0,
+                                        vb.y() + vb.height() / 2.0);
+        }
+
+        if (m_lockedSvgAnchor) {
+            // Map the captured SVG-space anchor to view-group (0,0).
+            // Renderer maps viewBox -> boundingRect, so SVG (ax, ay) is at
+            // item-local (br.x + (ax - vb.x) * br.w/vb.w,
+            //              br.y + (ay - vb.y) * br.h/vb.h).
+            // With setScale(s): parent = setPos + itemLocal * s, so
+            //   setPos = -itemLocal * s keeps the anchor at parent (0,0).
+            const double sx = br.width()  / vb.width();
+            const double sy = br.height() / vb.height();
+            const double s  = m_svgItem->scale();
+            const QPointF anchorSvg = *m_lockedSvgAnchor;
+            const double localX = br.x() + (anchorSvg.x() - vb.x()) * sx;
+            const double localY = br.y() + (anchorSvg.y() - vb.y()) * sy;
+            m_svgItem->setPos(-localX * s, -localY * s);
+        } else {
+            m_svgItem->centerAt(0., 0.);
+        }
+
+        // Having consumed the anchor during the unlock transition, drop it
+        // so the next unlocked redraw falls back to legacy centerAt.
+        if (unlockTransition) {
+            m_lockedSvgAnchor.reset();
+        }
+    } else {
+        // Unlocked and no pending transition, or non-Draft/Arch: legacy.
+        m_lockedSvgAnchor.reset();
+        m_svgItem->centerAt(0., 0.);
+    }
 
     if (Preferences::lightOnDark()) {
         QColor color = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
