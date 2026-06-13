@@ -1104,4 +1104,19 @@ void DlgExpressionInput::setMsgText()
     }
 }
 
+void DlgExpressionInput::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Escape) {
+        event->accept();
+        // Tell ViewProvider::eventCallback to swallow the matching ESC
+        // release so it doesn't also cancel edit mode ie. task panel,
+        // see https://github.com/freecad/freecad/issues/23518
+        qApp->setProperty("FCPopupAteEscape", true);
+        reject();
+        return;
+    }
+
+    QDialog::keyPressEvent(event);
+}
+
 #include "moc_DlgExpressionInput.cpp"

@@ -224,7 +224,7 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
             auto ke = static_cast<const SoKeyboardEvent*>(ev);
             const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
             switch (ke->getKey()) {
-                case SoKeyboardEvent::ESCAPE:
+                case SoKeyboardEvent::ESCAPE: {
                     if (self->keyPressed(press, ke->getKey())) {
                         node->setHandled();
                     }
@@ -235,6 +235,13 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
                         // some SoDragger. Therefore, we shall ignore ESC while any mouse button is
                         // pressed, until this Coin bug is fixed.
                         if (!press) {
+                            // FreeCAD #23518: if a popup (e.g. the expression editor) just
+                            // consumed the ESC press, swallow the matching release so we
+                            // don't also cancel edit mode on the parent task panel.
+                            if (qApp->property("FCPopupAteEscape").toBool()) {
+                                qApp->setProperty("FCPopupAteEscape", QVariant());
+                                break;
+                            }
                             // react only on key release
                             // Let first selection mode terminate
                             Gui::Document* doc = Gui::Application::Instance->activeDocument();
@@ -263,6 +270,7 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
                         FC_WARN("Release all mouse buttons before exiting editing");
                     }
                     break;
+                }
                 default:
                     // call the virtual method
                     if (self->keyPressed(press, ke->getKey())) {
