@@ -381,7 +381,7 @@ public:
     /// Set the selection for a document
     void setSelection(const char* pDocName, const std::vector<App::DocumentObject*>&);
     /// Clear the selection of document \a pDocName. If the document name is not given the selection
-    /// of the active document is cleared.
+    /// of all documents is cleared.
     void clearSelection(const char* pDocName = nullptr, bool clearPreSelect = true);
     /// Clear the selection of all documents
     void clearCompleteSelection(const char* pDocName = nullptr, bool clearPreSelect = true);
@@ -868,10 +868,18 @@ protected:
         const SelectionInfo* info;
         std::string docName;
     };
+    struct CompleteSelectionClearResult
+    {
+        std::string docName;
+        bool selectionChanged {false};
+        bool pickedListChanged {false};
+    };
 
     // Returns a selection context or nullptr if the document is not found
     SelectionContext getSelectionContext(const char* pDocName);
     SelectionConstContext getSelectionContext(const char* pDocName) const;
+    std::vector<std::string> getCompleteSelectionDocumentNames(const char* pDocName) const;
+    CompleteSelectionClearResult clearCompleteSelectionForDocument(const std::string& docName);
 
     static SelectionSingleton* _pcSingleton;
 

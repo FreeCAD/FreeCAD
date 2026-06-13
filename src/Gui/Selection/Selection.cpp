@@ -73,6 +73,14 @@ namespace sp = std::placeholders;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+namespace
+{
+bool isAllDocumentSelection(const char* pDocName)
+{
+    return !pDocName || !pDocName[0] || strcmp(pDocName, "*") == 0;
+}
+}  // namespace
+
 SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     : resolve(resolve)
     , blockedSelection(false)
@@ -2002,8 +2010,8 @@ void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelec
     // Because the introduction of external editing, it is best to make
     // clearSelection(0) behave as clearCompleteSelection(), which is the same
     // behavior of python Selection.clearSelection(None)
-    if (!pDocName || !pDocName[0] || strcmp(pDocName, "*") == 0) {
-        clearCompleteSelection(pDocName, clearPreSelect);
+    if (isAllDocumentSelection(pDocName)) {
+        clearCompleteSelection(nullptr, clearPreSelect);
         return;
     }
 
@@ -2053,54 +2061,113 @@ void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelec
 
 void SelectionSingleton::clearCompleteSelection(const char* pDocName, bool clearPreSelect)
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
-    }
+    const bool clearAllDocuments = isAllDocumentSelection(pDocName);
+    auto docNames = getCompleteSelectionDocumentNames(pDocName);
 
-    if (!context.info->pickedList.empty()) {
-        context.info->pickedList.clear();
-        notify(SelectionChanges(SelectionChanges::PickedListChanged, context.docName.c_str()));
-    }
-
-    if (clearPreSelect) {
+    if (clearPreSelect && (clearAllDocuments || !docNames.empty())) {
         rmvPreselect();
     }
 
-    if (context.info->selList.empty()) {
+    if (docNames.empty()) {
         return;
     }
 
-    if (!logDisabled) {
-        Application::Instance->macroManager()->addLine(
-            MacroManager::Cmt,
-            clearPreSelect ? "Gui.Selection.clearSelection()" : "Gui.Selection.clearSelection(False)"
-        );
+    bool selectionChanged = false;
+    bool macroLogged = false;
+    for (const auto& docName : docNames) {
+        auto result = clearCompleteSelectionForDocument(docName);
+        if (result.docName.empty()) {
+            continue;
+        }
+
+        if (result.selectionChanged) {
+            selectionChanged = true;
+            if (!macroLogged) {
+                if (!logDisabled) {
+                    Application::Instance->macroManager()->addLine(
+                        MacroManager::Cmt,
+                        clearPreSelect ? "Gui.Selection.clearSelection()"
+                                       : "Gui.Selection.clearSelection(False)"
+                    );
+                }
+                macroLogged = true;
+            }
+        }
+
+        if (result.pickedListChanged) {
+            notify(SelectionChanges(SelectionChanges::PickedListChanged, result.docName.c_str()));
+        }
+        if (result.selectionChanged) {
+            notify(SelectionChanges(SelectionChanges::ClrSelection, result.docName.c_str()));
+        }
     }
 
-    // Send the clear selection notification to all view providers associated with the
-    // objects being deselected.
+    if (selectionChanged) {
+        getMainWindow()->updateActions();
+    }
+}
+
+std::vector<std::string> SelectionSingleton::getCompleteSelectionDocumentNames(const char* pDocName) const
+{
+    if (!isAllDocumentSelection(pDocName)) {
+        auto doc = getDocument(pDocName);
+        if (!doc) {
+            return {};
+        }
+        return {doc->getName()};
+    }
+
+    // Work from document names so selection notifications cannot leave us with stale context
+    // pointers if an observer closes a document while the global clear is in progress.
+    std::vector<std::string> docNames;
+    docNames.reserve(docSelectionContext.size());
+    for (const auto& contextEntry : docSelectionContext) {
+        auto doc = contextEntry.first;
+        if (doc) {
+            docNames.emplace_back(doc->getName());
+        }
+    }
+
+    return docNames;
+}
+
+SelectionSingleton::CompleteSelectionClearResult SelectionSingleton::clearCompleteSelectionForDocument(
+    const std::string& docName
+)
+{
+    auto context = getSelectionContext(docName.c_str());
+    if (!context.info) {
+        return {};
+    }
+
+    CompleteSelectionClearResult result {.docName = context.docName};
+    result.pickedListChanged = !context.info->pickedList.empty();
+    if (result.pickedListChanged) {
+        context.info->pickedList.clear();
+    }
+
+    if (context.info->selList.empty()) {
+        return result;
+    }
 
     std::set<ViewProvider*> viewProviders;
-    for (SelectionDescription& sel : context.info->selList) {
+    for (const auto& sel : context.info->selList) {
         if (auto vp = Application::Instance->getViewProvider(sel.pObject)) {
             viewProviders.insert(vp);
         }
     }
 
     for (auto& vp : viewProviders) {
-        SelectionChanges Chng(SelectionChanges::ClrSelection, pDocName);
+        SelectionChanges Chng(SelectionChanges::ClrSelection, result.docName.c_str());
         vp->onSelectionChanged(Chng);
     }
 
     context.info->selList.clear();
-
-    SelectionChanges Chng(SelectionChanges::ClrSelection, context.docName.c_str());
+    result.selectionChanged = true;
 
     FC_LOG("Clear selection");
 
-    notify(std::move(Chng));
-    getMainWindow()->updateActions();
+    return result;
 }
 
 bool SelectionSingleton::isSelected(
