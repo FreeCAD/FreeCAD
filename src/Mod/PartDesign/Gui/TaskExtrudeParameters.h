@@ -233,6 +233,9 @@ protected:
     void translateSidesList(int index);
     virtual void translateModeList(QComboBox* box, int index);
     virtual void updateUI(Side side);
+    virtual bool showOffsetInDimension() const;
+    void placeOffsetBeforeLength();
+    void syncStartEndLimits();
     void updateDirectionEdits();
     void setDirectionMode(int index);
     void handleLineFaceNameClick(QLineEdit*);
@@ -260,9 +263,12 @@ private:
     void changeFaceName(QLineEdit* lineEdit, const QString& text);
 
     void createSideControllers();
+    bool isLengthMode(Side side) const;
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* startGizmo1 = nullptr;
     Gui::LinearGizmo* lengthGizmo1 = nullptr;
+    Gui::LinearGizmo* startGizmo2 = nullptr;
     Gui::LinearGizmo* lengthGizmo2 = nullptr;
     Gui::RotationGizmo* taperAngleGizmo1 = nullptr;
     Gui::RotationGizmo* taperAngleGizmo2 = nullptr;

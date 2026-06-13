@@ -61,6 +61,8 @@ private:
     void onModeChanged(int index, Side side) override;
     void translateModeList(QComboBox* box, int index) override;
     void updateUI(Side side) override;
+    bool showOffsetInDimension() const override;
+    void updatePocketStartEndLabels();
 };
 
 /// simulation dialog for the TaskView

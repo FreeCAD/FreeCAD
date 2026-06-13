@@ -79,7 +79,9 @@ public:
     );
 
 private Q_SLOTS:
+    void onStartAngleChanged(double);
     void onAngleChanged(double);
+    void onStartAngle2Changed(double);
     void onAngle2Changed(double);
     void onAxisChanged(int);
     void onMidplane(bool);
@@ -101,7 +103,9 @@ protected:
 private:
     // mirrors of revolution's or groove's properties
     // should have been done by inheriting revolution and groove from common class...
+    App::PropertyAngle* propStartAngle;
     App::PropertyAngle* propAngle;
+    App::PropertyAngle* propStartAngle2;
     App::PropertyAngle* propAngle2;
     App::PropertyBool* propReversed;
     App::PropertyBool* propMidPlane;
@@ -112,6 +116,7 @@ private:
     void connectSignals();
     void updateUI(int index);
     void translateModeList(int index);
+    void syncStartEndAngleLimits();
     // TODO: This is common with extrude. Maybe send to superclass.
     void translateFaceName();
     void clearFaceName();
@@ -135,7 +140,9 @@ private:
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::RadialGizmo* startRotationGizmo = nullptr;
     Gui::RadialGizmo* rotationGizmo = nullptr;
+    Gui::RadialGizmo* startRotationGizmo2 = nullptr;
     Gui::RadialGizmo* rotationGizmo2 = nullptr;
     void setupGizmos(ViewProvider* vp);
     void setGizmoPositions();

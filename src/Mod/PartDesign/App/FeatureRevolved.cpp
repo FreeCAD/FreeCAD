@@ -22,6 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+#include <vector>
+
 #include <gp_Lin.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
@@ -48,12 +51,15 @@ Revolved::Revolved()
 {
     Angle.setConstraints(&floatAngle);
     Angle2.setConstraints(&floatAngle);
+    StartAngle.setConstraints(&floatAngle);
+    StartAngle2.setConstraints(&floatAngle);
 }
 
 short Revolved::mustExecute() const
 {
     if (Placement.isTouched() || ReferenceAxis.isTouched() || Axis.isTouched() || Base.isTouched()
-        || UpToFace.isTouched() || Angle.isTouched() || Angle2.isTouched()) {
+        || UpToFace.isTouched() || Angle.isTouched() || Angle2.isTouched() || StartAngle.isTouched()
+        || StartAngle2.isTouched()) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -91,24 +97,44 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
 
     // Validate parameters
     double angleDeg = Angle.getValue();
-    if (angleDeg > maxDegree) {
+    double angle2Deg = Angle2.getValue();
+    double startAngleDeg = StartAngle.getValue();
+    double startAngle2Deg = StartAngle2.getValue();
+    if (angleDeg > maxDegree || angle2Deg > maxDegree || startAngleDeg > maxDegree
+        || startAngle2Deg > maxDegree) {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "Angle of revolution too large")
         );
     }
 
     auto angle = Base::toRadians<double>(angleDeg);
-    if (angle < Precision::Angular() && method == RevolMethod::Angle) {
-        return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "Angle of revolution too small")
-        );
-    }
+    auto startAngle = Base::toRadians<double>(startAngleDeg);
+    double angle2 = Base::toRadians(angle2Deg);
+    double startAngle2 = Base::toRadians(startAngle2Deg);
 
-    double angle2 = Base::toRadians(Angle2.getValue());
-    if (std::fabs(angle + angle2) < Precision::Angular() && method == RevolMethod::TwoAngles) {
-        return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "Angles of revolution nullify each other")
-        );
+    if (method == RevolMethod::Angle) {
+        if (angle - startAngle < Precision::Angular()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "End angle must be greater than start angle")
+            );
+        }
+    }
+    else if (method == RevolMethod::TwoAngles) {
+        if (angle - startAngle < -Precision::Angular()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "End angle must not be smaller than start angle on side 1")
+            );
+        }
+        if (angle2 - startAngle2 < -Precision::Angular()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "End angle must not be smaller than start angle on side 2")
+            );
+        }
+        if (std::fabs(angle - startAngle) + std::fabs(angle2 - startAngle2) < Precision::Angular()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Cannot create a revolution with zero angle")
+            );
+        }
     }
 
     TopoShape sketchshape = getTopoShapeVerifiedFace();
@@ -185,7 +211,18 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
     else {
         bool midplane = Midplane.getValue();
         bool reversed = Reversed.getValue();
-        generateRevolution(result, sketchshape, gp_Ax1(pnt, dir), angle, angle2, midplane, reversed, method);
+        generateRevolution(
+            result,
+            sketchshape,
+            gp_Ax1(pnt, dir),
+            angle,
+            angle2,
+            startAngle,
+            startAngle2,
+            midplane,
+            reversed,
+            method
+        );
     }
 
     setResult(base, result);
@@ -316,6 +353,8 @@ void Revolved::generateRevolution(
     const gp_Ax1& axis,
     double angle,
     double angle2,
+    double startAngle,
+    double startAngle2,
     bool midplane,
     bool reversed,
     RevolMethod method
@@ -323,45 +362,82 @@ void Revolved::generateRevolution(
 {
     if (method == RevolMethod::Angle || method == RevolMethod::TwoAngles
         || method == RevolMethod::ThroughAll) {
-        double angleTotal = angle;
-        double angleOffset = 0.;
-
-        if (method == RevolMethod::TwoAngles) {
-            // Rotate the face by `angle2`/`angle` to get "second" angle
-            angleTotal += angle2;
-            angleOffset = angle2 * -1.0;
-        }
-        else if (method == RevolMethod::ThroughAll) {
-            angleTotal = 2 * std::numbers::pi;
-        }
-        else if (midplane) {
-            // Rotate the face by half the angle to get Revolution symmetric to sketch plane
-            angleOffset = -angle / 2;
-        }
-
-        if (std::fabs(angleTotal) < Precision::Angular()) {
-            throw Base::ValueError("Cannot create a revolution with zero angle.");
-        }
-
         gp_Ax1 revolAx(axis);
         if (reversed) {
             revolAx.Reverse();
         }
 
-        TopoShape from = sketchshape;
-        if (method == RevolMethod::TwoAngles || midplane) {
-            gp_Trsf mov;
-            mov.SetRotation(revolAx, angleOffset);
-            TopLoc_Location loc(mov);
-            from.move(loc);
+        auto makeRevolutionSegment = [&](const gp_Ax1& segmentAxis, double start, double end) {
+            double angleTotal = end - start;
+            if (std::fabs(angleTotal) < Precision::Angular()) {
+                return TopoShape(0);
+            }
+
+            TopoShape from = sketchshape;
+            if (std::fabs(start) >= Precision::Angular()) {
+                gp_Trsf mov;
+                mov.SetRotation(segmentAxis, start);
+                TopLoc_Location loc(mov);
+                from.move(loc);
+            }
+
+            // revolve the face to a solid
+            // BRepPrimAPI is the only option that allows use of this shape for patterns.
+            // See https://forum.freecad.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
+            TopoShape segment = from;
+            segment = segment.makeElementRevolve(segmentAxis, angleTotal);
+            segment.Tag = -getID();
+            return segment;
+        };
+
+        std::vector<TopoShape> revolutions;
+        if (method == RevolMethod::ThroughAll) {
+            revolutions.push_back(makeRevolutionSegment(revolAx, 0.0, 2 * std::numbers::pi));
+        }
+        else if (method == RevolMethod::TwoAngles) {
+            revolutions.push_back(makeRevolutionSegment(revolAx, startAngle, angle));
+
+            // Reversed is already applied to revolAx; the second side intentionally uses
+            // the opposite axis.
+            gp_Ax1 revolAx2(revolAx);
+            revolAx2.Reverse();
+            revolutions.push_back(makeRevolutionSegment(revolAx2, startAngle2, angle2));
+        }
+        else if (midplane) {
+            // Start and end remain the total angular span in midplane mode and are split
+            // equally to both sides of the sketch plane, matching symmetric extrusion.
+            const double symmetricStart = startAngle / 2.0;
+            const double symmetricAngle = angle / 2.0;
+
+            revolutions.push_back(makeRevolutionSegment(revolAx, symmetricStart, symmetricAngle));
+
+            gp_Ax1 revolAx2(revolAx);
+            revolAx2.Reverse();
+            revolutions.push_back(makeRevolutionSegment(revolAx2, symmetricStart, symmetricAngle));
+        }
+        else {
+            revolutions.push_back(makeRevolutionSegment(revolAx, startAngle, angle));
         }
 
-        // revolve the face to a solid
-        // BRepPrimAPI is the only option that allows use of this shape for patterns.
-        // See https://forum.freecad.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
-        revol = from;
-        revol = revol.makeElementRevolve(revolAx, angleTotal);
-        revol.Tag = -getID();
+        revolutions.erase(
+            std::remove_if(
+                revolutions.begin(),
+                revolutions.end(),
+                [](const TopoShape& shape) { return shape.isNull() || shape.getShape().IsNull(); }
+            ),
+            revolutions.end()
+        );
+
+        if (revolutions.empty()) {
+            throw Base::ValueError("Cannot create a revolution with zero angle.");
+        }
+        if (revolutions.size() == 1) {
+            revol = revolutions.front();
+        }
+        else {
+            revol.makeElementFuse(revolutions);
+            revol.Tag = -getID();
+        }
     }
     else {
         throw Base::RuntimeError(
@@ -407,13 +483,16 @@ void Revolved::updateProperties(RevolMethod method)
 {
     // disable settings that are not valid on the current method
     // disable everything unless we are sure we need it
+    bool isStartAngleEnabled = false;
     bool isAngleEnabled = false;
+    bool isStartAngle2Enabled = false;
     bool isAngle2Enabled = false;
     bool isMidplaneEnabled = false;
     bool isReversedEnabled = false;
     bool isUpToFaceEnabled = false;
     switch (method) {
         case RevolMethod::Angle:
+            isStartAngleEnabled = true;
             isAngleEnabled = true;
             isMidplaneEnabled = true;
             isReversedEnabled = !Midplane.getValue();
@@ -430,13 +509,17 @@ void Revolved::updateProperties(RevolMethod method)
             isUpToFaceEnabled = true;
             break;
         case RevolMethod::TwoAngles:
+            isStartAngleEnabled = true;
             isAngleEnabled = true;
+            isStartAngle2Enabled = true;
             isAngle2Enabled = true;
             isReversedEnabled = true;
             break;
     }
 
+    StartAngle.setReadOnly(!isStartAngleEnabled);
     Angle.setReadOnly(!isAngleEnabled);
+    StartAngle2.setReadOnly(!isStartAngle2Enabled);
     Angle2.setReadOnly(!isAngle2Enabled);
     Midplane.setReadOnly(!isMidplaneEnabled);
     Reversed.setReadOnly(!isReversedEnabled);

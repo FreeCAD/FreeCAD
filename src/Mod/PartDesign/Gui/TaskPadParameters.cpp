@@ -24,7 +24,6 @@
 
 #include <Precision.hxx>
 
-
 #include <Mod/PartDesign/App/FeaturePad.h>
 
 #include "ui_TaskPadPocketParameters.h"
@@ -39,9 +38,22 @@ using namespace Gui;
 TaskPadParameters::TaskPadParameters(ViewProviderPad* PadView, QWidget* parent, bool newObj)
     : TaskExtrudeParameters(PadView, parent, "PartDesign_Pad", tr("Pad Parameters"))
 {
-    ui->offsetEdit->setToolTip(tr("Offset the pad from the face at which the pad will end on side 1"));
-    ui->offsetEdit2->setToolTip(tr("Offset the pad from the face at which the pad will end on side 2"));
+    ui->labelLength->setText(tr("End"));
+    ui->labelOffset->setText(tr("Start"));
+    ui->labelLength2->setText(tr("End"));
+    ui->labelOffset2->setText(tr("Start"));
+
+    ui->lengthEdit->setToolTip(tr("End position of the pad measured from the sketch plane on side 1"));
+    ui->offsetEdit->setToolTip(
+        tr("Start position of the pad measured from the sketch plane on side 1")
+    );
+    ui->lengthEdit2->setToolTip(tr("End position of the pad measured from the sketch plane on side 2"));
+    ui->offsetEdit2->setToolTip(
+        tr("Start position of the pad measured from the sketch plane on side 2")
+    );
     ui->checkBoxReversed->setToolTip(tr("Reverses pad direction"));
+
+    placeOffsetBeforeLength();
 
     // set the history path
     ui->lengthEdit->setEntryName(QByteArray("Length"));
@@ -78,12 +90,31 @@ void TaskPadParameters::translateModeList(QComboBox* box, int index)
     box->setCurrentIndex(index);
 }
 
+void TaskPadParameters::updatePadStartEndLabels()
+{
+    ui->labelLength->setText(tr("End"));
+    ui->labelLength2->setText(tr("End"));
+
+    const bool side1IsDimension = static_cast<Mode>(ui->changeMode->currentIndex())
+        == Mode::Dimension;
+    const bool side2IsDimension = static_cast<Mode>(ui->changeMode2->currentIndex())
+        == Mode::Dimension;
+    ui->labelOffset->setText(side1IsDimension ? tr("Start") : tr("Offset"));
+    ui->labelOffset2->setText(side2IsDimension ? tr("Start") : tr("Offset"));
+}
+
 void TaskPadParameters::updateUI(Side side)
 {
     // update direction combobox
     fillDirectionCombo();
     // set and enable checkboxes
     updateWholeUI(Type::Pad, side);
+    updatePadStartEndLabels();
+}
+
+bool TaskPadParameters::showOffsetInDimension() const
+{
+    return true;
 }
 
 void TaskPadParameters::onModeChanged(int index, Side side)
@@ -138,9 +169,9 @@ void TaskPadParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad* PadView, bool /*newObj*/)
+TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad* PadView, bool newObj)
     : TaskDlgExtrudeParameters(PadView)
-    , parameters(new TaskPadParameters(PadView))
+    , parameters(new TaskPadParameters(PadView, nullptr, newObj))
 {
     Content.push_back(parameters);
     Content.push_back(preview);
