@@ -77,7 +77,7 @@ void TaskLineDecor::initUi()
     ui->le_View->setText(QString::fromStdString(viewName));
 
     int n = m_edges.size();
-    ui->le_Lines->setText(QString::number(n) + tr(n == 1 ? " line" : " lines"));
+    ui->le_Lines->setText(tr("%n line(s)", "", static_cast<int>(m_edges.size())));
 
     ui->cc_Color->setColor(m_color.asValue<QColor>());
     ui->dsb_Weight->setValue(m_weight);
