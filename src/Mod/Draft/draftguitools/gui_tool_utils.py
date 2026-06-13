@@ -125,6 +125,30 @@ def _get_hint_xyz_constrain():
     return []
 
 
+def _get_hint_letter_shortcut(param_name, text):
+    """Build a hint for a configurable single-letter in-command shortcut.
+
+    Follows the same convention as the other ``_get_hint_*`` helpers: return
+    a list with a single hint when the shortcut maps to a valid A-Z key, or
+    an empty list otherwise so it can be safely concatenated.
+    """
+    shortcut = params.get_param(param_name).upper()
+    if re.fullmatch("[A-Z]", shortcut):
+        key = getattr(Gui.UserInput, "Key" + shortcut)
+        return [Gui.InputHint(text, key)]
+    return []
+
+
+def _get_hint_undo():
+    return _get_hint_letter_shortcut(
+        "inCommandShortcutUndo", translate("draft", "%1 undo last point")
+    )
+
+
+def _get_hint_close():
+    return _get_hint_letter_shortcut("inCommandShortcutClose", translate("draft", "%1 close"))
+
+
 def _get_hint_relative():
     pattern = re.compile("[A-Z]")
     shortcut = params.get_param("inCommandShortcutRelative").upper()

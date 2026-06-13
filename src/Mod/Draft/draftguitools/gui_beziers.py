@@ -500,18 +500,20 @@ class CubicBezCurve(gui_lines.Line):
 
     def get_hints(self):
         if len(self.node) < 2:
-            return [
+            hints = [
                 Gui.InputHint(
                     translate("draft", "%1 click and drag to define first point and knot"),
                     Gui.UserInput.MouseLeft,
                 )
             ]
-        return [
-            Gui.InputHint(
-                translate("draft", "%1 click and drag to define next point and knot"),
-                Gui.UserInput.MouseLeft,
-            )
-        ]
+        else:
+            hints = [
+                Gui.InputHint(
+                    translate("draft", "%1 click and drag to define next point and knot"),
+                    Gui.UserInput.MouseLeft,
+                )
+            ]
+        return hints + self._get_extra_wire_hints()
 
 
 Gui.addCommand("Draft_CubicBezCurve", CubicBezCurve())

@@ -325,7 +325,28 @@ class Line(gui_base_original.Creator):
             + gui_tool_utils._get_hint_xyz_constrain()
             + gui_tool_utils._get_hint_mod_constrain()
             + gui_tool_utils._get_hint_mod_snap()
+            + self._get_extra_wire_hints()
         )
+
+    def _get_extra_wire_hints(self):
+        """Return hints for the wire toolbar shortcuts that are currently usable.
+
+        Multi-point tools (polyline, B-spline, Bézier) expose undo, close,
+        wipe and set-working-plane buttons via ``wireUi``. The matching
+        shortcuts only act while their button is visible (see
+        ``DraftToolBar.checkSpecialChars``), so each hint is gated on button
+        visibility as well as on enough points having been placed for the
+        action to be meaningful.
+        """
+        if not self.ui:
+            return []
+        node_count = len(self.node)
+        hints = []
+        if node_count > 1 and self.ui.undoButton.isVisible():
+            hints += gui_tool_utils._get_hint_undo()
+        if node_count > 2 and self.ui.closeButton.isVisible():
+            hints += gui_tool_utils._get_hint_close()
+        return hints
 
 
 Gui.addCommand("Draft_Line", Line())
