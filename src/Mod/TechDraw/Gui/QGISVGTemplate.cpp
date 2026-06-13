@@ -52,10 +52,35 @@
 
 
 namespace {
+    constexpr auto defaultTemplateFontFamily = "Arial";
+
+    QString getStyleFontFamily(const QDomElement& elem)
+    {
+        static const QRegularExpression fontFamilyRegex(
+            QStringLiteral(R"((?:^|;)\s*font-family\s*:\s*([^;]+))"));
+
+        const QRegularExpressionMatch match =
+            fontFamilyRegex.match(elem.attribute(QStringLiteral("style")));
+        if (!match.hasMatch()) {
+            return {};
+        }
+
+        QString family = match.captured(1).trimmed();
+        if ((family.startsWith(QLatin1Char('\'')) && family.endsWith(QLatin1Char('\''))) ||
+            (family.startsWith(QLatin1Char('"')) && family.endsWith(QLatin1Char('"')))) {
+            family = family.mid(1, family.size() - 2);
+        }
+        return family;
+    }
+
     QFont getFont(QDomElement& elem)
     {
         if(elem.hasAttribute(QStringLiteral("font-family"))) {
             return elem.attribute(QStringLiteral("font-family"));
+        }
+        QString styleFontFamily = getStyleFontFamily(elem);
+        if (!styleFontFamily.isEmpty()) {
+            return styleFontFamily;
         }
         QDomElement parent = elem.parentNode().toElement();
         // Check if has parent
@@ -64,7 +89,7 @@ namespace {
             return getFont(parent);
         }
         // No attribute and no parent nodes left? Defaulting:
-        return QFont(QStringLiteral("sans"));
+        return QFont(QString::fromLatin1(defaultTemplateFontFamily));
     }
 
     std::vector<QDomElement> getFCElements(QDomDocument& doc) {
