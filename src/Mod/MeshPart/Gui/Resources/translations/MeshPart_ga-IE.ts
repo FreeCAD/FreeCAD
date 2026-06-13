@@ -382,11 +382,6 @@ Is é 0 an luach is lú.</translation>
       <translation>Bain úsáid as an mogalra Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Míne:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>An-gharbh</translation>
@@ -437,6 +432,11 @@ Is é 0 an luach is lú.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Má tá an paraiméadar seo níos lú, bíonn an mogalra níos míne.
 Luach sa raon 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Míne</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

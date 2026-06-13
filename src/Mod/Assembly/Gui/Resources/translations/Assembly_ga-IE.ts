@@ -870,8 +870,8 @@ Sainmhíníonn FÁNA géire an aistrithe idir 0 agus H1 agus H2 go 0 thart ar am
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>An féidir leat an chuid a aimsiú? </translation>
+      <source>Cannot find the part?</source>
+      <translation>An féidir leat an chuid a aimsiú?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -1547,27 +1547,27 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Cliceáil chun na hailt contrártha seo a roghnú.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation>Roghnaíonn sé na hailt choimhlintí seo</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Cliceáil chun na hailt iomarcacha seo a roghnú.</translation>
+      <source>Selects these redundant joints</source>
+      <translation>Roghnaíonn na hailt iomarcacha seo</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation>Tá comhpháirteanna neamhshrianta sa tionól a thugann na Céimeanna Saoirse sin chun cinn.
-Cliceáil chun na comhpháirteanna neamhshrianta seo a roghnú.
+      <translation>Tá comhpháirteanna neamhshrianta ag an tionól a thugann na Céimeanna Saoirse sin chun cinn.
+Roghnaíonn sé seo na comhpháirteanna neamhshrianta seo.
 Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní codanna srianta a bhfuil DoF saor acu fós.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Cliceáil chun na hailt mhífhoirmithe seo a roghnú.</translation>
+      <source>Selects these malformed joints</source>
+      <translation>Roghnaíonn sé na hailt mhífhoirmithe seo</translation>
     </message>
   </context>
   <context>
@@ -1579,8 +1579,8 @@ Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní c
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
-      <translation>Téigh go dtí an Tionól nasctha</translation>
+      <source>Go to Linked Assembly</source>
+      <translation>Téigh go dtí an Tionól Nasctha</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
@@ -1597,8 +1597,8 @@ Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní c
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
-      <translation>Roghnaigh srianta contrártha</translation>
+      <source>Select Conflicting Constraints</source>
+      <translation>Roghnaigh Srianta Coimhlintí</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
@@ -1615,8 +1615,8 @@ Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní c
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
-      <translation>Roghnaigh srianta iomarcacha</translation>
+      <source>Select Redundant Constraints</source>
+      <translation>Roghnaigh Srianta Iomarcacha</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
@@ -1633,8 +1633,8 @@ Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní c
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
-      <translation>Roghnaigh srianta mífhoirmithe</translation>
+      <source>Select Malformed Constraints</source>
+      <translation>Roghnaigh Srianta Mífhoirmithe</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
@@ -1651,8 +1651,8 @@ Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní c
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
-      <translation>Roghnaigh comhpháirteanna le DoFanna</translation>
+      <source>Select Components With DoFs</source>
+      <translation>Roghnaigh Comhpháirteanna le DoFanna</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
@@ -1669,8 +1669,8 @@ Nóta: Faoi láthair ní roghnaíonn sé seo ach codanna neamhcheangailte, ní c
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
-      <translation>Roghnaigh hailt chomhpháirte</translation>
+      <source>Select Component Joints</source>
+      <translation>Roghnaigh Comhpháirteanna</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>

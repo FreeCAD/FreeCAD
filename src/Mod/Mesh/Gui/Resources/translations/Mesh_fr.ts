@@ -729,7 +729,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="666"/>
       <source>Remove non-manifolds</source>
-      <translation>Supprimer les maillages non-manifolds</translation>
+      <translation>Supprimer des maillages non-manifolds</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="773"/>
@@ -1567,6 +1567,10 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Temps</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Temps :</translation>
@@ -2254,8 +2258,8 @@ Visit https://openscad.org/ to install it.</source>
       <translation>Afficher les couleurs</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
       <translation>Quitter le mode Information</translation>
     </message>

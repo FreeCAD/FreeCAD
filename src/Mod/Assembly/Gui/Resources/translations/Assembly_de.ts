@@ -870,8 +870,8 @@ SLOPE definiert die Steilheit des Übergangs zwischen 0 und H1 und H2 auf 0 übe
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>Kann das Bauteil nicht gefunden werden? </translation>
+      <source>Cannot find the part?</source>
+      <translation>Kann das Bauteil nicht gefunden werden?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -1545,27 +1545,27 @@ Die Dateien heißen "runPreDrag.asmt" und "dragging.log" und befinden sich im St
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Klicken, um diese widersprüchlichen Verbindungen auszuwählen.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation>Wählt diese widersprüchlichen Verbindungen aus</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Klicken, um diese überflüssigen Verbindungen auszuwählen.</translation>
+      <source>Selects these redundant joints</source>
+      <translation>Wählt diese überflüssigen Verbindungen aus</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
       <translation>Die Baugruppe enthält nicht festgelegte Komponenten, die diese nicht bestimmten Freiheitsgrade ergeben.
-Klicken, um diese nicht festgelegten Komponenten auszuwählen.
+(Dieser Befehl) Wählt diese nicht festgelegten Komponenten aus.
 Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte Bauteile, die noch nicht bestimmte Freiheitsgrade aufweisen.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Klicken, um diese fehlerhaften Verbindungen auszuwählen.</translation>
+      <source>Selects these malformed joints</source>
+      <translation>Wählt diese fehlerhaften Verbindungen aus</translation>
     </message>
   </context>
   <context>
@@ -1577,7 +1577,7 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
+      <source>Go to Linked Assembly</source>
       <translation>Zur verknüpften Baugruppe wechseln</translation>
     </message>
     <message>
@@ -1595,7 +1595,7 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
+      <source>Select Conflicting Constraints</source>
       <translation>Widersprüchliche Randbedingungen auswählen</translation>
     </message>
     <message>
@@ -1613,7 +1613,7 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
+      <source>Select Redundant Constraints</source>
       <translation>Überflüssige Randbedingungen auswählen</translation>
     </message>
     <message>
@@ -1631,7 +1631,7 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
+      <source>Select Malformed Constraints</source>
       <translation>Fehlerhafte Randbedingungen auswählen</translation>
     </message>
     <message>
@@ -1649,7 +1649,7 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
+      <source>Select Components With DoFs</source>
       <translation>Komponenten mit nicht festgelegten Freiheitsgraden auswählen</translation>
     </message>
     <message>
@@ -1667,7 +1667,7 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
+      <source>Select Component Joints</source>
       <translation>Komponentenverbindungen bzw. -Gelenke auswählen</translation>
     </message>
     <message>

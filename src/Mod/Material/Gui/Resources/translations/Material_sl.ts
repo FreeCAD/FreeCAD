@@ -1195,15 +1195,15 @@ If unchecked, they will be sorted by their name.</source>
       <translation>Sicer bodo vse spremembe izgubljene.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="567"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>Potrdite izbris</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
       <translation>Izbriši vrstico?</translation>
     </message>

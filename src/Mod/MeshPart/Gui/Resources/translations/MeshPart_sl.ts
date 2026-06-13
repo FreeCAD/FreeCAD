@@ -382,11 +382,6 @@ Najmanjša vrednost je 0.</translation>
       <translation>Uporabi NetGAN ploskovjevalnik</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Drobnatost:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Zelo grobo</translation>
@@ -437,6 +432,11 @@ Najmanjša vrednost je 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Če je ta določilka manjša, postane ploskvje drobnajše.
 Razpon vrednosti je 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Natančnost</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

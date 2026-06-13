@@ -472,7 +472,7 @@ void FileDialogInternal::normalizeSavePath(QString& path, const FileDialog::Filt
 
     // Check for any full-name filters first.
     for (const auto& pat : selectedFilter.patterns) {
-        if (!pat.startsWith("*.") && typedName == pat) {
+        if (!pat.startsWith("*.") && typedName.compare(pat, Qt::CaseInsensitive) == 0) {
             return;
         }
     }
@@ -492,7 +492,8 @@ void FileDialogInternal::normalizeSavePath(QString& path, const FileDialog::Filt
     }
     else /* size() > 1 */ {
         for (const auto& pat : selectedFilter.patterns) {
-            if (pat.startsWith("*.") && typedExt == QStringView(pat).mid(1)) {
+            if (pat.startsWith("*.")
+                && typedExt.compare(QStringView(pat).mid(1), Qt::CaseInsensitive) == 0) {
                 // Valid extension found for the selected filter.
                 return;
             }

@@ -159,3 +159,13 @@ class SketcherGuiTestCase(unittest.TestCase):
             max(margin, min(pos.x(), rect.right() - margin)),
             max(margin, min(pos.y(), rect.bottom() - margin)),
         )
+
+    def device_pixel_ratio(self, widget):
+        return widget.devicePixelRatioF()
+
+    def viewport_to_qpoint(self, view, viewport, point):
+        _, height = view.getSize()
+        scale = self.device_pixel_ratio(viewport)
+        x = int(round(point[0] / scale))
+        y = int(round((height - point[1] - 1) / scale))
+        return QtCore.QPoint(x, y)
