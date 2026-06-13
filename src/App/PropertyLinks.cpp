@@ -300,7 +300,8 @@ void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool rev
 
 void PropertyLinkBase::updateAllElementReferences(bool reverse)
 {
-    for (auto reference : _ElementRefMap) {
+    auto const copy = _ElementRefMap;
+    for (const auto& reference : copy) {
         for (auto prop : reference.second) {
             if (prop->getContainer()) {
                 try {
