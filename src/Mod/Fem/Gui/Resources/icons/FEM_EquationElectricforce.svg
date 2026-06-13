@@ -441,13 +441,13 @@
        style="color:#000000;fill:#3465a4;fill-rule:evenodd;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        d="m 28.3125,17.099609 -1.638672,4.039063 0.002,0.002 -1.638672,4.039062 -7.679687,-7.818359 z" />
     <path
-       style="display:inline;font-style:normal;font-weight:normal;font-size:13.3333px;line-height:125%;font-family:Helvetica;letter-spacing:0px;word-spacing:0px;fill:#eeeeec;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-dasharray:6, 2;paint-order:normal;stroke-linejoin:round;stroke-linecap:butt;vector-effect:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;marker:none"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:13.3333px;line-height:125%;font-family:Arial;letter-spacing:0px;word-spacing:0px;fill:#eeeeec;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-dasharray:6, 2;paint-order:normal;stroke-linejoin:round;stroke-linecap:butt;vector-effect:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;marker:none"
        d="M 61,9 V 45 L 37,55 V 17 Z"
        id="path2995-9" />
     <g
        aria-label="Fes"
        id="text849"
-       style="font-style:normal;font-weight:normal;font-size:13.3333px;line-height:125%;font-family:Helvetica;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#0c1522;stroke-width:0.72815628;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers stroke fill;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:13.3333px;line-height:125%;font-family:Arial;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#0c1522;stroke-width:0.72815628;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers stroke fill;stroke-opacity:1"
        transform="matrix(1.3717722,0,0,1.3748927,-21.406047,-13.33235)">
       <path
          d="M 33.379217,51.370425 H 29.639125 V 33.420791 h 10.26643 v 3.117304 h -6.526338 v 4.625676 h 6.074514 v 3.117303 h -6.074514 z"

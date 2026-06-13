@@ -220,7 +220,7 @@
        transform="matrix(0.70588237,0,0,0.70588253,12.17647,991.71512)" />
     <g
        transform="matrix(1.1306533,0,0,1.0802452,-21.400786,999.6261)"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:1.80968964;font-family:Helvetica"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:1.80968964;font-family:Arial"
        id="text3370">
       <path
          d="m 69.078917,28.361436 c 0,2.999997 -1.960003,5.08 -4.4,5.08 -2.559998,0 -4.4,-2.160003 -4.4,-5.36 0,-3.159997 1.800002,-5.16 4.24,-5.16 2.559997,0 4.56,2.120003 4.56,5.44 m 0.4,5.24 c -0.68,5.519994 -3.360004,8.840001 -7.44,9.64 -2.719998,0.519999 -4.76,-0.359998 -4.76,1.52 0,1.079999 0.840002,1.28 3,1.28 7.679992,0 12.6,-5.760009 12.6,-14.68 0,-6.919993 -3.480005,-11.24 -8.52,-11.24 -4.319996,0 -7.4,3.400005 -7.4,8.16 0,4.639995 3.400004,8 7.4,8 2.039998,0 3.680001,-0.880002 5.12,-2.68"

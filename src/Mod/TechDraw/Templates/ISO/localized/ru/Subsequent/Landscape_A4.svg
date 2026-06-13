@@ -29,7 +29,7 @@
  <!-- DrawingContent -->
  <path id="path7777" d="m20.25 204.75h271.5v-199.5h-271.5z" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
  <path id="path7779-6" d="m291.75 190.25v14.5h-184.5v-14.5z" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
- <text id="text985-5" x="256.7002" y="207.99167" fill="#000000" font-family="Helvetica" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan987-1" x="256.7002" y="207.99167" font-size="3.5278px" stroke-width=".26458" style="line-height:1.5">Формат А4</tspan></text>
+ <text id="text985-5" x="256.7002" y="207.99167" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan987-1" x="256.7002" y="207.99167" font-size="3.5278px" stroke-width=".26458" style="line-height:1.5">Формат А4</tspan></text>
  <path id="path4358-6" d="m107.25 194.76h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".25"/>
  <path id="path4362-6" d="m107.25 199.74h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
  <path id="path4358-5-3" d="m107.25 204.74h65" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
@@ -40,7 +40,7 @@
  <path id="path4358-1-3-9-87-5-1-73" d="m147.25 190.24v14.509" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
  <path id="path4358-1-3-9-87-5-1-7-1" d="m114.25 190.24v14.509" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
  <path id="path4358-1-3-9-87-5-1-7-6-8" d="m124.25 190.24v14.509" fill="none" stroke="#000" stroke-linecap="square" stroke-width=".5"/>
- <text id="text4951-0" x="186.64005" y="199.73553" fill="#000000" font-family="Helvetica" font-size="7.0556px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Номер"><tspan id="tspan4949-5" x="186.64005" y="199.73553" font-family="Arial" font-size="7.0556px" stroke-width=".26458" style="line-height:1.5">РИК-35.000000.000-01</tspan></text>
+ <text id="text4951-0" x="186.64005" y="199.73553" fill="#000000" font-family="Arial" font-size="7.0556px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5" freecad:editable="Номер"><tspan id="tspan4949-5" x="186.64005" y="199.73553" font-family="Arial" font-size="7.0556px" stroke-width=".26458" style="line-height:1.5">РИК-35.000000.000-01</tspan></text>
  <text id="text1056-1" x="282.97714" y="194.64096" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1054-9" x="282.97714" y="194.64096" stroke-width=".26458">Лист</tspan></text>
  <text id="text1064-6" x="107.46023" y="203.48462" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1062-8" x="107.46023" y="203.48462" stroke-width=".26458">Изм</tspan></text>
  <text id="text1068-2" x="115.46841" y="203.48373" fill="#000000" font-family="Arial" font-size="3.5278px" letter-spacing="0px" stroke-width=".26458" word-spacing="0px" style="line-height:1.5"><tspan id="tspan1066-3" x="115.46841" y="203.48373" stroke-width=".26458">Лист</tspan></text>

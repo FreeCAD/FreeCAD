@@ -296,7 +296,7 @@
      y="153.68515"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-weight="bold"
      letter-spacing="0px"
      stroke-width="1px"
@@ -305,7 +305,7 @@
        id="tspan4601"
        x="14.652468"
        y="153.68515"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="5.3215px"
        style="line-height:1.25">A</tspan></text>
   <text
@@ -315,7 +315,7 @@
      y="55.709824"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-weight="bold"
      letter-spacing="0px"
      stroke-width="1px"
@@ -324,7 +324,7 @@
        id="tspan4605"
        x="14.626484"
        y="55.709824"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="5.3215px"
        style="line-height:1.25">B</tspan></text>
   <text
@@ -334,7 +334,7 @@
      y="153.68515"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-weight="bold"
      letter-spacing="0px"
      stroke-width="1px"
@@ -343,7 +343,7 @@
        id="tspan4609"
        x="265.29684"
        y="153.68515"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="5.3215px"
        style="line-height:1.25">A</tspan></text>
   <text
@@ -353,7 +353,7 @@
      y="55.709824"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-weight="bold"
      letter-spacing="0px"
      stroke-width="1px"
@@ -362,7 +362,7 @@
        id="tspan4613"
        x="265.27084"
        y="55.709824"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="5.3215px"
        style="line-height:1.25">B</tspan></text>
   <text
@@ -372,7 +372,7 @@
      y="204.16963"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-weight="bold"
      letter-spacing="0px"
      stroke-width="1px"
@@ -381,7 +381,7 @@
        id="tspan4617"
        x="201.77625"
        y="204.16963"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="5.3215px"
        style="line-height:1.25">1</tspan></text>
   <text
@@ -391,7 +391,7 @@
      y="204.20473"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-weight="bold"
      letter-spacing="0px"
      stroke-width="1px"
@@ -400,7 +400,7 @@
        id="tspan4621"
        x="77.007645"
        y="204.20473"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="5.3215px"
        style="line-height:1.25">2</tspan></text>
   <text
@@ -410,7 +410,7 @@
      y="12.062176"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-weight="bold"
      letter-spacing="0px"
      stroke-width="1px"
@@ -419,7 +419,7 @@
        id="tspan4625"
        x="201.77625"
        y="12.062176"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="5.3215px"
        style="line-height:1.25">1</tspan></text>
   <text
@@ -429,7 +429,7 @@
      y="12.097256"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-weight="bold"
      letter-spacing="0px"
      stroke-width="1px"
@@ -438,7 +438,7 @@
        id="tspan4629"
        x="77.007645"
        y="12.097256"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="5.3215px"
        style="line-height:1.25">2</tspan></text>
   <text
@@ -447,7 +447,7 @@
      x="115.58746"
      y="181.99789"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-size="3.1144px"
      letter-spacing="0px"
      word-spacing="0px"
@@ -461,7 +461,7 @@
      x="115.58746"
      y="186.89949"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-size="3.1144px"
      letter-spacing="0px"
      word-spacing="0px"
@@ -469,14 +469,14 @@
        id="tspan3350"
        x="115.58746"
        y="186.89949"
-       font-family="Helvetica">Checked:</tspan></text>
+       font-family="Arial">Checked:</tspan></text>
   <text
      id="text3364"
      transform="scale(.98783 1.0123)"
      x="115.58746"
      y="191.84903"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-size="3.1144px"
      letter-spacing="0px"
      word-spacing="0px"
@@ -484,14 +484,14 @@
        id="tspan3366"
        x="115.58746"
        y="191.84903"
-       font-family="Helvetica">Approved:</tspan></text>
+       font-family="Arial">Approved:</tspan></text>
   <text
      id="text3380"
      transform="scale(.98783 1.0123)"
      x="115.58746"
      y="197.14716"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-size="3.1144px"
      letter-spacing="0px"
      word-spacing="0px"
@@ -499,7 +499,7 @@
        id="tspan3382"
        x="115.58746"
        y="197.14716"
-       font-family="Helvetica">Approved:</tspan></text>
+       font-family="Arial">Approved:</tspan></text>
   <text
      id="BlockACompany"
      x="163.36607"
@@ -507,7 +507,7 @@
      color="#000000"
      fill="#000000"
      fill-rule="evenodd"
-     font-family="Helvetica"
+     font-family="Arial"
      font-size="3.2442px"
      style="line-height:0%"
      freecad:editable="CompanyName"
@@ -515,7 +515,7 @@
        id="tspan6595"
        x="163.36607"
        y="157.8326"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="3.2442px">Company Name</tspan></text>
   <text
      id="BlockAAddress"
@@ -524,7 +524,7 @@
      color="#000000"
      fill="#000000"
      fill-rule="evenodd"
-     font-family="Helvetica"
+     font-family="Arial"
      font-size="3.2442px"
      style="line-height:0%"
      freecad:editable="CompanyAddress"><tspan
@@ -536,7 +536,7 @@
      x="163.88148"
      y="171.13162"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-size="5.2425px"
      letter-spacing="0px"
      word-spacing="0px"
@@ -544,13 +544,13 @@
      freecad:editable="DrawingTitle1"
      freecad:autofill="title"><tspan
        id="tspan4467"
-       font-family="Helvetica">Drawing Title 1</tspan></text>
+       font-family="Arial">Drawing Title 1</tspan></text>
   <text
      id="BlockBTitle2"
      x="164.08731"
      y="176.80217"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      letter-spacing="0px"
      word-spacing="0px"
      style="line-height:0%"
@@ -565,7 +565,7 @@
      x="164.08731"
      y="182.7054"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      letter-spacing="0px"
      word-spacing="0px"
      style="line-height:0%"
@@ -581,7 +581,7 @@
      y="193.43471"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      letter-spacing="0px"
      stroke-width="1px"
      word-spacing="0px"
@@ -590,7 +590,7 @@
        id="tspan3792-9"
        x="198.43159"
        y="193.43471"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="4.194px"
        style="line-height:1.25">Drawing Number</tspan></text>
   <text
@@ -599,7 +599,7 @@
      y="193.06583"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      letter-spacing="0px"
      stroke-width="1px"
      word-spacing="0px"
@@ -608,7 +608,7 @@
        id="tspan3796-0"
        x="252.18163"
        y="193.06583"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="3.1455px"
        style="line-height:1.25">Rev</tspan></text>
   <text
@@ -618,7 +618,7 @@
      color="#000000"
      fill="#000000"
      fill-rule="evenodd"
-     font-family="Helvetica"
+     font-family="Arial"
      stroke-dashoffset="2"
      stroke-linecap="round"
      stroke-linejoin="round"
@@ -628,7 +628,7 @@
        id="tspan6969"
        x="134.63594"
        y="184.10947"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="2.9489px"
        style="line-height:1.25">Drawn By</tspan></text>
   <text
@@ -638,7 +638,7 @@
      color="#000000"
      fill="#000000"
      fill-rule="evenodd"
-     font-family="Helvetica"
+     font-family="Arial"
      style="line-height:0%"
      freecad:editable="CheckedBy"><tspan
        id="tspan6973"
@@ -653,7 +653,7 @@
      color="#000000"
      fill="#000000"
      fill-rule="evenodd"
-     font-family="Helvetica"
+     font-family="Arial"
      style="line-height:0%"
      freecad:editable="Approved1"><tspan
        id="tspan6977"
@@ -668,7 +668,7 @@
      color="#000000"
      fill="#000000"
      fill-rule="evenodd"
-     font-family="Helvetica"
+     font-family="Arial"
      style="line-height:0%"
      freecad:editable="Approved2"><tspan
        id="tspan6981"
@@ -681,7 +681,7 @@
      x="164.06125"
      y="200.17592"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      letter-spacing="0px"
      word-spacing="0px"
      style="line-height:0%"
@@ -689,7 +689,7 @@
        id="tspan3770-2"
        x="164.06125"
        y="200.17592"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="3.1455px"
        style="line-height:1.25">Scale</tspan></text>
   <text
@@ -698,7 +698,7 @@
      y="193.31693"
      color="#000000"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      letter-spacing="0px"
      stroke-width="1px"
      word-spacing="0px"
@@ -707,7 +707,7 @@
        id="tspan3788-7"
        x="172.15469"
        y="193.31693"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="4.194px"
        style="line-height:1.25">Code</tspan></text>
   <text
@@ -715,7 +715,7 @@
      x="162.48712"
      y="193.14726"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-weight="bold"
      letter-spacing="0px"
      word-spacing="0px"
@@ -723,7 +723,7 @@
        id="tspan3784"
        x="162.48712"
        y="193.14726"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="5.3215px"
        style="line-height:1.25">A</tspan></text>
   <text
@@ -731,7 +731,7 @@
      x="189.79546"
      y="200.13062"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      font-size="3.1455px"
      letter-spacing="0px"
      word-spacing="0px"
@@ -750,7 +750,7 @@
      x="225.1777"
      y="200.17592"
      fill="#000000"
-     font-family="Helvetica"
+     font-family="Arial"
      letter-spacing="0px"
      word-spacing="0px"
      style="line-height:0%"
@@ -759,7 +759,7 @@
        id="tspan3780-0"
        x="225.1777"
        y="200.17592"
-       font-family="Helvetica"
+       font-family="Arial"
        font-size="3.1455px"
        style="line-height:1.25">Sheet n of m</tspan></text>
 </svg>
