@@ -55,6 +55,7 @@
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
+#include <Mod/PartDesign/App/FeatureDefeaturing.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "DlgActiveBody.h"
@@ -2009,6 +2010,94 @@ bool CmdPartDesignChamfer::isActive()
 }
 
 //===========================================================================
+// PartDesign_Defeaturing
+//===========================================================================
+
+static void makeDefeaturing(Gui::Command* cmd)
+{
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(true);
+    if (!pcActiveBody) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+
+    if (selection.empty()) {
+        auto* base = static_cast<Part::Feature*>(pcActiveBody->Tip.getValue());
+        finishDressupFeature(cmd, "Defeaturing", base, {}, false);
+        return;
+    }
+
+    if (selection.size() != 1) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong Selection"),
+            QObject::tr("Select faces from a single body")
+        );
+        return;
+    }
+    if (pcActiveBody != PartDesignGui::getBodyFor(selection[0].getObject(), false)) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Selection Outside Active Body"),
+            QObject::tr("Select faces from the active body")
+        );
+        return;
+    }
+
+    if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())) {
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            QObject::tr("Wrong Object Type"),
+            QObject::tr("Defeaturing works only on faces")
+        );
+        return;
+    }
+
+    std::vector<std::string> subNames = selection[0].getSubNames();
+    for (const auto& name : subNames) {
+        if (name.substr(0, 4) != "Face") {
+            QMessageBox::warning(
+                Gui::getMainWindow(),
+                QObject::tr("Wrong Selection"),
+                QObject::tr("Defeaturing works only on faces")
+            );
+            return;
+        }
+    }
+
+    Gui::Selection().clearSelection();
+
+    auto* base = static_cast<Part::Feature*>(selection[0].getObject());
+    finishDressupFeature(cmd, "Defeaturing", base, subNames, false);
+}
+
+DEF_STD_CMD_A(CmdPartDesignDefeaturing)
+
+CmdPartDesignDefeaturing::CmdPartDesignDefeaturing()
+    : Command("PartDesign_Defeaturing")
+{
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Defeaturing");
+    sToolTipText = QT_TR_NOOP("Removes selected faces from a solid");
+    sWhatsThis = "PartDesign_Defeaturing";
+    sStatusTip = sToolTipText;
+    sPixmap = "PartDesign_Defeaturing";
+}
+
+void CmdPartDesignDefeaturing::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    makeDefeaturing(this);
+}
+
+bool CmdPartDesignDefeaturing::isActive()
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
 // PartDesign_Draft
 //===========================================================================
 DEF_STD_CMD_A(CmdPartDesignDraft)
@@ -2739,6 +2828,7 @@ void CreatePartDesignCommands()
     rcCmdMgr.addCommand(new CmdPartDesignDraft());
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());
     rcCmdMgr.addCommand(new CmdPartDesignThickness());
+    rcCmdMgr.addCommand(new CmdPartDesignDefeaturing());
 
     rcCmdMgr.addCommand(new CmdPartDesignMirrored());
     rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());
