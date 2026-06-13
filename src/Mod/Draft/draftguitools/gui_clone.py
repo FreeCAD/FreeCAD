@@ -97,6 +97,7 @@ class Clone(gui_base_original.Modifier):
         objs_shape = [obj for obj in objs if hasattr(obj, "Shape")]
         if not objs_shape:
             _wrn(translate("draft", "Cannot clone objects without a shape, aborting"))
+            self.moveAfterCloning = False
             self.finish()
             return
         elif len(objs_shape) < len(objs):
