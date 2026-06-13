@@ -808,7 +808,11 @@ protected:
     void startRestoring() override;
     void finishRestoring() override;
 
-    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    bool resolvePickedElement(
+        const SoPickedPoint* pp,
+        std::string& subname,
+        const Gui::SelectionPickContext* pickContext
+    ) const override;
     std::vector<std::pair<std::string, std::string>> getRelatedElements(
         const std::string& subname,
         const SbVec3f& pickPoint

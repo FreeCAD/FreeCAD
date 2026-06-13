@@ -61,7 +61,11 @@ public:
     /// indicates if the ViewProvider can be selected
     bool isSelectable() const override;
 
-    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    bool resolvePickedElement(
+        const SoPickedPoint* pp,
+        std::string& subname,
+        const SelectionPickContext* pickContext
+    ) const override;
     bool getDetailPath(const char*, SoFullPath*, bool, SoDetail*&) const override;
 
 protected:

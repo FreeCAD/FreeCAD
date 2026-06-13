@@ -25,6 +25,9 @@
 
 #include <cstddef>
 #include <list>
+#include <limits>
+#include <memory>
+#include <optional>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -42,10 +45,13 @@
 class SoFullPath;
 class SoPickedPoint;
 class SoDetail;
+class SbVec2f;
 
 
 namespace Gui
 {
+
+struct SelectionPickContext;
 
 namespace SelectionPickPolicy
 {
@@ -58,15 +64,21 @@ struct Candidate
     bool isAnnotation {false};
     bool hasGate {false};
     bool passesGate {false};
+    // Used only when resolving a blocked-pick fallback.
+    float cursorDistanceSquared {std::numeric_limits<float>::infinity()};
 };
 
 GuiExport bool canFinalizeSinglePick(const std::vector<Candidate>& picked);
+GuiExport bool shouldExpandPickRadius(const std::vector<Candidate>& picked);
+GuiExport std::optional<std::size_t> chooseAllowedFallbackPick(const std::vector<Candidate>& picked);
 GuiExport std::size_t choosePreferredPick(const std::vector<Candidate>& picked);
 
 }  // namespace SelectionPickPolicy
 
 class Document;
 class ViewProviderDocumentObject;
+class SoFCUnifiedSelectionTestAccess;
+class SelectionGate;
 
 /**  Unified Selection node
  *  This is the new selection node for the 3D Viewer which will
@@ -112,6 +124,7 @@ public:
     static bool hasHighlight();
 
     friend class View3DInventorViewer;
+    friend class SoFCUnifiedSelectionTestAccess;
 
 protected:
     ~SoFCUnifiedSelection() override;
@@ -122,6 +135,7 @@ private:
     struct PickedInfo
     {
         const SoPickedPoint* pp {nullptr};
+        std::shared_ptr<const SoPickedPoint> ownedPoint;
         ViewProviderDocumentObject* vpd {nullptr};
         std::string element;
     };
@@ -131,11 +145,13 @@ private:
     static SelectionPickPolicy::Candidate getPickCandidate(
         const PickedInfo&,
         const Document*,
-        const PickedInfo* firstPicked = nullptr
+        const PickedInfo* firstPicked = nullptr,
+        const SbVec2f* cursorPosition = nullptr
     );
     static std::vector<SelectionPickPolicy::Candidate> getPickCandidates(
         const std::vector<PickedInfo>&,
-        const Document*
+        const Document*,
+        const SbVec2f* cursorPosition = nullptr
     );
     static bool canFinalizeSinglePick(const std::vector<PickedInfo>&);
 
@@ -151,6 +167,14 @@ private:
     );
     bool setSelection(const std::vector<PickedInfo>&, bool ctrlDown = false);
 
+    std::vector<PickedInfo> collectPickedList(
+        const SoPickedPointList& points,
+        const SoPath* actionPath,
+        bool singlePick,
+        bool copyPickedPoints = false,
+        const SelectionPickContext* pickContext = nullptr
+    ) const;
+    std::vector<PickedInfo> getExpandedPickedList(SoHandleEventAction* action) const;
     std::vector<PickedInfo> getPickedList(SoHandleEventAction* action, bool singlePick) const;
 
     Gui::Document* pcDocument {nullptr};

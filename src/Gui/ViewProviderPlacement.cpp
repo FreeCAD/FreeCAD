@@ -101,7 +101,11 @@ void ViewProviderPlacement::updateData(const App::Property* prop)
     ViewProviderGeometryObject::updateData(prop);
 }
 
-bool ViewProviderPlacement::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
+bool ViewProviderPlacement::resolvePickedElement(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const SelectionPickContext*
+) const
 {
     if (!Axis) {
         return false;

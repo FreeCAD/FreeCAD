@@ -174,6 +174,11 @@ public:
 
     bool linkGetDetailPath(const char*, SoFullPath*, SoDetail*&) const;
     bool linkGetElementPicked(const SoPickedPoint*, std::string&) const;
+    bool linkGetElementPicked(
+        const SoPickedPoint*,
+        std::string&,
+        const SelectionPickContext* pickContext
+    ) const;
 
     void setElementVisible(int index, bool visible);
     bool isElementVisible(int index) const;
@@ -251,7 +256,11 @@ public:
     void updateData(const App::Property*) override;
     void onChanged(const App::Property* prop) override;
     std::vector<App::DocumentObject*> claimChildren() const override;
-    bool getElementPicked(const SoPickedPoint*, std::string&) const override;
+    bool resolvePickedElement(
+        const SoPickedPoint*,
+        std::string&,
+        const SelectionPickContext* pickContext
+    ) const override;
     bool getDetailPath(const char*, SoFullPath*, bool, SoDetail*&) const override;
 
     void finishRestoring() override;

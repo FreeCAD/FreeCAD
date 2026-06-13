@@ -231,6 +231,20 @@ public:
         delete imp;
     }
 
+private:
+    template<typename Fallback>
+    bool dispatchResolvePickedElement(const SoPickedPoint* pp, std::string& subname, Fallback&& fallback) const
+    {
+        // Python view providers still expose the legacy getElementPicked() hook. If it is not
+        // implemented, continue through the C++ context-aware resolution path.
+        const auto ret = imp->getElementPicked(pp, subname);
+        if (ret == ViewProviderFeaturePythonImp::NotImplemented) {
+            return fallback();
+        }
+        return ret == ViewProviderFeaturePythonImp::Accepted;
+    }
+
+public:
     // Returns the icon
     QIcon getIcon() const override
     {
@@ -311,16 +325,15 @@ public:
     {
         return imp->onSelectionChanged(changes);
     }
-    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override
+    bool resolvePickedElement(
+        const SoPickedPoint* pp,
+        std::string& subname,
+        const SelectionPickContext* pickContext
+    ) const override
     {
-        auto ret = imp->getElementPicked(pp, subname);
-        if (ret == ViewProviderFeaturePythonImp::NotImplemented) {
-            return ViewProviderT::getElementPicked(pp, subname);
-        }
-        else if (ret == ViewProviderFeaturePythonImp::Accepted) {
-            return true;
-        }
-        return false;
+        return dispatchResolvePickedElement(pp, subname, [&]() {
+            return ViewProviderT::resolvePickedElement(pp, subname, pickContext);
+        });
     }
     std::string getElement(const SoDetail* det) const override
     {

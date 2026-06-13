@@ -32,6 +32,7 @@ class SoFullPath;
 class SoGroup;
 class SoPickedPoint;
 class SoSeparator;
+class SbVec2f;
 
 class QMenu;
 class QObject;
@@ -41,6 +42,8 @@ namespace Gui
 
 class ViewProvider;
 class ViewProviderDocumentObject;
+class SelectionGate;
+struct SelectionPickContext;
 
 /**
  * @brief Extension with special viewprovider calls
@@ -186,7 +189,17 @@ public:
     virtual void extensionFinishRestoring()
     {}
 
-    virtual bool extensionGetElementPicked(const SoPickedPoint*, std::string&) const
+    bool extensionGetElementPicked(const SoPickedPoint* pp, std::string& subname) const
+    {
+        return extensionGetElementPicked(pp, subname, nullptr);
+    }
+    /// Canonical extension hook for single-pick resolution. \a pickContext may be null when
+    /// callers only need the legacy pick resolution.
+    virtual bool extensionGetElementPicked(
+        const SoPickedPoint*,
+        std::string&,
+        const SelectionPickContext* /*pickContext*/
+    ) const
     {
         return false;
     }
