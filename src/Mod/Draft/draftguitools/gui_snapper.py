@@ -58,6 +58,7 @@ from draftgeoutils import intersections as geo_intersections
 from draftguitools import gui_trackers as trackers
 from draftutils import gui_utils
 from draftutils import params
+from draftutils import todo
 from draftutils import utils
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _wrn
@@ -1396,11 +1397,18 @@ class Snapper:
             self.constrainLine.off()
 
     def getPoint(
-        self, last=None, callback=None, movecallback=None, extradlg=None, title=None, mode="point"
+        self,
+        last=None,
+        callback=None,
+        movecallback=None,
+        extradlg=None,
+        title=None,
+        mode="point",
+        hints=None,
     ):
         """Get a 3D point from the screen.
 
-        getPoint([last],[callback],[movecallback],[extradlg],[title]):
+        getPoint([last],[callback],[movecallback],[extradlg],[title],[mode],[hints]):
         gets a 3D point from the screen. You can provide an existing point,
         in that case additional snap options and a tracker are available.
         You can also pass a function as callback, which will get called
@@ -1427,6 +1435,14 @@ class Snapper:
 
         If getPoint() is invoked without any argument, nothing is done
         but the callbacks are removed, so it can be used as a cancel function.
+
+        ``hints`` is an optional list of ``Gui.InputHint`` instances to
+        display in the status bar for the duration of the point pick. It may
+        also be a no-arg callable returning such a list (useful when the hint
+        text depends on tool state, e.g. "pick first point" vs "pick next
+        point"). The hints are shown once the task panel has finished
+        opening (via ``todo.delayAfter``) and are cleared automatically when
+        the user picks a point or cancels.
         """
         self.pt = None
         self.holdPoints = []
@@ -1485,6 +1501,13 @@ class Snapper:
                 if event.getState() == coin.SoMouseButtonEvent.DOWN:
                     accept()
 
+        def _clear_hints():
+            # Hide any hints that this getPoint call may have shown. Queued
+            # through delayAfter so it runs after any pending show that
+            # _schedule_hints may have posted in the same tick.
+            if hints and hasattr(Gui, "HintManager"):
+                todo.ToDo.delayAfter(Gui.HintManager.hide, None)
+
         def accept():
             try:
                 if self.callbackClick:
@@ -1505,6 +1528,7 @@ class Snapper:
             self.callbackMove = None
             Gui.Snapper.off()
             self.ui.offUi()
+            _clear_hints()
             if callback:
                 if len(inspect.getfullargspec(callback).args) > 1:
                     obj = None
@@ -1535,6 +1559,7 @@ class Snapper:
             self.callbackMove = None
             Gui.Snapper.off()
             self.ui.offUi()
+            _clear_hints()
             if callback:
                 if len(inspect.getfullargspec(callback).args) > 1:
                     callback(None, None)
@@ -1561,6 +1586,48 @@ class Snapper:
             self.callbackMove = self.view.addEventCallbackPivy(
                 coin.SoLocation2Event.getClassTypeId(), move
             )
+            self._schedule_hints(hints)
+
+    def _schedule_hints(self, hints):
+        """Show ``hints`` in the status bar after the task panel has opened.
+
+        ``hints`` can be a list of ``Gui.InputHint`` or a no-arg callable
+        returning such a list.
+
+        The show is scheduled in two stages so it survives panel creation:
+
+        1. ``todo.ToDo.delayAfter`` runs after ``Control.showDialog`` (which
+           is queued via ``todo.delay`` by ``DraftGui.taskUi``).
+        2. From that callback, ``QTimer.singleShot(0, ...)`` posts the
+           actual ``HintManager.show`` to the Qt event queue so it runs
+           after the panel's own posted layout/visibility events have been
+           processed.
+
+        Without stage 2, the first panel open of a session sometimes
+        re-layouts the status bar after our show, blanking the hint label.
+        """
+        if not hints or not hasattr(Gui, "HintManager"):
+            return
+
+        def _show():
+            try:
+                items = hints() if callable(hints) else hints
+            except Exception:
+                return
+            if items:
+                Gui.HintManager.show(*items)
+
+        def _schedule_inner():
+            # Second hop through Qt's event queue. Some panels (notably the
+            # BIM Wall task panel) post enough widget-realization events
+            # during their first open that a single singleShot(0) hop is
+            # still ahead of them and the hint label gets re-laid-out blank.
+            QtCore.QTimer.singleShot(0, _show)
+
+        def _schedule_outer():
+            QtCore.QTimer.singleShot(0, _schedule_inner)
+
+        todo.ToDo.delayAfter(_schedule_outer, None)
 
     def get_snap_toolbar(self):
         """Get the snap toolbar."""

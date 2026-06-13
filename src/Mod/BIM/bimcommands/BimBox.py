@@ -69,7 +69,23 @@ class BIM_Box:
                 callback=self.PointCallback,
                 movecallback=self.MoveCallback,
                 extradlg=self.taskbox(),
+                hints=self.get_hints,
             )
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        if not self.points:
+            label = translate("BIM", "%1 pick first point")
+        else:
+            label = translate("BIM", "%1 pick next point")
+        return (
+            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def MoveCallback(self, point, snapinfo):
         import DraftGeomUtils
@@ -129,6 +145,7 @@ class BIM_Box:
                 callback=self.PointCallback,
                 movecallback=self.MoveCallback,
                 extradlg=self.taskbox(),
+                hints=self.get_hints,
             )
         elif len(self.points) == 1:
             # this is our second point
@@ -239,6 +256,7 @@ class BIM_Box:
             callback=self.PointCallback,
             movecallback=self.MoveCallback,
             extradlg=self.taskbox(),
+            hints=self.get_hints,
         )
 
     def _setupForHeightInput(self):
@@ -264,6 +282,7 @@ class BIM_Box:
             callback=self.PointCallback,
             movecallback=self.MoveCallback,
             extradlg=self.taskbox(),
+            hints=self.get_hints,
         )
 
     def _makeBox(self):
