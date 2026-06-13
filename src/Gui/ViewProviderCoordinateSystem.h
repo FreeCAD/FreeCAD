@@ -121,6 +121,18 @@ private:
     std::map<Gui::ViewProvider*, bool> tempVisMap;
 };
 
+// Keep for backward compatibility
+class GuiExport ViewProviderOrigin: public ViewProviderCoordinateSystem
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderOrigin);
+
+public:
+    /// constructor.
+    ViewProviderOrigin() = default;
+    /// destructor.
+    ~ViewProviderOrigin() override = default;
+};
+
 }  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::DatumElement)
