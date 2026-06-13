@@ -26,6 +26,7 @@
 
 #include <string>
 #include <memory>
+#include <string_view>
 
 #include "UnitsSchemasSpecs.h"
 #include "Base/Quantity.h"
@@ -51,11 +52,19 @@ public:
     [[nodiscard]] int getNum() const;
 
     std::string translate(const Quantity& quant) const;
+    std::string translate(const Quantity& quant, std::string_view localeId) const;
     std::string translate(const Quantity& quant, double& factor, std::string& unitString) const;
+    std::string translate(
+        const Quantity& quant,
+        std::string_view localeId,
+        double& factor,
+        std::string& unitString
+    ) const;
 
 private:
     [[nodiscard]] static std::string toLocale(
         const Quantity& quant,
+        std::string_view localeId,
         double factor,
         const std::string& unitString
     );

@@ -25,6 +25,7 @@
 #include <unicode/uchar.h>
 #include <unicode/utf8.h>
 #include <unicode/locid.h>
+#include <array>
 #include <chrono>
 #include <ctime>
 #include <iomanip>
@@ -45,6 +46,22 @@ namespace
 {
 constexpr auto underscore = static_cast<UChar32>(U'_');
 std::string operatingSystemNumericLocale;
+std::string currentNumericFormattingLocale;
+std::string currentNumericFormattingDecimalSeparator;
+std::string currentNumericFormattingGroupingSeparator;
+
+#ifdef FC_OS_WIN32
+std::string getWindowsUserDefaultLocaleName()
+{
+    std::array<wchar_t, LOCALE_NAME_MAX_LENGTH> buffer {};
+    const int written = GetUserDefaultLocaleName(buffer.data(), static_cast<int>(buffer.size()));
+    if (written <= 0) {
+        return {};
+    }
+
+    return Base::Tools::wstringToString(std::wstring(buffer.data()));
+}
+#endif
 
 bool isValidFirstChar(UChar32 c)
 {
@@ -320,6 +337,50 @@ void Base::Tools::setOperatingSystemNumericLocale(std::string_view localeName)
 std::string Base::Tools::getOperatingSystemNumericLocale()
 {
     return operatingSystemNumericLocale;
+}
+
+std::string Base::Tools::getEffectiveOperatingSystemNumericLocale()
+{
+#ifdef FC_OS_WIN32
+    if (operatingSystemNumericLocale.empty()) {
+        return getWindowsUserDefaultLocaleName();
+    }
+#endif
+    return operatingSystemNumericLocale;
+}
+
+void Base::Tools::setCurrentNumericFormattingLocale(std::string_view localeName)
+{
+    currentNumericFormattingLocale = localeName;
+}
+
+std::string Base::Tools::getCurrentNumericFormattingLocale()
+{
+    if (!currentNumericFormattingLocale.empty()) {
+        return currentNumericFormattingLocale;
+    }
+
+    const auto localeName = getEffectiveOperatingSystemNumericLocale();
+    return localeName.empty() ? std::string {"C"} : localeName;
+}
+
+void Base::Tools::setCurrentNumericFormattingSeparators(
+    std::string_view decimalSeparator,
+    std::string_view groupingSeparator
+)
+{
+    currentNumericFormattingDecimalSeparator = decimalSeparator;
+    currentNumericFormattingGroupingSeparator = groupingSeparator;
+}
+
+std::string Base::Tools::getCurrentNumericFormattingDecimalSeparator()
+{
+    return currentNumericFormattingDecimalSeparator;
+}
+
+std::string Base::Tools::getCurrentNumericFormattingGroupingSeparator()
+{
+    return currentNumericFormattingGroupingSeparator;
 }
 
 void Base::Tools::setIcuDefaultLocale(std::string_view icuLocaleId)

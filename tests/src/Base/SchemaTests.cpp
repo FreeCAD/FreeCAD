@@ -28,13 +28,11 @@
 #include "Base/UnitsApi.h"
 #include "Base/UnitsSchemasData.h"
 #include "Base/UnitsSchemas.h"
+#include <src/LocaleTestHelpers.h>
 #include "TranslationTestHelpers.h"
 
 #include <array>
 #include <string>
-
-#include <unicode/locid.h>
-#include <unicode/utypes.h>
 
 using Base::Quantity;
 using Base::QuantityFormat;
@@ -48,17 +46,6 @@ using Base::UnitsSchemas;
 class SchemaTest: public testing::Test
 {
 protected:
-    void SetUp() override
-    {
-        // Ensure deterministic decimal separator for tests.
-        UErrorCode status = U_ZERO_ERROR;
-        icu::Locale::setDefault(icu::Locale("en_US_POSIX"), status);
-        ASSERT_TRUE(U_SUCCESS(status));
-    }
-
-    void TearDown() override
-    {}
-
     static std::string set(const std::string& schemaName, const Unit unit, const double value)  // NOLINT
     {
         UnitsApi::setSchema(schemaName);
@@ -112,6 +99,7 @@ protected:
         }
     }
 
+    tests::ScopedFormattingLocaleState localeState {"en_US_POSIX", "en_US_POSIX"};
     std::unique_ptr<UnitsSchemas> schemas;  // NOLINT
 };
 

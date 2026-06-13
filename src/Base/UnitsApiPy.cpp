@@ -26,9 +26,10 @@
 
 #include <CXX/Objects.hxx>
 
-#include "UnitsApi.h"
 #include "Quantity.h"
 #include "QuantityPy.h"
+#include "Tools.h"
+#include "UnitsApi.h"
 
 
 using namespace Base;
@@ -172,7 +173,8 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)
     double factor {};
     std::string unitStr;
     auto schema = std::make_unique<UnitsSchema>(schemas->spec(index));
-    const std::string unitStrLocalised = schema->translate(quant, factor, unitStr);
+    const auto localeId = Tools::getCurrentNumericFormattingLocale();
+    const std::string unitStrLocalised = schema->translate(quant, localeId, factor, unitStr);
 
     Py::Tuple res {3};
     res[0] = Py::String {unitStrLocalised, "utf-8"};

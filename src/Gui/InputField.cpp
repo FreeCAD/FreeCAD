@@ -37,6 +37,7 @@
 #include "InputField.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "QuantityParsingUtils.h"
 #include "QuantitySpinBox_p.h"
 
 
@@ -265,31 +266,39 @@ void InputField::contextMenuEvent(QContextMenuEvent* event)
 void InputField::newInput(const QString& text)
 {
     Quantity res;
-    try {
-        QString input = text;
-        fixup(input);
+    QString errorText;
+    auto tryParse = [&](const QString& input) -> bool {
+        try {
+            if (isBound()) {
+                const QByteArray inputUtf8 = input.toUtf8();
+                std::shared_ptr<Expression> e(
+                    ExpressionParser::parse(getPath().getDocumentObject(), inputUtf8.constData())
+                );
 
-        if (isBound()) {
-            std::shared_ptr<Expression> e(
-                ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8())
-            );
+                setExpression(e);
 
-            setExpression(e);
+                std::unique_ptr<Expression> evalRes(getExpression()->eval());
 
-            std::unique_ptr<Expression> evalRes(getExpression()->eval());
-
-            auto* value = freecad_cast<NumberExpression*>(evalRes.get());
-            if (value) {
-                res.setValue(value->getValue());
-                res.setUnit(value->getUnit());
+                auto* value = freecad_cast<NumberExpression*>(evalRes.get());
+                if (value) {
+                    res.setValue(value->getValue());
+                    res.setUnit(value->getUnit());
+                }
             }
+            else {
+                res = Quantity::parse(input.toStdString());
+            }
+            return true;
         }
-        else {
-            res = Quantity::parse(input.toStdString());
+        catch (Base::Exception& e) {
+            errorText = QString::fromLatin1(e.what());
+            return false;
         }
-    }
-    catch (Base::Exception& e) {
-        QString errorText = QString::fromLatin1(e.what());
+    };
+
+    if (!Gui::detail::parseWithFixupFallback(text, locale(), tryParse, [this](QString& input) {
+            fixup(input);
+        })) {
         if (iconLabel->isHidden()) {
             iconLabel->setVisible(true);
         }
@@ -402,13 +411,8 @@ void InputField::setToLastUsedValue()
 
 void InputField::pushToSavedValues(const QString& valueq)
 {
-    std::string value;
-    if (valueq.isEmpty()) {
-        value = this->text().toUtf8().constData();
-    }
-    else {
-        value = valueq.toUtf8().constData();
-    }
+    const QByteArray valueUtf8 = valueq.isEmpty() ? this->text().toUtf8() : valueq.toUtf8();
+    std::string value(valueUtf8.constData(), valueUtf8.size());
 
     if (_handle.isValid()) {
         char hist1[21];
@@ -790,25 +794,32 @@ void InputField::fixup(QString& input) const
 QValidator::State InputField::validate(QString& input, int& pos) const
 {
     Q_UNUSED(pos);
-    try {
-        Quantity res;
-        QString text = input;
-        fixup(text);
-        res = Quantity::parse(text.toStdString());
-
-        double factor;
-        std::string unitStr;
-        res.getUserString(factor, unitStr);
-        double value = res.getValue() / factor;
-        // disallow one to enter numbers out of range
-        if (value > this->Maximum || value < this->Minimum) {
-            return QValidator::Invalid;
+    Quantity res;
+    auto tryParse = [&](const QString& text) {
+        try {
+            res = Quantity::parse(text.toStdString());
+            return true;
         }
-    }
-    catch (Base::Exception&) {
+        catch (Base::Exception&) {
+            return false;
+        }
+    };
+
+    if (!Gui::detail::parseWithFixupFallback(input, locale(), tryParse, [this](QString& text) {
+            fixup(text);
+        })) {
         // Actually invalid input but the newInput slot gives
         // some feedback
         return QValidator::Intermediate;
+    }
+
+    double factor;
+    std::string unitStr;
+    res.getUserString(factor, unitStr);
+    double value = res.getValue() / factor;
+    // disallow one to enter numbers out of range
+    if (value > this->Maximum || value < this->Minimum) {
+        return QValidator::Invalid;
     }
 
     return QValidator::Acceptable;

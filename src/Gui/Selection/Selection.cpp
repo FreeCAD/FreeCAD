@@ -1039,12 +1039,13 @@ std::array<std::pair<double, std::string>, 3> schemaTranslatePoint(
     Base::Quantity mmz(Base::Quantity::MilliMetre);
     mmz.setValue(fabs(z) > precision ? z : 0.0);
 
+    const auto localeId = Base::Tools::getCurrentNumericFormattingLocale();
     double xfactor, yfactor, zfactor;
     std::string xunit, yunit, zunit;
 
-    Base::UnitsApi::schemaTranslate(mmx, xfactor, xunit);
-    Base::UnitsApi::schemaTranslate(mmy, yfactor, yunit);
-    Base::UnitsApi::schemaTranslate(mmz, zfactor, zunit);
+    Base::UnitsApi::schemaTranslate(mmx, localeId, xfactor, xunit);
+    Base::UnitsApi::schemaTranslate(mmy, localeId, yfactor, yunit);
+    Base::UnitsApi::schemaTranslate(mmz, localeId, zfactor, zunit);
 
     double xuser = fabs(x) > precision ? x / xfactor : 0.0;
     double yuser = fabs(y) > precision ? y / yfactor : 0.0;

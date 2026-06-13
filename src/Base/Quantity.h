@@ -28,6 +28,7 @@
 #include "Unit.h"
 #include <cstdint>
 #include <string>
+#include <string_view>
 
 namespace Base
 {
@@ -157,10 +158,19 @@ public:
     std::string toNumber(const QuantityFormat& format = QuantityFormat(QuantityFormat::Default)) const;
 
     std::string getUserString() const;
+    std::string getUserString(std::string_view localeId) const;
     /// transfer to user preferred unit/potence
     std::string getUserString(double& factor, std::string& unitString) const;
+    std::string getUserString(std::string_view localeId, double& factor, std::string& unitString) const;
     std::string getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const;
+    std::string getUserString(
+        UnitsSchema* schema,
+        std::string_view localeId,
+        double& factor,
+        std::string& unitString
+    ) const;
     std::string getSafeUserString() const;
+    std::string getSafeUserString(std::string_view localeId) const;
 
     static Quantity parse(const std::string& string);
 

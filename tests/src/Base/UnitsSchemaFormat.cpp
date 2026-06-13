@@ -3,38 +3,12 @@
 #include <Base/Quantity.h>
 #include <Base/UnitsSchema.h>
 
-#include <unicode/locid.h>
-#include <unicode/utypes.h>
+#include <src/LocaleTestHelpers.h>
 
 #include <string>
 
 namespace
 {
-class ScopedIcuLocale
-{
-public:
-    explicit ScopedIcuLocale(const char* name)
-        : previous {icu::Locale::getDefault()}
-    {
-        UErrorCode status = U_ZERO_ERROR;
-        icu::Locale::setDefault(icu::Locale(name), status);
-    }
-
-    ~ScopedIcuLocale()
-    {
-        UErrorCode status = U_ZERO_ERROR;
-        icu::Locale::setDefault(previous, status);
-    }
-
-    ScopedIcuLocale(const ScopedIcuLocale&) = delete;
-    ScopedIcuLocale(ScopedIcuLocale&&) = delete;
-    ScopedIcuLocale& operator=(const ScopedIcuLocale&) = delete;
-    ScopedIcuLocale& operator=(ScopedIcuLocale&&) = delete;
-
-private:
-    icu::Locale previous;
-};
-
 Base::UnitsSchema makeNoTranslationSchema()
 {
     Base::UnitsSchemaSpec spec {};
@@ -56,26 +30,33 @@ std::string translateValue(const double value, const Base::QuantityFormat& fmt)
     std::string unitString;
     return schema.translate(q, factor, unitString);
 }
+
+std::string translateValue(const double value, const Base::QuantityFormat& fmt, const char* localeId)
+{
+    Base::Quantity q(value);
+    q.setFormat(fmt);
+
+    auto schema = makeNoTranslationSchema();
+    double factor = 0.0;
+    std::string unitString;
+    return schema.translate(q, localeId, factor, unitString);
+}
 }  // namespace
 
 TEST(UnitsSchemaFormatTest, fixed_uses_precision_and_trailing_zeroes)
 {
-    ScopedIcuLocale locale("en_US");
-
     Base::QuantityFormat fmt(Base::QuantityFormat::Fixed, 2);
     fmt.option = Base::QuantityFormat::None;
 
-    EXPECT_EQ(translateValue(123.0, fmt), "123.00");
+    EXPECT_EQ(translateValue(123.0, fmt, "en_US"), "123.00");
 }
 
 TEST(UnitsSchemaFormatTest, scientific_uses_exponent_and_precision)
 {
-    ScopedIcuLocale locale("en_US");
-
     Base::QuantityFormat fmt(Base::QuantityFormat::Scientific, 2);
     fmt.option = Base::QuantityFormat::None;
 
-    const std::string s = translateValue(123.0, fmt);
+    const std::string s = translateValue(123.0, fmt, "en_US");
 
     const auto ePos = s.find_first_of("eE");
     ASSERT_NE(ePos, std::string::npos);
@@ -88,29 +69,62 @@ TEST(UnitsSchemaFormatTest, scientific_uses_exponent_and_precision)
 
 TEST(UnitsSchemaFormatTest, default_matches_qt_general_scientific_thresholds)
 {
-    ScopedIcuLocale locale("en_US");
-
     Base::QuantityFormat fmt(Base::QuantityFormat::Default, 6);
     fmt.option = Base::QuantityFormat::None;
 
-    EXPECT_EQ(translateValue(1e9, fmt), "1e+09");
-    EXPECT_EQ(translateValue(1e6, fmt), "1e+06");
-    EXPECT_EQ(translateValue(1e-6, fmt), "1e-06");
+    EXPECT_EQ(translateValue(1e9, fmt, "en_US"), "1e+09");
+    EXPECT_EQ(translateValue(1e6, fmt, "en_US"), "1e+06");
+    EXPECT_EQ(translateValue(1e-6, fmt, "en_US"), "1e-06");
 }
 
 TEST(UnitsSchemaFormatTest, omit_group_separator_option_removes_grouping)
 {
-    ScopedIcuLocale locale("en_US");
-
     Base::QuantityFormat fmtGroup(Base::QuantityFormat::Default, 0);
     fmtGroup.option = Base::QuantityFormat::None;
 
     Base::QuantityFormat fmtNoGroup(Base::QuantityFormat::Default, 0);
     fmtNoGroup.option = Base::QuantityFormat::OmitGroupSeparator;
 
-    const std::string withGrouping = translateValue(12345.0, fmtGroup);
-    const std::string noGrouping = translateValue(12345.0, fmtNoGroup);
+    const std::string withGrouping = translateValue(12345.0, fmtGroup, "en_US");
+    const std::string noGrouping = translateValue(12345.0, fmtNoGroup, "en_US");
 
     EXPECT_NE(withGrouping.find(','), std::string::npos);
     EXPECT_EQ(noGrouping.find(','), std::string::npos);
+}
+
+TEST(UnitsSchemaFormatTest, explicit_locale_overrides_current_and_icu_defaults)
+{
+    tests::ScopedFormattingLocaleState localeState {"de_DE", "fr_FR"};
+
+    Base::QuantityFormat fmt(Base::QuantityFormat::Fixed, 2);
+    fmt.option = Base::QuantityFormat::None;
+
+    EXPECT_EQ(translateValue(1.5, fmt, "en_US"), "1.50");
+}
+
+TEST(UnitsSchemaFormatTest, default_translation_uses_current_numeric_formatting_locale)
+{
+    tests::ScopedFormattingLocaleState localeState {"de_DE", "en_US"};
+
+    Base::QuantityFormat fmt(Base::QuantityFormat::Fixed, 2);
+    fmt.option = Base::QuantityFormat::None;
+
+    EXPECT_EQ(translateValue(1.5, fmt), "1,50");
+}
+
+TEST(UnitsSchemaFormatTest, effective_numeric_separators_override_locale_symbols)
+{
+    tests::ScopedCurrentNumericFormattingSeparators separators {",", "\xC2\xA0"};
+
+    Base::QuantityFormat fmtFixed(Base::QuantityFormat::Fixed, 2);
+    fmtFixed.option = Base::QuantityFormat::None;
+    EXPECT_EQ(translateValue(1.5, fmtFixed, "en_US"), "1,50");
+
+    Base::QuantityFormat fmtGrouped(Base::QuantityFormat::Default, 0);
+    fmtGrouped.option = Base::QuantityFormat::None;
+    EXPECT_EQ(
+        translateValue(12345.0, fmtGrouped, "en_US"),
+        std::string {"12\xC2\xA0"
+                     "345"}
+    );
 }

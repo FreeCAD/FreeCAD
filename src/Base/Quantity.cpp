@@ -278,24 +278,49 @@ std::string Quantity::toNumber(const QuantityFormat& format) const
 
 std::string Quantity::getUserString() const
 {
+    return getUserString(Base::Tools::getCurrentNumericFormattingLocale());
+}
+
+std::string Quantity::getUserString(std::string_view localeId) const
+{
     double dummy1 {};  // to satisfy GCC
     std::string dummy2 {};
-    return getUserString(dummy1, dummy2);
+    return getUserString(localeId, dummy1, dummy2);
 }
 
 std::string Quantity::getUserString(double& factor, std::string& unitString) const
 {
-    return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
+    return getUserString(Base::Tools::getCurrentNumericFormattingLocale(), factor, unitString);
+}
+
+std::string Quantity::getUserString(std::string_view localeId, double& factor, std::string& unitString) const
+{
+    return Base::UnitsApi::schemaTranslate(*this, localeId, factor, unitString);
 }
 
 std::string Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const
 {
-    return schema->translate(*this, factor, unitString);
+    return getUserString(schema, Base::Tools::getCurrentNumericFormattingLocale(), factor, unitString);
+}
+
+std::string Quantity::getUserString(
+    UnitsSchema* schema,
+    std::string_view localeId,
+    double& factor,
+    std::string& unitString
+) const
+{
+    return schema->translate(*this, localeId, factor, unitString);
 }
 
 std::string Quantity::getSafeUserString() const
 {
-    auto userStr = getUserString();
+    return getSafeUserString(Base::Tools::getCurrentNumericFormattingLocale());
+}
+
+std::string Quantity::getSafeUserString(std::string_view localeId) const
+{
+    auto userStr = getUserString(localeId);
     if (myValue != 0.0) {
         bool useFallback {false};
         try {

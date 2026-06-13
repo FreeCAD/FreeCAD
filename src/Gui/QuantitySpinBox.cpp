@@ -45,6 +45,7 @@
 
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
+#include "QuantityParsingUtils.h"
 #include "Command.h"
 #include "Dialogs/DlgExpressionInput.h"
 #include "Tools.h"
@@ -139,30 +140,37 @@ public:
         const App::ObjectIdentifier& path
     ) const
     {
-        App::ObjectIdentifier pathtmp = path;
-        try {
-            QString copy = str;
-            copy.remove(locale.groupSeparator());
-
-            // Expression parser
+        auto tryParse = [&](const QString& input) {
+            const QByteArray inputUtf8 = input.toUtf8();
             std::shared_ptr<Expression> expr(
-                ExpressionParser::parse(path.getDocumentObject(), copy.toUtf8().constData())
+                ExpressionParser::parse(path.getDocumentObject(), inputUtf8.constData())
             );
-            if (expr) {
-
-                std::unique_ptr<Expression> res(expr->eval());
-                NumberExpression* n = freecad_cast<NumberExpression*>(res.get());
-                if (n) {
-                    result = n->getQuantity();
-                    value = result.getValue();
-                    return true;
-                }
+            if (!expr) {
+                return false;
             }
+
+            std::unique_ptr<Expression> res(expr->eval());
+            NumberExpression* n = freecad_cast<NumberExpression*>(res.get());
+            if (!n) {
+                return false;
+            }
+
+            result = n->getQuantity();
+            value = result.getValue();
+            return true;
+        };
+
+        try {
+            return Gui::detail::parseWithFixupFallback(str, locale, tryParse, [this](QString& input) {
+                const QString groupSeparator = locale.groupSeparator();
+                if (!groupSeparator.isNull()) {
+                    input.remove(groupSeparator);
+                }
+            });
         }
         catch (Base::Exception&) {
             return false;
         }
-        return false;
     }
     Base::Quantity validateAndInterpret(
         QString& input,
@@ -874,9 +882,10 @@ void QuantitySpinBox::clearSchema()
 QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
 {
     Q_D(const QuantitySpinBox);
+    const auto localeId = Base::Tools::getCurrentNumericFormattingLocale();
     std::string unitStr;
-    const std::string str = d->scheme ? val.getUserString(d->scheme.get(), factor, unitStr)
-                                      : val.getUserString(factor, unitStr);
+    const std::string str = d->scheme ? val.getUserString(d->scheme.get(), localeId, factor, unitStr)
+                                      : val.getUserString(localeId, factor, unitStr);
     unitString = QString::fromStdString(unitStr);
     return QString::fromStdString(str);
 }
@@ -884,14 +893,15 @@ QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor
 QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
 {
     Q_D(const QuantitySpinBox);
+    const auto localeId = Base::Tools::getCurrentNumericFormattingLocale();
     std::string str;
     if (d->scheme) {
         double factor;
         std::string unitString;
-        str = val.getUserString(d->scheme.get(), factor, unitString);
+        str = val.getUserString(d->scheme.get(), localeId, factor, unitString);
     }
     else {
-        str = val.getUserString();
+        str = val.getUserString(localeId);
     }
     return QString::fromStdString(str);
 }
@@ -1112,14 +1122,19 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString& text) const
 {
     Q_D(const QuantitySpinBox);
 
-    QString copy = text;
     QValidator::State state = QValidator::Acceptable;
     const App::ObjectIdentifier& path = getPath();
-    Base::Quantity quant = d->validateAndInterpret(copy, state, path);
-    if (state != QValidator::Acceptable) {
-        fixup(copy);
-        quant = d->validateAndInterpret(copy, state, path);
-    }
+    Base::Quantity quant;
+    Gui::detail::parseWithFixupFallback(
+        text,
+        locale(),
+        [&](const QString& input) {
+            QString copy = input;
+            quant = d->validateAndInterpret(copy, state, path);
+            return state == QValidator::Acceptable;
+        },
+        [this](QString& input) { fixup(input); }
+    );
 
     return quant;
 }

@@ -51,6 +51,7 @@
 #include <Base/Precision.h>
 #include <Base/Quantity.h>
 #include <Base/Rotation.h>
+#include <Base/Tools.h>
 #include <Base/Type.h>
 #include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
@@ -1093,6 +1094,7 @@ void TaskMassProperties::tryUpdate()
 
     const int decimals = Base::UnitsApi::getDecimals();
     const int denominator = Base::UnitsApi::getDenominator();
+    const auto localeId = Base::Tools::getCurrentNumericFormattingLocale();
 
     auto setText =
         [&](QLineEdit* edit, const Base::Quantity& quantity, const QString& suffix = QString()) {
@@ -1107,10 +1109,10 @@ void TaskMassProperties::tryUpdate()
             std::string text;
             auto schema = Base::UnitsApi::createSchema(static_cast<std::size_t>(unitsSchemaIndex));
             if (schema) {
-                text = schema->translate(q);
+                text = schema->translate(q, localeId);
             }
             else {
-                text = Base::UnitsApi::schemaTranslate(q);
+                text = Base::UnitsApi::schemaTranslate(q, localeId);
             }
             edit->setText(QString::fromUtf8(text.c_str()) + suffix);
             edit->setCursorPosition(0);
@@ -1384,6 +1386,7 @@ void TaskMassProperties::saveResult()
 
     obj->Visibility.setValue(true);
 
+    const auto localeId = Base::Tools::getCurrentNumericFormattingLocale();
     auto setQuantity = [&](const char* name, const char* group, const Base::Quantity& quantity) {
         Base::Quantity q(quantity);
         if (std::fabs(q.getValue()) < Base::Precision::Confusion()) {
@@ -1396,10 +1399,10 @@ void TaskMassProperties::saveResult()
             std::string text;
             auto schema = Base::UnitsApi::createSchema(static_cast<std::size_t>(unitsSchemaIndex));
             if (schema) {
-                text = schema->translate(q);
+                text = schema->translate(q, localeId);
             }
             else {
-                text = Base::UnitsApi::schemaTranslate(q);
+                text = Base::UnitsApi::schemaTranslate(q, localeId);
             }
 
             prop->setValue(text.c_str());

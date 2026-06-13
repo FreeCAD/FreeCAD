@@ -27,6 +27,7 @@
 #include <CXX/WrapPython.h>
 
 #include "Exception.h"
+#include "Tools.h"
 #include "UnitsApi.h"
 #include "UnitsSchema.h"
 #include "UnitsSchemas.h"
@@ -125,14 +126,29 @@ double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)
 
 std::string UnitsApi::schemaTranslate(const Quantity& quant, double& factor, std::string& unitString)
 {
-    return schemas->currentSchema()->translate(quant, factor, unitString);
+    return schemaTranslate(quant, Tools::getCurrentNumericFormattingLocale(), factor, unitString);
+}
+
+std::string UnitsApi::schemaTranslate(
+    const Quantity& quant,
+    std::string_view localeId,
+    double& factor,
+    std::string& unitString
+)
+{
+    return schemas->currentSchema()->translate(quant, localeId, factor, unitString);
 }
 
 std::string UnitsApi::schemaTranslate(const Quantity& quant)
 {
+    return schemaTranslate(quant, Tools::getCurrentNumericFormattingLocale());
+}
+
+std::string UnitsApi::schemaTranslate(const Quantity& quant, std::string_view localeId)
+{
     double dummy1 {};  // to satisfy GCC
     std::string dummy2;
-    return schemas->currentSchema()->translate(quant, dummy1, dummy2);
+    return schemas->currentSchema()->translate(quant, localeId, dummy1, dummy2);
 }
 
 std::string UnitsApi::toUnicodeSuperscript(const std::string& str)
