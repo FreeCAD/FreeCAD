@@ -140,11 +140,11 @@ class PathGeometryGenerator:
         lineLen = self.deltaC + (
             2.0 * self.toolDiam
         )  # Line length to span boundbox diag with 2x cutter diameter extra on each end
-        self.halfDiag = math.ceil(lineLen / 2.0)
+        self.halfDiag = math.ceil(round(lineLen / 2.0, 6))
         cutPasses = (
-            math.ceil(lineLen / self.cutOut) + 1
+            math.ceil(round(lineLen / self.cutOut, 6)) + 1
         )  # Number of lines(passes) required to cover boundbox diagonal
-        self.halfPasses = math.ceil(cutPasses / 2.0)
+        self.halfPasses = math.ceil(round(cutPasses / 2.0, 6))
 
     # Public methods
     def setDebugObjectsGroup(self, tmpGrpObject):
@@ -266,7 +266,7 @@ class PathGeometryGenerator:
         loopCnt = 0
         segCnt = 0
         twoPi = 2.0 * math.pi
-        maxDist = math.ceil(self.cutOut * self._getRadialPasses())  # self.halfDiag
+        maxDist = math.ceil(round(self.cutOut * self._getRadialPasses(), 6))  # self.halfDiag
         move = self.centerOfPattern  # Use to translate the center of the spiral
         lastPoint = FreeCAD.Vector(0.0, 0.0, 0.0)
 
@@ -382,7 +382,7 @@ class PathGeometryGenerator:
                 2.0 * self.toolDiam
             )  # Line length to span boundbox diag with 2x cutter diameter extra on each end
             radialPasses = (
-                math.ceil(diag / self.cutOut) + 1
+                math.ceil(round(diag / self.cutOut, 6)) + 1
             )  # Number of lines(passes) required to cover boundbox diagonal
 
         return radialPasses

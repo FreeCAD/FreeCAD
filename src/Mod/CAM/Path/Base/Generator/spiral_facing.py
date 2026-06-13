@@ -220,7 +220,7 @@ def spiral(
     if total_radial_distance <= 0:
         actual_stepover = stepover_dist
     else:
-        number_of_intervals = math.ceil(total_radial_distance / stepover_dist)
+        number_of_intervals = math.ceil(round(total_radial_distance / stepover_dist, 6))
         actual_stepover = total_radial_distance / number_of_intervals
 
     Path.Log.debug(

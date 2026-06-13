@@ -888,7 +888,7 @@ class depth_params(object):
         all steps are of equal size, which is as big as possible but not bigger
         than max_size."""
 
-        steps_needed = math.ceil((start - stop) / max_size)
+        steps_needed = math.ceil(round((start - stop) / max_size, 6))
         depths = list(linspace(stop, start, steps_needed, endpoint=False))
 
         return depths

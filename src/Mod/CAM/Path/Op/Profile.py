@@ -1314,7 +1314,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             E = useWire.Edges[e]
             LE = E.Length
             if LE > (self.radius * 2):
-                nt = math.ceil(LE / (tagRad * math.pi))  # (tagRad * 2 * math.pi) is circumference
+                nt = math.ceil(round(LE / (tagRad * math.pi), 6))
+                # (tagRad * 2 * math.pi) is circumference
             else:
                 nt = 4  # desired + 1
             mid = LE / nt

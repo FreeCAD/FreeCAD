@@ -525,7 +525,7 @@ class ObjectDressup:
         rampheight = abs(startZ - rampedges[-1].end_point[2])
 
         max_rise_over_run = 1 / math.tan(math.radians(self.angle))
-        num_loops = math.ceil(rampheight / ramplen / max_rise_over_run)
+        num_loops = math.ceil(round(rampheight / ramplen / max_rise_over_run, 6))
         rampedges *= num_loops
         ramplen *= num_loops
 
