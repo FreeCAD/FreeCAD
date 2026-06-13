@@ -127,7 +127,6 @@ DrawViewDimension::DrawViewDimension()
                       (App::Prop_None),
                       "3D Geometry References");
     References3D.setScope(App::LinkScope::Global);
-
     ADD_PROPERTY_TYPE(FormatSpec,
                       (getDefaultFormatSpec()),
                       "Format",
@@ -301,6 +300,18 @@ void DrawViewDimension::resetArea()
     m_areaPoint.actualArea = 0.0;
 }
 
+void DrawViewDimension::onBeforeChange(const App::Property* prop)
+{
+    // re-parenting of tree on 2D reference changes
+    if (prop == &References2D && !isRestoring()) {
+        auto* dvp = getViewPart();
+        if (dvp) {
+            dvp->touch();
+        }
+    }
+    DrawView::onBeforeChange(prop);
+}
+
 void DrawViewDimension::onChanged(const App::Property* prop)
 {
     if (prop == &References3D) {
@@ -318,6 +329,10 @@ void DrawViewDimension::onChanged(const App::Property* prop)
 
     if (prop == &References2D) {
         updateSavedGeometry();
+        auto* dvp = getViewPart();
+        if (dvp) {
+            dvp->touch();
+        }
     }
     else if (prop == &References3D) {
         // remove the old measurement object
