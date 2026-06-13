@@ -48,7 +48,7 @@ from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils import todo
-from draftutils.messages import _err, _toolmsg
+from draftutils.messages import _err, _toolmsg, _wrn
 from draftutils.translate import translate
 
 
@@ -129,8 +129,9 @@ class Line(gui_base_original.Creator):
                 self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             if self.point:
                 self.ui.redraw()
+                if not self._append_point(self.point):
+                    return
                 self.pos = arg["Position"]
-                self.node.append(self.point)
                 self.drawUpdate(self.point)
                 if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)
@@ -239,6 +240,19 @@ class Line(gui_base_original.Creator):
                 _toolmsg(translate("draft", "Pick next point"))
             self.update_hints()
 
+    def _append_point(self, point):
+        """Append a point unless it would create a zero-length segment."""
+        if (
+            self.__class__ in (Line, Wire)
+            and self.node
+            and DraftVecUtils.equals(self.node[-1], point)
+        ):
+            _wrn(translate("draft", "Point identical to previous point"))
+            return False
+
+        self.node.append(point)
+        return True
+
     def drawUpdate(self, point):
         """Draws new line segment."""
         import Part
@@ -294,7 +308,9 @@ class Line(gui_base_original.Creator):
         when valid x, y, and z have been entered in the input fields.
         """
         self.point = App.Vector(numx, numy, numz)
-        self.node.append(self.point)
+        if not self._append_point(self.point):
+            self.ui.setNextFocus()
+            return
         self.drawUpdate(self.point)
         if self.mode == "line" and len(self.node) == 2:
             self.finish(cont=None, closed=False)

@@ -45,7 +45,7 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_lines as gui_lines
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _err, _toolmsg
+from draftutils.messages import _err, _toolmsg, _wrn
 from draftutils.translate import translate
 
 
@@ -75,6 +75,15 @@ class BSpline(gui_lines.Line):
         )
         if self.doc:
             self.bsplinetrack = trackers.bsplineTracker()
+
+    def _append_point(self, point):
+        """Reject duplicate consecutive points before updating the spline."""
+        if self.node and gui_lines.DraftVecUtils.equals(self.node[-1], point):
+            _wrn(translate("draft", "Point identical to previous point"))
+            return False
+
+        self.node.append(point)
+        return True
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -115,8 +124,9 @@ class BSpline(gui_lines.Line):
                 self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
             if self.point:
                 self.ui.redraw()
+                if not self._append_point(self.point):
+                    return
                 self.pos = arg["Position"]
-                self.node.append(self.point)
                 self.drawUpdate(self.point)
                 if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)
