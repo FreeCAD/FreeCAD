@@ -322,6 +322,17 @@ public:
   virtual std::string getFullName() const {return {};}
 
   /**
+   * @brief Return the document object that owns link-like properties in this container.
+   *
+   * Most property containers are not document objects and therefore cannot own
+   * links.  Containers that proxy document-object properties, such as view
+   * providers, can override this hook to return the associated document object.
+   *
+   * @return The owning document object, or `nullptr` when this container has no link owner.
+   */
+  virtual App::DocumentObject* getPropertyLinkOwner() const;
+
+  /**
    * @brief Find a property by its name.
    *
    * @param[in] name The name of the property to find.

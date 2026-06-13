@@ -51,6 +51,7 @@
 #include "DocumentObject.h"
 #include "MaterialPy.h"
 #include "ObjectIdentifier.h"
+#include "PropertySerialization.h"
 
 
 using namespace App;
@@ -3444,17 +3445,10 @@ void PropertyMaterialList::SaveDocFile(Base::Writer& writer) const
 
     // Apply the latest changes last for backwards compatibility
     for (const auto& it : _lValueList) {
-        writeString(str, it.image);
-        writeString(str, it.imagePath);
-        writeString(str, it.uuid);
+        PropertySerialization::writeBinaryString(str, it.image);
+        PropertySerialization::writeBinaryString(str, it.imagePath);
+        PropertySerialization::writeBinaryString(str, it.uuid);
     }
-}
-
-void PropertyMaterialList::writeString(Base::OutputStream& str, const std::string& value) const
-{
-    uint32_t uCt = (uint32_t)value.size();
-    str << uCt;
-    str.write(value.c_str(), uCt);
 }
 
 void PropertyMaterialList::RestoreDocFile(Base::Reader& reader)
@@ -3535,9 +3529,9 @@ void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
         it.transparency = valueF;
     }
     for (auto& it : values) {
-        readString(str, it.image);
-        readString(str, it.imagePath);
-        readString(str, it.uuid);
+        PropertySerialization::readBinaryString(str, it.image);
+        PropertySerialization::readBinaryString(str, it.imagePath);
+        PropertySerialization::readBinaryString(str, it.uuid);
     }
     convertAlpha(values);
     setValues(values);
@@ -3548,16 +3542,6 @@ void PropertyMaterialList::convertAlpha(std::vector<App::Material>& materials) c
     if (requiresAlphaConversion) {
         std::ranges::for_each(materials, convertAlphaInMaterial);
     }
-}
-
-void PropertyMaterialList::readString(Base::InputStream& str, std::string& value)
-{
-    uint32_t uCt {};
-    str >> uCt;
-
-    std::vector<char> temp(uCt);
-    str.read(temp.data(), uCt);
-    value.assign(temp.data(), temp.size());
 }
 
 const char* PropertyMaterialList::getEditorName() const

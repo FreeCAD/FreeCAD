@@ -1578,6 +1578,59 @@ class DocumentPlatformCases(unittest.TestCase):
         self.assertTrue(abs(self.Doc.Test.ColourList[1][2] - 1.0) < 0.01)
         self.assertTrue(abs(self.Doc.Test.ColourList[1][3] - 1.0) < 0.01)
 
+    def testLinkSubColorMap(self):
+        source = self.Doc.addObject("App::FeatureTest", "Source")
+        self.Doc.Test.addProperty("App::PropertyLinkSubColorMap", "SubColors", "Test")
+
+        self.Doc.Test.SubColors = [
+            (source, "Face1", (1.0, 0.0, 0.0, 1.0)),
+            (source, "Face1", (0.0, 1.0, 0.0, 0.25)),
+            (source, "Edge1", (0.0, 0.0, 1.0, 1.0)),
+        ]
+
+        colors = self.Doc.Test.SubColors
+        self.assertEqual(len(colors), 2)
+        self.assertEqual(colors[0][0], source)
+        self.assertEqual(colors[0][1], "Face1")
+        self.assertLess(abs(colors[0][2][1] - 1.0), 0.01)
+
+        # saving and restoring
+        self.Doc.saveAs(self.DocName)
+        FreeCAD.closeDocument("PlatformTests")
+        self.Doc = FreeCAD.open(self.DocName)
+
+        colors = self.Doc.Test.SubColors
+        self.assertEqual(len(colors), 2)
+        self.assertEqual(colors[0][0], self.Doc.Source)
+        self.assertEqual(colors[0][1], "Face1")
+        self.assertLess(abs(colors[0][2][1] - 1.0), 0.01)
+        self.assertLess(abs(colors[0][2][3] - 0.25), 0.01)
+        self.assertEqual(colors[1][1], "Edge1")
+        self.assertLess(abs(colors[1][2][2] - 1.0), 0.01)
+
+    def testLinkSubMaterialMap(self):
+        source = self.Doc.addObject("App::FeatureTest", "Source")
+        material = self.Doc.Test.Material
+        material.DiffuseColor = (0.2, 0.4, 0.6)
+        material.Transparency = 0.3
+
+        self.Doc.Test.addProperty("App::PropertyLinkSubMaterialMap", "SubMaterials", "Test")
+        self.Doc.Test.SubMaterials = (source, {"Face1": material})
+
+        # saving and restoring
+        self.Doc.saveAs(self.DocName)
+        FreeCAD.closeDocument("PlatformTests")
+        self.Doc = FreeCAD.open(self.DocName)
+
+        materials = self.Doc.Test.SubMaterials
+        self.assertEqual(len(materials), 1)
+        self.assertEqual(materials[0][0], self.Doc.Source)
+        self.assertEqual(materials[0][1], "Face1")
+        self.assertLess(abs(materials[0][2].DiffuseColor[0] - 0.2), 0.01)
+        self.assertLess(abs(materials[0][2].DiffuseColor[1] - 0.4), 0.01)
+        self.assertLess(abs(materials[0][2].DiffuseColor[2] - 0.6), 0.01)
+        self.assertLess(abs(materials[0][2].Transparency - 0.3), 0.01)
+
     def testVectorList(self):
         self.Doc.Test.VectorList = [(-0.05, 2.5, 5.2), (-0.05, 2.5, 5.2)]
 

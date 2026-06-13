@@ -99,6 +99,11 @@ public:
     {
         return pcObject;
     }
+    /// Get the App object as the owner of link-like properties on this view provider.
+    App::DocumentObject* getPropertyLinkOwner() const override
+    {
+        return getObject();
+    }
     /// Get the object of this ViewProvider object as specified type
     template<class T>
     T* getObject() const

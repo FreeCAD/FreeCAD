@@ -1398,23 +1398,7 @@ static inline const std::string& getSubNameWithStyle(const std::string& subName,
                                                      bool newStyle,
                                                      std::string& tmp)
 {
-    if (!newStyle) {
-        if (!shadow.oldName.empty()) {
-            return shadow.oldName;
-        }
-    }
-    else if (!shadow.newName.empty()) {
-        if (Data::hasMissingElement(shadow.oldName.c_str())) {
-            auto pos = shadow.newName.rfind('.');
-            if (pos != std::string::npos) {
-                tmp = shadow.newName.substr(0, pos + 1);
-                tmp += shadow.oldName;
-                return tmp;
-            }
-        }
-        return shadow.newName;
-    }
-    return subName;
+    return PropertyLinkSubReferenceStore::getSubNameWithStyle(subName, shadow, newStyle, tmp);
 }
 
 std::vector<std::string> PropertyLinkSub::getSubValues(bool newStyle) const
