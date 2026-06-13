@@ -41,7 +41,6 @@
 # include <boost/scope_exit.hpp>
 # include <chrono>
 # include <optional>
-# include <random>
 # include <memory>
 # include <utility>
 # include <set>
@@ -88,7 +87,7 @@
 #include <Base/Interpreter.h>
 #include <Base/MatrixPy.h>
 #include <Base/QuantityPy.h>
-#include <Base/Parameter.h>
+#include <Base/ParameterPy.h>
 #include <Base/Persistence.h>
 #include <Base/PlacementPy.h>
 #include <Base/PrecisionPy.h>
@@ -521,6 +520,10 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&OriginGroupExtensionPy::Type, pAppModule, "OriginGroupExtension");
     Base::InterpreterSingleton::addType(&LinkBaseExtensionPy::Type, pAppModule, "LinkBaseExtension");
 
+    Base::ParameterGrpPy::init_type();
+    Base::InterpreterSingleton::addType(Base::ParameterGrpPy::type_object(),
+        pAppModule, "ParameterGrp");
+
     //insert Base and Console
     Py_INCREF(pBaseModule);
     PyModule_AddObject(pAppModule, "Base", pBaseModule);
@@ -554,6 +557,7 @@ void Application::setupPythonTypes()
     Base::Vector2dPy::init_type();
     Base::InterpreterSingleton::addType(Base::Vector2dPy::type_object(),
         pBaseModule,"Vector2d");
+
     // clang-format on
 }
 
@@ -1342,19 +1346,18 @@ Application::TransactionSignaller::~TransactionSignaller() {
     }
 }
 
-int64_t Application::applicationPid()
+int64_t Application::uniqueInstanceId()
 {
-    static int64_t randomNumber = []() {
+    static int64_t uniqueId = []() {
         const auto tp = std::chrono::high_resolution_clock::now();
         const auto dur = tp.time_since_epoch();
-        const auto seed = dur.count();
-        std::mt19937 generator(static_cast<unsigned>(seed));
-        constexpr int64_t minValue {1};
-        constexpr int64_t maxValue {1000000};
-        std::uniform_int_distribution<int64_t> distribution(minValue, maxValue);
-        return distribution(generator);
+        // Mix up the bits. Smallest implementation of a xorshift64 there is.
+        auto hash = static_cast<int64_t>(dur.count());
+        hash ^= hash << 7;
+        hash ^= hash >> 9;
+        return hash & 0x7FFFFFFFFFFFFFFFULL;
     }();
-    return randomNumber;
+    return uniqueId;
 }
 
 std::string Application::getHomePath()
@@ -2955,6 +2958,7 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["SMESH_VERSION"] = SMESH_VERSION_STR;
 #endif
     mConfig["XERCESC_VERSION"] = fcXercescVersion;
+    mConfig["CLIPPER2_VERSION"] = fcClipper2Version;
 
 
     logStatus();

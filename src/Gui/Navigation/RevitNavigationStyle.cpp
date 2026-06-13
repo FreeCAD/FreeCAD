@@ -120,6 +120,7 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent* const ev)
             case SoMouseButtonEvent::BUTTON1:
                 this->lockrecenter = true;
                 this->button1down = press;
+                updateSelectionStartPosition(press, pos);
                 if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
                     newmode = NavigationStyle::SEEK_MODE;
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
@@ -200,7 +201,11 @@ SbBool RevitNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event*)ev;
-        if (this->currentmode == NavigationStyle::ZOOMING) {
+        if (this->currentmode == NavigationStyle::SELECTION && this->button1down
+            && tryStartBoxSelection(event, this->ctrldown)) {
+            processed = true;
+        }
+        else if (this->currentmode == NavigationStyle::ZOOMING) {
             this->zoomByCursor(posn, prevnormalized);
             processed = true;
         }

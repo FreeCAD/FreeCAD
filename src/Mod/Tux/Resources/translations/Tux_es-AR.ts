@@ -96,12 +96,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>
       <source>Trackball Classic</source>
-      <translation>Bola de seguimiento clásica</translation>
+      <translation>Trackball clásico</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="661"/>
       <source>Rounded Arcball</source>
-      <translation>Bola de arco redondeada</translation>
+      <translation>Arcball redondeado</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="662"/>

@@ -42,7 +42,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["force", "fixed"],
-        "solvers": ["ccxtools"],
+        "solvers": ["ccxtools", "z88"],
         "material": "solid",
         "equations": ["mechanical"],
     }
@@ -208,6 +208,9 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
         solver_obj.WorkingDir = ""
+    elif solvertype == "z88":
+        solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
+        solver_obj.SolverType = "sorcg"
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "

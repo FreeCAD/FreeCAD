@@ -76,6 +76,7 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/DogboneII.py
     Path/Dressup/Gui/Dragknife.py
     Path/Dressup/Gui/LeadInOut.py
+    Path/Dressup/Gui/Mirror.py
     Path/Dressup/Gui/Boundary.py
     Path/Dressup/Gui/Preferences.py
     Path/Dressup/Gui/RampEntry.py
@@ -381,6 +382,7 @@ SET(PathPythonOp_SRCS
     Path/Op/PocketShape.py
     Path/Op/Probe.py
     Path/Op/Profile.py
+    Path/Op/RotarySurface.py
     Path/Op/Slot.py
     Path/Op/Surface.py
     Path/Op/SurfaceSupport.py
@@ -413,6 +415,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/PocketShape.py
     Path/Op/Gui/Probe.py
     Path/Op/Gui/Profile.py
+    Path/Op/Gui/RotarySurface.py
     Path/Op/Gui/Selection.py
     Path/Op/Gui/SimpleCopy.py
     Path/Op/Gui/Slot.py
@@ -442,6 +445,11 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/linking.py
+    Path/Base/Generator/rotary_dropcutter.py
+    Path/Base/Generator/rotary_parallel.py
+    Path/Base/Generator/rotary_rings.py
+    Path/Base/Generator/rotary_spiral.py
+    Path/Base/Generator/rotary_wrap.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/spiral.py
     Path/Base/Generator/tapping.py
@@ -524,6 +532,7 @@ SET(Tests_SRCS
     CAMTests/test_profile.fcstd
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
+    CAMTests/TestAreaOperations.py
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
     CAMTests/TestCentroidPost.py
@@ -533,12 +542,14 @@ SET(Tests_SRCS
     CAMTests/TestGenericPlasma.py
     CAMTests/TestGrblPost.py
     CAMTests/TestLinuxCNCPost.py
+    CAMTests/TestLinuxCNCLegacyPost.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
     CAMTests/TestMach3Mach4LegacyPost.py
     CAMTests/TestMach3Mach4Post.py
     CAMTests/TestMassoG3Post.py
     CAMTests/TestMarlinPost.py
+    CAMTests/TestOpenSBPPost.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
@@ -557,6 +568,7 @@ SET(Tests_SRCS
     CAMTests/TestPathHelixGenerator.py
     CAMTests/TestPathLanguage.py
     CAMTests/TestPathLog.py
+    CAMTests/TestPathLogNew.py
     CAMTests/TestPathOpDeburr.py
     CAMTests/TestPathOpUtil.py
     CAMTests/TestPostCore.py
@@ -566,6 +578,12 @@ SET(Tests_SRCS
     CAMTests/TestPathPreferences.py
     CAMTests/TestPathProfile.py
     CAMTests/TestPathPropertyBag.py
+    CAMTests/TestPathRotaryGenerators.py
+    CAMTests/TestPathRotaryParallel.py
+    CAMTests/TestPathRotaryRings.py
+    CAMTests/TestPathRotarySurface.py
+    CAMTests/TestPathRotaryPostRegression.py
+    CAMTests/TestPathRotaryWrap.py
     CAMTests/TestPathRotationGenerator.py
     CAMTests/TestPathSetupSheet.py
     CAMTests/TestPathSpiralGenerator.py

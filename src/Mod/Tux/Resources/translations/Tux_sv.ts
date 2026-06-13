@@ -46,12 +46,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="97"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Mitten musknapp eller H-tangenten.</translation>
+      <translation>Mellersta musknappen eller H-tangenten.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="99"/>
       <source>Middle mouse button.</source>
-      <translation>Mitten av musknappen.</translation>
+      <translation>Mellersta musknappen.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="102"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="656"/>
       <source>Tooltip</source>
-      <translation>Tips</translation>
+      <translation>Verktygstips</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="657"/>
@@ -112,7 +112,7 @@
       <location filename="../../NavigationIndicatorGui.py" line="674"/>
       <source>Navigation Indicator</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation type="unfinished">Navigation Indicator</translation>
+      <translation>Navigeringsindikator</translation>
     </message>
   </context>
 </TS>

@@ -7,8 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  actions: write
+  contents: read
 
 concurrency:
   group: build-release-${{ github.event_name }}
@@ -17,16 +16,20 @@ concurrency:
 jobs:
   upload_src:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: write
+      actions: write
     outputs:
       build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
 
       - name: Checkout source
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ github.sha }}
           fetch-depth: 2
@@ -105,6 +108,8 @@ jobs:
 
   build:
     needs: upload_src
+    permissions:
+      contents: write
     strategy:
       matrix:
         include:
@@ -120,7 +125,7 @@ jobs:
     environment: weekly-build
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
 
@@ -144,14 +149,14 @@ jobs:
           fi
 
       - name: Checkout source
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{ github.sha }}
           fetch-depth: 2
           fetch-tags: true
           submodules: 'recursive'
 
-      - uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
+      - uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11 # v0.9.6
         with:
           pixi-version: v0.59.0
           cache: false
@@ -202,7 +207,7 @@ jobs:
 
       - name: Setup .NET 10 SDK
         if: runner.os == 'Windows'
-        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
+        uses: actions/setup-dotnet@9a946fdbd5fb07b82b2f5a4466058b876ab72bb2 # v5.3.0
         with:
           dotnet-version: '10.0.103'
 
@@ -228,7 +233,7 @@ jobs:
           fi
           python3 package/scripts/write_version_info.py ../freecad_version.txt
           cd package/rattler-build
-          pixi install
+          pixi install --frozen
 
       - name: Azure login for Windows build code signing
         id: azure_login

@@ -23,8 +23,8 @@
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>Componente</translation>
+      <source>Insert Component</source>
+      <translation>Inserir componente</translation>
     </message>
   </context>
   <context>
@@ -48,7 +48,7 @@
       <translation>Assemblagem</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="147"/>
       <source>Active object</source>
       <translation>Objeto ativo</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1803"/>
+      <location filename="../../../JointObject.py" line="1888"/>
       <source>Distance</source>
       <translation>Distância</translation>
     </message>
@@ -170,27 +170,27 @@
       <translation>Correia</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="812"/>
+      <location filename="../../../JointObject.py" line="818"/>
       <source>Broken link in: </source>
       <translation>Vinculo quebrado em: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1622"/>
+      <location filename="../../../JointObject.py" line="1696"/>
       <source>Select 2 elements from 2 separate parts</source>
-      <translation type="unfinished">Select 2 elements from 2 separate parts</translation>
+      <translation>Selecione 2 elementos de 2 partes distintas</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1805"/>
+      <location filename="../../../JointObject.py" line="1890"/>
       <source>Radius 1</source>
       <translation>Raio 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1807"/>
+      <location filename="../../../JointObject.py" line="1892"/>
       <source>Thread pitch</source>
       <translation>Passo da rosca</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1809"/>
+      <location filename="../../../JointObject.py" line="1894"/>
       <source>Pitch radius</source>
       <translation>Raio de inclinação</translation>
     </message>
@@ -347,59 +347,59 @@
       <translation type="unfinished">Do not Link</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="493"/>
+      <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
       <translation type="unfinished">Enter your formula…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="546"/>
-      <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
+      <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
+      <translation type="unfinished">In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="549"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Linear: C + VEL*time</source>
       <translation type="unfinished"> - Linear: C + VEL*time</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="551"/>
+      <location filename="../../../CommandCreateSimulation.py" line="553"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation type="unfinished"> - Quadratic: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="554"/>
+      <location filename="../../../CommandCreateSimulation.py" line="556"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation type="unfinished"> - Harmonic: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="557"/>
+      <location filename="../../../CommandCreateSimulation.py" line="559"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation type="unfinished"> - Exponential: C*exp(time/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="563"/>
+      <location filename="../../../CommandCreateSimulation.py" line="565"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation type="unfinished"> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="570"/>
+      <location filename="../../../CommandCreateSimulation.py" line="572"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation type="unfinished"> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="577"/>
+      <location filename="../../../CommandCreateSimulation.py" line="579"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation type="unfinished"> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="587"/>
+      <location filename="../../../CommandCreateSimulation.py" line="589"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation type="unfinished">C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="595"/>
+      <location filename="../../../CommandCreateSimulation.py" line="597"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -408,7 +408,7 @@ VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="604"/>
+      <location filename="../../../CommandCreateSimulation.py" line="606"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -419,14 +419,14 @@ VEL is the angular velocity in radians per second.
 PHASE is the phase of the sine wave.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="611"/>
+      <location filename="../../../CommandCreateSimulation.py" line="613"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation type="unfinished">C is a constant.
 TIMEC is the time constant of the exponential function.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="619"/>
+      <location filename="../../../CommandCreateSimulation.py" line="621"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -435,7 +435,7 @@ L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="628"/>
+      <location filename="../../../CommandCreateSimulation.py" line="630"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -446,7 +446,7 @@ T2 is the end of the impulse.
 SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="639"/>
+      <location filename="../../../CommandCreateSimulation.py" line="641"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -461,63 +461,63 @@ H2 is the height at T2 at the end of the ramp.
 SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="677"/>
-      <location filename="../../../CommandCreateSimulation.py" line="694"/>
+      <location filename="../../../CommandCreateSimulation.py" line="679"/>
+      <location filename="../../../CommandCreateSimulation.py" line="696"/>
       <source>Help</source>
       <translation>Ajuda</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="692"/>
+      <location filename="../../../CommandCreateSimulation.py" line="694"/>
       <source>Hide help</source>
       <translation>Ocultar ajuda</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1044"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
       <source>Animation</source>
       <translation>Animação</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1046"/>
       <source>Not enough frames to create an animation.</source>
       <translation type="unfinished">Not enough frames to create an animation.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1052"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1053"/>
       <source>Save Animation</source>
       <translation type="unfinished">Save Animation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1074"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
       <source>Generating Frames…</source>
       <translation type="unfinished">Generating Frames…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1076"/>
       <source>Cancel</source>
       <translation>Cancelar</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1102"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1103"/>
       <source>Assembling animation…</source>
       <translation type="unfinished">Assembling animation…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1118"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1119"/>
       <source>An error occurred while saving the animation</source>
       <translation type="unfinished">An error occurred while saving the animation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1136"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1137"/>
       <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
       <translation type="unfinished">Pillow (PIL) is not installed. It is required for GIF export.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1159"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1160"/>
       <source>OpenCV is not installed. It is required for video export.</source>
       <translation type="unfinished">OpenCV is not installed. It is required for video export.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1176"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1177"/>
       <source>Could not open video writer. Check codecs.</source>
       <translation type="unfinished">Could not open video writer. Check codecs.</translation>
     </message>
@@ -677,7 +677,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation type="unfinished">The {order} reference of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1231"/>
+      <location filename="../../../JointObject.py" line="1280"/>
       <source>The object to ground</source>
       <translation>Fixar objeto</translation>
     </message>
@@ -806,42 +806,52 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation type="unfinished">Sets the attachment offset of the second marker (coordinate system) of the joint</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="237"/>
       <source>Reverse the direction of the joint</source>
       <translation type="unfinished">Reverse the direction of the joint</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="240"/>
       <source>Reverse</source>
       <translation>Inverter</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
+      <source>Rotate the joint 90 degrees</source>
+      <translation type="unfinished">Rotate the joint 90 degrees</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
+      <source>Rotate</source>
+      <translation>Rotacionar</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="291"/>
       <source>Limits</source>
       <translation>Limites</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min length</source>
       <translation>Comprimento mínimo</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="320"/>
       <source>Max length</source>
       <translation>Comprimento Máximo</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="343"/>
       <source>Min angle</source>
       <translation>Angulo mínimo</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="372"/>
       <source>Max angle</source>
       <translation>Angulo máximo</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="404"/>
       <source>Reverse rotation</source>
       <translation>Inverter a rotação</translation>
     </message>
@@ -860,8 +870,8 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation type="unfinished">Cannot find the part? </translation>
+      <source>Cannot find the part?</source>
+      <translation type="unfinished">Cannot find the part?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -940,52 +950,52 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
       <source>The object is associated to one or more joints.</source>
       <translation>O objeto está associado a uma ou mais juntas.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="217"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Você deseja mover o objeto e excluir juntas associadas?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1103"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1090"/>
       <source>Move part</source>
       <translation>Mover peça</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1818"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
       <source>Empty Assembly</source>
       <translation type="unfinished">Empty Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1830"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restrito:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1838"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
       <source>Malformed joints:</source>
       <translation type="unfinished">Malformed joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1801"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
       <source>and %1 more</source>
       <translation>e %1 mais</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1862"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
       <source>Solver failed to converge</source>
       <translation>O solucionador falhou na conversão</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1870"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
       <source>Under-constrained:</source>
       <translation>Subrestrito:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1872"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -993,7 +1003,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1876"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>Fully constrained</source>
       <translation>Totalmente restrito</translation>
     </message>
@@ -1128,7 +1138,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="689"/>
       <source>Joints</source>
       <translation type="unfinished">Joints</translation>
     </message>
@@ -1256,27 +1266,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation type="unfinished">0.00 s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="256"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="278"/>
       <source>Step backward</source>
       <translation type="unfinished">Step backward</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="276"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="310"/>
       <source>Play backward</source>
       <translation type="unfinished">Play backward</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="296"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="348"/>
       <source>Stop</source>
       <translation>Parar</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="316"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="380"/>
       <source>Play forward</source>
       <translation type="unfinished">Play forward</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="336"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="412"/>
       <source>Step forward</source>
       <translation type="unfinished">Step forward</translation>
     </message>
@@ -1322,8 +1332,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
-      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1535,27 +1545,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation type="unfinished">Click to select these conflicting joints.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation type="unfinished">Selects these conflicting joints</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation type="unfinished">Click to select these redundant joints.</translation>
+      <source>Selects these redundant joints</source>
+      <translation type="unfinished">Selects these redundant joints</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
       <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation type="unfinished">Click to select these malformed joints.</translation>
+      <source>Selects these malformed joints</source>
+      <translation type="unfinished">Selects these malformed joints</translation>
     </message>
   </context>
   <context>
@@ -1567,8 +1577,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
-      <translation type="unfinished">Go to linked Assembly</translation>
+      <source>Go to Linked Assembly</source>
+      <translation type="unfinished">Go to Linked Assembly</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
@@ -1585,8 +1595,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <source>Select Conflicting Constraints</source>
+      <translation type="unfinished">Select Conflicting Constraints</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
@@ -1603,8 +1613,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
-      <translation type="unfinished">Select redundant constraints</translation>
+      <source>Select Redundant Constraints</source>
+      <translation type="unfinished">Select Redundant Constraints</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
@@ -1621,8 +1631,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <source>Select Malformed Constraints</source>
+      <translation type="unfinished">Select Malformed Constraints</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
@@ -1639,8 +1649,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
-      <translation type="unfinished">Select components with DoFs</translation>
+      <source>Select Components With DoFs</source>
+      <translation type="unfinished">Select Components With DoFs</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
@@ -1657,8 +1667,8 @@ Note: Currently this selects only unconnected parts, not constrained parts that 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
-      <translation type="unfinished">Select component joints</translation>
+      <source>Select Component Joints</source>
+      <translation type="unfinished">Select Component Joints</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>

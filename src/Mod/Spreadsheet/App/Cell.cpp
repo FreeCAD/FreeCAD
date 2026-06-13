@@ -374,7 +374,7 @@ void Cell::setContent(const char* value)
                             }
                         }
                     }
-                    else if (const auto number = freecad_cast<NumberExpression*>(parsedExpr.get())) {
+                    else if (freecad_cast<NumberExpression*>(parsedExpr.get())) {
                         // NumbersExpressions can accept more than can be parsed with strtod.
                         //   Example: 12.34 and 12,34 are both valid NumberExpressions
                         newExpr = std::move(parsedExpr);

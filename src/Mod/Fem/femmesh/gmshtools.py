@@ -180,11 +180,8 @@ class GmshTools(ObjectTools):
         self.ParallelProcessing = self.obj.ParallelProcessing
 
         # mesh groups
-        if self.obj.GroupsOfNodes:
-            self.group_nodes_export = True
-        else:
-            self.group_nodes_export = False
         self.group_elements = {}
+        self.group_indices = {}
 
         # mesh boundary layer
         self.bl_setting_list = []  # list of dict, each item map to MeshBoundaryLayer object
@@ -282,8 +279,16 @@ class GmshTools(ObjectTools):
         return self.process
 
     def update_properties(self):
-        self.obj.FemMesh = Fem.read(self.temp_file_mesh)
+        fem_mesh = Fem.FemMesh()
+        if self.group_elements and ".vtk" in self.temp_file_mesh:
+            fem_mesh.read(self.temp_file_mesh, vtk_cell_group_array="CellEntityIds")
+        else:
+            fem_mesh.read(self.temp_file_mesh)
+
+        self.obj.FemMesh = fem_mesh
+
         self.rename_groups()
+        self.postprocess_groups()
 
     def create_mesh(self):
         # for backward compatibility only
@@ -393,20 +398,21 @@ class GmshTools(ObjectTools):
         Console.PrintMessage("  " + self.gmsh_bin + "\n")
 
     def get_group_data(self):
-        # mesh group objects. Only one shape type is expected
+        # mesh group objects.
         geom = self.obj.Shape.getPropertyOfGeometry()
-        r_solids = range(1, len(geom.Solids) + 1)
-        r_faces = range(1, len(geom.Faces) + 1)
-        r_edges = range(1, len(geom.Edges) + 1)
-        solids = [(f"Solid{i}", [f"Solid{i}"]) for i in r_solids]
-        faces = [(f"Face{i}", [f"Face{i}"]) for i in r_faces]
-        edges = [(f"Edge{i}", [f"Edge{i}"]) for i in r_edges]
-        shapes = []
-        shapes.extend(solids)
-        shapes.extend(faces)
-        shapes.extend(edges)
+        self.group_elements = {
+            "Vertex": len(geom.Vertexes),
+            "Edge": len(geom.Edges),
+            "Face": len(geom.Faces),
+            "Solid": len(geom.Solids),
+        }
 
-        self.group_elements = dict(shapes)
+    def postprocess_groups(self):
+        # The created groups are for shape elements only: vertex, face, edge and solid
+        # From those we need to create new groups for the analysis features
+
+        fem_mesh = self.obj.FemMesh
+
         if not self.obj.MeshGroupList:
             # print("  No mesh group objects.")
             pass
@@ -418,7 +424,17 @@ class GmshTools(ObjectTools):
                 new_group_elements = meshtools.get_mesh_group_elements(mg, self.part_obj)
                 for ge in new_group_elements:
                     if ge not in self.group_elements:
-                        self.group_elements[ge] = new_group_elements[ge]
+                        self.group_elements[ge] = -1
+
+                        # build the group!
+                        new_group = fem_mesh.addGroup(ge, "All")
+                        for element in new_group_elements[ge]:
+                            for grp_idx in fem_mesh.Groups:
+                                if fem_mesh.getGroupName(grp_idx) == element:
+                                    fem_mesh.addGroupElements(
+                                        new_group, list(fem_mesh.getGroupElements(grp_idx))
+                                    )
+                                    break
                     else:
                         Console.PrintError("  A group with this name exists already.\n")
 
@@ -431,29 +447,44 @@ class GmshTools(ObjectTools):
                 "  Group meshing for analysis is set to true in FEM General Preferences. "
                 "Are you really sure about this? You could run into trouble!\n"
             )
-            self.group_nodes_export = True
+
             new_group_elements = meshtools.get_analysis_group_elements(self.analysis, self.part_obj)
             for ge in new_group_elements:
                 if ge not in self.group_elements:
-                    self.group_elements[ge] = new_group_elements[ge]
+                    self.group_elements[ge] = True
+
+                    # build the group!
+                    new_group = fem_mesh.addGroup(ge, "All")
+                    for element in new_group_elements[ge]:
+                        for grp_idx in fem_mesh.Groups:
+                            if fem_mesh.getGroupName(grp_idx) == element:
+                                fem_mesh.addGroupElements(
+                                    new_group, list(fem_mesh.getGroupElements(grp_idx))
+                                )
+                                break
                 else:
                     Console.PrintError("  A group with this name exists already.\n")
-        # else:
-        #    Console.PrintMessage("  No Group meshing for analysis.\n")
-
-        # if self.group_elements:
-        #    Console.PrintMessage("  {}\n".format(self.group_elements))
 
     def rename_groups(self):
         # salomemesh adds a suffix to the names of element groups if there are also nodes
         #  in the groups in the .unv file. This method removes the suffix
-        reg_exp = re.compile(r"(?P<item>(Edge|Face|Solid)\d+)_(?!Nodes)\w+$")
         fem_mesh = self.obj.FemMesh
+        reg_exp = re.compile(r"(?P<item>(Edge|Face|Solid)\d+)_(?!Nodes)\w+$")
         for i in fem_mesh.Groups:
             grp = fem_mesh.getGroupName(i)
             m = reg_exp.match(grp)
             if m:
                 fem_mesh.renameGroup(i, m.group("item"))
+
+        # if we load gmsh groups via vtk file the names got lost, we have only numbers.
+        # we need to rename them correctly.
+        for group in self.group_indices:
+            index = self.group_indices[group]
+            old_name = str(index)
+            for gidx in fem_mesh.Groups:
+                if fem_mesh.getGroupName(gidx) == old_name:
+                    fem_mesh.renameGroup(gidx, group)
+                    break
 
     def version(self):
         self.get_gmsh_command()
@@ -637,7 +668,7 @@ class GmshTools(ObjectTools):
                     continue
                 if boundary_layer_set:
                     Console.PrintLog("Boundary layer already set, ignoring {}".format(mr_obj.Name))
-                    # continue to get one waring for each ignored object
+                    # continue to get one warning for each ignored object
                     continue
 
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
@@ -696,7 +727,7 @@ class GmshTools(ObjectTools):
 
                         # Notes:
                         # 1. With gmsh version 4.7 new names for settings have been introduced.
-                        #    Due to deprication of old command names we switched to the new ones,
+                        #    Due to deprecation of old command names we switched to the new ones,
                         #    dropping support for gmsh <4.7 (released Nov. 2020)
                         setting = {}
                         setting["Size"] = Units.Quantity(mr_obj.MinimumThickness).Value
@@ -1261,8 +1292,8 @@ class GmshTools(ObjectTools):
                 self.outputCompoundWarning()
 
             edge_map = tft.setup_transfinite_edge_map(self.part_obj.Shape, transfinite_curve_list)
-            # the settings are only created at the very end, when we know if surface and volume atomation added
-            # addiotional transfinite curves
+            # the settings are only created at the very end, when we know if surface and volume
+            # automation added additional transfinite curves
 
         # transfinite surfaces
         surface_map = {}
@@ -1412,33 +1443,37 @@ class GmshTools(ObjectTools):
         # for example: "PartObject.Solid2" -> shape: Solid, index: 2
         # we use the element index of FreeCAD which starts with 1 (example: "Face1"),
         # same as Gmsh. For unit test we need them to have a fixed order
-        reg_exp = re.compile(r"(?:.*\.)?(?P<shape>Solid|Face|Edge|Vertex)(?P<index>\d+)$")
+
+        phy_tag = 0
+        self.group_indices = {}
 
         if self.group_elements:
             # print("  We are going to have to find elements to make mesh groups for.")
             geo.write("// group data\n")
             for group in sorted(self.group_elements):
-                gdata = self.group_elements[group]
-                ele = {"Volume": [], "Surface": [], "Line": [], "Point": []}
 
-                for i in gdata:
-                    m = reg_exp.match(i)
-                    if m:
-                        shape = m.group("shape")
-                        index = str(m.group("index"))
-                        if shape == "Solid":
-                            ele["Volume"].append(index)
-                        elif shape == "Face":
-                            ele["Surface"].append(index)
-                        elif shape == "Edge":
-                            ele["Line"].append(index)
-                        elif shape == "Vertex":
-                            ele["Point"].append(index)
+                element_count = self.group_elements[group]
 
-                for phys in ele:
-                    if ele[phys]:
-                        items = "{" + ", ".join(ele[phys]) + "}"
-                        geo.write('Physical {}("{}") = {};\n'.format(phys, group, items))
+                match group:
+                    case "Solid":
+                        phy_shape = "Volume"
+                    case "Face":
+                        phy_shape = "Surface"
+                    case "Edge":
+                        phy_shape = "Line"
+                    case "Vertex":
+                        phy_shape = "Point"
+
+                geo.write(f"For i In {{1:{element_count} }}\n")
+                geo.write(
+                    f'\tPhysical {phy_shape}(Sprintf("{group}%g", i), {phy_tag}+i) = {{i}};\n'
+                )
+                geo.write("EndFor\n")
+
+                # store physical tags for later rename
+                for i in range(element_count):
+                    self.group_indices[group + str(i + 1)] = phy_tag + 1
+                    phy_tag += 1
 
             geo.write("\n")
 
@@ -1739,14 +1774,6 @@ class GmshTools(ObjectTools):
 
         # save mesh
         geo.write("// save\n")
-        if self.group_elements and self.group_nodes_export:
-            geo.write("// For each group save not only the elements but the nodes too.;\n")
-            geo.write("Mesh.SaveGroupsOfNodes = 1;\n")
-            # belongs to Mesh.SaveAll but only needed if there are groups
-            geo.write(
-                "// Needed for Group meshing too, because "
-                "for one material there is no group defined;\n"
-            )
         geo.write("// Ignore Physical definitions and save all elements;\n")
         geo.write("Mesh.SaveAll = 1;\n")
         # explicit use double quotes in geo file
@@ -1810,8 +1837,16 @@ class GmshTools(ObjectTools):
 
     def read_and_set_new_mesh(self):
         if not self.error:
-            fem_mesh = Fem.read(self.temp_file_mesh)
+            fem_mesh = Fem.FemMesh()
+            if self.group_elements and ".vtk" in self.temp_file_mesh:
+                fem_mesh.read(self.temp_file_mesh, vtk_cell_group_array="CellEntityIds")
+            else:
+                fem_mesh.read(self.temp_file_mesh)
+
             self.obj.FemMesh = fem_mesh
+            self.rename_groups()
+            self.postprocess_groups()
+
             Console.PrintMessage("  New mesh was added to the mesh object.\n")
         else:
             Console.PrintError("No mesh was created.\n")
@@ -1896,7 +1931,7 @@ class PreviewSignals(QtCore.QObject):
 
 
 class GmshPreviewTools(GmshTools):
-    # overriden tool to not generate a meshing gmsh file, but a sizefield preview
+    # overridden tool to not generate a meshing gmsh file, but a sizefield preview
 
     def __init__(self, gmsh_mesh_obj, preview_object):
 
@@ -1922,7 +1957,6 @@ class GmshPreviewTools(GmshTools):
 
         # load the generated mesh
         self.obj.FemMesh = Fem.read(self.temp_file_mesh)
-        self.rename_groups()
 
         # read and extract node data
         dir = os.path.dirname(self.temp_file_geometry)
@@ -1974,7 +2008,7 @@ class GmshPreviewTools(GmshTools):
         # size fields
         self.write_size_fields(geo)
 
-        # estimate good max mesh size values for coarse visualizaion mesh
+        # estimate good max mesh size values for coarse visualization mesh
         area = self.part_obj.Shape.Area
         factor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetInt(
             "previewMeshFactor", 5
@@ -1995,7 +2029,7 @@ class GmshPreviewTools(GmshTools):
         geo.write("Plugin(MeshSizeFieldView).Run;\n")
         geo.write("\n")
 
-        # save view msh for later data extraction (we have addiotional views for result size field)
+        # save view msh for later data extraction (we have additional views for result size field)
         geo.write(f"Save View[{len(self.result_view_settings)}] 'preview_data.msh';\n")
 
 
@@ -2049,10 +2083,10 @@ Combine (unused):
 Unused:
     AutomaticMeshSizeField: Compute a mesh size field that is quite automatic Takes into account surface curvatures and closeness of objects
     Extend:                 Compute an extension of the mesh sizes from the given boundary curves (resp. surfaces) inside the surfaces (resp. volumes) being meshed.
-    Frustum:                Interpolate mesh sizes on a extended cylinder frustrum defined by inner (R1i and R2i) and outer (R1o and R2o) radii and two endpoints P1 and P2.The field value F for a point P is given by :
+    Frustum:                Interpolate mesh sizes on a extended cylinder frustum defined by inner (R1i and R2i) and outer (R1o and R2o) radii and two endpoints P1 and P2.The field value F for a point P is given by :
     LonLat:                 Evaluate Field[InField] in geographic coordinates (longitude, latitude):
     MaxEigenHessian:        Compute the maximum eigenvalue of the Hessian matrix of Field[InField], with the gradients evaluated by finite differences:
-    Octree:                 Pre compute another field on an octree to speed-up evalution.
+    Octree:                 Pre compute another field on an octree to speed-up evaluation.
     Param:                  Evaluate Field[InField] in parametric coordinates:
     Structured:             Linearly interpolate between data provided on a 3D rectangular structured grid.
 """

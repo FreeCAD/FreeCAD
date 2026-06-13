@@ -181,7 +181,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         """areaOpSetDefaultValues(obj, job) ... set default values"""
         obj.ClearingPattern = "Offset"
         obj.StepOver = 50
-        obj.ZigZagAngle = 45
+        obj.Angle = 45
+        obj.setEditorMode("Angle", 2)  # hide for default Offset pattern
         obj.UseOutline = False
         FeatureExtensions.set_default_property_values(obj, job)
 
@@ -205,7 +206,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             self.horiz = []
             self.vert = []
             self.edges = []
-            for base, subList in obj.Base:
+            for base, subList in self.baseShapes(obj):
                 for sub in subList:
                     if sub in avoidFeatures:
                         # skip this sub shape
@@ -238,10 +239,20 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             # Check if selected vertical faces form a loop
             if len(self.vert) > 0:
                 self.vertical = Path.Geom.combineConnectedShapes(self.vert)
-                self.vWires = [
-                    TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
-                    for shape in self.vertical
-                ]
+                self.vWires = []
+                for shape in self.vertical:
+                    try:
+                        self.vWires.append(
+                            TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
+                        )
+                    except ValueError as e:
+                        # findShapeOutline raises when the shape's edges cannot be
+                        # projected onto Z (e.g. a face whose plane contains the Z
+                        # axis). Skip — caller will produce an empty toolpath.
+                        Path.Log.warning(
+                            "Pocket {}: cannot project vertical face onto Z, "
+                            "skipping ({})".format(obj.Label, e)
+                        )
                 for wire in self.vWires:
                     w = Path.Geom.removeDuplicateEdges(wire)
                     face = Part.Face(w)

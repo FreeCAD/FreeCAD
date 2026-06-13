@@ -92,7 +92,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Select multiple faces with 3 or 4 edges, optional with corner vertices of 3-sided faces.</string>
+        <string>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>

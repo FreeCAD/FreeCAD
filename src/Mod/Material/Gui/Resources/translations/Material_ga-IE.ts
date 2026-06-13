@@ -649,14 +649,16 @@ Mura bhfuil tic sa bhosca seo, déanfar iad a shórtáil de réir a n-ainm.</tra
       <translation>Roghnaigh íomhá</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Comhaid íomhá (*.jpg *.jpeg *.png *.bmp);;Gach comhad (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation>Comhaid íomhá</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>Comhaid íomhá (*.svg);;Gach comhad (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>Gach comhad</translation>
     </message>
   </context>
   <context>
@@ -1193,9 +1195,9 @@ Mura bhfuil tic sa bhosca seo, déanfar iad a shórtáil de réir a n-ainm.</tra
       <translation>Seachas sin, caillfear na hathruithe go léir.</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Deimhnigh Scriosadh</translation>
     </message>

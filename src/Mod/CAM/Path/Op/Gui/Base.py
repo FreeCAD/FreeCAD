@@ -350,28 +350,20 @@ class ViewProvider(object):
                             # Get the face
                             face = selected_obj.Shape.getElement(sub)
 
-                            # Extract the normal vector
-                            # For planar faces, use the surface axis
-                            if hasattr(face.Surface, "Axis"):
-                                normal = face.Surface.Axis
-                            else:
-                                # For non-planar faces, use center of mass normal
-                                u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
-                                v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
-                                normal = face.normalAt(u_mid, v_mid)
+                            # Extract the normal vector at the center of the face
+                            u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
+                            v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
+                            normal = face.normalAt(u_mid, v_mid)
 
                             # Normalize the vector
                             normal.normalize()
 
-                            # Use attachment engine to set operation placement
-                            # AttachmentSupport: tuple of (object, subname)
-                            # MapMode: "FlatFace" aligns Z-axis with face normal
-                            self.operation.AttachmentSupport = (obj, (sub,))
-                            self.operation.MapMode = "FlatFace"
+                            # Store the face normal as the workplane orientation
+                            self.operation.Workplane = normal
                             FreeCAD.ActiveDocument.recompute()
 
                             FreeCAD.Console.PrintMessage(
-                                f"Attached {self.operation.Label} to {obj.Label}.{sub}\n"
+                                f"Set {self.operation.Label} workplane to {normal} from {selected_obj.Label}.{sub}\n"
                             )
 
                             # Deactivate and remove observer
@@ -854,8 +846,8 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     def supportsFaces(self):
         return self.features & PathOp.FeatureBaseFaces
 
-    def supportsPanels(self):
-        return self.features & PathOp.FeatureBasePanels
+    def supportsModels(self):
+        return self.features & PathOp.FeatureBaseModels
 
     def featureName(self):
         if self.supportsEdges() and self.supportsFaces():
@@ -875,7 +867,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             if not self.supportsFaces() and sel.SubObjects[0].ShapeType == "Face":
                 return False
         else:
-            if not self.supportsPanels() or "Panel" not in sel.Object.Name:
+            if not self.supportsModels() and sel.Object.isDerivedFrom("Part::Feature"):
                 return False
         return True
 
@@ -886,8 +878,12 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             # check each selection
             if self.selectionSupportedAsBaseGeometry(sel, False):
                 added = True
-                for sub in sel.SubElementNames:
-                    self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+                if sel.SubElementNames:
+                    for sub in sel.SubElementNames:
+                        self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+                else:
+                    self.obj.Proxy.addBase(self.obj, sel.Object, "")
+
         return added
 
     def addBase(self):
@@ -917,6 +913,8 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             if sub:
                 base = (obj, str(sub))
                 newlist.append(base)
+            else:
+                newlist.append(obj)
         Path.Log.debug("Setting new base: %s -> %s" % (self.obj.Base, newlist))
         self.obj.Base = newlist
 
@@ -1115,25 +1113,60 @@ class TaskPanelHeightsPage(TaskPanelPage):
             self.form.clearanceHeight, obj, "ClearanceHeight"
         )
 
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance = PathGuiUtil.QuantitySpinBox(
+                self.form.CollisionClearance, obj, "CollisionClearance"
+            )
+            for mode in [
+                "Clearance Height",
+                "Retract Height",
+                "Line of Sight",
+                "Tool Diameter",
+                "Tool Shape",
+            ]:
+                self.form.CollisionAvoidanceStrategy.addItem(translate("CAM_Operation", mode), mode)
+        else:
+            self.form.groupBoxLinking.hide()
+
     def getTitle(self, obj):
         return translate("PathOp", "Heights")
 
     def getFields(self, obj):
         self.safeHeight.updateProperty()
         self.clearanceHeight.updateProperty()
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance.updateProperty()
+            mode = self.form.CollisionAvoidanceStrategy.currentData()
+            if mode and obj.CollisionAvoidanceStrategy != mode:
+                obj.CollisionAvoidanceStrategy = mode
 
     def setFields(self, obj):
         self.safeHeight.updateWidget()
         self.clearanceHeight.updateWidget()
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance.updateWidget()
+            index = self.form.CollisionAvoidanceStrategy.findData(obj.CollisionAvoidanceStrategy)
+            if index >= 0:
+                self.form.CollisionAvoidanceStrategy.blockSignals(True)
+                self.form.CollisionAvoidanceStrategy.setCurrentIndex(index)
+                self.form.CollisionAvoidanceStrategy.blockSignals(False)
 
     def getSignalsForUpdate(self, obj):
         signals = []
         signals.append(self.form.safeHeight.editingFinished)
         signals.append(self.form.clearanceHeight.editingFinished)
+        if PathOp.FeatureLinking & self.features:
+            signals.append(self.form.CollisionClearance.editingFinished)
+            signals.append(self.form.CollisionAvoidanceStrategy.currentIndexChanged)
         return signals
 
     def pageUpdateData(self, obj, prop):
-        if prop in ["SafeHeight", "ClearanceHeight"]:
+        if prop in [
+            "SafeHeight",
+            "ClearanceHeight",
+            "CollisionAvoidanceStrategy",
+            "CollisionClearance",
+        ]:
             self.setFields(obj)
 
 
@@ -1523,7 +1556,7 @@ class TaskPanel(object):
     def panelSetFields(self):
         """panelSetFields() ... invoked to trigger a complete transfer of the model's properties to the UI."""
         Path.Log.track()
-        self.obj.Proxy.sanitizeBase(self.obj)
+        self.obj.Proxy.checkBase(self.obj)
         for page in self.featurePages:
             page.pageSetFields()
 

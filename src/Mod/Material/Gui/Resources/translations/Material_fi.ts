@@ -649,14 +649,16 @@ If unchecked, they will be sorted by their name.</translation>
       <translation>Valitse kuvatiedosto</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Kuvatiedostot (*.jpg *.jpeg *.png *.bmp);;Kaikki tiedostot (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation type="unfinished">Image files</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>Kuvatiedostot (*.svg);;Kaikki tiedostot (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>Kaikki tiedostot</translation>
     </message>
   </context>
   <context>
@@ -1193,9 +1195,9 @@ If unchecked, they will be sorted by their name.</translation>
       <translation type="unfinished">Otherwise, all changes will be lost.</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Vahvista poistaminen</translation>
     </message>

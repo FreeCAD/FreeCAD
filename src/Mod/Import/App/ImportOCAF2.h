@@ -34,6 +34,7 @@
 #include <TopoDS_Shape.hxx>
 #include <XCAFDoc_ColorTool.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
+#include <TDF_LabelSequence.hxx>
 
 #include <Base/Sequencer.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -103,6 +104,10 @@ public:
     void setShowProgress(bool enable)
     {
         options.showProgress = enable;
+    }
+    bool showProgress() const
+    {
+        return options.showProgress;
     }
     void setExpandCompound(bool enable)
     {

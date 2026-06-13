@@ -175,21 +175,25 @@ QString DlgPropertyLink::formatObject(App::Document* ownerDoc, App::DocumentObje
 
     if (!sub || !sub[0]) {
         if (obj->Label.getStrValue() == obj->getNameInDocument()) {
-            return QLatin1String(objName);
+            return QString::fromUtf8(objName);
         }
         return QStringLiteral("%1 (%2)").arg(
             QString::fromUtf8(obj->Label.getValue()),
-            QLatin1String(objName)
+            QString::fromUtf8(objName)
         );
     }
 
     auto sobj = obj->getSubObject(sub);
     if (!sobj || sobj->Label.getStrValue() == sobj->getNameInDocument()) {
-        return QStringLiteral("%1.%2").arg(QLatin1String(objName), QString::fromUtf8(sub));
+        return QStringLiteral("%1.%2").arg(QString::fromUtf8(objName), QString::fromUtf8(sub));
     }
 
     return QStringLiteral("%1 (%2.%3)")
-        .arg(QString::fromUtf8(sobj->Label.getValue()), QLatin1String(objName), QString::fromUtf8(sub));
+        .arg(
+            QString::fromUtf8(sobj->Label.getValue()),
+            QString::fromUtf8(objName),
+            QString::fromUtf8(sub)
+        );
 }
 
 static inline bool isLinkSub(const QList<App::SubObjectT>& links)
@@ -448,8 +452,8 @@ void DlgPropertyLink::init(const App::DocumentObjectT& prop, bool tryFilter)
         }
 
         if (!baseType.isBad()) {
-            const char* name = baseType.getName();
-            auto it = typeItems.find(QByteArray::fromRawData(name, strlen(name) + 1));
+            const auto name = baseType.getName();
+            auto it = typeItems.find(QByteArray(name.data(), name.size()));
             if (it != typeItems.end()) {
                 it->second->setSelected(true);
             }
@@ -1059,8 +1063,8 @@ QTreeWidgetItem* DlgPropertyLink::createItem(App::DocumentObject* obj, QTreeWidg
         item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsUserCheckable);
     }
 
-    const char* typeName = obj->getTypeId().getName();
-    QByteArray typeData = QByteArray::fromRawData(typeName, strlen(typeName) + 1);
+    const auto typeName = obj->getTypeId().getName();
+    auto typeData = QByteArray::fromRawData(typeName.data(), typeName.size());
     item->setData(0, Qt::UserRole + 2, typeData);
 
     QByteArray proxyType;
@@ -1071,11 +1075,11 @@ QTreeWidgetItem* DlgPropertyLink::createItem(App::DocumentObject* obj, QTreeWidg
         if (!proxy.isNone() && !proxy.isString()) {
             const char* name = nullptr;
             if (proxy.hasAttr("__class__")) {
-                proxyType = QByteArray(proxy.getAttr("__class__").as_string().c_str());
+                proxyType = QByteArray::fromStdString(proxy.getAttr("__class__").as_string());
             }
             else {
                 name = proxy.ptr()->ob_type->tp_name;
-                proxyType = QByteArray::fromRawData(name, strlen(name) + 1);
+                proxyType = QByteArray::fromRawData(name, strlen(name));
             }
             auto it = typeItems.find(proxyType);
             if (it != typeItems.end()) {
@@ -1102,8 +1106,8 @@ QTreeWidgetItem* DlgPropertyLink::createTypeItem(Base::Type type)
     if (!type.isBad() && type != App::DocumentObject::getClassTypeId()) {
         Base::Type parentType = type.getParent();
         if (!parentType.isBad()) {
-            const char* name = parentType.getName();
-            auto typeData = QByteArray::fromRawData(name, strlen(name) + 1);
+            const auto name = parentType.getName();
+            QByteArray typeData(name.data(), name.size());
             auto& typeItem = typeItems[typeData];
             if (!typeItem) {
                 typeItem = createTypeItem(parentType);
@@ -1143,7 +1147,7 @@ bool DlgPropertyLink::filterType(QTreeWidgetItem* item)
     }
 
     auto typeData = item->data(0, Qt::UserRole + 2).toByteArray();
-    Base::Type type = Base::Type::fromName(typeData.constData());
+    Base::Type type = Base::Type::fromName(std::string_view(typeData.data(), typeData.size()));
     if (type.isBad()) {
         return false;
     }
@@ -1170,8 +1174,8 @@ bool DlgPropertyLink::filterType(QTreeWidgetItem* item)
     }
 
     for (auto t = type; !t.isBad() && t != App::DocumentObject::getClassTypeId(); t = t.getParent()) {
-        const char* name = t.getName();
-        if (selectedTypes.count(QByteArray::fromRawData(name, strlen(name) + 1))) {
+        const auto name = t.getName();
+        if (selectedTypes.count(QByteArray(name.data(), name.size()))) {
             return false;
         }
     }

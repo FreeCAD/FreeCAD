@@ -953,11 +953,11 @@ class ReportTaskPanel:
         )
         # Enable per-item tooltips in the dropdown view
         self.template_dropdown.view().setToolTip("")
-        self.btn_manage_templates = QtWidgets.QPushButton(translate("Arch", "Manage..."))
+        self.btn_manage_templates = QtWidgets.QPushButton(translate("Arch", "Manage…"))
         self.btn_manage_templates.setToolTip(
             translate("Arch", "Rename, delete, or edit saved report templates.")
         )
-        self.btn_save_template = QtWidgets.QPushButton(translate("Arch", "Save as Template..."))
+        self.btn_save_template = QtWidgets.QPushButton(translate("Arch", "Save as Template…"))
         self.btn_save_template.setToolTip(
             translate("Arch", "Save the current set of statements as a new report template.")
         )
@@ -1024,11 +1024,11 @@ class ReportTaskPanel:
         )
         # Enable per-item tooltips in the dropdown view
         self.query_preset_dropdown.view().setToolTip("")
-        self.btn_manage_queries = QtWidgets.QPushButton(translate("Arch", "Manage..."))
+        self.btn_manage_queries = QtWidgets.QPushButton(translate("Arch", "Manage…"))
         self.btn_manage_queries.setToolTip(
             translate("Arch", "Rename, delete, or edit your saved query presets.")
         )
-        self.btn_save_query_preset = QtWidgets.QPushButton(translate("Arch", "Save..."))
+        self.btn_save_query_preset = QtWidgets.QPushButton(translate("Arch", "Save…"))
         self.btn_save_query_preset.setToolTip(
             translate("Arch", "Save the current query as a new preset.")
         )
@@ -1861,7 +1861,7 @@ class ReportTaskPanel:
         elif status == "ERROR":
             return ICON_STATUS_ERROR, message
         elif status == "INCOMPLETE":
-            return ICON_STATUS_INCOMPLETE, translate("Arch", "Query incomplete or typing...")
+            return ICON_STATUS_INCOMPLETE, translate("Arch", "Query incomplete or typing…")
         return QtGui.QIcon(), translate("Arch", "Ready")  # Default/initial state
 
     def _set_dirty(self, dirty_state):
@@ -2179,9 +2179,9 @@ if FreeCAD.GuiUp:
             self.layout.addWidget(self.preset_list)
 
             self.buttons_layout = QtWidgets.QHBoxLayout()
-            self.btn_rename = QtWidgets.QPushButton(translate("Arch", "Rename..."))
+            self.btn_rename = QtWidgets.QPushButton(translate("Arch", "Rename…"))
             self.btn_delete = QtWidgets.QPushButton(translate("Arch", "Delete"))
-            self.btn_edit_source = QtWidgets.QPushButton(translate("Arch", "Edit Source..."))
+            self.btn_edit_source = QtWidgets.QPushButton(translate("Arch", "Edit Source…"))
             self.btn_close = QtWidgets.QPushButton(translate("Arch", "Close"))
 
             self.buttons_layout.addWidget(self.btn_rename)

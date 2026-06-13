@@ -30,6 +30,8 @@
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="76"/>
+      <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="176"/>
+      <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="208"/>
       <source> px</source>
       <translation>px</translation>
     </message>
@@ -37,6 +39,16 @@
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="112"/>
       <source>Background color</source>
       <translation>背景色</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="166"/>
+      <source>Arrow Radius</source>
+      <translation type="unfinished">Arrow Radius</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="198"/>
+      <source>Arrow Height</source>
+      <translation type="unfinished">Arrow Height</translation>
     </message>
   </context>
   <context>
@@ -168,7 +180,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMeasureGui.cpp" line="115"/>
+      <location filename="../../AppMeasureGui.cpp" line="117"/>
       <source>Measure</source>
       <translation>計測</translation>
     </message>
@@ -183,99 +195,99 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
-      <translation>フィーチャーを測定</translation>
+      <source>Measures a feature</source>
+      <translation type="unfinished">Measures a feature</translation>
     </message>
   </context>
   <context>
     <name>MeasureGui::TaskMeasure</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="103"/>
+      <location filename="../../TaskMeasure.cpp" line="137"/>
       <source>Measurement</source>
       <translation>測定</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="119"/>
+      <location filename="../../TaskMeasure.cpp" line="153"/>
       <source>Show Delta</source>
       <translation>差分を表示</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="125"/>
+      <location filename="../../TaskMeasure.cpp" line="159"/>
       <source>Auto Save</source>
       <translation>自動保存</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="129"/>
+      <location filename="../../TaskMeasure.cpp" line="163"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
       <translation>新しい測定を開始したときに最後の測定結果を自動保存します。Shiftキーを使用すると、動作を一時的に反転します。</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <location filename="../../TaskMeasure.cpp" line="168"/>
       <source>Additive Selection</source>
       <translation>追加選択</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="140"/>
+      <location filename="../../TaskMeasure.cpp" line="174"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
       <translation>チェックした場合、新しい選択対象が測定に追加されます。 チェックされていない場合、現在の測定に選択対象を追加するにはCtrlキーを押す必要があり、押されていない場合は新しい測定が開始されます。</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="153"/>
+      <location filename="../../TaskMeasure.cpp" line="187"/>
       <source>Settings</source>
       <translation>設定</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="165"/>
+      <location filename="../../TaskMeasure.cpp" line="199"/>
       <source>Auto</source>
       <translation>自動</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="197"/>
+      <location filename="../../TaskMeasure.cpp" line="231"/>
       <source>Mode</source>
       <translation>モード</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="211"/>
+      <location filename="../../TaskMeasure.cpp" line="245"/>
       <source>Result</source>
       <translation>結果</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="577"/>
+      <location filename="../../TaskMeasure.cpp" line="551"/>
       <source>%1 auto-save</source>
       <translation>%1 自動保存</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="581"/>
+      <location filename="../../TaskMeasure.cpp" line="555"/>
       <source>%1 start new measurement</source>
       <translation>%1 新しい測定を開始</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="581"/>
+      <location filename="../../TaskMeasure.cpp" line="555"/>
       <source>%1 add to measurement</source>
       <translation>%1 測定に追加</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="810"/>
+      <location filename="../../TaskMeasure.cpp" line="780"/>
       <source>%1 new measurement, %2 toggle auto-save</source>
       <translation>%1 新しい測定、 %2 自動保存の切り替え</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="815"/>
+      <location filename="../../TaskMeasure.cpp" line="785"/>
       <source>%1 add to measurement, %2 toggle auto-save</source>
       <translation>%1 測定に追加、 %2 自動保存の切り替え</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="247"/>
+      <location filename="../../TaskMeasure.cpp" line="281"/>
       <source>Saves the measurement in the active document</source>
       <translation>測定値をアクティブなドキュメントに保存します。</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="253"/>
+      <location filename="../../TaskMeasure.cpp" line="287"/>
       <source>Close</source>
       <translation>閉じる</translation>
     </message>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="254"/>
+      <location filename="../../TaskMeasure.cpp" line="288"/>
       <source>Close the measurement task.</source>
       <translation>測定タスクを閉じます。</translation>
     </message>
@@ -283,7 +295,7 @@
   <context>
     <name>QPlatformTheme</name>
     <message>
-      <location filename="../../TaskMeasure.cpp" line="246"/>
+      <location filename="../../TaskMeasure.cpp" line="280"/>
       <source>Save</source>
       <translation>保存</translation>
     </message>
@@ -464,18 +476,18 @@
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
-      <source>Jx</source>
-      <translation>Jx</translation>
+      <source>J1</source>
+      <translation type="unfinished">J1</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
-      <source>Jy</source>
-      <translation>Jy</translation>
+      <source>J2</source>
+      <translation type="unfinished">J2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
-      <source>Jz</source>
-      <translation>Jz</translation>
+      <source>J3</source>
+      <translation type="unfinished">J3</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
@@ -504,47 +516,47 @@
   <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="279"/>
+      <location filename="../../TaskMassProperties.cpp" line="280"/>
       <source>Parameters</source>
       <translation>パラメーター</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="282"/>
+      <location filename="../../TaskMassProperties.cpp" line="283"/>
       <source>Physical Properties</source>
       <translation>物理的プロパティ</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="285"/>
+      <location filename="../../TaskMassProperties.cpp" line="286"/>
       <source>Center of Gravity</source>
       <translation>重心</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
+      <location filename="../../TaskMassProperties.cpp" line="287"/>
       <source>Center of Volume</source>
       <translation>体積中心</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
+      <location filename="../../TaskMassProperties.cpp" line="288"/>
       <source>Inertia</source>
       <translation>慣性</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="359"/>
+      <location filename="../../TaskMassProperties.cpp" line="360"/>
       <source>Close</source>
       <translation>閉じる</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="362"/>
+      <location filename="../../TaskMassProperties.cpp" line="363"/>
       <source>Save</source>
       <translation>保存</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="366"/>
+      <location filename="../../TaskMassProperties.cpp" line="367"/>
       <source>Reset</source>
       <translation>リセット</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1126"/>
+      <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
       <translation> (平均)</translation>
     </message>

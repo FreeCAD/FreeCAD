@@ -1281,7 +1281,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
 
         vector<DoublePoint> polygon;
         for (const auto p : path) {
-            polygon.push_back({(double)p.X, (double)p.Y});
+            polygon.emplace_back((double)p.X, (double)p.Y);
         }
         polygons.push_back(polygon);
     }
@@ -1309,15 +1309,15 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
     vector<double> xs;
     for (const auto& polygon : polygons) {
         // 1.a) All polygon vertices
-        for (const auto p : polygon) {
+        for (const auto& p : polygon) {
             xs.push_back(p.X);
         }
 
         // 1.b) Intersection of all polygons with c1
         // 1.c) Intersection of all polygons with c2
         for (size_t i = 0; i < polygon.size(); i++) {
-            const auto p0 = polygon[i];
-            const auto p1 = polygon[(i + 1) % polygon.size()];
+            const auto& p0 = polygon[i];
+            const auto& p1 = polygon[(i + 1) % polygon.size()];
             if (Line2CircleIntersect(c1, toolRadiusScaled, p0, p1, inters)) {
                 for (const auto p : inters) {
                     xs.push_back(p.X);
@@ -1366,7 +1366,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
 
     const auto interpX = [](const DoublePoint p0, const DoublePoint p1, double x) {
         const double interp = (x - p0.X) / (p1.X - p0.X);
-        const double y = p1.Y * interp + p0.Y * (1 - interp);
+        const double y = (p1.Y * interp) + (p0.Y * (1 - interp));
         return y;
     };
 
@@ -1374,7 +1374,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
     const vector<DoublePoint> circles = {c2, c1};
     double area = 0;
     double conventionalArea = 0;
-    for (size_t ix = 0; ix < xs.size() - 1; ix++) {
+    for (size_t ix = 0; ix + 1 < xs.size(); ix++) {
         const double x0 = xs[ix];
         const double x1 = xs[ix + 1];
         if (x0 == x1) {
@@ -1390,14 +1390,14 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
         vector<tuple<double, size_t, size_t>> ys;
 
         for (size_t ipolygon = 0; ipolygon < polygons.size(); ipolygon++) {
-            const auto polygon = polygons[ipolygon];
+            const auto& polygon = polygons[ipolygon];
             for (size_t iedge = 0; iedge < polygon.size(); iedge++) {
-                const auto p0 = polygon[iedge];
-                const auto p1 = polygon[(iedge + 1) % polygon.size()];
+                const auto& p0 = polygon[iedge];
+                const auto& p1 = polygon[(iedge + 1) % polygon.size()];
                 // note: we skip if the edge is vertical, p0.X == p1.X == xtest
                 if (min(p0.X, p1.X) < xtest && max(p0.X, p1.X) > xtest) {
                     const double y = interpX(p0, p1, xtest);
-                    ys.push_back({y, ipolygon, iedge});
+                    ys.emplace_back(y, ipolygon, iedge);
                 }
             }
         }
@@ -1406,9 +1406,9 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
             const DoublePoint c = circles[icircle];
             const double dx = abs(xtest - c.X);
             if (dx < toolRadiusScaled) {  // skip tangent; xtest can't be a tangent anyway
-                const double dy = sqrt(toolRadiusScaled * toolRadiusScaled - dx * dx);
-                ys.push_back({c.Y + dy, polygons.size() + icircle, 0});
-                ys.push_back({c.Y - dy, polygons.size() + icircle, 1});
+                const double dy = sqrt((toolRadiusScaled * toolRadiusScaled) - (dx * dx));
+                ys.emplace_back(c.Y + dy, polygons.size() + icircle, 0);
+                ys.emplace_back(c.Y - dy, polygons.size() + icircle, 1);
             }
         }
 
@@ -1425,14 +1425,12 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
         // that crossing:
         //     Init (i.e. y=-inf): outsideCount = 1 (outside c2 and inside all other shapes)
         std::vector<bool> outside;
+        outside.reserve(polygons.size() + circles.size());
         for (size_t i = 0; i < polygons.size() + circles.size(); i++) {
             outside.push_back(i == (polygons.size()));  // poly_0, ..., poly_n-1, c2, c1
         }
         int outsideCount = 1;
-        for (size_t iy = 0; iy < ys.size(); iy++) {
-            const size_t ishape = std::get<1>(ys[iy]);
-            const size_t ipart = std::get<2>(ys[iy]);
-
+        for (const auto& [_, ishape, ipart] : ys) {
             const bool prevOutside = outside[ishape];
             const int prevCount = outsideCount;
             outside[ishape] = !outside[ishape];
@@ -1446,9 +1444,9 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
             if (outsideCount == 0 || prevCount == 0) {
                 if (ishape < polygons.size()) {
                     // crossed a polygon
-                    const auto polygon = polygons[ishape];
-                    const auto p0 = polygon[ipart];
-                    const auto p1 = polygon[(ipart + 1) % polygon.size()];
+                    const auto& polygon = polygons[ishape];
+                    const auto& p0 = polygon[ipart];
+                    const auto& p1 = polygon[(ipart + 1) % polygon.size()];
                     const auto y0 = interpX(p0, p1, x0);
                     const auto y1 = interpX(p0, p1, x1);
                     const double newArea = (y0 + y1) / 2 * (x1 - x0);
@@ -1482,7 +1480,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
                     const double tmidx = (x0 + x1) / 2;
                     const double tmidy = (y0 + y1) / 2;
                     const double th = sqrt(
-                        (tmidx - c.X) * (tmidx - c.X) + (tmidy - c.Y) * (tmidy - c.Y)
+                        ((tmidx - c.X) * (tmidx - c.X)) + ((tmidy - c.Y) * (tmidy - c.Y))
                     );
                     const double areaTriangle = tbase * th / 2;
                     const double areaSegment = areaSector - areaTriangle;
@@ -1491,7 +1489,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
                     // the sign of the segment area is negative for bottom half of the circle,
                     // positive for top half
                     const double areaTrapezoid = (x1 - x0) * (y0 + y1) / 2;
-                    const double newArea = circleSign * areaSegment + areaTrapezoid;
+                    const double newArea = (circleSign * areaSegment) + areaTrapezoid;
                     area += entranceExitSign * newArea;
                     if (xtest < c2.X) {
                         conventionalArea += entranceExitSign * newArea;
@@ -1821,20 +1819,20 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             }
 
             // 8) finishingPass = offset(currentTBP, finishingThickness), filtered for paths with Z=1
-            // ...again, clipper 1 doesn't perserve Z for offsets, so do this per-curve
+            // ...again, clipper 1 doesn't preserve Z for offsets, so do this per-curve
             Paths finishingPass;
             for (const Path& path : currentTBP) {
                 bool orientation = Orientation(path);
                 int direction = (getPathNestingLevel(path, toolBounds) % 2 == 1) ? 1 : -1;
-                bool finshing = false;
+                bool finishing = false;
                 for (const IntPoint& p : path) {
                     if (p.Z == 1) {
-                        finshing = true;
+                        finishing = true;
                         break;
                     }
                 }
 
-                if (finshing) {
+                if (finishing) {
                     Paths out;
                     clipof.Clear();
                     clipof.AddPath(path, JoinType::jtRound, EndType::etClosedPolygon);
@@ -2856,6 +2854,13 @@ void Adaptive2d::ProcessPolyNode(
     CleanPolygons(boundPaths);
     SimplifyPolygons(boundPaths);
 
+    Paths tbpMinus;  // toolBoundPaths shrunk by some buffer room
+    clipof.Clear();
+    clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
+    clipof.Execute(tbpMinus, -2);
+    CleanPolygons(tbpMinus);
+    SimplifyPolygons(tbpMinus);
+
     AddPathsToProgress(progressPaths, toolBoundPaths, MotionType::mtLinkClear);
 
     IntPoint toolPos;
@@ -3283,18 +3288,21 @@ void Adaptive2d::ProcessPolyNode(
                 }
             }
 
-            Paths openPaths = PathIntersectArea(clip, rotated, toolBoundPaths);
+            // clip with tbpMinus instead of toolBoundPaths to ensure that all
+            // resulting points are inside toolBoundPaths, and not rounded to an
+            // integer coordinate outside of it
+            Paths openPaths = PathIntersectArea(clip, rotated, tbpMinus);
 
             for (Path& open : openPaths) {
                 bool added = false;
                 double dToGo = 0;  // first step is 0 -- start point
                 size_t seg = 0;
                 double segD = 0;
-                DoublePoint segDir = {1, 0};
                 while (!added && seg < open.size() - 1) {
                     // step to next point
                     IntPoint p;
-                    while (dToGo > 0 && seg < open.size() - 1) {
+                    DoublePoint segDir;
+                    do {
                         IntPoint p1 = open[seg];
                         IntPoint p2 = open[seg + 1];
                         double segLen = sqrt(DistanceSqrd(p1, p2));
@@ -3315,7 +3323,7 @@ void Adaptive2d::ProcessPolyNode(
                             seg++;
                             p = p2;  // ensures that we try the endpoint too
                         }
-                    }
+                    } while (dToGo > 0 && seg < open.size() - 1);
 
                     // Attempt to add the point
                     const auto toolDir = initToolDir(p, segDir);

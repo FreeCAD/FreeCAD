@@ -156,7 +156,7 @@ bool ViewProviderDocumentObject::removeDynamicProperty(const char* name)
 }
 
 App::Property* ViewProviderDocumentObject::addDynamicProperty(
-    const char* type,
+    std::string_view type,
     const char* name,
     const char* group,
     const char* doc,

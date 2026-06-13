@@ -54,6 +54,8 @@ SET(FemExamples_SRCS
     femexamples/boxanalysis_frequency.py
     femexamples/buckling_platebuckling.py
     femexamples/buckling_lateraltorsionalbuckling.py
+    femexamples/ccx_1D_fluid_network.py
+    femexamples/ccx_axisymm_shaft.py
     femexamples/ccx_buckling_flexuralbuckling.py
     femexamples/ccx_cantilever_base_edge.py
     femexamples/ccx_cantilever_base_face.py
@@ -75,6 +77,7 @@ SET(FemExamples_SRCS
     femexamples/ccx_disc_cyclic_symm_centrif.py
     femexamples/ccx_rigid_body.py
     femexamples/ccx_pipe_pressure_2D.py
+    femexamples/ccx_plane_stress_plate.py
     femexamples/constraint_centrif.py
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py

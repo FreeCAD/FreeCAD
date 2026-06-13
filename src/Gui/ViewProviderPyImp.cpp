@@ -148,7 +148,7 @@ PyObject* ViewProviderPy::supportedProperties(PyObject* args)
         auto data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it.getName()));
+            res.append(Base::toPyString(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -738,7 +738,7 @@ int ViewProviderPy::setCustomAttributes(const char* attr, PyObject* value)
 Py::Object ViewProviderPy::getAnnotation() const
 {
     try {
-        auto node = getViewProviderPtr()->getAnnotation();
+        auto node = getViewProviderPtr()->getOrCreateAnnotation();
         PyObject* Ptr
             = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", node, 1);
         node->ref();

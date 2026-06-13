@@ -479,6 +479,7 @@ void Application::initStyleParameterManager()
             bool tiledBG = hGrp->GetBool("TiledBackground", false);
 
             setStyleSheet(QString::fromStdString(sheet), tiledBG);
+            OverlayManager::instance()->refresh(nullptr, true);
         }
     );
 
@@ -854,7 +855,7 @@ void Application::open(const char* FileName, const char* Module)
             getMainWindow()->appendRecentFile(filename);
             FileDialog::setWorkingDirectory(filename);
         }
-        catch (const Base::PyException& e) {
+        catch (const Base::Exception& e) {
             // Usually thrown if the file is invalid somehow
             e.reportException();
         }
@@ -961,7 +962,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             }
             FileDialog::setWorkingDirectory(filename);
         }
-        catch (const Base::PyException& e) {
+        catch (const Base::Exception& e) {
             // Usually thrown if the file is invalid somehow
             e.reportException();
         }
@@ -1585,13 +1586,12 @@ void Application::unsetEditDocument(Gui::Document* pcDocument)
 }
 void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
 {
-    std::erase_if(d->editDocuments, [&](Gui::Document* doc) {
-        if (eval(doc)) {
-            doc->_resetEdit();
-            return true;
-        }
-        return false;
-    });
+    std::vector<Gui::Document*> matched, unmatched;
+    ranges::partition_copy(d->editDocuments, back_inserter(matched), back_inserter(unmatched), eval);
+    std::swap(d->editDocuments, unmatched);
+    for (auto doc : matched) {
+        doc->_resetEdit();
+    }
     updateActions();
 }
 Gui::MDIView* Application::editViewOfNode(SoNode* node) const
@@ -2553,7 +2553,7 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
 {
     std::stringstream out;
     out << App::Application::getUserCachePath() << App::Application::getExecutableName() << "_"
-        << App::Application::applicationPid() << ".lock";
+        << App::Application::uniqueInstanceId() << ".lock";
 
     // open a lock file with the PID
     Base::FileInfo fi(out.str());

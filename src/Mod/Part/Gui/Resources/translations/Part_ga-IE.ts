@@ -1174,22 +1174,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2407"/>
+      <location filename="../../Command.cpp" line="2394"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2408"/>
+      <location filename="../../Command.cpp" line="2395"/>
       <source>Box Selection</source>
       <translation>Roghnú Bosca</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2409"/>
+      <location filename="../../Command.cpp" line="2396"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>Roghnaíonn sé eilimintí san amharc 3T ag baint úsáide as bosca roghnúcháin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2411"/>
+      <location filename="../../Command.cpp" line="2398"/>
       <source>Box selection</source>
       <translation>Rogha bosca</translation>
     </message>
@@ -1197,17 +1197,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2329"/>
+      <location filename="../../Command.cpp" line="2316"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2330"/>
+      <location filename="../../Command.cpp" line="2317"/>
       <source>Check Geometry</source>
       <translation>Seiceáil Geoiméadracht</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2331"/>
+      <location filename="../../Command.cpp" line="2318"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation>Déanann anailís ar na cruthanna roghnaithe le haghaidh earráidí</translation>
     </message>
@@ -1215,17 +1215,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2363"/>
+      <location filename="../../Command.cpp" line="2350"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2364"/>
+      <location filename="../../Command.cpp" line="2351"/>
       <source>Appearance per &amp;Face</source>
       <translation>Dealramh in aghaidh &amp;Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2365"/>
+      <location filename="../../Command.cpp" line="2352"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation>Socraíonn sé cuma aghaidheanna aonair an réada roghnaithe</translation>
     </message>
@@ -1233,19 +1233,19 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1416"/>
+      <location filename="../../Command.cpp" line="1403"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1404"/>
       <source>Boolean Operation</source>
       <translation>Oibríocht Booleánach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1418"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Cuireann sé oibríochtaí booléacha i bhfeidhm leis na cruthanna roghnaithe</translation>
+      <location filename="../../Command.cpp" line="1405"/>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation>Cuireann sé oibríocht Booleánach i bhfeidhm leis na cruthanna roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -1307,17 +1307,17 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1715"/>
+      <location filename="../../Command.cpp" line="1702"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1716"/>
+      <location filename="../../Command.cpp" line="1703"/>
       <source>Shape Builder</source>
       <translation>Tógálaí Cruthanna</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1718"/>
+      <location filename="../../Command.cpp" line="1705"/>
       <source>Advanced utility to create shapes</source>
       <translation>Fóntais ardleibhéil chun cruthanna a chruthú</translation>
     </message>
@@ -1325,17 +1325,17 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1620"/>
+      <location filename="../../Command.cpp" line="1607"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1621"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>Chamfer</source>
       <translation>Seaimféaráil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1622"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>Déanann sé na himill roghnaithe de chruth a chamfáil</translation>
     </message>
@@ -1397,17 +1397,17 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1936"/>
+      <location filename="../../Command.cpp" line="1923"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1937"/>
+      <location filename="../../Command.cpp" line="1924"/>
       <source>Offset</source>
       <translation>Fritháireamh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1938"/>
+      <location filename="../../Command.cpp" line="1925"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Uirlisí chun cruthanna a fhritháireamh (cruthanna comhthreomhara a thógáil)</translation>
     </message>
@@ -1471,17 +1471,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1676"/>
+      <location filename="../../Command.cpp" line="1663"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1677"/>
+      <location filename="../../Command.cpp" line="1664"/>
       <source>Cross-Sections</source>
       <translation>Trasghearrthacha</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1678"/>
+      <location filename="../../Command.cpp" line="1665"/>
       <source>Creates cross-sections</source>
       <translation>Cruthaíonn trasghearrthacha</translation>
     </message>
@@ -1563,17 +1563,17 @@
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="1140"/>
+      <location filename="../../Command.cpp" line="1136"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1141"/>
+      <location filename="../../Command.cpp" line="1137"/>
       <source>Export CAD File</source>
       <translation>Easpórtáil Comhad CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../Command.cpp" line="1139"/>
       <source>Exports to a CAD file</source>
       <translation>Onnmhairítear chuig comhad CAD</translation>
     </message>
@@ -1581,17 +1581,17 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1448"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1449"/>
+      <location filename="../../Command.cpp" line="1436"/>
       <source>Extrude</source>
       <translation>Easbhrúigh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1450"/>
+      <location filename="../../Command.cpp" line="1437"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>Easbhrúitear an sceitse nó an phróifíl roghnaithe</translation>
     </message>
@@ -1599,17 +1599,17 @@
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1592"/>
+      <location filename="../../Command.cpp" line="1579"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1593"/>
+      <location filename="../../Command.cpp" line="1580"/>
       <source>Fillet</source>
       <translation>Filléad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1594"/>
+      <location filename="../../Command.cpp" line="1581"/>
       <source>Fillets the selected edges of a shape</source>
       <translation>Líonann sé imill roghnaithe crutha</translation>
     </message>
@@ -1653,17 +1653,17 @@
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1196"/>
+      <location filename="../../Command.cpp" line="1188"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1197"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>Import Curve Network</source>
       <translation>Iompórtáil Líonra Cuar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1199"/>
+      <location filename="../../Command.cpp" line="1191"/>
       <source>Imports a curve network</source>
       <translation>Iompórtálann líonra cuar</translation>
     </message>
@@ -1671,17 +1671,17 @@
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1732"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1733"/>
       <source>Loft</source>
       <translation>Lochta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1747"/>
+      <location filename="../../Command.cpp" line="1734"/>
       <source>Lofts the selected profiles</source>
       <translation>Lochta na próifílí roghnaithe</translation>
     </message>
@@ -1689,17 +1689,17 @@
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1505"/>
+      <location filename="../../Command.cpp" line="1492"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1506"/>
+      <location filename="../../Command.cpp" line="1493"/>
       <source>Face From Wires</source>
       <translation>Aghaidh ó Shreanga</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1507"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>Cruthaíonn sé aghaidh ó na sreanga roghnaithe (m.sh. ó sceitse)</translation>
     </message>
@@ -1707,17 +1707,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1256"/>
+      <location filename="../../Command.cpp" line="1243"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1257"/>
+      <location filename="../../Command.cpp" line="1244"/>
       <source>Convert to Solid</source>
       <translation>Tiontaigh go Soladach</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1245"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>Tiontaíonn sé an bhlaosc nó an comhdhúil roghnaithe go solad</translation>
     </message>
@@ -1725,17 +1725,17 @@
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1648"/>
+      <location filename="../../Command.cpp" line="1635"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1649"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Mirror</source>
       <translation>Scáthán</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1650"/>
+      <location filename="../../Command.cpp" line="1637"/>
       <source>Mirrors the selected shape</source>
       <translation>Scáthánaíonn an cruth roghnaithe</translation>
     </message>
@@ -1743,17 +1743,17 @@
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1803"/>
+      <location filename="../../Command.cpp" line="1790"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1804"/>
+      <location filename="../../Command.cpp" line="1791"/>
       <source>3D Offset</source>
       <translation>Fritháireamh 3T</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1805"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Offsets shapes in 3D</source>
       <translation>Fritháireamh cruthanna i 3T</translation>
     </message>
@@ -1761,17 +1761,17 @@
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1857"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1871"/>
+      <location filename="../../Command.cpp" line="1858"/>
       <source>2D Offset</source>
       <translation>Fritháireamh 2T</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1872"/>
+      <location filename="../../Command.cpp" line="1859"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>Fritháireamh cruthanna plánacha i 2T</translation>
     </message>
@@ -1833,17 +1833,17 @@
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2437"/>
+      <location filename="../../Command.cpp" line="2424"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2438"/>
+      <location filename="../../Command.cpp" line="2425"/>
       <source>Project on Surface</source>
       <translation>Tionscadal ar Dhromchla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2439"/>
+      <location filename="../../Command.cpp" line="2426"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1875,17 +1875,17 @@ teilgean.</translation>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1349"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Reverse Shapes</source>
       <translation>Cruthanna Droim ar Ais</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1351"/>
+      <location filename="../../Command.cpp" line="1338"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>Aisiompaíonn sé treoshuíomh na gcruthanna roghnaithe</translation>
     </message>
@@ -1893,17 +1893,17 @@ teilgean.</translation>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1564"/>
+      <location filename="../../Command.cpp" line="1551"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1565"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>Revolve</source>
       <translation>Rothlaigh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1566"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Revolves the selected shape</source>
       <translation>Rothlaíonn an cruth roghnaithe</translation>
     </message>
@@ -1911,17 +1911,17 @@ teilgean.</translation>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2185"/>
+      <location filename="../../Command.cpp" line="2172"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2186"/>
+      <location filename="../../Command.cpp" line="2173"/>
       <source>Ruled Surface</source>
       <translation>Dromchla Rialaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2187"/>
+      <location filename="../../Command.cpp" line="2174"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation>Cruthaíonn dromchla rialaithe idir 2 shreang roghnaithe</translation>
     </message>
@@ -2021,17 +2021,17 @@ teilgean.</translation>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1774"/>
+      <location filename="../../Command.cpp" line="1761"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1775"/>
+      <location filename="../../Command.cpp" line="1762"/>
       <source>Sweep</source>
       <translation>Scuab</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1776"/>
+      <location filename="../../Command.cpp" line="1763"/>
       <source>Sweeps profiles along a wire</source>
       <translation>Scuabann próifílí feadh sreinge</translation>
     </message>
@@ -2039,27 +2039,27 @@ teilgean.</translation>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2038"/>
+      <location filename="../../Command.cpp" line="2025"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2039"/>
+      <location filename="../../Command.cpp" line="2026"/>
       <source>Thickness</source>
       <translation>Tiús</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2040"/>
+      <location filename="../../Command.cpp" line="2027"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation>Baintear na haghaidheanna roghnaithe agus cuirtear an cruth atá fágtha amach chun tiús a chur leis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2099"/>
+      <location filename="../../Command.cpp" line="2086"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2100"/>
+      <location filename="../../Command.cpp" line="2087"/>
       <source>Selected shape is not a solid</source>
       <translation>Ní cruth soladach é an cruth roghnaithe</translation>
     </message>
@@ -2136,62 +2136,62 @@ teilgean.</translation>
       <translation>Roinn</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1101"/>
+      <location filename="../../Command.cpp" line="1097"/>
       <source>Import Part</source>
       <translation>Cuid Iompórtála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1225"/>
+      <location filename="../../Command.cpp" line="1212"/>
       <source>Import Curve Net</source>
       <translation>Iompórtáil Glan Cuar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1363"/>
+      <location filename="../../Command.cpp" line="1350"/>
       <source>Reverse</source>
       <translation>Droim ar ais</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1524"/>
+      <location filename="../../Command.cpp" line="1511"/>
       <source>Make face</source>
       <translation>Déan aghaidh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1830"/>
+      <location filename="../../Command.cpp" line="1817"/>
       <source>Make Offset</source>
       <translation>Déan Fritháireamh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1898"/>
+      <location filename="../../Command.cpp" line="1885"/>
       <source>Make 2D Offset</source>
       <translation>Déan Fritháireamh 2T</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2107"/>
+      <location filename="../../Command.cpp" line="2094"/>
       <source>Make Thickness</source>
       <translation>Déan Tiús</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2296"/>
+      <location filename="../../Command.cpp" line="2283"/>
       <source>Create ruled surface</source>
       <translation>Cruthaigh dromchla rialaithe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2549"/>
+      <location filename="../../Command.cpp" line="2536"/>
       <source>Add coordinate system</source>
       <translation>Cuir córas comhordanáidí leis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2587"/>
+      <location filename="../../Command.cpp" line="2574"/>
       <source>Add datum plane</source>
       <translation>Cuir eitleán sonraí leis</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2620"/>
+      <location filename="../../Command.cpp" line="2607"/>
       <source>Add datum line</source>
       <translation/>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2653"/>
+      <location filename="../../Command.cpp" line="2640"/>
       <source>Add datum point</source>
       <translation>Cuir pointe sonraí leis</translation>
     </message>
@@ -2221,12 +2221,12 @@ teilgean.</translation>
       <translation>Tiontaigh mogalra</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1464"/>
+      <location filename="../../TaskAttacher.cpp" line="1589"/>
       <source>Edit attachment</source>
       <translation>Cuir an ceangaltán in eagar</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="488"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="523"/>
       <source>Change face colors</source>
       <translation>Athraigh dathanna aghaidhe</translation>
     </message>
@@ -2267,7 +2267,7 @@ teilgean.</translation>
       <translation>Scuab</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1613"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1615"/>
       <source>Project on surface</source>
       <translation>Tionscadal ar dhromchla</translation>
     </message>
@@ -3183,8 +3183,8 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
-      <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>Cumascann comhdhúile le linn léamh comhad (mall ach le sonraí níos airde)</translation>
+      <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
+      <translation>Cuireann sé na cruthanna uile le chéile i gcomhdhúil amháin le linn allmhairithe, ag réiteach samplaí páirte agus ag cur claochluithe i bhfeidhm. Méadaíonn sé an t-am allmhairithe ach ní dhéanann sé difear do chruinneas na geoiméadrachta ná do cháilíocht an rindreála.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -3345,19 +3345,6 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
     </message>
   </context>
   <context>
-    <name>PartGui::DlgPartImportIgesImp</name>
-    <message>
-      <location filename="../../DlgPartImportIgesImp.cpp" line="72"/>
-      <source>IGES</source>
-      <translation>IGES</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartImportIgesImp.cpp" line="72"/>
-      <source>All Files</source>
-      <translation>Gach Comhad</translation>
-    </message>
-  </context>
-  <context>
     <name>PartGui::DlgPartImportStep</name>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
@@ -3373,14 +3360,6 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <location filename="../../DlgPartImportStep.ui" line="54"/>
       <source>Search File</source>
       <translation>Cuardaigh Comhad</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::DlgPartImportStepImp</name>
-    <message>
-      <location filename="../../DlgPartImportStepImp.cpp" line="72"/>
-      <source>All Files</source>
-      <translation>Gach Comhad</translation>
     </message>
   </context>
   <context>
@@ -4164,17 +4143,17 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="140"/>
       <source>Projection object</source>
       <translation>Réad teilgean</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
       <translation>Gan aon doiciméad gníomhach</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
       <translation>Ní féidir réad teilgean a chruthú</translation>
     </message>
@@ -4471,92 +4450,102 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <translation>Athraigh go dtí an painéal tascanna nuair a théann tú isteach sa bhinse oibre Dearaidh Cuid</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="267"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="258"/>
+      <source>Always open the attachment dialog when creating a new sketch in Part Design, regardless of selection or holding the Shift key. Without this, only a single face or datum plane selection skips the dialog.</source>
+      <translation>Oscail an dialóg ceangail i gcónaí agus sceitse nua á chruthú i nDearadh Cuid, beag beann ar an roghnú nó ar an eochair Shift a choinneáil. Gan é seo, ní sheachnóidh ach roghnú aghaidhe nó eitleáin sonraí amháin an dialóg.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="261"/>
+      <source>Always open attachment dialog for new sketches</source>
+      <translation>Oscail an dialóg ceangaltán i gcónaí le haghaidh sceitsí nua</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="292"/>
       <source>Show final result by default when editing features</source>
       <translation>Taispeáin an toradh deiridh de réir réamhshocraithe agus gnéithe á n-eagarthóireacht</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="270"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="295"/>
       <source>Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</source>
       <translation>Taispeánann sé an tsamhail lánríofa sa radharc 3D agus gné á heagarthóireacht, ag taispeáint an chomhthéacs deiridh seachas an ghné leithlisithe amháin</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="289"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="314"/>
       <source>Show transparent preview overlay by default when editing features</source>
       <translation>Taispeáin réamhamhairc thrédhearcach de réir réamhshocraithe agus gnéithe á n-eagarthóireacht</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="292"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="317"/>
       <source>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</source>
       <translation>Cuireann sé réamhamharc leaththrédhearcach den toradh i bhfeidhm agus gnéithe á n-eagarthóireacht chun athruithe a shamhlú sula gcuirtear i bhfeidhm iad</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="314"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="339"/>
       <source>Highlight the profile used to create features</source>
       <translation>Aibhsigh an phróifíl a úsáideadh chun gnéithe a chruthú</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="317"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="342"/>
       <source>Visually highlights the source sketch or geometry used to generate the feature currently being edited</source>
       <translation>Aibhsíonn sé go hamhairc an sceitse foinse nó an geoiméadracht a úsáideadh chun an ghné atá á heagarthóireacht faoi láthair a ghiniúint</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="336"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="361"/>
       <source>Experimental</source>
       <translation>Turgnamhach</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="342"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="367"/>
       <source>These settings are experimental and may result in decreased stability, problems and undefined behaviors</source>
       <translation>Is socruithe turgnamhacha iad seo agus d’fhéadfadh laghdú ar chobhsaíocht, fadhbanna agus iompraíochtaí neamhshainithe a bheith mar thoradh orthu</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="358"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="383"/>
       <source>Show interactive draggers when editing features</source>
       <translation>Taispeáin tarraingteoirí idirghníomhacha agus gnéithe á n-eagarthóireacht</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="361"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="386"/>
       <source>Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</source>
       <translation>Cumasaíonn sé láimhseálacha ar an scáileán (tarraingteoirí) san amharc 3T chun toisí agus paraiméadair na gné atá á heagarthóireacht a mhodhnú go hidirghníomhach trí tharraingt</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="383"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="408"/>
       <source>Disable recompute while dragging</source>
       <translation>Díchumasaigh athríomh agus tú ag tarraingt</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="386"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="411"/>
       <source>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</source>
       <translation>Cuireann sé seo cosc ​​ar an tsamhail athríomh a dhéanamh agus tarraingteoirí á ionramháil. Ní dhéantar an cruth a nuashonrú ach amháin tar éis an cnaipe luiche a scaoileadh.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="399"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="424"/>
       <source>Enable coarse snapping while dragging</source>
       <translation>Cumasaigh snapáil gharbh agus tú ag tarraingt</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="417"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="442"/>
       <source>Fine snap modifier</source>
       <translation>Mionathraitheoir snap mín</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="441"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="466"/>
       <source>Default coarse drag behavior</source>
       <translation>Iompar réamhshocraithe tarraingthe garbh</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="448"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="473"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
       <translation>Cinneann sé an bhfuil an tarraingt garbh nó mín gan an eochair mhionathraithe a shealbhú</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="468"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="493"/>
       <source>Coarse movement multiplier</source>
       <translation>Iolraitheoir gluaiseachta garbh</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="498"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="523"/>
       <source>Coarse rotation step (degrees)</source>
       <translation>Céim rothlaithe garbh (céimeanna)</translation>
     </message>
@@ -4566,7 +4555,7 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <translation>Athraigh go huathoibríoch chuig an bpainéal tascanna nuair a ghníomhaítear an binse oibre Dearaidh Páirteanna</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="255"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="280"/>
       <source>Preview</source>
       <translation>Réamhamharc</translation>
     </message>
@@ -4902,8 +4891,8 @@ the sketch plane's normal vector will be used</source>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
-      <source>Too few elements</source>
-      <translation>Ró-bheag eilimintí</translation>
+      <source>Too Few Elements</source>
+      <translation>Ró-bheagán eilimintí</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
@@ -5181,19 +5170,19 @@ ach na gearrthacha cruthaithe le feiceáil</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="233"/>
       <location filename="../../TaskShapeBuilder.cpp" line="252"/>
+      <source>Select two vertices</source>
+      <translation>Roghnaigh dhá bhuaicphointe</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="233"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="252"/>
       <location filename="../../TaskShapeBuilder.cpp" line="281"/>
       <location filename="../../TaskShapeBuilder.cpp" line="323"/>
       <location filename="../../TaskShapeBuilder.cpp" line="378"/>
       <location filename="../../TaskShapeBuilder.cpp" line="432"/>
       <location filename="../../TaskShapeBuilder.cpp" line="498"/>
-      <source>Wrong selection</source>
-      <translation>Rogha mícheart</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="233"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="252"/>
-      <source>Select two vertices</source>
-      <translation>Roghnaigh dhá bhuaicphointe</translation>
+      <source>Wrong Selection</source>
+      <translation>Rogha Mícheart</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="281"/>
@@ -5261,18 +5250,8 @@ ach na gearrthacha cruthaithe le feiceáil</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
-      <source>Too few elements</source>
-      <translation>Ró-bheag eilimintí</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
       <source>At least one edge or wire is required.</source>
       <translation>Tá imeall nó sreang amháin ar a laghad ag teastáil.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
-      <source>Invalid selection</source>
-      <translation>Rogha neamhbhailí</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="383"/>
@@ -5280,9 +5259,19 @@ ach na gearrthacha cruthaithe le feiceáil</translation>
       <translation>Roghnaigh imeall amháin ar a laghad ó réad amháin.</translation>
     </message>
     <message>
+      <location filename="../../TaskSweep.cpp" line="376"/>
+      <source>Too Few Elements</source>
+      <translation>Ró-bheagán eilimintí</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSweep.cpp" line="382"/>
+      <source>Invalid Selection</source>
+      <translation>Rogha Neamhbhailí</translation>
+    </message>
+    <message>
       <location filename="../../TaskSweep.cpp" line="393"/>
-      <source>Wrong selection</source>
-      <translation>Rogha mícheart</translation>
+      <source>Wrong Selection</source>
+      <translation>Rogha Mícheart</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="394"/>
@@ -5307,14 +5296,14 @@ ach na gearrthacha cruthaithe le feiceáil</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="505"/>
       <location filename="../../TaskSweep.cpp" line="513"/>
-      <source>Sweep path</source>
-      <translation>Cosán scuabtha</translation>
+      <source>The selected sweep path is invalid.</source>
+      <translation>Tá an cosán scuabtha roghnaithe neamhbhailí.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="505"/>
       <location filename="../../TaskSweep.cpp" line="513"/>
-      <source>The selected sweep path is invalid.</source>
-      <translation>Tá an cosán scuabtha roghnaithe neamhbhailí.</translation>
+      <source>Sweep Path</source>
+      <translation>Cosán Scuabtha</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="525"/>
@@ -5435,82 +5424,82 @@ comhordanáidí áitiúil an réada atá á cheangal.</translation>
       <translation>Taobhanna smeach</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="402"/>
+      <location filename="../../TaskAttacher.cpp" line="413"/>
       <source>OCC error: %1</source>
       <translation>Earráid OCC: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="405"/>
+      <location filename="../../TaskAttacher.cpp" line="416"/>
       <source>unknown error</source>
       <translation>earráid anaithnid</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="408"/>
+      <location filename="../../TaskAttacher.cpp" line="419"/>
       <source>Attachment mode failed: %1</source>
       <translation>Theip ar mhodh ceangail: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="413"/>
+      <location filename="../../TaskAttacher.cpp" line="424"/>
       <source>Not attached</source>
       <translation>Gan cheangal</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="421"/>
+      <location filename="../../TaskAttacher.cpp" line="432"/>
       <source>Attached with mode %1</source>
       <translation>Ceangailte le mód %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1020"/>
+      <location filename="../../TaskAttacher.cpp" line="1037"/>
       <source>Selecting…</source>
       <translation>Ag roghnú…</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="924"/>
+      <location filename="../../TaskAttacher.cpp" line="940"/>
       <source>Face</source>
       <translation>Aghaidh</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="425"/>
+      <location filename="../../TaskAttacher.cpp" line="436"/>
       <source>Attachment Offset (in its local coordinate system):</source>
       <translation>Fritháireamh Ceangaltáin (ina chóras comhordanáidí áitiúil):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="426"/>
+      <location filename="../../TaskAttacher.cpp" line="437"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Fritháireamh Ceangail (neamhghníomhach - gan a bheith ceangailte):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="931"/>
+      <location filename="../../TaskAttacher.cpp" line="947"/>
       <source>Edge</source>
       <translation>Imeall</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="938"/>
+      <location filename="../../TaskAttacher.cpp" line="954"/>
       <source>Vertex</source>
       <translation>Buaicphointe</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1026"/>
+      <location filename="../../TaskAttacher.cpp" line="1043"/>
       <source>Reference%1</source>
       <translation>Tagairt%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1095"/>
+      <location filename="../../TaskAttacher.cpp" line="1112"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Ní féidir é a chur in eagar mar go bhfuil rothlú AttachmentOffset ceangailte le léirithe.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1172"/>
+      <location filename="../../TaskAttacher.cpp" line="1195"/>
       <source>Reference combinations:</source>
       <translation>Teaglaim tagartha:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1194"/>
+      <location filename="../../TaskAttacher.cpp" line="1217"/>
       <source>%1 (add %2)</source>
       <translation>%1 (cuir %2 leis)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1197"/>
+      <location filename="../../TaskAttacher.cpp" line="1220"/>
       <source>%1 (add more references)</source>
       <translation>%1 (cuir tuilleadh tagairtí leis)</translation>
     </message>
@@ -5814,12 +5803,22 @@ Seiceálacha oibríochta booléan aonair:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1446"/>
+      <location filename="../../TaskAttacher.cpp" line="1481"/>
       <source>Attachment</source>
       <translation>Ceangaltán</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1528"/>
+      <location filename="../../TaskAttacher.cpp" line="1502"/>
+      <source>%1 select reference</source>
+      <translation>%1 roghnaigh tagairt</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="1508"/>
+      <source>2x%1 select and confirm</source>
+      <translation>Roghnaigh agus deimhnigh 2x%1</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="1658"/>
       <source>Datum dialog: input error</source>
       <translation>Dialóg sonraí: earráid ionchuir</translation>
     </message>
@@ -6069,8 +6068,8 @@ sreang sa radharc 3D don chonair scuabtha.</translation>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProvider.cpp" line="53"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
+      <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Cuir %1 in Eagar</translation>
     </message>
@@ -6093,16 +6092,6 @@ sreang sa radharc 3D don chonair scuabtha.</translation>
       <translation>Iompórtáil-Easpórtáil</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
-      <location filename="../../Command.cpp" line="410"/>
-      <location filename="../../Command.cpp" line="510"/>
-      <location filename="../../Command.cpp" line="952"/>
-      <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="2290"/>
-      <source>Wrong selection</source>
-      <translation>Rogha mícheart</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="350"/>
       <location filename="../../Command.cpp" line="427"/>
       <location filename="../../Command.cpp" line="527"/>
@@ -6114,6 +6103,16 @@ sreang sa radharc 3D don chonair scuabtha.</translation>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Select 2 shapes</source>
       <translation>Roghnaigh 2 chruth</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="333"/>
+      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="952"/>
+      <location filename="../../Command.cpp" line="1015"/>
+      <location filename="../../Command.cpp" line="2277"/>
+      <source>Wrong Selection</source>
+      <translation>Rogha Mícheart</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="351"/>
@@ -6140,23 +6139,30 @@ Leanúint ar aghaidh?</translation>
       <translation>Roghnaigh cruth amháin ar a laghad</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1210"/>
+      <location filename="../../Command.cpp" line="1080"/>
+      <location filename="../../Command.cpp" line="1150"/>
+      <source>STEP with colors</source>
+      <translation>CÉIM le dathanna</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1082"/>
+      <location filename="../../Command.cpp" line="1152"/>
+      <source>IGES with colors</source>
+      <translation>IGES le dathanna</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1201"/>
       <source>All CAD Files</source>
       <translation>Gach Comhad CAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1214"/>
-      <source>All Files</source>
-      <translation>Gach Comhad</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2291"/>
+      <location filename="../../Command.cpp" line="2278"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>Roghnaigh 2 imeall nó 2 shreang.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="73"/>
-      <location filename="../../TaskAttacher.cpp" line="106"/>
+      <location filename="../../TaskAttacher.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="116"/>
       <source>No reference selected</source>
       <translation>Níl aon tagairt roghnaithe</translation>
     </message>
@@ -6491,7 +6497,7 @@ Leanúint ar aghaidh?</translation>
       <translation>Cuir isteach an fad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1007"/>
+      <location filename="../../ViewProviderExt.cpp" line="994"/>
       <source>Appearance per Face</source>
       <translation>Dealramh in aghaidh an Aghaidhe</translation>
     </message>
@@ -7109,17 +7115,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1476"/>
+      <location filename="../../Command.cpp" line="1463"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1477"/>
+      <location filename="../../Command.cpp" line="1464"/>
       <source>Scale</source>
       <translation>Scála</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1478"/>
+      <location filename="../../Command.cpp" line="1465"/>
       <source>Scales the selected shape</source>
       <translation>Scálaíonn an cruth roghnaithe</translation>
     </message>
@@ -7135,12 +7141,12 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>Part::FaceMakerSimple</name>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="307"/>
+      <location filename="../../../App/FaceMaker.cpp" line="338"/>
       <source>Simple</source>
       <translation>Simplí</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMaker.cpp" line="312"/>
+      <location filename="../../../App/FaceMaker.cpp" line="343"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
       <translation>Déanann sé aghaidh phlána ar leithligh ó gach sreang go neamhspleách. Gan tacaíocht do phoill; is féidir sreanga a bheith ar phlánaí difriúla.</translation>
     </message>
@@ -7148,12 +7154,12 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>Part::FaceMakerBullseye</name>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="61"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="60"/>
       <source>Bull's-eye facemaker</source>
       <translation>Déantóir aghaidhe súile tarbh</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="66"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="65"/>
       <source>Supports making planar faces with holes with islands in them</source>
       <translation>Tacaíonn sé le haghaidheanna plánacha a dhéanamh le poill agus oileáin iontu</translation>
     </message>
@@ -7281,17 +7287,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2537"/>
+      <location filename="../../Command.cpp" line="2524"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2538"/>
+      <location filename="../../Command.cpp" line="2525"/>
       <source>Coordinate System</source>
       <translation>Córas Comhordanáidí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2539"/>
+      <location filename="../../Command.cpp" line="2526"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>Cruthaíonn sé córas comhordanáidí is féidir a cheangal le rudaí eile</translation>
     </message>
@@ -7299,17 +7305,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2676"/>
+      <location filename="../../Command.cpp" line="2663"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2677"/>
+      <location filename="../../Command.cpp" line="2664"/>
       <source>Datums</source>
       <translation>Dátaí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2679"/>
+      <location filename="../../Command.cpp" line="2666"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>Cruthaíonn sé réad sonraí (córas comhordanáidí, plána, líne, nó pointe) is féidir a cheangal le réada eile</translation>
     </message>
@@ -7317,7 +7323,7 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/Geometry.cpp" line="6698"/>
+      <location filename="../../../App/Geometry.cpp" line="6701"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
       <translation>Ní féidir trasnú na gcuar a thomhas. Bain triail as srian comhthráthach a chur idir buaicphointí na gcuar atá beartaithe agat a líonadh.</translation>
     </message>
@@ -7325,17 +7331,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2575"/>
+      <location filename="../../Command.cpp" line="2562"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2576"/>
+      <location filename="../../Command.cpp" line="2563"/>
       <source>Datum Plane</source>
       <translation>Plána Dáta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2577"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>Cruthaíonn sé plána sonraí is féidir a cheangal le rudaí eile</translation>
     </message>
@@ -7343,17 +7349,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartDatumLine</name>
     <message>
-      <location filename="../../Command.cpp" line="2608"/>
+      <location filename="../../Command.cpp" line="2595"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2609"/>
+      <location filename="../../Command.cpp" line="2596"/>
       <source>Datum Line</source>
       <translation>Líne Dáta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2610"/>
+      <location filename="../../Command.cpp" line="2597"/>
       <source>Creates a datum line that can be attached to other objects</source>
       <translation>Cruthaíonn líne sonraí is féidir a cheangal le rudaí eile</translation>
     </message>
@@ -7361,17 +7367,17 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2641"/>
+      <location filename="../../Command.cpp" line="2628"/>
       <source>Part</source>
       <translation>Cuid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2642"/>
+      <location filename="../../Command.cpp" line="2629"/>
       <source>Datum Point</source>
       <translation>Pointe Sonraí</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2643"/>
+      <location filename="../../Command.cpp" line="2630"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>Cruthaíonn sé pointe sonraí is féidir a cheangal le rudaí eile</translation>
     </message>
@@ -7541,12 +7547,12 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>Part::FaceMakerRing</name>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="371"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="367"/>
       <source>Ring facemaker</source>
       <translation>Déantóir aghaidhe fáinne</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="376"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="372"/>
       <source>Supports making planar faces with holes and holes as faces</source>
       <translation>Tacaíonn sé le haghaidheanna plánacha a dhéanamh le poill agus poill mar aghaidheanna</translation>
     </message>
@@ -7554,12 +7560,12 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2473"/>
+      <location filename="../../Command.cpp" line="2460"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation>Gearradh Roinne Buan</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2474"/>
+      <location filename="../../Command.cpp" line="2461"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation>Cruthaíonn réad nua mar thrasnú booléanach de na cruthanna infheicthe go léir agus na pláin ais roghnaithe</translation>
     </message>
@@ -7694,32 +7700,37 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
       <translation>Tarluithe</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="69"/>
+      <location filename="../../PatternParametersWidget.cpp" line="78"/>
       <source>Axis</source>
       <translation>Ais</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="70"/>
-      <location filename="../../PatternParametersWidget.cpp" line="72"/>
+      <location filename="../../PatternParametersWidget.cpp" line="79"/>
+      <location filename="../../PatternParametersWidget.cpp" line="81"/>
       <source>Total Angle</source>
       <translation>Uillinn Iomlán</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="71"/>
-      <location filename="../../PatternParametersWidget.cpp" line="73"/>
+      <location filename="../../PatternParametersWidget.cpp" line="80"/>
+      <location filename="../../PatternParametersWidget.cpp" line="82"/>
       <source>Angular Spacing</source>
       <translation>Spásáil Uilleach</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="412"/>
-      <location filename="../../PatternParametersWidget.cpp" line="508"/>
+      <location filename="../../PatternParametersWidget.cpp" line="423"/>
+      <location filename="../../PatternParametersWidget.cpp" line="519"/>
       <source>Spacing %1</source>
       <translation>Spásáil %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="428"/>
+      <location filename="../../PatternParametersWidget.cpp" line="439"/>
       <source>Remove this spacing definition.</source>
       <translation>Bain an sainmhíniú spásála seo.</translation>
+    </message>
+    <message>
+      <location filename="../../PatternParametersWidget.cpp" line="940"/>
+      <source>Reset spacing</source>
+      <translation>Athshocraigh an spásáil</translation>
     </message>
   </context>
   <context>
@@ -7742,12 +7753,12 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
   <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="47"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
       <source>BuildFace facemaker</source>
       <translation>Déantóir aghaidhe BuildFace</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBuildFace.cpp" line="52"/>
+      <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</translation>
     </message>

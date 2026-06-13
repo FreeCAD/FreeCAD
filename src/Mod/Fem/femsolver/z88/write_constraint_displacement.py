@@ -49,8 +49,10 @@ class WriterDisplacement(WriterList):
         z_rot = obj.zRotation.getValueAs("rad").Value
 
         # for plate elements, dof-1 -> z, dof-2 -> rot_x, dof-3 -> rot_y
+        index = self.writer.nodes["index"]
         if self.writer.solver_obj.ModelSpace == "plate":
-            for n in item["Nodes"]:
+            for idx in item["Nodes"]:
+                n = index[self.writer.node_id_map(idx)]
                 if not z_free:
                     self.writer.z88i2_rows.append(f"{n}  1  2  {z_disp}\n")
                 if not rotx_free:
@@ -58,7 +60,8 @@ class WriterDisplacement(WriterList):
                 if not roty_free:
                     self.writer.z88i2_rows.append(f"{n}  3  2  {y_rot}\n")
         else:
-            for n in item["Nodes"]:
+            for idx in item["Nodes"]:
+                n = index[self.writer.node_id_map(idx)]
                 if not x_free:
                     self.writer.z88i2_rows.append(f"{n}  1  2  {x_disp}\n")
                 if not y_free:

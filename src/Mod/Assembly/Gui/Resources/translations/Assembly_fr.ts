@@ -28,8 +28,8 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="80"/>
-      <source>Component</source>
-      <translation>Composant</translation>
+      <source>Insert Component</source>
+      <translation>Insérer un composant</translation>
     </message>
   </context>
   <context>
@@ -53,7 +53,7 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
       <translation>Assemblage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="146"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="147"/>
       <source>Active object</source>
       <translation>Activer/désactiver l'objet</translation>
     </message>
@@ -135,7 +135,7 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1803"/>
+      <location filename="../../../JointObject.py" line="1888"/>
       <source>Distance</source>
       <translation>Distance</translation>
     </message>
@@ -175,27 +175,27 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
       <translation>Courroie</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="812"/>
+      <location filename="../../../JointObject.py" line="818"/>
       <source>Broken link in: </source>
       <translation>Lien cassé dans : </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1622"/>
+      <location filename="../../../JointObject.py" line="1696"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Sélectionner 2 éléments dans 2 pièces séparées</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1805"/>
+      <location filename="../../../JointObject.py" line="1890"/>
       <source>Radius 1</source>
       <translation>Rayon 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1807"/>
+      <location filename="../../../JointObject.py" line="1892"/>
       <source>Thread pitch</source>
       <translation>Pas du filetage</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1809"/>
+      <location filename="../../../JointObject.py" line="1894"/>
       <source>Pitch radius</source>
       <translation>Rayon primitif</translation>
     </message>
@@ -356,59 +356,60 @@ double-cliquant dessus ou en appuyant sur F2 (le renommage d'une colonne entraî
       <translation>Ne pas lier</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="493"/>
+      <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
       <translation>Entrer une formule…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="546"/>
-      <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation>En capitale, des variables à remplacer par des valeurs réelles. Plus de détails sur chaque exemple dans son info-bulle.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
+      <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
+      <translation>Les variables en majuscules doivent être remplacées par des valeurs réelles. « initialValue » est remplacé dynamiquement par l'angle ou la
+distance en cours. Plus de détails sur chaque exemple dans leur info-bulle.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="549"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Linear: C + VEL*time</source>
       <translation>- Linéaire : C + VEL*temps</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="551"/>
+      <location filename="../../../CommandCreateSimulation.py" line="553"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation>- Quadratique : C + VEL*temps + ACC*temps^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="554"/>
+      <location filename="../../../CommandCreateSimulation.py" line="556"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation>- Harmonique : C + AMP*sin(VEL*temps - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="557"/>
+      <location filename="../../../CommandCreateSimulation.py" line="559"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation>- Exponentielle : C*exp(temps/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="563"/>
+      <location filename="../../../CommandCreateSimulation.py" line="565"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation>- Pas lisse : L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(temps - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="570"/>
+      <location filename="../../../CommandCreateSimulation.py" line="572"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation>- Impulsion carrée lisse : (H/pi)*(arctan(SLOPE*(temps - T1)) - arctan(SLOPE*(temps - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="577"/>
+      <location filename="../../../CommandCreateSimulation.py" line="579"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation>- Impulsion du haut de la rampe lisse : (((1/pi)*(arctan(1000*(temps - T1)) - arctan(1000*(temps - T2))))*(((H2 - H1)/(T2 - T1))*(temps - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="587"/>
+      <location filename="../../../CommandCreateSimulation.py" line="589"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C est un décalage constant.
 VEL est la vitesse, la pente ou le gradient de la ligne droite.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="595"/>
+      <location filename="../../../CommandCreateSimulation.py" line="597"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -417,7 +418,7 @@ VEL est la vitesse, la pente ou le gradient de la ligne droite.
 ACC est l'accélération ou le coefficient du second ordre. La fonction est une parabole.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="604"/>
+      <location filename="../../../CommandCreateSimulation.py" line="606"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -428,14 +429,14 @@ VEL est la vitesse angulaire en radians par seconde.
 PHASE est la phase de l'onde sinusoïdale.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="611"/>
+      <location filename="../../../CommandCreateSimulation.py" line="613"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C est une constante.
 TIMEC est la constante de temps de la fonction exponentielle.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="619"/>
+      <location filename="../../../CommandCreateSimulation.py" line="621"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -444,7 +445,7 @@ L2 est le niveau de l'étape après le temps = T0.
 SLOPE définit la pente de la transition entre L1 et L2 à T0. Des valeurs plus élevées donnent des étapes plus nettes. Des SLOPE ≥ 1000 conviennent.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="628"/>
+      <location filename="../../../CommandCreateSimulation.py" line="630"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -455,7 +456,7 @@ T2 est la fin de l'impulsion.
 SLOPE définit la pente de la transition entre 0 et H à T1 et T2. Des valeurs plus élevées donnent des impulsions plus nettes. Des SLOPE ≥ 1000 conviennent.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="639"/>
+      <location filename="../../../CommandCreateSimulation.py" line="641"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -470,63 +471,63 @@ H2 est la hauteur à T2 à la fin de la rampe.
 SLOPE définit la pente de la transition entre 0 et H1 et H2 à 0 à T1 et T2 respectivement. Des valeurs plus élevées donnent des impulsions plus nettes. Des SLOPE ≥ 1000 conviennent.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="677"/>
-      <location filename="../../../CommandCreateSimulation.py" line="694"/>
+      <location filename="../../../CommandCreateSimulation.py" line="679"/>
+      <location filename="../../../CommandCreateSimulation.py" line="696"/>
       <source>Help</source>
       <translation>Aide</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="692"/>
+      <location filename="../../../CommandCreateSimulation.py" line="694"/>
       <source>Hide help</source>
       <translation>Masquer l'aide</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1044"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
       <source>Animation</source>
       <translation>Animation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1046"/>
       <source>Not enough frames to create an animation.</source>
       <translation>Il n'y a pas assez d'images pour créer une animation.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1052"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1053"/>
       <source>Save Animation</source>
       <translation>Enregistrer l'animation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1074"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
       <source>Generating Frames…</source>
       <translation>Génération des images…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1076"/>
       <source>Cancel</source>
       <translation>Annuler</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1102"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1103"/>
       <source>Assembling animation…</source>
       <translation>Montage de l'animation…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1118"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1119"/>
       <source>An error occurred while saving the animation</source>
       <translation>Une erreur est survenue lors de l'enregistrement de l'animation.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1136"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1137"/>
       <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
       <translation>Pillow (PIL) n'est pas installé. Il est nécessaire pour l'exportation au format GIF.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1159"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1160"/>
       <source>OpenCV is not installed. It is required for video export.</source>
       <translation>OpenCV n'est pas installé. Il est nécessaire pour l'exportation vidéo.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="1176"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1177"/>
       <source>Could not open video writer. Check codecs.</source>
       <translation>L'éditeur vidéo n'a pas pu s'ouvrir. Vérifier les codecs.</translation>
     </message>
@@ -687,7 +688,7 @@ hélicoïdale et la liaison engrenage et la liaison courroie (rayon1).</translat
       <translation>La référence {order} de la liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1231"/>
+      <location filename="../../../JointObject.py" line="1280"/>
       <source>The object to ground</source>
       <translation>L'objet à bloquer</translation>
     </message>
@@ -816,42 +817,52 @@ hélicoïdale et la liaison engrenage et la liaison courroie (rayon1).</translat
       <translation>Définit le décalage de la fixation du deuxième marqueur de la liaison (système de coordonnées).</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="237"/>
       <source>Reverse the direction of the joint</source>
       <translation>Inverser la direction de la liaison</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="240"/>
       <source>Reverse</source>
       <translation>Inverser</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
+      <source>Rotate the joint 90 degrees</source>
+      <translation>Fait pivoter la liaison de 90 degrés.</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
+      <source>Rotate</source>
+      <translation>Pivoter</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="291"/>
       <source>Limits</source>
       <translation>Limites</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min length</source>
       <translation>Longueur minimale</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="320"/>
       <source>Max length</source>
       <translation>Longueur maximale</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="343"/>
       <source>Min angle</source>
       <translation>Angle minimum</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="372"/>
       <source>Max angle</source>
       <translation>Angle maximum</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="404"/>
       <source>Reverse rotation</source>
       <translation>Rotation inversée</translation>
     </message>
@@ -870,8 +881,8 @@ hélicoïdale et la liaison engrenage et la liaison courroie (rayon1).</translat
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>Vous ne trouvez pas la pièce ?</translation>
+      <source>Cannot find the part?</source>
+      <translation>Impossible de trouver la pièce ?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -952,52 +963,52 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="214"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
       <source>The object is associated to one or more joints.</source>
       <translation>L'objet est associé à une ou plusieurs liaisons.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="216"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="217"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Voulez-vous déplacer l'objet et supprimer les liaisons associées ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1103"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1090"/>
       <source>Move part</source>
       <translation>Déplacer une pièce</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1818"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
       <source>Empty Assembly</source>
       <translation>Assemblage vide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1830"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
       <source>Over-constrained:</source>
       <translation>Esquisse sur-contrainte :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1838"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
       <source>Malformed joints:</source>
       <translation>Liaisons défectueuses :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1801"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
       <source>and %1 more</source>
       <translation>et %1 de plus</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1862"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
       <source>Solver failed to converge</source>
       <translation>Le solveur n'a pas pu converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1870"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
       <source>Under-constrained:</source>
       <translation>L'esquisse manque de contraintes :</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1872"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n degrés de liberté</numerusform>
@@ -1005,7 +1016,7 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1876"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>Fully constrained</source>
       <translation>Esquisse entièrement contrainte</translation>
     </message>
@@ -1152,7 +1163,7 @@ lors du recalcul. Les colonnes « Description » et personnalisées ne sont pas 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="689"/>
       <source>Joints</source>
       <translation>Liaisons</translation>
     </message>
@@ -1280,27 +1291,27 @@ lors du recalcul. Les colonnes « Description » et personnalisées ne sont pas 
       <translation>0.00 s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="256"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="278"/>
       <source>Step backward</source>
       <translation>Précédent</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="276"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="310"/>
       <source>Play backward</source>
       <translation>Reculer</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="296"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="348"/>
       <source>Stop</source>
       <translation>Arrêter</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="316"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="380"/>
       <source>Play forward</source>
       <translation>Avancer</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="336"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="412"/>
       <source>Step forward</source>
       <translation>Suivant</translation>
     </message>
@@ -1346,11 +1357,11 @@ lors du recalcul. Les colonnes « Description » et personnalisées ne sont pas 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
-      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation>1 - Si un assemblage est actif : crée une liaison immobilisant définitivement deux pièces ensemble, empêchant tout mouvement ou
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation>1 - Si un assemblage est actif : crée une liaison à verrouillage statique reliant deux pièces entre elles, empêchant tout mouvement ou
 rotation.
-2 - Si une pièce est active : positionne les sous-pièces en faisant correspondre les systèmes de coordonnées sélectionnés. La
-deuxième pièce sélectionnée se déplacera.</translation>
+2 - Si une pièce est active : positionne les sous-pièces en alignant les systèmes de coordonnées sélectionnés. La deuxième pièce
+sélectionnée se déplacera.</translation>
     </message>
   </context>
   <context>
@@ -1571,28 +1582,28 @@ Le blocage d'une pièce fixe définitivement sa position dans l'assemblage, emp�
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Cliquer pour sélectionner ces liaisons problématiques</translation>
+      <source>Selects these conflicting joints</source>
+      <translation>Sélectionne ces liaisons en conflit.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Cliquer pour sélectionner ces liaisons redondantes</translation>
+      <source>Selects these redundant joints</source>
+      <translation>Sélectionne ces liaisons redondantes.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation>L'assemblage comporte des composants non contraints qui donnent lieu à ces degrés de liberté. Cliquer pour sélectionner ces composants
-non contraints.
-Remarque : pour l'instant, cette opération ne sélectionne que les pièces non connectées, et non les pièces contraintes qui disposent encore
+      <translation>L'assemblage comporte des composants non contraints qui donnent lieu à ces degrés de liberté.
+Sélectionne ces composants non contraints.
+Remarque : pour l'instant, cette fonction ne sélectionne que des pièces non connectées, et non des pièces contraintes qui disposent encore
 de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Cliquer pour sélectionner ces liaisons défectueuses</translation>
+      <source>Selects these malformed joints</source>
+      <translation>Sélectionne ces liaisons malformées.</translation>
     </message>
   </context>
   <context>
@@ -1604,8 +1615,8 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
-      <translation>Aller à l'assemblage lié</translation>
+      <source>Go to Linked Assembly</source>
+      <translation>Accéder à l'assemblage lié</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
@@ -1622,8 +1633,8 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
-      <translation>Sélectionner les contraintes en conflit</translation>
+      <source>Select Conflicting Constraints</source>
+      <translation>Sélectionner des contraintes en conflit</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
@@ -1640,8 +1651,8 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
-      <translation>Sélectionner les contraintes redondantes</translation>
+      <source>Select Redundant Constraints</source>
+      <translation>Sélectionner des contraintes redondantes</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
@@ -1658,8 +1669,8 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
-      <translation>Sélectionner les contraintes défectueuses</translation>
+      <source>Select Malformed Constraints</source>
+      <translation>Sélectionner des contraintes défectueuses</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
@@ -1676,7 +1687,7 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
+      <source>Select Components With DoFs</source>
       <translation>Sélectionner des composants avec des degrés de liberté</translation>
     </message>
     <message>
@@ -1694,7 +1705,7 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
+      <source>Select Component Joints</source>
       <translation>Sélectionner les liaisons des composants</translation>
     </message>
     <message>

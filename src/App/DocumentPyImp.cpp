@@ -891,7 +891,7 @@ PyObject* DocumentPy::supportedTypes(PyObject* args)
     Base::Type::getAllDerivedFrom(App::DocumentObject::getClassTypeId(), ary);
     Py::List res;
     for (const auto& it : ary) {
-        res.append(Py::String(it.getName()));
+        res.append(Base::toPyString(it.getName()));
     }
     return Py::new_reference_to(res);
 }

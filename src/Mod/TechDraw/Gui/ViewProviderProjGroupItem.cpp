@@ -52,7 +52,7 @@ ViewProviderProjGroupItem::~ViewProviderProjGroupItem()
 
 void ViewProviderProjGroupItem::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderDocumentObject::updateData(prop);
+    ViewProviderViewPart::updateData(prop);
 
     //TODO: Once we know that ProjType is valid, sPixMap = "Proj" + projType
 

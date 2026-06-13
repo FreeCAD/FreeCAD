@@ -1,50 +1,42 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
 
-#ifdef FC_OS_WIN32
-# include <windows.h>
-#endif
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# include <GL/gl.h>
-#endif
 #include <algorithm>
 #include <limits>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoLineWidthElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -52,9 +44,8 @@
 
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Selection/Selection.h>
-#include <Base/Console.h>
+#include <Base/Color.h>
 #include "SoBrepEdgeSet.h"
-#include "SoBrepFaceSet.h"
 #include "ViewProviderExt.h"
 
 #include <Gui/Inventor/So3DAnnotation.h>
@@ -69,6 +60,83 @@ struct SoBrepEdgeSet::SelContext: Gui::SoFCSelectionContextEx
     std::vector<int32_t> hl, sl;
 };
 
+static void applyOverlayPrimitiveState(SoState* state, SoNode* node)
+{
+    if (!state || !node) {
+        return;
+    }
+
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+    SoTextureEnabledElement::set(state, node, false);
+    SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
+    SoOverrideElement::setMaterialBindingOverride(state, node, true);
+}
+
+static void renderOverlayLines(
+    SoGLRenderAction* action,
+    SoIndexedLineSet* lineSet,
+    const int32_t* indices,
+    int numIndices,
+    const Base::Color& color
+)
+{
+    if (!action || !lineSet || !indices || numIndices <= 0) {
+        return;
+    }
+
+    // Match the legacy GL path by drawing each edge segment independently.
+    std::vector<int32_t> lineIndices;
+    lineIndices.reserve(static_cast<size_t>(numIndices) * 3);
+
+    int32_t previous = -1;
+    for (int i = 0; i < numIndices; i++) {
+        const int32_t current = indices[i];
+        if (current < 0) {
+            previous = -1;
+            continue;
+        }
+        if (previous >= 0) {
+            lineIndices.push_back(previous);
+            lineIndices.push_back(current);
+            lineIndices.push_back(-1);
+        }
+        previous = current;
+    }
+
+    if (lineIndices.empty()) {
+        return;
+    }
+
+    auto state = action->getState();
+    state->push();
+
+    applyOverlayPrimitiveState(state, lineSet);
+    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+
+    const SbColor sbColor(color.r, color.g, color.b);
+    const float transparency = std::max(0.0f, 1.0f - color.a);
+    const bool hasTransparency = transparency > 0.0f;
+    if (hasTransparency) {
+        SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+        SoLazyElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+    }
+
+    SoLazyElement::setEmissive(state, &sbColor);
+    uint32_t packedColor = sbColor.getPackedValue(transparency);
+    SoLazyElement::setPacked(state, lineSet, 1, &packedColor, hasTransparency);
+
+    // setValues() does not shrink the field, so rewrite the overlay index
+    // array to the exact size to avoid stale segments from the previous
+    // highlight.
+    lineSet->coordIndex.setNum(static_cast<int>(lineIndices.size()));
+    int32_t* coordIndex = lineSet->coordIndex.startEditing();
+    std::copy(lineIndices.begin(), lineIndices.end(), coordIndex);
+    lineSet->coordIndex.finishEditing();
+    lineSet->GLRender(action);
+
+    state->pop();
+}
+
 static void renderOverlayLines(
     SoGLRenderAction* action,
     SoIndexedLineSet* lineSet,
@@ -77,23 +145,77 @@ static void renderOverlayLines(
     const SbColor& color
 )
 {
-    if (!action || !lineSet || !indices || numIndices <= 0) {
+    renderOverlayLines(
+        action,
+        lineSet,
+        indices,
+        numIndices,
+        Base::Color(color[0], color[1], color[2], 1.0f)
+    );
+}
+
+static void renderColorOverrides(
+    SoGLRenderAction* action,
+    SoIndexedLineSet* lineSet,
+    const int32_t* indices,
+    int numIndices,
+    const std::map<int, Base::Color>& colors
+)
+{
+    if (!action || !lineSet || !indices || numIndices <= 0 || colors.empty()) {
         return;
     }
 
-    auto state = action->getState();
-    state->push();
+    struct ColorGroup
+    {
+        Base::Color color;
+        std::vector<int32_t> indices;
+    };
 
-    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+    std::map<uint32_t, ColorGroup> colorGroups;
+    const auto wildcard = colors.find(-1);
 
-    SoLazyElement::setEmissive(state, &color);
-    uint32_t packedColor = color.getPackedValue(0.0);
-    SoLazyElement::setPacked(state, lineSet, 1, &packedColor, false);
+    int lineIndex = 0;
+    for (int i = 0; i < numIndices; ++lineIndex) {
+        const int sectionStart = i;
+        while (i < numIndices && indices[i] >= 0) {
+            ++i;
+        }
 
-    lineSet->coordIndex.setValues(0, numIndices, indices);
-    lineSet->GLRender(action);
+        const Base::Color* color = nullptr;
+        auto it = colors.find(lineIndex);
+        if (it != colors.end()) {
+            color = &it->second;
+        }
+        else if (wildcard != colors.end()) {
+            color = &wildcard->second;
+        }
 
-    state->pop();
+        if (color) {
+            const SbColor sbColor(color->r, color->g, color->b);
+            const uint32_t key = sbColor.getPackedValue(std::max(0.0f, 1.0f - color->a));
+            auto& group = colorGroups[key];
+            if (group.indices.empty()) {
+                group.color = *color;
+            }
+            group.indices.insert(group.indices.end(), indices + sectionStart, indices + i);
+            group.indices.push_back(-1);
+        }
+
+        if (i < numIndices && indices[i] < 0) {
+            ++i;
+        }
+    }
+
+    for (const auto& [_, group] : colorGroups) {
+        renderOverlayLines(
+            action,
+            lineSet,
+            group.indices.data(),
+            static_cast<int>(group.indices.size()),
+            group.color
+        );
+    }
 }
 
 void SoBrepEdgeSet::initClass()
@@ -175,145 +297,6 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     }
 
     bool hasColorOverride = (ctx2 && !ctx2->colors.empty());
-    if (hasColorOverride) {
-        // Special handling for edge color overrides (e.g. highlighting specific edges).
-        // We initially attempted to use the same logic as SoBrepFaceSet (setting
-        // SoMaterialBindingElement::PER_PART_INDEXED and populating SoLazyElement arrays).
-        // However, this proved brittle for SoIndexedLineSet, causing persistent crashes
-        // in SoMaterialBundle/SoGLLazyElement (SIGSEGV) due to internal Coin3D state
-        // mismatches when mixing Lit (default) and Unlit (highlighted) states.
-        //
-        // To ensure stability, we bypass the base class GLRender entirely and perform
-        // a manual dual-pass render using direct OpenGL calls:
-        // Pass 1: Render default lines using the current Coin3D state (Lighting enabled).
-        // Pass 2: Render highlighted lines with Lighting disabled to ensure bright, flat colors.
-        state->push();
-
-        const SoCoordinateElement* coords;
-        const SbVec3f* normals;
-        const int32_t* cindices;
-        const int32_t* nindices;
-        const int32_t* tindices;
-        const int32_t* mindices;
-        int numcindices;
-        SbBool normalCacheUsed;
-
-        // We request normals (true) because default lines need them for lighting
-        this->getVertexData(
-            state,
-            coords,
-            normals,
-            cindices,
-            nindices,
-            tindices,
-            mindices,
-            numcindices,
-            true,
-            normalCacheUsed
-        );
-
-        const SbVec3f* coords3d = coords->getArrayPtr3();
-
-        // Apply the default material settings (Standard Lighting/Material)
-        // This ensures default lines look correct (e.g. Black)
-        SoMaterialBundle mb(action);
-        mb.sendFirst();
-
-        // We will collect highlighted segments to render them in a second pass
-        // so we don't have to switch GL state constantly.
-        struct HighlightSegment
-        {
-            int startIndex;
-            Base::Color color;
-        };
-        std::vector<HighlightSegment> highlights;
-
-        int linecount = 0;
-        int i = 0;
-
-        // --- PASS 1: Render Default Lines (Lit) ---
-        while (i < numcindices) {
-            int startIndex = i;
-
-            // Check if this line index has an override color
-            const Base::Color* pColor = nullptr;
-            auto it = ctx2->colors.find(linecount);
-            if (it != ctx2->colors.end()) {
-                pColor = &it->second;
-            }
-            else {
-                // Check for wildcard color
-                auto it_all = ctx2->colors.find(-1);
-                if (it_all != ctx2->colors.end()) {
-                    pColor = &it_all->second;
-                }
-            }
-
-            if (pColor) {
-                // This is a highlighted line. Save it for Pass 2.
-                highlights.push_back({startIndex, *pColor});
-
-                // Skip over the indices for this line
-                while (i < numcindices && cindices[i] >= 0) {
-                    i++;
-                }
-                i++;  // skip the -1 separator
-            }
-            else {
-                // This is a default line. Render immediately with current (Lit) state.
-                glBegin(GL_LINE_STRIP);
-                while (i < numcindices) {
-                    int32_t idx = cindices[i++];
-                    if (idx < 0) {
-                        break;
-                    }
-
-                    if (idx < coords->getNum()) {
-                        if (normals) {
-                            glNormal3fv((const GLfloat*)(normals + idx));
-                        }
-                        glVertex3fv((const GLfloat*)(coords3d + idx));
-                    }
-                }
-                glEnd();
-            }
-            linecount++;
-        }
-
-        // --- PASS 2: Render Highlighted Lines (Unlit) ---
-        if (!highlights.empty()) {
-            // Disable lighting and textures so the color is flat and bright
-            glPushAttrib(GL_LIGHTING_BIT | GL_CURRENT_BIT | GL_ENABLE_BIT);
-            glDisable(GL_LIGHTING);
-            glDisable(GL_TEXTURE_2D);
-
-            for (const auto& segment : highlights) {
-                // Apply the explicit color from the map
-                // Note: FreeCAD Base::Color transparency is 0.0 (opaque) to 1.0 (transparent)
-                // OpenGL Alpha is 1.0 (opaque) to 0.0 (transparent)
-                glColor4f(segment.color.r, segment.color.g, segment.color.b, 1.0f - segment.color.a);
-
-                glBegin(GL_LINE_STRIP);
-                int j = segment.startIndex;
-                while (j < numcindices) {
-                    int32_t idx = cindices[j++];
-                    if (idx < 0) {
-                        break;
-                    }
-
-                    if (idx < coords->getNum()) {
-                        glVertex3fv((const GLfloat*)(coords3d + idx));
-                    }
-                }
-                glEnd();
-            }
-            glPopAttrib();
-        }
-
-        // Do NOT call inherited::GLRender(action). We have handled all rendering manually.
-        state->pop();
-        return;
-    }
 
     if (ctx && ctx->highlightIndex == std::numeric_limits<int>::max()) {
         if (ctx->selectionIndex.empty() || ctx->isSelectAll()) {
@@ -364,7 +347,16 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
             renderSelection(action, ctx);
         }
     }
-    if (ctx2 && !ctx2->selectionIndex.empty()) {
+    if (hasColorOverride) {
+        renderColorOverrides(
+            action,
+            overlayLineSet,
+            this->coordIndex.getValues(0),
+            this->coordIndex.getNum(),
+            ctx2->colors
+        );
+    }
+    else if (ctx2 && !ctx2->selectionIndex.empty()) {
         renderSelection(action, ctx2, false);
     }
     else if (
@@ -372,10 +364,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
         && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight
     ) {
         state->push();
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDepthMask(false);
-        glDisable(GL_DEPTH_TEST);
+        SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
 
         inherited::GLRender(action);
 
@@ -465,78 +454,29 @@ void SoBrepEdgeSet::getBoundingBox(SoGetBoundingBoxAction* action)
     }
 }
 
-void SoBrepEdgeSet::renderShape(
-    const SoGLCoordinateElement* const coords,
-    const int32_t* cindices,
-    int numindices
-)
-{
-
-    const SbVec3f* coords3d = coords->getArrayPtr3();
-
-    int32_t i;
-    int previ;
-    const int32_t* end = cindices + numindices;
-    while (cindices < end) {
-        glBegin(GL_LINE_STRIP);
-        previ = *cindices++;
-        i = (cindices < end) ? *cindices++ : -1;
-        while (i >= 0) {
-            glVertex3fv((const GLfloat*)(coords3d + previ));
-            glVertex3fv((const GLfloat*)(coords3d + i));
-            previ = i;
-            i = cindices < end ? *cindices++ : -1;
-        }
-        glEnd();
-    }
-}
-
 void SoBrepEdgeSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
 {
     if (!ctx || ctx->highlightIndex < 0) {
         return;
     }
 
-    SoState* state = action->getState();
-    state->push();
-    // SoLineWidthElement::set(state, this, 4.0f);
-
-    SoLazyElement::setEmissive(state, &ctx->highlightColor);
-    packedColor = ctx->highlightColor.getPackedValue(0.0);
-    SoLazyElement::setPacked(state, this, 1, &packedColor, false);
-
-    const SoCoordinateElement* coords;
-    const SbVec3f* normals;
-    const int32_t* cindices;
-    int numcindices;
-    const int32_t* nindices;
-    const int32_t* tindices;
-    const int32_t* mindices;
-    SbBool normalCacheUsed;
-
-    this->getVertexData(
-        state,
-        coords,
-        normals,
-        cindices,
-        nindices,
-        tindices,
-        mindices,
-        numcindices,
-        false,
-        normalCacheUsed
-    );
-
-    SoMaterialBundle mb(action);
-    mb.sendFirst();  // make sure we have the correct material
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
+    if (!coords) {
+        return;
+    }
 
     int num = (int)ctx->hl.size();
     if (num > 0) {
         if (ctx->hl[0] < 0) {
-            renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+            renderOverlayLines(
+                action,
+                overlayLineSet,
+                this->coordIndex.getValues(0),
+                this->coordIndex.getNum(),
+                ctx->highlightColor
+            );
         }
         else {
-            const int32_t* id = &(ctx->hl[0]);
             if (!validIndexes(coords, ctx->hl)) {
                 SoDebugError::postWarning(
                     "SoBrepEdgeSet::renderHighlight",
@@ -544,58 +484,35 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
                 );
             }
             else {
-                renderShape(static_cast<const SoGLCoordinateElement*>(coords), id, num);
+                renderOverlayLines(action, overlayLineSet, ctx->hl.data(), num, ctx->highlightColor);
             }
         }
     }
-    state->pop();
 }
 
-void SoBrepEdgeSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx, bool push)
+void SoBrepEdgeSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx, bool /*push*/)
 {
-    SoState* state = action->getState();
-    if (push) {
-        state->push();
-        // SoLineWidthElement::set(state, this, 4.0f);
-
-        SoLazyElement::setEmissive(state, &ctx->selectionColor);
-        packedColor = ctx->selectionColor.getPackedValue(0.0);
-        SoLazyElement::setPacked(state, this, 1, &packedColor, false);
+    if (!ctx) {
+        return;
     }
 
-    const SoCoordinateElement* coords;
-    const SbVec3f* normals;
-    const int32_t* cindices;
-    int numcindices;
-    const int32_t* nindices;
-    const int32_t* tindices;
-    const int32_t* mindices;
-    SbBool normalCacheUsed;
-
-    this->getVertexData(
-        state,
-        coords,
-        normals,
-        cindices,
-        nindices,
-        tindices,
-        mindices,
-        numcindices,
-        false,
-        normalCacheUsed
-    );
-
-    SoMaterialBundle mb(action);
-    mb.sendFirst();  // make sure we have the correct material
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
+    if (!coords) {
+        return;
+    }
 
     int num = (int)ctx->sl.size();
     if (num > 0) {
         if (ctx->sl[0] < 0) {
-            renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+            renderOverlayLines(
+                action,
+                overlayLineSet,
+                this->coordIndex.getValues(0),
+                this->coordIndex.getNum(),
+                ctx->selectionColor
+            );
         }
         else {
-            cindices = &(ctx->sl[0]);
-            numcindices = (int)ctx->sl.size();
             if (!validIndexes(coords, ctx->sl)) {
                 SoDebugError::postWarning(
                     "SoBrepEdgeSet::renderSelection",
@@ -603,12 +520,9 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
                 );
             }
             else {
-                renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+                renderOverlayLines(action, overlayLineSet, ctx->sl.data(), num, ctx->selectionColor);
             }
         }
-    }
-    if (push) {
-        state->pop();
     }
 }
 

@@ -63,8 +63,10 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Iterator.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
+#include <BRepExtrema_MapOfIntegerPackedMapOfInteger.hxx>
 
 #include <App/PropertyStandard.h>
 #include <App/StringHasherPy.h>
@@ -203,26 +205,46 @@ int TopoShapePy::PyInit(PyObject* args, PyObject* keywds)
     return 0;
 }
 
-PyObject* TopoShapePy::copy(PyObject* args) const
+PyObject* TopoShapePy::copy(PyObject* args, PyObject* keywds) const
 {
     PyObject* copyGeom = Py_True;
     PyObject* copyMesh = Py_False;
+    PyObject* noElementMap = Py_False;
     const char* op = nullptr;
     PyObject* pyHasher = nullptr;
-    if (!PyArg_ParseTuple(
+    static const std::array<const char*, 4> kwd_list {"copyGeom", "copyMesh", "noElementMap", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
             args,
-            "|sO!O!O!",
-            &op,
-            &App::StringHasherPy::Type,
-            &pyHasher,
+            keywds,
+            "|O!O!$O!",
+            kwd_list,
             &PyBool_Type,
             &copyGeom,
             &PyBool_Type,
-            &copyMesh
+            &copyMesh,
+            &PyBool_Type,
+            &noElementMap
         )) {
         PyErr_Clear();
-        if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &copyGeom, &PyBool_Type, &copyMesh)) {
-            return 0;
+        if (keywds && PyDict_Size(keywds) != 0) {
+            PyErr_SetString(PyExc_TypeError, "copy() received invalid keyword arguments");
+            return nullptr;
+        }
+        if (!PyArg_ParseTuple(
+                args,
+                "|sO!O!O!",
+                &op,
+                &App::StringHasherPy::Type,
+                &pyHasher,
+                &PyBool_Type,
+                &copyGeom,
+                &PyBool_Type,
+                &copyMesh
+            )) {
+            PyErr_Clear();
+            if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &copyGeom, &PyBool_Type, &copyMesh)) {
+                return 0;
+            }
         }
     }
     if (op && !op[0]) {
@@ -233,9 +255,11 @@ PyObject* TopoShapePy::copy(PyObject* args) const
         hasher = static_cast<App::StringHasherPy*>(pyHasher)->getStringHasherPtr();
     }
     auto& self = *getTopoShapePtr();
+    auto elementMapPolicy = Base::asBoolean(noElementMap) ? ElementMapPolicy::Drop
+                                                          : ElementMapPolicy::Propagate;
     return Py::new_reference_to(shape2pyshape(
         TopoShape(self.Tag, hasher)
-            .makeElementCopy(self, op, PyObject_IsTrue(copyGeom), PyObject_IsTrue(copyMesh))
+            .makeElementCopy(self, op, PyObject_IsTrue(copyGeom), PyObject_IsTrue(copyMesh), elementMapPolicy)
     ));
 }
 
@@ -709,6 +733,38 @@ PyObject* TopoShapePy::check(PyObject* args) const
     Py_Return;
 }
 
+static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* args, PyObject* keywds)
+{
+    double tol = 0;
+    PyObject* pcObj;
+    PyObject* noElementMap = Py_False;
+    static const std::array<const char*, 4> kwd_list {"tools", "tolerance", "noElementMap", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            keywds,
+            "O|d$O!",
+            kwd_list,
+            &pcObj,
+            &tol,
+            &PyBool_Type,
+            &noElementMap
+        )) {
+        return 0;
+    }
+    PY_TRY
+    {
+        auto elementMapPolicy = Base::asBoolean(noElementMap) ? ElementMapPolicy::Drop
+                                                              : ElementMapPolicy::Propagate;
+        std::vector<TopoShape> shapes;
+        shapes.push_back(shape);
+        getPyShapes(pcObj, shapes);
+        return Py::new_reference_to(
+            shape2pyshape(TopoShape().makeElementBoolean(op, shapes, 0, tol, elementMapPolicy))
+        );
+    }
+    PY_CATCH_OCC
+}
+
 static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* args)
 {
     double tol = 0;
@@ -721,19 +777,21 @@ static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* arg
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         getPyShapes(pcObj, shapes);
-        return Py::new_reference_to(shape2pyshape(TopoShape().makeElementBoolean(op, shapes, 0, tol)));
+        return Py::new_reference_to(
+            shape2pyshape(TopoShape().makeElementBoolean(op, shapes, nullptr, tol))
+        );
     }
     PY_CATCH_OCC
 }
 
-PyObject* TopoShapePy::fuse(PyObject* args) const
+PyObject* TopoShapePy::fuse(PyObject* args, PyObject* keywds) const
 {
-    return makeShape(Part::OpCodes::Fuse, *getTopoShapePtr(), args);
+    return makeShape(Part::OpCodes::Fuse, *getTopoShapePtr(), args, keywds);
 }
 
-PyObject* TopoShapePy::multiFuse(PyObject* args) const
+PyObject* TopoShapePy::multiFuse(PyObject* args, PyObject* keywds) const
 {
-    return makeShape(Part::OpCodes::Fuse, *getTopoShapePtr(), args);
+    return makeShape(Part::OpCodes::Fuse, *getTopoShapePtr(), args, keywds);
 }
 
 PyObject* TopoShapePy::common(PyObject* args) const
@@ -922,9 +980,9 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
     }
 
     try {
-        const TopoDS_Shape& model = getTopoShapePtr()->getShape();
+        const TopoShape& model = *getTopoShapePtr();
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
-        if (model.IsNull() || shape.IsNull()) {
+        if (model.isNull() || shape.IsNull()) {
             PyErr_SetString(PyExc_ValueError, "Shape is null");
             return nullptr;
         }
@@ -936,22 +994,18 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
             return nullptr;
         }
 
-        TopTools_IndexedDataMapOfShapeListOfShape mapOfShapeShape;
-        TopExp::MapShapesAndAncestors(model, shape.ShapeType(), shapetype, mapOfShapeShape);
-        const TopTools_ListOfShape& ancestors = mapOfShapeShape.FindFromKey(shape);
+        std::vector<int> foundIndices = model.findAncestors(shape, shapetype);
+        std::unordered_set<int> appendedIndices = {};
 
         Py::List list;
-        std::set<Standard_Integer> hashes;
-        TopTools_ListIteratorOfListOfShape it(ancestors);
-        for (; it.More(); it.Next()) {
-            // make sure to avoid duplicates
-            Standard_Integer code = ShapeMapHasher {}(it.Value());
-            if (hashes.find(code) == hashes.end()) {
-                list.append(shape2pyshape(it.Value()));
-                hashes.insert(code);
+        for (int idx : foundIndices) {
+            if (appendedIndices.count(idx)) {
+                continue;
             }
-        }
 
+            list.append(shape2pyshape(model.getSubTopoShape(shapetype, idx)));
+            appendedIndices.emplace(idx);
+        }
         return Py::new_reference_to(list);
     }
     catch (Standard_Failure& e) {
@@ -1037,17 +1091,9 @@ PyObject* TopoShapePy::transformShape(PyObject* args)
     }
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
-    bool doCopy = Base::asBoolean(copy);
-    bool doCheckScale = Base::asBoolean(checkScale);
     PY_TRY
     {
-        if (doCopy) {
-            TopoShape s(*getTopoShapePtr());
-            s.transformShape(mat, false, doCheckScale);
-            return Py::new_reference_to(shape2pyshape(s));
-        }
-
-        this->getTopoShapePtr()->transformShape(mat, false, doCheckScale);
+        this->getTopoShapePtr()->transformShape(mat, Base::asBoolean(copy), Base::asBoolean(checkScale));
         return IncRef();
     }
     PY_CATCH_OCC
@@ -1544,7 +1590,7 @@ PyObject* TopoShapePy::isClosed(PyObject* args) const
 
     try {
         if (getTopoShapePtr()->getShape().IsNull()) {
-            Standard_Failure::Raise("Cannot determine the 'Closed'' flag of an empty shape");
+            throw Standard_Failure("Cannot determine the 'Closed'' flag of an empty shape");
         }
         return Py_BuildValue("O", (getTopoShapePtr()->isClosed() ? Py_True : Py_False));
     }

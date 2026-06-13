@@ -58,3 +58,6 @@ constexpr const char * fcXercescVersion = "${XercesC_VERSION}";
 // Pivy
 constexpr const char * fcPivyVersion = "${PIVY_VERSION}";
 
+// Clipper2
+constexpr const char * fcClipper2Version = "${Clipper2_VERSION}";
+

@@ -21,16 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-import sys
 import FreeCAD
-from FreeCAD import Placement
-from FreeCAD import Rotation
-from FreeCAD import Vector
 
-import Draft
 import ObjectsFem
+import Materials
+import Part
 
-from BOPTools import SplitFeatures
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
@@ -40,8 +36,8 @@ from .meshes import generate_mesh
 def get_information():
     return {
         "name": "Turbulent Flow - Elmer 2D",
-        "meshtype": "solid",
-        "meshelement": "Tet10",
+        "meshtype": "face",
+        "meshelement": "Tria3",
         "constraints": [
             "initial pressure",
             "initial temperature",
@@ -82,52 +78,26 @@ def setup(doc=None, solvertype="elmer"):
     # geometric objects
 
     # the wire defining the pipe volume in 2D
-    p1 = Vector(400, -50.000, 0)
-    p2 = Vector(400, -150.000, 0)
-    p3 = Vector(1200, -150.000, 0)
-    p4 = Vector(1200, 50.000, 0)
-    p5 = Vector(0, 50.000, 0)
-    p6 = Vector(0, -50.000, 0)
-    wire = Draft.make_wire([p1, p2, p3, p4, p5, p6], closed=True)
-    wire.MakeFace = True
-    wire.Label = "Wire"
+    p1 = FreeCAD.Vector(400, -50.000, 0)
+    p2 = FreeCAD.Vector(400, -150.000, 0)
+    p3 = FreeCAD.Vector(1200, -150.000, 0)
+    p4 = FreeCAD.Vector(1200, 50.000, 0)
+    p5 = FreeCAD.Vector(0, 50.000, 0)
+    p6 = FreeCAD.Vector(0, -50.000, 0)
+    wire = Part.makePolygon([p1, p2, p3, p4, p5, p6, p1])
+    circ_center = FreeCAD.Vector(160, 0, 0)
+    circle = Part.makeCircle(10, circ_center)
 
-    # the circle defining the heating rod
-    pCirc = Vector(160, 0, 0)
-    axisCirc = Vector(1, 0, 0)
-    placementCircle = Placement(pCirc, Rotation(axisCirc, 0))
-    circle = Draft.make_circle(10, placement=placementCircle)
-    circle.MakeFace = True
-    circle.Label = "HeatingRod"
-    circle.ViewObject.Visibility = False
+    f1 = Part.makeFace([circle])
+    f2 = Part.makeFace([wire, circle])
 
-    # a link of the circle
-    circleLink = doc.addObject("App::Link", "Link-HeatingRod")
-    circleLink.LinkTransform = True
-    circleLink.LinkedObject = circle
+    shape = Part.makeShell([f1, f2])
 
-    # cut rod from wire to get volume of fluid
-    cut = doc.addObject("Part::Cut", "Cut")
-    cut.Base = wire
-    cut.Tool = circleLink
-    cut.ViewObject.Visibility = False
-
-    # BooleanFregments object to combine cut with rod
-    BooleanFragments = SplitFeatures.makeBooleanFragments(name="BooleanFragments")
-    BooleanFragments.Objects = [cut, circle]
-
-    # set view
-    doc.recompute()
-    if FreeCAD.GuiUp:
-        BooleanFragments.ViewObject.Transparency = 50
-        BooleanFragments.ViewObject.Document.activeView().fitAll()
+    shell = doc.addObject("Part::Feature", "Shell")
+    shell.Shape = shape
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
-    if FreeCAD.GuiUp:
-        import FemGui
-
-        FemGui.setActiveAnalysis(analysis)
 
     # solver
     if solvertype == "elmer":
@@ -166,39 +136,30 @@ def setup(doc=None, solvertype="elmer"):
     equation_heat.Stabilize = True
 
     # material
+    mat_manager = Materials.MaterialManager()
 
-    # fluid
-    material_obj = ObjectsFem.makeMaterialFluid(doc, "Material_Fluid")
-    mat = material_obj.Material
-    mat["Name"] = "Water"
-    mat["Density"] = "998 kg/m^3"
-    mat["DynamicViscosity"] = "1.003e-3 kg/m/s"
-    mat["ThermalConductivity"] = "0.591 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "2.07e-4 m/m/K"
-    mat["SpecificHeat"] = "4182 J/kg/K"
-    material_obj.Material = mat
-    material_obj.References = [(BooleanFragments, "Face2")]
-    analysis.addObject(material_obj)
+    # fluid - water
+    water = mat_manager.getMaterial("7e5559d5-be15-4571-a72f-20c39edd41cf")
+    water_obj = ObjectsFem.makeMaterialFluid(doc, "Material_Fluid")
+    water_obj.UUID = water.UUID
+    water_obj.Material = water.Properties
+    water_obj.References = [(shell, "Face2")]
+    analysis.addObject(water_obj)
 
-    # tube wall
-    material_obj = ObjectsFem.makeMaterialSolid(doc, "Material_Wall")
-    mat = material_obj.Material
-    mat["Name"] = "Aluminum Generic"
-    mat["Density"] = "2700 kg/m^3"
-    mat["PoissonRatio"] = "0.35"
-    mat["ShearModulus"] = "25.0 GPa"
-    mat["UltimateTensileStrength"] = "310 MPa"
-    mat["YoungsModulus"] = "70000 MPa"
-    mat["ThermalConductivity"] = "237.0 W/m/K"
-    mat["ThermalExpansionCoefficient"] = "23.1 µm/m/K"
-    mat["SpecificHeat"] = "897.0 J/kg/K"
-    material_obj.Material = mat
-    material_obj.References = [(BooleanFragments, "Face1")]
-    analysis.addObject(material_obj)
+    # tube wall - aluminium generic
+    alum = mat_manager.getMaterial("9bf060e9-1663-44a2-88e2-2ff6ee858efe")
+    alum_obj = ObjectsFem.makeMaterialSolid(doc, "Material_Wall")
+    alum_obj.UUID = alum.UUID
+    alum_obj.Material = alum.Properties
+    alum_obj.References = [(shell, "Face1")]
+    analysis.addObject(alum_obj)
+
+    inlet_refs = (shell, "Edge6")
+    walls_refs = (shell, ("Edge2", "Edge3", "Edge5", "Edge7"))
 
     # constraint inlet velocity
     FlowVelocity_Inlet = ObjectsFem.makeConstraintFlowVelocity(doc, "FlowVelocity_Inlet")
-    FlowVelocity_Inlet.References = [(BooleanFragments, "Edge5")]
+    FlowVelocity_Inlet.References = [inlet_refs]
     FlowVelocity_Inlet.VelocityXFormula = (
         'Variable Coordinate 2; Real MATC "10*(tx+50e-3)*(50e-3-tx)"'
     )
@@ -209,57 +170,43 @@ def setup(doc=None, solvertype="elmer"):
 
     # constraint wall velocity
     FlowVelocity_Wall = ObjectsFem.makeConstraintFlowVelocity(doc, "FlowVelocity_Wall")
-    FlowVelocity_Wall.References = [
-        (BooleanFragments, "Edge2"),
-        (BooleanFragments, "Edge3"),
-        (BooleanFragments, "Edge4"),
-        (BooleanFragments, "Edge7"),
-    ]
+    FlowVelocity_Wall.References = [walls_refs]
     FlowVelocity_Wall.VelocityXUnspecified = False
     FlowVelocity_Wall.VelocityYUnspecified = False
     analysis.addObject(FlowVelocity_Wall)
 
     # constraint initial temperature
     Temperature_Initial = ObjectsFem.makeConstraintInitialTemperature(doc, "Temperature_Initial")
-    Temperature_Initial.InitialTemperature = 300.0
+    Temperature_Initial.InitialTemperature = "300.0 K"
     analysis.addObject(Temperature_Initial)
 
     # constraint wall temperature
     Temperature_Wall = ObjectsFem.makeConstraintTemperature(doc, "Temperature_Wall")
-    Temperature_Wall.Temperature = 300.0
-    Temperature_Wall.NormalDirection = Vector(0, 0, -1)
-    Temperature_Wall.References = [
-        (BooleanFragments, "Edge2"),
-        (BooleanFragments, "Edge3"),
-        (BooleanFragments, "Edge4"),
-        (BooleanFragments, "Edge7"),
-    ]
+    Temperature_Wall.Temperature = "300.0 K"
+    Temperature_Wall.References = [walls_refs]
     analysis.addObject(Temperature_Wall)
 
     # constraint inlet temperature
     Temperature_Inlet = ObjectsFem.makeConstraintTemperature(doc, "Temperature_Inlet")
-    Temperature_Inlet.Temperature = 350.0
-    Temperature_Inlet.NormalDirection = Vector(-1, 0, 0)
-    Temperature_Inlet.References = [(BooleanFragments, "Edge5")]
+    Temperature_Inlet.Temperature = "350.0 K"
+    Temperature_Inlet.References = [inlet_refs]
     analysis.addObject(Temperature_Inlet)
 
     # constraint heating rod temperature
     Temperature_HeatingRod = ObjectsFem.makeConstraintTemperature(doc, "Temperature_HeatingRod")
-    Temperature_HeatingRod.Temperature = 373.0
-    Temperature_HeatingRod.NormalDirection = Vector(0, -1, 0)
-    Temperature_HeatingRod.References = [(BooleanFragments, "Edge1")]
+    Temperature_HeatingRod.Temperature = "373.0 K"
+    Temperature_HeatingRod.References = [(shell, "Edge1")]
     analysis.addObject(Temperature_HeatingRod)
 
     # constraint initial pressure
     Pressure_Initial = ObjectsFem.makeConstraintInitialPressure(doc, "Pressure_Initial")
     Pressure_Initial.Pressure = "100.0 kPa"
-    Pressure_Initial.NormalDirection = Vector(0, -1, 0)
-    Pressure_Initial.References = [(BooleanFragments, "Face2")]
+    Pressure_Initial.References = [(shell, "Face2")]
     analysis.addObject(Pressure_Initial)
 
     # mesh
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.Shape = BooleanFragments
+    femmesh_obj.Shape = shell
     femmesh_obj.ElementOrder = "1st"
     femmesh_obj.CharacteristicLengthMax = "4 mm"
     femmesh_obj.ViewObject.Visibility = False
@@ -268,12 +215,17 @@ def setup(doc=None, solvertype="elmer"):
     mesh_region = ObjectsFem.makeMeshRegion(doc, femmesh_obj, name="MeshRegion")
     mesh_region.CharacteristicLength = "2 mm"
     mesh_region.References = [
-        (BooleanFragments, "Edge1"),
-        (BooleanFragments, "Vertex2"),
-        (BooleanFragments, "Vertex4"),
-        (BooleanFragments, "Vertex6"),
+        (shell, ("Edge1", "Vertex2", "Vertex6", "Vertex7")),
     ]
     mesh_region.ViewObject.Visibility = False
+
+    # set view
+    doc.recompute()
+    if FreeCAD.GuiUp:
+        import FemGui
+        shell.ViewObject.Transparency = 50
+        shell.ViewObject.Document.activeView().fitAll()
+        FemGui.setActiveAnalysis(analysis)
 
     # generate the mesh
     generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")

@@ -288,6 +288,7 @@ template<>
 inline void SketcherAddWorkbenchSketchEditModeActions(Gui::MenuItem& sketch)
 {
     sketch << "Sketcher_LeaveSketch"
+           << "Sketcher_CancelSketch"
            << "Sketcher_ViewSketch"
            << "Sketcher_ViewSection"
            << "Sketcher_StopOperation";
@@ -320,7 +321,7 @@ inline void SketcherAddWorkspaceLines<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Commands"
     );
 
-    if (hGrp->GetBool("UnifiedLineCommands", false)) {
+    if (hGrp->GetBool("UnifiedLineCommands", true)) {
         geom << "Sketcher_CompLine";
     }
     else {

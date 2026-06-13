@@ -99,17 +99,16 @@ void StdCmdOpen::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
-    QStringList formatList;
+    FileDialog::FilterList formatList;
 
-    QString allSupportedFormats = QObject::tr("Supported formats") + QStringLiteral(" (");
+    FileDialog::Filter allSupportedFormats {QObject::tr("Supported formats"), {}};
     // Cram all formats FreeCAD can import under one label
     const auto filetypes = App::GetApplication().getImportTypes();
     for (const auto& type : filetypes) {
-        allSupportedFormats += QStringLiteral(" *.");
-        allSupportedFormats += QString::fromStdString(type);
+        allSupportedFormats.patterns.append(QStringLiteral("*.") + QString::fromStdString(type));
     }
-    allSupportedFormats += QLatin1String(" *.FCBak)");
-    formatList += allSupportedFormats;
+    allSupportedFormats.patterns.append("*.FCBak");
+    formatList.append(allSupportedFormats);
 
     const auto importFilters = App::GetApplication().getImportFilters();
     // Make sure FCStd is the second entry in the format list
@@ -121,25 +120,25 @@ void StdCmdOpen::activated(int iMsg)
             if (!fcstdFilter.contains(QStringLiteral("*.FCBak"), Qt::CaseInsensitive)) {
                 fcstdFilter.replace(")", QStringLiteral(" *.FCBak)"));
             }
-            formatList += fcstdFilter;
+            formatList.append(FileDialog::Filter::fromFilterString(fcstdFilter));
             break;
         }
     }
     for (auto it = importFilters.cbegin(); it != importFilters.cend(); ++it) {
         if (it != fcstdIt) {
-            formatList += QString::fromStdString(it->first);
+            formatList.append(FileDialog::Filter::fromFilterString(QString::fromStdString(it->first)));
         }
     }
 
-    formatList += QObject::tr("All files") + QStringLiteral(" (*.*)");
+    formatList.append(FileDialog::Filter::AllFiles());
 
-    QString selectedFilter;
+    qsizetype selectedFilterIndex = -1;
     QStringList fileList = FileDialog::getOpenFileNames(
         getMainWindow(),
         QObject::tr("Open Document"),
         QString(),
         formatList,
-        &selectedFilter
+        &selectedFilterIndex
     );
     if (fileList.isEmpty()) {
         return;
@@ -175,7 +174,8 @@ void StdCmdOpen::activated(int iMsg)
     }
 
     // load the files with the associated modules
-    SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
+    SelectModule::Dict dict
+        = SelectModule::importHandler(fileList, formatList[selectedFilterIndex].toFilterString());
     if (dict.isEmpty()) {
         QMessageBox::critical(
             getMainWindow(),
@@ -225,44 +225,52 @@ void StdCmdImport::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
-    QStringList formatList;
+    FileDialog::FilterList formatList;
 
-    QString allSupportedFormats = QObject::tr("Supported formats") + QStringLiteral(" (");
+    FileDialog::Filter allSupportedFormats {QObject::tr("Supported formats"), {}};
     const auto filetypes = App::GetApplication().getImportTypes();
     for (const auto& type : filetypes) {
         if (type != "FCStd") {
-            allSupportedFormats += QStringLiteral(" *.");
-            allSupportedFormats += QString::fromStdString(type);
+            allSupportedFormats.patterns.append(QStringLiteral("*.") + QString::fromStdString(type));
         }
     }
-    allSupportedFormats += QLatin1Char(')');
-    formatList += allSupportedFormats;
+    formatList.append(allSupportedFormats);
 
     const auto importFilters = App::GetApplication().getImportFilters();
     for (auto it = importFilters.cbegin(); it != importFilters.cend(); ++it) {
         if (it->first.find("*.FCStd") == std::string::npos) {
-            formatList += QString::fromStdString(it->first);
+            formatList.append(FileDialog::Filter::fromFilterString(QString::fromStdString(it->first)));
         }
     }
 
-    formatList += QObject::tr("All files") + QStringLiteral(" (*.*)");
+    formatList.append(FileDialog::Filter::AllFiles());
 
     Base::Reference<ParameterGrp> hPath = App::GetApplication()
                                               .GetUserParameter()
                                               .GetGroup("BaseApp")
                                               ->GetGroup("Preferences")
                                               ->GetGroup("General");
-    QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileImportFilter"));
+    const auto lastImportFilterName = QString::fromStdString(hPath->GetASCII("FileImportFilter"));
+    qsizetype selectedFilterIndex = -1;
+    for (qsizetype i = 0; i < formatList.size(); ++i) {
+        if (formatList[i].name == lastImportFilterName) {
+            selectedFilterIndex = i;
+            break;
+        }
+    }
+
     QStringList fileList = FileDialog::getOpenFileNames(
         getMainWindow(),
         QObject::tr("Import File"),
         QString(),
         formatList,
-        &selectedFilter
+        &selectedFilterIndex
     );
     if (!fileList.isEmpty()) {
-        hPath->SetASCII("FileImportFilter", selectedFilter.toLatin1().constData());
-        SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
+        const auto& selectedFilter = formatList[selectedFilterIndex];
+        hPath->SetASCII("FileImportFilter", selectedFilter.name.toLatin1().constData());
+        SelectModule::Dict dict
+            = SelectModule::importHandler(fileList, selectedFilter.toFilterString());
 
         bool emptyDoc = (getActiveGuiDocument()->getDocument()->countObjects() == 0);
         // load the files with the associated modules
@@ -468,12 +476,14 @@ void StdCmdExport::activated(int iMsg)
     bool filenameWasGenerated = false;
 
     // fill the list of registered suffixes
-    QStringList filterList;
+    FileDialog::FilterList filterList;
     std::map<std::string, std::string> filterMap = App::GetApplication().getExportFilters();
     for (const auto& filter : filterMap) {
         // ignore the project file format
-        if (filter.first.find("(*.FCStd)") == std::string::npos) {
-            filterList << QString::fromStdString(filter.first);
+        if (filter.first.find("*.FCStd") == std::string::npos) {
+            filterList.append(
+                FileDialog::Filter::fromFilterString(QString::fromStdString(filter.first))
+            );
         }
     }
     Base::Reference<ParameterGrp> hPath = App::GetApplication()
@@ -481,13 +491,15 @@ void StdCmdExport::activated(int iMsg)
                                               .GetGroup("BaseApp")
                                               ->GetGroup("Preferences")
                                               ->GetGroup("General");
-    QString selectedFilter;
-
-    if (!exportInfo.filter.empty()) {
-        selectedFilter = QString::fromStdString(exportInfo.filter);
-    }
-    else {
-        selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
+    const auto lastExportFilterName = QString::fromStdString(
+        !exportInfo.filterName.empty() ? exportInfo.filterName : hPath->GetASCII("FileExportFilter")
+    );
+    qsizetype selectedFilterIndex = -1;
+    for (qsizetype i = 0; i < filterList.size(); ++i) {
+        if (filterList[i].name == lastExportFilterName) {
+            selectedFilterIndex = i;
+            break;
+        }
     }
 
     // Create a default filename for the export
@@ -539,12 +551,14 @@ void StdCmdExport::activated(int iMsg)
         QObject::tr("Export File"),
         defaultFilename,
         filterList,
-        &selectedFilter
+        &selectedFilterIndex
     );
     if (!filename.isEmpty()) {
-        hPath->SetASCII("FileExportFilter", selectedFilter.toLatin1().constData());
+        const auto& selectedFilter = filterList[selectedFilterIndex];
+        hPath->SetASCII("FileExportFilter", selectedFilter.name.toLatin1().constData());
 
-        SelectModule::Dict dict = SelectModule::exportHandler(filename, selectedFilter);
+        SelectModule::Dict dict
+            = SelectModule::exportHandler(filename, selectedFilter.toFilterString());
         // export the files with the associated modules
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
             getGuiApplication()->exportTo(it.key().toUtf8(), doc->getName(), it.value().toLatin1());
@@ -563,7 +577,7 @@ void StdCmdExport::activated(int iMsg)
 
         exportInfo.filename = filename.toStdString();
         exportInfo.object = toExport;
-        exportInfo.filter = selectedFilter.toStdString();
+        exportInfo.filterName = selectedFilter.name.toStdString();
         exportInfo.generatedName = filenameWasGenerated;
 
         doc->setExportInfo(exportInfo);
@@ -602,9 +616,9 @@ void StdCmdMergeProjects::activated(int iMsg)
     QString exe = qApp->applicationName();
     QString project = FileDialog::getOpenFileName(
         Gui::getMainWindow(),
-        QString::fromUtf8(QT_TR_NOOP("Merge Document")),
+        QObject::tr("Merge Document"),
         FileDialog::getWorkingDirectory(),
-        QStringList(QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe))
+        FileDialog::FilterList {{QObject::tr("%1 document").arg(exe), {"*.FCStd"}}}
     );
     if (!project.isEmpty()) {
         FileDialog::setWorkingDirectory(project);
@@ -614,8 +628,8 @@ void StdCmdMergeProjects::activated(int iMsg)
         if (proj == info) {
             QMessageBox::critical(
                 Gui::getMainWindow(),
-                QString::fromUtf8(QT_TR_NOOP("Merge Document")),
-                QString::fromUtf8(QT_TR_NOOP("Cannot merge document with itself."))
+                QObject::tr("Merge Document"),
+                QObject::tr("Cannot merge document with itself.")
             );
             return;
         }
@@ -691,12 +705,11 @@ void StdCmdExportDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
-    QString format = QStringLiteral("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
     QString fn = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(),
         Gui::GraphvizView::tr("Export Graph"),
         QString(),
-        QStringList(format)
+        FileDialog::FilterList {{QStringLiteral("Graphviz"), {"*.gv"}}}
     );
     if (!fn.isEmpty()) {
         QFile file(fn);
@@ -1484,6 +1497,19 @@ void StdCmdDelete::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     int tid = 0;
+    QPointer<QWidget> focusBefore;
+
+    // Restore focus to the widget the user was working in before the
+    // command opened any modal popup. Using a scope guard ensures the
+    // restore runs on every exit path: normal return, early return,
+    // and exception unwinding.
+    // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+    auto focusGuard = qScopeGuard([&focusBefore]() {
+        if (focusBefore && focusBefore->isVisible() && focusBefore->isEnabled()) {
+            focusBefore->setFocus(Qt::OtherFocusReason);
+        }
+    });
+
     try {
         std::set<App::Document*> docs;
         std::vector<App::TransactionLocker> tlocks;
@@ -1498,6 +1524,13 @@ void StdCmdDelete::activated(int iMsg)
             // commitCommand();
             return;
         }
+
+        // Snapshot focus before any popup can steal it. After the delete
+        // completes and any modal dialogs close, restore focus so keyboard
+        // navigation continues from where the user was working.
+        // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+        focusBefore = QApplication::focusWidget();
+
         // Ensure that the document from which we send the command
         // can undo it (e.g delete a subobject of an assembly
         // from the assembly file)
@@ -1531,6 +1564,7 @@ void StdCmdDelete::activated(int iMsg)
             bool more = false;
             auto sels = Selection().getSelectionEx();
             bool autoDeletion = true;
+            bool forceDeletion = false;
             for (auto& sel : sels) {
                 auto obj = sel.getObject();
                 if (!obj) {
@@ -1594,6 +1628,7 @@ void StdCmdDelete::activated(int iMsg)
                 );
                 if (ret == QMessageBox::Yes) {
                     autoDeletion = true;
+                    forceDeletion = true;
                 }
             }
             if (autoDeletion) {
@@ -1603,7 +1638,8 @@ void StdCmdDelete::activated(int iMsg)
                     if (vp) {
                         manageDocCommand(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
-                        if (vp->onDelete(sel.getSubNames())) {
+                        // skip if user explicitly confirmed deletion of objects with dependencies
+                        if (vp->onDelete(sel.getSubNames()) || forceDeletion) {
                             docs.insert(obj->getDocument());
                             FCMD_OBJ_DOC_CMD(obj, "removeObject('" << obj->getNameInDocument() << "')");
                         }

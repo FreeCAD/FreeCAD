@@ -37,7 +37,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "force", "pressure"],
-        "solvers": ["ccxtools", "elmer"],
+        "solvers": ["ccxtools", "elmer", "z88"],
         "material": "solid",
         "equations": ["mechanical"],
     }
@@ -82,6 +82,8 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
     elif solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         ObjectsFem.makeEquationElasticity(doc, solver_obj)
+    elif solvertype == "z88":
+        solver_obj = ObjectsFem.makeSolverZ88(doc, "SolverZ88")
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "

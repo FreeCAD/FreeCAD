@@ -87,7 +87,11 @@ def createResourceClone(obj, orig, name, icon):
 
         Path.Base.Gui.IconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
-        clone.ViewObject.Transparency = 80
+        clone.ViewObject.DisplayMode = "Flat Lines"
+        clone.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
+        clone.ViewObject.Transparency = 0
+        clone.ViewObject.LineColor = (0.310, 0.333, 0.357)
+        clone.ViewObject.ShapeMaterial.Shininess = 0.85
     obj.Document.recompute()  # necessary to create the clone shape
     return clone
 
@@ -391,8 +395,9 @@ class ObjectJob:
                 obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
             if not obj.Stock:
                 obj.Stock = PathStock.CreateFromBase(obj)
-        if obj.Stock.ViewObject:
-            obj.Stock.ViewObject.Visibility = False
+        PathStock.ApplyStockViewDefaults(obj.Stock)
+        if obj.Stock and obj.Stock.ViewObject:
+            obj.Stock.ViewObject.Visibility = True
 
     def removeBase(self, obj, base, removeFromModel):
         if isResourceClone(obj, base, None):

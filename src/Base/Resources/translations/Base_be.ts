@@ -19,7 +19,7 @@
       <translation>Звычайная Злучаных Штатаў (цалі, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="679"/>
+      <location filename="../../UnitsSchemasData.h" line="681"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Брытанская для грамадскіх інжынераў (футы, фунты, міль/г)</translation>
     </message>

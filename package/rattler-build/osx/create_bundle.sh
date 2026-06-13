@@ -56,8 +56,22 @@ echo -e "\################"
 echo -e "version_name:  ${version_name}"
 echo -e "################"
 
+# Extract Apple-compliant bundle version from version.json
+# For dev/weekly builds, append a "d" + ISO week number suffix (e.g. "1.2.0d12")
+# per Apple's CFBundleVersion spec for development builds
+bundle_version=$(python3 -c "
+import json, datetime
+d = json.load(open('../../../version.json'))
+v = f'{d[\"version_major\"]}.{d[\"version_minor\"]}.{d[\"version_patch\"]}'
+suffix = d.get('version_suffix', '')
+if suffix:
+    week = datetime.date.today().isocalendar()[1]
+    v += f'd{week}'
+print(v)
+")
+
 cp Info.plist.template ${conda_env}/../Info.plist
-sed -i "s/FREECAD_VERSION/${version_name}/" ${conda_env}/../Info.plist
+sed -i "s/FREECAD_BUNDLE_VERSION/${bundle_version}/" ${conda_env}/../Info.plist
 sed -i "s/APPLICATION_MENU_NAME/${application_menu_name}/" ${conda_env}/../Info.plist
 
 pixi list -e default > FreeCAD.app/Contents/packages.txt

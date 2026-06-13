@@ -15,11 +15,13 @@ on:
         default: false
 
 permissions:
-  contents: write        # required to PATCH the release body
+  contents: read
 
 jobs:
   update-notes:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write        # required to PATCH the release body
     steps:
       - name: Inject compare link into weekly release notes
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3  # v9.0.0

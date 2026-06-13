@@ -71,6 +71,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
             | PathOp.FeatureHeights
             | PathOp.FeatureStepDown
             | PathOp.FeatureCoolant
+            | PathOp.FeatureLinking
         )
 
     def initOperation(self, obj):
@@ -272,6 +273,31 @@ class ObjectMillFacing(PathOp.ObjectOp):
         tool_diameter = tool.Diameter.Value
         Path.Log.debug(f"Tool diameter: {tool_diameter}")
 
+        # Prepare linking parameters
+        solids = [base.Shape for base in self.job.Model.Group]
+        linkingArgs = {
+            "start_position": None,
+            "target_position": None,
+            "local_clearance": obj.SafeHeight.Value,
+            "global_clearance": obj.ClearanceHeight.Value,
+            "solids": None,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "collision_clearance": obj.CollisionClearance.Value,
+        }
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["local_clearance"] = obj.ClearanceHeight.Value
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_diameter"] = tool_diameter
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+
         # Determine the step-downs
         finish_step = 0.0  # No finish step for facing
         Path.Log.debug(
@@ -288,12 +314,11 @@ class ObjectMillFacing(PathOp.ObjectOp):
         )
         Path.Log.debug(f"Depth params object: {depthparams}")
 
-        # Always use the stock object top face for facing operations
-        job = PathUtils.findParentJob(obj)
-        Path.Log.debug(f"Job: {job.Label if job else 'None'}")
-        if job and job.Stock:
-            Path.Log.debug(f"Stock: {job.Stock.Label}")
-            stock_faces = job.Stock.Shape.Faces
+        # Use self.stock which the base class wraps with transformed geometry
+        # when a 3+2 workplane is active.
+        if self.stock and hasattr(self.stock, "Shape") and self.stock.Shape:
+            Path.Log.debug(f"Stock: {self.stock.Label}")
+            stock_faces = self.stock.Shape.Faces
             Path.Log.debug(f"Number of stock faces: {len(stock_faces)}")
 
             # Find faces with normal pointing toward Z+ (upward)
@@ -401,9 +426,6 @@ class ObjectMillFacing(PathOp.ObjectOp):
         except Exception as e:
             Path.Log.error(f"Error generating toolpath: {e}")
             raise
-
-        # clear commandlist
-        self.commandlist = []
 
         # Be safe. Add first G0 to clearance height
         targetZ = obj.ClearanceHeight.Value
@@ -588,13 +610,10 @@ class ObjectMillFacing(PathOp.ObjectOp):
                         first_position = FreeCAD.Vector(target_xy[0], target_xy[1], depth)
 
                         # Generate collision-aware linking moves up to safe/clearance and back down
-                        link_commands = linking.get_linking_moves(
-                            start_position=last_position,
-                            target_position=first_position,
-                            local_clearance=obj.SafeHeight.Value,
-                            global_clearance=obj.ClearanceHeight.Value,
-                            tool_shape=obj.ToolController.Tool.Shape,
-                        )
+                        linkingArgs["start_position"] = last_position
+                        linkingArgs["target_position"] = first_position
+                        link_commands = linking.get_linking_moves(**linkingArgs)
+
                         # Append linking moves, ensuring full XYZ continuity
                         current = last_position
                         for lc in link_commands:
@@ -662,7 +681,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
         # Apply feedrates to the entire commandlist, with debug on failure
         try:
             FeedRate.setFeedRate(self.commandlist, obj.ToolController)
-        except Exception as e:
+        except Exception:
             # Dump last 12 commands for diagnostics
             n = len(self.commandlist)
             start = max(0, n - 12)
@@ -690,7 +709,7 @@ def Create(name, obj=None, parentJob=None):
 
 def SetupProperties():
     """SetupProperties() ... Return list of properties required for the operation."""
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("CutMode")
     setup.append("ClearingPattern")
     setup.append("Angle")
