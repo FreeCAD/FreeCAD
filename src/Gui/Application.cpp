@@ -89,7 +89,6 @@
 #include "Macro.h"
 #include "PreferencePackManager.h"
 #include "PythonConsolePy.h"
-#include "PythonDebugger.h"
 #include "MainWindowPy.h"
 #include "MDIViewPy.h"
 #include "MDIViewWithCamera.h"
@@ -725,7 +724,6 @@ Application::Application(bool GUIenabled)
 
     // clang-format off
     // Python console binding
-    PythonDebugModule           ::init_module();
     PythonStdout                ::init_type();
     PythonStderr                ::init_type();
     OutputStdout                ::init_type();

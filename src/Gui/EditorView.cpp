@@ -289,12 +289,6 @@ bool EditorView::onHasMsg(const char* pMsg) const
     if (strcmp(pMsg, "Run") == 0) {
         return true;
     }
-    if (strcmp(pMsg, "DebugStart") == 0) {
-        return true;
-    }
-    if (strcmp(pMsg, "DebugStop") == 0) {
-        return true;
-    }
     if (strcmp(pMsg, "SaveAs") == 0) {
         return true;
     }
@@ -526,7 +520,6 @@ void EditorView::printPdf()
 void EditorView::setCurrentFileName(const QString& fileName)
 {
     d->fileName = fileName;
-    Q_EMIT changeFileName(d->fileName);
     d->textEdit->document()->setModified(false);
 
     QString name;
@@ -635,7 +628,6 @@ QStringList EditorView::undoActions() const
 QStringList EditorView::redoActions() const
 {
     return d->redos;
-    ;
 }
 
 void EditorView::focusInEvent(QFocusEvent*)
@@ -650,31 +642,19 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonEditorView, Gui::EditorView)
 PythonEditorView::PythonEditorView(PythonEditor* editor, QWidget* parent)
     : EditorView(editor, parent)
     , _pye(editor)
-{
-    connect(this, &PythonEditorView::changeFileName, editor, &PythonEditor::setFileName);
-    watcher = new PythonTracingWatcher(this);
-}
+    , watcher(new PythonTracingWatcher(this))
+{}
 
 PythonEditorView::~PythonEditorView()
 {
     delete watcher;
 }
 
-/**
- * Runs the action specified by \a pMsg.
- */
+/// Runs the action specified by \a pMsg.
 bool PythonEditorView::onMsg(const char* pMsg)
 {
     if (strcmp(pMsg, "Run") == 0) {
         executeScript();
-        return true;
-    }
-    else if (strcmp(pMsg, "StartDebug") == 0) {
-        QTimer::singleShot(300, this, &PythonEditorView::startDebug);
-        return true;
-    }
-    else if (strcmp(pMsg, "ToggleBreakpoint") == 0) {
-        toggleBreakpoint();
         return true;
     }
     return EditorView::onMsg(pMsg);
@@ -689,18 +669,10 @@ bool PythonEditorView::onHasMsg(const char* pMsg) const
     if (strcmp(pMsg, "Run") == 0) {
         return true;
     }
-    if (strcmp(pMsg, "StartDebug") == 0) {
-        return true;
-    }
-    if (strcmp(pMsg, "ToggleBreakpoint") == 0) {
-        return true;
-    }
     return EditorView::onHasMsg(pMsg);
 }
 
-/**
- * Runs the opened script in the macro manager.
- */
+/// Runs the opened script in the macro manager.
 void PythonEditorView::executeScript()
 {
     // always save the macro when it is modified
@@ -720,26 +692,6 @@ void PythonEditorView::executeScript()
         e.reportException();
         getMainWindow()->unsetCursor();
     }
-}
-
-void PythonEditorView::startDebug()
-{
-    _pye->startDebug();
-}
-
-void PythonEditorView::toggleBreakpoint()
-{
-    _pye->toggleBreakpoint();
-}
-
-void PythonEditorView::showDebugMarker(int line)
-{
-    _pye->showDebugMarker(line);
-}
-
-void PythonEditorView::hideDebugMarker()
-{
-    _pye->hideDebugMarker();
 }
 
 // ----------------------------------------------------------------------------
