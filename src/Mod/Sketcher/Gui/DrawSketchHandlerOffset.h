@@ -42,6 +42,9 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+#include <GeomConvert.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <Geom_TrimmedCurve.hxx>
 #include <TopoDS.hxx>
 #include <TopExp_Explorer.hxx>
 #include <gp_Pln.hxx>
@@ -369,6 +372,39 @@ private:
         }
     }
 
+    Part::Geometry* curveToBSpline(const TopoDS_Edge& edge)
+    {
+        // Offsetting a B-spline yields non-analytic edges: OCC represents them as OffsetCurve
+        // segments (most common), or as B-spline/Bezier curves. Convert any of these to a
+        // Part::GeomBSplineCurve, honoring the edge trimming and placement.
+        TopLoc_Location loc;
+        double first = 0.0;
+        double last = 0.0;
+        Handle(Geom_Curve) hCurve = BRep_Tool::Curve(edge, loc, first, last);
+        if (hCurve.IsNull()) {
+            return nullptr;
+        }
+        if (!loc.IsIdentity()) {
+            hCurve = Handle(Geom_Curve)::DownCast(hCurve->Transformed(loc.Transformation()));
+        }
+
+        Handle(Geom_BSplineCurve) hBSpline;
+        try {
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hCurve, first, last);
+            hBSpline = GeomConvert::CurveToBSplineCurve(tCurve);
+        }
+        catch (const Standard_Failure&) {
+            return nullptr;
+        }
+        if (hBSpline.IsNull()) {
+            return nullptr;
+        }
+
+        auto* bSpline = new Part::GeomBSplineCurve(hBSpline);
+        GeometryFacade::setConstruction(bSpline, false);
+        return bSpline;
+    }
+
     void getOffsetGeos(std::vector<Part::Geometry*>& geometriesToAdd, std::vector<int>& listOfOffsetGeoIds)
     {
         TopoDS_Shape offsetShape = makeOffsetShape();
@@ -377,23 +413,36 @@ private:
         }
 
         TopExp_Explorer expl(offsetShape, TopAbs_EDGE);
-        int geoIdToAdd = firstCurveCreated;
-        for (; expl.More(); expl.Next(), geoIdToAdd++) {
+        for (; expl.More(); expl.Next()) {
             const TopoDS_Edge& edge = TopoDS::Edge(expl.Current());
             BRepAdaptor_Curve curve(edge);
+
+            Part::Geometry* geo = nullptr;
             if (curve.GetType() == GeomAbs_Line) {
-                geometriesToAdd.push_back(curveToLine(curve));
-                listOfOffsetGeoIds.push_back(geoIdToAdd);
+                geo = curveToLine(curve);
             }
             else if (curve.GetType() == GeomAbs_Circle) {
-                geometriesToAdd.push_back(curveToCircleOrArc(curve, edge));
-                listOfOffsetGeoIds.push_back(geoIdToAdd);
+                geo = curveToCircleOrArc(curve, edge);
             }
             else if (curve.GetType() == GeomAbs_Ellipse) {
-                geometriesToAdd.push_back(curveToEllipseOrArc(curve, edge));
-                listOfOffsetGeoIds.push_back(geoIdToAdd);
+                geo = curveToEllipseOrArc(curve, edge);
             }
-            // TODO Bspline support
+            else {
+                // Offsetting a B-spline produces non-analytic edges (OffsetCurve, BSpline or
+                // Bezier). Convert any such edge to a B-spline so the B-spline section is not
+                // dropped from the result.
+                geo = curveToBSpline(edge);
+            }
+
+            if (geo) {
+                // addGeometry() assigns sequential ids from firstCurveCreated, so an offset
+                // geometry's id equals its position in geometriesToAdd. Deriving it this way
+                // (not from the edge index) keeps ids aligned when an edge type is skipped.
+                listOfOffsetGeoIds.push_back(
+                    firstCurveCreated + static_cast<int>(geometriesToAdd.size())
+                );
+                geometriesToAdd.push_back(geo);
+            }
         }
     }
 
