@@ -24,7 +24,12 @@
 #pragma once
 
 #include <FCGlobal.h>
+
+#include <map>
 #include <sstream>
+#include <string>
+
+class QOpenGLWidget;
 
 namespace Gui
 {
@@ -35,6 +40,12 @@ public:
     static void getStyleInformation(std::stringstream& str);
     static void getNavigationStyleInformation(std::stringstream& str);
     static void getDpiInformation(std::stringstream& str);
+    static void getDialogInformation(std::stringstream& str);
+    static void initOpenGLInformation(QOpenGLWidget&);
+    static void getOpenGLInformation(std::stringstream& str);
+
+    static std::string collect(const std::map<std::string, std::string>& config);
+    static std::string collect();
 };
 
 }  // namespace Gui
