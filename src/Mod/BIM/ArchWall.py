@@ -1895,6 +1895,22 @@ if FreeCAD.GuiUp:
             # Wall Options first, then Components (inherited self.form)
             self.form = [self.wallWidget, self.form]
 
+            # Keep the spin boxes in sync when Length/Width/Height are
+            # changed externally (e.g. by Draft-style node editing in the
+            # 3D view) so the panel does not show stale values and does
+            # not clobber them on accept().
+            FreeCAD.addDocumentObserver(self)
+
+        def slotChangedObject(self, obj, prop):
+            if obj is not self.obj:
+                return
+            if prop == "Length" and not self.length.hasFocus():
+                self.length.setProperty("value", self.obj.Length)
+            elif prop == "Width" and not self.width.hasFocus():
+                self.width.setProperty("value", self.obj.Width)
+            elif prop == "Height" and not self.height.hasFocus():
+                self.height.setProperty("value", self.obj.Height)
+
         def setAlign(self, button):
             if button == self.alignLeft:
                 self.obj.Align = "Left"
@@ -1905,10 +1921,15 @@ if FreeCAD.GuiUp:
             self.obj.recompute()
 
         def accept(self):
+            FreeCAD.removeDocumentObserver(self)
             self.obj.Length = self.length.property("value")
             self.obj.Width = self.width.property("value")
             self.obj.Height = self.height.property("value")
             return super().accept()
+
+        def reject(self):
+            FreeCAD.removeDocumentObserver(self)
+            return super().reject()
 
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
@@ -2102,7 +2123,36 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         taskd = WallTaskPanel(vobj.Object)
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
+        self._start_node_edit_session(vobj.Object)
         return True
+
+    def unsetEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+        self._stop_node_edit_session()
+        FreeCADGui.Control.closeDialog()
+        return True
+
+    def _start_node_edit_session(self, obj):
+        # Show draggable endpoint / height handles in the 3D view while the
+        # task panel is open. Only baseless walls expose nodes today (see
+        # ArchWallGuiTools.get_edit_points); other base types fall through
+        # silently so the task panel still works on its own.
+        self._node_edit_session = None
+        if obj.Base is not None:
+            return
+        from draftguitools.gui_node_edit_session import NodeEditSession
+        from draftguitools.gui_edit_arch_objects import ArchWallGuiTools
+
+        session = NodeEditSession([(obj, ArchWallGuiTools())])
+        session.start()
+        self._node_edit_session = session
+
+    def _stop_node_edit_session(self):
+        session = getattr(self, "_node_edit_session", None)
+        if session is not None:
+            session.stop()
+            self._node_edit_session = None
 
     def setupContextMenu(self, vobj, menu):
 
