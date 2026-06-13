@@ -31,6 +31,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "GeometryCreationMode.h"
@@ -41,7 +42,6 @@
 using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
-namespace sp = std::placeholders;
 
 bool isAlterGeoActive(Gui::Document* doc)
 {
@@ -54,32 +54,44 @@ bool isAlterGeoActive(Gui::Document* doc)
     return false;
 }
 
-void slotActiveDocument(const Gui::Document& doc, GeometryCreationMode lastActiveMode)
+namespace
 {
-    // Get the construction status and invoke ToggleConstruction if needed to ensure correct
-    // contruction indicators
-    auto vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc.getInEdit());
-    if (vp) {
-        GeometryCreationMode currentDocumentMode = vp->getGeometryCreationMode();
-        if (lastActiveMode != currentDocumentMode) {
-            // Notify for icon update
-            Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-            rcCmdMgr.updateCommands("ToggleConstruction", static_cast<int>(currentDocumentMode));
-        }
+
+void updateToggleConstructionCommands(GeometryCreationMode mode)
+{
+    Gui::Application::Instance->commandManager().updateCommands(
+        "ToggleConstruction",
+        static_cast<int>(mode)
+    );
+}
+
+GeometryCreationMode geometryCreationModeFromViewProvider(const Gui::ViewProviderDocumentObject& vp)
+{
+    auto sketchVp = dynamic_cast<const SketcherGui::ViewProviderSketch*>(&vp);
+    if (sketchVp) {
+        return sketchVp->getGeometryCreationMode();
     }
-    else {
-        // Init to Normal when ViewProviderSketch isn't yet available
-        Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
-        rcCmdMgr.updateCommands("ToggleConstruction", static_cast<int>(GeometryCreationMode::Normal));
+
+    return GeometryCreationMode::Normal;
+}
+
+void updateToggleConstructionCommands(const Gui::Document& doc)
+{
+    auto vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc.getInEdit());
+    updateToggleConstructionCommands(vp ? vp->getGeometryCreationMode() : GeometryCreationMode::Normal);
+}
+
+void resetToggleConstructionCommandsForDocument(const Gui::ViewProviderDocumentObject& vp)
+{
+    if (vp.getDocument() == Gui::Application::Instance->activeDocument()) {
+        updateToggleConstructionCommands(GeometryCreationMode::Normal);
     }
 }
 
+}  // namespace
+
 namespace SketcherGui
 {
-// Tracks the rendered state of the construction geometry, allowing update as needed when document
-// activation occurs
-GeometryCreationMode renderedCreationMode = GeometryCreationMode::Normal;
-
 /* Constrain commands =======================================================*/
 DEF_STD_CMD_AU(CmdSketcherToggleConstruction)
 
@@ -96,15 +108,22 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     sAccel = "G, N";
     eType = ForEdit;
 
-    Gui::Application::Instance->signalActiveDocument.connect([this](const Gui::Document& doc) {
-        slotActiveDocument(doc, renderedCreationMode);
+    auto app = Gui::Application::Instance;
+
+    app->signalActiveDocument.connect([](const Gui::Document& doc) {
+        updateToggleConstructionCommands(doc);
     });
 
-    Gui::Application::Instance->signalNewDocument.connect([](const Gui::Document& doc, bool) {
-        Gui::Application::Instance->commandManager().updateCommands(
-            "ToggleConstruction",
-            static_cast<int>(GeometryCreationMode::Normal)
-        );
+    app->signalNewDocument.connect([](const Gui::Document&, bool) {
+        updateToggleConstructionCommands(GeometryCreationMode::Normal);
+    });
+
+    app->signalInEdit.connect([](const Gui::ViewProviderDocumentObject& vp) {
+        updateToggleConstructionCommands(geometryCreationModeFromViewProvider(vp));
+    });
+
+    app->signalResetEdit.connect([](const Gui::ViewProviderDocumentObject& vp) {
+        resetToggleConstructionCommandsForDocument(vp);
     });
 
     // list of toggle construction commands
@@ -157,9 +176,6 @@ void CmdSketcherToggleConstruction::updateAction(int mode)
     if (act) {
 
         GeometryCreationMode creationMode = static_cast<GeometryCreationMode>(mode);
-
-        // Store
-        renderedCreationMode = creationMode;
 
         // Apply
         switch (creationMode) {
