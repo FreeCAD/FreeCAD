@@ -512,8 +512,17 @@ def approximateWire(wire, tolerance=0.01):
 class svgHandler(xml.sax.ContentHandler):
     """Parse SVG files and create FreeCAD objects."""
 
-    def __init__(self):
+    def __init__(self, headless=False):
         super().__init__()
+        self.headless = headless
+        if headless:
+            # If headless, our instance methods will do nothing.
+            self._msg = lambda *args, **kwargs: None
+            self._wrn = lambda *args, **kwargs: None
+        else:
+            self._msg = _msg
+            self._wrn = _wrn
+
         """Retrieve Draft parameters and initialize."""
         self.style = params.get_param("svgstyle")
         self.disableUnitScaling = params.get_param("svgDisableUnitScaling")
@@ -594,9 +603,9 @@ class svgHandler(xml.sax.ContentHandler):
         self.count += 1
         precision = svg_precision()
 
-        _msg("processing element {0}: {1}".format(self.count, name))
-        _msg("existing group transform: {}".format(self.grouptransform))
-        _msg("existing group style: {}".format(self.groupstyles))
+        self._msg("processing element {0}: {1}".format(self.count, name))
+        self._msg("existing group transform: {}".format(self.grouptransform))
+        self._msg("existing group style: {}".format(self.groupstyles))
 
         data = {}
         for keyword, content in list(attrs.items()):
@@ -634,6 +643,8 @@ class svgHandler(xml.sax.ContentHandler):
                     self.svgdpi = 96.0
                 elif "width" in data and "cm" in attrs.getValue("width"):
                     self.svgdpi = 96.0
+                elif self.headless:
+                    self.svgdpi = 96.0
                 else:
                     _inf = (
                         "This SVG file does not appear to have been produced "
@@ -658,15 +669,15 @@ class svgHandler(xml.sax.ContentHandler):
                         else:
                             self.svgdpi = 90.0
                         if ret:
-                            _msg(translate("ImportSVG", _inf))
-                            _msg(translate("ImportSVG", _qst))
-                            _msg("*** User specified {} " "dpi ***".format(self.svgdpi))
+                            self._msg(translate("ImportSVG", _inf))
+                            self._msg(translate("ImportSVG", _qst))
+                            self._msg("*** User specified {} " "dpi ***".format(self.svgdpi))
                     else:
                         self.svgdpi = 96.0
-                        _msg(_inf)
-                        _msg("*** Assuming {} dpi ***".format(self.svgdpi))
+                        self._msg(_inf)
+                        self._msg("*** Assuming {} dpi ***".format(self.svgdpi))
             if self.svgdpi == 1.0:
-                _wrn(
+                self._wrn(
                     "This SVG file (" + inks_doc_name + ") "
                     "has an unrecognised format which means "
                     "the dpi could not be determined; "
@@ -724,7 +735,7 @@ class svgHandler(xml.sax.ContentHandler):
                     if preserve_ar.startswith("none"):
                         m.scale(Vector(sx, sy, 1))
                         if sx != sy:
-                            _wrn(
+                            self._wrn(
                                 "Non-uniform scaling with probably degenerating "
                                 + "effects on Edges. ({} vs. {}).".format(sx, sy)
                             )
@@ -800,13 +811,13 @@ class svgHandler(xml.sax.ContentHandler):
         pathname = None
         if "id" in data:
             pathname = data["id"][0]
-            _msg("name: {}".format(pathname))
+            self._msg("name: {}".format(pathname))
 
         # Process paths
         if name == "path":
             if not pathname:
                 pathname = "Path"
-            _msg("data: {}".format(data))
+            self._msg("data: {}".format(data))
 
             if "freecad:basepoint1" in data:
                 p1 = data["freecad:basepoint1"]
@@ -870,7 +881,7 @@ class svgHandler(xml.sax.ContentHandler):
                 p4 = Vector(data["x"] + rx, -data["y"] - ry, 0)
 
                 if rx < 0 or ry < 0:
-                    _wrn("Warning: 'rx' or 'ry' is negative, " "check the SVG file")
+                    self._wrn("Warning: 'rx' or 'ry' is negative, " "check the SVG file")
 
                 if rx >= ry:
                     e = Part.Ellipse(Vector(), rx, ry)
@@ -968,7 +979,7 @@ class svgHandler(xml.sax.ContentHandler):
             ry = data["ry"]
 
             if rx < 0 or ry < 0:
-                _wrn("Warning: 'rx' or 'ry' is negative, check the SVG file")
+                self._wrn("Warning: 'rx' or 'ry' is negative, check the SVG file")
 
             if rx > ry:
                 sh = Part.Ellipse(c, rx, ry).toShape()
@@ -1004,7 +1015,7 @@ class svgHandler(xml.sax.ContentHandler):
         # Process texts
         if name in ["text", "tspan"]:
             if "freecad:skip" not in data:
-                _msg("processing a text")
+                self._msg("processing a text")
                 if "x" in data:
                     self.x = data["x"]
                 else:
@@ -1023,14 +1034,14 @@ class svgHandler(xml.sax.ContentHandler):
                     _font_size = int(getsize(data["font-size"]))
                     self.lastdim.ViewObject.FontSize = _font_size
 
-        _msg("done processing element {}".format(self.count))
+        self._msg("done processing element {}".format(self.count))
 
     # startElement()
 
     def characters(self, content):
         """Read characters from the given string."""
         if self.text:
-            _msg("reading characters {}".format(content))
+            self._msg("reading characters {}".format(content))
             obj = self.doc.addObject("App::Annotation", "Text")
             # use ignore to not break import if char is not found in latin1
             obj.LabelText = content.encode("latin1", "ignore")
@@ -1062,7 +1073,7 @@ class svgHandler(xml.sax.ContentHandler):
             self.transform = None
             self.text = None
         if name == "g" or name == "a" or name == "svg" or name == "freecad:used":
-            _msg("closing group")
+            self._msg("closing group")
             self.grouptransform.pop()
             if self.groupstyles:
                 self.groupstyles.pop()
@@ -1539,3 +1550,48 @@ def replace_use_with_reference(file_path):
 
     # return tree as xml string with namespace declaration.
     return ET.tostring(root, encoding="unicode", xml_declaration=True)
+
+
+def _get_shapes_from_svg(filename):
+    """
+    Internal helper function to import an SVG file and return its shapes
+    without adding them to the active document. Called from C++.
+    """
+
+    # Create a temporary, hidden document to perform the import
+    temp_doc_name = "___svg_import_temp___"
+
+    try:
+        FreeCAD.closeDocument(temp_doc_name)
+    except NameError:
+        pass
+
+    doc = FreeCAD.newDocument(temp_doc_name, hidden=True, temp=True)
+
+    try:
+        # Set up the parser, same as the open() function
+        parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges, False)
+        handler = svgHandler(headless=True)
+        # Crucially, direct the handler to our temporary document
+        parser.setContentHandler(handler)
+        parser._cont_handler.doc = doc
+
+        # Preprocess file to handle <use> tags
+        new_svg_content = replace_use_with_reference(filename)
+        xml.sax.parseString(new_svg_content, handler)
+        doc.recompute()
+
+        # Extract the .Shape property from all created objects
+        shapes = [obj.Shape for obj in doc.Objects if hasattr(obj, "Shape")]
+
+        return shapes
+
+    except Exception as e:
+        FreeCAD.Console.PrintError("Error in _get_shapes_from_svg: {}\n".format(str(e)))
+        return []
+
+    finally:
+        # Always ensure the temporary document is closed
+        if FreeCAD.getDocument(temp_doc_name):
+            FreeCAD.closeDocument(temp_doc_name)

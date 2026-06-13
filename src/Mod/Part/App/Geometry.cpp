@@ -144,6 +144,8 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
+#include <Mod/Part/App/TopoShapePy.h>
+#include <Base/Interpreter.h>
 #include <BRep_Tool.hxx>
 #include <TopoDS.hxx>
 #include <memory>
@@ -7736,6 +7738,80 @@ std::vector<TopoDS_Shape> makeTextWires(
     FT_Done_Face(ftFace);
     FT_Done_FreeType(ftLib);
     return allWires;
+}
+
+/**
+ * @brief Imports shapes from an SVG file.
+ *
+ * This function calls a Python helper that uses the Draft workbench's SVG
+ * importer to parse an SVG file and return its contents as a list of
+ * Part.Shape objects.
+ *
+ * @param fileName The full path to the SVG file.
+ * @return A vector of TopoDS_Shape containing the geometry from the SVG.
+ */
+std::vector<TopoDS_Shape> getShapesFromSVG(const std::string& fileName)
+{
+    std::vector<TopoDS_Shape> shapes;
+    Base::PyGILStateLocker lock;
+
+    // Import the Python module that contains our helper function.
+    // We will add this helper to 'importSVG.py'.
+    PyObject* pModule = PyImport_ImportModule("importSVG");
+    if (!pModule) {
+        Base::Console().error("fileToEdges: Failed to import Python module 'importSVG'.\n");
+        if (PyErr_Occurred()) {
+            PyErr_Print();
+        }
+        return shapes;
+    }
+
+    // Get the helper function from the module.
+    PyObject* pFunc = PyObject_GetAttrString(pModule, "_get_shapes_from_svg");
+    if (!pFunc || !PyCallable_Check(pFunc)) {
+        Base::Console().error(
+            "fileToEdges: Cannot find helper function '_get_shapes_from_svg' in 'importSVG.py'.\n"
+        );
+        if (PyErr_Occurred()) {
+            PyErr_Print();
+        }
+        Py_XDECREF(pFunc);
+        Py_DECREF(pModule);
+        return shapes;
+    }
+
+    // Prepare arguments for the Python function call.
+    PyObject* pArgs = PyTuple_New(1);
+    PyTuple_SetItem(pArgs, 0, PyUnicode_FromString(fileName.c_str()));
+
+    // Call the function.
+    PyObject* pResult = PyObject_CallObject(pFunc, pArgs);
+
+    // Clean up Python objects.
+    Py_DECREF(pArgs);
+    Py_XDECREF(pFunc);
+    Py_DECREF(pModule);
+
+    if (!pResult) {
+        Base::Console().error("fileToEdges: Python helper function '_get_shapes_from_svg' failed.\n");
+        PyErr_Print();
+        return shapes;
+    }
+
+    // Process the result: it should be a list of Part.Shape objects.
+    if (PyList_Check(pResult)) {
+        Py_ssize_t size = PyList_Size(pResult);
+        for (Py_ssize_t i = 0; i < size; ++i) {
+            PyObject* pItem = PyList_GetItem(pResult, i);
+            if (PyObject_TypeCheck(pItem, &Part::TopoShapePy::Type)) {
+                auto* shapePy = static_cast<Part::TopoShapePy*>(pItem);
+                shapes.push_back(shapePy->getTopoShapePtr()->getShape());
+            }
+        }
+    }
+
+    Py_DECREF(pResult);
+    return shapes;
 }
 
 }  // namespace Part

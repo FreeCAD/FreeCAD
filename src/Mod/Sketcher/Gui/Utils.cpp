@@ -1056,3 +1056,40 @@ QMap<QString, QString> SketcherGui::findAvailableFontFiles()
     }
     return fontMap;
 }
+
+/**
+ * @brief Scans the FreeCAD resource directory for available SVG symbol files.
+ * @return A map of friendly names (e.g., "fcc-logo") to their full file paths.
+ */
+QMap<QString, QString> SketcherGui::findAvailableSymbolFiles()
+{
+    QMap<QString, QString> symbolMap;
+
+    // Get the path to FreeCAD's data/Mod directory
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/Sketcher/Symbols/";
+    QString symbolPath = QString::fromStdString(defaultDir);
+    QDir symbolDir(symbolPath);
+
+    if (!symbolDir.exists()) {
+        Base::Console().warning("Symbol directory not found at: %s\n", symbolPath.toStdString().c_str());
+        return symbolMap;
+    }
+
+    // Iterate through all .svg files in the directory (and subdirectories)
+    QDirIterator it(
+        symbolPath,
+        QStringList() << QString::fromUtf8("*.svg"),
+        QDir::Files,
+        QDirIterator::Subdirectories
+    );
+
+    while (it.hasNext()) {
+        QString filePath = it.next();
+        QFileInfo fileInfo(filePath);
+        // Use the filename without extension as the user-friendly "friendly name"
+        // The map automatically handles duplicates; the last one found wins.
+        symbolMap[fileInfo.baseName()] = filePath;
+    }
+
+    return symbolMap;
+}

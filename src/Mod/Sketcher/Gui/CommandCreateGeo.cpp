@@ -69,6 +69,7 @@
 #include "DrawSketchHandlerPolygon.h"
 #include "DrawSketchHandlerRectangle.h"
 #include "DrawSketchHandlerSlot.h"
+#include "DrawSketchHandlerSymbol.h"
 #include "DrawSketchHandlerSplitting.h"
 #include "DrawSketchHandlerText.h"
 #include "DrawSketchHandlerTrimming.h"
@@ -1423,6 +1424,76 @@ bool CmdSketcherCreateText::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
+// Symbol ================================================================
+
+DEF_STD_CMD_AU(CmdSketcherCreateSymbol)
+
+CmdSketcherCreateSymbol::CmdSketcherCreateSymbol()
+    : Command("Sketcher_CreateSymbol")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Symbol");
+    sToolTipText = QT_TR_NOOP(
+        "Creates text geometries controlled by a Group constraint.\n"
+        "To Position/Size: Apply constraints to the group's construction line.\n"
+        "Note: While the Group constraint is active, any constraints applied directly to the "
+        "grouped geometries will be ignored.\n"
+    );
+    sWhatsThis = "Sketcher_CreateSymbol";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateSymbol";
+    sAccel = "G, U";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateSymbol, "Sketcher_CreateSymbol")
+
+void CmdSketcherCreateSymbol::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerSymbol>());
+}
+
+bool CmdSketcherCreateSymbol::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
+// ======================================================================================
+// Comp for outline tools =============================================
+
+class CmdSketcherCompCreateOutlines: public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompCreateOutlines()
+        : GroupCommand("Sketcher_CompCreateOutlines")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Text");
+        sToolTipText = QT_TR_NOOP("Creates grouped geometries");
+        sWhatsThis = "Sketcher_CompCreateOutlines";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+
+        addCommand("Sketcher_CreateText");
+        addCommand("Sketcher_CreateSymbol");
+    }
+
+    const char* className() const override
+    {
+        return "CmdSketcherCompCreateOutlines";
+    }
+
+    bool isActive() override
+    {
+        return isCommandActive(getActiveGuiDocument());
+    }
+};
+
 // B-spline ================================================================
 
 DEF_STD_CMD_AU(CmdSketcherCreateBSpline)
@@ -2005,6 +2076,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateText());
+    rcCmdMgr.addCommand(new CmdSketcherCreateSymbol());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     rcCmdMgr.addCommand(new CmdSketcherCreateChamfer());
     // rcCmdMgr.addCommand(new CmdSketcherCreateText());
@@ -2027,4 +2099,5 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     rcCmdMgr.addCommand(new CmdSketcherCompCurveEdition());
     rcCmdMgr.addCommand(new CmdSketcherCompExternal());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateOutlines());
 }
