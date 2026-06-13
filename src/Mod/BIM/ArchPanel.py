@@ -567,6 +567,52 @@ class _Panel(ArchComponent.Component):
                     if not pl.isNull():
                         obj.Placement = pl
 
+    def trimex_axis(self, obj):
+        """Trimex adapter (see draftguitools.gui_trimex._trimex_axis_for).
+
+        Trimex on the two faces perpendicular to the panel's Thickness
+        (top / bottom) updates ``Thickness`` and shifts ``Placement.Base``
+        along the axis to keep the opposite face anchored. Only the
+        baseless case is supported here, since the in-plane dimensions
+        of a profile-driven panel come from the base sketch, not from
+        ``Length`` / ``Width``.
+        """
+        try:
+            if getattr(obj, "Base", None):
+                return None
+            thickness = float(obj.Thickness.Value)
+        except Exception:
+            return None
+        if thickness < 1e-9:
+            return None
+
+        normal = getattr(obj, "Normal", FreeCAD.Vector(0, 0, 1))
+        normal = FreeCAD.Vector(normal)
+        if normal.Length < 1e-9:
+            normal = FreeCAD.Vector(0, 0, 1)
+        normal.normalize()
+
+        pl = obj.Placement
+        axis_world = pl.Rotation.multVec(normal)
+        p1 = FreeCAD.Vector(pl.Base)
+        p2 = p1 + axis_world * thickness
+
+        def _set(pts):
+            new_p1 = FreeCAD.Vector(pts[0])
+            new_p2 = FreeCAD.Vector(pts[1])
+            new_len = (new_p2 - new_p1).dot(axis_world)
+            if new_len < 1e-9:
+                return
+            shift_axial = (new_p1 - p1).dot(axis_world)
+            obj.Placement.Base = obj.Placement.Base + axis_world * shift_axial
+            obj.Thickness = new_len
+
+        return {
+            "endpoints": [p1, p2],
+            "axes": [FreeCAD.Vector(axis_world).negative(), FreeCAD.Vector(axis_world)],
+            "set": _set,
+        }
+
 
 class PanelTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
     """A task panel for Curtain Walls using the generic options task box"""

@@ -1486,6 +1486,70 @@ class _Wall(ArchComponent.Component):
             return (base, extrusion, placement)
         return None
 
+    def trimex_axis(self, obj):
+        """Trimex adapter (see draftguitools.gui_trimex._trimex_axis_for).
+
+        Walls integrate with Trimex on their two end faces:
+          - Wire/Line-based walls redirect to the base wire, so trimming
+            an end face moves the corresponding base vertex.
+          - Baseless walls expose their centerline endpoints and commit
+            new positions via ``set_from_endpoints`` (Length + Placement).
+          - Sketch-based walls do not opt in; Trimex keeps its default
+            face-extrude behaviour for them.
+        """
+        import Part
+        import Draft
+
+        wall_pl = obj.Placement
+        base = getattr(obj, "Base", None)
+        if base is None:
+            try:
+                eps = self.calc_endpoints(obj)
+            except Exception:
+                return None
+            if len(eps) < 2:
+                return None
+            axis = wall_pl.Rotation.multVec(FreeCAD.Vector(1, 0, 0))
+            return {
+                "endpoints": [FreeCAD.Vector(eps[0]), FreeCAD.Vector(eps[1])],
+                "axes": [FreeCAD.Vector(axis).negative(), FreeCAD.Vector(axis)],
+                "set": lambda pts: self.set_from_endpoints(obj, pts),
+            }
+        if Draft.getType(base) not in ("Wire", "Part::Line"):
+            return None
+        shape = getattr(base, "Shape", None)
+        if shape is None or shape.isNull():
+            return None
+        if shape.Wires:
+            edges = Part.__sortEdges__(shape.Wires[0].Edges)
+        else:
+            edges = shape.Edges
+        if not edges:
+            return None
+
+        def _tangent(edge, at_start):
+            try:
+                if at_start:
+                    t = FreeCAD.Vector(edge.tangentAt(edge.FirstParameter)).negative()
+                else:
+                    t = FreeCAD.Vector(edge.tangentAt(edge.LastParameter))
+            except Exception:
+                a = edge.Vertexes[0].Point
+                b = edge.Vertexes[-1].Point
+                t = (b - a) if not at_start else (a - b)
+            if t.Length < 1e-12:
+                return FreeCAD.Vector(1, 0, 0)
+            t.normalize()
+            return wall_pl.Rotation.multVec(t)
+
+        p_start = wall_pl.multVec(edges[0].Vertexes[0].Point)
+        p_end = wall_pl.multVec(edges[-1].Vertexes[-1].Point)
+        return {
+            "endpoints": [p_start, p_end],
+            "axes": [_tangent(edges[0], True), _tangent(edges[-1], False)],
+            "redirect": base,
+        }
+
     def calc_endpoints(self, obj):
         """Returns the global start and end points of a baseless wall's centerline."""
         # The wall's shape is centered, so its endpoints in local coordinates
