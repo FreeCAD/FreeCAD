@@ -80,6 +80,7 @@ def RePopulateIcons():
     a10.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
     a11.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
     a12.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
+    a13.setIcon(QtGui.QIcon(":/icons/NavigationGodot_" + StyleSheetType + ".svg"))
 
 
 def retranslateUi():
@@ -650,6 +651,47 @@ def retranslateUi():
         + "</p>"
     )
 
+    global t13
+    t13 = (
+        "<p align='center'><b>Godot</b> "
+        + text06
+        + """</p>
+        <table>
+        <tr>
+          <th><small>"""
+        + text01
+        + """</small></th>
+          <th><small>"""
+        + text02
+        + """</small></th>
+          <th><small>"""
+        + text03
+        + """</small></th>
+          <th><small>"""
+        + text04
+        + """</small></th>
+          <th><small>"""
+        + translate("NavigationIndicator", "Fly")
+        + """</small></th>
+        </tr>
+        <tr>
+          <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+          <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+          <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+          <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+          <td align='center'><img src=':/icons/Navigation_Mouse_Right.svg'></td>
+        </tr>
+        </table>
+        <b>"""
+        + translate("NavigationIndicator", "Fly mode")
+        + ":</b> "
+        + translate(
+            "NavigationIndicator",
+            "Hold right mouse button and move mouse to look. Use WASD/QE to move, Scroll to change speed. Shift for speed boost.",
+        )
+        + "</small></p>"
+    )
+
     menuSettings.setTitle(translate("NavigationIndicator", "Settings"))
     menuOrbit.setTitle(translate("NavigationIndicator", "Orbit style"))
     aCompact.setText(translate("NavigationIndicator", "Compact"))
@@ -780,6 +822,10 @@ a12.setText("Touchpad  ")
 a12.setData("Gui::TouchpadNavigationStyle")
 a12.setObjectName("Indicator_NavigationTouchpad")
 
+a13 = QtGui.QAction(gStyle)
+a13.setText("Godot  ")
+a13.setData("Gui::GodotNavigationStyle")
+a13.setObjectName("Indicator_NavigationGodot")
 RePopulateIcons()
 
 menu.addMenu(menuSettings)
@@ -797,6 +843,7 @@ menu.addAction(a9)
 menu.addAction(a10)
 menu.addAction(a11)
 menu.addAction(a12)
+menu.addAction(a13)
 
 pView.Attach(indicator)
 
@@ -839,6 +886,7 @@ def onTooltip():
         a10.setToolTip(t10)
         a11.setToolTip(t11)
         a12.setToolTip(t12)
+        a13.setToolTip(t13)
         p.SetBool("Tooltip", 1)
     else:
         for i in gStyle.actions():

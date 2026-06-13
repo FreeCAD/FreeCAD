@@ -34,7 +34,6 @@
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/events/SoEvents.h>
-
 #include <QEvent>
 #include <QAction>
 #include <Base/BaseClass.h>
@@ -43,6 +42,7 @@
 #include <FCGlobal.h>
 #include <memory>
 #include <optional>
+#include <QElapsedTimer>
 
 // forward declarations
 class SoEvent;
@@ -483,6 +483,50 @@ protected:
 
 private:
     SbBool lockButton1 {false};
+};
+
+class GuiExport GodotNavigationStyle: public UserNavigationStyle
+{
+    using inherited = UserNavigationStyle;
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    GodotNavigationStyle();
+    ~GodotNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
+
+protected:
+    SbBool processSoEvent(const SoEvent* const ev) override;
+
+private:
+    void applyMouseLook(int, int);
+    void applyFlyMovement();
+    void startFlyMode(const SoEvent* ev);
+    void stopFlyMode();
+
+    bool moveForward {false};
+    bool moveBackward {false};
+    bool moveLeft {false};
+    bool moveRight {false};
+    bool moveUp {false};
+    bool moveDown {false};
+    bool flyModeActive {false};
+    QPoint lockPos;
+
+    // internal state
+    bool upsideDown {false};
+    bool snapHorizon {true};
+    bool flySpeedInitialized {false};
+    float flySpeed {50.0f};
+    float currentYaw {0.0f};
+    float currentPitch {0.0f};
+    SbRotation baseOrientation;
+    SbVec2s button2PressPos;
+    QElapsedTimer flyElapsed;
+    QTimer* flyTimer {nullptr};
+    QObject* keyFilter {nullptr};
+
+    friend class GodotNavInputEventHandler;  // we need a seperate class to handle input events.
 };
 
 class GuiExport SolidWorksNavigationStyle: public UserNavigationStyle
