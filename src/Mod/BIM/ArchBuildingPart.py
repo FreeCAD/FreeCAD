@@ -1207,6 +1207,9 @@ class ViewProviderBuildingPart:
     def setWorkingPlane(self, restore=False):
         vobj = self.Object.ViewObject
 
+        if not getattr(vobj, "SetWorkingPlane", True):
+            return
+
         import WorkingPlane
 
         wp = WorkingPlane.get_working_plane(update=False)
