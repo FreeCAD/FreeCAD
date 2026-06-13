@@ -47,9 +47,9 @@ class TaskAddOffsetVertex:
         self.form.setWindowTitle(translate("TechDraw_AddOffsetVertex", "Offset Vertex"))
         self.view = view
         self.vertex = vertex
+        self._previewTag = None
         self.form.dSpinBoxX.valueChanged.connect(self.onOffsetChanged)
         self.form.dSpinBoxY.valueChanged.connect(self.onOffsetChanged)
-        self._previewTag = None
 
         sel = Gui.Selection.getSelectionEx()
         if sel and sel[0].SubElementNames:
