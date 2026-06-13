@@ -30,7 +30,6 @@
 #include "Quantity.h"
 
 using PyObject = struct _object;
-using PyMethodDef = struct PyMethodDef;
 
 namespace Base
 {
@@ -38,6 +37,8 @@ namespace Base
 
 class BaseExport UnitsApi
 {
+    friend class UnitsModulePy;
+
 public:
     static std::unique_ptr<UnitsSchema> createSchema(std::size_t num);
     static void setSchema(const std::string& name);
@@ -70,8 +71,6 @@ public:
     {
         return schemas->spec().num;
     }
-    // Python interface
-    static PyMethodDef Methods[];
 
 protected:
     static inline auto schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);

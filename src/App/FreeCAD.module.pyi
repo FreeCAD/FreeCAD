@@ -12,16 +12,23 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Literal, TypeAlias, overload
 
-from . import Console as Console
-from . import Units as Units
+from Base.Metadata import module
+from . import Console as Console  # pylint: disable=no-name-in-module,unused-import
+from . import Units as Units  # pylint: disable=no-name-in-module,unused-import
+
+module(
+    Name="FreeCAD",
+    Namespace="App",
+    Include="ApplicationPy.h",
+    CallbackOwner="ApplicationPy",
+    CallbackPrefix="s",
+)
 
 if TYPE_CHECKING:
     from Part import Feature as _PartFeature
 
 _FileTypeModules: TypeAlias = dict[str, str | list[str] | None]
-_LogLevelName: TypeAlias = Literal[
-    "Default", "Error", "Warning", "Message", "Log", "Trace"
-]
+_LogLevelName: TypeAlias = Literal["Default", "Error", "Warning", "Message", "Log", "Trace"]
 GuiUp: int
 ActiveDocument: Document | None
 
@@ -73,9 +80,7 @@ def addExportType(extension: str, module: str, /) -> None:
     """Register one exporter module for a file extension."""
     ...
 
-def addTranslatableExportType(
-    description: str, extensions: list[str], module: str, /
-) -> None:
+def addTranslatableExportType(description: str, extensions: list[str], module: str, /) -> None:
     """Register one exporter together with a translated file-dialog description."""
     ...
 
@@ -135,13 +140,11 @@ def loadFile(path: str, doc: str = "", module: str = "", /) -> None:
     """Load one file into an existing or inferred document context."""
     ...
 
-def open(name: str, hidden: bool = False, temporary: bool = False, /) -> Document:
+def open(name: str, hidden: bool = False, temporary: bool = False) -> Document:
     """Open a document file and return the created document."""
     ...
 
-def openDocument(
-    name: str, hidden: bool = False, temporary: bool = False, /
-) -> Document:
+def openDocument(name: str, hidden: bool = False, temporary: bool = False) -> Document:
     """Open a document file explicitly through the document loader."""
     ...
 
@@ -150,13 +153,23 @@ def newDocument(
     label: str | None = None,
     hidden: bool = False,
     temp: bool = False,
-    /,
 ) -> Document:
     """Create and return a new document."""
     ...
 
 def closeDocument(document: str | Document, /) -> None:
     """Close one document by name or object."""
+    ...
+
+def writeRecoverySnapshotToTransientDir(
+    document: Document,
+    /,
+    *,
+    compressed: bool = True,
+    save_binary_brep: bool = True,
+    save_thumbnail: bool = False,
+) -> bool:
+    """Write one recovery snapshot for a document into its transient directory."""
     ...
 
 # Document queries and observers

@@ -95,6 +95,8 @@ inline bool Breakpoint::operator==(const QString& fn)
  */
 class GuiExport PythonDebugModule: public Py::ExtensionModule<PythonDebugModule>
 {
+    friend class FreeCADDbgModulePy;
+
 public:
     static void init_module();
 

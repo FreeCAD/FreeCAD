@@ -41,6 +41,8 @@ namespace Base
 
 class BaseExport Translate: public Py::ExtensionModule<Translate>  // NOLINT
 {
+    friend class QtModulePy;
+
 public:
     Translate();
     ~Translate() override;

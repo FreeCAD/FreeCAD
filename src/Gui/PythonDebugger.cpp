@@ -30,6 +30,7 @@
 #include <Base/Interpreter.h>
 
 #include "PythonDebugger.h"
+#include "FreeCADDbgModulePy.h"
 #include "BitmapFactory.h"
 #include "EditorView.h"
 #include "MainWindow.h"
@@ -107,32 +108,7 @@ void PythonDebugModule::init_module()
 PythonDebugModule::PythonDebugModule()
     : Py::ExtensionModule<PythonDebugModule>("FreeCADDbg")
 {
-    add_varargs_method(
-        "getFunctionCallCount",
-        &PythonDebugModule::getFunctionCallCount,
-        "Get the total number of function calls executed and the number executed since the last "
-        "call to this function."
-    );
-    add_varargs_method(
-        "getExceptionCount",
-        &PythonDebugModule::getExceptionCount,
-        "Get the total number of exceptions and the number executed since the last call to this "
-        "function."
-    );
-    add_varargs_method(
-        "getLineCount",
-        &PythonDebugModule::getLineCount,
-        "Get the total number of lines executed and the number executed since the last call to "
-        "this function."
-    );
-    add_varargs_method(
-        "getFunctionReturnCount",
-        &PythonDebugModule::getFunctionReturnCount,
-        "Get the total number of function returns executed and the number executed since the last "
-        "call to this function."
-    );
-
-    initialize("The FreeCAD Python debug module");
+    FreeCADDbgModulePy::initialize(*this);
 
     Py::Dict d(moduleDictionary());
     Py::Object out(Py::asObject(new PythonDebugStdout()));

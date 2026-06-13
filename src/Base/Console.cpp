@@ -373,110 +373,6 @@ ConsoleSingleton& ConsoleSingleton::instance()
 //**************************************************************************
 // Python stuff
 
-// ConsoleSingleton Methods structure
-PyMethodDef ConsoleSingleton::Methods[] = {
-    {"PrintMessage",
-     sPyMessage,
-     METH_VARARGS,
-     "PrintMessage(obj) -> None\n\n"
-     "Print a message to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintLog",
-     sPyLog,
-     METH_VARARGS,
-     "PrintLog(obj) -> None\n\n"
-     "Print a log message to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintError",
-     sPyError,
-     METH_VARARGS,
-     "PrintError(obj) -> None\n\n"
-     "Print an error message to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintDeveloperError",
-     sPyDeveloperError,
-     METH_VARARGS,
-     "PrintDeveloperError(obj) -> None\n\n"
-     "Print an error message intended only for Developers to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintUserError",
-     sPyUserError,
-     METH_VARARGS,
-     "PrintUserError(obj) -> None\n\n"
-     "Print an error message intended only for the User to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintTranslatedUserError",
-     sPyTranslatedUserError,
-     METH_VARARGS,
-     "PrintTranslatedUserError(obj) -> None\n\n"
-     "Print an already translated error message intended only for the User to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintWarning",
-     sPyWarning,
-     METH_VARARGS,
-     "PrintWarning(obj) -> None\n\n"
-     "Print a warning message to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintDeveloperWarning",
-     sPyDeveloperWarning,
-     METH_VARARGS,
-     "PrintDeveloperWarning(obj) -> None\n\n"
-     "Print an warning message intended only for Developers to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintUserWarning",
-     sPyUserWarning,
-     METH_VARARGS,
-     "PrintUserWarning(obj) -> None\n\n"
-     "Print a warning message intended only for the User to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintTranslatedUserWarning",
-     sPyTranslatedUserWarning,
-     METH_VARARGS,
-     "PrintTranslatedUserWarning(obj) -> None\n\n"
-     "Print an already translated warning message intended only for the User to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintCritical",
-     sPyCritical,
-     METH_VARARGS,
-     "PrintCritical(obj) -> None\n\n"
-     "Print a critical message to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintNotification",
-     sPyNotification,
-     METH_VARARGS,
-     "PrintNotification(obj) -> None\n\n"
-     "Print a user notification to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"PrintTranslatedNotification",
-     sPyTranslatedNotification,
-     METH_VARARGS,
-     "PrintTranslatedNotification(obj) -> None\n\n"
-     "Print an already translated notification to the output.\n\n"
-     "obj : object\n    The string representation is printed."},
-    {"SetStatus",
-     sPySetStatus,
-     METH_VARARGS,
-     "SetStatus(observer, type, status) -> None\n\n"
-     "Set the status for either 'Log', 'Msg', 'Wrn' or 'Error' for an observer.\n\n"
-     "observer : str\n    Logging interface name.\n"
-     "type : str\n    Message type.\n"
-     "status : bool"},
-    {"GetStatus",
-     sPyGetStatus,
-     METH_VARARGS,
-     "GetStatus(observer, type) -> bool or None\n\n"
-     "Get the status for either 'Log', 'Msg', 'Wrn' or 'Error' for an observer.\n"
-     "Returns None if the specified observer doesn't exist.\n\n"
-     "observer : str\n    Logging interface name.\n"
-     "type : str\n    Message type."},
-    {"GetObservers",
-     sPyGetObservers,
-     METH_VARARGS,
-     "GetObservers() -> list of str\n\n"
-     "Get the names of the current logging interfaces."},
-    {nullptr, nullptr, 0, nullptr} /* Sentinel */
-};
-
 namespace
 {
 PyObject* FC_PYCONSOLE_MSG(std::function<void(const char*, const char*)> func, PyObject* args)
@@ -533,7 +429,7 @@ PyObject* FC_PYCONSOLE_MSG(std::function<void(const char*, const char*)> func, P
 }
 }  // namespace
 
-PyObject* ConsoleSingleton::sPyMessage(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintMessage(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -547,7 +443,7 @@ PyObject* ConsoleSingleton::sPyMessage(PyObject* /*self*/, PyObject* args)
     );
 }
 
-PyObject* ConsoleSingleton::sPyWarning(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintWarning(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) { instance().warning(notifier, "%s", msg); },
@@ -555,7 +451,7 @@ PyObject* ConsoleSingleton::sPyWarning(PyObject* /*self*/, PyObject* args)
     );
 }
 
-PyObject* ConsoleSingleton::sPyDeveloperWarning(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintDeveloperWarning(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -569,7 +465,7 @@ PyObject* ConsoleSingleton::sPyDeveloperWarning(PyObject* /*self*/, PyObject* ar
     );
 }
 
-PyObject* ConsoleSingleton::sPyUserWarning(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintUserWarning(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -583,7 +479,7 @@ PyObject* ConsoleSingleton::sPyUserWarning(PyObject* /*self*/, PyObject* args)
     );
 }
 
-PyObject* ConsoleSingleton::sPyTranslatedUserWarning(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintTranslatedUserWarning(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -597,7 +493,7 @@ PyObject* ConsoleSingleton::sPyTranslatedUserWarning(PyObject* /*self*/, PyObjec
     );
 }
 
-PyObject* ConsoleSingleton::sPyError(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintError(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -611,7 +507,7 @@ PyObject* ConsoleSingleton::sPyError(PyObject* /*self*/, PyObject* args)
     );
 }
 
-PyObject* ConsoleSingleton::sPyDeveloperError(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintDeveloperError(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -625,7 +521,7 @@ PyObject* ConsoleSingleton::sPyDeveloperError(PyObject* /*self*/, PyObject* args
     );
 }
 
-PyObject* ConsoleSingleton::sPyUserError(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintUserError(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -639,7 +535,7 @@ PyObject* ConsoleSingleton::sPyUserError(PyObject* /*self*/, PyObject* args)
     );
 }
 
-PyObject* ConsoleSingleton::sPyTranslatedUserError(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintTranslatedUserError(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -653,7 +549,7 @@ PyObject* ConsoleSingleton::sPyTranslatedUserError(PyObject* /*self*/, PyObject*
     );
 }
 
-PyObject* ConsoleSingleton::sPyLog(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintLog(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -667,7 +563,7 @@ PyObject* ConsoleSingleton::sPyLog(PyObject* /*self*/, PyObject* args)
     );
 }
 
-PyObject* ConsoleSingleton::sPyCritical(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintCritical(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -681,7 +577,7 @@ PyObject* ConsoleSingleton::sPyCritical(PyObject* /*self*/, PyObject* args)
     );
 }
 
-PyObject* ConsoleSingleton::sPyNotification(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintNotification(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -695,7 +591,7 @@ PyObject* ConsoleSingleton::sPyNotification(PyObject* /*self*/, PyObject* args)
     );
 }
 
-PyObject* ConsoleSingleton::sPyTranslatedNotification(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sPrintTranslatedNotification(PyObject* /*self*/, PyObject* args)
 {
     return FC_PYCONSOLE_MSG(
         [](const std::string& notifier, const char* msg) {
@@ -709,7 +605,7 @@ PyObject* ConsoleSingleton::sPyTranslatedNotification(PyObject* /*self*/, PyObje
     );
 }
 
-PyObject* ConsoleSingleton::sPyGetStatus(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sGetStatus(PyObject* /*self*/, PyObject* args)
 {
     char* pstr1 {};
     char* pstr2 {};
@@ -756,7 +652,7 @@ PyObject* ConsoleSingleton::sPyGetStatus(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* ConsoleSingleton::sPySetStatus(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sSetStatus(PyObject* /*self*/, PyObject* args)
 {
     char* pstr1 {};
     char* pstr2 {};
@@ -803,7 +699,7 @@ PyObject* ConsoleSingleton::sPySetStatus(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* ConsoleSingleton::sPyGetObservers(PyObject* /*self*/, PyObject* args)
+PyObject* ConsoleSingleton::sGetObservers(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;

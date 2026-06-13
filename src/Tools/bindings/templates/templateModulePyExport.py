@@ -20,9 +20,10 @@
 #                                                                              #
 ################################################################################
 
-from . import template
+from . import template  # pylint: disable=no-name-in-module
 import sys
 from pathlib import Path
+import shutil
 import model.generateTools
 
 
@@ -48,18 +49,40 @@ class TemplateModulePyExport(template.ModelTemplate):
                 return ""
             return escapeString(doc.UserDocu, indent) or ""
 
+        def extensionCallback(method):
+            if method.Callback:
+                if "::" in method.Callback:
+                    return f"&{method.Callback}"
+                return f"&{self.export.ModuleClass}::{method.Callback}"
+            return f"&{self.export.ModuleClass}::{method.Name}"
+
+        def extensionAddMethod(method):
+            if method.Keyword:
+                return "add_keyword_method"
+            if method.NoArgs:
+                return "add_noargs_method"
+            return "add_varargs_method"
+
+        def methodFlags(method):
+            if method.Keyword:
+                return "METH_VARARGS|METH_KEYWORDS"
+            if method.NoArgs:
+                return "METH_NOARGS"
+            return "METH_VARARGS"
+
         print("TemplateModulePyExport", outputDir / exportName)
 
         outputDir.mkdir(parents=True, exist_ok=True)
 
         outputImp = outputDir / f"{exportName}ModulePyImp.cpp"
         inputImp = inputDir / f"{exportName}ModulePyImp.cpp"
-        if not outputImp.exists():
-            if not inputImp.exists():
-                file = outputImp.open("wb")
-                print("TemplateModulePyExport", "TemplateImplement", file.name)
-                model.generateTools.replace(self.TemplateImplement, locals(), file)
-                file.close()
+        if inputImp.exists():
+            shutil.copyfile(inputImp, outputImp)
+        elif not outputImp.exists():
+            file = outputImp.open("wb")
+            print("TemplateModulePyExport", "TemplateImplement", file.name)
+            model.generateTools.replace(self.TemplateImplement, locals(), file)
+            file.close()
 
         outputCpp = outputDir / f"{exportName}ModulePy.cpp"
         with outputCpp.open("wb") as file:
@@ -86,31 +109,32 @@ namespace @self.export.Namespace.replace("::"," { namespace ")@
 // @self.export.Name@ModulePy - Python module helper
 //===========================================================================
 
++ if self.export.Runtime == "ExtensionModule":
+class @self.export.ModuleClass@;
+-
+
 class @self.export.Name@ModulePy
 {
 public:
++ if self.export.Runtime == "ExtensionModule":
+    static void initialize(@self.export.ModuleClass@& module);
+= else:
     static PyMethodDef Methods[];
+    static PyMethodDef BootstrapMethods[];
     static int addModuleMethods(PyObject* module);
+-
     static const char* moduleDocumentation();
 
     /** @name callbacks and implementers for the python module methods */
     //@{
++ if self.export.Runtime != "ExtensionModule":
 + for i in self.export.Method:
-+ if i.Keyword:
++ if not i.Callback:
     /// callback for the @i.Name@() function
-    static PyObject* staticCallback_@i.Name@(PyObject* self, PyObject* args, PyObject* kwd);
+    static PyObject* staticCallback_@i.Name@(@("PyObject* self, PyObject* args, PyObject* kwd" if i.Keyword else "PyObject* self, PyObject* args")@);
     /// implementer for the @i.Name@() function
-    static PyObject* @i.Name@(PyObject* args, PyObject* kwd);
-= elif i.NoArgs:
-    /// callback for the @i.Name@() function
-    static PyObject* staticCallback_@i.Name@(PyObject* self, PyObject* args);
-    /// implementer for the @i.Name@() function
-    static PyObject* @i.Name@();
-= else:
-    /// callback for the @i.Name@() function
-    static PyObject* staticCallback_@i.Name@(PyObject* self, PyObject* args);
-    /// implementer for the @i.Name@() function
-    static PyObject* @i.Name@(PyObject* args);
+    static PyObject* @i.Name@(@("PyObject* args, PyObject* kwd" if i.Keyword else "" if i.NoArgs else "PyObject* args")@);
+-
 -
 -
     //@}
@@ -128,8 +152,14 @@ public:
 
 #include "@self.export.Name@ModulePy.h"
 
++ if self.export.Include:
+#include "@self.export.Include@"
+-
+
++ if self.export.Runtime != "ExtensionModule":
 #include <Base/Exception.h>
 #include <Base/PyObjectBase.h>
+-
 #include <CXX/Objects.hxx>
 
 #if defined(__clang__)
@@ -139,20 +169,48 @@ public:
 
 using namespace @self.export.Namespace@;
 
++ if self.export.Runtime == "ExtensionModule":
+void @self.export.Name@ModulePy::initialize(@self.export.ModuleClass@& module)
+{
++ for i in self.export.Method:
+    module.@extensionAddMethod(i)@(
+        "@i.Name@",
+        @extensionCallback(i)@,
+        "@docString(i.Documentation, indent=8)@"
+    );
+-
+    module.initialize(moduleDocumentation());
+}
+= else:
 /// Methods structure of @self.export.Name@ModulePy
 PyMethodDef @self.export.Name@ModulePy::Methods[] = {
 + for i in self.export.Method:
     {"@i.Name@",
-+ if i.Keyword:
++ if i.Callback:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(@i.Callback@)),
+= elif i.Keyword:
         reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(staticCallback_@i.Name@)),
-        METH_VARARGS|METH_KEYWORDS,
-= elif i.NoArgs:
-        reinterpret_cast<PyCFunction>(staticCallback_@i.Name@),
-        METH_NOARGS,
 = else:
         reinterpret_cast<PyCFunction>(staticCallback_@i.Name@),
-        METH_VARARGS,
 -
+        @methodFlags(i)@,
+        "@docString(i.Documentation, indent=8)@"
+    },
+-
+    {nullptr, nullptr, 0, nullptr}  /* Sentinel */
+};
+
+PyMethodDef @self.export.Name@ModulePy::BootstrapMethods[] = {
++ for i in self.export.BootstrapMethods:
+    {"@i.Name@",
++ if i.Callback:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(@i.Callback@)),
+= elif i.Keyword:
+        reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(staticCallback_@i.Name@)),
+= else:
+        reinterpret_cast<PyCFunction>(staticCallback_@i.Name@),
+-
+        @methodFlags(i)@,
         "@docString(i.Documentation, indent=8)@"
     },
 -
@@ -163,34 +221,25 @@ int @self.export.Name@ModulePy::addModuleMethods(PyObject* module)
 {
     return PyModule_AddFunctions(module, Methods);
 }
+-
 
 const char* @self.export.Name@ModulePy::moduleDocumentation()
 {
     return "@docString(self.export.Documentation, indent=12)@";
 }
 
++ if self.export.Runtime != "ExtensionModule":
 + for i in self.export.Method:
++ if not i.Callback:
 // @i.Name@() callback and implementer
 // PyObject* @self.export.Name@ModulePy::@i.Name@(PyObject* args){};
 // has to be implemented in @self.export.Name@ModulePyImp.cpp
-+ if i.Keyword:
-PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(PyObject* self, PyObject* args, PyObject* kwd)
-= elif i.NoArgs:
-PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(PyObject* self, PyObject* Py_UNUSED(args))
-= else:
-PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(PyObject* self, PyObject* args)
--
+PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(@("PyObject* self, PyObject* args, PyObject* kwd" if i.Keyword else "PyObject* self, PyObject* Py_UNUSED(args)" if i.NoArgs else "PyObject* self, PyObject* args")@)
 {
     (void)self;
 
     try {
-+ if i.Keyword:
-        return @self.export.Name@ModulePy::@i.Name@(args, kwd);
-= elif i.NoArgs:
-        return @self.export.Name@ModulePy::@i.Name@();
-= else:
-        return @self.export.Name@ModulePy::@i.Name@(args);
--
+        return @self.export.Name@ModulePy::@i.Name@@("(args, kwd)" if i.Keyword else "()" if i.NoArgs else "(args)")@;
     }  // Please sync the following catch implementation with PY_CATCH
     catch (const Base::Exception& e)
     {
@@ -217,6 +266,8 @@ PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(PyObject* self, Py
 }
 
 -
+-
+-
 
 #if defined(__clang__)
 # pragma clang diagnostic pop
@@ -232,18 +283,16 @@ PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(PyObject* self, Py
 
 using namespace @self.export.Namespace@;
 
++ if self.export.Runtime != "ExtensionModule":
 + for i in self.export.Method:
-+ if i.Keyword:
-PyObject* @self.export.Name@ModulePy::@i.Name@(PyObject* /*args*/, PyObject* /*kwd*/)
-= elif i.NoArgs:
-PyObject* @self.export.Name@ModulePy::@i.Name@()
-= else:
-PyObject* @self.export.Name@ModulePy::@i.Name@(PyObject* /*args*/)
--
++ if not i.Callback:
+PyObject* @self.export.Name@ModulePy::@i.Name@(@("PyObject* /*args*/, PyObject* /*kwd*/" if i.Keyword else "" if i.NoArgs else "PyObject* /*args*/")@)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return nullptr;
 }
 
+-
+-
 -
 """

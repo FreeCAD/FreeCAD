@@ -33,48 +33,6 @@
 
 using namespace Base;
 
-//**************************************************************************
-// Python stuff of UnitsApi
-
-PyMethodDef UnitsApi::Methods[] = {
-    {"parseQuantity",
-     sParseQuantity,
-     METH_VARARGS,
-     "parseQuantity(string) -> Base.Quantity()\n\n"
-     "calculate a mathematical expression with units to a quantity object. \n"
-     "can be used for simple unit translation like: \n"
-     "parseQuantity('10m')\n"
-     "or for more complex espressions:\n"
-     "parseQuantity('sin(pi)/50.0 m/s^2')\n"},
-    {"listSchemas",
-     sListSchemas,
-     METH_VARARGS,
-     "listSchemas() -> a tuple of schemas\n\n"
-     "listSchemas(int) -> description of the given schema\n\n"},
-    {"getSchema",
-     sGetSchema,
-     METH_VARARGS,
-     "getSchema() -> int\n\n"
-     "The int is the position of the tuple returned by listSchemas"},
-    {"setSchema",
-     sSetSchema,
-     METH_VARARGS,
-     "setSchema(int) -> None\n\n"
-     "Sets the current schema to the given number, if possible"},
-    {"schemaTranslate",
-     sSchemaTranslate,
-     METH_VARARGS,
-     "schemaTranslate(Quantity, int) -> tuple\n\n"
-     "Translate a quantity to a given schema"},
-    {"toNumber",
-     sToNumber,
-     METH_VARARGS,
-     "toNumber(Quantity or float, [format='g', decimals=-1]) -> str\n\n"
-     "Convert a quantity or float to a string"},
-
-    {nullptr, nullptr, 0, nullptr} /* Sentinel */
-};
-
 PyObject* UnitsApi::sParseQuantity(PyObject* /*self*/, PyObject* args)
 {
     char* pstr {};

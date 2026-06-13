@@ -14,12 +14,21 @@ from collections.abc import Sequence
 from enum import IntEnum
 from typing import Any, ClassVar, Literal, Protocol, TypeAlias, overload
 
+from Base.Metadata import bootstrap_export, module, typing_only
 from FreeCAD import DocumentObject
 
 _Pathish: TypeAlias = str | bytes | bytearray
 _IconContent: TypeAlias = str | bytes | bytearray | memoryview
 _WorkbenchMenu: TypeAlias = str | Sequence[str]
 _WorkbenchCommands: TypeAlias = str | Sequence[str]
+
+module(
+    Name="FreeCADGui",
+    Namespace="Gui",
+    Include="ApplicationPy.h",
+    CallbackOwner="ApplicationPy",
+    CallbackPrefix="s",
+)
 
 class UserInput(IntEnum):
     """Enum of keyboard, mouse, and modifier tokens used by GUI input hints."""
@@ -434,10 +443,12 @@ def runCommand(name: str, index: int = 0, /) -> None:
     """Run one registered GUI command."""
     ...
 
+@typing_only
 def listCommands() -> list[str]:
     """Return the registered GUI command names."""
     ...
 
+@typing_only
 def isCommandActive(name: str, /) -> bool:
     """Return whether one command is active in the current GUI context."""
     ...
@@ -607,6 +618,14 @@ def coinRemoveAllChildren(node: object, /) -> None:
     """Remove all Coin child nodes from one parent node."""
     ...
 
+def applyElementColorOverride(target: object, colors: dict[str, object], /) -> None:
+    """Apply secondary element color overrides to one Coin node or path."""
+    ...
+
+def clearElementColorOverride(target: object, /) -> None:
+    """Clear secondary element color overrides from one Coin node or path."""
+    ...
+
 def suspendWaitCursor() -> None:
     """Temporarily suspend the global wait cursor."""
     ...
@@ -615,18 +634,22 @@ def resumeWaitCursor() -> None:
     """Resume the global wait cursor after suspension."""
     ...
 
+@bootstrap_export
 def showMainWindow(inThread: bool = False, /) -> None:
     """Show the main application window."""
     ...
 
+@bootstrap_export
 def exec_loop() -> None:
     """Enter the GUI event loop."""
     ...
 
+@bootstrap_export
 def setupWithoutGUI() -> None:
     """Initialize GUI services without showing the main window."""
     ...
 
+@bootstrap_export
 def embedToWindow(pointer: str, /) -> None:
     """Embed the GUI into an existing native window handle."""
     ...
