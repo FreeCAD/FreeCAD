@@ -285,14 +285,13 @@ struct DocumentP
     {
         _editingObject = sobj;
         _editMode = ModNum;
-        _editViewProvider = svp;  // Used to resolve start editing (find the document in edit from
-                                  // within the viewprovider)
+        std::string fullname = sobj->getFullName();
         _editViewProvider = svp->startEditing(ModNum);
         if (!_editViewProvider) {
             _editViewProviderParent = nullptr;
             _editObjs.clear();
             _editingObject = nullptr;
-            FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
+            FC_LOG("object '" << fullname << "' refuse to edit");
             return false;
         }
 

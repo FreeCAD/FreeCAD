@@ -39,7 +39,9 @@
 #include "ActionFunction.h"
 #include "Application.h"
 #include "Command.h"
+#include "Control.h"
 #include "Document.h"
+#include "DocumentObserver.h"
 #include "MDIView.h"
 #include "SoFCUnifiedSelection.h"
 #include "Tree.h"
@@ -300,6 +302,21 @@ void ViewProviderDocumentObject::addDefaultAction(QMenu* menu, const QString& te
     act->setData(QVariant((int)ViewProvider::Default));
     auto func = new Gui::ActionFunction(menu);
     func->trigger(act, [this]() { this->startDefaultEditMode(); });
+}
+
+bool ViewProviderDocumentObject::tryCloseDialog(Gui::TaskView::TaskDialog* dlg)
+{
+    if (dlg->canClose()) {
+        Gui::ViewProviderWeakPtrT self(this);
+        Gui::Control().reject();
+        if (self.expired()) {
+            Base::Console().warning("Closing the dialog has deleted the feature.\n");
+            return false;
+        }
+        return true;
+    }
+
+    return false;
 }
 
 void ViewProviderDocumentObject::setModeSwitch()
