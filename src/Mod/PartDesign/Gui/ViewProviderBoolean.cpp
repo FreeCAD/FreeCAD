@@ -50,6 +50,25 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBoolean, PartDesignGu
 
 const char* PartDesignGui::ViewProviderBoolean::DisplayEnum[] = {"Result", "Tools", nullptr};
 
+static Part::TopoShape getBooleanPreviewShape(
+    const PartDesign::Boolean* boolean,
+    const App::DocumentObject* object
+)
+{
+    if (!boolean || !object) {
+        return {};
+    }
+
+    if (boolean->UseLegacyBodyPlacement.getValue()) {
+        return Part::Feature::getTopoShape(
+            object,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
+    }
+
+    return boolean->getTopoShapeInLocalCoordinates(object);
+}
+
 
 ViewProviderBoolean::ViewProviderBoolean()
     : pcToolsPreview(new SoGroup)
@@ -163,14 +182,17 @@ void ViewProviderBoolean::updatePreview()
         return;
     }
 
-    const auto addToolPreview = [this, toolTransparency](App::DocumentObject* tool) {
+    const auto addToolPreview = [this, toolTransparency, boolean](App::DocumentObject* tool) {
         const auto feature = freecad_cast<Part::Feature*>(tool);
 
         if (!feature) {
             return;
         }
 
-        Part::TopoShape toolShape = feature->Shape.getShape();
+        Part::TopoShape toolShape = getBooleanPreviewShape(boolean, feature);
+        if (toolShape.isNull()) {
+            return;
+        }
 
         auto pcToolPreview = new PartGui::SoPreviewShape;
         updatePreviewShape(toolShape, pcToolPreview);
@@ -195,8 +217,13 @@ void ViewProviderBoolean::updatePreview()
             return;
         }
 
+        Part::TopoShape baseShape = getBooleanPreviewShape(boolean, baseFeature);
+        if (baseShape.isNull()) {
+            return;
+        }
+
         auto pcBaseShapePreview = new PartGui::SoPreviewShape;
-        updatePreviewShape(baseFeature->Shape.getShape(), pcBaseShapePreview);
+        updatePreviewShape(baseShape, pcBaseShapePreview);
 
         pcBaseShapePreview->transparency.setValue(static_cast<float>(toolTransparency));
         pcBaseShapePreview->color.setValue(

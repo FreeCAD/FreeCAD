@@ -455,6 +455,32 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
     return result;
 }
 
+Part::TopoShape Feature::getTopoShapeInLocalCoordinates(
+    const App::DocumentObject* object,
+    Part::ShapeOptions options
+) const
+{
+    if (!object) {
+        return {};
+    }
+
+    auto body = getFeatureBody();
+    const bool isSameBodyFeature = body && object->isDerivedFrom<PartDesign::Feature>()
+        && PartDesign::Body::findBodyOf(object) == body;
+
+    options |= Part::ShapeOption::ResolveLink;
+    if (isSameBodyFeature) {
+        return static_cast<const Part::Feature*>(object)->Shape.getShape();
+    }
+
+    options |= Part::ShapeOption::Transform;
+    auto shape = Part::Feature::getTopoShape(object, options);
+    if (body && !shape.isNull()) {
+        shape.transformShape(body->globalPlacement().inverse().toMatrix(), false, true);
+    }
+    return shape;
+}
+
 void Feature::getGeneratedShapes(
     std::vector<int>& faces,
     std::vector<int>& edges,

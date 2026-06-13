@@ -26,6 +26,7 @@
 #include <Standard_Failure.hxx>
 
 
+#include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
 #include "Body.h"
 #include "FeatureBase.h"
@@ -41,6 +42,13 @@ FeatureBase::FeatureBase()
 {
     BaseFeature.setScope(App::LinkScope::Global);
     BaseFeature.setStatus(App::Property::Hidden, false);
+    ADD_PROPERTY_TYPE(
+        UseLegacyBaseFeaturePlacement,
+        (App::GetApplication().isRestoring()),
+        "Compatibility",
+        App::Prop_Hidden,
+        "Use legacy FeatureBase source placement handling"
+    );
 }
 
 Part::Feature* FeatureBase::getBaseObject(bool) const
@@ -52,7 +60,7 @@ Part::Feature* FeatureBase::getBaseObject(bool) const
 short int FeatureBase::mustExecute() const
 {
 
-    if (BaseFeature.isTouched()) {
+    if (BaseFeature.isTouched() || UseLegacyBaseFeaturePlacement.isTouched()) {
         return 1;
     }
 
@@ -75,14 +83,37 @@ App::DocumentObjectExecReturn* FeatureBase::execute()
         );
     }
 
-    auto shape = Part::Feature::getTopoShape(
-        BaseFeature.getValue(),
-        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-    );
+    auto* base = BaseFeature.getValue();
+    if (UseLegacyBaseFeaturePlacement.getValue()) {
+        auto shape = Part::Feature::getTopoShape(
+            base,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
+        if (shape.isNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "BaseFeature has an empty shape")
+            );
+        }
+
+        Shape.setValue(shape);
+        return StdReturn;
+    }
+
+    const bool isBodyLocalFeature = base->isDerivedFrom<PartDesign::Feature>()
+        && Body::findBodyOf(base);
+    const bool isPartDesignBody = base->isDerivedFrom<PartDesign::Body>();
+
+    auto shape = isBodyLocalFeature
+        ? static_cast<Part::Feature*>(base)->Shape.getShape()
+        : Part::Feature::getTopoShape(base, Part::ShapeOption::ResolveLink);
     if (shape.isNull()) {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "BaseFeature has an empty shape")
         );
+    }
+
+    if (isBodyLocalFeature || isPartDesignBody) {
+        shape.transformShape(shape.getTransform(), true);
     }
 
     Shape.setValue(shape);
