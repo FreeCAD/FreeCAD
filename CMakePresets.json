@@ -44,6 +44,21 @@
         }
       },
       {
+        "name": "rel-with-deb-info",
+        "displayName": "RelWithDebInfo",
+        "description": "Default RelWithDebInfo profile",
+        "binaryDir": "${sourceDir}/build/relWithDebInfo",
+        "inherits": [
+          "common"
+        ],
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": {
+            "type": "STRING",
+            "value": "RelWithDebInfo"
+          }
+        }
+      },
+      {
         "name": "release",
         "displayName": "Release",
         "description": "Default release profile",
@@ -225,6 +240,16 @@
         ]
       },
       {
+        "name": "conda-rel-with-deb-info",
+        "hidden": true,
+        "displayName": "Conda RelWithDebInfo",
+        "description": "Conda RelWithDebInfo profile",
+        "inherits": [
+          "rel-with-deb-info",
+          "conda"
+        ]
+      },
+      {
         "name": "conda-release",
         "hidden": true,
         "displayName": "Conda Release",
@@ -250,6 +275,15 @@
         ]
       },
       {
+        "name": "conda-linux-rel-with-deb-info",
+        "displayName": "Conda RelWithDebInfo",
+        "description": "Conda RelWithDebInfo profile",
+        "inherits": [
+          "conda-rel-with-deb-info",
+          "conda-linux"
+        ]
+      },
+      {
         "name": "conda-linux-release",
         "displayName": "Conda Release",
         "description": "Conda release profile",
@@ -264,6 +298,15 @@
         "description": "Conda debug profile",
         "inherits": [
           "conda-debug",
+          "conda-macos"
+        ]
+      },
+      {
+        "name": "conda-macos-rel-with-deb-info",
+        "displayName": "Conda RelWithDebInfo",
+        "description": "Conda RelWithDebInfo profile",
+        "inherits": [
+          "conda-rel-with-deb-info",
           "conda-macos"
         ]
       },
@@ -283,13 +326,16 @@
         "inherits": [
           "conda-debug",
           "conda-windows"
-        ],
-        "cacheVariables": {
-          "CMAKE_BUILD_TYPE": {
-            "type": "STRING",
-            "value": "RelWithDebInfo"
-          }
-        }
+        ]
+      },
+      {
+        "name": "conda-windows-rel-with-deb-info",
+        "displayName": "Conda RelWithDebInfo",
+        "description": "Conda RelWithDebInfo profile",
+        "inherits": [
+          "conda-rel-with-deb-info",
+          "conda-windows"
+        ]
       },
       {
         "name": "conda-windows-release",
