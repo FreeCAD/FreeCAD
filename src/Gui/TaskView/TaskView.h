@@ -152,7 +152,7 @@ struct TaskInfo
     TaskPanel* taskPanel {nullptr};
     TaskDialog* ActiveDialog {nullptr};
     TaskEditControl* ActiveCtrl {nullptr};
-    App::Document* Document {nullptr};
+    const App::Document* Document {nullptr};
 };
 
 /** TaskView class
@@ -197,13 +197,10 @@ public:
     void setRestoreWidth(bool on);
     bool shouldRestoreWidth() const;
 
-    std::optional<TaskInfo> currentTaskInfo() const;
-
     TaskDialog* dialog(App::Document* doc);
 
-    // Show the task info at the index
-    // or taskwatcher if index = -1
-    void setShownTaskInfo(int index);
+    void setShownTaskInfo(std::vector<TaskInfo>::iterator infoIt);
+    void setShownTaskInfo(size_t index);
 
 Q_SIGNALS:
     void taskUpdate();
@@ -232,8 +229,8 @@ protected:
     void keyPressEvent(QKeyEvent* event) override;
     bool event(QEvent* event) override;
 
-    void addTaskWatcher();
-    void removeTaskWatcher();
+    void addTaskWatcher(int index = -1);
+    void removeTaskWatcher(int index = -1);
     /// update the visibility of the TaskWatcher accordant to the selection
     void updateWatcher();
     /// used by Gui::Control to register Dialogs, returns true if the dialog was not already there
@@ -245,7 +242,6 @@ protected:
     void setShowTaskWatcher(bool show);
 
     std::vector<TaskWatcher*> ActiveWatcher;
-    TaskPanel* TaskWatcherPanel;
 
     // First index of the stack is reserved to the active watcher
     std::vector<TaskInfo> taskInfos;
