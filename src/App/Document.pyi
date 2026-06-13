@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+from Base.Metadata import constmethod
 from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
+from DocumentSettings import DocumentSettings
 from typing import TYPE_CHECKING, Final, Literal, Sequence, overload
 
 if TYPE_CHECKING:
@@ -143,6 +145,13 @@ class Document(PropertyContainer):
         """
         For a regular document it returns its file name property.
         For a temporary document it returns its transient directory.
+        """
+        ...
+
+    @constmethod
+    def settings(self, namespace: str, /) -> DocumentSettings:
+        """
+        Return namespaced, document-persisted settings backed by this document's Meta map.
         """
         ...
 
