@@ -186,6 +186,16 @@ float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, boo
     return flip ? angle : -angle;
 }
 
+SbVec3f getAngleMidDirection(float startAngle, float range)
+{
+    const float midAngle = startAngle + 0.5F * range;
+    return SbVec3f(cos(midAngle), sin(midAngle), 0);
+}
+
+SbVec3f getAngleTextCenter(const SbVec3f& center, float startAngle, float range, float distanceFromCenter)
+{
+    return center + getAngleMidDirection(startAngle, range) * distanceFromCenter;
+}
 }  // namespace
 
 
@@ -820,9 +830,8 @@ SbVec3f SoDatumLabel::getLabelTextCenterAngle(const SbVec3f& p0)
     float startangle = param2.getValue();
     float range = param3.getValue();
     float len2 = 2.0F * length;
-    float endangle = startangle + range;
 
-    return getArcTextCenter(p0, startangle, endangle, len2);
+    return getAngleTextCenter(p0, startangle, range, len2);
 }
 
 SbVec3f SoDatumLabel::getLabelTextCenterArcLength(
@@ -1895,12 +1904,12 @@ SoDatumLabel::AngleGeometry SoDatumLabel::calculateAngleGeometry(const SbVec3f* 
     // set the text label angle to zero
     geom.angle = 0.F;
 
-    geom.v0 = getArcMidDirection(geom.startangle, geom.endangle);
+    geom.v0 = getAngleMidDirection(geom.startangle, geom.range);
 
     // leave some space for the text
     geom.textMargin = std::min(0.2F * abs(geom.range), this->imgWidth / (2 * geom.r));
 
-    geom.textOffset = getArcTextCenter(geom.p0, geom.startangle, geom.endangle, geom.r);
+    geom.textOffset = getAngleTextCenter(geom.p0, geom.startangle, geom.range, geom.r);
 
     // direction vectors for start and end lines
     geom.v1 = SbVec3f(cos(geom.startangle), sin(geom.startangle), 0);
