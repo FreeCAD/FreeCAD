@@ -209,6 +209,7 @@ void Workbench::activated()
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
+        "PartDesign_Thread",
         "Part_DatumPoint",
         "Part_DatumLine",
         "Part_DatumPlane",
@@ -359,6 +360,7 @@ void Workbench::activated()
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
+        "PartDesign_Thread",
         nullptr
     };
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
@@ -533,7 +535,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dressups << "PartDesign_Fillet"
               << "PartDesign_Chamfer"
               << "PartDesign_Draft"
-              << "PartDesign_Thickness";
+              << "PartDesign_Thickness"
+              << "PartDesign_Thread";
 
     *part << "PartDesign_Body"
           << "Separator"
@@ -616,7 +619,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "PartDesign_Fillet"
           << "PartDesign_Chamfer"
           << "PartDesign_Draft"
-          << "PartDesign_Thickness";
+          << "PartDesign_Thickness"
+          << "PartDesign_Thread";
 
     part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design Transformation Features");

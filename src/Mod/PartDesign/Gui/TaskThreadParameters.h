@@ -1,0 +1,59 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#pragma once
+
+#include "TaskDressUpParameters.h"
+#include "ViewProviderThread.h"
+#include <memory>
+
+class Ui_TaskThreadParameters;
+
+namespace PartDesign
+{
+class Thread;
+}
+
+namespace Gui
+{
+class LinearGizmo;
+class RotationalGizmo;
+class GizmoContainer;
+}  // namespace Gui
+
+namespace PartDesignGui
+{
+
+class TaskThreadParameters: public TaskDressUpParameters
+{
+    Q_OBJECT
+
+public:
+    TaskThreadParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
+    ~TaskThreadParameters() override;
+
+    void onRefDeleted() override;
+    void setButtons(const PartDesignGui::TaskDressUpParameters::selectionModes mode) override;
+    void onSelectionChanged(const Gui::SelectionChanges& change) override;
+
+    void apply() override;
+
+protected:
+    void changeEvent(QEvent* e) override;
+
+private:
+    std::unique_ptr<Ui_TaskThreadParameters> ui;
+};
+
+class TaskDlgThreadParameters: public TaskDlgDressUpParameters
+{
+    Q_OBJECT
+
+public:
+    explicit TaskDlgThreadParameters(ViewProviderThread* DressUpView);
+    ~TaskDlgThreadParameters() override;
+
+    /// is called by the framework if the dialog is accepted (Ok)
+    bool accept() override;
+};
+
+}  // namespace PartDesignGui
