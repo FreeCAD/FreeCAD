@@ -2221,13 +2221,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
-        # We do not need the full TNP string like :"Part.Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
-        # instead we need : "Part.Body.Pad.Face6"
-        resolved = rootObj.resolveSubElement(sub_name, True)
-        sub_name = resolved[2]
-
-        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
-
         comp, new_sub = UtilsAssembly.getComponentReference(self.assembly, rootObj, sub_name)
         if not comp:
             # Selection was not valid (not inside assembly or logic failed)
@@ -2277,12 +2270,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
-        # Apply the same processing as in addSelection to ensure consistent comparison
-        resolved = rootObj.resolveSubElement(sub_name, True)
-        sub_name = resolved[2]
-
-        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
-
         comp, new_sub = UtilsAssembly.getComponentReference(self.assembly, rootObj, sub_name)
         if not comp:
             return
@@ -2304,8 +2291,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if not sub_name:
             self.presel_ref = None
             return
-
-        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
 
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
