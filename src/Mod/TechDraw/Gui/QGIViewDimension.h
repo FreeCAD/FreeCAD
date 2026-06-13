@@ -88,9 +88,14 @@ public:
     bool getGroupSelection() override;
     void setGroupSelection(bool isSelected) override;
     virtual QGIDatumLabel* getDatumLabel() const { return datumLabel; }
+    std::optional<double> getCachedDiameterLineAngle() const { return m_cachedDiameterLineAngle; }
+    std::optional<double> getCachedAngleArcRadius() const { return m_cachedAngleArcRadius; }
+    std::optional<double> getCachedAngleLabelArcOffset() const { return m_cachedAngleLabelArcOffset; }
 
     void setNormalColorAll();
     TechDraw::DrawViewDimension* getDimFeat() { return dvDimension; }
+
+    double getIsoDimensionLineSpacing() const;
 
 public Q_SLOTS:
     void onPrettyChanged(int state);
@@ -209,7 +214,7 @@ private:
     double getDefaultExtensionLineOverhang() const;
     double getDefaultArrowTailLength() const;
     double getDefaultIsoDimensionLineSpacing() const;
-    double getIsoDimensionLineSpacing() const;
+    
     double getDefaultIsoReferenceLineOverhang() const;
     double getDefaultAsmeHorizontalLeaderLength() const;
 
@@ -222,6 +227,11 @@ private:
     double m_lineWidth;
     QGIDatumLabel* areaLeaderPointLabel;
     bool isAreaLeaderPointDragged;
+
+    mutable std::optional<double> m_cachedDiameterLineAngle;
+    mutable std::optional<double> m_cachedDiameterLabelAngle;
+    mutable std::optional<double> m_cachedAngleArcRadius;
+    mutable std::optional<double> m_cachedAngleLabelArcOffset;
 
     // needs Phase2 of autocorrect to be useful
     // QGCustomSvg* m_refFlag;
