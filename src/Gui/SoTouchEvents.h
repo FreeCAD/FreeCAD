@@ -139,4 +139,10 @@ public:
 
 protected:
     QWidget* widget;
+
+private:
+    // state for native gesture sequences (e.g. macOS trackpad pinch)
+    double nativeGestureAccumZoom {1.0};
+    SbVec2f nativeGestureCenter;
+    bool nativeGestureActive {false};
 };
