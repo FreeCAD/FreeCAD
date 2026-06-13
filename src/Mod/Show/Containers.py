@@ -198,6 +198,8 @@ def isAContainer(obj, links_too=False):
         return True
     if obj.isDerivedFrom("App::Origin"):
         return True
+    if obj.isDerivedFrom("App::Link") and links_too:
+        return True
     if obj.hasChildElement():
         return True if links_too else False
     return False
