@@ -498,6 +498,32 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                            << oldName << " -> " << newName);
                 }
             }
+            else if (missing && reverse) {
+                // Geometry-based search failed during an element-map version
+                // migration (reverse=true).  As a last resort, fall back to
+                // resolving by the indexed element name.  This is safe here
+                // because reverse is only true when the element-map version
+                // changed, which preserves BRep topology while only renaming
+                // the internal element tags.
+                std::string newsub(subname, strlen(subname) - strlen(element));
+                newsub += oldElement;
+                ShadowSub fallbackName;
+                if (GeoFeature::resolveElement(obj,
+                                               newsub.c_str(),
+                                               fallbackName,
+                                               true,
+                                               GeoFeature::ElementNameType::Export,
+                                               feature)
+                    && !GeoFeature::hasMissingElement(fallbackName.oldName.c_str())
+                    && !fallbackName.newName.empty()) {
+                    missing = false;
+                    elementName = std::move(fallbackName);
+                    const auto& oldName = shadow.newName.size() ? shadow.newName : shadow.oldName;
+                    FC_LOG(propertyName(this)
+                           << " auto change element reference (indexed) " << ret->getFullName()
+                           << " " << oldName << " -> " << elementName.newName);
+                }
+            }
         }
     }
 
