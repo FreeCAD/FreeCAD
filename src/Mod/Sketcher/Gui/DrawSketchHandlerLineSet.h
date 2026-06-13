@@ -2142,8 +2142,8 @@ void DSHPolyLineController::addStepConstraints()
         if (p4set) {
             if (handler->geoEltIds.size() > 1) {
                 if (!handler->isPreviousArc()) {
-                    int geoId2 = handler->geoEltIds[handler->geoEltIds.size() - 2].GeoId;
-                    Constraint2LinesByAngle(lastCurve, geoId2, Base::toRadians(p4), obj);
+                    int prevCurve = handler->geoEltIds[handler->geoEltIds.size() - 2].GeoId;
+                    Constraint2LinesByAngle(prevCurve, lastCurve, Base::toRadians(p4), obj);
                 }
             }
             else {
