@@ -56,6 +56,7 @@ packages=(
   ninja-build
   occt-draw
   pyside6-tools
+  python3-cxx-dev
   python3-dev
   python3-defusedxml
   python3-git
@@ -70,6 +71,7 @@ packages=(
   python3-pyside6.qtgui
   python3-pyside6.qtnetwork
   python3-pyside6.qtsvg
+  python3-pyside6.qtsvgwidgets
   python3-pyside6.qtwidgets
   qt6-base-dev
   qt6-l10n-tools

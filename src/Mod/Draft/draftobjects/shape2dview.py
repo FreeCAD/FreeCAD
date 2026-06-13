@@ -349,35 +349,20 @@ class Shape2DView(DraftObject):
                                 if hasattr(obj, "InPlace"):
                                     if obj.InPlace:
                                         faces = facesOrg
-                                    # Alternative approach in https://forum.freecad.org/viewtopic.php?p=807314#p807314, not adopted
                                     else:
                                         for faceOrg in facesOrg:
-                                            if len(faceOrg.Wires) == 1:
-                                                wireProj = self.getProjected(obj, faceOrg, proj)
-                                                # return Compound
-                                                wireProjWire = Part.Wire(wireProj.Edges)
-                                                faceProj = Part.Face(wireProjWire)
-                                            elif len(faceOrg.Wires) == 2:
-                                                wireClosedOuter = faceOrg.OuterWire
-                                                for w in faceOrg.Wires:
-                                                    if not w.isEqual(wireClosedOuter):
-                                                        wireClosedInner = w
-                                                        break
-                                                wireProjOuter = self.getProjected(
-                                                    obj, wireClosedOuter, proj
-                                                )
-                                                # return Compound
-                                                wireProjOuterWire = Part.Wire(wireProjOuter.Edges)
-                                                faceProj = Part.Face(wireProjOuterWire)
-                                                wireProjInner = self.getProjected(
-                                                    obj, wireClosedInner, proj
-                                                )
-                                                # return Compound
-                                                wireProjInnerWire = Part.Wire(wireProjInner.Edges)
-                                                faceProj.cutHoles(
-                                                    [wireProjInnerWire]
-                                                )  # (list of wires)
-                                            faces.append(faceProj)
+                                            edge_compounds = [
+                                                self.getProjected(obj, w, proj)
+                                                for w in faceOrg.Wires
+                                            ]
+                                            wires = [
+                                                Part.Wire(comp.Edges) for comp in edge_compounds
+                                            ]
+                                            faces.extend(
+                                                Part.makeFace(
+                                                    wires, "Part::FaceMakerBullseye"
+                                                ).Faces
+                                            )
                             else:
                                 c = sh.section(cutp)
                                 if hasattr(obj, "InPlace"):

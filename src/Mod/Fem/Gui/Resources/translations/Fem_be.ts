@@ -722,8 +722,8 @@
   <context>
     <name>Dialog</name>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="14"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="14"/>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="14"/>
       <source>Dialog</source>
       <translation>Дыялог</translation>
@@ -765,14 +765,14 @@
       <translation>Абярыце вяршыні, лініі і паверхні</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="42"/>
       <source>Temperature</source>
       <translation>Тэмпература</translation>
     </message>
     <message>
-      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="68"/>
+      <location filename="../../TaskPanelInitialTemperature.ui" line="71"/>
       <source>ºC</source>
       <translation>ºC</translation>
     </message>
@@ -2750,9 +2750,9 @@ that "MAXGS" needs to be increased.</source>
       <translation>Уваходны ціск</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Ціск</translation>
     </message>
@@ -2882,12 +2882,12 @@ that "MAXGS" needs to be increased.</source>
       <translation>Абаротаў у секунду</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <source>Parameter</source>
       <translation>Налада</translation>
     </message>
@@ -3011,16 +3011,6 @@ Note: has no effect if a solid was selected</source>
       <translation>Калі межавая ўмова вызначае пастаянны патэнцыял</translation>
     </message>
     <message>
-      <location filename="../ui/Electromagnetic.ui" line="348"/>
-      <source>Far field approximation assuming spherical symmetry</source>
-      <translation>Набліжэнне ў далёкім полі, якое прадугледжвае сферычную сіметрыю</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="351"/>
-      <source>Far field</source>
-      <translation>Далёкае поле</translation>
-    </message>
-    <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
       <translation>Канстанта патэнцыялу</translation>
@@ -3034,6 +3024,59 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
       <translation>Вектар нармалі кампаненту электрычнага поля зрушэння</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="608"/>
+      <source>Capacitance</source>
+      <translation>Ёмістасць</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="39"/>
+      <source>Dirichlet</source>
+      <translation>Дзірыхле</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="81"/>
+      <source>To define scalar potential and magnetic vector potential</source>
+      <translation>Для вызначэння скалярнага патэнцыялу і магнітнага вектарнага патэнцыялу</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="113"/>
+      <location filename="../ui/Electromagnetic.ui" line="432"/>
+      <location filename="../ui/CurrentDensity.ui" line="61"/>
+      <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <source>Real</source>
+      <translation>Сапраўдная частка</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="123"/>
+      <location filename="../ui/Electromagnetic.ui" line="442"/>
+      <location filename="../ui/CurrentDensity.ui" line="71"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <source>Imaginary</source>
+      <translation>Уяўная частка</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="130"/>
+      <source>Scalar</source>
+      <translation>Скалярны патэнцыял</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="162"/>
+      <source>Imaginary part of scalar potential</source>
+      <translation>Уяўная частка скалярнага патэнцыялу</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="348"/>
+      <source>Far field approximation assuming spherical symmetry</source>
+      <translation>Набліжэнне ў далёкім полі, якое прадугледжвае сферычную сіметрыю</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="351"/>
+      <source>Far field</source>
+      <translation>Далёкае поле</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
@@ -3074,49 +3117,6 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
       <source>Imaginary part of magnetic flux density z-component</source>
       <translation>Уяўная частка кампаненты z шчыльнасці магнітнага патоку</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="608"/>
-      <source>Capacitance</source>
-      <translation>Ёмістасць</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="39"/>
-      <source>Dirichlet</source>
-      <translation>Дзірыхле</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="81"/>
-      <source>To define scalar potential and magnetic vector potential</source>
-      <translation>Для вызначэння скалярнага патэнцыялу і магнітнага вектарнага патэнцыялу</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/CurrentDensity.ui" line="61"/>
-      <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/Electromagnetic.ui" line="113"/>
-      <location filename="../ui/Electromagnetic.ui" line="432"/>
-      <source>Real</source>
-      <translation>Сапраўдная частка</translation>
-    </message>
-    <message>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/CurrentDensity.ui" line="71"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/Electromagnetic.ui" line="123"/>
-      <location filename="../ui/Electromagnetic.ui" line="442"/>
-      <source>Imaginary</source>
-      <translation>Уяўная частка</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="130"/>
-      <source>Scalar</source>
-      <translation>Скалярны патэнцыял</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="162"/>
-      <source>Imaginary part of scalar potential</source>
-      <translation>Уяўная частка скалярнага патэнцыялу</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="624"/>
@@ -3196,7 +3196,6 @@ Note: has no effect if a solid was selected</source>
       <translation>Шырыня</translation>
     </message>
     <message>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
@@ -3204,6 +3203,7 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
       <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
       <source>mm</source>
       <translation>мм</translation>
     </message>
@@ -3304,14 +3304,14 @@ Note: has no effect if a solid was selected</source>
       <translation>Нармальны да мяжы</translation>
     </message>
     <message>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/Electromagnetic.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Уласцівасці характарыстык аналізу</translation>
     </message>
@@ -3321,9 +3321,9 @@ Note: has no effect if a solid was selected</source>
       <translation>Крыніца цяпла</translation>
     </message>
     <message>
-      <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
-      <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/BodyHeatSource.ui" line="35"/>
+      <location filename="../ui/CurrentDensity.ui" line="29"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
       <source>Mode</source>
       <translation>Рэжым</translation>
     </message>
@@ -3338,8 +3338,8 @@ Note: has no effect if a solid was selected</source>
       <translation>Узровень рассейвання</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="26"/>
       <location filename="../ui/CurrentDensity.ui" line="48"/>
+      <location filename="../ui/Magnetization.ui" line="26"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation>Уяўная частка ўжываецца толькі для ўраўненняў з гарманічным/вагальным кіраўніком тока</translation>
@@ -3411,11 +3411,11 @@ with harmonic/oscillating driving current</source>
       <translation>Абраць карыстальніцкі рэжым, каб уключыць вектарную шчыльнасць току</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="56"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/MeshManipulate.ui" line="594"/>
       <location filename="../ui/Electromagnetic.ui" line="181"/>
       <location filename="../ui/Electromagnetic.ui" line="449"/>
+      <location filename="../ui/MeshManipulate.ui" line="594"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3430,11 +3430,11 @@ with harmonic/oscillating driving current</source>
       <translation>Уяўная частка кампаненты х шчыльнасці току</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="107"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/MeshManipulate.ui" line="599"/>
       <location filename="../ui/Electromagnetic.ui" line="234"/>
       <location filename="../ui/Electromagnetic.ui" line="500"/>
+      <location filename="../ui/MeshManipulate.ui" line="599"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3449,11 +3449,11 @@ with harmonic/oscillating driving current</source>
       <translation>Уяўная частка кампаненты y шчыльнасці току</translation>
     </message>
     <message>
-      <location filename="../ui/Magnetization.ui" line="158"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/MeshManipulate.ui" line="604"/>
       <location filename="../ui/Electromagnetic.ui" line="287"/>
       <location filename="../ui/Electromagnetic.ui" line="551"/>
+      <location filename="../ui/MeshManipulate.ui" line="604"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3493,144 +3493,203 @@ with harmonic/oscillating driving current</source>
       <translation>Найбольшы памер элемента</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshPreview.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshDistance.ui" line="14"/>
-      <location filename="../ui/MeshShape.ui" line="14"/>
       <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshShape.ui" line="14"/>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/MeshPreview.ui" line="14"/>
       <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
-      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation>Стварае структураваную паліганальную сетку ў аб'ёме, арыентуючыся на яе трансфінітныя паверхні.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
-      <location filename="../ui/MeshAdvanced.ui" line="257"/>
-      <location filename="../ui/MeshDistance.ui" line="266"/>
-      <location filename="../ui/MeshManipulate.ui" line="434"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
-      <source>Diagram</source>
-      <translation>Дыяграма</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5- or 6-sided volumes</source>
-      <translation>Абраць любую колькасць 5- ці 6-баковых аб'ёмаў</translation>
-    </message>
-    <message>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
       <location filename="../ui/MeshAdvanced.ui" line="121"/>
       <location filename="../ui/MeshAdvanced.ui" line="526"/>
       <location filename="../ui/MeshAdvanced.ui" line="646"/>
       <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
       <source>Icon</source>
       <translation>Гузік</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
-      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation>Усе паверхні аб'ёму павінны быць трансфінітнымі.
-Калі паверхні маюць розныя тыпы паліганальнай сеткі (квадраты ці трыкутнікі), аб'ём таксама павінен быць створаны з уключанымі змяшанымі элементамі.</translation>
+      <location filename="../ui/MeshManipulate.ui" line="56"/>
+      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
+      <translation>Перацягнуць удакладненне, якое павінна быць зменена, у аб'ект маніпулявання ў дрэве дакумента</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
-      <source>Mixed mesh elements</source>
-      <translation>Змешаныя элементы паліганальнай сеткі</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </source>
-      <translation>Калі актывавана, усе рэбры і паверхні, якія належаць абраным аб'ёмам, якія не маюць трансфінітных азначэнняў, ужо аўтаматычна становяцца трансфінітнымі.
-Ужывайце стратэгічна размешчаныя вызначэнні трансфінітных крывых і паверхняў для кіравання аўтаматычным алгарытмам.
-
-Заўвага:
-1. Зададзеныя карыстальнікам крывыя распаўсюджваюцца на процілеглыя бакі граняў па ўсіх абраных гранях.
-2. Працуе з любой колькасцю аб'ёмаў, як звязаных, так і не звязаных</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
-      <source>Auto apply transfinite surfaces and curves</source>
-      <translation>Аўтаматычна прымяніць трансфінітныя паверхні і крывыя</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <source>Nodes</source>
-      <translation>Вузлоў</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
-      <source>Distribution</source>
-      <translation>Размеркаванне</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <source>Constant</source>
-      <translation>Сталы</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <source>Bump</source>
-      <translation>Двухбаковае ўшчыльненне</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
-      <source>Bump Inverted</source>
-      <translation>Перавернутае двухбаковае ўшчыльненне</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
-      <source>Progression</source>
-      <translation>Прагрэсія</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
-      <source>Progression Inverted</source>
-      <translation>Прагрэсія перавернутая</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
-      <source>Surface</source>
-      <translation>Паверхня</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
-      <source>Recombine</source>
-      <translation>Рэкамбінаваць</translation>
-    </message>
-    <message>
+      <location filename="../ui/MeshManipulate.ui" line="70"/>
       <location filename="../ui/MeshAdvanced.ui" line="34"/>
       <source>Type</source>
+      <translation>Тып</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="84"/>
+      <source>Restrict</source>
+      <translation>Адхіліць</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="89"/>
+      <source>Threshold</source>
+      <translation>Парог</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="94"/>
+      <location filename="../ui/MeshManipulate.ui" line="609"/>
+      <source>Mean</source>
+      <translation>Сярэдняе</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="99"/>
+      <source>Gradient</source>
+      <translation>Градыент</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="104"/>
+      <source>Curvature</source>
+      <translation>Крывізна</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="109"/>
+      <source>Laplacian</source>
+      <translation>Лапласаўскае</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="138"/>
+      <source>Restrict the application of the child refinement to the selected reference elements.</source>
+      <translation>Абмежаваць прымяненне даччынага ўдакладненні абранымі апорнымі элементамі.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="160"/>
+      <location filename="../ui/MeshManipulate.ui" line="173"/>
+      <source>Include the boundary of the selected reference elements</source>
+      <translation>Уключаць межы абраных апорных элементаў</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="163"/>
+      <source>Include boundary</source>
+      <translation>Уключаць межы</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="209"/>
+      <source>Apply a threshold to the child refinements value</source>
+      <translation>Прымяніць парогавае значэнне да даччынага значэння ўдакладненняў</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation>Памер паліганальнай сеткі пры адлегласці = найбольшай адлегласці (DistanceMaximum)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation>Адлегласць, на якім памер паліганальнай сеткі будзе найбольшым (SizeMaximum)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="308"/>
+      <source>Output size</source>
+      <translation>Выходны памер</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation>Памер паліганальнай сеткі пры адлегласці &lt; найменшай адлегласці (DistanceMinimum)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="365"/>
+      <source>Input value</source>
+      <translation>Уводнае значэнне</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation>Адлегласць, да якога памер паліганальнай сеткі будзе найменшым (SizeMinimum)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <source>Diagram</source>
+      <translation>Дыяграма</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="452"/>
+      <source>Linear interpolation</source>
+      <translation>Лінейная інтэрпаляцыя</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation>Вызначае, ці павінна інтэрпаляцыя памеру паліганальнай сеткі паміж SizeMinimum і SizeMaximum быць лінейнай ці сігмападобнай функцыяй</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="472"/>
+      <source>Stop at max input</source>
+      <translation>Прыпыніць пры найбольшым уводзе</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="493"/>
+      <source>Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</source>
+      <translation>Сярэдняе значэнне даччынага ўдакладнення G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="508"/>
+      <location filename="../ui/MeshManipulate.ui" line="617"/>
+      <location filename="../ui/MeshManipulate.ui" line="689"/>
+      <location filename="../ui/MeshManipulate.ui" line="761"/>
+      <source>Delta</source>
+      <translation>Дэльта</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <source>Delta in the aforementioned equation</source>
+      <translation>Дэльта ў вышэйзгаданым ураўненні</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="565"/>
+      <source>Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</source>
+      <translation>Вылічыць градыент канчатковай рознасці даччынага ўдакладнення G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="580"/>
+      <source>Kind</source>
       <translation>Тып</translation>
     </message>
     <message>
@@ -3674,39 +3733,9 @@ Notes:
       <translation>Удасканаленні анізатропнай паліганальнай сеткі працуюць толькі з алгарытмамі BAMG (2D) і MMG3D (3D)</translation>
     </message>
     <message>
-      <location filename="../ui/MeshAdvanced.ui" line="179"/>
-      <location filename="../ui/MeshDistance.ui" line="115"/>
-      <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation>Адлегласць, на якім памер паліганальнай сеткі будзе найбольшым (SizeMaximum)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="210"/>
-      <location filename="../ui/MeshAdvanced.ui" line="399"/>
-      <location filename="../ui/MeshDistance.ui" line="68"/>
-      <location filename="../ui/MeshManipulate.ui" line="236"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation>Памер паліганальнай сеткі пры адлегласці = найбольшай адлегласці (DistanceMaximum)</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshAdvanced.ui" line="315"/>
       <source>Size Tangent</source>
       <translation>Памер датычнай</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="337"/>
-      <location filename="../ui/MeshAdvanced.ui" line="430"/>
-      <location filename="../ui/MeshDistance.ui" line="178"/>
-      <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation>Памер паліганальнай сеткі пры адлегласці &lt; найменшай адлегласці (DistanceMinimum)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="368"/>
-      <location filename="../ui/MeshDistance.ui" line="219"/>
-      <location filename="../ui/MeshManipulate.ui" line="387"/>
-      <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation>Адлегласць, да якога памер паліганальнай сеткі будзе найменшым (SizeMinimum)</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
@@ -3833,8 +3862,8 @@ Example: "F2 + Sin(z)"</source>
       <translation>Поле</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
       <translation>Кадры</translation>
     </message>
@@ -3855,8 +3884,8 @@ Example: "F2 + Sin(z)"</source>
       <translation>Поле X</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
       <source>Y field</source>
       <translation>Поле Y</translation>
     </message>
@@ -3866,6 +3895,177 @@ Example: "F2 + Sin(z)"</source>
       <translation>Адно поле Y для кожнага кадра</translation>
     </message>
     <message>
+      <location filename="../ui/MeshShape.ui" line="38"/>
+      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
+      <translation>Вызначыць памер паліганальнай сеткі ўнутры і звонку фігуры з магчымай таўшчынёй пераходнага пласта</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="54"/>
+      <location filename="../ui/MeshShape.ui" line="70"/>
+      <source>Mesh size within the shape</source>
+      <translation>Памер паліганальнай сеткі ў межах фігуры</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="57"/>
+      <source>Size inside</source>
+      <translation>Памер унутры</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="80"/>
+      <location filename="../ui/MeshShape.ui" line="96"/>
+      <source>Mesh size outside of the shape</source>
+      <translation>Памер паліганальнай сеткі па-за фігурай</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="83"/>
+      <source>Size outside</source>
+      <translation>Памер звонку</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="106"/>
+      <location filename="../ui/MeshShape.ui" line="122"/>
+      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
+      <translation>Таўшчыня пераходнага пласта паміж уваходнымі і выходнымі памерамі паліганальнай сеткі (дадаецца звонку фігуры)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="145"/>
+      <source>Box</source>
+      <translation>Паралелепіпед</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="150"/>
+      <source>Sphere</source>
+      <translation>Сфера</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="155"/>
+      <source>Cylinder</source>
+      <translation>Цыліндр</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
+      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
+      <translation>Стварыць пэўную колькасць вузлоў паліганальнай сеткі на рэбрах з дапамогай структураванага алгарытму.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
+      <source>Number of nodes on the edge</source>
+      <translation>Колькасць вузлоў на рэбры</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <source>Progression</source>
+      <translation>Прагрэсія</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
+      <source>Invert</source>
+      <translation>Інвертаваць</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <source>Nodes</source>
+      <translation>Вузлоў</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <source>Bump</source>
+      <translation>Двухбаковае ўшчыльненне</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <source>Constant</source>
+      <translation>Сталы</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
+      <source>Coefficient</source>
+      <translation>Каэфіцыэнт</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
+      <source>Coefficient for bump/progression growth rate</source>
+      <translation>Каэфіцыент для вызначэння хуткасці росту двухбаковага ўшчыльнення/прагрэсіі</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation>Стварае структураваную паліганальную сетку ў аб'ёме, арыентуючыся на яе трансфінітныя паверхні.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation>Абраць любую колькасць 5- ці 6-баковых аб'ёмаў</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation>Усе паверхні аб'ёму павінны быць трансфінітнымі.
+Калі паверхні маюць розныя тыпы паліганальнай сеткі (квадраты ці трыкутнікі), аб'ём таксама павінен быць створаны з уключанымі змяшанымі элементамі.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation>Змешаныя элементы паліганальнай сеткі</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation>Калі актывавана, усе рэбры і паверхні, якія належаць абраным аб'ёмам, якія не маюць трансфінітных азначэнняў, ужо аўтаматычна становяцца трансфінітнымі.
+Ужывайце стратэгічна размешчаныя вызначэнні трансфінітных крывых і паверхняў для кіравання аўтаматычным алгарытмам.
+
+Заўвага:
+1. Зададзеныя карыстальнікам крывыя распаўсюджваюцца на процілеглыя бакі граняў па ўсіх абраных гранях.
+2. Працуе з любой колькасцю аб'ёмаў, як звязаных, так і не звязаных</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation>Аўтаматычна прымяніць трансфінітныя паверхні і крывыя</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <source>Distribution</source>
+      <translation>Размеркаванне</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <source>Bump Inverted</source>
+      <translation>Перавернутае двухбаковае ўшчыльненне</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <source>Progression Inverted</source>
+      <translation>Прагрэсія перавернутая</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>Паверхня</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <source>Recombine</source>
+      <translation>Рэкамбінаваць</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshPreview.ui" line="96"/>
       <location filename="../ui/MeshPreview.ui" line="109"/>
       <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
@@ -3873,8 +4073,8 @@ Example: "F2 + Sin(z)"</source>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="99"/>
-      <source>Min:</source>
-      <translation>Найменшы:</translation>
+      <source>Min</source>
+      <translation>Найменшы</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="112"/>
@@ -3889,8 +4089,8 @@ Example: "F2 + Sin(z)"</source>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="141"/>
-      <source>Max:</source>
-      <translation>Найбольшы:</translation>
+      <source>Max</source>
+      <translation>Найбольшы</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="154"/>
@@ -3910,8 +4110,66 @@ Example: "F2 + Sin(z)"</source>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="197"/>
-      <source>...</source>
+      <source>…</source>
       <translation>…</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings</source>
+      <translation>Глабальныя налады папярэдняга прагляду для ўдакладнення</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation>Аўтаматычна ўключае візуалізацыю памеру паліганальнай сеткі ўдакладнення пры адкрыцці дыялогавага акна задачы ўдакладнення.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation>Аўтаматычна ўключаць пры адкрыцці</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation>Вызначае, наколькі дакладнай будзе паліганальная сетка папярэдняга прагляду.
+Большая колькасць азначае больш дакладную паліганальную сетку (меншыя элементы паліганальнай сеткі)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation>Папярэдні прагляд дакладнасці паліганальнай сеткі</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation>Вызначыць памер элемента паліганальнай сеткі на аснове адлегласці да абранай апорнай геаметрыі.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>Памер</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation>Інтэрпаляцыя</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation>Памер выбаркі</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation>Колькасць кропак выбаркі, якія ўжываюцца для дыскрэтызацыі крывых і паверхняў.
+Для паверхні гэта памер выбаркі для кожнага напрамку.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation>Лінейная</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
@@ -3972,268 +4230,6 @@ Notes:
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
       <translation>Аўтаматычна прымяніць трансфінітныя крывыя</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation>Вызначыць памер элемента паліганальнай сеткі на аснове адлегласці да абранай апорнай геаметрыі.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="140"/>
-      <source>Size</source>
-      <translation>Памер</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="284"/>
-      <source>Interpolation</source>
-      <translation>Інтэрпаляцыя</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="291"/>
-      <source>Sampling size</source>
-      <translation>Памер выбаркі</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation>Колькасць кропак выбаркі, якія ўжываюцца для дыскрэтызацыі крывых і паверхняў.
-Для паверхні гэта памер выбаркі для кожнага напрамку.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="326"/>
-      <location filename="../ui/MeshManipulate.ui" line="462"/>
-      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation>Вызначае, ці павінна інтэрпаляцыя памеру паліганальнай сеткі паміж SizeMinimum і SizeMaximum быць лінейнай ці сігмападобнай функцыяй</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="329"/>
-      <source>Linear</source>
-      <translation>Лінейная</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="38"/>
-      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation>Вызначыць памер паліганальнай сеткі ўнутры і звонку фігуры з магчымай таўшчынёй пераходнага пласта</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="54"/>
-      <location filename="../ui/MeshShape.ui" line="70"/>
-      <source>Mesh size within the shape</source>
-      <translation>Памер паліганальнай сеткі ў межах фігуры</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="57"/>
-      <source>Size inside</source>
-      <translation>Памер унутры</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="80"/>
-      <location filename="../ui/MeshShape.ui" line="96"/>
-      <source>Mesh size outside of the shape</source>
-      <translation>Памер паліганальнай сеткі па-за фігурай</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="83"/>
-      <source>Size outside</source>
-      <translation>Памер звонку</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="106"/>
-      <location filename="../ui/MeshShape.ui" line="122"/>
-      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation>Таўшчыня пераходнага пласта паміж уваходнымі і выходнымі памерамі паліганальнай сеткі (дадаецца звонку фігуры)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="145"/>
-      <source>Box</source>
-      <translation>Паралелепіпед</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="150"/>
-      <source>Sphere</source>
-      <translation>Сфера</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshShape.ui" line="155"/>
-      <source>Cylinder</source>
-      <translation>Цыліндр</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="56"/>
-      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
-      <translation>Перацягнуць удакладненне, якое павінна быць зменена, у аб'ект маніпулявання ў дрэве дакумента</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="70"/>
-      <source>Type:</source>
-      <translation>Тып:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="84"/>
-      <source>Restrict</source>
-      <translation>Адхіліць</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="89"/>
-      <source>Threshold</source>
-      <translation>Парог</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="94"/>
-      <location filename="../ui/MeshManipulate.ui" line="609"/>
-      <source>Mean</source>
-      <translation>Сярэдняе</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="99"/>
-      <source>Gradient</source>
-      <translation>Градыент</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="104"/>
-      <source>Curvature</source>
-      <translation>Крывізна</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="109"/>
-      <source>Laplacian</source>
-      <translation>Лапласаўскае</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="138"/>
-      <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation>Абмежаваць прымяненне даччынага ўдакладненні абранымі апорнымі элементамі.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="160"/>
-      <location filename="../ui/MeshManipulate.ui" line="173"/>
-      <source>Include the boundary of the selected reference elements</source>
-      <translation>Уключаць межы абраных апорных элементаў</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="163"/>
-      <source>Include boundary</source>
-      <translation>Уключаць межы</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="209"/>
-      <source>Apply a threshold to the child refinements value</source>
-      <translation>Прымяніць парогавае значэнне да даччынага значэння ўдакладненняў</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="308"/>
-      <source>Output size</source>
-      <translation>Выходны памер</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="365"/>
-      <source>Input value</source>
-      <translation>Уводнае значэнне</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="452"/>
-      <source>Linear interpolation</source>
-      <translation>Лінейная інтэрпаляцыя</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="472"/>
-      <source>Stop at max input</source>
-      <translation>Прыпыніць пры найбольшым уводзе</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="493"/>
-      <source>Calculates the mean value of child refinement G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</source>
-      <translation>Сярэдняе значэнне даччынага ўдакладнення G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="508"/>
-      <location filename="../ui/MeshManipulate.ui" line="617"/>
-      <location filename="../ui/MeshManipulate.ui" line="689"/>
-      <location filename="../ui/MeshManipulate.ui" line="761"/>
-      <source>Delta</source>
-      <translation>Дэльта</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="527"/>
-      <location filename="../ui/MeshManipulate.ui" line="636"/>
-      <location filename="../ui/MeshManipulate.ui" line="708"/>
-      <location filename="../ui/MeshManipulate.ui" line="780"/>
-      <source>Delta in the aforementioned equation</source>
-      <translation>Дэльта ў вышэйзгаданым ураўненні</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="565"/>
-      <source>Compute the finite difference gradient of child refinement G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</source>
-      <translation>Вылічыць градыент канчатковай рознасці даччынага ўдакладнення G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="580"/>
-      <source>Kind</source>
-      <translation>Тып</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
-      <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation>Стварыць пэўную колькасць вузлоў паліганальнай сеткі на рэбрах з дапамогай структураванага алгарытму.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
-      <source>Number of nodes on the edge</source>
-      <translation>Колькасць вузлоў на рэбры</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
-      <source>Invert</source>
-      <translation>Інвертаваць</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
-      <source>Coefficient</source>
-      <translation>Каэфіцыэнт</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
-      <source>Coefficient for bump/progression growth rate</source>
-      <translation>Каэфіцыент для вызначэння хуткасці росту двухбаковага ўшчыльнення/прагрэсіі</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
-      <source>Global refinement preview settings:</source>
-      <translation>Глабальныя налады папярэдняга прагляду для ўдакладнення:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
-      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation>Аўтаматычна ўключае візуалізацыю памеру паліганальнай сеткі ўдакладнення пры адкрыцці дыялогавага акна задачы ўдакладнення.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
-      <source>Auto enable on open</source>
-      <translation>Аўтаматычна ўключаць пры адкрыцці</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
-      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation>Вызначае, наколькі дакладнай будзе паліганальная сетка папярэдняга прагляду.
-Большая колькасць азначае больш дакладную паліганальную сетку (меншыя элементы паліганальнай сеткі)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
-      <source>Preview mesh fineness</source>
-      <translation>Папярэдні прагляд дакладнасці паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
@@ -4355,14 +4351,14 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <translation>Вам неабходна стварыць ці задзейнічаць даследаванне</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="155"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="899"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="155"/>
       <source>A dialog is already open in the task panel</source>
       <translation>На панэлі задач дыялогавае акно ўжо адчыненае</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="156"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="900"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="156"/>
       <source>Do you want to close this dialog?</source>
       <translation>Ці зачыніць дыялогавае акно?</translation>
     </message>
@@ -6712,14 +6708,14 @@ No matching module was found in the current Python path.</source>
       <translation>Змяніць {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
       <translation>Паказаць графік</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
       <translation>Паказаць дадзеныя</translation>
     </message>
@@ -6754,8 +6750,8 @@ No matching module was found in the current Python path.</source>
       <translation>Дадзеныя табліцы</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="283"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <source>The name used in the plots legend</source>
       <translation>Назва, якая ўжываецца ў легендзе графіка</translation>
     </message>
@@ -6782,8 +6778,8 @@ No matching module was found in the current Python path.</source>
       <translation>Шырыня панэлі ад 0 да 1 (калі 1 - без прабелаў)</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="297"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <source>The style the line is drawn in</source>
       <translation>Стыль, у якім намаляваная лінія</translation>
     </message>
@@ -6808,28 +6804,28 @@ No matching module was found in the current Python path.</source>
       <translation>Колькасць слупкоў, на якія падзяляюцца дадзеныя</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="421"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <source>The histogram plot title</source>
       <translation>Загаловак графіка гістаграмы</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="428"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <source>The label shown for the histogram X axis</source>
       <translation>Метка, якая паказаная на восі X гістаграмы</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="435"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <source>The label shown for the histogram Y axis</source>
       <translation>Метка, якая паказаная на восі Y гістаграмы</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="442"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="449"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
       <source>Determines if the legend is plotted</source>
       <translation>Вызначае, ці нанесена легенда на графік</translation>
     </message>
@@ -6963,8 +6959,8 @@ No matching module was found in the current Python path.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2554"/>
-      <source>Define/create a contours filter which displays iso contours</source>
-      <translation>Вызначыць/стварыць фільтр контураў, які адлюстроўвае ізаметрычныя контуры</translation>
+      <source>Defines a contours filter that displays iso contours</source>
+      <translation>Вызначае фільтр контураў, які адлюстроўвае ізаметрычныя контуры</translation>
     </message>
   </context>
   <context>
@@ -7815,10 +7811,10 @@ Leave blank to use default Python executable</source>
   <context>
     <name>TaskPostGlyph</name>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>Форма гліфа</translation>
     </message>
@@ -7858,12 +7854,12 @@ Leave blank to use default Python executable</source>
       <translation>Сфера</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Якое вектарнае поле ўжываецца для арыентацыі гліфаў</translation>
     </message>
@@ -7873,10 +7869,10 @@ Leave blank to use default Python executable</source>
       <translation>Арыентацыя</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Нічога</translation>
     </message>
@@ -7897,10 +7893,10 @@ Leave blank to use default Python executable</source>
       <translation>Дадзеныя</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Пастаянны множнік, з якім маштабуюцца гліфы</translation>
     </message>
@@ -7915,9 +7911,9 @@ Leave blank to use default Python executable</source>
       <translation>Змяняе маштабны каэфіцыент на +/- 50% ад зададзенага каэфіцыенту маштабавання</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Калі дадзеныя пра маштаб з'яўляюцца вектарнымі, уласцівасць вызначае, ці будзе гліф маштабавацца па велічыні вектара альбо па асобных кампанентах</translation>
     </message>
@@ -8504,35 +8500,35 @@ Leave blank to use default Python executable</source>
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation>Стыль чарчэння контураў (налада 'Не' не малюе контуры)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
       <source>None</source>
       <translation>Нічога</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation>Шырыня ўсіх ліній (контур і штрыхоўка)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <source>Hatch pattern</source>
       <translation>Шаблон штрыхоўкі</translation>
     </message>
@@ -8552,8 +8548,8 @@ Leave blank to use default Python executable</source>
       <translation>Панэлі</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <source>Legend</source>
       <translation>Легенда</translation>
     </message>
@@ -8563,8 +8559,8 @@ Leave blank to use default Python executable</source>
       <translation>Колер усіх ліній (контур і штрыхоўка)</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
       <source>Color of the bars in histogram</source>
       <translation>Колер слупкоў на гістаграме</translation>
     </message>
@@ -8724,6 +8720,55 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
+    <name>SolverZ88</name>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="14"/>
+      <source>Solver Z88 Control</source>
+      <translation>Кіраваць сродкам рашэння Z88</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="20"/>
+      <source>Working directory</source>
+      <translation>Працоўны каталог</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="35"/>
+      <source>Write</source>
+      <translation>Запісаць</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="45"/>
+      <source>Edit</source>
+      <translation>Змяніць</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="56"/>
+      <source>Path to working directory. Leave blank to use user preferences</source>
+      <translation>Шлях да працоўнага каталога.
+Пакіньце поле пустым, каб ужываць налады карыстальніка</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="74"/>
+      <source>Solver Parameters</source>
+      <translation>Налады сродку рашэння</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="82"/>
+      <source>Solver type</source>
+      <translation>Тып сродку рашэння</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="122"/>
+      <source>Time</source>
+      <translation>Час</translation>
+    </message>
+    <message>
+      <location filename="../ui/SolverZ88.ui" line="129"/>
+      <source>Solver Version</source>
+      <translation>Версія сродку рашэння</translation>
+    </message>
+  </context>
+  <context>
     <name>SolverElmer</name>
     <message>
       <location filename="../ui/SolverElmer.ui" line="14"/>
@@ -8773,52 +8818,29 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>SolverZ88</name>
+    <name>FemToolsCcx</name>
     <message>
-      <location filename="../ui/SolverZ88.ui" line="14"/>
-      <source>Solver Z88 Control</source>
-      <translation>Кіраваць сродкам рашэння Z88</translation>
+      <location filename="../../../femtools/ccxtools.py" line="419"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>Адсутнічае, альбо няправільны двайковы код ccx CalculiX</translation>
     </message>
     <message>
-      <location filename="../ui/SolverZ88.ui" line="20"/>
-      <source>Working directory</source>
-      <translation>Працоўны каталог</translation>
+      <location filename="../../../femtools/ccxtools.py" line="453"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>МКЭ: няправільны двайковы код ccx</translation>
     </message>
     <message>
-      <location filename="../ui/SolverZ88.ui" line="35"/>
-      <source>Write</source>
-      <translation>Запісаць</translation>
+      <location filename="../../../femtools/ccxtools.py" line="466"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>МКЭ: двайковы код ccx CalculiX '{} ' не знойдзены.
+Пакажыце шлях да двайковага коду ccx CalculiX на ўкладцы налад МКЭ CalculiX.</translation>
     </message>
     <message>
-      <location filename="../ui/SolverZ88.ui" line="45"/>
-      <source>Edit</source>
-      <translation>Змяніць</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="56"/>
-      <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation>Шлях да працоўнага каталога.
-Пакіньце поле пустым, каб ужываць налады карыстальніка</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="74"/>
-      <source>Solver Parameters</source>
-      <translation>Налады сродку рашэння</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="82"/>
-      <source>Solver type</source>
-      <translation>Тып сродку рашэння</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="122"/>
-      <source>Time</source>
-      <translation>Час</translation>
-    </message>
-    <message>
-      <location filename="../ui/SolverZ88.ui" line="129"/>
-      <source>Solver Version</source>
-      <translation>Версія сродку рашэння</translation>
+      <location filename="../../../femtools/ccxtools.py" line="478"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>МКЭ: вывад ccx CalculiX '{} '{} 'не ўтрымлівае чаканай фразы' {}'.
+Некаторыя праблемы ўзнікаюць пры запуску двайковага файла ccx.
+Праверце, ці працуе ccx аўтаномна без FreeCAD.</translation>
     </message>
   </context>
   <context>
@@ -8968,51 +8990,9 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemToolsCcx</name>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="419"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation>Адсутнічае, альбо няправільны двайковы код ccx CalculiX</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="453"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation>МКЭ: няправільны двайковы код ccx</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="466"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation>МКЭ: двайковы код ccx CalculiX '{} ' не знойдзены.
-Пакажыце шлях да двайковага коду ccx CalculiX на ўкладцы налад МКЭ CalculiX.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="478"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation>МКЭ: вывад ccx CalculiX '{} '{} 'не ўтрымлівае чаканай фразы' {}'.
-Некаторыя праблемы ўзнікаюць пры запуску двайковага файла ccx.
-Праверце, ці працуе ccx аўтаномна без FreeCAD.</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPressure</name>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
-      <source>Input Error</source>
-      <translation>Памылка ўводу</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
-      <source>Input Error</source>
-      <translation>Памылка ўводу</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintForce</name>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
       <source>Input Error</source>
       <translation>Памылка ўводу</translation>
     </message>
@@ -9039,33 +9019,17 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgPost</name>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
       <source>Input Error</source>
       <translation>Памылка ўводу</translation>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
-      <source>Input Error</source>
-      <translation>Памылка ўводу</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
-      <source>Input Error</source>
-      <translation>Памылка ўводу</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
       <source>Input Error</source>
       <translation>Памылка ўводу</translation>
     </message>
@@ -9079,25 +9043,9 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
-      <source>Input Error</source>
-      <translation>Памылка ўводу</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
-      <source>Input Error</source>
-      <translation>Памылка ўводу</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
       <source>Input Error</source>
       <translation>Памылка ўводу</translation>
     </message>
@@ -9111,9 +9059,41 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <source>Input Error</source>
+      <translation>Памылка ўводу</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <message>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
+      <source>Input Error</source>
+      <translation>Памылка ўводу</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <source>Input Error</source>
+      <translation>Памылка ўводу</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
+    <message>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
+      <source>Input Error</source>
+      <translation>Памылка ўводу</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
       <source>Input Error</source>
       <translation>Памылка ўводу</translation>
     </message>
@@ -9122,6 +9102,22 @@ Leave blank to use default Python executable</source>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
+      <source>Input Error</source>
+      <translation>Памылка ўводу</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
+      <source>Input Error</source>
+      <translation>Памылка ўводу</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgPost</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
       <source>Input Error</source>
       <translation>Памылка ўводу</translation>
     </message>

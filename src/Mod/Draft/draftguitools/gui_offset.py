@@ -61,6 +61,8 @@ True if Draft_rc.__name__ else False
 class Offset(gui_base_original.Modifier):
     """Gui Command for the Offset tool."""
 
+    multi_object_selection = False
+
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
@@ -151,6 +153,8 @@ class Offset(gui_base_original.Modifier):
             if self.planetrack:
                 self.planetrack.set(self.shape.Vertexes[0].Point)
             self.running = True
+            self.selection_done = True
+            self.update_hints()
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -327,6 +331,14 @@ class Offset(gui_base_original.Modifier):
                     "Offset direction is not defined. Move the mouse on either side of the object first to indicate a direction.",
                 )
             )
+
+    def get_action_hints(self):
+        return (
+            [Gui.InputHint(translate("draft", "%1 pick distance"), Gui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+            + gui_tool_utils._get_hint_mod_copy()
+        )
 
 
 Gui.addCommand("Draft_Offset", Offset())

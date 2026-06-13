@@ -1573,6 +1573,10 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Tijd</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Tijd:</translation>
@@ -2261,8 +2265,8 @@ Visit https://openscad.org/ to install it.</translation>
       <translation type="unfinished">Display Colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
       <translation>Verlaat info-modus</translation>
     </message>

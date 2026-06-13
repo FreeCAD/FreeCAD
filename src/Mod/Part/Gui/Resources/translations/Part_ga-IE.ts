@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Cuireann sé oibríochtaí booléacha i bhfeidhm leis na cruthanna roghnaithe</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation>Cuireann sé oibríocht Booleánach i bhfeidhm leis na cruthanna roghnaithe</translation>
     </message>
   </context>
   <context>
