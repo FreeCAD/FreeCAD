@@ -109,11 +109,7 @@ SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     }
 }
 
-SelectionObserver::SelectionObserver(
-    const ViewProviderDocumentObject* vp,
-    bool attach,
-    ResolveMode resolve
-)
+SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool attach, ResolveMode resolve)
     : resolve(resolve)
     , blockedSelection(false)
 {
@@ -284,7 +280,7 @@ bool SelectionSingleton::hasSelection(const char* pDocName, ResolveMode resolve)
             return false;
         }
     }
-     for (auto& sel : _SelList) {
+    for (auto& sel : _SelList) {
         if (!sel.pDoc) {
             continue;
         }
@@ -553,12 +549,8 @@ SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(co
         return {.allowed = true, .reason = ""};
     }
     const char* subelement = nullptr;
-    auto pObject = getObjectOfType(
-        sel,
-        App::DocumentObject::getClassTypeId(),
-        gateResolve,
-        &subelement
-    );
+    auto pObject
+        = getObjectOfType(sel, App::DocumentObject::getClassTypeId(), gateResolve, &subelement);
 
 
     if (!ActiveGate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
@@ -871,14 +863,8 @@ bool SelectionSingleton::testSelection(
     }
 
     _SelObj temp;
-    int ret = checkSelection(
-        pDoc->getName(),
-        objectName,
-        pSubName,
-        ResolveMode::NoResolve,
-        temp,
-        &_SelList
-    );
+    int ret
+        = checkSelection(pDoc->getName(), objectName, pSubName, ResolveMode::NoResolve, temp, &_SelList);
     if (ret < 0) {
         return false;
     }
@@ -888,8 +874,11 @@ bool SelectionSingleton::testSelection(
         = getObjectOfType(temp, App::DocumentObject::getClassTypeId(), gateResolve, &subelement);
 
     std::string notAllowedReason = ActiveGate->notAllowedReason;
-    bool allowed
-        = ActiveGate->allow(gateObject ? gateObject->getDocument() : temp.pDoc, gateObject, subelement);
+    bool allowed = ActiveGate->allow(
+        gateObject ? gateObject->getDocument() : temp.pDoc,
+        gateObject,
+        subelement
+    );
     ActiveGate->notAllowedReason = notAllowedReason;
     return allowed;
 }
@@ -1171,7 +1160,7 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode 
     if (ActiveGate) {
         rmvSelectionGate();
     }
-    
+
     ActiveGate = gate;
     gateResolve = resolve;
 }
@@ -1401,7 +1390,7 @@ void SelectionSingleton::selStackPush(bool clearForward, bool overwrite)
 
 void SelectionSingleton::selStackGoBack(int count)
 {
-     if ((int)_SelStackBack.size() < count) {
+    if ((int)_SelStackBack.size() < count) {
         count = _SelStackBack.size();
     }
     if (count <= 0) {
@@ -1611,7 +1600,8 @@ bool SelectionSingleton::updateSelection(
     if (DocName == pDocName && FeatName == pObjectName && SubName == pSubName) {
         if (show) {
             FC_TRACE("preselect signal");
-            notify(SelectionChanges(SelectionChanges::SetPreselectSignal, DocName, FeatName, SubName));        }
+            notify(SelectionChanges(SelectionChanges::SetPreselectSignal, DocName, FeatName, SubName));
+        }
         else {
             rmvPreselect();
         }
@@ -2207,7 +2197,8 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
     // Remove also from the selection, if selected
     // We don't walk down the hierarchy for each selection, so there may be stray selection
     std::vector<SelectionChanges> changes;
-    for (auto it = _SelList.begin(), itNext = it; it != _SelList.end(); it = itNext) {        ++itNext;
+    for (auto it = _SelList.begin(), itNext = it; it != _SelList.end(); it = itNext) {
+        ++itNext;
         if (it->pResolvedObject == &Obj || it->pObject == &Obj) {
             changes.emplace_back(
                 SelectionChanges::RmvSelection,
@@ -2231,8 +2222,7 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
 
     if (!_PickedList.empty()) {
         bool changed = false;
-        for (auto it = _PickedList.begin(), itNext = it; it != _PickedList.end();
-             it = itNext) {
+        for (auto it = _PickedList.begin(), itNext = it; it != _PickedList.end(); it = itNext) {
             ++itNext;
             auto& sel = *it;
             if (sel.DocName == Obj.getDocument()->getName()
@@ -3375,7 +3365,7 @@ PyObject* SelectionSingleton::sAddSelectionGate(PyObject* /*self*/, PyObject* ar
 PyObject* SelectionSingleton::sRemoveSelectionGate(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
-       return nullptr;
+        return nullptr;
     }
 
     PY_TRY
