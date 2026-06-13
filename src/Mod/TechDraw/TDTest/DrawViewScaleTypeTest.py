@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+
+import codecs
+import os
+import tempfile
+import unittest
+
+import FreeCAD
+
+from .TechDrawTestUtilities import createPageWithSVGTemplate
+
+
+class DrawViewScaleTypeTest(unittest.TestCase):
+    """Regression test for issue #30186: a symbol-style view (DrawViewSymbol and
+    its DraftView / ArchView subclasses) whose ScaleType is set to 'Page' must
+    keep that ScaleType across a save/reload cycle instead of reverting to
+    'Custom'."""
+
+    def setUp(self):
+        self.document = FreeCAD.newDocument("TDScaleType")
+        self.page = createPageWithSVGTemplate(self.document)
+        # A page scale other than the view's default Scale of 1.0 is what makes a
+        # missing Scale sync observable: validateScale() on reload compares the
+        # stored Scale against the page scale and downgrades Page -> Custom on a
+        # mismatch.
+        self.page.Scale = 0.05
+        self.savedFile = None
+
+    def tearDown(self):
+        for name in list(FreeCAD.listDocuments().keys()):
+            FreeCAD.closeDocument(name)
+        if self.savedFile and os.path.exists(self.savedFile):
+            os.remove(self.savedFile)
+
+    def _addPageSymbol(self):
+        sym = self.document.addObject("TechDraw::DrawViewSymbol", "ScaleSym")
+        path = os.path.dirname(os.path.abspath(__file__))
+        with codecs.open(path + "/TestSymbol.svg", "r", encoding="utf-8") as f:
+            sym.Symbol = f.read()
+        self.page.addView(sym)
+        # DrawViewSymbol (like DraftView / ArchView) defaults ScaleType to Custom,
+        # so checkScale() at addView() leaves the stored Scale untouched. Switching
+        # to Page is the path that must sync the stored Scale to the page scale.
+        sym.ScaleType = "Page"
+        return sym
+
+    def testScaleTypePageSyncsStoredScale(self):
+        """Setting ScaleType to 'Page' must write the page scale into the stored
+        Scale property rather than leaving it at the default."""
+        sym = self._addPageSymbol()
+        self.assertEqual(sym.ScaleType, "Page")
+        self.assertAlmostEqual(sym.Scale, self.page.Scale)
+
+    def testScaleTypePagePersistsOnReload(self):
+        """ScaleType 'Page' must survive a save / close / reopen cycle (#30186)."""
+        self._addPageSymbol()
+        self.document.recompute()
+
+        self.savedFile = os.path.join(tempfile.gettempdir(), "td_scaletype_30186.FCStd")
+        self.document.saveAs(self.savedFile)
+        FreeCAD.closeDocument(self.document.Name)
+
+        reloaded = FreeCAD.openDocument(self.savedFile)
+        sym = reloaded.getObject("ScaleSym")
+        self.assertEqual(sym.ScaleType, "Page")
+        self.assertAlmostEqual(sym.Scale, reloaded.getObject("Page").Scale)
+
+
+if __name__ == "__main__":
+    unittest.main()
