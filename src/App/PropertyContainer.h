@@ -26,6 +26,7 @@
 #pragma once
 
 #include <map>
+#include <unordered_map>
 #include <vector>
 #include <string>
 #include <memory>
@@ -70,6 +71,36 @@ enum PropertyType
     Prop_NoRecompute = 16,
     /// The property won't be saved to file at all.
     Prop_NoPersist   = 32,
+};
+
+/**
+ * @brief Specifies whether a property alias is deprecated.
+ *
+ * Pass this to addPropertyAlias() or the ADD_PROPERTY_ALIAS /
+ * ADD_PROPERTY_DEPRECATED_ALIAS macros to control whether using the alias
+ * emits a developer warning.
+ */
+enum class PropertyAliasType {
+    /// The alias resolves silently with no warning.
+    Normal,
+    /// The alias resolves but emits a developer warning to encourage migration to the canonical name.
+    Deprecated,
+};
+
+/// Entry in the property alias map.
+struct PropertyAliasEntry {
+    std::string canonicalName;
+    PropertyAliasType type;
+};
+
+/**
+ * @brief Controls whether property alias resolution is applied in getPropertyByName().
+ */
+enum class PropertyLookupMode {
+    /// Resolve aliases when the canonical name is not found (default).
+    WithAliases,
+    /// Skip alias resolution; only canonical property names are matched.
+    WithoutAliases,
 };
 // clang-format on
 
@@ -327,7 +358,8 @@ public:
    * @param[in] name The name of the property to find.
    * @return The property if found or `nullptr` when not found.
    */
-  virtual Property *getPropertyByName(const char* name) const;
+  virtual Property *getPropertyByName(const char* name,
+                                      PropertyLookupMode mode = PropertyLookupMode::WithAliases) const;
 
   /**
    * @brief Get the name of a property.
@@ -535,6 +567,21 @@ public:
   }
 
   /**
+   * @brief Register an alias for a property name.
+   *
+   * After this call, getPropertyByName(alias) and Python attribute access via
+   * the alias name will transparently return the same property as
+   * getPropertyByName(canonicalName). This allows renaming properties in C++
+   * without breaking Python add-ons and macros that use the old name.
+   *
+   * @param[in] canonicalName The current, authoritative name of the property.
+   * @param[in] alias         The old or alternative name to also accept.
+   * @param[in] aliasType     Whether to emit a warning when the alias is used.
+   */
+  void addPropertyAlias(const char* canonicalName, const char* alias,
+                        PropertyAliasType aliasType = PropertyAliasType::Normal);
+
+  /**
    * @brief Remove a dynamic property.
    *
    * @param[in] name The name of the property to remove.
@@ -731,6 +778,8 @@ protected:
 
 private:
   std::string _propertyPrefix;
+  /// Maps alias names to their canonical property name and deprecation status.
+  std::unordered_map<std::string, PropertyAliasEntry> _propertyAliases;
   static PropertyData propertyData;
 };
 
@@ -755,6 +804,16 @@ private:
 
 #define ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
     _ADD_PROPERTY_TYPE(#_prop_,_prop_,_defaultval_,_group_,_type_,_Docu_)
+
+/// Register a non-deprecated alias for a property. The old alias name will resolve to the same
+/// property as the canonical name given by _prop_ (a bare C++ member name, stringified).
+#define ADD_PROPERTY_ALIAS(_prop_, _alias_) \
+    this->addPropertyAlias(#_prop_, _alias_, App::PropertyAliasType::Normal)
+
+/// Register a deprecated alias for a property. Like ADD_PROPERTY_ALIAS but emits a developer
+/// warning each time the alias is accessed, encouraging migration to the canonical name.
+#define ADD_PROPERTY_DEPRECATED_ALIAS(_prop_, _alias_) \
+    this->addPropertyAlias(#_prop_, _alias_, App::PropertyAliasType::Deprecated)
 
 
 #define PROPERTY_HEADER(_class_) \

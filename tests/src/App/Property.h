@@ -29,7 +29,80 @@
 #include <App/PropertyStandard.h>
 #include <App/VarSet.h>
 
+#include <Base/Console.h>
+
 #include <src/App/InitApplication.h>
+
+/// RAII helper that captures developer warnings emitted via Base::Console().
+class WarningCapture: public Base::ILogger
+{
+public:
+    WarningCapture()
+    {
+        Base::Console().attachObserver(this);
+    }
+
+    ~WarningCapture() override
+    {
+        Base::Console().detachObserver(this);
+    }
+
+    const char* name() override
+    {
+        return "WarningCapture";
+    }
+
+    void sendLog(
+        const std::string& /*notifierName*/,
+        const std::string& message,
+        Base::LogStyle level,
+        Base::IntendedRecipient /*recipient*/,
+        Base::ContentType /*content*/
+    ) override
+    {
+        if (level == Base::LogStyle::Warning) {
+            warnings.push_back(message);
+        }
+    }
+
+    std::vector<std::string> warnings;
+};
+
+class PropertyAlias: public ::testing::Test
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
+        _docName = App::GetApplication().getUniqueDocumentName("testAlias");
+        _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
+    }
+
+    void SetUp() override
+    {
+        varSet = freecad_cast<App::VarSet*>(_doc->addObject("App::VarSet", "VarSetAlias"));
+        dynProp = freecad_cast<App::PropertyInteger*>(
+            varSet->addDynamicProperty("App::PropertyInteger", "NewName", "Variables")
+        );
+        dynProp->setValue(42);
+    }
+
+    void TearDown() override
+    {
+        _doc->removeObject(varSet->getNameInDocument());
+    }
+
+    static void TearDownTestSuite()
+    {
+        App::GetApplication().closeDocument(_docName.c_str());
+    }
+
+    App::VarSet* varSet {};
+    App::PropertyInteger* dynProp {};
+
+    static std::string _docName;
+    static App::Document* _doc;
+};
 
 class RenameProperty: public ::testing::Test
 {

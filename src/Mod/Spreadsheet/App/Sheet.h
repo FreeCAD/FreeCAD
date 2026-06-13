@@ -200,7 +200,10 @@ public:
         return &cells;
     }
 
-    App::Property* getPropertyByName(const char* name) const override;
+    App::Property* getPropertyByName(
+        const char* name,
+        App::PropertyLookupMode mode = App::PropertyLookupMode::WithAliases
+    ) const override;
 
     App::Property* getDynamicPropertyByName(const char* name) const override;
 

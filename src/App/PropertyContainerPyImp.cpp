@@ -696,3 +696,21 @@ PyObject* PropertyContainerPy::renameProperty(PyObject* args) const
     PY_CATCH
 }
 
+PyObject* PropertyContainerPy::addPropertyAlias(PyObject* args)
+{
+    const char* canonicalName {};
+    const char* alias {};
+    PyObject* pyDeprecated = Py_False;
+    if (!PyArg_ParseTuple(args, "ss|O!", &canonicalName, &alias, &PyBool_Type, &pyDeprecated)) {
+        return nullptr;
+    }
+    PY_TRY
+    {
+        auto aliasType = PyObject_IsTrue(pyDeprecated) ? App::PropertyAliasType::Deprecated
+                                                     : App::PropertyAliasType::Normal;
+        getPropertyContainerPtr()->addPropertyAlias(canonicalName, alias, aliasType);
+        Py_Return;
+    }
+    PY_CATCH
+}
+

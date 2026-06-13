@@ -193,3 +193,22 @@ class PropertyContainer(Persistence):
             New property name.
         """
         ...
+
+    def addPropertyAlias(self, canonicalName: str, alias: str, deprecated: bool = False, /) -> None:
+        """
+        Register an alias for a property name.
+
+        After this call, getPropertyByName(alias) and Python attribute access via
+        the alias name will transparently return the same property as the canonical name.
+        This allows renaming a property in C++ without breaking Python add-ons and macros
+        that still use the old name.
+
+        canonicalName : str
+            The current, authoritative name of the property.
+        alias : str
+            The old or alternative name to also accept.
+        deprecated : bool
+            If True, a developer warning is emitted each time the alias is resolved,
+            encouraging migration to the canonical name.
+        """
+        ...

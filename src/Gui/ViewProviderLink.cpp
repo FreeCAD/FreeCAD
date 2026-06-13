@@ -4028,14 +4028,14 @@ static bool isExcludedProperties(const char* name)
     return false;
 }
 
-App::Property* ViewProviderLink::getPropertyByName(const char* name) const
+App::Property* ViewProviderLink::getPropertyByName(const char* name, App::PropertyLookupMode mode) const
 {
-    auto prop = inherited::getPropertyByName(name);
+    auto prop = inherited::getPropertyByName(name, mode);
     if (prop || isExcludedProperties(name)) {
         return prop;
     }
     if (childVp) {
-        prop = childVp->getPropertyByName(name);
+        prop = childVp->getPropertyByName(name, mode);
         if (prop && !prop->testStatus(App::Property::Hidden)) {
             return prop;
         }
@@ -4044,7 +4044,7 @@ App::Property* ViewProviderLink::getPropertyByName(const char* name) const
     if (pcObject && pcObject->canLinkProperties()) {
         auto linked = getLinkedViewProvider(nullptr, true);
         if (linked && linked != this) {
-            prop = linked->getPropertyByName(name);
+            prop = linked->getPropertyByName(name, mode);
         }
     }
     return prop;
