@@ -78,6 +78,7 @@
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "CommandHelpers.h"
+#include "TechDrawDetailViewHandler.h"
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
@@ -1026,16 +1027,25 @@ void CmdTechDrawDetailView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    std::vector<App::DocumentObject*> baseObj =
-        getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    if (baseObj.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select at least 1 DrawViewPart object as base"));
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
         return;
     }
-    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*(baseObj.begin()));
 
-    Gui::Control().showDialog(new TaskDlgDetail(dvp));
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
+
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    TechDrawDetailViewHandler* handler = new TechDrawDetailViewHandler();
+    viewPage->activateHandler(handler);
+
+    handler->addPreselected();
 }
 
 bool CmdTechDrawDetailView::isActive()
