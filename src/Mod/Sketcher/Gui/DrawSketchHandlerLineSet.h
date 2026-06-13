@@ -1970,7 +1970,7 @@ void DSHPolyLineController::adaptParameters(Base::Vector2d onSketchPos)
                 if (!fourthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
                 }
-                else if (vec.Length() > Precision::Confusion()) {
+                else if (fourthParam->hasFinishedEditing && vec.Length() > Precision::Confusion()) {
                     double ovpRange = fourthParam->getValue();
 
                     if (fabs(range - ovpRange) > Precision::Confusion()) {
