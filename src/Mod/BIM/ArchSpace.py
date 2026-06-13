@@ -620,17 +620,21 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 locked=True,
             )
             vobj.LineSpacing = 1.0
-        if not "TextPosition" in pl:
+        if not "TextPlacement" in pl:
             vobj.addProperty(
-                "App::PropertyVectorDistance",
-                "TextPosition",
+                "App::PropertyPlacement",
+                "TextPlacement",
                 "Space",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The position of the text. Leave (0,0,0) for automatic position",
+                    "The offset placement of the text from its automatic position",
                 ),
                 locked=True,
             )
+        if "TextPlacement" in vobj.PropertiesList:
+            vobj.setPropertyStatus("TextPlacement", "-Hidden")
+            vobj.setEditorMode("TextPlacement", 0)
+        self.migrateTextPosition(vobj)
         if not "TextAlign" in pl:
             vobj.addProperty(
                 "App::PropertyEnumeration",
@@ -665,6 +669,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
     def onDocumentRestored(self, vobj):
 
         self.setProperties(vobj)
+        self.scheduleTextPositionMigration(vobj)
 
     def getIcon(self):
 
@@ -679,6 +684,8 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
     def attach(self, vobj):
 
         ArchComponent.ViewProviderComponent.attach(self, vobj)
+        self.setProperties(vobj)
+        self.scheduleTextPositionMigration(vobj)
         from pivy import coin
 
         self.color = coin.SoBaseColor()
@@ -720,31 +727,138 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         sep.addChild(fhints)
         sep.addChild(self.fset)
         vobj.RootNode.addChild(sep)
+        self.migrateTextPosition(vobj)
+        self.onChanged(vobj, "TextPlacement")
 
     def updateData(self, obj, prop):
 
         if prop in ["Shape", "Label", "Tag", "Area"]:
+            self.migrateTextPosition(obj.ViewObject)
             self.onChanged(obj.ViewObject, "Text")
-            self.onChanged(obj.ViewObject, "TextPosition")
+            self.onChanged(obj.ViewObject, "TextPlacement")
+
+    def migrateTextPosition(self, vobj):
+        "Migrate the legacy TextPosition property to TextPlacement."
+
+        if "TextPosition" not in vobj.PropertiesList:
+            return
+        if "TextPlacement" not in vobj.PropertiesList:
+            return
+
+        if vobj.getTypeIdOfProperty("TextPosition") == "App::PropertyPlacement":
+            if self.isNullTextPlacement(vobj.TextPlacement):
+                vobj.TextPlacement = vobj.TextPosition
+        else:
+            legacy_position = FreeCAD.Vector(vobj.TextPosition)
+            if not self.isNullTextPosition(legacy_position):
+                automatic = self.getAutomaticTextPosition(vobj)
+                if automatic is None:
+                    self.scheduleTextPositionMigration(vobj)
+                    return
+                if self.isNullTextPlacement(vobj.TextPlacement):
+                    vobj.TextPlacement = FreeCAD.Placement(
+                        legacy_position.sub(automatic), FreeCAD.Rotation()
+                    )
+
+        vobj.setPropertyStatus("TextPosition", "-LockDynamic")
+        vobj.removeProperty("TextPosition")
+
+    def scheduleTextPositionMigration(self, vobj):
+        "Schedule TextPosition migration after restore has populated the shape."
+
+        if not FreeCAD.GuiUp:
+            return
+        if getattr(self, "text_position_migration_scheduled", False):
+            return
+        self.text_position_migration_scheduled = True
+        try:
+            from draftutils import todo
+
+            def migrate(args):
+                self.text_position_migration_scheduled = False
+                self.migrateTextPosition(args)
+                self.onChanged(args, "TextPlacementDelayed")
+
+            todo.ToDo.delay(migrate, vobj)
+        except Exception:
+            self.text_position_migration_scheduled = False
+
+    def scheduleTextPlacementUpdate(self, vobj):
+        "Schedule a text placement update after document restore has finished."
+
+        if not FreeCAD.GuiUp:
+            return
+        if getattr(self, "text_update_scheduled", False):
+            return
+        self.text_update_scheduled = True
+        try:
+            from draftutils import todo
+
+            def update(args):
+                self.text_update_scheduled = False
+                self.onChanged(args, "TextPlacementDelayed")
+
+            todo.ToDo.delay(update, vobj)
+        except Exception:
+            self.text_update_scheduled = False
+            pass
+
+    def isNullTextPosition(self, pos):
+        "Return True if a legacy text position is automatic."
+
+        import DraftVecUtils
+
+        return DraftVecUtils.isNull(pos)
+
+    def isNullTextPlacement(self, placement):
+        "Return True if a text placement has no offset and no rotation."
+
+        return (
+            self.isNullTextPosition(placement.Base) and placement.Rotation.Q == FreeCAD.Rotation().Q
+        )
+
+    def getAutomaticTextPosition(self, vobj):
+        "Return the automatic text position in the space's local coordinates."
+
+        try:
+            if vobj.Object.Shape.isNull():
+                return None
+            pos = vobj.Object.Shape.CenterOfMass
+            z = vobj.Object.Shape.BoundBox.ZMin
+            pos = FreeCAD.Vector(pos.x, pos.y, z)
+        except (AttributeError, RuntimeError):
+            return None
+        # placement's displacement will be already added by the coin node
+        return vobj.Object.Placement.inverse().multVec(pos)
+
+    def getTextPositionOffset(self, vobj, pos):
+        "Convert an effective local text position to a placement offset."
+
+        if self.isNullTextPosition(pos):
+            return FreeCAD.Placement()
+        automatic = self.getAutomaticTextPosition(vobj)
+        if automatic is None:
+            return FreeCAD.Placement(pos, FreeCAD.Rotation())
+        return FreeCAD.Placement(pos.sub(automatic), FreeCAD.Rotation())
+
+    def getTextPlacement(self, vobj):
+        "Return the effective local placement of the space text."
+
+        automatic = self.getAutomaticTextPosition(vobj)
+        if automatic is None:
+            return None
+        pl = FreeCAD.Placement(automatic, FreeCAD.Rotation())
+        return pl.multiply(vobj.TextPlacement)
 
     def getTextPosition(self, vobj):
+        "Return the effective local position of the space text."
 
-        pos = FreeCAD.Vector()
-        if hasattr(vobj, "TextPosition"):
-            import DraftVecUtils
+        return self.getTextPlacement(vobj).Base
 
-            if DraftVecUtils.isNull(vobj.TextPosition):
-                try:
-                    pos = vobj.Object.Shape.CenterOfMass
-                    z = vobj.Object.Shape.BoundBox.ZMin
-                    pos = FreeCAD.Vector(pos.x, pos.y, z)
-                except (AttributeError, RuntimeError):
-                    pos = FreeCAD.Vector()
-            else:
-                pos = vobj.Object.Placement.multVec(vobj.TextPosition)
-        # placement's displacement will be already added by the coin node
-        pos = vobj.Object.Placement.inverse().multVec(pos)
-        return pos
+    def setTextPosition(self, vobj, pos):
+        "Set the effective local text position while keeping automatic placement as the base."
+
+        vobj.TextPlacement = self.getTextPositionOffset(vobj, pos)
 
     def onChanged(self, vobj, prop):
 
@@ -818,30 +932,40 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 if hasattr(vobj, "FirstLine"):
                     scale = vobj.FirstLine.Value / vobj.FontSize.Value
                     self.header.scaleFactor.setValue([scale, scale, scale])
-                    self.onChanged(vobj, "TextPosition")
+                    self.onChanged(vobj, "TextPlacement")
 
         elif prop == "FirstLine":
             if hasattr(self, "header") and hasattr(vobj, "FontSize") and hasattr(vobj, "FirstLine"):
                 scale = vobj.FirstLine.Value / vobj.FontSize.Value
                 self.header.scaleFactor.setValue([scale, scale, scale])
-                self.onChanged(vobj, "TextPosition")
+                self.onChanged(vobj, "TextPlacement")
 
         elif prop == "TextColor":
             if hasattr(self, "color") and hasattr(vobj, "TextColor"):
                 c = vobj.TextColor
                 self.color.rgb.setValue(c[0], c[1], c[2])
 
-        elif prop == "TextPosition":
+        elif prop.startswith("TextPlacement"):
             if (
                 hasattr(self, "coords")
                 and hasattr(self, "header")
-                and hasattr(vobj, "TextPosition")
+                and hasattr(vobj, "TextPlacement")
                 and hasattr(vobj, "FirstLine")
             ):
-                pos = self.getTextPosition(vobj)
+                placement = self.getTextPlacement(vobj)
+                if placement is None:
+                    self.label.whichChild = -1
+                    if prop != "TextPlacementDelayed":
+                        self.scheduleTextPlacementUpdate(vobj)
+                    return
+                if hasattr(vobj, "Visibility") and vobj.Visibility:
+                    self.label.whichChild = 0
+                text_normal = placement.Rotation.multVec(FreeCAD.Vector(0, 0, 0.01))
+                pos = placement.Base.add(text_normal)
                 self.coords.translation.setValue(
-                    [pos.x, pos.y, pos.z + 0.01]
+                    [pos.x, pos.y, pos.z]
                 )  # adding small z offset to separate from bottom face
+                self.coords.rotation.setValue(placement.Rotation.Q)
                 up = vobj.FirstLine.Value * vobj.LineSpacing
                 self.header.translation.setValue([0, up, 0])
 
@@ -849,7 +973,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             if hasattr(self, "text1") and hasattr(self, "text2") and hasattr(vobj, "LineSpacing"):
                 self.text1.spacing = vobj.LineSpacing
                 self.text2.spacing = vobj.LineSpacing
-                self.onChanged(vobj, "TextPosition")
+                self.onChanged(vobj, "TextPlacement")
 
         elif prop == "TextAlign":
             if hasattr(self, "text1") and hasattr(self, "text2") and hasattr(vobj, "TextAlign"):
