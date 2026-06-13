@@ -520,7 +520,7 @@ class OpenSBPPost(PostProcessor):
         else:
             return super()._convert_program_control(command)
 
-    def _optimize_gcode(self, header_lines, gcode_lines) -> str:
+    def _optimize_gcode(self, gcode_lines) -> str:
         # There may be opensbp in the stream
         # so, you can't know the state for modal and axis-modal
         # FIXME: this override goes away when Processor's does
@@ -535,7 +535,7 @@ class OpenSBPPost(PostProcessor):
         self.values["OUTPUT_DUPLICATE_COMMANDS"] = True
 
         try:
-            return super()._optimize_gcode(header_lines, gcode_lines)
+            return super()._optimize_gcode(gcode_lines)
         finally:
             for k in disable:
                 self.values[k] = was[k]
