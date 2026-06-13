@@ -46,6 +46,7 @@ import FreeCAD
 import ArchCommands
 import ArchComponent
 import ArchIFC
+import ArchRestore
 import Draft
 
 from draftutils import params
@@ -798,7 +799,7 @@ class _Site(ArchIFC.IfcProduct):
         """
 
         # 1. Restore properties on the data object.
-        self.setProperties(obj)
+        super().onDocumentRestored(obj)
 
         # 2. Trigger the restoration sequence for the associated view provider.
         # This block only runs in GUI mode.
@@ -816,7 +817,7 @@ class _Site(ArchIFC.IfcProduct):
             # correctly initialized, especially for backward compatibility when a newer version of
             # FreeCAD adds new properties.
             try:
-                proxy = getattr(obj.ViewObject, "Proxy", None)
+                proxy = ArchRestore.get_view_provider_proxy(obj.ViewObject)
                 if proxy is not None and hasattr(proxy, "setProperties"):
                     proxy.setProperties(obj.ViewObject)
             except Exception as e:
@@ -840,9 +841,9 @@ class _Site(ArchIFC.IfcProduct):
             # one event loop cycle *before* we apply the constraints in a subsequent cycle.
             from PySide import QtCore
 
-            QtCore.QTimer.singleShot(
-                0, lambda: obj.ViewObject.Proxy.restoreConstraints(obj.ViewObject)
-            )
+            proxy = ArchRestore.get_view_provider_proxy(obj.ViewObject)
+            if proxy is not None and hasattr(proxy, "restoreConstraints"):
+                QtCore.QTimer.singleShot(0, lambda: proxy.restoreConstraints(obj.ViewObject))
 
     def execute(self, obj):
         """Method run when the object is recomputed.
@@ -2102,7 +2103,11 @@ class _ViewProviderSite:
 
     def updateSunPosition(self, vobj):
         """Calculates sun position and updates the sphere, path arc, and ray object."""
-        if not hasattr(vobj, "ShowSunPosition"):
+        try:
+            if not hasattr(vobj, "ShowSunPosition"):
+                return
+            obj = vobj.Object
+        except ReferenceError:
             return
 
         import math
@@ -2110,7 +2115,6 @@ class _ViewProviderSite:
         import datetime
         from pivy import coin
 
-        obj = vobj.Object
         declination_rot = FreeCAD.Rotation(
             FreeCAD.Vector(0, 0, 1),
             obj.Declination.Value if hasattr(obj, "Declination") else 0.0,

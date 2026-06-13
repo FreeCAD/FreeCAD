@@ -39,6 +39,7 @@ import uuid
 import FreeCAD
 import ArchCommands
 import ArchComponent
+import ArchRestore
 import Draft
 import DraftVecUtils
 
@@ -1066,6 +1067,7 @@ class _SectionPlane:
     def onDocumentRestored(self, obj):
 
         self.setProperties(obj)
+        ArchRestore.restore_view_object(obj)
 
     def execute(self, obj):
         import math

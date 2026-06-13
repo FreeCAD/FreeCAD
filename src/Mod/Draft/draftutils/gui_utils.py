@@ -488,7 +488,22 @@ def apply_current_style(objs):
                     setattr(vobj, prop, style[prop][1])
 
 
-def restore_view_object(obj, vp_module, vp_class, format=True, format_ref=None):
+def get_view_provider_proxy(vobj):
+    """Return a real Python view-provider proxy, or ``None`` if it is missing."""
+
+    if vobj is None:
+        return None
+
+    proxy = getattr(vobj, "Proxy", None)
+    if proxy is None or isinstance(proxy, int):
+        return None
+
+    return proxy
+
+
+def restore_view_object(
+    obj, vp_module=None, vp_class=None, format=True, format_ref=None, *, vp_constructor=None
+):
     """Restore the ViewObject if the object was saved without the GUI.
 
     Parameters
@@ -496,11 +511,18 @@ def restore_view_object(obj, vp_module, vp_class, format=True, format_ref=None):
     obj: App::DocumentObject
         Object whose ViewObject needs to be restored.
 
-    vp_module: string
-        View provider module. Must be in the draftviewproviders directory.
+    vp_module: string, optional
+        View provider module. Must be in the draftviewproviders directory
+        unless ``vp_constructor`` is provided.
 
-    vp_class: string
+    vp_class: string, optional
         View provider class.
+
+    vp_constructor: callable, optional
+        View provider constructor. If provided, ``vp_module`` and
+        ``vp_class`` are ignored. This lets other workbenches reuse the
+        Draft restore contract while owning their workbench-specific view
+        provider resolution.
 
     format: bool, optional
         Defaults to `True`.
@@ -512,13 +534,19 @@ def restore_view_object(obj, vp_module, vp_class, format=True, format_ref=None):
         Reference object to copy ViewObject properties from.
     """
     if not getattr(obj, "ViewObject", None):
-        return
+        return False
     vobj = obj.ViewObject
-    if not getattr(vobj, "Proxy", None):
-        vp_module = importlib.import_module("draftviewproviders." + vp_module)
-        getattr(vp_module, vp_class)(vobj)
+    if get_view_provider_proxy(vobj) is None:
+        if vp_constructor is None:
+            if vp_module is None or vp_class is None:
+                return False
+            vp_module = importlib.import_module("draftviewproviders." + vp_module)
+            vp_constructor = getattr(vp_module, vp_class)
+        vp_constructor(vobj)
         if format:
             format_object(obj, format_ref)
+        return True
+    return False
 
 
 def format_object(target, origin=None, ignore_construction=False):

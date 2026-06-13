@@ -258,6 +258,9 @@ class _Floor(ArchIFC.IfcProduct):
         """Method run when the document is restored. Re-adds the properties."""
 
         _Floor.setProperties(self, obj)
+        import ArchRestore
+
+        ArchRestore.restore_view_object(obj)
 
     def dumps(self):
 

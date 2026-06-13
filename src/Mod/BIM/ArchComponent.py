@@ -382,6 +382,10 @@ class Component(ArchIFC.IfcProduct):
         """
         Component.setProperties(self, obj)
 
+        import ArchRestore
+
+        ArchRestore.restore_view_object(obj)
+
     def execute(self, obj):
         """Method run when the object is recomputed.
 

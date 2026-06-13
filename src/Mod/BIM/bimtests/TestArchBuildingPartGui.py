@@ -1,6 +1,9 @@
+import os
+
 import FreeCAD as App
 import FreeCADGui
 import Arch
+import ArchRestore
 import Draft
 import Part
 import Sketcher
@@ -77,3 +80,27 @@ class TestArchBuildingPartGui(TestArchBaseGui):
         FreeCADGui.runCommand("Std_ToggleVisibility", 0)
         App.ActiveDocument.recompute()
         assert wall.Visibility
+
+    def test_building_part_restores_view_provider_when_guidocument_is_missing(self):
+        building_part = Arch.makeBuildingPart(name="HeadlessRestoreLevel")
+        App.ActiveDocument.recompute()
+
+        archive = None
+        try:
+            archive, _, restored = self.reopen_without_gui_document(building_part)
+            self.assertIsNotNone(restored)
+            self.assertIsNotNone(restored.ViewObject)
+            self.assertIsNotNone(restored.ViewObject.Proxy)
+            self.assertEqual(type(restored.ViewObject.Proxy).__name__, "ViewProviderBuildingPart")
+            self.assertTrue(restored.ViewObject.Visibility)
+            self.assertIn("ShowLevel", restored.ViewObject.PropertiesList)
+            self.assertIn("ShowLabel", restored.ViewObject.PropertiesList)
+
+            # Regression for the follow-up hardening: a truthy integer proxy
+            # placeholder must still be treated as missing and restored.
+            restored.ViewObject.Proxy = 1
+            ArchRestore.restore_view_object(restored)
+            self.assertEqual(type(restored.ViewObject.Proxy).__name__, "ViewProviderBuildingPart")
+        finally:
+            if archive is not None:
+                os.unlink(archive)
