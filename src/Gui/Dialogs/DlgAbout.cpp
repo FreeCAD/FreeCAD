@@ -54,6 +54,7 @@
 #include "BitmapFactory.h"
 #include "Dialogs/DlgAbout.h"
 #include "MainWindow.h"
+#include "OnlineDocumentation.h"
 #include "SplashScreen.h"
 #include "ui_AboutApplication.h"
 
@@ -136,6 +137,22 @@ AboutDialog::AboutDialog(QWidget* parent)
     ui->tabWidget->setCurrentIndex(0);  // always start on the About tab
 
     setupLabels();
+
+    ui->textBrowserLicense->setOpenExternalLinks(false);
+    connect(
+        ui->textBrowserLicense,
+        &QTextBrowser::anchorClicked,
+        ui->textBrowserLicense,
+        [this](const QUrl& url) {
+            if (url.scheme().startsWith(QLatin1String("http"))) {
+                const auto encoded = url.toEncoded();
+                Gui::OpenURLInBrowser(encoded.constData());
+                return;
+            }
+            ui->textBrowserLicense->setSource(url);
+        }
+    );
+
     showCredits();
     showLicenseInformation();
     showLibraryInformation();
@@ -378,7 +395,15 @@ void AboutDialog::showLicenseInformation()
         ui->tabWidget->addTab(tab_license, tr("License"));
         auto hlayout = new QVBoxLayout(tab_license);
         auto textField = new QTextBrowser(tab_license);
-        textField->setOpenExternalLinks(true);
+        textField->setOpenExternalLinks(false);
+        connect(textField, &QTextBrowser::anchorClicked, textField, [textField](const QUrl& url) {
+            if (url.scheme().startsWith(QLatin1String("http"))) {
+                const auto encoded = url.toEncoded();
+                Gui::OpenURLInBrowser(encoded.constData());
+                return;
+            }
+            textField->setSource(url);
+        });
         hlayout->addWidget(textField);
 
         textField->setHtml(licenseHTML);
@@ -416,7 +441,15 @@ void AboutDialog::showLibraryInformation()
     ui->tabWidget->addTab(tab_library, tr("Libraries"));
     auto hlayout = new QVBoxLayout(tab_library);
     auto textField = new QTextBrowser(tab_library);
-    textField->setOpenExternalLinks(true);
+    textField->setOpenExternalLinks(false);
+    connect(textField, &QTextBrowser::anchorClicked, textField, [textField](const QUrl& url) {
+        if (url.scheme().startsWith(QLatin1String("http"))) {
+            const auto encoded = url.toEncoded();
+            Gui::OpenURLInBrowser(encoded.constData());
+            return;
+        }
+        textField->setSource(url);
+    });
     hlayout->addWidget(textField);
 
     QString baseurl = QStringLiteral("file:///%1/ThirdPartyLibraries.html")
@@ -438,7 +471,15 @@ void AboutDialog::showCollectionInformation()
     ui->tabWidget->addTab(tab_collection, tr("Collection"));
     auto hlayout = new QVBoxLayout(tab_collection);
     auto textField = new QTextBrowser(tab_collection);
-    textField->setOpenExternalLinks(true);
+    textField->setOpenExternalLinks(false);
+    connect(textField, &QTextBrowser::anchorClicked, textField, [textField](const QUrl& url) {
+        if (url.scheme().startsWith(QLatin1String("http"))) {
+            const auto encoded = url.toEncoded();
+            Gui::OpenURLInBrowser(encoded.constData());
+            return;
+        }
+        textField->setSource(url);
+    });
     hlayout->addWidget(textField);
     textField->setSource(path);
 }
@@ -457,7 +498,15 @@ void AboutDialog::showPrivacyPolicy()
     ui->tabWidget->addTab(tabPrivacyPolicy, tr("Privacy Policy"));
     auto hLayout = new QVBoxLayout(tabPrivacyPolicy);
     auto textField = new QTextBrowser(tabPrivacyPolicy);
-    textField->setOpenExternalLinks(true);
+    textField->setOpenExternalLinks(false);
+    connect(textField, &QTextBrowser::anchorClicked, textField, [textField](const QUrl& url) {
+        if (url.scheme().startsWith(QLatin1String("http"))) {
+            const auto encoded = url.toEncoded();
+            Gui::OpenURLInBrowser(encoded.constData());
+            return;
+        }
+        textField->setSource(url);
+    });
     hLayout->addWidget(textField);
     textField->setMarkdown(text);
 }
@@ -506,8 +555,16 @@ LicenseView::LicenseView(QWidget* parent)
     : MDIView(nullptr, parent, Qt::WindowFlags())
 {
     browser = new QTextBrowser(this);
-    browser->setOpenExternalLinks(true);
+    browser->setOpenExternalLinks(false);
     browser->setOpenLinks(true);
+    connect(browser, &QTextBrowser::anchorClicked, this, [this](const QUrl& url) {
+        if (url.scheme().startsWith(QLatin1String("http"))) {
+            const auto encoded = url.toEncoded();
+            Gui::OpenURLInBrowser(encoded.constData());
+            return;
+        }
+        browser->setSource(url);
+    });
     setCentralWidget(browser);
 }
 

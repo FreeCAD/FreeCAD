@@ -21,7 +21,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include <QDesktopServices>
 #include <QDialog>
 #include <QMenu>
 #include <QMessageBox>
@@ -30,6 +29,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QToolButton>
+#include <QUrl>
 #include <QWindow>
 
 #include <fstream>
@@ -41,6 +41,7 @@
 #include <filesystem>
 
 #include "DlgVersionMigrator.h"
+#include "OnlineDocumentation.h"
 #include "SplitButton.h"
 
 #include "ui_DlgVersionMigrator.h"
@@ -547,7 +548,8 @@ void DlgVersionMigrator::freshStart()
 void DlgVersionMigrator::help()
 {
     auto helpPage = QStringLiteral("https://wiki.freecad.org/Version_migration");
-    QDesktopServices::openUrl(QUrl(helpPage));
+    const auto encoded = QUrl(helpPage).toEncoded();
+    Gui::OpenURLInBrowser(encoded.constData());
 }
 
 void DlgVersionMigrator::restart(const QString& message)
