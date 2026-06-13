@@ -1,0 +1,30 @@
+refactor: Fix selection view search logic with proper struct initialization and helper extraction
+
+This commit addresses code review feedback from PR #30449:
+
+**Key Changes:**
+1. Extract list-rebuild logic into dedicated helper method `refreshSelectionListFromCurrentSelection()`
+   - Separates UI filtering logic from selection notification handling
+   - Eliminates coupling between `search()` and `onSelectionChanged()`
+   - Avoids unrelated side effects from preference writes and auto-show logic
+
+2. Fix struct initialization issues:
+   - Use value-initialization: `SelectionChanges changes{}`
+   - Ensures all fields properly initialized, not undefined
+   - Pass valid document names to SetSelection path
+
+3. Update search behavior:
+   - When search text is cleared, use the new helper to restore current selection
+   - Properly triggers SetSelection callback for consistent state
+
+4. Normalize line endings to LF (Unix style) across entire file
+   - Addresses line-ending issue noted in code review
+   - No functional changes, purely formatting
+
+**Benefits:**
+- More maintainable code structure with clear separation of concerns
+- Prevents accidental data corruption from uninitialized structs
+- Easier to test and reason about list management
+- Sets foundation for future UX improvements
+
+Fixes: FreeCAD/FreeCAD#30449

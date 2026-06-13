@@ -119,6 +119,9 @@ private:
     QString getProperty(App::DocumentObject* obj) const;
     bool supportPart(App::DocumentObject* obj, const QString& part) const;
 
+    /// Helper to rebuild the selection list from the current selection
+    void refreshSelectionListFromCurrentSelection(const char* pDocName = nullptr);
+
 private:
     float x, y, z;
     std::vector<App::DocumentObject*> searchList;
