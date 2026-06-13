@@ -1532,7 +1532,8 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
     needsParens = false;
     if (freecad_cast<OperatorExpression*>(right))
         rightOperator = static_cast<OperatorExpression*>(right)->op;
-    if (right->priority() < priority()) // Check on operator priority first
+    // unit_exp '^' integer is unambiguous without outer parens (e.g. "10 mm ^ 3").
+    if (right->priority() < priority() && !(op == UNIT && rightOperator == POW))
         needsParens = true;
     else if (rightOperator == op) { // Same operator ?
         if (!isRightAssociative())
