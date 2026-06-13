@@ -69,45 +69,6 @@ TaskWidget::~TaskWidget() = default;
 
 //**************************************************************************
 //**************************************************************************
-// TaskGroup
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TaskGroup::TaskGroup(QWidget* parent)
-    : QSint::ActionBox(parent)
-{}
-
-TaskGroup::TaskGroup(const QString& headerText, QWidget* parent)
-    : QSint::ActionBox(headerText, parent)
-{}
-
-TaskGroup::TaskGroup(const QPixmap& icon, const QString& headerText, QWidget* parent)
-    : QSint::ActionBox(icon, headerText, parent)
-{}
-
-TaskGroup::~TaskGroup() = default;
-
-void TaskGroup::actionEvent(QActionEvent* e)
-{
-    QAction* action = e->action();
-    switch (e->type()) {
-        case QEvent::ActionAdded: {
-            this->createItem(action);
-            break;
-        }
-        case QEvent::ActionChanged: {
-            break;
-        }
-        case QEvent::ActionRemoved: {
-            // cannot change anything
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-//**************************************************************************
-//**************************************************************************
 // TaskBox
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1042,7 +1003,7 @@ void TaskView::clearActionStyle()
 {
     std::optional<TaskInfo> current = currentTaskInfo();
     TaskPanel* panel = current ? current->taskPanel : TaskWatcherPanel;
-    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->clearActionStyle();
+    QSint::ActionPanelScheme::defaultScheme()->clearActionStyle();
     panel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
@@ -1050,8 +1011,7 @@ void TaskView::restoreActionStyle()
 {
     std::optional<TaskInfo> current = currentTaskInfo();
     TaskPanel* panel = current ? current->taskPanel : TaskWatcherPanel;
-    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())
-        ->restoreActionStyle();
+    QSint::ActionPanelScheme::defaultScheme()->restoreActionStyle();
     panel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
