@@ -56,6 +56,7 @@ from draftgeoutils import general as geo_general
 from draftgeoutils import geometry as geo_geometry
 from draftgeoutils import intersections as geo_intersections
 from draftguitools import gui_trackers as trackers
+from draftguitools import gui_viewpolicy as view_policy
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
@@ -68,6 +69,25 @@ __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
 
 UNSNAPPABLES = ("Image::ImagePlane",)
+
+
+class GridDocumentObserver:
+    """Refreshes Draft grid policy when the active document or its context changes."""
+
+    def __init__(self, snapper):
+        self.snapper = snapper
+
+    def slotActivateDocument(self, doc):
+        self.snapper._syncActiveViewDocument()
+        self.snapper._onActiveGridDocumentChanged()
+
+    def slotChangedDocument(self, doc, prop):
+        if doc == App.ActiveDocument and prop == view_policy.DOCUMENT_CONTEXT_PROPERTY:
+            self.snapper._onActiveGridDocumentChanged()
+
+    def slotDeletedDocument(self, doc):
+        self.snapper._clearViewDocuments(doc)
+        self.snapper._onActiveGridDocumentChanged()
 
 
 class Snapper:
@@ -130,6 +150,9 @@ class Snapper:
         self.running = False
         self.callbackClick = None
         self.callbackMove = None
+        self._viewDocuments = {}
+        self._gridDocumentObserver = GridDocumentObserver(self)
+        App.addDocumentObserver(self._gridDocumentObserver)
         self.snapObjectIndex = 0
 
         # snap keys, it's important that they are in this order for
@@ -1573,6 +1596,97 @@ class Snapper:
         """Toggle FreeCAD Draft Grid."""
         Gui.runCommand("Draft_ToggleGrid")
 
+    def _getGridProfile(self, document):
+        return view_policy.registry.resolve(document)
+
+    def _setViewDocument(self, view, document):
+        if view is not None:
+            self._viewDocuments[id(view)] = document
+
+    def _getViewDocument(self, view):
+        if view is None:
+            return None
+        return self._viewDocuments.get(id(view))
+
+    def _clearViewDocuments(self, document):
+        stale_views = [
+            view_id for view_id, existing in self._viewDocuments.items() if existing == document
+        ]
+        for view_id in stale_views:
+            del self._viewDocuments[view_id]
+
+    def _syncActiveViewDocument(self):
+        view = gui_utils.get_3d_view()
+        if view is not None:
+            self._setViewDocument(view, App.ActiveDocument)
+            self.setTrackers(update_grid=False)
+
+    def _applyGridProfile(self, grid, document=None):
+        if document is None:
+            document = App.ActiveDocument
+        profile = self._getGridProfile(document)
+        if profile is None:
+            grid.clearRuntimeConfig()
+            grid.restoreDefaultVisibility()
+            return
+
+        grid.setRuntimeConfig(profile.as_overrides())
+        grid.restoreDefaultVisibility()
+        if profile.visibility == view_policy.GridVisibility.HIDDEN:
+            grid.show_always = False
+            grid.show_during_command = False
+        elif profile.visibility == view_policy.GridVisibility.DURING_COMMAND:
+            grid.show_always = False
+            grid.show_during_command = True
+        elif profile.visibility == view_policy.GridVisibility.ALWAYS:
+            grid.show_always = True
+            grid.show_during_command = False
+
+    def _applyGridProfiles(self):
+        for view, grid in zip(self.trackers[0], self.trackers[1]):
+            self._applyGridProfile(grid, self._getViewDocument(view))
+
+    def _onActiveGridDocumentChanged(self):
+        self._applyGridProfiles()
+        self._syncActiveGridProfile()
+
+    def _syncActiveGridProfile(self):
+        if gui_utils.get_3d_view() is None:
+            return
+        self.setTrackers(update_grid=False)
+        if self.grid is None:
+            return
+        if self.grid.show_always or (
+            self.grid.show_during_command
+            and hasattr(App, "activeDraftCommand")
+            and App.activeDraftCommand
+        ):
+            self.grid.set()
+        elif self.grid.Visible:
+            self.grid.off()
+
+    def pushViewPolicy(self, owner, policy):
+        view_policy.registry.push_policy(owner, policy)
+        self._applyGridProfiles()
+        self._syncActiveGridProfile()
+
+    def popViewPolicy(self, owner):
+        view_policy.registry.pop_policy(owner)
+        self._applyGridProfiles()
+        self._syncActiveGridProfile()
+
+    def setContextViewPolicy(self, context, owner, policy):
+        view_policy.registry.register_context_policy(context, owner, policy)
+        if view_policy.get_document_view_context(App.ActiveDocument) == context:
+            self._applyGridProfiles()
+            self._syncActiveGridProfile()
+
+    def clearContextViewPolicy(self, context, owner):
+        view_policy.registry.clear_context_policy(context, owner)
+        if view_policy.get_document_view_context(App.ActiveDocument) == context:
+            self._applyGridProfiles()
+            self._syncActiveGridProfile()
+
     def showradius(self):
         """Show the snap radius indicator."""
         self.radius = self.getScreenDist(params.get_param("snapRange"), (400, 300))
@@ -1673,10 +1787,11 @@ class Snapper:
                 self.holdTracker = self.trackers[9][i]
             else:
                 self.grid = trackers.gridTracker()
-                if params.get_param("alwaysShowGrid"):
-                    self.grid.show_always = True
-                if params.get_param("grid"):
-                    self.grid.show_during_command = True
+                self.grid.setVisibilityDefaults(
+                    show_always=params.get_param("alwaysShowGrid"),
+                    show_during_command=params.get_param("grid"),
+                )
+                self._applyGridProfile(self.grid, App.ActiveDocument)
                 self.tracker = trackers.snapTracker()
                 self.trackLine = trackers.lineTracker()
                 self.extLine = trackers.lineTracker(dotted=True)
@@ -1698,6 +1813,8 @@ class Snapper:
                 self.trackers[8].append(self.extLine2)
                 self.trackers[9].append(self.holdTracker)
             self.activeview = v
+            self._setViewDocument(v, App.ActiveDocument)
+            self._applyGridProfile(self.grid, App.ActiveDocument)
 
         if not update_grid:
             return

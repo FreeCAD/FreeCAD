@@ -178,6 +178,8 @@ public:
     PropertyString License;
     /// The URL to the license description or contract.
     PropertyString LicenseURL;
+    /// Primary workflow context of the document, for example "BIM".
+    PropertyString Context;
     /// Meta descriptions.
     PropertyMap Meta;
     /// Material descriptions, used and defined in the Material module.

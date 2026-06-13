@@ -45,6 +45,7 @@
 #include "NewFileButton.h"
 #include <App/DocumentObject.h>
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Gui/Action.h>
@@ -348,6 +349,9 @@ void StartView::newDraftFile()
 void StartView::newArchFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
+    if (auto* doc = App::GetApplication().getActiveDocument()) {
+        doc->Context.setValue("BIM");
+    }
     try {
         Gui::Application::Instance->activateWorkbench("BIMWorkbench");
     }

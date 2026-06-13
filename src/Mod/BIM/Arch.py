@@ -63,6 +63,109 @@ if FreeCAD.GuiUp:
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
+_BIM_VIEW_CONTEXT = "BIM"
+_BIM_VIEW_POLICY_OWNER = "BIM"
+_BIM_DOCUMENT_OBSERVER = None
+
+
+def get_default_bim_grid_settings(schema=None):
+    """Return the default BIM grid preset for the given unit schema."""
+    if schema is None:
+        schema = FreeCAD.Units.getSchema()
+
+    system = FreeCAD.Units.getMeasurementSystem(schema)
+    if system == FreeCAD.Units.MeasurementSystem.Imperial:
+        return {"spacing": "1in", "mainlines": 12}
+    if schema == FreeCAD.Units.Scheme.Centimeter:
+        return {"spacing": "10cm", "mainlines": 10}
+    return {"spacing": "0.1m", "mainlines": 10}
+
+
+def get_bim_view_policy():
+    from draftguitools.gui_viewpolicy import DraftViewPolicy
+    from draftguitools.gui_viewpolicy import GridVisibility
+
+    settings = get_default_bim_grid_settings()
+    spacing = FreeCAD.Units.Quantity(settings["spacing"]).Value
+
+    return DraftViewPolicy(
+        spacing=spacing,
+        mainlines=settings["mainlines"],
+        size=200,
+        visibility=GridVisibility.ALWAYS,
+    )
+
+
+def mark_bim_document(document):
+    if document is None:
+        return
+    if getattr(document, "Context", "") != _BIM_VIEW_CONTEXT:
+        document.Context = _BIM_VIEW_CONTEXT
+
+
+def is_bim_document(document):
+    return getattr(document, "Context", "") == _BIM_VIEW_CONTEXT
+
+
+def is_legacy_bim_document(document):
+    if document is None:
+        return False
+
+    if hasattr(document, "IfcFilePath"):
+        return True
+
+    for obj in getattr(document, "Objects", []):
+        if getattr(obj, "IfcType", None) == "Project":
+            return True
+        if getattr(getattr(obj, "Proxy", None), "Type", None) == "Project":
+            return True
+
+    return False
+
+
+def migrate_legacy_bim_document(document=None):
+    if document is None:
+        document = FreeCAD.ActiveDocument
+    if is_bim_document(document):
+        return False
+    if is_legacy_bim_document(document):
+        mark_bim_document(document)
+        return True
+    return False
+
+
+def ensure_bim_view_policy(document=None):
+    migrate_legacy_bim_document(document)
+    if not FreeCAD.GuiUp:
+        return False
+
+    from draftguitools import gui_viewpolicy
+
+    gui_viewpolicy.registry.register_context_policy(
+        _BIM_VIEW_CONTEXT, _BIM_VIEW_POLICY_OWNER, get_bim_view_policy()
+    )
+    _ensure_bim_document_observer()
+    return True
+
+
+class _BimDocumentObserver:
+    """Promotes legacy BIM documents to the explicit BIM context on activation."""
+
+    def slotActivateDocument(self, document):
+        migrate_legacy_bim_document(document)
+
+
+def _ensure_bim_document_observer():
+    global _BIM_DOCUMENT_OBSERVER
+    if _BIM_DOCUMENT_OBSERVER is not None:
+        return
+    _BIM_DOCUMENT_OBSERVER = _BimDocumentObserver()
+    FreeCAD.addDocumentObserver(_BIM_DOCUMENT_OBSERVER)
+
+
+if FreeCAD.GuiUp:
+    ensure_bim_view_policy()
+
 
 # Importing all members from these modules enables us to use them directly by
 # simply importing the Arch module, as if they were part of this module.
@@ -910,6 +1013,8 @@ def makeProject(sites=None, name=None):
         internalName="Project",
         defaultLabel=name if name else translate("Arch", "Project"),
     )
+
+    mark_bim_document(project.Document)
 
     # Initialize all relevant properties
     if sites:
