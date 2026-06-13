@@ -11,8 +11,38 @@ fi
 echo "$KEY" | sudo gpg --dearmor -o /usr/share/keyrings/neon-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/neon-keyring.gpg] http://archive.neon.kde.org/user noble main" | sudo tee /etc/apt/sources.list.d/neon-qt.list
 
-# Update package lists quietly
-sudo apt-get update -qq
+# Update package lists with retry logic for transient failures
+update_package_lists() {
+  local max_attempts=10
+  local attempt=1
+  local wait_time=5  # Exponential, doubles on every attempt
+
+  while [ $attempt -le $max_attempts ]; do
+    echo "apt update attempt $attempt of $max_attempts" >&2
+
+    if sudo apt-get update -qq; then
+      echo "apt update succeeded" >&2
+      return 0
+    fi
+
+    if [ $attempt -lt $max_attempts ]; then
+      echo "apt update failed, waiting ${wait_time}s before retry" >&2
+      sleep "$wait_time"
+      wait_time=$((wait_time * 2))
+    fi
+
+    attempt=$((attempt + 1))
+  done
+
+  echo "apt update failed after $max_attempts attempts" >&2
+  echo "Available repositories:" >&2
+  ls -la /etc/apt/sources.list.d/ >&2 || true
+  echo "apt configuration" >&2
+  apt-config dump | grep -E "^APT|^Acquire" >&2 || true
+  exit 1
+}
+
+update_package_lists
 
 packages=(
   ccache
@@ -81,5 +111,39 @@ packages=(
   xvfb
 )
 
-# Install all packages
-sudo apt-get install -y --no-install-recommends "${packages[@]}"
+# Install packages with retry logic for transient failures
+install_packages() {
+  local max_attempts=10
+  local attempt=1
+  local wait_time=5  # Exponential, doubles on every attempt
+
+  while [ $attempt -le $max_attempts ]; do
+    echo "Package installation attempt $attempt of $max_attempts" >&2
+    echo "Total packages to install: ${#packages[@]}" >&2
+
+    if sudo apt-get install -y --no-install-recommends "${packages[@]}"; then
+      echo "Package installation succeeded" >&2
+      return 0
+    fi
+
+    if [ $attempt -lt $max_attempts ]; then
+      echo "Package installation failed, waiting ${wait_time}s before retry" >&2
+      sleep "$wait_time"
+      wait_time=$((wait_time * 2))
+    fi
+
+    attempt=$((attempt + 1))
+  done
+
+  echo "Package installation failed after $max_attempts attempts" >&2
+  echo "Diagnostic information" >&2
+  echo "Failed package list" >&2
+  printf '%s\n' "${packages[@]}" >&2
+  echo "Available repositories" >&2
+  ls -la /etc/apt/sources.list.d/ >&2 || true
+  echo "apt cache state" >&2
+  apt-cache stats 2>&1 | head -20 >&2 || true
+  exit 1
+}
+
+install_packages
