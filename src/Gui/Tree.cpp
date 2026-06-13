@@ -5559,6 +5559,44 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     if (!selected && !item->selected) {
         return;
     }
+
+    // do not select the entire object if only a sub-element is
+    // selected ie. see https://github.com/freecad/freecad/issues/30161
+    // it's not the user's intent to select the whole object
+    // when selecting addtional items via the tree menu
+    if (selected) {
+        auto obj = item->object()->getObject();
+        if (obj && obj->isAttachedToDocument()) {
+            // compute this item's full subname ie. matching what would be pushed below
+            std::ostringstream guardStr;
+            App::DocumentObject* guardTopParent = nullptr;
+            item->getSubName(guardStr, guardTopParent);
+            App::DocumentObject* guardObj = obj;
+            if (guardTopParent) {
+                if (!obj->redirectSubName(guardStr, guardTopParent, nullptr)) {
+                    guardStr << obj->getNameInDocument() << '.';
+                }
+                guardObj = guardTopParent;
+            }
+            const std::string& guardSubname = guardStr.str();
+            const char* docname = guardObj->getDocument()->getName();
+
+            // Look for any existing selection entry on the same (object, subname-prefix)
+            // that carries an additional sub-element. If found, this Qt item is selected
+            // only as a visual reflection of the sub-element selection — don't re-push
+            // it as a whole-object selection. See #30161.
+            for (const auto& sel : Gui::Selection().getSelection(docname, ResolveMode::NoResolve)) {
+                if (sel.pObject != guardObj || !sel.SubName) {
+                    continue;
+                }
+                std::string_view existing(sel.SubName);
+                if (existing.size() > guardSubname.size() && existing.starts_with(guardSubname)) {
+                    return;
+                }
+            }
+        }
+    }
+
     if (item->selected != -1) {
         item->mySubs.clear();
     }
