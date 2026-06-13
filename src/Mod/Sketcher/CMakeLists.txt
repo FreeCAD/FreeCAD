@@ -31,6 +31,7 @@ if(BUILD_GUI)
     list (APPEND Sketcher_TestScripts
           SketcherTests/TestConstraintPreselectionGui.py
           SketcherTests/GuiTestCase.py
+          SketcherTests/TestGroupConstraintGui.py
           SketcherTests/TestPlacementUpdate.py
           SketcherTests/TestOnViewParameterGui.py
           SketcherTests/TestExternalFacePreselection.py
