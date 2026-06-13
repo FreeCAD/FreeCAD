@@ -164,17 +164,19 @@ class ObjectCustom(PathOp.ObjectOp):
 
     def parseExpressions(self, obj, line, index):
         pattern = r"@(.+?)@"
-        try:
-            while match := re.search(pattern, line):
-                expr = match.group(1)
+        while match := re.search(pattern, line):
+            expr = match.group(1)
+            try:
                 value = obj.evalExpression(expr)
-                line = re.sub(pattern, str(value), line, count=1)
-            return line
-        except Exception:
-            Path.Log.warning(
-                translate("PathCustom", "Can not parse expression from line %s: %s") % (index, line)
-            )
-        return None
+            except Exception:
+                Path.Log.warning(
+                    translate("PathCustom", "Can not parse expression from line %s: %s")
+                    % (index, line)
+                )
+                obj.Path = Path.Path()
+                raise Exception("Can not parse expression!")
+            line = re.sub(pattern, str(value), line, count=1)
+        return line
 
     def opExecute(self, obj):
         self.commandlist.append(Path.Command("(Begin Custom)"))
@@ -184,9 +186,6 @@ class ObjectCustom(PathOp.ObjectOp):
         if obj.Source == "Text" and obj.Gcode:
             for i, line in enumerate(obj.Gcode):
                 line = self.parseExpressions(obj, line, i)
-                if line is None:
-                    self.commandlist = []
-                    break
                 try:
                     newcommand = Path.Command(str(line))
                     self.commandlist.append(newcommand)
@@ -213,9 +212,6 @@ class ObjectCustom(PathOp.ObjectOp):
                     for i, line in enumerate(fd.readlines()):
                         line = line.strip()
                         line = self.parseExpressions(obj, line, i)
-                        if line is None:
-                            self.commandlist = []
-                            break
                         try:
                             newcommand = Path.Command(str(line))
                             self.commandlist.append(newcommand)
