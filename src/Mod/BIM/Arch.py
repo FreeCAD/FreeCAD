@@ -1552,7 +1552,10 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
         for stair in stairs:
             stair.recompute()
         makeRailing(stairs)
-        # return stairs - all other functions expect one object as return value
+        # Have to recompute again to update the railings and add them to the stairs:
+        for stair in stairs:
+            stair.recompute()
+        # Return stairs - all other functions expect one object as return value:
         return stairs[0]
     else:
         obj.recompute()
@@ -1598,7 +1601,6 @@ def makeRailing(stairs):
                 lrRail.MoveWithHost = True
                 if outlineLRAll:
                     setattr(stair, stairRailingLR, lrRail)
-                    break
                 elif outlineLR:
                     setattr(stair, stairRailingLR, lrRail)
 

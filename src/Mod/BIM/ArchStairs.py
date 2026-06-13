@@ -584,6 +584,11 @@ class _Stairs(ArchComponent.Component):
         if obj.getTypeIdOfProperty("RailingLeft") == "App::PropertyString":
             self.update_properties_0v19_to_0v20(obj)
 
+        if (obj.RailingLeft and obj.RailingLeft not in obj.Additions) or (
+            obj.RailingRight and obj.RailingRight not in obj.Additions
+        ):
+            self.update_properties_to_1v2(obj)
+
         if (
             hasattr(obj, "ArchSketchData")
             and obj.ArchSketchData
@@ -613,7 +618,6 @@ class _Stairs(ArchComponent.Component):
             pass
         obj.removeProperty("OutlineWireLeft")
         obj.removeProperty("OutlineWireRight")
-        self.update_properties_to_0v20(obj)
         from draftutils.messages import _log
 
         _log(
@@ -633,7 +637,6 @@ class _Stairs(ArchComponent.Component):
         self.setProperties(obj)
         obj.RailingLeft = railingLeftObject
         obj.RailingRight = railingRightObject
-        self.update_properties_to_0v20(obj)
         from draftutils.messages import _log
 
         _log(
@@ -643,22 +646,88 @@ class _Stairs(ArchComponent.Component):
             + "changed the type of properties 'RailingLeft' and 'RailingRight'"
         )
 
-    def update_properties_to_0v20(self, obj):
-        additions = obj.Additions
-        if obj.RailingLeft in additions:
-            additions.remove(obj.RailingLeft)
-        if obj.RailingRight in additions:
-            additions.remove(obj.RailingRight)
-        obj.Additions = additions
-        if obj.RailingLeft is not None:
-            obj.RailingLeft.Visibility = True
-        if obj.RailingRight is not None:
-            obj.RailingRight.Visibility = True
+    def update_properties_to_1v2(self, obj):
+        obj.recompute()
+        from draftutils.messages import _log
+
+        _log("v1.2.0, " + obj.Name + ", " + "added railing(s) to object Additions")
+
+    def _update_railings(self, obj):
+        railingLeftObject, railWireL = None, None
+        railingRightObject, railWireR = None, None
+        doc = FreeCAD.ActiveDocument
+
+        if obj.RailingLeft:
+            railingLeftObject = obj.RailingLeft
+            if obj.OutlineLeftAll:
+                railWireL, NU = _Stairs.returnOutlineWireFace(
+                    obj.OutlineLeftAll, self.OutlineRailArcLeftAll, mode="notFaceAlso"
+                )
+            elif obj.OutlineLeft:
+                railWireL, NU = _Stairs.returnOutlineWireFace(
+                    obj.OutlineLeft, self.OutlineRailArcLeft, mode="notFaceAlso"
+                )
+            else:
+                print(" No obj.OutlineLeftAll or obj.OutlineLeft")
+
+            if railWireL:
+                if (
+                    Draft.getType(railingLeftObject.Base) != "Part::Feature"
+                ):  # Base can have wrong type or be None.
+                    if railingLeftObject.Base:
+                        doc.removeObject(railingLeftObject.Base.Name)
+                    railingLeftWireObject = doc.addObject("Part::Feature", "RailingWire")
+                    if FreeCAD.GuiUp:
+                        railingLeftWireObject.ViewObject.hide()
+                    railingLeftObject.Base = railingLeftWireObject
+                # update the Base object shape
+                railingLeftObject.Base.Shape = railWireL
+                railingLeftObject.recompute()
+                if not railingLeftObject in obj.Additions:
+                    obj.Additions += [railingLeftObject]
+            else:
+                print(" No railWireL created ")
+
+        if obj.RailingRight:
+            railingRightObject = obj.RailingRight
+            if obj.OutlineRightAll:
+                railWireR, NU = _Stairs.returnOutlineWireFace(
+                    obj.OutlineRightAll, self.OutlineRailArcRightAll, mode="notFaceAlso"
+                )
+            elif obj.OutlineLeft:
+                railWireR, NU = _Stairs.returnOutlineWireFace(
+                    obj.OutlineLeft, self.OutlineRailArcRight, mode="notFaceAlso"
+                )
+            else:
+                print(" No obj.OutlineRightAll or obj.OutlineLeft")
+
+            if railWireR:
+                if (
+                    Draft.getType(railingRightObject.Base) != "Part::Feature"
+                ):  # Base can have wrong type or be None.
+                    if railingRightObject.Base:
+                        doc.removeObject(railingRightObject.Base.Name)
+                    railingRightWireObject = doc.addObject("Part::Feature", "RailingWire")
+                    if FreeCAD.GuiUp:
+                        railingRightWireObject.ViewObject.hide()
+                    railingRightObject.Base = railingRightWireObject
+                # update the Base object shape
+                railingRightObject.Base.Shape = railWireR
+                railingRightObject.recompute()
+                if not railingRightObject in obj.Additions:
+                    obj.Additions += [railingRightObject]
+            else:
+                print(" No railWireL created ")
 
     def execute(self, obj):
         "constructs the shape of the stairs"
 
         if self.clone(obj):
+            return
+
+        # Prevent this function from triggering itself:
+        if hasattr(self, "shape_changed"):
+            delattr(self, "shape_changed")
             return
 
         # Stairs can do without Base.  Base validity is tested in code below.
@@ -866,75 +935,22 @@ class _Stairs(ArchComponent.Component):
             # TODO Clear Railings also
             # return ?
 
+        self._update_railings(obj)  # Must come before processSubShapes.
+
         base = self.processSubShapes(obj, base, pl)
         if base:
             if not base.isNull():
                 obj.Shape = base
                 obj.Placement = pl
 
-        railingLeftObject, railWireL = None, None
-        railingRightObject, railWireR = None, None
-        doc = FreeCAD.ActiveDocument
-
-        if obj.RailingLeft:
-            railingLeftObject = obj.RailingLeft
-            if obj.OutlineLeftAll:
-                railWireL, NU = _Stairs.returnOutlineWireFace(
-                    obj.OutlineLeftAll, self.OutlineRailArcLeftAll, mode="notFaceAlso"
-                )
-            elif obj.OutlineLeft:
-                railWireL, NU = _Stairs.returnOutlineWireFace(
-                    obj.OutlineLeft, self.OutlineRailArcLeft, mode="notFaceAlso"
-                )
-            else:
-                print(" No obj.OutlineLeftAll or obj.OutlineLeft")
-
-            if railWireL:
-                if (
-                    Draft.getType(railingLeftObject.Base) != "Part::Feature"
-                ):  # Base can have wrong type or be None.
-                    if railingLeftObject.Base:
-                        doc.removeObject(railingLeftObject.Base.Name)
-                    railingLeftWireObject = doc.addObject("Part::Feature", "RailingWire")
-                    if FreeCAD.GuiUp:
-                        railingLeftWireObject.ViewObject.hide()
-                    railingLeftObject.Base = railingLeftWireObject
-                # update the Base object shape
-                railingLeftObject.Base.Shape = railWireL
-            else:
-                print(" No railWireL created ")
-
-        if obj.RailingRight:
-            railingRightObject = obj.RailingRight
-            if obj.OutlineRightAll:
-                railWireR, NU = _Stairs.returnOutlineWireFace(
-                    obj.OutlineRightAll, self.OutlineRailArcRightAll, mode="notFaceAlso"
-                )
-            elif obj.OutlineLeft:
-                railWireR, NU = _Stairs.returnOutlineWireFace(
-                    obj.OutlineLeft, self.OutlineRailArcRight, mode="notFaceAlso"
-                )
-            else:
-                print(" No obj.OutlineRightAll or obj.OutlineLeft")
-
-            if railWireR:
-                if (
-                    Draft.getType(railingRightObject.Base) != "Part::Feature"
-                ):  # Base can have wrong type or be None.
-                    if railingRightObject.Base:
-                        doc.removeObject(railingRightObject.Base.Name)
-                    railingRightWireObject = doc.addObject("Part::Feature", "RailingWire")
-                    if FreeCAD.GuiUp:
-                        railingRightWireObject.ViewObject.hide()
-                    railingRightObject.Base = railingRightWireObject
-                # update the Base object shape
-                railingRightObject.Base.Shape = railWireR
-            else:
-                print(" No railWireL created ")
-
         # compute step data
         if obj.NumberOfSteps > 1:
             obj.BlondelRatio = obj.RiserHeight.Value * 2 + obj.TreadDepth.Value
+
+    def onBeforeChange(self, obj, prop):
+
+        if prop == "Shape" and not FreeCAD.isRestoring():
+            self.shape_changed = True  # Prevent `execute` function from triggering itself.
 
     def onChanged(self, obj, prop):
 
@@ -2144,7 +2160,7 @@ class _Stairs(ArchComponent.Component):
             return
         else:  # elif obj.NumberOfSteps >= 2:  #elif numOfSteps is None and obj.NumberOfSteps >= 2:
             numOfSteps = obj.NumberOfSteps
-            print(" numOfSteps = obj.NumberOfSteps - ", numOfSteps)
+            # print(" numOfSteps = obj.NumberOfSteps - ", numOfSteps)
 
         # setup landingStep - step number of landing, if present
         if landings == "At center" or obj.Landings == "At center":
@@ -2479,10 +2495,6 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
             lst = []
             if hasattr(obj, "Base"):
                 lst.append(obj.Base)
-            if hasattr(obj, "RailingLeft"):
-                lst.append(obj.RailingLeft)
-            if hasattr(obj, "RailingRight"):
-                lst.append(obj.RailingRight)
             if hasattr(obj, "Additions"):
                 lst.extend(obj.Additions)
             if hasattr(obj, "Subtractions"):
