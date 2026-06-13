@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>420</width>
-    <height>451</height>
+    <height>395</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -92,17 +92,10 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,1,0,1">
+       <layout class="QGridLayout" name="gridLayout_5" columnstretch="1,1">
         <property name="verticalSpacing">
          <number>12</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string notr="true">X</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <widget class="Gui::QuantitySpinBox" name="qsbX" native="true">
           <property name="sizePolicy">
@@ -125,14 +118,21 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string notr="true">X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string notr="true">Y</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="3">
+        <item row="1" column="1">
          <widget class="Gui::QuantitySpinBox" name="qsbY" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -305,19 +305,6 @@ Custom: custom scale factor is used</string>
       </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
