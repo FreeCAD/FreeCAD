@@ -36,6 +36,7 @@ __url__ = "https://www.freecad.org"
 import FreeCAD
 import ArchComponent
 import ArchIFC
+import math
 
 from draftutils import params
 
@@ -53,6 +54,25 @@ else:
         return txt
 
     # \endcond
+
+
+def _get_profile_center(prof):
+
+    if hasattr(prof, "CenterOfMass"):
+        return prof.CenterOfMass
+    return prof.BoundBox.Center
+
+
+def _rotate_profile(prof, pt, vec):
+
+    if vec.getAngle(FreeCAD.Vector(0, 0, 1)) > 0.01:
+        up = FreeCAD.Vector(0, 0, 1)
+    else:
+        up = FreeCAD.Vector(0, 1, 0)
+    vec_x = up.cross(vec)
+    vec_y = vec.cross(vec_x)
+    rot = FreeCAD.Rotation(vec_x, vec_y, vec, "ZYX")
+    prof.rotate(pt, rot.Axis, math.degrees(rot.Angle))
 
 
 class _ArchPipe(ArchComponent.Component):
@@ -210,7 +230,6 @@ class _ArchPipe(ArchComponent.Component):
 
     def execute(self, obj):
 
-        import math
         import Part
         import DraftGeomUtils
 
@@ -238,11 +257,7 @@ class _ArchPipe(ArchComponent.Component):
             FreeCAD.Console.PrintError(translate("Arch", "Unable to build the profile") + "\n")
             return
         # move and rotate the profile to the first point
-        if hasattr(p, "CenterOfMass"):
-            c = p.CenterOfMass
-        else:
-            c = p.BoundBox.Center
-        delta = w.Vertexes[0].Point - c
+        delta = w.Vertexes[0].Point - _get_profile_center(p)
         p.translate(delta)
         import Draft
 
@@ -250,18 +265,8 @@ class _ArchPipe(ArchComponent.Component):
             v1 = obj.Base.Placement.multVec(obj.Base.Points[1]) - w.Vertexes[0].Point
         else:
             v1 = w.Vertexes[1].Point - w.Vertexes[0].Point
-        # v2 = DraftGeomUtils.getNormal(p)
-        # rot = FreeCAD.Rotation(v2,v1)
-        # rotate keeping up vector
-        if v1.getAngle(FreeCAD.Vector(0, 0, 1)) > 0.01:
-            up = FreeCAD.Vector(0, 0, 1)
-        else:
-            up = FreeCAD.Vector(0, 1, 0)
-        v1y = up.cross(v1)
-        v1x = v1.cross(v1y)
-        rot = FreeCAD.Rotation(v1x, v1y, v1, "ZYX")
-        p.rotate(w.Vertexes[0].Point, rot.Axis, math.degrees(rot.Angle))
-        p.rotate(w.Vertexes[0].Point, v1, 90)
+        _rotate_profile(p, w.Vertexes[0].Point, v1)
+
         shapes = []
         try:
             if p.Faces:
@@ -389,6 +394,7 @@ class _ArchPipe(ArchComponent.Component):
                         ).toShape()
                     ]
                 )
+                p = Part.Face(p)
                 if obj.WallThickness.Value and (obj.WallThickness.Value < obj.Diameter.Value / 2):
                     p2 = Part.Wire(
                         [
@@ -399,7 +405,6 @@ class _ArchPipe(ArchComponent.Component):
                             ).toShape()
                         ]
                     )
-                    p = Part.Face(p)
                     p2 = Part.Face(p2)
                     p = p.cut(p2)
         return p
@@ -472,7 +477,6 @@ class _ArchPipeConnector(ArchComponent.Component):
         tol = 1  # tolerance for alignment. This is only visual, we can keep it low...
         ptol = 0.001  # tolerance for coincident points
 
-        import math
         import Part
         import DraftGeomUtils
         import ArchCommands
@@ -536,20 +540,9 @@ class _ArchPipeConnector(ArchComponent.Component):
             perp.multiply(obj.Radius.Value)
             center = point.add(v1).add(perp)
             # move and rotate the profile to the first point
-            delta = point.add(v1) - p.CenterOfMass
+            delta = point.add(v1) - _get_profile_center(p)
             p.translate(delta)
-            # vp = DraftGeomUtils.getNormal(p)
-            # rot = FreeCAD.Rotation(vp,v1)
-            # rotate keeping up vector
-            if v1.getAngle(FreeCAD.Vector(0, 0, 1)) > 0.01:
-                up = FreeCAD.Vector(0, 0, 1)
-            else:
-                up = FreeCAD.Vector(0, 1, 0)
-            v1y = up.cross(v1)
-            v1x = v1.cross(v1y)
-            rot = FreeCAD.Rotation(v1x, v1y, v1, "ZYX")
-            p.rotate(p.CenterOfMass, rot.Axis, math.degrees(rot.Angle))
-            p.rotate(p.CenterOfMass, v1, 90)
+            _rotate_profile(p, _get_profile_center(p), v1)
             try:
                 sh = p.revolve(center, normal, math.degrees(math.pi - v1.getAngle(v2)))
             except:
@@ -561,9 +554,9 @@ class _ArchPipeConnector(ArchComponent.Component):
         else:
             if obj.ConnectorType != "Tee":
                 obj.ConnectorType = "Tee"
-            if wires[2].Vertexes[0].Point == point:
+            if wires[2].Vertexes[0].Point.sub(point).Length <= ptol:
                 order.append("start")
-            elif wires[0].Vertexes[-1].Point == point:
+            elif wires[2].Vertexes[-1].Point.sub(point).Length <= ptol:
                 order.append("end")
             else:
                 FreeCAD.Console.PrintError(translate("Arch", "Common vertex not found") + "\n")
@@ -573,10 +566,16 @@ class _ArchPipeConnector(ArchComponent.Component):
                 v3 = wires[2].Vertexes[-2].Point.sub(wires[2].Vertexes[-1].Point).normalize()
             if round(v1.getAngle(v2), tol) in [0, round(math.pi, tol)]:
                 pair = [v1, v2, v3]
+                p_main = obj.Pipes[0].Proxy.getProfile(obj.Pipes[0])
+                p_tee = obj.Pipes[2].Proxy.getProfile(obj.Pipes[2])
             elif round(v1.getAngle(v3), tol) in [0, round(math.pi, tol)]:
                 pair = [v1, v3, v2]
+                p_main = obj.Pipes[0].Proxy.getProfile(obj.Pipes[0])
+                p_tee = obj.Pipes[1].Proxy.getProfile(obj.Pipes[1])
             elif round(v2.getAngle(v3), tol) in [0, round(math.pi, tol)]:
                 pair = [v2, v3, v1]
+                p_main = obj.Pipes[1].Proxy.getProfile(obj.Pipes[1])
+                p_tee = obj.Pipes[0].Proxy.getProfile(obj.Pipes[0])
             else:
                 FreeCAD.Console.PrintError(translate("Arch", "At least 2 pipes must align") + "\n")
                 return
@@ -588,20 +587,16 @@ class _ArchPipeConnector(ArchComponent.Component):
             self.setOffset(obj.Pipes[1], order[1], offset)
             self.setOffset(obj.Pipes[2], order[2], offset)
             normal = pair[0].cross(pair[2])
-            # move and rotate the profile to the first point
-            delta = point.add(pair[0]) - p.CenterOfMass
-            p.translate(delta)
-            vp = DraftGeomUtils.getNormal(p)
-            rot = FreeCAD.Rotation(vp, pair[0])
-            p.rotate(p.CenterOfMass, rot.Axis, math.degrees(rot.Angle))
-            t1 = p.extrude(pair[1].multiply(2))
-            # move and rotate the profile to the second point
-            delta = point.add(pair[2]) - p.CenterOfMass
-            p.translate(delta)
-            vp = DraftGeomUtils.getNormal(p)
-            rot = FreeCAD.Rotation(vp, pair[2])
-            p.rotate(p.CenterOfMass, rot.Axis, math.degrees(rot.Angle))
-            t2 = p.extrude(pair[2].negative().multiply(2))
+            # move and rotate the main profile to the first point
+            delta = point.add(pair[0]) - _get_profile_center(p_main)
+            p_main.translate(delta)
+            _rotate_profile(p_main, point.add(pair[0]), pair[0])
+            t1 = p_main.extrude(pair[1].multiply(2))
+            # move and rotate the tee profile to the second point
+            delta = point.add(pair[2]) - _get_profile_center(p_tee)
+            p_tee.translate(delta)
+            _rotate_profile(p_tee, point.add(pair[2]), pair[2])
+            t2 = p_tee.extrude(pair[2].negative().multiply(2))
             # create a cut plane
             cp = Part.makePolygon([point, point.add(pair[0]), point.add(normal), point])
             cp = Part.Face(cp)
