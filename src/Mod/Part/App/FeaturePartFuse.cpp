@@ -45,7 +45,6 @@ using namespace Part;
 namespace Part
 {
 extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
-extern bool getRefineModelParameter();
 }  // namespace Part
 
 PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
@@ -66,7 +65,7 @@ const char* Fuse::opCode() const
 
 // ----------------------------------------------------
 
-PROPERTY_SOURCE(Part::MultiFuse, Part::Feature)
+PROPERTY_SOURCE(Part::MultiFuse, Part::RefinableFeature)
 
 
 MultiFuse::MultiFuse()
@@ -81,16 +80,6 @@ MultiFuse::MultiFuse()
         "Shape history"
     );
     History.setSize(0);
-
-    ADD_PROPERTY_TYPE(
-        Refine,
-        (0),
-        "Boolean",
-        (App::PropertyType)(App::Prop_None),
-        "Refine shape (clean up redundant edges) after this boolean operation"
-    );
-
-    this->Refine.setValue(getRefineModelParameter());
 }
 
 short MultiFuse::mustExecute() const
@@ -154,7 +143,14 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
             mkFuse.Build();
 
             if (!mkFuse.IsDone()) {
-                throw Base::RuntimeError("MultiFusion failed");
+                return new App::DocumentObjectExecReturn(
+                    "MultiFusion failed. Likely due to a geometry engine "
+                    "limitation. Nearly touching, aligned, or complex coplanar "
+                    "faces may cause it. Try slightly moving a shape (e.g. "
+                    "0.01 mm in Placement), changing the fusion order, or "
+                    "fusing smaller groups. See: https://wiki.freecad.org/"
+                    "Boolean_Troubleshooting"
+                );
             }
 
             TopoShape res(0);
@@ -172,11 +168,27 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
                 try {
                     TopoDS_Shape oldShape = res.getShape();
                     BRepBuilderAPI_RefineModel mkRefine(oldShape);
-                    // We just built an element map above for the fuse, don't erase it for a refine.
-                    res.setShape(mkRefine.Shape(), false);
-                    ShapeHistory hist = buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
-                    for (auto& jt : history) {
-                        jt = joinHistory(jt, hist);
+                    if (!this->isRefineResultValid(mkRefine.Shape())) {
+                        Base::Console().warning(
+                            "'%s': The boolean result is correct, but the "
+                            "Refine (cleanup) step damaged it and was skipped. "
+                            "The result may have extra internal edges. To "
+                            "prevent this, disable Refine in this feature's "
+                            "properties. This is a known limitation of the "
+                            "geometry engine. See: https://wiki.freecad.org/"
+                            "Boolean_Troubleshooting\n",
+                            this->Label.getValue()
+                        );
+                    }
+                    else {
+                        // We just built an element map above for the fuse,
+                        // don't erase it for a refine.
+                        res.setShape(mkRefine.Shape(), false);
+                        ShapeHistory hist
+                            = buildHistory(mkRefine, TopAbs_FACE, res.getShape(), oldShape);
+                        for (auto& jt : history) {
+                            jt = joinHistory(jt, hist);
+                        }
                     }
                 }
                 catch (Standard_Failure&) {
@@ -221,6 +233,9 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
             App::DocumentObject* link = Shapes.getValues()[0];
             copyMaterial(link);
             return Part::Feature::execute();
+        }
+        catch (Base::Exception& e) {
+            return new App::DocumentObjectExecReturn(e.what());
         }
         catch (Standard_Failure& e) {
             return new App::DocumentObjectExecReturn(e.GetMessageString());

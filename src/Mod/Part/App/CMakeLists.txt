@@ -168,6 +168,8 @@ generate_from_py(ShapeUpgrade/UnifySameDomain)
 SET(Features_SRCS
     FeaturePartBoolean.cpp
     FeaturePartBoolean.h
+    FeaturePartRefinable.cpp
+    FeaturePartRefinable.h
     FeaturePartBox.cpp
     FeaturePartBox.h
     FeaturePartCircle.cpp
