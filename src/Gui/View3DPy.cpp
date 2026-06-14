@@ -256,12 +256,12 @@ void View3DInventorPy::init_type()
     );
     add_varargs_method(
         "addEventCallbackSWIG",
-        &View3DInventorPy::addEventCallbackPivy,
+        &View3DInventorPy::addEventCallbackSWIG,
         "Deprecated -- use addEventCallbackPivy()"
     );
     add_varargs_method(
         "removeEventCallbackSWIG",
-        &View3DInventorPy::removeEventCallbackPivy,
+        &View3DInventorPy::removeEventCallbackSWIG,
         "Deprecated -- use removeEventCallbackPivy()"
     );
     add_noargs_method(
@@ -2385,6 +2385,19 @@ Py::Object View3DInventorPy::addEventCallbackPivy(const Py::Tuple& args)
     }
 }
 
+Py::Object View3DInventorPy::addEventCallbackSWIG(const Py::Tuple& args)
+{
+    if (!Base::warnDeprecatedPythonApi(
+            "Method",
+            "FreeCADGui._View3DInventor.addEventCallbackSWIG",
+            "Use addEventCallbackPivy instead."
+        )) {
+        throw Py::Exception();
+    }
+
+    return addEventCallbackPivy(args);
+}
+
 Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
 {
     PyObject* proxy;
@@ -2428,6 +2441,19 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
     catch (const Py::Exception&) {
         throw;
     }
+}
+
+Py::Object View3DInventorPy::removeEventCallbackSWIG(const Py::Tuple& args)
+{
+    if (!Base::warnDeprecatedPythonApi(
+            "Method",
+            "FreeCADGui._View3DInventor.removeEventCallbackSWIG",
+            "Use removeEventCallbackPivy instead."
+        )) {
+        throw Py::Exception();
+    }
+
+    return removeEventCallbackPivy(args);
 }
 
 Py::Object View3DInventorPy::setAxisCross(const Py::Tuple& args)

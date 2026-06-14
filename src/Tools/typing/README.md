@@ -87,6 +87,13 @@ Prefer generated stubs for classes that already have binding `.pyi` specs.
 Those files are close to the C++ wrapper source of truth and can be improved
 without creating a second hand-written API surface.
 
+When curated source stubs use `typing_extensions.deprecated(...)`, the public
+stub generator preserves those decorators on the emitted public stubs for
+binding classes, source-adjacent type stubs, and `*.module.pyi` functions.
+When binding classes use `@deprecated_attributes(...)`, the public stub
+generator rewrites those members as deprecated properties in the emitted stubs
+so the deprecation remains visible in the standard public typing surface.
+
 When the same binding class is exported through multiple public module paths,
 the merged public stubs keep one canonical class body and make the other
 symbols re-export aliases. `FreeCAD.Base` is canonical for classes sourced from

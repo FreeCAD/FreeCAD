@@ -24,6 +24,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 
 #include "MDIViewPy.h"
 #include "MDIView.h"
@@ -49,7 +50,7 @@ void MDIViewPy::init_type()
     add_varargs_method("undoActions", &MDIViewPy::undoActions, "undoActions()");
     add_varargs_method("redoActions", &MDIViewPy::redoActions, "redoActions()");
 
-    add_varargs_method("message", &MDIViewPy::sendMessage, "deprecated: use sendMessage");
+    add_varargs_method("message", &MDIViewPy::message, "message(str) -- deprecated: use sendMessage(str)");
     add_varargs_method("sendMessage", &MDIViewPy::sendMessage, "sendMessage(str)");
     add_varargs_method("supportMessage", &MDIViewPy::supportMessage, "supportMessage(str)");
     add_varargs_method("fitAll", &MDIViewPy::fitAll, "fitAll()");
@@ -176,6 +177,15 @@ Py::Object MDIViewPy::redoActions(const Py::Tuple& args)
     }
 
     return list;
+}
+
+Py::Object MDIViewPy::message(const Py::Tuple& args)
+{
+    if (!Base::warnDeprecatedPythonApi("Method", "Gui.MDIView.message", "Use sendMessage instead.")) {
+        throw Py::Exception();
+    }
+
+    return sendMessage(args);
 }
 
 Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)

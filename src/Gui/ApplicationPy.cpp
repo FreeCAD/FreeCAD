@@ -920,6 +920,10 @@ PyObject* ApplicationPy::sHide(PyObject* /*self*/, PyObject* args)
 
     requirePythonMainThread("FreeCADGui.hide");
 
+    if (!Base::warnDeprecatedPythonApi("Method", "FreeCADGui.hide", "Use hideObject instead.")) {
+        return nullptr;
+    }
+
     Document* pcDoc = Application::Instance->activeDocument();
 
     if (pcDoc) {
@@ -937,6 +941,10 @@ PyObject* ApplicationPy::sShow(PyObject* /*self*/, PyObject* args)
     }
 
     requirePythonMainThread("FreeCADGui.show");
+
+    if (!Base::warnDeprecatedPythonApi("Method", "FreeCADGui.show", "Use showObject instead.")) {
+        return nullptr;
+    }
 
     Document* pcDoc = Application::Instance->activeDocument();
 
@@ -1139,6 +1147,14 @@ PyObject* ApplicationPy::sSendActiveView(PyObject* /*self*/, PyObject* args)
     }
 
     requirePythonMainThread("FreeCADGui.SendMsgToActiveView");
+
+    if (!Base::warnDeprecatedPythonApi(
+            "Method",
+            "FreeCADGui.SendMsgToActiveView",
+            "Use the View class instead."
+        )) {
+        return nullptr;
+    }
 
     if (!Application::Instance->sendMsgToActiveView(psCommandStr)) {
         if (!Base::asBoolean(suppress)) {

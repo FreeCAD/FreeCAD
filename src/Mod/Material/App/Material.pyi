@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, no_args, sequence_protocol
+from Base.Metadata import export, no_args, sequence_protocol, deprecated_attributes
 from Base.BaseClass import BaseClass
 from typing import Final
 
@@ -14,6 +14,13 @@ from typing import Final
     Delete=True,
 )
 @sequence_protocol(sq_length=True, sq_item=True, sq_contains=True, mp_subscript=True)
+@deprecated_attributes(
+    AuthorAndLicense="Use Author and License instead.",
+    Properties="Legacy compatibility API. Prefer PropertyObjects.",
+    PhysicalProperties="Legacy compatibility API. Prefer PropertyObjects.",
+    AppearanceProperties="Legacy compatibility API. Prefer PropertyObjects.",
+    LegacyProperties="Legacy compatibility API. Prefer PropertyObjects.",
+)
 class Material(BaseClass):
     """
     Material descriptions.

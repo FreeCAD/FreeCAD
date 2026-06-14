@@ -50,3 +50,9 @@ def sequence_protocol(**kwargs: Any) -> Callable[[_ClassT], _ClassT]:
     A decorator to attach sequence protocol metadata to a class.
     """
     ...
+
+def deprecated_attributes(**kwargs):
+    """
+    A decorator to attach per-attribute deprecation messages to a class.
+    """
+    ...

@@ -41,7 +41,7 @@ This system is designed to be fully compatible and backwards-compatible with the
 The binding system is built around a few core components:
 
 * **Metadata Decorators:**
-    A set of decorators (e.g., `@export`, `@constmethod`, `@sequence_protocol`) to annotate classes and methods with necessary metadata for the binding process. These decorators help bridge the gap between the C++ definitions and the Python interface.
+    A set of decorators (e.g., `@export`, `@constmethod`, `@sequence_protocol`, `@deprecated_attributes`) to annotate classes and methods with necessary metadata for the binding process. These decorators help bridge the gap between the C++ definitions and the Python interface.
 
 * **C++ Python Stub Generation:**
     The system generates C++ Python stubs that act as a direct mapping to the corresponding C++ classes. These stubs include method signatures, attributes, and detailed docstrings and uses the same code
@@ -149,6 +149,42 @@ provide Python type hinting for type checkers like mypy. Overload-only construct
 exception: when the overload set carries constructor documentation, that documentation is
 folded into the exported class documentation, because constructor bindings are generated
 through `Constructor=True` rather than a normal method stub.
+
+### Deprecation
+
+Deprecated methods and classes should use `typing_extensions.deprecated` so type checkers can
+flag call sites:
+
+```python
+from typing_extensions import deprecated
+
+class ShapePy(PyObjectBase):
+    @deprecated("Use fuse() instead.")
+    def multiFuse(self, tools) -> object:
+        """
+        Deprecated: use fuse() instead.
+        """
+        ...
+```
+
+The binding generator preserves the deprecation message and emits a runtime
+`DeprecationWarning` from the generated wrapper.
+
+Deprecated attributes should use `@deprecated_attributes(...)` on the enclosing class:
+
+```python
+from Metadata import deprecated_attributes
+
+@deprecated_attributes(
+    Wire="Use OuterWire instead.",
+)
+class TopoShapeFace(TopoShape):
+    Wire: object = ...
+    """Legacy alias for the outer wire of this face. Use OuterWire instead."""
+```
+
+Docstring markers like `Deprecated:` or `deprecated --` are still supported as a legacy fallback,
+but new attribute deprecations should prefer explicit metadata.
 
 ### Attributes and Read-Only Properties
 

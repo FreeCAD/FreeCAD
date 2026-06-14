@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from typing import Any, overload
+from typing_extensions import deprecated
 
 from FreeCAD import Placement, Rotation, Vector
 from FreeCADGui import _MDIView, _View3DInventorViewer
@@ -278,12 +279,14 @@ class _View3DInventor:
         """Remove one Pivy event callback."""
         ...
 
+    @deprecated("Use addEventCallbackPivy instead.")
     def addEventCallbackSWIG(
         self, event_type: object, callback: object, extended: int = 1, /
     ) -> object:
         """Register one SWIG event callback."""
         ...
 
+    @deprecated("Use removeEventCallbackPivy instead.")
     def removeEventCallbackSWIG(
         self, event_type: object, callback: object, extended: int = 1, /
     ) -> object:

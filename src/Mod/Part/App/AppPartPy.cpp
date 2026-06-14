@@ -119,6 +119,16 @@ extern const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError fe);
 namespace Part
 {
 
+namespace
+{
+void warnDeprecatedImportMethod(const char* methodName, const char* replacement)
+{
+    if (!Base::warnDeprecatedPythonApi("Method", methodName, replacement)) {
+        throw Py::Exception();
+    }
+}
+}  // namespace
+
 PartExport void getPyShapes(PyObject* obj, std::vector<TopoShape>& shapes)
 {
     if (!obj) {
@@ -449,12 +459,12 @@ public:
         add_varargs_method(
             "open",
             &Module::open,
-            "open(string) -- Create a new document and load the file into the document."
+            "open(string) -- Deprecated. Use Import.open(string) instead."
         );
         add_varargs_method(
             "insert",
             &Module::insert,
-            "insert(string,string) -- Insert the file into the given document."
+            "insert(string,string) -- Deprecated. Use Import.insert(string,string) instead."
         );
         add_varargs_method(
             "export",
@@ -833,6 +843,8 @@ private:
             throw Py::RuntimeError("No file extension");
         }
 
+        warnDeprecatedImportMethod("Part.open", "Use Import.open instead.");
+
         if (file.hasExtension({"stp", "step"})) {
             // create new document and add Import feature
             App::Document* pcDoc = App::GetApplication().newDocument();
@@ -884,6 +896,8 @@ private:
             pcDoc = App::GetApplication().newDocument(DocName);
         }
 
+        warnDeprecatedImportMethod("Part.insert", "Use Import.insert instead.");
+
         if (file.hasExtension({"stp", "step"})) {
             ImportStepParts(pcDoc, EncodedName.c_str());
 
@@ -894,7 +908,6 @@ private:
             pcDoc->recompute();
         }
         else {
-            FC_WARN("Importing BREP via 'Part' is deprecated. Use 'ImportGui' instead.");
             TopoShape shape;
             shape.read(EncodedName.c_str());
 

@@ -300,6 +300,10 @@ private:
 
     Py::Object fromShape(const Py::Tuple& args)
     {
+        if (!Base::warnDeprecatedPythonApi("Method", "PathApp.fromShape", "Use fromShapes instead.")) {
+            throw Py::Exception();
+        }
+
         PyObject* pcObj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj)) {
             throw Py::Exception();

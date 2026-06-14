@@ -151,6 +151,20 @@ inline Py::Object pyCallWithKeywords(PyObject* callable, PyObject* args, PyObjec
 }
 
 /**
+ * Emit a Python DeprecationWarning for one FreeCAD API entry point.
+ *
+ * apiKind and qualifiedName must both be non-null and non-empty.
+ *
+ * Returns false if the warning API raised a Python exception instead of
+ * reporting a warning, for example when deprecations are configured as errors.
+ */
+BaseExport bool warnDeprecatedPythonApi(
+    const char* apiKind,
+    const char* qualifiedName,
+    const char* message = nullptr
+);
+
+/**
  * The SystemExitException is thrown if the Python-internal PyExc_SystemExit exception
  * was thrown.
  * @author Werner Mayer
