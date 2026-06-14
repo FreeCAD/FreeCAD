@@ -31,6 +31,8 @@
 #include <Base/Uuid.h>
 #include <Base/Tools.h>
 
+#include <array>
+
 #include "PropertyFile.h"
 #include "Document.h"
 #include "DocumentObject.h"
@@ -40,6 +42,12 @@
 using namespace App;
 using namespace Base;
 using namespace std;
+
+namespace {
+
+constexpr std::size_t includedFileBufferSize = 64 * 1024;
+
+}
 
 
 //**************************************************************************
@@ -444,10 +452,26 @@ void PropertyFileIncluded::SaveDocFile(Base::Writer& writer) const
     }
 
     // copy plain data
-    unsigned char c;
+    std::array<char, includedFileBufferSize> buffer {};
     std::ostream& to = writer.Stream();
-    while (from.get((char&)c)) {
-        to.put((char)c);
+    while (from) {
+        from.read(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+        const std::streamsize count = from.gcount();
+        if (count > 0) {
+            to.write(buffer.data(), count);
+            if (!to) {
+                std::stringstream str;
+                str << "PropertyFileIncluded::SaveDocFile(): "
+                    << "File '" << _cValue << "' in transient directory cannot be written.";
+                throw Base::FileSystemError(str.str());
+            }
+        }
+    }
+    if (from.bad()) {
+        std::stringstream str;
+        str << "PropertyFileIncluded::SaveDocFile(): "
+            << "File '" << _cValue << "' in transient directory cannot be read.";
+        throw Base::FileSystemError(str.str());
     }
 }
 
@@ -469,11 +493,33 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader& reader)
 
     // copy plain data
     aboutToSetValue();
-    unsigned char c;
-    while (reader.get((char&)c)) {
-        to.put((char)c);
+    std::array<char, includedFileBufferSize> buffer {};
+    while (reader) {
+        reader.read(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+        const std::streamsize count = reader.gcount();
+        if (count > 0) {
+            to.write(buffer.data(), count);
+            if (!to) {
+                std::stringstream str;
+                str << "PropertyFileIncluded::RestoreDocFile(): "
+                    << "File '" << _cValue << "' in transient directory cannot be written.";
+                throw Base::FileSystemError(str.str());
+            }
+        }
+    }
+    if (reader.bad()) {
+        std::stringstream str;
+        str << "PropertyFileIncluded::RestoreDocFile(): "
+            << "File '" << _cValue << "' in transient directory cannot be read.";
+        throw Base::FileSystemError(str.str());
     }
     to.close();
+    if (!to) {
+        std::stringstream str;
+        str << "PropertyFileIncluded::RestoreDocFile(): "
+            << "File '" << _cValue << "' in transient directory cannot be closed.";
+        throw Base::FileSystemError(str.str());
+    }
 
     // set read-only after restoring the file
     fi.setPermissions(Base::FileInfo::ReadOnly);
