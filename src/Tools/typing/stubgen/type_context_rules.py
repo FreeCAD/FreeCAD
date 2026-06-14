@@ -79,7 +79,7 @@ TYPE_CONTEXT_RULES = (
     TypeContextRule(
         source="src/Base/ParameterPy.cpp",
         context_name="ParameterGrp",
-        public_targets=(PublicTypeTarget("FreeCAD", "_ParameterGrp"),),
+        public_targets=(PublicTypeTarget("FreeCAD", "ParameterGrp"),),
     ),
     TypeContextRule(
         source="src/Gui/MainWindowPy.cpp",

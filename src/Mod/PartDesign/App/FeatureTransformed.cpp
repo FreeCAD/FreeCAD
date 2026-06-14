@@ -440,8 +440,13 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     supportShape = refineShapeIfActive((supportShape));
 
-    this->Shape.setValue(getSolid(supportShape));  // picking the first solid
-    rejected = getRemainingSolids(supportShape.getShape());
+    this->Shape.setValue(getSolid(supportShape));
+    if (singleSolidRuleMode() == SingleSolidRuleMode::Enforced) {
+        rejected = getRemainingSolids(supportShape.getShape());
+    }
+    else {
+        rejected.Nullify();
+    }
 
     return App::DocumentObject::StdReturn;
 }

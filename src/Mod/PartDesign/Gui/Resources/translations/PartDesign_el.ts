@@ -931,8 +931,8 @@ so that self intersection is avoided.</source>
       <translation>Δημιουργία Σύνθετης Πράξης (Boolean)</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="224"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="224"/>
       <source>Add a Body</source>
       <translation>Προσθήκη ενός Σώματος</translation>
     </message>
@@ -1101,8 +1101,8 @@ Select a body from below, or create a new body.</source>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="53"/>
-      <source>Please select</source>
-      <translation>Παρακαλώ επιλέξτε</translation>
+      <source>Select an active body</source>
+      <translation type="unfinished">Select an active body</translation>
     </message>
   </context>
   <context>
@@ -3176,11 +3176,11 @@ measured along the specified direction</source>
       <translation>Δεν υπάρχουν έγκυρα επίπεδα σε αυτό το έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="137"/>
-      <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
-      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
+      <location filename="../../ViewProvider.cpp" line="137"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../SketchWorkflow.cpp" line="761"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Ένα παράθυρο επιλογών είναι ήδη ανοιχτό στον πίνακα εργασιών</translation>
     </message>
@@ -3205,6 +3205,11 @@ measured along the specified direction</source>
       <translation>Δεν υπάρχει ενεργό σώμα. Παρακαλώ ενεργοποιήστε ένα σώμα πριν εισάγετε ένα στοιχείο αναφοράς.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation type="unfinished">Invalid Selection</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="470"/>
       <source>Sub-shape binder</source>
       <translation>Σύνδεσμος Εξωτερικών Σχημάτων</translation>
@@ -3220,11 +3225,16 @@ measured along the specified direction</source>
       <translation>Δεν υπάρχει διαθέσιμο σκαρίφημα στο έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="138"/>
-      <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../SketchWorkflow.cpp" line="762"/>
+      <location filename="../../Command.cpp" line="2196"/>
+      <source>Select only one feature in an active body.</source>
+      <translation type="unfinished">Select only one feature in an active body.</translation>
+    </message>
+    <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../ViewProvider.cpp" line="138"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../SketchWorkflow.cpp" line="762"/>
       <source>Close this dialog?</source>
       <translation>Κλείσιμο αυτού του διαλόγου?</translation>
     </message>
@@ -3256,11 +3266,6 @@ measured along the specified direction</source>
       <translation>Επιλέξτε μια ακμή, μια επιφάνεια ή ένα σώμα από ένα ενεργό σώμα.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1026"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>Για να χρησιμοποιήσετε στοιχεία από άλλο αντικείμενο, δοκιμάστε να τα εισάγετε πρώτα με μια "Σύνδεση σχήματος" ή ως "Βασικό χαρακτηριστικό"</translation>
@@ -3274,11 +3279,6 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1848"/>
       <source>%1 works only on parts.</source>
       <translation>Το %1 λειτουργεί μόνο σε εξαρτήματα.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2196"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation>Επιλέξτε μόνο ένα χαρακτηριστικό από το αντικείμενο.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
@@ -3362,6 +3362,11 @@ This may lead to unexpected results.</source>
       <translation>Δεν υπάρχει τίποτα για μετεγκατάσταση</translation>
     </message>
     <message>
+      <location filename="../../CommandBody.cpp" line="622"/>
+      <source>Edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
+      <translation type="unfinished">Edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</translation>
+    </message>
+    <message>
       <location filename="../../CommandBody.cpp" line="697"/>
       <source>Select exactly one Part Design feature or a body.</source>
       <translation>Επιλέξτε ακριβώς μία λειτουργία ΣχεδίασηςΕξαρτήματος ή ένα Σώμα.</translation>
@@ -3386,11 +3391,6 @@ This may lead to unexpected results.</source>
       <source>No Part Design features without body found Nothing to migrate.</source>
       <translation>Δεν βρέθηκαν μεμονωμένα εργαλεία σχεδίασης έξω από κάποιο Σώμα. 
 Δεν υπάρχει τίποτα για να μετακινηθεί.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandBody.cpp" line="622"/>
-      <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Παρακαλώ πραγματοποιήστε επεξεργασία του '%1' και επαναπροσδιορίστε το ώστε να χρησιμοποιήσετε ένα επίπεδο Βάσης ή ένα επίπεδο Αναφοράς ως το επίπεδο σκαριφήματος.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="696"/>
@@ -3463,14 +3463,14 @@ This may lead to unexpected results.</source>
       <translation>Δεν είναι εφικτό να δημιουργήσετε αφαιρετικό χαρακτηριστικό χωρίς κάποιο διαθέσιμο χαρακτηριστικό βάσης</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <source>Vertical sketch axis</source>
       <translation>Κάθετος άξονας σκίτσου</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <location filename="../../TaskTransformedParameters.cpp" line="440"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <source>Horizontal sketch axis</source>
       <translation>Οριζόντιος άξονας σκίτσου</translation>
     </message>
@@ -3523,10 +3523,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Προκειμένου να χρησιμοποιήσετε αυτό το χαρακτηριστικό θα πρέπει να ανήκει σε κάποιο εξάρτημα που βρίσκεται στο έγγραφο.</translation>
     </message>
     <message>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <source>Edit %1</source>
       <translation>Επεξεργασία %1</translation>
     </message>
@@ -4462,23 +4462,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>Αδυναμία εκτέλεσης λογικής πράξης: Το σχήμα βάσης δεν είναι έγκυρο</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <location filename="../../../App/FeaturePipe.cpp" line="537"/>
       <location filename="../../../App/FeaturePipe.cpp" line="571"/>
       <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Το αποτέλεσμα έχει πολλαπλά στερεά: ενεργοποιήστε την επιλογή 'Να επιτρέπονται τα Σύνθετα' (Allow Compound) στο ενεργό Σώμα.</translation>
     </message>
@@ -4513,10 +4513,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>Το κομμάτι που πρόσθεσες δεν κόλλησε πουθενά και χάθηκε.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="370"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <source>Resulting shape is not a solid</source>
       <translation>Το σχήμα που προκύπτει δεν είναι στερεό</translation>
     </message>
@@ -4658,9 +4658,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Σφάλμα: Η επιφάνεια πρέπει να είναι επίπεδη</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
       <source>Error: Result is not a solid</source>
       <translation>Σφάλμα: Το αποτέλεσμα δεν είναι σταθερό (δεν έχει όγκο)</translation>
     </message>
@@ -4813,8 +4813,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>Μετάβαση (Loft): Η δημιουργία επιφάνειας από το σχέδιο απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="303"/>
       <location filename="../../../App/FeaturePipe.cpp" line="500"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="303"/>
       <source>Loft: Failed to create shell</source>
       <translation>Μετάβαση (Loft): Αποτυχία δημιουργίας κελύφους</translation>
     </message>
@@ -4921,14 +4921,14 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Αδυναμία αφαίρεσης βασικού σχήματος χωρίς την ύπαρξη αρχικού αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="355"/>
       <source>Unknown operation type</source>
       <translation>Άγνωστος τύπος λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="363"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="363"/>
       <source>Failed to perform boolean operation</source>
       <translation>Η εκτέλεση της λειτουργίας Boolean απέτυχε</translation>
     </message>
@@ -5453,10 +5453,10 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <location filename="../../TaskFeatureParameters.cpp" line="264"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>Η λειτουργία δεν μπόρεσε να δημιουργηθεί με τις δεδομένες παραμέτρους.
-Η γεωμετρία ενδέχεται να είναι μη έγκυρη ή οι παράμετροι να είναι ασύμβατες.
-Παρακαλούμε προσαρμόστε τις παραμέτρους και δοκιμάστε ξανά.</translation>
+Adjust the parameters and try again.</source>
+      <translation type="unfinished">The feature could not be created with the given parameters.
+The geometry may be invalid or the parameters may be incompatible.
+Adjust the parameters and try again.</translation>
     </message>
   </context>
   <context>

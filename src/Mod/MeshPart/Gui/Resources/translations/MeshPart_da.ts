@@ -383,11 +383,6 @@ The smallest value is 0.</translation>
       <translation type="unfinished">Use the Netgen mesher</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation type="unfinished">Fineness:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation type="unfinished">Very coarse</translation>
@@ -438,6 +433,11 @@ The smallest value is 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation type="unfinished">If this parameter is smaller, the mesh becomes finer.
 A value in the range of 0.1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation type="unfinished">Fineness</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

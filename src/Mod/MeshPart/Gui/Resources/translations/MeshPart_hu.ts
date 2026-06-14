@@ -383,11 +383,6 @@ A legkisebb érték 0.</translation>
       <translation>Használja a Netgen hálógenerálót</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Finomság:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Nagyon durva</translation>
@@ -438,6 +433,11 @@ A legkisebb érték 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Ha ez a paraméter kisebb, a háló finomabb lesz.
 0.1-1 tartományban lévő érték.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Finomítás</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

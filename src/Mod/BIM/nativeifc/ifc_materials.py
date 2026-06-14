@@ -88,12 +88,13 @@ def load_materials(obj):
     """Recursively loads materials of child objects"""
 
     show_material(obj)
-    if isinstance(obj, FreeCAD.DocumentObject):
-        group = obj.Group
-    else:
-        group = obj.Objects
-    for child in group:
-        load_materials(child)
+    if isinstance(obj, FreeCAD.DocumentObject) and hasattr(obj, "Group"):
+        for child in group:
+            load_materials(child)
+    elif isinstance(obj, FreeCAD.Document):
+        for child in obj.Objects:
+            # Recursion not needed here.
+            show_material(child)
 
 
 def get_material(obj):

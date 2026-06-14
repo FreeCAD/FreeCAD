@@ -72,7 +72,7 @@ class TestSolverZ88(unittest.TestCase):
     def test_ccx_cantilever_ele_hexa20(self):
         from femexamples.ccx_cantilever_ele_hexa20 import setup
 
-        setup(self.document, "z88")
+        setup(self.document, "z88", test_mode=True)
         self.inputfile_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************

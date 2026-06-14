@@ -1,25 +1,25 @@
-/****************************************************************************
- *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
- *                                                                          *
- *   This file is part of the FreeCAD CAx development system.               *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Library General Public            *
- *   License as published by the Free Software Foundation; either           *
- *   version 2 of the License, or (at your option) any later version.       *
- *                                                                          *
- *   This library  is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
- *   GNU Library General Public License for more details.                   *
- *                                                                          *
- *   You should have received a copy of the GNU Library General Public      *
- *   License along with this library; see the file COPYING.LIB. If not,     *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,          *
- *   Suite 330, Boston, MA  02111-1307, USA                                 *
- *                                                                          *
- ****************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <atomic>
 #include <cctype>
@@ -2522,7 +2522,7 @@ void ViewProviderLink::applyMaterial()
             true
         );  // true for secondary
         action.swapColors(colorMap);
-        linkView->getLinkRoot()->doAction(&action);
+        action.apply(linkView->getLinkRoot());
 
         // 5. Ensure the old global override mechanism is not used.
         linkView->setMaterial(-1, nullptr);
@@ -2533,7 +2533,7 @@ void ViewProviderLink::applyMaterial()
 
         // 1. Dispatch an empty Color action to clear the secondary context.
         SoSelectionElementAction action(SoSelectionElementAction::Color, true);
-        linkView->getLinkRoot()->doAction(&action);
+        action.apply(linkView->getLinkRoot());
 
         // 2. Re-apply any other material settings (e.g., for array elements,
         // or clear the old global override if it was set).
@@ -2629,8 +2629,8 @@ std::vector<App::DocumentObject*> ViewProviderLink::claimChildren() const
     if (ext && !ext->_getShowElementValue() && ext->_getElementCountValue()) {
         // in array mode without element objects, we'd better not show the
         // linked object's children to avoid inconsistent behavior on selection.
-        // We claim the linked object instead
-        if (ext) {
+        // Claim the linked object only if requested.
+        if (ext->getLinkClaimChildValue()) {
             auto obj = ext->getLinkedObjectValue();
             if (obj) {
                 ret.push_back(obj);
@@ -3930,13 +3930,14 @@ bool ViewProviderLink::applyColorsTo(ViewProviderDocumentObject* vp, bool prevOv
     }
 
     auto node = vp->getModeSwitch();
-    if (!node) {
+    auto root = vp->getRoot();
+    if (!node || !root) {
         return prevOverride;
     }
 
     SoSelectionElementAction action(SoSelectionElementAction::Color, true);
     // reset color and visibility first
-    action.apply(node);
+    action.apply(root);
 
     std::map<std::string, std::map<std::string, Base::Color>> colorMap;
     std::set<std::string> hideList;
@@ -3960,15 +3961,15 @@ bool ViewProviderLink::applyColorsTo(ViewProviderDocumentObject* vp, bool prevOv
     SoTempPath path(10);
     path.ref();
     for (auto& v : colorMap) {
-        action.swapColors(v.second);
+        action.setColors(v.second);
         if (v.first.empty()) {
             prevOverride = true;
-            action.apply(node);
+            action.apply(root);
             continue;
         }
         SoDetail* det = nullptr;
         path.truncate(0);
-        if (vp->getDetailPath(v.first.c_str(), &path, false, det)) {
+        if (vp->getDetailPath(v.first.c_str(), &path, true, det)) {
             prevOverride = true;
             action.apply(&path);
         }
@@ -3979,7 +3980,7 @@ bool ViewProviderLink::applyColorsTo(ViewProviderDocumentObject* vp, bool prevOv
     for (const auto& sub : hideList) {
         SoDetail* det = nullptr;
         path.truncate(0);
-        if (!sub.empty() && vp->getDetailPath(sub.c_str(), &path, false, det)) {
+        if (!sub.empty() && vp->getDetailPath(sub.c_str(), &path, true, det)) {
             prevOverride = true;
             action.apply(&path);
         }

@@ -871,8 +871,8 @@ SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo 
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>¿No encuentra la parte? </translation>
+      <source>Cannot find the part?</source>
+      <translation type="unfinished">Cannot find the part?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -1545,28 +1545,27 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Haga clic para seleccionar estas articulaciones en conflicto.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation type="unfinished">Selects these conflicting joints</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Haga clic para seleccionar estas articulaciones redundantes.</translation>
+      <source>Selects these redundant joints</source>
+      <translation type="unfinished">Selects these redundant joints</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation>El ensamblaje tiene componentes sin restricciones que dan lugar a esos grados de libertad.
-Haga clic para seleccionar estos componentes sin restricciones.
-
-Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas que aún tienen algunos grados de libertad.</translation>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Selects these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Haga clic para seleccionar estas articulaciones mal formadas.</translation>
+      <source>Selects these malformed joints</source>
+      <translation type="unfinished">Selects these malformed joints</translation>
     </message>
   </context>
   <context>
@@ -1578,8 +1577,8 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
-      <translation>Ir a ensamblaje enlazado</translation>
+      <source>Go to Linked Assembly</source>
+      <translation type="unfinished">Go to Linked Assembly</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
@@ -1596,7 +1595,7 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
+      <source>Select Conflicting Constraints</source>
       <translation>Seleccionar restricciones conflictivas</translation>
     </message>
     <message>
@@ -1614,7 +1613,7 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
+      <source>Select Redundant Constraints</source>
       <translation>Seleccionar restricciones redundantes</translation>
     </message>
     <message>
@@ -1632,7 +1631,7 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
+      <source>Select Malformed Constraints</source>
       <translation>Seleccionar restricciones mal formadas</translation>
     </message>
     <message>
@@ -1650,8 +1649,8 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
-      <translation>Selecciona componentes con grados de libertad</translation>
+      <source>Select Components With DoFs</source>
+      <translation type="unfinished">Select Components With DoFs</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
@@ -1668,8 +1667,8 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
-      <translation>Seleccionar las uniones de los componentes</translation>
+      <source>Select Component Joints</source>
+      <translation type="unfinished">Select Component Joints</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>

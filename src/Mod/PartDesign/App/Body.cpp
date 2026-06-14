@@ -351,6 +351,7 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
         // Check if the next feature is pointing to the one being deleted
         if (nextPD->BaseFeature.getValue() == feature) {
             nextPD->BaseFeature.setValue(prevSolidFeature);
+            nextPD->onBaseFeatureRerouted(feature, prevSolidFeature);
         }
     }
 

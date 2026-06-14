@@ -1195,15 +1195,15 @@ If unchecked, they will be sorted by their name.</source>
       <translation>Aksi halde tüm değişiklikler kaybolacak.</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="170"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="567"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>Silmeyi Onayla</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
       <translation>Bu satırı sil?</translation>
     </message>
