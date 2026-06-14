@@ -408,6 +408,7 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
 bool SketchObject::seekTrimPoints(
     int GeoId,
     const Base::Vector3d& point,
+    bool includeSketchAxes,
     int& GeoId1,
     Base::Vector3d& intersect1,
     int& GeoId2,
@@ -418,9 +419,23 @@ bool SketchObject::seekTrimPoints(
         return false;
     }
 
-    auto geos = getCompleteGeometry();  // this includes the axes too
+    auto geos = getCompleteGeometry();  // this includes the axes as GeomBoundedCurve
 
-    geos.resize(geos.size() - 2);  // remove the axes to avoid intersections with the axes
+    // remove the axes since they aren't infinite lines and not all intersections will count
+    geos.resize(geos.size() - 2);
+
+    Part::GeomLine hAxis, vAxis;
+    int hAxisIndex, vAxisIndex = -1;
+    if (includeSketchAxes) {
+        // re-add the axes as infinite lines
+        hAxisIndex = geos.size();
+        hAxis.setLine(Base::Vector3d(0, 0, 0), Base::Vector3d(1, 0, 0));
+        geos.push_back(&hAxis);
+
+        vAxisIndex = geos.size();
+        vAxis.setLine(Base::Vector3d(0, 0, 0), Base::Vector3d(0, 1, 0));
+        geos.push_back(&vAxis);
+    }
 
     int localindex1, localindex2;
 
@@ -433,8 +448,18 @@ bool SketchObject::seekTrimPoints(
     }
 
     // invalid complete geometry indices are mapped to GeoUndef
-    GeoId1 = getGeoIdFromCompleteGeometryIndex(localindex1);
-    GeoId2 = getGeoIdFromCompleteGeometryIndex(localindex2);
+    auto getGeoIdForIndex = [&](int index) {
+        if (includeSketchAxes && index == hAxisIndex) {
+            return Part::Part2DObject::H_Axis;
+        }
+        if (includeSketchAxes && index == vAxisIndex) {
+            return Part::Part2DObject::V_Axis;
+        }
+        return getGeoIdFromCompleteGeometryIndex(index);
+    };
+
+    GeoId1 = getGeoIdForIndex(localindex1);
+    GeoId2 = getGeoIdForIndex(localindex2);
 
     return true;
 }
@@ -747,7 +772,7 @@ void createNewConstraintsForTrim(
     }
 }
 
-int SketchObject::trim(int GeoId, const Base::Vector3d& point)
+int SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketchAxes)
 {
     if (!isGeoIdAllowedForTrim(this, GeoId)) {
         return -1;
@@ -784,6 +809,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     if (!SketchObject::seekTrimPoints(
             GeoId,
             point,
+            includeSketchAxes,
             cuttingGeoIds[0],
             cutPoints[0],
             cuttingGeoIds[1],
