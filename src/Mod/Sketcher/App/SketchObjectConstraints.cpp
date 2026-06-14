@@ -74,7 +74,7 @@ void SketchObject::retrieveSolverDiagnostics()
     lastMalformedConstraints = solvedSketch.getMalformedConstraints();
 }
 
-int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
+SketchSolveResult SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -109,29 +109,29 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     // Failure is default for notifying the user unless otherwise proven
     lastSolverStatus = GCS::Failed;
 
-    int err = 0;
+    auto err = SketchSolveResult::Success;
 
     // redundancy is a lower priority problem than conflict/over-constraint/solver error
     // we set it here because we are indeed going to solve, as we can. However, we still want to
     // provide the right error code.
     if (lastHasRedundancies) {// redundant constraints
-        err = -2;
+        err = SketchSolveResult::RedundantConstraints;
     }
 
     if (lastDoF < 0) {// over-constrained sketch
-        err = -4;
+        err = SketchSolveResult::OverConstrained;
     }
     else if (lastHasConflict) {// conflicting constraints
         // The situation is exactly the same as in the over-constrained situation.
-        err = -3;
+        err = SketchSolveResult::ConflictingConstraints;
     }
     else if (lastHasMalformedConstraints) {
-        err = -5;
+        err = SketchSolveResult::MalformedConstraints;
     }
     else {
         lastSolverStatus = solvedSketch.solve();
         if (lastSolverStatus != 0) {// solving
-            err = -1;
+            err = SketchSolveResult::SolverFailed;
         }
     }
 
@@ -161,11 +161,12 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     }
 
     lastSolveTime = solvedSketch.getSolveTime();
+    lastSolveResult = err;
 
     // In uncommon situations, the analysis of QR decomposition leads to full rank, but the result
     // does not converge. We avoid marking a sketch as fully constrained when no convergence is
     // achieved.
-    if (err == 0) {
+    if (err == SketchSolveResult::Success) {
         FullyConstrained.setValue(lastDoF == 0);
         if (updateGeoAfterSolving) {
             // set the newly solved geometry
@@ -211,7 +212,7 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 
     this->Constraints.setValues(std::move(newVals));
 
-    int err = solve();
+    int err = static_cast<int>(solve());
 
     if (err)
         this->Constraints.getValues()[ConstrId]->setValue(oldDatum);// newVals is a shell now

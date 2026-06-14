@@ -4734,9 +4734,9 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
             }
         }
 
-        int ret = getSketchObject()->solve();
+        auto ret = getSketchObject()->solve();
 
-        if (ret != 0) {
+        if (ret != SketchSolveResult::Success) {
             // if the sketched could not be solved, we first redraw to update the UI geometry as
             // onChanged did not update it.
             UpdateSolverInformation();
