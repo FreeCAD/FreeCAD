@@ -143,9 +143,8 @@ class BIM_Diff:
                                         < MOVE_TOLERANCE
                                     ):
                                         # same boundbox
-                                        if (
-                                            hasattr(obj, "Material")
-                                            and hasattr(mainobj, "Material")
+                                        if hasattr(obj, "Material") and hasattr(
+                                            mainobj, "Material"
                                         ):
                                             if (
                                                 obj.Material
