@@ -66,10 +66,10 @@ class PartExport Deformation
 public:
     Deformation() = default;
 
-    static gp_Pnt twist(gp_Pnt from, double pitch, gp_Vec direction, gp_Pnt origin);
-    static gp_Pnt twistAlongX(gp_Pnt from, double pitch, gp_Pnt origin);
-    static gp_Pnt twistAlongY(gp_Pnt from, double pitch, gp_Pnt origin);
-    static gp_Pnt twistAlongZ(gp_Pnt from, double pitch, gp_Pnt origin);
+    static gp_Pnt twist(gp_Pnt from, double pitch, gp_Vec direction, gp_Pnt origin = {});
+    static gp_Pnt twistAlongX(gp_Pnt from, double pitch, gp_Pnt origin = {});
+    static gp_Pnt twistAlongY(gp_Pnt from, double pitch, gp_Pnt origin = {});
+    static gp_Pnt twistAlongZ(gp_Pnt from, double pitch, gp_Pnt origin = {});
 
     static gp_Pnt bendAlongCurve(
         gp_Pnt from,
