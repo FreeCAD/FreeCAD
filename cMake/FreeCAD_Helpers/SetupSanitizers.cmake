@@ -1,38 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# SPDX-FileNotice: Part of the FreeCAD project.
-
-#--------------------------------------------------------------------------
-#   Copyright (c) 2026 Chris Jones github.com/ipatch                      *
-#                                                                         *
-#   This file is part of the FreeCAD CAx development system.              *
-#                                                                         *
-#   This program is free software; you can redistribute it and/or modify  *
-#   it under the terms of the GNU Library General Public License (LGPL)   *
-#   as published by the Free Software Foundation; either version 2 of     *
-#   the License, or (at your option) any later version.                   *
-#   for detail see the LICENCE text file.                                 *
-#                                                                         *
-#   FreeCAD is distributed in the hope that it will be useful,            *
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#   GNU Library General Public License for more details.                  *
-#                                                                         *
-#   You should have received a copy of the GNU Library General Public     *
-#   License along with FreeCAD; if not, write to the Free Software        *
-#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#   USA                                                                   *
-#                                                                         *
-#--------------------------------------------------------------------------
-
-# NOTE: referencing my copy of professional cmake (book) i see the below list of available sanitizers
-# 1. AddressSanitizer (ASan) *only supported by Visual Studio
-# 2. LeakSanitizer (LSan) *can't be used with (MSan) (TSan)
-# 3. MemorySanitizer (MSan)
-# 4. ThreadSanitizer (TSan)
-# 5. UndefinedBehaviorSanitizer (UBSan) *can be used with all
 
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
+
+option(FREECAD_USE_SANITIZER_ASAN "Enable AddressSanitizer (ASan)" OFF)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    option(FREECAD_USE_SANITIZER_LSAN "Enable LeakSanitizer (LSan)" OFF)
+    option(FREECAD_USE_SANITIZER_TSAN "Enable ThreadSanitizer (TSan)" OFF)
+    option(FREECAD_USE_SANITIZER_UBSAN "Enable UndefinedBehaviorSanitizer (UBSan)" OFF)
+    option(FREECAD_USE_SANITIZER_MSAN "Enable MemorySanitizer (MSan)" OFF)
+endif()
+
+mark_as_advanced(
+    FREECAD_USE_SANITIZER_ASAN
+    FREECAD_USE_SANITIZER_LSAN
+    FREECAD_USE_SANITIZER_TSAN
+    FREECAD_USE_SANITIZER_UBSAN
+    FREECAD_USE_SANITIZER_MSAN
+)
 
 macro(_check_sanitizer_flag flag result)
     set(CMAKE_REQUIRED_LINK_OPTIONS ${flag})
@@ -56,14 +41,12 @@ macro(SetupSanitizers)
         if(FREECAD_USE_SANITIZER_ASAN AND (FREECAD_USE_SANITIZER_MSAN OR FREECAD_USE_SANITIZER_TSAN))
             message(FATAL_ERROR "ASan cannot be used with MSan or TSan")
         endif()
-        # LSan is incompatible with MSan and TSan
         if(FREECAD_USE_SANITIZER_LSAN AND (FREECAD_USE_SANITIZER_MSAN OR FREECAD_USE_SANITIZER_TSAN))
             message(FATAL_ERROR "LSan cannot be used with MSan or TSan")
         endif()
         if(FREECAD_USE_SANITIZER_TSAN AND FREECAD_USE_SANITIZER_MSAN)
             message(FATAL_ERROR "TSan and MSan cannot be used together")
         endif()
-
 
         # Verify compiler supports requested sanitizers
         if(FREECAD_USE_SANITIZER_ASAN)
@@ -82,14 +65,8 @@ macro(SetupSanitizers)
             _check_sanitizer_flag(-fsanitize=undefined _ubsan_supported)
         endif()
 
-        set(_has_sanitizer FALSE)
         if(FREECAD_USE_SANITIZER_ASAN OR FREECAD_USE_SANITIZER_LSAN OR FREECAD_USE_SANITIZER_TSAN
-        OR FREECAD_USE_SANITIZER_UBSAN OR FREECAD_USE_SANITIZER_MSAN)
-            set(_has_sanitizer TRUE)
-        endif()
-
-
-        if(_has_sanitizer)
+                OR FREECAD_USE_SANITIZER_UBSAN OR FREECAD_USE_SANITIZER_MSAN)
             if(NOT CMAKE_BUILD_TYPE MATCHES "Debug|RelWithDebInfo")
                 message(WARNING "Sanitizers work best with Debug or RelWithDebInfo builds")
             endif()
