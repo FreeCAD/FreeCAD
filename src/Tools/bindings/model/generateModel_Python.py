@@ -887,6 +887,19 @@ def parse_module_python_code(path: str) -> GenerateModel:
     return model
 
 
+def _is_explicit_export(class_node: ast.ClassDef) -> bool:
+    for decorator in class_node.decorator_list:
+        match decorator:
+            case ast.Name(id="export"):
+                return True
+            case ast.Call(func=ast.Name(id="export"), keywords=_, args=_):
+                return True
+            case _:
+                continue
+
+    return False
+
+
 def parse_python_code(path: str) -> GenerateModel:
     """
     Parse the given Python source code and build a GenerateModel containing
@@ -900,17 +913,21 @@ def parse_python_code(path: str) -> GenerateModel:
 
     tree = ast.parse(source_code)
     imports_mapping = _parse_imports(tree)
+    class_nodes = [node for node in tree.body if isinstance(node, ast.ClassDef)]
+    has_explicit_exports = any(_is_explicit_export(node) for node in class_nodes)
 
     explicit_exports = []
     non_explicit_exports = []
 
-    for node in tree.body:
-        if isinstance(node, ast.ClassDef):
-            py_export = _parse_class(node, source_code, path, imports_mapping)
-            if py_export.IsExplicitlyExported:
-                explicit_exports.append(py_export)
-            else:
-                non_explicit_exports.append(py_export)
+    for node in class_nodes:
+        if has_explicit_exports and not _is_explicit_export(node):
+            continue
+
+        py_export = _parse_class(node, source_code, path, imports_mapping)
+        if py_export.IsExplicitlyExported:
+            explicit_exports.append(py_export)
+        else:
+            non_explicit_exports.append(py_export)
 
     model = GenerateModel()
     if explicit_exports:

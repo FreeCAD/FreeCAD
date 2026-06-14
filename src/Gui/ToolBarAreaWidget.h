@@ -21,7 +21,10 @@
 
 #pragma once
 
+#include <map>
+
 #include <QLayout>
+#include <QMap>
 #include <QToolBar>
 #include <QPointer>
 #include <QWidget>
@@ -62,6 +65,7 @@ public:
     void addWidget(QWidget* widget);
     void insertWidget(int index, QWidget* widget);
     void removeWidget(QWidget* widget);
+    void setParameters(const ParameterGrp::handle& hParam);
 
     void adjustParent();
 
@@ -103,7 +107,10 @@ public:
     }
 
     void saveState();
-    void restoreState(const std::map<int, QToolBar*>& toolbars);
+    void restoreState(
+        const std::map<int, QToolBar*>& toolbars,
+        const QMap<QString, bool>& widgetVisibility = {}
+    );
 
 private:
     QHBoxLayout* _layout;
