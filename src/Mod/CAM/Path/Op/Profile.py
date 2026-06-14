@@ -225,6 +225,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "\nManual: uses order of shapes selection",
                 ),
             ),
+            (
+                "App::PropertyBool",
+                "HelixRamp",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Create helix ramp for closed path\nHelix pitch limits by 'Step Down'",
+                ),
+            ),
         ]
 
     @classmethod

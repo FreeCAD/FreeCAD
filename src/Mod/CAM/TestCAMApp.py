@@ -51,6 +51,7 @@ from CAMTests.TestPathOpDeburr import TestPathOpDeburr
 from CAMTests.TestPathHelpers import TestPathHelpers
 from CAMTests.TestPathHelix import TestPathHelix
 from CAMTests.TestPathHelixGenerator import TestPathHelixGenerator
+from CAMTests.TestPathRampEntryHelixGenerator import TestPathRampEntryHelixGenerator
 from CAMTests.TestPathSpiralGenerator import TestPathSpiralGenerator
 from CAMTests.TestPathLog import TestPathLog
 from CAMTests.TestPathLogNew import TestPathLogNew
