@@ -182,8 +182,8 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
         return;
     }
 
-    if (ctx && ctx->highlightIndex == std::numeric_limits<int>::max()) {
-        if (ctx->selectionIndex.empty() || ctx->isSelectAll()) {
+    if (ctx && ctx->highlightIndex == std::numeric_limits<int>::max() && !ctx->isSelectAll()) {
+        if (ctx->selectionIndex.empty()) {
             if (ctx2) {
                 ctx2->selectionColor = ctx->highlightColor;
                 renderSelection(action, ctx2);
