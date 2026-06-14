@@ -131,9 +131,9 @@ public:
      */
     static TopoShape FlexShape(const TopoShape& source, FlexParameters& params);
 
-    static TopoShape bend(const TopoShape& source, const Flex::FlexParameters& params);
-    static TopoShape twist(const TopoShape& source, const Flex::FlexParameters& params);
-    static TopoShape userDeform(const TopoShape& source, Flex::FlexParameters& params);
+    static TopoDS_Shape bend(const TopoDS_Shape& source, const Flex::FlexParameters& params);
+    static TopoDS_Shape twist(const TopoDS_Shape& source, const Flex::FlexParameters& params);
+    static TopoDS_Shape userDeform(const TopoDS_Shape& source, Flex::FlexParameters& params);
 
 private:
     static App::PropertyIntegerConstraint::Constraints sampleRange;

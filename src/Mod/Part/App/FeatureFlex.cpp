@@ -27,6 +27,8 @@
 #include "FeatureFlex.h"
 #include "Deformation.h"
 
+#include <BRepBndLib.hxx>
+
 using namespace Part;
 
 
@@ -231,63 +233,81 @@ Flex::FlexParameters Flex::computeFinalParameters() const
 TopoShape Flex::FlexShape(const TopoShape& source, Flex::FlexParameters& params)
 {
     TopoShape result(source);
+
+    // move the shape to the origin of deformation
+    gp_Trsf trsf;
+    trsf.SetDisplacement({{0., 0., 0.}, {1., 0., 0.}}, {params.coord});
+
+    auto shape = source.getShape();
+    shape.Move(trsf);
+
     switch (params.mode) {
         case FlexMode::Bend:
-            result.setShape(bend(source, params));
+            result.setShape(bend(shape, params), false);
             break;
         case FlexMode::Twist:
-            result.setShape(twist(source, params));
+            result.setShape(twist(shape, params), false);
             break;
         case FlexMode::UserDefined:
-            result.setShape(userDeform(source, params));
+            result.setShape(userDeform(shape, params), false);
             break;
         default:
             break;
     }
+    // move the result back from the origin of deformation
+    result.move(trsf.Inverted());
+    result.bakeInTransform();
+
     return result;
 }
 
-TopoShape Flex::bend(const TopoShape& source, const Flex::FlexParameters& params)
+TopoDS_Shape Flex::bend(const TopoDS_Shape& source, const Flex::FlexParameters& params)
 {
-    auto shape = source.getShape();
-
     auto curve = params.curve;
-    auto factor = params.factor;
+    auto userFactor = params.factor;
+
+    // compute the factor between geometry dimension and curve coordinate
+    Bnd_Box bBox;
+    BRepBndLib::Add(source, bBox);
+    double xSize = bBox.CornerMax().X() - bBox.CornerMin().X();
+    double factor = userFactor * (curve.LastParameter() - curve.FirstParameter()) / xSize;
+
     auto func = [curve, factor](gp_Pnt pt) {
         return Deformation::bendXAlongCurve(pt, curve, factor);
     };
 
     try {
-        return {Deformation::deform(shape, func, params.samples)};
+        auto result = Deformation::deform(source, func, params.samples);
+        // Deformation::bend move the shape to the curve so we move it back here
+        // TODO doesn't work as expected
+        gp_Trsf trsf;
+        trsf.SetDisplacement({curve.Value(curve.FirstParameter()), {0., 0., 1.}}, {});
+        result.Move(trsf);
+        return result;
     }
     catch (Base::Exception& e) {
         throw Base::RuntimeError("FeatureFlex failed on bend\n" + e.getMessage());
     }
 }
 
-TopoShape Flex::twist(const TopoShape& source, const Flex::FlexParameters& params)
+TopoDS_Shape Flex::twist(const TopoDS_Shape& source, const Flex::FlexParameters& params)
 {
     const double pitch = params.pitch;
-    const TopoDS_Shape& shape = source.getShape();
-    const auto origin = params.coord.Location();
-    const auto axis = params.coord.Direction();
 
-    auto func = [pitch, origin, axis](gp_Pnt pt) {
-        return Deformation::twist(pt, pitch, axis, origin);
+    auto func = [pitch](gp_Pnt pt) {
+        return Deformation::twistAlongX(pt, pitch);
     };
 
     try {
-        return {Deformation::deform(shape, func, params.samples)};
+        return Deformation::deform(source, func, params.samples);
     }
     catch (Base::Exception& e) {
         throw Base::RuntimeError("FeatureFlex failed on twist\n" + e.getMessage());
     }
 }
 
-TopoShape Flex::userDeform(const TopoShape& source, Flex::FlexParameters& params)
+TopoDS_Shape Flex::userDeform(const TopoDS_Shape& source, Flex::FlexParameters& params)
 {
-    const TopoDS_Shape& shape = source.getShape();
-
     auto* expr = params.funcExpr;
 
     auto func = [&expr](gp_Pnt pt) {
@@ -299,8 +319,7 @@ TopoShape Flex::userDeform(const TopoShape& source, Flex::FlexParameters& params
     };
 
     try {
-        auto result = Deformation::deform(shape, func, params.samples);
-        return result;
+        return Deformation::deform(source, func, params.samples);
     }
     catch (Base::Exception& e) {
         throw Base::RuntimeError("FeatureFlex failed on userDeform\n" + e.getMessage());
