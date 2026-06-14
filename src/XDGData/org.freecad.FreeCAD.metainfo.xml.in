@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.freecad.FreeCAD</id>
+  <project_license>LGPL-2.1</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <developer_name>The FreeCAD Team</developer_name>
+  <launchable type="desktop-id">org.freecad.FreeCAD.desktop</launchable>
+  <name>FreeCAD</name>
+  <summary>An open source parametric 3D CAD modeler</summary>
+  <description>
+    <p>
+      FreeCAD is an open-source parametric 3D modeler built to help you design real-world objects of
+      any size. With parametric modeling, you can easily modify your designs by adjusting parameters
+      in the model history. FreeCAD is suitable for a wide range of uses, from product design and
+      mechanical engineering to architecture and 3D printing.
+    </p>
+    <p>
+      The software allows you to create constrained 2D sketches, which can be used as the basis for more
+      complex 3D models. It includes tools to adjust dimensions, extract design details, and produce
+      production-ready technical drawings. FreeCAD is available on Windows, Mac, and Linux, and
+      supports various file formats like STEP, IGES, STL, SVG, DXF, OBJ, IFC, and more, making it easy to
+      fit into existing workflows. It also supports customization through Python scripting for those
+      who want to automate tasks or develop custom features.
+    </p>
+    <p>
+      FreeCAD offers several specialized workbenches, including tools for Finite Element Analysis
+      (FEA), Building Information Modeling (BIM), CAM / CNC and robot movement simulation. You can expand its
+      capabilities with add-ons, plugins, and macros created by the FreeCAD community, which can be
+      installed directly from the application. This flexibility makes it a practical choice for both
+      professionals and hobbyists.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Part Design</caption>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/partdesign.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Assembly</caption>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/assembly.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>BIM</caption>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/bim.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>FEM</caption>
+      <image>https://raw.githubusercontent.com/FreeCAD/FreeCAD/main/.github/images/fem.png</image>
+    </screenshot>
+  </screenshots>
+  <keywords>
+    <keyword>engineering</keyword>
+    <keyword translate="no">cad</keyword>
+    <keyword translate="no">bim</keyword>
+    <keyword translate="no">fea</keyword>
+	<keyword translate="no">fem</keyword>
+    <keyword translate="no">cam</keyword>
+	<keyword translate="no">cnc</keyword>
+    <keyword translate="no">design</keyword>
+    <keyword translate="no">3d</keyword>
+    <keyword translate="no">3d-printing</keyword>
+    <keyword translate="no">opencascade</keyword>
+	<keyword translate="no">parametric-modeler</keyword>
+    <keyword>architecture</keyword>
+	<keyword>assembly</keyword>
+	<keyword>part</keyword>
+    <keyword translate="no">coin</keyword>
+  </keywords>
+  <url type="homepage">https://www.freecad.org/</url>
+  <url type="bugtracker">https://github.com/FreeCAD/FreeCAD/issues</url>
+  <url type="faq">https://wiki.freecad.org/Frequently_asked_questions</url>
+  <url type="help">https://wiki.freecad.org/User_hub</url>
+  <url type="donation">https://www.freecad.org/sponsor.php</url>
+  <url type="translate">https://crowdin.com/project/freecad</url>
+  <url type="vcs-browser">https://github.com/FreeCAD/FreeCAD</url>
+  <url type="contribute">https://github.com/FreeCAD/FreeCAD/blob/master/CONTRIBUTING.md</url>
+  <update_contact>yorik_AT_uncreated.net</update_contact>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="@PACKAGE_VERSION@" date="@APPDATA_RELEASE_DATE@"/>
+  </releases>
+</component>

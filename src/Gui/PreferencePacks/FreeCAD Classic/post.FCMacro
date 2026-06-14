@@ -1,0 +1,8 @@
+# Classic theme must delete any set value for the editor text so that it is calculated dynamically when needed
+import FreeCAD
+
+editorPrefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Editor")
+editorPrefs.RemInt("Text")
+
+appPrefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow")
+appPrefs.RemString("QtStyle")
