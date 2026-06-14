@@ -2,7 +2,7 @@
 name = "Parashell"
 version = "1.2.0"
 description = "pixi instructions for Parashell"
-authors = ["parashell <dev@parashell.cloud>"]
+authors = ["parashell <ops@parashell.cloud>"]
 channels = ["conda-forge"]
 platforms = [ "linux-64", "osx-64", "osx-arm64", "win-64" ]
 requires-pixi = ">=0.48"
