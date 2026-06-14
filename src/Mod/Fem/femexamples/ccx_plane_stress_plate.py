@@ -112,21 +112,21 @@ def setup(doc=None, solvertype="calculix"):
     analysis.addObject(material_obj)
 
     # constraint displacement 1
-    con_disp1 = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement1")
+    con_disp1 = ObjectsFem.makeConstraintDisplacement(doc, "Displacement1")
     con_disp1.References = [(face_obj, "Edge4")]
     con_disp1.xFree = False
     con_disp1.xDisplacement = "0.0 mm"
     analysis.addObject(con_disp1)
 
     # constraint displacement 2
-    con_disp2 = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement2")
+    con_disp2 = ObjectsFem.makeConstraintDisplacement(doc, "Displacement2")
     con_disp2.References = [(face_obj, "Edge1")]
     con_disp2.yFree = False
     con_disp2.yDisplacement = "0.0 mm"
     analysis.addObject(con_disp2)
     
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "ForceLoad")
     con_force.References = [(face_obj, "Edge2")]
     con_force.DirectionVector = (1, 0, 0) 
     con_force.Force = "500.00 N"

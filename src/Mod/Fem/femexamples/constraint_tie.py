@@ -137,12 +137,12 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Edge1")]
     analysis.addObject(con_fixed)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "ForceLoad")
     con_force.References = [(geom_obj, "Edge2")]
     con_force.Force = "10000.0 N"  # 10 kN
     con_force.Direction = (geom_obj, ["Edge2"])
@@ -150,7 +150,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force)
 
     # constraint tie
-    con_tie = ObjectsFem.makeConstraintTie(doc, "ConstraintTie")
+    con_tie = ObjectsFem.makeConstraintTie(doc, "Tie")
     con_tie.References = [
         (geom_obj, "Face5"),
         (geom_obj, "Face7"),

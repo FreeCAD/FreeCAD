@@ -19779,8 +19779,8 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 1,
 2,
 7,
@@ -20015,16 +20015,16 @@ Evolumes
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
+Fixed,1
+Fixed,2
+Fixed,3
 
 
 ***********************************************************
 ** constraints pressure element face loads
-** ConstraintPressure
+** PressureLoad
 *DLOAD
 ** Hole_Plate.Face2
 4796,P3,-130.0
@@ -20116,7 +20116,7 @@ U
 S, E, PEEQ
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

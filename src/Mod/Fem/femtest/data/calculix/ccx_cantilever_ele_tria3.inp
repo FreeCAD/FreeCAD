@@ -1535,8 +1535,8 @@ Efaces
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 1,
 2,
 5,
@@ -1573,19 +1573,19 @@ Efaces
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
-ConstraintFixed,4
-ConstraintFixed,5
-ConstraintFixed,6
+Fixed,1
+Fixed,2
+Fixed,3
+Fixed,4
+Fixed,5
+Fixed,6
 
 
 ***********************************************************
 ** constraints force node loads
-** ConstraintForce
+** ForceLoad
 *CLOAD
 ** node loads on shape: CanileverPlate:Edge3
 3,3,-642857.1428571
@@ -1607,7 +1607,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

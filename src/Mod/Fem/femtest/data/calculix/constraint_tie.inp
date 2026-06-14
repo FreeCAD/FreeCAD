@@ -18535,16 +18535,16 @@ Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 3,
 9,
 461,
 
 ***********************************************************
 ** constraints tie surface sets
-** ConstraintTie
-*SURFACE, NAME=TIE_DEPConstraintTie
+** Tie
+*SURFACE, NAME=TIE_DEPTie
 4834,S1
 4835,S1
 4890,S1
@@ -18567,7 +18567,7 @@ Evolumes
 9637,S1
 9877,S1
 10493,S2
-*SURFACE, NAME=TIE_INDConstraintTie
+*SURFACE, NAME=TIE_INDTie
 4687,S4
 5445,S3
 5759,S4
@@ -18611,9 +18611,9 @@ Evolumes
 
 ***********************************************************
 ** Tie Constraints
-** ConstraintTie
-*TIE, POSITION TOLERANCE=25, ADJUST=NO, NAME=TIEConstraintTie
-TIE_DEPConstraintTie, TIE_INDConstraintTie
+** Tie
+*TIE, POSITION TOLERANCE=25, ADJUST=NO, NAME=TIETie
+TIE_DEPTie, TIE_INDTie
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
@@ -18623,16 +18623,16 @@ TIE_DEPConstraintTie, TIE_INDConstraintTie
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
+Fixed,1
+Fixed,2
+Fixed,3
 
 
 ***********************************************************
 ** constraints force node loads
-** ConstraintForce
+** ForceLoad
 *CLOAD
 ** node loads on shape: BooleanFragments:Edge2
 2,2,1666.666666667
@@ -18649,7 +18649,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

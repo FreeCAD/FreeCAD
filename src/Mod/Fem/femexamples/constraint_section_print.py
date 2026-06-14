@@ -143,19 +143,19 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
     analysis.addObject(steel_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Face8")]
     analysis.addObject(con_fixed)
 
     # constraint pressure
-    con_pressure = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, "PressureLoad")
     con_pressure.References = [(geom_obj, "Face4")]
     con_pressure.Pressure = "100.0 MPa"
     con_pressure.Reversed = False
     analysis.addObject(con_pressure)
 
     # constraint section print
-    con_sectionpr = ObjectsFem.makeConstraintSectionPrint(doc, "ConstraintSectionPrint")
+    con_sectionpr = ObjectsFem.makeConstraintSectionPrint(doc, "SectionPrint")
     con_sectionpr.References = [(geom_obj, "Face2")]
     analysis.addObject(con_sectionpr)
 
