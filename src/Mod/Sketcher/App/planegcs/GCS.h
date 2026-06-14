@@ -503,6 +503,47 @@ public:
     int addConstraintP2CDistance(Point& p, Circle& c, double* distance, int tagId = 0, bool driving = true);
     int addConstraintArcLength(Arc& a, double* dist, int tagId, bool driving = true);
 
+    // 3D constraints
+    int addConstraintP2PDistance3D(
+        Point3D& p1,
+        Point3D& p2,
+        double* distance,
+        int tagId = 0,
+        bool driving = true
+    );
+    int addConstraintParallel3D(
+        Point3D& p1,
+        Point3D& p2,
+        Point3D& p3,
+        Point3D& p4,
+        int tagId = 0,
+        bool driving = true
+    );
+    int addConstraintL2LAngle3D(Line3D& l1, Line3D& l2, double* angle, int tagId = 0, bool driving = true);
+    int addConstraintL2LAngle3D(
+        Point3D& p1,
+        Point3D& p2,
+        Point3D& p3,
+        Point3D& p4,
+        double* angle,
+        int tagId = 0,
+        bool driving = true
+    );
+    int addConstraintEqualLength3D(Line3D& l1, Line3D& l2, int tagId = 0, bool driving = true);
+
+    // 3D derived constraints
+    int addConstraintP2PCoincident3D(Point3D& p1, Point3D& p2, int tagId = 0, bool driving = true);
+
+    // Locks a single coordinate of a 3D point.
+    int addConstraintCoordinateX3D(Point3D& p, double* x, int tagId = 0, bool driving = true);
+    int addConstraintCoordinateY3D(Point3D& p, double* y, int tagId = 0, bool driving = true);
+    int addConstraintCoordinateZ3D(Point3D& p, double* z, int tagId = 0, bool driving = true);
+
+    // 3D line segment parallel to a global axis.
+    int addConstraintLineAlongX3D(Line3D& l, int tagId = 0, bool driving = true);
+    int addConstraintLineAlongY3D(Line3D& l, int tagId = 0, bool driving = true);
+    int addConstraintLineAlongZ3D(Line3D& l, int tagId = 0, bool driving = true);
+
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(
         Ellipse& e,

@@ -955,6 +955,144 @@ int System::addConstraintCoordinateY(Point& p, double* y, int tagId, bool drivin
     return addConstraintEqual(p.y, y, tagId, driving);
 }
 
+// 3D constraints
+
+int System::addConstraintP2PDistance3D(Point3D& p1, Point3D& p2, double* distance, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintP2PDistance3D(p1, p2, distance);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
+namespace
+{
+
+// instead of using three equation we are susing two equations(as we only need two last one is just
+// redundant) for the parallelism, so we need to choose the two most significant components of the
+// direction vectors to use for the constraint, and skip the least significant one. This function
+// returns which component to skip.
+ConstraintParallel3D::Component referenceParallelComponent(
+    Point3D& p1,
+    Point3D& p2,
+    Point3D& p3,
+    Point3D& p4
+)
+{
+    double d1x = *p1.x - *p2.x;
+    double d1y = *p1.y - *p2.y;
+    double d1z = *p1.z - *p2.z;
+    double d2x = *p3.x - *p4.x;
+    double d2y = *p3.y - *p4.y;
+    double d2z = *p3.z - *p4.z;
+
+    double len1Sq = d1x * d1x + d1y * d1y + d1z * d1z;
+    bool useFirst = len1Sq > std::numeric_limits<double>::epsilon();
+    double refX = useFirst ? d1x : d2x;
+    double refY = useFirst ? d1y : d2y;
+    double refZ = useFirst ? d1z : d2z;
+
+    if (std::abs(refX) >= std::abs(refY) && std::abs(refX) >= std::abs(refZ)) {
+        return ConstraintParallel3D::X;
+    }
+    if (std::abs(refY) >= std::abs(refZ)) {
+        return ConstraintParallel3D::Y;
+    }
+    return ConstraintParallel3D::Z;
+}
+}  // namespace
+
+int System::addConstraintParallel3D(Point3D& p1, Point3D& p2, Point3D& p3, Point3D& p4, int tagId, bool driving)
+{
+    const ConstraintParallel3D::Component skipped = referenceParallelComponent(p1, p2, p3, p4);
+
+    auto addComponent = [&](ConstraintParallel3D::Component component) {
+        Constraint* constr = new ConstraintParallel3D(p1, p2, p3, p4, component);
+        constr->setTag(tagId);
+        constr->setDriving(driving);
+        return addConstraint(constr);
+    };
+
+    int lastIdx = -1;
+    for (auto c : {ConstraintParallel3D::X, ConstraintParallel3D::Y, ConstraintParallel3D::Z}) {
+        if (c != skipped) {
+            lastIdx = addComponent(c);
+        }
+    }
+    return lastIdx;
+}
+
+int System::addConstraintL2LAngle3D(Line3D& l1, Line3D& l2, double* angle, int tagId, bool driving)
+{
+    return addConstraintL2LAngle3D(l1.p1, l1.p2, l2.p1, l2.p2, angle, tagId, driving);
+}
+
+int System::addConstraintL2LAngle3D(
+    Point3D& p1,
+    Point3D& p2,
+    Point3D& p3,
+    Point3D& p4,
+    double* angle,
+    int tagId,
+    bool driving
+)
+{
+    Constraint* constr = new ConstraintL2LAngle3D(p1, p2, p3, p4, angle);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
+int System::addConstraintEqualLength3D(Line3D& l1, Line3D& l2, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintEqualLineLength3D(l1, l2);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
+// 3D derived constraints
+
+int System::addConstraintP2PCoincident3D(Point3D& p1, Point3D& p2, int tagId, bool driving)
+{
+    addConstraintEqual(p1.x, p2.x, tagId, driving);
+    addConstraintEqual(p1.y, p2.y, tagId, driving);
+    return addConstraintEqual(p1.z, p2.z, tagId, driving);
+}
+
+int System::addConstraintCoordinateX3D(Point3D& p, double* x, int tagId, bool driving)
+{
+    return addConstraintEqual(p.x, x, tagId, driving);
+}
+
+int System::addConstraintCoordinateY3D(Point3D& p, double* y, int tagId, bool driving)
+{
+    return addConstraintEqual(p.y, y, tagId, driving);
+}
+
+int System::addConstraintCoordinateZ3D(Point3D& p, double* z, int tagId, bool driving)
+{
+    return addConstraintEqual(p.z, z, tagId, driving);
+}
+
+int System::addConstraintLineAlongX3D(Line3D& l, int tagId, bool driving)
+{
+    addConstraintEqual(l.p1.y, l.p2.y, tagId, driving);
+    return addConstraintEqual(l.p1.z, l.p2.z, tagId, driving);
+}
+
+int System::addConstraintLineAlongY3D(Line3D& l, int tagId, bool driving)
+{
+    addConstraintEqual(l.p1.x, l.p2.x, tagId, driving);
+    return addConstraintEqual(l.p1.z, l.p2.z, tagId, driving);
+}
+
+int System::addConstraintLineAlongZ3D(Line3D& l, int tagId, bool driving)
+{
+    addConstraintEqual(l.p1.x, l.p2.x, tagId, driving);
+    return addConstraintEqual(l.p1.y, l.p2.y, tagId, driving);
+}
+
 int System::addConstraintArcRules(Arc& a, int tagId, bool driving)
 {
     addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);
