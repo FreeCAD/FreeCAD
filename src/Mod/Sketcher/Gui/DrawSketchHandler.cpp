@@ -316,6 +316,16 @@ bool DrawSketchHandler::isWidgetVisible() const
     return false;
 };
 
+bool DrawSketchHandler::isConstructionMode() const
+{
+    return sketchgui->isConstructionMode();
+}
+
+const char* DrawSketchHandler::constructionModeAsBooleanText()
+{
+    return sketchgui->isConstructionMode() ? "True" : "False";
+}
+
 QPixmap DrawSketchHandler::getToolIcon() const
 {
     return QPixmap();
