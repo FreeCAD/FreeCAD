@@ -25,6 +25,11 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
+#include <QMetaObject>
+
 #include <Gui/ComboLinks.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
@@ -36,6 +41,7 @@
 #include "TaskTransformedMessages.h"
 #include "ViewProviderTransformed.h"
 
+class QDialogButtonBox;
 class QListWidget;
 
 class Ui_TaskTransformedParameters;
@@ -49,6 +55,11 @@ namespace PartDesign
 {
 class Transformed;
 }
+namespace Gui
+{
+struct AsyncInlineRecomputeProgressTarget;
+class AsyncPreviewSession;
+}  // namespace Gui
 
 namespace PartDesignGui
 {
@@ -93,7 +104,27 @@ public:
     /// Exit the selection mode of the associated task panel
     void exitSelectionMode();
 
+    virtual void flushPendingRecompute();
+    void stopPendingRecompute();
+    void cancelPendingRecompute();
+    bool hasOutstandingRecompute() const;
+    bool canReuseAcceptedPreviewResult() const;
+    void setDeferredClosePending(bool pending);
+    Gui::AsyncInlineRecomputeProgressTarget makeAcceptedRecomputeProgressTarget(
+        QDialogButtonBox* dialogButtonBox,
+        const QString& statusText
+    );
+    /// Recompute either this feature or the parent MultiTransform feature
+    void recomputeFeature();
+    bool isUpdateBlocked() const
+    {
+        return blockUpdate;
+    }
+
     static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 protected:
     /** Setup the standalone UI.
@@ -123,8 +154,9 @@ protected:
      */
     bool originalSelected(const Gui::SelectionChanges& msg);
 
-    /// Recompute either this feature or the parent MultiTransform feature
-    void recomputeFeature();
+    void scheduleRecomputeFeature();
+    void requestImmediateRecompute(bool waitForCompletion);
+    void requestStagedPreviewUpdate();
 
     /// Hide the top transformed object (see getTopTransformedObject())
     void hideObject();
@@ -158,13 +190,8 @@ protected:
 
     bool isEnabledTransaction() const;
     void setupTransaction();
-
-    /**
-     * Returns the base transformation view provider
-     * For stand alone features it will be view provider associated with this object
-     * For features inside multitransform it will be the view provider of the multitransform object
-     */
-    PartDesignGui::ViewProviderTransformed* getTopTransformedView() const;
+    void setUpdateViewEnabled(bool on);
+    virtual void applyStagedPreviewStateToObject();
 
 private Q_SLOTS:
     virtual void onUpdateView(bool /*unused*/) = 0;
@@ -174,6 +201,8 @@ private Q_SLOTS:
     void onFeatureDeleted();
     void indexesMoved();
     void onModeChanged(int mode_id);
+    void onCancelPreview();
+    void onPreviewControllerRecomputeSettled();
 
 private:
     /** Setup the parameter UI.
@@ -189,6 +218,14 @@ private:
     void removeObject(App::DocumentObject*);
     void clearButtons();
     void checkVisibility();
+    void setupAsyncPreviewController();
+    void connectPreviewControllerSignals();
+    Gui::AsyncPreviewSession* getAsyncPreviewSession();
+    const Gui::AsyncPreviewSession* getAsyncPreviewSession() const;
+    AsyncPreviewController* getAsyncPreviewController();
+    const AsyncPreviewController* getAsyncPreviewController() const;
+    void requestRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
 
     /// Return the base object of the base transformed object (see getTopTransformedObject())
     // Either through the ViewProvider or the currently active subFeature of the parentTask
@@ -211,6 +248,13 @@ protected:
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
     bool blockUpdate = false;
 
+    /**
+     * Returns the base transformation view provider.
+     * For stand alone features it will be the view provider associated with this object.
+     * For features inside multitransform it will be the view provider of the multitransform object.
+     */
+    PartDesignGui::ViewProviderTransformed* getTopTransformedView() const;
+
 private:
     int transactionID = 0;
     bool enableTransaction = true;
@@ -221,6 +265,9 @@ private:
     /// Widget holding the transform task UI
     QWidget* proxy = nullptr;
     std::unique_ptr<Ui_TaskTransformedParameters> ui;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
+    bool pendingStagedPreviewUpdate = false;
+    bool flushingStagedPreviewUpdate = false;
 };
 
 /// simulation dialog for the TaskView
@@ -236,9 +283,19 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
 
+private Q_SLOTS:
+    void onParameterRecomputeSettled();
+
 protected:
+    AcceptRecomputeMode acceptRecomputeMode(
+        bool isUpdateBlocked,
+        AcceptPendingRecomputeAction pendingRecomputeAction
+    ) const override;
+
     TaskTransformedParameters* parameter = nullptr;
     TaskTransformedMessages* message = nullptr;
+
+private:
 };
 
 }  // namespace PartDesignGui

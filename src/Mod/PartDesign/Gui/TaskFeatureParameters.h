@@ -25,15 +25,48 @@
 #pragma once
 
 
+#include <functional>
+#include <memory>
+#include <string>
 #include <type_traits>
+#include <utility>
+
+#include <App/Application.h>
+#include <QPointer>
+#include <QString>
+#include <Gui/AsyncPreviewController.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/DocumentObserver.h>
 
+#include "DeferredDialogRejectUtils.h"
 #include "ViewProvider.h"
+
+namespace App
+{
+class Document;
+class DocumentObject;
+}  // namespace App
+
+class QDialogButtonBox;
+
+namespace Gui
+{
+class AsyncPreviewSession;
+struct AsyncInlineRecomputeProgressTarget;
+struct AsyncRecomputeDialogOptions;
+}  // namespace Gui
 
 namespace PartDesignGui
 {
+
+using AsyncPreviewController = Gui::AsyncPreviewController;
+
+bool runAsyncAcceptDocumentRecompute(App::Document* document);
+bool runAsyncAcceptDocumentRecompute(
+    App::Document* document,
+    const Gui::AsyncRecomputeDialogOptions& options
+);
 
 class Ui_TaskPreviewParameters;
 
@@ -78,6 +111,25 @@ public:
     /// apply changes made in the parameters input to the model via commands
     virtual void apply()
     {}
+    virtual void flushPendingRecompute()
+    {}
+    virtual void stopPendingRecompute()
+    {}
+    virtual bool hasOutstandingRecompute() const
+    {
+        return false;
+    }
+    virtual bool canReuseAcceptedPreviewResult() const
+    {
+        return true;
+    }
+    virtual void setDeferredClosePending(bool)
+    {}
+    virtual Gui::AsyncPreviewSession* getAcceptedRecomputeProgressSession();
+    Gui::AsyncInlineRecomputeProgressTarget makeAcceptedRecomputeProgressTarget(
+        QDialogButtonBox* dialogButtonBox,
+        const QString& statusText
+    );
 
     void recomputeFeature();
 
@@ -139,6 +191,9 @@ protected:
         blockUpdate = value;
     }
 
+Q_SIGNALS:
+    void recomputeSettled();
+
 protected:
     PartDesignGui::ViewProvider* vp;
 
@@ -180,10 +235,103 @@ public:
     }
 
 protected:
+    enum class AcceptPendingRecomputeAction
+    {
+        Flush,
+        Stop
+    };
+
+    enum class AcceptRecomputeMode
+    {
+        AsyncDocument,
+        CommandDocument
+    };
+
+    virtual AcceptPendingRecomputeAction acceptPendingRecomputeAction() const;
+    virtual AcceptRecomputeMode acceptRecomputeMode(
+        bool isUpdateBlocked,
+        AcceptPendingRecomputeAction pendingRecomputeAction
+    ) const;
+    bool applyAcceptedFeatureParameters(
+        AcceptPendingRecomputeAction pendingRecomputeAction,
+        bool& isUpdateBlocked
+    );
+    void prepareAcceptedFeatureForDocumentRecompute(
+        App::DocumentObject* feature,
+        bool isUpdateBlocked,
+        AcceptPendingRecomputeAction pendingRecomputeAction
+    );
+    bool runAcceptedFeatureRecompute(
+        App::Document* document,
+        AcceptRecomputeMode mode,
+        const Gui::AsyncInlineRecomputeProgressTarget& inlineProgressTarget
+    );
+    void finalizeAcceptedFeature(App::DocumentObject* feature);
+    bool reportAcceptException(const Base::Exception& e) const;
+    bool hasDeferredRejectPending() const;
+    bool finishRejectOrDefer(App::DocumentObject* object);
+
+    template<typename Parameter, typename Signal, typename RejectFn, typename UpdatePendingFn = std::nullptr_t>
+    void prepareDeferredReject(
+        Parameter* parameter,
+        Signal signal,
+        RejectFn&& rejectNow,
+        UpdatePendingFn&& updatePending = nullptr
+    )
+    {
+        ensureDeferredDialogRejectConnection(
+            deferredReject,
+            parameter,
+            signal,
+            this,
+            &TaskDlgFeatureParameters::onDeferredRejectRecomputeSettled
+        );
+
+        QPointer<Parameter> parameterGuard(parameter);
+        deferredRejectReady = [parameterGuard]() {
+            return parameterGuard && !parameterGuard->hasOutstandingRecompute();
+        };
+        deferredRejectAction = [rejectNow = std::forward<RejectFn>(rejectNow)]() mutable {
+            return rejectNow();
+        };
+        deferredRejectSetPending = [this,
+                                    parameterGuard,
+                                    updatePending = std::forward<UpdatePendingFn>(updatePending)](
+                                       bool pending
+                                   ) mutable {
+            setDeferredDialogRejectPending(
+                deferredReject,
+                pending,
+                buttonBox,
+                [parameterGuard, &updatePending](bool pending) mutable {
+                    if (parameterGuard) {
+                        parameterGuard->setDeferredClosePending(pending);
+                    }
+                    if constexpr (!std::is_same_v<std::decay_t<UpdatePendingFn>, std::nullptr_t>) {
+                        updatePending(pending);
+                    }
+                }
+            );
+
+            if (!pending) {
+                clearDeferredRejectHandlers();
+            }
+        };
+    }
+
     PartDesignGui::TaskPreviewParameters* preview;
+    DeferredDialogRejectState deferredReject;
+
+private Q_SLOTS:
+    void onDeferredRejectRecomputeSettled();
 
 private:
+    void clearDeferredRejectHandlers();
+
     PartDesignGui::ViewProvider* vp;
+    std::function<bool()> deferredRejectReady;
+    std::function<bool()> deferredRejectAction;
+    std::function<void(bool)> deferredRejectSetPending;
 };
 
 }  // namespace PartDesignGui

@@ -23,6 +23,7 @@
 
 #include "Gizmo.h"
 
+#include <atomic>
 #include <cmath>
 #include <QApplication>
 
@@ -55,6 +56,8 @@ using namespace Gui;
 
 namespace
 {
+std::atomic<int> g_activeGizmoDragCount {0};
+
 enum class DefaultDragBehavior
 {
     Coarse = 0,
@@ -70,6 +73,27 @@ Base::Reference<ParameterGrp> getGizmoParameterGroup()
     return hGrp;
 }
 
+Qt::KeyboardModifiers getFineSnapModifier()
+{
+    auto modifier = static_cast<Qt::KeyboardModifier>(
+        getGizmoParameterGroup()->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
+    );
+    if (modifier == Qt::ControlModifier) {
+        return modifier;
+    }
+    return Qt::ShiftModifier;
+}
+
+bool isCoarseSnapEnabled()
+{
+    return getGizmoParameterGroup()->GetBool("EnableCoarseSnap", true);
+}
+
+int getGizmoPreviewDebounceMs()
+{
+    int interval = static_cast<int>(getGizmoParameterGroup()->GetInt("GizmoPreviewDebounceMs", 60));
+    return std::max(0, interval);
+}
 int getCoarseLinearSnapMultiplier()
 {
     int multiplier = static_cast<int>(
@@ -103,7 +127,43 @@ void Gizmo::setDraggerPlacement(const Base::Vector3d& pos, const Base::Vector3d&
 
 bool Gizmo::isDelayedUpdateEnabled()
 {
+    // Continuous preview is the default so gizmo interaction stays close to
+    // mainline behavior. Users can still opt into drag-end-only updates for
+    // heavy models through the preference.
     return getGizmoParameterGroup()->GetBool("DelayedGizmoUpdate", false);
+}
+
+void Gizmo::setDeferredUpdateHandler(std::function<void()> handler)
+{
+    deferredUpdateHandler = std::move(handler);
+}
+
+bool Gizmo::isAnyDragActive()
+{
+    return g_activeGizmoDragCount.load(std::memory_order_relaxed) > 0;
+}
+
+int Gizmo::activeDragPreviewDebounceMs()
+{
+    return getGizmoPreviewDebounceMs();
+}
+
+void Gizmo::setDragInteractionActive(bool active)
+{
+    if (dragInteractionActive == active) {
+        return;
+    }
+
+    dragInteractionActive = active;
+    if (active) {
+        g_activeGizmoDragCount.fetch_add(1, std::memory_order_relaxed);
+    }
+    else {
+        int previous = g_activeGizmoDragCount.fetch_sub(1, std::memory_order_relaxed);
+        if (previous <= 0) {
+            g_activeGizmoDragCount.store(0, std::memory_order_relaxed);
+        }
+    }
 }
 
 double Gizmo::getMultFactor()
@@ -132,18 +192,9 @@ SoInteractionKit* LinearGizmo::initDragger()
     draggerContainer->color.setValue(1, 0, 0);
     dragger = draggerContainer->getDragger();
 
-    dragger->addStartCallback(
-        [](void* data, SoDragger*) { static_cast<LinearGizmo*>(data)->draggingStarted(); },
-        this
-    );
-    dragger->addFinishCallback(
-        [](void* data, SoDragger*) { static_cast<LinearGizmo*>(data)->draggingFinished(); },
-        this
-    );
-    dragger->addMotionCallback(
-        [](void* data, SoDragger*) { static_cast<LinearGizmo*>(data)->draggingContinued(); },
-        this
-    );
+    dragger->addStartCallback(&LinearGizmo::startDragCB, this);
+    dragger->addFinishCallback(&LinearGizmo::finishDragCB, this);
+    dragger->addMotionCallback(&LinearGizmo::motionDragCB, this);
 
     dragger->labelVisible = false;
 
@@ -163,6 +214,21 @@ SoInteractionKit* LinearGizmo::initDragger()
 
 void LinearGizmo::uninitDragger()
 {
+    setDragInteractionActive(false);
+
+    if (dragger) {
+        dragger->removeStartCallback(&LinearGizmo::startDragCB, this);
+        dragger->removeFinishCallback(&LinearGizmo::finishDragCB, this);
+        dragger->removeMotionCallback(&LinearGizmo::motionDragCB, this);
+    }
+
+    QObject::disconnect(quantityChangedConnection);
+    QObject::disconnect(formulaDialogConnection);
+    quantityChangedConnection = {};
+    formulaDialogConnection = {};
+    deferredUpdateHandler = {};
+    property = nullptr;
+
     dragger = nullptr;
     draggerContainer = nullptr;
 }
@@ -273,6 +339,7 @@ void LinearGizmo::setVisibility(bool visible)
 
 void LinearGizmo::draggingStarted()
 {
+    setDragInteractionActive(true);
     initialValue = property->value().getValue();
     dragger->translationIncrementCount.setValue(0);
 
@@ -283,13 +350,34 @@ void LinearGizmo::draggingStarted()
 
 void LinearGizmo::draggingFinished()
 {
+    setDragInteractionActive(false);
     if (isDelayedUpdateEnabled()) {
         property->blockSignals(false);
-        property->valueChanged(property->value().getValue());
+        if (deferredUpdateHandler) {
+            deferredUpdateHandler();
+        }
+        else {
+            property->valueChanged(property->value().getValue());
+        }
     }
 
     property->setFocus();
     property->selectAll();
+}
+
+void LinearGizmo::startDragCB(void* data, SoDragger*)
+{
+    static_cast<LinearGizmo*>(data)->draggingStarted();
+}
+
+void LinearGizmo::finishDragCB(void* data, SoDragger*)
+{
+    static_cast<LinearGizmo*>(data)->draggingFinished();
+}
+
+void LinearGizmo::motionDragCB(void* data, SoDragger*)
+{
+    static_cast<LinearGizmo*>(data)->draggingContinued();
 }
 
 void LinearGizmo::draggingContinued()
@@ -342,18 +430,9 @@ SoInteractionKit* RotationGizmo::initDragger()
     rotator->arcRadius = 16.0f;
     dragger->setPart("rotator", rotator);
 
-    dragger->addStartCallback(
-        [](void* data, SoDragger*) { static_cast<RotationGizmo*>(data)->draggingStarted(); },
-        this
-    );
-    dragger->addFinishCallback(
-        [](void* data, SoDragger*) { static_cast<RotationGizmo*>(data)->draggingFinished(); },
-        this
-    );
-    dragger->addMotionCallback(
-        [](void* data, SoDragger*) { static_cast<RotationGizmo*>(data)->draggingContinued(); },
-        this
-    );
+    dragger->addStartCallback(&RotationGizmo::startDragCB, this);
+    dragger->addFinishCallback(&RotationGizmo::finishDragCB, this);
+    dragger->addMotionCallback(&RotationGizmo::motionDragCB, this);
 
     setProperty(property);
 
@@ -364,12 +443,28 @@ SoInteractionKit* RotationGizmo::initDragger()
 
 void RotationGizmo::uninitDragger()
 {
+    setDragInteractionActive(false);
+
+    if (dragger) {
+        dragger->removeStartCallback(&RotationGizmo::startDragCB, this);
+        dragger->removeFinishCallback(&RotationGizmo::finishDragCB, this);
+        dragger->removeMotionCallback(&RotationGizmo::motionDragCB, this);
+    }
+
+    QObject::disconnect(quantityChangedConnection);
+    QObject::disconnect(formulaDialogConnection);
+    quantityChangedConnection = {};
+    formulaDialogConnection = {};
+    deferredUpdateHandler = {};
+    property = nullptr;
+
     dragger = nullptr;
     draggerContainer = nullptr;
 
     translationSensor.detach();
     translationSensor.setData(nullptr);
     translationSensor.setFunction(nullptr);
+    linearGizmo = nullptr;
 }
 
 void RotationGizmo::updateColorTheme()
@@ -478,6 +573,7 @@ SoRotationDraggerContainer* RotationGizmo::getDraggerContainer()
 
 void RotationGizmo::draggingStarted()
 {
+    setDragInteractionActive(true);
     initialValue = property->value().getValue();
     dragger->rotationIncrementCount.setValue(0);
 
@@ -488,13 +584,34 @@ void RotationGizmo::draggingStarted()
 
 void RotationGizmo::draggingFinished()
 {
+    setDragInteractionActive(false);
     if (isDelayedUpdateEnabled()) {
         property->blockSignals(false);
-        property->valueChanged(property->value().getValue());
+        if (deferredUpdateHandler) {
+            deferredUpdateHandler();
+        }
+        else {
+            property->valueChanged(property->value().getValue());
+        }
     }
 
     property->setFocus();
     property->selectAll();
+}
+
+void RotationGizmo::startDragCB(void* data, SoDragger*)
+{
+    static_cast<RotationGizmo*>(data)->draggingStarted();
+}
+
+void RotationGizmo::finishDragCB(void* data, SoDragger*)
+{
+    static_cast<RotationGizmo*>(data)->draggingFinished();
+}
+
+void RotationGizmo::motionDragCB(void* data, SoDragger*)
+{
+    static_cast<RotationGizmo*>(data)->draggingContinued();
 }
 
 void RotationGizmo::draggingContinued()

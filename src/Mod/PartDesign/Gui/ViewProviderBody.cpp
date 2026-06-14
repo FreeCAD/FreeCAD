@@ -33,8 +33,10 @@
 #include <Base/Console.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/ViewProviderDatum.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -575,7 +577,24 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
     }
 
     App::Document* doc = body->getDocument();
-    doc->recompute();
+    const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+        Gui::getMainWindow(),
+        QObject::tr("Body"),
+        QObject::tr("Computing body..."),
+        doc,
+        /*force=*/false,
+        [doc]() {
+            if (doc) {
+                doc->recompute();
+            }
+        }
+    );
+    if (!outcome.success && !outcome.canceled) {
+        Base::Console().error(
+            "%s\n",
+            outcome.message.empty() ? "Body recompute failed" : outcome.message.c_str()
+        );
+    }
 
     // check if a proxy object has been created for the base feature
     std::vector<App::DocumentObject*> links = body->Group.getValues();

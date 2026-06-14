@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <App/PropertyLinks.h>
+
 #include "TaskTransformedParameters.h"
 #include "ViewProviderMirrored.h"
 
@@ -71,9 +73,14 @@ private:
     void retranslateParameterUI(QWidget* widget) override;
     void updateUI();
     void getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
+    void syncStagedMirrorPlaneFromObject();
+    void setStagedMirrorPlane(const App::PropertyLinkSub& lnk);
+    void syncPlaneComboToStagedMirrorPlane();
+    void applyStagedPreviewStateToObject() override;
 
 private:
     Gui::ComboLinks planeLinks;
+    App::PropertyLinkSub stagedMirrorPlane;
     std::unique_ptr<Ui_TaskMirroredParameters> ui;
 };
 

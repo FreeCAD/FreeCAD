@@ -66,7 +66,6 @@
 #include <Base/Tools.h>
 #include <Base/XMLTools.h>
 #include <Base/Uuid.h>
-#include <Base/Sequencer.h>
 #include <Base/Stream.h>
 #include <Base/UnitsApi.h>
 
@@ -2824,14 +2823,6 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
 {
     ZoneScoped;
 
-    // Recompute can execute Python-backed features. Keep the GIL for the full
-    // recompute so async recompute still serializes Python execution the same
-    // way the main-thread path does, preserving compatibility with existing
-    // Python-backed objects and addons. Main-thread signal hops such as
-    // signalBeforeRecompute() temporarily release it when they need to run
-    // Python on the GUI thread to avoid deadlocks.
-    Base::PyGILStateLocker locker;
-
     if (d->undoing || d->rollback) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Ignore document recompute on undo/redo");
@@ -2898,6 +2889,16 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
     ParameterGrp::handle hGrp =
         GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
     bool canAbort = hGrp->GetBool("CanAbortRecompute", true);
+    RecomputeProgressHandle* progress = App::currentRecomputeProgress();
+    std::unique_ptr<RecomputeProgressHandle> ownedProgress;
+    if (!progress && canAbort) {
+        ownedProgress = std::make_unique<RecomputeProgressHandle>();
+        progress = ownedProgress.get();
+    }
+    std::optional<RecomputeProgressScope> recomputeScope;
+    if (progress) {
+        recomputeScope.emplace(progress->makeScope("Recompute..."));
+    }
 
     tracker.checkpoint("pre-recompute & topo sort");
 
@@ -2906,15 +2907,24 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
         size_t idx = 0;
         // maximum two passes to allow some form of dependency inversion
         for (int passes = 0; passes < 2 && idx < topoSortedObjects.size(); ++passes) {
-            std::unique_ptr<Base::SequencerLauncher> seq;
-            if (canAbort) {
-                seq = std::make_unique<Base::SequencerLauncher>("Recompute...",
-                                                                topoSortedObjects.size());
-            }
             FC_LOG("Recompute pass " << passes);
             for (; idx < topoSortedObjects.size(); ++idx) {
+                std::optional<RecomputeProgressScope> objectScope;
+                if (recomputeScope) {
+                    objectScope.emplace(
+                        recomputeScope->makeStepScope(idx, topoSortedObjects.size())
+                    );
+                }
+
+                if (objectScope && objectScope->wasCanceled()) {
+                    throw Base::UserAbortException();
+                }
+
                 auto obj = topoSortedObjects[idx];
                 if (!obj->isAttachedToDocument() || filter.find(obj) != filter.end()) {
+                    if (objectScope) {
+                        objectScope->setProgress(100);
+                    }
                     continue;
                 }
                 // ask the object if it should be recomputed
@@ -2935,6 +2945,9 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                         // inListRecursive from the queue then proceed
                         obj->getInListEx(filter, true);
                         filter.insert(obj);
+                        if (objectScope) {
+                            objectScope->setProgress(100);
+                        }
                         continue;
                     }
                 }
@@ -2946,8 +2959,8 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                         inObjIt->enforceRecompute();
                     }
                 }
-                if (seq) {
-                    seq->next(true);
+                if (objectScope) {
+                    objectScope->setProgress(100);
                 }
             }
             // check if all objects are recomputed but still thouched
@@ -2971,7 +2984,9 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
         }
     }
     catch (Base::Exception& e) {
-        e.reportException();
+        if (!Base::isUserAbortException(e)) {
+            e.reportException();
+        }
     }
 
     tracker.checkpoint("Recompute");
@@ -3000,9 +3015,9 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
         if (!testStatus(Status::IgnoreErrorOnRecompute)) {
             for (auto it : topoSortedObjects) {
                 if (it->isError()) {
-                    const char* text = getErrorDescription(it);
-                    if (text) {
-                        Base::Console().error("%s: %s\n", it->Label.getValue(), text);
+                    if (const auto* issue = d->findRecomputeIssue(it);
+                        issue && issue->shouldReportAsError()) {
+                        Base::Console().error("%s: %s\n", it->Label.getValue(), issue->Why.c_str());
                     }
                 }
             }
@@ -3228,9 +3243,12 @@ int Document::_recomputeFeature(DocumentObject* Feat) // NOLINT
         }
     }
     catch (Base::AbortException& e) {
-        e.reportException();
+        const bool userCanceled = Base::isUserAbortException(e);
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << e.what());
-        d->addRecomputeLog("User abort", Feat);
+        d->addRecomputeLog(userCanceled ? "User aborted" : e.what(),
+                           Feat,
+                           userCanceled ? RecomputeIssueKind::Canceled
+                                        : RecomputeIssueKind::Failure);
         return -1;
     }
     catch (const Base::MemoryException& e) {

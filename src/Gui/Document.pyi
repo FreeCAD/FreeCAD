@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
-from Base.Metadata import constmethod
+from Base.Metadata import constmethod, export
 from Base.Persistence import Persistence
 from Base.Matrix import Matrix
 from typing import Any, Final, List, Optional
 
+@export(
+    DisableNotify=True,
+)
 class Document(Persistence):
     """
     This is a Document class

@@ -37,6 +37,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -166,7 +167,7 @@ void LoftWidget::findShapes()
     }
 }
 
-bool LoftWidget::accept()
+bool LoftWidget::accept(QDialogButtonBox* dialogButtonBox)
 {
     QString list, solid, ruled, closed;
     if (d->ui.checkSolid->isChecked()) {
@@ -224,8 +225,33 @@ bool LoftWidget::accept()
         }
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Loft"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
-        doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
+        const QString recomputeStatus = tr("Computing loft…");
+        Gui::AsyncRecomputeDialogOptions recomputeOptions;
+        recomputeOptions.inlineProgressTarget
+            = Gui::makeTaskPanelInlineRecomputeProgressTarget(this, dialogButtonBox, recomputeStatus);
+        const auto outcome = Gui::runAsyncDocumentObjectRecomputeProgressDialog(
+            this,
+            tr("Loft"),
+            recomputeStatus,
+            obj,
+            /*recursive=*/true,
+            recomputeOptions,
+            [obj]() {
+                if (obj && obj->getDocument()) {
+                    obj->getDocument()->recomputeFeature(obj, /*recursive=*/true);
+                }
+            }
+        );
+        if (!outcome.success) {
+            doc->abortCommand();
+            if (outcome.canceled) {
+                return false;
+            }
+            throw Base::RuntimeError(
+                outcome.message.empty() ? "Loft recompute failed" : outcome.message
+            );
+        }
         if (obj && !obj->isValid()) {
             std::string msg = obj->getStatusString();
             doc->abortCommand();
@@ -295,7 +321,7 @@ void TaskLoft::clicked(int)
 
 bool TaskLoft::accept()
 {
-    return widget->accept();
+    return widget->accept(buttonBox);
 }
 
 bool TaskLoft::reject()

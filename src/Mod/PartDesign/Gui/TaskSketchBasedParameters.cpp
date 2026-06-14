@@ -98,9 +98,14 @@ const QString TaskSketchBasedParameters::onAddSelection(
 
     std::vector<std::string> upToFaces(1, subname);
     prop.setValue(selObj, upToFaces);
-    recomputeFeature();
+    triggerPreviewRecompute();
 
     return refStr;
+}
+
+void TaskSketchBasedParameters::triggerPreviewRecompute()
+{
+    recomputeFeature();
 }
 
 void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject*, App::DocumentObject* base)
@@ -221,7 +226,7 @@ QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
     std::vector<std::string> upToFaces(1, ss.str());
     auto sketchBased = getObject<PartDesign::ProfileBased>();
     sketchBased->UpToFace.setValue(obj, upToFaces);
-    recomputeFeature();
+    triggerPreviewRecompute();
 
     return QByteArray(ss.str().c_str());
 }
@@ -303,6 +308,12 @@ TaskDlgSketchBasedParameters::TaskDlgSketchBasedParameters(PartDesignGui::ViewPr
 {}
 
 TaskDlgSketchBasedParameters::~TaskDlgSketchBasedParameters() = default;
+
+TaskDlgFeatureParameters::AcceptPendingRecomputeAction TaskDlgSketchBasedParameters::
+    acceptPendingRecomputeAction() const
+{
+    return AcceptPendingRecomputeAction::Stop;
+}
 
 //==== calls from the TaskView ===============================================================
 

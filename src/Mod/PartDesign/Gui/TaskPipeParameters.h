@@ -24,6 +24,11 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
+#include <QMetaObject>
+
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderPipe.h"
 #include "TaskDressUpParameters.h"
@@ -38,10 +43,14 @@ namespace Gui
 {
 class ButtonGroup;
 class ViewProvider;
+class AsyncPreviewSession;
+struct AsyncInlineRecomputeProgressTarget;
 }  // namespace Gui
 
 namespace PartDesignGui
 {
+
+class TaskPipeParameters;
 
 class Ui_TaskPipeParameters;
 class Ui_TaskPipeOrientation;
@@ -79,8 +88,14 @@ public:
         return selectionMode;
     }
 
+    TaskPipeParameters* getPreviewOwner() const
+    {
+        return previewOwner;
+    }
+
 private:
     enum SelectionModes selectionMode;
+    TaskPipeParameters* previewOwner = nullptr;
     friend class TaskDlgPipeParameters;
 };
 
@@ -97,7 +112,19 @@ public:
     );
     ~TaskPipeParameters() override;
 
-    bool accept();
+    bool accept(bool previewSettled = true);
+    bool accept(bool previewSettled, const Gui::AsyncInlineRecomputeProgressTarget& inlineProgressTarget);
+    void flushPendingRecompute() override;
+    void stopPendingRecompute() override;
+    void runImmediateRecompute();
+    void schedulePendingRecompute();
+    bool hasOutstandingRecompute() const override;
+    bool canReuseAcceptedPreviewResult() const override;
+    void setDeferredClosePending(bool pending);
+    Gui::AsyncPreviewSession* getAcceptedRecomputeProgressSession() override;
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 private Q_SLOTS:
     void onTangentChanged(bool checked);
@@ -110,6 +137,8 @@ protected:
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
+    void requestRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI();
     void clearButtons();
@@ -123,6 +152,7 @@ private:
 private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPipeParameters> ui;
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
     StateHandlerTaskPipe* stateHandler;
     friend class TaskDlgPipeParameters;
 };
@@ -207,10 +237,18 @@ public:
 public:
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
+    bool reject() override;
     /// is called by the framework if the dialog is rejected (Cancel)
 
 protected Q_SLOTS:
     void onButtonToggled(QAbstractButton* button, bool checked);
+
+private:
+    void clearInteractiveSelection();
+    bool performReject();
+
+private Q_SLOTS:
+    void onParameterRecomputeSettled();
 
 protected:
     TaskPipeParameters* parameter;
@@ -219,6 +257,8 @@ protected:
 
     Gui::ButtonGroup* buttonGroup;
     StateHandlerTaskPipe* stateHandler;
+
+private:
 };
 
 }  // namespace PartDesignGui

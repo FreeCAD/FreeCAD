@@ -27,7 +27,9 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Part/PartGlobal.h>
 
+class QDialogButtonBox;
 class QTreeWidgetItem;
 
 namespace Gui
@@ -38,7 +40,7 @@ class StatusWidget;
 namespace PartGui
 {
 
-class SweepWidget: public QWidget
+class PartGuiExport SweepWidget: public QWidget
 {
     Q_OBJECT
 
@@ -46,7 +48,7 @@ public:
     explicit SweepWidget(QWidget* parent = nullptr);
     ~SweepWidget() override;
 
-    bool accept();
+    bool accept(QDialogButtonBox* dialogButtonBox);
     bool reject();
 
 private:
@@ -63,7 +65,7 @@ private:
     Private* d;
 };
 
-class TaskSweep: public Gui::TaskView::TaskDialog
+class PartGuiExport TaskSweep: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 

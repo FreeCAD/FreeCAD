@@ -41,17 +41,10 @@ bool ShapeRelationKey::operator<(const ShapeRelationKey& other) const
 
 TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int index)
 {
-    TopoShape ts;
-
-    if (int(topoShapes.size()) >= index) {
-        ts = topoShapes[index - 1];
-    }
-
-    if (ts.isNull()) {
-        ts = shapes.FindKey(index);
-        ts.initCache();
-        ts._cache->subLocation = ts._Shape.Location();
-    }
+    std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
+    TopoShape ts(shapes.FindKey(index));
+    ts.initCache();
+    ts._cache->setSubLocation(ts._Shape.Location());
 
     if (ts._Shape.IsEqual(parent._cache->shape)) {
         return parent;
@@ -65,8 +58,9 @@ TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int i
         res.setShape(TopoShape::moved(res._Shape, parent.getShape().Location()), false);
     }
 
-    if (ts._cache->cachedElementMap) {
-        res.resetElementMap(ts._cache->cachedElementMap);
+    auto cachedElementMap = ts._cache->getCachedElementMap();
+    if (cachedElementMap) {
+        res.resetElementMap(cachedElementMap);
     }
     else if (parent._parentCache) {
         // If no cachedElementMap exists, we use _parentCache for
@@ -83,7 +77,7 @@ TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int i
         // in the direct parent shape, while TopoShape::_subLocation is
         // used to accumulate locations in higher ancestors. We
         // separate these two to avoid invalidating cache.
-        res._subLocation = parent._subLocation * parent._cache->subLocation;
+        res._subLocation = parent._subLocation * parent._cache->getSubLocation();
         res._parentCache = parent._parentCache;
     }
     else {
@@ -92,7 +86,7 @@ TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int i
 
     // the subelement doesn't have an element map, lets find it by mapping the parent shape onto the
     // subelement.
-    if (res.elementMap(false) == 0 && res._parentCache->cachedElementMap) {
+    if (res.elementMap(false) == 0 && res._parentCache->hasCachedElementMap()) {
         res.flushElementMap();
     }
 
@@ -102,25 +96,28 @@ TopoShape TopoShapeCache::Ancestry::_getTopoShape(const TopoShape& parent, int i
 
 void TopoShapeCache::Ancestry::clear()
 {
-    topoShapes.clear();
+    if (owner) {
+        std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
+        return;
+    }
 }
 
 TopoShape TopoShapeCache::Ancestry::getTopoShape(const TopoShape& parent, int index)
 {
     TopoShape res;
+    std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
     if (index <= 0 || index > shapes.Extent()) {
         return res;
     }
-    topoShapes.resize(shapes.Extent());
     return _getTopoShape(parent, index);
 }
 
 std::vector<TopoShape> TopoShapeCache::Ancestry::getTopoShapes(const TopoShape& parent)
 {
+    std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
     int count = shapes.Extent();
     std::vector<TopoShape> res;
     res.reserve(count);
-    topoShapes.resize(count);
     for (int i = 1; i <= count; ++i) {
         res.push_back(_getTopoShape(parent, i));
     }
@@ -129,6 +126,7 @@ std::vector<TopoShape> TopoShapeCache::Ancestry::getTopoShapes(const TopoShape& 
 
 TopoDS_Shape TopoShapeCache::Ancestry::stripLocation(const TopoDS_Shape& parent, const TopoDS_Shape& child)
 {
+    std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
     if (parent.Location() != owner->location) {
         owner->location = parent.Location();
         owner->locationInverse = parent.Location().Inverted();
@@ -138,6 +136,7 @@ TopoDS_Shape TopoShapeCache::Ancestry::stripLocation(const TopoDS_Shape& parent,
 
 int TopoShapeCache::Ancestry::find(const TopoDS_Shape& parent, const TopoDS_Shape& subShape)
 {
+    std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
     if (parent.Location().IsIdentity()) {
         return shapes.FindIndex(subShape);
     }
@@ -146,6 +145,7 @@ int TopoShapeCache::Ancestry::find(const TopoDS_Shape& parent, const TopoDS_Shap
 
 TopoDS_Shape TopoShapeCache::Ancestry::find(const TopoDS_Shape& parent, int index)
 {
+    std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
     if (index <= 0 || index > shapes.Extent()) {
         return {};
     }
@@ -157,11 +157,19 @@ TopoDS_Shape TopoShapeCache::Ancestry::find(const TopoDS_Shape& parent, int inde
 
 int TopoShapeCache::Ancestry::count() const
 {
+    if (owner) {
+        std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
+        return shapes.Extent();
+    }
     return shapes.Extent();
 }
 
 bool TopoShapeCache::Ancestry::empty() const
 {
+    if (owner) {
+        std::lock_guard<std::recursive_mutex> lock(owner->_mutex);
+        return shapes.IsEmpty();
+    }
     return shapes.IsEmpty();
 }
 
@@ -169,8 +177,15 @@ TopoShapeCache::TopoShapeCache(const TopoDS_Shape& tds)
     : shape(tds.Located(TopLoc_Location()))
 {}
 
+TopoDS_Shape TopoShapeCache::getShape() const
+{
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+    return shape;
+}
+
 void TopoShapeCache::insertRelation(const ShapeRelationKey& key, const QVector<Data::MappedElement>& value)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
     auto [insertedItr, newKeyInserted] = relations.insert({key, value});
     if (newKeyInserted) {
         insertedItr->first.name.compact();
@@ -180,13 +195,76 @@ void TopoShapeCache::insertRelation(const ShapeRelationKey& key, const QVector<D
     }
 }
 
+bool TopoShapeCache::getRelation(const ShapeRelationKey& key, QVector<Data::MappedElement>& value) const
+{
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+    auto it = relations.find(key);
+    if (it == relations.end()) {
+        return false;
+    }
+    value = it->second;
+    return true;
+}
+
 bool TopoShapeCache::isTouched(const TopoDS_Shape& tds) const
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
     return !this->shape.IsPartner(tds) || this->shape.Orientation() != tds.Orientation();
+}
+
+void TopoShapeCache::clearShapeAncestryCache()
+{
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+    for (auto& ancestry : shapeAncestryCache) {
+        ancestry.clear();
+    }
+}
+
+void TopoShapeCache::setCachedElementMap(Data::ElementMapPtr elementMap)
+{
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+    cachedElementMap = std::move(elementMap);
+}
+
+Data::ElementMapPtr TopoShapeCache::getCachedElementMap() const
+{
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+    return cachedElementMap;
+}
+
+bool TopoShapeCache::hasCachedElementMap() const
+{
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+    return static_cast<bool>(cachedElementMap);
+}
+
+void TopoShapeCache::resetSubLocation()
+{
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+    subLocation.Identity();
+}
+
+void TopoShapeCache::setSubLocation(const TopLoc_Location& location)
+{
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+    subLocation = location;
+}
+
+TopLoc_Location TopoShapeCache::getSubLocation() const
+{
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+    return subLocation;
+}
+
+void TopoShapeCache::clearRelations()
+{
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
+    relations.clear();
 }
 
 TopoShapeCache::Ancestry& TopoShapeCache::getAncestry(TopAbs_ShapeEnum type)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
     auto& ancestry = shapeAncestryCache.at(type);
     if (!ancestry.owner) {
         ancestry.owner = this;
@@ -206,6 +284,7 @@ TopoShapeCache::Ancestry& TopoShapeCache::getAncestry(TopAbs_ShapeEnum type)
 
 int TopoShapeCache::countShape(TopAbs_ShapeEnum type)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
     if (shape.IsNull()) {
         return 0;
     }
@@ -214,6 +293,7 @@ int TopoShapeCache::countShape(TopAbs_ShapeEnum type)
 
 int TopoShapeCache::findShape(const TopoDS_Shape& parent, const TopoDS_Shape& subShape)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
     if (shape.IsNull() || subShape.IsNull()) {
         return 0;
     }
@@ -222,6 +302,7 @@ int TopoShapeCache::findShape(const TopoDS_Shape& parent, const TopoDS_Shape& su
 
 TopoDS_Shape TopoShapeCache::findShape(const TopoDS_Shape& parent, TopAbs_ShapeEnum type, int index)
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
     if (!shape.IsNull()) {
         return getAncestry(type).find(parent, index);
     }
@@ -235,6 +316,7 @@ TopoDS_Shape TopoShapeCache::findAncestor(
     std::vector<TopoDS_Shape>* ancestors
 )
 {
+    std::lock_guard<std::recursive_mutex> lock(_mutex);
     TopoDS_Shape nullShape;
     if (shape.IsNull() || subShape.IsNull() || type == TopAbs_SHAPE) {
         return nullShape;

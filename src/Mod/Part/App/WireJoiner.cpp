@@ -69,7 +69,6 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
-#include <Base/Sequencer.h>
 #include <Base/Parameter.h>
 #include <App/Application.h>
 
@@ -77,6 +76,7 @@
 
 #include "Geometry.h"
 #include "PartFeature.h"
+#include "ProgressIndicator.h"
 #include "TopoShapeOpCode.h"
 #include "TopoShapeMapper.h"
 
@@ -121,6 +121,46 @@ static inline void getEndPoints(const TopoDS_Wire& wire, gp_Pnt& p1, gp_Pnt& p2)
             throw Base::RuntimeError("Condition failed: " #cond); \
         } \
     } while (0)
+
+namespace
+{
+
+class WireJoinerProgress
+{
+public:
+    WireJoinerProgress(const char* text, std::size_t steps)
+        : _scope(text, ProgressFallback::createHandle)
+        , _totalSteps(steps)
+    {}
+
+    void next(bool canAbort = false)
+    {
+        if (canAbort) {
+            checkAbort();
+        }
+
+        ++_currentStep;
+        if (!_scope || _totalSteps == 0) {
+            return;
+        }
+
+        constexpr std::size_t maxProgress = 100;
+        std::size_t current = std::min(maxProgress, (_currentStep * maxProgress) / _totalSteps);
+        _scope.setProgress(current);
+    }
+
+    static void checkAbort()
+    {
+        App::throwIfRecomputeCanceled();
+    }
+
+private:
+    ScopedRecomputeProgress _scope;
+    std::size_t _totalSteps {0};
+    std::size_t _currentStep {0};
+};
+
+}  // namespace
 
 class WireJoiner::WireJoinerP
 {
@@ -1362,13 +1402,11 @@ public:
             info.iteration = ++idx;
         }
 
-        std::unique_ptr<Base::SequencerLauncher> seq(
-            new Base::SequencerLauncher("Splitting edges", edges.size())
-        );
+        WireJoinerProgress progress("Splitting edges", edges.size());
 
         idx = 0;
         for (auto& info : edges) {
-            seq->next(true);
+            progress.next(true);
             ++idx;
             auto& params = intersects[&info];
             checkSelfIntersection(info, params);
@@ -1556,9 +1594,7 @@ public:
 
     void findSuperEdges()
     {
-        std::unique_ptr<Base::SequencerLauncher> seq(
-            new Base::SequencerLauncher("Combining edges", edges.size())
-        );
+        WireJoinerProgress progress("Combining edges", edges.size());
 
         std::deque<VertexInfo> vertices;
 
@@ -1568,7 +1604,7 @@ public:
         // other edges (count == 2 counts this and the other edge) on one of
         // its vertices to save traverse time.
         for (auto it = edges.begin(); it != edges.end(); ++it) {
-            seq->next(true);
+            progress.next(true);
             auto& info = *it;
             if (info.iteration == iteration || info.iteration < 0) {
                 continue;
@@ -1717,9 +1753,7 @@ public:
     // in more than one closed wires if it connects to more than one edges.
     void findClosedWires(bool tightBound = false)
     {
-        std::unique_ptr<Base::SequencerLauncher> seq(
-            new Base::SequencerLauncher("Finding wires", edges.size())
-        );
+        WireJoinerProgress progress("Finding wires", edges.size());
 
         for (auto& info : edges) {
             info.wireInfo.reset();
@@ -1729,7 +1763,7 @@ public:
         for (auto it = edges.begin(); it != edges.end(); ++it) {
             VertexInfo beginVertex(it, true);
             auto& beginInfo = *it;
-            seq->next(true);
+            progress.next(true);
             ++iteration;
             if (beginInfo.iteration < 0 || beginInfo.wireInfo) {
                 continue;
@@ -2033,7 +2067,7 @@ public:
         int* stackPos = nullptr
     )
     {
-        Base::SequencerBase::Instance().checkAbort();
+        WireJoinerProgress::checkAbort();
         EdgeInfo& beginInfo = *beginVertex.it;
 
         EdgeInfo* currentInfo = currentVertex.edgeInfo();
@@ -2347,14 +2381,12 @@ public:
         // tight bound, for each wire, check wire edge branches (using the
         // adjacent list built earlier), and split the wire whenever possible.
 
-        std::unique_ptr<Base::SequencerLauncher> seq(
-            new Base::SequencerLauncher("Finding tight bound", edges.size())
-        );
+        WireJoinerProgress progress("Finding tight bound", edges.size());
 
         int iteration2 = iteration;
         for (auto& info : edges) {
             ++iteration;
-            seq->next(true);
+            progress.next(true);
             if (info.iteration < 0 || !info.wireInfo) {
                 continue;
             }
@@ -2688,9 +2720,7 @@ public:
         // the important fact that an edge can be shared by at most two tight
         // bound wires.
 
-        std::unique_ptr<Base::SequencerLauncher> seq(
-            new Base::SequencerLauncher("Exhaust tight bound", edges.size())
-        );
+        WireJoinerProgress progress("Exhaust tight bound", edges.size());
 
         for (auto& info : edges) {
             if (info.iteration < 0 || !info.wireInfo || !info.wireInfo->done) {
@@ -2707,7 +2737,7 @@ public:
         int iteration2 = iteration;
         for (auto& info : edges) {
             ++iteration;
-            seq->next(true);
+            progress.next(true);
             if (info.iteration < 0 || !info.wireInfo || !info.wireInfo->done) {
                 if (info.wireInfo) {
                     showShape(*info.wireInfo, "iskip");

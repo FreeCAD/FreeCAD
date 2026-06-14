@@ -133,7 +133,7 @@ void TaskPocketParameters::onModeChanged(int index, Side side)
     }
 
     updateUI(side);
-    recomputeFeature();
+    runInteractiveRecompute();
 }
 
 void TaskPocketParameters::apply()

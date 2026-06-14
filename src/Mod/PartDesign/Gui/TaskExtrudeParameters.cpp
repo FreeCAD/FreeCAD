@@ -22,14 +22,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QSignalBlocker>
 #include <QAction>
+#include <QSignalBlocker>
 
-
+#include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/Tools.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Gui/Inventor/Draggers/SoLinearDragger.h>
@@ -39,7 +42,7 @@
 
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskExtrudeParameters.h"
-#include "TaskTransformedParameters.h"
+#include "DeferredDialogRejectUtils.h"
 #include "ReferenceSelection.h"
 
 
@@ -47,6 +50,11 @@ using namespace PartDesignGui;
 using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskExtrudeParameters */
+
+namespace
+{
+constexpr int AsyncInteractivePreviewDebounceMs = 150;
+}
 
 TaskExtrudeParameters::TaskExtrudeParameters(
     ViewProviderExtrude* SketchBasedView,
@@ -61,6 +69,31 @@ TaskExtrudeParameters::TaskExtrudeParameters(
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+
+    AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = getObject<PartDesign::FeatureExtrude>();
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (auto* extrude = getObject<PartDesign::FeatureExtrude>()) {
+            extrude->recomputeFeature();
+            extrude->recomputePreview();
+        }
+    };
+    callbacks.onAppliedResult = [this](bool success, bool canceled) {
+        if (!canceled && success) {
+            updateDirectionEdits();
+            setGizmoPositions();
+        }
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    connect(
+        asyncPreviewSession->controller(),
+        &AsyncPreviewController::recomputeSettled,
+        this,
+        &TaskExtrudeParameters::recomputeSettled
+    );
     handleLineFaceNameNo(ui->lineFaceName);
     handleLineFaceNameNo(ui->lineFaceName2);
 
@@ -68,7 +101,23 @@ TaskExtrudeParameters::TaskExtrudeParameters(
     group->addButton(ui->checkBoxReversed);
     group->setExclusive(true);
 
+    asyncPreviewSession->bindWidgets(
+        {
+            ui->previewStatusWidget,
+            ui->progressBarPreview,
+            ui->labelPreviewStatus,
+            ui->buttonCancelPreview,
+        },
+        [this](const char* text) { return tr(text); },
+        proxy
+    );
+
     this->groupLayout()->addWidget(proxy);
+}
+
+TaskExtrudeParameters::~TaskExtrudeParameters()
+{
+    stopPendingRecompute();
 }
 
 void TaskExtrudeParameters::setupDialog()
@@ -119,9 +168,13 @@ void TaskExtrudeParameters::setupDialog()
 
     setupGizmos();
 
+    asyncPreviewSession->setSchedulerInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? AsyncInteractivePreviewDebounceMs : 0
+    );
+
     // trigger recompute to ensure external geometry references update correctly.
     // see freecad issue #25794
-    tryRecomputeFeature();
+    runInteractiveRecompute();
 }
 
 void TaskExtrudeParameters::setupSideDialog(SideController& side)
@@ -432,12 +485,77 @@ void TaskExtrudeParameters::setSelectionMode(SelectionMode mode, Side side)
 void TaskExtrudeParameters::tryRecomputeFeature()
 {
     try {
-        // recompute and update the direction
-        recomputeFeature();
+        requestRecompute(/*waitForCompletion=*/false);
     }
     catch (const Base::Exception& e) {
         e.reportException();
     }
+}
+
+void TaskExtrudeParameters::schedulePendingRecompute()
+{
+    if (!isUpdateBlocked() && asyncPreviewSession) {
+        asyncPreviewSession->scheduleRecompute();
+    }
+}
+
+void TaskExtrudeParameters::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void TaskExtrudeParameters::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+bool TaskExtrudeParameters::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+void TaskExtrudeParameters::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+Gui::AsyncPreviewSession* TaskExtrudeParameters::getAcceptedRecomputeProgressSession()
+{
+    return asyncPreviewSession.get();
+}
+
+void TaskExtrudeParameters::runInteractiveRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopScheduledRecompute();
+    }
+    tryRecomputeFeature();
+}
+
+void TaskExtrudeParameters::updateRecomputeUi()
+{
+    if (!ui || !asyncPreviewSession) {
+        return;
+    }
+    asyncPreviewSession->updateUi();
+}
+
+void TaskExtrudeParameters::requestRecompute(bool waitForCompletion)
+{
+    if (!isUpdateBlocked() && asyncPreviewSession) {
+        asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
+}
+
+void TaskExtrudeParameters::triggerPreviewRecompute()
+{
+    runInteractiveRecompute();
 }
 
 void TaskExtrudeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -482,12 +600,10 @@ void TaskExtrudeParameters::selectedReferenceAxis(const Gui::SelectionChanges& m
         setSelectionMode(None);
 
         propReferenceAxis->setValue(selObj, edge);
-        tryRecomputeFeature();
+        runInteractiveRecompute();
 
         // update direction combobox
         fillDirectionCombo();
-
-        setGizmoPositions();
     }
 }
 
@@ -528,7 +644,7 @@ void TaskExtrudeParameters::selectedShapeFace(const Gui::SelectionChanges& msg, 
 
     updateShapeFaces(side.listWidgetReferences, *side.UpToShape);
 
-    tryRecomputeFeature();
+    runInteractiveRecompute();
 }
 
 void PartDesignGui::TaskExtrudeParameters::selectedFace(
@@ -536,6 +652,7 @@ void PartDesignGui::TaskExtrudeParameters::selectedFace(
     SideController& side
 )
 {
+    stopPendingRecompute();
     QString refText = onAddSelection(msg, *side.UpToFace);
 
     if (refText.length() > 0) {
@@ -579,7 +696,7 @@ void PartDesignGui::TaskExtrudeParameters::selectedShape(
     updateShapeName(side.lineShapeName, *side.UpToShape);
     updateShapeFaces(side.listWidgetReferences, *side.UpToShape);
 
-    tryRecomputeFeature();
+    runInteractiveRecompute();
 }
 
 void TaskExtrudeParameters::clearFaceName(QLineEdit* lineEdit)
@@ -637,19 +754,19 @@ std::vector<std::string> PartDesignGui::TaskExtrudeParameters::getShapeFaces(
 void TaskExtrudeParameters::onLengthChanged(double len, Side side)
 {
     getSideController(side).Length->setValue(len);
-    tryRecomputeFeature();
+    schedulePendingRecompute();
 }
 
 void TaskExtrudeParameters::onOffsetChanged(double len, Side side)
 {
     getSideController(side).Offset->setValue(len);
-    tryRecomputeFeature();
+    schedulePendingRecompute();
 }
 
 void TaskExtrudeParameters::onTaperChanged(double angle, Side side)
 {
     getSideController(side).TaperAngle->setValue(angle);
-    tryRecomputeFeature();
+    schedulePendingRecompute();
 }
 
 bool TaskExtrudeParameters::hasProfileFace(PartDesign::ProfileBased* profile) const
@@ -899,10 +1016,7 @@ void TaskExtrudeParameters::onDirectionCBChanged(int num)
         setDirectionMode(num);
 
         extrude->ReferenceAxis.setValue(lnk.getValue(), lnk.getSubValues());
-        tryRecomputeFeature();
-        updateDirectionEdits();
-
-        setGizmoPositions();
+        runInteractiveRecompute();
     }
 }
 
@@ -910,9 +1024,7 @@ void TaskExtrudeParameters::onAlongSketchNormalChanged(bool on)
 {
     if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         extrude->AlongSketchNormal.setValue(on);
-        tryRecomputeFeature();
-
-        setGizmoPositions();
+        runInteractiveRecompute();
     }
 }
 
@@ -926,8 +1038,21 @@ void TaskExtrudeParameters::onAllFacesToggled(bool on, Side side)
         if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
             extrude->UpToShape.setValue(extrude->UpToShape.getValue());
             updateShapeFaces(sideCtrl.listWidgetReferences, *sideCtrl.UpToShape);
-            tryRecomputeFeature();
+            runInteractiveRecompute();
         }
+    }
+}
+
+void TaskExtrudeParameters::onUpdateView(bool on)
+{
+    setUpdateBlocked(!on);
+    if (on) {
+        if (!(asyncPreviewSession && asyncPreviewSession->triggerScheduledRecomputeNow())) {
+            runInteractiveRecompute();
+        }
+    }
+    else {
+        stopPendingRecompute();
     }
 }
 
@@ -936,12 +1061,7 @@ void TaskExtrudeParameters::onXDirectionEditChanged(double len)
     if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         extrude->Direction
             .setValue(len, extrude->Direction.getValue().y, extrude->Direction.getValue().z);
-        tryRecomputeFeature();
-        // checking for case of a null vector is done in FeatureExtrude.cpp
-        // if there was a null vector, the normal vector of the sketch is used.
-        // therefore the vector component edits must be updated
-        updateDirectionEdits();
-        setGizmoPositions();
+        schedulePendingRecompute();
     }
 }
 
@@ -950,9 +1070,7 @@ void TaskExtrudeParameters::onYDirectionEditChanged(double len)
     if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         extrude->Direction
             .setValue(extrude->Direction.getValue().x, len, extrude->Direction.getValue().z);
-        tryRecomputeFeature();
-        updateDirectionEdits();
-        setGizmoPositions();
+        schedulePendingRecompute();
     }
 }
 
@@ -961,9 +1079,7 @@ void TaskExtrudeParameters::onZDirectionEditChanged(double len)
     if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         extrude->Direction
             .setValue(extrude->Direction.getValue().x, extrude->Direction.getValue().y, len);
-        tryRecomputeFeature();
-        updateDirectionEdits();
-        setGizmoPositions();
+        schedulePendingRecompute();
     }
 }
 
@@ -1037,10 +1153,7 @@ void TaskExtrudeParameters::onReversedChanged(bool on)
     if (auto extrude = getObject<PartDesign::FeatureExtrude>()) {
         extrude->Reversed.setValue(on);
         // update the direction
-        tryRecomputeFeature();
-        updateDirectionEdits();
-
-        setGizmoPositions();
+        runInteractiveRecompute();
     }
 }
 
@@ -1114,6 +1227,7 @@ void TaskExtrudeParameters::changeFaceName(QLineEdit* lineEdit, const QString& t
         QString label = parts[0];
         QVariant name = objectNameByLabel(label, lineEdit->property("FeatureName"));
         if (name.isValid()) {
+            stopPendingRecompute();
             parts[0] = name.toString();
             QString uptoface = parts.join(QStringLiteral(":"));
             lineEdit->setProperty("FeatureName", name);
@@ -1342,7 +1456,7 @@ void TaskExtrudeParameters::onSidesModeChanged(int index)
             break;
     }
 
-    recomputeFeature();
+    runInteractiveRecompute();
 }
 
 void TaskExtrudeParameters::updateUI(Side)
@@ -1384,6 +1498,18 @@ void TaskExtrudeParameters::setupGizmos()
     lengthGizmo2 = new Gui::LinearGizmo(ui->lengthEdit2);
     taperAngleGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
     taperAngleGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
+    lengthGizmo1->setDeferredUpdateHandler([this]() {
+        onLengthChanged(ui->lengthEdit->value().getValue(), Side::First);
+    });
+    lengthGizmo2->setDeferredUpdateHandler([this]() {
+        onLengthChanged(ui->lengthEdit2->value().getValue(), Side::Second);
+    });
+    taperAngleGizmo1->setDeferredUpdateHandler([this]() {
+        onTaperChanged(ui->taperEdit->value().getValue(), Side::First);
+    });
+    taperAngleGizmo2->setDeferredUpdateHandler([this]() {
+        onTaperChanged(ui->taperEdit2->value().getValue(), Side::Second);
+    });
 
     connect(ui->sidesMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int) {
         setGizmoPositions();
@@ -1395,7 +1521,6 @@ void TaskExtrudeParameters::setupGizmos()
     );
 
     setGizmoPositions();
-    showDraggerHints();
 }
 
 void TaskExtrudeParameters::setGizmoPositions()
@@ -1454,16 +1579,37 @@ TaskDlgExtrudeParameters::TaskDlgExtrudeParameters(PartDesignGui::ViewProviderEx
 
 bool TaskDlgExtrudeParameters::accept()
 {
-    getTaskParameters()->setSelectionMode(TaskExtrudeParameters::None);
+    auto* parameters = getTaskParameters();
+    if (!parameters || hasDeferredRejectPending()) {
+        return false;
+    }
+
+    prepareDeferredReject(parameters, &TaskExtrudeParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
+    parameters->setSelectionMode(TaskExtrudeParameters::None);
 
     return TaskDlgSketchBasedParameters::accept();
 }
 
 bool TaskDlgExtrudeParameters::reject()
 {
-    getTaskParameters()->setSelectionMode(TaskExtrudeParameters::None);
+    auto* parameters = getTaskParameters();
+    if (!parameters) {
+        return false;
+    }
 
-    return TaskDlgSketchBasedParameters::reject();
+    prepareDeferredReject(parameters, &TaskExtrudeParameters::recomputeSettled, [this]() {
+        return TaskDlgSketchBasedParameters::reject();
+    });
+    parameters->stopPendingRecompute();
+    parameters->setSelectionMode(TaskExtrudeParameters::None);
+    return finishRejectOrDefer(getObject<PartDesign::Feature>());
+}
+
+void TaskDlgExtrudeParameters::onParameterRecomputeSettled()
+{
+    finishRejectOrDefer(getObject<PartDesign::Feature>());
 }
 
 #include "moc_TaskExtrudeParameters.cpp"

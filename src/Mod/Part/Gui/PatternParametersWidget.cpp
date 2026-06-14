@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include <QDebug>
-#include <QTimer>
 #include <QHBoxLayout>
 #include <QToolButton>
 #include <QLabel>
@@ -227,6 +225,7 @@ void PatternParametersWidget::updateUI()
     }
 
     // Update other controls directly from properties
+    reversedState = m_reversedProp && m_reversedProp->getValue();
     ui->comboMode->setCurrentIndex(m_modeProp->getValue());
     ui->spinExtent->setValue(m_extentProp->getValue());
     ui->spinSpacing->setValue(m_spacingProp->getValue());
@@ -273,11 +272,10 @@ void PatternParametersWidget::onEnableCheckBoxToggled(bool checked)
 
 void PatternParametersWidget::adaptVisibilityToMode()
 {
-    if (!m_modeProp) {
+    if (!m_feature) {
         return;
     }
-    // Use the enum names defined in FeatureLinearPattern.h
-    auto mode = static_cast<PartGui::PatternMode>(m_modeProp->getValue());
+    auto mode = static_cast<PartGui::PatternMode>(ui->comboMode->currentIndex());
 
     ui->formLayout->labelForField(ui->spinExtent)->setVisible(mode == PartGui::PatternMode::Extent);
     ui->spinExtent->setVisible(mode == PartGui::PatternMode::Extent);
@@ -325,8 +323,7 @@ void PatternParametersWidget::onDirectionChanged(int /*index*/)
         requestReferenceSelection();
     }
     else {
-        m_directionProp->Paste(dirLinks.getCurrentLink());  // Update the property
-        parametersChanged();                                // Notify change
+        parametersChanged();
     }
 }
 
@@ -336,17 +333,16 @@ void PatternParametersWidget::onReversePressed()
         return;
     }
 
-    m_reversedProp->setValue(!m_reversedProp->getValue());
+    reversedState = !reversedState;
     parametersChanged();
 }
 
-void PatternParametersWidget::onModeChanged(int index)
+void PatternParametersWidget::onModeChanged(int /*index*/)
 {
     if (blockUpdate || !m_modeProp) {
         return;
     }
-    m_modeProp->setValue(index);  // Assuming enum values match index
-    adaptVisibilityToMode();      // Update visibility based on new mode
+    adaptVisibilityToMode();
     parametersChanged();
 }
 
@@ -356,8 +352,8 @@ void PatternParametersWidget::onLengthChanged(double value)
     if (blockUpdate || !m_extentProp) {
         return;
     }
-    m_extentProp->setValue(value);
-    parametersChanged();  // Still emit signal even if bound
+    Q_UNUSED(value);
+    parametersChanged();
 }
 
 void PatternParametersWidget::onOffsetChanged(double value)
@@ -365,21 +361,8 @@ void PatternParametersWidget::onOffsetChanged(double value)
     if (blockUpdate || !m_spacingProp || !m_spacingPatternProp) {
         return;
     }
-
-    m_spacingProp->setValue(value);
-
-    // Crucially, also update the *first* element of the SpacingPattern list
-    std::vector<double> currentSpacings = m_spacingPatternProp->getValues();
-    if (currentSpacings.empty()) {
-        currentSpacings.push_back(ui->spinSpacing->value().getValue());  // Use UI value which
-                                                                         // includes units
-    }
-    else {
-        currentSpacings[0] = ui->spinSpacing->value().getValue();
-    }
-
-    m_spacingPatternProp->setValues(currentSpacings);  // Update the property list
-    parametersChanged();                               // Emit signal
+    Q_UNUSED(value);
+    parametersChanged();
 }
 
 void PatternParametersWidget::onOccurrencesChanged(unsigned int value)
@@ -388,9 +371,8 @@ void PatternParametersWidget::onOccurrencesChanged(unsigned int value)
     if (blockUpdate || !m_occurrencesProp) {
         return;
     }
-
-    m_occurrencesProp->setValue(value);
-    parametersChanged();  // Still emit signal even if bound
+    Q_UNUSED(value);
+    parametersChanged();
 }
 
 
@@ -530,18 +512,7 @@ void PatternParametersWidget::updateSpacingPatternProperty()
         return;
     }
 
-    std::vector<double> newSpacings;
-
-    // First element is always the main offset's value
-    newSpacings.push_back(ui->spinSpacing->value().getValue());
-
-    // Add values from dynamic spin boxes
-    for (Gui::QuantitySpinBox* spinBox : dynamicSpacingSpinBoxes) {
-        newSpacings.push_back(spinBox->value().getValue());
-    }
-
-    m_spacingPatternProp->setValues(newSpacings);  // Set the property list
-    parametersChanged();                           // Emit signal after property is set
+    parametersChanged();
 }
 
 // --- Getters ---
@@ -555,7 +526,7 @@ void PatternParametersWidget::getAxis(App::DocumentObject*& obj, std::vector<std
 
 bool PatternParametersWidget::getReverse() const
 {
-    return m_reversedProp->getValue();
+    return reversedState;
 }
 
 int PatternParametersWidget::getMode() const
@@ -583,12 +554,40 @@ std::string PatternParametersWidget::getSpacingPatternsAsString() const
     // Build the Python list string for SpacingPattern
     std::stringstream ss;
     ss << "[";
-    const auto& spacingValues = m_spacingPatternProp->getValues();
+    const auto spacingValues = currentSpacingPatternValues();
     for (size_t i = 0; i < spacingValues.size(); ++i) {
         ss << (i > 0 ? ", " : "") << spacingValues[i];
     }
     ss << "]";
     return ss.str();
+}
+
+std::vector<double> PatternParametersWidget::currentSpacingPatternValues() const
+{
+    std::vector<double> spacingValues;
+    spacingValues.push_back(ui->spinSpacing->value().getValue());
+    for (Gui::QuantitySpinBox* spinBox : dynamicSpacingSpinBoxes) {
+        spacingValues.push_back(spinBox->value().getValue());
+    }
+    return spacingValues;
+}
+
+void PatternParametersWidget::applyToBoundProperties() const
+{
+    if (!m_directionProp || !m_reversedProp || !m_modeProp || !m_extentProp || !m_spacingProp
+        || !m_spacingPatternProp || !m_occurrencesProp) {
+        return;
+    }
+
+    if (!isSelectReferenceMode()) {
+        m_directionProp->Paste(dirLinks.getCurrentLink());
+    }
+    m_reversedProp->setValue(reversedState);
+    m_modeProp->setValue(ui->comboMode->currentIndex());
+    m_extentProp->setValue(ui->spinExtent->value().getValue());
+    m_spacingProp->setValue(ui->spinSpacing->value().getValue());
+    m_spacingPatternProp->setValues(currentSpacingPatternValues());
+    m_occurrencesProp->setValue(ui->spinOccurrences->value());
 }
 
 void PatternParametersWidget::applyQuantitySpinboxes() const

@@ -56,6 +56,12 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    setupPreviewWidgets(
+        ui->previewStatusWidget,
+        ui->progressBarPreview,
+        ui->labelPreviewStatus,
+        ui->buttonCancelPreview
+    );
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Fillet* pcFillet = DressUpView->getObject<PartDesign::Fillet>();
@@ -138,7 +144,7 @@ void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
         ui->buttonRefSel->setEnabled(!checked);
         ui->listWidgetReferences->setEnabled(!checked);
         fillet->UseAllEdges.setValue(checked);
-        fillet->recomputeFeature();
+        schedulePendingRecompute();
     }
 }
 
@@ -151,7 +157,6 @@ void TaskFilletParameters::setButtons(const selectionModes mode)
 void TaskFilletParameters::onRefDeleted()
 {
     TaskDressUpParameters::deleteRef(ui->listWidgetReferences);
-    setGizmoPositions();
 }
 
 void TaskFilletParameters::onAddAllEdges()
@@ -165,9 +170,7 @@ void TaskFilletParameters::onLengthChanged(double len)
         setSelectionMode(none);
         setupTransaction();
         fillet->Radius.setValue(len);
-        fillet->recomputeFeature();
-        // hide the fillet if there was a computation error
-        hideOnError();
+        schedulePendingRecompute();
     }
 }
 
@@ -196,6 +199,13 @@ void TaskFilletParameters::changeEvent(QEvent* e)
     }
 }
 
+void TaskFilletParameters::onDressUpRecomputeFinished(bool canceled)
+{
+    if (!canceled) {
+        setGizmoPositions();
+    }
+}
+
 void TaskFilletParameters::apply()
 {
     ui->filletRadius->apply();
@@ -215,6 +225,12 @@ void TaskFilletParameters::setupGizmos(ViewProviderDressUp* vp)
 
     radiusGizmo = new Gui::LinearGizmo(ui->filletRadius);
     radiusGizmo2 = new Gui::LinearGizmo(ui->filletRadius);
+    radiusGizmo->setDeferredUpdateHandler([this]() {
+        onLengthChanged(ui->filletRadius->value().getValue());
+    });
+    radiusGizmo2->setDeferredUpdateHandler([this]() {
+        onLengthChanged(ui->filletRadius->value().getValue());
+    });
 
     gizmoContainer = GizmoContainer::create({radiusGizmo, radiusGizmo2}, vp);
 

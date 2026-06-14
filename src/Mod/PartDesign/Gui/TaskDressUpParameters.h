@@ -25,6 +25,11 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+
+#include <QPointer>
+
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
@@ -34,9 +39,15 @@
 
 
 class QAction;
+class QLabel;
 class QListWidget;
 class QListWidgetItem;
-
+class QProgressBar;
+class QPushButton;
+namespace Gui
+{
+class AsyncPreviewSession;
+}
 namespace Part
 {
 class Feature;
@@ -60,7 +71,12 @@ public:
 
     const std::vector<std::string> getReferences() const;
     Part::Feature* getBase() const;
-
+    void flushPendingRecompute() override;
+    void stopPendingRecompute() override;
+    bool hasOutstandingRecompute() const override;
+    void setDeferredClosePending(bool pending);
+    Gui::AsyncPreviewSession* getAcceptedRecomputeProgressSession() override;
+    void clearInteractiveSelection();
     void setupTransaction();
 
     int getTransactionID() const
@@ -71,6 +87,9 @@ public:
     void setSelectionGate();
 
     bool event(QEvent* event) override;
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 protected Q_SLOTS:
     void onButtonRefSel(const bool checked);
@@ -102,12 +121,25 @@ protected:
     void setSelectionMode(selectionModes mode);
     virtual void setButtons(const selectionModes mode) = 0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
+    void setupPreviewWidgets(
+        QWidget* statusWidget,
+        QProgressBar* progressBar,
+        QLabel* statusLabel,
+        QPushButton* cancelButton
+    );
+    void schedulePendingRecompute();
+    void runImmediateRecompute();
+    virtual bool shouldRestoreReferenceHighlightAfterRecompute() const;
+    virtual bool shouldHideOnErrorAfterRecompute() const;
+    virtual void onDressUpRecomputeFinished(bool canceled);
 
     ViewProviderDressUp* getDressUpView() const;
 
 private:
     void tryAddSelection(const std::string& doc, const std::string& obj, const std::string& sub);
     void setDressUpVisibility(bool visible);
+    void requestRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
 
 protected:
     QWidget* proxy;
@@ -125,6 +157,11 @@ private:
     Gui::WeakPtrT<ViewProviderDressUp> DressUpView;
 
     Gui::ViewProvider* previouslyShownViewProvider {nullptr};
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
+    QPointer<QWidget> previewStatusWidget;
+    QPointer<QProgressBar> previewProgressBar;
+    QPointer<QLabel> previewStatusLabel;
+    QPointer<QPushButton> previewCancelButton;
 };
 
 /// simulation dialog for the TaskView
@@ -140,6 +177,12 @@ public:
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
     bool reject() override;
+
+protected:
+    AcceptPendingRecomputeAction acceptPendingRecomputeAction() const override;
+
+private Q_SLOTS:
+    void onParameterRecomputeSettled();
 
 protected:
     TaskDressUpParameters* parameter;

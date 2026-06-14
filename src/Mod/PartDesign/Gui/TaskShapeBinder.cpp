@@ -25,13 +25,19 @@
 
 #include <boost/core/ignore_unused.hpp>
 #include <QAction>
+#include <QCoreApplication>
 #include <QMessageBox>
 
 
+#include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Console.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Tools.h>
@@ -42,6 +48,8 @@
 
 #include "ui_TaskShapeBinder.h"
 #include "TaskShapeBinder.h"
+#include "TaskFeatureParameters.h"
+#include "DeferredDialogRejectUtils.h"
 
 
 using namespace PartDesignGui;
@@ -49,6 +57,20 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskShapeBinder */
 
+namespace
+{
+
+Gui::AsyncRecomputeDialogOptions shapeBinderRollbackDialogOptions()
+{
+    Gui::AsyncRecomputeDialogOptions options;
+    options.showDelayMs = 450;
+    options.cancelable = false;
+    options.dynamicLabel = false;
+    options.forceIndeterminate = true;
+    return options;
+}
+
+}  // namespace
 
 //**************************************************************************
 //**************************************************************************
@@ -72,15 +94,47 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool newObj, QWi
     proxy = new QWidget(this);
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
-
     setupButtonGroup();
     setupContextMenu();
     this->groupLayout()->addWidget(proxy);
 
+    AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = vp.expired() ? nullptr : vp->getObject<PartDesign::ShapeBinder>();
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (!vp.expired()) {
+            if (auto* binder = vp->getObject<PartDesign::ShapeBinder>()) {
+                binder->getDocument()->recomputeFeature(binder);
+            }
+        }
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    connect(
+        asyncPreviewSession->controller(),
+        &AsyncPreviewController::recomputeSettled,
+        this,
+        &TaskShapeBinder::recomputeSettled
+    );
+    asyncPreviewSession->bindWidgets(
+        {
+            ui->previewStatusWidget,
+            ui->progressBarPreview,
+            ui->labelPreviewStatus,
+            ui->buttonCancelPreview,
+        },
+        [this](const char* text) { return tr(text); },
+        proxy
+    );
+
     updateUI();
 }
 
-TaskShapeBinder::~TaskShapeBinder() = default;
+TaskShapeBinder::~TaskShapeBinder()
+{
+    stopPendingRecompute();
+}
 
 void TaskShapeBinder::updateUI()
 {
@@ -111,7 +165,6 @@ void TaskShapeBinder::updateUI()
     if (obj) {
         auto* svp = doc->getViewProvider(obj);
         if (svp) {
-            supportShow = svp->isShow();
             svp->setVisible(true);
         }
     }
@@ -151,9 +204,10 @@ void TaskShapeBinder::supportChanged(const QString& text)
     if (!vp.expired() && text.isEmpty()) {
         PartDesign::ShapeBinder* binder = vp->getObject<PartDesign::ShapeBinder>();
         binder->Support.setValue(nullptr, nullptr);
-        vp->highlightReferences(false);
-        vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
         ui->listWidgetReferences->clear();
+        clearButtons();
+        exitSelectionMode();
+        requestRecompute(/*waitForCompletion=*/false);
     }
 }
 
@@ -172,22 +226,21 @@ void TaskShapeBinder::onButtonToggled(QAbstractButton* button, bool checked)
         }
     }
 
-    switch (id) {
-        case TaskShapeBinder::refAdd:
-        case TaskShapeBinder::refRemove:
-            if (!vp.expired()) {
-                vp->highlightReferences(true);
-            }
-            break;
-        case TaskShapeBinder::refObjAdd:
-            break;
-        default:
-            break;
+    if (!vp.expired()) {
+        const bool highlight = checked
+            && (id == TaskShapeBinder::refAdd || id == TaskShapeBinder::refRemove);
+        vp->highlightReferences(highlight);
     }
 }
 
-void TaskShapeBinder::changeEvent(QEvent*)
-{}
+void TaskShapeBinder::changeEvent(QEvent* e)
+{
+    TaskBox::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(proxy);
+        updateRecomputeUi();
+    }
+}
 
 void TaskShapeBinder::deleteItem()
 {
@@ -216,10 +269,9 @@ void TaskShapeBinder::deleteItem()
             subs.erase(it);
             binder->Support.setValue(obj, subs);
 
-            vp->highlightReferences(false);
-            vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
-
             clearButtons();
+            exitSelectionMode();
+            requestRecompute(/*waitForCompletion=*/false);
         }
     }
 }
@@ -269,12 +321,7 @@ void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
                 setObjectLabel(msg);
             }
 
-            clearButtons();
-
-            if (!vp.expired()) {
-                vp->highlightReferences(false);
-                vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
-            }
+            requestRecompute(/*waitForCompletion=*/false);
         }
 
         clearButtons();
@@ -379,9 +426,11 @@ void TaskShapeBinder::clearButtons()
 
 void TaskShapeBinder::exitSelectionMode()
 {
-
     selectionMode = none;
     Gui::Selection().clearSelection();
+    if (!vp.expired()) {
+        vp->highlightReferences(false);
+    }
 }
 
 void TaskShapeBinder::accept()
@@ -393,15 +442,96 @@ void TaskShapeBinder::accept()
     std::string label = ui->baseEdit->text().toStdString();
     PartDesign::ShapeBinder* binder = vp->getObject<PartDesign::ShapeBinder>();
     if (!binder->Support.getValue() && !label.empty()) {
+        App::DocumentObject* support = binder->getDocument()->getObject(label.c_str());
+        if (!support) {
+            const auto objects = binder->getDocument()->findObjects(
+                App::DocumentObject::getClassTypeId(),
+                nullptr,
+                label.c_str()
+            );
+            if (!objects.empty()) {
+                support = objects.front();
+            }
+        }
+
+        if (!support) {
+            return;
+        }
+
         auto mode = selectionMode;
         selectionMode = refObjAdd;
         SelectionChanges msg(
             SelectionChanges::AddSelection,
             binder->getDocument()->getName(),
-            label.c_str()
+            support->getNameInDocument()
         );
         referenceSelected(msg);
         selectionMode = mode;
+        requestRecompute(/*waitForCompletion=*/false);
+    }
+}
+
+bool TaskShapeBinder::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+bool TaskShapeBinder::canReuseAcceptedPreviewResult() const
+{
+    return asyncPreviewSession && asyncPreviewSession->didLastRecomputeSucceed();
+}
+
+void TaskShapeBinder::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+Gui::AsyncInlineRecomputeProgressTarget TaskShapeBinder::makeAcceptedRecomputeProgressTarget(
+    QDialogButtonBox* dialogButtonBox,
+    const QString& statusText
+)
+{
+    if (!asyncPreviewSession) {
+        return {};
+    }
+
+    return asyncPreviewSession->makeInlineRecomputeProgressTarget(this, dialogButtonBox, statusText);
+}
+
+void TaskShapeBinder::clearInteractiveSelection()
+{
+    clearButtons();
+    exitSelectionMode();
+}
+
+void TaskShapeBinder::updateRecomputeUi()
+{
+    if (!ui || !asyncPreviewSession) {
+        return;
+    }
+    asyncPreviewSession->updateUi();
+}
+
+void TaskShapeBinder::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void TaskShapeBinder::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+void TaskShapeBinder::requestRecompute(bool waitForCompletion)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->requestRecompute(waitForCompletion);
     }
 }
 
@@ -422,17 +552,99 @@ TaskDlgShapeBinder::TaskDlgShapeBinder(ViewProviderShapeBinder* view, bool newOb
 
 TaskDlgShapeBinder::~TaskDlgShapeBinder() = default;
 
+void TaskDlgShapeBinder::ensureDeferredRejectConnection()
+{
+    ensureDeferredDialogRejectConnection(
+        deferredReject,
+        parameter,
+        &TaskShapeBinder::recomputeSettled,
+        this,
+        &TaskDlgShapeBinder::onParameterRecomputeSettled
+    );
+}
+
+void TaskDlgShapeBinder::setDeferredRejectPending(bool pending)
+{
+    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
+        if (parameter) {
+            parameter->setDeferredClosePending(pending);
+        }
+    });
+}
+
+bool TaskDlgShapeBinder::rejectNow()
+{
+    if (vp.expired()) {
+        return false;
+    }
+
+    App::Document* doc = vp->getObject()->getDocument();
+    vp->getDocument()->abortCommand();
+    Gui::cmdGuiDocument(doc, "resetEdit()");
+    if (doc->mustExecute()) {
+        const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+            parameter,
+            tr("Shape binder"),
+            tr("Discarding changes..."),
+            doc,
+            /*force=*/false,
+            shapeBinderRollbackDialogOptions(),
+            [doc]() {
+                if (doc) {
+                    doc->recompute();
+                }
+            }
+        );
+        if (!outcome.success && !outcome.canceled) {
+            Base::Console().error(
+                "%s\n",
+                outcome.message.empty() ? "Shape binder rollback recompute failed"
+                                        : outcome.message.c_str()
+            );
+        }
+    }
+    return true;
+}
+
 bool TaskDlgShapeBinder::accept()
 {
+    if (deferredReject.pending) {
+        return false;
+    }
+
     try {
         if (!vp.expired()) {
+            PartDesign::ShapeBinder* binder = vp->getObject<PartDesign::ShapeBinder>();
+            parameter->clearInteractiveSelection();
             parameter->accept();
-
-            Gui::cmdAppDocument(vp->getObject(), "recompute()");
-            if (!vp->getObject()->isValid()) {
-                throw Base::RuntimeError(vp->getObject()->getStatusString());
+            const bool previewSettled = !parameter->hasOutstandingRecompute()
+                && parameter->canReuseAcceptedPreviewResult();
+            if (previewSettled) {
+                parameter->flushPendingRecompute();
+                Gui::cmdAppDocument(binder, "purgeTouched()");
+                if (!binder->isValid()) {
+                    throw Base::RuntimeError(binder->getStatusString());
+                }
             }
-            Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
+            else {
+                parameter->stopPendingRecompute();
+                auto progressTarget = parameter->makeAcceptedRecomputeProgressTarget(
+                    buttonBox,
+                    tr("Applying changes...")
+                );
+                Gui::AsyncRecomputeDialogOptions options;
+                options.cancelable = false;
+                options.dynamicLabel = false;
+                options.forceIndeterminate = true;
+                options.inlineProgressTarget = progressTarget;
+                if (!runAsyncAcceptDocumentRecompute(binder->getDocument(), options)) {
+                    return false;
+                }
+                if (!binder->isValid()) {
+                    throw Base::RuntimeError(binder->getStatusString());
+                }
+            }
+            Gui::cmdGuiDocument(binder, "resetEdit()");
             vp->getDocument()->commitCommand();
         }
     }
@@ -440,8 +652,8 @@ bool TaskDlgShapeBinder::accept()
         vp->getDocument()->abortCommand();
         QMessageBox::warning(
             parameter,
-            tr("Input Error"),
-            QApplication::translate("Exception", e.what())
+            tr("Input error"),
+            QCoreApplication::translate("Exception", e.what())
         );
         return false;
     }
@@ -451,15 +663,36 @@ bool TaskDlgShapeBinder::accept()
 
 bool TaskDlgShapeBinder::reject()
 {
-    if (!vp.expired()) {
-        // roll back the done things (deletes 'vp')
-        // Gui::Command::abortCommand();
-        vp->getDocument()->abortCommand();
-        App::Document* doc = vp->getObject()->getDocument();
-        Gui::cmdGuiDocument(doc, "resetEdit()");
-        Gui::cmdAppDocument(doc, "recompute()");
+    if (vp.expired()) {
+        return true;
     }
-    return true;
+
+    ensureDeferredRejectConnection();
+    parameter->clearInteractiveSelection();
+    parameter->stopPendingRecompute();
+
+    if (!parameter->hasOutstandingRecompute()) {
+        return rejectNow();
+    }
+
+    if (!deferredReject.pending) {
+        App::Document* doc = vp->getObject()->getDocument();
+        deferredReject.documentName = doc ? std::string(doc->getName()) : std::string();
+        setDeferredRejectPending(true);
+    }
+
+    return false;
+}
+
+void TaskDlgShapeBinder::onParameterRecomputeSettled()
+{
+    finishDeferredDialogReject(
+        this,
+        deferredReject,
+        parameter && !parameter->hasOutstandingRecompute(),
+        [this]() { return rejectNow(); },
+        [this](bool pending) { setDeferredRejectPending(pending); }
+    );
 }
 
 #include "moc_TaskShapeBinder.cpp"

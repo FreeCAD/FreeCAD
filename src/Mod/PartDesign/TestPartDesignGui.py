@@ -26,6 +26,7 @@ import FreeCAD
 import FreeCADGui
 import os
 import sys
+import time
 import unittest
 import Sketcher
 import Part
@@ -112,6 +113,18 @@ class CallableCheckExemptionDialogWasClosed:
 
 App = FreeCAD
 Gui = FreeCADGui
+
+
+def spin_events(predicate=None, timeout=1.0, step=0.01):
+    end = time.monotonic() + timeout
+    while time.monotonic() < end:
+        QApplication.processEvents(QtCore.QEventLoop.AllEvents, int(step * 1000))
+        if predicate is not None and predicate():
+            return True
+        time.sleep(step)
+
+    QApplication.processEvents(QtCore.QEventLoop.AllEvents, int(step * 1000))
+    return predicate() if predicate is not None else True
 
 
 # ---------------------------------------------------------------------------
@@ -264,6 +277,69 @@ class PartDesignGuiTestCases(unittest.TestCase):
         FreeCAD.closeDocument("SketchGuiTest")
 
 
+class PartDesignAsyncGuiTestCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = App.newDocument("PartDesignAsyncGuiTest")
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+
+        Gui.activateView("Gui::View3DInventor", True)
+        Gui.activeView().setActiveObject("pdbody", self.Body)
+
+        self.Sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.Body.addObject(self.Sketch)
+        self.Sketch.AttachmentSupport = (self.Body.Origin.OriginFeatures[3], [""])
+        self.Sketch.MapMode = "FlatFace"
+
+        geometry = [
+            Part.LineSegment(App.Vector(-5.0, -5.0, 0), App.Vector(5.0, -5.0, 0)),
+            Part.LineSegment(App.Vector(5.0, -5.0, 0), App.Vector(5.0, 5.0, 0)),
+            Part.LineSegment(App.Vector(5.0, 5.0, 0), App.Vector(-5.0, 5.0, 0)),
+            Part.LineSegment(App.Vector(-5.0, 5.0, 0), App.Vector(-5.0, -5.0, 0)),
+        ]
+        self.Sketch.addGeometry(geometry, False)
+
+        constraints = [
+            Sketcher.Constraint("Coincident", 0, 2, 1, 1),
+            Sketcher.Constraint("Coincident", 1, 2, 2, 1),
+            Sketcher.Constraint("Coincident", 2, 2, 3, 1),
+            Sketcher.Constraint("Coincident", 3, 2, 0, 1),
+            Sketcher.Constraint("Horizontal", 0),
+            Sketcher.Constraint("Horizontal", 2),
+            Sketcher.Constraint("Vertical", 1),
+            Sketcher.Constraint("Vertical", 3),
+        ]
+        self.Sketch.addConstraint(constraints)
+
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Body.addObject(self.Pad)
+        self.Pad.Profile = self.Sketch
+        self.Pad.Length = 10.0
+        self.Pad.Length2 = 100.0
+        self.Pad.Type = 0
+        self.Pad.UpToFace = None
+        self.Pad.Reversed = 0
+        self.Pad.SideType = "One side"
+        self.Pad.Offset = 0.0
+
+        self.Doc.recompute()
+
+    def tearDown(self):
+        if App.ActiveDocument and Gui.Control.activeDialog():
+            Gui.ActiveDocument.resetEdit()
+            spin_events(timeout=0.2)
+
+        if App.ActiveDocument and App.ActiveDocument.Name == self.Doc.Name:
+            App.closeDocument(self.Doc.Name)
+
+    def testPadSetEditPumpsEvents(self):
+        self.assertFalse(Gui.Control.activeDialog())
+        self.assertTrue(Gui.ActiveDocument.setEdit(self.Pad.Name, 0))
+        self.assertTrue(spin_events(lambda: Gui.Control.activeDialog(), timeout=0.5))
+
+        Gui.ActiveDocument.resetEdit()
+        self.assertTrue(spin_events(lambda: not Gui.Control.activeDialog(), timeout=0.5))
+
+
 class PartDesignTransformed(unittest.TestCase):
     def setUp(self):
         self.Doc = App.newDocument("PartDesignTransformed")
@@ -307,23 +383,53 @@ class CreateSketch(unittest.TestCase):
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/PartDesign")
         useAttachmentSaved = param.GetBool("NewSketchUseAttachmentDialog", False)
         param.SetBool("NewSketchUseAttachmentDialog", False)
-        App.newDocument()
-        App.activeDocument().addObject("PartDesign::Body", "Body")
-        App.ActiveDocument.getObject("Body").Label = "Body"
-        App.ActiveDocument.getObject("Body").AllowCompound = True
-        FreeCADGui.activateView("Gui::View3DInventor", True)
-        FreeCADGui.activeView().setActiveObject("pdbody", App.activeDocument().Body)
-        FreeCADGui.Selection.clearSelection()
-        FreeCADGui.runCommand("Std_OrthographicCamera", 1)
-        workflowcheck = CallableCheckExemptionDialog(self)
-        QtCore.QTimer.singleShot(100, workflowcheck)
-        FreeCADGui.runCommand("PartDesign_CompSketches", 0)
-        activeDialog = FreeCADGui.Control.activeDialog()
-        self.assertIsNotNone(activeDialog)
-        if activeDialog is not None:
-            FreeCADGui.Control.closeDialog()
-        App.closeDocument(App.ActiveDocument.Name)
-        param.SetBool("NewSketchUseAttachmentDialog", useAttachmentSaved)
+        try:
+            App.newDocument()
+            App.activeDocument().addObject("PartDesign::Body", "Body")
+            App.ActiveDocument.getObject("Body").Label = "Body"
+            App.ActiveDocument.getObject("Body").AllowCompound = True
+            FreeCADGui.activateView("Gui::View3DInventor", True)
+            FreeCADGui.activeView().setActiveObject("pdbody", App.activeDocument().Body)
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(App.ActiveDocument.Body)
+            FreeCADGui.runCommand("Std_OrthographicCamera", 1)
+            FreeCADGui.runCommand("PartDesign_NewSketch", 0)
+
+            def sketch_created():
+                return any(
+                    obj.TypeId == "Sketcher::SketchObject" for obj in App.ActiveDocument.Objects
+                )
+
+            self.assertTrue(
+                spin_events(
+                    lambda: Gui.Control.activeDialog() and sketch_created(),
+                    timeout=1.0,
+                )
+            )
+            self.assertTrue(Gui.Control.activeDialog())
+            self.assertTrue(sketch_created())
+
+            dialog = Gui.Control.activeTaskDialog()
+            self.assertIsNotNone(dialog)
+            dialog.reject()
+            self.assertTrue(
+                spin_events(
+                    lambda: (
+                        not Gui.Control.activeDialog()
+                        and not sketch_created()
+                        and not App.ActiveDocument.HasPendingTransaction
+                        and App.ActiveDocument.getBookedTransactionID() == 0
+                    ),
+                    timeout=1.5,
+                )
+            )
+            self.assertFalse(sketch_created())
+            self.assertFalse(App.ActiveDocument.HasPendingTransaction)
+            self.assertEqual(App.ActiveDocument.getBookedTransactionID(), 0)
+        finally:
+            if App.ActiveDocument is not None:
+                App.closeDocument(App.ActiveDocument.Name)
+            param.SetBool("NewSketchUseAttachmentDialog", useAttachmentSaved)
 
 
 # class PartDesignGuiTestCases(unittest.TestCase):

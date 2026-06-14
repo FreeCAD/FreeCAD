@@ -376,9 +376,9 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
     SoPath* imagePath = sa.getPath();
     if (imagePath) {
         SoDragger* dragger = pTextTranslation->getDragger();
-        dragger->addStartCallback(dragStartCallback, this);
-        dragger->addFinishCallback(dragFinishCallback, this);
-        dragger->addMotionCallback(dragMotionCallback, this);
+        Gui::installDraggerInteractionCallbacks<
+            ViewProviderAnnotationLabel,
+            &ViewProviderAnnotationLabel::onDraggerInteraction>(dragger, this);
 
         dragger->setPartAsPath("translator", imagePath);
 
@@ -408,27 +408,31 @@ void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 }
 
 
-void ViewProviderAnnotationLabel::dragStartCallback(void*, SoDragger*)
+void ViewProviderAnnotationLabel::onDraggerInteraction(
+    Gui::DraggerInteraction interaction,
+    SoDragger* dragger
+)
 {
-    // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand(
-        QT_TRANSLATE_NOOP("Command", "Transform")
-    );
-}
+    switch (interaction) {
+        case Gui::DraggerInteraction::Start:
+            Gui::Application::Instance->activeDocument()->openCommand(
+                QT_TRANSLATE_NOOP("Command", "Transform")
+            );
+            return;
 
-void ViewProviderAnnotationLabel::dragFinishCallback(void*, SoDragger*)
-{
-    // This is called when a manipulator has done manipulating
-    Gui::Application::Instance->activeDocument()->commitCommand();
-}
+        case Gui::DraggerInteraction::Finish:
+            Gui::Application::Instance->activeDocument()->commitCommand();
+            return;
 
-void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag)
-{
-    auto that = static_cast<ViewProviderAnnotationLabel*>(data);
-    const SbMatrix& mat = drag->getMotionMatrix();
-    App::DocumentObject* obj = that->getObject();
-    if (obj && obj->is<App::AnnotationLabel>()) {
-        static_cast<App::AnnotationLabel*>(obj)->TextPosition.setValue(mat[3][0], mat[3][1], mat[3][2]);
+        case Gui::DraggerInteraction::Motion: {
+            const SbMatrix& mat = dragger->getMotionMatrix();
+            App::DocumentObject* obj = getObject();
+            if (obj && obj->is<App::AnnotationLabel>()) {
+                static_cast<App::AnnotationLabel*>(obj)
+                    ->TextPosition.setValue(mat[3][0], mat[3][1], mat[3][2]);
+            }
+            return;
+        }
     }
 }
 

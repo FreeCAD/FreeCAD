@@ -24,7 +24,9 @@
 
 
 #include <QButtonGroup>
+#include <QDialogButtonBox>
 #include <QMessageBox>
+#include <QPointer>
 #include <QTextStream>
 #include <sstream>
 #include <TopExp.hxx>
@@ -37,6 +39,7 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -102,6 +105,7 @@ public:
     QButtonGroup bg;
     ShapeSelection* gate;
     BoxSelection selection;
+    QPointer<QDialogButtonBox> dialogButtonBox;
     Private()
     {
         Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
@@ -140,6 +144,11 @@ ShapeBuilderWidget::~ShapeBuilderWidget()
 {
     Gui::Selection().rmvSelectionGate();
     delete d;
+}
+
+void ShapeBuilderWidget::setDialogButtonBox(QDialogButtonBox* dialogButtonBox)
+{
+    d->dialogButtonBox = dialogButtonBox;
 }
 
 void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -200,7 +209,38 @@ void ShapeBuilderWidget::onCreateButtonClicked()
         else if (mode == 5) {
             createSolidFromShell();
         }
-        doc->getDocument()->recompute();
+        App::Document* appDoc = doc->getDocument();
+        const auto recomputeDocument = [appDoc]() {
+            if (appDoc) {
+                appDoc->recompute();
+            }
+        };
+        const QString recomputeStatus = tr("Computing shape...");
+        Gui::AsyncRecomputeDialogOptions recomputeOptions;
+        recomputeOptions.inlineProgressTarget = Gui::makeTaskPanelInlineRecomputeProgressTarget(
+            this,
+            d->dialogButtonBox,
+            recomputeStatus
+        );
+        const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+            this,
+            tr("Shape builder"),
+            recomputeStatus,
+            appDoc,
+            /*force=*/false,
+            recomputeOptions,
+            recomputeDocument
+        );
+        if (!outcome.success) {
+            if (!outcome.canceled) {
+                Base::Console().error(
+                    "%s\n",
+                    outcome.message.empty() ? "Shape builder recompute failed"
+                                            : outcome.message.c_str()
+                );
+            }
+            return;
+        }
         Gui::Selection().clearSelection();
     }
     catch (const Base::Exception& e) {
@@ -630,7 +670,9 @@ TaskShapeBuilder::TaskShapeBuilder()
 TaskShapeBuilder::~TaskShapeBuilder() = default;
 
 void TaskShapeBuilder::open()
-{}
+{
+    widget->setDialogButtonBox(buttonBox);
+}
 
 void TaskShapeBuilder::clicked(int)
 {}

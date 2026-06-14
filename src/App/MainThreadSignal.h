@@ -47,11 +47,13 @@ class MainThreadSignalConfig
 public:
     using IsMainThreadFn = bool (*)();  // true iff currently on GUI/main thread
     using InvokeFn = void (*)(std::function<void()>&& fn, bool blocking);
+    using PumpEventsFn = void (*)();
 
-    static void setHooks(IsMainThreadFn isMainThread, InvokeFn invoke)
+    static void setHooks(IsMainThreadFn isMainThread, InvokeFn invoke, PumpEventsFn pumpEvents = nullptr)
     {
         isMainThreadSlot() = isMainThread;
         invokeSlot() = invoke;
+        pumpEventsSlot() = pumpEvents;
     }
 
     static inline bool isMainThread()
@@ -65,6 +67,11 @@ public:
         return isMainThreadSlot() && invokeSlot();
     }
 
+    static inline bool canPumpEvents()
+    {
+        return pumpEventsSlot() != nullptr;
+    }
+
     static inline void invoke(std::function<void()>&& fn, bool blocking)
     {
         auto* f = invokeSlot();
@@ -73,6 +80,13 @@ public:
         }
         else {
             fn();  // no hooks, run inline
+        }
+    }
+
+    static inline void pumpEvents()
+    {
+        if (auto* f = pumpEventsSlot()) {
+            f();
         }
     }
 
@@ -85,6 +99,11 @@ private:
     static InvokeFn& invokeSlot()
     {
         static InvokeFn fn = nullptr;
+        return fn;
+    }
+    static PumpEventsFn& pumpEventsSlot()
+    {
+        static PumpEventsFn fn = nullptr;
         return fn;
     }
 };
@@ -234,7 +253,11 @@ private:
             return self->sig_(std::forward<typename ::fastsignals::signal_arg_t<Arguments>>(args)...);
         }
 
-        Base::PyGILStateRelease release;
+        const bool shouldReleaseGil = Py_IsInitialized() && PyGILState_Check();
+        std::optional<Base::PyGILStateRelease> release;
+        if (shouldReleaseGil) {
+            release.emplace();
+        }
 
         auto caps = std::make_tuple(
             detail::captureSignalArg<typename ::fastsignals::signal_arg_t<Arguments>>(args)...
@@ -243,6 +266,10 @@ private:
         if constexpr (std::is_void_v<result_type>) {
             MainThreadSignalConfig::invoke(
                 [self, caps = std::move(caps)]() mutable {
+                    std::optional<Base::PyGILStateLocker> lock;
+                    if (Py_IsInitialized()) {
+                        lock.emplace();
+                    }
                     std::apply([self](auto&... c) { self->sig_(c.get()...); }, caps);
                 },
                 /*blocking=*/true
@@ -252,6 +279,10 @@ private:
             std::optional<detail::non_void_t<result_type>> result;
             MainThreadSignalConfig::invoke(
                 [self, caps = std::move(caps), &result]() mutable {
+                    std::optional<Base::PyGILStateLocker> lock;
+                    if (Py_IsInitialized()) {
+                        lock.emplace();
+                    }
                     result.emplace(
                         std::apply([self](auto&... c) { return self->sig_(c.get()...); }, caps)
                     );

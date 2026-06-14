@@ -24,11 +24,11 @@
 
 #pragma once
 
-#include "TaskTransformedParameters.h"
-#include "ViewProviderTransformed.h"
 #include <Mod/PartDesign/App/FeatureLinearPattern.h>
 
-class QTimer;
+#include "TaskTransformedParameters.h"
+#include "ViewProviderTransformed.h"
+
 class Ui_TaskPatternParameters;
 
 namespace PartGui
@@ -56,9 +56,9 @@ public:
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void applyStagedPreviewStateToObject() override;
 
 private Q_SLOTS:
-    void onUpdateViewTimer();
     // Slot to handle reference selection request from the widget
     void onParameterWidgetRequestReferenceSelection();
     void onParameterWidgetRequestReferenceSelection2();
@@ -67,13 +67,12 @@ private Q_SLOTS:
     // Update view signal (might be redundant now)
     void onUpdateView(bool on) override;
 
-
 private:
     void setupParameterUI(QWidget* widget) override;
     void retranslateParameterUI(QWidget* widget) override;
 
     void updateUI();
-    void kickUpdateViewTimer() const;
+    void scheduleUpdateView();
     void updateSpacingLabels();
 
     void bindProperties();
@@ -91,9 +90,7 @@ private:
     PartGui::PatternParametersWidget* activeDirectionWidget = nullptr;
 
     std::unique_ptr<Ui_TaskPatternParameters> ui;
-    QTimer* updateViewTimer = nullptr;
 };
-
 
 /// simulation dialog for the TaskView
 class TaskDlgLinearPatternParameters: public TaskDlgTransformedParameters

@@ -24,6 +24,7 @@
 
 
 #include <algorithm>
+#include <cstring>
 #include <numbers>
 #include <iterator>
 #include <Bnd_Box.hxx>
@@ -50,10 +51,13 @@
 #include <gp_Cylinder.hxx>
 #include <gp_Pln.hxx>
 #include <GProp_GProps.hxx>
+#include <Message_ProgressScope.hxx>
 #include <ShapeAnalysis_Curve.hxx>
 #include <ShapeAnalysis_Shell.hxx>
 #include <ShapeBuild_ReShape.hxx>
 #include <ShapeFix_Face.hxx>
+#include <Standard_ConstructionError.hxx>
+#include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
 #include <TColgp_Array2OfPnt.hxx>
 #include <TColgp_SequenceOfPnt.hxx>
@@ -75,6 +79,52 @@
 
 
 using namespace ModelRefine;
+
+bool Part::isUserAbortFailure(const Standard_Failure& failure)
+{
+    const auto* message = failure.GetMessageString();
+    return message && std::strcmp(message, "User aborted") == 0;
+}
+
+namespace
+{
+
+void throwIfUserBreak(const Message_ProgressRange& theRange)
+{
+    if (theRange.UserBreak()) {
+        Standard_ConstructionError::Raise("User aborted");
+    }
+}
+
+void throwIfUserBreak(const Message_ProgressScope& theScope)
+{
+    if (theScope.UserBreak()) {
+        Standard_ConstructionError::Raise("User aborted");
+    }
+}
+
+std::size_t countSubShapes(
+    const TopoDS_Shape& shape,
+    TopAbs_ShapeEnum type,
+    TopAbs_ShapeEnum toAvoid = TopAbs_SHAPE
+)
+{
+    std::size_t count = 0;
+    TopExp_Explorer explorer;
+    if (toAvoid == TopAbs_SHAPE) {
+        explorer.Init(shape, type);
+    }
+    else {
+        explorer.Init(shape, type, toAvoid);
+    }
+
+    for (; explorer.More(); explorer.Next()) {
+        ++count;
+    }
+    return count;
+}
+
+}  // namespace
 
 
 void ModelRefine::getFaceEdges(const TopoDS_Face& face, EdgeVectorType& edges)
@@ -1113,11 +1163,15 @@ FaceUniter::FaceUniter(const TopoDS_Shell& shellIn)
     workShell = shellIn;
 }
 
-bool FaceUniter::process()
+bool FaceUniter::process(const Message_ProgressRange& theRange)
 {
     if (workShell.IsNull()) {
         return false;
     }
+    throwIfUserBreak(theRange);
+    Message_ProgressScope refineScope(theRange, "Refining shell...", 3);
+    refineScope.Show();
+
     modifiedShapes.clear();
     deletedShapes.clear();
     typeObjects.push_back(&getPlaneObject());
@@ -1138,18 +1192,28 @@ bool FaceUniter::process()
     ModelRefine::FaceVectorType facesToSew;
 
     ModelRefine::FaceAdjacencySplitter adjacencySplitter(workShell);
+    Message_ProgressScope mergeScope(
+        refineScope.Next(),
+        "Merging coplanar faces...",
+        std::max<std::size_t>(1, typeObjects.size())
+    );
+    mergeScope.Show();
 
     for (typeIt = typeObjects.begin(); typeIt != typeObjects.end(); ++typeIt) {
+        throwIfUserBreak(mergeScope);
+        Message_ProgressRange typeRange = mergeScope.Next();
         ModelRefine::FaceVectorType typedFaces = splitter.getTypedFaceVector((*typeIt)->getType());
         ModelRefine::FaceEqualitySplitter equalitySplitter;
         equalitySplitter.split(typedFaces, *typeIt);
         for (std::size_t indexEquality(0); indexEquality < equalitySplitter.getGroupCount();
              ++indexEquality) {
+            throwIfUserBreak(typeRange);
             adjacencySplitter.split(equalitySplitter.getGroup(indexEquality));
             //            std::cout << "      adjacency group count: " <<
             //            adjacencySplitter.getGroupCount() << std::endl;
             for (std::size_t adjacentIndex(0); adjacentIndex < adjacencySplitter.getGroupCount();
                  ++adjacentIndex) {
+                throwIfUserBreak(typeRange);
                 //                    std::cout << "         face count is: " <<
                 //                    adjacencySplitter.getGroup(adjacentIndex).size() << std::endl;
                 TopoDS_Face newFace = (*typeIt)->buildFace(adjacencySplitter.getGroup(adjacentIndex));
@@ -1187,6 +1251,7 @@ bool FaceUniter::process()
             }
         }
     }
+    mergeScope.Close();
     if (!facesToSew.empty()) {
         modifiedSignal = true;
         workShell = ModelRefine::removeFaces(workShell, facesToRemove);
@@ -1198,6 +1263,9 @@ bool FaceUniter::process()
         }
 
         if (!emptyShell || facesToSew.size() > 1) {
+            Message_ProgressScope sewScope(refineScope.Next(), "Sewing refined shell...", 1);
+            sewScope.Show();
+            throwIfUserBreak(sewScope);
             BRepBuilderAPI_Sewing sew;
             sew.Add(workShell);
             FaceVectorType::iterator sewIt;
@@ -1205,6 +1273,7 @@ bool FaceUniter::process()
                 sew.Add(*sewIt);
             }
             sew.Perform();
+            throwIfUserBreak(sewScope);
 
             // update the list of modifications
             for (auto& it : modifiedShapes) {
@@ -1238,15 +1307,18 @@ bool FaceUniter::process()
                     }
                 }
             }
-
             try {
                 workShell = TopoDS::Shell(sew.SewedShape());
             }
             catch (Standard_Failure&) {
                 return false;
             }
+            sewScope.Close();
         }
         else {
+            Message_ProgressScope sewScope(refineScope.Next(), "Sewing refined shell...", 1);
+            sewScope.Show();
+            throwIfUserBreak(sewScope);
             // workShell has no more faces and we add exactly one face
             BRep_Builder builder;
             builder.MakeShell(workShell);
@@ -1254,8 +1326,12 @@ bool FaceUniter::process()
             for (sewIt = facesToSew.begin(); sewIt != facesToSew.end(); ++sewIt) {
                 builder.Add(workShell, *sewIt);
             }
+            sewScope.Close();
         }
 
+        Message_ProgressScope cleanupScope(refineScope.Next(), "Fusing refined edges...", 1);
+        cleanupScope.Show();
+        throwIfUserBreak(cleanupScope);
         BRepLib_FuseEdges edgeFuse(workShell);
 // TODO: change this version after occ fix. Freecad Mantis 1450
 #if OCC_VERSION_HEX <= 0x7fffff
@@ -1322,6 +1398,7 @@ bool FaceUniter::process()
             }
             // TODO: Handle vertices that have disappeared in the fusion of the edges
         }
+        cleanupScope.Close();
     }
     return true;
 }
@@ -1337,14 +1414,16 @@ void FaceUniter::fixOrientation(const TopoDS_Shell& shell)
 
 // BRepBuilderAPI_RefineModel implement a way to log all modifications on the faces
 
-Part::BRepBuilderAPI_RefineModel::BRepBuilderAPI_RefineModel(const TopoDS_Shape& shape)
+Part::BRepBuilderAPI_RefineModel::BRepBuilderAPI_RefineModel(const TopoDS_Shape& shape, BuildMode buildMode)
 {
     myShape = shape;
-    Build();
+    if (buildMode == BuildMode::Immediate) {
+        Build();
+    }
 }
 
 #if OCC_VERSION_HEX >= 0x070600
-void Part::BRepBuilderAPI_RefineModel::Build(const Message_ProgressRange&)
+void Part::BRepBuilderAPI_RefineModel::Build(const Message_ProgressRange& theRange)
 #else
 void Part::BRepBuilderAPI_RefineModel::Build()
 #endif
@@ -1353,14 +1432,32 @@ void Part::BRepBuilderAPI_RefineModel::Build()
         throw Standard_Failure("Cannot remove splitter from empty shape");
     }
 
+#if OCC_VERSION_HEX >= 0x070600
+    throwIfUserBreak(theRange);
+#endif
+
     if (myShape.ShapeType() == TopAbs_SOLID) {
+#if OCC_VERSION_HEX >= 0x070600
+        Message_ProgressScope solidScope(
+            theRange,
+            "Refining solid...",
+            std::max<std::size_t>(1, countSubShapes(myShape, TopAbs_SHELL))
+        );
+        solidScope.Show();
+#endif
         const TopoDS_Solid& solid = TopoDS::Solid(myShape);
         BRepBuilderAPI_MakeSolid mkSolid;
         TopExp_Explorer it;
         for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
             const TopoDS_Shell& currentShell = TopoDS::Shell(it.Current());
             ModelRefine::FaceUniter uniter(currentShell);
-            if (uniter.process()) {
+            if (
+#if OCC_VERSION_HEX >= 0x070600
+                uniter.process(solidScope.Next())
+#else
+                uniter.process()
+#endif
+            ) {
                 if (uniter.isModified()) {
                     const TopoDS_Shell& newShell = uniter.getShell();
                     mkSolid.Add(newShell);
@@ -1377,9 +1474,19 @@ void Part::BRepBuilderAPI_RefineModel::Build()
         myShape = mkSolid.Solid();
     }
     else if (myShape.ShapeType() == TopAbs_SHELL) {
+#if OCC_VERSION_HEX >= 0x070600
+        Message_ProgressScope shellScope(theRange, "Refining shell...", 1);
+        shellScope.Show();
+#endif
         const TopoDS_Shell& shell = TopoDS::Shell(myShape);
         ModelRefine::FaceUniter uniter(shell);
-        if (uniter.process()) {
+        if (
+#if OCC_VERSION_HEX >= 0x070600
+            uniter.process(shellScope.Next())
+#else
+            uniter.process()
+#endif
+        ) {
             // TODO: Why not check for uniter.isModified()?
             myShape = uniter.getShell();
             LogModifications(uniter);
@@ -1389,6 +1496,18 @@ void Part::BRepBuilderAPI_RefineModel::Build()
         }
     }
     else if (myShape.ShapeType() == TopAbs_COMPOUND) {
+#if OCC_VERSION_HEX >= 0x070600
+        Message_ProgressScope compoundScope(
+            theRange,
+            "Refining compound...",
+            std::max<std::size_t>(
+                1,
+                countSubShapes(myShape, TopAbs_SOLID)
+                    + countSubShapes(myShape, TopAbs_SHELL, TopAbs_SOLID) + 4
+            )
+        );
+        compoundScope.Show();
+#endif
         BRep_Builder builder;
         TopoDS_Compound comp;
         builder.MakeCompound(comp);
@@ -1400,11 +1519,25 @@ void Part::BRepBuilderAPI_RefineModel::Build()
             BRepTools_ReShape reshape;
             TopExp_Explorer it;
             int countShells = 0;
+#if OCC_VERSION_HEX >= 0x070600
+            Message_ProgressScope solidScope(
+                compoundScope.Next(),
+                "Refining solid...",
+                std::max<std::size_t>(1, countSubShapes(solid, TopAbs_SHELL))
+            );
+            solidScope.Show();
+#endif
             for (it.Init(solid, TopAbs_SHELL); it.More(); it.Next()) {
                 countShells++;
                 const TopoDS_Shell& currentShell = TopoDS::Shell(it.Current());
                 ModelRefine::FaceUniter uniter(currentShell);
-                if (uniter.process()) {
+                if (
+#if OCC_VERSION_HEX >= 0x070600
+                    uniter.process(solidScope.Next())
+#else
+                    uniter.process()
+#endif
+                ) {
                     if (uniter.isModified()) {
                         if (countShells > 1) {
                             uniter.fixOrientation(currentShell);
@@ -1419,29 +1552,55 @@ void Part::BRepBuilderAPI_RefineModel::Build()
         }
         // free shells
         for (xp.Init(myShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
+#if OCC_VERSION_HEX >= 0x070600
+            Message_ProgressScope shellScope(compoundScope.Next(), "Refining shell...", 1);
+            shellScope.Show();
+#endif
             const TopoDS_Shell& shell = TopoDS::Shell(xp.Current());
             ModelRefine::FaceUniter uniter(shell);
-            if (uniter.process()) {
+            if (
+#if OCC_VERSION_HEX >= 0x070600
+                uniter.process(shellScope.Next())
+#else
+                uniter.process()
+#endif
+            ) {
                 builder.Add(comp, uniter.getShell());
                 LogModifications(uniter);
             }
         }
         // the rest
+#if OCC_VERSION_HEX >= 0x070600
+        Message_ProgressScope faceScope(compoundScope.Next(), "Collecting faces...", 1);
+        faceScope.Show();
+#endif
         for (xp.Init(myShape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
             if (!xp.Current().IsNull()) {
                 builder.Add(comp, xp.Current());
             }
         }
+#if OCC_VERSION_HEX >= 0x070600
+        Message_ProgressScope wireScope(compoundScope.Next(), "Collecting wires...", 1);
+        wireScope.Show();
+#endif
         for (xp.Init(myShape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
             if (!xp.Current().IsNull()) {
                 builder.Add(comp, xp.Current());
             }
         }
+#if OCC_VERSION_HEX >= 0x070600
+        Message_ProgressScope edgeScope(compoundScope.Next(), "Collecting edges...", 1);
+        edgeScope.Show();
+#endif
         for (xp.Init(myShape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
             if (!xp.Current().IsNull()) {
                 builder.Add(comp, xp.Current());
             }
         }
+#if OCC_VERSION_HEX >= 0x070600
+        Message_ProgressScope vertexScope(compoundScope.Next(), "Collecting vertices...", 1);
+        vertexScope.Show();
+#endif
         for (xp.Init(myShape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
             if (!xp.Current().IsNull()) {
                 builder.Add(comp, xp.Current());

@@ -43,6 +43,7 @@
 #include <App/Link.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -50,7 +51,6 @@
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "TaskSweep.h"
@@ -302,7 +302,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
     return (!pathShape.IsNull());
 }
 
-bool SweepWidget::accept()
+bool SweepWidget::accept(QDialogButtonBox* dialogButtonBox)
 {
     if (d->ui.buttonPath->isChecked()) {
         return false;
@@ -399,7 +399,6 @@ bool SweepWidget::accept()
     }
 
     try {
-        Gui::WaitCursor wc;
         QString cmd;
         cmd = QStringLiteral(
                   "App.getDocument('%5').addObject('Part::Sweep','Sweep')\n"
@@ -416,8 +415,33 @@ bool SweepWidget::accept()
         }
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Sweep"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
-        doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
+        const QString recomputeStatus = tr("Computing sweep…");
+        Gui::AsyncRecomputeDialogOptions recomputeOptions;
+        recomputeOptions.inlineProgressTarget
+            = Gui::makeTaskPanelInlineRecomputeProgressTarget(this, dialogButtonBox, recomputeStatus);
+        const auto outcome = Gui::runAsyncDocumentObjectRecomputeProgressDialog(
+            this,
+            tr("Sweep"),
+            recomputeStatus,
+            obj,
+            /*recursive=*/true,
+            recomputeOptions,
+            [obj]() {
+                if (obj && obj->getDocument()) {
+                    obj->getDocument()->recomputeFeature(obj, /*recursive=*/true);
+                }
+            }
+        );
+        if (!outcome.success) {
+            doc->abortCommand();
+            if (outcome.canceled) {
+                return false;
+            }
+            throw Base::RuntimeError(
+                outcome.message.empty() ? "Sweep recompute failed" : outcome.message
+            );
+        }
         if (obj && !obj->isValid()) {
             std::string msg = obj->getStatusString();
             doc->abortCommand();
@@ -559,7 +583,7 @@ void TaskSweep::clicked(int id)
 
 bool TaskSweep::accept()
 {
-    return widget->accept();
+    return widget->accept(buttonBox);
 }
 
 bool TaskSweep::reject()

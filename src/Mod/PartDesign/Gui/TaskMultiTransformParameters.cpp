@@ -154,15 +154,33 @@ void TaskMultiTransformParameters::slotDeletedObject(const Gui::ViewProviderDocu
     TaskTransformedParameters::slotDeletedObject(Obj);
 }
 
-void TaskMultiTransformParameters::closeSubTask()
+void TaskMultiTransformParameters::commitSubTaskEdits()
+{
+    if (!subTask) {
+        return;
+    }
+
+    subTask->exitSelectionMode();
+
+    if (!subFeature) {
+        subTask->stopPendingRecompute();
+        return;
+    }
+
+    subTask->flushPendingRecompute();
+    subTask->apply();
+}
+
+void TaskMultiTransformParameters::closeSubTask(bool shuttingDown)
 {
     if (subTask) {
         ui->buttonOK->hide();
-        exitSelectionMode();
-        // The subfeature can already be deleted (e.g. cancel) so we have to check before
-        // calling apply
-        if (subFeature) {
-            subTask->apply();
+        if (!shuttingDown) {
+            commitSubTaskEdits();
+        }
+        else {
+            subTask->exitSelectionMode();
+            subTask->stopPendingRecompute();
         }
 
         delete subTask;
@@ -199,7 +217,7 @@ void TaskMultiTransformParameters::onTransformDelete()
     pcMultiTransform->Transformations.setValues(transformFeatures);
     // Note: When the last transformation is deleted, recomputeFeature does nothing, because
     // Transformed::execute() says: "No transformations defined, exit silently"
-    recomputeFeature();
+    scheduleRecomputeFeature();
 
     ui->listTransformFeatures->model()->removeRow(row);
     ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
@@ -450,7 +468,7 @@ void TaskMultiTransformParameters::finishAdd(std::string& newFeatName)
     }
     pcMultiTransform->Transformations.setValues(transformFeatures);
 
-    recomputeFeature();
+    scheduleRecomputeFeature();
 
     // Set state to hidden - only the MultiTransform should be visible
     FCMD_OBJ_HIDE(newFeature);
@@ -496,7 +514,7 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
     }
 
     pcMultiTransform->Transformations.setValues(transformFeatures);
-    recomputeFeature();
+    scheduleRecomputeFeature();
 }
 
 void TaskMultiTransformParameters::onMoveUp()
@@ -516,14 +534,26 @@ void TaskMultiTransformParameters::onSubTaskButtonOK()
 
 void TaskMultiTransformParameters::onUpdateView(bool on)
 {
-    blockUpdate = !on;
+    setUpdateViewEnabled(on);
     if (on) {
-        recomputeFeature();
+        scheduleRecomputeFeature();
     }
+}
+
+void TaskMultiTransformParameters::flushPendingRecompute()
+{
+    if (subTask && subFeature) {
+        subTask->flushPendingRecompute();
+        return;
+    }
+
+    TaskTransformedParameters::flushPendingRecompute();
 }
 
 void TaskMultiTransformParameters::apply()
 {
+    commitSubTaskEdits();
+
     auto pcMultiTransform = getObject<PartDesign::MultiTransform>();
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
     std::stringstream str;
@@ -540,7 +570,7 @@ void TaskMultiTransformParameters::apply()
 TaskMultiTransformParameters::~TaskMultiTransformParameters()
 {
     try {
-        closeSubTask();
+        closeSubTask(/*shuttingDown=*/true);
     }
     catch (const Py::Exception&) {
         Base::PyException exc;  // extract the Python error text

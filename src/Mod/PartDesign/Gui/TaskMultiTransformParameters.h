@@ -62,6 +62,7 @@ public:
     ~TaskMultiTransformParameters() override;
 
     void apply() override;
+    void flushPendingRecompute() override;
 
     /// Return the currently active subFeature
     PartDesign::Transformed* getSubFeature()
@@ -93,7 +94,8 @@ private:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
     void updateUI();
-    void closeSubTask();
+    void commitSubTaskEdits();
+    void closeSubTask(bool shuttingDown = false);
     void moveTransformFeature(int increment);
     void finishAdd(std::string& newFeatName);
 

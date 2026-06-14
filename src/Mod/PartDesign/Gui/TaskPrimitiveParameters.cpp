@@ -24,17 +24,21 @@
 
 #include <limits>
 
+#include <QCoreApplication>
 #include <QMessageBox>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Base/Converter.h>
-#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/Command.h>
+#include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/InputHint.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
@@ -43,10 +47,16 @@
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 
 #include "TaskPrimitiveParameters.h"
+#include "DeferredDialogRejectUtils.h"
 #include "ui_TaskPrimitiveParameters.h"
 
 
 using namespace PartDesignGui;
+
+namespace
+{
+constexpr int AsyncInteractivePreviewDebounceMs = 150;
+}
 
 // clang-format off
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
@@ -59,7 +69,6 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
 
     proxy = new QWidget(this);
     ui->setupUi(proxy);
-
     this->groupLayout()->addWidget(proxy);
 
     int index = 0;
@@ -375,6 +384,37 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             this, &TaskBoxPrimitives::onWedgeZ2minChanged);
 
     setupGizmos();
+
+    AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = getObject<PartDesign::FeaturePrimitive>();
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (auto* primitive = getObject<PartDesign::FeaturePrimitive>()) {
+            primitive->recomputeFeature();
+        }
+    };
+    asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    connect(
+        asyncPreviewSession->controller(),
+        &AsyncPreviewController::recomputeSettled,
+        this,
+        &TaskBoxPrimitives::recomputeSettled
+    );
+    asyncPreviewSession->bindWidgets(
+        {
+            ui->previewStatusWidget,
+            ui->progressBarPreview,
+            ui->labelPreviewStatus,
+            ui->buttonCancelPreview,
+        },
+        [this](const char* text) { return tr(text); },
+        proxy
+    );
+    asyncPreviewSession->setSchedulerInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? AsyncInteractivePreviewDebounceMs : 0
+    );
 }
 // clang-format on
 
@@ -383,7 +423,7 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
  */
 TaskBoxPrimitives::~TaskBoxPrimitives()
 {
-    Gui::getMainWindow()->hideHints();
+    stopPendingRecompute();
 
     // hide the parts coordinate system axis for selection
     try {
@@ -405,61 +445,44 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
 void TaskBoxPrimitives::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
     if (this->vp == &Obj) {
+        stopPendingRecompute();
         this->vp = nullptr;
     }
 }
 
 void TaskBoxPrimitives::onBoxHeightChanged(double v)
 {
-    if (auto box = getObject<PartDesign::Box>()) {
-        box->Height.setValue(v);
-        box->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Box>([v](auto* box) { box->Height.setValue(v); });
 }
 
 void TaskBoxPrimitives::onBoxWidthChanged(double v)
 {
-    if (auto box = getObject<PartDesign::Box>()) {
-        box->Width.setValue(v);
-        box->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Box>([v](auto* box) { box->Width.setValue(v); });
 }
 
 void TaskBoxPrimitives::onBoxLengthChanged(double v)
 {
-    if (auto box = getObject<PartDesign::Box>()) {
-        box->Length.setValue(v);
-        box->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Box>([v](auto* box) { box->Length.setValue(v); });
 }
 
 void TaskBoxPrimitives::onCylinderAngleChanged(double v)
 {
-    if (auto cyl = getObject<PartDesign::Cylinder>()) {
-        cyl->Angle.setValue(v);
-        cyl->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Cylinder>([v](auto* cyl) { cyl->Angle.setValue(v); });
 }
 
 void TaskBoxPrimitives::onCylinderHeightChanged(double v)
 {
-    if (auto cyl = getObject<PartDesign::Cylinder>()) {
-        cyl->Height.setValue(v);
-        cyl->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Cylinder>([v](auto* cyl) { cyl->Height.setValue(v); });
 }
 
 void TaskBoxPrimitives::onCylinderRadiusChanged(double v)
 {
-    if (auto cyl = getObject<PartDesign::Cylinder>()) {
-        cyl->Radius.setValue(v);
-        cyl->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Cylinder>([v](auto* cyl) { cyl->Radius.setValue(v); });
 }
 
 void TaskBoxPrimitives::onCylinderXSkewChanged(double v)
 {
-    if (auto cyl = getObject<PartDesign::Cylinder>()) {
+    updatePrimitive<PartDesign::Cylinder>([this, v](auto* cyl) {
         // we must assure that if the user incremented from e.g. 85 degree with the
         // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
         if ((v < 90.0) && (v > -90.0)) {
@@ -474,13 +497,12 @@ void TaskBoxPrimitives::onCylinderXSkewChanged(double v)
             }
             ui->cylinderXSkew->setValue(cyl->FirstAngle.getQuantityValue());
         }
-        cyl->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onCylinderYSkewChanged(double v)
 {
-    if (auto cyl = getObject<PartDesign::Cylinder>()) {
+    updatePrimitive<PartDesign::Cylinder>([this, v](auto* cyl) {
         // we must assure that if the user incremented from e.g. 85 degree with the
         // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
         if ((v < 90.0) && (v > -90.0)) {
@@ -495,192 +517,144 @@ void TaskBoxPrimitives::onCylinderYSkewChanged(double v)
             }
             ui->cylinderYSkew->setValue(cyl->SecondAngle.getQuantityValue());
         }
-        cyl->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onSphereAngle1Changed(double v)
 {
-    if (auto sph = getObject<PartDesign::Sphere>()) {
+    updatePrimitive<PartDesign::Sphere>([this, v](auto* sph) {
         ui->sphereAngle2->setMinimum(v);  // Angle1 must geometrically be <= than Angle2
         sph->Angle1.setValue(v);
-        sph->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onSphereAngle2Changed(double v)
 {
-    if (auto sph = getObject<PartDesign::Sphere>()) {
+    updatePrimitive<PartDesign::Sphere>([this, v](auto* sph) {
         ui->sphereAngle1->setMaximum(v);  // Angle1 must geometrically be <= than Angle2
         sph->Angle2.setValue(v);
-        sph->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onSphereAngle3Changed(double v)
 {
-    if (auto sph = getObject<PartDesign::Sphere>()) {
-        sph->Angle3.setValue(v);
-        sph->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Sphere>([v](auto* sph) { sph->Angle3.setValue(v); });
 }
 
 void TaskBoxPrimitives::onSphereRadiusChanged(double v)
 {
-    if (auto sph = getObject<PartDesign::Sphere>()) {
-        sph->Radius.setValue(v);
-        sph->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Sphere>([v](auto* sph) { sph->Radius.setValue(v); });
 }
 
 void TaskBoxPrimitives::onConeAngleChanged(double v)
 {
-    if (auto cone = getObject<PartDesign::Cone>()) {
-        cone->Angle.setValue(v);
-        cone->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Cone>([v](auto* cone) { cone->Angle.setValue(v); });
 }
 
 void TaskBoxPrimitives::onConeHeightChanged(double v)
 {
-    if (auto cone = getObject<PartDesign::Cone>()) {
-        cone->Height.setValue(v);
-        cone->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Cone>([v](auto* cone) { cone->Height.setValue(v); });
 }
 
 void TaskBoxPrimitives::onConeRadius1Changed(double v)
 {
-    if (auto cone = getObject<PartDesign::Cone>()) {
-        cone->Radius1.setValue(v);
-        cone->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Cone>([v](auto* cone) { cone->Radius1.setValue(v); });
 }
 
 void TaskBoxPrimitives::onConeRadius2Changed(double v)
 {
-    if (auto cone = getObject<PartDesign::Cone>()) {
-        cone->Radius2.setValue(v);
-        cone->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Cone>([v](auto* cone) { cone->Radius2.setValue(v); });
 }
 
 void TaskBoxPrimitives::onEllipsoidAngle1Changed(double v)
 {
-    if (auto ell = getObject<PartDesign::Ellipsoid>()) {
+    updatePrimitive<PartDesign::Ellipsoid>([this, v](auto* ell) {
         ui->ellipsoidAngle2->setMinimum(v);  // Angle1 must geometrically be <= than Angle2
         ell->Angle1.setValue(v);
-        ell->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onEllipsoidAngle2Changed(double v)
 {
-    if (auto ell = getObject<PartDesign::Ellipsoid>()) {
+    updatePrimitive<PartDesign::Ellipsoid>([this, v](auto* ell) {
         ui->ellipsoidAngle1->setMaximum(v);  // Angle1 must geometrically be <= than Angle22
         ell->Angle2.setValue(v);
-        ell->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onEllipsoidAngle3Changed(double v)
 {
-    if (auto ell = getObject<PartDesign::Ellipsoid>()) {
-        ell->Angle3.setValue(v);
-        ell->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Ellipsoid>([v](auto* ell) { ell->Angle3.setValue(v); });
 }
 
 void TaskBoxPrimitives::onEllipsoidRadius1Changed(double v)
 {
-    if (auto ell = getObject<PartDesign::Ellipsoid>()) {
-        ell->Radius1.setValue(v);
-        ell->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Ellipsoid>([v](auto* ell) { ell->Radius1.setValue(v); });
 }
 
 void TaskBoxPrimitives::onEllipsoidRadius2Changed(double v)
 {
-    if (auto ell = getObject<PartDesign::Ellipsoid>()) {
-        ell->Radius2.setValue(v);
-        ell->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Ellipsoid>([v](auto* ell) { ell->Radius2.setValue(v); });
 }
 
 void TaskBoxPrimitives::onEllipsoidRadius3Changed(double v)
 {
-    if (auto ell = getObject<PartDesign::Ellipsoid>()) {
-        ell->Radius3.setValue(v);
-        ell->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Ellipsoid>([v](auto* ell) { ell->Radius3.setValue(v); });
 }
 
 void TaskBoxPrimitives::onTorusAngle1Changed(double v)
 {
-    if (auto tor = getObject<PartDesign::Torus>()) {
+    updatePrimitive<PartDesign::Torus>([this, v](auto* tor) {
         ui->torusAngle2->setMinimum(v);  // Angle1 must geometrically be <= than Angle2
         tor->Angle1.setValue(v);
-        tor->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onTorusAngle2Changed(double v)
 {
-    if (auto tor = getObject<PartDesign::Torus>()) {
+    updatePrimitive<PartDesign::Torus>([this, v](auto* tor) {
         ui->torusAngle1->setMaximum(v);  // Angle1 must geometrically be <= than Angle2
         tor->Angle2.setValue(v);
-        tor->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onTorusAngle3Changed(double v)
 {
-    if (auto tor = getObject<PartDesign::Torus>()) {
-        tor->Angle3.setValue(v);
-        tor->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Torus>([v](auto* tor) { tor->Angle3.setValue(v); });
 }
 
 void TaskBoxPrimitives::onTorusRadius1Changed(double v)
 {
-    if (auto tor = getObject<PartDesign::Torus>()) {
+    updatePrimitive<PartDesign::Torus>([this, v](auto* tor) {
         // this is the outer radius that must not be smaller than the inner one
         // otherwise the geometry is impossible and we can even get a crash:
         // https://forum.freecad.org/viewtopic.php?f=3&t=44467
         ui->torusRadius2->setMaximum(v);
         tor->Radius1.setValue(v);
-        tor->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onTorusRadius2Changed(double v)
 {
-    if (auto tor = getObject<PartDesign::Torus>()) {
+    updatePrimitive<PartDesign::Torus>([this, v](auto* tor) {
         ui->torusRadius1->setMinimum(v);
         tor->Radius2.setValue(v);
-        tor->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onPrismCircumradiusChanged(double v)
 {
-    if (auto prim = getObject<PartDesign::Prism>()) {
-        prim->Circumradius.setValue(v);
-        prim->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Prism>([v](auto* prim) { prim->Circumradius.setValue(v); });
 }
 
 void TaskBoxPrimitives::onPrismHeightChanged(double v)
 {
-    if (auto prim = getObject<PartDesign::Prism>()) {
-        prim->Height.setValue(v);
-        prim->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Prism>([v](auto* prim) { prim->Height.setValue(v); });
 }
 
 void TaskBoxPrimitives::onPrismXSkewChanged(double v)
 {
-    if (auto prim = getObject<PartDesign::Prism>()) {
+    updatePrimitive<PartDesign::Prism>([this, v](auto* prim) {
         // we must assure that if the user incremented from e.g. 85 degree with the
         // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
         if ((v < 90.0) && (v > -90.0)) {
@@ -695,13 +669,12 @@ void TaskBoxPrimitives::onPrismXSkewChanged(double v)
             }
             ui->prismXSkew->setValue(prim->FirstAngle.getQuantityValue());
         }
-        prim->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onPrismYSkewChanged(double v)
 {
-    if (auto prim = getObject<PartDesign::Prism>()) {
+    updatePrimitive<PartDesign::Prism>([this, v](auto* prim) {
         // we must assure that if the user incremented from e.g. 85 degree with the
         // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
         if ((v < 90.0) && (v > -90.0)) {
@@ -716,106 +689,92 @@ void TaskBoxPrimitives::onPrismYSkewChanged(double v)
             }
             ui->prismYSkew->setValue(prim->SecondAngle.getQuantityValue());
         }
-        prim->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onPrismPolygonChanged(int v)
 {
-    if (auto prim = getObject<PartDesign::Prism>()) {
-        prim->Polygon.setValue(v);
-        prim->recomputeFeature();
-    }
+    updatePrimitive<PartDesign::Prism>([v](auto* prim) { prim->Polygon.setValue(v); });
 }
 
 void TaskBoxPrimitives::onWedgeX2minChanged(double v)
 {
-    if (auto wedge = getObject<PartDesign::Wedge>()) {
+    updatePrimitive<PartDesign::Wedge>([this, v](auto* wedge) {
         ui->wedgeX2max->setMinimum(v);  // wedgeX2min must be <= than wedgeX2max
         wedge->X2min.setValue(v);
-        wedge->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onWedgeX2maxChanged(double v)
 {
-    if (auto wedge = getObject<PartDesign::Wedge>()) {
+    updatePrimitive<PartDesign::Wedge>([this, v](auto* wedge) {
         ui->wedgeX2min->setMaximum(v);  // wedgeX2min must be <= than wedgeX2max
         wedge->X2max.setValue(v);
-        wedge->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onWedgeXminChanged(double v)
 {
-    if (auto wedge = getObject<PartDesign::Wedge>()) {
+    updatePrimitive<PartDesign::Wedge>([this, v](auto* wedge) {
         ui->wedgeXmax->setMinimum(v);
         wedge->Xmin.setValue(v);
-        wedge->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onWedgeXmaxChanged(double v)
 {
-    if (auto wedge = getObject<PartDesign::Wedge>()) {
+    updatePrimitive<PartDesign::Wedge>([this, v](auto* wedge) {
         ui->wedgeXmin->setMaximum(v);  // must be < than wedgeXmax
         wedge->Xmax.setValue(v);
-        wedge->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onWedgeYminChanged(double v)
 {
-    if (auto wedge = getObject<PartDesign::Wedge>()) {
+    updatePrimitive<PartDesign::Wedge>([this, v](auto* wedge) {
         ui->wedgeYmax->setMinimum(v);  // must be > than wedgeYmin
         wedge->Ymin.setValue(v);
-        wedge->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onWedgeYmaxChanged(double v)
 {
-    if (auto wedge = getObject<PartDesign::Wedge>()) {
+    updatePrimitive<PartDesign::Wedge>([this, v](auto* wedge) {
         ui->wedgeYmin->setMaximum(v);  // must be < than wedgeYmax
         wedge->Ymax.setValue(v);
-        wedge->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onWedgeZ2minChanged(double v)
 {
-    if (auto wedge = getObject<PartDesign::Wedge>()) {
+    updatePrimitive<PartDesign::Wedge>([this, v](auto* wedge) {
         ui->wedgeZ2max->setMinimum(v);  // must be >= than wedgeZ2min
         wedge->Z2min.setValue(v);
-        wedge->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onWedgeZ2maxChanged(double v)
 {
-    if (auto wedge = getObject<PartDesign::Wedge>()) {
+    updatePrimitive<PartDesign::Wedge>([this, v](auto* wedge) {
         ui->wedgeZ2min->setMaximum(v);  // must be <= than wedgeZ2max
         wedge->Z2max.setValue(v);
-        wedge->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onWedgeZminChanged(double v)
 {
-    if (auto wedge = getObject<PartDesign::Wedge>()) {
+    updatePrimitive<PartDesign::Wedge>([this, v](auto* wedge) {
         ui->wedgeZmax->setMinimum(v);  // must be > than wedgeZmin
         wedge->Zmin.setValue(v);
-        wedge->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onWedgeZmaxChanged(double v)
 {
-    if (auto wedge = getObject<PartDesign::Wedge>()) {
+    updatePrimitive<PartDesign::Wedge>([this, v](auto* wedge) {
         ui->wedgeZmin->setMaximum(v);  // must be < than wedgeZmax
         wedge->Zmax.setValue(v);
-        wedge->recomputeFeature();
-    }
+    });
 }
 
 void TaskBoxPrimitives::onPlacementChanged()
@@ -823,18 +782,80 @@ void TaskBoxPrimitives::onPlacementChanged()
     setGizmoPositions();
 }
 
+void TaskBoxPrimitives::schedulePendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->scheduleRecompute();
+    }
+}
+
+bool TaskBoxPrimitives::hasOutstandingRecompute() const
+{
+    return asyncPreviewSession && asyncPreviewSession->hasOutstandingRecompute();
+}
+
+bool TaskBoxPrimitives::canReuseAcceptedPreviewResult() const
+{
+    return asyncPreviewSession && asyncPreviewSession->didLastRecomputeSucceed();
+}
+
+void TaskBoxPrimitives::setDeferredClosePending(bool pending)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+Gui::AsyncInlineRecomputeProgressTarget TaskBoxPrimitives::makeAcceptedRecomputeProgressTarget(
+    QDialogButtonBox* dialogButtonBox,
+    const QString& statusText
+)
+{
+    if (!asyncPreviewSession) {
+        return {};
+    }
+
+    return asyncPreviewSession->makeInlineRecomputeProgressTarget(this, dialogButtonBox, statusText);
+}
+
+void TaskBoxPrimitives::updateRecomputeUi()
+{
+    if (!ui || !asyncPreviewSession) {
+        return;
+    }
+    asyncPreviewSession->updateUi();
+}
+
+void TaskBoxPrimitives::flushPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void TaskBoxPrimitives::stopPendingRecompute()
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+void TaskBoxPrimitives::requestRecompute(bool waitForCompletion)
+{
+    if (asyncPreviewSession) {
+        asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
+}
 
 bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
 {
     try {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (!doc) {
+        if (!obj || !obj->isAttachedToDocument()) {
             return false;
         }
 
         std::string cmd;
         std::string name(Gui::Command::getObjectCmd(obj));
-        Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
         switch (ui->widgetStack->currentIndex()) {
             case 1:  // box
                 cmd = fmt::format(
@@ -998,13 +1019,12 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
         // No need to open a transaction because this is already done in the command
         // class or when starting to edit a primitive.
         Gui::Command::runCommand(Gui::Command::Doc, cmd.c_str());
-        Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::PyException& e) {
         QMessageBox::warning(
             this,
             tr("Create primitive"),
-            QApplication::translate("Exception", e.what())
+            QCoreApplication::translate("Exception", e.what())
         );
         return false;
     }
@@ -1022,17 +1042,35 @@ void TaskBoxPrimitives::setupGizmos()
             lengthGizmo = new Gui::LinearGizmo(ui->boxLength);
             widthGizmo = new Gui::LinearGizmo(ui->boxWidth);
             heightGizmo = new Gui::LinearGizmo(ui->boxHeight);
+            lengthGizmo->setDeferredUpdateHandler([this]() {
+                onBoxLengthChanged(ui->boxLength->value().getValue());
+            });
+            widthGizmo->setDeferredUpdateHandler([this]() {
+                onBoxWidthChanged(ui->boxWidth->value().getValue());
+            });
+            heightGizmo->setDeferredUpdateHandler([this]() {
+                onBoxHeightChanged(ui->boxHeight->value().getValue());
+            });
 
             gizmoContainer = Gui::GizmoContainer::create({widthGizmo, heightGizmo, lengthGizmo}, vp);
             break;
         case PartDesign::FeaturePrimitive::Cylinder:
             heightGizmo = new Gui::LinearGizmo(ui->cylinderHeight);
             radiusGizmo = new Gui::LinearGizmo(ui->cylinderRadius);
+            heightGizmo->setDeferredUpdateHandler([this]() {
+                onCylinderHeightChanged(ui->cylinderHeight->value().getValue());
+            });
+            radiusGizmo->setDeferredUpdateHandler([this]() {
+                onCylinderRadiusChanged(ui->cylinderRadius->value().getValue());
+            });
 
             gizmoContainer = Gui::GizmoContainer::create({heightGizmo, radiusGizmo}, vp);
             break;
         case PartDesign::FeaturePrimitive::Sphere:
             radiusGizmo = new Gui::LinearGizmo(ui->sphereRadius);
+            radiusGizmo->setDeferredUpdateHandler([this]() {
+                onSphereRadiusChanged(ui->sphereRadius->value().getValue());
+            });
 
             gizmoContainer = Gui::GizmoContainer::create({radiusGizmo}, vp);
             break;
@@ -1041,24 +1079,6 @@ void TaskBoxPrimitives::setupGizmos()
     }
 
     setGizmoPositions();
-
-    if (Gui::GizmoContainer::isCoarseSnapEnabled()) {
-        const Gui::InputHint::UserInput key = Gui::GizmoContainer::getFineSnapKey();
-        const bool coarseByDefault = Gui::GizmoContainer::isCoarseByDefault();
-
-        QString message;
-        if (coarseByDefault) {
-            message = tr("%1 fine dragging");
-        }
-        else {
-            message = tr("%1 coarse dragging");
-        }
-
-        Gui::getMainWindow()->showHints({{
-            .message = message,
-            .sequences = {{key}},
-        }});
-    }
 }
 
 void TaskBoxPrimitives::setGizmoPositions()
@@ -1114,26 +1134,133 @@ TaskDlgPrimitiveParameters::TaskDlgPrimitiveParameters(ViewProviderPrimitive* Pr
 
 TaskDlgPrimitiveParameters::~TaskDlgPrimitiveParameters() = default;
 
+void TaskDlgPrimitiveParameters::ensureDeferredRejectConnection()
+{
+    ensureDeferredDialogRejectConnection(
+        deferredReject,
+        primitive,
+        &TaskBoxPrimitives::recomputeSettled,
+        this,
+        &TaskDlgPrimitiveParameters::onPrimitiveRecomputeSettled
+    );
+}
+
+void TaskDlgPrimitiveParameters::setDeferredRejectPending(bool pending)
+{
+    setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
+        if (parameter) {
+            parameter->setEnabled(!pending);
+        }
+        if (primitive) {
+            primitive->setDeferredClosePending(pending);
+        }
+    });
+}
+
+bool TaskDlgPrimitiveParameters::rejectNow()
+{
+    if (parameter) {
+        parameter->stopPendingAttachmentUpdate();
+    }
+
+    Gui::Document* guiDocument = vp_prm ? vp_prm->getDocument() : nullptr;
+    if (!guiDocument) {
+        return false;
+    }
+
+    guiDocument->abortCommand();
+    if (App::Document* document = guiDocument->getDocument()) {
+        Gui::cmdGuiDocument(document, "resetEdit()");
+    }
+
+    return true;
+}
+
+void TaskDlgPrimitiveParameters::onPrimitiveRecomputeSettled()
+{
+    finishDeferredDialogReject(
+        this,
+        deferredReject,
+        primitive && !primitive->hasOutstandingRecompute(),
+        [this]() { return rejectNow(); },
+        [this](bool pending) { setDeferredRejectPending(pending); }
+    );
+}
+
 bool TaskDlgPrimitiveParameters::accept()
 {
-    bool primitiveOK = primitive->setPrimitive(vp_prm->getObject());
+    if (deferredReject.pending) {
+        return false;
+    }
+
+    auto* feature = vp_prm ? vp_prm->getObject<PartDesign::FeaturePrimitive>() : nullptr;
+    App::Document* document = feature ? feature->getDocument() : nullptr;
+    if (!feature || !document) {
+        return false;
+    }
+
+    parameter->flushPendingAttachmentUpdate();
+    parameter->stopPendingAttachmentUpdate();
+    const bool previewSettled = !primitive->hasOutstandingRecompute()
+        && primitive->canReuseAcceptedPreviewResult();
+    if (!previewSettled) {
+        primitive->stopPendingRecompute();
+    }
+    else {
+        primitive->flushPendingRecompute();
+    }
+
+    bool primitiveOK = primitive->setPrimitive(feature);
     if (!primitiveOK) {
         return primitiveOK;
     }
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+
+    if (previewSettled) {
+        // setPrimitive() records the final UI values through Python commands, which
+        // retouches the primitive even when the async preview already computed the
+        // same state. Clear that redundant touch so the final document recompute can
+        // skip the primitive and only update downstream dependents.
+        Gui::cmdAppObject(feature, "purgeTouched()");
+        for (auto parent : feature->getInList()) {
+            parent->touch();
+        }
+    }
+
+    auto progressTarget
+        = primitive->makeAcceptedRecomputeProgressTarget(buttonBox, tr("Applying changes..."));
+    Gui::AsyncRecomputeDialogOptions options;
+    options.cancelable = false;
+    options.dynamicLabel = false;
+    options.forceIndeterminate = true;
+    options.inlineProgressTarget = progressTarget;
+    if (!runAsyncAcceptDocumentRecompute(document, options)) {
+        return false;
+    }
+    Gui::cmdGuiDocument(document, "resetEdit()");
+    document->commitTransaction();
 
     return true;
 }
 
 bool TaskDlgPrimitiveParameters::reject()
 {
-    // roll back the done things
-    // Gui::Command::abortCommand();
-    vp_prm->getDocument()->abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    ensureDeferredRejectConnection();
+    parameter->stopPendingAttachmentUpdate();
+    primitive->stopPendingRecompute();
 
-    return true;
+    if (!primitive->hasOutstandingRecompute()) {
+        return rejectNow();
+    }
+
+    if (!deferredReject.pending) {
+        App::DocumentObject* object = vp_prm ? vp_prm->getObject() : nullptr;
+        deferredReject.documentName = object && object->getDocument()
+            ? std::string(object->getDocument()->getName())
+            : std::string();
+        setDeferredRejectPending(true);
+    }
+
+    return false;
 }
 
 QDialogButtonBox::StandardButtons TaskDlgPrimitiveParameters::getStandardButtons() const

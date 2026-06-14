@@ -60,6 +60,7 @@ public:
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override = 0;
     const QString onAddSelection(const Gui::SelectionChanges& msg, App::PropertyLinkSub& prop);
+    virtual void triggerPreviewRecompute();
     virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     /*!
@@ -97,6 +98,9 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+
+protected:
+    AcceptPendingRecomputeAction acceptPendingRecomputeAction() const override;
 };
 
 }  // namespace PartDesignGui

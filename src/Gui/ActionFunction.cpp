@@ -182,4 +182,79 @@ void TimerFunction::singleShot(int ms)
     QTimer::singleShot(ms, this, &Gui::TimerFunction::timeout);
 }
 
+// ----------------------------------------------------------------------------
+
+namespace Gui
+{
+class DebouncedFunctionPrivate
+{
+public:
+    std::function<void()> timeoutFunc;
+    QTimer* timer = nullptr;
+};
+}  // namespace Gui
+
+DebouncedFunction::DebouncedFunction(QObject* parent)
+    : QObject(parent)
+    , d_ptr(new DebouncedFunctionPrivate())
+{
+    Q_D(DebouncedFunction);
+    d->timer = new QTimer(this);
+    d->timer->setSingleShot(true);
+    connect(d->timer, &QTimer::timeout, this, &DebouncedFunction::timeout);
+}
+
+DebouncedFunction::~DebouncedFunction() = default;
+
+void DebouncedFunction::setFunction(std::function<void()> func)
+{
+    Q_D(DebouncedFunction);
+    d->timeoutFunc = std::move(func);
+}
+
+void DebouncedFunction::setInterval(int ms)
+{
+    Q_D(DebouncedFunction);
+    d->timer->setInterval(ms);
+}
+
+int DebouncedFunction::interval() const
+{
+    Q_D(const DebouncedFunction);
+    return d->timer->interval();
+}
+
+bool DebouncedFunction::isActive() const
+{
+    Q_D(const DebouncedFunction);
+    return d->timer->isActive();
+}
+
+void DebouncedFunction::start()
+{
+    Q_D(DebouncedFunction);
+    d->timer->start();
+}
+
+void DebouncedFunction::stop()
+{
+    Q_D(DebouncedFunction);
+    d->timer->stop();
+}
+
+void DebouncedFunction::triggerNow()
+{
+    Q_D(DebouncedFunction);
+    d->timer->stop();
+    timeout();
+}
+
+void DebouncedFunction::timeout()
+{
+    Q_D(DebouncedFunction);
+    if (d->timeoutFunc) {
+        d->timeoutFunc();
+    }
+}
+
 #include "moc_ActionFunction.cpp"

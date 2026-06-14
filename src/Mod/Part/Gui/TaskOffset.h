@@ -25,8 +25,10 @@
 
 #pragma once
 
+#include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {
@@ -35,7 +37,7 @@ class Offset;
 namespace PartGui
 {
 
-class OffsetWidget: public QWidget
+class PartGuiExport OffsetWidget: public QWidget
 {
     Q_OBJECT
 
@@ -43,12 +45,22 @@ public:
     explicit OffsetWidget(Part::Offset*, QWidget* parent = nullptr);
     ~OffsetWidget() override;
 
-    bool accept();
+    bool accept(QDialogButtonBox* dialogButtonBox = nullptr);
     bool reject();
+    void flushPendingRecompute();
+    void stopPendingRecompute();
+    bool hasOutstandingRecompute() const;
+    void setDeferredClosePending(bool pending);
     Part::Offset* getObject() const;
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 private:
     void setupConnections();
+    void schedulePreviewRecompute();
+    void requestPreviewRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
     void onSpinOffsetValueChanged(double);
     void onModeTypeActivated(int);
     void onJoinTypeActivated(int);
@@ -65,7 +77,7 @@ private:
     Private* d;
 };
 
-class TaskOffset: public Gui::TaskView::TaskDialog
+class PartGuiExport TaskOffset: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -86,7 +98,16 @@ public:
     }
 
 private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+    bool rejectNow();
+
+private Q_SLOTS:
+    void onRecomputeSettled();
+
+private:
     OffsetWidget* widget;
+    Gui::DeferredDialogRejectState deferredReject;
 };
 
 }  // namespace PartGui

@@ -24,14 +24,19 @@
 
 #include <limits>
 
+#include <QDialogButtonBox>
 #include <QMessageBox>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncRecomputeProgressDialog.h>
+#include <Gui/AsyncPreviewSession.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/FeatureOffset.h>
@@ -45,8 +50,11 @@ using namespace PartGui;
 class OffsetWidget::Private
 {
 public:
+    static constexpr int AsyncPreviewDebounceMs = 150;
+
     Ui_TaskOffset ui {};
     Part::Offset* offset {nullptr};
+    std::unique_ptr<Gui::AsyncPreviewSession> asyncPreviewSession;
 };
 
 /* TRANSLATOR PartGui::OffsetWidget */
@@ -106,6 +114,37 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
     d->ui.spinOffset->blockSignals(block);
 
     d->ui.spinOffset->bind(d->offset->Value);
+
+    Gui::AsyncPreviewController::Callbacks callbacks;
+    callbacks.makeRequest = [this]() {
+        auto* object = d->offset;
+        return object ? App::RecomputeRequest::fromDocumentObject(*object) : App::RecomputeRequest {};
+    };
+    callbacks.runSync = [this]() {
+        if (d->offset && d->offset->getDocument()) {
+            d->offset->getDocument()->recomputeFeature(d->offset);
+        }
+    };
+    d->asyncPreviewSession = std::make_unique<Gui::AsyncPreviewSession>(std::move(callbacks), this);
+    d->asyncPreviewSession->setSchedulerInterval(
+        App::GetApplication().isAsyncRecomputeEnabled() ? Private::AsyncPreviewDebounceMs : 0
+    );
+    connect(
+        d->asyncPreviewSession->controller(),
+        &Gui::AsyncPreviewController::recomputeSettled,
+        this,
+        &OffsetWidget::recomputeSettled
+    );
+    d->asyncPreviewSession->bindWidgets(
+        {
+            d->ui.previewStatusWidget,
+            d->ui.progressBarPreview,
+            d->ui.labelPreviewStatus,
+            d->ui.buttonCancelPreview,
+        },
+        [this](const char* text) { return tr(text); }
+    );
+    updateRecomputeUi();
 }
 
 OffsetWidget::~OffsetWidget()
@@ -138,63 +177,114 @@ Part::Offset* OffsetWidget::getObject() const
     return d->offset;
 }
 
+void OffsetWidget::schedulePreviewRecompute()
+{
+    if (d->asyncPreviewSession && d->ui.updateView->isChecked()) {
+        d->asyncPreviewSession->scheduleRecompute();
+    }
+}
+
+void OffsetWidget::flushPendingRecompute()
+{
+    if (d->asyncPreviewSession) {
+        d->asyncPreviewSession->flushPendingRecompute();
+    }
+}
+
+void OffsetWidget::stopPendingRecompute()
+{
+    if (d->asyncPreviewSession) {
+        d->asyncPreviewSession->stopPendingRecompute();
+    }
+}
+
+bool OffsetWidget::hasOutstandingRecompute() const
+{
+    return d->asyncPreviewSession && d->asyncPreviewSession->hasOutstandingRecompute();
+}
+
+void OffsetWidget::setDeferredClosePending(bool pending)
+{
+    if (d->asyncPreviewSession) {
+        d->asyncPreviewSession->setDeferredClosePending(pending);
+    }
+}
+
+void OffsetWidget::requestPreviewRecompute(bool waitForCompletion)
+{
+    if (d->asyncPreviewSession) {
+        d->asyncPreviewSession->requestRecompute(waitForCompletion);
+    }
+}
+
+void OffsetWidget::updateRecomputeUi()
+{
+    if (d->asyncPreviewSession) {
+        d->asyncPreviewSession->updateUi();
+    }
+}
+
 void OffsetWidget::onSpinOffsetValueChanged(double val)
 {
     d->offset->Value.setValue(val);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onModeTypeActivated(int val)
 {
     d->offset->Mode.setValue(val);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onJoinTypeActivated(int val)
 {
     d->offset->Join.setValue((long)val);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onIntersectionToggled(bool on)
 {
     d->offset->Intersection.setValue(on);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onSelfIntersectionToggled(bool on)
 {
     d->offset->SelfIntersection.setValue(on);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onFillOffsetToggled(bool on)
 {
     d->offset->Fill.setValue(on);
-    if (d->ui.updateView->isChecked()) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
-    }
+    schedulePreviewRecompute();
 }
 
 void OffsetWidget::onUpdateViewToggled(bool on)
 {
     if (on) {
-        d->offset->getDocument()->recomputeFeature(d->offset);
+        if (!d->asyncPreviewSession) {
+            return;
+        }
+
+        if (!d->asyncPreviewSession->triggerScheduledRecomputeNow()) {
+            requestPreviewRecompute(/*waitForCompletion=*/false);
+        }
+    }
+    else {
+        stopPendingRecompute();
     }
 }
 
-bool OffsetWidget::accept()
+bool OffsetWidget::accept(QDialogButtonBox* dialogButtonBox)
 {
+    const bool previewUpToDate = d->ui.updateView->isChecked();
+    flushPendingRecompute();
+    App::Document* document = d->offset->getDocument();
+    if (!document) {
+        return false;
+    }
+
     try {
         double offsetValue = d->ui.spinOffset->value().getValue();
         Gui::cmdAppObjectArgs(d->offset, "Value = %f", offsetValue);
@@ -213,16 +303,50 @@ bool OffsetWidget::accept()
         );
         Gui::cmdAppObjectArgs(d->offset, "Fill = %s", d->ui.fillOffset->isChecked() ? "True" : "False");
 
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        if (previewUpToDate) {
+            Gui::cmdAppObject(d->offset, "purgeTouched()");
+            for (auto parent : d->offset->getInList()) {
+                parent->touch();
+            }
+        }
+
+        const QString recomputeStatus = tr("Computing offset...");
+        const auto progressTarget = d->asyncPreviewSession
+            ? d->asyncPreviewSession
+                  ->makeInlineRecomputeProgressTarget(this, dialogButtonBox, recomputeStatus)
+            : Gui::AsyncInlineRecomputeProgressTarget {};
+        Gui::AsyncRecomputeDialogOptions recomputeOptions;
+        recomputeOptions.inlineProgressTarget = progressTarget;
+        const auto outcome = Gui::runAsyncDocumentRecomputeProgressDialog(
+            this,
+            tr("Offset"),
+            recomputeStatus,
+            document,
+            /*force=*/false,
+            recomputeOptions,
+            [document]() {
+                if (document) {
+                    document->recompute();
+                }
+            }
+        );
+        if (!outcome.success) {
+            if (outcome.canceled) {
+                return false;
+            }
+            throw Base::RuntimeError(
+                outcome.message.empty() ? "Offset recompute failed" : outcome.message
+            );
+        }
         if (!d->offset->isValid()) {
             throw Base::CADKernelError(d->offset->getStatusString());
         }
 
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
-        d->offset->getDocument()->commitTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
+        document->commitTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
     }
     catch (const Base::Exception& e) {
-        d->offset->getDocument()->abortTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
+        document->abortTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
         QMessageBox::warning(
             this,
             tr("Input error"),
@@ -236,6 +360,8 @@ bool OffsetWidget::accept()
 
 bool OffsetWidget::reject()
 {
+    stopPendingRecompute();
+
     // get the support and Sketch
     App::DocumentObject* source = d->offset->Source.getValue();
     if (source) {
@@ -255,6 +381,7 @@ void OffsetWidget::changeEvent(QEvent* e)
     QWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
         d->ui.retranslateUi(this);
+        updateRecomputeUi();
     }
 }
 
@@ -265,6 +392,7 @@ TaskOffset::TaskOffset(Part::Offset* offset)
 {
     widget = new OffsetWidget(offset);
     addTaskBox(Gui::BitmapFactory().pixmap("Part_Offset"), widget);
+    connect(widget, &OffsetWidget::recomputeSettled, this, &TaskOffset::onRecomputeSettled);
 }
 
 TaskOffset::~TaskOffset() = default;
@@ -282,12 +410,70 @@ void TaskOffset::clicked(int)
 
 bool TaskOffset::accept()
 {
-    return widget->accept();
+    if (!widget || deferredReject.pending) {
+        return false;
+    }
+
+    return widget->accept(buttonBox);
 }
 
 bool TaskOffset::reject()
 {
-    return widget->reject();
+    if (!widget) {
+        return false;
+    }
+
+    ensureDeferredRejectConnection();
+    widget->stopPendingRecompute();
+    if (!widget->hasOutstandingRecompute()) {
+        return rejectNow();
+    }
+
+    if (!deferredReject.pending) {
+        auto* object = getObject();
+        deferredReject.documentName = object && object->getDocument()
+            ? std::string(object->getDocument()->getName())
+            : std::string();
+        setDeferredRejectPending(true);
+    }
+
+    return false;
+}
+
+void TaskOffset::ensureDeferredRejectConnection()
+{
+    Gui::ensureDeferredDialogRejectConnection(
+        deferredReject,
+        widget,
+        &OffsetWidget::recomputeSettled,
+        this,
+        &TaskOffset::onRecomputeSettled
+    );
+}
+
+void TaskOffset::setDeferredRejectPending(bool pending)
+{
+    Gui::setDeferredDialogRejectPending(deferredReject, pending, buttonBox, [this](bool pending) {
+        if (widget) {
+            widget->setDeferredClosePending(pending);
+        }
+    });
+}
+
+bool TaskOffset::rejectNow()
+{
+    return widget && widget->reject();
+}
+
+void TaskOffset::onRecomputeSettled()
+{
+    Gui::finishDeferredDialogReject(
+        this,
+        deferredReject,
+        widget && !widget->hasOutstandingRecompute(),
+        [this]() { return rejectNow(); },
+        [this](bool pending) { setDeferredRejectPending(pending); }
+    );
 }
 
 #include "moc_TaskOffset.cpp"

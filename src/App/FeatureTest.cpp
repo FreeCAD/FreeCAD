@@ -34,6 +34,7 @@
 #include <Base/Unit.h>
 #include <CXX/Objects.hxx>
 
+#include "Application.h"
 #include "FeatureTest.h"
 #include "Material.h"
 #include "Range.h"
@@ -54,6 +55,7 @@ struct AsyncBlockerState
     std::condition_variable changed;
     bool started = false;
     bool proceed = false;
+    int executionCount = 0;
 };
 
 AsyncBlockerState& getAsyncBlockerState()
@@ -407,6 +409,7 @@ void FeatureTestAsyncBlocker::resetBlocker()
     std::lock_guard<std::mutex> lock(state.mutex);
     state.started = false;
     state.proceed = false;
+    state.executionCount = 0;
 }
 
 bool FeatureTestAsyncBlocker::waitUntilStarted(std::chrono::milliseconds timeout)
@@ -414,6 +417,20 @@ bool FeatureTestAsyncBlocker::waitUntilStarted(std::chrono::milliseconds timeout
     auto& state = getAsyncBlockerState();
     std::unique_lock<std::mutex> lock(state.mutex);
     return state.changed.wait_for(lock, timeout, [&state] { return state.started; });
+}
+
+bool FeatureTestAsyncBlocker::waitUntilExecutionCount(int count, std::chrono::milliseconds timeout)
+{
+    auto& state = getAsyncBlockerState();
+    std::unique_lock<std::mutex> lock(state.mutex);
+    return state.changed.wait_for(lock, timeout, [&state, count] { return state.executionCount >= count; });
+}
+
+int FeatureTestAsyncBlocker::getExecutionCount()
+{
+    auto& state = getAsyncBlockerState();
+    std::lock_guard<std::mutex> lock(state.mutex);
+    return state.executionCount;
 }
 
 void FeatureTestAsyncBlocker::releaseBlocker()
@@ -431,7 +448,14 @@ DocumentObjectExecReturn* FeatureTestAsyncBlocker::execute()
     auto& state = getAsyncBlockerState();
     std::unique_lock<std::mutex> lock(state.mutex);
     state.started = true;
+    ++state.executionCount;
     state.changed.notify_all();
     state.changed.wait(lock, [&state] { return state.proceed; });
+    lock.unlock();
+
+    if (App::currentRecomputeWasCanceled()) {
+        throw Base::UserAbortException();
+    }
+
     return StdReturn;
 }

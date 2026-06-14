@@ -32,8 +32,6 @@
 #include <App/Application.h>
 #include <App/Services.h>
 
-class SoDragger;
-
 namespace Gui
 {
 class QuantitySpinBox;
@@ -106,9 +104,8 @@ private Q_SLOTS:
     void onRotationChange(QuantitySpinBox* changed);
 
 private:
-    static inline bool firstDrag = true;
-    static void dragStartCallback(void* data, SoDragger* d);
-    static void dragMotionCallback(void* data, SoDragger* d);
+    void onDraggerInteraction(Gui::DraggerInteraction interaction);
+    void ensureTransformCommandOpen();
 
     void setSelectionMode(SelectionMode mode);
     SelectionMode getSelectionMode() const;

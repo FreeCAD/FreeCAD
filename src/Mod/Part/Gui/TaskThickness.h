@@ -25,8 +25,12 @@
 
 #pragma once
 
+#include <memory>
+
+#include <Gui/DeferredDialogRejectUtils.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace Gui
 {
@@ -41,7 +45,7 @@ class Thickness;
 namespace PartGui
 {
 
-class ThicknessWidget: public QWidget
+class PartGuiExport ThicknessWidget: public QWidget
 {
     Q_OBJECT
 
@@ -49,12 +53,23 @@ public:
     explicit ThicknessWidget(Part::Thickness*, QWidget* parent = nullptr);
     ~ThicknessWidget() override;
 
-    bool accept();
+    bool accept(QDialogButtonBox* dialogButtonBox = nullptr);
     bool reject();
+    void flushPendingRecompute();
+    void stopPendingRecompute();
+    bool hasOutstandingRecompute() const;
+    bool isFaceSelectionActive() const;
+    void setDeferredClosePending(bool pending);
     Part::Thickness* getObject() const;
+
+Q_SIGNALS:
+    void recomputeSettled();
 
 private:
     void setupConnections();
+    void schedulePreviewRecompute();
+    void requestPreviewRecompute(bool waitForCompletion);
+    void updateRecomputeUi();
     void onSpinOffsetValueChanged(double);
     void onModeTypeActivated(int);
     void onJoinTypeActivated(int);
@@ -76,7 +91,7 @@ private:
     Private* d;
 };
 
-class TaskThickness: public Gui::TaskView::TaskDialog
+class PartGuiExport TaskThickness: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -96,7 +111,16 @@ public:
     }
 
 private:
+    void ensureDeferredRejectConnection();
+    void setDeferredRejectPending(bool pending);
+    bool rejectNow();
+
+private Q_SLOTS:
+    void onRecomputeSettled();
+
+private:
     ThicknessWidget* widget;
+    Gui::DeferredDialogRejectState deferredReject;
 };
 
 }  // namespace PartGui
