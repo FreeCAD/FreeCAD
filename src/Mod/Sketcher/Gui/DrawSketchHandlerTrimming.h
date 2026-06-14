@@ -81,28 +81,43 @@ public:
     }
 };
 
-class DrawSketchHandlerTrimming: public DrawSketchHandler
+class DrawSketchHandlerTrimming;
+
+using DSHTrimmingController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerTrimming,
+    StateMachines::OneSeekEnd,
+    /*PAutoConstraintSize=*/0,
+    /*OnViewParametersT=*/OnViewParameters<0, 0>,
+    /*WidgetParametersT=*/WidgetParameters<0, 0>,
+    /*WidgetCheckboxesT=*/WidgetCheckboxes<1, 1>,
+    /*WidgetComboboxesT=*/WidgetComboboxes<0, 0>,
+    /*WidgetLineEditsT=*/WidgetLineEdits<0, 0>>;
+
+using DSHTrimmingControllerBase = DSHTrimmingController::ControllerBase;
+using DrawSketchHandlerTrimmingBase = DrawSketchControllableHandler<DSHTrimmingController>;
+
+class DrawSketchHandlerTrimming: public DrawSketchHandlerTrimmingBase
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerTrimming)
 
+    friend DSHTrimmingController;
+    friend DSHTrimmingControllerBase;
+
 public:
-    DrawSketchHandlerTrimming() = default;
+    DrawSketchHandlerTrimming()
+        : DrawSketchHandlerTrimmingBase()
+    {}
     ~DrawSketchHandlerTrimming() override
     {
         Gui::Selection().rmvSelectionGate();
     }
 
-    void mouseMove(SnapManager::SnapHandle snapHandle) override
+    void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
-        Base::Vector2d onSketchPos = snapHandle.compute();
-        if (mousePressed) {
-            executeCommands(onSketchPos);
-            return;
-        }
+        trimPos = onSketchPos;
+        geoIdToTrim = getPreselectCurve();
 
-        int GeoId = getPreselectCurve();
-
-        if (GeoId < 0) {
+        if (geoIdToTrim < 0) {
             EditMarkers.resize(0);
             drawEditMarkers(EditMarkers, 2);
         }
@@ -111,8 +126,9 @@ public:
         int GeoId1, GeoId2;
         Base::Vector3d intersect1, intersect2;
         if (!sk->seekTrimPoints(
-                GeoId,
+                geoIdToTrim,
                 Base::Vector3d(onSketchPos.x, onSketchPos.y, 0),
+                includeAxes,
                 GeoId1,
                 intersect1,
                 GeoId2,
@@ -127,7 +143,7 @@ public:
             EditMarkers.emplace_back(intersect1.x, intersect1.y);
         }
         else {
-            auto start = sk->getPoint(GeoId, Sketcher::PointPos::start);
+            auto start = sk->getPoint(geoIdToTrim, Sketcher::PointPos::start);
             EditMarkers.emplace_back(start.x, start.y);
         }
 
@@ -135,7 +151,7 @@ public:
             EditMarkers.emplace_back(intersect2.x, intersect2.y);
         }
         else {
-            auto end = sk->getPoint(GeoId, Sketcher::PointPos::end);
+            auto end = sk->getPoint(geoIdToTrim, Sketcher::PointPos::end);
             EditMarkers.emplace_back(end.x, end.y);
         }
 
@@ -143,30 +159,19 @@ public:
         drawEditMarkers(EditMarkers, 2);
     }
 
-    bool pressButton(Base::Vector2d onSketchPos) override
+    bool canGoToNextMode() override
     {
-        Q_UNUSED(onSketchPos);
-        mousePressed = true;
-
-        EditMarkers.resize(0);
-        drawEditMarkers(EditMarkers);
-
-        return true;
+        if (geoIdToTrim < 0) {
+            return false;
+        }
+        const Part::Geometry* geo = sketchgui->getSketchObject()->getGeometry(geoIdToTrim);
+        return geo->isDerivedFrom<Part::GeomTrimmedCurve>() || geo->is<Part::GeomCircle>()
+            || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomBSplineCurve>();
     }
 
-    bool releaseButton(Base::Vector2d onSketchPos) override
+    void executeCommands() override
     {
-        mousePressed = false;
-
-        executeCommands(onSketchPos);
-
-        return true;
-    }
-
-    void executeCommands(Base::Vector2d onSketchPos)
-    {
-        int GeoId = getPreselectCurve();
-        if (GeoId < 0) {
+        if (geoIdToTrim < 0) {
             return;
         }
 
@@ -175,49 +180,67 @@ public:
         // resulting in another edge being deleted.
         Gui::Selection().rmvPreselect();
 
-        const Part::Geometry* geo = sketchgui->getSketchObject()->getGeometry(GeoId);
-        if (geo->isDerivedFrom<Part::GeomTrimmedCurve>() || geo->is<Part::GeomCircle>()
-            || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomBSplineCurve>()) {
-            try {
-                openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(),
-                    "trim(%d,App.Vector(%f,%f,0))",
-                    GeoId,
-                    onSketchPos.x,
-                    onSketchPos.y
-                );
-                commitCommand();
-                tryAutoRecompute(sketchgui->getObject<Sketcher::SketchObject>());
-            }
-            catch (const Base::Exception&) {
-                Gui::NotifyError(
-                    sketchgui,
-                    QT_TRANSLATE_NOOP("Notifications", "Error"),
-                    QT_TRANSLATE_NOOP("Notifications", "Failed to trim edge")
-                );
-
-                abortCommand();
-            }
+        try {
+            openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
+            Gui::cmdAppObjectArgs(
+                sketchgui->getObject(),
+                "trim(%d,App.Vector(%f,%f,0),%s)",
+                geoIdToTrim,
+                trimPos.x,
+                trimPos.y,
+                includeAxes ? "True" : "False"
+            );
+            commitCommand();
+            tryAutoRecompute(sketchgui->getObject<Sketcher::SketchObject>());
+        }
+        catch (const Base::Exception&) {
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to trim edge")
+            );
+            abortCommand();
         }
     }
 
 private:
-    void activated() override
+    std::string getToolName() const override
     {
-        Gui::Selection().clearSelection();
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
+        return "DSH_Trimming";
     }
 
     QString getCrosshairCursorSVGName() const override
     {
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
         return QStringLiteral("Sketcher_Pointer_Trimming");
+    }
+
+    std::unique_ptr<QWidget> createWidget() const override
+    {
+        return std::make_unique<SketcherToolDefaultWidget>();
+    }
+
+    bool isWidgetVisible() const override
+    {
+        return true;
+    };
+
+    QPixmap getToolIcon() const override
+    {
+        return Gui::BitmapFactory().pixmap("Sketcher_Trimming");
+    }
+
+    QString getToolWidgetText() const override
+    {
+        return QString(tr("Trimming Parameters"));
     }
 
 private:
     std::vector<Base::Vector2d> EditMarkers;
-    bool mousePressed = false;
+    Base::Vector2d trimPos;
+    int geoIdToTrim = Sketcher::GeoEnum::GeoUndef;
+    bool includeAxes = false;
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
@@ -229,4 +252,28 @@ public:
     }
 };
 
+template<>
+void DSHTrimmingController::configureToolWidget()
+{
+    if (!init) {  // Code to be executed only upon initialisation
+        toolWidget->setCheckboxLabel(
+            WCheckbox::FirstBox,
+            QApplication::translate("TaskSketcherTool_c1_trimming", "Include axes")
+        );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::FirstBox,
+            QApplication::translate("TaskSketcherTool_c1_trimming", "Include axes as trim boundaries")
+        );
+    }
+    syncCheckboxToHandler(WCheckbox::FirstBox, handler->includeAxes);
+}
+
+template<>
+void DSHTrimmingController::adaptDrawingToCheckboxChange(int checkboxindex, bool value)
+{
+    if (checkboxindex == WCheckbox::FirstBox) {
+        handler->includeAxes = value;
+    }
+    handler->updateCursor();
+}
 }  // namespace SketcherGui

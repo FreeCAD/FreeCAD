@@ -310,7 +310,7 @@ TEST_F(SketchObjectTest, testTrimWithoutIntersection)
     Base::Vector3d trimPoint(2.0, 3.1, 0.0);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -335,7 +335,7 @@ TEST_F(SketchObjectTest, testTrimLineSegmentEnd)
     int geoId = getObject()->addGeometry(&lineSeg);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -370,7 +370,7 @@ TEST_F(SketchObjectTest, testTrimLineSegmentMid)
     int geoId = getObject()->addGeometry(&lineSeg);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -399,7 +399,7 @@ TEST_F(SketchObjectTest, testTrimCircleEnd)
     int geoId = getObject()->addGeometry(&circle);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -431,7 +431,7 @@ TEST_F(SketchObjectTest, testTrimCircleMid)
     int geoId = getObject()->addGeometry(&circle);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -463,7 +463,7 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleEnd)
     int geoId = getObject()->addGeometry(&arcOfCircle);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -497,7 +497,7 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
     int geoId = getObject()->addGeometry(&arcOfCircle);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -527,7 +527,7 @@ TEST_F(SketchObjectTest, testTrimEllipseEnd)
     int geoId = getObject()->addGeometry(&ellipse);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
@@ -566,7 +566,7 @@ TEST_F(SketchObjectTest, testTrimEllipseMid)
     getObject()->deleteUnusedInternalGeometry(geoId);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
@@ -602,7 +602,7 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineEnd)
     int geoId = getObject()->addGeometry(periodicBSpline.get());
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -637,7 +637,7 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineMid)
     int geoId = getObject()->addGeometry(periodicBSpline.get());
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
@@ -673,7 +673,7 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineEnd)
     int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
     // remove all internal geometry
     for (int iterGeoId = 0; iterGeoId < getObject()->getHighestCurveIndex(); ++iterGeoId) {
         getObject()->deleteUnusedInternalGeometryAndUpdateGeoId(iterGeoId);
@@ -712,7 +712,7 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     int geoId = getObject()->addGeometry(nonPeriodicBSpline.get());
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
     // remove all internal geometry
     for (int i = 0; i < getObject()->getHighestCurveIndex(); ++i) {
         if (getObject()->getGeometry(i)->is<Part::GeomBSplineCurve>()) {
@@ -760,7 +760,7 @@ TEST_F(SketchObjectTest, testTrimEffectOnConstruction)
     int geoId = getObject()->addGeometry(&circle, true);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -800,7 +800,7 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnFullLengthConstraints)
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Distance), 1);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -836,7 +836,7 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnSymmetricConstraints)
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Symmetric), 1);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
@@ -871,7 +871,7 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Tangent), 1);
 
     // Act
-    int result = getObject()->trim(geoId, trimPoint);
+    int result = getObject()->trim(geoId, trimPoint, false);
 
     // Assert
     EXPECT_EQ(result, 0);
