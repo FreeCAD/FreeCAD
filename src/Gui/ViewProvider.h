@@ -367,6 +367,19 @@ public:
      * @return          true if the deletion is approved by the view provider.
      */
     virtual bool onDelete(const std::vector<std::string>& subNames);
+
+    /**
+     * Override to redirect tree-view highlighting to a different object when
+     * an element (face/edge/vertex) on this object is selected in the 3D view.
+     *
+     * Return the DocumentObject that should be highlighted in the tree, or
+     * nullptr to use the default behavior (highlight this object).
+     *
+     * The Gui::Selection data and 3D highlight are NOT affected — only the
+     * tree item that gets highlighted changes. Subname is the full subname
+     * string from the selection (e.g. "Chamfer.Face3").
+     */
+    virtual App::DocumentObject* resolveTreeSelectTarget(const char* subname) const;
     /** Called before deletion
      *
      * Unlike onDelete(), this function is guaranteed to be called before

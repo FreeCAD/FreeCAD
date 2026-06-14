@@ -5907,7 +5907,22 @@ void DocumentItem::selectItems(SelectionReason reason)
     bool sync = (sels.size() > 50 || reason == SR_SELECT) ? false : true;
 
     for (const auto& sel : sels) {
-        findItemByObject(sync, sel.pObject, sel.SubName, true);
+        App::DocumentObject* obj = sel.pObject;
+        const char* sub = sel.SubName ? sel.SubName : "";
+
+        // Allow the object's ViewProvider to redirect which tree item is
+        // highlighted when an element is selected in the 3D view.
+        // The actual Gui::Selection data and 3D highlight are unchanged.
+        Gui::ViewProvider* vp = pDocument->getViewProvider(obj);
+        if (vp) {
+            if (App::DocumentObject* target = vp->resolveTreeSelectTarget(sub)) {
+                if (target->getDocument() == pDocument->getDocument()) {
+                    findItemByObject(sync, target, "", true);
+                    continue;
+                }
+            }
+        }
+        findItemByObject(sync, obj, sub, true);
     }
 
     DocumentObjectItem* newSelect = nullptr;
