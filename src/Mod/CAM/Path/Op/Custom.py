@@ -198,6 +198,7 @@ class ObjectCustom(PathOp.ObjectOp):
             else:
                 with open(gcode_file) as fd:
                     for l in fd.readlines():
+                        l = l.strip()
                         counter += 1
                         try:
                             newcommand = Path.Command(str(l))
