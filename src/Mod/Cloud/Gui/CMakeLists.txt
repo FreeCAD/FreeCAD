@@ -10,7 +10,10 @@ set(CloudGui_LIBS
     FreeCADGui
 )
 
-qt_add_resources(Cloud_QRC_SRCS Resources/Cloud.qrc)
+qt_add_resources(Cloud_QRC_SRCS
+    Resources/Cloud.qrc
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SET(CloudGui_SRCS
     ${Cloud_QRC_SRCS}

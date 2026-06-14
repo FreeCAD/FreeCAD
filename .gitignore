@@ -56,7 +56,8 @@ ui_*.h
 /src/Tools/offlinedoc/*.txt
 /src/Tools/offlinedoc/localwiki/
 /src/Mod/CAM/research/
-OpenSCAD_rc.py
+*_rc.py
+*_rc.rcc
 tags
 /CMakeUserPresets.json
 Testing
