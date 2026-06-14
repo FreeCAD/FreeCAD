@@ -55,6 +55,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawViewArch.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewDraft.h>
@@ -62,12 +63,18 @@
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
+#include "QGIEdge.h"
+#include "QGIFace.h"
+#include "QGIVertex.h"
 #include "QGIViewPart.h"
+#include "QGIViewBalloon.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
+#include "QGIView.h"
 #include "Rez.h"
 #include "TaskActiveView.h"
 #include "TaskComplexSection.h"
@@ -78,6 +85,8 @@
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "CommandHelpers.h"
+#include "TechDrawHandler.h"
+#include "TechDrawBalloonHandler.h"
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
@@ -1191,91 +1200,6 @@ bool CmdTechDrawProjectionGroup::isActive()
     return (havePage && !taskInProgress);
 }
 
-//! common checks of Selection for Dimension commands
-//non-empty selection, no more than maxObjs selected and at least 1 DrawingPage exists
-bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
-{
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                             QObject::tr("Select an object first"));
-        return false;
-    }
-
-    const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if (SubNames.size() > maxObjs) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                             QObject::tr("Too many objects selected"));
-        return false;
-    }
-
-    std::vector<App::DocumentObject*> pages =
-        cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    if (pages.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                             QObject::tr("Create a page first"));
-        return false;
-    }
-    return true;
-}
-
-bool _checkDrawViewPartBalloon(Gui::Command* cmd)
-{
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
-    if (!objFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                             QObject::tr("No view of a part in selection"));
-        return false;
-    }
-    return true;
-}
-
-bool _checkDirectPlacement(const QGIView* view, const std::vector<std::string>& subNames,
-                           QPointF& placement)
-{
-    // Let's see, if we can help speed up the placement of the balloon:
-    // As of now we support:
-    //     Single selected vertex: place the balloon tip end here
-    //     Single selected edge:   place the balloon tip at its midpoint (suggested placement for e.g. chamfer dimensions)
-    //
-    // Single selected faces are currently not supported, but maybe we could in this case use the center of mass?
-
-    if (subNames.size() != 1) {
-        // If nothing or more than one subjects are selected, let the user decide, where to place the balloon
-        return false;
-    }
-
-    const QGIViewPart* viewPart = dynamic_cast<const QGIViewPart*>(view);
-    if (!viewPart) {
-        //not a view of a part, so no geometry to attach to
-        return false;
-    }
-
-    std::string geoType = TechDraw::DrawUtil::getGeomTypeFromName(subNames[0]);
-    if (geoType == "Vertex") {
-        int index = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
-        TechDraw::VertexPtr vertex =
-            static_cast<DrawViewPart*>(viewPart->getViewObject())->getProjVertexByIndex(index);
-        if (vertex) {
-            placement = viewPart->mapToScene(Rez::guiX(vertex->x()), Rez::guiX(vertex->y()));
-            return true;
-        }
-    }
-    else if (geoType == "Edge") {
-        int index = TechDraw::DrawUtil::getIndexFromName(subNames[0]);
-        TechDraw::BaseGeomPtr geo =
-            static_cast<DrawViewPart*>(viewPart->getViewObject())->getGeomByIndex(index);
-        if (geo) {
-            Base::Vector3d midPoint(Rez::guiX(geo->getMidPoint()));
-            placement = viewPart->mapToScene(midPoint.x, midPoint.y);
-            return true;
-        }
-    }
-
-    return false;
-}
-
 DEF_STD_CMD_A(CmdTechDrawBalloon)
 
 CmdTechDrawBalloon::CmdTechDrawBalloon() : Command("TechDraw_Balloon")
@@ -1292,40 +1216,27 @@ CmdTechDrawBalloon::CmdTechDrawBalloon() : Command("TechDraw_Balloon")
 void CmdTechDrawBalloon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelectionBalloon(this, 1);
-    if (!result) {
+
+    auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
         return;
     }
 
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-
-    auto objFeat(dynamic_cast<TechDraw::DrawView*>(selection[0].getObject()));
-    if (!objFeat) {
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
         return;
     }
 
-    TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
-
-    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
-    ViewProviderPage* pageVP = freecad_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
-    ViewProviderDrawingView* viewVP =
-        freecad_cast<ViewProviderDrawingView*>(guiDoc->getViewProvider(objFeat));
-
-    if (pageVP && viewVP) {
-        QGVPage* viewPage = pageVP->getQGVPage();
-        QGSPage* scenePage = pageVP->getQGSPage();
-        if (viewPage) {
-            auto* view = dynamic_cast<QGIView*>(viewVP->getQView());
-            QPointF placement;
-            if (view && _checkDirectPlacement(view, selection[0].getSubNames(), placement)) {
-                //this creates the balloon if something is already selected
-                scenePage->createBalloon(placement, objFeat);
-                return;
-            }
-            viewPage->startBalloonPlacing(objFeat);
-        }
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
     }
+
+    TechDrawBalloonHandler* handler = new TechDrawBalloonHandler();
+    
+    viewPage->activateHandler(handler);
+
+    handler->addPreselected();
 }
 
 bool CmdTechDrawBalloon::isActive()
