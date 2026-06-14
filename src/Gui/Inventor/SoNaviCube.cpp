@@ -1784,6 +1784,12 @@ void SoNaviCube::addButtonFace(PickId pickId) const
         }
     };
 
+    const auto addPoint = [&](float x, float y) {
+        const auto index = static_cast<std::int32_t>(verts.size());
+        verts.push_back(transform(x, y));
+        return index;
+    };
+
     switch (pickId) {
         default:
             break;
@@ -1816,8 +1822,29 @@ void SoNaviCube::addButtonFace(PickId pickId) const
             const auto base = appendLoop({0.0F,   -18.0F, 18.0F,  -6.0F, 12.0F,  -6.0F, 12.0F, 8.0F,
                                           4.0F,   8.0F,   4.0F,   0.0F,  -4.0F,  0.0F,  -4.0F, 8.0F,
                                           -12.0F, 8.0F,   -12.0F, -6.0F, -18.0F, -6.0F});
-            appendTriangles(base, {10, 1, 0, 9, 2, 1, 9, 3, 2, 9, 8, 3,
-                                   8,  7, 3, 7, 4, 3, 7, 6, 5, 7, 5, 4});
+            const int roofTop = 0;
+            const int roofRight = 1;
+            const int rightWallTop = 2;
+            const int rightWallBottom = 3;
+            const int doorRightBottom = 4;
+            const int doorRightTop = 5;
+            const int doorLeftTop = 6;
+            const int doorLeftBottom = 7;
+            const int leftWallBottom = 8;
+            const int leftWallTop = 9;
+            const int roofLeft = 10;
+            const int doorRightLintel = addPoint(4.0F, -6.0F) - base;
+            const int doorLeftLintel = addPoint(-4.0F, -6.0F) - base;
+
+            // Keep the door as a true cutout: fill the roof, side walls, and lintel separately
+            // instead of drawing triangles through the opening.
+            appendTriangles(base, {roofLeft,        roofRight,       roofTop,
+                                   doorRightLintel, rightWallBottom, rightWallTop,
+                                   doorRightLintel, doorRightBottom, rightWallBottom,
+                                   leftWallTop,     doorLeftBottom,  doorLeftLintel,
+                                   leftWallTop,     leftWallBottom,  doorLeftBottom,
+                                   doorLeftLintel,  doorRightTop,    doorRightLintel,
+                                   doorLeftLintel,  doorLeftTop,     doorRightTop});
             break;
         }
         case PickId::Backside: {
