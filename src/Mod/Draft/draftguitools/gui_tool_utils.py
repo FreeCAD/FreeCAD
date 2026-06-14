@@ -314,7 +314,7 @@ def get_point(target, args, noTracker=False):
         )
         info = Gui.Snapper.snapInfo
         mask = Gui.Snapper.affinity
-    if not point:
+    if point is None:
         p = Gui.ActiveDocument.ActiveView.getCursorPos()
         point = Gui.ActiveDocument.ActiveView.getPoint(p)
         info = Gui.ActiveDocument.ActiveView.getObjectInfo(p)
