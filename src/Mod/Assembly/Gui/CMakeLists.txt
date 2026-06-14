@@ -67,7 +67,7 @@ SOURCE_GROUP("Module" FILES ${AssemblyGui_SRCS_Module})
 
 SET(AssemblyGui_SRCS
     ${AssemblyResource_SRCS}
-    ${AssemblyGui_UIC_HDRS}
+    ${AssemblyGui_UIC_SRCS}
     ${AssemblyGui_SRCS_Module}
     ${Python_SRCS}
 )
