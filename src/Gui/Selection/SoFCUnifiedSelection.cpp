@@ -181,6 +181,56 @@ std::size_t choosePreferredPick(const std::vector<Candidate>& picked)
 
 // *************************************************************************
 
+void AutoPreselection::setEnabled(SbBool on)
+{
+    if (!enabled && on) {
+        resetFrameCounter();
+    }
+
+    enabled = on;
+}
+
+void AutoPreselection::setMinumumFPS(double value)
+{
+    minFPS = value;
+}
+
+SbBool AutoPreselection::shouldDisablePreselection() const
+{
+    if (!enabled) {
+        return false;
+    }
+
+    double min = minFPS;
+    return std::all_of(frames.cbegin(), frames.cend(), [min](const auto& time) {
+        return time.frmpersec > 0.0 && time.frmpersec < min;
+    });
+}
+
+void AutoPreselection::resetFrameCounter()
+{
+    framecount = 0;
+    for (auto& it : frames) {
+        it.reset();
+    }
+
+    totalcoin = 0.0;
+}
+
+void AutoPreselection::addFrametime(double picktime)
+{
+    int index = framecount % arraySize;
+    framecount++;
+
+    totalcoin += (picktime - frames[index].traversal);
+    double coinfps = totalcoin / std::min(framecount, arraySize);
+
+    frames[index].traversal = picktime;
+    frames[index].frmpersec = 1.0 / coinfps;
+}
+
+// *************************************************************************
+
 SO_NODE_SOURCE(SoFCUnifiedSelection)
 
 /*!
@@ -509,7 +559,7 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
             }
         }
         else if (
-            preselectionMode.getValue() != OFF
+            preselectionMode.getValue() != SoFCUnifiedSelection::OFF
             && preselectAction->SelChange.Type == SelectionChanges::SetPreselect
         ) {
             if (currentHighlightPath) {
@@ -578,7 +628,7 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
 
     if (action->getTypeId() == SoFCSelectionAction::getClassTypeId()) {
         auto selectionAction = static_cast<SoFCSelectionAction*>(action);
-        if (selectionMode.getValue() == ON
+        if (selectionMode.getValue() == SoFCUnifiedSelection::ON
             && (selectionAction->SelChange.Type == SelectionChanges::AddSelection
                 || selectionAction->SelChange.Type == SelectionChanges::RmvSelection)) {
             // selection changes inside the 3d view are handled in handleEvent()
@@ -660,7 +710,7 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
             }
         }
         else if (
-            selectionMode.getValue() == ON
+            selectionMode.getValue() == SoFCUnifiedSelection::ON
             && selectionAction->SelChange.Type == SelectionChanges::SetSelection
         ) {
             std::vector<ViewProvider*> vps;
@@ -872,7 +922,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
                 return false;
             }
 
-            if (ok && preselectionMode == OFF) {
+            if (ok && preselectionMode == SoFCUnifiedSelection::OFF) {
                 snprintf(
                     buf,
                     512,
@@ -979,7 +1029,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
             type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
         }
 
-        if (preselectionMode == OFF) {
+        if (preselectionMode == SoFCUnifiedSelection::OFF) {
             snprintf(
                 buf,
                 512,
@@ -1032,7 +1082,10 @@ void SoFCUnifiedSelection::handleEvent(SoHandleEventAction* action)
         // NOTE: If preselection is off then we do not check for a picked point because otherwise
         // this search may slow down extremely the system on really big data sets. In this case we
         // just check for a picked point if the data set has been selected.
-        if (preselectionMode == AUTO || preselectionMode == ON) {
+        if (preselectionMode == SoFCUnifiedSelection::AUTO
+            || preselectionMode == SoFCUnifiedSelection::ON) {
+            autoPreselect.setEnabled(preselectionMode == SoFCUnifiedSelection::AUTO);
+            SbTime picktime = SbTime::getTimeOfDay();
             // check to see if the mouse is over our geometry...
             auto infos = this->getPickedList(action, true);
             if (!infos.empty()) {
@@ -1046,6 +1099,13 @@ void SoFCUnifiedSelection::handleEvent(SoHandleEventAction* action)
                     // because only from there the SoGLWidgetElement delivers the OpenGL window
                     this->touch();
                 }
+            }
+
+            picktime = SbTime::getTimeOfDay() - picktime;
+            autoPreselect.addFrametime(picktime.getValue());
+            if (autoPreselect.shouldDisablePreselection()) {
+                autoPreselect.setEnabled(false);
+                this->preselectionMode.setValue(SoFCUnifiedSelection::OFF);
             }
         }
     }
