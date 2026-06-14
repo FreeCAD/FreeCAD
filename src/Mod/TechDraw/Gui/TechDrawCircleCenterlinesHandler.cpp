@@ -29,6 +29,7 @@
 #include <QGraphicsItem>
 #include <vector>
 #include <string>
+#include <cmath>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -112,6 +113,10 @@ void execHoleCircle(std::vector<std::string> SubNames, TechDraw::DrawViewPart* o
     // make the center lines for the individual bolt holes
     constexpr double ExtendFactor{1.1};
     for (const TechDraw::CirclePtr& oneCircle : Circles) {
+        // If it is not on the big circle it should skip it
+        if (std::sqrt(std::pow(oneCircle->center.x - bigCenter.x, 2) + std::pow(oneCircle->center.y - bigCenter.y, 2)) != bigRadius) {
+            continue;
+        }
         // convert the center to canonical form
         Base::Vector3d oneCircleCenter = CosmeticVertex::makeCanonicalPointInverted(objFeat, oneCircle->center);
         // oneCircle->radius is scaled.
