@@ -478,7 +478,7 @@ public:
     );
 
     /// trim a curve
-    int trim(int geoId, const Base::Vector3d& point);
+    int trim(int geoId, const Base::Vector3d& point, bool includeSketchAxes);
     /// extend a curve
     int extend(int geoId, double increment, PointPos endPoint);
     /// Once smaller pieces have been created from a larger curve (by split or trim, say), derive
@@ -937,6 +937,7 @@ public:
     bool seekTrimPoints(
         int GeoId,
         const Base::Vector3d& point,
+        bool includeSketchAxes,
         int& GeoId1,
         Base::Vector3d& intersect1,
         int& GeoId2,
