@@ -59,6 +59,7 @@ public:
     // Display properties
     App::PropertyPercent Transparency;
     App::PropertyMaterialList ShapeAppearance;  // May be different from material
+    App::PropertyMaterial ShapeMaterial;
     App::PropertyBool BoundingBox;
     App::PropertyBool Selectable;
 
