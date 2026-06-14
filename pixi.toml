@@ -8,6 +8,7 @@ platforms = [ "linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64" ]
 requires-pixi = ">=0.48"
 
 [dependencies]
+anyio = "*"
 blinker = "*"
 calculix = "*"
 ccache = "*"
@@ -31,7 +32,7 @@ ifcopenshell = "*"
 lark = "*"
 libboost-devel = "*"
 lxml = "*"
-matplotlib = "*"
+matplotlib-base = "*"
 mcp = ">=1.27,<2.0"
 nine = "*"
 ninja = "*"
@@ -51,7 +52,6 @@ pre-commit = "*"
 pyright = "==1.1.408"
 pybind11 = "*"
 pycollada = "*"
-pyside6 = "*"
 python = ">=3.11,<3.12"
 pythonocc-core = "*"
 pyyaml = "*"
@@ -110,6 +110,7 @@ xorg-xproto = "*"
 [target.linux-aarch64.dependencies]
 clang = "*"
 clangxx = "*"
+pyside6 = "*"
 kernel-headers_linux-aarch64 = "*"
 libdrm-cos7-aarch64 = "*"
 libglvnd-cos7-aarch64 = "*"
@@ -159,6 +160,18 @@ winpthreads-devel = "*"
 
 [pypi-dependencies]
 freecad-stubs = "*"
+
+[target.linux-64.pypi-dependencies]
+pyside6 = "==6.8.3"
+
+[target.osx-64.pypi-dependencies]
+pyside6 = "==6.8.3"
+
+[target.osx-arm64.pypi-dependencies]
+pyside6 = "==6.8.3"
+
+[target.win-64.pypi-dependencies]
+pyside6 = "==6.8.3"
 
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]
