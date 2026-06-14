@@ -810,6 +810,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/pycosat-0.6.6-py311h13e5629_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/pydantic-core-2.46.4-py311h3a14e8f_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/pyright-1.1.408-py311ha332486_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-64/pyside6-6.8.3-py311h4ef2287_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/python-3.11.14-h3999593_1_cpython.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/pythonocc-core-7.8.1.1-all_h8605edd_200.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/pyyaml-6.0.3-py311h53ebfaf_1.conda
@@ -863,8 +864,6 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/69/76/37c0ccd5ab968a6a438f9c623aeecc84c202ab2fabc6a8fd927580c15b5a/QtPy-2.4.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/99/bc/cdfb911f753b4b4f8e400d66d805e5718e32632837507b574a573b3efa24/freecad_stubs-1.0.21-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ad/74/082381f996baea3d6716d542c2184cb031e63f1cb6d4edca871fe82dd787/PySide6_Essentials-6.8.3-cp39-abi3-macosx_12_0_universal2.whl
-      - pypi: https://files.pythonhosted.org/packages/e5/89/162c763f2799786e16f9045aa599dcf126e0f5f6a517f1e0251ba0be17e6/shiboken6-6.8.3-cp39-abi3-macosx_12_0_universal2.whl
-      - pypi: https://files.pythonhosted.org/packages/ef/5f/dc408fb62a99d20e30f930f4de60c7d5c257d25a97baab600dc430f859bf/PySide6-6.8.3-cp39-abi3-macosx_12_0_universal2.whl
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/adwaita-icon-theme-49.0-unix_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiohappyeyeballs-2.6.2-pyhd8ed1ab_0.conda
@@ -1190,6 +1189,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pycosat-0.6.6-py311h3696347_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pydantic-core-2.46.4-py311hf7c400d_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pyright-1.1.408-py311he363849_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pyside6-6.8.3-py311h8511715_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/python-3.11.14-hec0b533_1_cpython.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pythonocc-core-7.8.1.1-all_hf024ef7_200.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pyyaml-6.0.3-py311hc290fe0_1.conda
@@ -1243,8 +1243,6 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/69/76/37c0ccd5ab968a6a438f9c623aeecc84c202ab2fabc6a8fd927580c15b5a/QtPy-2.4.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/99/bc/cdfb911f753b4b4f8e400d66d805e5718e32632837507b574a573b3efa24/freecad_stubs-1.0.21-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ad/74/082381f996baea3d6716d542c2184cb031e63f1cb6d4edca871fe82dd787/PySide6_Essentials-6.8.3-cp39-abi3-macosx_12_0_universal2.whl
-      - pypi: https://files.pythonhosted.org/packages/e5/89/162c763f2799786e16f9045aa599dcf126e0f5f6a517f1e0251ba0be17e6/shiboken6-6.8.3-cp39-abi3-macosx_12_0_universal2.whl
-      - pypi: https://files.pythonhosted.org/packages/ef/5f/dc408fb62a99d20e30f930f4de60c7d5c257d25a97baab600dc430f859bf/PySide6-6.8.3-cp39-abi3-macosx_12_0_universal2.whl
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiohappyeyeballs-2.6.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiosignal-1.4.0-pyhd8ed1ab_0.conda
@@ -11327,6 +11325,26 @@ packages:
   - pkg:pypi/pyright?source=hash-mapping
   size: 4105041
   timestamp: 1767872957953
+- conda: https://conda.anaconda.org/conda-forge/osx-64/pyside6-6.8.3-py311h4ef2287_0.conda
+  sha256: 6921cfedd21e814d3ef74e85a52feaf1806e7fa730afad4fbab8e423b75e0565
+  md5: 11f7504a1d371dfec1dd5105611ea31c
+  depends:
+  - __osx >=11.0
+  - libclang13 >=18.1.8
+  - libcxx >=18
+  - libxml2 >=2.13.7,<2.14.0a0
+  - libxslt >=1.1.39,<2.0a0
+  - python >=3.11,<3.12.0a0
+  - python_abi 3.11.* *_cp311
+  - qt6-main 6.8.3.*
+  - qt6-main >=6.8.3,<6.9.0a0
+  license: LGPL-3.0-only
+  license_family: LGPL
+  purls:
+  - pkg:pypi/pyside6?source=hash-mapping
+  - pkg:pypi/shiboken6?source=hash-mapping
+  size: 12478847
+  timestamp: 1743274063239
 - conda: https://conda.anaconda.org/conda-forge/osx-64/python-3.11.14-h3999593_1_cpython.conda
   build_number: 1
   sha256: 42a5106ae9f2a745f258ca187f811da1736e5d2f39ce33df200b00a34cfb47e6
@@ -14984,6 +15002,26 @@ packages:
   - pkg:pypi/pyright?source=hash-mapping
   size: 4108249
   timestamp: 1767873006306
+- conda: https://conda.anaconda.org/conda-forge/osx-arm64/pyside6-6.8.3-py311h8511715_0.conda
+  sha256: 141e5d6f8bd55060fc6f15b289adc02c7abafaa6fc03ca692c0677ed1a7864bd
+  md5: d1342f34813330d55597820e30bf2094
+  depends:
+  - __osx >=11.0
+  - libclang13 >=18.1.8
+  - libcxx >=18
+  - libxml2 >=2.13.7,<2.14.0a0
+  - libxslt >=1.1.39,<2.0a0
+  - python >=3.11,<3.12.0a0
+  - python_abi 3.11.* *_cp311
+  - qt6-main 6.8.3.*
+  - qt6-main >=6.8.3,<6.9.0a0
+  license: LGPL-3.0-only
+  license_family: LGPL
+  purls:
+  - pkg:pypi/pyside6?source=hash-mapping
+  - pkg:pypi/shiboken6?source=hash-mapping
+  size: 11807717
+  timestamp: 1743274071670
 - conda: https://conda.anaconda.org/conda-forge/osx-arm64/python-3.11.14-hec0b533_1_cpython.conda
   build_number: 1
   sha256: f1fc90c0929f744d0db11d1247cd97632134494cea2a99fa24996ad928e904a8
@@ -19389,20 +19427,6 @@ packages:
   sha256: aa56c135db924ecfaf50088baf32f737d28027419ca5fee67c0c7141b29184e3
   requires_dist:
   - shiboken6==6.8.3
-  requires_python: '>=3.9,<3.14'
-- pypi: https://files.pythonhosted.org/packages/e5/89/162c763f2799786e16f9045aa599dcf126e0f5f6a517f1e0251ba0be17e6/shiboken6-6.8.3-cp39-abi3-macosx_12_0_universal2.whl
-  name: shiboken6
-  version: 6.8.3
-  sha256: 483efc7dd53c69147b8a8ade71f7619c79ffc683efcb1dc4f4cb6c40bb23d29b
-  requires_python: '>=3.9,<3.14'
-- pypi: https://files.pythonhosted.org/packages/ef/5f/dc408fb62a99d20e30f930f4de60c7d5c257d25a97baab600dc430f859bf/PySide6-6.8.3-cp39-abi3-macosx_12_0_universal2.whl
-  name: pyside6
-  version: 6.8.3
-  sha256: 31f390c961b54067ae41360e5ea3b340ce0e0e5feadea2236c28226d3b37edcc
-  requires_dist:
-  - shiboken6==6.8.3
-  - pyside6-essentials==6.8.3
-  - pyside6-addons==6.8.3
   requires_python: '>=3.9,<3.14'
 - pypi: https://files.pythonhosted.org/packages/f0/b2/3205336262bf88d57f01503df81ede2a0b1eecbb2a7d58978a5e5625f7c1/PySide6_Essentials-6.8.3-cp39-abi3-manylinux_2_28_x86_64.whl
   name: pyside6-essentials
