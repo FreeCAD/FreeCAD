@@ -1,0 +1,24 @@
+General:
+  UUID: "04ff5d9b-ff60-432e-899a-c3111404ea04"
+  Author: "FreeCAD"
+  License: "CC-BY-SA-4.0"
+  Name: "Plastic (Generic)"
+  Description: >-
+    Generic prototype for engineering thermoplastics with POM/Delrin-class
+    machinability, suitable as a starter material for CAM exploration.
+    Soft plastics (HDPE, PE, PP) can run faster; reinforced or filled plastics
+    (glass-filled nylon, carbon-filled PEEK) typically run slower with
+    significantly higher tool wear. Specific plastic grades are available in
+    the Supplemental Materials addon.
+    Values are conservative engineering defaults for general-purpose
+    thermoplastic machining.
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Thermoplast"
+  Machinability:
+    UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+    SurfaceSpeedHSS: '150 m/min'
+    SurfaceSpeedCarbide: '300 m/min'
+    UnitCuttingForce: '250 N/mm^2'
+    ChipThicknessExponent: 0.25

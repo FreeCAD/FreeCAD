@@ -1,0 +1,31 @@
+General:
+  UUID: "d7576c15-f8e8-43b1-9e56-2bf6b0f8338b"
+  Author: "FreeCAD"
+  License: "CC-BY-SA-4.0"
+  Name: "Brass (Generic)"
+  Description: >-
+    Generic prototype for general brass (Cu-Zn) alloys, suitable as a starter
+    material for CAM exploration. Free-cutting brass (C36000) was historically
+    the 100% machinability baseline and can run significantly faster than
+    these defaults. Specific brass alloys are available in the Supplemental
+    Materials addon.
+    Surface speeds: derived from the brass HSS range of 90-210 m/min
+    (Wikipedia "Speeds and feeds", CC-BY-SA-4.0); 120 m/min is mid-conservative.
+    Unit cutting force and chip thickness exponent: published Kienzle-model
+    reference values for the CuZn brass class.
+Inherits:
+  Brass:
+    UUID: "4151e19c-fd6a-4ca4-83d4-d5e17d76cb9c"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Brass"
+  Machinability:
+    UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+    SurfaceSpeedHSS: '120 m/min'
+    SurfaceSpeedCarbide: '250 m/min'
+    UnitCuttingForce: '900 N/mm^2'
+    ChipThicknessExponent: 0.21
