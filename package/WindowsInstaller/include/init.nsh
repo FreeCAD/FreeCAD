@@ -7,6 +7,8 @@ Initialization functions
 #--------------------------------
 # User initialization
 
+!include WinVer.nsh
+
 Var FCLangName
 
 Function InitUser
@@ -105,13 +107,11 @@ SectionEnd
 # the selection states of the dictionary sections
 Function .onInit
 
-  ReadRegStr $R0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
-  ${if} $R0 == "5.0" # 2000
-  ${orif} $R0 == "5.1" # XP
-  ${orif} $R0 == "5.2" # 2003
-  ${orif} $R0 == "6.0" # Vista
-  ${orif} $R0 == "6.1" # 7
-    MessageBox MB_OK|MB_ICONSTOP "${APP_NAME} ${APP_VERSION} requires Windows 8 or newer." /SD IDOK
+  # qt6.8 has windows 10 1809 as minimum version, which is build 17763
+  # build number details at https://learn.microsoft.com/en-us/windows/release-health/release-information
+  ${ifnot} ${AtLeastWin10}
+  ${andifnot} ${AtLeastBuild} 17763
+    MessageBox MB_OK|MB_ICONSTOP "${APP_NAME} ${APP_VERSION} requires Windows 10 or newer." /SD IDOK
     Quit
   ${endif}
   
