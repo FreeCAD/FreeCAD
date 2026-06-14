@@ -25,7 +25,9 @@
 
 
 #include <algorithm>
+#include <cctype>
 #include <iostream>
+#include <ranges>
 #include <string>
 #include <vector>
 
@@ -35,13 +37,101 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include <App/Application.h>
+#include <App/PropertyContainer.h>
 #include "PropertyPythonObject.h"
-#include "DocumentObject.h"
 
 
 using namespace App;
 
 namespace {
+
+/**
+ * @brief Check whether a string is empty, blank or pure separators.
+ */
+bool isBlank(const std::string& str)
+{
+    return !std::ranges::any_of(str, [](unsigned char c) { return !std::isspace(c) && c != '/' && c != '\\'; });
+}
+
+enum class PathType : char8_t
+{
+    File,
+    Dir
+};
+
+/**
+ * @brief Collapse repeated slashes (e.g. home path "build/debug//" + "Mod").
+ */
+void normalizePath(std::string& path, PathType type = PathType::Dir)
+{
+    std::ranges::replace(path, '\\', '/');
+    auto out = path.begin();
+    for (auto it = path.begin(); it != path.end(); ++it) {
+        if (*it == '/' && out != path.begin() && *(out - 1) == '/') {
+            continue;
+        }
+        *out++ = *it;
+    }
+    path.erase(out, path.end());
+    if (type == PathType::Dir && !path.empty() && path.back() != '/') {
+        path.push_back('/');
+    }
+}
+
+/**
+ * @brief Add user defined Macros directory from preferences.
+ */
+void addUserMacroDir(Py::List& validDirs)
+{
+    static constexpr auto GROUP = "User parameter:BaseApp/Preferences/Macro";
+    static const auto group = App::GetApplication().GetParameterGroupByPath(GROUP);
+    static const auto defaultMacroDir = []() {
+        auto path = App::Application::getUserMacroDir();
+        normalizePath(path);
+        return path;
+    }();
+
+    validDirs.append(Py::String(defaultMacroDir));
+    auto path = group->GetASCII("MacroPath", defaultMacroDir.c_str());
+    normalizePath(path);
+
+    if (isBlank(path) || path == defaultMacroDir) {
+        return;
+    }
+
+    validDirs.append(Py::String(path));
+}
+
+/**
+ * @brief Add user system Macros directory from install dir.
+ */
+void addSystemMacroDir(Py::List& validDirs)
+{
+    const auto path = App::Application::getHomePath() + "Macro";
+    validDirs.append(Py::String(path));
+}
+
+/**
+ * @brief Add additional macro dirs set by command line argument --macro-path.
+ */
+void addAdditionalMacroDirs(Py::List& validDirs)
+{
+    auto& conf = App::Application::Config();
+    auto additional = conf.find("AdditionalMacroPaths");
+    if (additional == conf.end()) {
+        return;
+    }
+
+    auto paths = additional->second | std::ranges::views::split(';');
+    for (auto&& path : paths) {
+        std::string dir {path.begin(), path.end()};
+        normalizePath(dir);
+        if (!isBlank(dir)) {
+            validDirs.append(Py::String(dir));
+        }
+    }
+}
 
 /**
  * @brief Check whether a path starts with a given directory prefix.
@@ -52,24 +142,8 @@ namespace {
  */
 bool isUnderDirectory(std::string filePath, std::string directory)
 {
-    std::ranges::replace(filePath, '\\', '/');
-    std::ranges::replace(directory, '\\', '/');
-    // Collapse repeated slashes (e.g. home path "build/debug//" + "Mod")
-    auto collapseSlashes = [](std::string& s) {
-        auto out = s.begin();
-        for (auto it = s.begin(); it != s.end(); ++it) {
-            if (*it == '/' && out != s.begin() && *(out - 1) == '/') {
-                continue;
-            }
-            *out++ = *it;
-        }
-        s.erase(out, s.end());
-    };
-    collapseSlashes(filePath);
-    collapseSlashes(directory);
-    if (!directory.empty() && directory.back() != '/') {
-        directory += '/';
-    }
+    normalizePath(filePath, PathType::File);
+    normalizePath(directory);
     return filePath.starts_with(directory);
 }
 
@@ -121,7 +195,7 @@ bool isAllowedModule(const std::string& moduleName)
     Py::Module importlib(importlibUtil, true);
     Py::Callable findSpec(importlib.getAttr("find_spec"));
 
-    // FreeCAD adds each workbench directory to sys.path individually (e.g. .../Mod/Assembly/),
+    // FreeCAD adds each Mod directory to sys.path individually (e.g. .../Mod/Assembly/),
     // so a module stored as "Assembly.JointObject" in the FCStd is actually importable as just
     // "JointObject". Try the full name first, then the part after the first dot.
     std::vector<std::string> namesToTry = {moduleName};
@@ -154,11 +228,17 @@ bool isAllowedModule(const std::string& moduleName)
     if (!freecad.hasAttr("__ModDirs__")) {
         throw Py::RuntimeError("FreeCAD.__ModDirs__ not set -- FreeCADInit.py has not run yet");
     }
-    Py::List modDirs(freecad.getAttr("__ModDirs__"));
+    Py::List validDirs(freecad.getAttr("__ModDirs__"));
 
+    // Macros are valid sources too
+    addSystemMacroDir(validDirs);
+    addUserMacroDir(validDirs);
+    addAdditionalMacroDirs(validDirs);
+
+    const auto validDirsSize = static_cast<int>(validDirs.size());
     auto isUnderFreeCAD = [&](const std::string& path) {
-        for (int i = 0; i < static_cast<int>(modDirs.size()); ++i) {
-            if (isUnderDirectory(path, Py::String(modDirs[i]).as_std_string())) {
+        for (int i = 0; i < validDirsSize; ++i) {
+            if (isUnderDirectory(path, Py::String(validDirs[i]).as_std_string())) {
                 return true;
             }
         }
@@ -238,11 +318,11 @@ std::string PropertyPythonObject::toString() const
     std::string repr;
     Base::PyGILStateLocker lock;
     try {
-        Py::Module pickle(PyImport_ImportModule("json"), true);
-        if (pickle.isNull()) {
+        Py::Module json(PyImport_ImportModule("json"), true);
+        if (json.isNull()) {
             throw Py::Exception();
         }
-        Py::Callable method(pickle.getAttr(std::string("dumps")));
+        Py::Callable method(json.getAttr(std::string("dumps")));
         Py::Object dump;
         if (this->object.hasAttr("dumps")) {
             Py::Tuple args;
@@ -290,11 +370,11 @@ void PropertyPythonObject::fromString(const std::string& repr)
         if (repr.empty()) {
             return;
         }
-        Py::Module pickle(PyImport_ImportModule("json"), true);
-        if (pickle.isNull()) {
+        Py::Module json(PyImport_ImportModule("json"), true);
+        if (json.isNull()) {
             throw Py::Exception();
         }
-        Py::Callable method(pickle.getAttr(std::string("loads")));
+        Py::Callable method(json.getAttr(std::string("loads")));
         Py::Tuple args(1);
         args.setItem(0, Py::String(repr));
         Py::Object res = method.apply(args);
@@ -524,7 +604,7 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
         }
         else if (!load_failed) {
             Base::Console().warning(
-                "PropertyPythonObject::Restore: unsupported serialisation: %s\n",
+                "PropertyPythonObject::Restore: unsupported serialization: %s\n",
                 buffer.c_str());
         }
         restoreObject(reader);
