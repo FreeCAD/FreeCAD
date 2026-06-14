@@ -170,12 +170,32 @@ jobs:
       artifactBasename: Windows-${{ github.run_id }}
       skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
 
+  WindowsArm:
+    needs: [Gate, Prepare]
+    if: >-
+      needs.Prepare.result == 'success'
+      && !startsWith(github.head_ref, 'refs/heads/backport-')
+      && (github.event_name != 'pull_request'
+          || startsWith(github.event.pull_request.base.ref, 'releases/')
+          || contains(toJSON(github.event.pull_request.labels.*.name), 'Approved:'))
+    uses: ./.github/workflows/sub_buildWindows.yml
+    with:
+      artifactBasename: Windows-ARM-${{ github.run_id }}
+      runner: windows-11-arm
+      cmakeArchitecture: ARM64
+      libpackDownloadUrl: https://github.com/FreeCAD/FreeCAD-LibPack/releases/download/3.4.0/LibPack-1.2.0-v3.4.0-ARM64-Release.7z
+      libpackName: LibPack-1.2.0-v3.4.0-ARM64-Release
+      cacheKey: Windows-ARM
+      allowedToFail: true  # Experimental platform: don't block merges on failure (for now)
+      skipBuild: ${{ needs.Gate.outputs.should-run != 'true' }}
+
   WrapUp:
     needs: [
         Gate,
         Prepare,
         Pixi,
-        Windows
+        Windows,
+        WindowsArm
       ]
     if: always()
     uses: ./.github/workflows/sub_wrapup.yml
