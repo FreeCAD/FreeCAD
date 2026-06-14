@@ -1481,10 +1481,12 @@ void Cloud::Module::LinkXSetValue(std::string filename)
     // Starting from here the Document doesn't exist we must create it
     // and make it the active Document before Restoring
     App::Document* newDoc;
+    App::DocumentInitFlags newInitFlags;
     string newName;
     Document* currentDoc = GetApplication().getActiveDocument();
     newName = GetApplication().getUniqueDocumentName("unnamed");
-    newDoc = GetApplication().newDocument(newName.c_str(), (const char*)path.c_str(), true);
+    newInitFlags.createView = true;
+    newDoc = GetApplication().newDocument(newName.c_str(), (const char*)path.c_str(), newInitFlags);
     GetApplication().setActiveDocument(newDoc);
     this->cloudRestore((const char*)path.c_str());
     GetApplication().setActiveDocument(currentDoc);
