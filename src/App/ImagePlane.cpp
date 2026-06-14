@@ -36,6 +36,10 @@ ImagePlane::ImagePlane()
     ADD_PROPERTY_TYPE(ImageFile, (nullptr), "ImagePlane", App::Prop_None, "File of the image");
     ADD_PROPERTY_TYPE(XSize, (100), "ImagePlane", App::Prop_None, "Size of a pixel in X");
     ADD_PROPERTY_TYPE(YSize, (100), "ImagePlane", App::Prop_None, "Size of a pixel in Y");
+    ADD_PROPERTY_TYPE(CropLeft, (0.0), "ImagePlane", App::Prop_None, "Left crop distance");
+    ADD_PROPERTY_TYPE(CropRight, (0.0), "ImagePlane", App::Prop_None, "Right crop distance");
+    ADD_PROPERTY_TYPE(CropTop, (0.0), "ImagePlane", App::Prop_None, "Top crop distance");
+    ADD_PROPERTY_TYPE(CropBottom, (0.0), "ImagePlane", App::Prop_None, "Bottom crop distance");
 }
 
 int ImagePlane::getXSizeInPixel()

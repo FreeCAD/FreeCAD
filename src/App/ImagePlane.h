@@ -43,6 +43,10 @@ public:
     App::PropertyFileIncluded ImageFile;
     App::PropertyLength XSize;
     App::PropertyLength YSize;
+    App::PropertyLength CropLeft;
+    App::PropertyLength CropRight;
+    App::PropertyLength CropTop;
+    App::PropertyLength CropBottom;
 
     int getXSizeInPixel();
     int getYSizeInPixel();
