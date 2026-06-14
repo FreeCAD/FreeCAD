@@ -1702,7 +1702,8 @@ class Snapper:
                 self.extLine2 = self.trackers[8][i]
                 self.holdTracker = self.trackers[9][i]
             else:
-                self.grid = trackers.gridTracker()
+                doc_name = App.ActiveDocument.Name if App.ActiveDocument is not None else None
+                self.grid = trackers.gridTracker(doc_name)
                 if params.get_param("alwaysShowGrid"):
                     self.grid.show_always = True
                 if params.get_param("grid"):
