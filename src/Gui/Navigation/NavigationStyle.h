@@ -296,6 +296,7 @@ protected:
 
     SbBool handleEventInForeground(const SoEvent* const e);
     virtual SbBool processSoEvent(const SoEvent* const ev);
+    bool offerEventToViewer(const SoEvent* const ev);
     void syncWithEvent(const SoEvent* const ev);
     virtual void openPopupMenu(const SbVec2s& position);
 
@@ -313,6 +314,12 @@ protected:
     void updateSelectionStartPosition(SbBool press, const SbVec2s& position);
     void setSelectionStartPosition(const SbVec2s& position);
     void clearSelectionStartPosition();
+    bool handleSelectionDragMotion(
+        const SoLocation2Event* const ev,
+        ViewerMode& newmode,
+        bool additiveSelection = false,
+        bool allowBoxSelection = true
+    );
     bool tryStartBoxSelection(const SoLocation2Event* const ev, bool additiveSelection = false);
     bool tryStartBoxSelection(
         const SbVec2s& startPosition,
