@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   height="64"
+   width="64"
+   id="svg12"
+   sodipodi:docname="Sketcher_Pointer_Oblong_Frame_Center.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="5.1596698"
+     inkscape:cx="37.017873"
+     inkscape:cy="41.087901"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="symbol" />
+  <defs
+     id="defs16" />
+  <g
+     id="symbol"
+     style="fill:none;stroke:#cc0000;stroke-width:1.92924"
+     transform="matrix(1.0366786,0,0,1.0366786,-0.1467704,-6.1737144)">
+    <path
+       id="rect3"
+       d="m 33.903245,32 h 11.575434 c 4.27519,0 7.71695,3.44176 7.71695,7.71695 v 11.575434 c 0,4.275191 -3.44176,7.716951 -7.71695,7.716951 H 33.903245 c -4.275191,0 -7.71695,-3.44176 -7.71695,-7.716951 V 39.71695 C 26.186295,35.44176 29.628054,32 33.903245,32 Z" />
+    <path
+       id="rect3-1"
+       d="m 34.867862,36.823097 h 9.646198 c 2.137593,0 3.858472,1.720879 3.858472,3.858473 v 9.646197 c 0,2.137594 -1.720879,3.858472 -3.858472,3.858472 h -9.646198 c -2.137593,0 -3.858472,-1.720878 -3.858472,-3.858472 V 40.68157 c 0,-2.137594 1.720879,-3.858473 3.858472,-3.858473 z" />
+    <circle
+       cx="39.69096"
+       cy="45.504665"
+       id="circle6"
+       style="fill:none;stroke:#cc0000;stroke-width:1.92924"
+       r="3.8584757" />
+  </g>
+  <g
+     id="crosshair"
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter">
+    <path
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9"
+       id="path9" />
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "name": "5mm Endmill",
+  "shape": "endmill.fcstd",
+  "shape-type": "Endmill",
+  "parameter": {
+    "CuttingEdgeHeight": "30.0000 mm",
+    "Diameter": "5.0000 mm",
+    "Length": "50.0000 mm",
+    "ShankDiameter": "3.0000 mm"
+  },
+  "attribute": {}
+}

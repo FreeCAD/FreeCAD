@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg4199" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" height="64" width="64" version="1.1" xmlns:cc="http://creativecommons.org/ns#" viewBox="0 0 64 64.000001" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <metadata id="metadata4204">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(0 -988.36)">
+  <rect id="rect4151" style="color:#000000" fill-rule="evenodd" ry="10" height="56" width="56" y="992.36" x="4" fill="#eeeeec"/>
+  <g id="g4311" transform="matrix(.72726 0 0 .72726 8.7275 286.29)">
+   <g stroke="#2e3436">
+    <path id="path4144" d="m11.5 1002.4v35c0 4 0 4 20 4 21 0 21 0 21-4v-35c0-3.0001 0-3.0001-21-3-20-0.00004-20-0.00004-20 3z" fill-rule="evenodd" stroke-width="2" fill="#fff"/>
+    <path id="path4195" d="m12.5 1028.4c0 9-1 12 2 12h16v-12z" fill-rule="evenodd" stroke-width=".5" fill="#fff"/>
+    <path id="path4169" d="m31.5 1027.4v14" stroke-width="2" fill="none"/>
+    <path id="path4167" d="m11.5 1027.4h41" stroke-width="2" fill="none"/>
+    <path id="path4154" d="m51.5 1028.4c0 10 1 12-2 12h-17v-12z" fill-rule="evenodd" stroke-width=".5" fill="#fff"/>
+   </g>
+   <g id="g4356" transform="matrix(.56104 0 0 -.55886 14.047 1583.6)" stroke="#eeeeec" stroke-width="2.8574" fill="#729fcf">
+    <g id="g4358" transform="matrix(0.5 0 0 0.5 20.237 506.39)" stroke="#eeeeec" stroke-width="5.7148" fill="#729fcf">
+     <ellipse id="ellipse4360" rx="5.7143" transform="matrix(2.625 0 0 2.6667 -17.723 791.04)" stroke="#eeeeec" ry="5.625" cy="88.839" cx="15.714" stroke-width="2.16" fill="#729fcf"/>
+    </g>
+   </g>
+   <g id="g4262" transform="matrix(.67438 0 0 .67438 -32.74 326.31)" fill="none">
+    <path id="path4170-6" d="m102 1009.1-6-6.0001-6 6.0001" stroke="#2e3436" stroke-width="4"/>
+    <path id="path4145" d="m101 1008.1-5-5.0001-5 5.0001" stroke="#729fcf" stroke-width="2"/>
+   </g>
+   <g id="g4477" transform="matrix(.67438 0 0 -.67438 -32.74 1700.4)" fill="none">
+    <path id="path4479" d="m102 1009.1-6-6.0001-6 6.0001" stroke="#2e3436" stroke-width="4"/>
+    <path id="path4481" d="m101 1008.1-5-5.0001-5 5.0001" stroke="#729fcf" stroke-width="2"/>
+   </g>
+   <g id="g4493" transform="matrix(0 .67438 -.67438 0 721.05 948.62)" fill="none">
+    <path id="path4495" d="m102 1009.1-6-6.0001-6 6.0001" stroke="#2e3436" stroke-width="4"/>
+    <path id="path4497" d="m101 1008.1-5-5.0001-5 5.0001" stroke="#729fcf" stroke-width="2"/>
+   </g>
+   <g id="g4499" transform="matrix(0 .67438 .67438 0 -657.05 948.62)" fill="none">
+    <path id="path4501" d="m102 1009.1-6-6.0001-6 6.0001" stroke="#2e3436" stroke-width="4"/>
+    <path id="path4503" d="m101 1008.1-5-5.0001-5 5.0001" stroke="#729fcf" stroke-width="2"/>
+   </g>
+  </g>
+  <g id="g5846" transform="translate(-.50298 -.65930)" stroke="#2e3436" stroke-linecap="round" stroke-width="1.3" fill="none">
+   <path id="path5814" stroke-linejoin="round" d="m19 1005.4 3-8 3 8"/>
+   <path id="path5816" d="m20 1003.4h4"/>
+   <path id="path5818" stroke-linejoin="round" d="m32 1005.4h-4v-8"/>
+   <g>
+    <path id="path5820" d="m33 997.36h6"/>
+    <path id="path5822" d="m36 997.36v8"/>
+    <path id="path5826" d="m40 1002.4h6"/>
+    <path id="path5828" d="m43 999.36v6"/>
+   </g>
+  </g>
+ </g>
+</svg>

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource>
+        <file>ui/preferences-import.ui</file>
+    </qresource>
+</RCC>

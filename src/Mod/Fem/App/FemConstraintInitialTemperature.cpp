@@ -1,0 +1,86 @@
+/***************************************************************************
+ *   Copyright (c) 2015 FreeCAD Developers                                 *
+ *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
+ *            Ruan Olwagen <olwager@eskom.co.za>                           *
+ *            Oswald van Ginkel <vginkeo@eskom.co.za>                      *
+ *   Based on Force constraint by Jan Rheinländer                          *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+
+#include "FemConstraintInitialTemperature.h"
+
+
+using namespace Fem;
+
+PROPERTY_SOURCE(Fem::ConstraintInitialTemperature, Fem::Constraint)
+
+ConstraintInitialTemperature::ConstraintInitialTemperature()
+{
+    ADD_PROPERTY(InitialTemperature, (300.0));
+    ADD_PROPERTY(EnableFinalTemperature, (false));
+    ADD_PROPERTY(FinalTemperature, (300.0));
+    ADD_PROPERTY_TYPE(
+        EnableAmplitude,
+        (false),
+        "",
+        (App::PropertyType)(App::Prop_None),
+        "Amplitude of the final temperature field"
+    );
+    ADD_PROPERTY_TYPE(
+        AmplitudeValues,
+        (std::vector<std::string> {"0, 0", "1, 1"}),
+        "",
+        (App::PropertyType)(App::Prop_None),
+        "Amplitude values"
+    );
+}
+
+App::DocumentObjectExecReturn* ConstraintInitialTemperature::execute()
+{
+    return Constraint::execute();
+}
+
+const char* ConstraintInitialTemperature::getViewProviderName() const
+{
+    return "FemGui::ViewProviderFemConstraintInitialTemperature";
+}
+
+void ConstraintInitialTemperature::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
+{
+    if (strcmp(propName, "initialTemperature") == 0
+        && (strcmp(typeName, "App::PropertyTemperature") == 0
+            || strcmp(typeName, "App::PropertyFloat") == 0)) {
+        App::PropertyTemperature initialTemp;
+        initialTemp.Restore(reader);
+        InitialTemperature.setValue(initialTemp.getValue());
+    }
+    else {
+        Constraint::handleChangedPropertyName(reader, typeName, propName);
+    }
+}
+
+void ConstraintInitialTemperature::onChanged(const App::Property* prop)
+{
+    Constraint::onChanged(prop);
+}

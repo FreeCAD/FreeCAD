@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>504</width>
+    <height>549</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Help</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Source</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0">
+       <widget class="Gui::PrefRadioButton" name="radioButton_2">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>Fetches the documentation from pages rendered on GitHub.
+This is currently not available.</string>
+        </property>
+        <property name="text">
+         <string>GitHub (online)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>optionGithub</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Help</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="Gui::PrefRadioButton" name="radioOffline">
+        <property name="toolTip">
+         <string>Set this to a custom URL or the folder where the help files are located.
+You can easily download the documentation for offline use by using the Addon
+Manager and installing the &quot;offline-documentation&quot; addon. If this
+field is left blank, FreeCAD will automatically search for the help files at
+the default location ($USERAPPDATADIR/Mod/offline-documentation).</string>
+        </property>
+        <property name="text">
+         <string>Custom location</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>optionCustom</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Help</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="Gui::PrefLineEdit" name="lineEdit_2">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>A translation suffix to use, for example &quot;fr&quot;
+to get French translation of the documentation.</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>Suffix</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Help</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::PrefFileChooser" name="fileChooser">
+        <property name="toolTip">
+         <string>Set this to a custom URL or the folder where the help files are located.
+Documentation can be downloaded for offline use via the Addon Manager and installing the
+&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
+automatically search for the help files at the default location
+($USERAPPDATADIR/Mod/offline-documentation).</string>
+        </property>
+        <property name="mode">
+         <enum>Gui::FileChooser::Directory</enum>
+        </property>
+        <property name="fileName">
+         <string/>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>Location</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Help</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>Translation suffix</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="Gui::PrefRadioButton" name="radioButton">
+        <property name="toolTip">
+         <string>The documentation pages will be fetched from the official
+FreeCADwiki at https://wiki.freecad.org</string>
+        </property>
+        <property name="text">
+         <string>FreeCAD Wiki (online)</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>optionWiki</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Help</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefRadioButton" name="radioOnline">
+        <property name="toolTip">
+         <string>The documentation pages will be fetched from an automatic Markdown conversion
+of the FreeCAD wiki,hosted on FreeCAD's GitHub account. This can be styled with a
+custom stylesheet below and can look nicer than the wiki option. The 'Markdown' or
+'Pandoc' Python module should be installed for optimal results.</string>
+        </property>
+        <property name="text">
+         <string>Markdown version (online)</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>optionMarkdown</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Help</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Display</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefRadioButton" name="radioBrowser">
+        <property name="toolTip">
+         <string>The documentation will open in the default web browser</string>
+        </property>
+        <property name="text">
+         <string>In the default web browser</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>optionBrowser</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Help</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefRadioButton" name="radioTab">
+        <property name="toolTip">
+         <string>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</string>
+        </property>
+        <property name="text">
+         <string>In a FreeCAD tab</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>optionTab</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Help</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefRadioButton" name="radioDialog">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+        <string>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
+Requires the PySide QtWebengineWidgets component.</string>
+        </property>
+        <property name="text">
+         <string>In a separate, embeddable dialog</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>optionDialog</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Help</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Custom stylesheet</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefFileChooser" name="styleSheet">
+          <property name="toolTip">
+          <string>Specify the path to an alternative CSS file for styling Markdown pages.
+This only applies if Markdown is selected above.</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>StyleSheet</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Help</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFileChooser</class>
+   <extends>Gui::FileChooser</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefRadioButton</class>
+   <extends>QRadioButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

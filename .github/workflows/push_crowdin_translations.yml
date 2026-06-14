@@ -1,0 +1,47 @@
+name: Push Crowdin Translations
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  update-crowdin:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Install Qt ≥ 6.8
+        uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730
+        with:
+          aqtversion: "==3.1.*"
+          version: "6.8.3"
+          host: "linux"
+          target: "desktop"
+          arch: "linux_gcc_64"
+
+      - name: Setup Python & dependencies
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: "3.13"
+      - name: Install Python packages
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pyside6
+
+      - name: Push translations to Crowdin
+        run: |
+          ./updatecrowdin.py gather
+          ./updatecrowdin.py upload
+        working-directory: ./src/Tools
+        env:
+          CROWDIN_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
+          CROWDIN_PROJECT_ID: freecad

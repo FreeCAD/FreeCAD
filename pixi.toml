@@ -1,0 +1,217 @@
+[workspace]
+name = "Parashell"
+version = "1.2.0"
+description = "pixi instructions for Parashell"
+authors = ["parashell <dev@parashell.cloud>"]
+channels = ["conda-forge"]
+platforms = [ "linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64" ]
+requires-pixi = ">=0.48"
+
+[dependencies]
+blinker = "*"
+calculix = "*"
+ccache = "*"
+cmake = "*"
+coin3d = "*"
+compilers = ">=1.10,<1.11"
+conda-devenv = "*"
+debugpy = "*"
+defusedxml = "*"
+docutils = "*"
+doxygen = "*"
+eigen = ">=3.3,<5"
+fmt = "*"
+freetype = "*"
+git = "*"
+graphviz = "*"
+gtest= "*"
+harfbuzz = "*"
+hdf5 = "*"
+ifcopenshell = "*"
+lark = "*"
+libboost-devel = "*"
+lxml = "*"
+matplotlib = "*"
+mcp = ">=1.27,<2.0"
+nine = "*"
+ninja = "*"
+noqt5 = "*"
+numpy = ">=1.26,<1.27"
+occt = ">=7.8,<7.9"
+opencamlib = "*"
+opencv = "*"
+openssl = "*"
+pandas = "*"
+pcl = "*"
+pillow = ">=12.2,<13.0"
+pip = "*"
+pivy = "*"
+ply = "*"
+pre-commit = "*"
+pyright = "==1.1.408"
+pybind11 = "*"
+pycollada = "*"
+pyside6 = "*"
+python = ">=3.11,<3.12"
+pythonocc-core = "*"
+pyyaml = "*"
+qt6-main = ">=6.8,<6.9"
+requests = "*"
+scipy = "*"
+six = "*"
+smesh = "*"
+swig = "*"
+sympy = "*"
+tbb-devel = ">=2022,<2023"
+validators = ">=0.35,<1.0"
+vtk = "*"
+xerces-c = "*"
+xlutils = "*"
+yaml-cpp = "*"
+zlib = "*"
+zstd = "*"
+compiler-rt = ">=18.1.8,<22"
+
+## Linux Dependencies (x86-64)
+[target.linux-64.dependencies]
+clang = "*"
+clangxx = "*"
+kernel-headers_linux-64 = "*"
+libdrm-cos7-x86_64 = "*"
+libselinux-cos7-x86_64 = "*"
+libsepol-cos7-x86_64 = "*"
+libspnav = "*"
+libx11-common-cos7-x86_64 = "*"
+libx11-cos7-x86_64 = "*"
+libxau-cos7-x86_64 = "*"
+libxcb-cos7-x86_64 = "*"
+libxdamage-cos7-x86_64 = "*"
+libxext-cos7-x86_64 = "*"
+libxfixes-cos7-x86_64 = "*"
+libxi-cos7-x86_64 = "*"
+libxi-devel-cos7-x86_64 = "*"
+libxxf86vm-cos7-x86_64 = "*"
+llvm-openmp = "*"
+mesa-dri-drivers-cos7-x86_64 = "*"
+mesa-libegl-cos7-x86_64 = "*"
+mesa-libegl-devel-cos7-x86_64 = "*"
+mesa-libgl-cos7-x86_64 = "*"
+mesa-libgl-devel-cos7-x86_64 = "*"
+mold = "*"
+pixman-cos7-x86_64 = "*"
+qt6-wayland = ">=6.8,<6.9"
+sed = "*"
+sysroot_linux-64 = "*"
+xorg-x11-server-common-cos7-x86_64 = "*"
+xorg-x11-server-xvfb-cos7-x86_64 = "*"
+xorg-xproto = "*"
+
+## Linux Dependencies (aarch64)
+[target.linux-aarch64.dependencies]
+clang = "*"
+clangxx = "*"
+kernel-headers_linux-aarch64 = "*"
+libdrm-cos7-aarch64 = "*"
+libglvnd-cos7-aarch64 = "*"
+libglvnd-glx-cos7-aarch64 = "*"
+libselinux-cos7-aarch64 = "*"
+libsepol-cos7-aarch64 = "*"
+libspnav = "*"
+libx11-common-cos7-aarch64 = "*"
+libx11-cos7-aarch64 = "*"
+libxau-cos7-aarch64 = "*"
+libxcb-cos7-aarch64 = "*"
+libxdamage-cos7-aarch64 = "*"
+libxext-cos7-aarch64 = "*"
+libxfixes-cos7-aarch64 = "*"
+libxi-cos7-aarch64 = "*"
+libxi-devel-cos7-aarch64 = "*"
+libxxf86vm-cos7-aarch64 = "*"
+llvm-openmp = "*"
+mesa-dri-drivers-cos7-aarch64 = "*"
+mesa-khr-devel-cos7-aarch64 = "*"
+mesa-libegl-cos7-aarch64 = "*"
+mesa-libegl-devel-cos7-aarch64 = "*"
+mesa-libgbm-cos7-aarch64 = "*"
+mesa-libgl-cos7-aarch64 = "*"
+mesa-libgl-devel-cos7-aarch64 = "*"
+mesa-libglapi-cos7-aarch64 = "*"
+mold = "*"
+pixman-cos7-aarch64 = "*"
+qt6-wayland = ">=6.8,<6.9"
+sed = "*"
+sysroot_linux-aarch64 = "*"
+xorg-x11-server-common-cos7-aarch64 = "*"
+xorg-x11-server-xvfb-cos7-aarch64 = "*"
+xorg-xproto = "*"
+
+## macOS Dependencies (Intel)
+[target.osx-64.dependencies]
+sed = "*"
+
+## macOS Dependencies (Apple Silicon)
+[target.osx-arm64.dependencies]
+sed = "*"
+
+[target.win-64.dependencies]
+libwinpthread = "*"
+winpthreads-devel = "*"
+
+[pypi-dependencies]
+freecad-stubs = "*"
+
+## Qt 6 Configuration Presets
+[target.linux-64.tasks]
+configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug", "{{ extra_args }}" ], args = [{ "arg" ="extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+
+[target.linux-aarch64.tasks]
+configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+
+[target.osx-64.tasks]
+configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+
+[target.osx-arm64.tasks]
+configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+
+[target.win-64.tasks]
+configure-debug = { cmd = [ "cmake", "--preset", "conda-windows-debug", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-windows-release", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+freecad-debug = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-debug"]}
+freecad-release = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-release"]}
+
+[tasks]
+initialize = { cmd = ["git", "submodule", "update", "--init", "--recursive"]}
+# redirect to debug by default
+configure = [{ task = "configure-debug" }]
+build = [{ task = "build-debug" }]
+install = [{ task = "install-debug" }]
+test = [{ task = "test-debug" }]
+freecad = [{ task = "freecad-debug" }]
+
+build-debug = { cmd = ["cmake", "--build", "build/debug"]}
+build-release = { cmd = ["cmake", "--build", "build/release"]}
+install-debug = { cmd = ["cmake", "--install", "build/debug"]}
+install-release = { cmd = ["cmake", "--install", "build/release"]}
+test-debug = { cmd = ["ctest", "--test-dir", "build/debug"]}
+test-release = { cmd = ["ctest", "--test-dir", "build/release"]}
+freecad-debug = "build/debug/bin/FreeCAD"
+freecad-release = "build/release/bin/FreeCAD"
+
+[feature.ps-plugins]
+platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
+
+[feature.ps-plugins.dependencies]
+python = ">=3.11,<3.12"
+
+[feature.ps-plugins.pypi-dependencies]
+PySide6 = "==6.8.3"
+mcp = ">=1.27,<2.0"
+Pillow = ">=12.2,<13.0"
+validators = ">=0.35,<1.0"
+
+[environments]
+ps-plugins = { features = ["ps-plugins"], no-default-feature = true }

@@ -1,0 +1,1088 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg2"
+   width="420mm"
+   height="297mm"
+   version="1.2"
+   viewBox="0 0 420 297"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:freecad="http://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+  <defs
+     id="defs1" />
+  <metadata
+     id="metadata849">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:date>13/10/2016</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <!-- DrawingContent -->
+  <path
+     id="path6"
+     d="m10.167 286.84h399.67"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path8"
+     d="m409.83 286.84v-276.67"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path10"
+     d="m409.83 10.163h-399.67"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path12"
+     d="m10.167 10.163v276.67"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path14"
+     d="m210 10.163v-9.9882"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path16"
+     d="m210 286.84v9.9882"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path18"
+     d="m10.167 148.5h-9.9917"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path20"
+     d="m409.83 148.5h9.9917"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path22"
+     d="m367.37 286.84v7.4912"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path24"
+     d="m52.631 286.84v7.4912"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path26"
+     d="m314.91 286.84v7.4912"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path28"
+     d="m105.09 286.84v7.4912"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path30"
+     d="m262.46 10.163v-7.4912"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path32"
+     d="m157.54 10.163v-7.4912"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path34"
+     d="m314.91 10.163v-7.4912"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path36"
+     d="m105.09 10.163v-7.4912"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path38"
+     d="m367.37 10.163v-7.4912"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path40"
+     d="m52.631 10.163v-7.4912"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path42"
+     d="m10.167 74.387h-7.4938"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path44"
+     d="m10.167 222.61h-7.4938"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path46"
+     d="m409.83 74.387h7.4938"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path48"
+     d="m409.83 222.61h7.4938"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path50"
+     d="m110.08 289.33h199.83"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path52"
+     d="m160.04 286.84v4.9941"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path54"
+     d="m259.96 286.84v4.9941"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path56"
+     d="m170.03 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path58"
+     d="m249.97 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path60"
+     d="m180.03 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path62"
+     d="m239.98 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path64"
+     d="m190.02 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path66"
+     d="m229.98 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path68"
+     d="m200.01 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path70"
+     d="m219.99 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path72"
+     d="m110.08 286.84v4.9941"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path74"
+     d="m309.92 286.84v4.9941"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path76"
+     d="m120.08 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path78"
+     d="m299.93 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path80"
+     d="m130.07 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path82"
+     d="m289.93 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path84"
+     d="m140.06 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path86"
+     d="m279.94 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path88"
+     d="m150.05 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path90"
+     d="m269.95 286.84v2.497"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path456"
+     d="m392.07 293.66h0.46361l0.3677-1.0278h1.3958l0.3677 1.0278h0.4736l-1.2799-3.5009h-0.51357zm0.99217-1.4553 0.53955-1.5422 0.53955 1.5422z"
+     fill-rule="evenodd" />
+  <path
+     id="path460"
+     d="m25.234 293.66h0.46861v-1.6421h1.4008v1.6421h0.46361v-3.4959h-0.46361v1.4253h-1.4008v-1.4253h-0.46861z"
+     fill-rule="evenodd" />
+  <path
+     id="path464"
+     d="m341.77 291.77 0.35271-0.29265 0.0909-0.19577 0.03-0.24171-0.0649-0.37856-0.19683-0.27168-0.31674-0.1658-0.44363-0.0609h-1.245v3.4959h1.3149l0.46861-0.0699 0.34771-0.20676 0.21682-0.32761 0.0759-0.44348-0.046-0.29665-0.1209-0.24671-0.19584-0.18178zm-0.64446-0.15581h-0.68543v-1.0328h0.7254l0.27277 0.03 0.19084 0.0909 0.1159 0.15582 0.041 0.23173-0.046 0.23172-0.1209 0.16181-0.20683 0.0999zm0.11091 1.6271h-0.79634v-1.2046h0.75038l0.31773 0.036 0.22681 0.10487 0.13589 0.18179 0.046 0.26169-0.046 0.27767-0.1259 0.19078-0.21182 0.11586z"
+     fill-rule="evenodd" />
+  <path
+     id="path468"
+     d="m79.781 293.19 0.08563 0.46845h0.25199v-1.8888h-1.2748v0.4285h0.78604v0.03l-0.06045 0.46346-0.16126 0.34259-0.2469 0.21675-0.30734 0.0699-0.34271-0.0899-0.26708-0.27268-0.17126-0.44847-0.06055-0.61427 0.05545-0.60929 0.17136-0.44847 0.27207-0.27168 0.36789-0.0959 0.25189 0.0499 0.20663 0.14083 0.15118 0.23772 0.08563 0.31663h0.49888l-0.13099-0.48343-0.24689-0.36257-0.34771-0.22174-0.43844-0.0809-0.57442 0.12585-0.43334 0.36857-0.27717 0.57932-0.09572 0.77009 0.09572 0.77608 0.27717 0.57932 0.40816 0.36757 0.51397 0.12085 0.28726-0.0399 0.25699-0.10088 0.22172-0.17679z"
+     fill-rule="evenodd" />
+  <path
+     id="path472"
+     d="m234.56 5.1742v1.1636h3.4971v-1.1636l-0.1109-0.54907-0.33772-0.40803-0.54855-0.25186-0.75137-0.090653-0.76536 0.080595-0.30275 0.10074-0.2418 0.14103-0.32773 0.40803-0.0809 0.26699zm0.41866 0.035258 0.0749-0.38285 0.23181-0.26192 0.41366-0.15617 0.60949-0.050381 0.58951 0.055415 0.41365 0.15616 0.2468 0.26699 0.0809 0.37276v0.65987h-2.6608z"
+     fill-rule="evenodd" />
+  <path
+     id="path476"
+     d="m185.6 6.227v-2.2164h-0.42265v1.753h-1.185v-1.5616h-0.41766v1.5616h-1.0481v-1.7127h-0.42365v2.1761z"
+     fill-rule="evenodd" />
+  <path
+     id="path480"
+     d="m289.22 4.3531 0.42365 0.10074 0.30175 0.16625 0.18684 0.23169 0.06 0.27202-0.0899 0.32743-0.27278 0.2569-0.44363 0.17128-0.61449 0.055415-0.60949-0.055415-0.44863-0.16624-0.27177-0.2569-0.0959-0.33247 0.05-0.24178 0.14188-0.20654 0.22681-0.16119 0.31174-0.1108v-0.47857l-0.4786 0.15113-0.3627 0.26193-0.22681 0.35767-0.0809 0.42815 0.12589 0.53398 0.35271 0.40799 0.57952 0.26196 0.78634 0.090653 0.78635-0.090653 0.57952-0.26196 0.3577-0.40799 0.1209-0.53398-0.0959-0.46847-0.26678-0.37779-0.43863-0.26696-0.59451-0.14107z"
+     fill-rule="evenodd" />
+  <path
+     id="path484"
+     d="m133.15 6.2017v-0.46847h-1.6077v-1.4709h-0.41765v1.4709h-1.0481v-1.8084h-0.42365v2.2769z"
+     fill-rule="evenodd" />
+  <path
+     id="path488"
+     d="m341.08 4.5395-0.29176-0.35261-0.19684-0.090683-0.2418-0.030234-0.37868 0.065503-0.27177 0.19646-0.16587 0.31734-0.0609 0.4433v1.2442h3.4971v-1.3147l-0.0699-0.46847-0.20683-0.34758-0.32772-0.2166-0.44363-0.075561-0.29676 0.045357-0.24679 0.12089-0.18185 0.19645zm-0.15587 0.64475v0.68507h-1.0331v-0.72537l0.03-0.27199 0.0909-0.19142 0.15587-0.11585 0.2318-0.040303 0.23181 0.045326 0.16187 0.12089 0.0999 0.20655zm1.6276-0.11081v0.79588h-1.205v-0.75055l0.036-0.31734 0.10492-0.22669 0.18185-0.13601 0.26178-0.045326 0.27777 0.045326 0.19084 0.12595 0.1159 0.21157z"
+     fill-rule="evenodd" />
+  <path
+     id="path492"
+     d="m80.222 4.2473 0.46861-0.085659v-0.25186h-1.8896v1.2744h0.42834v-0.78582h0.03017l0.46361 0.060449 0.34271 0.16122 0.21662 0.24681 0.07054 0.30729-0.09072 0.34252-0.27207 0.26699-0.44843 0.17128-0.61479 0.060449-0.60979-0.055415-0.44843-0.17128-0.27207-0.27202-0.09582-0.3677 0.05046-0.25187 0.14108-0.20655 0.2368-0.15109 0.31744-0.085659v-0.49867l-0.4837 0.13095-0.3628 0.24684-0.22172 0.34758-0.08063 0.43823 0.126 0.57425 0.36779 0.4332 0.57952 0.27708 0.77096 0.095677 0.77605-0.095677 0.57941-0.27708 0.36789-0.408 0.1209-0.51382-0.040266-0.28711-0.10082-0.2569-0.17635-0.22166z"
+     fill-rule="evenodd" />
+  <path
+     id="path496"
+     d="m395.43 6.7005v-0.46344l-1.0282-0.36773v-1.3953l1.0282-0.36774v-0.4735l-3.5021 1.2795v0.51379zm-1.4558-0.99236-1.5427-0.53897 1.5427-0.539z"
+     fill-rule="evenodd" />
+  <path
+     id="path500"
+     d="m28.235 6.3377v-0.46847h-1.6427v-1.4004h1.6427v-0.46344h-3.4971v0.46344h1.426v1.4004h-1.426v0.46847z"
+     fill-rule="evenodd" />
+  <path
+     id="path504"
+     d="m5.9038 112.71h0.035271l0.48375-0.0809 0.36281-0.23672 0.2318-0.37256 0.085669-0.49342-0.085669-0.52438-0.22172-0.39254-0.35273-0.2517-0.45352-0.0909-0.2973 0.04-0.24187 0.11087-0.18644 0.18178-0.13606 0.24172-0.2721-0.32762-0.43336-0.11586-0.39304 0.0759-0.2973 0.21675-0.18644 0.35258-0.065505 0.48343 0.080623 0.45347 0.22172 0.34759 0.35274 0.22673 0.46863 0.0749h0.035271v-0.44847l-0.3225-0.04-0.2318-0.13085-0.14109-0.21175-0.050388-0.29665 0.040316-0.26269 0.10582-0.19078 0.17133-0.11586 0.23179-0.046 0.24691 0.046 0.16629 0.12086 0.10078 0.21075 0.030235 0.28766-0.00504 0.19677h0.39808l-0.010072-0.24671 0.045352-0.31763 0.12093-0.23672 0.19653-0.14083 0.25699-0.0509 0.29227 0.0559 0.21668 0.14583 0.13606 0.23173 0.045352 0.30664-0.050398 0.31762-0.15116 0.23173-0.24188 0.14583-0.33257 0.0559z"
+     fill-rule="evenodd" />
+  <path
+     id="path508"
+     d="m7.0023 186.79v-2.4032h-0.43335v1.8988l-0.23684-0.10588-0.19652-0.18078-0.35777-0.55934-0.15117-0.29765-0.21668-0.33161-0.25195-0.23672-0.2973-0.13684-0.33762-0.0499-0.42328 0.0859-0.33257 0.23672-0.21164 0.36257-0.075587 0.46845 0.085669 0.48343 0.23683 0.36756 0.37793 0.23672 0.49886 0.0809h0.070551v-0.45846h-0.040317l-0.34265-0.045-0.25195-0.13684-0.16125-0.21574-0.055434-0.28766 0.050388-0.29166 0.12598-0.21674 0.19653-0.14184 0.24691-0.0499 0.2318 0.035 0.19652 0.0959 0.17133 0.16181 0.15117 0.22074 0.16125 0.29765 0.31242 0.49341 0.33258 0.34759 0.40312 0.20676 0.50894 0.0659z"
+     fill-rule="evenodd" />
+  <path
+     id="path512"
+     d="m413.56 112.18v0.035l0.0809 0.48343 0.2368 0.36257 0.37269 0.23172 0.49359 0.0859 0.52456-0.0859 0.39267-0.22173 0.25179-0.35259 0.0909-0.45346-0.04-0.29665-0.11091-0.24172-0.18184-0.18678-0.2418-0.13584 0.32772-0.27168 0.11591-0.43349-0.0759-0.39253-0.21682-0.29765-0.35271-0.18578-0.48359-0.0659-0.45363 0.0809-0.34771 0.22174-0.22681 0.35258-0.0749 0.46845v0.035h0.44862l0.04-0.32262 0.13089-0.23173 0.21182-0.14083 0.29676-0.0499 0.26278 0.04 0.19084 0.10587 0.1159 0.1708 0.046 0.23173-0.046 0.24671-0.1209 0.1668-0.21082 0.10088-0.28776 0.03-0.19684-5e-3v0.39754l0.2468-0.01 0.31773 0.0459 0.2368 0.12086 0.14089 0.19577 0.051 0.2567-0.0559 0.29265-0.14588 0.21675-0.2318 0.13584-0.30675 0.0449-0.31773-0.0499-0.23181-0.15082-0.14588-0.24172-0.0559-0.3326z"
+     fill-rule="evenodd" />
+  <path
+     id="path516"
+     d="m413.6 187.39h2.404v-0.43349h-1.8994l0.10591-0.23672 0.18085-0.19577 0.55953-0.35757 0.29776-0.15182 0.33172-0.21575 0.2368-0.2527 0.13689-0.29665 0.05-0.3376-0.0859-0.4235-0.2368-0.33261-0.3627-0.21075-0.46861-0.0759-0.4836 0.0859-0.36769 0.23673-0.23681 0.37755-0.0809 0.49841v0.0709h0.45862v-0.0399l0.045-0.3426 0.13689-0.2527 0.21682-0.16081 0.28676-0.0549 0.29176 0.0499 0.21682 0.12585 0.14188 0.19677 0.05 0.24671-0.035 0.23173-0.0959 0.19677-0.16187 0.17079-0.22082 0.15083-0.29775 0.16181-0.49359 0.31163-0.34771 0.33261-0.20683 0.40352-0.0659 0.5084z"
+     fill-rule="evenodd" />
+  <path
+     id="path520"
+     d="m7.0023 37.054v-0.45337h-0.86671v-0.49861h-0.40312v0.49861h-2.1517v0.45846l2.1114 1.5313h0.44344v-1.5364zm-1.2698 1.1133-1.5671-1.1133h1.5671z"
+     fill-rule="evenodd" />
+  <path
+     id="path524"
+     d="m7.0023 259.76v-0.45846h-3.5223v0.34259l0.30738 0.0909 0.2066 0.18078 0.12094 0.27768 0.040306 0.38254h0.35777v-0.81603z"
+     fill-rule="evenodd" />
+  <path
+     id="path528"
+     d="m415.11 39.162h0.45362v-0.86638h0.49958v-0.40302h-0.49958v-2.1509h-0.45862l-1.5317 2.1106v0.44328h1.5367zm-1.1131-1.2694 1.1131-1.5666v1.5666z"
+     fill-rule="evenodd" />
+  <path
+     id="path532"
+     d="m414.74 261.5h0.45862v-3.5208h-0.34272l-0.0909 0.30763-0.18085 0.20576-0.27677 0.12086-0.38368 0.041v0.35758h0.81632z"
+     fill-rule="evenodd" />
+  <path
+     id="path92"
+     d="m219.99 286.84h189.84"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path94"
+     d="m219.99 286.84v-59.929"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path96"
+     d="m219.99 226.91h189.84"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path98"
+     d="m409.83 226.91v59.929"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path100"
+     d="m219.99 282.84h164.86"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path102"
+     d="m219.99 269.86h164.86"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path104"
+     d="m219.99 256.87h164.86"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path106"
+     d="m219.99 241.89h44.963"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path108"
+     d="m384.85 280.18h24.979"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path110"
+     d="m384.85 273.52h24.979"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path112"
+     d="m384.85 266.86h24.979"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path114"
+     d="m384.85 260.2h24.979"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path116"
+     d="m384.85 253.54h24.979"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path118"
+     d="m384.85 246.88h24.979"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path120"
+     d="m384.85 240.22h24.979"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path122"
+     d="m384.85 233.57h24.979"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path124"
+     d="m239.98 282.84v-25.969"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path126"
+     d="m264.95 282.84v-55.934"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path128"
+     d="m364.87 282.84v-12.985"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path130"
+     d="m384.85 286.84v-59.929"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <path
+     id="path596"
+     d="m386.26 284.82h0.33073l0.26278-0.73413h0.99717l0.26278 0.73413h0.33872l-0.91424-2.5h-0.36769zm0.70941-1.0398 0.38468-1.1007 0.38468 1.1007z"
+     fill-rule="evenodd" />
+  <path
+     id="path604"
+     d="m387.8 276.81 0.25179-0.20875 0.0649-0.14084 0.022-0.17279-0.047-0.26968-0.13989-0.19377-0.22681-0.11886-0.31674-0.0439h-0.88925v2.497h0.93921l0.33472-0.0499 0.2488-0.14782 0.15487-0.23373 0.0539-0.31663-0.033-0.21175-0.0859-0.17679-0.14088-0.12984zm-0.46062-0.11187h-0.48959v-0.73813h0.51857l0.19484 0.022 0.13588 0.0649 0.0829 0.11187 0.029 0.16481-0.032 0.1658-0.0869 0.11487-0.14688 0.0719zm0.0789 1.1616h-0.56853v-0.85898h0.53655l0.22681 0.025 0.16187 0.0749 0.0969 0.12985 0.033 0.18678-0.033 0.19876-0.0899 0.13584-0.15087 0.0829z"
+     fill-rule="evenodd" />
+  <path
+     id="path612"
+     d="m387.94 270.57-0.0719 0.30264-0.1189 0.21575-0.16587 0.13284-0.19483 0.0439-0.23381-0.0649-0.18285-0.19477-0.12289-0.31663-0.04-0.43848 0.04-0.43549 0.1189-0.32062 0.18384-0.19377 0.23681-0.0689 0.17285 0.036 0.14788 0.10088 0.1149 0.16181 0.0799 0.22373h0.34171l-0.10791-0.34259-0.18784-0.2587-0.25479-0.16181-0.30674-0.0579-0.38069 0.0899-0.29175 0.25271-0.18785 0.41351-0.0639 0.56134 0.0639 0.56133 0.18785 0.41352 0.29175 0.2557 0.38069 0.0859 0.33472-0.0679 0.27077-0.19077 0.19084-0.31363 0.0999-0.4245z"
+     fill-rule="evenodd" />
+  <path
+     id="path620"
+     d="m387.35 262.34h-0.83131v2.4971h0.83131l0.39267-0.0789 0.29176-0.24171 0.17985-0.39154 0.0649-0.53637-0.058-0.54636-0.0719-0.21674-0.10092-0.1718-0.29175-0.23472-0.18984-0.0569zm-0.025 0.29865 0.27377 0.0539 0.18684 0.1658 0.11191 0.29465 0.036 0.43549-0.04 0.4215-0.1109 0.29465-0.19085 0.1758-0.26677 0.0579h-0.47161v-1.8998z"
+     fill-rule="evenodd" />
+  <path
+     id="path628"
+     d="m386.6 258.18h1.5837v-0.30164h-1.253v-0.84601h1.1161v-0.29864h-1.1161v-0.74812h1.224v-0.30265h-1.5547z"
+     fill-rule="evenodd" />
+  <path
+     id="path636"
+     d="m386.62 251.52h0.33472v-1.1476h1.0501v-0.29865h-1.0501v-0.74912h1.2919v-0.30164h-1.6266z"
+     fill-rule="evenodd" />
+  <path
+     id="path644"
+     d="m388.01 244.53 0.0609 0.3346h0.18085v-1.3494h-0.91124v0.30564h0.56153v0.022l-0.043 0.33061-0.1149 0.24471-0.17686 0.15482-0.21981 0.0509-0.2448-0.0649-0.18984-0.19478-0.1229-0.31962-0.043-0.43948 0.039-0.43549 0.1229-0.31962 0.19384-0.19477 0.26278-0.0679 0.18085 0.036 0.14688 0.10088 0.10791 0.1688 0.0619 0.22673h0.3557l-0.0929-0.34559-0.17685-0.25869-0.2488-0.15882-0.31274-0.0569-0.41066 0.0899-0.30874 0.26269-0.19883 0.41352-0.0679 0.55035 0.0679 0.55434 0.19883 0.41352 0.29076 0.26269 0.36769 0.0869 0.20483-0.029 0.18385-0.0719 0.15787-0.12585z"
+     fill-rule="evenodd" />
+  <path
+     id="path652"
+     d="m386.52 238.2h0.33472v-1.1726h1.0012v1.1726h0.33072v-2.4971h-0.33072v1.0188h-1.0012v-1.0188h-0.33472z"
+     fill-rule="evenodd" />
+  <path
+     id="path660"
+     d="m387.19 231.24h-0.46062v0.30264h1.253v-0.30264h-0.46062v-1.8928h0.46062v-0.30165h-1.253v0.30165h0.46062z"
+     fill-rule="evenodd" />
+  <text
+     id="text3331"
+     transform="scale(1.0002 .99983)"
+     x="220.94621"
+     y="232.89519"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.996px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="NomAuteur"
+     freecad:author="author"><tspan
+       id="tspan3333"
+       x="220.94621"
+       y="232.89519"
+       stroke-width=".12987">NOM AUTEUR</tspan></text>
+  <text
+     id="text3331-5"
+     transform="scale(1.0002 .99983)"
+     x="220.7397"
+     y="240.4381"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.996px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="DateDeCreation"
+     freecad:autofill="date"><tspan
+       id="tspan3333-6"
+       x="220.7397"
+       y="240.4381"
+       stroke-width=".12987">DATE DE CREATION</tspan></text>
+  <text
+     id="text3331-5-5"
+     transform="scale(1.0002 .99983)"
+     x="220.69489"
+     y="247.86339"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.996px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="NomSuperviseur"><tspan
+       id="tspan3333-6-9"
+       x="220.69489"
+       y="247.86339"
+       stroke-width=".12987">NOM SUPERVISEUR</tspan></text>
+  <text
+     id="text3331-5-3"
+     transform="scale(1.0002 .99983)"
+     x="220.64323"
+     y="255.27249"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.996px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="DateVerification"><tspan
+       id="tspan3333-6-1"
+       x="220.64323"
+       y="255.27249"
+       stroke-width=".12987">DATE VERIFICATION</tspan></text>
+  <text
+     id="text3331-5-9-1"
+     transform="scale(1.0002 .99983)"
+     x="229.88155"
+     y="265.74518"
+     fill="#000000"
+     font-family="Arial"
+     font-size="5.0749px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     text-align="center"
+     text-anchor="middle"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="A3"><tspan
+       id="tspan3316"
+       x="229.88155"
+       y="265.74518"
+       stroke-width=".12987">A3</tspan></text>
+  <text
+     id="text3331-5-9"
+     transform="scale(1.0002 .99983)"
+     x="229.75246"
+     y="278.47223"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.996px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     text-align="center"
+     text-anchor="middle"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="Echelle"
+     freecad:autofill="scale"><tspan
+       id="tspan3333-6-6"
+       x="229.75246"
+       y="278.47223"
+       stroke-width=".12987">ECHELLE</tspan></text>
+  <text
+     id="text3331-5-9-4"
+     transform="scale(1.0002 .99983)"
+     x="251.72014"
+     y="278.47223"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.996px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     text-align="center"
+     text-anchor="middle"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="Poids"><tspan
+       id="tspan3333-6-6-3"
+       x="251.72014"
+       y="278.47223"
+       stroke-width=".12987">POIDS</tspan></text>
+  <text
+     id="text3331-5-9-4-3"
+     transform="scale(1.0002 .99983)"
+     x="266.41663"
+     y="278.47223"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.996px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="Version"><tspan
+       id="tspan3333-6-6-3-8"
+       x="266.41663"
+       y="278.47223"
+       stroke-width=".12987">VERSION</tspan></text>
+  <text
+     id="text3331-5-9-4-3-9"
+     transform="scale(1.0002 .99983)"
+     x="374.77441"
+     y="278.47223"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.996px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     text-align="center"
+     text-anchor="middle"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="Feuille"
+     freecad:autofill="sheet"><tspan
+       id="tspan3333-6-6-3-8-7"
+       x="374.77441"
+       y="278.47223"
+       stroke-width=".12987">FEUILLE</tspan></text>
+  <text
+     id="text3331-0"
+     transform="scale(1.0002 .99983)"
+     x="322.54102"
+     y="241.19551"
+     fill="#000000"
+     font-family="Arial"
+     font-size="8.4582px"
+     font-weight="bold"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     text-align="center"
+     text-anchor="middle"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="Titre"
+     freecad:autofill="title"><tspan
+       id="tspan3333-5"
+       x="322.54102"
+       y="241.19551"
+       font-family="Arial"
+       font-size="8.4582px"
+       font-weight="bold"
+       stroke-width=".12987"
+       text-align="center"
+       text-anchor="middle"
+       style="line-height:125%">TITRE</tspan></text>
+  <text
+     id="text3331-0-4"
+     transform="scale(1.0002 .99983)"
+     x="322.54102"
+     y="248.8811"
+     fill="#000000"
+     font-family="Arial"
+     font-size="5.6388px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     text-align="center"
+     text-anchor="middle"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="Sous_titre"><tspan
+       id="tspan3333-5-6"
+       x="322.54102"
+       y="248.8811"
+       stroke-width=".12987">SOUS_TITRE</tspan></text>
+  <text
+     id="text241"
+     transform="scale(1.0002 .99983)"
+     x="266.53876"
+     y="264.17239"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.996px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="Societe"><tspan
+       id="tspan243"
+       x="266.53876"
+       y="264.17239"
+       stroke-width=".12987">SOCIETE</tspan></text>
+  <text
+     id="text287"
+     transform="scale(1.0002 .99983)"
+     x="220.60886"
+     y="285.88763"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.1013px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="COPYRIGHT"><tspan
+       id="tspan289"
+       x="220.60886"
+       y="285.88763"
+       stroke-width=".12987">COPYRIGHT</tspan></text>
+  <text
+     id="text275"
+     transform="scale(1.0002 .99983)"
+     x="390.95779"
+     y="284.51395"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.1013px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="A__"><tspan
+       id="tspan3245-0"
+       x="390.95779"
+       y="284.51395"
+       stroke-width=".12987">_________</tspan></text>
+  <text
+     id="text278"
+     transform="scale(1.0002 .99983)"
+     x="390.95779"
+     y="277.88495"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.1013px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="B__"><tspan
+       id="tspan280"
+       x="390.95779"
+       y="277.88495"
+       stroke-width=".12987">_________</tspan></text>
+  <text
+     id="text282"
+     transform="scale(1.0002 .99983)"
+     x="390.95779"
+     y="271.18945"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.1013px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="C__"><tspan
+       id="tspan284"
+       x="390.95779"
+       y="271.18945"
+       stroke-width=".12987">_________</tspan></text>
+  <text
+     id="text286"
+     transform="scale(1.0002 .99983)"
+     x="390.88663"
+     y="264.54691"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.1013px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="D__"><tspan
+       id="tspan288"
+       x="390.88663"
+       y="264.54691"
+       stroke-width=".12987">_________</tspan></text>
+  <text
+     id="text290"
+     transform="scale(1.0002 .99983)"
+     x="390.81546"
+     y="257.93546"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.1013px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="E__"><tspan
+       id="tspan292"
+       x="390.81546"
+       y="257.93546"
+       stroke-width=".12987">_________</tspan></text>
+  <text
+     id="text294"
+     transform="scale(1.0002 .99983)"
+     x="390.88663"
+     y="251.24013"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.1013px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="F__"><tspan
+       id="tspan296"
+       x="390.88663"
+       y="251.24013"
+       stroke-width=".12987">_________</tspan></text>
+  <text
+     id="text298"
+     transform="scale(1.0002 .99983)"
+     x="390.95779"
+     y="244.57651"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.1013px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="G__"><tspan
+       id="tspan300"
+       x="390.95779"
+       y="244.57651"
+       stroke-width=".12987">_________</tspan></text>
+  <text
+     id="text302"
+     transform="scale(1.0002 .99983)"
+     x="390.81546"
+     y="237.94699"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.1013px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="H__"><tspan
+       id="tspan304"
+       x="390.81546"
+       y="237.94699"
+       stroke-width=".12987">_________</tspan></text>
+  <text
+     id="text306"
+     transform="scale(1.0002 .99983)"
+     x="391.12991"
+     y="231.25304"
+     fill="#000000"
+     font-family="sans"
+     font-size="3.1013px"
+     letter-spacing="0px"
+     stroke-width=".12987"
+     word-spacing="0px"
+     style="line-height:125%"
+     freecad:editable="I__"><tspan
+       id="tspan308"
+       x="391.12991"
+       y="231.25304"
+       stroke-width=".12987">_________</tspan></text>
+  <text
+     id="text3482"
+     transform="scale(1.0002 .99983)"
+     x="220.80046"
+     y="229.05392"
+     fill="#000000"
+     font-family="Sans"
+     font-size="1.9736px"
+     letter-spacing=".019736px"
+     stroke-width=".999"
+     word-spacing=".0084582px"
+     style="line-height:119.00000572%"><tspan
+       id="tspan3484"
+       x="220.80046"
+       y="229.05392"
+       stroke-width=".999">DESSINATEUR :</tspan></text>
+  <text
+     id="text3490"
+     transform="scale(1.0002 .99983)"
+     x="220.94403"
+     y="244.14862"
+     fill="#000000"
+     font-family="Sans"
+     font-size="1.9736px"
+     letter-spacing=".019736px"
+     stroke-width=".999"
+     word-spacing=".0084582px"
+     style="line-height:119.00000572%"><tspan
+       id="tspan3494"
+       x="220.94403"
+       y="244.14862"
+       stroke-width=".999">VALIDÉ PAR :</tspan></text>
+  <text
+     id="text3496"
+     transform="scale(1.0002 .99983)"
+     x="220.79082"
+     y="258.94061"
+     fill="#000000"
+     font-family="Sans"
+     font-size="1.9736px"
+     letter-spacing=".019736px"
+     stroke-width=".999"
+     word-spacing=".0084582px"
+     style="line-height:119.00000572%"><tspan
+       id="tspan3498"
+       x="220.79082"
+       y="258.94061"
+       stroke-width=".999">FORMAT :</tspan></text>
+  <text
+     id="text272"
+     transform="scale(1.0002 .99983)"
+     x="265.72968"
+     y="259.11047"
+     fill="#000000"
+     font-family="Sans"
+     font-size="1.9736px"
+     letter-spacing=".019736px"
+     stroke-width=".999"
+     word-spacing=".0084582px"
+     style="line-height:119.00000572%"><tspan
+       id="tspan274"
+       x="265.72968"
+       y="259.11047"
+       stroke-width=".999">SOCIÉTÉ :</tspan></text>
+  <text
+     id="text3508"
+     transform="scale(1.0002 .99983)"
+     x="220.7966"
+     y="272.12231"
+     fill="#000000"
+     font-family="Sans"
+     font-size="1.9736px"
+     letter-spacing=".019736px"
+     stroke-width=".999"
+     word-spacing=".0084582px"
+     style="line-height:119.00000572%"><tspan
+       id="tspan3510"
+       x="220.7966"
+       y="272.12231"
+       stroke-width=".999">ÉCHELLE :</tspan></text>
+  <text
+     id="text3512"
+     transform="scale(1.0002 .99983)"
+     x="240.57292"
+     y="272.03085"
+     fill="#000000"
+     font-family="Sans"
+     font-size="1.9736px"
+     letter-spacing=".019736px"
+     stroke-width=".999"
+     word-spacing=".0084582px"
+     style="line-height:119.00000572%"><tspan
+       id="tspan3514"
+       x="240.57292"
+       y="272.03085"
+       stroke-width=".999">POIDS (kg) :</tspan></text>
+  <text
+     id="text3516"
+     transform="scale(1.0002 .99983)"
+     x="265.72968"
+     y="272.12231"
+     fill="#000000"
+     font-family="Sans"
+     font-size="1.9736px"
+     letter-spacing=".019736px"
+     stroke-width=".999"
+     word-spacing=".0084582px"
+     style="line-height:119.00000572%"><tspan
+       id="tspan3518"
+       x="265.72968"
+       y="272.12231"
+       stroke-width=".999">VERSION :</tspan></text>
+  <text
+     id="text3520"
+     transform="scale(1.0002 .99983)"
+     x="365.55179"
+     y="272.12234"
+     fill="#000000"
+     font-family="Sans"
+     font-size="1.9736px"
+     letter-spacing=".019736px"
+     stroke-width=".999"
+     word-spacing=".0084582px"
+     style="line-height:119.00000572%"><tspan
+       id="tspan3522"
+       x="365.55179"
+       y="272.12234"
+       stroke-width=".999">FEUILLE :</tspan></text>
+  <text
+     id="text3562"
+     transform="scale(1.0002 .99983)"
+     x="220.80046"
+     y="236.4668"
+     fill="#000000"
+     font-family="Sans"
+     font-size="1.9736px"
+     letter-spacing=".019736px"
+     stroke-width=".999"
+     word-spacing=".0084582px"
+     style="line-height:119.00000572%"><tspan
+       id="tspan3564"
+       x="220.80046"
+       y="236.4668"
+       stroke-width=".999">DATE :</tspan></text>
+  <text
+     id="text3562-1"
+     transform="scale(1.0002 .99983)"
+     x="220.80046"
+     y="251.52934"
+     fill="#000000"
+     font-family="Sans"
+     font-size="1.9736px"
+     letter-spacing=".019736px"
+     stroke-width=".999"
+     word-spacing=".0084582px"
+     style="line-height:119.00000572%"><tspan
+       id="tspan3564-7"
+       x="220.80046"
+       y="251.52934"
+       stroke-width=".999">DATE :</tspan></text>
+  <path
+     id="path130-7"
+     d="m389.93 286.84v-59.929"
+     fill="none"
+     stroke="#000"
+     stroke-width=".34965" />
+  <!-- DrawingContent -->
+</svg>

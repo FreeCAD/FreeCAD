@@ -1,0 +1,415 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2018 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
+import FreeCAD
+import FreeCADGui
+import Path
+import PathScripts.PathUtils as PathUtils
+import Path.Dressup.Utils as PathDressup
+
+from PySide import QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import os
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+
+Part = LazyLoader("Part", globals(), "Part")
+
+"""Z Depth Correction Dressup.  This dressup takes a probe file as input and does bilinear interpolation of the Zdepths to correct for a surface which is not parallel to the milling table/bed.  The probe file should conform to the format specified by the linuxcnc G38 probe logging: 9-number coordinate consisting of XYZABCUVW http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g38
+"""
+
+LOGLEVEL = False
+
+LOG_MODULE = Path.Log.thisModule()
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
+translate = FreeCAD.Qt.translate
+
+
+class ObjectDressup:
+    def __init__(self, obj):
+        obj.addProperty(
+            "App::PropertyLink",
+            "Base",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
+        )
+        obj.addProperty(
+            "App::PropertyFile",
+            "probefile",
+            "ProbeData",
+            QT_TRANSLATE_NOOP("App::Property", "The point file from the surface probing."),
+        )
+        obj.addProperty("Part::PropertyPartShape", "interpSurface", "Path")
+        obj.addProperty(
+            "App::PropertyDistance",
+            "ArcInterpolate",
+            "Interpolate",
+            QT_TRANSLATE_NOOP("App::Property", "Deflection distance for arc interpolation"),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "SegInterpolate",
+            "Interpolate",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "break segments into smaller segments of this length.",
+            ),
+        )
+        obj.Proxy = self
+        obj.ArcInterpolate = 0.1
+        obj.SegInterpolate = 1.0
+
+    def dumps(self):
+        return
+
+    def loads(self, state):
+        return
+
+    def onChanged(self, obj, prop):
+        if prop == "Path" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
+    def _bilinearInterpolate(self, surface, x, y):
+        p1 = FreeCAD.Vector(x, y, 100.0)
+        p2 = FreeCAD.Vector(x, y, -100.0)
+
+        vertical_line = Part.Line(p1, p2)
+        points, _ = vertical_line.intersectCS(surface)
+        return points[0].Z
+
+    def _getinterpSurface(self, obj):
+        filename = obj.probefile
+        if not filename:
+            return
+
+        if not os.path.isfile(filename):
+            Path.Log.warning(
+                translate("CAM_DressupZCorrect", "Probe file not found: %s") % filename
+            )
+            return
+
+        with open(filename, "r") as file:
+            lines = file.readlines()
+
+        pointlist = []
+        skipped = []
+        for i, line in enumerate(lines):
+            w = line.replace(",", ".").split()
+            if len(w) < 3:
+                skipped.append(i + 1)
+                continue
+            try:
+                xval = round(float(w[0]), 2)
+                yval = round(float(w[1]), 2)
+                zval = round(float(w[2]), 2)
+            except ValueError:
+                skipped.append(i + 1)
+                continue
+            pointlist.append((xval, yval, zval))
+
+        if skipped:
+            Path.Log.warning(
+                translate("CAM_DressupZCorrect", "Skipped non-data lines in file: %s (lines %s)")
+                % (filename, ", ".join(str(n) for n in skipped))
+            )
+
+        if len(pointlist) < 3:
+            obj.interpSurface = Part.Shape()
+            Path.Log.warning(
+                translate("CAM_DressupZCorrect", "Not enough points (%s) got from file: %s")
+                % (len(pointlist), filename)
+            )
+            return
+
+        cols = list(zip(*pointlist))
+        yindex = list(sorted(set(cols[1])))
+
+        Path.Log.debug(pointlist)
+        Path.Log.debug("cols: {}".format(cols))
+        Path.Log.debug("yindex: {}".format(yindex))
+
+        array = []
+        for y in yindex:
+            points = sorted([p for p in pointlist if p[1] == y])
+            array.append([FreeCAD.Vector(p[0], p[1], p[2]) for p in points])
+
+        intSurf = Part.BSplineSurface()
+        try:
+            intSurf.interpolate(array)
+            obj.interpSurface = intSurf.toShape()
+        except Exception:
+            obj.interpSurface = Part.Shape()
+            Path.Log.warning(
+                translate("CAM_DressupZCorrect", "Failed to create surface from probe data: %s")
+                % filename
+            )
+
+        return
+
+    def execute(self, obj):
+        if not obj.Base or not obj.Base.isDerivedFrom("Path::Feature") or not obj.Base.Path:
+            obj.Path = Path.Path()
+            return
+
+        path = PathUtils.getPathWithPlacement(obj.Base)
+        if not path.Commands:
+            obj.Path = Path.Path()
+            return
+
+        self._getinterpSurface(obj)
+        if obj.interpSurface.isNull():
+            # returns base path if no valid probe data
+            obj.Path = path
+            return
+
+        face = obj.interpSurface.toNurbs().Faces[0]
+        surface = face.Surface
+        bb = face.BoundBox
+        bb.ZMax = 0
+        bb.ZMin = 0
+
+        newcommandlist = []
+        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
+        for cmd in path.Commands:
+            Path.Log.debug(cmd)
+            Path.Log.debug("     curLoc:{}".format(currLocation))
+            newparams = dict(cmd.Parameters)
+            zval = newparams.get("Z", currLocation["Z"])
+            if cmd.Name not in Path.Geom.CmdMoveMill:
+                # non mill command
+                newcommandlist.append(cmd)
+                currLocation.update(cmd.Parameters)
+            else:
+                curVec = FreeCAD.Vector(currLocation["X"], currLocation["Y"], currLocation["Z"])
+                edge = Path.Geom.edgeForCmd(cmd, curVec)
+                if edge is None:
+                    continue
+                if cmd.Name in Path.Geom.CmdMoveArc:
+                    pointlist = edge.discretize(Deflection=obj.ArcInterpolate.Value)
+                else:
+                    disc_number = int(edge.Length / obj.SegInterpolate.Value)
+                    if disc_number > 1:
+                        pointlist = edge.discretize(Number=disc_number)
+                    else:
+                        pointlist = [v.Point for v in edge.Vertexes]
+
+                for point in pointlist:
+                    if not bb.isInside(FreeCAD.Vector(point.x, point.y, 0)):
+                        obj.Path = path
+                        pointStr = f"({round(point.x, 3)}, {round(point.y, 3)})"
+                        bbMin = f"XMin={round(bb.XMin, 3)}, YMin={round(bb.YMin, 3)}"
+                        bbMax = f"XMax={round(bb.XMax, 3)}, YMax={round(bb.YMax, 3)}"
+                        Path.Log.warning(
+                            translate(
+                                "CAM_DressupZCorrect",
+                                "Path point %s is outside of the probe area %s, %s",
+                            )
+                            % (pointStr, bbMin, bbMax)
+                        )
+                        return
+
+                    offset = self._bilinearInterpolate(surface, point.x, point.y)
+                    commandparams = {"X": point.x, "Y": point.y, "Z": point.z + offset}
+                    if "F" in newparams.keys():
+                        commandparams["F"] = newparams["F"]
+                    newcommand = Path.Command("G1", commandparams)
+                    newcommandlist.append(newcommand)
+                    currLocation.update(newcommand.Parameters)
+                    currLocation["Z"] = zval
+
+        obj.Path = Path.Path(newcommandlist)
+
+
+class TaskPanel:
+    def __init__(self, obj):
+        self.obj = obj
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ZCorrectEdit.ui")
+        FreeCAD.ActiveDocument.openTransaction("Edit Z Correction Dress-up")
+        self.interpshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "InterpolationSurface")
+        self.interpshape.Shape = obj.interpSurface
+        self.interpshape.ViewObject.Transparency = 60
+        self.interpshape.ViewObject.ShapeColor = (1.00000, 1.00000, 0.01961)
+        self.interpshape.ViewObject.Selectable = False
+        stock = PathUtils.findParentJob(obj).Stock
+        self.interpshape.Placement.Base.z = stock.Shape.BoundBox.ZMax
+
+    def reject(self):
+        FreeCAD.ActiveDocument.abortTransaction()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+
+    def accept(self):
+        self.getFields()
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.removeObject(self.interpshape.Name)
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+        FreeCAD.ActiveDocument.recompute()
+
+    def getFields(self):
+        self.obj.Proxy.execute(self.obj)
+
+    def updateUI(self):
+        if Path.Log.getLevel(LOG_MODULE) == Path.Log.Level.DEBUG:
+            for obj in FreeCAD.ActiveDocument.Objects:
+                if obj.Name.startswith("Shape"):
+                    FreeCAD.ActiveDocument.removeObject(obj.Name)
+            print("object name %s" % self.obj.Name)
+            if hasattr(self.obj.Proxy, "shapes"):
+                Path.Log.info("showing shapes attribute")
+                for shapes in self.obj.Proxy.shapes.itervalues():
+                    for shape in shapes:
+                        Part.show(shape)
+            else:
+                Path.Log.info("no shapes attribute found")
+
+    def updateModel(self):
+        self.getFields()
+        self.updateUI()
+        FreeCAD.ActiveDocument.recompute()
+
+    def setFields(self):
+        self.form.ProbePointFileName.setText(self.obj.probefile)
+        self.updateUI()
+
+    def open(self):
+        pass
+
+    def setupUi(self):
+        self.setFields()
+        # now that the form is filled, setup the signal handlers
+        self.form.ProbePointFileName.editingFinished.connect(self.updateModel)
+        self.form.SetProbePointFileName.clicked.connect(self.SetProbePointFileName)
+
+    def SetProbePointFileName(self):
+        filename = QtGui.QFileDialog.getOpenFileName(
+            self.form,
+            translate("CAM_Probe", "Select Probe Point File"),
+            None,
+            translate("CAM_Probe", "All Files (*.*)"),
+        )
+        if filename and filename[0]:
+            self.obj.probefile = str(filename[0])
+            self.setFields()
+
+
+class ViewProviderDressup:
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def attach(self, vobj):
+        self.obj = vobj.Object
+        if self.obj and self.obj.Base:
+            for i in self.obj.Base.InList:
+                if hasattr(i, "Group"):
+                    group = i.Group
+                    for g in group:
+                        if g.Name == self.obj.Base.Name:
+                            group.remove(g)
+                    i.Group = group
+        return
+
+    def claimChildren(self):
+        return [self.obj.Base]
+
+    def setEdit(self, vobj, mode=0):
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+        elif mode == 0:
+            FreeCADGui.Control.closeDialog()
+            panel = TaskPanel(vobj.Object)
+            FreeCADGui.Control.showDialog(panel)
+            panel.setupUi()
+        return True
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def onDelete(self, arg1=None, arg2=None):
+        """this makes sure that the base operation is added back to the project and visible"""
+        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+        job = PathUtils.findParentJob(arg1.Object)
+        job.Proxy.addOperation(arg1.Object.Base)
+        arg1.Object.Base = None
+        return True
+
+    def getIcon(self):
+        if getattr(PathDressup.baseOp(self.obj), "Active", True):
+            return ":/icons/CAM_Dressup.svg"
+        else:
+            return ":/icons/CAM_OpActive.svg"
+
+
+class CommandPathDressup:
+    def GetResources(self):
+        return {
+            "Pixmap": "CAM_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupZCorrect", "Z Depth Correction"),
+            "Accel": "",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_DressupZCorrect", "Corrects Z depth using a probe map"
+            ),
+        }
+
+    def IsActive(self):
+        return bool(PathDressup.selection())
+
+    def Activated(self):
+        # check that the selection contains exactly what we want
+        op = PathDressup.selection(verbose=True)
+        if not op:
+            return
+
+        # everything ok!
+        FreeCAD.ActiveDocument.openTransaction("Create Dress-up")
+        FreeCADGui.addModule("Path.Dressup.Gui.ZCorrect")
+        FreeCADGui.addModule("PathScripts.PathUtils")
+        FreeCADGui.doCommand(
+            'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "ZCorrectDressup")'
+        )
+        FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ObjectDressup(obj)")
+        FreeCADGui.doCommand("obj.Base = FreeCAD.ActiveDocument." + op.Name)
+        FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ViewProviderDressup(obj.ViewObject)")
+        FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
+        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False")
+        FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
+        FreeCAD.ActiveDocument.recompute()
+
+
+if FreeCAD.GuiUp:
+    # register the FreeCAD command
+    FreeCADGui.addCommand("CAM_DressupZCorrect", CommandPathDressup())
+
+FreeCAD.Console.PrintLog("Loading PathDressup… done\n")

@@ -1,0 +1,834 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
+# *   Copyright (c) 2018, 2019 Gauthier Briere                              *
+# *   Copyright (c) 2019, 2020 Schildkroet                                  *
+# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2024 Carl Slater <CandLWorkshopLLC@gmail.com>           *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Lesser General Public License for more details.                   *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+import math
+import re
+from typing import Any, Callable, Dict, List, Tuple, Union
+
+import FreeCAD
+from FreeCAD import Units
+
+import Path
+import Path.Post.Utils as PostUtils
+from Path.Base.MachineState import MachineState
+from Path.Post.DrillCycleExpander import DrillCycleExpander
+
+# Define some types that are used throughout this file
+CommandLine = List[str]
+Gcode = List[str]
+PathParameter = float
+PathParameters = Dict[str, PathParameter]
+Values = Dict[str, Any]
+
+ParameterFunction = Callable[[Values, str, str, PathParameter, PathParameters], str]
+
+
+def check_for_an_adaptive_op(
+    values: Values,
+    command: str,
+    command_line: CommandLine,
+    adaptive_op_variables: Tuple[bool, float, float],
+) -> str:
+    """Check to see if the current command is an adaptive op."""
+    adaptiveOp: bool
+    opHorizRapid: float
+    opVertRapid: float
+
+    adaptiveOp, opHorizRapid, opVertRapid = adaptive_op_variables
+    if values["OUTPUT_ADAPTIVE"] and adaptiveOp and command in values["RAPID_MOVES"]:
+        if opHorizRapid and opVertRapid:
+            return "G1"
+        command_line.append("(Tool Controller Rapid Values are unset)")
+    return ""
+
+
+def check_for_drill_translate(
+    values: Values,
+    gcode: Gcode,
+    command: str,
+    command_line: CommandLine,
+    params: PathParameters,
+    motion_location: PathParameters,
+    drill_retract_mode: str,
+) -> bool:
+    """Check for drill commands to translate."""
+    comment: str
+
+    if values["TRANSLATE_DRILL_CYCLES"] and command in values["DRILL_CYCLES_TO_TRANSLATE"]:
+        if values["OUTPUT_COMMENTS"]:  # Comment the original command
+            comment = create_comment(values, format_command_line(values, command_line))
+            gcode.append(f"{linenumber(values)}{comment}")
+        # wrap this block to ensure that the value of values["MOTION_MODE"]
+        # is restored in case of error
+        try:
+            drill_translate(
+                values,
+                gcode,
+                command,
+                params,
+                motion_location,
+                drill_retract_mode,
+            )
+        except (ArithmeticError, LookupError) as err:
+            print("exception occurred", err)
+        # drill_translate uses G90 mode internally, so need to
+        # switch back to G91 mode if it was that way originally
+        if values["MOTION_MODE"] == "G91":
+            gcode.append(f"{linenumber(values)}G91")
+        return True
+    return False
+
+
+def check_for_machine_specific_commands(values: Values, gcode: Gcode, command: str) -> None:
+    """Check for comments containing machine-specific commands."""
+    m: object
+    raw_command: str
+
+    if values["ENABLE_MACHINE_SPECIFIC_COMMANDS"]:
+        m = re.match(r"^\(MC_RUN_COMMAND: ([^)]+)\)$", command)
+        if m:
+            raw_command = m.group(1)
+            # pass literally to the controller
+            gcode.append(f"{linenumber(values)}{raw_command}")
+
+
+def check_for_spindle_wait(
+    values: Values, gcode: Gcode, command: str, command_line: CommandLine
+) -> None:
+    """Check for commands that might need a wait command after them."""
+    cmd: str
+
+    if values["SPINDLE_WAIT"] > 0 and command in ("M3", "M03", "M4", "M04"):
+        gcode.append(f"{linenumber(values)}{format_command_line(values, command_line)}")
+        cmd = format_command_line(values, ["G4", f'P{values["SPINDLE_WAIT"]}'])
+        gcode.append(f"{linenumber(values)}{cmd}")
+
+
+def check_for_suppressed_commands(
+    values: Values, gcode: Gcode, command: str, command_line: CommandLine
+) -> bool:
+    """Check for commands that will be suppressed."""
+    comment: str
+
+    if command in values["SUPPRESS_COMMANDS"]:
+        if values["OUTPUT_COMMENTS"]:
+            # convert the command to a comment
+            comment = create_comment(values, format_command_line(values, command_line))
+            gcode.append(f"{linenumber(values)}{comment}")
+        # remove the command
+        return True
+    return False
+
+
+def check_for_tlo(values: Values, gcode: Gcode, command: str, params: PathParameters) -> None:
+    """Output a tool length command if USE_TLO is True."""
+
+    if command in ("M6", "M06") and values["USE_TLO"]:
+        cmd = format_command_line(values, ["G43", f'H{str(int(params["T"]))}'])
+        gcode.append(f"{linenumber(values)}{cmd}")
+
+
+def check_for_tool_change(
+    values: Values, gcode: Gcode, command: str, command_line: CommandLine
+) -> bool:
+    """Check for a tool change."""
+
+    if command in ("M6", "M06"):
+        if values["OUTPUT_COMMENTS"]:
+            comment = create_comment(values, "Begin toolchange")
+            gcode.append(f"{linenumber(values)}{comment}")
+        if values["OUTPUT_TOOL_CHANGE"]:
+            if values["STOP_SPINDLE_FOR_TOOL_CHANGE"]:
+                # stop the spindle
+                gcode.append(f"{linenumber(values)}M5")
+            for line in values["TOOL_CHANGE"].splitlines(False):
+                gcode.append(f"{linenumber(values)}{line}")
+            return False
+        if values["OUTPUT_COMMENTS"]:
+            # convert the tool change to a comment
+            comment = create_comment(values, format_command_line(values, command_line))
+            gcode.append(f"{linenumber(values)}{comment}")
+        return True
+    return False
+
+
+def create_comment(values: Values, comment_string: str) -> str:
+    """Create a comment from a string using the correct comment symbol."""
+    if values["COMMENT_SYMBOL"] == "(":
+        # Sanitize nested parentheses to prevent breaking G-code comment format
+        # Replace ( with [ and ) with ] to preserve readability
+        sanitized = comment_string.replace("(", "[").replace(")", "]")
+        return f"({sanitized})"
+    return values["COMMENT_SYMBOL"] + comment_string
+
+
+def default_axis_parameter(
+    values: Values,
+    command: str,  # pylint: disable=unused-argument
+    param: str,
+    param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
+    current_location: PathParameters,
+) -> str:
+    """Process an axis parameter."""
+    #
+    # used to compare two floating point numbers for "close-enough equality"
+    #
+    epsilon: float = 0.00001
+
+    if (
+        not values["OUTPUT_DOUBLES"]
+        and param in current_location
+        and math.fabs(current_location[param] - param_value) < epsilon
+    ):
+        return ""
+    return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+
+
+def default_D_parameter(
+    values: Values,
+    command: str,
+    param: str,  # pylint: disable=unused-argument
+    param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
+    current_location: PathParameters,  # pylint: disable=unused-argument
+) -> str:
+    """Process the D parameter."""
+    if command in ("G41", "G42"):
+        return str(int(param_value))
+    if command in ("G41.1", "G42.1"):
+        return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+    if command in ("G96", "G97"):
+        return format_for_spindle(values, param_value)
+    # anything else that is supported
+    return str(float(param_value))
+
+
+def default_F_parameter(
+    values: Values,
+    command: str,
+    param: str,
+    param_value: PathParameter,
+    parameters: PathParameters,
+    current_location: PathParameters,
+) -> str:
+    """Process the F parameter."""
+    #
+    # used to compare two floating point numbers for "close-enough equality"
+    #
+    epsilon: float = 0.00001
+    found: bool
+
+    if (
+        not values["OUTPUT_DOUBLES"]
+        and param in current_location
+        and math.fabs(current_location[param] - param_value) < epsilon
+    ):
+        return ""
+    # Many posts don't use rapid speeds, but eventually
+    # there will be refactored posts that do, so this
+    # "if statement" is being kept separate to make it
+    # more obvious where to put that check.
+    if command in values["RAPID_MOVES"]:
+        return ""
+    feed = Units.Quantity(param_value, Units.Velocity)
+    if feed.getValueAs(values["UNIT_SPEED_FORMAT"]) <= 0.0:
+        return ""
+    # if any of X, Y, Z, U, V, or W are in the parameters
+    # and any of their values is different than where the device currently should be
+    # then feed is in linear units
+    found = False
+    for key in ("X", "Y", "Z", "U", "V", "W"):
+        if key in parameters and math.fabs(current_location[key] - parameters[key]) > epsilon:
+            found = True
+    if found:
+        return format_for_feed(values, feed)
+    # else if any of A, B, or C are in the parameters, the feed is in degrees,
+    #     which should not be converted when in --inches mode
+    found = False
+    for key in ("A", "B", "C"):
+        if key in parameters:
+            found = True
+    if found:
+        # converting from degrees per second to degrees per minute as well
+        return format(float(feed * 60.0), f'.{str(values["FEED_PRECISION"])}f')
+    # which leaves none of X, Y, Z, U, V, W, A, B, C,
+    # which should not be valid but return a converted value just in case
+    return format_for_feed(values, feed)
+
+
+def default_int_parameter(
+    values: Values,  # pylint: disable=unused-argument
+    command: str,  # pylint: disable=unused-argument
+    param: str,  # pylint: disable=unused-argument
+    param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
+    current_location: PathParameters,  # pylint: disable=unused-argument
+) -> str:
+    """Process a parameter that is treated like an integer."""
+    return str(int(param_value))
+
+
+def default_length_parameter(
+    values: Values,
+    command: str,  # pylint: disable=unused-argument
+    param: str,  # pylint: disable=unused-argument
+    param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
+    current_location: PathParameters,  # pylint: disable=unused-argument
+) -> str:
+    """Process a parameter that is treated like a length."""
+    return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+
+
+def default_P_parameter(
+    values: Values,
+    command: str,
+    param: str,  # pylint: disable=unused-argument
+    param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
+    current_location: PathParameters,  # pylint: disable=unused-argument
+) -> str:
+    """Process the P parameter."""
+    if command in ("G2", "G02", "G3", "G03", "G5.2", "G5.3", "G10", "G54.1", "G59"):
+        return str(int(param_value))
+    if command in ("G4", "G04", "G76", "G82", "G86", "G89"):
+        return str(float(param_value))
+    if command in ("G5", "G05", "G64"):
+        return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+    # anything else that is supported
+    return str(param_value)
+
+
+def default_Q_parameter(
+    values: Values,
+    command: str,
+    param: str,  # pylint: disable=unused-argument
+    param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
+    current_location: PathParameters,  # pylint: disable=unused-argument
+) -> str:
+    """Process the Q parameter."""
+    if command == "G10":
+        return str(int(param_value))
+    if command in ("G64", "G73", "G83"):
+        return format_for_axis(values, Units.Quantity(param_value, Units.Length))
+    return ""
+
+
+def default_rotary_parameter(
+    values: Values,
+    command: str,  # pylint: disable=unused-argument
+    param: str,
+    param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
+    current_location: PathParameters,
+) -> str:
+    """Process a rotarty parameter (such as A, B, and C)."""
+    #
+    # used to compare two floating point numbers for "close-enough equality"
+    #
+    epsilon: float = 0.00001
+
+    if (
+        not values["OUTPUT_DOUBLES"]
+        and param in current_location
+        and math.fabs(current_location[param] - param_value) < epsilon
+    ):
+        return ""
+    #  unlike other axis, rotary axis such as A, B, and C are always in degrees
+    #  and should not be converted when in --inches mode
+    return str(format(float(param_value), f'.{str(values["AXIS_PRECISION"])}f'))
+
+
+def default_S_parameter(
+    values: Values,
+    command: str,  # pylint: disable=unused-argument
+    param: str,  # pylint: disable=unused-argument
+    param_value: PathParameter,
+    parameters: PathParameters,  # pylint: disable=unused-argument
+    current_location: PathParameters,  # pylint: disable=unused-argument
+) -> str:
+    """Process the S parameter."""
+    return format_for_spindle(values, param_value)
+
+
+def determine_adaptive_op(values: Values, pathobj) -> Tuple[bool, float, float]:
+    """Determine if the pathobj contains an Adaptive operation."""
+    nl = "\n"
+    adaptiveOp: bool = False
+    opHorizRapid: float = 0.0
+    opVertRapid: float = 0.0
+
+    if values["OUTPUT_ADAPTIVE"] and "Adaptive" in pathobj.Name:
+        adaptiveOp = True
+        if hasattr(pathobj, "ToolController"):
+            tc = pathobj.ToolController
+            if hasattr(tc, "HorizRapid") and tc.HorizRapid > 0:
+                opHorizRapid = Units.Quantity(tc.HorizRapid, Units.Velocity)
+            else:
+                FreeCAD.Console.PrintWarning(
+                    f"Tool Controller Horizontal Rapid Values are unset{nl}"
+                )
+            if hasattr(tc, "VertRapid") and tc.VertRapid > 0:
+                opVertRapid = Units.Quantity(tc.VertRapid, Units.Velocity)
+            else:
+                FreeCAD.Console.PrintWarning(f"Tool Controller Vertical Rapid Values are unset{nl}")
+    return (adaptiveOp, opHorizRapid, opVertRapid)
+
+
+def drill_translate(
+    values: Values,
+    gcode: Gcode,
+    command: str,
+    params: PathParameters,
+    motion_location: PathParameters,
+    drill_retract_mode: str,
+) -> None:
+    """Translate drill cycles.
+
+    Currently only cycles in XY are provided (G17).
+    XZ (G18) and YZ (G19) are not dealt with.
+    In other words only Z drilling can be translated.
+
+    This is a compatibility wrapper around DrillCycleExpander.
+    """
+
+    if values["MOTION_MODE"] == "G91":
+        # force absolute coordinates during cycles
+        gcode.append(f"{linenumber(values)}G90")
+
+    # TODO: Defaulting to 0.0 when an axis is missing from motion_location
+    # silently degrades G98 safe-height retract (max(initial_z, R) uses 0
+    # instead of the real tool height). Consider requiring a valid initial
+    # position and warning when motion_location is incomplete.
+    initial_position = {
+        "X": motion_location.get("X", 0.0),
+        "Y": motion_location.get("Y", 0.0),
+        "Z": motion_location.get("Z", 0.0),
+    }
+
+    # Per ADR-002, Path Command coordinates are always absolute.
+    # No G91-to-absolute conversion is needed.
+    drill_params = {k: params[k] for k in params if k in ("X", "Y", "Z", "R", "F", "Q", "P")}
+
+    # Validate R >= Z (preserve original error comment)
+    if drill_params.get("R", 0.0) < drill_params.get("Z", 0.0):
+        comment = create_comment(values, "Drill cycle error: R less than Z")
+        gcode.append(f"{linenumber(values)}{comment}")
+        return
+
+    # Create expander and expand the drill cycle
+    expander = DrillCycleExpander(MachineState(initial_position))
+    expander.machine_state.addCommand(Path.Command(drill_retract_mode))
+
+    expanded = expander.expand_command(Path.Command(command, drill_params))
+
+    # HACK: we have to strip F params if they are zero
+    # because we don't know the G0 F in here, and DrillCycleExpander always generates F
+    # The newer MBPP doesn't have this problem.
+    for pc in expanded:
+        if "F" in pc.Parameters and pc.Parameters["F"] == 0:
+            del pc.Parameters["F"]
+
+    # Format expanded commands into gcode strings
+    for ecmd in expanded:
+        _format_expanded_command(values, gcode, ecmd)
+
+
+def _format_expanded_command(values: Values, gcode: Gcode, cmd) -> None:
+    """Format an expanded Path.Command from DrillCycleExpander into a gcode string."""
+    parts = [cmd.Name]
+    params = cmd.Parameters
+
+    for axis in ("X", "Y", "Z"):
+        if axis in params:
+            parts.append(
+                f"{axis}{format_for_axis(values, Units.Quantity(params[axis], Units.Length))}"
+            )
+
+    if "F" in params:
+        parts.append(f"F{format_for_feed(values, Units.Quantity(params['F'], Units.Velocity))}")
+
+    if "P" in params:
+        parts.append(f"P{params['P']}")
+
+    gcode.append(f"{linenumber(values)}{format_command_line(values, parts)}")
+
+
+def format_command_line(values: Values, command_line: CommandLine) -> str:
+    """Construct the command line for the final output."""
+    return values["COMMAND_SPACE"].join(command_line)
+
+
+def format_for_axis(values: Values, number) -> str:
+    """Format a number using the precision for an axis value."""
+    return str(
+        format(
+            float(number.getValueAs(values["UNIT_FORMAT"])),
+            f'.{str(values["AXIS_PRECISION"])}f',
+        )
+    )
+
+
+def format_for_feed(values: Values, number) -> str:
+    """Format a number using the precision for a feed rate."""
+    return str(
+        format(
+            float(number.getValueAs(values["UNIT_SPEED_FORMAT"])),
+            f'.{str(values["FEED_PRECISION"])}f',
+        )
+    )
+
+
+def format_for_spindle(values: Values, number) -> str:
+    """Format a number using the precision for a spindle speed."""
+    return str(format(float(number), f'.{str(values["SPINDLE_DECIMALS"])}f'))
+
+
+def init_parameter_functions(parameter_functions: Dict[str, ParameterFunction]) -> None:
+    """Initialize a list of parameter functions.
+
+    These functions are called in the UtilsParse.parse_a_path
+    function to return the appropriate parameter value.
+    """
+    default_parameter_functions: Dict[str, ParameterFunction]
+    parameter: str
+
+    default_parameter_functions = {
+        "A": default_rotary_parameter,
+        "B": default_rotary_parameter,
+        "C": default_rotary_parameter,
+        "D": default_D_parameter,
+        "E": default_length_parameter,
+        "F": default_F_parameter,
+        # "G" is reserved for G-code commands
+        "H": default_int_parameter,
+        "I": default_length_parameter,
+        "J": default_length_parameter,
+        "K": default_length_parameter,
+        "L": default_int_parameter,
+        # "M" is reserved for M-code commands
+        # "N" is reserved for the line numbers
+        # "O" is reserved for the line numbers for subroutines
+        "P": default_P_parameter,
+        "Q": default_Q_parameter,
+        "R": default_length_parameter,
+        "S": default_S_parameter,
+        "T": default_int_parameter,
+        "U": default_axis_parameter,
+        "V": default_axis_parameter,
+        "W": default_axis_parameter,
+        "X": default_axis_parameter,
+        "Y": default_axis_parameter,
+        "Z": default_axis_parameter,
+        # "$" is used by LinuxCNC (and others?) to designate which spindle
+    }
+    for parameter in default_parameter_functions:  # pylint: disable=consider-using-dict-items
+        parameter_functions[parameter] = default_parameter_functions[parameter]
+
+
+def linenumber(values: Values, space: Union[str, None] = None) -> str:
+    """Output the next line number if appropriate."""
+    line_num: str
+
+    if not values["OUTPUT_LINE_NUMBERS"]:
+        return ""
+    if space is None:
+        space = values["COMMAND_SPACE"]
+    line_num = str(values["line_number"])
+    values["line_number"] += values["LINE_INCREMENT"]
+    return f"N{line_num}{space}"
+
+
+def output_G73_G83_drill_moves(
+    values: Values,
+    gcode: Gcode,
+    command: str,
+    params: PathParameters,
+    drill_z: float,
+    retract_z: float,
+    F_feedrate: str,
+    G0_retract_z: str,
+) -> None:
+    """Output the movement G code for G73 and G83."""
+    a_bit: float
+    chip_breaker_height: float
+    clearance_depth: float
+    cmd: str
+    drill_step: float
+    last_stop_z: float
+    next_stop_z: float
+
+    last_stop_z = retract_z
+    drill_step = Units.Quantity(params["Q"], Units.Length)
+    # NIST 3.5.16.4 G83 Cycle:  "current hole bottom, backed off a bit."
+    a_bit = drill_step * 0.05
+    if drill_step != 0:
+        while True:
+            if last_stop_z != retract_z:
+                # rapid move to just short of last drilling depth
+                clearance_depth = last_stop_z + a_bit
+                cmd = format_command_line(
+                    values,
+                    ["G0", f"Z{format_for_axis(values, clearance_depth)}"],
+                )
+                gcode.append(f"{linenumber(values)}{cmd}")
+            next_stop_z = last_stop_z - drill_step
+            if next_stop_z > drill_z:
+                cmd = format_command_line(
+                    values, ["G1", f"Z{format_for_axis(values, next_stop_z)}"]
+                )
+                gcode.append(f"{linenumber(values)}{cmd}{F_feedrate}")
+                if command == "G73":
+                    # Rapid up "a small amount".
+                    chip_breaker_height = next_stop_z + values["CHIPBREAKING_AMOUNT"]
+                    cmd = format_command_line(
+                        values,
+                        [
+                            "G0",
+                            f"Z{format_for_axis(values, chip_breaker_height)}",
+                        ],
+                    )
+                    gcode.append(f"{linenumber(values)}{cmd}")
+                elif command == "G83":
+                    # Rapid up to the retract height
+                    gcode.append(f"{linenumber(values)}{G0_retract_z}")
+                last_stop_z = next_stop_z
+            else:
+                cmd = format_command_line(values, ["G1", f"Z{format_for_axis(values, drill_z)}"])
+                gcode.append(f"{linenumber(values)}{cmd}{F_feedrate}")
+                gcode.append(f"{linenumber(values)}{G0_retract_z}")
+                break
+
+
+def output_G81_G82_drill_moves(
+    values: Values,
+    gcode: Gcode,
+    command: str,
+    params: PathParameters,
+    drill_z: float,
+    F_feedrate: str,
+    G0_retract_z: str,
+) -> None:
+    """Output the movement G code for G81 and G82."""
+    cmd: str
+
+    cmd = format_command_line(values, ["G1", f"Z{format_for_axis(values, drill_z)}"])
+    gcode.append(f"{linenumber(values)}{cmd}{F_feedrate}")
+    # pause where applicable
+    if command == "G82":
+        cmd = format_command_line(values, ["G4", f'P{str(params["P"])}'])
+        gcode.append(f"{linenumber(values)}{cmd}")
+    gcode.append(f"{linenumber(values)}{G0_retract_z}")
+
+
+def parse_a_group(values: Values, gcode: Gcode, pathobj) -> None:
+    """Parse a Group (compound, project, or simple path)."""
+    comment: str
+
+    if hasattr(pathobj, "Group"):  # We have a compound or project.
+        if values["OUTPUT_COMMENTS"]:
+            comment = create_comment(values, f"Compound: {pathobj.Label}")
+            gcode.append(f"{linenumber(values)}{comment}")
+        for p in pathobj.Group:
+            parse_a_group(values, gcode, p)
+    else:  # parsing simple path
+        # groups might contain non-path things like stock.
+        if not hasattr(pathobj, "Path"):
+            return
+        if values["OUTPUT_PATH_LABELS"] and values["OUTPUT_COMMENTS"]:
+            comment = create_comment(values, f"Path: {pathobj.Label}")
+            gcode.append(f"{linenumber(values)}{comment}")
+        parse_a_path(values, gcode, pathobj)
+
+
+def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
+    """Parse a simple Path."""
+    adaptive_op_variables: Tuple[bool, float, float]
+    cmd: str
+    command: str
+    command_line: CommandLine
+    current_location: PathParameters = {}  # keep track for no doubles
+    drill_retract_mode: str = "G98"
+    lastcommand: str = ""
+    motion_location: PathParameters = {}  # keep track of last motion location
+    parameter: str
+    parameter_value: str
+
+    # Check to see if values["TOOL_BEFORE_CHANGE"] is set and value is true
+    # doing it here to reduce the number of times it is checked
+    swap_tool_change_order = False
+    if "TOOL_BEFORE_CHANGE" in values and values["TOOL_BEFORE_CHANGE"]:
+        swap_tool_change_order = True
+    current_location.update(
+        # the goal is to have initial values that aren't likely to match
+        # any "real" first parameter values
+        Path.Command(
+            "G0",
+            {
+                "X": 123456789.0,
+                "Y": 123456789.0,
+                "Z": 123456789.0,
+                "U": 123456789.0,
+                "V": 123456789.0,
+                "W": 123456789.0,
+                "A": 123456789.0,
+                "B": 123456789.0,
+                "C": 123456789.0,
+                "F": 123456789.0,
+            },
+        ).Parameters
+    )
+    adaptive_op_variables = determine_adaptive_op(values, pathobj)
+
+    path_to_process = pathobj.Path
+
+    # Process canned cycles for drilling operations
+    path_to_process = PostUtils.cannedCycleTerminator(path_to_process)
+
+    # Apply arc splitting if requested
+    if values["SPLIT_ARCS"]:
+        path_to_process = PostUtils.splitArcs(path_to_process)
+
+    for c in path_to_process.Commands:
+        command = c.Name
+        command_line = []
+
+        # Skip blank lines if requested
+        if not command:
+            if not values["OUTPUT_BLANK_LINES"]:
+                continue
+
+        # Modify the command name if necessary
+        if command.startswith("("):
+            if not values["OUTPUT_COMMENTS"]:
+                continue
+            if values["COMMENT_SYMBOL"] != "(" and len(command) > 2:
+                command = create_comment(values, command[1:-1])
+
+        cmd = check_for_an_adaptive_op(values, command, command_line, adaptive_op_variables)
+        if cmd:
+            command = cmd
+        # Add the command name to the command line
+        command_line.append(command)
+        # if modal: suppress the command if it is the same as the last one
+        if values["MODAL"] and command == lastcommand:
+            command_line.pop(0)
+
+        # Now add the remaining parameters in order
+        for parameter in values["PARAMETER_ORDER"]:
+            if parameter in c.Parameters:
+                parameter_value = values["PARAMETER_FUNCTIONS"][parameter](
+                    values,
+                    command,
+                    parameter,
+                    c.Parameters[parameter],
+                    c.Parameters,
+                    current_location,
+                )
+                if parameter_value:
+                    command_line.append(f"{parameter}{parameter_value}")
+
+        set_adaptive_op_speed(values, command, command_line, c.Parameters, adaptive_op_variables)
+        # Remember the current command
+        lastcommand = command
+        # Remember the current location
+        current_location.update(c.Parameters)
+        if command in ("G90", "G91"):
+            # Remember the motion mode
+            values["MOTION_MODE"] = command
+        elif command in ("G98", "G99"):
+            # Remember the drill retract mode for drill_translate
+            drill_retract_mode = command
+        if command in values["MOTION_COMMANDS"]:
+            # Remember the current location for drill_translate
+            motion_location.update(c.Parameters)
+        if check_for_drill_translate(
+            values,
+            gcode,
+            command,
+            command_line,
+            c.Parameters,
+            motion_location,
+            drill_retract_mode,
+        ):
+            command_line = []
+        check_for_spindle_wait(values, gcode, command, command_line)
+        if check_for_tool_change(values, gcode, command, command_line):
+            command_line = []
+        if check_for_suppressed_commands(values, gcode, command, command_line):
+            command_line = []
+
+        if command_line:
+            if command in ("M6", "M06") and swap_tool_change_order:
+                swapped_command_line = [
+                    command_line[1],
+                    command_line[0],
+                ]  # swap the order of the commands
+                # Add a line number to the front of the command line
+                gcode.append(
+                    f"{linenumber(values)}{format_command_line(values, swapped_command_line)}"
+                )
+            else:
+                # Add a line number to the front of the command line
+                gcode.append(f"{linenumber(values)}{format_command_line(values, command_line)}")
+
+        check_for_tlo(values, gcode, command, c.Parameters)
+        check_for_machine_specific_commands(values, gcode, command)
+
+
+def set_adaptive_op_speed(
+    values: Values,
+    command: str,
+    command_line: CommandLine,
+    params: PathParameters,
+    adaptive_op_variables: Tuple[bool, float, float],
+) -> None:
+    """Set the appropriate feed speed for an adaptive op."""
+    adaptiveOp: bool
+    opHorizRapid: float
+    opVertRapid: float
+    param_num: str
+
+    adaptiveOp, opHorizRapid, opVertRapid = adaptive_op_variables
+    if (
+        values["OUTPUT_ADAPTIVE"]
+        and adaptiveOp
+        and command in values["RAPID_MOVES"]
+        and opHorizRapid
+        and opVertRapid
+    ):
+        if "Z" not in params:
+            param_num = format_for_feed(values, opHorizRapid)
+        else:
+            param_num = format_for_feed(values, opVertRapid)
+        command_line.append(f"F{param_num}")

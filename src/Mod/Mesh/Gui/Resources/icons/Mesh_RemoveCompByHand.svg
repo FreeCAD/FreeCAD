@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   width="64"
+   height="64"
+   id="svg9484"
+   version="1.1">
+  <title
+     id="title3749">Mesh_Remove_Comp_by_Hand</title>
+  <defs
+     id="defs9486">
+    <linearGradient
+       id="linearGradient1909">
+      <stop
+         style="stop-color:#4e9a06;stop-opacity:1"
+         offset="0"
+         id="stop1905" />
+      <stop
+         style="stop-color:#8ae234;stop-opacity:1"
+         offset="1"
+         id="stop1907" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1347">
+      <stop
+         style="stop-color:#4e9a06;stop-opacity:1"
+         offset="0"
+         id="stop1343" />
+      <stop
+         style="stop-color:#8ae234;stop-opacity:1"
+         offset="1"
+         id="stop1345" />
+    </linearGradient>
+    <marker
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path1067"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:none;stroke-width:1pt;stroke-opacity:1;fill:#8ae234;fill-opacity:1"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <linearGradient
+       id="linearGradient12537">
+      <stop
+         style="stop-color:#00fd00;stop-opacity:1;"
+         offset="0"
+         id="stop12539" />
+      <stop
+         style="stop-color:#00fd00;stop-opacity:0;"
+         offset="1"
+         id="stop12541" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient12537"
+       id="linearGradient12547"
+       x1="4.5"
+       y1="14.755193"
+       x2="30.5"
+       y2="14.755193"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(35,-2)" />
+    <linearGradient
+       id="linearGradient1014">
+      <stop
+         style="stop-color:#204a87;stop-opacity:1"
+         offset="0"
+         id="stop1010" />
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
+         offset="1"
+         id="stop1012" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient1347"
+       id="linearGradient1349"
+       x1="25.894817"
+       y1="-1.0932833"
+       x2="11.196301"
+       y2="-19.181715"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#linearGradient1909"
+       id="linearGradient1911"
+       x1="23.388866"
+       y1="0.75593823"
+       x2="12.52975"
+       y2="-18.27072"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <metadata
+     id="metadata9489">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:title>Mesh_Remove_Comp_by_Hand</dc:title>
+        <dc:description>Triangular mesh, faces and plus symbol</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Icon based on a wmayer' s design</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>triangles</rdf:li>
+            <rdf:li>faces</rdf:li>
+            <rdf:li>cross</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:relation />
+        <dc:identifier />
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>12-06-2020</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[bitacovir]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(0,32)"
+     style="opacity:1">
+    <path
+       id="path1903-0"
+       d="M 23.50984,-24.628277 53.207297,-12.71033 22.632579,15.299236 Z"
+       style="fill:#75507b;fill-opacity:1" />
+    <path
+       id="path1049-9"
+       d="M 53.207297,-12.71033 20.67196,18.930845 22.147925,-27.242881 Z"
+       style="fill:none;stroke:#171018;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:none;stroke:#ad7fa8;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 24.873268,-22.680728 23.134108,10.861546 -24.151353,23.52788 z"
+       id="path875" />
+    <path
+       style="fill:url(#linearGradient1911);fill-opacity:1"
+       d="M 7.0227055,-24.589038 36.535335,-12.641175 5.4759649,15.241798 Z"
+       id="path1903" />
+    <path
+       style="fill:none;stroke:#172a04;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 36.535335,-12.641175 4,19 5.4759648,-27.173726 Z"
+       id="path1049" />
+    <path
+       style="fill:none;stroke:#8ae234;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 8.2603537,-22.672297 7.1930047,11.714906 31.370781,-11.720367 Z"
+       id="path873" />
+    <g
+       id="g1658">
+      <g
+         transform="translate(-34.434687,-64.167468)"
+         id="g3890">
+        <rect
+           style="fill:#cc0000;fill-opacity:1;stroke:#280000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect3839"
+           width="36.76955"
+           height="6"
+           x="-19.97056"
+           y="110.13708"
+           ry="2"
+           transform="matrix(-0.70710678,0.70710678,0.70710678,0.70710678,0,0)" />
+        <rect
+           style="fill:#cc0000;fill-opacity:1;stroke:#280000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect3839-5"
+           width="36.76955"
+           height="6"
+           x="94.752312"
+           y="-4.5857863"
+           ry="2"
+           transform="rotate(45)" />
+        <rect
+           style="fill:#cc0000;stroke:#cc0000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect3888"
+           width="13"
+           height="2"
+           x="-4.8928065"
+           y="112.14682"
+           ry="0"
+           transform="rotate(-45)" />
+      </g>
+      <path
+         id="path3922"
+         d="m 43.938752,16.025893 -9.498595,9.5422"
+         style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         id="path3922-2"
+         d="m 57.528242,2.4681521 -9.564,9.6075979"
+         style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         id="path3922-7"
+         d="m 35.837201,2.4027521 -1.476185,1.476185"
+         style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

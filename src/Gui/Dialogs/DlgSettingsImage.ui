@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsImage</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsImage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>291</width>
+    <height>498</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Image Settings</string>
+  </property>
+  <layout class="QGridLayout">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
+    <number>9</number>
+   </property>
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBoxDim">
+     <property name="title">
+      <string>Image Dimensions</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <layout class="QGridLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Standard sizes</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="2">
+         <widget class="QComboBox" name="standardSizeBox">
+          <item>
+           <property name="text">
+            <string>Current screen</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Icon       32  x 32</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Icon       64 x 64</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Icon       128 x 128</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">CGA       320 x 200</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">QVGA     320 x 240</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">VGA       640 x 480</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">NTSC     720 x 480</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">PAL        768 x 578</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">SVGA     800 x 600</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">XGA       1024 x 768</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">HD720   1280 x 720</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">SXGA     1280 x 1024</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">SXGA+   1400 x 1050</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">UXGA     1600 x 1200</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">HD1080 1920 x 1080</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">WUXGA  1920 x 1200</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">QXGA     2048 x 1538</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">WQXGA  2560 x 1600</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">QSXGA   2560 x 2048</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">QUXGA   3200 × 2400</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">HUXGA   6400 × 4800</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string notr="true">!!!          10000 x 10000</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="textLabelWidth">
+          <property name="text">
+           <string>&amp;Width</string>
+          </property>
+          <property name="buddy">
+           <cstring>spinWidth</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="spinWidth">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>32767</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Pixel</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="textLabelHeight">
+          <property name="text">
+           <string>&amp;Height</string>
+          </property>
+          <property name="buddy">
+           <cstring>spinHeight</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinHeight">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>32767</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Pixel</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="textLabel1">
+          <property name="text">
+           <string>Aspect ratio</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="buttonRatioScreen">
+          <property name="text">
+           <string>&amp;Screen</string>
+          </property>
+          <property name="shortcut">
+           <string>Alt+S</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="buttonRatio4x3">
+          <property name="text">
+           <string>&amp;4:3</string>
+          </property>
+          <property name="shortcut">
+           <string>Alt+4</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="buttonRatio16x9">
+          <property name="text">
+           <string>1&amp;6:9</string>
+          </property>
+          <property name="shortcut">
+           <string>Alt+6</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="buttonRatio1x1">
+          <property name="text">
+           <string>&amp;1:1</string>
+          </property>
+          <property name="shortcut">
+           <string>Alt+1</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBoxProp">
+     <property name="title">
+      <string>Image Properties</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="textLabelColor">
+        <property name="text">
+         <string>Back&amp;ground</string>
+        </property>
+        <property name="buddy">
+         <cstring>comboBackground</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBackground">
+        <item>
+         <property name="text">
+          <string>Current</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>White</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Black</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Transparent</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Creation method</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="comboMethod"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="buttonGroupComment">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Image Comment</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="radioButtonMiba">
+        <property name="text">
+         <string>Insert MIBA</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="radioButtonComment">
+        <property name="text">
+         <string>Insert comment</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QTextEdit" name="textEditComment">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>70</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="checkWatermark">
+        <property name="text">
+         <string>Add watermark</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>standardSizeBox</tabstop>
+  <tabstop>spinWidth</tabstop>
+  <tabstop>spinHeight</tabstop>
+  <tabstop>buttonRatioScreen</tabstop>
+  <tabstop>buttonRatio4x3</tabstop>
+  <tabstop>buttonRatio16x9</tabstop>
+  <tabstop>buttonRatio1x1</tabstop>
+  <tabstop>comboBackground</tabstop>
+  <tabstop>comboMethod</tabstop>
+  <tabstop>radioButtonMiba</tabstop>
+  <tabstop>radioButtonComment</tabstop>
+  <tabstop>textEditComment</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>radioButtonComment</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>textEditComment</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>35</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>39</x>
+     <y>316</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

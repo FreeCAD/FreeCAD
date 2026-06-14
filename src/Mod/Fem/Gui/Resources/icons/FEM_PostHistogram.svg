@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="16"
+   height="16"
+   fill="currentColor"
+   class="bi bi-bar-chart"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="FEM_PostHistogram.svg"
+   inkscape:version="1.4.1 (93de688d07, 2025-03-30)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="48.84375"
+     inkscape:cx="9.4996801"
+     inkscape:cy="6.1932182"
+     inkscape:window-width="3132"
+     inkscape:window-height="1772"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <rect
+     style="fill:#e5007e;stroke:#260013;stroke-width:0.461535;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="rect2"
+     width="3.5384648"
+     height="4.3404469"
+     x="0.67558533"
+     y="9.1421566"
+     ry="0.68956506" />
+  <rect
+     style="fill:#e5007e;stroke:#260013;stroke-width:0.459332;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="rect3"
+     width="3.540668"
+     height="8.5446272"
+     x="6.2196369"
+     y="4.9390783"
+     ry="0.62339282" />
+  <rect
+     style="fill:#e5007e;stroke:#260013;stroke-width:0.459208;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none"
+     id="rect4"
+     width="3.5407922"
+     height="12.789965"
+     x="11.764729"
+     y="0.69380343"
+     ry="0.64040416" />
+  <rect
+     style="fill:#e5007e;stroke:#260013;stroke-width:0.4;stroke-linecap:square;stroke-linejoin:round;fill-opacity:1"
+     id="rect5"
+     width="14.966091"
+     height="1.412668"
+     x="0.53230965"
+     y="14.167626"
+     rx="0.12284084"
+     ry="0" />
+</svg>

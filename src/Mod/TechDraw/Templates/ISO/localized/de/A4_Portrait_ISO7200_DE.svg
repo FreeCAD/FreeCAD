@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   id="template"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:freecad="http://www.freecad.org/wiki/index.php?title=Svg_Namespace"
+   xmlns:index="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+  <defs
+     id="defs36" />
+  <g
+     id="frame"
+     style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1">
+    <rect
+       style="stroke-width:0.7"
+       width="180"
+       height="277"
+       x="20"
+       y="10"
+       id="rect1" />
+    <rect
+       width="190"
+       height="287"
+       x="15"
+       y="5"
+       id="rect2" />
+    <path
+       d="m 65.00,5.00 v 5"
+       id="path2" />
+    <path
+       d="m 65.00,287.00 v 5"
+       id="path3" />
+    <path
+       d="m 110.00,5.00 v 5"
+       id="path4" />
+    <path
+       d="m 110.00,287.00 v 5"
+       id="path5" />
+    <path
+       d="m 155.00,5.00 v 5"
+       id="path6" />
+    <path
+       d="m 155.00,287.00 v 5"
+       id="path7" />
+    <path
+       d="m 15.00,56.17 h 5"
+       id="path8" />
+    <path
+       d="m 200.00,56.17 h 5"
+       id="path9" />
+    <path
+       d="m 15.00,102.33 h 5"
+       id="path10" />
+    <path
+       d="m 200.00,102.33 h 5"
+       id="path11" />
+    <path
+       d="m 15.00,148.50 h 5"
+       id="path12" />
+    <path
+       d="m 200.00,148.50 h 5"
+       id="path13" />
+    <path
+       d="m 15.00,194.67 h 5"
+       id="path14" />
+    <path
+       d="m 200.00,194.67 h 5"
+       id="path15" />
+    <path
+       d="m 15.00,240.83 h 5"
+       id="path16" />
+    <path
+       d="m 200.00,240.83 h 5"
+       id="path17" />
+  </g>
+  <g
+     id="coords"
+     style="font-size:3.52778px;font-family:Open Sans;font-weight:bold;text-anchor:middle">
+    <text
+       x="42.50"
+       y="9.00"
+       id="text17">1</text>
+    <text
+       x="42.50"
+       y="291.00"
+       id="text18">1</text>
+    <text
+       x="87.50"
+       y="9.00"
+       id="text19">2</text>
+    <text
+       x="87.50"
+       y="291.00"
+       id="text20">2</text>
+    <text
+       x="132.50"
+       y="9.00"
+       id="text21">3</text>
+    <text
+       x="132.50"
+       y="291.00"
+       id="text22">3</text>
+    <text
+       x="177.50"
+       y="9.00"
+       id="text23">4</text>
+    <text
+       x="177.50"
+       y="291.00"
+       id="text24">4</text>
+    <text
+       x="17.50"
+       y="33.08"
+       id="text25">A</text>
+    <text
+       x="202.50"
+       y="33.08"
+       id="text26">A</text>
+    <text
+       x="17.50"
+       y="79.25"
+       id="text27">B</text>
+    <text
+       x="202.50"
+       y="79.25"
+       id="text28">B</text>
+    <text
+       x="17.50"
+       y="125.42"
+       id="text29">C</text>
+    <text
+       x="202.50"
+       y="125.42"
+       id="text30">C</text>
+    <text
+       x="17.50"
+       y="171.58"
+       id="text31">D</text>
+    <text
+       x="202.50"
+       y="171.58"
+       id="text32">D</text>
+    <text
+       x="17.50"
+       y="217.75"
+       id="text33">E</text>
+    <text
+       x="202.50"
+       y="217.75"
+       id="text34">E</text>
+    <text
+       x="17.50"
+       y="263.92"
+       id="text35">F</text>
+    <text
+       x="202.50"
+       y="263.92"
+       id="text36">F</text>
+  </g>
+  <g
+     id="fieldframes"
+     transform="translate(200, 287)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M -135,-3e-5 V -40"
+       id="path1277" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M -70.00001,-3e-5 -70,-30"
+       id="path1279" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M -70,-10 H 0"
+       id="path1279-7" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M -70,-20 H 0"
+       id="path2330" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M -135,-30 H 0"
+       id="path1279-7-6" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M -12.00001,-3e-5 -12,-10"
+       id="path1390" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M -20,-30 V -40"
+       id="path1390-4" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M -27,-3e-5 V -10"
+       id="path1392" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="m -56,0 1e-5,-10"
+       id="path1279-3" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="m -95,-30 v -9.99998"
+       id="path1279-3-8" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.699999;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M -55,-30.00002 V -40"
+       id="path1279-3-8-3" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.699567;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5692"
+       width="180"
+       height="40"
+       x="-180"
+       y="-40" />
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-11"
+       y="-7"
+       id="text1398"><tspan
+         id="tspan1396"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-11"
+         y="-7">Blatt</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-25"
+       y="-2"
+       id="text1398-4-4"><tspan
+         id="tspan1396-7-5"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-25"
+         y="-2">A4</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-26"
+       y="-7"
+       id="text1571"><tspan
+         id="tspan1569"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-26"
+         y="-7">Blattgröße</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-55"
+       y="-7"
+       id="text1575"><tspan
+         id="tspan1573"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-55"
+         y="-7">Ausgabedatum</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-69.000015"
+       y="-7"
+       id="text1398-9"><tspan
+         id="tspan1396-3"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-69.000015"
+         y="-7">Maßstab</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-69"
+       y="-17"
+       id="text2403"><tspan
+         id="tspan2401"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-69"
+         y="-17">Sachnummer</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-69"
+       y="-27"
+       id="text1398-9-3"><tspan
+         id="tspan1396-3-1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-69"
+         y="-27">Projekt</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-134"
+       y="-27"
+       id="text2602"><tspan
+         id="tspan2600"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-134"
+         y="-27">Titel</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-179"
+       y="-37"
+       id="text2602-5"><tspan
+         id="tspan2600-7"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-179"
+         y="-37">Eigentümer</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-134"
+       y="-37"
+       id="text1398-9-3-6"><tspan
+         id="tspan1396-3-1-2"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-134"
+         y="-37">Erstellt durch</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-94"
+       y="-37"
+       id="text1398-9-3-6-1"><tspan
+         id="tspan1396-3-1-2-7"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-94"
+         y="-37">Genehmigt von</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="-54"
+       y="-37"
+       id="text1398-9-3-5"><tspan
+         id="tspan1396-3-1-9"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.46944px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-54"
+         y="-37">Dokumentenart</tspan></text>
+    <text
+       style="font-size:4.23333px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.264583"
+       x="163.99998"
+       y="285"
+       id="text1915"><tspan
+         id="tspan1913"
+         style="stroke-width:0.264583"
+         x="163.99998"
+         y="285" /></text>
+    <g
+       style="fill:none;stroke-linecap:round;stroke-linejoin:round"
+       id="g2904"
+       transform="matrix(0.56375738,0,0,0.56375738,-4.99981,-35)">
+      <g
+         id="g2882">
+        <!-- Circle -->
+        <circle
+           cx="0"
+           cy="0"
+           r="5"
+           style="stroke:#000000;stroke-width:0.3"
+           id="circle2856" />
+        <!-- Line -->
+        <path
+           d="M 0,5.7483 V 1.7145 m 0,-1.143 v -1.143 m 0,-1.143 v -4.0338"
+           style="stroke:#000000;stroke-width:0.18"
+           id="path2858" />
+        <!-- Line -->
+        <path
+           d="M -12.5,5 V -5"
+           style="stroke:#000000;stroke-width:0.3"
+           id="path2860" />
+        <!-- Line -->
+        <path
+           d="m -22.5,2.3205 v -4.641"
+           style="stroke:#000000;stroke-width:0.3"
+           id="path2862" />
+        <!-- Line -->
+        <path
+           d="m -23.5,0 h 0.6 m 0.54,0 v 0 m 0.54,0 h 2.16 m 0.54,0 v 0 m 0.54,0 h 2.16 m 0.54,0 v 0 m 0.54,0 h 2.16 m 0.54,0 v 0 m 0.54,0 h 0.6"
+           style="stroke:#000000;stroke-width:0.18"
+           id="path2864" />
+        <!-- Line -->
+        <path
+           d="m -12.5,5 -10,-2.6795"
+           style="stroke:#000000;stroke-width:0.3"
+           id="path2866" />
+        <!-- Line -->
+        <path
+           d="m -12.5,-5 -10,2.6795"
+           style="stroke:#000000;stroke-width:0.3"
+           id="path2868" />
+        <!-- Line -->
+        <path
+           d="m -5.7483,0 h 4.0338 m 1.143,0 h 1.143 m 1.143,0 h 4.0338"
+           style="stroke:#000000;stroke-width:0.18"
+           id="path2870" />
+        <!-- Circle -->
+        <circle
+           cx="0"
+           cy="0"
+           r="2.320508"
+           style="stroke:#000000;stroke-width:0.3"
+           id="circle2872" />
+        <!-- Line -->
+        <path
+           d="m -15.9438,0 h 0.1091"
+           style="stroke:#000000;stroke-width:0.18"
+           id="path2874" />
+        <!-- Line -->
+        <path
+           d="m -12.6961,0 h 0.1091"
+           style="stroke:#000000;stroke-width:0.18"
+           id="path2876" />
+        <!-- Line -->
+        <path
+           d="m -19.1721,0 h 0.1091"
+           style="stroke:#000000;stroke-width:0.18"
+           id="path2878" />
+        <!-- Line -->
+        <path
+           d="m -22.4247,0 h 0.1091"
+           style="stroke:#000000;stroke-width:0.18"
+           id="path2880" />
+      </g>
+    </g>
+  </g>
+  <g
+     id="editables">
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="190.0"
+       y="285.0"
+       id="text1398-4"
+       freecad:editable="page_number"
+       freecad:autofill="sheet"><tspan
+         id="tspan1396-7"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="190.0"
+         y="285.0">1/1</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="146.0"
+       y="285.0"
+       id="text1398-4-4-9"
+       freecad:editable="fc-date"
+       freecad:autofill="date"><tspan
+         id="tspan1396-7-5-8"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="146.0"
+         y="285.0">2023-12-22</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="132.0"
+       y="275.0"
+       id="text2977"
+       freecad:editable="Sachnummer"><tspan
+         id="tspan2975"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="132.0"
+         y="275.0">Sachnummer</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="132.0"
+       y="265.0"
+       id="text2981"
+       freecad:editable="projekt"><tspan
+         id="tspan2979"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="132.0"
+         y="265.0">Projekt</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="147.0"
+       y="255.0"
+       id="text2985"
+       freecad:editable="document_type"><tspan
+         id="tspan2983"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="147.0"
+         y="255.0">Dokumentenart</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="107.0"
+       y="255.0"
+       id="text2989"
+       freecad:editable="Genehmiger"><tspan
+         id="tspan2987"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="107.0"
+         y="255.0">Genehmiger</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="67.0"
+       y="255.0"
+       id="text2993"
+       freecad:editable="author_name"
+       freecad:autofill="author"><tspan
+         id="tspan2991"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="67.0"
+         y="255.0">Ersteller</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="22.0"
+       y="258.0"
+       id="text2993-7"
+       freecad:editable="owner_1"
+       freecad:autofill="organization"><tspan
+         id="tspan2991-6"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="22.0"
+         y="258.0">Eigentümer</tspan></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="22.0"
+       y="264.0"
+       id="text3985"
+       index:editable="owner_2"><tspan
+         id="tspan939"
+         x="22.0"
+         y="264.0" /></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="22.0"
+       y="270.0"
+       id="text3989"
+       index:editable="owner_3"><tspan
+         id="tspan937"
+         x="22.0"
+         y="270.0" /></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="22.0"
+       y="276.0"
+       id="text3993"
+       index:editable="owner_4"><tspan
+         id="tspan935"
+         x="22.0"
+         y="276.0" /></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="22.0"
+       y="282.0"
+       id="text3997"
+       index:editable="owner5"><tspan
+         id="tspan933"
+         x="22.0"
+         y="282.0" /></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="67.0"
+       y="265.0"
+       id="text1398-4-4-9-0-1"
+       freecad:editable="drawing_title"
+       freecad:autofill="title"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="67.0"
+         y="265.0"
+         id="tspan3120">Titel</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="-133"
+         y="-15.826385"
+         id="tspan3118" /></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="67.0"
+       y="271.0"
+       id="text1398-4-4-9-0-1-7"
+       index:editable="drawing_title_2"><tspan
+         id="tspan941"
+         x="67.0"
+         y="271.0" /></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="67.0"
+       y="276.0"
+       id="text1398-4-4-9-0-1-5"
+       index:editable="drawing_subtitle"><tspan
+         id="tspan943"
+         x="67.0"
+         y="276.0" /></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="67.0"
+       y="280.0"
+       id="text1398-4-4-9-0-1-5-1"
+       index:editable="drawing_subtitle_2"><tspan
+         id="tspan945"
+         x="67.0"
+         y="280.0" /></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52778px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="67.0"
+       y="284.0"
+       id="text1398-4-4-9-0-1-5-5"
+       index:editable="drawing_subtitle_3"><tspan
+         id="tspan947"
+         x="67.0"
+         y="284.0" /></text>
+    <text
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;line-height:1.25;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;stroke-width:0.264583"
+       x="131.99998499999998"
+       y="285.0"
+       id="text1398-4-4-9-4"
+       freecad:editable="fc-sc"
+       freecad:autofill="scale"><tspan
+         id="tspan1396-7-5-8-44"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93889px;font-family:osifont;-inkscape-font-specification:'osifont, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke-width:0.264583"
+         x="131.99998499999998"
+         y="285.0">1:1</tspan></text>
+  </g>
+</svg>

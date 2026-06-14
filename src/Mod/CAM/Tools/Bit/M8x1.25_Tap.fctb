@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "M8x1.25_Tap",
+  "shape": "tap.fcstd",
+  "shape-type": "tap",
+  "parameter": {
+    "CuttingEdgeLength": "24 mm",
+    "Diameter": "9.25 mm",
+    "Flutes": "4",
+    "Length": "79 mm",
+    "Pitch": "1.25 mm",
+    "ShankDiameter": "8 mm",
+    "TipAngle": "90.000 \u00b0"
+  },
+  "attribute": {}
+}

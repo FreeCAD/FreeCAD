@@ -1,0 +1,7 @@
+/** \defgroup SPREADSHEET Spreadsheet
+ *  \ingroup CWORKBENCHES
+ *  \brief Tools to work with spreadsheets
+
+See \ref src/Mod/Draft/draft.dox as an example of how to populate this page
+
+ */

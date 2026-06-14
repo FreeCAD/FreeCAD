@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Parashell
+Comment=Feature based Parametric Modeler
+GenericName=CAD Application
+Exec=Parashell - --single-instance %F
+Terminal=false
+Type=Application
+Icon=app.parashell.Parashell
+Categories=Graphics;Science;Education;Engineering;X-CNC;
+StartupNotify=true
+StartupWMClass=Parashell
+MimeType=application/x-extension-fcstd;model/obj;image/vnd.dwg;image/vnd.dxf;model/vnd.collada+xml;application/iges;model/iges;model/step;model/step+zip;model/stl;application/vnd.shp;model/vrml;

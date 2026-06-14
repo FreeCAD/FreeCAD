@@ -1,0 +1,334 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+from PySide.QtCore import QT_TRANSLATE_NOOP
+import FreeCAD
+import Path
+import Path.Op.Base as PathOp
+from Path.Base import Drillable
+from PathScripts import PathUtils
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+
+Draft = LazyLoader("Draft", globals(), "Draft")
+Part = LazyLoader("Part", globals(), "Part")
+DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
+
+
+__title__ = "CAM Circular Holes Base Operation"
+__author__ = "sliptonic (Brad Collette)"
+__url__ = "https://www.freecad.org"
+__doc__ = "Base class an implementation for operations on circular holes."
+
+
+translate = FreeCAD.Qt.translate
+
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
+class ObjectOp(PathOp.ObjectOp):
+    """Base class for proxy objects of all operations on circular holes."""
+
+    def opFeatures(self, obj):
+        """opFeatures(obj) ... calls circularHoleFeatures(obj) and ORs in the standard features required for processing circular holes.
+        Do not overwrite, implement circularHoleFeatures(obj) instead"""
+        return (
+            PathOp.FeatureTool
+            | PathOp.FeatureDepths
+            | PathOp.FeatureHeights
+            | PathOp.FeatureBaseFaces
+            | self.circularHoleFeatures(obj)
+            | PathOp.FeatureCoolant
+            | PathOp.FeatureLinking
+        )
+
+    def circularHoleFeatures(self, obj):
+        """circularHoleFeatures(obj) ... overwrite to add operations specific features.
+        Can safely be overwritten by subclasses."""
+        return 0
+
+    def initOperation(self, obj):
+        """initOperation(obj) ... adds Disabled properties and calls initCircularHoleOperation(obj).
+        Do not overwrite, implement initCircularHoleOperation(obj) instead."""
+        obj.addProperty(
+            "App::PropertyStringList",
+            "Disabled",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "List of disabled features"),
+        )
+        # Handle SortingMode property with migration support
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SortingMode",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Manual or Automatic mode sorting of holes"),
+        )
+        obj.SortingMode = ("Automatic", "Manual")  # Set available options
+        obj.SortingMode = "Automatic"  # Set default value
+
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "StartPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Start point for automatic sorting (x,y used, z ignored)"
+            ),
+        )
+
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseEndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Enable to use end point for automatic sorting"),
+        )
+
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "EndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "End point for automatic sorting (x,y used, z ignored)"
+            ),
+        )
+
+        self.initCircularHoleOperation(obj)
+
+    def updateSortingVisibility(self, obj):
+        """Show or hide StartPoint, EndPoint and UseEndPoint based on SortingMode."""
+        if hasattr(obj, "SortingMode"):
+            mode = 0 if obj.SortingMode == "Automatic" else 2  # 0=visible, 2=hidden
+            for prop in ("StartPoint", "EndPoint", "UseEndPoint"):
+                if hasattr(obj, prop):
+                    obj.setEditorMode(prop, mode)
+
+    def opOnChanged(self, obj, prop):
+        """opOnChanged(obj, prop) ... react to SortingMode changes to update property visibility."""
+        if prop == "SortingMode" and hasattr(obj, "StartPoint"):
+            self.updateSortingVisibility(obj)
+
+    def initCircularHoleOperation(self, obj):
+        """initCircularHoleOperation(obj) ... overwrite if the subclass needs initialisation.
+        Can safely be overwritten by subclasses."""
+        pass
+
+    def holeDiameter(self, base, sub):
+        """holeDiameter(base, sub) ... returns the diameter of the specified hole."""
+        try:
+            shape = base.Shape.getElement(sub)
+            if isinstance(shape, Part.Vertex):
+                return 0
+
+            if isinstance(shape, Part.Edge) and isinstance(shape.Curve, Part.Circle):
+                return shape.Curve.Radius * 2
+
+            if isinstance(shape, Part.Face):
+                for edge in shape.Edges:
+                    if isinstance(edge.Curve, Part.Circle):
+                        return edge.Curve.Radius * 2
+
+            # for all other shapes the diameter is just the dimension in X.
+            # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
+            Path.Log.warning(
+                translate(
+                    "CAM",
+                    "Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.",
+                )
+            )
+            return shape.BoundBox.XLength
+        except Exception as e:
+            Path.Log.error(e)
+
+        return 0
+
+    def holePosition(self, base, sub):
+        """holePosition(base, sub) ... returns a Vector for the position defined by the given features.
+        Note that the value for Z is set to 0."""
+
+        try:
+            shape = base.Shape.getElement(sub)
+            if isinstance(shape, Part.Vertex):
+                return FreeCAD.Vector(shape.X, shape.Y, 0)
+
+            if isinstance(shape, Part.Edge) and isinstance(shape.Curve, Part.Circle):
+                return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
+
+            if isinstance(shape, Part.Face):
+                if isinstance(shape.Surface, Part.Cylinder):
+                    return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
+                if all(isinstance(e.Curve, Part.Circle) for e in shape.Edges):
+                    center = shape.Edges[0].Curve.Center
+                    if all(Path.Geom.pointsCoincide(center, e.Curve.Center) for e in shape.Edges):
+                        return FreeCAD.Vector(center.x, center.y, 0)
+            return FreeCAD.Vector(shape.CenterOfMass.x, shape.CenterOfMass.y, 0)
+        except Exception as e:
+            Path.Log.error(e)
+
+        Path.Log.error(
+            translate(
+                "CAM",
+                "Feature %s.%s cannot be processed as a circular hole - please remove from Base geometry list.",
+            )
+            % (base.Label, sub)
+        )
+        return None
+
+    def isHoleEnabled(self, obj, base, sub):
+        """isHoleEnabled(obj, base, sub) ... return true if hole is enabled."""
+        name = "%s.%s" % (base.Name, sub)
+        return name not in obj.Disabled
+
+    def opExecute(self, obj):
+        """opExecute(obj) ... processes all Base features and Locations and collects
+        them in a list of positions and radii which is then passed to circularHoleExecute(obj, holes).
+        Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
+        Path.Log.track()
+
+        holes = []
+        for base, subs in self.baseShapes(obj):
+            for sub in subs:
+                Path.Log.debug("processing {} in {}".format(sub, base.Name))
+                if not self.isHoleEnabled(obj, base, sub):
+                    continue
+                pos = self.holePosition(base, sub)
+                if not pos:
+                    continue
+                diam = self.holeDiameter(base, sub)
+                for hole in holes:  # check positions repeats
+                    if Path.Geom.pointsCoincide((pos.x, pos.y), (hole["x"], hole["y"])):
+                        if diam > hole["d"] and not Path.Geom.isRoughly(diam, hole["d"]):
+                            # use bigger hole and disable with less diameter
+                            name = "%s.%s" % (base.Name, hole["sub"])
+                            disabled = obj.Disabled
+                            disabled.append(name)
+                            obj.Disabled = disabled
+                            hole["d"] = diam
+                            hole["sub"] = sub
+                        else:
+                            # disable repeat with less diameter
+                            name = "%s.%s" % (base.Name, sub)
+                            disabled = obj.Disabled
+                            disabled.append(name)
+                            obj.Disabled = disabled
+                        break
+                else:  # is not a repeat, add unique position
+                    holes.append({"x": pos.x, "y": pos.y, "d": diam, "sub": sub})
+
+        for pos in getattr(obj, "Locations", []):
+            holes.append({"x": pos.x, "y": pos.y, "d": 0})
+
+        if len(holes) > 0:
+            if obj.SortingMode == "Automatic":
+                # Use the c++ implementation of the TSP sorting algorithm for better performance
+                startPoint = [obj.StartPoint.x, obj.StartPoint.y]
+                endPoint = [obj.EndPoint.x, obj.EndPoint.y] if obj.UseEndPoint else None
+                holes = PathUtils.sort_locations_tsp(
+                    holes, ["x", "y"], startPoint=startPoint, endPoint=endPoint
+                )
+            self.circularHoleExecute(obj, holes)
+
+    def circularHoleExecute(self, obj, holes):
+        """circularHoleExecute(obj, holes) ... implement processing of holes.
+        holes is a list of dictionaries with 'x', 'y' and 'r' specified for each hole.
+        Note that for Vertexes, non-circular Edges and Locations r=0.
+        Must be overwritten by subclasses."""
+        pass
+
+    def findAllHoles(self, obj, selection=[]):
+        """findAllHoles(obj) ...
+        find all holes of all base or selected models and assign as features."""
+        Path.Log.track()
+        job = self.getJob(obj)
+        if not job:
+            return
+
+        matchvector = None if job.JobType == "Multiaxis" else FreeCAD.Vector(0, 0, 1)
+        tooldiameter = obj.ToolController.Tool.Diameter.Value
+
+        features = []
+        models = []
+        for sel in selection:
+            if sel.isDerivedFrom("Part::Feature"):
+                models.append(sel)
+        if not models:
+            models = self.model
+        for base in models:
+            if not base.isDerivedFrom("Part::Feature"):
+                continue
+            features.extend(
+                Drillable.getDrillableTargets(base, toolDiameter=tooldiameter, vector=matchvector)
+            )
+        obj.Base = features
+        obj.Disabled = []
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        # Migration logic for SortingMode
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Manual or Automatic mode sorting of holes"),
+            )
+            obj.SortingMode = ("Automatic", "Manual")
+            obj.SortingMode = "Automatic"
+
+        # Migration logic for StartPoint
+        if not hasattr(obj, "StartPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "StartPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Start point for automatic sorting (x,y used, z ignored)",
+                ),
+            )
+
+        # Migration logic for UseEndPoint
+        if not hasattr(obj, "UseEndPoint"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseEndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Enable to use end point for automatic sorting"),
+            )
+
+        # Migration logic for EndPoint
+        if not hasattr(obj, "EndPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "EndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "End point for automatic sorting (x,y used, z ignored)",
+                ),
+            )

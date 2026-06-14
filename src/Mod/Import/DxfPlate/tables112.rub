@@ -1,0 +1,72 @@
+  0
+SECTION
+  2
+TABLES
+  0
+TABLE
+  2
+VPORT
+  5
+20
+ 70
+    1
+  0
+ENDTAB
+  0
+TABLE
+  2
+LTYPE
+  5
+22
+ 70
+     1
+  0
+LTYPE
+  5
+23
+  2
+BYLAYER
+ 70
+     0
+  3
+NORMAL
+ 72
+    65
+ 73
+1
+ 40
+1
+  0
+ENDTAB
+  0
+TABLE
+  2
+STYLE
+  5
+24
+ 70
+   1
+  0
+STYLE
+  5
+26
+  2
+STANDARD
+  3
+txt
+ 70
+   0
+ 40
+   0
+ 41
+   1
+ 50
+   0
+ 71
+   0
+ 42
+   1
+  4
+
+  0
+ENDTAB

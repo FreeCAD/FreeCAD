@@ -1,0 +1,7 @@
+/** \defgroup TEST Test
+ *  \ingroup CWORKBENCHES
+ *  \brief Test framework of FreeCAD
+
+See \ref src/Mod/Draft/draft.dox for example on how to populate a .dox file.
+
+ */

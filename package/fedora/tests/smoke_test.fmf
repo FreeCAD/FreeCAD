@@ -1,0 +1,4 @@
+summary: Run All FreeCADCmd python tests
+test: /usr/bin/FreeCADCmd -v
+require: /usr/bin/FreeCADCmd
+duration: 1m

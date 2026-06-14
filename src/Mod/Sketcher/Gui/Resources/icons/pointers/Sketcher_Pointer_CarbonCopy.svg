@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg12"
+   width="64"
+   height="64"
+   version="1.1"
+   sodipodi:docname="Sketcher_Pointer_CarbonCopy.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="3.3366601"
+     inkscape:cx="-43.90618"
+     inkscape:cy="20.679361"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="symbol" />
+  <metadata
+     id="metadata18">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs16">
+    <inkscape:path-effect
+       effect="dashed_stroke"
+       id="path-effect2"
+       is_visible="true"
+       lpeversion="1"
+       numberdashes="4"
+       holefactor="0"
+       splitsegments="true"
+       halfextreme="true"
+       unifysegment="true"
+       message="Add &lt;b&gt;&quot;Fill Between Many LPE&quot;&lt;/b&gt; to add fill." />
+    <inkscape:path-effect
+       effect="dashed_stroke"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       numberdashes="4"
+       holefactor="0"
+       splitsegments="true"
+       halfextreme="true"
+       unifysegment="true"
+       message="Add &lt;b&gt;&quot;Fill Between Many LPE&quot;&lt;/b&gt; to add fill." />
+  </defs>
+  <g
+     transform="translate(7.8637513,-7.2733382)"
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     id="symbol">
+    <g
+       id="g2"
+       transform="matrix(1.2085103,0,0,1.2091735,-10.465732,-8.0359924)"
+       style="stroke-width:1.65448">
+      <path
+         style="fill:none;stroke:#cc0000;stroke-width:1.65448;stroke-opacity:0.5"
+         id="path1-1"
+         d="m 52.504008,38.171602 c 0.04702,0.360588 0.07127,0.72833 0.07127,1.101736 0,0.373409 -0.02425,0.741154 -0.07127,1.101744 m -0.569043,2.1285 c -0.284503,0.6861 -0.656908,1.326537 -1.103168,1.907263 m -1.558046,1.558044 c -0.580726,0.446259 -1.221164,0.818664 -1.907264,1.103166 m -2.1285,0.569042 c -0.360588,0.04701 -0.72833,0.07127 -1.101736,0.07127 -0.373409,0 -0.741154,-0.02425 -1.101745,-0.07127 m -2.128499,-0.569044 c -0.6861,-0.284502 -1.326537,-0.656908 -1.907263,-1.103167 m -1.558044,-1.558046 c -0.44626,-0.580726 -0.818664,-1.221164 -1.103166,-1.907264 m -0.569042,-2.1285 c -0.04701,-0.360588 -0.07127,-0.72833 -0.07127,-1.101737 0,-0.373409 0.02425,-0.741153 0.07127,-1.101744 m 0.569044,-2.128499 c 0.284502,-0.6861 0.656907,-1.326537 1.103167,-1.907263 m 1.558046,-1.558045 c 0.580726,-0.446259 1.221164,-0.818664 1.907264,-1.103166 m 2.1285,-0.569041 c 0.360588,-0.04702 0.72833,-0.07127 1.101737,-0.07127 0.373408,0 0.741153,0.02425 1.101744,0.07127 m 2.128499,0.569043 c 0.6861,0.284503 1.326537,0.656908 1.907263,1.103168 m 1.558044,1.558045 c 0.44626,0.580727 0.818664,1.221165 1.103166,1.907265 m 0.569042,2.1285 c 0.04702,0.360588 0.07127,0.72833 0.07127,1.101736"
+         sodipodi:type="arc"
+         sodipodi:ry="8.4390249"
+         sodipodi:rx="8.4390249"
+         sodipodi:cy="39.273338"
+         sodipodi:cx="44.13625"
+         inkscape:path-effect="#path-effect2"
+         transform="translate(-0.69013976,-0.31897735)" />
+      <path
+         y="39.273338"
+         x="25.2582"
+         height="18.312866"
+         width="20.87805"
+         id="rect6073-6"
+         style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#cc0000;stroke-width:1.65448;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5"
+         inkscape:path-effect="#path-effect1"
+         sodipodi:type="rect"
+         d="m 25.2582,40.799411 v -1.526073 l 1.739837,0 m 3.479675,0 h 3.479675 m 3.479675,0 h 3.479675 m 3.479675,0 h 1.739838 v 1.526073 m 0,3.052144 v 3.052144 m 0,3.052145 v 3.052144 m 0,3.052144 v 1.526073 h -1.739838 m -3.479675,0 h -3.479675 m -3.479675,0 h -3.479675 m -3.479675,0 H 25.2582 v -1.526073 m 0,-3.052144 v -3.052144 m 0,-3.052145 v -3.052144 m 0,-3.052144 v -1.526073"
+         transform="translate(-0.69013976,-0.31897735)" />
+    </g>
+    <g
+       id="g3"
+       transform="matrix(1.2085103,0,0,1.2091735,-7.6316906,-12.872686)"
+       style="stroke-width:1.65448">
+      <rect
+         y="46.262405"
+         x="17.2582"
+         height="18.312866"
+         width="20.87805"
+         id="rect6073"
+         style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke-width:1.65448;stroke-miterlimit:4;stroke-dasharray:none" />
+      <circle
+         style="fill:none;stroke:#cc0000;stroke-width:1.65448"
+         id="path1"
+         cx="36.13625"
+         cy="46.262405"
+         r="8.4390249" />
+    </g>
+  </g>
+  <g
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter"
+     id="crosshair">
+    <path
+       id="path9"
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9" />
+  </g>
+</svg>

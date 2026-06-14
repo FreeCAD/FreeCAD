@@ -1,0 +1,4 @@
+/** \defgroup PATH Path
+ *  \ingroup PYTHONWORKBENCHES
+ *  \brief Tools to generate CNC toolpaths and G-Code
+ */

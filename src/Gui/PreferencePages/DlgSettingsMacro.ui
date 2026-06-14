@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsMacro</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsMacro">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>391</width>
+    <height>407</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Macro</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>General Macro Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="PrefCheckBox_LocalEnv">
+        <property name="toolTip">
+         <string>Variables defined by macros are created as local variables</string>
+        </property>
+        <property name="text">
+         <string>Run macros in local environment</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LocalEnvironment</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Macro</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="GroupBox6">
+     <property name="title">
+      <string>Macro Recording Settings</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="GroupBox8">
+        <property name="title">
+         <string>Macro Path</string>
+        </property>
+        <layout class="QGridLayout">
+         <property name="leftMargin">
+          <number>11</number>
+         </property>
+         <property name="topMargin">
+          <number>11</number>
+         </property>
+         <property name="rightMargin">
+          <number>11</number>
+         </property>
+         <property name="bottomMargin">
+          <number>11</number>
+         </property>
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="Gui::PrefFileChooser" name="MacroPath">
+           <property name="toolTip">
+            <string>The directory in which the application will search for macros</string>
+           </property>
+           <property name="mode">
+            <enum>Gui::FileChooser::Directory</enum>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>MacroPath</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Macro</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     <item row="1" column="0">
+       <widget class="QGroupBox" name="GroupBox7">
+        <property name="title">
+         <string>Gui Commands</string>
+        </property>
+        <layout class="QGridLayout">
+         <property name="leftMargin">
+          <number>11</number>
+         </property>
+         <property name="topMargin">
+          <number>11</number>
+         </property>
+         <property name="rightMargin">
+          <number>11</number>
+         </property>
+         <property name="bottomMargin">
+          <number>11</number>
+         </property>
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="Gui::PrefCheckBox" name="PrefCheckBox_RecordGui">
+           <property name="toolTip">
+            <string>Recorded macros will also contain user interface commands</string>
+           </property>
+           <property name="text">
+            <string>Record GUI commands</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>RecordGui</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Macro</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="Gui::PrefCheckBox" name="PrefCheckBox_GuiAsComment">
+           <property name="toolTip">
+            <string>Recorded macros will also contain user interface commands as comments</string>
+           </property>
+           <property name="text">
+            <string>Record as comment</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>GuiAsComment</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Macro</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QGroupBox" name="groupBox4">
+        <property name="title">
+         <string>Logging Commands</string>
+        </property>
+        <layout class="QVBoxLayout">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>11</number>
+         </property>
+         <property name="topMargin">
+          <number>11</number>
+         </property>
+         <property name="rightMargin">
+          <number>11</number>
+         </property>
+         <property name="bottomMargin">
+          <number>11</number>
+         </property>
+         <item>
+          <widget class="Gui::PrefCheckBox" name="PConsoleCheckBox">
+           <property name="toolTip">
+            <string>Commands executed by macro scripts are shown in Python console</string>
+           </property>
+           <property name="text">
+            <string>Show script commands in Python console</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>ScriptToPyConsole</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Macro</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Gui::PrefCheckBox" name="FileLogCheckBox">
+           <property name="text">
+            <string>Log all commands issued by menus to file</string>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>ScriptToFile</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Macro</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Gui::PrefFileChooser" name="MacroPath_2">
+           <property name="fileName" stdset="0">
+            <string>FullScript.FCScript</string>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>ScriptFile</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Macro</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+   <widget class="QGroupBox" name="recentmacrosgroupBox">
+    <property name="title">
+     <string>Recent Macros Menu</string>
+    </property>
+    <layout class="QGridLayout" name="recentmacrosgridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="recentMacroListLabel">
+       <property name="text">
+        <string>Size of recent macro list</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="5">
+      <widget class="Gui::PrefSpinBox" name="RecentMacros">
+       <property name="toolTip">
+        <string>How many macros should be listed in recent macros list</string>
+       </property>
+       <property name="value">
+        <number>12</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>RecentMacros</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>RecentMacros</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="recentMacroListShortcutCountLabel">
+       <property name="text">
+        <string>Keyboard shortcut count</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="5">
+      <widget class="Gui::PrefSpinBox" name="ShortcutCount">
+       <property name="toolTip">
+        <string>How many recent macros should have shortcuts</string>
+       </property>
+       <property name="value">
+        <number>3</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>ShortcutCount</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>RecentMacros</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="ShorcutModifiersLabel">
+       <property name="text">
+        <string>Keyboard Modifiers</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="2" column="5" colspan="3">
+      <widget class="Gui::ModifierLineEdit" name="ShortcutModifiers">
+       <property name="toolTip">
+        <string>Keyboard modifiers, default = Ctrl+Shift+</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </item>
+  <item row="3" column="0">
+   <spacer>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
+    </property>
+    <property name="sizeHint" stdset="0">
+     <size>
+      <width>20</width>
+      <height>40</height>
+     </size>
+    </property>
+   </spacer>
+  </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+ <customwidget>
+  <class>Gui::ModifierLineEdit</class>
+  <extends>QLineEdit</extends>
+  <header>Gui/Widgets.h</header>
+ </customwidget>
+ <customwidget>
+  <class>Gui::PrefSpinBox</class>
+  <extends>QSpinBox</extends>
+  <header>Gui/PrefWidgets.h</header>
+ </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFileChooser</class>
+   <extends>Gui::FileChooser</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>PrefCheckBox_RecordGui</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>PrefCheckBox_GuiAsComment</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartGui::DlgBooleanOperation</class>
+ <widget class="QWidget" name="PartGui::DlgBooleanOperation">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>264</width>
+    <height>408</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Boolean Operation</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Boolean Operation</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="margin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="unionButton">
+        <property name="text">
+         <string>Union</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="diffButton">
+        <property name="text">
+         <string>Difference</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="interButton">
+        <property name="text">
+         <string>Intersection</string>
+        </property>
+       </widget>
+      </item>
+     <item row="1" column="1">
+       <widget class="QRadioButton" name="sectionButton">
+        <property name="text">
+         <string>Section</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTreeWidget" name="firstShape">
+     <property name="editTriggers">
+      <set>QAbstractItemView::CurrentChanged|QAbstractItemView::EditKeyPressed</set>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <property name="expandsOnDoubleClick">
+      <bool>false</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>First shape</string>
+      </property>
+     </column>
+     <item>
+      <property name="text">
+       <string>Solids</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Shells</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Compounds</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Faces</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QTreeWidget" name="secondShape">
+     <property name="editTriggers">
+      <set>QAbstractItemView::CurrentChanged|QAbstractItemView::EditKeyPressed</set>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <property name="expandsOnDoubleClick">
+      <bool>false</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>Second shape</string>
+      </property>
+     </column>
+     <item>
+      <property name="text">
+       <string>Solids</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Shells</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Compounds</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Faces</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>117</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="1">
+    <widget class="QPushButton" name="swapButton">
+     <property name="text">
+      <string>Swap Selection</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

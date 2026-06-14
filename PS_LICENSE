@@ -1,0 +1,31 @@
+Parashell Proprietary License
+
+Copyright (c) 2026 Parashell. All rights reserved.
+
+This license applies to the proprietary components of Parashell, including but
+not limited to the Cython-compiled modules distributed in the Mod directory and
+any other files explicitly designated as proprietary (the "Software"). It does
+NOT apply to the open source components derived from FreeCAD, which remain
+governed by the LGPL and their respective licenses.
+
+The Software is the confidential and proprietary property of Parashell and is
+protected by copyright and other intellectual property laws. It is licensed,
+not sold.
+
+No part of the Software may be used, copied, modified, merged, published,
+distributed, sublicensed, reverse engineered, decompiled, disassembled, or
+otherwise exploited, in whole or in part, in any form or by any means, without
+the prior express written permission of Parashell.
+
+Any use of the Software is permitted only under the terms of a separate written
+agreement with Parashell. In the absence of such an agreement, no rights or
+licenses, express or implied, are granted to you with respect to the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL PARASHELL BE
+LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+For licensing inquiries, contact ops@parashell.cloud.

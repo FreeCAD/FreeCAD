@@ -1,0 +1,4 @@
+/** \defgroup POINTS Points
+ *  \ingroup CWORKBENCHES
+ *  \brief Tools to work with point clouds
+ */

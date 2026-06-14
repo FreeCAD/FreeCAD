@@ -1,0 +1,14 @@
+# ANSI Y14.2 standard line definitions
+# NOTE: saving this file from a spreadsheet program (like LibreOffice Calc) may
+# append empty cells to the ends of the lines. this can confuse FreeCAD.
+# NOTE: ANSI does not number line definitions.  The line numbers assigned here are an
+# invention for our purposes
+# line number, description, graphical element list
+# equivalent to ISO #1
+1,Continuous,n/a
+# roughly ISO #2
+2,Dashed,Gap,Dash,Gap
+# roughly ISO #8
+3,LongDashedDashed,LongDash,Gap,Dash,Gap
+# roughly ISO #9
+4,LongDashedDoubleDashed,LongDash,Gap,Dash,Gap,Dash,Gap

@@ -1,0 +1,134 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug C++ Tests",
+      "type": "cppdbg",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${command:cmake.buildDirectory}/tests/Tests_run",
+      "args": [],
+      "environment": [
+        {
+          "name": "PATH",
+          "value": "${command:cmake.buildDirectory}/tests:${env:PATH}"
+        }
+      ],
+      "linux": {
+        "MIMode": "gdb",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "setupCommands": [
+          {
+            "description": "Load QT pretty-printers for GDB",
+            "text": "python import sys; sys.path.append('${workspaceFolder}/contrib/debugger'); from qt_pretty_printers_gdb import register_qt_printers; register_qt_printers()",
+            "ignoreFailures": false
+          },
+          {
+            "description": "Enable pretty-printing for GDB",
+            "text": "-enable-pretty-printing",
+            "ignoreFailures": true
+          },
+          {
+            "description": "Set Disassembly Flavor to Intel",
+            "text": "-gdb-set disassembly-flavor intel",
+            "ignoreFailures": true
+          }
+        ]
+      },
+      "osx": {
+        "MIMode": "lldb",
+        "preRunCommands": [
+          "command script import ${workspaceFolder}/contrib/debugger/qt_pretty_printers_lldb.py"
+        ]
+      },
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "preLaunchTask": "CMake: build",
+      "sourceFileMap": {
+        "${workspaceFolder}": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "C/C++ debugger",
+      "type": "cppdbg",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${command:cmake.buildDirectory}/bin/FreeCAD",
+      "args": ["${workspaceFolder}/.vscode/scripts/VSCodeAutostartDebug.FCMacro"],
+      "environment": [
+        {
+          "name": "PATH",
+          "value": "${command:cmake.buildDirectory}/bin:${env:PATH}"
+        },
+        {
+          "name": "PYDEVD_DISABLE_FILE_VALIDATION",
+          "value": "1"
+        }
+      ],
+      "linux": {
+        "MIMode": "gdb",
+        "miDebuggerPath": "/usr/bin/gdb",
+        "setupCommands": [
+          {
+            "description": "Load QT pretty-printers for GDB",
+            "text": "python import sys; sys.path.append('${workspaceFolder}/contrib/debugger'); from qt_pretty_printers_gdb import register_qt_printers; register_qt_printers()",
+            "ignoreFailures": false
+          },
+          {
+            "description": "Enable pretty-printing for GDB",
+            "text": "-enable-pretty-printing",
+            "ignoreFailures": true
+          },
+          {
+            "description": "Set Disassembly Flavor to Intel",
+            "text": "-gdb-set disassembly-flavor intel",
+            "ignoreFailures": true
+          }
+        ]
+      },
+      "osx": {
+        "MIMode": "lldb",
+        "preRunCommands": [
+          "command script import ${workspaceFolder}/contrib/debugger/qt_pretty_printers_lldb.py"
+        ]
+      },
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "presentation": {
+        "hidden": true,
+      }
+    },
+    {
+      "name": "Python debugger",
+      "type": "debugpy",
+      "request": "attach",
+      "preLaunchTask": "WaitForDebugpy",
+      "redirectOutput": true,
+      "connect": {
+        "host": "localhost",
+        "port": 5679
+      },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/src",
+          "remoteRoot": "${command:cmake.buildDirectory}"
+        }
+      ],
+      "justMyCode": false,
+      "presentation": {
+        "hidden": true,
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug FreeCAD",
+      "configurations": ["C/C++ debugger", "Python debugger"],
+      "preLaunchTask": "CMake: build",
+      "stopAll": true,
+      "presentation": {
+        "order": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<!-- https://tamirov.ru edited -->
+<title>Surface roughness: material removal prohibited. Technical drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<g>
+ <path d="m5,32 l16,28 32,-56" fill="none" stroke="#000" stroke-width="2"/>
+ <circle cx="21" cy="39" r="10" fill="none" stroke="#000" stroke-width="2"/>
+</g>
+</svg>

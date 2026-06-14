@@ -1,0 +1,4 @@
+/** \defgroup MATERIAL Material
+ *  \ingroup UTILITIES
+ *  \brief Materials support for FreeCAD
+ */

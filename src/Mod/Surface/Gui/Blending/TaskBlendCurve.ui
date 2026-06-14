@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SurfaceGui::BlendCurve</class>
+ <widget class="QWidget" name="SurfaceGui::BlendCurve">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>297</width>
+    <height>352</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Blend Curve</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Start Edge</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QToolButton" name="buttonFirstEdge">
+        <property name="text">
+         <string>Edge</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="firstEdgeEdit">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Continuity</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="contFirstEdge">
+        <item>
+         <property name="text">
+          <string notr="true">C0</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">G1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">G2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">G3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">G4</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Parameter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::DoubleSpinBox" name="paramFirstEdge">
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Size</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::DoubleSpinBox" name="sizeFirstEdge">
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>End Edge</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QToolButton" name="buttonSecondEdge">
+        <property name="text">
+         <string>Edge</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="secondEdgeEdit">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Continuity</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="contSecondEdge">
+        <item>
+         <property name="text">
+          <string notr="true">C0</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">G1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">G2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">G3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">G4</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Parameter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::DoubleSpinBox" name="paramSecondEdge">
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.050000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Size</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::DoubleSpinBox" name="sizeSecondEdge">
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::DoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>buttonFirstEdge</tabstop>
+  <tabstop>firstEdgeEdit</tabstop>
+  <tabstop>contFirstEdge</tabstop>
+  <tabstop>paramFirstEdge</tabstop>
+  <tabstop>sizeFirstEdge</tabstop>
+  <tabstop>buttonSecondEdge</tabstop>
+  <tabstop>secondEdgeEdit</tabstop>
+  <tabstop>contSecondEdge</tabstop>
+  <tabstop>paramSecondEdge</tabstop>
+  <tabstop>sizeSecondEdge</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

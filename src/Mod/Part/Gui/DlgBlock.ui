@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BlockDefinition</class>
+ <widget class="QDialog" name="BlockDefinition">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>299</width>
+    <height>477</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Block Definition</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>First Limit</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="margin">
+       <number>6</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <layout class="QGridLayout">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="TextLabel1">
+          <property name="text">
+           <string>Type</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="FirstLimitType">
+          <item>
+           <property name="text">
+            <string>Dimension</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Up to next</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Up to last</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Up to plane</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Up to face</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="TextLabel2">
+          <property name="text">
+           <string>Length</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="FirstLimitLength">
+          <property name="suffix">
+           <string>mm</string>
+          </property>
+          <property name="value">
+           <number>20</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="TextLabel3">
+          <property name="text">
+           <string>Limit</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="FirstLimitSelection">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>No selection</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="GroupBox6">
+     <property name="title">
+      <string>Profile</string>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="margin">
+       <number>9</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="TextLabel4">
+          <property name="text">
+           <string>Selection</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="ProfileSelection">
+          <property name="text">
+           <string>No selection</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <layout class="QGridLayout">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="Reverse">
+       <property name="text">
+        <string>Reverse</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QCheckBox" name="BothSides">
+       <property name="text">
+        <string>Both sides</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="SecondLimit">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Second Limit</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="margin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <layout class="QGridLayout">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="TextLabel1_2">
+          <property name="text">
+           <string>Type</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="SecondLimitType">
+          <item>
+           <property name="text">
+            <string>Dimension</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Up to next</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Up to last</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Up to plane</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Up to face</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="TextLabel2_2">
+          <property name="text">
+           <string>Length</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="SecondLimitLength">
+          <property name="suffix">
+           <string>mm</string>
+          </property>
+          <property name="value">
+           <number>20</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="TextLabel3_2">
+          <property name="text">
+           <string>Limit</string>
+          </property>
+         </widget>
+        </item>
+       <item row="2" column="1">
+         <widget class="QLineEdit" name="SecondLimitSelection">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>No selection</string>
+          </property>
+         </widget>
+        </item>
+        </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QGroupBox" name="Direction">
+     <property name="title">
+      <string>Direction</string>
+     </property>
+     <layout class="QVBoxLayout">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="margin">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="DirectionPerpendicular">
+        <property name="text">
+         <string>Perpendicular to sketch</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QGridLayout">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="TextLabel5">
+          <property name="text">
+           <string>Reference</string>
+          </property>
+         </widget>
+        </item>
+       <item row="0" column="1">
+         <widget class="QLineEdit" name="DirectionSelection">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>No selection</string>
+          </property>
+         </widget>
+        </item>
+        </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>FirstLimitType</tabstop>
+  <tabstop>FirstLimitLength</tabstop>
+  <tabstop>FirstLimitSelection</tabstop>
+  <tabstop>ProfileSelection</tabstop>
+  <tabstop>Reverse</tabstop>
+  <tabstop>BothSides</tabstop>
+  <tabstop>SecondLimitType</tabstop>
+  <tabstop>SecondLimitLength</tabstop>
+  <tabstop>SecondLimitSelection</tabstop>
+  <tabstop>DirectionPerpendicular</tabstop>
+  <tabstop>DirectionSelection</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>BlockDefinition</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>455</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>BlockDefinition</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>455</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

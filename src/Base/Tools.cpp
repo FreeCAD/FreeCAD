@@ -1,0 +1,372 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/***************************************************************************
+ *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+#include <unicode/uchar.h>
+#include <unicode/utf8.h>
+#include <unicode/locid.h>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
+#include <string>
+#include <vector>
+
+#include "PyExport.h"
+#include "Interpreter.h"
+#include "Tools.h"
+
+#ifdef FC_OS_WIN32
+# include <windows.h>
+# include <stdexcept>
+#endif
+
+namespace
+{
+constexpr auto underscore = static_cast<UChar32>(U'_');
+std::string operatingSystemNumericLocale;
+
+bool isValidFirstChar(UChar32 c)
+{
+    auto category = static_cast<UCharCategory>(u_charType(c));
+
+    return (c == underscore)
+        || (category == U_UPPERCASE_LETTER || category == U_LOWERCASE_LETTER
+            || category == U_TITLECASE_LETTER || category == U_MODIFIER_LETTER
+            || category == U_OTHER_LETTER || category == U_LETTER_NUMBER);
+}
+
+bool isValidSubsequentChar(UChar32 c)
+{
+    auto category = static_cast<UCharCategory>(u_charType(c));
+    return (c == underscore)
+        || (category == U_UPPERCASE_LETTER || category == U_LOWERCASE_LETTER
+            || category == U_TITLECASE_LETTER || category == U_MODIFIER_LETTER
+            || category == U_OTHER_LETTER || category == U_LETTER_NUMBER
+            || category == U_DECIMAL_DIGIT_NUMBER || category == U_NON_SPACING_MARK
+            || category == U_COMBINING_SPACING_MARK || category == U_CONNECTOR_PUNCTUATION);
+}
+
+};  // namespace
+
+// Silence the linter complaining about ICU's U8_NEXT macros
+// NOLINTBEGIN(bugprone-inc-dec-in-conditions,readability-function-cognitive-complexity)
+std::string Base::Tools::getIdentifier(std::string_view name)
+{
+    if (name.empty()) {
+        return "_";
+    }
+
+    const char* bytes = name.data();
+    const size_t length = name.length();
+    size_t inOffset = 0;
+    size_t outOffset = 0;
+    // The resulting identifier can't ever be longer than the input + 1 as all codepoints are
+    // either added as-is or replaced with '_' which is a single byte, the smallest quantum a
+    // codepoint can occupy in UTF-8; the +1 coming from the initial '_' that can be prepended.
+    // This allows for bypassing bounds checks when appending (U8_APPEND_UNSAFE), only shrinking
+    // the string at the end.
+    std::string result(length + 1, '\0');
+
+    // Handle the first character independently, prepending an underscore if it is not a valid
+    // first character, but *is* a valid later character
+    UChar32 firstChar = 0;
+    U8_NEXT(bytes, inOffset, length, firstChar);
+    const bool firstCharValid = isValidFirstChar(firstChar);
+    if (!firstCharValid) {
+        result[outOffset++] = '_';
+    }
+    if (firstCharValid || isValidSubsequentChar(firstChar)) {
+        U8_APPEND_UNSAFE(result, outOffset, firstChar);
+    }
+
+    while (inOffset < length) {
+        UChar32 c = 0;
+        U8_NEXT(bytes, inOffset, length, c);
+
+        if (isValidSubsequentChar(c)) {
+            U8_APPEND_UNSAFE(result, outOffset, c);
+        }
+        else {
+            result[outOffset++] = '_';
+        }
+    }
+
+    result.resize(outOffset);
+    return result;
+}
+// NOLINTEND(bugprone-inc-dec-in-conditions,readability-function-cognitive-complexity)
+
+std::wstring Base::Tools::widen(const std::string& str)
+{
+    std::wostringstream wstm;
+    const std::ctype<wchar_t>& ctfacet = std::use_facet<std::ctype<wchar_t>>(wstm.getloc());
+    for (char i : str) {
+        wstm << ctfacet.widen(i);
+    }
+    return wstm.str();
+}
+
+std::string Base::Tools::narrow(const std::wstring& str)
+{
+    std::ostringstream stm;
+    const std::ctype<char>& ctfacet = std::use_facet<std::ctype<char>>(stm.getloc());
+    for (wchar_t i : str) {
+        stm << ctfacet.narrow(i, 0);
+    }
+    return stm.str();
+}
+
+#ifdef FC_OS_WIN32
+std::string Base::Tools::wstringToString(const std::wstring& str)
+{
+    if (str.empty()) {
+        return {};
+    }
+    // Use a two-pass WideCharToMultiByte approach, which is the official recommendation as of this
+    // writing (2026).
+    int neededSize
+        = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, str.data(), -1, nullptr, 0, nullptr, nullptr);
+    char* CharString = new char[static_cast<size_t>(neededSize)];
+    WideCharToMultiByte(
+        CP_UTF8,
+        WC_ERR_INVALID_CHARS,
+        str.data(),
+        -1,
+        CharString,
+        neededSize,
+        nullptr,
+        nullptr
+    );
+    std::string String(CharString);
+    delete[] CharString;
+    CharString = NULL;
+    return String;
+}
+#endif
+
+
+std::string Base::Tools::escapedUnicodeFromUtf8(const char* s)
+{
+    Base::PyGILStateLocker lock;
+    std::string escapedstr;
+
+    PyObject* unicode = PyUnicode_FromString(s);
+    if (!unicode) {
+        return escapedstr;
+    }
+
+    PyObject* escaped = PyUnicode_AsUnicodeEscapeString(unicode);
+    if (escaped) {
+        escapedstr = std::string(PyBytes_AsString(escaped));
+        Py_DECREF(escaped);
+    }
+
+    Py_DECREF(unicode);
+    return escapedstr;
+}
+
+std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
+{
+    Base::PyGILStateLocker lock;
+    std::string string;
+
+    PyObject* unicode
+        = PyUnicode_DecodeUnicodeEscape(s.c_str(), static_cast<Py_ssize_t>(s.size()), "strict");
+    if (!unicode) {
+        return string;
+    }
+    if (PyUnicode_Check(unicode)) {
+        string = PyUnicode_AsUTF8(unicode);
+    }
+    Py_DECREF(unicode);
+    return string;
+}
+
+std::string Base::Tools::escapeQuotesFromString(const std::string& s)
+{
+    std::string result;
+    size_t len = s.size();
+    for (size_t i = 0; i < len; ++i) {
+        switch (s.at(i)) {
+            case '\"':
+                result += "\\\"";
+                break;
+            case '\'':
+                result += "\\\'";
+                break;
+            default:
+                result += s.at(i);
+                break;
+        }
+    }
+    return result;
+}
+
+std::string Base::Tools::escapeEncodeString(const std::string& s)
+{
+    std::string result;
+    size_t len = s.size();
+    for (size_t i = 0; i < len; ++i) {
+        switch (s.at(i)) {
+            case '\\':
+                result += "\\\\";
+                break;
+            case '\"':
+                result += "\\\"";
+                break;
+            case '\'':
+                result += "\\\'";
+                break;
+            default:
+                result += s.at(i);
+                break;
+        }
+    }
+    return result;
+}
+
+std::string Base::Tools::escapeEncodeFilename(const std::string& s)
+{
+    std::string result;
+    size_t len = s.size();
+    for (size_t i = 0; i < len; ++i) {
+        switch (s.at(i)) {
+            case '\"':
+                result += "\\\"";
+                break;
+            case '\'':
+                result += "\\\'";
+                break;
+            default:
+                result += s.at(i);
+                break;
+        }
+    }
+    return result;
+}
+
+std::string Base::Tools::quoted(const char* name)
+{
+    std::stringstream str;
+    str << "\"" << name << "\"";
+    return str.str();
+}
+
+std::string Base::Tools::quoted(const std::string& name)
+{
+    std::stringstream str;
+    str << "\"" << name << "\"";
+    return str.str();
+}
+
+std::string Base::Tools::joinList(const std::vector<std::string>& vec, const std::string& sep)
+{
+    std::stringstream str;
+    for (const auto& it : vec) {
+        str << it << sep;
+    }
+    return str.str();
+}
+
+std::string Base::Tools::currentDateTimeString()
+{
+    const auto now = std::chrono::system_clock::now();
+    const std::time_t t = std::chrono::system_clock::to_time_t(now);
+
+    std::tm tmUtc {};
+#if defined(_WIN32)
+    gmtime_s(&tmUtc, &t);
+#else
+    gmtime_r(&t, &tmUtc);
+#endif
+
+    std::ostringstream out;
+    out << std::put_time(&tmUtc, "%Y-%m-%dT%H:%M:%SZ");
+    return out.str();
+}
+
+bool Base::Tools::isCLocaleName(std::string_view localeName)
+{
+    return localeName == "C" || localeName == "c" || localeName == "C.UTF-8" || localeName == "C.utf8"
+        || localeName == "c.utf8" || localeName == "POSIX" || localeName == "posix";
+}
+
+void Base::Tools::setOperatingSystemNumericLocale(std::string_view localeName)
+{
+    operatingSystemNumericLocale = localeName;
+}
+
+std::string Base::Tools::getOperatingSystemNumericLocale()
+{
+    return operatingSystemNumericLocale;
+}
+
+void Base::Tools::setIcuDefaultLocale(std::string_view icuLocaleId)
+{
+    UErrorCode status = U_ZERO_ERROR;
+
+    if (icuLocaleId.empty() || isCLocaleName(icuLocaleId)) {
+        icu::Locale::setDefault(icu::Locale("en_US_POSIX"), status);
+        return;
+    }
+
+    const std::string localeId(icuLocaleId);
+    const icu::Locale locale = icu::Locale::createFromName(localeId.c_str());
+    icu::Locale::setDefault(locale, status);
+}
+
+std::vector<std::string> Base::Tools::splitSubName(const std::string& subname)
+{
+    // Turns 'Part.Part001.Body.Pad.Edge1'
+    // Into ['Part', 'Part001', 'Body', 'Pad', 'Edge1']
+    std::vector<std::string> subNames;
+    std::string subName;
+    std::istringstream subNameStream(subname);
+    while (std::getline(subNameStream, subName, '.')) {
+        subNames.push_back(subName);
+    }
+
+    // Check if the last character of the input string is the delimiter.
+    // If so, add an empty string to the subNames vector.
+    // Because the last subname is the element name and can be empty.
+    if (!subname.empty() && subname.back() == '.') {
+        subNames.push_back("");  // Append empty string for trailing dot.
+    }
+
+    return subNames;
+}
+
+// ------------------------------------------------------------------------------------------------
+
+void Base::ZipTools::rewrite(const std::string& source, const std::string& target)
+{
+    Base::PyGILStateLocker lock;
+    PyObject* module = PyImport_ImportModule("freecad.utils_zip");
+    if (!module) {
+        throw Py::Exception();
+    }
+
+    Py::Module commands(module, true);
+    commands.callMemberFunction("rewrite", Py::TupleN(Py::String(source), Py::String(target)));
+}

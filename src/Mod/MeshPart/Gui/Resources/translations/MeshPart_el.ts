@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="el" sourcelanguage="en">
+  <context>
+    <name>CmdMeshPartCrossSections</name>
+    <message>
+      <location filename="../../Command.cpp" line="276"/>
+      <source>MeshPart</source>
+      <translation>ΕξάρτημαΠλέγματος</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="277"/>
+      <source>Cross-Sections</source>
+      <translation>Εγκάρσιες Τομές</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="278"/>
+      <source>Applies cross-sections to the mesh</source>
+      <translation>Εφαρμογή εγκάρσιων τομών στο πλέγμα</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshPartCurveOnMesh</name>
+    <message>
+      <location filename="../../Command.cpp" line="312"/>
+      <source>Mesh</source>
+      <translation>Πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="313"/>
+      <source>Curve on Mesh</source>
+      <translation>Καμπύλη πάνω σε Πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="314"/>
+      <source>Creates an approximated curve on top of a mesh object</source>
+      <translation>Σχεδιάζει μια ομαλή καμπύλη που ακολουθεί το σχήμα του πλέγματος</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshPartMesher</name>
+    <message>
+      <location filename="../../Command.cpp" line="58"/>
+      <source>Mesh</source>
+      <translation>Πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="59"/>
+      <source>Mesh From Shape</source>
+      <translation>Πλέγμα από Σχήμα</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="61"/>
+      <source>Tessellate shape</source>
+      <translation>Ψηφίδωση σχήματος</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshPartSection</name>
+    <message>
+      <location filename="../../Command.cpp" line="190"/>
+      <source>Mesh</source>
+      <translation>Πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="192"/>
+      <source>Creates a section from a mesh and plane</source>
+      <translation>Δημιουργεί μια τομή από τον συνδυασμό ενός πλέγματος και ενός επιπέδου</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="191"/>
+      <source>Section</source>
+      <translation>Τομή</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshPartTrimByPlane</name>
+    <message>
+      <location filename="../../Command.cpp" line="84"/>
+      <source>Mesh</source>
+      <translation>Πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="85"/>
+      <source>Trim Mesh</source>
+      <translation>Περικοπή Πλέγματος</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="86"/>
+      <source>Trims a mesh with a plane</source>
+      <translation>Περικόπτει τις ακμές ενός πλέγματος με ένα επίπεδο</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="135"/>
+      <source>Trim with plane</source>
+      <translation>Περικοπή με επίπεδο</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="215"/>
+      <source>Section with plane</source>
+      <translation>Τμήμα με επίπεδο</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPartGui::CrossSections</name>
+    <message>
+      <location filename="../../CrossSections.ui" line="14"/>
+      <source>Cross Sections</source>
+      <translation>Εγκάρσιες Τομές</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="20"/>
+      <source>Guiding Plane</source>
+      <translation>Επίπεδο Οδηγός</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="26"/>
+      <source>XY</source>
+      <translation>XY</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="36"/>
+      <source>XZ</source>
+      <translation>XZ</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="43"/>
+      <source>YZ</source>
+      <translation>YZ</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="52"/>
+      <source>Position</source>
+      <translation>Θέση</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="109"/>
+      <source>Distance</source>
+      <translation>Απόσταση</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="71"/>
+      <source>Sections</source>
+      <translation>Τομές</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="83"/>
+      <source>On both sides</source>
+      <translation>Και στις δύο πλευρές</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="92"/>
+      <source>Count</source>
+      <translation>Αρίθμηση</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="128"/>
+      <source>Options</source>
+      <translation>Επιλογές</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="134"/>
+      <source>Connect edges if distance less than</source>
+      <translation>Συνδέστε τις άκρες εάν η απόσταση είναι μικρότερη από</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.cpp" line="390"/>
+      <source>Failure</source>
+      <translation>Αποτυχία</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPartGui::CurveOnMeshHandler</name>
+    <message>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
+      <source>Create</source>
+      <translation>Δημιουργήστε</translation>
+    </message>
+    <message>
+      <location filename="../../CurveOnMesh.cpp" line="359"/>
+      <source>Close wire</source>
+      <translation>Κλείσιμο γραμμής</translation>
+    </message>
+    <message>
+      <location filename="../../CurveOnMesh.cpp" line="361"/>
+      <source>Clear</source>
+      <translation>Εκκαθάριση</translation>
+    </message>
+    <message>
+      <location filename="../../CurveOnMesh.cpp" line="362"/>
+      <source>Cancel</source>
+      <translation>Ακύρωση</translation>
+    </message>
+    <message>
+      <location filename="../../CurveOnMesh.cpp" line="615"/>
+      <source>Wrong mesh selected</source>
+      <translation>Επιλέχθηκε λάθος πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../CurveOnMesh.cpp" line="655"/>
+      <source>No point was selected</source>
+      <translation>Δεν επιλέχθηκε κανένα σημείο</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPartGui::TaskCurveOnMesh</name>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="14"/>
+      <source>Curve on Mesh</source>
+      <translation>Καμπύλη πάνω σε Πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="23"/>
+      <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
+      <translation>Πατήστε 'Έναρξη' και μετά επιλέξτε σημεία πάνω στο πλέγμα. Όταν ορίσετε αρκετά σημεία, κάντε δεξί κλικ και επιλέξτε 'Δημιουργία'. Επαναλάβετε τη διαδικασία για να δημιουργήσετε περισσότερες καμπύλες. Κλείστε αυτό το πλαίσιο εργασιών για να ολοκληρώσετε τη λειτουργία.
+
+Αυτή η εντολή λειτουργεί μόνο με αντικείμενα Πλέγματος (Mesh) και όχι με απλές έδρες ή επιφάνειες. Για να μετατρέψετε ένα αντικείμενο σε πλέγμα, χρησιμοποιήστε τα εργαλεία του πάγκου εργασίας Πλέγματος (Mesh).</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="38"/>
+      <source>Wire</source>
+      <translation>Σύνθετη Γραμμή</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="44"/>
+      <source>Snap tolerance to vertices</source>
+      <translation>Ανοχή σύνδεσης σημείων με τις κορυφές</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="51"/>
+      <source> px</source>
+      <translation> px</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="61"/>
+      <source>Split threshold</source>
+      <translation>Όριο διαχωρισμού</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="87"/>
+      <source>Spline Approximation</source>
+      <translation>Προσέγγιση σημείων Καμπύλης</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="96"/>
+      <source>Tolerance to mesh</source>
+      <translation>Ανοχή πλέγματος</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="122"/>
+      <source>Continuity</source>
+      <translation>Συνέχεια</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="136"/>
+      <source>Maximum curve degree</source>
+      <translation>Μέγιστος βαθμός καμπύλης</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCurveOnMesh.ui" line="153"/>
+      <source>Start</source>
+      <translation>Εκκίνηση</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPartGui::Tessellation</name>
+    <message>
+      <location filename="../../Tessellation.ui" line="14"/>
+      <source>Tessellation</source>
+      <translation>Ψηφίδωση</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="30"/>
+      <source>Standard</source>
+      <translation>Καθιερωμένο</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="33"/>
+      <source>Use the standard mesher</source>
+      <translation>Χρησιμοποιήστε ένα προκαθορισμένο πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="48"/>
+      <source>Maximal linear deflection of a mesh section from the surface of the object</source>
+      <translation>Μέγιστη γραμμική απόκλιση ενός τμήματος πλέγματος από την επιφάνεια του αντικειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="74"/>
+      <source>Maximal angular deflection of a mesh section to the next section</source>
+      <translation>Μέγιστη γωνιακή απόκλιση ενός τμήματος πλέγματος στο επόμενο τμήμα</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="102"/>
+      <source>Relative surface deviation</source>
+      <translation>Σχετική επιφανειακή απόκλιση</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="109"/>
+      <source>Mesh will get face colors of the object</source>
+      <translation>Το πλέγμα θα πάρει τα χρώματα των όψεων του αντικειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="112"/>
+      <source>Apply face colors to mesh</source>
+      <translation>Εφαρμογή των χρωμάτων όψεων στο πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="119"/>
+      <source>Mesh segments will be grouped according to the color of the object faces.
+These groups will be exported for mesh output formats supporting
+this feature (e.g. the format OBJ).</source>
+      <translation>Τα τμήματα πλέγματος θα ομαδοποιηθούν ανάλογα με το χρώμα των όψεων των αντικειμένων.
+Αυτές οι ομάδες θα εξαχθούν για μορφές πλέγματος που υποστηρίζουν αυτήν τη λειτουργία (π.χ. τη μορφή OBJ).</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="124"/>
+      <source>Define segments by face colors</source>
+      <translation>Ορισμός τμημάτων με βάση τα χρώματα όψεων</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="145"/>
+      <source>Mefisto</source>
+      <translation>Mefisto</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="148"/>
+      <source>Use the Mefisto mesher</source>
+      <translation>Χρησιμοποιήστε το πλέγμα Mephisto</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="20"/>
+      <source>Meshing Options</source>
+      <translation>Επιλογές Πλεγματοποίησης</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="41"/>
+      <source>Surface deviation</source>
+      <translation>Απόκλιση επιφάνειας</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="67"/>
+      <source>Angular deviation</source>
+      <translation>Επιλογές Πλεγματοποίησης</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="98"/>
+      <source>The maximal linear deviation of a mesh segment will be the specified
+surface deviation multiplied by the length of the current mesh segment (edge)</source>
+      <translation>Η μέγιστη γραμμική απόκλιση ενός τμήματος του πλέγματος θα είναι η καθορισμένη απόκλιση επιφάνειας πολλαπλασιασμένη με το μήκος του συγκεκριμένου τμήματος (ακμής) του πλέγματος</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="156"/>
+      <source>Maximum edge length</source>
+      <translation>Μέγιστο μήκος ακμής</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="162"/>
+      <source>If this number is smaller the mesh becomes finer.
+The smallest value is 0.</source>
+      <translation>Εάν αυτός ο αριθμός είναι μικρότερος, το πλέγμα γίνεται λεπτότερο.
+Η μικρότερη τιμή είναι 0.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="183"/>
+      <source>Estimate</source>
+      <translation>Εκτίμηση</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="206"/>
+      <source>Netgen</source>
+      <translation>Netgen αυτόματη 3D τετραεδρική γεννήτρια πλέγματος</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="209"/>
+      <source>Use the Netgen mesher</source>
+      <translation>Χρησιμοποιήστε το Netgen για το πλέγμα</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="234"/>
+      <source>Very coarse</source>
+      <translation>Πολύ τραχύ</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="239"/>
+      <source>Coarse</source>
+      <translation>Τραχύ</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="244"/>
+      <source>Moderate</source>
+      <translation>Μέτριο</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="249"/>
+      <source>Fine</source>
+      <translation>Λεπτό</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="254"/>
+      <source>Very fine</source>
+      <translation>Πολύ λεπτό</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="259"/>
+      <source>User defined</source>
+      <translation>Ορισμένο από τον Χρήστη</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="269"/>
+      <source>Mesh size grading</source>
+      <translation>Διαβάθμιση μεγέθους πλέγματος</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="302"/>
+      <source>Elements per edge</source>
+      <translation>Στοιχεία ανά ακμή</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="335"/>
+      <source>Elements per curvature radius</source>
+      <translation>Στοιχεία ανά ακτίνα καμπυλότητας</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="279"/>
+      <source>If this parameter is smaller, the mesh becomes finer.
+A value in the range of 0.1-1.</source>
+      <translation>Εάν αυτή η παράμετρος είναι μικρότερη, το πλέγμα γίνεται λεπτότερο.
+Μια τιμή στο εύρος 0,1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Λεπτότητα</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="312"/>
+      <location filename="../../Tessellation.ui" line="345"/>
+      <source>If this parameter is larger, the mesh becomes finer.
+A value in the range of 0.2-10.</source>
+      <translation>Αν αυτή η παράμετρος είναι μεγαλύτερη, το πλέγμα γίνεται λεπτότερο.
+Το εύρος τιμής είναι 0,2-10.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="370"/>
+      <source>Whether optimization of surface shape will be done</source>
+      <translation>Εάν θα γίνει βελτιστοποίηση του σχήματος της επιφάνειας</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="373"/>
+      <source>Optimize surface</source>
+      <translation>Βελτιστοποίηση επιφάνειας</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="383"/>
+      <source>Whether second order elements will be generated</source>
+      <translation>Εάν θα δημιουργηθούν στοιχεία δεύτερης σειράς</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="386"/>
+      <source>Second order elements</source>
+      <translation>Στοιχεία δεύτερης τάξης</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="393"/>
+      <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
+      <translation>Αν τα πλέγματα θα τακτοποιηθούν κατά προτίμηση χρησιμοποιώντας τετράπλευρες όψεις</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="396"/>
+      <source>Quad dominated</source>
+      <translation>Πλέγμα αποτελούμενο από τετράπλευρα τμήματα</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="422"/>
+      <source>Leave panel open</source>
+      <translation>Αφήστε τον πίνακα ανοιχτό</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="62"/>
+      <source>Gmsh</source>
+      <translation>Gmsh</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="240"/>
+      <location filename="../../Tessellation.cpp" line="246"/>
+      <source>No Active Document</source>
+      <translation type="unfinished">No Active Document</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="280"/>
+      <source>Error: body without a tip selected.
+Either set the tip of the body or select a different shape.</source>
+      <translation>Σφάλμα: Επιλέχθηκε σώμα χωρίς ενεργό άκρο (Tip).
+Είτε ορίστε το άκρο του σώματος είτε επιλέξτε ένα διαφορετικό σχήμα.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="288"/>
+      <source>Error: shape without faces selected.
+Select a different shape.</source>
+      <translation>Σφάλμα: Επιλέχθηκε σχήμα χωρίς έδρες.
+Επιλέξτε ένα διαφορετικό σχήμα.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="293"/>
+      <source>Select a shape for meshing, first.</source>
+      <translation>Επιλέξτε ένα σχήμα για πλεγματοποίηση, πρώτα.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_Section</name>
+    <message>
+      <location filename="../../Command.cpp" line="204"/>
+      <source>Select plane</source>
+      <translation>Επιλέξτε επίπεδο</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="205"/>
+      <source>Select a plane to section the mesh with.</source>
+      <translation>Επιλέξτε ένα επίπεδο με το οποίο θα γίνει η τομή του πλέγματος.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_TrimByPlane</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Select plane</source>
+      <translation>Επιλέξτε επίπεδο</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Select a plane to trim the mesh with.</source>
+      <translation>Επιλέξτε ένα επίπεδο με το οποίο θα γίνει η περικοπή του πλέγματος.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="105"/>
+      <source>Trim With Plane</source>
+      <translation>Κόψιμο με ίσια επιφάνεια</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="106"/>
+      <source>Select the side to keep</source>
+      <translation>Επιλέξτε την πλευρά που θα διατηρηθε</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="108"/>
+      <source>Below</source>
+      <translation>Κάτω</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="110"/>
+      <source>Above</source>
+      <translation>Πάνω</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="112"/>
+      <source>Split</source>
+      <translation>Διαχωρισμός</translation>
+    </message>
+  </context>
+  <context>
+    <name>Workbench</name>
+    <message>
+      <location filename="../../Workbench.cpp" line="36"/>
+      <source>MeshPart</source>
+      <translation>ΕξάρτημαΠλέγματος</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatMesh</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="51"/>
+      <source>Unwrap Mesh</source>
+      <translation>Ξετύλιγμα πλέγματος</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="54"/>
+      <source>Finds a flat representation of a mesh</source>
+      <translation>Βρίσκει μια επίπεδη μορφή ενός πλέγματος</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshPart_CreateFlatFace</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="90"/>
+      <source>Unwrap Face</source>
+      <translation>Ξετύλιγμα επιφάνειας</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="93"/>
+      <source>Finds a flat representation of a face</source>
+      <translation>Βρίσκει μια επίπεδη μορφή μιας έδρας (επιφάνειας)</translation>
+    </message>
+  </context>
+</TS>

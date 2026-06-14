@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/umf-measurement.svg</file>
+        <file>icons/preferences-measure.svg</file>
+        <file>icons/Measurement-Angle.svg</file>
+        <file>icons/Measurement-Area.svg</file>
+        <file>icons/Measurement-CenterOfMass.svg</file>
+        <file>icons/Measurement-Distance.svg</file>
+        <file>icons/Measurement-Group.svg</file>
+        <file>icons/Measurement-Inertia.svg</file>
+        <file>icons/Measurement-Position.svg</file>
+        <file>icons/Measurement-Diameter.svg</file>
+        <file>icons/Measurement-Radius.svg</file>
+        <file>icons/Measurement-Volume.svg</file>
+        <file>icons/MassPropertiesIcon.svg</file>
+        <file>icons/COV-Icon.svg</file>
+        <file>icons/COG-Icon.svg</file>
+    </qresource>
+</RCC>

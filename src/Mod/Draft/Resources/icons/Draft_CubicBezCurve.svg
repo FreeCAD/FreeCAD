@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   id="svg3612"
+   height="64px"
+   width="64px"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs3614">
+    <linearGradient
+       y2="5"
+       x2="-22"
+       y1="18"
+       x1="-18"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3801-1"
+       xlink:href="#linearGradient3836-0" />
+    <linearGradient
+       id="linearGradient3836-0">
+      <stop
+         id="stop3838-2"
+         offset="0"
+         style="stop-color:#c4a000;stop-opacity:1;" />
+      <stop
+         id="stop3840-5"
+         offset="1"
+         style="stop-color:#fce94f;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       y2="5"
+       x2="-22"
+       y1="18"
+       x1="-18"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3801-1-3"
+       xlink:href="#linearGradient3836-0-6" />
+    <linearGradient
+       id="linearGradient3836-0-6">
+      <stop
+         id="stop3838-2-7"
+         offset="0"
+         style="stop-color:#c4a000;stop-opacity:1;" />
+      <stop
+         id="stop3840-5-5"
+         offset="1"
+         style="stop-color:#fce94f;stop-opacity:1;" />
+    </linearGradient>
+  </defs>
+  <g
+     id="layer1">
+    <g
+       id="g4117">
+      <path
+         style="fill:none;stroke:#2e3436;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 55,50 53,15"
+         id="path4034-3" />
+      <path
+         style="fill:none;stroke:#2e3436;stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 9,50 11,15"
+         id="path4030-9" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 9,49 11,15"
+         id="path4030" />
+      <rect
+         style="color:#000000;fill:#edd400;fill-opacity:1;fill-rule:nonzero;stroke:#2e2900;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="rect3190"
+         width="10"
+         height="10"
+         x="7"
+         y="5" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 55,49 53,15"
+         id="path4034" />
+      <g
+         style="stroke:#2e3436;stroke-width:2;fill:#d3d7cf"
+         transform="translate(41.740915,4.3123332)"
+         id="g3166-4">
+        <g
+           style="stroke:#2e3436;stroke-width:2;fill:#d3d7cf"
+           id="g4040">
+          <path
+             transform="translate(-41.740915,-4.3123332)"
+             style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;color:#000000;fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
+             id="path3714"
+             d="m 9,49 6,0 c 0,-30 34,-30 34,0 l 6,0 C 55,11 9,11 9,49 z" />
+        </g>
+      </g>
+      <rect
+         style="color:#000000;fill:#edd400;fill-opacity:1;fill-rule:nonzero;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="rect3190-2-2"
+         width="6"
+         height="6"
+         x="9"
+         y="7" />
+      <rect
+         style="color:#000000;fill:#edd400;fill-opacity:1;fill-rule:nonzero;stroke:#2e2900;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="rect3190-7"
+         width="10"
+         height="10"
+         x="47"
+         y="5" />
+      <rect
+         style="color:#000000;fill:#edd400;fill-opacity:1;fill-rule:nonzero;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="rect3190-2-2-0"
+         width="6"
+         height="6"
+         x="49"
+         y="7" />
+      <path
+         id="path3915"
+         d="M 11,49 C 11,14 53,14 53,49"
+         style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <g
+       transform="translate(33.327866,-1.429711)"
+       id="g3057">
+      <g
+         transform="translate(-33.322131,1.429711)"
+         id="g3827-1">
+        <g
+           transform="translate(31.322131,40.570289)"
+           id="g3797-9">
+          <path
+             style="fill:none;stroke:#2e2900;stroke-width:1.99999988;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             id="path4250-71"
+             d="M -26.156204,5.582626 A 8.993818,8.9934077 0.02042283 1 1 -12.493793,17.282241 8.993818,8.9934077 0.02042283 1 1 -26.156204,5.582626 z" />
+          <path
+             style="fill:url(#linearGradient3801-1);fill-opacity:1;stroke:#fce94f;stroke-width:1.99999952;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             id="path4250-7-3"
+             d="M -24.633588,6.893588 A 6.9999997,7.0000001 0 1 1 -14,16 6.9999997,7.0000001 0 0 1 -24.633588,6.893588 z" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g3057-3"
+       transform="translate(73.327866,-1.429711)">
+      <g
+         transform="translate(-33.322131,1.429711)"
+         id="g3827-1-5">
+        <g
+           transform="translate(31.322131,40.570289)"
+           id="g3797-9-6">
+          <path
+             style="fill:none;stroke:#2e2900;stroke-width:1.99999988;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             id="path4250-71-2"
+             d="M -26.156204,5.582626 A 8.993818,8.9934077 0.02042283 1 1 -12.493793,17.282241 8.993818,8.9934077 0.02042283 1 1 -26.156204,5.582626 z" />
+          <path
+             style="fill:url(#linearGradient3801-1-3);fill-opacity:1;stroke:#fce94f;stroke-width:1.99999952;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+             id="path4250-7-3-9"
+             d="M -24.633588,6.893588 A 6.9999997,7.0000001 0 1 1 -14,16 6.9999997,7.0000001 0 0 1 -24.633588,6.893588 z" />
+        </g>
+      </g>
+    </g>
+    <g
+       transform="translate(-79.059022,1.6025174)"
+       id="layer1-2">
+      <g
+         id="g3966"
+         transform="matrix(0.9463094,0,0,0.9463094,-423.94991,-0.8705343)">
+        <g
+           id="g3946">
+          <g
+             id="g3801"
+             transform="matrix(0.8389287,0,0,0.8389287,70.961422,17.159235)" />
+          <g
+             transform="scale(0.89528422,1.1169637)"
+             style="font-style:normal;font-weight:normal;font-size:22.51535797px;font-family:'Bitstream Vera Sans';fill:#ffffff;fill-opacity:1;stroke:#2e3436;stroke-width:2.11347365;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             id="text3735" />
+        </g>
+      </g>
+    </g>
+  </g>
+  <metadata
+     id="metadata3427">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Fri Jan 17 12:22:46 2014 -0500</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[WandererFan]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_BezCurve.svg</dc:identifier>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson, [vocx]</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>curve</rdf:li>
+            <rdf:li>line</rdf:li>
+            <rdf:li>dot</rdf:li>
+            <rdf:li>point</rdf:li>
+            <rdf:li>circle</rdf:li>
+            <rdf:li>square</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>A curved line in the shape of an upside down U with a point at each end that has a square shaped control point, and a 3 in the middle</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     style="font-weight:600;font-size:32px;line-height:1.25;font-family:FreeSans;-inkscape-font-specification:'FreeSans Semi-Bold';fill:#ffffff;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"
+     d="m 24.496001,42.981999 q 0,-1.76 0.48,-3.104 0.512,-1.344 1.248,-2.112 0.768,-0.768 1.792,-1.216 1.024,-0.48 1.92,-0.64 0.928,-0.16 1.92,-0.16 3.296,0 5.248,1.696 1.952,1.664 1.952,4.48 0,1.568 -0.704,2.72 -0.704,1.12 -2.272,2.112 1.92,0.928 2.816,2.304 0.896,1.344 0.896,3.328 0,3.328 -2.176,5.312 -2.144,1.952 -5.76,1.952 -3.488,0 -5.568,-1.984 -2.048,-2.016 -2.08,-5.408 h 4.352 q 0.192,3.552 3.392,3.552 1.472,0 2.4,-0.96 0.96,-0.96 0.96,-2.464 0,-1.248 -0.672,-2.144 -0.672,-0.928 -1.792,-1.248 -0.896,-0.224 -2.624,-0.224 v -3.008 h 0.384 q 3.968,0 3.968,-3.424 0,-1.408 -0.736,-2.176 -0.736,-0.8 -2.08,-0.8 -1.76,0 -2.4,0.992 -0.64,0.992 -0.704,3.008 h -4.16 z"
+     id="text2"
+     aria-label="3" />
+</svg>

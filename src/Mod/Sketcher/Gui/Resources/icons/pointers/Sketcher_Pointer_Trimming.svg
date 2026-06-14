@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   height="64"
+   width="64"
+   id="svg12"
+   sodipodi:docname="Sketcher_Pointer_Trimming.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="6.607029"
+     inkscape:cx="40.865569"
+     inkscape:cy="43.438586"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="symbol" />
+  <defs
+     id="defs16" />
+  <g
+     id="symbol"
+     style="fill:none;stroke:#cc0000;stroke-width:2">
+    <circle
+       id="circle6"
+       cy="40.971458"
+       cx="39.036678"
+       style="stroke-width:2"
+       r="4" />
+    <path
+       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:none"
+       d="M 30.803782,58.854389 46.050537,25.73644"
+       id="path1"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:none"
+       d="M 39.036678,40.971459 57.088949,59.988908"
+       id="path1-7"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:2, 2;stroke-dashoffset:0"
+       d="M 35.739389,37.497878 22.847876,23.91711"
+       id="path1-7-7"
+       sodipodi:nodetypes="cc" />
+  </g>
+  <g
+     id="crosshair"
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter">
+    <path
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9"
+       id="path9" />
+  </g>
+</svg>

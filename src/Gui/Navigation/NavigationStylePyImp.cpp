@@ -1,0 +1,115 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+/***************************************************************************
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+// generated out of NavigationStyle.pyi
+#include "Navigation/NavigationStylePy.h"
+#include "Navigation/NavigationStylePy.cpp"
+
+using namespace Gui;
+
+/** @class NavigationStylePy
+ * The NavigationStyle Python class provides additional methods for manipulation of
+ * navigation style objects.
+ * @see NavigationStyle
+ */
+
+// returns a string which represent the object e.g. when printed in python
+std::string NavigationStylePy::representation() const
+{
+    return {"<NavigationStyle object>"};
+}
+
+/** Returns the rotation enabled state */
+PyObject* NavigationStylePy::isRotationEnabled(PyObject* args)
+{
+    PY_TRY
+    {
+        if (!PyArg_ParseTuple(args, "")) {
+            return nullptr;
+        }
+
+        if (getNavigationStylePtr()->isRotationEnabled()) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    PY_CATCH;
+}
+
+/** Sets the rotation enabled state */
+PyObject* NavigationStylePy::setRotationEnabled(PyObject* args)
+{
+    PY_TRY
+    {
+        int pEnabled;
+        if (!PyArg_ParseTuple(args, "p", &pEnabled)) {
+            return nullptr;
+        }
+
+        getNavigationStylePtr()->setRotationEnabled(pEnabled);
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+/** Returns the orientation lock state */
+PyObject* NavigationStylePy::isOrientationLocked(PyObject* args)
+{
+    PY_TRY
+    {
+        if (!PyArg_ParseTuple(args, "")) {
+            return nullptr;
+        }
+
+        if (getNavigationStylePtr()->isOrientationLocked()) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    PY_CATCH;
+}
+
+/** Sets the orientation lock state */
+PyObject* NavigationStylePy::setOrientationLocked(PyObject* args)
+{
+    PY_TRY
+    {
+        int pEnabled;
+        if (!PyArg_ParseTuple(args, "p", &pEnabled)) {
+            return nullptr;
+        }
+
+        getNavigationStylePtr()->setOrientationLocked(pEnabled);
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* NavigationStylePy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
+
+int NavigationStylePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
+}

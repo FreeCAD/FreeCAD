@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   id="svg2816"
+   height="64px"
+   width="64px"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs26" />
+  <g
+     id="pale-red"
+     style="fill:none;stroke:#280000;stroke-width:13.0001"
+     transform="matrix(0.61538495,0,0,0.61538495,10.309556,10.309556)">
+    <path
+       d="M 17.15836,17.158356 52.874794,52.87479"
+       id="path2"
+       style="stroke-width:11.375;stroke-dasharray:none" />
+    <path
+       d="M 52.874794,17.158356 17.15836,52.87479"
+       id="path4"
+       style="stroke-width:11.375;stroke-dasharray:none" />
+    <circle
+       r="29.249981"
+       cy="-35.246952"
+       cx="-35.246952"
+       id="circle6"
+       style="stroke-width:13;stroke-dasharray:none"
+       transform="scale(-1)" />
+  </g>
+  <g
+     id="red"
+     style="fill:none;stroke:#cc0000;stroke-width:5.82365"
+     transform="matrix(-0.68685493,0,0,-0.68685493,54.001462,53.947177)">
+    <circle
+       r="26"
+       cy="32"
+       cx="32"
+       id="circle9"
+       style="stroke-width:5.82365" />
+    <path
+       d="M 50,50 14,14"
+       id="path11"
+       style="stroke-width:5.82365" />
+    <path
+       d="M 14,50 50,14"
+       id="path13"
+       style="stroke-width:5.82365" />
+  </g>
+  <g
+     id="red-6"
+     style="fill:none;stroke:#cc0000;stroke-width:5.16915"
+     transform="matrix(-0.77382069,0,0,-0.77382069,68.948538,68.948534)">
+    <circle
+       r="24.325176"
+       cy="47.670937"
+       cx="47.67094"
+       id="circle9-7"
+       style="fill:none;fill-opacity:1;stroke:#ef2929;stroke-width:2.58457;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+  <g
+     id="dark"
+     style="fill:none;stroke:#ef2929;stroke-width:2.91182"
+     transform="matrix(-0.68685493,0,0,-0.68685493,53.94718,53.947177)">
+    <path
+       d="M 50,52 12,14"
+       id="path18"
+       style="stroke-width:2.91182" />
+    <path
+       d="M 12,50 50,12"
+       id="path20"
+       style="stroke-width:2.91182" />
+  </g>
+</svg>

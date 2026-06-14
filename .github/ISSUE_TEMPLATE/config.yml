@@ -1,0 +1,22 @@
+blank_issues_enabled: false
+
+contact_links:
+  - about: Report a security vulnerability privately (do not open a public issue).
+    name: 🔒 𝗦𝗲𝗰𝘂𝗿𝗶𝘁𝘆
+    url: https://github.com/TryParashell/Parashell/security/policy
+
+  - about: Join the FreeCAD community on our Discord.
+    name: 💬 𝗗𝗶𝘀𝗰𝗼𝗿𝗱
+    url: https://discord.gg/w2cTKGzccC
+
+  - about: Learn more about Parashell and the open source project.
+    name: 🌐 𝗪𝗲�����
+    url: https://www.parashell.cloud/open-source
+
+  - about: Read on how FreeCAD, Parashell's upstream, is developed.
+    name: 📕 𝗛𝗮𝗻𝗱𝗯𝗼𝗼𝗸
+    url: https://freecad.github.io/DevelopersHandbook
+
+  - about: Look up information about the underlying FreeCAD core.
+    name: 📖 𝗙𝗿𝗲𝗲𝗖𝗔𝗗 𝗪𝗶𝗸𝗶
+    url: https://wiki.freecad.org

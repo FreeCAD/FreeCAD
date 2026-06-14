@@ -1,0 +1,11 @@
+summary:
+    Run All FreeCAD python tests
+prepare:
+    how: install
+    package: 
+    - xwayland-run
+    - weston
+discover:
+    how: fmf
+execute:
+    how: tmt

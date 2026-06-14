@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   height="64"
+   width="64"
+   id="svg10"
+   sodipodi:docname="Sketcher_Pointer_Create_ArcOfEllipse.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="6.6733202"
+     inkscape:cx="2.5474575"
+     inkscape:cy="46.603488"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="symbol" />
+  <defs
+     id="defs14" />
+  <g
+     id="symbol"
+     style="fill:none;stroke:#cc0000;stroke-width:2">
+    <path
+       d="M 41.272834,25.607073 C 4.7480784,50.897163 10.628042,66.094259 44.624247,55.810832"
+       id="path2"
+       sodipodi:nodetypes="cc"
+       style="stroke-width:2" />
+    <circle
+       cx="50.368847"
+       cy="37.983585"
+       id="circle4"
+       style="stroke-width:2"
+       r="4" />
+    <circle
+       cx="16.93918"
+       cy="55.306599"
+       id="circle4-8"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       r="4" />
+    <circle
+       cx="44.624249"
+       cy="55.421989"
+       id="circle4-8-7"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       r="4" />
+    <circle
+       cx="41.272835"
+       cy="25.607073"
+       id="circle4-8-5"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       r="4" />
+  </g>
+  <g
+     id="crosshair"
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter">
+    <path
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9"
+       id="path7" />
+  </g>
+</svg>

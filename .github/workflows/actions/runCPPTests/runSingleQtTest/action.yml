@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+name: runSingleQtTest
+description: "Run a single QtTest-based C++ test executable, generate log and report"
+
+inputs:
+  testCommand:
+    description: "Test executable path"
+    required: true
+  testLogFile:
+    description: "Path for the command-line output of the tests"
+    required: true
+  testName:
+    description: "A descriptive name for the test suite"
+    required: true
+outputs:
+  reportText:
+    description: "Report text"
+    value: ${{ steps.report.outputs.reportText }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run QtTest tests
+      shell: bash -l {0}
+      env:
+        QT_QPA_PLATFORM: offscreen
+        TEST_COMMAND: ${{ inputs.testCommand }}
+        TEST_LOG_FILE: ${{ inputs.testLogFile }}
+      run: |
+        set -o pipefail
+        $TEST_COMMAND | tee -a "$TEST_LOG_FILE"
+    - name: Parse test results
+      if: always()
+      id: report
+      shell: bash -l {0}
+      env:
+        TEST_LOG_FILE: ${{ inputs.testLogFile }}
+        TEST_NAME: ${{ inputs.testName }}
+      run: |
+        # This bonkers sed regex is to try to find the start and end of the QtTest output block, which is not really
+        # designed to be machine-readable. Why did they have to choose asterisks?!?!
+        result=$(sed -n '/^\*\*\*\*\*\*\*\*\* Start/,/^\*\*\*\*\*\*\*\*\* Finished/p' "$TEST_LOG_FILE" || true)
+        if grep -qE "^FAIL!" "$TEST_LOG_FILE"
+        then
+          reportText="<details><summary>:fire: QtTest C++ test suite '${TEST_NAME}' failed</summary>\n"
+        else
+          reportText="<details><summary>:heavy_check_mark: QtTest C++ test suite '${TEST_NAME}' succeeded</summary>\n"
+        fi
+        reportText+="\n"
+        reportText+="Results\n"
+        reportText+="\n"
+        reportText+='```\n'
+        reportText+="$result\n"
+        reportText+='```\n'
+        reportText+="</details>\n"
+        reportText+="\n"
+        echo "reportText<<EOD" >> $GITHUB_OUTPUT
+        echo -e "$reportText" >> $GITHUB_OUTPUT
+        echo "EOD" >> $GITHUB_OUTPUT
+        echo -e "$reportText"

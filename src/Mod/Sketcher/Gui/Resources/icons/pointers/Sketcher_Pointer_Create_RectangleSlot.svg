@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   width="64"
+   height="64"
+   id="svg12"
+   sodipodi:docname="Sketcher_Pointer_Create_RectangleSlot.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="7.296875"
+     inkscape:cx="47.417559"
+     inkscape:cy="48.239829"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g6" />
+  <defs
+     id="defs16" />
+  <g
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     id="g6"
+     transform="translate(0,2)">
+    <circle
+       cx="39.285717"
+       cy="54.862953"
+       id="circle4"
+       style="stroke-width:2"
+       r="4" />
+    <circle
+       cx="55"
+       cy="21.862944"
+       id="circle4-1"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       r="4" />
+    <circle
+       cx="55"
+       cy="54.862953"
+       id="circle4-1-5"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       r="4" />
+    <path
+       id="path1-8"
+       style="fill:none;stroke-width:2"
+       d="m 55,39.148664 c -8.678759,0 -15.714284,7.035528 -15.714284,15.714291 H 22.000001 C 22.000001,36.637551 36.774604,21.862944 55,21.862944 Z"
+       sodipodi:nodetypes="ccccc" />
+  </g>
+  <g
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter"
+     id="g10">
+    <path
+       d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
+       id="path8" />
+  </g>
+</svg>

@@ -1,0 +1,146 @@
+{
+    "IfcProject": {
+        "is_abstract": false,
+        "parent": "IfcContext",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Phase",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": [
+            {
+                "name": "OwnerHistory",
+                "type": "IfcOwnerHistory"
+            },
+            {
+                "name": "IsNestedBy",
+                "type": "IfcRelNests"
+            },
+            {
+                "name": "IsDecomposedBy",
+                "type": "IfcRelAggregates"
+            },
+            {
+                "name": "RepresentationContexts",
+                "type": "IfcRepresentationContext"
+            },
+            {
+                "name": "UnitsInContext",
+                "type": "IfcUnitAssignment"
+            },
+            {
+                "name": "IsDefinedBy",
+                "type": "IfcRelDefinesByProperties"
+            },
+            {
+                "name": "Declares",
+                "type": "IfcRelDeclares"
+            }
+        ]
+    },
+    "IfcProjectLibrary": {
+        "is_abstract": false,
+        "parent": "IfcContext",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Phase",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": [
+            {
+                "name": "OwnerHistory",
+                "type": "IfcOwnerHistory"
+            },
+            {
+                "name": "IsNestedBy",
+                "type": "IfcRelNests"
+            },
+            {
+                "name": "IsDecomposedBy",
+                "type": "IfcRelAggregates"
+            },
+            {
+                "name": "RepresentationContexts",
+                "type": "IfcRepresentationContext"
+            },
+            {
+                "name": "UnitsInContext",
+                "type": "IfcUnitAssignment"
+            },
+            {
+                "name": "IsDefinedBy",
+                "type": "IfcRelDefinesByProperties"
+            },
+            {
+                "name": "Declares",
+                "type": "IfcRelDeclares"
+            }
+        ]
+    }
+}

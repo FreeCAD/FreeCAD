@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg4199" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="64" width="64" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="0 0 64.000001 64.000001">
+ <metadata id="metadata4204">
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g id="layer1" transform="translate(0 -988.36)">
+  <g fill-rule="evenodd">
+   <rect id="rect4140" style="color:#000000" ry="10" height="56" width="56" y="992.36" x="4" fill="#eeeeec"/>
+   <g stroke="#2e3436">
+    <path id="path4144" d="m16 1027.9v-20c0-8 4-12.5 16-12.5s16 4.5 16 12.5v20c0 8-4 17.5-16 17.5s-16-9.5-16-17.5z" stroke-width="2" fill="#fff"/>
+    <path id="path4195" d="m17 1010.9c-0.13863-10 1.4688-14.5 15-14.5v14.5z" stroke-width=".5" fill="#729fcf"/>
+    <path id="path4197" d="m47 1010.9c0.13863-10-1.4688-14.5-15-14.5v14.5z" stroke-width=".5" fill="#fff"/>
+   </g>
+  </g>
+  <path id="path4169" d="m32 1011.9v-16.5" stroke="#2e3436" stroke-width="2" fill="none"/>
+  <path id="path4167" d="m16 1011.9h32" stroke="#2e3436" stroke-width="2" fill="none"/>
+  <g>
+   <rect id="rect4139" height="18" stroke="#2e3436" stroke-linecap="round" stroke-width="1.6" fill="#729fcf" style="color:#000000" fill-rule="evenodd" ry="3.5" width="8" y="1002.9" x="28"/>
+   <g id="text4139" transform="translate(.65152 -2.1518)">
+    <path id="path4148" d="m31.013 1009.8q0.2-0.1883 0.41765-0.1883 0.44118 0 0.44118 0.4883v7.8648q0 0.5-0.42354 0.5-0.4353 0-0.4353-0.5059 0 0 0-6.9354l-1.0235 1.0236q-0.15883 0.1588-0.31765 0.1588-0.44707 0-0.44707-0.3941 0-0.2 0.17059-0.3706l1.6177-1.6412z"/>
+   </g>
+   <g id="text4143" transform="translate(3.017 -1.7542)">
+    <path id="path4151" d="m19.717 1003.1q-0.45883 0-0.45883-0.4118 0-0.1294 0.10588-0.3411 0.37059-0.7295 0.85295-1.0412 0.60001-0.3883 1.2647-0.3883 1.1177 0 1.753 0.853 0.46471 0.6235 0.46471 1.3412 0 0.6294-0.38824 1.2588l-2.853 4.606h2.7883q0.44118 0 0.44118 0.4412 0 0.3823-0.48236 0.3823h-3.4177q-0.52354 0-0.52354-0.3765 0-0.1647 0.07647-0.2882l3.1648-5.1001q0.32353-0.5235 0.32353-0.9235 0-0.5059-0.32353-0.8824-0.39412-0.4588-1.053-0.4588-0.81766 0-1.3236 0.9647-0.19412 0.3647-0.41177 0.3647z"/>
+   </g>
+  </g>
+ </g>
+</svg>

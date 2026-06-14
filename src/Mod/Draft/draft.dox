@@ -1,0 +1,42 @@
+/** \defgroup DRAFT Draft
+ *  \ingroup PYTHONWORKBENCHES
+ *  \brief Basic 2D drawing tools and other generic tools
+
+The Draft workbench provides many tools for building geometrical
+objects in a two-dimensional space, normally supported by a working plane
+that includes a grid.
+
+The grid serves as visual feedback of the coordinates and dimensions
+of the geometrical elements that are created. Moreover, the vertices
+of the elements can be attached to the grid intersections to precisely
+position them in the plane.
+
+The Draft workbench also includes many "Modifier" tools that can be used
+by most objects in the software because these tools work on the internal
+Part::TopoShape property that most 2D and 3D objects have.
+
+The Draft workbench is similar to the Sketcher workbench in that both
+can be used to create 2D objects in a planar surface. However, there is
+an important difference:
+- The Sketcher defines a local coordinate system; all geometrical elements
+  created within it are referenced to this local origin. In addition,
+  the position of those elements, as well as various relationships,
+  are kept through the use of mathematical constraints (vertical, horizontal,
+  parallelism, etc.).
+- On the other hand, the elements created with Draft are placed in the global
+  coordinate system. The elements in Draft don't have constraints, they are
+  freely placed in the 3D space.
+
+The Sketcher Workbench is intended to be used together with the Part
+and PartDesign workbenches to create very fine profiles that can be extruded
+to create complex 3D solids.
+
+The Draft Workbench is more intended to draw exclusively in a 2D plane
+placing points in a grid. Often this behavior is better suited for
+drawing architectural plans, or for quick "drafting" that doesn't need
+to keep mathematical constraints between its elements.
+
+Due to this reason, the Draft Workbench is the foundation on which
+the Arch Workbench sits. All tools of the Draft Workbench are available
+in the Arch Workbench.
+*/

@@ -1,0 +1,44 @@
+as of 1/15/14, oce 0.14
+
+aox					pass
+blocks144				pass
+bosses					pass
+cylinder1				pass
+cylinder3				pass
+cylinder4				pass
+cylinder5				pass
+cylinder7_V2				pass and fail //see note below*
+cylinder8				pass and fail //doesn't join faces, but doesn't corrupt model.
+cylinderSeam1				pass
+cylinderSeam2				pass
+cylinderSeam3				pass
+cylinderSeam4				pass
+cylinderSeam5				pass
+cylinderSeam6				pass
+cylinderSeam8				pass
+cylinderSeam9				pass
+refine_breaks_cylinder			pass
+filletBox				pass
+holesInFace2				pass
+mesh					pass
+shelf					pass
+spline					pass
+Y_Rod_Mount				pass
+ZMoterMountscripted			pass
+
+* I thought this was because of the float to double bug, but it's not....Float to double might have been a factor, but there is another problem. I rebuilt this condition from scratch and refine works with no corruption. If I save this file and re-open it, refine works, but corrupts the model. shell is open. This is true in either fcstd or brep format. weird! This is the second version of this file as to rule out any chance of the float to double bug. This is real flaky and it won't be the last time we deal with this. I keep thinking about romans comment "don't abuse shapefix". http://opencascade.blogspot.com/2009/03/topology-and-geometry-in-open-cascade.html?showComment=1236718620000#c8850560473418361068
+
+Here are some tolerance numbers for cylinder7_V2. new is from the new construction code that uses shapefix to build missing seem edges. The old code doesn't consider the formation of complete cylinder and failed several tests.
+
+Draw[11]> tolerance old
+Tolerance MAX=2.0000099999999999e-07 AVG=1.2882835847679566e-07 MIN=9.9999999999999995e-08
+FACE    : MAX=9.9999999999999995e-08 AVG=9.9999999999999995e-08 MIN=9.9999999999999995e-08
+EDGE    : MAX=1.3197224981754301e-07 AVG=1.0799306245438574e-07 MIN=9.9999999999999995e-08
+VERTEX  : MAX=2.0000099999999999e-07 AVG=1.4375043749999997e-07 MIN=9.9999999999999995e-08
+
+Draw[12]> tolerance new
+Tolerance MAX=2.0000000000000002e-05 AVG=6.8618840877249059e-06 MIN=9.9999999999999995e-08
+FACE    : MAX=9.9999999999999995e-08 AVG=9.9999999999999995e-08 MIN=9.9999999999999995e-08
+EDGE    : MAX=1.0000000000000001e-05 AVG=2.5862406655887408e-06 MIN=9.9999999999999995e-08
+VERTEX  : MAX=2.0000000000000002e-05 AVG=1.0056250187500003e-05 MIN=9.9999999999999995e-08
+

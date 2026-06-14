@@ -1,0 +1,668 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Lesser General Public License for more details.                   *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+"""
+This file has utilities for checking and catching common errors in FreeCAD
+CAM projects.  Ideally, the user could execute these utilities from an icon
+to make sure tools are selected and configured and defaults have been revised
+"""
+
+from collections import Counter
+from datetime import datetime
+import FreeCAD
+import Path
+import Path.Log
+import Path.Main.Sanity.ImageBuilder as ImageBuilder
+import Path.Main.Sanity.ReportGenerator as ReportGenerator
+import os
+import Path.Dressup.Utils as PathDressup
+
+translate = FreeCAD.Qt.translate
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
+class CAMSanity:
+    # Toggle: True = use thumbnail, False = always use fallback image
+    USE_TOOL_THUMBNAIL = False
+
+    """
+    This class has the functionality to harvest data from a CAM Job
+    and export it in a format that is useful to the user.
+    """
+
+    def __init__(self, job, output_file):
+        self.job = job
+        self.output_file = output_file
+        self.filelocation = os.path.dirname(output_file)
+
+        # set the filelocation to the parent of the output filename
+        if not os.path.isdir(self.filelocation):
+            raise ValueError(
+                translate(
+                    "CAM_Sanity",
+                    "output location {} doesn't exist".format(os.path.dirname(output_file)),
+                )
+            )
+
+        self.image_builder = ImageBuilder.ImageBuilderFactory.get_image_builder(self.filelocation)
+        self.data = self.summarize()
+
+    def summarize(self):
+        """
+        Gather all the incremental parts of the analysis
+        """
+
+        data = {}
+        data["baseData"] = self._baseObjectData()
+        data["designData"] = self._designData()
+        data["toolData"] = self._toolData()
+        data["runData"] = self._runData()
+        data["outputData"] = self._outputData()
+        data["fixtureData"] = self._fixtureData()
+        data["stockData"] = self._stockData()
+        # data["squawkData"] = self._squawkData()
+
+        return data
+
+    def squawk(self, operator, note, date=datetime.now(), squawkType="NOTE"):
+        squawkType = squawkType if squawkType in ("NOTE", "WARNING", "CAUTION", "TIP") else "NOTE"
+
+        if squawkType == "TIP":
+            squawk_icon = "Sanity_Bulb"
+        elif squawkType == "NOTE":
+            squawk_icon = "Sanity_Note"
+        elif squawkType == "WARNING":
+            squawk_icon = "Sanity_Warning"
+        elif squawkType == "CAUTION":
+            squawk_icon = "Sanity_Caution"
+
+        path = f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{squawk_icon}.svg"
+
+        local_date_str = date.strftime("%c")
+        squawk = {
+            "Date": local_date_str,
+            "Operator": operator,
+            "Note": note,
+            "squawkType": squawkType,
+            "squawkIcon": path,
+        }
+
+        return squawk
+
+    def _baseObjectData(self):
+        data = {"baseimage": "", "bases": "", "squawkData": []}
+        obj = self.job
+        bases = {}
+        for name, count in Counter(
+            [obj.Proxy.baseObject(obj, o).Label for o in obj.Model.Group]
+        ).items():
+            bases[name] = str(count)
+            data["baseimage"] = self.image_builder.build_image(
+                obj.Model, "baseimage", as_bytes=True
+            )
+        data["bases"] = bases
+
+        return data
+
+    def _designData(self):
+        """
+        Returns header information about the design document
+        Returns information about issues and concerns (squawks)
+        """
+
+        obj = self.job
+        data = {
+            "FileName": "",
+            "LastModifiedDate": "",
+            "Customer": "",
+            "Designer": "",
+            "JobDescription": "",
+            "JobLabel": "",
+            "Sequence": "",
+            "JobType": "",
+            "squawkData": [],
+        }
+        data["FileName"] = obj.Document.FileName
+        data["LastModifiedDate"] = str(obj.Document.LastModifiedDate)
+        data["Customer"] = obj.Document.Company
+        lastmod = obj.Document.LastModifiedDate
+        if lastmod:
+            try:
+                # Parse ISO 8601 string and format
+                data["LastModifiedDate"] = datetime.fromisoformat(str(lastmod)).strftime("%c")
+            except Exception:
+                data["LastModifiedDate"] = str(lastmod)
+        else:
+            data["LastModifiedDate"] = ""
+        data["JobDescription"] = obj.Description
+        data["JobLabel"] = obj.Label
+
+        n = 0
+        m = 0
+        for i in obj.Document.Objects:
+            if hasattr(i, "Proxy"):
+                if isinstance(i.Proxy, Path.Main.Job.ObjectJob):
+                    m += 1
+                    if i is obj:
+                        n = m
+        data["Sequence"] = "{} of {}".format(n, m)
+        data["JobType"] = "2.5D Milling"  # improve after job types added
+
+        return data
+
+    def _fixtureData(self):
+        obj = self.job
+        data = {"fixtures": "", "orderBy": "", "datumImage": "", "squawkData": []}
+
+        data["fixtures"] = str(obj.Fixtures)
+        data["orderBy"] = str(obj.OrderOutputBy)
+
+        data["datumImage"] = self.image_builder.build_image(obj, "datumImage", as_bytes=True)
+
+        return data
+
+    def _outputData(self):
+        obj = self.job
+        data = {
+            "lastpostprocess": "",
+            "lastgcodefile": "",
+            "optionalstops": "",
+            "programmer": "",
+            "machine": "",
+            "postprocessor": "",
+            "postprocessorFlags": "",
+            "filesize": "",
+            "linecount": "",
+            "outputfilename": "setupreport",
+            "squawkData": [],
+        }
+
+        data["lastpostprocess"] = str(obj.LastPostProcessDate)
+        data["lastgcodefile"] = str(obj.LastPostProcessOutput)
+        data["optionalstops"] = "False"
+        data["programmer"] = ""
+        data["machine"] = ""
+        data["postprocessor"] = str(obj.PostProcessor)
+        data["postprocessorFlags"] = str(obj.PostProcessorArgs)
+
+        if obj.PostProcessorOutputFile != "":
+            fname = obj.PostProcessorOutputFile
+            data["outputfilename"] = os.path.splitext(os.path.basename(fname))[0]
+
+        for op in obj.Operations.Group:
+            if "Stop" in op.Name and hasattr(op, "Stop") and op.Stop is True:
+                data["optionalstops"] = "True"
+
+        if obj.LastPostProcessOutput == "":
+            data["filesize"] = str(0.0)
+            data["linecount"] = str(0)
+            data["squawkData"].append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "The Job has not been post-processed"),
+                )
+            )
+        else:
+            if os.path.isfile(obj.LastPostProcessOutput):
+                data["filesize"] = str(os.path.getsize(obj.LastPostProcessOutput) / 1000)
+                data["linecount"] = str(sum(1 for line in open(obj.LastPostProcessOutput)))
+            else:
+                data["filesize"] = str(0.0)
+                data["linecount"] = str(0)
+                data["squawkData"].append(
+                    self.squawk(
+                        "CAMSanity",
+                        translate(
+                            "CAM_Sanity",
+                            "The Job's last post-processed file is missing",
+                        ),
+                    )
+                )
+
+        return data
+
+    def _runData(self):
+        obj = self.job
+        data = {
+            "cycletotal": "",
+            "jobMinZ": "",
+            "jobMaxZ": "",
+            "jobDescription": "",
+            "operations": [],
+            "squawkData": [],
+        }
+
+        data["cycletotal"] = str(obj.CycleTime)
+        data["jobMinZ"] = FreeCAD.Units.Quantity(
+            obj.Path.BoundBox.ZMin, FreeCAD.Units.Length
+        ).UserString
+        data["jobMaxZ"] = FreeCAD.Units.Quantity(
+            obj.Path.BoundBox.ZMax, FreeCAD.Units.Length
+        ).UserString
+        data["jobDescription"] = obj.Description
+
+        data["operations"] = []
+        for op in obj.Operations.Group:
+            oplabel = op.Label
+            Path.Log.debug(oplabel)
+            ctime = op.CycleTime if hasattr(op, "CycleTime") else "00:00:00"
+            cool = op.CoolantMode if hasattr(op, "CoolantMode") else "N/A"
+
+            o = op
+            while "Dressup" in o.Name:
+                oplabel = "{}:{}".format(oplabel, o.Base.Label)
+                o = o.Base
+                if hasattr(o, "CycleTime"):
+                    ctime = o.CycleTime
+                cool = o.CoolantMode if hasattr(o, "CoolantMode") else cool
+
+            if hasattr(op, "Active") and not op.Active:
+                oplabel = "{} (INACTIVE)".format(oplabel)
+                ctime = "00:00:00"
+
+            if op.Path.BoundBox.isValid():
+                zmin = FreeCAD.Units.Quantity(
+                    op.Path.BoundBox.ZMin, FreeCAD.Units.Length
+                ).UserString
+                zmax = FreeCAD.Units.Quantity(
+                    op.Path.BoundBox.ZMax, FreeCAD.Units.Length
+                ).UserString
+            else:
+                zmin = ""
+                zmax = ""
+
+            opdata = {
+                "opName": oplabel,
+                "minZ": zmin,
+                "maxZ": zmax,
+                "cycleTime": ctime,
+                "coolantMode": cool,
+            }
+            data["operations"].append(opdata)
+
+        return data
+
+    def _stockData(self):
+        obj = self.job
+        data = {
+            "xLen": "",
+            "yLen": "",
+            "zLen": "",
+            "material": "",
+            "surfaceSpeedCarbide": "",
+            "surfaceSpeedHSS": "",
+            "stockImage": "",
+            "squawkData": [],
+        }
+
+        bb = obj.Stock.Shape.BoundBox
+        data["xLen"] = FreeCAD.Units.Quantity(bb.XLength, FreeCAD.Units.Length).UserString
+        data["yLen"] = FreeCAD.Units.Quantity(bb.YLength, FreeCAD.Units.Length).UserString
+        data["zLen"] = FreeCAD.Units.Quantity(bb.ZLength, FreeCAD.Units.Length).UserString
+
+        data["material"] = "Not Specified"
+        if hasattr(obj.Stock, "ShapeMaterial"):
+            if obj.Stock.ShapeMaterial is not None:
+                data["material"] = obj.Stock.ShapeMaterial.Name
+
+            props = obj.Stock.ShapeMaterial.PhysicalProperties
+            if "SurfaceSpeedCarbide" in props:
+                data["surfaceSpeedCarbide"] = FreeCAD.Units.Quantity(
+                    props["SurfaceSpeedCarbide"]
+                ).UserString
+            if "SurfaceSpeedHSS" in props:
+                data["surfaceSpeedHSS"] = FreeCAD.Units.Quantity(
+                    props["SurfaceSpeedHSS"]
+                ).UserString
+
+        if data["material"] in ["Default", "Not Specified"]:
+            data["squawkData"].append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "Consider Specifying the Stock Material"),
+                    squawkType="TIP",
+                )
+            )
+
+        data["stockImage"] = self.image_builder.build_image(obj.Stock, "stockImage", as_bytes=True)
+
+        return data
+
+    def _toolData(self):
+        """
+        Returns information about the tools used in the job, and associated
+        toolcontrollers
+        Returns information about issues and problems with the tools (squawks)
+        """
+
+        obj = self.job
+        data = {"squawkData": []}
+
+        for TC in obj.Tools.Group:
+            if not hasattr(TC.Tool, "BitBody"):
+                data["squawkData"].append(
+                    data["squawkData"].append(
+                        self.squawk(
+                            "CAMSanity",
+                            translate(
+                                "CAM_Sanity",
+                                "Tool number {} is a legacy tool. Legacy tools not \
+                    supported by Path-Sanity",
+                            ).format(TC.ToolNumber),
+                            squawkType="WARNING",
+                        )
+                    )
+                )
+                continue  # skip old-style tools
+            tooldata = data.setdefault(str(TC.ToolNumber), {})
+            bitshape = tooldata.get("ShapeType", "")
+            if bitshape not in ["", TC.Tool.ShapeType]:
+                data["squawkData"].append(
+                    self.squawk(
+                        "CAMSanity",
+                        translate("CAM_Sanity", "Tool number {} used by multiple tools").format(
+                            TC.ToolNumber
+                        ),
+                        squawkType="CAUTION",
+                    )
+                )
+            tooldata["ShapeType"] = TC.Tool.ShapeType
+            tooldata["bitShape"] = TC.Tool.ShapeType
+            tooldata["description"] = TC.Tool.Label
+            tooldata["manufacturer"] = ""
+            tooldata["url"] = ""
+            tooldata["inspectionNotes"] = ""
+            tooldata["diameter"] = str(TC.Tool.Diameter.UserString)
+            tooldata["shape"] = TC.Tool.ShapeType
+
+            tooldata["partNumber"] = ""
+
+            # Use the toggle to determine which image to use
+            imagebytes = None
+            if self.USE_TOOL_THUMBNAIL:
+                # Try to get the thumbnail
+                thumb_bytes = None
+                if hasattr(TC.Tool, "Proxy") and hasattr(TC.Tool.Proxy, "get_thumbnail"):
+                    try:
+                        thumb_bytes = TC.Tool.Proxy.get_thumbnail()
+                    except Exception:
+                        thumb_bytes = None
+                if thumb_bytes:
+                    imagebytes = thumb_bytes
+                else:
+                    # Warn and use fallback head-on image
+                    data["squawkData"].append(
+                        self.squawk(
+                            "CAMSanity",
+                            translate("CAM_Sanity", "Toolbit Shape for TC: {} not found").format(
+                                TC.ToolNumber
+                            ),
+                            squawkType="WARNING",
+                        )
+                    )
+                    imagebytes = self.image_builder.build_image(
+                        TC.Tool, f"T{TC.ToolNumber}", as_bytes=True, view="headon"
+                    )
+            else:
+                # Always use fallback head-on image
+                imagebytes = self.image_builder.build_image(
+                    TC.Tool, f"T{TC.ToolNumber}", as_bytes=True, view="headon"
+                )
+            tooldata["imagebytes"] = imagebytes
+            imagepath = os.path.join(self.filelocation, f"T{TC.ToolNumber}.png")
+            tooldata["imagepath"] = imagepath
+            Path.Log.debug(imagepath)
+            # No longer writing imagedata to disk; handled by imagebytes logic above
+
+            tooldata["feedrate"] = str(TC.HorizFeed.UserString)
+            if TC.HorizFeed.Value == 0.0:
+                data["squawkData"].append(
+                    self.squawk(
+                        "CAMSanity",
+                        translate("CAM_Sanity", "Tool Controller '{}' has no feedrate").format(
+                            TC.Label
+                        ),
+                        squawkType="WARNING",
+                    )
+                )
+
+            tooldata["spindlespeed"] = f"{int(TC.SpindleSpeed)} rpm"
+            if TC.SpindleSpeed == 0.0:
+                data["squawkData"].append(
+                    self.squawk(
+                        "CAMSanity",
+                        translate("CAM_Sanity", "Tool Controller '{}' has no spindlespeed").format(
+                            TC.Label
+                        ),
+                        squawkType="WARNING",
+                    )
+                )
+
+            used = False
+            for op in obj.Operations.Group:
+                base_op = PathDressup.baseOp(op)
+                if hasattr(base_op, "ToolController") and base_op.ToolController is TC:
+                    used = True
+                    tooldata.setdefault("ops", []).append(
+                        {
+                            "Operation": base_op.Label,
+                            "ToolController": TC.Label,
+                            "Feed": str(TC.HorizFeed.UserString),
+                            "Speed": f"{int(TC.SpindleSpeed)} rpm",
+                        }
+                    )
+
+            if used is False:
+                tooldata.setdefault("ops", [])
+                data["squawkData"].append(
+                    self.squawk(
+                        "CAMSanity",
+                        translate("CAM_Sanity", "Tool Controller '{}' is not used").format(
+                            TC.Label
+                        ),
+                        squawkType="WARNING",
+                    )
+                )
+
+        return data
+
+    def serialize(self, obj):
+        """A function to serialize non-serializable objects."""
+        if isinstance(obj, type(Exception)):
+            # Convert an exception to its string representation
+            return str(obj)
+        # You might need to handle more types depending on your needs
+        return str(obj)  # Fallback to convert any other non-serializable types to string
+
+    def get_output_report(self):
+        Path.Log.debug("get_output_url")
+
+        generator = ReportGenerator.ReportGenerator(self.data, embed_images=True)
+        return generator.generate_html()
+
+    def get_all_squawks(self, overrides=None):
+        """Collect squawks from all validation sections without generating images or HTML.
+
+        Calls each _xxxData() method directly using the current image_builder (a
+        DummyImageBuilder when invoked via validate_job(), so no GUI or file I/O occurs).
+        Also runs _validate_job_structure() for structural checks.
+
+        Args:
+            overrides: Optional dict of postprocessor property overrides.
+                       Passed through to apply_configuration_bundle() so that
+                       callers (e.g. the dialog) can inject values without
+                       modifying the job.
+
+        Returns:
+            tuple: (all_squawks, critical_squawks) where critical = WARNING or CAUTION
+        """
+        all_squawks = []
+        for method in [
+            self._toolData,
+            self._outputData,
+            self._runData,
+            self._stockData,
+            self._fixtureData,
+            self._baseObjectData,
+            self._designData,
+        ]:
+            try:
+                all_squawks.extend(method().get("squawkData", []))
+            except Exception as e:
+                Path.Log.warning(f"get_all_squawks: {method.__name__} failed: {e}")
+        all_squawks.extend(self._validate_job_structure())
+
+        # Collect postprocessor-specific squawks
+        if hasattr(self.job, "Machine") and self.job.Machine:
+            try:
+                from Machine.models.machine import MachineFactory
+                from Path.Post.Processor import PostProcessorFactory
+
+                machine = MachineFactory.get_machine(self.job.Machine)
+                postprocessor_name = getattr(machine, "postprocessor_file_name", None)
+                if postprocessor_name:
+                    postprocessor = PostProcessorFactory.get_post_processor(
+                        self.job, postprocessor_name
+                    )
+                    if postprocessor and hasattr(postprocessor, "get_sanity_checks"):
+                        if hasattr(postprocessor, "apply_configuration_bundle"):
+                            postprocessor.apply_configuration_bundle(overrides=overrides)
+                        pp_squawks = postprocessor.get_sanity_checks(self.job)
+                        all_squawks.extend(pp_squawks)
+            except FileNotFoundError as e:
+                if "Available machines:" in str(e):
+                    # a missing machine means "don't do sanity"
+                    Path.Log.warning(f"Failed to get postprocessor sanity checks: {e}")
+                else:
+                    raise e
+
+        critical = [s for s in all_squawks if s["squawkType"] in ("WARNING", "CAUTION")]
+        Path.Log.debug(f"get_all_squawks: {len(all_squawks)} squawks, {len(critical)} critical")
+        Path.Log.debug(f"Critical squawks: {critical}")
+        return all_squawks, critical
+
+    @staticmethod
+    def validate_job(job, overrides=None):
+        """Lightweight job validation without generating images or HTML.
+
+        Bypasses __init__ entirely to avoid calling summarize() or any image-generation
+        code. Sets up only the attributes needed by the _xxxData() methods, uses
+        DummyImageBuilder unconditionally, and calls get_all_squawks().
+
+        Args:
+            job: FreeCAD CAM job object
+            overrides: Optional dict of postprocessor property overrides.
+                       When provided these are passed to the postprocessor's
+                       apply_configuration_bundle() instead of reading from the job.
+
+        Returns:
+            tuple: (all_squawks, critical_squawks) where critical = WARNING or CAUTION
+        """
+        import tempfile
+        import os as _os
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sanity = object.__new__(CAMSanity)
+            sanity.job = job
+            sanity.output_file = _os.path.join(tmpdir, "dummy.html")
+            sanity.filelocation = tmpdir
+            sanity.image_builder = ImageBuilder.DummyImageBuilder(tmpdir)
+            sanity.data = {}
+            return sanity.get_all_squawks(overrides=overrides)
+
+    def validate_for_postprocessing(self):
+        """
+        Lightweight validation for post-processing without full report generation.
+
+        Returns:
+            tuple: (has_critical_issues, all_squawks, critical_squawks)
+        """
+        all_squawks = []
+
+        # Collect squawks from key validation methods
+        all_squawks.extend(self._toolData().get("squawkData", []))
+
+        # Add basic job structure validation
+        job_squawks = self._validate_job_structure()
+        all_squawks.extend(job_squawks)
+
+        # Identify critical squawks that should block post-processing
+        critical_squawks = []
+        for squawk in all_squawks:
+            if squawk["squawkType"] in ("WARNING", "CAUTION"):
+                note = squawk["Note"].lower()
+                # Critical issues for post-processing
+                if any(
+                    keyword in note
+                    for keyword in [
+                        "no feedrate",
+                        "no spindlespeed",
+                        "no tool controllers",
+                        "no operations",
+                        "no model",
+                        "no base",
+                    ]
+                ):
+                    critical_squawks.append(squawk)
+
+        has_critical = len(critical_squawks) > 0
+        return has_critical, all_squawks, critical_squawks
+
+    def _validate_job_structure(self):
+        """
+        Validate basic job structure for post-processing.
+
+        Returns:
+            list: List of squawk dictionaries for job structure issues
+        """
+        job_squawks = []
+
+        # Check if job has operations
+        if not hasattr(self.job, "Operations") or not self.job.Operations:
+            job_squawks.append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "No operations found in job"),
+                    squawkType="WARNING",
+                )
+            )
+
+        # Check if job has model
+        if not hasattr(self.job, "Model") or not self.job.Model:
+            job_squawks.append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "No model/base geometry found in job"),
+                    squawkType="WARNING",
+                )
+            )
+
+        return job_squawks

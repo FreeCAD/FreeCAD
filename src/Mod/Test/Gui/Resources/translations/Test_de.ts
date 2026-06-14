@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="de" sourcelanguage="en">
+  <context>
+    <name>TestGui::UnitTest</name>
+    <message>
+      <location filename="../../UnitTest.ui" line="32"/>
+      <source>Test</source>
+      <translation>Aufgabe</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="17"/>
+      <source>FreeCAD Unit Test</source>
+      <translation>FreeCAD-Unit-Test</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="44"/>
+      <source>Select test name</source>
+      <translation>Name des Tests auswählen</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="96"/>
+      <source>&amp;Start</source>
+      <translation>&amp;Starten</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="99"/>
+      <source>Alt+S</source>
+      <translation>Alt+S</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="128"/>
+      <source>&amp;Copy</source>
+      <translation>&amp;Kopieren</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="131"/>
+      <source>Ctrl+C</source>
+      <translation>Strg+C</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="141"/>
+      <source>&amp;Help</source>
+      <translation>&amp;Hilfe</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="144"/>
+      <source>F1</source>
+      <translation>F1</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="154"/>
+      <source>&amp;About</source>
+      <translation>Ü&amp;ber</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="157"/>
+      <source>Alt+A</source>
+      <translation>Alt+B</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="167"/>
+      <source>Close</source>
+      <translation>Schließen</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="170"/>
+      <source>Alt+C</source>
+      <translation>Alt+I</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="182"/>
+      <source>Progress</source>
+      <translation>Fortschritt</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="201"/>
+      <source>Run</source>
+      <translation>Ausführen</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="218"/>
+      <source>Failures</source>
+      <translation>Versagen</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="235"/>
+      <source>Errors</source>
+      <translation>Fehler</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="252"/>
+      <source>Remaining</source>
+      <translation>Verbleibend</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="272"/>
+      <source>Failures and Errors</source>
+      <translation>Versagen und Fehler</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="288"/>
+      <source>Description</source>
+      <translation>Beschreibung</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="305"/>
+      <source>Idle</source>
+      <translation>Leerlauf</translation>
+    </message>
+  </context>
+  <context>
+    <name>TestGui::UnitTestDialog</name>
+    <message>
+      <location filename="../../UnitTestImp.cpp" line="172"/>
+      <source>Help</source>
+      <translation>Hilfe</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTestImp.cpp" line="173"/>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>Den Namen des aufrufbaren Objekts eingeben, das wenn aufgerufen einen TestCase zurückgibt.
+'start' drücken und der somit erzeugte Test wird durchlaufen.
+
+Doppelklick auf eine Fehlermeldung in der Baumstrukturansicht zeigt mehr Informationen, einschließlich eines Stacktrace.</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTestImp.cpp" line="187"/>
+      <source>About FreeCAD UnitTest</source>
+      <translation>Über FreeCAD UnitTest</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTestImp.cpp" line="188"/>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest ist Teil von FreeCAD und untersützt Modultests für selbsterstellte Module.</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTestImp.cpp" line="206"/>
+      <source>Errors copied to clipboard</source>
+      <translation>Fehler in die Zwischenablage kopiert</translation>
+    </message>
+  </context>
+</TS>

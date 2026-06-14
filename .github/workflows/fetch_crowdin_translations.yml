@@ -1,0 +1,73 @@
+name: Fetch Crowdin Translations
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 1"
+
+# Writes happen via the GH_TOKEN_FOR_CROWDIN_SYNC secret; GITHUB_TOKEN stays read-only.
+permissions:
+  contents: read
+
+jobs:
+  update-crowdin:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN_FOR_CROWDIN_SYNC }}
+
+      - name: Install Qt ≥ 6.8
+        uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730
+        with:
+          aqtversion: "==3.1.*"
+          version: "6.8.3"
+          host: "linux"
+          target: "desktop"
+          arch: "linux_gcc_64"
+
+      - name: Setup Python & dependencies
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: "3.13"
+      - name: Install Python packages
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pyside6
+
+      - name: Gather translations from crowdin
+        run: |
+          ./updatecrowdin.py build
+          while ./updatecrowdin.py build-status | grep -q "status: inProgress"; do sleep 10; done
+          ./updatecrowdin.py download
+          ./updatecrowdin.py install
+        working-directory: ./src/Tools
+        env:
+          CROWDIN_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
+          CROWDIN_PROJECT_ID: freecad
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "freecad-gh-actions-translation-bot"
+          git config --global user.email "freecad-gh-actions-translation-bot@github.com"
+          git add src
+          git commit -m "Update translations from Crowdin" || echo "No changes to commit"
+
+      - name: Push changes to a new branch
+        run: |
+          git branch update-crowdin-translations
+          git push origin update-crowdin-translations --force
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
+        with:
+          branch: update-crowdin-translations
+          title: "Update translations from Crowdin"
+          body: "Automatic Crowdin update."
+          token: ${{ secrets.GH_TOKEN_FOR_CROWDIN_SYNC }}
+          delete-branch: true
+          add-paths: |
+            src

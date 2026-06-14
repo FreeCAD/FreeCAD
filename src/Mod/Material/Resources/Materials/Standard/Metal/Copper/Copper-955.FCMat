@@ -1,0 +1,88 @@
+﻿---
+# File created by FreeCAD 1.0.2 Revision: 39319 (Git)
+General:
+  UUID: "3675f617-cf32-4803-8ccb-003ca7077e8a"
+  Name: "Copper-955"
+  Author: "Joe Da Silva"
+  License: "LGPL-2.0-or-later"
+  SourceURL: "https://copper.org/publications/pub_list/pdf/144-8-mechanical.pdf"
+  ReferenceSource: "144-8-mechanical.pdf"
+  Tags:
+    - "C95500"
+    - "Cast"
+    - "Bronzes"
+    - "Nickel aluminum bronze"
+  Description: >
+    NOTE: This alloy not named in source, but Copper-955 appears as closest.
+    Copper-955, Nickel aluminum bronze, Sand cast.
+    Cu≥78% Fe=3.35% Ni=5.20% Al=9.95% Mn=0.3%. IACS=8%.
+    Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
+    with permission and credit to the 'Copper Development Association' (CDA).
+    For your own production accuracy, please use values provided by the
+    material vendors you are working with.
+Inherits:
+  Brass:
+    UUID: "4151e19c-fd6a-4ca4-83d4-d5e17d76cb9c"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Sand cast"
+    StandardCode: "Copper-955"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    CompressiveStrength: "414 MPa"
+    Density: "7530 kg/m^3"
+    PoissonRatio: "0.32"
+    UltimateStrain: "10.6"
+    UltimateTensileStrength: "697.7 MPa"
+    YieldStrain: "0.31"
+    YieldStrength: "303 MPa"
+    Elongation: "11"
+    FractureStrength: "704 MPa"
+    ReductionOfArea: "9"
+    YoungsModulus: "116 GPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "419 J/kg/K"
+    ThermalConductivity: "41.9 W/m/K"
+    ThermalExpansionCoefficient: "16.2 µm/m/K"
+    ThermalExpansionReferenceTemperature: "293.00 K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "4.64 MS/m"
+    RelativePermeability: "1050119"
+  Hardness:
+    UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
+    Hardness: "93"
+    HardnessUnits: "HRB"
+  Toughness:
+    UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
+    ImpactCharpy: "14 J"
+    NotchTensileStrength: "725 MPa"
+  IsotropicLinearElasticArrays:
+    UUID: '2afbba4b-55c0-4c4a-a6dc-4f5716cc5571'
+    ElasticProperties:
+      - [["295 K", "", "0.32", "", "116 GPa"],
+         ["195 K", "", "",     "", "123 GPa"],
+         ["76 K",  "", "",     "", "128 GPa"],
+         ["20 K",  "", "",     "", "128 GPa"],
+         ["4 K",   "", "",     "", "128 GPa"]]
+  LinearElasticArrays:
+    UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+    PlasticUniaxialProperties:
+      - [["295 K", "10.6", "697.7 MPa", "0.31", "303 MPa", "11.0", "704 MPa", "9.0"],
+         ["195 K", "8.47", "721 MPa",   "0.35", "330 MPa", "9.0",  "709 MPa", "9.0"],
+         ["76 K",  "6.06", "807 MPa",   "0.38", "379 MPa", "6.0",  "804 MPa", "7.0"],
+         ["20 K",  "5.74", "873 MPa",   "0.44", "425 MPa", "6.0",  "863 MPa", "2.0"],
+         ["4 K",   "6.08", "900 MPa",   "0.42", "414 MPa", "6.0",  "888 MPa", "5.0"]]
+  ToughnessArrays:
+    UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
+    PlasticTriaxialProperties:
+      - [["295 K", "14 J", "725 MPa"],
+         ["195 K", "11 J", "778 MPa"],
+         ["76 K",  "8 J",  "820 MPa"],
+         ["20 K",  "8 J",  "840 MPa"],
+         ["4 K",   "",     "816 MPa"]]

@@ -1,0 +1,82 @@
+Check Keywords "Warn"
+
+Header
+  Mesh DB "."
+End
+
+Solver 1
+  Calculate Principal = Logical True
+  Displace mesh = Logical True
+  Eigen Analysis = Logical False
+  Equation = String "Stress Solver"
+  Geometric Stiffness = Logical False
+  Linear System Abort Not Converged = Logical False
+  Linear System Direct Method = String "Umfpack"
+  Linear System Precondition Recompute = Integer 1
+  Linear System Residual Output = Integer 1
+  Linear System Solver = String "Direct"
+  Optimize Bandwidth = Logical True
+  Procedure = File "StressSolve" "StressSolver"
+  Stabilize = Logical True
+  Steady State Convergence Tolerance = Real 1e-05
+  Variable = String "Displacement"
+  Variable DOFs = Integer 3
+End
+
+Simulation
+  Coordinate Mapping(3) = Integer 1 2 3
+  Coordinate Scaling = Real 0.001
+  Coordinate System = String "Cartesian"
+  Simulation Type = String "Steady State"
+  Steady State Max Iterations = Integer 1
+  Steady State Min Iterations = Integer 0
+  Use Mesh Names = Logical True
+End
+
+Constants
+End
+
+Body 1
+  Equation = Integer 1
+  Material = Integer 1
+  Name = String "Solid1"
+End
+
+Material 1
+  Name = String "CalculiX-Steel"
+  Poisson ratio = Real 0.3
+  Youngs Modulus = Real 210000000000.0
+End
+
+Equation 1
+  Active Solvers(2) = Integer 1 2
+End
+
+Solver 2
+  Binary Output = Logical False
+  Coordinate Scaling Revert = Logical True
+  Equation = String "ResultOutput"
+  Exec Solver = String "After simulation"
+  Output File Name = File "FreeCAD"
+  Procedure = File "ResultOutputSolve" "ResultOutputSolver"
+  Save Geometry Ids = Logical False
+  Vtu Format = Logical True
+  Vtu Time Collection = Logical True
+End
+
+Boundary Condition 1
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Face1"
+End
+
+Boundary Condition 2
+  Force 1 = Real -0.0
+  Force 1 Normalize by Area = Logical True
+  Force 2 = Real -0.0
+  Force 2 Normalize by Area = Logical True
+  Force 3 = Real -9000000.0
+  Force 3 Normalize by Area = Logical True
+  Name = String "Face2"
+End

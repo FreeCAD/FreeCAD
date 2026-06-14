@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" id="svg4564" height="64" width="64" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs id="defs4566">
+    <radialGradient r="34.345188" fy="672.79736" fx="225.26402" cy="672.79736" cx="225.26402" gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)" gradientUnits="userSpaceOnUse" id="radialGradient4572" xlink:href="#linearGradient3144-3" />
+    <linearGradient id="linearGradient3144-3">
+      <stop id="stop3146-7" offset="0" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop id="stop3148-0" offset="1" style="stop-color:#ffffff;stop-opacity:0" />
+    </linearGradient>
+    <radialGradient r="34.345188" fy="672.79736" fx="225.26402" cy="672.79736" cx="225.26402" gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)" gradientUnits="userSpaceOnUse" id="radialGradient4574" xlink:href="#linearGradient3144-0" />
+    <linearGradient id="linearGradient3144-0">
+      <stop id="stop3146-2" offset="0" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop id="stop3148-9" offset="1" style="stop-color:#ffffff;stop-opacity:0" />
+    </linearGradient>
+    <radialGradient r="34.345188" fy="672.79736" fx="225.26402" cy="672.79736" cx="225.26402" gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)" gradientUnits="userSpaceOnUse" id="radialGradient3846" xlink:href="#linearGradient3144-3" />
+    <radialGradient r="34.345188" fy="672.79736" fx="225.26402" cy="672.79736" cx="225.26402" gradientTransform="matrix(1,0,0,0.6985294,0,202.82863)" gradientUnits="userSpaceOnUse" id="radialGradient3848" xlink:href="#linearGradient3144-0" />
+    <linearGradient id="linearGradient3836-0-6-4">
+      <stop id="stop3838-2-7-0" offset="0" style="stop-color:#a40000;stop-opacity:1" />
+      <stop id="stop3840-5-5-9" offset="1" style="stop-color:#ef2929;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="linearGradient3836-0-6">
+      <stop id="stop3838-2-7" offset="0" style="stop-color:#a40000;stop-opacity:1" />
+      <stop id="stop3840-5-5" offset="1" style="stop-color:#ef2929;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <metadata id="metadata4569">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[bitacovir]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date />
+        <dc:relation />
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier />
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title />
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag />
+        </dc:subject>
+        <dc:description />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g transform="translate(0,-988.36218)" id="layer1">
+    <path id="path913" d="m 16.001457,991.61563 v 8.76197" style="fill:#ffffff;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path style="fill:#ffffff;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="m 16.005154,1008.394 v 8.7619" id="path913-6" />
+    <path id="path913-6-4" d="M 3.2625654,1004.386 H 11.992377" style="fill:#ffffff;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path style="fill:#ffffff;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 19.969916,1004.3436 H 28.72376" id="path913-6-4-4" />
+  </g>
+</svg>

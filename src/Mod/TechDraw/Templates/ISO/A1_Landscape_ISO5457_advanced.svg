@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg
+   width="841mm"
+   height="594mm"
+   viewBox="0 0 841 594"
+   version="1.1"
+   id="svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:freecad="https://www.freecad.org/wiki/index.php?title=Svg_Namespace">
+  <title id="title">Drawing sheet ISO 5457 - A1T - Advanced</title>
+  <metadata id="metadata">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <cc:license rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:title>Drawing sheet ISO 5457 - A1T - Advanced</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Benjamin May</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <rect id="drawing_space_frame" x="20" y="10" width="811" height="574" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round" />
+  <g id="centring_marks" style="fill:none;stroke:#000000;stroke-width:0.7;stroke-linecap:round">
+    <path id="top_centering" d="m 420.5,5 v 10" />
+    <path id="right_centering" d="m 836,297 h -10" />
+    <path id="bottom_centering" d="m 420.5,589 v -10" />
+    <path id="left_centering" d="m 15,297 h 10" />
+  </g>
+  <g id="grid_reference_system">
+    <g id="grid_reference_borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
+      <rect id="grid_reference_border"  x="15" y="5" width="821" height="584" />
+      <path id="upper_border_1" d="m 70.5,5 v 5"/>
+      <path id="upper_border_2" d="m 120.5,5 v 5"/>
+      <path id="upper_border_3" d="m 170.5,5 v 5"/>
+      <path id="upper_border_4" d="m 220.5,5 v 5"/>
+      <path id="upper_border_5" d="m 270.5,5 v 5"/>
+      <path id="upper_border_6" d="m 320.5,5 v 5"/>
+      <path id="upper_border_7" d="m 370.5,5 v 5"/>
+      <path id="upper_border_9" d="m 470.5,5 v 5"/>
+      <path id="upper_border_10" d="m 520.5,5 v 5"/>
+      <path id="upper_border_11" d="m 570.5,5 v 5"/>
+      <path id="upper_border_12" d="m 620.5,5 v 5"/>
+      <path id="upper_border_13" d="m 670.5,5 v 5"/>
+      <path id="upper_border_14" d="m 720.5,5 v 5"/>
+      <path id="upper_border_15" d="m 770.5,5 v 5"/>
+      <path id="right_border_1" d="m 836,47 h -5"/>
+      <path id="right_border_2" d="m 836,97 h -5"/>
+      <path id="right_border_3" d="m 836,147 h -5"/>
+      <path id="right_border_4" d="m 836,197 h -5"/>
+      <path id="right_border_5" d="m 836,247 h -5"/>
+      <path id="right_border_7" d="m 836,347 h -5"/>
+      <path id="right_border_8" d="m 836,397 h -5"/>
+      <path id="right_border_9" d="m 836,447 h -5"/>
+      <path id="right_border_10" d="m 836,497 h -5"/>
+      <path id="right_border_11" d="m 836,547 h -5"/>
+      <path id="lower_border_1" d="m 70.5,589 v -5"/>
+      <path id="lower_border_2" d="m 120.5,589 v -5"/>
+      <path id="lower_border_3" d="m 170.5,589 v -5"/>
+      <path id="lower_border_4" d="m 220.5,589 v -5"/>
+      <path id="lower_border_5" d="m 270.5,589 v -5"/>
+      <path id="lower_border_6" d="m 320.5,589 v -5"/>
+      <path id="lower_border_7" d="m 370.5,589 v -5"/>
+      <path id="lower_border_9" d="m 470.5,589 v -5"/>
+      <path id="lower_border_10" d="m 520.5,589 v -5"/>
+      <path id="lower_border_11" d="m 570.5,589 v -5"/>
+      <path id="lower_border_12" d="m 620.5,589 v -5"/>
+      <path id="lower_border_13" d="m 670.5,589 v -5"/>
+      <path id="lower_border_14" d="m 720.5,589 v -5"/>
+      <path id="lower_border_15" d="m 770.5,589 v -5"/>
+      <path id="left_border_1" d="m 15,47 h 5"/>
+      <path id="left_border_2" d="m 15,97 h 5"/>
+      <path id="left_border_3" d="m 15,147 h 5"/>
+      <path id="left_border_4" d="m 15,197 h 5"/>
+      <path id="left_border_5" d="m 15,247 h 5"/>
+      <path id="left_border_7" d="m 15,347 h 5"/>
+      <path id="left_border_8" d="m 15,397 h 5"/>
+      <path id="left_border_9" d="m 15,447 h 5"/>
+      <path id="left_border_10" d="m 15,497 h 5"/>
+      <path id="left_border_11" d="m 15,547 h 5"/>
+    </g>
+    <g id="grid_reference_markers" style="font-size:3.5px;font-family:osifont;text-align:center;text-anchor:middle;fill:#000000;stroke:none">
+      <text id="upper_marker_1" x="45.5" y="8.8">1</text>
+      <text id="upper_marker_2" x="95.5" y="8.8">2</text>
+      <text id="upper_marker_3" x="145.5" y="8.8">3</text>
+      <text id="upper_marker_4" x="195.5" y="8.8">4</text>
+      <text id="upper_marker_5" x="245.5" y="8.8">5</text>
+      <text id="upper_marker_6" x="295.5" y="8.8">6</text>
+      <text id="upper_marker_7" x="345.5" y="8.8">7</text>
+      <text id="upper_marker_8" x="395.5" y="8.8">8</text>
+      <text id="upper_marker_9" x="445.5" y="8.8">9</text>
+      <text id="upper_marker_10" x="495.5" y="8.8">10</text>
+      <text id="upper_marker_11" x="545.5" y="8.8">11</text>
+      <text id="upper_marker_12" x="595.5" y="8.8">12</text>
+      <text id="upper_marker_13" x="645.5" y="8.8">13</text>
+      <text id="upper_marker_14" x="695.5" y="8.8">14</text>
+      <text id="upper_marker_15" x="745.5" y="8.8">15</text>
+      <text id="upper_marker_16" x="795.5" y="8.8">16</text>
+      <text id="right_marker_1" x="833.5" y="23.3">A</text>
+      <text id="right_marker_2" x="833.5" y="73.3">B</text>
+      <text id="right_marker_3" x="833.5" y="123.3">C</text>
+      <text id="right_marker_4" x="833.5" y="173.3">D</text>
+      <text id="right_marker_5" x="833.5" y="223.3">E</text>
+      <text id="right_marker_6" x="833.5" y="273.3">F</text>
+      <text id="right_marker_7" x="833.5" y="323.3">G</text>
+      <text id="right_marker_8" x="833.5" y="373.3">H</text>
+      <text id="right_marker_9" x="833.5" y="423.3">J</text>
+      <text id="right_marker_10" x="833.5" y="473.3">K</text>
+      <text id="right_marker_11" x="833.5" y="523.3">L</text>
+      <text id="right_marker_12" x="833.5" y="573.3">M</text>
+      <text id="lower_marker_1" x="45.5" y="587.8">1</text>
+      <text id="lower_marker_2" x="95.5" y="587.8">2</text>
+      <text id="lower_marker_3" x="145.5" y="587.8">3</text>
+      <text id="lower_marker_4" x="195.5" y="587.8">4</text>
+      <text id="lower_marker_5" x="245.5" y="587.8">5</text>
+      <text id="lower_marker_6" x="295.5" y="587.8">6</text>
+      <text id="lower_marker_7" x="345.5" y="587.8">7</text>
+      <text id="lower_marker_8" x="395.5" y="587.8">8</text>
+      <text id="lower_marker_9" x="445.5" y="587.8">9</text>
+      <text id="lower_marker_10" x="495.5" y="587.8">10</text>
+      <text id="lower_marker_11" x="545.5" y="587.8">11</text>
+      <text id="lower_marker_12" x="595.5" y="587.8">12</text>
+      <text id="lower_marker_13" x="645.5" y="587.8">13</text>
+      <text id="lower_marker_14" x="695.5" y="587.8">14</text>
+      <text id="lower_marker_15" x="745.5" y="587.8">15</text>
+      <text id="lower_marker_16" x="795.5" y="587.8">A1</text>
+      <text id="left_marker_1" x="17.5" y="23.3">A</text>
+      <text id="left_marker_2" x="17.5" y="73.3">B</text>
+      <text id="left_marker_3" x="17.5" y="123.3">C</text>
+      <text id="left_marker_4" x="17.5" y="173.3">D</text>
+      <text id="left_marker_5" x="17.5" y="223.3">E</text>
+      <text id="left_marker_6" x="17.5" y="273.3">F</text>
+      <text id="left_marker_7" x="17.5" y="323.3">G</text>
+      <text id="left_marker_8" x="17.5" y="373.3">H</text>
+      <text id="left_marker_9" x="17.5" y="423.3">J</text>
+      <text id="left_marker_10" x="17.5" y="473.3">K</text>
+      <text id="left_marker_11" x="17.5" y="523.3">L</text>
+      <text id="left_marker_12" x="17.5" y="573.3">M</text>
+    </g>
+  </g>
+  <g id="trimming_marks" style="fill:#000000;stroke:none">
+    <path id="top_left_trimming" d="m 0,0 h 10 v 5 h -5 v 5 h -5 z" />
+    <path id="top_right_trimming" d="m 841,0 h -10 v 5 h 5 v 5 h 5 z" />
+    <path id="bottom_right_trimming" d="m 841,594 h -10 v -5 h 5 v -5 h 5 z" />
+    <path id="bottom_left_trimming" d="m 0,594 h 10 v -5 h -5 v -5 h -5 z" />
+  </g>
+<!-- Title block -->
+  <g id="title_block_borders" style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:round;stroke-linejoin:round">
+    <rect id="title_block_frame" x="651" y="536" width="180" height="48" style="stroke-width:0.7"/>
+    <rect id="legal_owner_border" x="791" y="536" width="40" height="24"/>
+    <rect id="identification_number_border" x="731" y="560" width="60" height="12"/>
+    <rect id="revision_index_border" x="791" y="572" width="20" height="12"/>
+    <rect id="date_of_issue_border" x="751" y="572" width="40" height="12"/>
+    <rect id="sheet_number_border" x="811" y="572" width="20" height="12"/>
+    <rect id="language_code_border" x="731" y="572" width="20" height="12"/>
+    <rect id="title_border" x="651" y="536" width="80" height="24"/>
+    <rect id="responsible_department_border" x="791" y="560" width="40" height="12"/>
+    <rect id="approval_person_border" x="731" y="548" width="60" height="12"/>
+    <rect id="creator_border" x="731" y="536" width="60" height="12"/>
+    <rect id="document_type_border" x="651" y="560" width="80" height="12"/>
+    <rect id="document_status_border" x="651" y="572" width="80" height="12"/>
+  </g>
+  <g id="title_block_labels" style="font-size:3.5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
+    <text id="legal_owner_label" x="791.5" y="539.6">Owner:</text>
+    <text id="identification_number_label" x="731.5" y="563.6">Drawing number:</text>
+    <text id="revision_index_label" x="791.5" y="575.6">Revision:</text>
+    <text id="date_of_issue_label" x="751.5" y="575.6">Issue date:</text>
+    <text id="sheet_number_label" x="811.5" y="575.6">Sheet:</text>
+    <text id="language_code_label" x="731.5" y="575.6">Language:</text>
+    <text id="title_label" x="651.5" y="539.6">Title, supplementary title:</text>
+    <text id="responsible_department_label" x="791.5" y="563.6">Responsible department:</text>
+    <text id="approval_person_label" x="731.5" y="551.6">Approved by:</text>
+    <text id="creator_label" x="731.5" y="539.6">Created by:</text>
+    <text id="document_type label" x="651.5" y="563.6">Document type:</text>
+    <text id="document_status_label" x="651.5" y="575.6">Document status:</text>
+    <text id="sheet_scale_label" x="771.5" y="527.6">Scale:</text>
+    <text id="general_tolerances_label" x="731.5" y="527.6">General tolerances:</text>
+    <text id="part_material_label" x="651.5" y="527.6">Part Material:</text>
+  </g>
+  <g id="title_block_data_fields" style="font-size:5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
+    <text id="legal_owner_1_data_field" x="811" y="545.1" freecad:editable="legal_owner_1" freecad:autofill="organization" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
+    <text id="legal_owner_2_data_field" x="811" y="549.1" freecad:editable="legal_owner_2" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
+    <text id="legal_owner_3_data_field" x="811" y="553.1" freecad:editable="legal_owner_3" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
+    <text id="legal_owner_4_data_field" x="811" y="557.1" freecad:editable="legal_owner_4" style="font-size:3.5px;text-align:center;text-anchor:middle"><tspan/></text>
+    <text id="identification_number_data_field" x="732" y="569.2" freecad:editable="drawing_number"><tspan>DN</tspan></text>
+    <text id="revision_index_data_field" x="801" y="581.2" freecad:editable="revision_index" style="text-align:center;text-anchor:middle"><tspan>AAA</tspan></text>
+    <text id="date_of_issue_data_field" x="752" y="581.2" freecad:editable="date_of_issue" freecad:autofill="date"><tspan>YYYY-MM-DD</tspan></text>
+    <text id="sheet_number_data_field" x="821" y="581.2" freecad:editable="sheet_number" freecad:autofill="sheet" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
+    <text id="language_data_field" x="741" y="581.2" freecad:editable="language_code" style="text-align:center;text-anchor:middle"><tspan>EN</tspan></text>
+    <text id="title_data_field" x="652" y="545.2" freecad:editable="title" freecad:autofill="title"><tspan>ISO 7200 titleblock</tspan></text>
+    <text id="supplementary_title_1_data_field" x="652" y="551.2" freecad:editable="supplementary_title_1"><tspan>ST1</tspan></text>
+    <text id="supplementary_title_2_data_field" x="652" y="557.2" freecad:editable="supplementary_title_2"><tspan>ST2</tspan></text>
+    <text id="responsible_department_data_field" x="792" y="569.2" freecad:editable="responsible_department"><tspan>RD</tspan></text>
+    <text id="approval_person_data_field" x="732" y="557.2" freecad:editable="approval_person"><tspan>B. Hecate</tspan></text>
+    <text id="creator_data_field" x="732" y="545.2" freecad:editable="creator" freecad:autofill="author"><tspan>A. Nemesis</tspan></text>
+    <text id="document_type_data_field" x="652" y="569.2" freecad:editable="document_type"><tspan>Component Drawing</tspan></text>
+    <text id="document_status_data_field" x="652" y="581.2" freecad:editable="document_status"><tspan>In preparation</tspan></text>
+    <text id="sheet_scale_data_field" x="781" y="533.2" freecad:editable="scale" freecad:autofill="scale" style="text-align:center;text-anchor:middle"><tspan>1 : 1</tspan></text>
+    <text id="general_tolerances_data_field" x="732" y="533.2" freecad:editable="general_tolerances"><tspan>ISO 2768-m</tspan></text>
+    <text id="part_material_data_field" x="652" y="533.2" freecad:editable="part_material"><tspan>Stainless steel Mat.No. 1.4301</tspan></text>
+  </g>
+  <g id="extras_outlines" style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round">
+    <path id="first_angle_trapezoid" d="m 810,519 -10,2.5 v 5 l 10,2.5 z"/>
+    <circle id="first_angle_inner circle" cx="817" cy="524" r="2.5"/>
+    <circle id="first_angle_outer circle" cx="817" cy="524" r="5"/>
+  </g>
+  <g id="extras_centre_lines" style="fill:none;stroke:#000000;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:6, 0.75, 0.125, 0.75">
+    <path id="first_angle_horizontal" d="m 799,524 h 24" style="stroke-dashoffset:0.25"/>
+    <path id="first_angle_vertical" d="m 817,530 v -12" style="stroke-dashoffset:4.625"/>
+  </g>
+</svg>

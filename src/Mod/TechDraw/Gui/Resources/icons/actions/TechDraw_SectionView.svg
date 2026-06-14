@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   width="64"
+   height="64"
+   id="svg4024"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs4026" />
+  <metadata
+     id="metadata4029">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(0,16)"
+     style="display:inline"
+     id="layer1">
+    <g
+       id="g989"
+       style="display:inline">
+      <path
+         d="M 16,-7 H 52 V 39 H 15"
+         id="path3041-5"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#042a2a;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:17.32;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <path
+         style="fill:#16d0d2;stroke:#042a2a;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 18.999906,-13.000077 -10.0000003,6.0000004 10.0000003,6 z"
+         id="path2" />
+      <path
+         style="fill:#16d0d2;stroke:#042a2a;stroke-width:2;stroke-linejoin:round;stroke-dasharray:none"
+         d="m 18.999906,32.999923 -10.0000003,6.000001 10.0000003,6 z"
+         id="path5" />
+      <path
+         d="M 16,-7 H 52 V 39 H 15"
+         id="path6"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#16d0d2;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:17.32;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      <path
+         d="M 17,-8 H 53 V 38 H 16"
+         id="path7"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#34e0e2;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:17.32;stroke-opacity:1;marker:none;enable-background:accumulate" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,242 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 0penBrain.                                         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+# This is the lint workflow for CI of FreeCAD.
+# Formatting checks (black, clang-format, trailing whitespace, line endings,
+# tabs) are handled by pre-commit, so they are intentionally not duplicated
+# here.
+
+name: Lint
+
+on:
+  workflow_call:
+    inputs:
+      artifactBasename:
+        type: string
+        required: true
+      changedFiles:
+        type: string
+        required: true
+      changedCppFiles:
+        type: string
+        required: true
+      changedCppLines:
+        type: string
+        required: false
+      changedPythonFiles:
+        type: string
+        required: true
+      checkQtConnections:
+        default: true
+        type: boolean
+        required: false
+      qtConnectionsFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkPylint:
+        default: true
+        type: boolean
+        required: false
+      pylintDisable:
+        default: C0302,C0303 # Trailing whitespaces (C0303) are already checked
+        type: string
+        required: false
+      pylintFailSilent:
+        default: true
+        type: boolean
+        required: false
+      clangStyle:
+        default: file # for .clang-format file
+        type: string
+        required: false
+      checkSpelling:
+        default: true
+        type: boolean
+        required: false
+      listIgnoredMisspelling:
+        default: .github/codespellignore
+        type: string
+        required: false
+      spellingIgnore:
+        default: ./.git*,*.po,*.ts,*.svg,./src/3rdParty,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL*,./src/Doc/FreeCAD.uml,./build/
+        type: string
+        required: false
+      codespellFailSilent:
+        default: true
+        type: boolean
+        required: false
+      checkClangTidy:
+        default: true
+        type: boolean
+        required: false
+      clangTidyFailSilent:
+        default: true # warnings or notes will never fail the CI, only errors
+        type: boolean
+        required: false
+    outputs:
+      reportFile:
+        value: ${{ jobs.Lint.outputs.reportFile }}
+
+permissions:
+  contents: read
+
+jobs:
+
+  Lint:
+    if: inputs.changedFiles != ''
+    runs-on: ubuntu-latest
+    env:
+      logdir: /tmp/logs/
+      fixesdir: /tmp/fixes/
+      reportdir: /tmp/report/
+      reportfilename: ${{ inputs.artifactBasename }}-report.md
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      reportFile: ${{ steps.Init.outputs.reportFile }}
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: Check out code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          submodules: true
+
+      - name: Make needed directories, files and initializations
+        id: Init
+        run: |
+          mkdir -p ${{ env.logdir }}
+          mkdir -p ${{ env.fixesdir }}
+          mkdir -p ${{ env.reportdir }}
+          echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+
+    # Version consistency check
+      - name: Check version sync
+        if: always()
+        run: python3 src/Tools/sync_version.py --check
+
+    # Generic lints steps
+      - name: Check File Case Sensitivity
+        uses: credfeto/action-case-checker@cb652aeab29ed363bbdb7d9ee1bfcc010c46cac5 # v1.3.0
+
+    # Python linting steps
+
+      - name: Set up pixi for stub smoke checks
+        if: always()
+<<<<<<< HEAD
+        uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
+        with:
+          run-install: false
+=======
+        uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11 # v0.9.6
+>>>>>>> upstream/main
+
+      - name: Install Python stub smoke-check dependencies
+        if: always()
+        run: |
+          python3 -m pip install --user uv
+
+      - name: Pylint
+        if: inputs.checkPylint && inputs.changedPythonFiles != '' && always()
+        continue-on-error: ${{ inputs.pylintFailSilent }}
+        run: |
+          python3 tools/lint/pylint.py \
+            --files ${{ inputs.changedPythonFiles }} \
+            --disable "${{ inputs.pylintDisable }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Generated binding stubs smoke check
+        if: always()
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          python3 tools/lint/python_stubs.py \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+    # C++ linting steps
+
+      - name: Install FreeCAD dependencies
+        if: inputs.changedCppFiles != '' && always()
+        run: ./package/ubuntu/install-apt-packages.sh
+
+      - name: Run CMake # This is needed for Clang tools to work correctly
+        if: inputs.changedCppFiles != '' && always()
+        run: |
+          mkdir build && cmake -S ./ -B ./build/ -D CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
+
+      - name: Check old Qt string-based connections (https://wiki.qt.io/New_Signal_Slot_Syntax)
+        if: inputs.checkQtConnections && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.qtConnectionsFailSilent }}
+        run: |
+          python3 tools/lint/qt_connections.py \
+            --files ${{ inputs.changedCppFiles }} \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Codespell
+        if: inputs.checkSpelling && always()
+        continue-on-error: ${{ inputs.codespellFailSilent }}
+        run: |
+          python3 tools/lint/codespell.py \
+            --files ${{ inputs.changedFiles }} \
+            --ignore-words "${{ inputs.listIgnoredMisspelling }}" \
+            --skip "${{ inputs.spellingIgnore }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+      - name: Clang-tidy
+        if: inputs.checkClangTidy && inputs.changedCppFiles != '' && always()
+        continue-on-error: ${{ inputs.clangTidyFailSilent }}
+        run: |
+          python3 tools/lint/clang_tidy.py \
+            --files ${{ inputs.changedCppFiles }} \
+            --line-filter '${{ inputs.changedCppLines }}' \
+            --clang-style "${{ inputs.clangStyle }}" \
+            --log-dir "${{ env.logdir }}" \
+            --report-file "${{ env.reportdir }}${{ env.reportfilename }}"
+
+    # Upload steps
+
+      - name: Upload logs and fixes
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ inputs.artifactBasename }}-Logs
+          path: |
+            ${{ env.logdir }}
+            ${{ env.fixesdir }}
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ env.reportfilename }}
+          path: |
+            ${{env.reportdir}}${{ env.reportfilename }}

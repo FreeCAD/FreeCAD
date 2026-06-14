@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 16.933333 16.933334"
+   version="1.1"
+   id="svg8"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2">
+    <linearGradient
+       xlink:href="#linearGradient3836-9-3"
+       id="linearGradient3922"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-0.20770928,-0.18465137,0.17787713,-0.21561979,-45.700119,137.6269)"
+       x1="11.390151"
+       y1="453.55045"
+       x2="54.509644"
+       y2="485.54004" />
+    <linearGradient
+       id="linearGradient3836-9-3">
+      <stop
+         style="stop-color:#204a87;stop-opacity:1"
+         offset="0"
+         id="stop3838-8-5" />
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1"
+         offset="1"
+         id="stop3840-1-6" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="matrix(1,0,0,0.99996156,0,-288.52169)"
+     style="stroke-width:1.00002">
+    <g
+       id="g3">
+      <path
+         style="fill:#042a2a;stroke:#555753;stroke-width:1.58753;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:1;paint-order:fill markers stroke"
+         d="M 2.4454487,303.02121 14.487884,290.97877"
+         id="path1" />
+      <path
+         style="fill:#042a2a;stroke:#555753;stroke-width:1.58753;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:1;paint-order:fill markers stroke"
+         d="m 7.0292824,290.84614 3.7430386,12.30678"
+         id="path2" />
+      <path
+         style="fill:none;stroke:#555753;stroke-width:1.58753;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:1;paint-order:fill markers stroke"
+         d="m 2.4396753,299.81298 c 0,0 1.6411749,-4.3344 6.9542244,-2.79382 5.3130493,1.54059 4.5834993,5.97772 4.5834993,5.97772"
+         id="path3" />
+    </g>
+    <g
+       id="g6"
+       style="stroke-width:1.00002"
+       transform="translate(0)">
+      <path
+         style="fill:#042a2a;stroke:#d3d7cf;stroke-width:0.52917684;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:1;paint-order:fill markers stroke"
+         d="M 2.4454487,303.02121 14.487884,290.97877"
+         id="path4" />
+      <path
+         style="fill:#042a2a;stroke:#d3d7cf;stroke-width:0.52917684;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:1;paint-order:fill markers stroke"
+         d="m 7.0292824,290.84614 3.7430386,12.30678"
+         id="path5" />
+      <path
+         style="fill:none;stroke:#d3d7cf;stroke-width:0.52917684;stroke-linecap:square;stroke-dasharray:none;stroke-dashoffset:1;paint-order:fill markers stroke"
+         d="m 2.4396753,299.81298 c 0,0 1.6411749,-4.3344 6.9542244,-2.79382 5.3130493,1.54059 4.5834993,5.97772 4.5834993,5.97772"
+         id="path6" />
+    </g>
+    <g
+       id="g40"
+       transform="matrix(0.23008827,0,0,0.23009706,1.670695,289.52624)"
+       style="display:inline;stroke-width:1.14992">
+      <path
+         style="fill:#729fcf;fill-opacity:1;stroke:#0b1521;stroke-width:2.29984;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path4250"
+         d="M 23.263097,24.518251 A 11.502815,11.502299 0.0048887 1 1 40.736898,39.48171 11.502815,11.502299 0.0048887 1 1 23.263097,24.518251 Z" />
+      <path
+         style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:url(#linearGradient3922);fill-opacity:1;stroke:#729fcf;stroke-width:2.29984;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+         id="path1-0"
+         d="m 32.175781,22.794922 c 2.057708,0.0371 4.120381,0.761913 5.8125,2.210937 3.85283,3.29932 4.30235,9.127829 1,12.980469 -3.297926,3.85424 -9.123393,4.307423 -12.976562,1.007813 -3.85283,-3.29932 -4.30235,-9.127829 -1,-12.980469 1.862092,-2.1762 4.518208,-3.266456 7.164062,-3.21875 z" />
+    </g>
+  </g>
+</svg>

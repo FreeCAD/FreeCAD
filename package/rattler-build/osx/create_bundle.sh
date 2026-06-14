@@ -1,0 +1,130 @@
+#!/bin/bash
+
+set -e
+set -x
+
+conda_env="Parashell.app/Contents/Resources"
+
+mkdir -p ${conda_env}
+
+cp -a ../.pixi/envs/default/* ${conda_env}
+
+# delete unnecessary stuff
+rm -rf ${conda_env}/include
+find ${conda_env} -name \*.a -delete
+
+mv ${conda_env}/bin ${conda_env}/bin_tmp
+mkdir ${conda_env}/bin
+cp ${conda_env}/bin_tmp/freecad ${conda_env}/bin/
+cp ${conda_env}/bin_tmp/freecadcmd ${conda_env}/bin
+cp ${conda_env}/bin_tmp/ccx ${conda_env}/bin/
+cp ${conda_env}/bin_tmp/python ${conda_env}/bin/
+cp ${conda_env}/bin_tmp/pip ${conda_env}/bin/
+cp ${conda_env}/bin_tmp/pyside6-rcc ${conda_env}/bin/
+cp ${conda_env}/bin_tmp/gmsh ${conda_env}/bin/
+cp ${conda_env}/bin_tmp/dot ${conda_env}/bin/
+cp ${conda_env}/bin_tmp/unflatten ${conda_env}/bin/
+rm -rf ${conda_env}/bin_tmp
+
+sed -i '1s|.*|#!/usr/bin/env python|' ${conda_env}/bin/pip
+
+# copy resources
+cp resources/* ${conda_env}
+
+# Remove __pycache__ folders and .pyc files
+find . -path "*/__pycache__/*" -delete
+find . -name "*.pyc" -type f -delete
+
+# fix problematic rpaths and reexport_dylibs for signing
+# see https://github.com/FreeCAD/FreeCAD/issues/10144#issuecomment-1836686775
+# and https://github.com/FreeCAD/FreeCAD-Bundle/pull/203
+# and https://github.com/FreeCAD/FreeCAD-Bundle/issues/375
+python ../scripts/fix_macos_lib_paths.py ${conda_env}/lib -r
+
+# build and install the launcher
+cmake -B build launcher
+cmake --build build
+mkdir -p Parashell.app/Contents/MacOS
+cp build/Parashell Parashell.app/Contents/MacOS/Parashell
+
+# Add deployment target suffix to artifact name (e.g., "-macOS11" or "-macOS15")
+deploy_target="${MACOS_DEPLOYMENT_TARGET:-11.0}"
+version_name="Parashell_${BUILD_TAG}-macOS${deploy_target%%.*}-$(uname -m)"
+application_menu_name="Parashell_${BUILD_TAG}"
+
+echo -e "\################"
+echo -e "version_name:  ${version_name}"
+echo -e "################"
+
+# Extract Apple-compliant bundle version from version.json
+# For dev/weekly builds, append a "d" + ISO week number suffix (e.g. "1.2.0d12")
+# per Apple's CFBundleVersion spec for development builds
+bundle_version=$(python3 -c "
+import json, datetime
+d = json.load(open('../../../version.json'))
+v = f'{d[\"version_major\"]}.{d[\"version_minor\"]}.{d[\"version_patch\"]}'
+suffix = d.get('version_suffix', '')
+if suffix:
+    week = datetime.date.today().isocalendar()[1]
+    v += f'd{week}'
+print(v)
+")
+
+cp Info.plist.template ${conda_env}/../Info.plist
+sed -i "s/FREECAD_BUNDLE_VERSION/${bundle_version}/" ${conda_env}/../Info.plist
+sed -i "s/APPLICATION_MENU_NAME/${application_menu_name}/" ${conda_env}/../Info.plist
+
+pixi list -e default > Parashell.app/Contents/packages.txt
+sed -i '1s/.*/\nLIST OF PACKAGES:/' Parashell.app/Contents/packages.txt
+
+# move plugins into their final location (Library only exists for macOS < 15.0 builds)
+if [ -d "${conda_env}/Library" ]; then
+    mv ${conda_env}/Library ${conda_env}/..
+fi
+
+# move App Extensions (PlugIns) to the correct location for macOS registration
+if [ -d "${conda_env}/PlugIns" ]; then
+    mv ${conda_env}/PlugIns ${conda_env}/..
+fi
+
+if [[ "${MACOS_SIGN_RELEASE}" == "true" ]]; then
+    # create the signed dmg
+    ../../scripts/macos_sign_and_notarize.zsh -p "Parashell" -k ${MACOS_SIGNING_KEY_ID} -n "Parashell.app" -o "${version_name}.dmg"
+else
+    # Ad-hoc sign for local builds (required for QuickLook extensions to register)
+    if [ -d "Parashell.app/Contents/PlugIns" ]; then
+        echo "Ad-hoc signing App Extensions with entitlements..."
+        codesign --force --sign - \
+            --entitlements ../../../src/MacAppBundle/QuickLook/modern/ThumbnailExtension.entitlements \
+            Parashell.app/Contents/PlugIns/FreeCADThumbnailExtension.appex
+        codesign --force --sign - \
+            --entitlements ../../../src/MacAppBundle/QuickLook/modern/PreviewExtension.entitlements \
+            Parashell.app/Contents/PlugIns/FreeCADPreviewExtension.appex
+    fi
+    echo "Ad-hoc signing app bundle..."
+    codesign --force --sign - Parashell.app/Contents/packages.txt
+    if [ -f "Parashell.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd" ]; then
+        codesign --force --sign - Parashell.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd
+    fi
+    codesign --force --sign - Parashell.app
+
+    # create the dmg
+    dmgbuild -s dmg_settings.py "Parashell" "${version_name}.dmg"
+fi
+
+# create hash
+sha256sum ${version_name}.dmg > ${version_name}.dmg-SHA256.txt
+
+if [[ "${UPLOAD_RELEASE}" == "true" ]]; then
+    for attempt in 1 2 3 4 5; do
+        if gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg" "${version_name}.dmg-SHA256.txt"; then
+            break
+        fi
+        if [[ $attempt -eq 5 ]]; then
+            echo "Failed to upload release after 5 attempts" >&2
+            exit 1
+        fi
+        echo "Upload attempt $attempt failed, retrying in $((attempt * 10))s..."
+        sleep $((attempt * 10))
+    done
+fi

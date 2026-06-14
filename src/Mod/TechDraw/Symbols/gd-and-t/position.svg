@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<!-- https://tamirov.ru edited -->
+<title>Позиционный допуск. Position – tech drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<g>
+ <circle cx="26" cy="40" r="14" fill="none" stroke="#000" stroke-width="2"/>
+ <path d="m26,19 v41" fill="none" stroke="#000" stroke-width="2"/>
+ <path d="m5,40 h42" fill="none" stroke="#000" stroke-width="2"/>
+</g>
+</svg>

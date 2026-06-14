@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>678</width>
+    <height>663</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Native IFC</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Import</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Initial import</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefComboBox" name="comboBox">
+          <property name="toolTip">
+           <string>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ImportStrategy</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/NativeIFC</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Only root object (default)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Project structure (levels)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>All individual IFC objects</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Representation type</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefComboBox" name="comboBox_2">
+          <property name="toolTip">
+           <string>The type of object created at import. Coin only is much faster, but does not provide the full shape information. Convert between the two anytime by right-clicking the object tree</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShapeMode</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/NativeIFC</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Load full shape (slower)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Load 3D representation only, no shape (default)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>No 3D representation</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_3">
+        <property name="toolTip">
+         <string>If this is checked, the BIM workbench will be loaded after import</string>
+        </property>
+        <property name="text">
+         <string>Switch to BIM workbench after import</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SwitchWB</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_7">
+        <property name="toolTip">
+         <string>Load all property sets automatically when opening an IFC file</string>
+        </property>
+        <property name="text">
+         <string>Preload property sets</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LoadPsets</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_9">
+        <property name="toolTip">
+         <string>Load all types automatically when opening an IFC file</string>
+        </property>
+        <property name="text">
+         <string>Preload types</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LoadTypes</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_8">
+        <property name="toolTip">
+         <string>Load all materials automatically when opening an IFC file</string>
+        </property>
+        <property name="text">
+         <string>Preload materials</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LoadMaterials</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_11">
+        <property name="toolTip">
+         <string>Load all layers automatically when opening an IFC file</string>
+        </property>
+        <property name="text">
+         <string>Preload layers</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LoadLayers</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_10">
+        <property name="toolTip">
+         <string>When enabling this, the original version of objects dropped onto an IFC project tree will not be deleted</string>
+        </property>
+        <property name="text">
+         <string>Keep original version of aggregated objects</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>KeepAggregated</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox">
+        <property name="toolTip">
+         <string>If this is checked, a dialog will be shown at each import</string>
+        </property>
+        <property name="text">
+         <string>Show options dialog when importing</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AskAgain</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Export</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_2">
+        <property name="text">
+         <string>Show warning when saving</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AskBeforeSaving</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>New Document</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_13">
+        <property name="text">
+         <string>Always lock new documents</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SingleDoc</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_12">
+        <property name="text">
+         <string>Ask every time</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SingleDocAskAgain</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>New Project</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_4">
+        <property name="accessibleName">
+         <string>If this is checked, when creating a new projects, a default structure (site, building and storey) will be added under the project</string>
+        </property>
+        <property name="text">
+         <string>Create a default structure</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ProjectFull</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_5">
+        <property name="accessibleName">
+         <string>Enables asking the above question every time a project is created</string>
+        </property>
+        <property name="text">
+         <string>Ask every time</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ProjectAskAgain</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="title">
+      <string>New Type</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_14">
+        <property name="toolTip">
+         <string>When enabled, converting objects to IFC types will always keep the original object</string>
+        </property>
+        <property name="text">
+         <string>Always keep original object when converting to type</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ConvertTypeKeepOriginal</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_15">
+        <property name="toolTip">
+         <string>When enabled, a dialog will be shown each time when converting objects to IFC types</string>
+        </property>
+        <property name="text">
+         <string>Show dialog when converting to type</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ConvertTypeAskAgain</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

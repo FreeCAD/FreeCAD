@@ -1,0 +1,52 @@
+General:
+  UUID: "ba2474ee-f62c-45f5-b388-823ea105847f"
+  Author: "Jonas Bähr"
+  License: "CC-BY-3.0"
+  Name: "Hard Wood"
+  Description: >-
+    Prototype for various hard woods, with densities around 0.75 g/cm^3 (beech, oak, ...).
+    Wood is highly anisotropic and here data is provided only for the single
+    cutting direction that is the toughest: the crosscut (direction A, as
+    defined by Kivimaa).
+    The surface speeds given here are conservative values and can be increased up
+    to 4x on capable machines with sufficiently large tools.
+    In addition, the numbers here use the cutting force model from B.Ettelt,
+    which is less accurate for smaller chip loads, but has the advantage of being
+    compatible with the model from O.Kienzle commonly used for metals.
+    Another source of uncertaintly is the unknown base rake angle.
+    Together with the natural inhomogenities of Wood the numbers given here can
+    only serve as an initial estimate.
+    Source: Zerspanung von Holz und Holzwerkstoffen, https://www.hanser-fachbuch.de/fachbuch/artikel/9783446477698
+Inherits:
+  Wood:
+    UUID: "1850ac4a-0df2-43cd-9934-e59e95b9526f"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Wood"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Wood"
+  Machinability:
+    UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+    # ISBN 978-3-446-47769-8, 2. Edition 2023, P. 66
+    # for contour milling, a wide range from 10m/s to 40m/s (up to 120m/s for HSC)
+    # is provided, without differentiation on the cutting material or type of wood.
+    # Here we take the lower end, based on the assumption that mainly hobbyists will
+    # apply this information. Here, smaller tool diameters are common, thus higher surface
+    # speeds are not achievable.
+    SurfaceSpeedHSS: '600 m/min'
+    SurfaceSpeedCarbide: '600 m/min'
+    # ISBN 978-3-446-47769-8, 2. Edition 2023, P. 120 (again citing work from B.Ettelt, 1987)
+    # provided is the mean of the upper bounds of the ranges given for beech (26..40) and
+    # oak (22..44), for direction A. (values for direction B are 12 and 10; for direction C
+    # 7.5 and 7 respectively)
+    # Unfortunately, it is unknown with which rake angle the values have been obtained.
+    # The choice of 20° is arbitrary and needs revision. It should prevent underestimation
+    # of the calculated cutting force when expecting a value normalized for 0°.
+    # i.e. 42 / (1 - 20/100) is 52.5
+    # NB: Ettelt's model uses 'N/mm^1.5' because it does not normalizes the chip thickness,
+    # however, the definition of FC's Machinability-model requires this normalization.
+    UnitCuttingForce: '52.5 N/mm^2'
+    # Ettelt's model uses the square root of the chip thickness, i.e. an 0.5 as exponent
+    ChipThicknessExponent: 0.50

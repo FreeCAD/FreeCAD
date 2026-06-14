@@ -1,0 +1,71 @@
+{
+  "tasks": [
+    {
+      "type": "process",
+      "label": "FreeCAD: setup conda environment",
+      "linux": {
+        "command": "conda/setup-environment.sh",
+      },
+      "osx": {
+        "command": "conda/setup-environment.sh",
+      },
+      "windows": {
+        "command": "conda/setup-environment.cmd",
+      },
+      "group": "none",
+      "problemMatcher": [],
+    },
+    {
+      "label": "WaitForDebugpy",
+      "type": "shell",
+      "command": "python ${workspaceFolder}/.vscode/scripts/WaitForDebugpy.py",
+      "group": "none",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never", //silently fail and don't launch the debugger
+        "panel": "dedicated",
+        "close": true,
+        "revealProblems": "never"
+      },
+      "hide": true
+    },
+    {
+      "type": "cmake",
+      "label": "CMake: build",
+      "command": "build",
+      "preset": "${command:cmake.activeBuildPresetName}",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Build all targets",
+      "dependsOn": [],
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "Tests: run c++ tests",
+      "detail": "Run googletest",
+      "type": "shell",
+      "command": "${command:cmake.buildDirectory}/tests/Tests_run",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "dependsOn": ["CMake: build"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tests: run python tests",
+      "detail": "Run FreeCAD integrated tests",
+      "type": "shell",
+      "command": "${command:cmake.buildDirectory}/bin/FreeCAD",
+      "args": ["-t", "0"],
+      "group": {
+        "kind": "test"
+      },
+      "dependsOn": ["CMake: build"],
+      "problemMatcher": []
+    }
+  ],
+  "version": "2.0.0"
+}

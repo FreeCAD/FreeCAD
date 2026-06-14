@@ -1,0 +1,18 @@
+<RCC>
+    <qresource>
+        <file>icons/Robot_CreateRobot.svg</file>
+        <file>icons/Robot_CreateTrajectory.svg</file>
+        <file>icons/Robot_Edge2Trac.svg</file>
+        <file>icons/Robot_Export.svg</file>
+        <file>icons/Robot_InsertWaypoint.svg</file>
+        <file>icons/Robot_InsertWaypointPre.svg</file>
+        <file>icons/Robot_RestoreHomePos.svg</file>
+        <file>icons/Robot_SetDefaultOrientation.svg</file>
+        <file>icons/Robot_SetDefaultValues.svg</file>
+        <file>icons/Robot_SetHomePos.svg</file>
+        <file>icons/Robot_Simulate.svg</file>
+        <file>icons/Robot_TrajectoryCompound.svg</file>
+        <file>icons/Robot_TrajectoryDressUp.svg</file>
+        <file>icons/RobotWorkbench.svg</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64px"
+   height="64px"
+   id="svg5821"
+   version="1.1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs5823">
+    <linearGradient
+       id="linearGradient6349">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop6351" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop6353" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3377">
+      <stop
+         style="stop-color:#0019a3;stop-opacity:1;"
+         offset="0"
+         id="stop3379" />
+      <stop
+         style="stop-color:#0069ff;stop-opacity:1;"
+         offset="1"
+         id="stop3381" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3377"
+       id="linearGradient3383"
+       x1="901.1875"
+       y1="1190.875"
+       x2="1267.9062"
+       y2="1190.875"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-1,0,0,1,2199.356,0)" />
+    <radialGradient
+       xlink:href="#linearGradient6349"
+       id="radialGradient6355"
+       cx="1103.6399"
+       cy="1424.4465"
+       fx="1103.6399"
+       fy="1424.4465"
+       r="194.40614"
+       gradientTransform="matrix(-1.4307499,-1.3605156e-7,-1.202713e-8,0.1264801,2674.7488,1244.2826)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       xlink:href="#linearGradient3893"
+       id="linearGradient3899"
+       x1="35"
+       y1="50"
+       x2="31"
+       y2="16"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient3893">
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1"
+         offset="0"
+         id="stop3895" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop3897" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,34.704127,-9.9426796)"
+       xlink:href="#linearGradient3893-4"
+       id="linearGradient3907-7"
+       x1="39.949749"
+       y1="10.393398"
+       x2="21.564972"
+       y2="4.7365441"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient3893-4">
+      <stop
+         style="stop-color:#d3d7cf;stop-opacity:1"
+         offset="0"
+         id="stop3895-0" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="1"
+         id="stop3897-9" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata5826">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[WandererFan]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>2016-04-27</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/TechDraw_Dimension_Length.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license
+           rdf:resource="https://www.gnu.org/licenses/lgpl-3.0.en.html">https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>double arrow</rdf:li>
+            <rdf:li>diagonal</rdf:li>
+            <rdf:li>arrow</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Double arrow at angle between two diagonal bars</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <rect
+     style="fill:#302b00;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:100;stroke-dashoffset:8.71"
+     id="rect1-9"
+     width="7.573863"
+     height="30.295454"
+     x="-28.40094"
+     y="30.107107"
+     rx="1.9999999"
+     ry="2.0645161"
+     transform="rotate(-45)" />
+  <rect
+     style="fill:#302b00;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:100;stroke-dashoffset:8.71"
+     id="rect1-2-8"
+     width="7.573863"
+     height="30.295454"
+     x="20.82917"
+     y="30.107107"
+     rx="1.9999999"
+     ry="2.0645161"
+     transform="rotate(-45)" />
+  <rect
+     style="fill:#fce94f;fill-opacity:1;stroke:none;stroke-width:0.999994;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:100;stroke-dashoffset:8.71"
+     id="rect2-7"
+     width="3.786932"
+     height="26.451096"
+     x="-26.507473"
+     y="32.000572"
+     rx="0.99999994"
+     ry="0.99999982"
+     transform="rotate(-45)" />
+  <rect
+     style="fill:#fce94f;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:100;stroke-dashoffset:8.71"
+     id="rect2-6-1"
+     width="3.786932"
+     height="26.50852"
+     x="22.722635"
+     y="32.000572"
+     rx="0.99999994"
+     ry="0.99999994"
+     transform="rotate(-45)" />
+  <g
+     id="g6-3"
+     transform="matrix(0.72887251,0.72578279,-0.56132491,0.56273466,-10.61285,-41.839654)"
+     style="stroke-width:1.10595">
+    <rect
+       style="fill:#302b00;fill-opacity:1;stroke:none;stroke-width:1.65895;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:3.45;stroke-opacity:1"
+       id="rect4-4"
+       width="37.553383"
+       height="5.5224795"
+       x="-46.836781"
+       y="77.283447"
+       transform="matrix(9.6913757e-4,-0.99999953,0.99999622,0.0027487,0,0)"
+       rx="1.2581276"
+       ry="0.9721995" />
+    <path
+       style="fill:#edd400;fill-opacity:1;stroke:#302b00;stroke-width:1.65894;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+       d="M 74.376743,10.515111 C 79.820366,0.51684628 79.820366,0.51684628 79.820366,0.51684628 L 85.692042,10.518727 Z"
+       id="path5-7" />
+    <path
+       style="fill:#edd400;fill-opacity:1;stroke:#302b00;stroke-width:1.65894;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+       d="m 85.658189,45.461925 c -5.443621,9.998132 -5.443621,9.998132 -5.443621,9.998132 L 74.34289,45.45831 Z"
+       id="path5-1-3" />
+    <rect
+       style="fill:#edd400;fill-opacity:1;stroke:none;stroke-width:3.31787;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dashoffset:8.71"
+       id="rect3-6"
+       width="41.242214"
+       height="2.7612395"
+       x="-48.288445"
+       y="78.64576"
+       transform="matrix(9.6914399e-4,-0.99999953,0.99999622,0.0027487,0,0)"
+       rx="2.6911302"
+       ry="1.7499589" />
+  </g>
+  <path
+     style="fill:#edd400;fill-opacity:1;stroke:#edd400;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="M 57.38838,23.914826 C 40.085174,6.61162 40.085174,6.61162 40.085174,6.61162"
+     id="path2" />
+  <path
+     style="fill:#fce94f;fill-opacity:1;stroke:#edd400;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;stroke-dasharray:none;stroke-dashoffset:8.71;stroke-opacity:1"
+     d="M 22.576529,58.724873 C 5.2751253,41.423471 5.2751253,41.423471 5.2751253,41.423471"
+     id="path2-3" />
+</svg>

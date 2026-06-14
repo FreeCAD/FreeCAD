@@ -1,0 +1,116 @@
+#Inventor V2.1 ascii
+
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+#/***************************************************************************
+# *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# **************************************************************************
+
+
+Separator {
+
+  Separator {
+
+    DEF X_DISPLACEMENT Switch {
+
+      Separator {
+
+        Rotation {
+          rotation 0 0 1  1.5707964
+
+        }
+        DEF DISPLACEMENT Separator {
+
+          Translation {
+            translation 0 -2 0
+
+          }
+          Cone {
+            bottomRadius 0.3
+            height 4
+
+          }
+        }
+      }
+    }
+    DEF Y_DISPLACEMENT Switch {
+
+      Separator {
+
+        Rotation {
+          rotation 0 0 1  3.1415927
+
+        }
+        USE DISPLACEMENT
+      }
+    }
+    DEF Z_DISPLACEMENT Switch {
+
+      Separator {
+
+        Rotation {
+          rotation -1 0 0  1.5707964
+
+        }
+        USE DISPLACEMENT
+      }
+    }
+    DEF X_ROTATION Switch {
+
+      Separator {
+
+        Rotation {
+          rotation 0 0 1  1.5707964
+
+        }
+        DEF ROTATION Separator {
+
+            Cylinder {
+              radius 2
+              height 0.15
+
+            }
+          }
+      }
+    }
+    DEF Y_ROTATION Switch {
+
+      Separator {
+
+        Rotation {
+          rotation 0 0 1  0
+
+        }
+        USE ROTATION
+      }
+    }
+    DEF Z_ROTATION Switch {
+
+      Separator {
+
+        Rotation {
+          rotation 1 0 0  1.5707964
+
+        }
+        USE ROTATION
+      }
+    }
+  }
+}

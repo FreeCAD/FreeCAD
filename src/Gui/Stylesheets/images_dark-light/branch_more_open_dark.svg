@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="20.000002"
+   height="20.000002"
+   id="svg2"
+   version="1.1"
+   viewBox="0 0 20.000002 20.000001"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Pablo Gil</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>SVG</rdf:li>
+            <rdf:li>template</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(-1074.0663,-336.59799)">
+    <g
+       transform="rotate(90,1082.5663,353.098)"
+       id="layer1-4">
+      <path
+         id="path2474"
+         d="m 1075.0663,348.59798 3,3.50001 -3,3.49999"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:0.34901961;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.34901961" />
+    </g>
+    <g
+       transform="translate(1.5420313e-5)"
+       id="layer1-6">
+      <path
+         id="path1730"
+         d="m 1094.0663,347.09799 h -10"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:0.60093898;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.11764706" />
+      <path
+         id="path1728"
+         d="m 1083.5663,336.59799 v 20"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:0.60093898;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.11764706" />
+    </g>
+  </g>
+</svg>

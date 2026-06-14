@@ -1,0 +1,5 @@
+{
+    "name": "All Spaces",
+    "description": "Selects all Space objects in the document.",
+    "query": "SELECT * FROM document WHERE IfcType = 'Space'"
+}

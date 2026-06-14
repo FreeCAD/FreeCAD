@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<notpackage format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>Bad root node</name>
+  <description>The root node is not called "package".</description>
+  <version>1.0.0</version>
+</notpackage>

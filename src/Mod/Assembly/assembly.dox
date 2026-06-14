@@ -1,0 +1,4 @@
+/** \defgroup ASSEMBLY Assembly
+ *  \ingroup PYTHONWORKBENCHES
+ *  \brief Tools to build assemblies
+ */

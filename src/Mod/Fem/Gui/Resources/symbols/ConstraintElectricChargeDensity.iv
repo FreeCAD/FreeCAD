@@ -1,0 +1,74 @@
+#Inventor V2.1 ascii
+
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+#/***************************************************************************
+# *   Copyright (c) 2025 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# **************************************************************************
+
+
+Separator {
+
+  Separator {
+
+    Translation {
+      translation 0 0.5 0
+
+    }
+    Sphere {
+      radius 0.5
+
+    }
+    Translation {
+      translation 0 2.0 0
+
+    }
+    BaseColor {
+      rgb 0.17 0.46 1.0
+
+    }
+    Sphere {
+      radius 0.5
+
+    }
+    Translation {
+      translation 0 -1.375 0
+
+    }
+    BaseColor {
+      rgb 1 1 1
+
+    }
+    Cylinder {
+      radius 0.1
+      height 0.75
+
+    }
+    Translation {
+      translation 0 .625 0
+
+    }
+    Cone {
+      bottomRadius 0.25
+      height 0.5
+
+    }
+  }
+}

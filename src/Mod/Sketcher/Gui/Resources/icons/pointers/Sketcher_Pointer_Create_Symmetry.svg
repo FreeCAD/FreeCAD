@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   height="64"
+   width="64"
+   id="svg12"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs16">
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lstart"
+       refX="0.0"
+       refY="0.0"
+       orient="auto">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;fill:context-stroke;stroke:context-stroke;stroke-width:1.0pt"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path4362" />
+    </marker>
+  </defs>
+  <g
+     id="crosshair"
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter">
+    <path
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9"
+       id="path9" />
+  </g>
+  <path
+     style="fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 33.612274,29.732474 v 0 c 0,0 -6.759671,4.19863 -6.731131,13.462262 0.02854,9.263631 6.731131,13.58246 6.731131,13.58246"
+     id="path1221" />
+  <path
+     style="fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1"
+     d="M 43.348375,32.497046 V 55.455009"
+     id="path1256" />
+  <path
+     style="fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 52.363237,56.837294 v 0 c 0,0 6.759671,-4.19863 6.731131,-13.462262 -0.02854,-9.263631 -6.731131,-13.58246 -6.731131,-13.58246"
+     id="path1221-9" />
+  <circle
+     cx="33.612274"
+     cy="29.732473"
+     r="4"
+     id="circle6"
+     style="fill:none;stroke:#cc0000;stroke-width:2" />
+  <circle
+     cx="33.612274"
+     cy="56.777195"
+     r="4"
+     id="circle6-4"
+     style="fill:none;stroke:#cc0000;stroke-width:2" />
+  <circle
+     cx="52.363235"
+     cy="29.792572"
+     r="4"
+     id="circle6-4-0"
+     style="fill:none;stroke:#cc0000;stroke-width:2" />
+  <circle
+     cx="52.363235"
+     cy="56.837296"
+     r="4"
+     id="circle6-4-0-2"
+     style="fill:none;stroke:#cc0000;stroke-width:2" />
+</svg>

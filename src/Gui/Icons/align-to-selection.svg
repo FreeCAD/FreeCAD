@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg2869"
+   version="1.1"
+   viewBox="0 0 64 64"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2871">
+    <linearGradient
+       id="linearGradient5">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop19" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop20" />
+    </linearGradient>
+    <linearGradient
+       id="swatch18">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop18" />
+    </linearGradient>
+    <linearGradient
+       id="swatch15">
+      <stop
+         style="stop-color:#3d0000;stop-opacity:1;"
+         offset="0"
+         id="stop15" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5-1">
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1;"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:0;"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3836-9">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-8" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3775">
+      <stop
+         style="stop-color:#16d0d2;stop-opacity:1"
+         offset="0"
+         id="stop3777" />
+      <stop
+         style="stop-color:#34e0e2;stop-opacity:1"
+         offset="1"
+         id="stop3779" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3775"
+       id="linearGradient3"
+       gradientUnits="userSpaceOnUse"
+       x1="44"
+       y1="40"
+       x2="40"
+       y2="8" />
+  </defs>
+  <metadata
+     id="metadata2874">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[maxwxyz]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>2024</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer3"
+     style="display:inline">
+    <g
+       id="g22">
+      <g
+         id="g21">
+        <path
+           id="path3825-7"
+           d="M 25,5 59,9 V 43 L 25,39 Z"
+           style="font-variation-settings:normal;display:inline;overflow:visible;visibility:visible;vector-effect:none;fill:url(#linearGradient3);fill-opacity:1;stroke:#042a2a;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;marker:none;enable-background:accumulate;stop-color:#000000" />
+        <path
+           id="path3825-7-7"
+           d="M 25,5 59,9 V 43 L 25,39 Z"
+           style="display:inline;overflow:visible;visibility:visible;fill:none;stroke:#042a2a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate" />
+      </g>
+      <path
+         style="color:#000000;fill:#042a2a;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+         d="m 42,21 a 3,3 0 0 0 -2.121094,0.878906 l -5.201172,5.199219 a 3,3 0 0 0 0,4.244141 3,3 0 0 0 4.244141,0 l 5.199219,-5.201172 a 3,3 0 0 0 0,-4.242188 A 3,3 0 0 0 42,21 Z M 31.599609,31.400391 a 3,3 0 0 0 -2.121093,0.878906 l -5.199219,5.199219 a 3,3 0 0 0 0,4.242187 3,3 0 0 0 4.242187,0 l 5.199219,-5.199219 a 3,3 0 0 0 0,-4.242187 3,3 0 0 0 -2.121094,-0.878906 z m -10.40039,10.40039 a 3,3 0 0 0 -2.121094,0.876953 l -5.199219,5.201172 a 3,3 0 0 0 0,4.242188 3,3 0 0 0 4.242188,0 l 5.201172,-5.199219 a 3,3 0 0 0 0,-4.244141 3,3 0 0 0 -2.123047,-0.876953 z"
+         id="path10" />
+      <path
+         style="color:#000000;fill:#042a2a;fill-rule:evenodd;stroke:#042a2a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="M 6.6559887,59.344011 11.30168,41.970397 24.029603,54.69832 Z"
+         id="path7" />
+      <path
+         style="color:#000000;fill:#2bdbdd;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+         d="m 41.292969,23.292969 -5.199219,5.199218 a 1,1 0 0 0 0,1.414063 1,1 0 0 0 1.414062,0 l 5.199219,-5.199219 a 1,1 0 0 0 0,-1.414062 1,1 0 0 0 -1.414062,0 z m -10.400391,10.40039 -5.199219,5.199219 a 1,1 0 0 0 0,1.414063 1,1 0 0 0 1.414063,0 l 5.199219,-5.199219 a 1,1 0 0 0 0,-1.414063 1,1 0 0 0 -1.414063,0 z M 20.492187,44.09375 15.292969,49.292969 a 1,1 0 0 0 0,1.414062 1,1 0 0 0 1.414062,0 l 5.199219,-5.199219 a 1,1 0 0 0 0,-1.414062 1,1 0 0 0 -1.414063,0 z"
+         id="path15" />
+      <path
+         style="color:#000000;fill:#2bdbdd;fill-rule:evenodd;stroke:#2bdbdd;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+         d="m 12.337891,45.835937 7.826171,7.826172 -10.6835932,2.857422 z"
+         id="path20" />
+    </g>
+  </g>
+</svg>

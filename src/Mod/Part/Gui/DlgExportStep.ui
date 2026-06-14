@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartGui::DlgExportStep</class>
+ <widget class="QWidget" name="PartGui::DlgExportStep">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>445</width>
+    <height>278</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>STEP Export Settings</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Export</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Scheme</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Units for export of STEP</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QComboBox" name="comboBoxUnits">
+        <item>
+         <property name="text">
+          <string>Millimeter</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Meter</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Inch</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QComboBox" name="comboBoxSchema">
+        <item>
+         <property name="text">
+          <string notr="true">AP203</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">AP214 Committee Draft</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">AP214 Draft International Standard</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">AP214 International Standard</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string notr="true">AP242 Draft International Standard</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="checkBoxExportLegacy">
+        <property name="text">
+         <string>Use legacy export function</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ExportLegacy</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxKeepPlacement">
+        <property name="toolTip">
+         <string>Keeps the placement information when exporting
+a single object. When importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the placement property.</string>
+        </property>
+        <property name="text">
+         <string>Export single object placement</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ExportKeepPlacement</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="checkBoxExportHiddenObj">
+        <property name="toolTip">
+         <string>Uncheck this to skip invisible objects when exporting, which is useful for CADs that do not support invisibility STEP styling.</string>
+        </property>
+        <property name="text">
+         <string>Export invisible objects</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ExportHiddenObject</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Import</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBoxPcurves">
+        <property name="text">
+         <string>Write out curves in parametric space of surface</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>checkBoxPcurves</tabstop>
+  <tabstop>checkBoxExportHiddenObj</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

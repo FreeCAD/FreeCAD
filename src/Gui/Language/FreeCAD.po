@@ -1,0 +1,26 @@
+# This is a Qt message file in .po format.  Each msgid starts with
+# a scope.  This scope should *NOT* be translated - eg. translating
+# from French to English, "Foo::Bar" would be translated to "Pub",
+# not "Foo::Pub".
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2003-11-01 21:36:20 CET\n"
+"PO-Revision-Date: YYYY-MM-DD\n"
+"Last-Translator: FULLNAME <EMAIL@ADDRESS>\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+
+#: MenuManager.cpp:
+QT_TRANSLATE_NOOP( "Gui::MenuManager", "&File" )
+QT_TRANSLATE_NOOP( "Gui::MenuManager", "&Edit" )
+QT_TRANSLATE_NOOP( "Gui::MenuManager", "&View" )
+QT_TRANSLATE_NOOP( "Gui::MenuManager", "&Tools" )
+QT_TRANSLATE_NOOP( "Gui::MenuManager", "&Windows" )
+QT_TRANSLATE_NOOP( "Gui::MenuManager", "&Help" )
+
+#: DockWindow.cpp
+QT_TRANSLATE_NOOP( "Gui::DockWindow", "Toolbox" )
+QT_TRANSLATE_NOOP( "Gui::DockWindow", "Property editor" )
+QT_TRANSLATE_NOOP( "Gui::DockWindow", "Report View" )
+QT_TRANSLATE_NOOP( "Gui::DockWindow", "Help view" )
+QT_TRANSLATE_NOOP( "Gui::DockWindow", "Tree view" )

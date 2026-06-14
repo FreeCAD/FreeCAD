@@ -1,0 +1,843 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsDraft</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsDraft">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>880</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>DXF</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_Main">
+   <item>
+    <widget class="QGroupBox" name="groupBox_General">
+     <property name="title">
+      <string>General</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_General">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_dxfShowDialog">
+        <property name="toolTip">
+         <string>If checked, this preferences dialog will be shown each time you import or export
+a DXF file.</string>
+        </property>
+        <property name="text">
+         <string>Show the importer dialog when importing a file</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfShowDialog</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_dxfUseLegacyImporter">
+        <property name="toolTip">
+         <string>Use the legacy Python importer. This importer is more feature-complete but slower and requires an external library.</string>
+        </property>
+        <property name="text">
+         <string>Use legacy importer</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfUseLegacyImporter</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_dxfUseLegacyExporter">
+        <property name="toolTip">
+         <string>Use the legacy Python exporter. This exporter is more feature-complete but slower and requires an external library.</string>
+        </property>
+        <property name="text">
+         <string>Use legacy exporter</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfUseLegacyExporter</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_AutoUpdate">
+     <property name="title">
+      <string>Automatic Update (Legacy Only)</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_AutoUpdate">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_dxfAllowDownload">
+        <property name="toolTip">
+         <string>If checked, FreeCAD is allowed to download and update the Python libraries
+required by the legacy importer. This can also be done manually by installing
+the 'dxf_library' addon from the Addon Manager.</string>
+        </property>
+        <property name="text">
+         <string>Allow FreeCAD to automatically download and update the DXF libraries</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfAllowDownload</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_ImportAs">
+     <property name="title">
+      <string>Import As</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_ImportAs">
+      <item>
+       <widget class="Gui::PrefRadioButton" name="radio_ImportAs_Draft">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Creates fully parametric Draft objects. Block definitions are imported as
+reusable objects (Part Compounds) and instances become `App::Link` objects,
+maintaining the block structure. Best for full integration with the Draft
+workbench. </string>
+        </property>
+        <property name="text">
+         <string>Editable Draft objects (highest fidelity, slowest)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfImportAsDraft</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <property name="prefRadioButtonGroup" stdset="0">
+         <string>DxfImportMode</string>
+        </property>
+        <property name="prefRadioButtonValue" stdset="0">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefRadioButton" name="radio_ImportAs_Primitives">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
+definitions are imported as reusable objects (Part Compounds) and instances
+become `App::Link` objects, maintaining the block structure. Best for
+script-based post-processing and Part workbench integration.</string>
+        </property>
+        <property name="text">
+         <string>Editable Part primitives (high fidelity, slower)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfImportAsPrimitives</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <property name="prefRadioButtonGroup" stdset="0">
+         <string>DxfImportMode</string>
+        </property>
+        <property name="prefRadioButtonValue" stdset="0">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefRadioButton" name="radio_ImportAs_Shapes">
+        <property name="toolTip">
+         <string>Creates a non-parametric shape for each DXF entity. Block definitions are
+imported as reusable objects (Part Compounds) and instances become `App::Link`
+objects, maintaining the block structure. Good for referencing and measuring.</string>
+        </property>
+        <property name="text">
+         <string>Individual Part shapes (balanced, recommended)</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfImportAsShapes</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <property name="prefRadioButtonGroup" stdset="0">
+         <string>DxfImportMode</string>
+        </property>
+        <property name="prefRadioButtonValue" stdset="0">
+         <number>2</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefRadioButton" name="radio_ImportAs_Fused">
+        <property name="toolTip">
+         <string>Merges all geometry per layer into a single, non-editable shape. Block
+structures are not preserved; their geometry becomes part of the layer's
+shape. Best for importing and viewing very large files with maximum performance.</string>
+        </property>
+        <property name="text">
+         <string>Fused Part shapes (lowest fidelity, fastest)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfImportAsFused</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <property name="prefRadioButtonGroup" stdset="0">
+         <string>DxfImportMode</string>
+        </property>
+        <property name="prefRadioButtonValue" stdset="0">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_ImportSettings">
+     <property name="title">
+      <string>Import Settings</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_ImportSettings">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_Scaling">
+        <item>
+         <widget class="QLabel" name="label_dxfScaling">
+          <property name="text">
+           <string>Global scaling factor</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_1">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="spinBox_dxfScaling">
+          <property name="toolTip">
+           <string>Scale factor to apply to DXF files on import. The factor is the conversion
+between the DXF file's unit and millimeters. Example: for files in
+millimeters: 1, in centimeters: 10, in meters: 1000, in inches: 25.4,
+in feet: 304.8</string>
+          </property>
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="maximum">
+           <double>999999.999998999992386</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfScaling</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_ImportContent">
+        <property name="text">
+         <string>Import</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_Import">
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBox_dxftext">
+          <property name="toolTip">
+           <string>If checked, text, mtext, and dimension entities will be imported as Draft objects</string>
+          </property>
+          <property name="text">
+           <string>Texts and dimensions</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxftext</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefCheckBox" name="checkBox_dxfImportPoints">
+          <property name="toolTip">
+           <string>If checked, point entities will be imported</string>
+          </property>
+          <property name="text">
+           <string>Points</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfImportPoints</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBox_dxflayout">
+          <property name="toolTip">
+           <string>If checked, entities from the paper space will also be imported. By default,
+only model space is imported</string>
+          </property>
+          <property name="text">
+           <string>Paper space objects</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxflayout</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::PrefCheckBox" name="checkBox_dxfstarblocks">
+          <property name="toolTip">
+           <string>If checked, anonymous blocks (whose names begin with *) will also be imported.
+These are often used for hatches and dimensions</string>
+          </property>
+          <property name="text">
+           <string>Anonymous blocks (*-blocks)</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfstarblocks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBox_importDxfHatches">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>If checked, the boundaries of hatch objects will be imported as closed wires.
+(Legacy importer only)</string>
+          </property>
+          <property name="text">
+           <string>Hatch boundaries</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>importDxfHatches</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_Appearance">
+        <property name="text">
+         <string>Appearance</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_Appearance">
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBox_dxfGetOriginalColors">
+          <property name="toolTip">
+           <string>If checked, colors will be set as specified in the DXF file whenever
+possible. Otherwise, default FreeCAD colors are applied</string>
+          </property>
+          <property name="text">
+           <string>Use colors from the DXF file</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfGetOriginalColors</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefCheckBox" name="checkBox_dxfStdSize">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>If checked, imported texts will get the standard Draft text size, instead of
+the size defined in the DXF document. (Legacy importer only)</string>
+          </property>
+          <property name="text">
+           <string>Use standard font size for texts</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfStdSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_AdvancedProcessing">
+        <property name="text">
+         <string>Advanced processing</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_Advanced">
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBox_joingeometry">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>If checked, the legacy importer will attempt to join coincident geometric
+objects into wires. This can be slow for large files. (Legacy importer only)</string>
+          </property>
+          <property name="text">
+           <string>Join geometry</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>joingeometry</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::PrefCheckBox" name="checkBox_renderPolylineWidth">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>If checked, polylines that have a width property will be rendered as faces
+representing that width. (Legacy importer only)</string>
+          </property>
+          <property name="text">
+           <string>Render polylines with width</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>renderPolylineWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBox_dxfCreateSketch">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>If checked, the legacy importer will attempt to create Sketcher objects
+instead of Draft or Part objects. This overrides the 'Import As' setting</string>
+          </property>
+          <property name="text">
+           <string>Create sketches</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfCreateSketch</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_ExportOptions">
+     <property name="title">
+      <string>Export Options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_Export">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_Discretize">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_DiscretizeEllipses">
+          <property name="toolTip">
+           <string>Ellipse export is poorly supported. Use this to export them as polylines instead.</string>
+          </property>
+          <property name="text">
+           <string>Treat ellipses and splines as polylines</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DiscretizeEllipses</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_maxsegmentlength">
+          <property name="text">
+           <string>Maximum spline segment</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="spinBox_maxsegmentlength">
+          <property name="toolTip">
+           <string>Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string>mm</string>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>maxsegmentlength</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_Export3D">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_dxfmesh">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>All objects containing faces will be exported as 3D polyface meshes</string>
+          </property>
+          <property name="text">
+           <string>Export 3D objects as polyface meshes</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfmesh</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_ExportTechDraw">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_dxfExportBlocks">
+          <property name="toolTip">
+           <string>TechDraw Views will be exported as blocks.
+This might fail for post DXF R12 templates.</string>
+          </property>
+          <property name="text">
+           <string>Export TechDraw Views as blocks</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfExportBlocks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_Project">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_dxfproject">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>Exported objects will be projected to reflect the current view direction</string>
+          </property>
+          <property name="text">
+           <string>Project exported objects along current view direction</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dxfproject</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefRadioButton</class>
+   <extends>QRadioButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>checkBox_dxfUseLegacyImporter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_joingeometry</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_dxfUseLegacyImporter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_renderPolylineWidth</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_dxfUseLegacyImporter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_dxfStdSize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_dxfUseLegacyImporter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_importDxfHatches</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_dxfUseLegacyImporter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_dxfCreateSketch</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_dxfCreateSketch</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>groupBox_ImportAs</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_dxfUseLegacyExporter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_dxfmesh</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_dxfUseLegacyExporter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_dxfproject</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_dxfUseLegacyExporter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_dxfmesh</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_dxfUseLegacyExporter</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_dxfproject</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+<title>Стыковой шов односторонний с V-образным крутым скосом одной кромки. Single bevel CJP groove weld - tech drawing chars (FreeCAD) https://freecad-gost.ru</title>
+<path d="m5,10 v50 h10 l15,-50 " fill="none" stroke="#000" stroke-linejoin="round" stroke-width="2" />
+</svg>

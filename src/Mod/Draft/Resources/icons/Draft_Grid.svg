@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   id="svg2726"
+   height="64px"
+   width="64px"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2728">
+    <linearGradient
+       id="linearGradient3946">
+      <stop
+         id="stop3948"
+         offset="0"
+         style="stop-color:#888a85;stop-opacity:1" />
+      <stop
+         id="stop3950"
+         offset="1"
+         style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="469.43594"
+       x2="127.30297"
+       y1="734.65814"
+       x1="182.81459"
+       id="linearGradient3952"
+       xlink:href="#linearGradient3946" />
+    <linearGradient
+       gradientTransform="translate(0.8811394,4.4056794)"
+       y2="469.43594"
+       x2="127.30297"
+       y1="734.65814"
+       x1="182.81459"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3962"
+       xlink:href="#linearGradient3946" />
+    <linearGradient
+       gradientTransform="translate(-4.0774755e-6,4.4056694)"
+       y2="469.43594"
+       x2="127.30297"
+       y1="734.65814"
+       x1="182.81459"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3964"
+       xlink:href="#linearGradient3946" />
+    <linearGradient
+       gradientTransform="translate(-0.88114055,4.4056794)"
+       y2="469.43594"
+       x2="127.30297"
+       y1="734.65814"
+       x1="182.81459"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3966"
+       xlink:href="#linearGradient3946" />
+    <linearGradient
+       y2="469.43594"
+       x2="127.30297"
+       y1="734.65814"
+       x1="182.81459"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3968"
+       xlink:href="#linearGradient3946" />
+    <linearGradient
+       gradientTransform="translate(-1.1451159e-5,5.286812)"
+       y2="469.43594"
+       x2="127.30297"
+       y1="734.65814"
+       x1="182.81459"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3970"
+       xlink:href="#linearGradient3946" />
+    <linearGradient
+       gradientTransform="translate(-1.1451159e-5,4.4056755)"
+       y2="469.43594"
+       x2="127.30297"
+       y1="734.65814"
+       x1="182.81459"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3972"
+       xlink:href="#linearGradient3946" />
+  </defs>
+  <g
+     id="layer1">
+    <g
+       transform="matrix(0.1621282,0,0,0.1621282,6.3605986,-66.108806)"
+       id="g4289">
+      <path
+         id="path2996"
+         d="M 53.287468,444.76412 V 765.49796"
+         style="fill:none;stroke:#2e3436;stroke-width:49.3437;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path2996-3"
+         d="M 158.14276,444.76412 V 765.49796"
+         style="fill:none;stroke:#2e3436;stroke-width:49.3437;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path2996-6"
+         d="m 262.99806,444.76412 -0.88114,320.73384"
+         style="fill:none;stroke:#2e3436;stroke-width:49.3437;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path2996-7"
+         d="M 318.50969,494.10779 H -2.2241553"
+         style="fill:none;stroke:#2e3436;stroke-width:49.3437;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path2996-7-3"
+         d="M 318.50968,605.13104 H -2.2241572"
+         style="fill:none;stroke:#2e3436;stroke-width:49.3437;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path2996-7-5"
+         d="M 318.5097,709.98633 H -2.2241483"
+         style="fill:none;stroke:#2e3436;stroke-width:49.3437;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <g
+         transform="translate(0.88113641,-4.4056837)"
+         style="fill:#fad647;fill-opacity:1"
+         id="g3890">
+        <g
+           style="stroke:url(#linearGradient3952)"
+           id="g3938">
+          <path
+             id="path2996-62"
+             d="M 52.406332,449.1698 V 769.90364"
+             style="fill:none;stroke:url(#linearGradient3962);stroke-width:24.6718;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+          <path
+             id="path2996-3-9"
+             d="M 157.26163,449.1698 V 769.90364"
+             style="fill:#fad647;fill-opacity:1;stroke:url(#linearGradient3964);stroke-width:24.6718;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+          <path
+             id="path2996-6-1"
+             d="M 262.11692,449.1698 V 769.90364"
+             style="fill:#fad647;fill-opacity:1;stroke:url(#linearGradient3966);stroke-width:24.6718;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+          <path
+             id="path2996-7-2"
+             d="M 317.62857,498.51347 H -3.105291"
+             style="fill:#fad647;fill-opacity:1;stroke:url(#linearGradient3968);stroke-width:24.6718;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+          <path
+             id="path2996-7-3-7"
+             d="M 317.62856,609.53672 H -3.1053025"
+             style="fill:#fad647;fill-opacity:1;stroke:url(#linearGradient3970);stroke-width:24.6718;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+          <path
+             id="path2996-7-5-0"
+             d="M 317.62856,714.39202 H -3.1053025"
+             style="fill:#fad647;fill-opacity:1;stroke:url(#linearGradient3972);stroke-width:24.6718;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+        </g>
+      </g>
+      <path
+         id="path2996-9"
+         d="M 47.11951,444.76412 V 765.49796"
+         style="fill:none;stroke:#ffffff;stroke-width:12.3359;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path2996-3-3"
+         d="M 151.9748,444.76412 V 765.49796"
+         style="fill:none;stroke:#ffffff;stroke-width:12.3359;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path2996-6-6"
+         d="M 256.8301,444.76412 V 765.49796"
+         style="fill:none;stroke:#ffffff;stroke-width:12.3359;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path2996-7-0"
+         d="M 318.50966,487.93983 H -2.2241543"
+         style="fill:none;stroke:#ffffff;stroke-width:12.3359;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path2996-7-3-6"
+         d="M 318.50966,598.96308 H -2.2241543"
+         style="fill:none;stroke:#ffffff;stroke-width:12.3359;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path2996-7-5-2"
+         d="M 318.50966,703.81837 H -2.2241543"
+         style="fill:none;stroke:#ffffff;stroke-width:12.3359;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+    </g>
+  </g>
+  <metadata
+     id="metadata4658">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Tue Dec 29 12:10:22 2015 -0200</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Yorik van Havre]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Grid.svg</dc:identifier>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>grid</rdf:li>
+            <rdf:li>lines</rdf:li>
+            <rdf:li>intersecting</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Six mutually intersecting lines forming a grid</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

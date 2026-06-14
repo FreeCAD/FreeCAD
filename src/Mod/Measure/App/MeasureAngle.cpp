@@ -1,0 +1,543 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/***************************************************************************
+ *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
+ *                                                                         *
+ *   This file is part of FreeCAD.                                         *
+ *                                                                         *
+ *   FreeCAD is free software: you can redistribute it and/or modify it    *
+ *   under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the  *
+ *   License, or (at your option) any later version.                       *
+ *                                                                         *
+ *   FreeCAD is distributed in the hope that it will be useful, but        *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+ *   Lesser General Public License for more details.                       *
+ *                                                                         *
+ *   You should have received a copy of the GNU Lesser General Public      *
+ *   License along with FreeCAD. If not, see                               *
+ *   <https://www.gnu.org/licenses/>.                                      *
+ *                                                                         *
+ **************************************************************************/
+
+
+#include <App/PropertyContainer.h>
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/MeasureManager.h>
+#include <Base/Tools.h>
+#include <Base/Precision.h>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
+#include <Geom_Line.hxx>
+#include <Geom_Plane.hxx>
+#include <GeomAPI_IntSS.hxx>
+#include <GeomAPI_ExtremaCurveCurve.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopExp.hxx>
+#include <BRep_Tool.hxx>
+
+#include "MeasureAngle.h"
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
+#include <TopTools_IndexedMapOfShape.hxx>
+
+using namespace Measure;
+
+PROPERTY_SOURCE(Measure::MeasureAngle, Measure::MeasureBase)
+
+
+MeasureAngle::MeasureAngle()
+{
+    ADD_PROPERTY_TYPE(Element1, (nullptr), "Measurement", App::Prop_None, "First element of the measurement");
+    Element1.setScope(App::LinkScope::Global);
+    Element1.setAllowExternal(true);
+
+    ADD_PROPERTY_TYPE(
+        Element2,
+        (nullptr),
+        "Measurement",
+        App::Prop_None,
+        "Second element of the measurement"
+    );
+    Element2.setScope(App::LinkScope::Global);
+    Element2.setAllowExternal(true);
+
+    ADD_PROPERTY_TYPE(
+        Angle,
+        (0.0),
+        "Measurement",
+        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+        "Angle between the two elements"
+    );
+    Angle.setUnit(Base::Unit::Angle);
+}
+
+MeasureAngle::~MeasureAngle() = default;
+
+
+bool MeasureAngle::isValidSelection(const App::MeasureSelection& selection)
+{
+    if (selection.size() != 2) {
+        return false;
+    }
+
+    for (auto element : selection) {
+        auto type = App::MeasureManager::getMeasureElementType(element);
+
+        if (type == App::MeasureElementType::INVALID) {
+            return false;
+        }
+
+        if (!(type == App::MeasureElementType::LINE || type == App::MeasureElementType::PLANE
+              || type == App::MeasureElementType::LINESEGMENT
+              || type == App::MeasureElementType::DISC)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool MeasureAngle::isPrioritizedSelection(const App::MeasureSelection& selection)
+{
+    if (selection.size() != 2) {
+        return false;
+    }
+
+    // Check if the two elements are parallel
+    auto element1 = selection.at(0);
+    auto objT1 = element1.object;
+    App::DocumentObject* ob1 = objT1.getObject();
+    std::string sub1 = objT1.getSubName();
+    Base::Vector3d vec1;
+    getVec(*ob1, sub1, vec1);
+
+    auto element2 = selection.at(1);
+    auto objT2 = element2.object;
+    App::DocumentObject* ob2 = objT2.getObject();
+    std::string sub2 = objT2.getSubName();
+    Base::Vector3d vec2;
+    getVec(*ob2, sub2, vec2);
+
+
+    double angle = std::fmod(vec1.GetAngle(vec2), std::numbers::pi);
+    return angle > Base::Precision::Angular();
+}
+
+
+void MeasureAngle::parseSelection(const App::MeasureSelection& selection)
+{
+
+    assert(selection.size() >= 2);
+
+    auto element1 = selection.at(0);
+    auto objT1 = element1.object;
+    App::DocumentObject* ob1 = objT1.getObject();
+    const std::vector<std::string> elems1 = {objT1.getSubName()};
+    Element1.setValue(ob1, elems1);
+
+    auto element2 = selection.at(1);
+    auto objT2 = element2.object;
+    App::DocumentObject* ob2 = objT2.getObject();
+    const std::vector<std::string> elems2 = {objT2.getSubName()};
+    Element2.setValue(ob2, elems2);
+}
+
+
+bool MeasureAngle::getVec(App::DocumentObject& ob, std::string& subName, Base::Vector3d& vecOut)
+{
+    App::SubObjectT subject {&ob, subName.c_str()};
+    auto info = getMeasureInfo(subject);
+    if (!info || !info->valid) {
+        return false;
+    }
+
+    auto angleInfo = std::dynamic_pointer_cast<Part::MeasureAngleInfo>(info);
+    vecOut = angleInfo->orientation;
+    return true;
+}
+
+Base::Vector3d MeasureAngle::getLoc(App::DocumentObject& ob, std::string& subName)
+{
+    App::SubObjectT subject {&ob, subName.c_str()};
+    auto info = getMeasureInfo(subject);
+    if (!info || !info->valid) {
+        return Base::Vector3d();
+    }
+
+    auto angleInfo = std::dynamic_pointer_cast<Part::MeasureAngleInfo>(info);
+    return angleInfo->position;
+}
+
+gp_Vec MeasureAngle::vector1()
+{
+
+    App::DocumentObject* ob = Element1.getValue();
+    std::vector<std::string> subs = Element1.getSubValues();
+
+    if (!ob || !ob->isValid() || subs.empty()) {
+        return {};
+    }
+
+    Base::Vector3d vec;
+    getVec(*ob, subs.at(0), vec);
+    return gp_Vec(vec.x, vec.y, vec.z);
+}
+
+gp_Vec MeasureAngle::vector2()
+{
+    App::DocumentObject* ob = Element2.getValue();
+    std::vector<std::string> subs = Element2.getSubValues();
+
+    if (!ob || !ob->isValid() || subs.empty()) {
+        return gp_Vec();
+    }
+
+    Base::Vector3d vec;
+    getVec(*ob, subs.at(0), vec);
+    return gp_Vec(vec.x, vec.y, vec.z);
+}
+
+gp_Vec MeasureAngle::location1()
+{
+
+    App::DocumentObject* ob = Element1.getValue();
+    std::vector<std::string> subs = Element1.getSubValues();
+
+    if (!ob || !ob->isValid() || subs.empty()) {
+        return {};
+    }
+    auto temp = getLoc(*ob, subs.at(0));
+    return {temp.x, temp.y, temp.z};
+}
+gp_Vec MeasureAngle::location2()
+{
+    App::DocumentObject* ob = Element2.getValue();
+    std::vector<std::string> subs = Element2.getSubValues();
+
+    if (!ob || !ob->isValid() || subs.empty()) {
+        return {};
+    }
+
+    auto temp = getLoc(*ob, subs.at(0));
+    return {temp.x, temp.y, temp.z};
+}
+
+bool MeasureAngle::setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2)
+{
+    if (s1.IsNull() || s2.IsNull()) {
+        return false;
+    }
+
+    switch (mCase) {
+        case MeasurementCase::FaceFace:
+            return computeOriginFaceFace(s1, s2);
+        case MeasurementCase::EdgeEdge:
+            return computeOriginEdgeEdge(s1, s2);
+        case MeasurementCase::FaceEdge:
+            return computeOriginFaceEdge(s1);
+    }
+
+    // cant reach here
+    return false;
+}
+
+bool MeasureAngle::computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2)
+{
+    auto setOriginFromEdgeMidpoint = [this](const TopoDS_Edge& edge) -> bool {
+        TopoDS_Vertex v1, v2;
+        TopExp::Vertices(edge, v1, v2);
+        outOrigin = gp_Pnt((BRep_Tool::Pnt(v1).XYZ() + BRep_Tool::Pnt(v2).XYZ()) / 2);
+        return true;
+    };
+
+    TopTools_IndexedMapOfShape edges1, edges2;
+    TopExp::MapShapes(s1, TopAbs_EDGE, edges1);
+    TopExp::MapShapes(s2, TopAbs_EDGE, edges2);
+
+    for (int i = 1; i <= edges1.Extent(); i++) {
+        const TopoDS_Edge& ed1 = TopoDS::Edge(edges1(i));
+        for (int j = 1; j <= edges2.Extent(); j++) {
+            const TopoDS_Edge& ed2 = TopoDS::Edge(edges2(j));
+
+            if (ed1.IsSame(ed2)) {
+                return setOriginFromEdgeMidpoint(ed1);
+            }
+
+            auto geom1 = Part::Geometry::fromShape(ed1, true);
+            auto geom2 = Part::Geometry::fromShape(ed2, true);
+            if (geom1 && geom2
+                && geom1->isSame(*geom2, Precision::Confusion(), Precision::Angular())) {
+                return setOriginFromEdgeMidpoint(ed1);
+            }
+        }
+    }
+
+    _isImgOrigin = true;
+
+    gp_Pln pln1(gp_Pnt(location1().XYZ()), gp_Dir(vector1()));
+    gp_Pln pln2(gp_Pnt(location2().XYZ()), gp_Dir(vector2()));
+
+    gp_Lin intersectionLine;
+    if (Part::intersect(pln1, pln2, intersectionLine)) {
+        gp_Pnt refPnt(location1().XYZ());
+        GeomAPI_ProjectPointOnCurve proj(refPnt, new Geom_Line(intersectionLine));
+        if (proj.NbPoints() > 0) {
+            outOrigin = proj.Point(1);
+            return true;
+        }
+    }
+
+    outOrigin = gp_Pnt((location1().XYZ() + location2().XYZ()) / 2.0);
+    return true;
+}
+
+bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
+{
+    TopoDS_Edge e1 = TopoDS::Edge(s1);
+    TopoDS_Edge e2 = TopoDS::Edge(s2);
+    TopoDS_Vertex common;
+
+    if (TopExp::CommonVertex(e1, e2, common)) {
+        outOrigin = BRep_Tool::Pnt(common);
+        return true;
+    }
+
+    // get geometrically same vertex
+    TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
+    TopExp::Vertices(e1, v1_1, v1_2);
+    TopExp::Vertices(e2, v2_1, v2_2);
+
+    gp_Pnt p1_1 = BRep_Tool::Pnt(v1_1);
+    gp_Pnt p1_2 = BRep_Tool::Pnt(v1_2);
+    gp_Pnt p2_1 = BRep_Tool::Pnt(v2_1);
+    gp_Pnt p2_2 = BRep_Tool::Pnt(v2_2);
+
+    double tol = Precision::Confusion();
+    if (p1_1.IsEqual(p2_1, tol) || p1_1.IsEqual(p2_2, tol)) {
+        outOrigin = p1_1;
+        return true;
+    }
+    if (p1_2.IsEqual(p2_1, tol) || p1_2.IsEqual(p2_2, tol)) {
+        outOrigin = p1_2;
+        return true;
+    }
+
+    _isImgOrigin = true;
+
+    gp_Lin lin1(gp_Pnt(location1().XYZ()), gp_Dir(vector1()));
+    gp_Lin lin2(gp_Pnt(location2().XYZ()), gp_Dir(vector2()));
+    gp_Pnt p1, p2;
+    Part::closestPointsOnLines(lin1, lin2, p1, p2);
+    outOrigin = p1;
+    return true;
+}
+
+bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1)
+{
+    _isImgOrigin = true;
+
+    bool faceIsS1 = (s1.ShapeType() == TopAbs_FACE);
+    gp_Vec faceNormal = ((faceIsS1) ? vector1() : vector2()).Normalized();
+    gp_Vec edgeDir = ((faceIsS1) ? vector2() : vector1()).Normalized();
+    gp_Pnt faceLoc = gp_Pnt(((faceIsS1) ? location1() : location2()).XYZ());
+    gp_Pnt edgeLoc = gp_Pnt(((faceIsS1) ? location2() : location1()).XYZ());
+
+    // projection direction from the edge onto the face
+    Base::Vector3d edgeDirVec(edgeDir.X(), edgeDir.Y(), edgeDir.Z());
+    Base::Vector3d normalVec(faceNormal.X(), faceNormal.Y(), faceNormal.Z());
+    edgeDirVec.ProjectToPlane(Base::Vector3d(0, 0, 0), normalVec);
+
+    gp_Vec projection(edgeDirVec.x, edgeDirVec.y, edgeDirVec.z);
+    projection.Normalize();
+
+    gp_Lin linEdge(edgeLoc, gp_Dir(edgeDir));
+    gp_Lin linProj(faceLoc, gp_Dir(projection));
+    gp_Pnt p1, p2;
+    Part::closestPointsOnLines(linEdge, linProj, p1, p2);
+
+    if (faceIsS1) {
+        outOrigin = p2;
+    }
+    else {
+        gp_Vec facePtToP1(faceLoc, p1);
+        double dist = facePtToP1.Dot(faceNormal);
+        outOrigin = gp_Pnt(p1.XYZ() - dist * faceNormal.XYZ());
+    }
+
+    return true;
+}
+
+
+bool MeasureAngle::getOrigin(gp_Pnt& outOrigin)
+{
+    outOrigin = this->outOrigin;
+    return true;
+}
+
+bool MeasureAngle::setDirections(TopoDS_Shape& s1)
+{
+
+    direction1 = vector1();
+    direction2 = vector2();
+
+    gp_Vec loc1 = location1();
+    gp_Vec loc2 = location2();
+
+    // For edges with a common vertex, we need to orient the vectors
+    // so they point away from the common vertex
+    if (mCase == MeasurementCase::EdgeEdge) {
+
+        if (direction1.Dot(gp_Vec(outOrigin.XYZ()) - loc1) > 0) {
+            direction1.Reverse();
+        }
+        if (direction2.Dot(gp_Vec(outOrigin.XYZ()) - loc2) > 0) {
+            direction2.Reverse();
+        }
+    }
+    else if (mCase == MeasurementCase::FaceFace) {
+
+        gp_Vec between = loc2 - loc1;
+
+        if (direction1.Dot(between) < 0) {
+            direction1.Reverse();
+        }
+        if (direction2.Dot(between) > 0) {
+            direction2.Reverse();
+        }
+    }
+    else if (mCase == MeasurementCase::FaceEdge) {
+        bool faceIsS1 = (s1.ShapeType() == TopAbs_FACE);
+
+        gp_Vec& faceNormal = (faceIsS1 ? direction1 : direction2);
+        gp_Vec& edgeDir = faceIsS1 ? direction2 : direction1;
+        gp_Vec edgeLoc = faceIsS1 ? loc2 : loc1;
+
+        faceNormal.Normalize();
+        edgeDir.Normalize();
+
+        // project edge exactly onto the face plane
+        Base::Vector3d edgeDirVec(edgeDir.X(), edgeDir.Y(), edgeDir.Z());
+        Base::Vector3d normalVec(faceNormal.X(), faceNormal.Y(), faceNormal.Z());
+        edgeDirVec.ProjectToPlane(Base::Vector3d(0, 0, 0), normalVec);
+
+        gp_Vec projection(edgeDirVec.x, edgeDirVec.y, edgeDirVec.z);
+        projection.Normalize();
+
+        if (edgeDir.Dot(gp_Vec(outOrigin.XYZ()) - edgeLoc) > 0) {
+            edgeDir.Reverse();
+        }
+
+        if (!projection.IsParallel(edgeDir, Precision::Angular())) {
+            if (projection.Dot(edgeDir) < 0) {
+                projection.Reverse();
+            }
+
+            faceNormal = projection;
+        }
+    }
+    else {
+        // should not reach here
+        return false;
+    }
+
+    return true;
+}
+
+bool MeasureAngle::getDirections(gp_Vec& dir1, gp_Vec& dir2)
+{
+    if (direction1.Magnitude() < Precision::Confusion()
+        || direction2.Magnitude() < Precision::Confusion()) {
+        return false;
+    }
+    dir1 = direction1;
+    dir2 = direction2;
+
+    return true;
+}
+
+bool MeasureAngle::isImgOrigin()
+{
+    return _isImgOrigin;
+}
+
+App::DocumentObjectExecReturn* MeasureAngle::execute()
+{
+    App::DocumentObject* ob1 = Element1.getValue();
+    std::vector<std::string> subs1 = Element1.getSubValues();
+
+    App::DocumentObject* ob2 = Element2.getValue();
+    std::vector<std::string> subs2 = Element2.getSubValues();
+
+    _isImgOrigin = false;
+
+    if (!ob1 || !ob1->isValid() || !ob2 || !ob2->isValid()) {
+        return new App::DocumentObjectExecReturn("Submitted object(s) is not valid");
+    }
+
+    if (subs1.empty() || subs2.empty()) {
+        return new App::DocumentObjectExecReturn("No geometry element picked");
+    }
+
+    TopoDS_Shape s1 = Part::Feature::getShape(
+        ob1,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+            | Part::ShapeOption::Transform,
+        subs1.at(0).c_str()
+    );
+    TopoDS_Shape s2 = Part::Feature::getShape(
+        ob2,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+            | Part::ShapeOption::Transform,
+        subs2.at(0).c_str()
+    );
+    if (s1.ShapeType() == TopAbs_FACE && s2.ShapeType() == TopAbs_FACE) {
+        mCase = MeasurementCase::FaceFace;
+    }
+    else if (s1.ShapeType() == TopAbs_EDGE && s2.ShapeType() == TopAbs_EDGE) {
+        mCase = MeasurementCase::EdgeEdge;
+    }
+    else {
+        mCase = MeasurementCase::FaceEdge;
+    }
+
+    if (!setOrigin(s1, s2) || !setDirections(s1)) {
+        return new App::DocumentObjectExecReturn("Failed to Set Origin");
+    }
+
+
+    double angleRad = direction1.Angle(direction2);
+
+    // because of face normal are perpendicular to face
+    if (mCase == MeasurementCase::FaceFace) {
+        angleRad = std::numbers::pi - angleRad;
+    }
+
+    Angle.setValue(Base::toDegrees(angleRad));
+
+    return DocumentObject::StdReturn;
+}
+
+void MeasureAngle::onChanged(const App::Property* prop)
+{
+
+    if (prop == &Element1 || prop == &Element2) {
+        if (!isRestoring()) {
+            App::DocumentObjectExecReturn* ret = recompute();
+            delete ret;
+        }
+    }
+    DocumentObject::onChanged(prop);
+}
+
+//! Return the object we are measuring
+//! used by the viewprovider in determining visibility
+std::vector<App::DocumentObject*> MeasureAngle::getSubject() const
+{
+    return {Element1.getValue()};
+}

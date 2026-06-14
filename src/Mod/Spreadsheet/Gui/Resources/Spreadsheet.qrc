@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/preferences-spreadsheet.svg</file>
+        <file>icons/Spreadsheet.svg</file>
+        <file>icons/SpreadsheetController.svg</file>
+        <file>icons/SpreadsheetImport.svg</file>
+        <file>icons/SpreadsheetExport.svg</file>
+        <file>icons/SpreadsheetSplitCell.svg</file>
+        <file>icons/SpreadsheetMergeCells.svg</file>
+        <file>icons/SpreadsheetAlignRight.svg</file>
+        <file>icons/SpreadsheetAlignLeft.svg</file>
+        <file>icons/SpreadsheetAlignCenter.svg</file>
+        <file>icons/SpreadsheetAlignVCenter.svg</file>
+        <file>icons/SpreadsheetAlignTop.svg</file>
+        <file>icons/SpreadsheetAlignBottom.svg</file>
+        <file>icons/SpreadsheetStyleUnderline.svg</file>
+        <file>icons/SpreadsheetStyleItalic.svg</file>
+        <file>icons/SpreadsheetStyleBold.svg</file>
+        <file>icons/SpreadsheetWorkbench.svg</file>
+        <file>icons/SpreadsheetAlias.svg</file>
+    </qresource>
+</RCC>

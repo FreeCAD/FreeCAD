@@ -1,0 +1,4011 @@
+{
+    "IfcAnnotation": {
+        "is_abstract": false,
+        "parent": "IfcProduct",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcBeam": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcBuilding": {
+        "is_abstract": false,
+        "parent": "IfcSpatialStructureElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CompositionType",
+                "type": "IfcElementCompositionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL"
+                ]
+            },
+            {
+                "name": "ElevationOfRefHeight",
+                "type": "IfcLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ElevationOfTerrain",
+                "type": "IfcLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcBuildingElement": {
+        "is_abstract": true,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcBuildingElementComponent": {
+        "is_abstract": true,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcBuildingElementPart": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElementComponent",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcBuildingElementProxy": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CompositionType",
+                "type": "IfcElementCompositionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcBuildingStorey": {
+        "is_abstract": false,
+        "parent": "IfcSpatialStructureElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CompositionType",
+                "type": "IfcElementCompositionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL"
+                ]
+            },
+            {
+                "name": "Elevation",
+                "type": "IfcLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcChamferEdgeFeature": {
+        "is_abstract": false,
+        "parent": "IfcEdgeFeature",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "FeatureLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Width",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Height",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcColumn": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcCovering": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcCoveringTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "CEILING",
+                    "FLOORING",
+                    "CLADDING",
+                    "ROOFING",
+                    "INSULATION",
+                    "MEMBRANE",
+                    "SLEEVING",
+                    "WRAPPING",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcCurtainWall": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcDiscreteAccessory": {
+        "is_abstract": false,
+        "parent": "IfcElementComponent",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcDistributionChamberElement": {
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcDistributionControlElement": {
+        "is_abstract": false,
+        "parent": "IfcDistributionElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ControlElementId",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcDistributionElement": {
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcDistributionFlowElement": {
+        "is_abstract": false,
+        "parent": "IfcDistributionElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcDistributionPort": {
+        "is_abstract": false,
+        "parent": "IfcPort",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "FlowDirection",
+                "type": "IfcFlowDirectionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "SOURCE",
+                    "SINK",
+                    "SOURCEANDSINK",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcDoor": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "OverallHeight",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "OverallWidth",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcEdgeFeature": {
+        "is_abstract": true,
+        "parent": "IfcFeatureElementSubtraction",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "FeatureLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcElectricDistributionPoint": {
+        "is_abstract": false,
+        "parent": "IfcFlowController",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "DistributionPointFunction",
+                "type": "IfcElectricDistributionPointFunctionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "ALARMPANEL",
+                    "CONSUMERUNIT",
+                    "CONTROLPANEL",
+                    "DISTRIBUTIONBOARD",
+                    "GASDETECTORPANEL",
+                    "INDICATORPANEL",
+                    "MIMICPANEL",
+                    "MOTORCONTROLCENTRE",
+                    "SWITCHBOARD",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            },
+            {
+                "name": "UserDefinedFunction",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcElectricalElement": {
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcElement": {
+        "is_abstract": true,
+        "parent": "IfcProduct",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcElementAssembly": {
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "AssemblyPlace",
+                "type": "IfcAssemblyPlaceEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "SITE",
+                    "FACTORY",
+                    "NOTDEFINED"
+                ]
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcElementAssemblyTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "ACCESSORY_ASSEMBLY",
+                    "ARCH",
+                    "BEAM_GRID",
+                    "BRACED_FRAME",
+                    "GIRDER",
+                    "REINFORCEMENT_UNIT",
+                    "RIGID_FRAME",
+                    "SLAB_FIELD",
+                    "TRUSS",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcElementComponent": {
+        "is_abstract": true,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcEnergyConversionDevice": {
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcEquipmentElement": {
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFastener": {
+        "is_abstract": false,
+        "parent": "IfcElementComponent",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFeatureElement": {
+        "is_abstract": true,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFeatureElementAddition": {
+        "is_abstract": true,
+        "parent": "IfcFeatureElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFeatureElementSubtraction": {
+        "is_abstract": true,
+        "parent": "IfcFeatureElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFlowController": {
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFlowFitting": {
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFlowMovingDevice": {
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFlowSegment": {
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFlowStorageDevice": {
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFlowTerminal": {
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFlowTreatmentDevice": {
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFooting": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcFootingTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "FOOTING_BEAM",
+                    "PAD_FOOTING",
+                    "PILE_CAP",
+                    "STRIP_FOOTING",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcFurnishingElement": {
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcGrid": {
+        "is_abstract": false,
+        "parent": "IfcProduct",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcMechanicalFastener": {
+        "is_abstract": false,
+        "parent": "IfcFastener",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "NominalDiameter",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "NominalLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcMember": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcOpeningElement": {
+        "is_abstract": false,
+        "parent": "IfcFeatureElementSubtraction",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcPile": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcPileTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "COHESION",
+                    "FRICTION",
+                    "SUPPORT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            },
+            {
+                "name": "ConstructionType",
+                "type": "IfcPileConstructionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "CAST_IN_PLACE",
+                    "COMPOSITE",
+                    "PRECAST_CONCRETE",
+                    "PREFAB_STEEL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcPlate": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcPort": {
+        "is_abstract": true,
+        "parent": "IfcProduct",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcProjectionElement": {
+        "is_abstract": false,
+        "parent": "IfcFeatureElementAddition",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcProxy": {
+        "is_abstract": false,
+        "parent": "IfcProduct",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ProxyType",
+                "type": "IfcObjectTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "PRODUCT",
+                    "PROCESS",
+                    "CONTROL",
+                    "RESOURCE",
+                    "ACTOR",
+                    "GROUP",
+                    "PROJECT",
+                    "NOTDEFINED"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcRailing": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcRailingTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "HANDRAIL",
+                    "GUARDRAIL",
+                    "BALUSTRADE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcRamp": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ShapeType",
+                "type": "IfcRampTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "STRAIGHT_RUN_RAMP",
+                    "TWO_STRAIGHT_RUN_RAMP",
+                    "QUARTER_TURN_RAMP",
+                    "TWO_QUARTER_TURN_RAMP",
+                    "HALF_TURN_RAMP",
+                    "SPIRAL_RAMP",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcRampFlight": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcReinforcingBar": {
+        "is_abstract": false,
+        "parent": "IfcReinforcingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "SteelGrade",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "NominalDiameter",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CrossSectionArea",
+                "type": "IfcAreaMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "BarLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "BarRole",
+                "type": "IfcReinforcingBarRoleEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "MAIN",
+                    "SHEAR",
+                    "LIGATURE",
+                    "STUD",
+                    "PUNCHING",
+                    "EDGE",
+                    "RING",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            },
+            {
+                "name": "BarSurface",
+                "type": "IfcReinforcingBarSurfaceEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "PLAIN",
+                    "TEXTURED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcReinforcingElement": {
+        "is_abstract": true,
+        "parent": "IfcBuildingElementComponent",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "SteelGrade",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcReinforcingMesh": {
+        "is_abstract": false,
+        "parent": "IfcReinforcingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "SteelGrade",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "MeshLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "MeshWidth",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongitudinalBarNominalDiameter",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "TransverseBarNominalDiameter",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongitudinalBarCrossSectionArea",
+                "type": "IfcAreaMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "TransverseBarCrossSectionArea",
+                "type": "IfcAreaMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongitudinalBarSpacing",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "TransverseBarSpacing",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcRoof": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ShapeType",
+                "type": "IfcRoofTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "FLAT_ROOF",
+                    "SHED_ROOF",
+                    "GABLE_ROOF",
+                    "HIP_ROOF",
+                    "HIPPED_GABLE_ROOF",
+                    "GAMBREL_ROOF",
+                    "MANSARD_ROOF",
+                    "BARREL_ROOF",
+                    "RAINBOW_ROOF",
+                    "BUTTERFLY_ROOF",
+                    "PAVILION_ROOF",
+                    "DOME_ROOF",
+                    "FREEFORM",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcRoundedEdgeFeature": {
+        "is_abstract": false,
+        "parent": "IfcEdgeFeature",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "FeatureLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Radius",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcSite": {
+        "is_abstract": false,
+        "parent": "IfcSpatialStructureElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CompositionType",
+                "type": "IfcElementCompositionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL"
+                ]
+            },
+            {
+                "name": "RefLatitude",
+                "type": "IfcCompoundPlaneAngleMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "RefLongitude",
+                "type": "IfcCompoundPlaneAngleMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "RefElevation",
+                "type": "IfcLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LandTitleNumber",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcSlab": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcSlabTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "FLOOR",
+                    "ROOF",
+                    "LANDING",
+                    "BASESLAB",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcSpace": {
+        "is_abstract": false,
+        "parent": "IfcSpatialStructureElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CompositionType",
+                "type": "IfcElementCompositionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL"
+                ]
+            },
+            {
+                "name": "InteriorOrExteriorSpace",
+                "type": "IfcInternalOrExternalEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "INTERNAL",
+                    "EXTERNAL",
+                    "NOTDEFINED"
+                ]
+            },
+            {
+                "name": "ElevationWithFlooring",
+                "type": "IfcLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcSpatialStructureElement": {
+        "is_abstract": true,
+        "parent": "IfcProduct",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CompositionType",
+                "type": "IfcElementCompositionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStair": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ShapeType",
+                "type": "IfcStairTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "STRAIGHT_RUN_STAIR",
+                    "TWO_STRAIGHT_RUN_STAIR",
+                    "QUARTER_WINDING_STAIR",
+                    "QUARTER_TURN_STAIR",
+                    "HALF_WINDING_STAIR",
+                    "HALF_TURN_STAIR",
+                    "TWO_QUARTER_WINDING_STAIR",
+                    "TWO_QUARTER_TURN_STAIR",
+                    "THREE_QUARTER_WINDING_STAIR",
+                    "THREE_QUARTER_TURN_STAIR",
+                    "SPIRAL_STAIR",
+                    "DOUBLE_RETURN_STAIR",
+                    "CURVED_RUN_STAIR",
+                    "TWO_CURVED_RUN_STAIR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStairFlight": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "NumberOfRiser",
+                "type": "xs:long",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "NumberOfTreads",
+                "type": "xs:long",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "RiserHeight",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "TreadLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralAction": {
+        "is_abstract": true,
+        "parent": "IfcStructuralActivity",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
+                ]
+            },
+            {
+                "name": "DestabilizingLoad",
+                "type": "xs:boolean",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralActivity": {
+        "is_abstract": true,
+        "parent": "IfcProduct",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralConnection": {
+        "is_abstract": true,
+        "parent": "IfcStructuralItem",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralCurveConnection": {
+        "is_abstract": false,
+        "parent": "IfcStructuralConnection",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralCurveMember": {
+        "is_abstract": false,
+        "parent": "IfcStructuralMember",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralCurveTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "RIGID_JOINED_MEMBER",
+                    "PIN_JOINED_MEMBER",
+                    "CABLE",
+                    "TENSION_MEMBER",
+                    "COMPRESSION_MEMBER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralCurveMemberVarying": {
+        "is_abstract": false,
+        "parent": "IfcStructuralCurveMember",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralCurveTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "RIGID_JOINED_MEMBER",
+                    "PIN_JOINED_MEMBER",
+                    "CABLE",
+                    "TENSION_MEMBER",
+                    "COMPRESSION_MEMBER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralItem": {
+        "is_abstract": true,
+        "parent": "IfcProduct",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralLinearAction": {
+        "is_abstract": false,
+        "parent": "IfcStructuralAction",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
+                ]
+            },
+            {
+                "name": "DestabilizingLoad",
+                "type": "xs:boolean",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ProjectedOrTrue",
+                "type": "IfcProjectedOrTrueLengthEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "PROJECTED_LENGTH",
+                    "TRUE_LENGTH"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralLinearActionVarying": {
+        "is_abstract": false,
+        "parent": "IfcStructuralLinearAction",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
+                ]
+            },
+            {
+                "name": "DestabilizingLoad",
+                "type": "xs:boolean",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ProjectedOrTrue",
+                "type": "IfcProjectedOrTrueLengthEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "PROJECTED_LENGTH",
+                    "TRUE_LENGTH"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralMember": {
+        "is_abstract": true,
+        "parent": "IfcStructuralItem",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralPlanarAction": {
+        "is_abstract": false,
+        "parent": "IfcStructuralAction",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
+                ]
+            },
+            {
+                "name": "DestabilizingLoad",
+                "type": "xs:boolean",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ProjectedOrTrue",
+                "type": "IfcProjectedOrTrueLengthEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "PROJECTED_LENGTH",
+                    "TRUE_LENGTH"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralPlanarActionVarying": {
+        "is_abstract": false,
+        "parent": "IfcStructuralPlanarAction",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
+                ]
+            },
+            {
+                "name": "DestabilizingLoad",
+                "type": "xs:boolean",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ProjectedOrTrue",
+                "type": "IfcProjectedOrTrueLengthEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "PROJECTED_LENGTH",
+                    "TRUE_LENGTH"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralPointAction": {
+        "is_abstract": false,
+        "parent": "IfcStructuralAction",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
+                ]
+            },
+            {
+                "name": "DestabilizingLoad",
+                "type": "xs:boolean",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralPointConnection": {
+        "is_abstract": false,
+        "parent": "IfcStructuralConnection",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralPointReaction": {
+        "is_abstract": false,
+        "parent": "IfcStructuralReaction",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralReaction": {
+        "is_abstract": true,
+        "parent": "IfcStructuralActivity",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
+                ]
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralSurfaceConnection": {
+        "is_abstract": false,
+        "parent": "IfcStructuralConnection",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralSurfaceMember": {
+        "is_abstract": false,
+        "parent": "IfcStructuralMember",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralSurfaceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "BENDING_ELEMENT",
+                    "MEMBRANE_ELEMENT",
+                    "SHELL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            },
+            {
+                "name": "Thickness",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcStructuralSurfaceMemberVarying": {
+        "is_abstract": false,
+        "parent": "IfcStructuralSurfaceMember",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralSurfaceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "BENDING_ELEMENT",
+                    "MEMBRANE_ELEMENT",
+                    "SHELL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            },
+            {
+                "name": "Thickness",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcTendon": {
+        "is_abstract": false,
+        "parent": "IfcReinforcingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "SteelGrade",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcTendonTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "STRAND",
+                    "WIRE",
+                    "BAR",
+                    "COATED",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            },
+            {
+                "name": "NominalDiameter",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CrossSectionArea",
+                "type": "IfcAreaMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "TensionForce",
+                "type": "IfcForceMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PreStress",
+                "type": "IfcPressureMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "FrictionCoefficient",
+                "type": "IfcNormalisedRatioMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "AnchorageSlip",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "MinCurvatureRadius",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcTendonAnchor": {
+        "is_abstract": false,
+        "parent": "IfcReinforcingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "SteelGrade",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcTransportElement": {
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "OperationType",
+                "type": "IfcTransportElementTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "ELEVATOR",
+                    "ESCALATOR",
+                    "MOVINGWALKWAY",
+                    "USERDEFINED",
+                    "NOTDEFINED"
+                ]
+            },
+            {
+                "name": "CapacityByWeight",
+                "type": "IfcMassMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CapacityByNumber",
+                "type": "IfcCountMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcVirtualElement": {
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcWall": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcWallStandardCase": {
+        "is_abstract": false,
+        "parent": "IfcWall",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    },
+    "IfcWindow": {
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "GlobalId",
+                "type": "IfcGloballyUniqueId",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Name",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Description",
+                "type": "IfcText",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ObjectType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "OverallHeight",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "OverallWidth",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ],
+        "complex_attributes": []
+    }
+}

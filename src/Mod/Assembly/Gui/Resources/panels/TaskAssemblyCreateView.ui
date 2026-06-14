@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskAssemblyCreateView</class>
+ <widget class="QWidget" name="TaskAssemblyCreateView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>376</width>
+    <height>387</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Exploded View</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="Gui::PrefCheckBox" name="CheckBox_PartsAsSingleSolid">
+     <property name="toolTip">
+      <string>If checked, parts will be selected as a single solid</string>
+     </property>
+     <property name="text">
+      <string>Parts as single solid</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>PartsAsSingleSolid</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Assembly</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QListWidget" name="stepList"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="btnAlignDragger">
+     <property name="text">
+      <string>Align Dragger</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="LabelAlignDragger">
+     <property name="text">
+      <string>Select a feature to align. Press Esc to cancel.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QPushButton" name="btnRadialExplosion">
+     <property name="text">
+      <string>Explode Radially</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

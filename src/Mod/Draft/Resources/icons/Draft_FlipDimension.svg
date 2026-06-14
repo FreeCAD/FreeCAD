@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg2735"
+   height="64px"
+   width="64px">
+  <defs
+     id="defs2737">
+    <linearGradient
+       id="linearGradient5192">
+      <stop
+         id="stop5194"
+         offset="0"
+         style="stop-color:#204a87;stop-opacity:1" />
+      <stop
+         id="stop5196"
+         offset="1"
+         style="stop-color:#729fcf;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5127">
+      <stop
+         id="stop5129"
+         offset="0"
+         style="stop-color:#fce94f;stop-opacity:1" />
+      <stop
+         id="stop5131"
+         offset="1"
+         style="stop-color:#c4a000;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="4.3889422"
+       x2="540.14728"
+       y1="19.713791"
+       x1="499.98511"
+       id="linearGradient5133"
+       xlink:href="#linearGradient5127" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="4.3889422"
+       x2="540.14728"
+       y1="19.713791"
+       x1="499.98511"
+       id="linearGradient5133-1"
+       xlink:href="#linearGradient5127-2" />
+    <linearGradient
+       id="linearGradient5127-2">
+      <stop
+         id="stop5129-0"
+         offset="0"
+         style="stop-color:#fce94f;stop-opacity:1" />
+      <stop
+         id="stop5131-6"
+         offset="1"
+         style="stop-color:#c4a000;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient5127-2"
+       id="linearGradient5151"
+       gradientUnits="userSpaceOnUse"
+       x1="499.98511"
+       y1="19.713791"
+       x2="540.14728"
+       y2="4.3889422"
+       gradientTransform="matrix(0,0.59069326,0.37332419,0,17.504326,-286.6532)" />
+    <linearGradient
+       gradientUnits="userSpaceOnUse"
+       y2="38.657543"
+       x2="29.080149"
+       y1="60.706417"
+       x1="33.634201"
+       id="linearGradient5198"
+       xlink:href="#linearGradient5192" />
+  </defs>
+  <g
+     id="layer1">
+    <path
+       id="path2644-2"
+       d="m 519.14119,-20.101366 28.77974,45.53683 -57.55949,0 z"
+       style="fill:url(#linearGradient5133);fill-opacity:1;fill-rule:evenodd;stroke:#302b00;stroke-width:4.25898315;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       transform="matrix(0,0.59069326,-0.37332419,0,46.495674,-286.6532)" />
+    <path
+       id="path3009"
+       d="m 59,37 -18,2 4,4 c 0,0 -2,5 -13,5 C 21,48 13,34 13,34 l -8,7 c 0,0 10,18 27,18 17,0 21,-8 21,-8 l 4,4 z"
+       style="fill:url(#linearGradient5198);fill-opacity:1;stroke:#0b1521;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <path
+       id="path2644-2-3"
+       d="M 51.159091,20 39,32.160706 39,7.8392939 z"
+       style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       id="path2644-2-8"
+       d="M 10,20.000002 27,37 27,2.9999977 z"
+       style="fill:url(#linearGradient5151);fill-opacity:1;fill-rule:evenodd;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       id="path2644-2-3-7"
+       d="M 12.840909,20.000002 25,32.160708 25,7.8392967 z"
+       style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <path
+       id="path3009-4"
+       d="m 56.749324,39.265165 -11.467298,1.276823 2.344728,2.42508 C 47.626754,42.967068 43,50 32,50 21,50 12.568182,37.022727 12.568182,37.022727 l -4.9886365,4.375 c 0,0 8.5490195,15.791498 25.3525495,15.698697 16.803531,-0.0928 19.930065,-8.924354 19.930065,-8.924354 l 2.607821,2.600333 z"
+       style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+  </g>
+  <metadata
+     id="metadata4610">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Wed Nov 13 19:25:01 2013 -0200</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Yorik van Havre]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_</dc:identifier>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>triangle</rdf:li>
+            <rdf:li>arrow</rdf:li>
+            <rdf:li>curved</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Two triangles, one pointing left, the other right, with a curved arrow below them pointing from the left to the right and slightly upwards</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
