@@ -239,6 +239,13 @@ public:
         }
     };
 
+    struct PreselectionCandidates
+    {
+        PreselectionResult Constraint;
+        PreselectionResult Geometry;
+        PreselectionResult Axis;
+    };
+
 public:
     explicit EditModeCoinManager(ViewProviderSketch& vp);
     ~EditModeCoinManager();
@@ -322,6 +329,12 @@ private:
     bool detectPointPreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
     bool detectCurvePreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
     bool detectAxisPreselection(const SoPickedPoint* point, PreselectionResult& result);
+    PreselectionCandidates collectPreselectionCandidates(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos,
+        int hoveredPointIndex
+    );
+    PreselectionResult resolvePreselectionCandidates(const PreselectionCandidates& candidates) const;
 
     // This function populates the coin nodes with the information of the current geometry
     void processGeometry(const GeoListFacade& geolistfacade);
