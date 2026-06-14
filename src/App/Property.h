@@ -984,10 +984,12 @@ public:
      */
     virtual void setValues(const ListT& newValues = ListT())
     {
-        atomic_change guard(*this);
-        this->_touchList.clear();
-        this->_lValueList = newValues;
-        guard.tryInvoke();
+        if( newValues != this->_lValueList) {
+            atomic_change guard(*this);
+            this->_touchList.clear();
+            this->_lValueList = newValues;
+            guard.tryInvoke();
+        }
     }
 
     /**
