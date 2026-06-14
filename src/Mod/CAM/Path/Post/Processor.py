@@ -468,7 +468,7 @@ class PostProcessor:
                 "name": "parameter_order",
                 "type": "text",  # one line
                 "label": translate("CAM", "Generated Parameter Order for GCode"),
-                "default": "XYZABCFSIJTQRP",  # FIXME: only list `supported`
+                "default": "XYZABCFSIJTQRPH",  # FIXME: only list `supported`
                 "help": translate("CAM", "Generated Parameter Order for GCode for output"),
             },
             {
