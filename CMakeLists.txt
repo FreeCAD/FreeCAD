@@ -152,10 +152,6 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
     endif()
 endif()
 
-if(BUILD_VR)
-    find_package(Rift)
-endif(BUILD_VR)
-
 SetLibraryVersions()
 SetGlobalCompilerAndLinkerSettings()
 

@@ -746,9 +746,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_AxisCross"
           << "Std_ToggleClipPlane"
           << "Std_TextureMapping"
-#ifdef BUILD_VR
-          << "Std_ViewVR"
-#endif
           << "Separator" << visu << "Std_ToggleNavigation"
           << "Std_RandomColor"
           << "Std_ToggleTransparency"
