@@ -487,31 +487,40 @@ public:
 
     virtual int getSize() const;
 
-    /** Sets the property
+    /**
+     * Accessor methods to the whole map
      */
-    void setValue()
-    {}
+    const std::map<std::string, std::string>& getValue() const;
+    void setValue();
+    void setValue(const std::map<std::string, std::string>& map);
+    void setValue(std::map<std::string, std::string>&& map);
+
+    /**
+     * Accessor methods to particular items
+     */
+    std::string getValue(const std::string& key) const;
     void setValue(const std::string& key, const std::string& value);
-    void setValue(const char* key, const char* value);
-    void setValues(const std::map<std::string, std::string>&);
-    void setValues(std::map<std::string, std::string>&&);
+    bool deleteValue(const std::string& key);
 
-    /// index operator
-    const std::string& operator[](const std::string& key) const;
-
-    void set1Value(const std::string& key, const std::string& value)
-    {
-        _lValueList.operator[](key) = value;
-    }
-
-    const std::map<std::string, std::string>& getValues() const
-    {
-        return _lValueList;
-    }
     const char* getValue(const char* key) const;
+    void setValue(const char* key, const char* value);
 
-    // virtual const char* getEditorName(void) const { return
-    // "Gui::PropertyEditor::PropertyStringListItem"; }
+    /**
+     * Accessor aliases
+     */
+    const std::map<std::string, std::string>& getValues() const { return getValue(); }
+    void setValues(const std::map<std::string, std::string>& map) { setValue(map); }
+    void setValues(std::map<std::string, std::string>&& map) { setValue(map); }
+
+    const boost::any getPathValue(const ObjectIdentifier& path) const override;
+    void setPathValue(const ObjectIdentifier& path, const boost::any& value) override;
+
+    ObjectIdentifier getItemPath(const std::string& key) const;
+
+    const char* getEditorName() const override
+    {
+        return "Gui::PropertyEditor::PropertyMapItem";
+    }
 
     PyObject* getPyObject() override;
     void setPyObject(PyObject* py) override;
