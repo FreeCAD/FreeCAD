@@ -2403,6 +2403,7 @@ class PostProcessor:
         # Format parameters with clean, stateless implementation
         parameter_order = self.values.get(
             "PARAMETER_ORDER",
+            # FIXME: dry
             ["X", "Y", "Z", "A", "B", "C", "F", "I", "J", "K", "R", "Q", "P", "S", "T"],
         )
 
