@@ -21,11 +21,13 @@
  ***************************************************************************/
 
 
+#include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 #include <QAbstractItemView>
 #include <QContextMenuEvent>
 #include <QLineEdit>
 #include <QMenu>
+#include <QSet>
 #include <QTextBlock>
 #include <QGuiApplication>
 #include <QScreen>
@@ -36,12 +38,15 @@
 #include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
+#include <App/VarSet.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Base/Tools.h>
+#include <Base/Type.h>
 #include <CXX/Extensions.hxx>
 
 #include "ExpressionCompleter.h"
+#include "FuzzyMatcher.h"
 
 
 FC_LOG_LEVEL_INIT("Completer", true, true)
@@ -61,7 +66,12 @@ public:
 
     void setNoProperty(bool enabled)
     {
+        beginResetModel();
         noProperty = enabled;
+        namedPropsCache.clear();
+        fuzzyMatches.clear();
+        fuzzyMode = false;
+        endResetModel();
     }
 
     void setDocumentObject(const App::DocumentObject* obj, bool checkInList)
@@ -73,12 +83,18 @@ public:
             if (!noProperty && checkInList) {
                 inList = obj->getInListEx(true);
             }
+            else {
+                inList.clear();
+            }
         }
         else {
             currentDoc.clear();
             currentObj.clear();
             inList.clear();
         }
+        namedPropsCache.clear();
+        fuzzyMatches.clear();
+        fuzzyMode = false;
         endResetModel();
     }
 
@@ -258,6 +274,12 @@ public:
         if (role != Qt::EditRole && role != Qt::DisplayRole && role != Qt::UserRole) {
             return {};
         }
+        if (fuzzyMode) {
+            if (!index.isValid() || index.row() < 0 || index.row() >= fuzzyMatches.size()) {
+                return {};
+            }
+            return fuzzyMatches.at(index.row()).completion;
+        }
         QVariant variant;
         Info info = getInfo(index);
         _data(info, index.row(), &variant, nullptr, role == Qt::UserRole);
@@ -359,7 +381,7 @@ public:
             if (idx >= 0 && idx < objSize) {
                 obj = objs[idx / 2];
                 // if they are in the ignore list skip
-                if (inList.contains(obj)) {
+                if (isObjectExcluded(obj)) {
                     return;
                 }
             }
@@ -448,10 +470,13 @@ public:
             const auto& objs = doc->getObjects();
             objSize = (int)objs.size() * 2;
             // if invalid index, or in the ignore list bail out
-            if (idx < 0 || idx >= objSize || inList.contains(obj)) {
+            if (idx < 0 || idx >= objSize) {
                 return;
             }
             obj = objs[idx / 2];
+            if (isObjectExcluded(obj)) {
+                return;
+            }
 
             if (info.obj < 0) {
                 // if this is AN actual Object item and not a root
@@ -538,7 +563,7 @@ public:
 
     QModelIndex parent(const QModelIndex& index) const override
     {
-        if (!index.isValid()) {
+        if (!index.isValid() || fuzzyMode) {
             return {};
         }
 
@@ -650,6 +675,12 @@ public:
         if (row < 0) {
             return {};
         }
+        if (fuzzyMode) {
+            if (parent.isValid() || row >= fuzzyMatches.size()) {
+                return {};
+            }
+            return createIndex(row, column, infoId(Info::root));
+        }
         Info myParentInfoEncoded = Info::root;
 
         // encode the parent's QModelIndex into an 'Info' structure
@@ -663,6 +694,9 @@ public:
     // function returns how many children the QModelIndex parent has
     int rowCount(const QModelIndex& parent = QModelIndex()) const override
     {
+        if (fuzzyMode) {
+            return parent.isValid() ? 0 : fuzzyMatches.size();
+        }
         Info info;
         int row = 0;
         if (!parent.isValid()) {
@@ -692,12 +726,244 @@ public:
         return 1;
     }
 
+    void setFuzzyMode(bool enabled)
+    {
+        if (fuzzyMode == enabled) {
+            return;
+        }
+
+        beginResetModel();
+        fuzzyMode = enabled;
+        if (!fuzzyMode) {
+            fuzzyMatches.clear();
+        }
+        endResetModel();
+    }
+
+    void setFuzzyFilter(const QString& text)
+    {
+        beginResetModel();
+        fuzzyMode = true;
+        fuzzyMatches.clear();
+
+        if (!text.isEmpty()) {
+            QSet<QString> seen;
+            QList<Match> collected;
+            collectFuzzyMatches(text, seen, collected);
+            std::sort(collected.begin(), collected.end(), [](const Match& left, const Match& right) {
+                if (left.score != right.score) {
+                    return left.score > right.score;
+                }
+                return left.completion < right.completion;
+            });
+
+            constexpr int maxFuzzyCompletions = 200;
+            fuzzyMatches = collected.mid(0, maxFuzzyCompletions);
+        }
+
+        endResetModel();
+    }
+
+    QString pathFromIndex(const QModelIndex& index) const
+    {
+        if (!index.isValid()) {
+            return {};
+        }
+
+        if (fuzzyMode) {
+            return data(index, Qt::UserRole).toString();
+        }
+
+        QString res;
+        auto parent = index;
+        do {
+            res = data(parent, Qt::UserRole).toString() + res;
+            parent = parent.parent();
+        } while (parent.isValid());
+
+        return res;
+    }
+
 private:
+    struct Match
+    {
+        QString completion;
+        int score = 0;
+    };
+
+    static constexpr int userVariableScoreBonus = 250;
+
+    void collectFuzzyMatches(const QString& filterText, QSet<QString>& seen, QList<Match>& collected) const
+    {
+        auto currentDocument = App::GetApplication().getDocument(currentDoc.c_str());
+        if (currentDocument) {
+            if (auto obj = currentDocument->getObject(currentObj.c_str())) {
+                collectObjectProperties(QString(), obj, filterText, seen, collected);
+            }
+        }
+
+        const auto& docs = App::GetApplication().getDocuments();
+        for (auto doc : docs) {
+            if (!doc) {
+                continue;
+            }
+
+            const bool isCurrentDoc = currentDoc == doc->getName();
+            const QString docPrefix = isCurrentDoc
+                ? QString()
+                : QString::fromUtf8(doc->getName()) + QLatin1Char('#');
+
+            const auto& objs = doc->getObjects();
+            for (auto obj : objs) {
+                if (!obj || isObjectExcluded(obj)) {
+                    continue;
+                }
+
+                collectObject(
+                    docPrefix + QString::fromLatin1(obj->getNameInDocument()),
+                    obj,
+                    filterText,
+                    seen,
+                    collected
+                );
+
+                const QString label = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
+                if (!label.isEmpty() && label != QString::fromLatin1(obj->getNameInDocument())) {
+                    collectObject(docPrefix + label, obj, filterText, seen, collected);
+                }
+            }
+        }
+    }
+
+    void collectObject(
+        const QString& objectPath,
+        App::DocumentObject* obj,
+        const QString& filterText,
+        QSet<QString>& seen,
+        QList<Match>& collected
+    ) const
+    {
+        const int propertyScoreBonus = isUserVariableContainer(obj) ? userVariableScoreBonus : 0;
+        const QString objectCompletion = noProperty ? objectPath : objectPath + QLatin1Char('.');
+        addMatch(objectCompletion, filterText, seen, collected);
+        if (!noProperty) {
+            collectObjectProperties(
+                objectPath + QLatin1Char('.'),
+                obj,
+                filterText,
+                seen,
+                collected,
+                propertyScoreBonus
+            );
+        }
+    }
+
+    void collectObjectProperties(
+        const QString& prefix,
+        App::DocumentObject* obj,
+        const QString& filterText,
+        QSet<QString>& seen,
+        QList<Match>& collected,
+        int scoreBonus = 0
+    ) const
+    {
+        if (!obj || noProperty) {
+            return;
+        }
+
+        auto& props = getCachedPropertyNamedList(obj);
+        for (const auto& [propName, prop] : props) {
+            if (!propName || !prop) {
+                continue;
+            }
+
+            const QString propertyPath = prefix + QString::fromLatin1(propName);
+            addMatch(propertyPath, filterText, seen, collected, scoreBonus);
+
+            std::vector<App::ObjectIdentifier> paths = retrieveSubPaths(prop);
+            for (const auto& path : paths) {
+                auto pathString = path.getSubPathStr();
+                if (!pathString.empty() && (pathString[0] == '.' || pathString[0] == '#')) {
+                    pathString.erase(pathString.begin());
+                }
+                if (!pathString.empty()) {
+                    addMatch(
+                        propertyPath + QLatin1Char('.') + QString::fromLatin1(pathString.c_str()),
+                        filterText,
+                        seen,
+                        collected,
+                        scoreBonus
+                    );
+                }
+            }
+        }
+    }
+
+    static void addMatch(
+        const QString& completion,
+        const QString& filterText,
+        QSet<QString>& seen,
+        QList<Match>& collected,
+        int scoreBonus = 0
+    )
+    {
+        if (completion.isEmpty() || seen.contains(completion)) {
+            return;
+        }
+
+        int score = 0;
+        if (Gui::FuzzyMatcher::match(filterText, searchableCompletionText(completion), score)) {
+            seen.insert(completion);
+            collected.push_back({completion, score + scoreBonus});
+        }
+    }
+
+    static QString searchableCompletionText(const QString& completion)
+    {
+        QString leaf = completion;
+        while (leaf.endsWith(QLatin1Char('.')) || leaf.endsWith(QLatin1Char('#'))) {
+            leaf.chop(1);
+        }
+
+        const int dot = leaf.lastIndexOf(QLatin1Char('.'));
+        const int hash = leaf.lastIndexOf(QLatin1Char('#'));
+        const int separator = std::max(dot, hash);
+        if (separator >= 0) {
+            leaf = leaf.mid(separator + 1);
+        }
+
+        return leaf + QLatin1Char(' ') + completion;
+    }
+
+    static bool isSpreadsheetObject(App::DocumentObject* obj)
+    {
+        const Base::Type sheetType = Base::Type::fromName("Spreadsheet::Sheet");
+        return obj && !sheetType.isBad() && obj->isDerivedFrom(sheetType);
+    }
+
+    static bool isUserVariableContainer(App::DocumentObject* obj)
+    {
+        return obj && (obj->isDerivedFrom<App::VarSet>() || isSpreadsheetObject(obj));
+    }
+
+    bool isObjectExcluded(App::DocumentObject* obj) const
+    {
+        if (!obj || !inList.contains(obj)) {
+            return false;
+        }
+
+        // Keep shared parameter containers visible; expression validation still rejects invalid
+        // dependency cycles when a selected completion cannot be used safely.
+        return !isUserVariableContainer(obj);
+    }
+
     mutable std::map<DocumentObject*, std::vector<std::pair<const char*, App::Property*>>> namedPropsCache;
     std::set<App::DocumentObject*> inList;
     std::string currentDoc;
     std::string currentObj;
+    QList<Match> fuzzyMatches;
     bool noProperty;
+    bool fuzzyMode = false;
 };
 
 const ExpressionCompleterModel::Info ExpressionCompleterModel::Info::root = {-1, -1, -1, 0};
@@ -744,8 +1010,7 @@ void ExpressionCompleter::setDocumentObject(const App::DocumentObject* obj, bool
     }
     setCompletionPrefix(QString());
     checkInList = _checkInList;
-    auto m = model();
-    if (m) {
+    if (auto m = model()) {
         static_cast<ExpressionCompleterModel*>(m)->setDocumentObject(obj, checkInList);
     }
 }
@@ -753,10 +1018,30 @@ void ExpressionCompleter::setDocumentObject(const App::DocumentObject* obj, bool
 void ExpressionCompleter::setNoProperty(bool enabled)
 {
     noProperty = enabled;
-    auto m = model();
-    if (m) {
+    if (auto m = model()) {
         static_cast<ExpressionCompleterModel*>(m)->setNoProperty(enabled);
     }
+}
+
+void ExpressionCompleter::updateCompletionModel(const QString& completionPrefix)
+{
+    auto m = static_cast<ExpressionCompleterModel*>(model());
+    if (!m) {
+        return;
+    }
+
+    const bool endsWithPathSeparator = completionPrefix.endsWith(QLatin1Char('.'))
+        || completionPrefix.endsWith(QLatin1Char('#'));
+    const bool useFuzzyModel = !noProperty && !endsWithPathSeparator
+        && filterMode() != Qt::MatchStartsWith && !completionPrefix.isEmpty();
+    if (useFuzzyModel) {
+        m->setFuzzyFilter(completionPrefix);
+        setCompletionPrefix(QString());
+        return;
+    }
+
+    m->setFuzzyMode(false);
+    setCompletionPrefix(completionPrefix);
 }
 
 QString ExpressionCompleter::pathFromIndex(const QModelIndex& index) const
@@ -766,20 +1051,7 @@ QString ExpressionCompleter::pathFromIndex(const QModelIndex& index) const
         return {};
     }
 
-    QString res;
-    auto parent = index;
-    do {
-        res = m->data(parent, Qt::UserRole).toString() + res;
-        parent = parent.parent();
-    } while (parent.isValid());
-
-    auto info = ExpressionCompleterModel::getInfo(index);
-    FC_TRACE(
-        "join path " << info.doc << "," << info.obj << "," << info.prop << ","
-                     << info.contextualHierarchy << "," << index.row() << ": "
-                     << res.toUtf8().constData()
-    );
-    return res;
+    return static_cast<ExpressionCompleterModel*>(m)->pathFromIndex(index);
 }
 
 QStringList ExpressionCompleter::splitPath(const QString& input) const
@@ -895,6 +1167,7 @@ void ExpressionCompleter::slotUpdate(const QString& prefix, int pos)
 
     QString completionPrefix = tokenizer.perform(prefix, pos);
     if (completionPrefix.isEmpty()) {
+        updateCompletionModel(QString());
         if (auto itemView = popup()) {
             itemView->setVisible(false);
         }
@@ -902,8 +1175,7 @@ void ExpressionCompleter::slotUpdate(const QString& prefix, int pos)
     }
 
     FC_TRACE("Completion Prefix:" << completionPrefix.toUtf8().constData());
-    // Set completion prefix
-    setCompletionPrefix(completionPrefix);
+    updateCompletionModel(completionPrefix);
 
     if (widget()->hasFocus()) {
         FC_TRACE("Complete on Prefix" << completionPrefix.toUtf8().constData());
@@ -1022,7 +1294,14 @@ void ExpressionLineEdit::hideCompleter()
 void ExpressionLineEdit::slotTextChanged(const QString& text)
 {
     if (!block) {
-        if (!text.size() || (checkPrefix && text[0] != QLatin1Char(checkPrefix))) {
+        if (!text.size()) {
+            if (completer) {
+                completer->slotUpdate(text, cursorPosition());
+            }
+            return;
+        }
+        if (checkPrefix && text[0] != QLatin1Char(checkPrefix)) {
+            hideCompleter();
             return;
         }
         Q_EMIT textChanged2(text, cursorPosition());
