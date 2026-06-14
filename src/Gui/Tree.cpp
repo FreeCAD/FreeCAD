@@ -1672,14 +1672,9 @@ int TreeWidget::getIconSize()
     if (defaultSize == 0) {
         auto tree = instance();
         if (tree) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-            QStyleOptionViewItem opt = tree->viewOptions();
-            defaultSize = opt.decorationSize.width();
-#else
             QStyleOptionViewItem opt;
             tree->initViewItemOption(&opt);
             defaultSize = opt.decorationSize.width();
-#endif
         }
         else {
             defaultSize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
@@ -2309,19 +2304,11 @@ public:
 QPoint getPos(QEvent* event)
 {
     if (auto* dragMoveEvent = dynamic_cast<QDragMoveEvent*>(event)) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        return dragMoveEvent->pos();
-#else
         return dragMoveEvent->position().toPoint();
-#endif
     }
 
-    else if (auto* dropEvent = dynamic_cast<QDropEvent*>(event)) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        return dropEvent->pos();
-#else
+    if (auto* dropEvent = dynamic_cast<QDropEvent*>(event)) {
         return dropEvent->position().toPoint();
-#endif
     }
 
     // For unsupported event types or if casting fails
@@ -6499,7 +6486,81 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     QIcon& icon = mode == QIcon::Normal ? icon1 : icon2;
 
     if (icon.isNull()) {
-        generateIcon(currentStatus, mode, icon);
+        QPixmap px;
+        if (currentStatus & Status::Error) {
+            static QPixmap pxError;
+            if (pxError.isNull()) {
+                // object is in error state
+                pxError = Gui::BitmapFactory().pixmapFromSvg("overlay_error", QSize(10, 10));
+            }
+            px = pxError;
+        }
+        else if (currentStatus & Status::Recompute) {
+            static QPixmap pxRecompute;
+            if (pxRecompute.isNull()) {
+                // object must be recomputed
+                pxRecompute = Gui::BitmapFactory().pixmapFromSvg("overlay_recompute", QSize(10, 10));
+            }
+            px = pxRecompute;
+        }
+
+        // get the original icon set
+        QIcon icon_org = object()->getIcon();
+        QStyleOptionViewItem opt;
+        getTree()->initViewItemOption(&opt);
+        int w = opt.decorationSize.width();
+        QPixmap pxOn, pxOff;
+
+        // if needed show small pixmap inside
+        if (!px.isNull()) {
+            pxOff = BitmapFactory().merge(
+                icon_org.pixmap(w, w, mode, QIcon::Off),
+                px,
+                BitmapFactoryInst::TopRight
+            );
+            pxOn = BitmapFactory().merge(
+                icon_org.pixmap(w, w, mode, QIcon::On),
+                px,
+                BitmapFactoryInst::TopRight
+            );
+        }
+        else {
+            pxOff = icon_org.pixmap(w, w, mode, QIcon::Off);
+            pxOn = icon_org.pixmap(w, w, mode, QIcon::On);
+        }
+
+        if (currentStatus & Status::Hidden) {
+            static QPixmap pxHidden;
+            if (pxHidden.isNull()) {
+                pxHidden = Gui::BitmapFactory().pixmapFromSvg("TreeItemVisible", QSize(10, 10));
+            }
+            pxOff = BitmapFactory().merge(pxOff, pxHidden, BitmapFactoryInst::TopLeft);
+            pxOn = BitmapFactory().merge(pxOn, pxHidden, BitmapFactoryInst::TopLeft);
+        }
+
+        if (currentStatus & Status::External) {
+            static QPixmap pxExternal;
+            constexpr int px = 12;
+            if (pxExternal.isNull()) {
+                pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay", QSize(px, px));
+            }
+            pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
+            pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
+        }
+
+        if (currentStatus & Status::Freezed) {
+            static QPixmap pxFreeze;
+            if (pxFreeze.isNull()) {
+                // object is in freezed state
+                pxFreeze = Gui::BitmapFactory().pixmapFromSvg("Std_ToggleFreeze", QSize(16, 16));
+            }
+            pxOff = BitmapFactory().merge(pxOff, pxFreeze, BitmapFactoryInst::TopLeft);
+            pxOn = BitmapFactory().merge(pxOn, pxFreeze, BitmapFactoryInst::TopLeft);
+        }
+
+        icon.addPixmap(pxOn, QIcon::Normal, QIcon::On);
+        icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
+
         icon = object()->mergeColorfulOverlayIcons(icon);
 
         if (isVisibilityIconEnabled()) {

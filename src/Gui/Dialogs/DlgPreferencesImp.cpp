@@ -2017,11 +2017,7 @@ bool PreferencesSearchController::handlePopupKeyPress(const QKeyEvent* keyEvent)
 
 bool PreferencesSearchController::isClickOutsidePopup(const QMouseEvent* mouseEvent) const
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint globalPos = mouseEvent->globalPos();
-#else
     const QPoint globalPos = mouseEvent->globalPosition().toPoint();
-#endif
     const auto searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
     auto popupRect = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
 

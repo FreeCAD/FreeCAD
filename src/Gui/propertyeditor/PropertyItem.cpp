@@ -922,11 +922,7 @@ QWidget* PropertyFontItem::createEditor(
 void PropertyFontItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     auto cb = qobject_cast<QComboBox*>(editor);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
-#else
     QStringList familyNames = QFontDatabase::families(QFontDatabase::Any);
-#endif
     cb->addItems(familyNames);
     int index = familyNames.indexOf(data.toString());
     cb->setCurrentIndex(index);
