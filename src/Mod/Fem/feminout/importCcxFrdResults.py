@@ -33,6 +33,7 @@ __url__ = "https://www.freecad.org"
 
 import os
 import math
+import re
 
 import FreeCAD
 from FreeCAD import Console
@@ -314,6 +315,111 @@ def importFrd(filename, analysis=None, result_name_prefix="", result_analysis_ty
     return res_obj
 
 
+# When CalculiX is built with MinGW on Windows (e.g. the binaries distributed
+# by calculix/CalculiX-Windows since 2.23), scientific-notation values in the
+# .frd output use 3-digit exponents (E-003), making negative values 13 chars
+# instead of the 12 chars the fixed-slice parser below expects.  These helpers
+# normalize an affected line back to 12-char columns so read_frd_result can
+# parse it unchanged.  See issue #29515.
+_FRD_3DIGIT_EXP_RE = re.compile(r"E[+-]\d{3}")
+
+
+def _reformat_ccx_value(value):
+    """Format a float as exactly 12 chars with a 2-digit exponent.
+
+    Returns the 12-char string, or None if the value's exponent magnitude
+    exceeds 99 (which cannot be expressed in 12 chars with a 5-digit mantissa
+    and is vanishingly rare in FEM output).
+    """
+    s = "{:+.5E}".format(value)
+    mantissa, exp = s.split("E")
+    digits = exp[1:].lstrip("0") or "0"
+    if len(digits) > 2:
+        return None
+    if len(digits) == 1:
+        digits = "0" + digits
+    out = "{}E{}{}".format(mantissa, exp[0], digits)
+    # Replace leading '+' with a space so positives and negatives share the
+    # same 12-char layout that the fixed-slice parser expects.
+    if out[0] == "+":
+        out = " " + out[1:]
+    if len(out) < 12:
+        out = " " * (12 - len(out)) + out
+    return out
+
+
+def _normalize_ccx_frd_line(line):
+    """Normalize a CCX .frd data line to uniform 12-char value columns.
+
+    Returns the line unchanged if it does not look like a data line affected
+    by the 3-digit-exponent quirk (e.g. lines from a 2-digit-exponent CCX
+    build, element-connectivity lines whose values are integers, or lines
+    with values too large to repack into 12 chars).
+    """
+    # Fast path: lines without 3-digit exponents are already 12-char-compatible.
+    if not _FRD_3DIGIT_EXP_RE.search(line):
+        return line
+
+    # Preserve trailing newline so the rest of the parser sees the same line
+    # structure it always has.
+    if line.endswith("\r\n"):
+        body, newline = line[:-2], "\r\n"
+    elif line.endswith("\n"):
+        body, newline = line[:-1], "\n"
+    else:
+        body, newline = line, ""
+
+    # Data lines have the form " -1" + 10-char integer id + N value columns.
+    # Headers, element connectivity, and section markers are left alone.
+    if len(body) < 14 or body[:3] != " -1":
+        return line
+    id_field = body[3:13]
+    if not id_field.strip().lstrip("-").isdigit():
+        return line
+
+    prefix = body[:13]
+    rest = body[13:].rstrip()
+    if not rest:
+        return line
+
+    # In 3-digit-exponent CCX output, positive values are 12 chars (no leading
+    # space) and negative values are 13 chars (with the '-' sign).  Walking
+    # the cursor value-by-value gives an unambiguous tokenization.
+    values = []
+    i = 0
+    n = len(rest)
+    while i < n:
+        ch = rest[i]
+        if ch == "-":
+            width = 13
+        elif ch.isdigit() or ch == "+":
+            width = 12
+        elif ch == " ":
+            i += 1
+            continue
+        else:
+            return line
+        chunk = rest[i : i + width].strip()
+        if not chunk:
+            return line
+        try:
+            values.append(float(chunk))
+        except ValueError:
+            return line
+        i += width
+
+    reformatted = []
+    for v in values:
+        s = _reformat_ccx_value(v)
+        if s is None:
+            # A value needs more than a 2-digit exponent; can't fit in 12
+            # chars, so leave the line as-is for the parser to raise on.
+            return line
+        reformatted.append(s)
+
+    return prefix + "".join(reformatted) + newline
+
+
 # read a calculix result file and extract the nodes
 # displacement vectors and stress values.
 def read_frd_result(frd_input):
@@ -385,6 +491,10 @@ def read_frd_result(frd_input):
         # depending on c runtime lib and possibly locale calculix may format NAN differently so we
         # need to sanitize the file
         line = line.replace("NAN(IND)", "NAN")
+        # Some CalculiX-on-Windows builds emit scientific-notation values with
+        # 3-digit exponents (E-003), which breaks the fixed 12-char column
+        # slicing below.  See issue #29515.
+        line = _normalize_ccx_frd_line(line)
         # Check if we found nodes section
         if line[4:6] == "2C":
             nodes_found = True
