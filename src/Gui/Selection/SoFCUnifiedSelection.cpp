@@ -1650,7 +1650,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
             style = SoFCSelectionRoot::Box;
         }
         else {
-            renderBBox(action, this, ctx->hlAll ? ctx->hlColor : ctx->selColor);
+            renderBBox(action, this, (ctx->hlAll && !ctx->selAll) ? ctx->hlColor : ctx->selColor);
             return true;
         }
     }
@@ -2174,7 +2174,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                 SbColor selColor, hlColor;
                 SoFCSelectionRoot::checkSelection(sel, selColor, hl, hlColor);
                 if (sel || hl) {
-                    SoFCSelectionRoot::renderBBox(action, this, hl ? hlColor : selColor);
+                    SoFCSelectionRoot::renderBBox(action, this, (hl && !sel) ? hlColor : selColor);
                 }
                 else {
                     inherited::GLRenderInPath(action);
