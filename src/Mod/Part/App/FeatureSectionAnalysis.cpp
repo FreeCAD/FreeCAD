@@ -1,0 +1,352 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2026 Gregg Jaskiewicz
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1            *
+ *   of the License, or (at your option) any later version.                   *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful,               *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty              *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                  *
+ *   See the GNU Lesser General Public License for more details.              *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
+ *                                                                            *
+ ******************************************************************************/
+
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepPrimAPI_MakeHalfSpace.hxx>
+#include <Precision.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Face.hxx>
+#include <BRep_Builder.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Vec.hxx>
+#include <ShapeAnalysis_FreeBounds.hxx>
+#include <ShapeFix_Wire.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
+
+#include <BRepAlgoAPI_Cut.hxx>
+#include <BRepAlgoAPI_Section.hxx>
+
+#include <functional>
+
+#include <Base/Console.h>
+
+#include "FaceMakerBullseye.h"
+#include "FeatureSectionAnalysis.h"
+
+
+using namespace Part;
+
+PROPERTY_SOURCE(Part::SectionAnalysis, Part::Feature)
+
+SectionAnalysis::SectionAnalysis()
+{
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Section Analysis", App::Prop_None, "Source shape to section");
+    ADD_PROPERTY_TYPE(
+        PlaneNormal,
+        (Base::Vector3d(0, 0, 1)),
+        "Section Analysis",
+        App::Prop_None,
+        "Normal of the cutting plane"
+    );
+    ADD_PROPERTY_TYPE(
+        PlaneOffset,
+        (0.0),
+        "Section Analysis",
+        App::Prop_None,
+        "Distance of cutting plane from origin along the normal direction"
+    );
+    ADD_PROPERTY_TYPE(
+        FlipCut,
+        (false),
+        "Section Analysis",
+        App::Prop_None,
+        "Flip which side of the plane is visible"
+    );
+    ADD_PROPERTY_TYPE(
+        SolidFaceCounts,
+        ({}),
+        "Section Analysis",
+        static_cast<App::PropertyType>(App::Prop_Output | App::Prop_Hidden),
+        "Number of section faces per solid (for per-solid coloring)"
+    );
+
+    Source.setScope(App::LinkScope::Global);
+}
+
+short SectionAnalysis::mustExecute() const
+{
+    if (Source.isTouched() || PlaneNormal.isTouched() || PlaneOffset.isTouched()
+        || FlipCut.isTouched()) {
+        return 1;
+    }
+    return Feature::mustExecute();
+}
+
+void SectionAnalysis::collectSectionFaces(
+    const TopoDS_Shape& solid,
+    const gp_Pln& slicePlane,
+    std::vector<TopoDS_Face>& faces
+) const
+{
+    // Extract plane coefficients: ax + by + cz + d_coeff = 0
+    // The offset-from-origin is -d_coeff.
+    double a, b, c, d_coeff;
+    slicePlane.Coefficients(a, b, c, d_coeff);
+    double d = -d_coeff;
+
+    // Create a face on the cutting plane
+    BRepBuilderAPI_MakeFace mkFace(slicePlane);
+    TopoDS_Face planeFace = mkFace.Face();
+
+    // Create a reference point on the positive normal side
+    gp_Vec tempVector(a, b, c);
+    tempVector.Normalize();
+    tempVector *= (d + 1.0);
+    gp_Pnt refPoint(0.0, 0.0, 0.0);
+    refPoint.Translate(tempVector);
+
+    // Create half-space containing the reference point
+    BRepPrimAPI_MakeHalfSpace mkSolid(planeFace, refPoint);
+    TopoDS_Solid halfSpace = mkSolid.Solid();
+
+    // Cut the solid with the half-space (use raw OCCT, not FC wrapper which logs errors)
+    BRepAlgoAPI_Cut mkCut(solid, halfSpace);
+    if (!mkCut.IsDone()) {
+        return;
+    }
+
+    // Find faces that lie on the cutting plane
+    TopTools_IndexedMapOfShape mapOfFaces;
+    TopExp::MapShapes(mkCut.Shape(), TopAbs_FACE, mapOfFaces);
+    for (int i = 1; i <= mapOfFaces.Extent(); i++) {
+        const TopoDS_Face& face = TopoDS::Face(mapOfFaces.FindKey(i));
+        BRepAdaptor_Surface adapt(face);
+        if (adapt.GetType() == GeomAbs_Plane) {
+            gp_Pln plane = adapt.Plane();
+            if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
+                && plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
+                // Ensure consistent face orientation — the effective normal
+                // (geometric normal ± topological orientation) should match
+                // the slice plane direction so lighting/hatching is stable.
+                // BRepAdaptor_Surface::Plane() returns the geometric normal
+                // which ignores face topology, so check Orientation() too.
+                gp_Dir effectiveNormal = plane.Axis().Direction();
+                if (face.Orientation() == TopAbs_REVERSED) {
+                    effectiveNormal.Reverse();
+                }
+                gp_Dir sliceNormal = slicePlane.Axis().Direction();
+                if (effectiveNormal.Dot(sliceNormal) < 0) {
+                    faces.push_back(TopoDS::Face(face.Reversed()));
+                }
+                else {
+                    faces.push_back(face);
+                }
+            }
+        }
+    }
+}
+
+App::DocumentObjectExecReturn* SectionAnalysis::execute()
+{
+    App::DocumentObject* source = Source.getValue();
+    if (!source) {
+        return new App::DocumentObjectExecReturn("No source shape linked.");
+    }
+
+    // Collect shapes recursively — handles nested App::Part containers
+    // (e.g., STEP imports from Fusion 360 with sub-assemblies).
+    TopoDS_Shape sourceShape
+        = Feature::getShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
+
+    if (sourceShape.IsNull()) {
+        // Try recursive collection for nested Part containers
+        BRep_Builder builder;
+        TopoDS_Compound compound;
+        builder.MakeCompound(compound);
+        bool found = false;
+
+        std::function<void(App::DocumentObject*)> collectShapes;
+        collectShapes = [&](App::DocumentObject* obj) {
+            TopoDS_Shape shape
+                = Feature::getShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+            if (!shape.IsNull()) {
+                builder.Add(compound, shape);
+                found = true;
+                return;
+            }
+            // Recurse into children (App::Part, App::DocumentObjectGroup, etc.)
+            for (auto* child : obj->getOutList()) {
+                collectShapes(child);
+            }
+        };
+
+        for (auto* child : source->getOutList()) {
+            collectShapes(child);
+        }
+
+        if (found) {
+            sourceShape = compound;
+        }
+    }
+
+    if (sourceShape.IsNull()) {
+        return new App::DocumentObjectExecReturn("Source shape is empty.");
+    }
+
+    Base::Vector3d n = PlaneNormal.getValue();
+    double d = PlaneOffset.getValue();
+    bool flip = FlipCut.getValue();
+
+    // Normalize
+    double len = n.Length();
+    if (len < Precision::Confusion()) {
+        return new App::DocumentObjectExecReturn("Plane normal is zero.");
+    }
+    n = n / len;
+
+    double a = n.x, b = n.y, c = n.z;
+    if (flip) {
+        a = -a;
+        b = -b;
+        c = -c;
+        d = -d;
+    }
+
+    gp_Pln slicePlane(a, b, c, -d);
+    TopExp_Explorer xp;
+    std::vector<TopoDS_Face> sectionFaces;
+    std::vector<long> faceCounts;
+
+    // Count solids in source shape
+    int solidCount = 0;
+    for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+        solidCount++;
+    }
+
+    if (solidCount == 0) {
+        Base::Console().warning(
+            "SectionAnalysis: no solids found in source shape. "
+            "For nested Part containers (e.g. STEP imports), try selecting "
+            "individual bodies or creating a compound first.\n"
+        );
+    }
+
+    // Primary approach: Section + FaceMakerBullseye per solid.
+    // BRepAlgoAPI_Section computes intersection edges, FaceMakerBullseye
+    // builds faces with proper hole nesting (inner wires inside outer).
+    for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+        size_t facesBefore = sectionFaces.size();
+        try {
+            BRepAlgoAPI_Section cs(xp.Current(), slicePlane);
+            if (!cs.IsDone()) {
+                faceCounts.push_back(0);
+                continue;
+            }
+
+            Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+            TopExp_Explorer edgeXp;
+            for (edgeXp.Init(cs.Shape(), TopAbs_EDGE); edgeXp.More(); edgeXp.Next()) {
+                hEdges->Append(edgeXp.Current());
+            }
+            if (hEdges->IsEmpty()) {
+                faceCounts.push_back(0);
+                continue;
+            }
+
+            Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+            ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), false, hWires);
+
+            FaceMakerBullseye fm;
+            fm.setPlane(slicePlane);
+            for (int i = 1; i <= hWires->Length(); i++) {
+                TopoDS_Wire wire = TopoDS::Wire(hWires->Value(i));
+                ShapeFix_Wire aFix;
+                aFix.SetPrecision(Precision::Confusion());
+                aFix.Load(wire);
+                aFix.FixReorder();
+                aFix.FixConnected();
+                aFix.FixClosed();
+                fm.addWire(aFix.Wire());
+            }
+            fm.Build();
+
+            if (fm.IsDone()) {
+                gp_Dir sliceNormal = slicePlane.Axis().Direction();
+                for (edgeXp.Init(fm.Shape(), TopAbs_FACE); edgeXp.More(); edgeXp.Next()) {
+                    TopoDS_Face face = TopoDS::Face(edgeXp.Current());
+                    BRepAdaptor_Surface adapt(face);
+                    if (adapt.GetType() == GeomAbs_Plane) {
+                        gp_Dir effectiveNormal = adapt.Plane().Axis().Direction();
+                        if (face.Orientation() == TopAbs_REVERSED) {
+                            effectiveNormal.Reverse();
+                        }
+                        if (effectiveNormal.Dot(sliceNormal) < 0) {
+                            face = TopoDS::Face(face.Reversed());
+                        }
+                    }
+                    sectionFaces.push_back(face);
+                }
+            }
+        }
+        catch (...) {
+        }
+        faceCounts.push_back(static_cast<long>(sectionFaces.size() - facesBefore));
+    }
+
+    // Fallback: Boolean Cut approach if Section produced nothing
+    if (sectionFaces.empty()) {
+        faceCounts.clear();
+        for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+            size_t facesBefore = sectionFaces.size();
+            try {
+                collectSectionFaces(xp.Current(), slicePlane, sectionFaces);
+            }
+            catch (...) {
+            }
+            faceCounts.push_back(static_cast<long>(sectionFaces.size() - facesBefore));
+        }
+    }
+
+    SolidFaceCounts.setValues(faceCounts);
+    auto& faces = sectionFaces;
+
+    if (faces.empty() && solidCount > 0) {
+        Base::Console().warning(
+            "SectionAnalysis: %d solids found but no cross-section faces generated. "
+            "The cutting plane may not intersect the geometry.\n",
+            solidCount
+        );
+    }
+
+    if (faces.empty()) {
+        this->Shape.setValue(TopoDS_Shape());
+    }
+    else if (faces.size() == 1) {
+        this->Shape.setValue(faces.front());
+    }
+    else {
+        BRep_Builder builder;
+        TopoDS_Compound compound;
+        builder.MakeCompound(compound);
+        for (const auto& face : faces) {
+            builder.Add(compound, face);
+        }
+        this->Shape.setValue(compound);
+    }
+
+    return App::DocumentObject::StdReturn;
+}
