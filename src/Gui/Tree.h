@@ -207,6 +207,16 @@ private:
     void selectAllGroupLevel(const QTreeWidgetItem* targetNode, bool isGroup);
     void clearSelectAllContext();
 
+    // Reusable menu builder shared by contextMenuEvent() and the public
+    // showContextMenuForSelection() slot below.
+    void buildAndExecContextMenu();
+
+public Q_SLOTS:
+    /// Build and exec the tree context menu for the current selection, at the
+    /// cursor.  Allows the menu to be raised programmatically (e.g. from another
+    /// view) without synthesising a context-menu event.
+    void showContextMenuForSelection();
+
 protected Q_SLOTS:
     void onCreateGroup();
     void onRelabelObject();
