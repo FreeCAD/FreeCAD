@@ -167,6 +167,7 @@ SET(FemInOut_SRCS
     feminout/importCcxFrdResults.py
     feminout/importFenicsMesh.py
     feminout/importInpMesh.py
+    feminout/importMedResults.py
     feminout/importPyMesh.py
     feminout/importToolsFem.py
     feminout/importVTKResults.py
@@ -211,6 +212,7 @@ SET(FemObjects_SRCS
     femobjects/element_fluid1D.py
     femobjects/element_geometry1D.py
     femobjects/element_geometry2D.py
+    femobjects/element_geometry_laminate.py
     femobjects/element_rotation1D.py
     femobjects/material_common.py
     femobjects/material_mechanicalnonlinear.py
@@ -231,6 +233,7 @@ SET(FemObjects_SRCS
     femobjects/result_mechanical.py
     femobjects/solver_calculix.py
     femobjects/solver_ccxtools.py
+    femobjects/solver_codeaster.py
     femobjects/solver_elmer.py
     femobjects/solver_z88.py
 )
@@ -301,6 +304,23 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/write_step_equation.py
     femsolver/calculix/write_step_output.py
     femsolver/calculix/writer.py
+)
+
+SET(FemSolverCodeAster_SRCS
+    femsolver/codeaster/__init__.py
+    femsolver/codeaster/add_con_fixed.py
+    femsolver/codeaster/add_con_force.py
+    femsolver/codeaster/add_femelement_geometry.py
+    femsolver/codeaster/add_femelement_material.py
+    femsolver/codeaster/add_mesh.py
+    femsolver/codeaster/codeastertools.py
+    femsolver/codeaster/writer.py
+)
+
+SET(FemSolverCodeAsterEquations_SRCS
+    femsolver/codeaster/equations/__init__.py
+    femsolver/codeaster/equations/elasticity.py
+    femsolver/codeaster/equations/elasticity_writer.py
 )
 
 SET(FemSolverElmer_SRCS
@@ -388,6 +408,7 @@ SET(FemTestsApp_SRCS
     femtest/app/test_object.py
     femtest/app/test_open.py
     femtest/app/test_result.py
+    femtest/app/test_solver_codeaster.py
     femtest/app/test_solver_elmer.py
     femtest/app/test_solver_mystran.py
     femtest/app/test_solver_z88.py
@@ -444,6 +465,13 @@ SET(FemTestsCcx_SRCS
     femtest/data/calculix/square_pipe_end_twisted_edgeforces.inp
     femtest/data/calculix/square_pipe_end_twisted_nodeforces.inp
     femtest/data/calculix/thermomech_bimetal.inp
+)
+
+SET(FemTestsCodeAster_SRCS
+    femtest/data/codeaster/__init__.py
+    femtest/data/codeaster/plate-ORD1.med
+    femtest/data/codeaster/test.export
+    femtest/data/codeaster/testplate.comm
 )
 
 SET(FemTestsElmer_SRCS
@@ -607,6 +635,8 @@ SET(FemAllScripts
     ${FemResult_SRCS}
     ${FemSolver_SRCS}
     ${FemSolverCalculix_SRCS}
+    ${FemSolverCodeAster_SRCS}
+    ${FemSolverCodeAsterEquations_SRCS}
     ${FemSolverElmer_SRCS}
     ${FemSolverElmerEquations_SRCS}
     ${FemSolverFenics_SRCS}
@@ -616,6 +646,7 @@ SET(FemAllScripts
     ${FemTestsApp_SRCS}
     ${FemTestsFiles_SRCS}
     ${FemTestsCcx_SRCS}
+    ${FemTestsCodeAster_SRCS}
     ${FemTestsElmer_SRCS}
     ${FemTestsMesh_SRCS}
     ${FemTestsGMSH_SRCS}
@@ -647,6 +678,8 @@ INSTALL(FILES ${FemObjects_SRCS} DESTINATION Mod/Fem/femobjects)
 INSTALL(FILES ${FemResult_SRCS} DESTINATION Mod/Fem/femresult)
 INSTALL(FILES ${FemSolver_SRCS} DESTINATION Mod/Fem/femsolver)
 INSTALL(FILES ${FemSolverCalculix_SRCS} DESTINATION Mod/Fem/femsolver/calculix)
+INSTALL(FILES ${FemSolverCodeAster_SRCS} DESTINATION Mod/Fem/femsolver/codeaster)
+INSTALL(FILES ${FemSolverCodeAsterEquations_SRCS} DESTINATION Mod/Fem/femsolver/codeaster/equations)
 INSTALL(FILES ${FemSolverElmer_SRCS} DESTINATION Mod/Fem/femsolver/elmer)
 INSTALL(FILES ${FemSolverElmerEquations_SRCS} DESTINATION Mod/Fem/femsolver/elmer/equations)
 INSTALL(FILES ${FemSolverFenics_SRCS} DESTINATION Mod/Fem/femsolver/fenics)
@@ -656,6 +689,7 @@ INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsApp_SRCS} DESTINATION Mod/Fem/femtest/app)
 INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/data)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/data/calculix)
+INSTALL(FILES ${FemTestsCodeAster_SRCS} DESTINATION Mod/Fem/femtest/data/codeaster)
 INSTALL(FILES ${FemTestsElmer_SRCS} DESTINATION Mod/Fem/femtest/data/elmer)
 INSTALL(FILES ${FemTestsMesh_SRCS} DESTINATION Mod/Fem/femtest/data/mesh)
 INSTALL(FILES ${FemTestsMystran_SRCS} DESTINATION Mod/Fem/femtest/data/mystran)
@@ -703,6 +737,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_element_fluid1D.py
     femtaskpanels/task_element_geometry1D.py
     femtaskpanels/task_element_geometry2D.py
+    femtaskpanels/task_element_geometry_laminate.py
     femtaskpanels/task_element_rotation1D.py
     femtaskpanels/task_material_common.py
     femtaskpanels/task_material_reinforced.py
@@ -721,6 +756,7 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_result_mechanical.py
     femtaskpanels/task_solver_calculix.py
     femtaskpanels/task_solver_ccxtools.py
+    femtaskpanels/task_solver_codeaster.py
     femtaskpanels/task_solver_elmer.py
     femtaskpanels/task_solver_z88.py
 )
@@ -780,6 +816,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_element_fluid1D.py
     femviewprovider/view_element_geometry1D.py
     femviewprovider/view_element_geometry2D.py
+    femviewprovider/view_element_geometry_laminate.py
     femviewprovider/view_element_rotation1D.py
     femviewprovider/view_material_common.py
     femviewprovider/view_material_mechanicalnonlinear.py
@@ -800,6 +837,7 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_result_mechanical.py
     femviewprovider/view_solver_calculix.py
     femviewprovider/view_solver_ccxtools.py
+    femviewprovider/view_solver_codeaster.py
     femviewprovider/view_solver_elmer.py
     femviewprovider/view_solver_z88.py
 )
