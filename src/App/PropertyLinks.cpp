@@ -41,6 +41,7 @@
 #include "ObjectIdentifier.h"
 #include "ElementNamingUtils.h"
 #include "GeoFeature.h"
+#include "ComplexGeoData.h"
 
 
 FC_LOG_LEVEL_INIT("PropertyLinks", true, true)
@@ -474,7 +475,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         // to version change, i.e. 'reverse', try search by geometry first
         const char* oldElement = Data::findElementName(shadow.oldName.c_str());
         if (!Data::hasMissingElement(oldElement)) {
-            auto names = geo->searchElementCache(oldElement);
+            auto names = geo->searchElementCache(oldElement, Data::SearchOption::CheckGeometry);
             if (names.empty()) {
                 // try floating point tolerance
                 names = geo->searchElementCache(oldElement, Data::SearchOptions());
