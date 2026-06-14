@@ -142,4 +142,4 @@ endif(BUILD_BRIDGE)
 
 if(BUILD_AGENT)
     add_subdirectory(Agent)
-endif(BUILD_Agent)
+endif(BUILD_AGENT)

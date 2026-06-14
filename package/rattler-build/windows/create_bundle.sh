@@ -9,6 +9,18 @@ conda_env="${conda_env//\\//}"
 copy_dir="Parashell_Windows"
 mkdir -p ${copy_dir}/bin
 
+echo "Installing QtWebEngine-enabled PySide6 payload for the Parashell Agent"
+agent_mod_dir="$(find "${conda_env}/Library/Mod" -type d -path '*/Mod/Agent' 2>/dev/null | head -n1)"
+if [ -n "${agent_mod_dir}" ]; then
+    "${conda_env}/python.exe" -m pip install --no-input --no-cache-dir \
+        --target "${agent_mod_dir}/_webengine" "PySide6==6.8.3"
+    find "${agent_mod_dir}/_webengine" -name "*.dist-info" -type d -prune -exec rm -rf {} + || true
+    rm -rf "${agent_mod_dir}/_webengine/bin"
+else
+    echo "ERROR: Parashell Agent module directory not found; cannot install QtWebEngine payload." >&2
+    exit 1
+fi
+
 # Copy Conda's Python and (U)CRT to FreeCAD/bin
 cp -a ${conda_env}/DLLs ${copy_dir}/bin/DLLs
 cp -a ${conda_env}/Lib ${copy_dir}/bin/Lib
