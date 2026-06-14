@@ -122,6 +122,9 @@ private:
 
     bool setDirections(TopoDS_Shape& s1);  // not the actual normals adjusted for arc visualization
 
+    bool isDatum1();
+    bool isDatum2();
+
     void onChanged(const App::Property* prop) override;
 };
 
