@@ -44,9 +44,6 @@ ManifestDPIAware true
 !include WinVer.nsh
 !include x64.nsh
 
-# load the nsPprocess plugin
-!include nsProcess.nsh
-
 # Set of various macros and functions
 !include include\utils.nsh
 

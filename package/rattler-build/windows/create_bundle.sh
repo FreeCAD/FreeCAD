@@ -139,48 +139,34 @@ sha256sum ${version_name}.7z > ${version_name}.7z-SHA256.txt
 
 if [ "${MAKE_INSTALLER}" == "true" ]; then
     FILES_FREECAD="$(cygpath -w $(pwd))\\${version_name}"
-    nsis_cpdir=$(pwd)/.nsis_tmp
-    cp -r "${CONDA_PREFIX}/NSIS" "${nsis_cpdir}"
-    # curl -L -o ".nsis-log.zip" http://prdownloads.sourceforge.net/nsis/nsis-3.11-log.zip # we use the log variant of the package already
-    # curl -L -o ".nsis-strlen_8192.zip" "http://prdownloads.sourceforge.net/nsis/nsis-3.11-strlen_8192.zip"
-    curl -L -o ".NsProcess.7z" "https://nsis.sourceforge.io/mediawiki/images/1/18/NsProcess.zip"
-    if [ ! $(echo fc19fc66a5219a233570fafd5daeb0c9b85387b379f6df5ac8898159a57c5944 .NsProcess.7z | sha256sum --check --status) ]; then
-        7z x .NsProcess.7z -o"${nsis_cpdir}" -y
-        mv "${nsis_cpdir}"/Plugin/nsProcess.dll "${nsis_cpdir}"/Plugins/x86-ansi/nsProcess.dll
-        mv "${nsis_cpdir}"/Plugin/nsProcessW.dll "${nsis_cpdir}"/Plugins/x86-unicode/nsProcess.dll
-        "${nsis_cpdir}"/makensis.exe -V4 \
-            -D"ExeFile=${version_name}-installer.exe" \
-            -D"FILES_FREECAD=${FILES_FREECAD}" \
-            -X'SetCompressor /FINAL lzma' \
-            ../../WindowsInstaller/FreeCAD-installer.nsi
-        mv ../../WindowsInstaller/${version_name}-installer.exe .
-        echo "Created installer ${version_name}-installer.exe"
-
-        # See if we can sign the installer exe as well:
-        if [[ "${WINDOWS_SIGN_RELEASE:-0}" == "1" ]] && \
-           az account get-access-token \
-               --tenant "$TENANT" \
-               --scope "https://codesigning.azure.net/.default" \
-               >/dev/null 2>&1;
-        then
-          echo "Signing the installer..."
-          sign code artifact-signing \
-              --artifact-signing-endpoint "${WINDOWS_AZURE_ENDPOINT}" \
-              --artifact-signing-certificate-profile "${WINDOWS_AZURE_CERTIFICATE_PROFILE}" \
-              --artifact-signing-account "${WINDOWS_AZURE_SIGNING_ACCOUNT}" \
-              --timestamp-url https://timestamp.acs.microsoft.com \
-              --timestamp-digest sha256 \
-              ${version_name}-installer.exe >/dev/null 2>&1 \
-              || { echo "Signing the installer failed!"; exit 1; }
-        else
-          echo "No code signing available, leaving the installer unsigned"
-        fi
-
-        sha256sum ${version_name}-installer.exe > ${version_name}-installer.exe-SHA256.txt
+    nsis_cmd="${CONDA_PREFIX}/NSIS/makensis.exe"
+    "${nsis_cmd}" -V4 \
+        -D"ExeFile=${version_name}-installer.exe" \
+        -D"FILES_FREECAD=${FILES_FREECAD}" \
+        -X'SetCompressor /FINAL lzma' \
+        ../../WindowsInstaller/FreeCAD-installer.nsi
+    mv ../../WindowsInstaller/${version_name}-installer.exe .
+    echo "Created installer ${version_name}-installer.exe"
+    # See if we can sign the installer exe as well:
+    if [[ "${WINDOWS_SIGN_RELEASE:-0}" == "1" ]] && \
+       az account get-access-token \
+           --tenant "$TENANT" \
+           --scope "https://codesigning.azure.net/.default" \
+           >/dev/null 2>&1;
+    then
+      echo "Signing the installer..."
+      sign code artifact-signing \
+          --artifact-signing-endpoint "${WINDOWS_AZURE_ENDPOINT}" \
+          --artifact-signing-certificate-profile "${WINDOWS_AZURE_CERTIFICATE_PROFILE}" \
+          --artifact-signing-account "${WINDOWS_AZURE_SIGNING_ACCOUNT}" \
+          --timestamp-url https://timestamp.acs.microsoft.com \
+          --timestamp-digest sha256 \
+          ${version_name}-installer.exe >/dev/null 2>&1 \
+          || { echo "Signing the installer failed!"; exit 1; }
     else
-        echo "Error: Failed to get NsProcess plugin. Aborting installer creation..."
+      echo "No code signing available, leaving the installer unsigned"
     fi
-    rm -rf "${nsis_cpdir}"
+    sha256sum ${version_name}-installer.exe > ${version_name}-installer.exe-SHA256.txt
 fi
 
 if [ "${UPLOAD_RELEASE}" == "true" ]; then

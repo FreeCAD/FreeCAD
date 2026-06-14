@@ -127,15 +127,19 @@ Function .onInit
   ${endif}
 
   # Check that FreeCAD is not currently running
-  ${nsProcess::FindProcess} ${BIN_FREECAD} $R0
-  # if running result is '0', if not running it is '603'
+  Push $R0
+  Push $R1
+  ${FindProc} $R0 ${BIN_FREECAD}
+  ${FindProc} $R1 ${BIN_FREECADCMD}
+  # if running result is '0', if not running it is '1'
   ${if} $R0 == "0"
+  ${orif} $R1 == "0"
    MessageBox MB_OK|MB_ICONSTOP "$(UnInstallRunning)" /SD IDOK
    Abort
   ${endif}
-  # plugin must be unloaded
-  ${nsProcess::Unload}
-  
+  Pop $R1
+  Pop $R0
+
   # initialize the multi-user installer UI
   !insertmacro MULTIUSER_INIT
 
@@ -169,15 +173,19 @@ Function un.onInit
   !insertmacro MULTIUSER_UNINIT
 
   # Check that FreeCAD is not currently running
-  ${nsProcess::FindProcess} ${BIN_FREECAD} $R0
-  # if running result is '0', if not running it is '603'
+  Push $R0
+  Push $R1
+  ${FindProc} $R0 ${BIN_FREECAD}
+  ${FindProc} $R1 ${BIN_FREECADCMD}
+  # if running result is '0', if not running it is '1'
   ${if} $R0 == "0"
+  ${orif} $R1 == "0"
    MessageBox MB_OK|MB_ICONSTOP "$(UnInstallRunning)" /SD IDOK
    Abort
   ${endif}
-  # plugin must be unloaded
-  ${nsProcess::Unload}
-  
+  Pop $R1
+  Pop $R0
+
   # check if it is a 64bit system
   ${if} ${RunningX64}
    SetRegView 64
