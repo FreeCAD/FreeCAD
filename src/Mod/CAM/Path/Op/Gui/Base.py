@@ -1510,7 +1510,16 @@ class TaskPanel(object):
             except Exception as ee:
                 Path.Log.debug("{}\n".format(ee))
             FreeCAD.ActiveDocument.commitTransaction()
-        self.cleanup(resetEdit)
+            # Object was removed; nothing meaningful to recompute, and the
+            # owning document still needs a refresh to drop view artifacts.
+            self.cleanup(resetEdit, recompute=True)
+        else:
+            # Edit-mode cancel: abortTransaction has already rolled back any
+            # property writes the user made, so re-running opExecute would
+            # just regenerate an unchanged toolpath.  Skip the recompute so
+            # long-running ops (Surface3D, Adaptive, etc.) don't pay for a
+            # cancel.
+            self.cleanup(resetEdit, recompute=False)
         return True
 
     def preCleanup(self):
@@ -1521,13 +1530,14 @@ class TaskPanel(object):
         self.obj.ViewObject.Proxy.clearTaskPanel()
         self.obj.ViewObject.Visibility = self.visibility
 
-    def cleanup(self, resetEdit):
+    def cleanup(self, resetEdit, recompute=True):
         """cleanup() ... implements common cleanup tasks."""
         self.panelCleanup()
         FreeCADGui.Control.closeDialog()
         if resetEdit:
             FreeCADGui.ActiveDocument.resetEdit()
-        FreeCAD.ActiveDocument.recompute()
+        if recompute:
+            FreeCAD.ActiveDocument.recompute()
 
     def pageDirtyChanged(self, page):
         """pageDirtyChanged(page) ... internal callback"""
