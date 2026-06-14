@@ -304,3 +304,10 @@ FunctionEnd
   SetDetailsPrint lastused
 !macroend
 !define DetailPrintToBoth `!insertmacro _DetailPrintToBoth`
+
+# based on https://nsis.sourceforge.io/Check_whether_your_application_is_running#Using_the_name_of_the_process_(with_Windows'_tasklist_command)
+!macro _FindProc result processName
+  nsExec::Exec '"$SYSDIR\cmd.exe" /c ""$SYSDIR\tasklist.exe" /NH /FI "IMAGENAME eq ${processName}" | "$SYSDIR\find.exe" /I "${processName}""'
+  Pop ${result}
+!macroend
+!define FindProc `!insertmacro _FindProc`
