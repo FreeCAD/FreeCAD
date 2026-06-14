@@ -1382,6 +1382,10 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::resolvePreselection
     const PreselectionCandidates& candidates
 ) const
 {
+    if (candidates.Geometry.Kind == PreselectionResult::HitKind::Point) {
+        return candidates.Geometry;
+    }
+
     if (candidates.Constraint.hasWinner()) {
         return candidates.Constraint;
     }
