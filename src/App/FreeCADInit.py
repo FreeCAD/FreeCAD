@@ -172,6 +172,7 @@ def InitApplications():
 
     # to have all the module-paths available in FreeCADGuiInit.py:
     FreeCAD.__ModDirs__ = list(ModDict.values())
+    FreeCAD.__MacroDirs__ = list({os.path.realpath(MacroDir), os.path.realpath(MacroStd), SystemWideMacroDir})
 
     # this allows importing with:
     # from FreeCAD.Module import package
