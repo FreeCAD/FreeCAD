@@ -24,8 +24,14 @@
 #include <cstdint>
 
 #include <Inventor/SbColor.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
 
 #include "Window.h"
+
+class SoColorPacker;
+class SoNode;
+class SoState;
 
 namespace Gui::SelectionColors
 {
@@ -60,5 +66,80 @@ inline SbColor defaultHighlightColor()
 inline SbColor defaultSelectionColor()
 {
     return viewPreferenceColor("SelectionColor", selectionFallbackColor());
+}
+
+enum class VisualRole
+{
+    Selection,
+    Preselection,
+};
+
+inline SbColor scaledColor(const SbColor& color, float scale)
+{
+    return SbColor(color[0] * scale, color[1] * scale, color[2] * scale);
+}
+
+inline SbColor emissiveColor(VisualRole role, const SbColor& color)
+{
+    // Emissive is only a small boost so selection colors stay visible without
+    // flattening shaded faces. Selection and preselection intentionally share
+    // the scale for now; keep the role explicit so future tuning stays local.
+    constexpr float selectionEmissiveScale = 0.35f;
+    constexpr float preselectionEmissiveScale = 0.35f;
+    const float scale = role == VisualRole::Preselection ? preselectionEmissiveScale
+                                                         : selectionEmissiveScale;
+    return scaledColor(color, scale);
+}
+
+inline void clearColorOverrides(SoState* state, SoNode* node)
+{
+    SoOverrideElement::setAmbientColorOverride(state, node, false);
+    SoOverrideElement::setDiffuseColorOverride(state, node, false);
+    SoOverrideElement::setEmissiveColorOverride(state, node, false);
+}
+
+inline void applyMaterial(
+    SoState* state,
+    SoNode* node,
+    VisualRole role,
+    const SbColor& color,
+    SoColorPacker* packer
+)
+{
+    const SbColor emissive = emissiveColor(role, color);
+
+    clearColorOverrides(state, node);
+
+    SoLazyElement::setAmbient(state, &color);
+    SoOverrideElement::setAmbientColorOverride(state, node, true);
+
+    SoLazyElement::setDiffuse(state, node, 1, &color, packer);
+    SoOverrideElement::setDiffuseColorOverride(state, node, true);
+
+    SoLazyElement::setEmissive(state, &emissive);
+    SoOverrideElement::setEmissiveColorOverride(state, node, true);
+}
+
+inline void applyPackedMaterial(
+    SoState* state,
+    SoNode* node,
+    VisualRole role,
+    const SbColor& color,
+    std::uint32_t packedColor,
+    bool hasTransparency
+)
+{
+    const SbColor emissive = emissiveColor(role, color);
+
+    clearColorOverrides(state, node);
+
+    SoLazyElement::setAmbient(state, &color);
+    SoOverrideElement::setAmbientColorOverride(state, node, true);
+
+    SoLazyElement::setPacked(state, node, 1, &packedColor, hasTransparency);
+    SoOverrideElement::setDiffuseColorOverride(state, node, true);
+
+    SoLazyElement::setEmissive(state, &emissive);
+    SoOverrideElement::setEmissiveColorOverride(state, node, true);
 }
 }  // namespace Gui::SelectionColors

@@ -4,7 +4,7 @@
 """
 Manage baselines for the Coin node visual snapshot test.
 
-This script runs the existing FreeCAD unittest `TestCoinNodeSnapshots` via FreeCADCmd,
+This script runs the existing FreeCAD unittest snapshot table via FreeCADCmd,
 configuring it through environment variables (so we don't depend on FreeCAD forwarding
 CLI args to Python).
 
@@ -165,12 +165,13 @@ def main(argv: list[str]) -> int:
     if args.nodes.strip():
         env["FC_VISUAL_NODES"] = args.nodes
 
+    test_name = "TestCoinNodeSnapshots.CoinNodeSnapshotTestCase.test_coin_node_snapshots"
     if args.mode == "update":
         env["FC_VISUAL_UPDATE_BASELINE"] = "1"
-        cmd = [str(freecadcmd), "-t", "TestCoinNodeSnapshots"]
+        cmd = [str(freecadcmd), "-t", test_name]
     else:
         env.pop("FC_VISUAL_UPDATE_BASELINE", None)
-        cmd = [str(freecadcmd), "-t", "TestCoinNodeSnapshots"]
+        cmd = [str(freecadcmd), "-t", test_name]
 
     print(f"Running: {' '.join(cmd)}")
     if "QT_QPA_PLATFORM" in env:

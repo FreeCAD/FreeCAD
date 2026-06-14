@@ -660,15 +660,14 @@ SbBool SoFCSelection::preRender(SoGLRenderAction* action, GLint& oldDepthFunc)
             col = colorHighlight.getValue();
         }
 
-        // Emissive Color
-        SoLazyElement::setEmissive(state, &col);
-        SoOverrideElement::setEmissiveColorOverride(state, this, true);
-
-        // Diffuse Color
-        if (style.getValue() == EMISSIVE_DIFFUSE) {
-            SoLazyElement::setDiffuse(state, this, 1, &col, &colorpacker);
-            SoOverrideElement::setDiffuseColorOverride(state, this, true);
-        }
+        SelectionColors::applyMaterial(
+            state,
+            this,
+            selected.getValue() == SELECTED ? SelectionColors::VisualRole::Selection
+                                            : SelectionColors::VisualRole::Preselection,
+            col,
+            &colorpacker
+        );
     }
 
     // Draw on top of other things at same z-buffer depth if:
@@ -741,23 +740,15 @@ bool SoFCSelection::setOverride(SoGLRenderAction* action, SelContextPtr ctx)
     SoMaterialBindingElement::set(state, SoMaterialBindingElement::OVERALL);
     SoOverrideElement::setMaterialBindingOverride(state, this, true);
 
-    if (!preselected && ctx) {
-        SoLazyElement::setEmissive(state, &ctx->selectionColor);
-    }
-    else if (ctx) {
-        SoLazyElement::setEmissive(state, &ctx->highlightColor);
-    }
-    SoOverrideElement::setEmissiveColorOverride(state, this, true);
-
-    if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR
-        || mystyle == SoFCSelection::EMISSIVE_DIFFUSE) {
-        if (!preselected && ctx) {
-            SoLazyElement::setDiffuse(state, this, 1, &ctx->selectionColor, &colorpacker);
-        }
-        else if (ctx) {
-            SoLazyElement::setDiffuse(state, this, 1, &ctx->highlightColor, &colorpacker);
-        }
-        SoOverrideElement::setDiffuseColorOverride(state, this, true);
+    if (ctx) {
+        SelectionColors::applyMaterial(
+            state,
+            this,
+            preselected ? SelectionColors::VisualRole::Preselection
+                        : SelectionColors::VisualRole::Selection,
+            preselected ? ctx->highlightColor : ctx->selectionColor,
+            &colorpacker
+        );
     }
 
     this->uniqueId = oldId;
