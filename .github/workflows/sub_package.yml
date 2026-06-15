@@ -1,0 +1,131 @@
+name: Package Installers
+
+on:
+  workflow_call:
+    inputs:
+      artifactBasename:
+        type: string
+        required: true
+      allowedToFail:
+        default: false
+        type: boolean
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  Package:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ inputs.allowedToFail }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { target: linux-64, os: ubuntu-22.04 }
+          - { target: osx-arm64, os: macos-latest, deploy_target: "11.0" }
+          - { target: osx-arm64, os: macos-latest, deploy_target: "15.0" }
+          - { target: win-64, os: windows-latest }
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: Maximize build space
+        if: runner.os == 'Linux'
+        uses: AdityaGarg8/remove-unwanted-software@90e01b21170618765a73370fcc3abbd1684a7793 # v5
+        with:
+          verbose: 'true'
+          remove-android: 'true'
+          remove-cached-tools: 'true'
+
+      - name: Set platform environment variables
+        shell: bash -l {0}
+        env:
+          OPERATING_SYSTEM: ${{ runner.os }}
+        run: |
+          if [[ $OPERATING_SYSTEM == 'Windows' ]]; then
+            echo 'PIXI_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
+            echo 'RATTLER_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
+          fi
+
+      - name: Checkout source
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          fetch-tags: true
+          submodules: 'recursive'
+
+      - uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11 # v0.9.6
+        with:
+          pixi-version: v0.68.0
+          cache: false
+
+      - name: Compute build tag
+        id: build_tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          BRANCH="${{ github.ref_name }}"
+          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+          MD5=$(printf '%s' "${{ github.sha }}" | md5sum | cut -d' ' -f1)
+          EPOCH=$(date "+%s")
+          STAMP="${MD5}-${EPOCH}"
+          if [ "$BRANCH" = "$DEFAULT_BRANCH" ]; then
+            BUILD_TAG="weekly-${STAMP}"
+          else
+            SAFE_BRANCH=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9._-]/-/g')
+            BUILD_TAG="${SAFE_BRANCH}-${STAMP}"
+          fi
+          echo "build_tag=${BUILD_TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Build packages
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_PLATFORM: ${{ matrix.target }}
+          BUILD_TAG: ${{ steps.build_tag.outputs.build_tag }}
+        run: |
+          set -euo pipefail
+          if [[ "${{ runner.os }}" == "macOS" ]]; then
+            export MACOS_DEPLOYMENT_TARGET="${{ matrix.deploy_target }}"
+          fi
+          python3 package/scripts/write_version_info.py ../freecad_version.txt
+          cd package/rattler-build
+          pixi install --frozen
+
+      - name: Create installable bundle
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_PLATFORM: ${{ matrix.target }}
+          MAKE_INSTALLER: "true"
+          UPLOAD_RELEASE: "false"
+          BUILD_TAG: ${{ steps.build_tag.outputs.build_tag }}
+        run: |
+          set -euo pipefail
+          export MACOS_SIGN_RELEASE=0
+          export WINDOWS_SIGN_RELEASE=0
+          if [[ "${{ runner.os }}" == "macOS" ]]; then
+            export MACOS_DEPLOYMENT_TARGET="${{ matrix.deploy_target }}"
+          fi
+          cd package/rattler-build
+          pixi run -e package create_bundle
+
+      - name: Upload installable artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ inputs.artifactBasename }}-installers-${{ matrix.target }}-${{ matrix.deploy_target || 'default' }}
+          if-no-files-found: error
+          path: |
+            package/rattler-build/linux/Parashell_*.AppImage
+            package/rattler-build/linux/Parashell_*.AppImage.zsync
+            package/rattler-build/linux/Parashell_*.AppImage-SHA256.txt
+            package/rattler-build/windows/Parashell_*.7z
+            package/rattler-build/windows/Parashell_*.7z-SHA256.txt
+            package/rattler-build/windows/Parashell_*-installer.exe
+            package/rattler-build/windows/Parashell_*-installer.exe-SHA256.txt
+            package/rattler-build/osx/Parashell_*.dmg
+            package/rattler-build/osx/Parashell_*.dmg-SHA256.txt
