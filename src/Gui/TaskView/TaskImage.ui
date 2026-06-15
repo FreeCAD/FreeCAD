@@ -257,10 +257,23 @@
          <item>
           <widget class="QCheckBox" name="checkBoxOrient">
            <property name="text">
-            <string>Snap rotation to line</string>
+            <string>Snap rotation to line (R)</string>
            </property>
            <property name="toolTip">
             <string>Rotate the image to align the drawn line to the nearest 45 degree angle</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxCenterMidpoint">
+           <property name="text">
+            <string>Center on midpoint (C)</string>
+           </property>
+           <property name="toolTip">
+            <string>Center the image on the midpoint of the drawn line</string>
            </property>
            <property name="checked">
             <bool>false</bool>

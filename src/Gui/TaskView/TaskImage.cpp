@@ -42,6 +42,8 @@
 #include <Gui/Camera.h>
 #include <Gui/Document.h>
 #include <Gui/EditableDatumLabel.h>
+#include <Gui/InputHint.h>
+#include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -205,6 +207,30 @@ void TaskImage::scaleImage(double factor)
     }
 }
 
+void TaskImage::showToolHints() const
+{
+    using enum Gui::InputHint::UserInput;
+    InteractiveScaleState state = scale->getState();
+
+    InputHint snap = {tr("%1 snap angle"), {ModifierCtrl}};
+    InputHint toggleCenter = {tr("%1 toggle centering"), {KeyC}};
+    InputHint toggleRotation = {tr("%1 toggle rotating to line"), {KeyR}};
+
+    std::list<Gui::InputHint> hints = Gui::lookupHints<InteractiveScaleState>(
+        state,
+        {
+            {.state = InteractiveScaleState::PickingFirst,
+             .hints = {{tr("%1 pick first point"), {MouseLeft}}, toggleCenter, toggleRotation}},
+            {.state = InteractiveScaleState::PickingSecond,
+             .hints = {snap, {tr("%1 pick second point"), {MouseLeft}}, toggleCenter, toggleRotation}},
+            {.state = InteractiveScaleState::Pending, .hints = {toggleCenter, toggleRotation}},
+        }
+    );
+
+    Gui::getMainWindow()->showHints(hints);
+}
+
+
 void TaskImage::startScale()
 {
     if (scale) {
@@ -212,15 +238,29 @@ void TaskImage::startScale()
         ui->pushButtonScale->hide();
         ui->groupBoxCalibration->show();
         ui->pushButtonApply->setEnabled(false);
+
+        showToolHints();
     }
 }
 
 void TaskImage::acceptScale()
 {
     if (scale) {
+        bool update = false;
+        if (ui->checkBoxCenterMidpoint->isChecked()) {
+            SbVec3f midpoint = scale->getMidPoint();
+            ui->spinBoxX->setValue(-midpoint[0]);
+            ui->spinBoxY->setValue(-midpoint[1]);
+            update = true;
+        }
         if (ui->checkBoxOrient->isChecked()) {
             applyOrientation();
+            update = true;
         }
+        if (update) {
+            updatePlacement();
+        }
+
         scaleImage(scale->getScaleFactor());
         rejectScale();
     }
@@ -241,12 +281,21 @@ void TaskImage::applyOrientation()
     float newAngle = placementAngle + adjustment;
 
     ui->spinBoxRotation->setValue(newAngle);
-    updatePlacement();
 }
 
 void TaskImage::enableApplyBtn()
 {
     ui->pushButtonApply->setEnabled(true);
+}
+
+void TaskImage::toggleRotation()
+{
+    ui->checkBoxOrient->toggle();
+}
+
+void TaskImage::toggleCentering()
+{
+    ui->checkBoxCenterMidpoint->toggle();
 }
 
 void TaskImage::rejectScale()
@@ -255,6 +304,8 @@ void TaskImage::rejectScale()
         scale->deactivate();
         ui->pushButtonScale->show();
         ui->groupBoxCalibration->hide();
+
+        showToolHints();
     }
 }
 
@@ -268,6 +319,9 @@ void TaskImage::onInteractiveScale()
             connect(scale, &InteractiveScale::scaleRequired, this, &TaskImage::acceptScale);
             connect(scale, &InteractiveScale::scaleCanceled, this, &TaskImage::rejectScale);
             connect(scale, &InteractiveScale::enableApplyBtn, this, &TaskImage::enableApplyBtn);
+            connect(scale, &InteractiveScale::showToolHints, this, &TaskImage::showToolHints);
+            connect(scale, &InteractiveScale::toggleRotation, this, &TaskImage::toggleRotation);
+            connect(scale, &InteractiveScale::toggleCentering, this, &TaskImage::toggleCentering);
         }
     }
 
@@ -500,6 +554,23 @@ InteractiveScale::~InteractiveScale()
     delete measureLabel;
 }
 
+InteractiveScaleState InteractiveScale::getState() const
+{
+    if (!active) {
+        return InteractiveScaleState::Inactive;
+    }
+    else if (points.size() == 0) {
+        return InteractiveScaleState::PickingFirst;
+    }
+    else if (points.size() == 1) {
+        return InteractiveScaleState::PickingSecond;
+    }
+    else {
+        return InteractiveScaleState::Pending;
+    }
+}
+
+
 void InteractiveScale::activate()
 {
     if (viewer) {
@@ -554,7 +625,16 @@ double InteractiveScale::getAngleDegrees() const
     }
 
     SbVec3f delta = points[1] - points[0];
-    return std::atan2(delta[1], delta[0]) * 180.0 / M_PI;
+    return Base::toDegrees(std::atan2(delta[1], delta[0]));
+}
+
+SbVec3f InteractiveScale::getMidPoint() const
+{
+    if (points.size() < 2) {
+        return {0.0F, 0.0F, 0.0F};
+    }
+
+    return (points[0] + points[1]) / 2;
 }
 
 double InteractiveScale::getDistance(const SbVec3f& pt) const
@@ -564,6 +644,23 @@ double InteractiveScale::getDistance(const SbVec3f& pt) const
     }
 
     return (points[0] - pt).length();
+}
+
+SbVec3f InteractiveScale::snapAtAngle(const SbVec3f& pt) const
+{
+    if (points.size() < 1) {
+        return pt;
+    }
+    const SbVec3f& first = points[0];
+    SbVec3f delta = pt - first;
+
+    float angle = std::atan2(delta[1], delta[0]);
+    // Snap in radians, since we'll use them for the vector
+    const float snapSize = Base::toRadians(5.0);
+    angle = snapSize * round(angle / snapSize);
+
+    SbVec3f snapPos = first + delta.length() * SbVec3f {cos(angle), sin(angle), 0.0F};
+    return snapPos;
 }
 
 void InteractiveScale::setDistance(const SbVec3f& pos3d)
@@ -601,14 +698,21 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
 
         measureLabel->label->setPoints(planePoint, planePoint);
         measureLabel->activate();
+        Q_EMIT showToolHints();
     }
     else if (points.size() == 1) {
+        // Snap when Ctrl is held
+        if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
+            planePoint = snapAtAngle(planePoint);
+        }
+
         double distance = getDistance(planePoint);
         if (distance > Base::Precision::Confusion()) {
             points.push_back(planePoint);
 
             measureLabel->startEdit(distance, this, true);
 
+            Q_EMIT showToolHints();
             Q_EMIT enableApplyBtn();
         }
         else {
@@ -632,6 +736,12 @@ void InteractiveScale::getMousePosition(void* ud, SoEventCallback* ecb)
         std::unique_ptr<SoPickedPoint> pp(view->getPointOnRay(l2e->getPosition(), scale->viewProv));
         if (pp) {
             SbVec3f pos3d = scale->getCoordsOnImagePlane(pp->getPoint());
+
+            // Snap when Ctrl is held
+            if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
+                pos3d = scale->snapAtAngle(pos3d);
+            }
+
             scale->setDistance(pos3d);
         }
     }
@@ -643,12 +753,31 @@ void InteractiveScale::soEventFilter(void* ud, SoEventCallback* ecb)
 
     const SoEvent* soEvent = ecb->getEvent();
     if (soEvent->isOfType(SoKeyboardEvent::getClassTypeId())) {
-        /* If user presses escape, then we cancel the tool.*/
         const auto kbe = static_cast<const SoKeyboardEvent*>(soEvent);  // NOLINT
 
-        if (kbe->getKey() == SoKeyboardEvent::ESCAPE && kbe->getState() == SoButtonEvent::UP) {
-            ecb->setHandled();
-            Q_EMIT scale->scaleCanceled();
+        // We only care about release events
+        if (kbe->getState() != SoButtonEvent::UP) {
+            return;
+        }
+
+        switch (kbe->getKey()) {
+            case SoKeyboardEvent::ESCAPE:
+                // Cancel the tool
+                ecb->setHandled();
+                Q_EMIT scale->scaleCanceled();
+                break;
+            case SoKeyboardEvent::R:
+                // Toggle rotating the image by the line
+                ecb->setHandled();
+                Q_EMIT scale->toggleRotation();
+                break;
+            case SoKeyboardEvent::C:
+                // Toggle centering the image on midpoint
+                ecb->setHandled();
+                Q_EMIT scale->toggleCentering();
+                break;
+            default:
+                break;
         }
     }
     else if (soEvent->isOfType(SoMouseButtonEvent::getClassTypeId())) {
