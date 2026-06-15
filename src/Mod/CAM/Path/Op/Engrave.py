@@ -144,7 +144,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         if obj.Base:
             # user has selected specific subelements
             Path.Log.track(len(obj.Base))
-            for base, subs in obj.Base:
+            for base, subs in self.baseShapes(obj):
                 edges = []
                 wires = []
                 for feature in subs:

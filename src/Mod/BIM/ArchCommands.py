@@ -559,21 +559,22 @@ def getCutVolume(cutplane, shapes, clip=False, depth=None):
         cutface = Part.Face(cutface)
         cutnormal = DraftVecUtils.scaleTo(ax, wm)
         cutvolume = cutface.extrude(cutnormal)
-        cutnormal = cutnormal.negative()
-        invcutvolume = cutface.extrude(cutnormal)
-        if clip:
-            extrudedplane = p.extrude(cutnormal)
-            bordervolume = invcutvolume.cut(extrudedplane)
-            cutvolume = cutvolume.fuse(bordervolume)
-            cutvolume = cutvolume.removeSplitter()
-            invcutvolume = extrudedplane
-            cutface = p
+        invcutvolume = cutface.extrude(-cutnormal)
         if depth:
-            depthnormal = DraftVecUtils.scaleTo(cutnormal, depth)
+            depthnormal = DraftVecUtils.scaleTo(-cutnormal, depth)
             depthvolume = cutface.extrude(depthnormal)
             depthclipvolume = invcutvolume.cut(depthvolume)
             cutvolume = cutvolume.fuse(depthclipvolume)
+        if clip:
+            clipface = cutface.cut(p)
+            clipface.translate(-cutnormal)
+            clipvolume = clipface.extrude(2 * cutnormal)
+            cutvolume = cutvolume.fuse(clipvolume)
+            invcutvolume = invcutvolume.fuse(clipvolume)
+            cutface = p
+        if depth or clip:
             cutvolume = cutvolume.removeSplitter()
+            invcutvolume = invcutvolume.removeSplitter()
         return cutface, cutvolume, invcutvolume
 
 

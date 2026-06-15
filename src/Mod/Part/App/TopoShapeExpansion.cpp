@@ -24,6 +24,7 @@
 
 #include <cmath>
 #include <limits>
+#include <sstream>
 
 #ifndef _Standard_Version_HeaderFile
 # include <Standard_Version.hxx>
@@ -6185,6 +6186,21 @@ TopoShape& TopoShape::makeElementBoolean(
         if (shape.isNull()) {
             FC_THROWM(NullShapeException, "Null input shape");
         }
+
+        if (!shape.isValid()) {
+            std::ostringstream details;
+            shape.analyze(false, details);
+
+            std::string message = "Invalid input shape for boolean ";
+            message += maker;
+            if (!details.str().empty()) {
+                message += ":\n";
+                message += details.str();
+            }
+
+            FC_THROWM(Base::CADKernelError, message.c_str());
+        }
+
         if (++i == 0) {
             shapeArguments.Append(shape.getShape());
         }

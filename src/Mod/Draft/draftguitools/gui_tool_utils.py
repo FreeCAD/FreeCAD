@@ -93,6 +93,19 @@ def _get_hint_mod_snap():
     return [Gui.InputHint(translate("draft", "Hold %1 snap"), key)]
 
 
+def _get_hint_mod_copy():
+    key = _HINT_MOD_KEYS[params.get_param("modalt")]
+    return [Gui.InputHint(translate("draft", "Hold %1 copy"), key)]
+
+
+def _get_hint_select_object(multiple=True):
+    if multiple:
+        text = translate("draft", "%1 select objects to modify")
+    else:
+        text = translate("draft", "%1 select object to modify")
+    return [Gui.InputHint(text, Gui.UserInput.MouseLeft)]
+
+
 def _get_hint_xyz_constrain():
     pattern = re.compile("[A-Z]")
     shortcut_x = params.get_param("inCommandShortcutRestrictX").upper()
@@ -301,7 +314,7 @@ def get_point(target, args, noTracker=False):
         )
         info = Gui.Snapper.snapInfo
         mask = Gui.Snapper.affinity
-    if not point:
+    if point is None:
         p = Gui.ActiveDocument.ActiveView.getCursorPos()
         point = Gui.ActiveDocument.ActiveView.getPoint(p)
         info = Gui.ActiveDocument.ActiveView.getObjectInfo(p)

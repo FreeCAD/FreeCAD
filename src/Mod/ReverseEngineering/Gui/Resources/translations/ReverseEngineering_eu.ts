@@ -237,8 +237,8 @@
       <translation>Kokapena</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
-      <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <source>Fit B-spline</source>
       <translation type="unfinished">Fit B-spline</translation>
     </message>
@@ -590,6 +590,26 @@
       <source>Reverse Engineering</source>
       <translation>Alderantzizko ingeniaritza</translation>
     </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="36"/>
+      <source>&amp;Reverse Engineering</source>
+      <translation type="unfinished">&amp;Reverse Engineering</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Surface Reconstruction</source>
+      <translation type="unfinished">Surface Reconstruction</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Segmentation</source>
+      <translation>Segmentazioa</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Approximation</source>
+      <translation type="unfinished">Approximation</translation>
+    </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineCurve</name>
@@ -620,8 +640,8 @@
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
-      <source>Iso-Parametric</source>
-      <translation type="unfinished">Iso-Parametric</translation>
+      <source>Equidistant</source>
+      <translation type="unfinished">Equidistant</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -720,7 +740,7 @@
   <context>
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="89"/>
+      <location filename="../../FitBSplineCurve.cpp" line="103"/>
       <source>Input Error</source>
       <translation>Sarrera-errorea</translation>
     </message>

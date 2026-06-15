@@ -126,12 +126,79 @@ class CommandTestCase(unittest.TestCase):
 class TestNavigationStyle(unittest.TestCase):
     def setUp(self):
         self.Doc = FreeCAD.newDocument("CreateTest")
+        self.View = FreeCADGui.getDocument(self.Doc).ActiveView
 
     def testInvalidStyle(self):
-        FreeCADGui.getDocument(self.Doc).ActiveView.setNavigationType("App::Extension")
-        self.assertNotEqual(
-            FreeCADGui.getDocument(self.Doc).ActiveView.getNavigationType(), "App::Extension"
+        self.View.setNavigationType("App::Extension")
+        self.assertNotEqual(self.View.getNavigationType(), "App::Extension")
+
+    def testOrientationLockBlocksProgrammaticOrientationChanges(self):
+        viewer = self.View.getViewer()
+        navigation = viewer.getNavigationStyle()
+        initial = self.View.getCameraOrientation()
+        target = (0.0, 0.70710678, 0.0, 0.70710678)
+
+        navigation.setOrientationLocked(True)
+        self.View.setViewDirection((1.0, 0.0, 0.0))
+        self.assertTrue(self.View.getCameraOrientation().isSame(initial, 1e-6))
+        self.View.setCameraOrientation(target)
+        self.assertTrue(self.View.getCameraOrientation().isSame(initial, 1e-6))
+
+        navigation.setOrientationLocked(False)
+        self.View.setCameraOrientation(target)
+        self.assertFalse(self.View.getCameraOrientation().isSame(initial, 1e-6))
+
+    def testOrientationLockAllowsTranslationOnlyViewPosition(self):
+        navigation = self.View.getViewer().getNavigationStyle()
+        initial = self.View.viewPosition()
+        target = FreeCAD.Placement(
+            FreeCAD.Vector(initial.Base.x + 10.0, initial.Base.y + 20.0, initial.Base.z + 30.0),
+            initial.Rotation,
         )
+
+        navigation.setOrientationLocked(True)
+        self.View.viewPosition(target, 0, 0)
+        moved = self.View.viewPosition()
+
+        self.assertTrue(moved.Rotation.isSame(initial.Rotation, 1e-6))
+        self.assertGreater((moved.Base - initial.Base).Length, 1e-6)
+
+    def testOrientationLockDoesNotBlockCameraTypeChanges(self):
+        navigation = self.View.getViewer().getNavigationStyle()
+        current = self.View.getCameraType()
+        target = "Orthographic" if current == "Perspective" else "Perspective"
+
+        navigation.setOrientationLocked(True)
+        self.View.setCameraType(target)
+
+        self.assertEqual(self.View.getCameraType(), target)
+
+    def testNavigationStyleSwitchPreservesRotationFlags(self):
+        viewer = self.View.getViewer()
+        navigation = viewer.getNavigationStyle()
+        current = self.View.getNavigationType()
+        styles = [style for style in self.View.listNavigationTypes() if style != current]
+
+        self.assertTrue(styles)
+        navigation.setRotationEnabled(False)
+        navigation.setOrientationLocked(True)
+
+        self.View.setNavigationType(styles[0])
+        navigation = viewer.getNavigationStyle()
+
+        self.assertFalse(navigation.isRotationEnabled())
+        self.assertTrue(navigation.isOrientationLocked())
+
+    def testRotationDisableStopsActiveSpinAnimation(self):
+        viewer = self.View.getViewer()
+        navigation = viewer.getNavigationStyle()
+
+        self.View.startAnimating(0.0, 1.0, 0.0, 1.0)
+        self.assertTrue(viewer.isSpinning())
+
+        navigation.setRotationEnabled(False)
+
+        self.assertFalse(viewer.isSpinning())
 
     def tearDown(self):
         FreeCAD.closeDocument("CreateTest")

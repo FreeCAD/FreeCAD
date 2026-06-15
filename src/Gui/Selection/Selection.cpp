@@ -25,9 +25,14 @@
 
 #include <array>
 #include <set>
+#include <cstdint>
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 
+#include <Inventor/SbColor.h>
+#include <Inventor/SoPath.h>
+#include <Inventor/details/SoDetail.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -51,10 +56,13 @@
 #include "MDIView.h"
 #include "SelectionFilter.h"
 #include "SelectionFilterPy.h"
+#include "SelectionColors.h"
 #include "SelectionObserverPython.h"
+#include "SoFCUnifiedSelection.h"
 #include "Tree.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
+#include "Window.h"
 
 
 FC_LOG_LEVEL_INIT("Selection", false, true, true)
@@ -717,14 +725,19 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
         return {};
     }
 
+    std::vector<App::DocumentObject*> temp;
     std::set<App::DocumentObject*> objs;
+
     for (auto& sel : context.info->selList) {
         if (App::DocumentObject* pObject = getObjectOfType(sel, typeId, resolve)) {
-            objs.insert(pObject);
+            auto ret = objs.insert(pObject);
+            if (ret.second) {
+                temp.push_back(pObject);
+            }
         }
     }
 
-    return std::vector<App::DocumentObject*>(objs.begin(), objs.end());
+    return temp;
 }
 
 std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
@@ -2536,6 +2549,52 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "clearPreselection() -> None\n"
      "\n"
      "Clear the preselection."},
+    {"applyCoinHighlight",
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(SelectionSingleton::sApplyCoinHighlight)),
+     METH_VARARGS | METH_KEYWORDS,
+     "applyCoinHighlight(path, detail=None, color=None) -> None\n"
+     "\n"
+     "Apply a low-level Coin highlight to a path.\n"
+     "\n"
+     "path : coin.SoPath\n"
+     "    Coin scene-graph path to update.\n"
+     "detail : coin.SoDetail, None\n"
+     "    Optional sub-element detail. When omitted, highlight the whole path.\n"
+     "color : tuple(float, float, float), None\n"
+     "    Optional normalized RGB override. When omitted, use the current View preference color."},
+    {"clearCoinHighlight",
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(SelectionSingleton::sClearCoinHighlight)),
+     METH_VARARGS | METH_KEYWORDS,
+     "clearCoinHighlight(path) -> None\n"
+     "\n"
+     "Clear a low-level Coin highlight from a path.\n"
+     "\n"
+     "path : coin.SoPath\n"
+     "    Coin scene-graph path to update."},
+    {"applyCoinSelection",
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(SelectionSingleton::sApplyCoinSelection)),
+     METH_VARARGS | METH_KEYWORDS,
+     "applyCoinSelection(path, detail=None, mode='append', color=None) -> None\n"
+     "\n"
+     "Apply a low-level Coin selection action to a path.\n"
+     "\n"
+     "path : coin.SoPath\n"
+     "    Coin scene-graph path to update.\n"
+     "detail : coin.SoDetail, None\n"
+     "    Optional sub-element detail. When omitted, target the whole path.\n"
+     "mode : str, SelectionActionMode, None\n"
+     "    One of 'append', 'remove', 'all'.\n"
+     "color : tuple(float, float, float), None\n"
+     "    Optional normalized RGB override. When omitted, use the current View preference color."},
+    {"clearCoinSelection",
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(SelectionSingleton::sClearCoinSelection)),
+     METH_VARARGS | METH_KEYWORDS,
+     "clearCoinSelection(path) -> None\n"
+     "\n"
+     "Clear a low-level Coin selection from a path.\n"
+     "\n"
+     "path : coin.SoPath\n"
+     "    Coin scene-graph path to update."},
     {"countObjectsOfType",
      (PyCFunction)SelectionSingleton::sCountObjectsOfType,
      METH_VARARGS,
@@ -2912,6 +2971,94 @@ ResolveMode toEnum(int value)
             throw Base::ValueError("Wrong enum value");
     }
 }
+
+bool convertCoinPointer(PyObject* object, const char* primaryType, const char* fallbackType, void** ptr)
+{
+    *ptr = nullptr;
+    Base::Interpreter().convertSWIGPointerObj("pivy.coin", primaryType, object, ptr, 0);
+    if (!*ptr && fallbackType) {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", fallbackType, object, ptr, 0);
+    }
+    return *ptr != nullptr;
+}
+
+SoPath* getCoinPath(PyObject* object)
+{
+    void* ptr = nullptr;
+    if (!convertCoinPointer(object, "SoPath *", "_p_SoPath", &ptr)) {
+        throw Base::TypeError("'path' must be a pivy.coin.SoPath");
+    }
+    return static_cast<SoPath*>(ptr);
+}
+
+const SoDetail* getCoinDetail(PyObject* object)
+{
+    if (!object || object == Py_None) {
+        return nullptr;
+    }
+
+    void* ptr = nullptr;
+    if (!convertCoinPointer(object, "SoDetail *", "_p_SoDetail", &ptr)) {
+        throw Base::TypeError("'detail' must be a pivy.coin.SoDetail or None");
+    }
+    return static_cast<const SoDetail*>(ptr);
+}
+
+SbColor getCoinColor(PyObject* object, const char* argName, const SbColor& fallback)
+{
+    if (!object || object == Py_None) {
+        return fallback;
+    }
+
+    if (!PyTuple_Check(object) && !PyList_Check(object)) {
+        throw Base::TypeError(std::string("'") + argName + "' must be a 3-item RGB tuple/list or None");
+    }
+
+    Py::Sequence sequence(object);
+    if (sequence.length() != 3) {
+        throw Base::TypeError(std::string("'") + argName + "' must contain exactly 3 values");
+    }
+
+    return SbColor(
+        static_cast<float>(Py::Float(sequence.getItem(0))),
+        static_cast<float>(Py::Float(sequence.getItem(1))),
+        static_cast<float>(Py::Float(sequence.getItem(2)))
+    );
+}
+
+std::string getCoinString(PyObject* object, const char* argName)
+{
+    if (PyUnicode_Check(object)) {
+        return Py::String(object).as_std_string("utf-8");
+    }
+
+    if (PyBytes_Check(object)) {
+        return Py::Bytes(object).as_std_string();
+    }
+
+    throw Base::TypeError(
+        std::string("'") + argName + "' must be a string, SelectionActionMode, or None"
+    );
+}
+
+Gui::SoSelectionElementAction::Type getCoinSelectionType(PyObject* object)
+{
+    if (!object || object == Py_None) {
+        return Gui::SoSelectionElementAction::Append;
+    }
+
+    std::string value = getCoinString(object, "mode");
+    if (boost::iequals(value, "append")) {
+        return Gui::SoSelectionElementAction::Append;
+    }
+    if (boost::iequals(value, "remove")) {
+        return Gui::SoSelectionElementAction::Remove;
+    }
+    if (boost::iequals(value, "all")) {
+        return Gui::SoSelectionElementAction::All;
+    }
+    throw Base::ValueError("Unsupported 'mode'; expected one of: append, remove, all");
+}
 }  // namespace
 
 PyObject* SelectionSingleton::sIsSelected(PyObject* /*self*/, PyObject* args)
@@ -3066,6 +3213,99 @@ PyObject* SelectionSingleton::sRemPreselection(PyObject* /*self*/, PyObject* arg
     Selection().rmvPreselect();
 
     Py_Return;
+}
+
+PyObject* SelectionSingleton::sApplyCoinHighlight(PyObject* /*self*/, PyObject* args, PyObject* kwd)
+{
+    PyObject* pathObject = nullptr;
+    PyObject* detailObject = Py_None;
+    PyObject* colorObject = Py_None;
+    static const std::array<const char*, 4> kwlist {"path", "detail", "color", nullptr};
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kwd, "O|OO", kwlist, &pathObject, &detailObject, &colorObject)
+    ) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        auto* path = getCoinPath(pathObject);
+        auto* detail = getCoinDetail(detailObject);
+
+        SoHighlightElementAction action;
+        action.setHighlighted(true);
+        action.setColor(getCoinColor(colorObject, "color", SelectionColors::defaultHighlightColor()));
+        action.setElement(detail);
+        action.apply(path);
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* SelectionSingleton::sClearCoinHighlight(PyObject* /*self*/, PyObject* args, PyObject* kwd)
+{
+    PyObject* pathObject = nullptr;
+    static const std::array<const char*, 2> kwlist {"path", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "O", kwlist, &pathObject)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        SoHighlightElementAction action;
+        action.setHighlighted(false);
+        action.apply(getCoinPath(pathObject));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* SelectionSingleton::sApplyCoinSelection(PyObject* /*self*/, PyObject* args, PyObject* kwd)
+{
+    PyObject* pathObject = nullptr;
+    PyObject* detailObject = Py_None;
+    PyObject* modeObject = Py_None;
+    PyObject* colorObject = Py_None;
+    static const std::array<const char*, 5> kwlist {"path", "detail", "mode", "color", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwd,
+            "O|OOO",
+            kwlist,
+            &pathObject,
+            &detailObject,
+            &modeObject,
+            &colorObject
+        )) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        SoSelectionElementAction action(getCoinSelectionType(modeObject));
+        action.setColor(getCoinColor(colorObject, "color", SelectionColors::defaultSelectionColor()));
+        action.setElement(getCoinDetail(detailObject));
+        action.apply(getCoinPath(pathObject));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* SelectionSingleton::sClearCoinSelection(PyObject* /*self*/, PyObject* args, PyObject* kwd)
+{
+    PyObject* pathObject = nullptr;
+    static const std::array<const char*, 2> kwlist {"path", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "O", kwlist, &pathObject)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        SoSelectionElementAction action(SoSelectionElementAction::None);
+        action.apply(getCoinPath(pathObject));
+        Py_Return;
+    }
+    PY_CATCH;
 }
 
 PyObject* SelectionSingleton::sGetCompleteSelection(PyObject* /*self*/, PyObject* args)

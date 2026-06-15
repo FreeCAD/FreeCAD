@@ -1824,15 +1824,15 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             for (const Path& path : currentTBP) {
                 bool orientation = Orientation(path);
                 int direction = (getPathNestingLevel(path, toolBounds) % 2 == 1) ? 1 : -1;
-                bool finshing = false;
+                bool finishing = false;
                 for (const IntPoint& p : path) {
                     if (p.Z == 1) {
-                        finshing = true;
+                        finishing = true;
                         break;
                     }
                 }
 
-                if (finshing) {
+                if (finishing) {
                     Paths out;
                     clipof.Clear();
                     clipof.AddPath(path, JoinType::jtRound, EndType::etClosedPolygon);
