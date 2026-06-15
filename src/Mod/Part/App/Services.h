@@ -37,6 +37,16 @@ private:
     std::unique_ptr<Attacher::AttachEngine3D> attacher;
 };
 
+class PartSubObjectSnap final: public App::SubObjectSnapProvider
+{
+public:
+    std::optional<Base::Vector3d> snapPosition(
+        App::SubObjectT object,
+        std::optional<Base::Vector3d> worldCursor,
+        const Base::Matrix4D& objectToWorld
+    ) const override;
+};
+
 class PartCenterOfMass final: public App::CenterOfMassProvider
 {
 public:

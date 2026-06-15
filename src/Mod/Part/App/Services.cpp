@@ -21,13 +21,22 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+
 #include <Base/Interpreter.h>
+#include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 
 #include <App/Link.h>
 #include <App/Part.h>
 
+#include "Geometry.h"
+#include "PartFeature.h"
 #include "Services.h"
+#include "Tools.h"
 
 AttacherSubObjectPlacement::AttacherSubObjectPlacement()
     : attacher(std::make_unique<Attacher::AttachEngine3D>())
@@ -45,6 +54,92 @@ Base::Placement AttacherSubObjectPlacement::calculate(
     auto calculatedAttachment = attacher->calculateAttachedPlacement(basePlacement);
 
     return basePlacement.inverse() * calculatedAttachment;
+}
+
+namespace
+{
+
+constexpr double edgeEndpointSnapThreshold = 0.15;
+
+}  // namespace
+
+std::optional<Base::Vector3d> PartSubObjectSnap::snapPosition(
+    App::SubObjectT object,
+    std::optional<Base::Vector3d> worldCursor,
+    const Base::Matrix4D& objectToWorld
+) const
+{
+    // Non-3D selections arrive with (0,0,0)
+    if (!worldCursor) {
+        return std::nullopt;
+    }
+
+    // getOldElementName() resolves via GeoFeature::resolveElement(), giving
+    // "Edge1" / "Face2" etc. regardless of whether TNP mapped names are active.
+    std::string elementName = object.getOldElementName();
+    if (!elementName.starts_with("Edge")) {
+        return std::nullopt;
+    }
+
+    // Mirror the Attacher's subname construction so all object types (Part,
+    // PartDesign, links, assemblies) resolve correctly.
+    std::string fullSubname = object.getSubNameNoElement() + elementName;
+
+    auto shape = Part::Feature::getTopoShape(
+        object.getObject(),
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+        fullSubname.c_str()
+    );
+
+    if (shape.isNull() || shape.getShape().ShapeType() != TopAbs_EDGE) {
+        return std::nullopt;
+    }
+
+    // Evaluate endpoint positions in local space via the same Geometry
+    // abstraction the Attacher uses — this gives parameter-correct arc
+    // endpoints regardless of curve type.
+    auto geom = Part::Geometry::fromShape(shape.getShape());
+    auto* curve = dynamic_cast<Part::GeomCurve*>(geom.get());
+    if (!curve) {
+        return std::nullopt;
+    }
+
+    auto u1 = curve->getFirstParameter();
+    auto u2 = curve->getLastParameter();
+    auto localP1 = curve->pointAtParameter(u1);
+    auto localP2 = curve->pointAtParameter(u2);
+
+    // Skip closed edges (full circles, closed splines).
+    if ((localP1 - localP2).Length() < 1e-7) {
+        return std::nullopt;
+    }
+
+    // Apply the caller-supplied object-to-world matrix to convert local edge
+    // endpoints to world space for comparison with worldCursor.
+    Base::Vector3d p1, p2;
+    objectToWorld.multVec(localP1, p1);
+    objectToWorld.multVec(localP2, p2);
+
+    // Arc length gives a physically meaningful threshold regardless of curve
+    // type or parameterisation non-uniformity.
+    TopoDS_Edge edge = TopoDS::Edge(shape.getShape());
+    GProp_GProps props;
+    BRepGProp::LinearProperties(edge, props);
+    double threshold = edgeEndpointSnapThreshold * props.Mass();
+
+    double d1 = (*worldCursor - p1).Length();
+    double d2 = (*worldCursor - p2).Length();
+
+    // Snap to the nearer endpoint when both are within threshold, otherwise
+    // to whichever single endpoint qualifies.
+    if (d1 <= threshold && d1 <= d2) {
+        return p1;
+    }
+    if (d2 <= threshold) {
+        return p2;
+    }
+
+    return std::nullopt;
 }
 
 std::optional<Base::Vector3d> PartCenterOfMass::ofDocumentObject(App::DocumentObject* object) const
