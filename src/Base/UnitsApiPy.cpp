@@ -29,6 +29,7 @@
 #include "UnitsApi.h"
 #include "Quantity.h"
 #include "QuantityPy.h"
+#include "UnitsSchemas.h"
 
 
 using namespace Base;
