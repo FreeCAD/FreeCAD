@@ -131,7 +131,7 @@ class Shape2DView(DraftObject):
         if not "ExclusionNames" in pl:
             _tip = QT_TRANSLATE_NOOP(
                 "App::Property",
-                "A list of exclusion object labels. Any object whose Label matches an entry will not be drawn.",
+                "A list of exclusion object names. Any object viewed that matches a name from the list will not be drawn.",
             )
             obj.addProperty("App::PropertyStringList", "ExclusionNames", "Draft", _tip, locked=True)
         if not "OnlySolids" in pl:
@@ -200,64 +200,6 @@ class Shape2DView(DraftObject):
                     nedges.append(e)
         return nedges
 
-    def excludeNames(self, obj, objs):
-        if hasattr(obj, "ExclusionNames"):
-            objs = [o for o in objs if o.Label not in obj.ExclusionNames]
-            return objs
-
-    def _get_group_contents_excluding(self, objectslist, excluded_names, walls=True):
-        """Return a list of objects from expanding groups, excluding named objects.
-
-        Similar to ``groups.get_group_contents`` but any object whose
-        ``Label`` appears in *excluded_names* is skipped along with its
-        entire subtree.
-
-        Parameters
-        ----------
-        objectslist : list
-            A list of ``App::DocumentObject`` items to expand.
-            Any object that ``groups.is_group`` considers a group will be
-            recursed into, unless its Label is in *excluded_names*.
-
-        excluded_names : set of str
-            Labels of objects to exclude.  When a group's Label matches,
-            the group **and** all of its children are omitted from the
-            result.  When a leaf object's Label matches, only that object
-            is omitted.
-
-        walls : bool, optional
-            It defaults to ``True``.
-            If ``True``, Wall, Roof, Structure and CurtainWall objects
-            are scanned for hosted Window, Door, and Rebar objects,
-            which are then added to the output list.
-
-        Returns
-        -------
-        list
-            The flattened, deduplicated list of objects with all
-            excluded subtrees removed.
-        """
-        newlist = []
-        if not isinstance(objectslist, list):
-            objectslist = [objectslist]
-        for obj in objectslist:
-            if not obj:
-                continue
-            if obj.Label in excluded_names:
-                continue
-            if groups.is_group(obj):
-                newlist.extend(self._get_group_contents_excluding(obj.Group, excluded_names, walls))
-            else:
-                newlist.append(obj)
-                if walls:
-                    newlist.extend(groups.get_windows(obj))
-
-        cleanlist = []
-        for obj in newlist:
-            if obj not in cleanlist:
-                cleanlist.append(obj)
-        return cleanlist
-
     def _get_shapes(self, shape, onlysolids=False):
         if onlysolids:
             return shape.Solids
@@ -305,11 +247,12 @@ class Shape2DView(DraftObject):
                     except:
                         print("Shape2DView: BIM not present, unable to recompute")
                         return
-                    if hasattr(obj, "ExclusionNames") and obj.ExclusionNames:
-                        excluded = set(obj.ExclusionNames)
-                        objs = self._get_group_contents_excluding(objs, excluded, walls=True)
-                    else:
-                        objs = groups.get_group_contents(objs, walls=True)
+                    excluded = (
+                        set(obj.ExclusionNames)
+                        if hasattr(obj, "ExclusionNames") and obj.ExclusionNames
+                        else None
+                    )
+                    objs = groups.get_group_contents(objs, walls=True, exclude_names=excluded)
                     if not objs:
                         obj.Shape = Part.Shape()
                         return
@@ -445,7 +388,12 @@ class Shape2DView(DraftObject):
 
             elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
                 shapes = []
-                objs = self.excludeNames(obj, groups.get_group_contents(obj.Base))
+                excluded = (
+                    set(obj.ExclusionNames)
+                    if hasattr(obj, "ExclusionNames") and obj.ExclusionNames
+                    else None
+                )
+                objs = groups.get_group_contents(obj.Base, exclude_names=excluded)
                 for o in objs:
                     if hasattr(o, "Shape"):
                         shapes.extend(self._get_shapes(o.Shape))
