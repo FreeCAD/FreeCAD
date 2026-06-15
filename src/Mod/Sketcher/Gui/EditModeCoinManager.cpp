@@ -1363,28 +1363,53 @@ bool EditModeCoinManager::detectAxisPreselection(
     return false;
 }
 
+EditModeCoinManager::PreselectionCandidates EditModeCoinManager::collectPreselectionCandidates(
+    const SoPickedPointList& points,
+    const SbVec2s& cursorPos,
+    int hoveredPointIndex
+)
+{
+    PreselectionCandidates candidates;
+
+    candidates.Constraint = detectConstraintPreselection(points, cursorPos);
+    detectGeometryPreselection(points, cursorPos, hoveredPointIndex, candidates.Geometry);
+    detectAxisPreselection(points, candidates.Axis);
+
+    return candidates;
+}
+
+EditModeCoinManager::PreselectionResult EditModeCoinManager::resolvePreselectionCandidates(
+    const PreselectionCandidates& candidates
+) const
+{
+    if (candidates.Geometry.Kind == PreselectionResult::HitKind::Point) {
+        return candidates.Geometry;
+    }
+
+    if (candidates.Constraint.hasWinner()) {
+        return candidates.Constraint;
+    }
+
+    if (candidates.Geometry.hasWinner()) {
+        return candidates.Geometry;
+    }
+
+    if (candidates.Axis.hasWinner()) {
+        return candidates.Axis;
+    }
+
+    return {};
+}
+
 EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
     const SoPickedPointList& points,
     const SbVec2s& cursorPos,
     int hoveredPointIndex
 )
 {
-    PreselectionResult result;
-
-    result = detectConstraintPreselection(points, cursorPos);
-    if (result.hasWinner()) {
-        return result;
-    }
-
-    if (detectGeometryPreselection(points, cursorPos, hoveredPointIndex, result)) {
-        return result;
-    }
-
-    if (detectAxisPreselection(points, result)) {
-        return result;
-    }
-
-    return result;
+    return resolvePreselectionCandidates(
+        collectPreselectionCandidates(points, cursorPos, hoveredPointIndex)
+    );
 }
 
 SoGroup* EditModeCoinManager::getSelectedConstraints()
