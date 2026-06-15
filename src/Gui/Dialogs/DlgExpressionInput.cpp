@@ -42,7 +42,7 @@
 #include "Dialogs/DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
 #include "Application.h"
-#include "Command.h"
+#include "CommandT.h"
 #include "Tools.h"
 #include "ExpressionBinding.h"
 #include "BitmapFactory.h"
@@ -662,36 +662,22 @@ void DlgExpressionInput::acceptWithVarSet()
     if (const NumberExpression* ne = toNumberExpr(expr)) {
         // the value is a number: directly assign it to the property instead of
         // making it an expression in the variable set
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').getObject('%s').%s = %f",
-            obj->getDocument()->getName(),
-            obj->getNameInDocument(),
-            prop->getName(),
-            ne->getValue()
-        );
+        if (prop->isDerivedFrom<App::PropertyInteger>()) {
+            Gui::cmdAppObjectArgs(obj, "%s = %d", prop->getName(), std::lround(ne->getValue()));
+        }
+        else {
+            Gui::cmdAppObjectArgs(obj, "%s = %f", prop->getName(), ne->getValue());
+        }
     }
     else if (const StringExpression* se = toStringExpr(expr)) {
         // the value is a string: directly assign it to the property.
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').getObject('%s').%s = \"%s\"",
-            obj->getDocument()->getName(),
-            obj->getNameInDocument(),
-            prop->getName(),
-            se->getText().c_str()
-        );
+        std::string text = Base::Tools::quoted(se->getText());
+        Gui::cmdAppObjectArgs(obj, "%s = %s", prop->getName(), text);
     }
     else if (const OperatorExpression* une = toUnitNumberExpr(expr)) {
         // the value is a unit number: directly assign it to the property.
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').getObject('%s').%s = \"%s\"",
-            obj->getDocument()->getName(),
-            obj->getNameInDocument(),
-            prop->getName(),
-            une->toString().c_str()
-        );
+        std::string text = Base::Tools::quoted(une->toString());
+        Gui::cmdAppObjectArgs(obj, "%s = %s", prop->getName(), text);
     }
     else {
         // the value is an expression: make an expression binding in the VarSet
@@ -707,15 +693,20 @@ void DlgExpressionInput::acceptWithVarSet()
 
 void DlgExpressionInput::accept()
 {
-    applyImpliedUnit();
+    try {
+        applyImpliedUnit();
 
-    if (varSetsVisible) {
-        if (needReportOnVarSet()) {
-            return;
+        if (varSetsVisible) {
+            if (needReportOnVarSet()) {
+                return;
+            }
+            acceptWithVarSet();
         }
-        acceptWithVarSet();
+        QDialog::accept();
     }
-    QDialog::accept();
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
 }
 
 static App::Document* getPreselectedDocument()
