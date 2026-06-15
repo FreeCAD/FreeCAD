@@ -209,6 +209,8 @@ SET(TechDrawGui_SRCS
     TaskCosmeticCircle.ui
     TechDrawHandler.cpp
     TechDrawHandler.h
+    TechDrawCircleCenterlinesHandler.cpp
+    TechDrawCircleCenterlinesHandler.h
     Widgets/CompassDialWidget.cpp
     Widgets/CompassDialWidget.h
     Widgets/CompassWidget.cpp
