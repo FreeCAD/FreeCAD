@@ -758,7 +758,7 @@ void NaviCubeImplementation::createCubeFaceTextures()
 
         // Coin backend: store as a Coin-managed texture (SoTexture2).
         // Mirror to match the OpenGL texture coordinate origin (bottom-left).
-        const QImage rgba = image.mirrored().convertToFormat(QImage::Format_RGBA8888);
+        const QImage rgba = image.flipped(Qt::Vertical).convertToFormat(QImage::Format_RGBA8888);
         const int w = rgba.width();
         const int h = rgba.height();
         std::vector<unsigned char> pixels(static_cast<size_t>(w) * static_cast<size_t>(h) * 4U);
