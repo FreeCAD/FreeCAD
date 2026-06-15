@@ -95,7 +95,7 @@ requirements:
         - cross-python_${{ target_platform }}
 
   host:
-    - coin3d ==4.0.3
+    - coin3d >=4.0.8,<4.1.0a0
     - eigen >=3.3,<6
     - fmt
     - freetype
