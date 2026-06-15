@@ -8,6 +8,7 @@ add_executable(Gui_tests_run
         Assistant.cpp
         Camera.cpp
         FileDialog.cpp
+        MeasureDistanceGui.cpp
         StyleParameters/StyleParametersApplicationTest.cpp
         StyleParameters/ParserTest.cpp
         StyleParameters/ParameterManagerTest.cpp
@@ -24,4 +25,9 @@ target_link_libraries(Gui_tests_run PRIVATE
     GTest::gmock_main
     FreeCADApp
     FreeCADGui
+    MeasureGui
+)
+
+target_include_directories(Gui_tests_run PRIVATE
+    ${CMAKE_PREFIX_PATH}/include/opencascade
 )
