@@ -722,6 +722,21 @@ void PropertySheet::setAlignment(CellAddress address, int _alignment)
     cell->setAlignment(_alignment);
 }
 
+void PropertySheet::setAlignment(Range range, int _alignment)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        CellAddress address = *range;
+        if (Cell* cell = nonNullCellAt(address)) {
+            if (cell->address == address) {
+                cell->_setAlignment(_alignment);
+            }
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
+}
+
 void PropertySheet::setStyle(CellAddress address, const std::set<std::string>& _style)
 {
     Cell* cell = nonNullCellAt(address);
@@ -729,11 +744,35 @@ void PropertySheet::setStyle(CellAddress address, const std::set<std::string>& _
     cell->setStyle(_style);
 }
 
+void PropertySheet::setStyle(Range range, const std::set<std::string>& _style)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        if (Cell* cell = nonNullCellAt(*range)) {
+            cell->_setStyle(_style);
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
+}
+
 void PropertySheet::setForeground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setForeground(color);
+}
+
+void PropertySheet::setForeground(Range range, const Base::Color& color)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        if (Cell* cell = nonNullCellAt(*range)) {
+            cell->_setForeground(color);
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
 }
 
 void PropertySheet::clearForeground(CellAddress address)
@@ -750,6 +789,18 @@ void PropertySheet::setBackground(CellAddress address, const Base::Color& color)
     cell->setBackground(color);
 }
 
+void PropertySheet::setBackground(Range range, const Base::Color& color)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        if (Cell* cell = nonNullCellAt(*range)) {
+            cell->_setBackground(color);
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
+}
+
 void PropertySheet::clearBackground(CellAddress address)
 {
     Cell* cell = nonNullCellAt(address);
@@ -762,6 +813,18 @@ void PropertySheet::setDisplayUnit(CellAddress address, const std::string& unit)
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setDisplayUnit(unit);
+}
+
+void PropertySheet::setDisplayUnit(Range range, const std::string& unit)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        if (Cell* cell = nonNullCellAt(*range)) {
+            cell->_setDisplayUnit(unit);
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
 }
 
 
@@ -824,6 +887,18 @@ void PropertySheet::setComputedUnit(CellAddress address, const Base::Unit& unit)
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setComputedUnit(unit);
+}
+
+void PropertySheet::setComputedUnit(Range range, const Base::Unit& unit)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        if (Cell* cell = nonNullCellAt(*range)) {
+            cell->_setComputedUnit(unit);
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
 }
 
 void PropertySheet::setSpans(CellAddress address, int rows, int columns)

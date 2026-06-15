@@ -420,6 +420,18 @@ void Cell::setAlignment(int _alignment)
     }
 }
 
+void Cell::_setAlignment(int _alignment)
+{
+    if (_alignment != alignment) {
+        alignment = _alignment;
+        setUsed(
+            ALIGNMENT_SET,
+            alignment != (ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER)
+        );
+        setDirty();
+    }
+}
+
 /**
  * Get alignment.
  *
@@ -449,6 +461,15 @@ void Cell::setStyle(const std::set<std::string>& _style)
     }
 }
 
+void Cell::_setStyle(const std::set<std::string>& _style)
+{
+    if (_style != style) {
+        style = _style;
+        setUsed(STYLE_SET, !style.empty());
+        setDirty();
+    }
+}
+
 /**
  * Get the style of the cell.
  *
@@ -475,6 +496,15 @@ void Cell::setForeground(const Base::Color& color)
         setDirty();
 
         signaller.tryInvoke();
+    }
+}
+
+void Cell::_setForeground(const Base::Color& color)
+{
+    if (color != foregroundColor) {
+        foregroundColor = color;
+        setUsed(FOREGROUND_COLOR_SET, foregroundColor != Base::Color(0, 0, 0, 1));
+        setDirty();
     }
 }
 
@@ -516,6 +546,15 @@ void Cell::setBackground(const Base::Color& color)
         setDirty();
 
         signaller.tryInvoke();
+    }
+}
+
+void Cell::_setBackground(const Base::Color& color)
+{
+    if (color != backgroundColor) {
+        backgroundColor = color;
+        setUsed(BACKGROUND_COLOR_SET, backgroundColor != Base::Color(1, 1, 1, 0));
+        setDirty();
     }
 }
 
@@ -571,6 +610,27 @@ void Cell::setDisplayUnit(const std::string& unit)
         setDirty();
 
         signaller.tryInvoke();
+    }
+}
+
+void Cell::_setDisplayUnit(const std::string& unit)
+{
+    DisplayUnit newDisplayUnit;
+    if (!unit.empty()) {
+        std::shared_ptr<App::UnitExpression> e(
+            ExpressionParser::parseUnit(owner->sheet(), unit.c_str())
+        );
+
+        if (!e) {
+            throw Base::UnitsMismatchError("Invalid unit");
+        }
+        newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
+    }
+
+    if (newDisplayUnit != displayUnit) {
+        displayUnit = std::move(newDisplayUnit);
+        setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
+        setDirty();
     }
 }
 
@@ -638,6 +698,13 @@ void Cell::setComputedUnit(const Base::Unit& unit)
     setDirty();
 
     signaller.tryInvoke();
+}
+
+void Cell::_setComputedUnit(const Base::Unit& unit)
+{
+    computedUnit = unit;
+    setUsed(COMPUTED_UNIT_SET, computedUnit != Base::Unit());
+    setDirty();
 }
 
 /**
