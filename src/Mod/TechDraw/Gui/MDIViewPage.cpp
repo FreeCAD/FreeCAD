@@ -475,6 +475,11 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
         menu.addAction(m_exportDXFAction);
         menu.addAction(m_exportPDFAction);
         menu.addAction(m_printAllAction);
+        auto& commandManager = Gui::Application::Instance->commandManager();
+        if (commandManager.getCommandByName("Std_ViewDockUndockFullscreen")) {
+            menu.addSeparator();
+            commandManager.addTo("Std_ViewDockUndockFullscreen", &menu);
+        }
         if (PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual) {
             m_toggleFrameAction->setEnabled(true);
         } else {
