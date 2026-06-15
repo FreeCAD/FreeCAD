@@ -313,7 +313,8 @@ bool ExpressionSpinBox::handleKeyEvent(QKeyEvent* event)
             openFormulaDialog();
             return true;
         }
-        else if (event->matches(QKeySequence::Backspace) || event->matches(QKeySequence::Delete)) {
+
+        if (event->matches(QKeySequence::Backspace) || event->matches(QKeySequence::Delete)) {
             if (hasExpression()) {
                 removeExpression();
                 return true;
