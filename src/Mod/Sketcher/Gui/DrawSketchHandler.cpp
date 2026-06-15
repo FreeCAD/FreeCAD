@@ -452,7 +452,9 @@ std::vector<QPixmap> DrawSketchHandler::suggestedConstraintsPixmaps(
                 iconType.toStdString().c_str(),
                 QSize(iconWidth, iconWidth)
             );
-            pixmaps.push_back(icon);
+            if (!icon.isNull()) {
+                pixmaps.push_back(icon);
+            }
         }
     }
     return pixmaps;
@@ -1296,6 +1298,10 @@ int DrawSketchHandler::seekAndRenderAutoConstraint(
 void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstraint>& suggestedConstraints)
 {
     std::vector<QPixmap> pixmaps = suggestedConstraintsPixmaps(suggestedConstraints);
+    if (pixmaps.empty()) {
+        applyCursor();
+        return;
+    }
     addCursorTail(pixmaps);
 }
 

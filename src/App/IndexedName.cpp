@@ -28,6 +28,7 @@
 #include <unordered_set>
 
 #include "IndexedName.h"
+#include "ByteArray.h"
 
 using namespace Data;
 
@@ -63,6 +64,13 @@ std::pair<int, int> getIntegerSuffix(const char* name, int nameLength)
         suffix = std::atoi(name + suffixPosition);
     }
     return std::make_pair(suffix, suffixPosition);
+}
+
+IndexedName::IndexedName(const QByteArray& data)
+    : type("")
+    , index(0)
+{
+    set(data.constData(), data.size());
 }
 
 void IndexedName::set(const char* name,

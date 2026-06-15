@@ -8799,11 +8799,6 @@ using the given X/Y spacings</source>
       <translation>Значэнне</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
-      <source>Reapplies auto-fill to this field</source>
-      <translation>Паўторна прымяняе аўтаматычнае запаўненне да поля</translation>
-    </message>
-    <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value</source>
       <translation>Значэнне для замены пры аўтазапаўненні</translation>
@@ -8812,6 +8807,11 @@ using the given X/Y spacings</source>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
       <translation>Тэкставы надпіс</translation>
+    </message>
+    <message>
+      <location filename="../../DlgTemplateField.ui" line="52"/>
+      <source>Applies autofill to this field</source>
+      <translation>Прымяняе аўтазапаўненне да гэтага поля</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>
