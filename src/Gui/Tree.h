@@ -24,6 +24,9 @@
 #pragma once
 
 #include <unordered_map>
+#include <utility>
+#include <vector>
+#include <QBrush>
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QStyledItemDelegate>
@@ -38,6 +41,10 @@
 #include <Gui/TreeItemMode.h>
 
 class QLineEdit;
+class QToolButton;
+class QMenu;
+class QCheckBox;
+class QRegularExpression;
 
 namespace Gui
 {
@@ -133,7 +140,8 @@ public:
 
     void resetItemSearch();
     void startItemSearch(QLineEdit*);
-    void itemSearch(const QString& text, bool select);
+    bool itemSearch(const QString& text, bool select, bool global = false);
+    QStringList getHighlightedNames() const;
 
     static void synchronizeSelectionCheckBoxes();
     static void updateVisibilityIcons();
@@ -206,6 +214,13 @@ private:
     void selectAllDocumentLevel();
     void selectAllGroupLevel(const QTreeWidgetItem* targetNode, bool isGroup);
     void clearSelectAllContext();
+    void searchInDocumentItem(
+        QTreeWidgetItem* node,
+        const QRegularExpression& re,
+        QTreeWidgetItem*& firstHit,
+        int& hitCount
+    );
+    static constexpr int kSearchHitCap = 500;
 
 protected Q_SLOTS:
     void onCreateGroup();
@@ -285,6 +300,7 @@ private:
     Command* skipRecomputeCommand;
     QTreeWidgetItem* contextItem;
     App::DocumentObject* searchObject;
+    std::vector<std::pair<QTreeWidgetItem*, QBrush>> searchHighlights;
     Gui::Document* searchDoc;
     Gui::Document* searchContextDoc;
     DocumentObjectItem* editingItem;
@@ -592,10 +608,18 @@ private Q_SLOTS:
     void showEditor();
     void hideEditor();
     void itemSearch(const QString& text);
+    void onHistoryActionTriggered(QAction* action);
 
 private:
-    QLineEdit* searchBox;
-    TreeWidget* treeWidget;
+    TreeWidget* treeWidget = nullptr;
+    QWidget* searchRow = nullptr;
+    QLineEdit* searchBox = nullptr;
+    QToolButton* historyBtn = nullptr;
+    QCheckBox* globalBtn = nullptr;
+    QMenu* historyMenu = nullptr;
+
+    void saveSearchHistory(const QString& term);
+    static constexpr int kMaxHistory = 10;
 };
 
 /**
