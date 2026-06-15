@@ -723,7 +723,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
             (
                 "G0X1Y2Z3F110 G1X4Y5Z6F50 "  # with F
                 "G2X7Y8I9J10 G3X11Y12I13J14 G2X7Y8I9J10Z11 G3X11Y12I13J14Z12 G4P2 "
-                "G20 G21 G38.2X1Y2Z3 G54 G92X4Y5Z6 "
+                "G20 G21 G38.2Z3F9 G54 G92X4Y5Z6 "
                 # The drill params don't necessarily make sense in these, we just need certain params:
                 "G98 G99 "
                 "G73X1Y2Z7F100R91Q1 G80 G81X1Y2Z9F100R10 G82X1Y2Z10F100R11P12 G83X1Y2Z11F100R12Q2 "
@@ -1083,6 +1083,81 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         self.assertIn(
             expect, gcode, f"In\n---{gcode}\n---"
         )  # FIXME: a diff-like would be much better
+
+    def test_convert_probe_open(self):
+        """Test the _convert_probe_open functions"""
+
+        self.post._machine.output.comments.enabled = True
+        self.post.apply_configuration_bundle()
+
+        # First probe open
+        file = "probe_results.txt"
+        open = Path.Command("(begin probe ...)", {}, {"probe_open": file})
+        gcode = self.post._convert_probe_open(open)
+
+        self.assertRegex(
+            gcode,
+            r'OPEN "probe_results\.txt" FOR OUTPUT as',
+            "OPEN statement, and correct filename",
+        )
+        self.assertIn(
+            "CaptureZPos:", self.post.values["POST_JOB"], "Has subroutines once/job in POST_JOB"
+        )
+
+        # Second probe open (check subroutines added only once)
+        file = "probe_results2.txt"
+        open = Path.Command("(begin probe ...)", {}, {"probe_open": file})
+        _ = self.post._convert_probe_open(open)
+        subroutine_markers = [
+            line for line in self.post.values["POST_JOB"].split("\n") if line in "CaptureZPos:"
+        ]
+        self.assertEqual(
+            1,
+            len(subroutine_markers),
+            "probe subroutines added to POST_JOB only once ('CaptureZPos'):---\n{self.post.values['POST_JOB']}\n---",
+        )
+
+    def test_convert_probe(self):
+        """Test the _convert_probe_convert functions"""
+
+        self.post._machine.output.comments.enabled = True
+        self.post._machine.output.units = OutputUnits.METRIC
+        self.post.apply_configuration_bundle()
+
+        # Probe.opExecute would make G38.2's
+        # (after open-comment, clearance, then for each: safe, g38.2)
+        probe = Path.Command(f"G38.2 Z5 F{5/60}")
+
+        # test 1
+        gcode = self.post._convert_probe(probe)
+        # very stereotyped, just converts to G1
+        expected = """&hit = 0
+ON INPUT(&my_ZzeroInput, 1) GOSUB CaptureZPos
+G1 Z5.000 F5.000
+IF &hit = 0 THEN GOTO FailedToTouch
+""".rstrip()
+        self.assertEqual(expected, gcode)
+
+        # the pp is strict:
+
+        with self.assertRaisesRegex(Exception, "must have a Z and F"):
+            _ = self.post._convert_probe(Path.Command(f"G38.2 F{5/60}"))
+
+        with self.assertRaisesRegex(Exception, "should only have Z and F"):
+            _ = self.post._convert_probe(Path.Command(f"G38.2 X1 Z5 F{5/60}"))
+
+    def test_convert_probe_close(self):
+        """Test the _convert_probe_convert_close functions"""
+
+        self.post._machine.output.comments.enabled = True
+        self.post.apply_configuration_bundle()
+
+        # close
+        close = Path.Command("(end probe...)", {}, {"probe_close": ""})
+
+        # minimal check
+        gcode = self.post._convert_probe_close(close)
+        self.assertIn("CLOSE #1", gcode)
 
     @unittest.expectedFailure
     def test_todo(self):

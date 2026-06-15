@@ -34,6 +34,8 @@
 #include <set>
 #include <vector>
 
+#include <QString>
+
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
 

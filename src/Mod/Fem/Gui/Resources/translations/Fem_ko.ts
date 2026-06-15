@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="1124"/>
       <source>Local Coordinate System</source>
-      <translation>로컬 좌표계</translation>
+      <translation>지역 좌표계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1125"/>
@@ -1865,13 +1865,13 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintContact.cpp" line="367"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="230"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="375"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
@@ -1900,7 +1900,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="158"/>
       <source>Vertex, Edge, Face</source>
-      <translation>정점, 모서리, 면</translation>
+      <translation>꼭짓점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
@@ -1922,12 +1922,12 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="256"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="295"/>
@@ -1945,7 +1945,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="87"/>
       <source>Vertex, Edge, Face</source>
-      <translation>정점, 모서리, 면</translation>
+      <translation>꼭짓점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
@@ -1967,12 +1967,12 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="131"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="167"/>
@@ -2112,12 +2112,12 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="905"/>
@@ -2135,7 +2135,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="93"/>
       <source>Vertex, Edge, Face</source>
-      <translation>정점, 모서리, 면</translation>
+      <translation>꼭짓점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
@@ -2157,12 +2157,12 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="181"/>
@@ -2239,12 +2239,12 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="369"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="300"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="312"/>
@@ -2294,12 +2294,12 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="150"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="237"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="159"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
@@ -2344,12 +2344,12 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="146"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="158"/>
@@ -2402,12 +2402,12 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="151"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
@@ -2425,7 +2425,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Vertex, Edge, Face</source>
-      <translation>정점, 모서리, 면</translation>
+      <translation>꼭짓점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
@@ -2446,12 +2446,12 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="207"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="265"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="216"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
   </context>
   <context>
@@ -2476,7 +2476,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="350"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
@@ -2492,7 +2492,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
@@ -4060,7 +4060,7 @@ Notes:
     <message>
       <location filename="../ui/MeshPreview.ui" line="99"/>
       <source>Min</source>
-      <translation type="unfinished">Min</translation>
+      <translation>최소</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="112"/>
@@ -4076,7 +4076,7 @@ Notes:
     <message>
       <location filename="../ui/MeshPreview.ui" line="141"/>
       <source>Max</source>
-      <translation type="unfinished">Max</translation>
+      <translation>최대</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="154"/>
@@ -7287,7 +7287,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
       <source>Vertex, Edge, Face</source>
-      <translation>정점, 모서리, 면</translation>
+      <translation>꼭짓점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
@@ -7309,12 +7309,12 @@ No matching module was found in the current Python path.</source>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="320"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
@@ -8788,22 +8788,22 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemToolsCcx</name>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="419"/>
+      <location filename="../../../femtools/ccxtools.py" line="421"/>
       <source>No or wrong CalculiX binary ccx</source>
       <translation>CalculiX 바이너리 ccx가 없거나 잘못되었습니다</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="453"/>
+      <location filename="../../../femtools/ccxtools.py" line="455"/>
       <source>FEM: wrong ccx binary</source>
       <translation>FEM: 잘못된 ccx 바이너리</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="466"/>
+      <location filename="../../../femtools/ccxtools.py" line="468"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
       <translation>FEM: CalculiX 바이너리 ccx '{}'을 찾을 수 없습니다. FEM 환경설정의 CalculiX 탭에서 CalculiX 바이너리 ccx 경로를 지정하세요.</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="478"/>
+      <location filename="../../../femtools/ccxtools.py" line="480"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
       <translation>FEM: CalculiX ccx '{}' 출력 '{}'에 예상 문구 '{}'가 포함되어 있지 않습니다. ccx 바이너리 실행 중 문제가 있습니다. FreeCAD 없이 ccx가 단독으로 실행되는지 확인하세요.</translation>
     </message>
