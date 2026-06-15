@@ -34,10 +34,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { target: linux-64, os: ubuntu-22.04 }
-          - { target: osx-arm64, os: macos-latest, deploy_target: "11.0" }
-          - { target: osx-arm64, os: macos-latest, deploy_target: "15.0" }
-          - { target: win-64, os: windows-latest }
+          - { target: linux-64, os: ubuntu-22.04, legacyCacheKey: pixi-ubuntu-latest }
+          - { target: osx-arm64, os: macos-latest, deploy_target: "11.0", legacyCacheKey: pixi-macos-latest }
+          - { target: osx-arm64, os: macos-latest, deploy_target: "15.0", legacyCacheKey: pixi-macos-latest }
+          - { target: win-64, os: windows-latest, legacyCacheKey: pixi-windows-2022 }
     steps:
       - name: Harden the runner (Audit all outbound calls)
         uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
@@ -93,6 +93,8 @@ jobs:
           restore-keys: |
             FC-${{ env.cacheKey }}-${{ github.ref }}-
             FC-${{ env.cacheKey }}-
+            FC-${{ matrix.legacyCacheKey }}-${{ github.ref }}-
+            FC-${{ matrix.legacyCacheKey }}-
 
       - name: Compute build tag
         id: build_tag
