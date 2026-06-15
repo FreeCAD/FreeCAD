@@ -96,4 +96,5 @@ def makeEllipse(*args, **kwarg):
     utils.use_instead("make_ellipse")
     return make_ellipse(*args, **kwarg)
 
+
 ## @}

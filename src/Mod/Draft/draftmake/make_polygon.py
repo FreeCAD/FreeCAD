@@ -94,4 +94,5 @@ def makePolygon(*args, **kwarg):
     utils.use_instead("make_polygon")
     return make_polygon(*args, **kwarg)
 
+
 ## @}

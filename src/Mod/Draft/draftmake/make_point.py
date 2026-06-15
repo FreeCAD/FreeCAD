@@ -96,4 +96,5 @@ def makePoint(*args, **kwarg):
     utils.use_instead("make_point")
     return make_point(*args, **kwarg)
 
+
 ## @}

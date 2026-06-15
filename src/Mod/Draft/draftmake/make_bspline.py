@@ -120,4 +120,5 @@ def makeBSpline(*args, **kwarg):
     utils.use_instead("make_bspline")
     return make_bspline(*args, **kwarg)
 
+
 ## @}

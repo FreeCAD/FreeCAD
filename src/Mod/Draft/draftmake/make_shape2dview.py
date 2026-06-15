@@ -77,4 +77,5 @@ def makeShape2DView(*args, **kwarg):
     utils.use_instead("make_shape2dview")
     return make_shape2dview(*args, **kwarg)
 
+
 ## @}

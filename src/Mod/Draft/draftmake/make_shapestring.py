@@ -77,4 +77,5 @@ def makeShapeString(*args, **kwarg):
     utils.use_instead("make_shapestring")
     return make_shapestring(*args, **kwarg)
 
+
 ## @}

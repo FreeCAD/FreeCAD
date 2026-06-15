@@ -134,4 +134,5 @@ def makeWire(*args, **kwarg):
     utils.use_instead("make_wire")
     return make_wire(*args, **kwarg)
 
+
 ## @}

@@ -106,4 +106,5 @@ def makeRectangle(*args, **kwarg):
     utils.use_instead("make_rectangle")
     return make_rectangle(*args, **kwarg)
 
+
 ## @}

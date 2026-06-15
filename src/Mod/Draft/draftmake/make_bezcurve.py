@@ -116,4 +116,5 @@ def makeBezCurve(*args, **kwarg):
     utils.use_instead("make_bezcurve")
     return make_bezcurve(*args, **kwarg)
 
+
 ## @}
