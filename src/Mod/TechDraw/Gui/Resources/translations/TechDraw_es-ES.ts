@@ -1584,7 +1584,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1968"/>
       <source>Inserts a dimension showing the horizontal extent (overall length) of an object or feature</source>
-      <translation type="unfinished">Inserts a dimension showing the horizontal extent (overall length) of an object or feature</translation>
+      <translation>Inserta una cota que muestra la extensión horizontal (longitud total) de un objeto o elemento</translation>
     </message>
   </context>
   <context>
@@ -2087,7 +2087,7 @@ Al hacer clic izquierdo en un espacio vacío, se validará la dimensión actual.
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2093"/>
       <source>Inserts a dimension showing the vertical extent (overall length) of an object or feature</source>
-      <translation type="unfinished">Inserts a dimension showing the vertical extent (overall length) of an object or feature</translation>
+      <translation>Inserta una cota que muestra la extensión vertical (longitud total) de un objeto o elemento</translation>
     </message>
   </context>
   <context>
@@ -5891,7 +5891,7 @@ Los cambios no tendrán efecto en cotas existentes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="577"/>
       <source>Template directory</source>
-      <translation type="unfinished">Template directory</translation>
+      <translation>Directorio de plantillas</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="590"/>
@@ -8730,11 +8730,6 @@ using the given X/Y spacings</translation>
       <translation>Valor</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
-      <source>Reapplies auto-fill to this field</source>
-      <translation>Vuelve a aplicar el autocompletado a este campo</translation>
-    </message>
-    <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value</source>
       <translation>El valor de reemplazo de autocompletar</translation>
@@ -8743,6 +8738,11 @@ using the given X/Y spacings</translation>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
       <translation>Etiqueta Texto</translation>
+    </message>
+    <message>
+      <location filename="../../DlgTemplateField.ui" line="52"/>
+      <source>Applies autofill to this field</source>
+      <translation type="unfinished">Applies autofill to this field</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>

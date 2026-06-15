@@ -52,6 +52,7 @@
 # include <tuple>
 # include <vector>
 # include <fmt/format.h>
+# include <fmt/ranges.h>
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>

@@ -26,6 +26,8 @@
 
 #include "ZoomableView.h"
 #include "ui_Sheet.h"
+#include "App/Application.h"
+#include "Base/Console.h"
 
 
 ZoomableView::ZoomableView(Ui::Sheet* ui)

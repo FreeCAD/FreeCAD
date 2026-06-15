@@ -8730,11 +8730,6 @@ utilizzando le spaziature X/Y specificate</translation>
       <translation>Valore</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
-      <source>Reapplies auto-fill to this field</source>
-      <translation>Riapplica la compilazione automatica a questo campo</translation>
-    </message>
-    <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value</source>
       <translation>Il valore in sostituzione della compilazione automatica</translation>
@@ -8743,6 +8738,11 @@ utilizzando le spaziature X/Y specificate</translation>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
       <translation>Etichetta Testo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgTemplateField.ui" line="52"/>
+      <source>Applies autofill to this field</source>
+      <translation>Applica la compilazione automatica a questo campo</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>

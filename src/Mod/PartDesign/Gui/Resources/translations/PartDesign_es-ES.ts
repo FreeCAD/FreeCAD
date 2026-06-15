@@ -3224,7 +3224,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="2196"/>
       <source>Select only one feature in an active body.</source>
-      <translation type="unfinished">Select only one feature in an active body.</translation>
+      <translation>Seleccione solo una característica en un cuerpo activo.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
