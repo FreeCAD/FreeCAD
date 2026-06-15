@@ -27,9 +27,13 @@
 
 #pragma once
 
+#include <optional>
+
+#include <App/DocumentObserver.h>
 #include "ViewProvider.h"
 #include <Gui/ViewProviderGeoFeatureGroupExtension.h>
 #include <Gui/Inventor/SoToggleSwitch.h>
+#include <fastsignals/connection.h>
 
 
 namespace PartDesignGui
@@ -51,9 +55,12 @@ public:
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
+    void attach(App::DocumentObject*) override;
+    void beforeDelete() override;
     bool onDelete(const std::vector<std::string>&) override;
     const char* getDefaultDisplayMode() const override;
     void onChanged(const App::Property* prop) override;
+    void update(const App::Property* prop) override;
 
 protected:
     void updateData(const App::Property* prop) override;
@@ -66,10 +73,26 @@ protected:
     static const char* DisplayEnum[];
 
 private:
+    struct ActiveBodyExposure
+    {
+        App::DocumentObjectWeakPtrT body;
+        int bodyMode;
+        int booleanMode;
+        bool bodyWasVisible;
+        bool booleanWasVisible;
+        bool indirect;
+    };
+
+    const char* getConfiguredDisplayMode();
     void updateBasePreviewVisibility();
+    void restoreActiveBodyExposure();
+    void syncActiveBodyVisibility();
+    void onBodyActivated(const Gui::ViewProviderDocumentObject* vp, const char* name);
 
     Gui::CoinPtr<SoGroup> pcToolsPreview;
     Gui::CoinPtr<SoToggleSwitch> pcBasePreviewToggle;
+    fastsignals::scoped_connection _bodyActivationConn;
+    std::optional<ActiveBodyExposure> _activeBodyExposure;
 };
 
 }  // namespace PartDesignGui

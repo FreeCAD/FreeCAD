@@ -27,6 +27,8 @@
 #include <QMenu>
 #include <Inventor/nodes/SoTransform.h>
 
+#include <utility>
+
 #include "ViewProviderBoolean.h"
 
 #include "StyleParameters.h"
@@ -35,11 +37,16 @@
 #include <Base/ServiceProvider.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
 #include <App/Document.h>
+#include <App/GroupExtension.h>
+#include <Gui/ActiveObjectList.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
 #include <Gui/Utilities.h>
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/Gui/TaskDlgEditSketch.h>
 
@@ -65,6 +72,153 @@ ViewProviderBoolean::ViewProviderBoolean()
 
 ViewProviderBoolean::~ViewProviderBoolean() = default;
 
+void ViewProviderBoolean::attach(App::DocumentObject* pcObject)
+{
+    ViewProvider::attach(pcObject);
+    _bodyActivationConn = getDocument()->signalActivatedViewProvider.connect(
+        [this](const Gui::ViewProviderDocumentObject* vp, const char* name) {
+            onBodyActivated(vp, name);
+        }
+    );
+}
+
+void ViewProviderBoolean::update(const App::Property* prop)
+{
+    if (!_activeBodyExposure || prop == &getObject()->Visibility) {
+        Gui::ViewProviderDocumentObject::update(prop);
+        return;
+    }
+
+    // A tool body is temporarily shown via setDisplayMaskMode("Group").
+    // The normal ViewProvider::update() briefly sets pcModeSwitch=-1 (hide/show
+    // optimization) which hides the entire Group subtree, making the tool body flash.
+    // Call updateData() directly to skip that cycle.
+    if (isUpdatesEnabled()) {
+        updateData(prop);
+    }
+}
+
+const char* ViewProviderBoolean::getConfiguredDisplayMode()
+{
+    if (Display.getValue() != 0) {
+        return "Group";
+    }
+
+    if (auto bodyViewProvider = getBodyViewProvider()) {
+        return bodyViewProvider->DisplayMode.getValueAsString();
+    }
+
+    return getDefaultDisplayMode();
+}
+
+static void setTemporaryVisible(Gui::ViewProvider* vp, bool visible)
+{
+    // This is scene-graph-only visibility and must not mutate App Visibility.
+    if (visible) {
+        vp->Gui::ViewProvider::show();
+    }
+    else {
+        vp->Gui::ViewProvider::hide();
+    }
+}
+
+void ViewProviderBoolean::restoreActiveBodyExposure()
+{
+    if (!_activeBodyExposure) {
+        return;
+    }
+
+    auto exposure = std::move(*_activeBodyExposure);
+    _activeBodyExposure.reset();
+
+    auto* body = exposure.body.get<App::DocumentObject>();
+    if (body) {
+        if (auto* bodyVP = Gui::Application::Instance->getViewProvider(body)) {
+            bodyVP->setDefaultMode(exposure.bodyMode);
+            setTemporaryVisible(bodyVP, exposure.bodyWasVisible);
+        }
+    }
+
+    setDefaultMode(exposure.booleanMode);
+    setTemporaryVisible(this, exposure.booleanWasVisible);
+}
+
+void ViewProviderBoolean::syncActiveBodyVisibility()
+{
+    auto* activeView = getDocument()->getActiveView();
+    auto* activeBody = activeView ? activeView->getActiveObject<App::DocumentObject*>(PDBODYKEY)
+                                  : nullptr;
+    auto* activeBodyVP = activeBody ? dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                                          Gui::Application::Instance->getViewProvider(activeBody)
+                                      )
+                                    : nullptr;
+    onBodyActivated(activeBodyVP, PDBODYKEY);
+}
+
+void ViewProviderBoolean::onBodyActivated(const Gui::ViewProviderDocumentObject* vp, const char* name)
+{
+    if (strcmp(name, PDBODYKEY) != 0) {
+        return;
+    }
+
+    auto* feature = getObject<PartDesign::Boolean>();
+    if (!feature) {
+        return;
+    }
+
+    App::DocumentObject* activatedBody = vp ? vp->getObject() : nullptr;
+    App::DocumentObject* matchingMember = nullptr;
+    if (activatedBody) {
+        for (auto* member : feature->Group.getValues()) {
+            auto* group = member
+                ? member->getExtensionByType<App::GroupExtension>(/*no_except=*/true)
+                : nullptr;
+            if (member == activatedBody || (group && group->hasObject(activatedBody, true))) {
+                matchingMember = member;
+                break;
+            }
+        }
+    }
+
+    const bool indirectActivation = matchingMember && matchingMember != activatedBody;
+    const bool sameExposure = matchingMember && _activeBodyExposure
+        && _activeBodyExposure->body.get<App::DocumentObject>() == matchingMember
+        && _activeBodyExposure->indirect == indirectActivation;
+    if (!sameExposure) {
+        restoreActiveBodyExposure();
+    }
+    if (!matchingMember) {
+        return;
+    }
+
+    auto* bodyVP = Gui::Application::Instance->getViewProvider(matchingMember);
+    if (!bodyVP) {
+        restoreActiveBodyExposure();
+        return;
+    }
+
+    if (!sameExposure) {
+        _activeBodyExposure.emplace(
+            ActiveBodyExposure {
+                .body = App::DocumentObjectWeakPtrT(matchingMember),
+                .bodyMode = bodyVP->getActualMode(),
+                .booleanMode = getActualMode(),
+                .bodyWasVisible = bodyVP->Gui::ViewProvider::isShow(),
+                .booleanWasVisible = Gui::ViewProvider::isShow(),
+                .indirect = indirectActivation,
+            }
+        );
+    }
+
+    setDisplayMaskMode("Group");
+    if (_activeBodyExposure->indirect) {
+        bodyVP->setDisplayMaskMode("Group");
+    }
+    else {
+        setTemporaryVisible(bodyVP, true);
+    }
+}
+
 void ViewProviderBoolean::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit Boolean"));
@@ -86,6 +240,12 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string>& s)
     return ViewProvider::onDelete(s);
 }
 
+void ViewProviderBoolean::beforeDelete()
+{
+    restoreActiveBodyExposure();
+    ViewProvider::beforeDelete();
+}
+
 const char* ViewProviderBoolean::getDefaultDisplayMode() const
 {
     return "Flat Lines";
@@ -97,23 +257,19 @@ void ViewProviderBoolean::onChanged(const App::Property* prop)
     ViewProvider::onChanged(prop);
 
     if (prop == &Display) {
-        const auto getDisplayMode = [this]() {
-            if (Display.getValue() != 0) {
-                return "Group";
-            }
-
-            if (auto bodyViewProvider = getBodyViewProvider()) {
-                return bodyViewProvider->DisplayMode.getValueAsString();
-            }
-
-            return getDefaultDisplayMode();
-        };
-
-        setDisplayMode(getDisplayMode());
+        setDisplayMode(getConfiguredDisplayMode());
+        if (_activeBodyExposure) {
+            _activeBodyExposure->booleanMode = getActualMode();
+            setDisplayMaskMode("Group");
+        }
     }
 
     if (prop == &Visibility) {
         updateBasePreviewVisibility();
+        if (_activeBodyExposure) {
+            _activeBodyExposure->booleanWasVisible = Visibility.getValue();
+        }
+        syncActiveBodyVisibility();
     }
 }
 
@@ -140,6 +296,10 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
     }
 
     ViewProvider::updateData(prop);
+
+    if (prop == &feature->Group) {
+        syncActiveBodyVisibility();
+    }
 }
 
 void ViewProviderBoolean::attachPreview()
