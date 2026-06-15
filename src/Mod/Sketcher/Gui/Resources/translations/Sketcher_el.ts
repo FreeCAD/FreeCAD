@@ -4,12 +4,12 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1559"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1629"/>
       <source>Clone</source>
       <translation>Πιστό Αντίγραφο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1561"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1631"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Δημιουργεί ένα Πιστό αντίγραφο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -45,12 +45,12 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1641"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1711"/>
       <source>Clone</source>
       <translation>Πιστό Αντίγραφο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1643"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1713"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Δημιουργεί έναν Πιστό αντίγραφο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -94,12 +94,12 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1508"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1578"/>
       <source>Copy</source>
       <translation>Αντιγραφή</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1509"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1579"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Δημιουργεί ένα απλό αντίγραφο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -253,12 +253,12 @@ as mirroring reference</source>
   <context>
     <name>CmdSketcherMove</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1607"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1677"/>
       <source>Move</source>
       <translation>Μετακίνηση</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1608"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1678"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Μετακινεί το γεωμετρικό στοιχείο λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -266,12 +266,12 @@ as mirroring reference</source>
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1950"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2020"/>
       <source>Rectangular Array</source>
       <translation>Ορθογώνια Διάταξη</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1951"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2021"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>Δημιουργεί ένα μοτίβο ορθογώνιας συστοιχίας της γεωμετρίας λαμβάνοντας ως αναφορά το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -826,43 +826,43 @@ invalid constraints, and degenerate geometry</source>
       <translation>Ένωση Καμπυλών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="298"/>
+      <location filename="../../CommandSketcherTools.cpp" line="368"/>
       <source>Cut in Sketcher</source>
       <translation>Αποκοπή στο Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="343"/>
+      <location filename="../../CommandSketcherTools.cpp" line="413"/>
       <source>Paste in Sketcher</source>
       <translation>Επικόλληση στο Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1090"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1160"/>
       <source>Exposing Internal Geometry</source>
       <translation>Εμφάνιση Εσωτερικής Γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1293"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1363"/>
       <source>Copy/clone/move geometry</source>
       <translation>Αντιγραφή/κλωνοποίηση/μετακίνηση γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1878"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1948"/>
       <source>Create copy of geometry</source>
       <translation>Δημιουργία αντιγράφου γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2128"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2198"/>
       <source>Delete all geometry</source>
       <translation>Διαγραφή όλων των γεωμετρικών στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2192"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2262"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1232"/>
       <source>Delete all constraints</source>
       <translation>Διαγραφή όλων των περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2326"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2396"/>
       <source>Remove Axes Alignment</source>
       <translation>Κατάργηση Ευθυγράμμισης Αξόνων</translation>
     </message>
@@ -1323,18 +1323,18 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="11208"/>
       <location filename="../../CommandConstraints.cpp" line="11283"/>
       <location filename="../../CommandConstraints.cpp" line="11295"/>
-      <location filename="../../CommandSketcherTools.cpp" line="393"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1037"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1366"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1376"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1438"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1970"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1980"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2044"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2254"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2264"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2311"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2376"/>
+      <location filename="../../CommandSketcherTools.cpp" line="463"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1107"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1436"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1446"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1508"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2040"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2050"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2114"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2324"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2334"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2381"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2446"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
@@ -1999,62 +1999,62 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Πρέπει να επιλεγούν δύο άκρα ή ένα σημείο ταύτισης.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="88"/>
+      <location filename="../../CommandSketcherTools.cpp" line="140"/>
       <source>Wrong Selection</source>
       <translation>Λανθασμένη Επιλογή</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="89"/>
-      <location filename="../../CommandSketcherTools.cpp" line="394"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1038"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1367"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1377"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1971"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1981"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2255"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2265"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2377"/>
+      <location filename="../../CommandSketcherTools.cpp" line="141"/>
+      <location filename="../../CommandSketcherTools.cpp" line="464"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1108"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1437"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1447"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2041"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2051"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2325"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2335"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2447"/>
       <source>Select elements from a single sketch.</source>
       <translation>Επιλέξτε στοιχεία από ένα σχέδιο.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="902"/>
+      <location filename="../../CommandSketcherTools.cpp" line="972"/>
       <source>No constraint selected</source>
       <translation>Δεν επιλέχθηκε κανένας περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="903"/>
+      <location filename="../../CommandSketcherTools.cpp" line="973"/>
       <source>At least one constraint must be selected</source>
       <translation>Πρέπει να επιλεχθεί τουλάχιστον ένας περιορισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1439"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2045"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1509"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2115"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Η δημιουργία αντιγράφου απαιτεί την ύπαρξη τουλάχιστον ενός επιλεγμένου στοιχείου μη εξωτερικής γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2118"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2188"/>
       <source>Delete All Geometry</source>
       <translation>Διαγραφή Όλων των Γεωμετρικών Στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2182"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2252"/>
       <source>Delete All Constraints</source>
       <translation>Διαγραφή Όλων των Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2119"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2189"/>
       <source>Delete all geometry and constraints?</source>
       <translation>Διαγραφή όλης της γεωμετρίας και των περιορισμών;</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2183"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2253"/>
       <source>Delete all the constraints in the sketch?</source>
       <translation>Διαγραφή όλων των περιορισμών του σχεδίου;</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2312"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2382"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
       <translation>Η αφαίρεση της ευθυγράμμισης αξόνων απαιτεί την επιλογή τουλάχιστον ενός μη εξωτερικού γεωμετρικού στοιχείου</translation>
     </message>
@@ -3361,8 +3361,8 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="39"/>
-      <source>Font face used for labels and constraints</source>
-      <translation type="unfinished">Font face used for labels and constraints</translation>
+      <source>Font used for labels and constraints</source>
+      <translation type="unfinished">Font used for labels and constraints</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="93"/>
@@ -4220,8 +4220,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1716"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1719"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1786"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1789"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Δημιουργεί ένα Πιστό αντίγραφο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -4229,17 +4229,17 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1715"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1785"/>
       <source>Clone</source>
       <translation>Πιστό Αντίγραφο</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1723"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1793"/>
       <source>Copy</source>
       <translation>Αντιγραφή</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1731"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1801"/>
       <source>Move</source>
       <translation>Μετακίνηση</translation>
     </message>
@@ -4256,8 +4256,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1724"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1727"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1794"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1797"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Δημιουργεί ένα απλό αντίγραφο του γεωμετρικού στοιχείου λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -4355,8 +4355,8 @@ Select the method to attach this sketch to selected objects.</source>
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1732"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1734"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1802"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1804"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Μετακινεί το γεωμετρικό στοιχείο λαμβάνοντας ως σημείο αναφοράς το τελευταίο επιλεγμένο σημείο</translation>
     </message>
@@ -4923,9 +4923,9 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="190"/>
       <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1315"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1896"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2333"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1385"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1966"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2403"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="264"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="355"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="515"/>
@@ -4947,28 +4947,28 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Σφάλμα</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2134"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2204"/>
       <source>Failed to delete all geometry</source>
       <translation>Η διαγραφή όλης της γεωμετρίας απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2199"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2269"/>
       <source>Failed to delete all constraints</source>
       <translation>Η διαγραφή όλων των περιορισμών απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2419"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2489"/>
       <source>Selection has no valid geometries. B-splines and points are not supported yet.</source>
       <translation>Η επιλογή δεν έχει έγκυρες γεωμετρίες. Οι B-splines και τα σημεία δεν υποστηρίζονται ακόμη.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="142"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2418"/>
+      <location filename="../../CommandSketcherTools.cpp" line="194"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2488"/>
       <source>Invalid selection</source>
       <translation>Μη έγκυρη επιλογή</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="143"/>
+      <location filename="../../CommandSketcherTools.cpp" line="195"/>
       <source>Selection has no valid geometries.</source>
       <translation>Η επιλογή δεν έχει έγκυρες γεωμετρίες.</translation>
     </message>
@@ -4987,7 +4987,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../CommandConstraints.cpp" line="963"/>
       <location filename="../../CommandConstraints.cpp" line="6932"/>
       <location filename="../../CommandConstraints.cpp" line="7134"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1101"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1171"/>
       <source>Invalid Constraint</source>
       <translation>Μη έγκυρος περιορισμός</translation>
     </message>
@@ -7294,12 +7294,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCopyClipboard</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="249"/>
+      <location filename="../../CommandSketcherTools.cpp" line="319"/>
       <source>C&amp;opy Elements</source>
       <translation>Αντιγραφή Στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="250"/>
+      <location filename="../../CommandSketcherTools.cpp" line="320"/>
       <source>Copies the selected geometries and constraints to the clipboard</source>
       <translation>Αντιγράφει τα επιλεγμένα γεωμετρικά σχήματα και τους περιορισμούς στο πρόχειρο</translation>
     </message>
@@ -7307,12 +7307,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherCut</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="280"/>
+      <location filename="../../CommandSketcherTools.cpp" line="350"/>
       <source>C&amp;ut Elements</source>
       <translation>Αποκοπή Στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="281"/>
+      <location filename="../../CommandSketcherTools.cpp" line="351"/>
       <source>Cuts the selected geometries and constraints to the clipboard</source>
       <translation>Αποκόπτει τις επιλεγμένες γεωμετρίες και τους περιορισμούς στο πρόχειρο</translation>
     </message>
@@ -7320,12 +7320,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherPaste</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="320"/>
+      <location filename="../../CommandSketcherTools.cpp" line="390"/>
       <source>P&amp;aste Elements</source>
       <translation>Επικόλληση στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="321"/>
+      <location filename="../../CommandSketcherTools.cpp" line="391"/>
       <source>Pastes the geometries and constraints from the clipboard into the sketch</source>
       <translation>Αυτή η λειτουργία παίρνει ό, τι έχετε κάνει «Αντιγραφή» (γραμμές, κύκλους και τις διαστάσεις) και το τοποθετεί μέσα στο σχέδιο που δουλεύετε τώρα. Είναι ο πιο γρήγορος τρόπος να μεταφέρετε έτοιμα σχήματα από ένα σημείο σε ένα άλλο</translation>
     </message>
@@ -7333,12 +7333,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="368"/>
+      <location filename="../../CommandSketcherTools.cpp" line="438"/>
       <source>Select Associated Constraints</source>
       <translation>Επιλογή Σχετιζόμενων Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="370"/>
+      <location filename="../../CommandSketcherTools.cpp" line="440"/>
       <source>Selects the constraints associated with the selected geometrical elements</source>
       <translation>Αυτό το εργαλείο σάς βοηθά να βρείτε γρήγορα ποιες μετρήσεις και ποιοι περιορισμοί ελέγχουν μια γραμμή ή έναν κύκλο. Αν επιλέξετε μια γραμμή και πατήσετε αυτό το κουμπί, το FreeCAD θα φωτίσει αυτόματα όλες τις διαστάσεις, τις παραλληλίες ή τις καθετότητες που την επηρεάζουν, ώστε να ξέρετε τι πρέπει να αλλάξετε</translation>
     </message>
@@ -7346,12 +7346,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSelectOrigin</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="452"/>
+      <location filename="../../CommandSketcherTools.cpp" line="522"/>
       <source>Select Origin</source>
       <translation>Επιλογή Σημείου Αρχής Αξόνων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="453"/>
+      <location filename="../../CommandSketcherTools.cpp" line="523"/>
       <source>Selects the local origin point of the sketch</source>
       <translation>Επιλέγει το κεντρικό σημείο αναφοράς (αρχή αξόνων) του σχεδίου</translation>
     </message>
@@ -7359,12 +7359,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSelectVerticalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="496"/>
+      <location filename="../../CommandSketcherTools.cpp" line="566"/>
       <source>Select Vertical Axis</source>
       <translation>Επιλογή Κατακόρυφου Άξονα</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="497"/>
+      <location filename="../../CommandSketcherTools.cpp" line="567"/>
       <source>Selects the local vertical axis of the sketch</source>
       <translation>Επιλέγει τον τοπικό κατακόρυφο άξονα του σχεδίου (συνήθως ο άξονας Y)</translation>
     </message>
@@ -7372,12 +7372,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="537"/>
+      <location filename="../../CommandSketcherTools.cpp" line="607"/>
       <source>Select Horizontal Axis</source>
       <translation>Επιλογή Οριζόντιου Άξονα</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="538"/>
+      <location filename="../../CommandSketcherTools.cpp" line="608"/>
       <source>Selects the local horizontal axis of the sketch</source>
       <translation>Επιλέγει τον τοπικό οριζόντιο άξονα του σχεδίου (συνήθως ο άξονας X)</translation>
     </message>
@@ -7385,12 +7385,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSelectRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="577"/>
+      <location filename="../../CommandSketcherTools.cpp" line="647"/>
       <source>Select Redundant Constraints</source>
       <translation>Επιλογή Περιττών Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="578"/>
+      <location filename="../../CommandSketcherTools.cpp" line="648"/>
       <source>Selects all redundant constraints</source>
       <translation>Επιλογή Πλεοναζόντων Περιορισμών χρησιμοποιείται όταν έχετε δώσει περισσότερες πληροφορίες από όσες χρειάζεται το πρόγραμμα, συνήθως το FreeCAD εμφανίζει ένα μήνυμα σε πορτοκαλί φόντο που λέει "Redundant Constraints"</translation>
     </message>
@@ -7398,12 +7398,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSelectMalformedConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="635"/>
+      <location filename="../../CommandSketcherTools.cpp" line="705"/>
       <source>Select Malformed Constraints</source>
       <translation>Επιλογή Ελαττωματικών Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="636"/>
+      <location filename="../../CommandSketcherTools.cpp" line="706"/>
       <source>Selects all malformed constraints</source>
       <translation>Η Επιλογή Ελαττωματικών Περιορισμών χρησιμοποιείται για τον εντοπισμό περιορισμών που έχουν "χαλάσει" τεχνικά και δεν μπορούν πλέον να υπολογιστούν σωστά από το πρόγραμμα</translation>
     </message>
@@ -7411,12 +7411,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSelectPartiallyRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="690"/>
+      <location filename="../../CommandSketcherTools.cpp" line="760"/>
       <source>Select Partially Redundant Constraints</source>
       <translation>Επιλογή Μερικώς Πλεοναζόντων Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="691"/>
+      <location filename="../../CommandSketcherTools.cpp" line="761"/>
       <source>Selects all partially redundant constraints</source>
       <translation>Η επιλογή Μερικώς Πλεοναζόντων Περιορισμών είναι ένα πιο "έξυπνο" εργαλείο καθαρισμού. Χρησιμοποιείται όταν ένας περιορισμός δεν είναι εντελώς άχρηστος, αλλά ένα μέρος της πληροφορίας που δίνει καλύπτεται ήδη από άλλους περιορισμούς</translation>
     </message>
@@ -7424,12 +7424,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="746"/>
+      <location filename="../../CommandSketcherTools.cpp" line="816"/>
       <source>Select Conflicting Constraints</source>
       <translation>Επιλογή Συγκρουόμενων Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="747"/>
+      <location filename="../../CommandSketcherTools.cpp" line="817"/>
       <source>Selects all conflicting constraints</source>
       <translation>Η επιλογή Συγκρουόμενων Περιορισμών είναι ένα από τα πιο χρήσιμα εργαλεία για τη διόρθωση σφαλμάτων, καθώς εντοπίζει περιορισμούς που "μαλώνουν" μεταξύ τους, δίνοντας στο πρόγραμμα εντολές που είναι αδύνατο να εκτελεστούν ταυτόχρονα</translation>
     </message>
@@ -7437,12 +7437,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="804"/>
+      <location filename="../../CommandSketcherTools.cpp" line="874"/>
       <source>Select Associated Geometry</source>
       <translation>Επιλογή Σχετιζόμενης Γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="806"/>
+      <location filename="../../CommandSketcherTools.cpp" line="876"/>
       <source>Selects the geometrical elements associated with the selected constraints</source>
       <translation>Αυτή η εντολή επιλέγει αυτόματα τα γεωμετρικά στοιχεία (γραμμές, τόξα ή σημεία) που είναι συνδεδεμένα με τους περιορισμούς (κανόνες) που έχετε ήδη επιλέξει</translation>
     </message>
@@ -7450,12 +7450,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSelectElementsWithDoFs</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="924"/>
+      <location filename="../../CommandSketcherTools.cpp" line="994"/>
       <source>Select Under-Constrained Elements</source>
       <translation>Επιλογή Μη Πλήρως Περιορισμένης Γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="925"/>
+      <location filename="../../CommandSketcherTools.cpp" line="995"/>
       <source>Selects geometrical elements where the solver still detects unconstrained degrees of freedom</source>
       <translation>Η εντολή αυτή είναι ο "ανιχνευτής" που σας δείχνει ποια σημεία του σχεδίου σας μπορούν ακόμα να κουνηθούν και χρειάζονται περισσότερες διαστάσεις ή περιορισμούς</translation>
     </message>
@@ -7463,12 +7463,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1083"/>
       <source>Toggle Internal Geometry</source>
       <translation>Εναλλαγή Εσωτερικής Γεωμετρίας</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1014"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1084"/>
       <source>Toggles the visibility of all internal geometry</source>
       <translation>Αυτό το εργαλείο λειτουργεί ως "διακόπτης" για να κρύβετε ή να εμφανίζετε τις βοηθητικές γραμμές ενός σχήματος που έχετε ήδη σχεδιάσει. Χρησιμοποιείται κυρίως όταν δουλεύουμε με σύνθετα σχήματα, όπως οι ελλείψεις (ellipses) ή οι καμπύλες B-splines. Είναι οι βοηθητικές γραμμές και τα σημεία που "κουβαλάει" ένα σχήμα για να οριστεί η δομή του (π. χ. οι εστίες μιας έλλειψης ή τα κέντρα ελέγχου μιας καμπύλης)</translation>
     </message>
@@ -7476,12 +7476,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1128"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1198"/>
       <source>Mirror</source>
       <translation>Κατοπτρισμός</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1130"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1200"/>
       <source>Creates a mirrored copy of the selected geometry</source>
       <translation>Κατοπτρισμός / Καθρέφτης χρησιμοποιείται για να δημιουργήσετε ένα πανομοιότυπο αντίγραφο των γραμμών σας, το οποίο "κοιτάζει" αντίθετα, σαν να καθρεφτίζεται πάνω σε έναν άξονα</translation>
     </message>
@@ -7489,12 +7489,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2102"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2172"/>
       <source>Delete All Geometry</source>
       <translation>Διαγραφή Όλων των Γεωμετρικών Στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2103"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2173"/>
       <source>Deletes all geometry and their constraints in the current sketch, with the exception of external geometry</source>
       <translation>Διαγραφή Όλης της Γεωμετρίας είναι η επιλογή που χρησιμοποιείται για να διαγράψετε ταυτόχρονα όλα τα σχήματα που έχετε σχεδιάσει μέσα σε ένα Σχέδιο (Sketch)</translation>
     </message>
@@ -7502,12 +7502,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2167"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2237"/>
       <source>Delete All Constraints</source>
       <translation>Διαγραφή Όλων των Περιορισμών</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2168"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
       <source>Deletes all constraints in the sketch</source>
       <translation>Διαγραφή Όλων των Περιορισμών χρησιμοποιείται για να αφαιρέσετε μαζικά όλους τους περιορισμούς και τις διαστάσεις από ένα σχέδιο, αφήνοντας όμως τις γραμμές και τα σχήματα (τη γεωμετρία) ανέπαφα</translation>
     </message>
@@ -7515,12 +7515,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherRemoveAxesAlignment</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2234"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2304"/>
       <source>Remove Axes Alignment</source>
       <translation>Κατάργηση Ευθυγράμμισης Αξόνων</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2235"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2305"/>
       <source>Modifies the constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
       <translation>Χρησιμοποιείται για να διαγράψετε αυτόματα τους περιορισμούς που "κλειδώνουν" μια γραμμή πάνω στον οριζόντιο (X) ή τον κατακόρυφο (Y) άξονα. Δεν καταργεί απλώς τους περιορισμούς, αλλά προσπαθεί να μετατρέψει τους οριζόντιους και κάθετους περιορισμούς σε άλλους (όπως η καθετότητα μεταξύ γραμμών), ώστε το σχήμα σας να μην "διαλυθεί"</translation>
     </message>
@@ -7528,12 +7528,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherOffset</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2354"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2424"/>
       <source>Offset</source>
       <translation>Μετατόπιση</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2355"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2425"/>
       <source>Adds an equidistant closed contour around selected geometry: positive values offset outward, negative values inward</source>
       <translation>Προσθέτει ένα ισαπέχον κλειστό περίγραμμα γύρω από την επιλεγμένη γεωμετρία: οι θετικές τιμές δημιουργούν μετατόπιση προς τα έξω, ενώ οι αρνητικές προς τα μέσα</translation>
     </message>
@@ -7541,12 +7541,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherRotate</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2437"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2507"/>
       <source>Rotate / Polar Transform</source>
       <translation>Περιστροφή / Κυκλική Διάταξη</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2438"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2508"/>
       <source>Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation</source>
       <translation>Περιστρέφει την επιλεγμένη γεωμετρία δημιουργώντας 'n' αντίγραφα, τοποθετώντας τα σε ίσες αποστάσεις γύρω από ένα κέντρο που εσείς επιλέγετε</translation>
     </message>
@@ -7554,12 +7554,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherScale</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2471"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2541"/>
       <source>Scale</source>
       <translation>Κλίμακα</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2472"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2542"/>
       <source>Scales the selected geometries</source>
       <translation>Αλλάζει την κλίμακα (μέγεθος) των επιλεγμένων γεωμετριών</translation>
     </message>
@@ -7567,12 +7567,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>CmdSketcherTranslate</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2505"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2575"/>
       <source>Move / Array Transform</source>
       <translation>Μετακίνηση / Διάταξη σε Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2506"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2576"/>
       <source>Translates the selected geometries and enables the creation of 'i' * 'j' copies</source>
       <translation>Μετακινεί τα επιλεγμένα σχήματα και επιτρέπει τη δημιουργία πολλαπλών αντιγράφων σε γραμμές και στήλες (i * j). 
 Παράδειγμα: Αν θέλετε 10 τρύπες σε μια πλάκα, σχεδιάζετε μόνο την πρώτη και το FreeCAD δημιουργεί τις υπόλοιπες αυτόματα σε ίσες αποστάσεις</translation>

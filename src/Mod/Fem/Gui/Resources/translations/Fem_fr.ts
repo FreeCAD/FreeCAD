@@ -8806,23 +8806,23 @@ visualisation des données de sommets.</translation>
   <context>
     <name>FemToolsCcx</name>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="419"/>
+      <location filename="../../../femtools/ccxtools.py" line="421"/>
       <source>No or wrong CalculiX binary ccx</source>
       <translation>Il n'y a pas de fichier binaire ccx de CalculiX ou le fichier est incorrect.</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="453"/>
+      <location filename="../../../femtools/ccxtools.py" line="455"/>
       <source>FEM: wrong ccx binary</source>
       <translation>FEM : le binaire ccx est incorrect.</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="466"/>
+      <location filename="../../../femtools/ccxtools.py" line="468"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
       <translation>FEM : le binaire ccx « {} » de CalculiX est introuvable. Définir le chemin d'accès au binaire ccx de CalculiX dans l'onglet CalculiX des
 préférences de l'atelier FEM.</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="478"/>
+      <location filename="../../../femtools/ccxtools.py" line="480"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
       <translation>FEM : ccx « {} » de CalculiX donnant « {} » ne contient pas la phrase attendue « {} ». Il y a des problèmes lors de l'exécution du binaire ccx.
 Vérifier si ccx fonctionne de manière autonome sans FreeCAD.</translation>

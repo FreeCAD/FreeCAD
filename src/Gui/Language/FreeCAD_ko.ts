@@ -136,7 +136,7 @@
       <location filename="../Transform.cpp" line="108"/>
       <location filename="../TaskTransform.cpp" line="129"/>
       <location filename="../TaskTransform.cpp" line="807"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="415"/>
       <source>Transform</source>
       <translation>변환하기</translation>
     </message>
@@ -581,7 +581,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="123"/>
       <source>Renames the object</source>
-      <translation>객체 이름 바꾸기</translation>
+      <translation>대상체 이름 바꾸기</translation>
     </message>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="130"/>
@@ -6484,110 +6484,147 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="390"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="393"/>
       <source>Edit</source>
       <translation>편집</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="401"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="404"/>
       <source>property</source>
       <translation>속성</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="865"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
       <source>Expand/Collapse Properties</source>
       <translation>속성 펼치기/접기</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="867"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="871"/>
       <source>Expand to Default</source>
       <translation>기본 상태로 확장</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="873"/>
       <source>Expand All</source>
       <translation>모두 펼치기</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="871"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="875"/>
       <source>Collapse All</source>
       <translation>모두 접기</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="877"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="881"/>
       <source>Default Expand</source>
       <translation>기본 확장</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="880"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="884"/>
       <source>Auto Expand</source>
       <translation>자동 펼치기</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="883"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="887"/>
       <source>Auto Collapse</source>
       <translation>자동 접기</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="972"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="977"/>
+      <source>object %1 (%2):
+</source>
+      <translation type="unfinished">object %1 (%2):
+</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="984"/>
+      <source>property %1
+</source>
+      <translation type="unfinished">property %1
+</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="996"/>
+      <source>document %1:
+</source>
+      <translation type="unfinished">document %1:
+</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1021"/>
+      <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
+      <translation type="unfinished">The property %1 in object %2 (%3) in document %4 is referenced by:</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1037"/>
+      <source>(No references found.)</source>
+      <translation type="unfinished">(No references found.)</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1055"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1143"/>
+      <source>Property Uses</source>
+      <translation type="unfinished">Property Uses</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1085"/>
       <source>Copy</source>
       <translation>복사</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="980"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1093"/>
       <source>Add Property</source>
       <translation>속성 추가</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="987"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1253"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1100"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1371"/>
       <source>Rename Property Group</source>
       <translation>속성 그룹 이름 변경</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="998"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1111"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation>그룹 이름을 변경할 수 없습니다: 하나 이상의 속성 이름이 그룹 이름으로 시작합니다</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1007"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1223"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1120"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1341"/>
       <source>Rename Property</source>
       <translation>속성 이름 변경</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1008"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1193"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1121"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1311"/>
       <source>Edit Property Tooltip</source>
       <translation>속성 도구 설명 편집</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1025"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1138"/>
       <source>Delete Property</source>
       <translation>속성 삭제</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1194"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1312"/>
       <source>Tooltip</source>
       <translation>도구 설명</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1035"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1153"/>
       <source>Show Hidden</source>
       <translation>숨김 항목 표시</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1052"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
       <source>Expression</source>
       <translation>수식</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1224"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1342"/>
       <source>Property name</source>
       <translation>속성 이름</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1254"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1372"/>
       <source>Group name:</source>
       <translation>그룹이름:</translation>
     </message>
@@ -7031,7 +7068,7 @@ Specify another directory?</source>
       <location filename="../TextDocumentEditorView.cpp" line="136"/>
       <location filename="../TextDocumentEditorView.cpp" line="143"/>
       <source>Edit text</source>
-      <translation>텍스트 편집</translation>
+      <translation>글자 편집</translation>
     </message>
   </context>
   <context>
@@ -8257,7 +8294,7 @@ Continue?</source>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="839"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1191"/>
       <source>Enter text:</source>
-      <translation>텍스트 입력:</translation>
+      <translation>글자 입력:</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="857"/>
@@ -8630,12 +8667,12 @@ Choose 'Abort' to abort</source>
       <translation>시스템 브라우저를 열 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2687"/>
+      <location filename="../View3DInventorViewer.cpp" line="3157"/>
       <source>Out of memory</source>
       <translation>메모리 부족</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2688"/>
+      <location filename="../View3DInventorViewer.cpp" line="3158"/>
       <source>Not enough memory available to display the data.</source>
       <translation>데이터를 표시할 수 있는 메모리가 충분하지 않습니다.</translation>
     </message>
@@ -8702,7 +8739,7 @@ Choose 'Abort' to abort</source>
       <translation>이동:</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoPlanarDragger.cpp" line="282"/>
+      <location filename="../Inventor/Draggers/SoPlanarDragger.cpp" line="281"/>
       <source>Translation XY:</source>
       <translation>이동 XY:</translation>
     </message>
@@ -9047,7 +9084,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderTextDocument.cpp" line="107"/>
       <source>Edit Text</source>
-      <translation>텍스트 편집</translation>
+      <translation>글자 편집</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="97"/>
@@ -9093,12 +9130,12 @@ the current copy will be lost.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="951"/>
+      <location filename="../Selection/Selection.cpp" line="959"/>
       <source>Not allowed:</source>
       <translation>허용 안 됨:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1334"/>
+      <location filename="../Selection/Selection.cpp" line="1342"/>
       <source>Selection not allowed by filter</source>
       <translation>필터에서 허용되지 않는 선택</translation>
     </message>
@@ -10771,7 +10808,7 @@ after FreeCAD launches</source>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="600"/>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="611"/>
       <source>Text</source>
-      <translation>텍스트</translation>
+      <translation>글자</translation>
     </message>
   </context>
   <context>
@@ -10849,12 +10886,12 @@ after FreeCAD launches</source>
   <context>
     <name>NaviCubeDraggableCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1163"/>
+      <location filename="../NaviCube.cpp" line="1272"/>
       <source>Movable Navigation Cube</source>
       <translation>이동 가능한 탐색 큐브</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1164"/>
+      <location filename="../NaviCube.cpp" line="1273"/>
       <source>Drags and places the NaviCube</source>
       <translation type="unfinished">Drags and places the NaviCube</translation>
     </message>
@@ -10862,32 +10899,32 @@ after FreeCAD launches</source>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="669"/>
+      <location filename="../View3DSettings.cpp" line="660"/>
       <source>FRONT</source>
       <translation>전면</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="671"/>
+      <location filename="../View3DSettings.cpp" line="662"/>
       <source>TOP</source>
       <translation>상단</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="673"/>
+      <location filename="../View3DSettings.cpp" line="664"/>
       <source>RIGHT</source>
       <translation>오른쪽</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="675"/>
+      <location filename="../View3DSettings.cpp" line="666"/>
       <source>REAR</source>
       <translation>후면</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="677"/>
+      <location filename="../View3DSettings.cpp" line="668"/>
       <source>BOTTOM</source>
       <translation>하단</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="679"/>
+      <location filename="../View3DSettings.cpp" line="670"/>
       <source>LEFT</source>
       <translation>왼쪽</translation>
     </message>
@@ -12837,7 +12874,7 @@ the region are non-opaque.</source>
   <context>
     <name>Gui::AutoSaver</name>
     <message>
-      <location filename="../AutoSaver.cpp" line="188"/>
+      <location filename="../AutoSaver.cpp" line="187"/>
       <source>Wait until the auto-recovery file has been saved…</source>
       <translation>자동 복구 파일이 저장될 때까지 기다리세요…</translation>
     </message>
@@ -14675,7 +14712,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>FileFormat</name>
     <message>
-      <location filename="../FreeCADGuiInit.py" line="463"/>
+      <location filename="../FreeCADGuiInit.py" line="470"/>
       <source>Portable Document Format</source>
       <translation>이동식 문서 형식</translation>
     </message>
