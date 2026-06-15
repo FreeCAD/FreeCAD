@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="706"/>
       <source>Active View</source>
-      <translation type="unfinished">Active View</translation>
+      <translation>Активний вигляд</translation>
     </message>
   </context>
   <context>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="576"/>
       <source>Centerline</source>
-      <translation type="unfinished">Centerline</translation>
+      <translation>Центрова лінія</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="577"/>
@@ -418,7 +418,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1870"/>
       <source>Exports the current page as a DXF</source>
-      <translation type="unfinished">Exports the current page as a DXF</translation>
+      <translation>Експортує поточну сторінку як DXF</translation>
     </message>
   </context>
   <context>
@@ -436,7 +436,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1827"/>
       <source>Exports the current page as an SVG</source>
-      <translation type="unfinished">Exports the current page as an SVG</translation>
+      <translation>Експортує поточну сторінку як SVG</translation>
     </message>
   </context>
   <context>
@@ -610,7 +610,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="356"/>
       <source>Adds centerlines to selected circles and arcs:</source>
-      <translation type="unfinished">Adds centerlines to selected circles and arcs:</translation>
+      <translation>Додає центрові лінії до вибраних кіл та дуг:</translation>
     </message>
   </context>
   <context>
@@ -623,7 +623,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="289"/>
       <source>Circle Centerlines</source>
-      <translation type="unfinished">Circle Centerlines</translation>
+      <translation>Центрові лінії кіл</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="290"/>
@@ -1672,7 +1672,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="109"/>
       <source>New Page</source>
-      <translation type="unfinished">New Page</translation>
+      <translation>Нова сторінка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="110"/>
@@ -2044,7 +2044,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="1543"/>
       <source>Insert SVG</source>
-      <translation type="unfinished">Insert SVG</translation>
+      <translation>Вставити SVG</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1544"/>
@@ -2098,7 +2098,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="299"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>Новий вигляд</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="300"/>
@@ -2143,7 +2143,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create image</source>
-      <translation type="unfinished">Create image</translation>
+      <translation>Створити зображення</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="506"/>
@@ -2159,7 +2159,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../Command.cpp" line="1911"/>
       <location filename="../../PagePrinter.cpp" line="444"/>
       <source>Save page to DXF</source>
-      <translation type="unfinished">Save page to DXF</translation>
+      <translation>Зберегти сторінку до DXF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="463"/>
@@ -2817,17 +2817,17 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="35"/>
       <source>Save changes</source>
-      <translation type="unfinished">Save changes</translation>
+      <translation>Зберегти зміни</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="49"/>
       <source>Close editor</source>
-      <translation type="unfinished">Close editor</translation>
+      <translation>Закрити редактор</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="73"/>
       <source>Paragraph formatting</source>
-      <translation type="unfinished">Paragraph formatting</translation>
+      <translation>Форматування абзацу</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="99"/>
@@ -2888,67 +2888,67 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="145"/>
       <source>Cut (Ctrl+X)</source>
-      <translation type="unfinished">Cut (Ctrl+X)</translation>
+      <translation>Вирізати (Ctrl+X)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="168"/>
       <source>Copy (Ctrl+C)</source>
-      <translation type="unfinished">Copy (Ctrl+C)</translation>
+      <translation>Копіювати (Ctrl+C)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="191"/>
       <source>Paste (Ctrl+V)</source>
-      <translation type="unfinished">Paste (Ctrl+V)</translation>
+      <translation>Вставити (Ctrl+V)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="221"/>
       <source>Link (Ctrl+L)</source>
-      <translation type="unfinished">Link (Ctrl+L)</translation>
+      <translation>Посилання (Ctrl+L)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="280"/>
       <source>Italic (Ctrl+I)</source>
-      <translation type="unfinished">Italic (Ctrl+I)</translation>
+      <translation>Курсив (Ctrl+I)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="306"/>
       <source>Underline (Ctrl+U)</source>
-      <translation type="unfinished">Underline (Ctrl+U)</translation>
+      <translation>Підкреслений (Ctrl+U)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="329"/>
       <source>Strikethrough text</source>
-      <translation type="unfinished">Strikethrough text</translation>
+      <translation>Закреслений текст</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="362"/>
       <source>Bullet list (Ctrl+-)</source>
-      <translation type="unfinished">Bullet list (Ctrl+-)</translation>
+      <translation>Маркований список (Ctrl+-)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="388"/>
       <source>Ordered list (Ctrl+=)</source>
-      <translation type="unfinished">Ordered list (Ctrl+=)</translation>
+      <translation>Нумерований список (Ctrl+=)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="414"/>
       <source>Decrease indentation (Ctrl+,)</source>
-      <translation type="unfinished">Decrease indentation (Ctrl+,)</translation>
+      <translation>Зменшити відступ (Ctrl+,)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="417"/>
       <source>Decrease Indentation</source>
-      <translation type="unfinished">Decrease Indentation</translation>
+      <translation>Зменшити відступ</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="437"/>
       <source>Increase indentation (Ctrl+.)</source>
-      <translation type="unfinished">Increase indentation (Ctrl+.)</translation>
+      <translation>Збільшити відступ (Ctrl+.)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="440"/>
       <source>Increase Indentation</source>
-      <translation type="unfinished">Increase Indentation</translation>
+      <translation>Збільшити відступ</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="473"/>
@@ -2958,7 +2958,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="496"/>
       <source>Text background color</source>
-      <translation type="unfinished">Text background color</translation>
+      <translation>Колір фону тексту</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="499"/>
@@ -2974,7 +2974,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../mrichtextedit.ui" line="566"/>
       <location filename="../../mrichtextedit.ui" line="612"/>
       <source>More functions</source>
-      <translation type="unfinished">More functions</translation>
+      <translation>Багато функцій</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="96"/>
@@ -3009,7 +3009,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.cpp" line="161"/>
       <source>Remove character formatting</source>
-      <translation type="unfinished">Remove character formatting</translation>
+      <translation>Вилучити форматування символів</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="166"/>
@@ -3280,7 +3280,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1216"/>
       <source>Create a page first</source>
-      <translation type="unfinished">Create a page first</translation>
+      <translation>Спочатку створіть сторінку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
@@ -3300,7 +3300,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1903"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Зберегти файл DXF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2093"/>
@@ -3503,7 +3503,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="998"/>
       <location filename="../../CommandStack.cpp" line="369"/>
       <source>Task In Progress</source>
-      <translation type="unfinished">Task In Progress</translation>
+      <translation>Завдання в процесі</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="119"/>
@@ -3536,7 +3536,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="1766"/>
       <location filename="../../CommandStack.cpp" line="370"/>
       <source>Close active task dialog and try again.</source>
-      <translation type="unfinished">Close active task dialog and try again.</translation>
+      <translation>Закрийте вікно активного завдання і спробуйте ще раз.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="898"/>
@@ -3753,7 +3753,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="363"/>
       <source>Select an image file</source>
-      <translation type="unfinished">Select an image file</translation>
+      <translation>Вибрати файл зображення</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="419"/>
@@ -3768,7 +3768,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="433"/>
       <source>Create a page to insert</source>
-      <translation type="unfinished">Create a page to insert</translation>
+      <translation>Створити сторінку для вставки</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="440"/>
@@ -3799,7 +3799,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../MDIViewPage.cpp" line="619"/>
       <source>Export Page as PDF</source>
-      <translation type="unfinished">Export Page as PDF</translation>
+      <translation>Експортувати сторінку як PDF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="538"/>
@@ -3809,7 +3809,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../MDIViewPage.cpp" line="561"/>
       <source>Export page as DXF</source>
-      <translation type="unfinished">Export page as DXF</translation>
+      <translation>Експортувати сторінку як DXF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="602"/>
@@ -8732,11 +8732,6 @@ using the given X/Y spacings</translation>
       <translation>Значення</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
-      <source>Reapplies auto-fill to this field</source>
-      <translation type="unfinished">Reapplies auto-fill to this field</translation>
-    </message>
-    <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value</source>
       <translation type="unfinished">The autofill replacement value</translation>
@@ -8745,6 +8740,11 @@ using the given X/Y spacings</translation>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
       <translation>ТекстовийНадпис</translation>
+    </message>
+    <message>
+      <location filename="../../DlgTemplateField.ui" line="52"/>
+      <source>Applies autofill to this field</source>
+      <translation type="unfinished">Applies autofill to this field</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>

@@ -8737,11 +8737,6 @@ using the given X/Y spacings</source>
       <translation>Luach</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
-      <source>Reapplies auto-fill to this field</source>
-      <translation>Athchuirtear líonadh uathoibríoch i bhfeidhm ar an réimse seo</translation>
-    </message>
-    <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value</source>
       <translation>An luach athsholáthair uathlíonta</translation>
@@ -8750,6 +8745,11 @@ using the given X/Y spacings</source>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
       <translation>Lipéad Téacs</translation>
+    </message>
+    <message>
+      <location filename="../../DlgTemplateField.ui" line="52"/>
+      <source>Applies autofill to this field</source>
+      <translation>Cuirtear uathlíonadh i bhfeidhm ar an réimse seo</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>

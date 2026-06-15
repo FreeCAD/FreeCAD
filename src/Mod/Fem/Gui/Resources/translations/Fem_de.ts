@@ -8804,22 +8804,22 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
   <context>
     <name>FemToolsCcx</name>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="419"/>
+      <location filename="../../../femtools/ccxtools.py" line="421"/>
       <source>No or wrong CalculiX binary ccx</source>
       <translation>Keine oder falsche CalculiX-ccx-Binärdatei</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="453"/>
+      <location filename="../../../femtools/ccxtools.py" line="455"/>
       <source>FEM: wrong ccx binary</source>
       <translation>FEM: Falsche ccx-Binärdatei</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="466"/>
+      <location filename="../../../femtools/ccxtools.py" line="468"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
       <translation>FEM: CalculiX-ccx-Binärdatei '{}' nicht gefunden. Bitte den Pfad der CalculiX-ccx-Binärdatei in den FEM-Einstellungen auf der Registerkarte CalculiX eingeben.</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="478"/>
+      <location filename="../../../femtools/ccxtools.py" line="480"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
       <translation>FEM: CalculiX-ccx '{}' Ausgabe '{}' enthält nicht die erwartete Phrase '{}'. Es gibt einige Probleme beim Ausführen der ccx-Binärdatei. Es sollte überprüft werden, ob ccx eigenständig ohne FreeCAD läuft.</translation>
     </message>

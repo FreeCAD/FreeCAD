@@ -2262,7 +2262,7 @@ of the projection.</source>
       <translation>திடமான</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="423"/>
+      <location filename="../../TaskSweep.cpp" line="417"/>
       <source>Sweep</source>
       <translation>துடைக்கவும்</translation>
     </message>
@@ -5280,39 +5280,39 @@ only created cuts will be visible</source>
       <translation>'% 1' ஐ சுயவிவரமாகவும் பாதையாகவும் பயன்படுத்த முடியாது.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="431"/>
       <source>Input error</source>
       <translation>உள்ளீடு பிழை</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="478"/>
+      <location filename="../../TaskSweep.cpp" line="472"/>
       <source>Done</source>
       <translation>முடிந்தது</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="481"/>
+      <location filename="../../TaskSweep.cpp" line="475"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>3D காட்சியில் ஒன்று அல்லது அதற்கு மேற்பட்ட இணைக்கப்பட்ட விளிம்புகளைத் தேர்ந்தெடுத்து 'முடிந்தது' என்பதை அழுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="505"/>
-      <location filename="../../TaskSweep.cpp" line="513"/>
+      <location filename="../../TaskSweep.cpp" line="499"/>
+      <location filename="../../TaskSweep.cpp" line="507"/>
       <source>The selected sweep path is invalid.</source>
       <translation>தேர்ந்தெடுக்கப்பட்ட ச்வீப் பாதை தவறானது.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="505"/>
-      <location filename="../../TaskSweep.cpp" line="513"/>
+      <location filename="../../TaskSweep.cpp" line="499"/>
+      <location filename="../../TaskSweep.cpp" line="507"/>
       <source>Sweep Path</source>
       <translation>ச்வீப் பாதை</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="525"/>
+      <location filename="../../TaskSweep.cpp" line="519"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="526"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Sweep</source>
       <translation>துடைக்கவும்</translation>
     </message>
@@ -6001,7 +6001,7 @@ Individual boolean operation checks:</source>
       <translation>ஃப்ரெனெட்</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="551"/>
+      <location filename="../../TaskSweep.cpp" line="545"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>குறைந்தபட்சம் 1 சுயவிவரத்தையும் ஒரு விளிம்பு அல்லது கம்பியையும் தேர்ந்தெடுக்கவும் 
