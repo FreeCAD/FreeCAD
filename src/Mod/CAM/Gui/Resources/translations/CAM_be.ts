@@ -3397,7 +3397,7 @@ See the file save policy below on how to deal with name conflicts.</source>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
-      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="94"/>
       <source>Radius</source>
       <translation>Радыус</translation>
     </message>
@@ -3613,79 +3613,148 @@ See the file save policy below on how to deal with name conflicts.</source>
       <translation>Перамычка</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="26"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="28"/>
       <source>Width</source>
       <translation>Шырыня</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="33"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
       <source>Height</source>
       <translation>Вышыня</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="40"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="42"/>
       <source>Angle</source>
       <translation>Вугал</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="47"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="35"/>
       <source>Width of the resulting holding tag</source>
       <translation>Шырыня выніковай перамычкі</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="61"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="49"/>
       <source>Plunge angle for ascent and descent of holding tag</source>
       <translation>Вугал апускання і ўздыму перамычкі</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="126"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="52"/>
+      <source> °</source>
+      <translation> °</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="136"/>
+      <source>Remove all tags from list</source>
+      <translation>Выдаліць усе меткі з спісу</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="139"/>
+      <source>Clear</source>
+      <translation>Ачысціць</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
+      <source>Remove selected tag from list</source>
+      <translation>Выдаліць абраную метку з спісу</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="149"/>
+      <source>Remove</source>
+      <translation>Выдаліць</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="156"/>
+      <source>Edit position of selected tag</source>
+      <translation>Правіць становішча абранай меткі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
       <source>Edit</source>
       <translation>Змяніць</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="166"/>
+      <source>Add new tags</source>
+      <translation>Дадаць новую метку</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="169"/>
       <source>Add</source>
       <translation>Дадаць</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="54"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="176"/>
+      <source>Enable/disable all tags</source>
+      <translation>Уключыць/адключыць усе меткі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="179"/>
+      <source>Enable All</source>
+      <translation>Уключыць усё</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="186"/>
+      <source>Replace all tags by tags from another DressupTag</source>
+      <translation>Заменіце ўсе меткі меткамі з іншага DressupTag</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="189"/>
+      <source>Copy</source>
+      <translation>Скапіраваць</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="206"/>
+      <source>Min</source>
+      <translation>Найменшы</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="213"/>
+      <source>Minimum number of tags per short wire</source>
+      <translation>Найменшая колькасць метак на кароткай ломанай лініі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="229"/>
+      <source>Max</source>
+      <translation>Найбольшы</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="236"/>
+      <source>Maximum number of tags per long wire</source>
+      <translation>Найбольшая колькасць метак на доўгай ломанай лініі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="252"/>
+      <source>Create the specified number of tags for each bottom wire</source>
+      <translation>Стварыць паказаную колькасць метак для кожнай ніжняй ломанай лініі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="255"/>
+      <source>Replace Existing Tags</source>
+      <translation>Заменіць існуючыя меткі</translation>
+    </message>
+    <message>
+      <location filename="../panels/HoldingTagsEdit.ui" line="87"/>
       <source>Height of holding tag. Note that resulting tag might be smaller if the tag&apos;s width and angle result in a triangular shape.</source>
       <translation>Вышыня перамычкі.
 Звярніце ўвагу, што выніковая перамычка можа быць менш, калі шырыня і вугал нахілу перамычкі маюць трыкутную фігуру.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="87"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="101"/>
       <source>Radius of the fillet at the top. If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.</source>
       <translation>Радыус акруглення наверху.
 Калі радыус занадта вялікі для фігуры перамычкі, ён памяншаецца да найбольшага магчымага радыусу, у выніку чаго атрымліваецца сферычная фігура.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="97"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="121"/>
       <source>List of current tags. Edit coordinates by double click or Edit button. Tags are automatically disabled if they overlap with the previous tag, or don&apos;t lie on the base wire.</source>
       <translation>Спіс бягучых перамычак.
 Змяніце каардынаты падвоенай пстрычкай мышы ці кнопкай Змяніць.
 Перамычка аўтаматычна адключаецца, калі яны перакрываюцца з папярэдняй перамычкай, альбо не ляжаць на асноўнай ломанай лініі.</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="116"/>
-      <source>Delete</source>
-      <translation>Выдаліць</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="143"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="200"/>
       <source>Auto Generate</source>
       <translation>Аўтаматычнае стварэнне</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
-      <location filename="../panels/HoldingTagsEdit.ui" line="181"/>
-      <source>Replace All</source>
-      <translation>Замяніць усё</translation>
-    </message>
-    <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="172"/>
-      <source>Copy From</source>
-      <translation>Капіраваць з</translation>
     </message>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="14"/>
@@ -4231,11 +4300,6 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
 Карысна пасля змены мяжы мадэлі ці налад загатоўкі.</translation>
     </message>
     <message>
-      <location filename="../panels/PathEdit.ui" line="130"/>
-      <source>0,0,1,1</source>
-      <translation>0,0,1,1</translation>
-    </message>
-    <message>
       <location filename="../panels/PathEdit.ui" line="292"/>
       <source>Assign Material</source>
       <translation>Прызначыць матэрыял</translation>
@@ -4771,35 +4835,41 @@ Default: 3 mm</source>
       <translation>Першапачатковая стратэгія прадухілення сутыкненняў для новых аперацый.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="938"/>
-      <location filename="../../../Path/Dressup/Boundary.py" line="62"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="941"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="63"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="57"/>
       <source>The base path to modify</source>
       <translation>Асноўная траекторыя для змены</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="72"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="73"/>
       <source>Solid object to be used to limit the generated Path.</source>
       <translation>Суцэльны аб'ект, які будзе ўжыты для абмежавання створанай траекторыі.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="83"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="84"/>
       <source>Determines if Boundary describes an inclusion or exclusion mask.</source>
       <translation>Вызначае, ці апісвае мяжа маску ўключэння ці выключэння.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="93"/>
-      <location filename="../../../Path/Dressup/Boundary.py" line="135"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="94"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="145"/>
       <location filename="../../../Path/Op/PocketBase.py" line="186"/>
       <location filename="../../../Path/Op/PocketBase.py" line="291"/>
       <source>Set distance which will attempts to avoid unnecessary retractions.</source>
       <translation>Задаць адлегласць, якая дазволіць пазбегнуць непатрэбных уцягванняў.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="102"/>
-      <location filename="../../../Path/Dressup/Boundary.py" line="149"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="103"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="159"/>
       <source>Apply boundary to Rest Machining.</source>
       <translation>Прымяніць мяжу да механічнй апрацоўкі.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Boundary.py" line="112"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="169"/>
+      <source>Apply offset to stock shape.</source>
+      <translation>Прымяніць зрушэнне да фігуры загатоўкі.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="204"/>
@@ -4849,38 +4919,38 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
 Можа быць карысны для шматпрофільных аперацый, напрыклад, для кішэні з шаблона зігзагападобнага зрушэння</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="944"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="947"/>
       <source>Width of tags.</source>
       <translation>Шырыня перамычак.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="950"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="953"/>
       <source>Height of tags.</source>
       <translation>Вышыня перамычак.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="956"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="959"/>
       <source>Angle of tag plunge and ascent.</source>
       <translation>Вугал апускання і ўздыму перамычак.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="962"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="965"/>
       <source>Radius of the fillet for the tag.</source>
       <translation>Радыус акругленне перамычак.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="968"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="971"/>
       <source>Locations of inserted holding tags</source>
       <translation>Месцазнаходжанні ўстаўленых перамычак</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="974"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="977"/>
       <source>IDs of disabled holding tags</source>
       <translation>Ідэнтыфікатары адключаных перамычак</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="983"/>
-      <location filename="../../../Path/Dressup/Tags.py" line="1024"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="986"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1036"/>
       <source>Split B-Spline by arcs and ignore not vertical arcs axis (experimental).</source>
       <translation>Падзяліць B-сплайн на дугі, і ігнараваць не вертыкальную вось дуг (эксперыментальна).</translation>
     </message>
@@ -4937,7 +5007,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="97"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="431"/>
-      <location filename="../../../Path/Op/Profile.py" line="210"/>
+      <location filename="../../../Path/Op/Profile.py" line="215"/>
       <source>Set distance which will attempts to avoid unnecessary retractions</source>
       <translation>Задаць адлегласць, якая дазволіць пазбегнуць непатрэбных уцягванняў</translation>
     </message>
@@ -5157,8 +5227,8 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="542"/>
-      <location filename="../../../Path/Op/Base.py" line="226"/>
-      <location filename="../../../Path/Op/Base.py" line="494"/>
+      <location filename="../../../Path/Op/Base.py" line="297"/>
+      <location filename="../../../Path/Op/Base.py" line="570"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Ацэнка часу цыклу аперацыі</translation>
     </message>
@@ -5239,7 +5309,7 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="64"/>
-      <location filename="../../../Path/Op/Base.py" line="200"/>
+      <location filename="../../../Path/Op/Base.py" line="271"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="57"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Задаць False, каб прадухіліць стварэнне G-code для аперацыі</translation>
@@ -5338,9 +5408,9 @@ Set to zero to disable limitation by pitch</source>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1920"/>
-      <source>The maximum allowable descent in a single revolution of the helixSet to zero to disable limitation by pitch</source>
+      <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
       <translation>Найбольш дапушчальны спуск за адзін абарот спіралі.
-Задаць нуль, каб адключыць абмежаванне па падачы</translation>
+Задаць значэнне нуль, каб адключыць абмежаванне падачы.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1617"/>
@@ -5391,39 +5461,39 @@ Set to zero to disable limitation by pitch</source>
       <translation>Разбіць дугі на асобныя адрэзкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="118"/>
+      <location filename="../../../Path/Op/Base.py" line="189"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="142"/>
       <source>The base geometry for this operation</source>
       <translation>Асноўная геаметрыя для аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="127"/>
+      <location filename="../../../Path/Op/Base.py" line="198"/>
       <source>Holds the calculated value for the StartDepth</source>
       <translation>Змяшчае вылічанае значэнне для Пачатковай глыбіні (StartDepth)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="135"/>
+      <location filename="../../../Path/Op/Base.py" line="206"/>
       <source>Holds the calculated value for the FinalDepth</source>
       <translation>Змяшчае вылічанае значэнне для канчатковай глыбіні (FinalDepth)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="143"/>
+      <location filename="../../../Path/Op/Base.py" line="214"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="100"/>
       <source>Holds the diameter of the tool</source>
       <translation>Трымаць дыяметр інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="151"/>
+      <location filename="../../../Path/Op/Base.py" line="222"/>
       <source>Holds the max Z value of Stock</source>
       <translation>Трымаць найбольшае значэнне восі Z загатоўкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="158"/>
+      <location filename="../../../Path/Op/Base.py" line="229"/>
       <source>Holds the min Z value of Stock</source>
       <translation>Трымаць найменшае значэнне восі Z загатоўкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="175"/>
+      <location filename="../../../Path/Op/Base.py" line="246"/>
       <source>Method collision detection to create optimal path between areas
 
 Clearance Height: no collision detection, uses clearance height for rapid moves between areas
@@ -5440,103 +5510,110 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
 Фігура інструмента: бяспечная - правярае зазор, ужываючы папярочны перасек фігуры інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="188"/>
+      <location filename="../../../Path/Op/Base.py" line="259"/>
       <source>Distance for collision detection</source>
       <translation>Адлегласць для выяўлення сутыкненняў</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="208"/>
-      <location filename="../../../Path/Op/Base.py" line="503"/>
+      <location filename="../../../Path/Op/Base.py" line="279"/>
+      <location filename="../../../Path/Op/Base.py" line="579"/>
       <source>Enable post processor to add block delete commands</source>
       <translation>Дазволіць пасляапрацоўцы дадаваць каманды выдалення блокаў</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="214"/>
+      <location filename="../../../Path/Op/Base.py" line="285"/>
       <source>An optional comment for this Operation</source>
       <translation>Неабавязковы каментар для аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="220"/>
+      <location filename="../../../Path/Op/Base.py" line="291"/>
       <source>User Assigned Label</source>
       <translation>Метка, якая прызначаная карыстальнікам</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="246"/>
+      <location filename="../../../Path/Op/Base.py" line="308"/>
+      <location filename="../../../Path/Op/Base.py" line="607"/>
+      <source>The orientation of the tool for this operation. Default is (0, 0, 1) for standard Z-up milling.</source>
+      <translation>Арыентацыя інструмента для аперацыі.
+Першапачатковае значэнне (0, 0, 1) для стандартнага Z-вобразнай фрэзероўкі.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Base.py" line="322"/>
       <source>Base locations for this operation</source>
       <translation>Асноўнае месцазнаходжанне для аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="257"/>
+      <location filename="../../../Path/Op/Base.py" line="333"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="94"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>Кантролер інструмента, які будзе ўжывацца для вылічэння траекторыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="266"/>
+      <location filename="../../../Path/Op/Base.py" line="342"/>
       <source>Coolant mode for this operation</source>
       <translation>Рэжым астуджэння для аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="274"/>
+      <location filename="../../../Path/Op/Base.py" line="350"/>
       <source>Starting Depth of Tool- first cut depth in Z</source>
       <translation>Пачатковая глыбіня інструменту - глыбіня першага рэзу па восі Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="280"/>
+      <location filename="../../../Path/Op/Base.py" line="356"/>
       <source>Final Depth of Tool- lowest value in Z</source>
       <translation>Канчатковая глыбіня інструменту - найменшае значэнне па восі Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="294"/>
+      <location filename="../../../Path/Op/Base.py" line="370"/>
       <source>Starting Depth internal use only for derived values</source>
       <translation>Пачатковая глыбіня ўнутранага ўжывання толькі для вытворных значэнняў</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="305"/>
-      <location filename="../../../Path/Op/Base.py" line="511"/>
+      <location filename="../../../Path/Op/Base.py" line="381"/>
+      <location filename="../../../Path/Op/Base.py" line="587"/>
       <source>Incremental Step Down of Tool</source>
       <translation>Паступовы крок уніз інструменту</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="313"/>
+      <location filename="../../../Path/Op/Base.py" line="389"/>
       <source>Maximum material removed on final pass.</source>
       <translation>Найбольшая колькасць матэрыялу, якое выдаляецца пры апошнім праходзе.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="324"/>
+      <location filename="../../../Path/Op/Base.py" line="400"/>
       <source>The height needed to clear clamps and obstructions</source>
       <translation>Вышыня, якая неабходная для ачысткі заціскаў і перашкод</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="330"/>
+      <location filename="../../../Path/Op/Base.py" line="406"/>
       <source>Rapid Safety Height between locations.</source>
       <translation>Бяспечная вышыня хуткага ходу паміж месцазнаходжаннямі.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="338"/>
+      <location filename="../../../Path/Op/Base.py" line="414"/>
       <source>The start point of this path</source>
       <translation>Пачатковая кропка траекторыі</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="463"/>
       <location filename="../../../Path/Op/Surface.py" line="418"/>
-      <location filename="../../../Path/Op/Base.py" line="344"/>
+      <location filename="../../../Path/Op/Base.py" line="420"/>
       <location filename="../../../Path/Op/Slot.py" line="223"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Задаць True, калі пакажыце пачатковую кропку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="352"/>
+      <location filename="../../../Path/Op/Base.py" line="428"/>
       <source>Lower limit of the turning diameter</source>
       <translation>Ніжняя мяжа дыяметру вітка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="358"/>
+      <location filename="../../../Path/Op/Base.py" line="434"/>
       <source>Upper limit of the turning diameter.</source>
       <translation>Верхняя мяжа дыяметру вітка.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="474"/>
+      <location filename="../../../Path/Op/Base.py" line="550"/>
       <location filename="../../../CAMTests/TestTestPost.py" line="657"/>
       <source>Coolant option for this operation</source>
       <translation>Налада астуджэння для аперацыі</translation>
@@ -5664,7 +5741,7 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
     </message>
     <message>
       <location filename="../../../Path/Op/Engrave.py" line="71"/>
-      <location filename="../../../Path/Op/Vcarve.py" line="398"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="409"/>
       <source>Additional base objects to be engraved</source>
       <translation>Дадатковыя асноўныя аб'екты для гравіроўкі</translation>
     </message>
@@ -5821,7 +5898,7 @@ For External profile - profile radius</source>
 Для вонкавага профілю - радыус профілю</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="140"/>
+      <location filename="../../../Path/Op/Profile.py" line="145"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>Дадатковае значэнне, якое дазваляе трымацца далей ад канчатковага профілю - падыходзіць для траекторыі інструмента чарнавой апрацоўкі</translation>
     </message>
@@ -5841,7 +5918,7 @@ For External profile - profile radius</source>
       <translation>Выключыць фрэзераванне, якія выступаюць адносна ўнутранай грані.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="114"/>
+      <location filename="../../../Path/Op/Profile.py" line="119"/>
       <location filename="../../../Path/Op/Pocket.py" line="67"/>
       <location filename="../../../Path/Op/Waterline.py" line="267"/>
       <location filename="../../../Path/Op/Surface.py" line="240"/>
@@ -5929,67 +6006,67 @@ For External profile - profile radius</source>
       <translation>Месцазнаходжанне вываду для запісу дадзеных зонда</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="105"/>
+      <location filename="../../../Path/Op/Profile.py" line="110"/>
       <location filename="../../../Path/Op/PocketBase.py" line="136"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>Напрамак, у якім траекторыя руху інструмента павінна праходзіць вакол дэталі па гадзінніку (CW) ці супраць (CCW)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="123"/>
+      <location filename="../../../Path/Op/Profile.py" line="128"/>
       <source>Controls how tool moves around corners. Default=Round</source>
       <translation>Кіруе рухам інструмента па кутах.
 Першапачаткова = Закруглены</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="131"/>
+      <location filename="../../../Path/Op/Profile.py" line="136"/>
       <source>Maximum distance before a miter joint is truncated</source>
       <translation>Найбольшая адлегласць да абразання дыяганальнага аб'яднання</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="146"/>
+      <location filename="../../../Path/Op/Profile.py" line="151"/>
       <source>Profile holes as well as the outline</source>
       <translation>Прафіляваць адтуліны, а таксама контур</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="152"/>
+      <location filename="../../../Path/Op/Profile.py" line="157"/>
       <source>Profile the outline</source>
       <translation>Прафіляваць контур</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="158"/>
+      <location filename="../../../Path/Op/Profile.py" line="163"/>
       <source>Profile round holes</source>
       <translation>Прафіляваць закругленыя адтуліны</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="164"/>
+      <location filename="../../../Path/Op/Profile.py" line="169"/>
       <source>Side of edge that tool should cut</source>
       <translation>Бок рабра, які інструмент павінен абрэзаць</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="172"/>
+      <location filename="../../../Path/Op/Profile.py" line="177"/>
       <source>Make True, if using Cutter Radius Compensation</source>
       <translation>Задаць True, калі ўжываецца карэкцыя радыусу разца</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="181"/>
+      <location filename="../../../Path/Op/Profile.py" line="186"/>
       <source>The number of passes to do. If more than one, requires a non-zero value for Stepover</source>
       <translation>Колькасць выкананых праходаў.
 Калі іх больш аднаго, патрабуецца ненулявое значэнне для пакрокавага выканання праходу</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="190"/>
+      <location filename="../../../Path/Op/Profile.py" line="195"/>
       <source>If doing multiple passes, the extra offset of each additional pass</source>
       <translation>Пры выкананні некалькіх праходаў патрабуецца дадатковае зрушэнне кожнага дадатковага праходу</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="201"/>
+      <location filename="../../../Path/Op/Profile.py" line="206"/>
       <source>Override start point
 Shoud be used only with Individually HandleMultipleFeaturesand disabled UseStartPoint</source>
       <translation>Перавызначыць пачатковую кропку.
 Варта ўжываць толькі з індывідуальнай апрацоўкай мноства функцый (HandleMultipleFeaturesand) і адключаным выкарыстаннем пачатковай кропкі (UseStartPoint)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="221"/>
+      <location filename="../../../Path/Op/Profile.py" line="226"/>
       <location filename="../../../Path/Op/PocketBase.py" line="206"/>
       <location filename="../../../Path/Op/PocketBase.py" line="303"/>
       <source>Order processing of the shapes
@@ -6323,34 +6400,34 @@ Manual: uses order of shapes selection</source>
       <translation>Аперацыя па ачыстцы ўнутранай часткі разьбы</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="408"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="419"/>
       <source>Optimize movements</source>
       <translation>Аптымізаваць рух</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="417"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="428"/>
       <source>Add finishing pass</source>
       <translation>Дадаць фінішны праход</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="426"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="437"/>
       <source>Finishing pass Z offset</source>
       <translation>Завяршальны праход з зрушэннем Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="437"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="448"/>
       <source>The deflection value for discretizing arcs</source>
       <translation>Значэнне адхіленні для дыскрэтызацыі дуг</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="447"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="458"/>
       <source>Cutoff for removing colinear segments (degrees). 
                         default=10.0.</source>
       <translation>Адсячэнне для выдалення калінеарных  адрэзкаў (градусаў).
 Першапачаткова = 10.0.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="453"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="464"/>
       <source>Vcarve Tolerance</source>
       <translation>Допуск для V-вобразнай выемкі</translation>
     </message>
@@ -6376,48 +6453,74 @@ Manual: uses order of shapes selection</source>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="49"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="75"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="77"/>
       <source>Pattern method</source>
       <translation>Метад шаблону</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="67"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="69"/>
       <source>The tool controller that will be used to calculate the toolpath
 Should be identical for all base operations</source>
       <translation>Кантролер інструмента, які будзе ўжывацца для разліку траекторыі руху інструмента.
 Павінен быць ідэнтычным для ўсіх асноўных аперацый</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="83"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="85"/>
       <source>The number of copies in Linear1D and Polar pattern</source>
       <translation>Колькасць копій у лінейным аднамерным (Linear1D) і палярным (Polar) шаблоне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="129"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="131"/>
       <source>Make copies in X direction before Y in Linear 2D pattern</source>
       <translation>Зрабіць копіі ў напрамку восі X перад воссю Y у лінейным двухмерным шаблоне</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="143"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="226"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="294"/>
+      <source>Define the offsets and angle of rotation for repeats from selected shapes
+
+If selection without sub elements:
+- shape contains only vertexes: create repeats for each vertex
+- shape contains edges: create only one repeat (useful for imported nesting shapes)</source>
+      <translation>Вызначыць зрушэнні і вугал павароту для паўтораў абраных фігур
+
+Калі вылучэнне выканана без укладзеных элементаў:
+- фігура ўтрымлівае толькі вяршыні: стварыце паўторы для кожнай вяршыні;
+- фігура ўтрымлівае рэбры: стварыце толькі адзін паўтор (карысна для імпартаваных укладзеных фігур)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="152"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="308"/>
+      <source>Define the base offsets and angle of rotation from selected shape</source>
+      <translation>Вызначыць асноўныя зрушэнні і вугал павароту адносна абранай фігуры</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="158"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="316"/>
+      <source>Sorting mode</source>
+      <translation>Рэжым парадкавання</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="172"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="262"/>
       <source>Use randomly offset</source>
       <translation>Ужыць выпадковае зрушэнне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="155"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="219"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="184"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="255"/>
       <source>Max angle of rotation for jitter randomness</source>
       <translation>Найбольшы вугал павароту для забеспячэння выпадковага дрыгацення</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="66"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="100"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="102"/>
       <source>The number of copies in X-direction in linear pattern</source>
       <translation>Колькасць копій у напрамку восі X у лінейным шаблоне</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="74"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="108"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="110"/>
       <source>The number of copies in Y-direction in linear pattern</source>
       <translation>Колькасць копій у напрамку восі Y у лінейным шаблоне</translation>
     </message>
@@ -6433,30 +6536,30 @@ Should be identical for all base operations</source>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="115"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="137"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="166"/>
       <source>Maximum random offset of copies</source>
       <translation>Найбольшае выпадковае зрушэнне копій</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="121"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="149"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="178"/>
       <source>Seed value for jitter randomness</source>
       <translation>Пачатковае значэнне для выпадковасці дрыгацення</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="52"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="54"/>
       <source>The toolpaths to array</source>
       <translation>Траекторыі руху інструмента для дадання ў масіў</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="58"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="92"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="94"/>
       <source>The spacing between the array copies in linear pattern</source>
       <translation>Адлегласць паміж копіямі масіву ў лінейным шаблоне</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="80"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="114"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="116"/>
       <source>Total angle in polar pattern</source>
       <translation>Агульны вугал у палярным шаблоне</translation>
     </message>
@@ -6467,7 +6570,7 @@ Should be identical for all base operations</source>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="94"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="120"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="122"/>
       <source>The centre of rotation in polar pattern</source>
       <translation>Цэнтр вярчэння ў палярным шаблоне</translation>
     </message>
@@ -6478,8 +6581,8 @@ Should be identical for all base operations</source>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="58"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="243"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="60"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="279"/>
       <source>Operations cycle time estimation</source>
       <translation>Ацэнка часу цыклу аперацыі</translation>
     </message>
@@ -6849,69 +6952,69 @@ Should be identical for all base operations</source>
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="252"/>
+      <location filename="../../../Path/Op/Profile.py" line="257"/>
       <location filename="../../../Path/Op/Helix.py" line="98"/>
       <source>Outside</source>
       <translation>Звонку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="253"/>
+      <location filename="../../../Path/Op/Profile.py" line="258"/>
       <location filename="../../../Path/Op/Helix.py" line="97"/>
       <source>Inside</source>
       <translation>Унутры</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="239"/>
+      <location filename="../../../Path/Op/Profile.py" line="244"/>
       <source>CW</source>
       <translation>па гадзінніку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="240"/>
+      <location filename="../../../Path/Op/Profile.py" line="245"/>
       <source>CCW</source>
       <translation>супраць гадзінніка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="243"/>
+      <location filename="../../../Path/Op/Profile.py" line="248"/>
       <source>Collectively</source>
       <translation>Калектыўна</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="244"/>
+      <location filename="../../../Path/Op/Profile.py" line="249"/>
       <source>Individually</source>
       <translation>Індывідуальна</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="247"/>
+      <location filename="../../../Path/Op/Profile.py" line="252"/>
       <source>Round</source>
       <translation>Закруглены</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="248"/>
+      <location filename="../../../Path/Op/Profile.py" line="253"/>
       <source>Square</source>
       <translation>Квадрат</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="249"/>
+      <location filename="../../../Path/Op/Profile.py" line="254"/>
       <source>Miter</source>
       <translation>Кант</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="256"/>
+      <location filename="../../../Path/Op/Profile.py" line="261"/>
       <source>Automatic</source>
       <translation>Аўтаматычна</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="257"/>
+      <location filename="../../../Path/Op/Profile.py" line="262"/>
       <source>Manual</source>
       <translation>Уручную</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="468"/>
+      <location filename="../../../Path/Op/Profile.py" line="473"/>
       <source>The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.</source>
       <translation>Абраныя рэбры недаступныя. Калі іх некалькі, можа спрацаваць змена парадку выбару.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="625"/>
+      <location filename="../../../Path/Op/Profile.py" line="630"/>
       <source>Unable to create path for face(s).</source>
       <translation>Не атрымалася стварыць траекторыю для граняў.</translation>
     </message>
@@ -7058,7 +7161,7 @@ Should be identical for all base operations</source>
   <context>
     <name>PathVcarve</name>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="709"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="726"/>
       <source>The Job Base Object has no engraveable element. Engraving operation will produce no output.</source>
       <translation>Асноўны аб'ект задання не мае элемента, які можна выгравіраваць. Аперацыя гравіроўкі не прывядзе да атрымання выніку.</translation>
     </message>
@@ -7277,7 +7380,7 @@ Should be identical for all base operations</source>
   <context>
     <name>PathOp</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="46"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="48"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Задаць False, каб прадухіліць стварэнне G-code для аперацыі</translation>
     </message>
@@ -7292,76 +7395,76 @@ Should be identical for all base operations</source>
       <translation>Задаць працоўную плоскасць ад грані</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="822"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="814"/>
       <source>Base Geometry</source>
       <translation>Асноўная геаметрыя</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="940"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="932"/>
       <source>Multiple operations are labeled as</source>
       <translation>Некалькі аперацый пазначаныя як</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1014"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1006"/>
       <source>Base Location</source>
       <translation>Асноўнае месцазнаходжанне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1142"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1134"/>
       <source>Heights</source>
       <translation>Вышыні</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1232"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1224"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>Канчатковая глыбіня (FinalDepth) не можа быць зменена для гэтай аперацыі.
 Калі неабходна задаць канчатковую глыбіню (FinalDepth) ўручную - абярыце іншую аперацыю.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1255"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1247"/>
       <source>Depths</source>
       <translation>Глыбіні</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1356"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1348"/>
       <source>Diameters</source>
       <translation>Дыяметры</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1388"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1380"/>
       <source>AreaOp Operation</source>
       <translation>Аперацыя AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1449"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1441"/>
       <source>Operation</source>
       <translation>Аперацыя</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1514"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1506"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>Аперацыя адмены AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1651"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1643"/>
       <source>Start Point Selection</source>
       <translation>Выбар пачатковай кропкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1652"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1644"/>
       <source>Selects the start point</source>
       <translation>Выбірае пачатковую кропку</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1702"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1694"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>Не знойдзены прыдатны кантролер інструментаў.
 Перапыненне аперацыі стварэння</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1706"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1698"/>
       <source>No tool controller, aborting op creation</source>
       <translation>Адсутнічае кантролер інструментаў, перапыняецца аперацыя стварэння</translation>
     </message>
@@ -7379,12 +7482,12 @@ Aborting op creation</source>
       <translation>Аснова пустая альбо з'яўляецца хібным аб'ектам.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="307"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="383"/>
       <source>Arrays of toolpaths having different tool controllers or tool controller not selected.</source>
       <translation>Масівы траекторый руху інструмента, якія маюць розныя кантролеры інструмента, альбо кантролер інструмента не абраны.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="316"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="392"/>
       <source>Arrays not compatible with coolant modes.</source>
       <translation>Масіў не сумяшчальны з рэжымамі астуджэння.</translation>
     </message>
@@ -7658,7 +7761,7 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_DressupPathBoundary</name>
     <message>
-      <location filename="../../../Path/Dressup/Boundary.py" line="359"/>
+      <location filename="../../../Path/Dressup/Boundary.py" line="392"/>
       <source>The selected object is not a path</source>
       <translation>Абраны аб'ект не з'яўляецца траекторыяй</translation>
     </message>
@@ -7676,18 +7779,18 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_DressupTag</name>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1305"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1317"/>
       <source>Cannot insert holding tags for this path - select a profile path</source>
       <translation>Не атрымалася ўставіць перамычкі для траекторыі.
 Абярыце шлях да профілю</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1354"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1366"/>
       <source>The selected object is not a path</source>
       <translation>Абраны аб'ект не з'яўляецца траекторыяй</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1358"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1370"/>
       <source>Select a profile object</source>
       <translation>Абраць аб'ект профілю</translation>
     </message>
@@ -7697,12 +7800,12 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>Перамычка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="555"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="575"/>
       <source>Tag</source>
       <translation>Метка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/Tags.py" line="558"/>
+      <location filename="../../../Path/Dressup/Gui/Tags.py" line="578"/>
       <source>Creates a tag dress-up object from a selected toolpath</source>
       <translation>Стварае аздабленне для крапежных аб'ектаў з абранай траекторыі руху інструмента</translation>
     </message>
@@ -8553,32 +8656,32 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="411"/>
+      <location filename="../../../Path/Op/Base.py" line="487"/>
       <source>None</source>
       <translation>Нічога</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="412"/>
+      <location filename="../../../Path/Op/Base.py" line="488"/>
       <source>Flood</source>
       <translation>Напоўніць</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="413"/>
+      <location filename="../../../Path/Op/Base.py" line="489"/>
       <source>Mist</source>
       <translation>Распыліць</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="648"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="640"/>
       <source>Copy {0}…</source>
       <translation>Капіраваць {0}…</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="649"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="641"/>
       <source>New tool controller…</source>
       <translation>Новы кантролер інструментаў…</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="694"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="686"/>
       <source>This tool controller is used by {0} other operations.</source>
       <translation>Кантролер інструментаў ужываецца для {0} іншых аперацый.</translation>
     </message>
@@ -8586,62 +8689,62 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="693"/>
+      <location filename="../../../Path/Op/Base.py" line="838"/>
       <source>No parent job found for operation.</source>
       <translation>Не знойдзена бацькоўскае заданне для аперацыі.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="698"/>
+      <location filename="../../../Path/Op/Base.py" line="843"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>Бацькоўскае заданне %s не мае асноўнага аб'екту</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="850"/>
+      <location filename="../../../Path/Op/Base.py" line="1114"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>Кантролер інструмента не абраны. Для пабудовы траекторыі нам патрэбны інструмент.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="864"/>
+      <location filename="../../../Path/Op/Base.py" line="1128"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>Не знойдзены інструмент, альбо яго дыяметр - 0. Для пабудовы траекторыі нам патрэбны інструмент.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1190"/>
+      <location filename="../../../Path/Op/Base.py" line="1498"/>
       <source>No Tool Controller selected.</source>
       <translation>Кантролер інструмента не абраны.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1193"/>
+      <location filename="../../../Path/Op/Base.py" line="1501"/>
       <source>Tool Error</source>
       <translation>Памылка інструменту</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1205"/>
+      <location filename="../../../Path/Op/Base.py" line="1513"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Неабходна хуткасць падачы кантролера інструменту для разліку часу цыкла.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1208"/>
+      <location filename="../../../Path/Op/Base.py" line="1516"/>
       <source>Tool Feedrate Error</source>
       <translation>Памылка хуткасці падачы інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1214"/>
+      <location filename="../../../Path/Op/Base.py" line="1522"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>Дадаць у Аркуш налад хуткасць падачы кантролера інструмента для больш дакладнага вызначэння часу цыклу.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="1223"/>
+      <location filename="../../../Path/Op/Base.py" line="1531"/>
       <source>Cycletime Error</source>
       <translation>Памылка часу цыкла</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="952"/>
+      <location filename="../../../Path/Op/Base.py" line="1260"/>
       <source>Base object %s.%s already in the list</source>
       <translation>Асноўны аб'ект %s.%s ужо прысутнічае ў спісе</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="962"/>
+      <location filename="../../../Path/Op/Base.py" line="1270"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>Асноўны аб'ект %s.%s адхілены аперацыяй</translation>
     </message>
@@ -9097,74 +9200,130 @@ This will not delete the toolbits contained within it.</source>
     </message>
     <message>
       <location filename="../../../Path/Post/Processor.py" line="378"/>
+      <source>Pre-Job</source>
+      <translation>Папярэдняе заданне</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="380"/>
+      <source>G-code commands inserted before each Job.</source>
+      <translation>Каманды G-code, якія ўводзяцца перад кожным заданнем.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="385"/>
+      <source>Post-Job</source>
+      <translation>Пасля заканчэння задання</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="387"/>
+      <source>G-code commands inserted after each Job.</source>
+      <translation>Каманды G-code, якія ўводзяцца пасля кожнага задання.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="392"/>
+      <source>Pre-Fixture</source>
+      <translation>Перад прыстасаваннем</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="394"/>
+      <source>G-code commands inserted before fixture change.</source>
+      <translation>Каманды G-code, якія ўводзяцца перад зменамі прыстасавання.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="399"/>
+      <source>Post-Fixture</source>
+      <translation>Пасля прыстасавання</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="401"/>
+      <source>G-code commands inserted after fixture change.</source>
+      <translation>Каманды G-code, якія ўводзяцца пасля змены прыстасавання.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="406"/>
       <source>Pre-Operation</source>
       <translation>Папярэдняя падрыхтоўка да аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="380"/>
+      <location filename="../../../Path/Post/Processor.py" line="408"/>
       <source>G-code commands inserted before each operation.</source>
       <translation>Каманды G-code, якія ўводзяцца перад кожнай аперацыяй.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="385"/>
+      <location filename="../../../Path/Post/Processor.py" line="413"/>
       <source>Post-Operation</source>
       <translation>Пасля аперацый</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="387"/>
+      <location filename="../../../Path/Post/Processor.py" line="415"/>
       <source>G-code commands inserted after each operation.</source>
       <translation>Каманды G-code, якія ўводзяцца пасля кожнай аперацыяй.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="392"/>
+      <location filename="../../../Path/Post/Processor.py" line="420"/>
       <source>Pre-Tool Change</source>
       <translation>Папярэдняя змена інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="394"/>
+      <location filename="../../../Path/Post/Processor.py" line="422"/>
       <source>G-code commands inserted before tool changes.</source>
       <translation>Каманды G-code, якія ўводзяцца перад зменай інструмента.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="399"/>
+      <location filename="../../../Path/Post/Processor.py" line="427"/>
       <source>Post-Tool Change</source>
       <translation>Пасля змены інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="401"/>
+      <location filename="../../../Path/Post/Processor.py" line="429"/>
+      <location filename="../../../Path/Post/Processor.py" line="436"/>
       <source>G-code commands inserted after tool changes.</source>
       <translation>Каманды G-code, якія ўводзяцца пасля змены інструмента.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="406"/>
+      <location filename="../../../Path/Post/Processor.py" line="434"/>
+      <source>Tool Return after tool changes</source>
+      <translation>Вяртанне інструмента пасля змены інструмента</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="441"/>
       <source>Pre-Rotary Move</source>
       <translation>Папярэдняе вярчальнае перамяшчэнне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="408"/>
+      <location filename="../../../Path/Post/Processor.py" line="443"/>
       <source>G-code commands inserted before rotary axis moves.</source>
       <translation>Каманды G-code, якія ўводзяцца перад перамяшчэннем восі кручэння.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="413"/>
+      <location filename="../../../Path/Post/Processor.py" line="448"/>
       <source>Post-Rotary Move</source>
       <translation>Пасля вярчальнае перамяшчэнне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="415"/>
+      <location filename="../../../Path/Post/Processor.py" line="450"/>
       <source>G-code commands inserted after rotary axis moves.</source>
       <translation>Каманды G-code, якія ўводзяцца пасля перамяшчэння восі кручэння.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="420"/>
+      <location filename="../../../Path/Post/Processor.py" line="455"/>
       <source>Show Pre-processing Dialogs</source>
       <translation>Паказаць дыялогавыя вокны папярэдняй апрацоўкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="426"/>
+      <location filename="../../../Path/Post/Processor.py" line="461"/>
       <source>Show interactive dialogs during post-processing. Disable for automated operation or testing.</source>
       <translation>Паказваць інтэрактыўныя дыялогі падчас наступнай апрацоўкі.
 Адключыць для аўтаматычнай працы ці тэставання.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="466"/>
+      <source>Generated Parameter Order for GCode</source>
+      <translation>Створаны парадак налад для G-сode</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Post/Processor.py" line="468"/>
+      <source>Generated Parameter Order for GCode for output</source>
+      <translation>Створаны парадак налад для G-сode для вываду</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Utils.py" line="226"/>
@@ -9318,27 +9477,27 @@ This will not delete the toolbits contained within it.</source>
       <translation>Пасляапрацоўка Mach3_Mach4</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="92"/>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="93"/>
       <source>Path Blending Mode</source>
       <translation>Рэжым накладання траекторый</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="99"/>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="100"/>
       <source>Path blending mode: EXACT_PATH (G61) stops at each point, EXACT_STOP (G61.1) stops at path ends, BLEND (G64) allows smooth motion</source>
       <translation>Рэжым накладання траекторыі: EXACT_PATH (G61) спыняецца ў кожнай кропцы, EXACT_STOP (G61. 1) спыняецца ў канцы траекторыі, BLEND (G64) забяспечвае плыўнае перамяшчэнне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="105"/>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="106"/>
       <source>Blend Tolerance</source>
       <translation>Дакладнасць накладання</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="114"/>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="115"/>
       <source>Tolerance for BLEND mode (P value): 0 = no tolerance (G64), &gt;0 = tolerance (G64 P-), in current units</source>
       <translation>Допуск для рэжыму накладання BLEND (значэнне P): 0 = няма допуску (G64), >0 = допуск (G64 P-), у бягучых адзінках вымярэння</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="121"/>
+      <location filename="../../../Path/Post/scripts/linuxcnc_post.py" line="122"/>
       <source>LinuxCNC post processor</source>
       <translation>Пасляапрацоўка LinuxCNC</translation>
     </message>
@@ -9366,17 +9525,17 @@ This will not delete the toolbits contained within it.</source>
       <translation>2x наканечніка свердзела</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="426"/>
+      <location filename="../../../Path/Op/Drilling.py" line="427"/>
       <source>Tapping strategy requires a Tap tool with Pitch</source>
       <translation>Стратэгія наразання разьбы патрабуе разьбавы інструмент з падачай</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="499"/>
+      <location filename="../../../Path/Op/Drilling.py" line="500"/>
       <source>Tapping strategy requires a Tap tool with non-zero Pitch</source>
       <translation>Стратэгія наразання разьбы патрабуе разьбавы інструмент з ненулявой падачай</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="509"/>
+      <location filename="../../../Path/Op/Drilling.py" line="510"/>
       <source>Tapping strategy requires a ToolController with non-zero SpindleSpeed</source>
       <translation>Стратэгія наразання разьбы патрабуе кантролер інструментаў з ненулявой хуткасцю кручэння шпіндаля</translation>
     </message>
@@ -9999,12 +10158,12 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Vcarve</name>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="673"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="685"/>
       <source>VCarve requires an engraving cutter with a cutting edge angle</source>
       <translation>Для V-вобразнай выемкі патрабуецца гравіравальны разец з вострым нахілам рэжучага рабра</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="679"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="691"/>
       <source>Engraver cutting edge angle must be &lt; 180 degrees.</source>
       <translation>Вугал рэжучага рабра гравёра павінен быць менш чым 180 градусаў.</translation>
     </message>
@@ -10022,17 +10181,17 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Array</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="541"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="799"/>
       <source>Array</source>
       <translation>Масіў</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="542"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="800"/>
       <source>Creates an array from selected toolpaths</source>
       <translation>Стварае масіў з абраных траекторый руху інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="575"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="833"/>
       <source>Arrays can be created only from toolpath operations.</source>
       <translation>Масівы могуць быць створаныя толькі з аперацый траекторыі руху інструмента.</translation>
     </message>

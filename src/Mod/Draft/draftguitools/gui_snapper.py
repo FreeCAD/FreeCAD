@@ -131,6 +131,7 @@ class Snapper:
         self.callbackClick = None
         self.callbackMove = None
         self.snapObjectIndex = 0
+        self.pointConstraintProvider = None
 
         # snap keys, it's important that they are in this order for
         # saving in preferences and for properly restoring the toolbar
@@ -330,6 +331,7 @@ class Snapper:
         if self.snapInfo and "Component" in self.snapInfo:
             osnap = self.snapToObject(lastpoint, active, constrain, eline, point)
             if osnap:
+                osnap = self._apply_point_constraint(osnap, lastpoint, noTracker)
                 self.running = False
                 return osnap
 
@@ -342,6 +344,7 @@ class Snapper:
             else:
                 point = self.snapToGrid(point)
         fp = self.cstr(lastpoint, constrain, point)
+        fp = self._apply_point_constraint(fp, lastpoint, noTracker)
         if self.trackLine and lastpoint and (not noTracker):
             self.trackLine.p2(fp)
             self.trackLine.setColor()
@@ -1255,6 +1258,33 @@ class Snapper:
         """Lower the grid tracker so it doesn't obscure other objects."""
         if self.grid:
             self.grid.lowerTracker()
+
+    def setPointConstraintProvider(self, provider):
+        """Set the active task panel that constrains snapped points."""
+        self.pointConstraintProvider = provider
+
+    def clearPointConstraintProvider(self, provider=None):
+        """Clear the active provider if it matches ``provider``."""
+        if provider is None or self.pointConstraintProvider is provider:
+            self.pointConstraintProvider = None
+
+    def _apply_point_constraint(self, point, lastpoint, noTracker):
+        """Apply the active task panel's point constraints."""
+        provider = self.pointConstraintProvider
+        if provider is None:
+            return point
+        locked = provider.constrain_point(point, lastpoint)
+        if noTracker or locked is None:
+            return locked
+        if self.tracker:
+            self.tracker.setCoords(locked)
+            self.tracker.on()
+        if self.trackLine and lastpoint:
+            self.trackLine.p2(locked)
+            self.trackLine.setColor()
+            self.trackLine.on()
+            self.setArchDims(lastpoint, locked)
+        return locked
 
     def off(self):
         """Finish snapping."""

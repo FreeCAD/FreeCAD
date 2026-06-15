@@ -8729,11 +8729,6 @@ entsprechend den angegebenen X- und Y-Abständen</translation>
       <translation>Wert</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
-      <source>Reapplies auto-fill to this field</source>
-      <translation>Wendet das automatische Ausfüllen erneut auf dieses Feld an</translation>
-    </message>
-    <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value</source>
       <translation>Ersatztext des Werkzeugs zum automatischen Ausfüllen</translation>
@@ -8742,6 +8737,11 @@ entsprechend den angegebenen X- und Y-Abständen</translation>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
       <translation>TextLabel</translation>
+    </message>
+    <message>
+      <location filename="../../DlgTemplateField.ui" line="52"/>
+      <source>Applies autofill to this field</source>
+      <translation>Wendet das automatische Ausfüllen auf dieses Feld an</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>

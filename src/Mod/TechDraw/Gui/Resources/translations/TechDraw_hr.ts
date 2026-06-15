@@ -8777,11 +8777,6 @@ koristeći zadane X/Y razmake</translation>
       <translation>Vrijednost</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
-      <source>Reapplies auto-fill to this field</source>
-      <translation>Ponovno primjenjuje automatsko popunjavanje na ovo polje</translation>
-    </message>
-    <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value</source>
       <translation>Zamjenska vrijednost za automatsko popunjavanje</translation>
@@ -8790,6 +8785,11 @@ koristeći zadane X/Y razmake</translation>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
       <translation>Tekst oznaka</translation>
+    </message>
+    <message>
+      <location filename="../../DlgTemplateField.ui" line="52"/>
+      <source>Applies autofill to this field</source>
+      <translation type="unfinished">Applies autofill to this field</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>

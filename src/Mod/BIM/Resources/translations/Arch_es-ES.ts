@@ -219,9 +219,9 @@
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DO NOT have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation>Una lista opcional de filtros propiedad:valor separados por punto y coma (;). Anteponer ! al nombre de una propiedad para invertir el efecto del filtro (excluir objetos que coincidan con el filtro). Se seleccionarán los objetos cuya propiedad contenga el valor.
+      <translation>Una lista separada por punto y coma opcional (;) de propiedad: filtros de valor . Anteponer ! al nombre de una propiedad para invertir el efecto del filtro (excluir objetos que coincidan con el filtro). Se seleccionarán los objetos cuya propiedad contenga el valor.
 
-Ejemplos de filtros válidos (no se distingue entre mayúsculas y minúsculas): Nombre:Wall: solo se tendrán en cuenta los objetos cuyo nombre (nombre interno) contenga «wall»; !Nombre:Wall: solo se tendrán en cuenta los objetos cuyo nombre (nombre interno) NO contenga «wall»; Descripción:Win: solo se tendrán en cuenta los objetos que contengan «win» en su descripción; !Etiqueta:Win: solo se tendrán en cuenta los objetos que NO contengan «win» en su etiqueta; IfcType:Wall: solo se tendrán en cuenta los objetos cuyo tipo Ifc sea «Wall»; !Etiqueta:Wall: solo se tendrán en cuenta los objetos cuya etiqueta NO sea «Wall». Si se deja este campo vacío, no se aplicará ningún filtro.
+Ejemplos de filtros válidos (no se distingue entre mayúsculas y minúsculas): Nombre:Wall - solo se tendrán en cuenta los objetos cuyo nombre (nombre interno) contenga «wall»; !Nombre:Wall - solo se tendrán en cuenta los objetos cuyo nombre (nombre interno) NO contenga «wall»; Descripción:Win - solo se tendrán en cuenta los objetos que contengan «win» en su descripción; !Etiqueta:Win - solo se tendrán en cuenta los objetos que NO contengan «win» en su etiqueta; IfcType:Wall - solo se tendrán en cuenta los objetos cuyo tipo Ifc sea «Wall»; !Etiqueta:Wall - solo se tendrán en cuenta los objetos cuya etiqueta NO sea «Wall». Si se deja este campo vacío, no se aplicará ningún filtro.
 
 Cuando se trata de objetos IFC nativos, se puede utilizar el nombre de las propiedades de FreeCAD, por ejemplo: «Class:IfcWall» o cualquier otro atributo IFC (por ejemplo, «IsTypedBy:#455»). Si la columna «Objetos» se ha establecido en un proyecto o documento IFC, se tendrán en cuenta todas las entidades IFC de ese proyecto.</translation>
     </message>
@@ -2184,11 +2184,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
       <location filename="../ui/dialogViews.ui" line="69"/>
-      <source>Level</source>
-      <translation>Nivel</translation>
+      <source>Elevation</source>
+      <translation>Elevación</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="79"/>
+      <location filename="../ui/dialogViews.ui" line="84"/>
       <source>2D Views</source>
       <translation>Vistas 2D</translation>
     </message>
@@ -2257,6 +2257,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="175"/>
+      <location filename="../ui/dialogViews.ui" line="74"/>
       <source>Height</source>
       <translation>Altura</translation>
     </message>
@@ -3791,7 +3792,7 @@ La plantilla predeterminada se encuentra en:
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="441"/>
-      <location filename="../../ArchCommands.py" line="1727"/>
+      <location filename="../../ArchCommands.py" line="1728"/>
       <location filename="../../bimcommands/BimProfile.py" line="83"/>
       <source>Category</source>
       <translation>Categoría</translation>
@@ -3808,7 +3809,7 @@ La plantilla predeterminada se encuentra en:
     <message>
       <location filename="../../ArchStructure.py" line="457"/>
       <location filename="../../ArchStructure.py" line="1585"/>
-      <location filename="../../ArchCommands.py" line="1360"/>
+      <location filename="../../ArchCommands.py" line="1361"/>
       <location filename="../../ArchWall.py" line="1857"/>
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
@@ -4478,7 +4479,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Recuperar el borde seleccionado</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1740"/>
+      <location filename="../../ArchSectionPlane.py" line="1781"/>
       <location filename="../../ArchAxis.py" line="985"/>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
@@ -4497,7 +4498,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Añadir</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1507"/>
+      <location filename="../../ArchSectionPlane.py" line="1548"/>
       <location filename="../../ArchIFCView.py" line="63"/>
       <location filename="../../ArchAxis.py" line="830"/>
       <location filename="../../ArchMaterial.py" line="471"/>
@@ -4537,7 +4538,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Nombre</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1729"/>
+      <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../ArchComponent.py" line="2538"/>
       <location filename="../../ArchWindow.py" line="1716"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
@@ -6139,7 +6140,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Operación</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1453"/>
+      <location filename="../../ArchCommands.py" line="1454"/>
       <location filename="../../ArchSchedule.py" line="936"/>
       <source>Export CSV File</source>
       <translation>Exportar archivo CSV</translation>
@@ -6151,17 +6152,17 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     </message>
     <message>
       <location filename="../../ArchReport.py" line="888"/>
-      <location filename="../../ArchCommands.py" line="1359"/>
+      <location filename="../../ArchCommands.py" line="1360"/>
       <source>Description</source>
       <translation>Descripción</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1496"/>
+      <location filename="../../ArchCommands.py" line="1497"/>
       <source>Object does not have settable IFC attributes</source>
       <translation>Objeto no tiene atributos configurables de IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1730"/>
+      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
       <location filename="../../ArchComponent.py" line="2539"/>
@@ -6170,7 +6171,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation>Valor</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1731"/>
+      <location filename="../../ArchCommands.py" line="1732"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1015"/>
       <source>Unit</source>
@@ -6496,7 +6497,7 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <location filename="../../ArchComponent.py" line="1585"/>
       <source>Error computing areas for {self.obj.Label}: unable to combine projected horizontal faces. Area values will be reset to 0.
 </source>
-      <translation type="unfinished">Error computing areas for {self.obj.Label}: unable to combine projected horizontal faces. Area values will be reset to 0.
+      <translation>Error calculando áreas para {self.obj.Label}: no se puede combinar caras horizontales proyectadas. Los valores de área se restablecerán a 0.
 </translation>
     </message>
     <message>
@@ -6611,97 +6612,97 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>Crear el plano de sección</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1733"/>
+      <location filename="../../ArchSectionPlane.py" line="1774"/>
       <source>Scope</source>
       <translation>Alcance</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1736"/>
+      <location filename="../../ArchSectionPlane.py" line="1777"/>
       <source>Placement and Visuals</source>
       <translation>Colocación y Visuales</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1739"/>
+      <location filename="../../ArchSectionPlane.py" line="1780"/>
       <source>Objects seen by this section plane</source>
       <translation>Objetos vistos por esta seccion del plano</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1745"/>
+      <location filename="../../ArchSectionPlane.py" line="1786"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>Eliminar los objetos resaltados de la lista anterior</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1746"/>
+      <location filename="../../ArchSectionPlane.py" line="1787"/>
       <source>Add Selected</source>
       <translation>Añadir seleccionados</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1751"/>
+      <location filename="../../ArchSectionPlane.py" line="1792"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>Añade los objetos seleccionados al alcance de este plano de sección</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1752"/>
+      <location filename="../../ArchSectionPlane.py" line="1793"/>
       <source>Cut View</source>
       <translation>Cortar vista</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1759"/>
+      <location filename="../../ArchSectionPlane.py" line="1800"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>Crea un corte en vivo en la vista 3D, ocultando geometría en un lado del plano para ver dentro de su modelo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1760"/>
+      <location filename="../../ArchSectionPlane.py" line="1801"/>
       <source>Rotate by 90°</source>
       <translation>Girar 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1764"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>Rota el plano alrededor de su eje X local</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1768"/>
+      <location filename="../../ArchSectionPlane.py" line="1809"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>Rota el plano alrededor de su eje Y local</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1772"/>
+      <location filename="../../ArchSectionPlane.py" line="1813"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>Rota el plano alrededor de su eje Z local</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1773"/>
+      <location filename="../../ArchSectionPlane.py" line="1814"/>
       <source>Resize to Fit</source>
       <translation>Modificar el tamaño para ajustar</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1779"/>
+      <location filename="../../ArchSectionPlane.py" line="1820"/>
       <source>Recenter Plane</source>
       <translation>Volver a centrar plano</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1761"/>
+      <location filename="../../ArchSectionPlane.py" line="1802"/>
       <source>Rotate X</source>
       <translation>Rotar X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1512"/>
+      <location filename="../../ArchSectionPlane.py" line="1553"/>
       <source>Toggle Cut View</source>
       <translation>Alternar vista de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1765"/>
+      <location filename="../../ArchSectionPlane.py" line="1806"/>
       <source>Rotate Y</source>
       <translation>Rotar Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1769"/>
+      <location filename="../../ArchSectionPlane.py" line="1810"/>
       <source>Rotate Z</source>
       <translation>Rotar Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1819"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Redimensiona el plano para encajar los objetos en la lista anterior</translation>
     </message>
@@ -6713,7 +6714,7 @@ Se requiere el módulo Python Pybug o pysolar.</translation>
       <translation>Centro</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1784"/>
+      <location filename="../../ArchSectionPlane.py" line="1825"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centra el plano en los objetos de la lista anterior</translation>
     </message>
@@ -6919,12 +6920,12 @@ Creación de Edificio cancelada.</translation>
       <translation>Plano de corte inválido</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="823"/>
+      <location filename="../../ArchCommands.py" line="824"/>
       <source>is not closed</source>
       <translation>no está cerrado</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="825"/>
+      <location filename="../../ArchCommands.py" line="826"/>
       <source>is not valid</source>
       <translation>no es válido</translation>
     </message>
@@ -6939,78 +6940,78 @@ Creación de Edificio cancelada.</translation>
       <translation>{0} se asigna a {1}, eliminando el soporte de adjuntos del primero para evitar la dependencia cíclica.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="827"/>
+      <location filename="../../ArchCommands.py" line="828"/>
       <source>does not contain any solid</source>
       <translation>no contiene ningún sólido</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="833"/>
+      <location filename="../../ArchCommands.py" line="834"/>
       <source>contains a non-closed solid</source>
       <translation>contiene un sólido no cerrado</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="837"/>
+      <location filename="../../ArchCommands.py" line="838"/>
       <source>contains faces that are not part of any solid</source>
       <translation>Contiene caras que no son parte de ningún sólido</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1351"/>
+      <location filename="../../ArchCommands.py" line="1352"/>
       <source>Survey</source>
       <translation>Registro de medidas</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1353"/>
+      <location filename="../../ArchCommands.py" line="1354"/>
       <source>Clear</source>
       <translation>Limpiar</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1356"/>
+      <location filename="../../ArchCommands.py" line="1357"/>
       <source>Export CSV</source>
       <translation>Exportar CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1361"/>
+      <location filename="../../ArchCommands.py" line="1362"/>
       <source>Area</source>
       <translation>Área</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1408"/>
+      <location filename="../../ArchCommands.py" line="1409"/>
       <source>Total</source>
       <translation>Total</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1743"/>
+      <location filename="../../ArchCommands.py" line="1744"/>
       <source>The object does not have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>El objeto no contiene el atributo IfcProperties. Cancelar la creación de hojas de cálculo para el objeto:</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1958"/>
+      <location filename="../../ArchCommands.py" line="1959"/>
       <source>No closed wires found.</source>
       <translation>No se encontraron cables cerrados.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1504"/>
+      <location filename="../../ArchCommands.py" line="1505"/>
       <source>Disabling B-rep force flag of object</source>
       <translation>Desactivando indicador de fuerza B-rep del objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1352"/>
+      <location filename="../../ArchCommands.py" line="1353"/>
       <source>Set Description</source>
       <translation>Establecer descripción</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1354"/>
+      <location filename="../../ArchCommands.py" line="1355"/>
       <source>Copy Total Length</source>
       <translation>Copiar longitud total</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1355"/>
+      <location filename="../../ArchCommands.py" line="1356"/>
       <source>Copy Total Area</source>
       <translation>Copiar área total</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1512"/>
-      <location filename="../../ArchCommands.py" line="1519"/>
+      <location filename="../../ArchCommands.py" line="1513"/>
+      <location filename="../../ArchCommands.py" line="1520"/>
       <source>Enabling B-rep force flag of object</source>
       <translation>Activando el indicador de fuerza B-rep del objeto</translation>
     </message>
@@ -7077,7 +7078,7 @@ Creación de Edificio cancelada.</translation>
       <translation>Crear componente</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1728"/>
+      <location filename="../../ArchCommands.py" line="1729"/>
       <source>Key</source>
       <translation>Clave</translation>
     </message>
@@ -7159,8 +7160,8 @@ Creación de Edificio cancelada.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="679"/>
-      <source>BorderSetback is too large and collapses the face. Setback ignored.</source>
-      <translation>El rebaje del borde es demasiado grande y colapsa la cara. El rebaje se ignora.</translation>
+      <source>Border setback is too large and collapses the face. Setback ignored.</source>
+      <translation type="unfinished">Border setback is too large and collapses the face. Setback ignored.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="719"/>
@@ -7508,7 +7509,7 @@ Creación de Edificio cancelada.</translation>
       <translation>Una etiqueta opcional para este componente</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="963"/>
+      <location filename="../../ArchSectionPlane.py" line="1004"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>La forma de este objeto</translation>
@@ -7529,7 +7530,7 @@ Creación de Edificio cancelada.</translation>
       <translation>Un mapa MaterialName:SolidIndexesList que relaciona nombres de materiales con índices de sólido a ser usado al referenciar este objeto desde otros archivos</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1135"/>
+      <location filename="../../ArchSectionPlane.py" line="1176"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>The line width of this object</source>
       <translation>El ancho de línea de este objeto</translation>
@@ -9083,7 +9084,7 @@ Creación de Edificio cancelada.</translation>
       <translation>Si es verdadero, se añaden líneas adicionales con cada objeto individual a los resultados</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="996"/>
       <location filename="../../ArchFloor.py" line="253"/>
       <source>The placement of this object</source>
       <translation>La posición de este objeto</translation>
@@ -9305,79 +9306,79 @@ Creación de Edificio cancelada.</translation>
       <translation>Forma del refuerzo</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="974"/>
+      <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Los objetos que deben ser considerados por este plano de sección. Vacío significa todo el documento.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="985"/>
+      <location filename="../../ArchSectionPlane.py" line="1026"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Si es falso, los objetos no sólidos también se cortarán, con posibles resultados equivocados.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="997"/>
+      <location filename="../../ArchSectionPlane.py" line="1038"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Si es verdadero, las vistas resultantes se verán acopladas al área de plano de sección.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1008"/>
+      <location filename="../../ArchSectionPlane.py" line="1049"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Si es verdadero, el color del material de los objetos se utilizará para llenar las áreas cortadas.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1020"/>
+      <location filename="../../ArchSectionPlane.py" line="1061"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>La geometría más allá de este valor será cortada. Mantener en cero para ilimitado.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1093"/>
+      <location filename="../../ArchSectionPlane.py" line="1134"/>
       <source>The display length of this section plane</source>
       <translation>El tamaño de pantalla de este plano de sección</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1105"/>
+      <location filename="../../ArchSectionPlane.py" line="1146"/>
       <source>The display height of this section plane</source>
       <translation>La altura de la pantalla de este plano de sección</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1117"/>
+      <location filename="../../ArchSectionPlane.py" line="1158"/>
       <source>The size of the arrows of this section plane</source>
       <translation>El tamaño de las flechas de este plano de sección</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1126"/>
+      <location filename="../../ArchSectionPlane.py" line="1167"/>
       <source>The transparency of this object</source>
       <translation>La transparencia de este objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1144"/>
-      <location filename="../../ArchSectionPlane.py" line="1161"/>
+      <location filename="../../ArchSectionPlane.py" line="1185"/>
+      <location filename="../../ArchSectionPlane.py" line="1202"/>
       <source>Show the cut in the 3D view</source>
       <translation>Mostrar el corte en la vista 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1152"/>
+      <location filename="../../ArchSectionPlane.py" line="1193"/>
       <source>The color of this object</source>
       <translation>El color de este objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1172"/>
+      <location filename="../../ArchSectionPlane.py" line="1213"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>La distancia entre el plano de corte y la vista actual de corte (mantener esto un valor muy pequeño, pero no cero)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1181"/>
+      <location filename="../../ArchSectionPlane.py" line="1222"/>
       <source>Show the label in the 3D view</source>
       <translation>Mostrar la etiqueta en la vista 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1189"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>El nombre de la fuente</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1198"/>
+      <location filename="../../ArchSectionPlane.py" line="1239"/>
       <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>El tamaño de la fuente de texto</translation>
@@ -11551,17 +11552,12 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
       <translation>Aislar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="120"/>
-      <source>Creates a new level</source>
-      <translation>Crear un nuevo nivel</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="123"/>
+      <location filename="../../bimcommands/BimViews.py" line="125"/>
       <source>Creates a new working plane proxy</source>
       <translation>Crea un nuevo proxy de plano de trabajo</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="124"/>
+      <location filename="../../bimcommands/BimViews.py" line="126"/>
       <source>Deletes the selected item</source>
       <translation>Elimina el elemento seleccionado</translation>
     </message>
@@ -11572,8 +11568,8 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="90"/>
-      <source>New Level</source>
-      <translation>Nuevo nivel</translation>
+      <source>New Level Above</source>
+      <translation type="unfinished">New Level Above</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="91"/>
@@ -11591,42 +11587,47 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
       <translation>Guardar posición de vista</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="127"/>
+      <location filename="../../bimcommands/BimViews.py" line="122"/>
+      <source>Creates a new level above the highest existing one</source>
+      <translation type="unfinished">Creates a new level above the highest existing one</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="129"/>
       <source>Toggles the visibility of selected items</source>
       <translation>Alterna la visibilidad de los elementos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="130"/>
+      <location filename="../../bimcommands/BimViews.py" line="132"/>
       <source>Turns all items off except the selected ones</source>
       <translation>Desactiva todos los elementos excepto los seleccionados</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="133"/>
+      <location filename="../../bimcommands/BimViews.py" line="135"/>
       <source>Saves the current camera position to the selected items</source>
       <translation>Guarda la posición actual de la cámara en los elementos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="134"/>
+      <location filename="../../bimcommands/BimViews.py" line="136"/>
       <source>Renames the selected item</source>
       <translation>Renombra los elementos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="135"/>
+      <location filename="../../bimcommands/BimViews.py" line="137"/>
       <source>Activates the selected item</source>
       <translation>Activa el elemento seleccionado</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="161"/>
+      <location filename="../../bimcommands/BimViews.py" line="163"/>
       <source>BIM Views Manager</source>
       <translation>Gestor de vistas BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="309"/>
+      <location filename="../../bimcommands/BimViews.py" line="311"/>
       <source>2D Views</source>
       <translation>Vistas 2D</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="322"/>
+      <location filename="../../bimcommands/BimViews.py" line="324"/>
       <source>Sheets</source>
       <translation>Hojas</translation>
     </message>
@@ -11756,12 +11757,12 @@ Ctrl+/ para alternar entre modo automático y manual</translation>
       <translation>Cortar líneas</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="376"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="377"/>
       <source>Removing property</source>
       <translation>Eliminando propiedad</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="381"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="382"/>
       <source>Removing property set</source>
       <translation>Eliminando conjunto de propiedades</translation>
     </message>

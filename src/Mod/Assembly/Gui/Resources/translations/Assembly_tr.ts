@@ -964,37 +964,37 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
       <translation>Parçayı taşı</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1807"/>
       <source>Empty Assembly</source>
       <translation>Boş Montaj</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Over-constrained:</source>
       <translation>Aşırı kısıtlı:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
       <source>Malformed joints:</source>
       <translation>Bozuk bağlantılar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1792"/>
       <source>and %1 more</source>
       <translation>ve %1 tane daha</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1851"/>
       <source>Solver failed to converge</source>
       <translation>Çözücü yakınsamadı</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>Under-constrained:</source>
       <translation>Yetersiz kısıtlı:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Serbestlik Derecesi</numerusform>
@@ -1002,7 +1002,7 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1865"/>
       <source>Fully constrained</source>
       <translation>Tam kısıtlı</translation>
     </message>
