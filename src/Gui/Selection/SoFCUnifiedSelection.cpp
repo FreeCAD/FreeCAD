@@ -922,8 +922,9 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
         // We need to convert the short name in the selection to a full element path to look it up
         // Ex:  Body.Pad.Face9  to Body.Pad.;g3;SKT;:H12dc,E;FAC;:H12dc:4,F;:G0;XTR;:H12dc:8,F.Face9
         getFullSubElementName(subName);
-        std::string subSelected
+        const char* subSelected_cstr
             = Gui::Selection().getSelectedElement(vpd->getObject(), subName.c_str());
+        std::string subSelected = subSelected_cstr == nullptr ? "" : subSelected_cstr;
 
         FC_TRACE(
             "select " << (!subSelected.empty() ? subSelected : "'null'") << ", " << objectName

@@ -252,11 +252,6 @@ public:
     void attachSelection();
     /** Detaches from the selection. */
     void detachSelection();
-    /** clears the document scope filter, allowing cross-document selection events. */
-    void clearDocumentScope()
-    {
-        documentScopeName.clear();
-    }
 
 private:
     virtual void onSelectionChanged(const SelectionChanges& msg) = 0;
@@ -268,7 +263,6 @@ private:
     std::string filterDocName;
     std::string filterObjName;
     ResolveMode resolve;
-    std::string documentScopeName;
     bool blockedSelection;
 };
 
@@ -300,6 +294,20 @@ public:
      * literal into QT_TR_NOOP() for translatability.
      */
     std::string notAllowedReason;
+};
+
+/** SelectionGateFilterExternal
+ * The selection gate disallows any external object
+ */
+class GuiExport SelectionGateFilterExternal: public SelectionGate
+{
+public:
+    explicit SelectionGateFilterExternal(const char* docName, const char* objName = nullptr);
+    bool allow(App::Document*, App::DocumentObject*, const char*) override;
+
+private:
+    std::string DocName;
+    std::string ObjName;
 };
 
 /** The Selection class
@@ -384,7 +392,7 @@ public:
     /// of the active document is cleared.
     void clearSelection(const char* pDocName = nullptr, bool clearPreSelect = true);
     /// Clear the selection of all documents
-    void clearCompleteSelection(const char* pDocName = nullptr, bool clearPreSelect = true);
+    void clearCompleteSelection(bool clearPreSelect = true);
     /// Check if selected
     bool isSelected(
         const char* pDocName,
@@ -407,7 +415,7 @@ public:
     ) const;
     bool hasSelectionGate(App::Document* pDoc) const;
 
-    std::string getSelectedElement(App::DocumentObject*, const char* pSubName) const;
+    const char* getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 
     /// set the preselected object (mostly by the 3D view)
     int setPreselect(
@@ -425,24 +433,16 @@ public:
     void setPreselectCoord(float x, float y, float z);
     /// returns the present preselection
     const SelectionChanges& getPreselection() const;
-    /// add a SelectionGate to control what is selectable in a document's scope, by default the
-    /// active document is selected
-    // which is usually the intended behavior
-    void addSelectionGate(
-        Gui::SelectionGate* gate,
-        ResolveMode resolve = ResolveMode::OldStyleElement,
-        const char* pDocName = nullptr
-    );
+
+    /// add a SelectionGate to control what is selectable
+    void addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve = ResolveMode::OldStyleElement);
+    /// remove the active SelectionGate
+    void rmvSelectionGate();
 
     /** @brief get the pointer to the selection gate
      * It will be nullptr when no selection filter active
      */
     const Gui::SelectionGate* getSelectionGate(const App::Document* document) const;
-    /// remove the document's SelectionGate, by default the active document is selected, which is
-    /// usually the intended behavior
-    void rmvSelectionGate(const char* pDocName = nullptr);
-    /// remove the document's SelectionGate (assumes valid pointer)
-    void rmvSelectionGate(App::Document* doc);
 
     int disableCommandLog();
     int enableCommandLog(bool silent = false);
@@ -519,9 +519,8 @@ public:
     /** Set selection object visibility
      *
      * @param visible: see VisibleState
-     * @param pDocName: name of the document that scopes the request, defaults to active document
      */
-    void setVisible(VisibleState visible, const char* pDocName = nullptr);
+    void setVisible(VisibleState visible);
 
     bool isClarifySelectionActive();
     void setClarifySelectionActive(bool active);
@@ -605,7 +604,7 @@ public:
     std::vector<SelObj> getCompleteSelection(ResolveMode resolve = ResolveMode::OldStyleElement) const;
 
     /// Check if there is any selection
-    bool hasSelection(const char* pDocName = nullptr) const;
+    bool hasSelection() const;
 
     /** Check if there is any selection within a given document
      *
@@ -619,7 +618,7 @@ public:
      * If \c resolve is false, then the match is only done with the top
      * level parent object.
      */
-    bool hasSelection(const char* doc, ResolveMode resolve) const;
+    bool hasSelection(const char* doc, ResolveMode resolve = ResolveMode::OldStyleElement) const;
 
     /** Check if there is any sub-element selection
      *
@@ -636,7 +635,10 @@ public:
     bool hasPreselection() const;
 
     /// Size of selected entities for all documents
-    unsigned int size(const char* pDocName = nullptr) const;
+    unsigned int size() const
+    {
+        return static_cast<unsigned int>(_SelList.size());
+    }
 
     /** @name Selection stack functions
      *
@@ -645,10 +647,15 @@ public:
      */
     //@{
     /// Return the current selection stack size
-    std::size_t selStackBackSize(const char* pDocName = nullptr) const;
-
+    std::size_t selStackBackSize() const
+    {
+        return _SelStackBack.size();
+    }
     /// Return the current forward selection stack size
-    std::size_t selStackForwardSize(const char* pDocName = nullptr) const;
+    std::size_t selStackForwardSize() const
+    {
+        return _SelStackForward.size();
+    }
 
     /** Obtain selected objects from stack
      *
@@ -666,12 +673,11 @@ public:
     /** Go back selection history
      *
      * @param count: optional number of steps to go back
-     * @param pDocName: the name of the document to index the context, defaults to active document
      *
      * This function pops the selection stack, and populate the current
      * selection with the content of the last pop'd entry
      */
-    void selStackGoBack(int count = 1, const char* pDocName = nullptr);
+    void selStackGoBack(int count = 1);
 
     /** Go forward selection history
      *
@@ -681,16 +687,15 @@ public:
      * This function pops the selection stack, and populate the current
      * selection with the content of the last pop'd entry
      */
-    void selStackGoForward(int count = 1, const char* pDocName = nullptr);
+    void selStackGoForward(int count = 1);
 
     /** Save the current selection on to the stack
      *
      * @param clearForward: whether to clear forward selection stack
      * @param overwrite: whether to overwrite the current top entry of the
      *                   stack instead of pushing a new entry.
-     * @param pDocName: the name of the document to index the context, defaults to active document
      */
-    void selStackPush(bool clearForward = true, bool overwrite = false, const char* pDocName = nullptr);
+    void selStackPush(bool clearForward = true, bool overwrite = false);
     //@}
 
     /** @name Picked list functions
@@ -701,11 +706,11 @@ public:
      */
     //@{
     /// Check whether picked list is enabled
-    bool needPickedList(const char* pDocName = nullptr) const;
+    bool needPickedList() const;
     /// Turn on or off picked list
-    void enablePickedList(bool, const char* pDocName = nullptr);
+    void enablePickedList(bool);
     /// Check if there is any selection inside picked list
-    bool hasPickedList(const char* pDocName = nullptr) const;
+    bool hasPickedList() const;
     /// Return select objects inside picked list
     std::vector<SelectionSingleton::SelObj> getPickedList(const char* pDocName) const;
     /// Return selected object inside picked list grouped by top level parents
@@ -727,9 +732,9 @@ public:
         GreedySelection
     };
     /// Changes the style of selection between greedy and normal.
-    void setSelectionStyle(SelectionStyle selStyle, const char* pDocName = nullptr);
+    void setSelectionStyle(SelectionStyle selStyle);
     /// Get the style of selection.
-    SelectionStyle getSelectionStyle(const char* pDocName = nullptr);
+    SelectionStyle getSelectionStyle();
     //@}
 
     static SelectionSingleton& instance();
@@ -779,7 +784,6 @@ protected:
 
     /// Observer message from the App doc
     void slotDeletedObject(const App::DocumentObject&);
-    void slotClosedDocument(const App::Document&);
 
     /// helper to retrieve document by name
     App::Document* getDocument(const char* pDocName = nullptr) const;
@@ -792,7 +796,7 @@ protected:
         notify(SelectionChanges(Chng));
     }
 
-    struct SelectionDescription
+    struct _SelObj
     {
         std::string DocName;
         std::string FeatName;
@@ -812,25 +816,34 @@ protected:
         std::string getSubString() const;
     };
 
+    std::list<_SelObj> _SelList;
+
+    std::list<_SelObj> _PickedList;
+    bool _needPickedList {false};
+
+    using SelStackItem = std::set<App::SubObjectT>;
+    std::deque<SelStackItem> _SelStackBack;
+    std::deque<SelStackItem> _SelStackForward;
+
     int checkSelection(
         const char* pDocName,
         const char* pObjectName,
         const char* pSubName,
         ResolveMode resolve,
-        SelectionDescription& sel,
-        const std::list<SelectionDescription>* selList = nullptr
+        _SelObj& sel,
+        const std::list<_SelObj>* selList = nullptr
     ) const;
 
     std::vector<Gui::SelectionObject> getObjectList(
         const char* pDocName,
         Base::Type typeId,
-        const std::list<SelectionDescription>& objs,
+        const std::list<_SelObj>& objs,
         ResolveMode resolve,
         bool single = false
     ) const;
 
     static App::DocumentObject* getObjectOfType(
-        const SelectionDescription& sel,
+        const _SelObj& sel,
         Base::Type type,
         ResolveMode resolve,
         const char** subelement = nullptr
@@ -842,41 +855,7 @@ protected:
         ResolveMode resolve = ResolveMode::OldStyleElement
     ) const;
 
-    using SelStackItem = std::set<App::SubObjectT>;
-    // Each document has a description context
-    struct SelectionInfo
-    {
-        Gui::SelectionGate* gate {nullptr};
-        ResolveMode resolveMode {ResolveMode::OldStyleElement};
-
-        std::list<SelectionDescription> selList;
-        std::list<SelectionDescription> pickedList;
-        bool needPickedList {false};
-
-        std::deque<SelStackItem> selStackBack;
-        std::deque<SelStackItem> selStackForward;
-
-        SelectionStyle selectionStyle {SelectionStyle::NormalSelection};
-    };
-    struct SelectionContext
-    {
-        SelectionInfo* info;
-        std::string docName;
-    };
-    struct SelectionConstContext
-    {
-        const SelectionInfo* info;
-        std::string docName;
-    };
-
-    // Returns a selection context or nullptr if the document is not found
-    SelectionContext getSelectionContext(const char* pDocName);
-    SelectionConstContext getSelectionContext(const char* pDocName) const;
-
     static SelectionSingleton* _pcSingleton;
-
-
-    std::map<App::Document*, SelectionInfo> docSelectionContext;
 
     struct SelectionAllowance
     {
@@ -890,10 +869,7 @@ protected:
      * @param sel The object to be selected.
      * @returns SelectionAllowance
      */
-    SelectionAllowance isSelectionAllowed(
-        const SelectionContext& context,
-        const SelectionDescription& sel
-    );
+    SelectionAllowance isSelectionAllowed(const _SelObj& sel);
     // Preselection helpers, it's a mess, needs clarifying -theo-vt
     std::string DocName;
     std::string FeatName;
@@ -901,11 +877,14 @@ protected:
     float hx {0.0f}, hy {0.0f}, hz {0.0f};
     SelectionChanges CurrentPreselection;
 
+    Gui::SelectionGate* ActiveGate {nullptr};
+    ResolveMode gateResolve;
 
     int logDisabled {0};
     bool logHasSelection {false};
     bool clarifySelectionActive {false};
 
+    SelectionStyle selectionStyle;
     std::deque<SelectionChanges> NotificationQueue;
     bool Notifying {false};
 };
