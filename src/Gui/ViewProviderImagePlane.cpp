@@ -371,9 +371,9 @@ void ViewProviderImagePlane::convertToSFImage(const QImage& img)
 void ViewProviderImagePlane::updateData(const App::Property* prop)
 {
     Image::ImagePlane* pcPlaneObj = static_cast<Image::ImagePlane*>(pcObject);
-    if (prop == &pcPlaneObj->XSize || prop == &pcPlaneObj->YSize ||
-        prop == &pcPlaneObj->CropLeft || prop == &pcPlaneObj->CropRight ||
-        prop == &pcPlaneObj->CropTop || prop == &pcPlaneObj->CropBottom) {
+    if (prop == &pcPlaneObj->XSize || prop == &pcPlaneObj->YSize || prop == &pcPlaneObj->CropLeft
+        || prop == &pcPlaneObj->CropRight || prop == &pcPlaneObj->CropTop
+        || prop == &pcPlaneObj->CropBottom) {
         float xsize = pcPlaneObj->XSize.getValue();
         float ysize = pcPlaneObj->YSize.getValue();
 
