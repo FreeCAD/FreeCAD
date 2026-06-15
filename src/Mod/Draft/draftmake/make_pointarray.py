@@ -158,4 +158,5 @@ def makePointArray(*args, **kwarg):
     utils.use_instead("make_point_array")
     return make_point_array(*args, **kwarg)
 
+
 ## @}
