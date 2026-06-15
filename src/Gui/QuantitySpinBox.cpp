@@ -469,7 +469,7 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
         return;
     }
 
-    if (!handleKeyEvent(event->text())) {
+    if (!handleKeyEvent(event)) {
         QAbstractSpinBox::keyPressEvent(event);
     }
 
@@ -710,7 +710,7 @@ void QuantitySpinBox::openFormulaDialog()
             setExpression(box->getExpression());
         }
         else if (box->discardedFormula()) {
-            setExpression(std::shared_ptr<Expression>());
+            removeExpression();
         }
 
         updateExpression();
@@ -724,6 +724,12 @@ void QuantitySpinBox::openFormulaDialog()
     Gui::adjustDialogPosition(box);
 
     Q_EMIT showFormulaDialog(true);
+}
+
+void QuantitySpinBox::removeExpression()
+{
+    setExpression(std::shared_ptr<Expression>());
+    selectNumber();
 }
 
 void QuantitySpinBox::handlePendingEmit(bool updateUnit /* = true */)
