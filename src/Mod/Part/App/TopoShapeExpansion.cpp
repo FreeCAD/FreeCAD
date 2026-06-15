@@ -37,6 +37,7 @@
 # include <BRepAdaptor_HCompCurve.hxx>
 #endif
 
+#include <BRepGProp.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
@@ -73,6 +74,7 @@
 #include <GeomConvert.hxx>
 #include <GeomFill_BezierCurves.hxx>
 #include <GeomFill_BSplineCurves.hxx>
+#include <GProp_GProps.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <ShapeBuild_ReShape.hxx>
@@ -137,6 +139,38 @@ static void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res)
     for (auto& s : shape.getSubTopoShapes()) {
         expandCompound(s, res);
     }
+}
+
+static bool isSamePlanarFaceWithDifferentBoundary(
+    const TopoShape& face,
+    const TopoShape& candidate,
+    double tol
+)
+{
+    // A sketch edit can split an edge of an otherwise unchanged planar cap. In that case the
+    // boundary topology differs, but the face plane, area, and center still identify the cap.
+    if (face.shapeType() != TopAbs_FACE || candidate.shapeType() != TopAbs_FACE) {
+        return false;
+    }
+    if (!face.isCoplanar(candidate, tol)) {
+        return false;
+    }
+
+    GProp_GProps faceProps;
+    GProp_GProps candidateProps;
+    BRepGProp::SurfaceProperties(face.getShape(), faceProps);
+    BRepGProp::SurfaceProperties(candidate.getShape(), candidateProps);
+
+    const double faceArea = faceProps.Mass();
+    const double candidateArea = candidateProps.Mass();
+    const double areaTolerance = std::max(tol, std::max(faceArea, candidateArea) * 1e-9);
+    if (std::abs(faceArea - candidateArea) > areaTolerance) {
+        return false;
+    }
+
+    const double centerTolerance = std::max(tol, Precision::Confusion());
+    return faceProps.CentreOfMass().SquareDistance(candidateProps.CentreOfMass())
+        <= centerTolerance * centerTolerance;
 }
 
 void TopoShape::initCache(int reset) const
@@ -565,12 +599,28 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
                     if (!shapeSet.insert(shape).second) {
                         continue;
                     }
+                    auto addPlanarFaceMatch = [&]() {
+                        if (shapeType != TopAbs_FACE) {
+                            return false;
+                        }
+                        if (!isSamePlanarFaceWithDifferentBoundary(subshape, shape, tol)) {
+                            return false;
+                        }
+                        if (names) {
+                            names->push_back(shapeName(shapeType) + std::to_string(idx));
+                        }
+                        res.push_back(shape);
+                        return true;
+                    };
                     TopoShape otherWire;
                     std::vector<TopoDS_Shape> otherVertices;
                     if (shapeType == TopAbs_FACE) {
                         otherWire = shape.splitWires();
                         if (wire.countSubShapes(TopAbs_EDGE)
                             != otherWire.countSubShapes(TopAbs_EDGE)) {
+                            if (addPlanarFaceMatch() && singleSearch) {
+                                return res;
+                            }
                             continue;
                         }
                         otherVertices = otherWire.getSubShapes(TopAbs_VERTEX);
@@ -579,6 +629,9 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
                         otherVertices = shape.getSubShapes(TopAbs_VERTEX);
                     }
                     if (otherVertices.size() != vertices.size()) {
+                        if (addPlanarFaceMatch() && singleSearch) {
+                            return res;
+                        }
                         continue;
                     }
                     if (checkGeometry && !compareGeometry(shape, false)) {
@@ -3784,6 +3837,51 @@ struct MapperPrism: MapperMaker
     }
 };
 
+struct MapperFinitePrism: MapperMaker
+{
+    BRepPrimAPI_MakePrism& prism;
+
+    explicit MapperFinitePrism(BRepPrimAPI_MakePrism& maker)
+        : MapperMaker(maker)
+        , prism(maker)
+    {}
+
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
+    {
+        MapperMaker::generated(s);
+
+        try {
+            // BRepPrimAPI_MakePrism exposes cap history separately from Generated().
+            // Include it so finite extrusions name top and bottom profiles directly.
+            appendGenerated(prism.FirstShape(s));
+            appendGenerated(prism.LastShape(s));
+        }
+        catch (const Standard_Failure& e) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Exception on prism shape mapper: " << e.GetMessageString());
+            }
+        }
+
+        return _res;
+    }
+
+private:
+    void appendGenerated(const TopoDS_Shape& shape) const
+    {
+        if (shape.IsNull()) {
+            return;
+        }
+
+        for (const auto& existing : _res) {
+            if (existing.IsSame(shape)) {
+                return;
+            }
+        }
+
+        _res.push_back(shape);
+    }
+};
+
 TopoShape& TopoShape::makeElementFilledFace(
     const std::vector<TopoShape>& _shapes,
     const BRepFillingParams& params,
@@ -4596,7 +4694,7 @@ TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec,
         FC_THROWM(NullShapeException, "Null shape");
     }
     BRepPrimAPI_MakePrism mkPrism(base.getShape(), vec);
-    return makeElementShape(mkPrism, base, op);
+    return makeShapeWithElementMap(mkPrism.Shape(), MapperFinitePrism(mkPrism), {base}, op);
 }
 
 TopoShape& TopoShape::makeElementPrismUntil(
