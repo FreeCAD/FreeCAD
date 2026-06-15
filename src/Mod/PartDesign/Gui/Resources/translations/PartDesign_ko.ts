@@ -230,7 +230,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Local Coordinate System</source>
-      <translation>로컬 좌표계</translation>
+      <translation>지역 좌표계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="284"/>

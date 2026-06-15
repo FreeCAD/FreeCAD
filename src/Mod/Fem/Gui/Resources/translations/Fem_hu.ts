@@ -8807,22 +8807,22 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
   <context>
     <name>FemToolsCcx</name>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="419"/>
+      <location filename="../../../femtools/ccxtools.py" line="421"/>
       <source>No or wrong CalculiX binary ccx</source>
       <translation>Hiányzó vagy hibás CalculiX xszámítás bináris fájl</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="453"/>
+      <location filename="../../../femtools/ccxtools.py" line="455"/>
       <source>FEM: wrong ccx binary</source>
       <translation>VEM: az xszámítás bináris érvénytelen</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="466"/>
+      <location filename="../../../femtools/ccxtools.py" line="468"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
       <translation>VEM: A CalculiX xszámítás '{}' bináris fájl nem található. Kérlek, állítsd be a CalculiX xszámítás bináris fájl elérési útját a VEM beállításoknál a CalculiX fülön.</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="478"/>
+      <location filename="../../../femtools/ccxtools.py" line="480"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
       <translation>VEM: A CalculiX xszámítás '{}' kimenete '{}' nem tartalmazza a várt kifejezést '{}'. Valami gond van a xszámítás futtatásakor. Nézd meg, hogy a xszámítás önállóan, FreeCAD nélkül le tud-e futni.</translation>
     </message>

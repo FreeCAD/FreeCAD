@@ -6483,7 +6483,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="29"/>
       <source>Text</source>
-      <translation>텍스트</translation>
+      <translation>글자</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="43"/>
@@ -8729,11 +8729,6 @@ using the given X/Y spacings</source>
       <translation>값</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
-      <source>Reapplies auto-fill to this field</source>
-      <translation>이 필드에 자동 채우기를 다시 적용합니다.</translation>
-    </message>
-    <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value</source>
       <translation>자동 채우기 대체 값</translation>
@@ -8742,6 +8737,11 @@ using the given X/Y spacings</source>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
       <translation>텍스트 레이블</translation>
+    </message>
+    <message>
+      <location filename="../../DlgTemplateField.ui" line="52"/>
+      <source>Applies autofill to this field</source>
+      <translation type="unfinished">Applies autofill to this field</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>

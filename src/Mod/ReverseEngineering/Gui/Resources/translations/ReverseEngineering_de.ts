@@ -237,7 +237,7 @@
       <translation>Positionierung</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="138"/>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
       <source>Fit B-spline</source>
       <translation>B-Spline einpassen</translation>
@@ -590,6 +590,26 @@
       <source>Reverse Engineering</source>
       <translation>Rückführung</translation>
     </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="36"/>
+      <source>&amp;Reverse Engineering</source>
+      <translation>&amp;Reverse-Engineering</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Surface Reconstruction</source>
+      <translation>Oberflächenwiederherstellung</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Segmentation</source>
+      <translation>Segmentierung</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Approximation</source>
+      <translation>Annäherung</translation>
+    </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineCurve</name>
@@ -620,8 +640,8 @@
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
-      <source>Iso-Parametric</source>
-      <translation>Iso-Parametrisch</translation>
+      <source>Equidistant</source>
+      <translation>Äquidistant</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -720,7 +740,7 @@
   <context>
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="89"/>
+      <location filename="../../FitBSplineCurve.cpp" line="103"/>
       <source>Input Error</source>
       <translation>Eingabefehler</translation>
     </message>

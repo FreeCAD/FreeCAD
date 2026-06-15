@@ -2183,11 +2183,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
       <location filename="../ui/dialogViews.ui" line="69"/>
-      <source>Level</source>
-      <translation>Kat</translation>
+      <source>Elevation</source>
+      <translation>Rakım</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="79"/>
+      <location filename="../ui/dialogViews.ui" line="84"/>
       <source>2D Views</source>
       <translation>2B Görünümler</translation>
     </message>
@@ -2256,6 +2256,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="175"/>
+      <location filename="../ui/dialogViews.ui" line="74"/>
       <source>Height</source>
       <translation>Yükseklik</translation>
     </message>
@@ -3800,7 +3801,7 @@ konumu: &lt;FreeCAD kurulum dizini&gt;/Resources/Mod/BIM/templates/webgl_export_
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="441"/>
-      <location filename="../../ArchCommands.py" line="1727"/>
+      <location filename="../../ArchCommands.py" line="1728"/>
       <location filename="../../bimcommands/BimProfile.py" line="83"/>
       <source>Category</source>
       <translation>Kategori</translation>
@@ -3817,7 +3818,7 @@ konumu: &lt;FreeCAD kurulum dizini&gt;/Resources/Mod/BIM/templates/webgl_export_
     <message>
       <location filename="../../ArchStructure.py" line="457"/>
       <location filename="../../ArchStructure.py" line="1585"/>
-      <location filename="../../ArchCommands.py" line="1360"/>
+      <location filename="../../ArchCommands.py" line="1361"/>
       <location filename="../../ArchWall.py" line="1857"/>
       <location filename="../../ArchCoveringGui.py" line="996"/>
       <location filename="../../ArchCoveringGui.py" line="1077"/>
@@ -4487,7 +4488,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation type="unfinished">Retrieves the selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1740"/>
+      <location filename="../../ArchSectionPlane.py" line="1781"/>
       <location filename="../../ArchAxis.py" line="985"/>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
@@ -4506,7 +4507,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>Ekle</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1507"/>
+      <location filename="../../ArchSectionPlane.py" line="1548"/>
       <location filename="../../ArchIFCView.py" line="63"/>
       <location filename="../../ArchAxis.py" line="830"/>
       <location filename="../../ArchMaterial.py" line="471"/>
@@ -4546,7 +4547,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>Isim</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1729"/>
+      <location filename="../../ArchCommands.py" line="1730"/>
       <location filename="../../ArchComponent.py" line="2538"/>
       <location filename="../../ArchWindow.py" line="1716"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
@@ -6148,7 +6149,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>İşlem</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1453"/>
+      <location filename="../../ArchCommands.py" line="1454"/>
       <location filename="../../ArchSchedule.py" line="936"/>
       <source>Export CSV File</source>
       <translation>Dışa aktar CSV Dosya</translation>
@@ -6160,17 +6161,17 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
     </message>
     <message>
       <location filename="../../ArchReport.py" line="888"/>
-      <location filename="../../ArchCommands.py" line="1359"/>
+      <location filename="../../ArchCommands.py" line="1360"/>
       <source>Description</source>
       <translation>Açıklama</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1496"/>
+      <location filename="../../ArchCommands.py" line="1497"/>
       <source>Object does not have settable IFC attributes</source>
       <translation>Nesnenin ayarlanabilir IFC öznitelikleri yok</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1730"/>
+      <location filename="../../ArchCommands.py" line="1731"/>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
       <location filename="../../ArchComponent.py" line="2539"/>
@@ -6179,7 +6180,7 @@ Yatay mesafe = 0 ise yatay mesafe, yüksekliğin göreli profille aynı olacağ�
       <translation>Değer</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1731"/>
+      <location filename="../../ArchCommands.py" line="1732"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1015"/>
       <source>Unit</source>
@@ -6620,97 +6621,97 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Kesit Düzlemi Oluştur</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1733"/>
+      <location filename="../../ArchSectionPlane.py" line="1774"/>
       <source>Scope</source>
       <translation>Kapsam</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1736"/>
+      <location filename="../../ArchSectionPlane.py" line="1777"/>
       <source>Placement and Visuals</source>
       <translation>Yerleşim ve Görseller</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1739"/>
+      <location filename="../../ArchSectionPlane.py" line="1780"/>
       <source>Objects seen by this section plane</source>
       <translation>Bu kesit düzleminin gördüğü nesneler</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1745"/>
+      <location filename="../../ArchSectionPlane.py" line="1786"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>Yukarıdaki listeden vurgulanan nesneleri kaldırır</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1746"/>
+      <location filename="../../ArchSectionPlane.py" line="1787"/>
       <source>Add Selected</source>
       <translation>Seçileni Ekle</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1751"/>
+      <location filename="../../ArchSectionPlane.py" line="1792"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>Seçili nesneleri bu kesit düzleminin kapsamına ekler</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1752"/>
+      <location filename="../../ArchSectionPlane.py" line="1793"/>
       <source>Cut View</source>
       <translation>Kesit görünümü</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1759"/>
+      <location filename="../../ArchSectionPlane.py" line="1800"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>3B görünümde canlı bir kesit oluşturur; modelinizin içini görebilmeniz için düzlemin bir tarafındaki geometrileri gizler</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1760"/>
+      <location filename="../../ArchSectionPlane.py" line="1801"/>
       <source>Rotate by 90°</source>
       <translation>90° döndür</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1764"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>Düzlemi yerel X ekseni etrafında döndürür</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1768"/>
+      <location filename="../../ArchSectionPlane.py" line="1809"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>Düzlemi yerel Y ekseni etrafında döndürür</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1772"/>
+      <location filename="../../ArchSectionPlane.py" line="1813"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>Düzlemi yerel Z ekseni etrafında döndürür</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1773"/>
+      <location filename="../../ArchSectionPlane.py" line="1814"/>
       <source>Resize to Fit</source>
       <translation>Sığdıracak şekilde yeniden boyutlandır</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1779"/>
+      <location filename="../../ArchSectionPlane.py" line="1820"/>
       <source>Recenter Plane</source>
       <translation>Düzlemi yeniden ortala</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1761"/>
+      <location filename="../../ArchSectionPlane.py" line="1802"/>
       <source>Rotate X</source>
       <translation>X ekseninde döndür</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1512"/>
+      <location filename="../../ArchSectionPlane.py" line="1553"/>
       <source>Toggle Cut View</source>
       <translation type="unfinished">Toggle Cut View</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1765"/>
+      <location filename="../../ArchSectionPlane.py" line="1806"/>
       <source>Rotate Y</source>
       <translation>Y ekseninde döndür</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1769"/>
+      <location filename="../../ArchSectionPlane.py" line="1810"/>
       <source>Rotate Z</source>
       <translation>Z ekseninde döndür</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1819"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Düzlemi, yukarıdaki listedeki nesnelere sığacak şekilde yeniden boyutlandırır</translation>
     </message>
@@ -6722,7 +6723,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Ortala</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1784"/>
+      <location filename="../../ArchSectionPlane.py" line="1825"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Düzlemi yukarıdaki listedeki nesnelerin üzerine ortalar</translation>
     </message>
@@ -6928,12 +6929,12 @@ oluşturma iptal edildi.</translation>
       <translation>Geçersiz kesit düzlemi</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="823"/>
+      <location filename="../../ArchCommands.py" line="824"/>
       <source>is not closed</source>
       <translation>kapalı değil</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="825"/>
+      <location filename="../../ArchCommands.py" line="826"/>
       <source>is not valid</source>
       <translation>geçerli değil</translation>
     </message>
@@ -6948,78 +6949,78 @@ oluşturma iptal edildi.</translation>
       <translation>{0}, {1} ile eşlendi; döngüsel bağımlılığı önlemek için ilkinin "Bağlama Desteği" kaldırılıyor.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="827"/>
+      <location filename="../../ArchCommands.py" line="828"/>
       <source>does not contain any solid</source>
       <translation>hiçbir katı gövde içermiyor</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="833"/>
+      <location filename="../../ArchCommands.py" line="834"/>
       <source>contains a non-closed solid</source>
       <translation>Kapalı olmayan bir katı içerir</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="837"/>
+      <location filename="../../ArchCommands.py" line="838"/>
       <source>contains faces that are not part of any solid</source>
       <translation>Herhangi bir katının parçası olmayan yüzeyler içerir</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1351"/>
+      <location filename="../../ArchCommands.py" line="1352"/>
       <source>Survey</source>
       <translation>Anket</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1353"/>
+      <location filename="../../ArchCommands.py" line="1354"/>
       <source>Clear</source>
       <translation>Temizle</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1356"/>
+      <location filename="../../ArchCommands.py" line="1357"/>
       <source>Export CSV</source>
       <translation>Dışa aktar CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1361"/>
+      <location filename="../../ArchCommands.py" line="1362"/>
       <source>Area</source>
       <translation>Alan</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1408"/>
+      <location filename="../../ArchCommands.py" line="1409"/>
       <source>Total</source>
       <translation>Toplam</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1743"/>
+      <location filename="../../ArchCommands.py" line="1744"/>
       <source>The object does not have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>Nesnede IfcProperties özniteliği yok. Şu nesne için elektronik tablo oluşturma iptal ediliyor:</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1958"/>
+      <location filename="../../ArchCommands.py" line="1959"/>
       <source>No closed wires found.</source>
       <translation type="unfinished">No closed wires found.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1504"/>
+      <location filename="../../ArchCommands.py" line="1505"/>
       <source>Disabling B-rep force flag of object</source>
       <translation>Nesnenin BREP zorlama işareti devre dışı bırakılıyor</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1352"/>
+      <location filename="../../ArchCommands.py" line="1353"/>
       <source>Set Description</source>
       <translation>Açıklama ayarla</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1354"/>
+      <location filename="../../ArchCommands.py" line="1355"/>
       <source>Copy Total Length</source>
       <translation>Toplam uzunluğu kopyala</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1355"/>
+      <location filename="../../ArchCommands.py" line="1356"/>
       <source>Copy Total Area</source>
       <translation>Toplam alanı kopyala</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1512"/>
-      <location filename="../../ArchCommands.py" line="1519"/>
+      <location filename="../../ArchCommands.py" line="1513"/>
+      <location filename="../../ArchCommands.py" line="1520"/>
       <source>Enabling B-rep force flag of object</source>
       <translation>Nesnenin BREP zorlama işareti etkinleştiriliyor</translation>
     </message>
@@ -7086,7 +7087,7 @@ oluşturma iptal edildi.</translation>
       <translation>Bileşen Oluştur</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1728"/>
+      <location filename="../../ArchCommands.py" line="1729"/>
       <source>Key</source>
       <translation>Anahtar</translation>
     </message>
@@ -7168,8 +7169,8 @@ oluşturma iptal edildi.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="679"/>
-      <source>BorderSetback is too large and collapses the face. Setback ignored.</source>
-      <translation type="unfinished">BorderSetback is too large and collapses the face. Setback ignored.</translation>
+      <source>Border setback is too large and collapses the face. Setback ignored.</source>
+      <translation type="unfinished">Border setback is too large and collapses the face. Setback ignored.</translation>
     </message>
     <message>
       <location filename="../../ArchCovering.py" line="719"/>
@@ -7517,7 +7518,7 @@ oluşturma iptal edildi.</translation>
       <translation>Bu bileşen için isteğe bağlı etiket</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="963"/>
+      <location filename="../../ArchSectionPlane.py" line="1004"/>
       <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>Bu nesnenin şekli</translation>
@@ -7538,7 +7539,7 @@ oluşturma iptal edildi.</translation>
       <translation>Malzeme adlarını, bu nesneye diğer dosyalardan referans verilirken kullanılacak katı indeksleriyle ilişkilendiren MaterialName:SolidIndexesList eşlemesi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1135"/>
+      <location filename="../../ArchSectionPlane.py" line="1176"/>
       <location filename="../../ArchBuildingPart.py" line="547"/>
       <source>The line width of this object</source>
       <translation>Bu nesne için çizgi genişlik</translation>
@@ -9092,7 +9093,7 @@ oluşturma iptal edildi.</translation>
       <translation>Doğruysa, sonuçlara her bir nesne için ek satırlar eklenir</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="955"/>
+      <location filename="../../ArchSectionPlane.py" line="996"/>
       <location filename="../../ArchFloor.py" line="253"/>
       <source>The placement of this object</source>
       <translation>Bu nesnenin yerleşimi</translation>
@@ -9314,79 +9315,79 @@ oluşturma iptal edildi.</translation>
       <translation>Donatı şekli</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="974"/>
+      <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Bu kesit düzleminin dikkate alacağı nesneler. Boş bırakılırsa tüm belgeyi kapsar.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="985"/>
+      <location filename="../../ArchSectionPlane.py" line="1026"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Yanlışsa, katı olmayanlar da kesilir; hatalı sonuçlar oluşabilir</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="997"/>
+      <location filename="../../ArchSectionPlane.py" line="1038"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Doğruysa, oluşturulan görünümler kesit düzlemi alanına göre kırpılır</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1008"/>
+      <location filename="../../ArchSectionPlane.py" line="1049"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Doğruysa, nesnelerin malzeme rengi kesit alanlarını doldurmak için kullanılır</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1020"/>
+      <location filename="../../ArchSectionPlane.py" line="1061"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Bu değerden daha uzaktaki geometri kırpılır. Sınırsız için 0 bırakın.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1093"/>
+      <location filename="../../ArchSectionPlane.py" line="1134"/>
       <source>The display length of this section plane</source>
       <translation>Bu kesit düzleminin görüntüleme uzunluğu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1105"/>
+      <location filename="../../ArchSectionPlane.py" line="1146"/>
       <source>The display height of this section plane</source>
       <translation>Bu kesit düzleminin görüntüleme yüksekliği</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1117"/>
+      <location filename="../../ArchSectionPlane.py" line="1158"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Bu kesit düzleminin ok boyutu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1126"/>
+      <location filename="../../ArchSectionPlane.py" line="1167"/>
       <source>The transparency of this object</source>
       <translation>Bu nesnenin saydamlığı</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1144"/>
-      <location filename="../../ArchSectionPlane.py" line="1161"/>
+      <location filename="../../ArchSectionPlane.py" line="1185"/>
+      <location filename="../../ArchSectionPlane.py" line="1202"/>
       <source>Show the cut in the 3D view</source>
       <translation>3B görünümde kesiti göster</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1152"/>
+      <location filename="../../ArchSectionPlane.py" line="1193"/>
       <source>The color of this object</source>
       <translation>Bu nesne için renk</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1172"/>
+      <location filename="../../ArchSectionPlane.py" line="1213"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Kesit düzlemi ile gerçek görünüş kesiti arasındaki mesafe (çok küçük tutun, ama sıfır olmasın)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1181"/>
+      <location filename="../../ArchSectionPlane.py" line="1222"/>
       <source>Show the label in the 3D view</source>
       <translation>3B görünümde etiketi göster</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1189"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
       <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>Yazı tipinin adı</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1198"/>
+      <location filename="../../ArchSectionPlane.py" line="1239"/>
       <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>Metin yazı tipi boyutu</translation>
@@ -11556,17 +11557,12 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>İzolasyon</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="120"/>
-      <source>Creates a new level</source>
-      <translation>Oluşturur yeni kat</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="123"/>
+      <location filename="../../bimcommands/BimViews.py" line="125"/>
       <source>Creates a new working plane proxy</source>
       <translation>Yeni bir çalışma düzlemi vekili oluşturur</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="124"/>
+      <location filename="../../bimcommands/BimViews.py" line="126"/>
       <source>Deletes the selected item</source>
       <translation>Seçili öğeyi siler</translation>
     </message>
@@ -11577,8 +11573,8 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="90"/>
-      <source>New Level</source>
-      <translation>Yeni Kat</translation>
+      <source>New Level Above</source>
+      <translation type="unfinished">New Level Above</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="91"/>
@@ -11596,42 +11592,47 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Görünüm Konumunu Kaydet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="127"/>
+      <location filename="../../bimcommands/BimViews.py" line="122"/>
+      <source>Creates a new level above the highest existing one</source>
+      <translation type="unfinished">Creates a new level above the highest existing one</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="129"/>
       <source>Toggles the visibility of selected items</source>
       <translation>Seçili öğelerin görünürlüğünü açar/kapatır</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="130"/>
+      <location filename="../../bimcommands/BimViews.py" line="132"/>
       <source>Turns all items off except the selected ones</source>
       <translation>Seçilenler dışındaki tüm öğeleri kapatır</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="133"/>
+      <location filename="../../bimcommands/BimViews.py" line="135"/>
       <source>Saves the current camera position to the selected items</source>
       <translation>Geçerli kamera konumunu seçili öğelere kaydeder</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="134"/>
+      <location filename="../../bimcommands/BimViews.py" line="136"/>
       <source>Renames the selected item</source>
       <translation>Seçili öğeyi yeniden adlandırır</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="135"/>
+      <location filename="../../bimcommands/BimViews.py" line="137"/>
       <source>Activates the selected item</source>
       <translation>Seçili öğeyi etkinleştirir</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="161"/>
+      <location filename="../../bimcommands/BimViews.py" line="163"/>
       <source>BIM Views Manager</source>
       <translation type="unfinished">BIM Views Manager</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="309"/>
+      <location filename="../../bimcommands/BimViews.py" line="311"/>
       <source>2D Views</source>
       <translation>2B Görünümler</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="322"/>
+      <location filename="../../bimcommands/BimViews.py" line="324"/>
       <source>Sheets</source>
       <translation>Sayfalar</translation>
     </message>
@@ -11761,12 +11762,12 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Kesim çizgileri</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="376"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="377"/>
       <source>Removing property</source>
       <translation>Özellik kaldırılıyor</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_psets.py" line="381"/>
+      <location filename="../../nativeifc/ifc_psets.py" line="382"/>
       <source>Removing property set</source>
       <translation>Özellik seti kaldırılıyor</translation>
     </message>
