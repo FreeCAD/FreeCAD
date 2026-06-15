@@ -6,7 +6,6 @@ file(GLOB Agent_Binaries CONFIGURE_DEPENDS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 SET(Agent_SRCS
-    __init__.py
     Init.py
     InitGui.py
     agent_config.py
