@@ -6,6 +6,7 @@
 # You can find the full license text in the LICENSE file in the root directory.
 
 import os
+import traceback
 import FreeCAD
 import Arch
 import ArchCovering
@@ -564,6 +565,8 @@ if FreeCAD.GuiUp:
         def __init__(self, command=None, obj=None, selection=None):
             self.command = command
             self.obj_to_edit = obj
+            self.is_creation_mode = obj is None
+            self.created_objs = None
             self.template = _CoveringTemplate()
             self.selected_obj = None
             self.selected_sub = None
@@ -1627,7 +1630,57 @@ if FreeCAD.GuiUp:
                 QtCore.QTimer.singleShot(0, FreeCADGui.HintManager.hide)
 
         def getStandardButtons(self):
-            return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+            return (
+                QtGui.QDialogButtonBox.Ok
+                | QtGui.QDialogButtonBox.Cancel
+                | QtGui.QDialogButtonBox.Apply
+            )
+
+        def clicked(self, button):
+            if button == QtGui.QDialogButtonBox.Apply:
+                self.apply()
+
+        def _do_apply(self):
+            self._sync_ui_to_target()
+
+            if self.is_creation_mode and not self.obj_to_edit:
+                targets = self.selection_list
+                if not targets and self.selected_obj:
+                    targets = (
+                        [(self.selected_obj, [self.selected_sub])]
+                        if self.selected_sub
+                        else [self.selected_obj]
+                    )
+
+                self.created_objs = []
+                if targets:
+                    for base in targets:
+                        new_obj = Arch.makeCovering(base)
+                        self.template.apply_to(new_obj)
+                        self.created_objs.append(new_obj)
+
+                if self.created_objs:
+                    self.obj_to_edit = self.created_objs[0]
+                    self.chk_continue.hide()
+            elif self.created_objs is not None:
+                for obj in self.created_objs:
+                    self.template.apply_to(obj)
+            else:
+                self.template.apply_to(self.obj_to_edit)
+
+            self._save_user_preferences()
+
+        def apply(self):
+            """Applies changes without closing the task panel."""
+            try:
+                QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+                self._do_apply()
+                FreeCAD.ActiveDocument.recompute()
+            except Exception as e:
+                FreeCAD.Console.PrintError(f"Error applying covering: {e}\n")
+                traceback.print_exc()
+            finally:
+                QtGui.QApplication.restoreOverrideCursor()
 
         def _unregister_observer(self, _val=None):
             """Safely remove self from selection observers."""
@@ -1725,32 +1778,19 @@ if FreeCAD.GuiUp:
             See the class docstring for the transaction model.
             """
             try:
-                self._sync_ui_to_target()
-
+                QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
                 doc = FreeCAD.ActiveDocument
 
-                if not self.obj_to_edit:
-                    targets = self.selection_list
-                    if not targets and self.selected_obj:
-                        targets = (
-                            [(self.selected_obj, [self.selected_sub])]
-                            if self.selected_sub
-                            else [self.selected_obj]
-                        )
+                self._do_apply()
 
-                    if targets:
-                        for base in targets:
-                            new_obj = Arch.makeCovering(base)
-                            self.template.apply_to(new_obj)
+                # Remove the buffer inside the open transaction so the create and delete records
+                # cancel out.
+                doc.removeObject(self.template.buffer.Name)
+                self.template.destroy()
 
-                    self._save_user_preferences()
+                doc.recompute()
 
-                    # Remove the buffer inside the open transaction so the create and delete records
-                    # cancel out.
-                    doc.removeObject(self.template.buffer.Name)
-                    self.template.destroy()
-
-                    doc.recompute()
+                if self.is_creation_mode:
                     doc.commitTransaction()
 
                     if self.chk_continue.isChecked():
@@ -1763,21 +1803,20 @@ if FreeCAD.GuiUp:
                         self.selected_sub = None
                         self._updateSelectionUI()
                         self.setPicking(True)
+                        self.is_creation_mode = True
+                        self.obj_to_edit = None
+                        self.chk_continue.show()
                         return False
-
-                else:
-                    self.template.apply_to(self.obj_to_edit)
-                    self._save_user_preferences()
-                    doc.removeObject(self.template.buffer.Name)
-                    self.template.destroy()
-                    doc.recompute()
+                # else: edit mode — transaction committed by resetEdit() in _cleanup_and_close()
 
             except Exception as e:
-                FreeCAD.ActiveDocument.abortTransaction()
-                import traceback
-
+                doc = FreeCAD.ActiveDocument
+                if doc:
+                    doc.abortTransaction()
                 traceback.print_exc()
                 FreeCAD.Console.PrintError(f"Error updating covering: {e}\n")
+            finally:
+                QtGui.QApplication.restoreOverrideCursor()
 
             self._cleanup_and_close()
             return True
@@ -1813,7 +1852,7 @@ if FreeCAD.GuiUp:
             if self.template:
                 self.template.destroy()
                 self.template = None
-            if self.obj_to_edit:
+            if self.obj_to_edit and not self.is_creation_mode:
                 FreeCADGui.ActiveDocument.resetEdit()
             # FreeCAD's task panel infrastructure orphans (unparents) the form widgets on close
             # rather than deleting them. Schedule deletion now so Qt destroys them while the event
@@ -1844,6 +1883,8 @@ class _CoveringTemplate:
 
     def __init__(self, name="CoveringTemplate"):
         self.buffer = Arch.makeCovering(name=name)
+
+        self.buffer.Proxy._is_template = True
 
         if self.buffer.ViewObject:
             self.buffer.ViewObject.ShowInTree = False
