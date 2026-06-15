@@ -27,12 +27,15 @@
 #include "TaskView/TaskView.h"
 #include "ViewProviderDragger.h"
 
+#include <Inventor/nodes/SoSeparator.h>
+
 #include <Base/ServiceProvider.h>
 
 #include <App/Application.h>
 #include <App/Services.h>
 
 class SoDragger;
+class SoTransform;
 
 namespace Gui
 {
@@ -52,7 +55,8 @@ public:
     {
         None,
         SelectTransformOrigin,
-        SelectAlignTarget
+        SelectAlignTarget,
+        SelectCustomCS
     };
     enum class PlacementMode
     {
@@ -63,7 +67,8 @@ public:
     enum class PositionMode
     {
         Local,
-        Global
+        Global,
+        Custom
     };
 
     struct CoordinateSystem
@@ -94,6 +99,7 @@ private Q_SLOTS:
     void onPlacementModeChange(int index);
 
     void onPickTransformOrigin();
+    void onPickCoordinateSystemReference();
     void onTransformOriginReset();
     void onAlignRotationChanged();
 
@@ -115,6 +121,7 @@ private:
 
     CoordinateSystem globalCoordinateSystem() const;
     CoordinateSystem localCoordinateSystem() const;
+    CoordinateSystem customCoordinateSystem() const;
     CoordinateSystem currentCoordinateSystem() const;
 
     Base::Rotation::EulerSequence eulerSequence() const;
@@ -144,12 +151,18 @@ private:
 
     bool isDraggerAlignedToCoordinateSystem() const;
 
+    void showCoordinateSystemIndicator();
+    void hideCoordinateSystemIndicator();
+    void updateCoordinateSystemIndicator();
+
     ViewProviderDragger* vp;
 
     const App::SubObjectPlacementProvider* subObjectPlacementProvider;
     const App::CenterOfMassProvider* centerOfMassProvider;
 
     CoinPtr<SoTransformDragger> dragger;
+    CoinPtr<SoSeparator> csIndicatorRoot;
+    SoTransform* csIndicatorTransform {nullptr};
 
     Ui_TaskTransformDialog* ui;
 
@@ -158,6 +171,7 @@ private:
     PositionMode positionMode {PositionMode::Local};
 
     std::optional<Base::Placement> customTransformOrigin {};
+    std::optional<Base::Placement> customCoordinateSystemPlacement {};
     Base::Placement referencePlacement {};
     Base::Placement globalOrigin {};
     Base::Rotation referenceRotation {};

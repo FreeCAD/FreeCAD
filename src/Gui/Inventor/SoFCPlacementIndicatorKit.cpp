@@ -68,6 +68,9 @@ SoFCPlacementIndicatorKit::SoFCPlacementIndicatorKit()
     SO_NODE_ADD_FIELD(axisLength, (axisLengthDefault));
     SO_NODE_ADD_FIELD(parts, (AxisCross));
     SO_NODE_ADD_FIELD(axes, (AllAxes));
+    SO_NODE_ADD_FIELD(axisLabels, ("X"));
+    axisLabels.set1Value(1, "Y");
+    axisLabels.set1Value(2, "Z");
 
     SO_NODE_DEFINE_ENUM_VALUE(Part, Axes);
     SO_NODE_DEFINE_ENUM_VALUE(Part, ArrowHeads);
@@ -99,7 +102,7 @@ void SoFCPlacementIndicatorKit::notify(SoNotList* l)
 {
     SoField* field = l->getLastField();
 
-    if (field == &parts || field == &axes || field == &axisLength) {
+    if (field == &parts || field == &axes || field == &axisLength || field == &axisLabels) {
         // certainly this is not the fastest way to recompute the geometry as it does recreate
         // everything from the scratch. It is however very easy to implement and this node should
         // not really change too often so the performance penalty is better than making code that
@@ -245,25 +248,38 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
 
     auto sep = new SoSeparator;
 
+    auto labelAt = [&](int i, const char* fallback) -> const char* {
+        return axisLabels.getNum() > i ? axisLabels[i].getString() : fallback;
+    };
+
     if (axes.getValue() & X) {
-        sep->addChild(
-            createAxis("X", Base::Vector3d::UnitX, ViewParams::instance()->getAxisXColor(), xyOffset)
-        );
+        sep->addChild(createAxis(
+            labelAt(0, "X"),
+            Base::Vector3d::UnitX,
+            ViewParams::instance()->getAxisXColor(),
+            xyOffset
+        ));
     }
 
     if (axes.getValue() & Y) {
-        sep->addChild(
-            createAxis("Y", Base::Vector3d::UnitY, ViewParams::instance()->getAxisYColor(), xyOffset)
-        );
+        sep->addChild(createAxis(
+            labelAt(1, "Y"),
+            Base::Vector3d::UnitY,
+            ViewParams::instance()->getAxisYColor(),
+            xyOffset
+        ));
     }
 
     if (axes.getValue() & Z) {
         double zOffset = (parts.getValue() & PlaneIndicator) ? planeIndicatorMargin
                                                              : axisMargin + additionalAxisMargin;
 
-        sep->addChild(
-            createAxis("Z", Base::Vector3d::UnitZ, ViewParams::instance()->getAxisZColor(), zOffset)
-        );
+        sep->addChild(createAxis(
+            labelAt(2, "Z"),
+            Base::Vector3d::UnitZ,
+            ViewParams::instance()->getAxisZColor(),
+            zOffset
+        ));
     }
 
     return sep;
