@@ -4,7 +4,7 @@ version = "1.2.0"
 description = "pixi instructions for Parashell"
 authors = ["parashell <ops@parashell.cloud>"]
 channels = ["conda-forge"]
-platforms = [ "linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64" ]
+platforms = [ "linux-64", "linux-aarch64", "osx-arm64", "win-64" ]
 requires-pixi = ">=0.48"
 
 [dependencies]
@@ -20,7 +20,7 @@ debugpy = "*"
 defusedxml = "*"
 docutils = "*"
 doxygen = "*"
-eigen = ">=3.3,<5"
+eigen = ">=3.3,<6"
 fmt = "*"
 freetype = "*"
 git = "*"
@@ -38,7 +38,7 @@ nine = "*"
 ninja = "*"
 noqt5 = "*"
 numpy = ">=1.26,<1.27"
-occt = ">=7.8,<7.9"
+occt = ">=7.9,<8.0"
 opencamlib = "*"
 opencv = "*"
 openssl = "*"
@@ -52,17 +52,18 @@ pre-commit = "*"
 pyright = "==1.1.408"
 pybind11 = "*"
 pycollada = "*"
+pyside6 = ">=6.11,<6.12"
 python = ">=3.11,<3.12"
 pythonocc-core = "*"
 pyyaml = "*"
-qt6-main = ">=6.8,<6.9"
+qt6-main = ">=6.11,<6.12"
 requests = "*"
 scipy = "*"
 six = "*"
 smesh = "*"
 swig = "*"
 sympy = "*"
-tbb-devel = ">=2022,<2023"
+tbb-devel = ">=2022"
 validators = ">=0.35,<1.0"
 vtk = "*"
 xerces-c = "*"
@@ -101,7 +102,8 @@ mesa-libgl-cos7-x86_64 = "*"
 mesa-libgl-devel-cos7-x86_64 = "*"
 mold = "*"
 pixman-cos7-x86_64 = "*"
-qt6-wayland = ">=6.8,<6.9"
+qt6-wayland = ">=6.11,<6.12"
+qt6-webengine = ">=6.11,<6.12"
 sed = "*"
 sysroot_linux-64 = "*"
 xorg-x11-server-common-cos7-x86_64 = "*"
@@ -112,7 +114,6 @@ xorg-xproto = "*"
 [target.linux-aarch64.dependencies]
 clang = "*"
 clangxx = "*"
-pyside6 = "*"
 kernel-headers_linux-aarch64 = "*"
 libdrm-cos7-aarch64 = "*"
 libglvnd-cos7-aarch64 = "*"
@@ -141,39 +142,26 @@ mesa-libgl-devel-cos7-aarch64 = "*"
 mesa-libglapi-cos7-aarch64 = "*"
 mold = "*"
 pixman-cos7-aarch64 = "*"
-qt6-wayland = ">=6.8,<6.9"
+qt6-wayland = ">=6.11,<6.12"
+qt6-webengine = ">=6.11,<6.12"
 sed = "*"
 sysroot_linux-aarch64 = "*"
 xorg-x11-server-common-cos7-aarch64 = "*"
 xorg-x11-server-xvfb-cos7-aarch64 = "*"
 xorg-xproto = "*"
 
-## macOS Dependencies (Intel)
-[target.osx-64.dependencies]
-sed = "*"
-
 ## macOS Dependencies (Apple Silicon)
 [target.osx-arm64.dependencies]
+qt6-webengine = ">=6.11,<6.12"
 sed = "*"
 
 [target.win-64.dependencies]
 libwinpthread = "*"
 winpthreads-devel = "*"
+qt6-webengine = ">=6.11,<6.12"
 
 [pypi-dependencies]
 freecad-stubs = "*"
-
-[target.linux-64.pypi-dependencies]
-pyside6 = "==6.8.3"
-
-[target.osx-64.pypi-dependencies]
-pyside6 = "==6.8.3"
-
-[target.osx-arm64.pypi-dependencies]
-pyside6 = "==6.8.3"
-
-[target.win-64.pypi-dependencies]
-pyside6 = "==6.8.3"
 
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]
@@ -183,10 +171,6 @@ configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depe
 [target.linux-aarch64.tasks]
 configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-
-[target.osx-64.tasks]
-configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.osx-arm64.tasks]
 configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug", "{{ extra_args }}" ], args = [{ "arg" = "extra_args", "default" = "" }], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}

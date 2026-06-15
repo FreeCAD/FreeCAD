@@ -21,7 +21,7 @@ requirements:
     - ninja
     - noqt5
     - python>=3.11,<3.12
-    - qt6-main>=6.8,<6.9
+    - qt6-main>=6.11,<6.12
     - swig>=4.3,<4.4
 
     - if: linux and x86_64
@@ -90,17 +90,13 @@ requirements:
         - xorg-x11-server-xvfb-cos7-aarch64
         - xorg-xproto
 
-    - if: osx and x86_64
-      then:
-        - __osx >=10.13
-
     - if: build_platform != target_platform
       then:
         - cross-python_${{ target_platform }}
 
   host:
     - coin3d ==4.0.3
-    - eigen >=3.3,<5
+    - eigen >=3.3,<6
     - fmt
     - freetype
     - hdf5
@@ -109,14 +105,14 @@ requirements:
     - matplotlib-base
     - noqt5
     - numpy>=1.26,<2
-    - occt>=7.8,<7.9
+    - occt>=7.9,<8.0
     - pcl
     - pivy
     - ply
     - pybind11
     - pyside6
     - python>=3.11,<3.12
-    - qt6-main>=6.8,<6.9
+    - qt6-main>=6.11,<6.12
     - six
     - smesh
     - vtk
@@ -155,7 +151,7 @@ requirements:
     - nine
     - noqt5
     - numpy>=1.26,<2
-    - occt>=7.8,<7.9
+    - occt>=7.9,<8.0
     - olefile
     - opencamlib
     - opencv
@@ -169,7 +165,7 @@ requirements:
     - python>=3.11,<3.12
     - pythonocc-core
     - pyyaml
-    - qt6-main>=6.8,<6.9
+    - qt6-main>=6.11,<6.12
     - requests
     - scipy
     - sympy
@@ -182,4 +178,13 @@ requirements:
       then:
         - libspnav
         - qt6-wayland
+        - qt6-webengine>=6.11,<6.12
         - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+
+    - if: win
+      then:
+        - qt6-webengine>=6.11,<6.12
+
+    - if: osx and arm64
+      then:
+        - qt6-webengine>=6.11,<6.12
