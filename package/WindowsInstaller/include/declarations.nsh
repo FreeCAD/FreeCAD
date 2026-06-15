@@ -73,6 +73,7 @@ Var AppSuff
 Var CreateDesktopIcon
 Var CreateFileAssociations
 Var OldVersionNumber
+Var OriginalCmdInstDir
 Var Pointer
 Var Search
 Var StartmenuFolder
