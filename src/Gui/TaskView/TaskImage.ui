@@ -238,7 +238,7 @@
         </property>
        </widget>
       </item>
-	  <item row="3" column="0" colspan="2">
+      <item row="3" column="0" colspan="2">
        <widget class="QPushButton" name="pushButtonScale">
         <property name="toolTip">
          <string>Scales the image interactively by setting a length between two points of the image</string>
@@ -248,25 +248,42 @@
         </property>
        </widget>
       </item>
-	  <item row="4" column="0" colspan="2">
-	   <widget class="QGroupBox" name="groupBoxCalibration">
+      <item row="4" column="0" colspan="2">
+       <widget class="QGroupBox" name="groupBoxCalibration">
         <property name="title">
          <string>Calibration</string>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
+        <layout class="QVBoxLayout" name="calibrationLayout">
          <item>
-          <widget class="QPushButton" name="pushButtonApply">
+          <widget class="QCheckBox" name="checkBoxOrient">
            <property name="text">
-            <string>Apply</string>
+            <string>Snap rotation to line</string>
+           </property>
+           <property name="toolTip">
+            <string>Rotate the image to align the drawn line to the nearest 45 degree angle</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButtonCancel">
-           <property name="text">
-            <string>Cancel</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="buttonLayout">
+           <item>
+            <widget class="QPushButton" name="pushButtonApply">
+             <property name="text">
+              <string>Apply</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonCancel">
+             <property name="text">
+              <string>Cancel</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
