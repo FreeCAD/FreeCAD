@@ -37,7 +37,10 @@ set(Assembly_Scripts
 )
 
 if(BUILD_GUI)
-    list (APPEND Assembly_Scripts InitGui.py)
+    list (APPEND Assembly_Scripts
+          InitGui.py
+          TestAssemblyGui.py
+    )
 endif(BUILD_GUI)
 
 INSTALL(
