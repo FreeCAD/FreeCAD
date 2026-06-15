@@ -2075,7 +2075,7 @@ def makeWindow(
     from draftutils import todo
 
     if baseobj and Draft.getType(baseobj) == "Window" and FreeCAD.ActiveDocument:
-        window = Draft.clone(baseobj)
+        window = Draft.make_clone(baseobj)
         return window
 
     window = _initializeArchObject(
