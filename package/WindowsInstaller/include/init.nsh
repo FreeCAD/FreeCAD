@@ -27,6 +27,10 @@ FunctionEnd
 # MultiUser custom method
 
 Function PostMultiUserPageInit
+  # restore command line install directory
+  ${if} $OriginalCmdInstDir != ""
+    StrCpy $INSTDIR $OriginalCmdInstDir
+  ${endif}
   # check if this FreeCAD version is already installed
   ReadRegStr $0 SHCTX "${APP_UNINST_KEY}" "UninstallString"
   ${if} $0 != ""
@@ -106,7 +110,8 @@ SectionEnd
 # .onInit must be here after the section definition because we have to set
 # the selection states of the dictionary sections
 Function .onInit
-
+  # save INSTDIR specified with /D for later
+  StrCpy $OriginalCmdInstDir $INSTDIR
   # qt6.8 has windows 10 1809 as minimum version, which is build 17763
   # build number details at https://learn.microsoft.com/en-us/windows/release-health/release-information
   ${ifnot} ${AtLeastWin10}
