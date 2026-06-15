@@ -65,7 +65,6 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTexture2.h>
-#include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec4f.h>
@@ -141,72 +140,65 @@ constexpr int cubeFaceIndex(SoNaviCube::PickId id)
     return -1;
 }
 
-SoSeparator* depthClearScene()
+/** Restores the OpenGL state touched while clearing the NaviCube overlay depth. */
+class ScopedDepthClearState
 {
-    static SoSeparator* root = nullptr;
-    if (root) {
-        return root;
-    }
-
-    root = new SoSeparator;
-    root->ref();
-
-    // Ensure the quad is drawn with blending enabled and without relying on any inherited
-    // backface-culling assumptions. The quad uses alpha=0, so with blending it won't touch the
-    // color buffer while still writing depth.
+public:
+    ScopedDepthClearState()
     {
-        auto* transparency = new SoTransparencyType;
-        transparency->value = SoTransparencyType::BLEND;
-        root->addChild(transparency);
-
-        auto* hints = new SoShapeHints;
-        hints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
-        hints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
-        hints->faceType = SoShapeHints::UNKNOWN_FACE_TYPE;
-        root->addChild(hints);
+        scissorEnabled = glIsEnabled(GL_SCISSOR_TEST);
+        glGetIntegerv(GL_SCISSOR_BOX, scissorBox);
+        glGetBooleanv(GL_DEPTH_WRITEMASK, &depthWriteMask);
+        glGetDoublev(GL_DEPTH_CLEAR_VALUE, &clearDepth);
     }
 
-    // Use a dedicated camera so the caller doesn't need to manually override projection/view
-    // matrices. The quad is placed on the far plane so it writes depth=1.0 everywhere.
+    ScopedDepthClearState(const ScopedDepthClearState&) = delete;
+    ScopedDepthClearState& operator=(const ScopedDepthClearState&) = delete;
+
+    ~ScopedDepthClearState() noexcept
     {
-        auto* cam = new SoOrthographicCamera;
-        using Mapping = SoCamera::ViewportMapping;
-        cam->viewportMapping = Mapping::LEAVE_ALONE;
-        cam->aspectRatio = 1.0F;
-        cam->position = SbVec3f(0.0F, 0.0F, 0.0F);
-        cam->orientation = SbRotation();
-        cam->nearDistance = 0.0F;
-        cam->farDistance = 1.0F;
-        cam->focalDistance = 1.0F;
-        cam->height = 2.0F;
-        root->addChild(cam);
+        glScissor(
+            scissorBox[0],
+            scissorBox[1],
+            static_cast<GLsizei>(scissorBox[2]),
+            static_cast<GLsizei>(scissorBox[3])
+        );
+        if (scissorEnabled == GL_TRUE) {
+            glEnable(GL_SCISSOR_TEST);
+        }
+        else {
+            glDisable(GL_SCISSOR_TEST);
+        }
+        glDepthMask(depthWriteMask);
+        glClearDepth(clearDepth);
     }
 
-    auto* depth = new SoDepthBuffer;
-    depth->test = TRUE;
-    depth->write = TRUE;
-    depth->function = SoDepthBuffer::ALWAYS;
-    depth->range = SbVec2f(0.0F, 1.0F);
-    root->addChild(depth);
+private:
+    GLboolean scissorEnabled {GL_FALSE};
+    GLint scissorBox[4] {};
+    GLboolean depthWriteMask {GL_TRUE};
+    GLdouble clearDepth {1.0};
+};
 
-    // Render fully transparent to avoid touching the color buffer; only depth is reset.
-    auto* mat = new SoMaterial;
-    mat->diffuseColor.setValue(1.0F, 1.0F, 1.0F);
-    mat->transparency = 1.0F;
-    root->addChild(mat);
+/** Clears only the depth buffer in the NaviCube viewport, leaving color output untouched. */
+void clearOverlayDepth(int viewportX, int viewportY, int viewportWidth, int viewportHeight)
+{
+    if (viewportWidth <= 0 || viewportHeight <= 0) {
+        return;
+    }
 
-    auto* face = new SoFaceSet;
-    face->numVertices.set1Value(0, 4);
-    auto* vp = new SoVertexProperty;
-    face->vertexProperty = vp;
-    vp->vertex.setNum(4);
-    vp->vertex.set1Value(0, SbVec3f(-1.0F, -1.0F, -1.0F));
-    vp->vertex.set1Value(1, SbVec3f(1.0F, -1.0F, -1.0F));
-    vp->vertex.set1Value(2, SbVec3f(1.0F, 1.0F, -1.0F));
-    vp->vertex.set1Value(3, SbVec3f(-1.0F, 1.0F, -1.0F));
-    root->addChild(face);
+    ScopedDepthClearState state;
 
-    return root;
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(
+        viewportX,
+        viewportY,
+        static_cast<GLsizei>(viewportWidth),
+        static_cast<GLsizei>(viewportHeight)
+    );
+    glDepthMask(GL_TRUE);
+    glClearDepth(1.0);
+    glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 bool pointInTriangle2D(const SbVec2f& p, const SbVec2f& a, const SbVec2f& b, const SbVec2f& c)
@@ -1285,9 +1277,7 @@ void SoNaviCube::beginOverlayPass(
     // Reset depth within the overlay viewport so the NaviCube can self-occlude and render
     // translucency correctly without being affected by whatever the main scene left in the depth
     // buffer.
-    state->push();
-    depthClearScene()->GLRender(action);
-    state->pop();
+    clearOverlayDepth(viewportX, viewportY, viewportWidth, viewportHeight);
 
     // Enforce overlay render state after the depth-clear pass.
     SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
