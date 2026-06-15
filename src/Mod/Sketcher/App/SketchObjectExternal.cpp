@@ -1523,8 +1523,15 @@ void processEdge2(TopoDS_Edge& projEdge, std::vector<std::unique_ptr<Part::Geome
         // a Bspline Split the spline into arcs
         GeomConvert_BSplineCurveKnotSplitting bSplineSplitter(projCurve.BSpline(), 2);
         auto* bspline = new Part::GeomBSplineCurve(projCurve.BSpline());
-        GeometryFacade::setConstruction(bspline, true);
-        geos.emplace_back(bspline);
+        if (auto* geom = bspline->toCanonical()) {
+            GeometryFacade::setConstruction(geom, true);
+            geos.emplace_back(geom);
+            delete bspline;
+        }
+        else {
+            GeometryFacade::setConstruction(bspline, true);
+            geos.emplace_back(bspline);
+        }
     }
     else if (projCurve.GetType() == GeomAbs_Hyperbola) {
         gp_Hypr e = projCurve.Hyperbola();
@@ -1990,129 +1997,80 @@ void processEdge(const TopoDS_Edge& edge,
         auto shape = Part::TopoShape(edge);
         bool planar = shape.findPlane(plane);
 
-        // Check if the edge is planar and plane is perpendicular to the projection plane
-        if (planar && plane.Axis().IsNormal(sketchPlane.Axis(), Precision::Angular())) {
-            // Project an edge to a line. Only works if the edge is planar and its plane is
-            // perpendicular to the projection plane. OCC has trouble handling
-            // BSpline projection to a straight line. Although it does correctly projects
-            // the line including extreme bounds (not always a case), it will produce a BSpline with degree
-            // more than one.
-            //
-            // The work around here is to use an aligned bounding box of the edge to get
-            // the projection of the extremum points to construct the projected line.
+        // The workaround of PR 19700 causes a regression with issue 25720.
+        // Although the idea seems to be correct it's numerically not stable enough.
+        // Theoretically the optimal bounding box of the transformed edge should have no
+        // expansion in Y direction but practially it does and the expansion is much
+        // higher than Precision::Confusion(). Due to these inaccuracies the computed
+        // line segment differs too much from the expected projected edge and may lead
+        // to further problems like observed in issue 25720.
+        // Alternative idea (in processEdge2):
+        // Usually OCC creates a B-spline from the projected edge. If it has a degree of
+        // 1 it can be directly translated into a line segment. If it has a higher degree
+        // then it must be checked if all control points are collinear. This can be easily
+        // done with the covariance matrix:
+        // * if the rank is 0 then it degenerates to a point
+        // * if the rank is 1 then it's a line segment
 
-            // First, transform the shape to the projection plane local coordinates.
-            shape.setPlacement(invPlm * shape.getPlacement());
+        try {
+            Part::TopoShape projShape;
+            // Projection of the edge on parallel plane to the sketch plane is edge itself
+            // all we need to do is match coordinate systems
+            // for some reason OCC doesn't like to project a planar B-Spline to a plane parallel to it
+            if (planar && plane.Axis().Direction().IsParallel(sketchPlane.Axis().Direction(), Precision::Confusion())) {
+                TopoDS_Edge projEdge = edge;
 
-            // Align the z axis of the edge plane to the y axis of the projection
-            // plane,  so that the extreme bound will be a line in the x axis direction
-            // of the projection plane.
-            double angle = plane.Axis().Direction().Angle(sketchPlane.YAxis().Direction());
+                // We need to trim the curve in case we are projecting a B-Spline segment
+                if(curve.GetType() == GeomAbs_BSplineCurve){
+                    double Param1 = curve.FirstParameter();
+                    double Param2 = curve.LastParameter();
 
-            gp_Trsf trsf;
-            if (fabs(angle) > Precision::Angular()) {
-                trsf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(0, 0, 1)), angle);
-                shape.move(trsf);
+                    if (Param1 > Param2){
+                        std::swap(Param1, Param2);
+                    }
+
+                    // trim curve in case we are projecting a segment
+                    auto bsplineCurve = curve.BSpline();
+                    if(Param2 - Param1 > Precision::Confusion()){
+                        bsplineCurve->Segment(Param1, Param2);
+                        projEdge = BRepBuilderAPI_MakeEdge(bsplineCurve).Edge();
+                    }
+                }
+
+                projShape.setShape(projEdge);
+
+                // We can't use gp_Pln::Distance() because we need to
+                // know which side the plane is regarding the sketch
+                const gp_Pnt& aP = sketchPlane.Location();
+                const gp_Pnt& aLoc = plane.Location ();
+                const gp_Dir& aDir = plane.Axis().Direction();
+                double d = (aDir.X() * (aP.X() - aLoc.X()) +
+                        aDir.Y() * (aP.Y() - aLoc.Y()) +
+                        aDir.Z() * (aP.Z() - aLoc.Z()));
+
+                gp_Trsf trsf;
+                trsf.SetTranslation(gp_Vec(aDir) * d);
+                projShape.transformShape(Part::TopoShape::convert(trsf), /*copy*/false);
+            } else {
+                // When planes not parallel or perpendicular, or edge is not planar
+                // normal projection is working just fine
+                BRepOffsetAPI_NormalProjection mkProj(aProjFace);
+                mkProj.Add(edge);
+                mkProj.Build();
+
+                projShape.setShape(mkProj.Projection());
             }
-
-            // Make a copy to work around OCC circular edge transformation bug
-            shape = shape.makeElementCopy();
-
-            // Obtain the bounding box (precise version!) and move the extreme points back
-            // to the original location
-            auto bbox = shape.getBoundBoxOptimal();
-            if (!bbox.IsValid()){
-                throw Base::CADKernelError("Invalid bounding box");
-            }
-
-            gp_Pnt p1(bbox.MinX, bbox.MinY, 0);
-            gp_Pnt p2(bbox.MaxX, bbox.MaxY, 0);
-            if (fabs(angle) > Precision::Angular()) {
-                trsf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(0, 0, 1)), -angle);
-                p1.Transform(trsf);
-                p2.Transform(trsf);
-            }
-
-            // The bounding box has no expansion in Y direction.
-            // Due to possible rounding errors force the same y
-            // value for both points. This fixes issue 25720
-            Base::Vector3d P1(p1.X(), (p1.Y() + p2.Y()) / 2.0, 0);
-            Base::Vector3d P2(p2.X(), (p1.Y() + p2.Y()) / 2.0, 0);
-
-            // check for degenerated case when the line is collapsed to a point
-            if (p1.SquareDistance(p2) < Precision::SquareConfusion()) {
-                auto* point = new Part::GeomPoint((P1 + P2) / 2);
-                GeometryFacade::setConstruction(point, true);
-                geos.emplace_back(point);
-            }
-            else {
-                auto* projectedSegment = new Part::GeomLineSegment();
-                projectedSegment->setPoints(P1, P2);
-                GeometryFacade::setConstruction(projectedSegment, true);
-                geos.emplace_back(projectedSegment);
+            if (!projShape.isNull() && projShape.hasSubShape(TopAbs_EDGE)) {
+                for (auto &e : projShape.getSubTopoShapes(TopAbs_EDGE)) {
+                    // Transform copy of the edge to the sketch plane local coordinates
+                    e.transformShape(invPlm.toMatrix(), /*copy*/true, /*checkScale*/true);
+                    TopoDS_Edge projEdge = TopoDS::Edge(e.getShape());
+                    processEdge2(projEdge, geos);
+                }
             }
         }
-        else {
-            try {
-                Part::TopoShape projShape;
-                // Projection of the edge on parallel plane to the sketch plane is edge itself
-                // all we need to do is match coordinate systems
-                // for some reason OCC doesn't like to project a planar B-Spline to a plane parallel to it
-                if (planar && plane.Axis().Direction().IsParallel(sketchPlane.Axis().Direction(), Precision::Confusion())) {
-                    TopoDS_Edge projEdge = edge;
-
-                    // We need to trim the curve in case we are projecting a B-Spline segment
-                    if(curve.GetType() == GeomAbs_BSplineCurve){
-                        double Param1 = curve.FirstParameter();
-                        double Param2 = curve.LastParameter();
-
-                        if (Param1 > Param2){
-                            std::swap(Param1, Param2);
-                        }
-
-                        // trim curve in case we are projecting a segment
-                        auto bsplineCurve = curve.BSpline();
-                        if(Param2 - Param1 > Precision::Confusion()){
-                            bsplineCurve->Segment(Param1, Param2);
-                            projEdge = BRepBuilderAPI_MakeEdge(bsplineCurve).Edge();
-                        }
-                    }
-
-                    projShape.setShape(projEdge);
-
-                    // We can't use gp_Pln::Distance() because we need to
-                    // know which side the plane is regarding the sketch
-                    const gp_Pnt& aP = sketchPlane.Location();
-                    const gp_Pnt& aLoc = plane.Location ();
-                    const gp_Dir& aDir = plane.Axis().Direction();
-                    double d = (aDir.X() * (aP.X() - aLoc.X()) +
-                            aDir.Y() * (aP.Y() - aLoc.Y()) +
-                            aDir.Z() * (aP.Z() - aLoc.Z()));
-
-                    gp_Trsf trsf;
-                    trsf.SetTranslation(gp_Vec(aDir) * d);
-                    projShape.transformShape(Part::TopoShape::convert(trsf), /*copy*/false);
-                } else {
-                    // When planes not parallel or perpendicular, or edge is not planar
-                    // normal projection is working just fine
-                    BRepOffsetAPI_NormalProjection mkProj(aProjFace);
-                    mkProj.Add(edge);
-                    mkProj.Build();
-
-                    projShape.setShape(mkProj.Projection());
-                }
-                if (!projShape.isNull() && projShape.hasSubShape(TopAbs_EDGE)) {
-                    for (auto &e : projShape.getSubTopoShapes(TopAbs_EDGE)) {
-                        // Transform copy of the edge to the sketch plane local coordinates
-                        e.transformShape(invPlm.toMatrix(), /*copy*/true, /*checkScale*/true);
-                        TopoDS_Edge projEdge = TopoDS::Edge(e.getShape());
-                        processEdge2(projEdge, geos);
-                    }
-                }
-            }
-            catch (Standard_Failure& e) {
-                throw Base::CADKernelError(e.GetMessageString());
-            }
+        catch (Standard_Failure& e) {
+            throw Base::CADKernelError(e.GetMessageString());
         }
     }
 }

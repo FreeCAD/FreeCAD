@@ -138,6 +138,10 @@
 
 #include <App/Application.h>
 #include <App/PropertyStandard.h>
+
+#include <Eigen/Eigen>
+#include <Eigen/QR>
+
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -1512,6 +1516,70 @@ std::list<Geometry*> GeomBSplineCurve::toBiArcs(double tolerance) const
 {
     BSplineCurveBiArcs arcs(this->myCurve);
     return arcs.toBiArcs(tolerance);
+}
+
+Geometry* GeomBSplineCurve::toCanonical() const
+{
+    double sxx {0.0};
+    double sxy {0.0};
+    double sxz {0.0};
+    double syy {0.0};
+    double syz {0.0};
+    double szz {0.0};
+    double mx {0.0};
+    double my {0.0};
+    double mz {0.0};
+
+    const TColgp_Array1OfPnt& poles = myCurve->Poles();
+    for (int index = poles.Lower(); index <= poles.Upper(); index++) {
+        const gp_Pnt& pnt = poles.Value(index);
+        sxx += pnt.X() * pnt.X();
+        sxy += pnt.X() * pnt.Y();
+        sxz += pnt.X() * pnt.Z();
+        syy += pnt.Y() * pnt.Y();
+        syz += pnt.Y() * pnt.Z();
+        szz += pnt.Z() * pnt.Z();
+        mx += pnt.X();
+        my += pnt.Y();
+        mz += pnt.Z();
+    }
+
+    double nSize = static_cast<double>(poles.Size());
+    sxx = sxx - mx * mx / nSize;
+    sxy = sxy - mx * my / nSize;
+    sxz = sxz - mx * mz / nSize;
+    syy = syy - my * my / nSize;
+    syz = syz - my * mz / nSize;
+    szz = szz - mz * mz / nSize;
+
+    Eigen::Matrix3d covMat = Eigen::Matrix3d::Zero();
+    covMat(0, 0) = sxx;
+    covMat(1, 1) = syy;
+    covMat(2, 2) = szz;
+    covMat(0, 1) = sxy;
+    covMat(1, 0) = sxy;
+    covMat(0, 2) = sxz;
+    covMat(2, 0) = sxz;
+    covMat(1, 2) = syz;
+    covMat(2, 1) = syz;
+
+    Eigen::FullPivHouseholderQR<Eigen::Matrix3d> qr(covMat);
+    size_t rank = qr.rank();
+    if (rank == 0) {
+        // point
+        gp_Pnt pnt = poles.Value(poles.Lower());
+        return new GeomPoint(Base::convertTo<Base::Vector3d>(pnt));
+    }
+    if (rank == 1) {
+        // line segment
+        auto line = new GeomLineSegment;
+        line->setPoints(getStartPoint(), getEndPoint());
+        return line;
+    }
+
+    // TODO: Arc of circle, parabola, hyperbola
+
+    return nullptr;
 }
 
 void GeomBSplineCurve::workAroundOCCTBug(const std::vector<double>& weights)

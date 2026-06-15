@@ -381,6 +381,7 @@ public:
     std::tuple<GeomBSplineCurvePtr, GeomBSplineCurvePtr> split(double u, double tol) const;
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
+    Geometry* toCanonical() const;
 
     void increaseDegree(int degree);
     void approximate(double tol3d, int maxSegments, int maxDegree, GeomAbs_Shape continuity);
