@@ -72,6 +72,9 @@ def make_shape2dview(baseobj, projectionVector=None, facenumbers=[]):
     return obj
 
 
-makeShape2DView = make_shape2dview
+def makeShape2DView(*args, **kwarg):
+    """DEPRECATED. Use 'make_shape2dview'."""
+    utils.use_instead("make_shape2dview")
+    return make_shape2dview(*args, **kwarg)
 
 ## @}

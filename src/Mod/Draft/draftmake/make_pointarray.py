@@ -153,11 +153,10 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
     return new_obj
 
 
-def makePointArray(base, ptlst):
-    """Create PointArray. DEPRECATED. Use 'make_point_array'."""
-    utils.use_instead("make_point_array")
-
     return make_point_array(base, ptlst)
-
+def makePointArray(*args, **kwarg):
+    """DEPRECATED. Use 'make_point_array'."""
+    utils.use_instead("make_point_array")
+    return make_point_array(*args, **kwarg)
 
 ## @}

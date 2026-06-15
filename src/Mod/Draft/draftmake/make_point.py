@@ -91,6 +91,9 @@ def make_point(X=0, Y=0, Z=0, color=None, name="Point", point_size=5):
     return obj
 
 
-makePoint = make_point
+def makePoint(*args, **kwarg):
+    """DEPRECATED. Use 'make_point'."""
+    utils.use_instead("make_point")
+    return make_point(*args, **kwarg)
 
 ## @}

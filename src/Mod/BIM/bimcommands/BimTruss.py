@@ -101,7 +101,7 @@ class Arch_Truss:
         FreeCADGui.addModule("Arch")
         if not basename:
             if self.points:
-                cmd = "base = Draft.makeLine(FreeCAD."
+                cmd = "base = Draft.make_line(FreeCAD."
                 cmd += str(self.points[0]) + ",FreeCAD." + str(self.points[1]) + ")"
                 FreeCADGui.doCommand(cmd)
                 basename = "base"

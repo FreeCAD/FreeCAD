@@ -1798,7 +1798,7 @@ def joinWalls(walls, delete=False, deletebase=False):
                 else:
                     newSk = None
             if newSk:
-                sk = Draft.makeSketch(base.Base, autoconstraints=True, addTo=newSk)
+                sk = Draft.make_sketch(base.Base, autoconstraints=True, addTo=newSk)
                 base.Base = sk
             else:
                 sk = base.Base

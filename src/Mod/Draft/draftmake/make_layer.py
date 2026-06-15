@@ -72,9 +72,8 @@ def get_layer_container():
 
 
 def getLayerContainer():
-    """Get the Layer container. DEPRECATED. Use 'get_layer_container'."""
+    """DEPRECATED. Use 'get_layer_container'."""
     utils.use_instead("get_layer_container")
-
     return get_layer_container()
 
 

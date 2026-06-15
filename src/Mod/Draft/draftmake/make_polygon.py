@@ -89,6 +89,9 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
     return obj
 
 
-makePolygon = make_polygon
+def makePolygon(*args, **kwarg):
+    """DEPRECATED. Use 'make_polygon'."""
+    utils.use_instead("make_polygon")
+    return make_polygon(*args, **kwarg)
 
 ## @}

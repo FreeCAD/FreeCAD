@@ -72,6 +72,9 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
     return obj
 
 
-makeShapeString = make_shapestring
+def makeShapeString(*args, **kwarg):
+    """DEPRECATED. Use 'make_shapestring'."""
+    utils.use_instead("make_shapestring")
+    return make_shapestring(*args, **kwarg)
 
 ## @}

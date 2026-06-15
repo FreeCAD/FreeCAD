@@ -265,6 +265,9 @@ def make_sketch(
     return nobj
 
 
-makeSketch = make_sketch
+def makeSketch(*args, **kwarg):
+    """DEPRECATED. Use 'make_sketch'."""
+    utils.use_instead("make_sketch")
+    return make_sketch(*args, **kwarg)
 
 ## @}

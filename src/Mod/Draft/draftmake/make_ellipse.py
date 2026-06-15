@@ -91,6 +91,9 @@ def make_ellipse(majradius, minradius, placement=None, face=None, support=None):
     return obj
 
 
-makeEllipse = make_ellipse
+def makeEllipse(*args, **kwarg):
+    """DEPRECATED. Use 'make_ellipse'."""
+    utils.use_instead("make_ellipse")
+    return make_ellipse(*args, **kwarg)
 
 ## @}

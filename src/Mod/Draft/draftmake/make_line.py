@@ -35,7 +35,7 @@ import draftmake.make_wire as make_wire
 
 
 def make_line(first_param, last_param=None):
-    """makeLine(first_param, p2)
+    """make_line(first_param, p2)
 
     Creates a line from 2 points or from a given object.
 
@@ -70,6 +70,9 @@ def make_line(first_param, last_param=None):
     return obj
 
 
-makeLine = make_line
+def makeLine(*args, **kwarg):
+    """DEPRECATED. Use 'make_line'."""
+    utils.use_instead("make_line")
+    return make_line(*args, **kwarg)
 
 ## @}

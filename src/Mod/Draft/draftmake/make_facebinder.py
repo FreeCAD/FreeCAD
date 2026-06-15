@@ -67,6 +67,9 @@ def make_facebinder(selectionset, name="Facebinder"):
     return fb
 
 
-makeFacebinder = make_facebinder
+def makeFacebinder(*args, **kwarg):
+    """DEPRECATED. Use 'make_facebinder'."""
+    utils.use_instead("make_facebinder")
+    return make_facebinder(*args, **kwarg)
 
 ## @}
