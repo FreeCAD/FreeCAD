@@ -54,6 +54,7 @@
 #include <QWhatsThis>
 #include <QWindow>
 #include <QPushButton>
+#include <QAbstractButton>
 #include <string>
 
 
@@ -114,6 +115,135 @@
 #include "WaitCursor.h"
 #include "WorkbenchManager.h"
 #include "Workbench.h"
+
+namespace
+{
+constexpr const char* kStatusBarFullTextProperty = "statusBarFullText";
+constexpr const char* kInputHintsVisibleProperty = "inputHintsVisible";
+
+/// Apply ellipsis to text based on available widget width
+void setElidedText(QWidget* widget, const QString& fullText)
+{
+    if (!widget) {
+        return;
+    }
+    const QString text = fullText.simplified();
+    widget->setProperty(kStatusBarFullTextProperty, text);
+    widget->setToolTip(text);
+
+    QFontMetrics fm(widget->font());
+    int availableWidth = std::max(1, widget->width());
+    QString elided = fm.elidedText(text, Qt::ElideMiddle, availableWidth);
+
+    if (auto* label = qobject_cast<QLabel*>(widget)) {
+        label->setText(elided);
+    }
+    else if (auto* button = qobject_cast<QAbstractButton*>(widget)) {
+        button->setText(elided);
+    }
+}
+
+/// Refresh elided text when widget size changes
+void refreshElidedText(QWidget* widget)
+{
+    if (!widget) {
+        return;
+    }
+    const QVariant fullText = widget->property(kStatusBarFullTextProperty);
+    if (fullText.isValid()) {
+        setElidedText(widget, fullText.toString());
+    }
+}
+
+enum class InputHintsVisibility
+{
+    Hidden,
+    Visible
+};
+
+bool hasInputHints(const std::list<Gui::InputHint>& hints)
+{
+    return !hints.empty();
+}
+
+// Store the last applied hint visibility
+bool inputHintsVisibilityProperty(const QWidget* widget)
+{
+    if (!widget) {
+        return false;
+    }
+
+    const QVariant value = widget->property(kInputHintsVisibleProperty);
+    if (!value.isValid()) {
+        return widget->isVisible();
+    }
+
+    return value.toBool();
+}
+
+void setInputHintsVisibilityProperty(QWidget* widget, bool visible)
+{
+    if (!widget) {
+        return;
+    }
+
+    widget->setProperty(kInputHintsVisibleProperty, visible);
+}
+
+// Show or hide the input hints widget
+void applyInputHintsVisibility(QWidget* widget, InputHintsVisibility visibility)
+{
+    if (!widget) {
+        return;
+    }
+
+    const bool visible = visibility == InputHintsVisibility::Visible;
+
+    if (inputHintsVisibilityProperty(widget) == visible && widget->isVisible() == visible) {
+        return;
+    }
+
+    setInputHintsVisibilityProperty(widget, visible);
+    widget->setVisible(visible);
+}
+
+void clearInputHints(Gui::InputHintWidget* hintWidget)
+{
+    if (!hintWidget) {
+        return;
+    }
+
+    hintWidget->clearHints();
+}
+
+// Empty hints should not reserve space in the status bar
+void hideInputHints(Gui::InputHintWidget* hintWidget)
+{
+    if (!hintWidget) {
+        return;
+    }
+
+    clearInputHints(hintWidget);
+    applyInputHintsVisibility(hintWidget, InputHintsVisibility::Hidden);
+}
+
+// Keep hints visible only while there is useful hint content to show
+void showInputHints(Gui::InputHintWidget* hintWidget, const std::list<Gui::InputHint>& hints)
+{
+    if (!hintWidget) {
+        return;
+    }
+
+    if (!hasInputHints(hints)) {
+        hideInputHints(hintWidget);
+        return;
+    }
+
+    applyInputHintsVisibility(hintWidget, InputHintsVisibility::Visible);
+    hintWidget->showHints(hints);
+}
+
+}  // namespace
 
 #include "MergeDocuments.h"
 #include "ViewProviderExtern.h"
@@ -417,13 +547,25 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     statusBar()->setObjectName(QStringLiteral("statusBar"));
     connect(statusBar(), &QStatusBar::messageChanged, this, &MainWindow::statusMessageChanged);
 
-    // labels and progressbar
     d->status = new StatusBarObserver();
+
+    // High-priority hints (stretch=100): never clipped by other widgets
+    d->hintLabel = new InputHintWidget(statusBar());
+    d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
+    d->hintLabel->setWindowTitle(tr("Input Hints"));
+    statusBar()->addWidget(d->hintLabel, 100);
+    applyInputHintsVisibility(d->hintLabel, InputHintsVisibility::Hidden);
+
+    // Low-priority preselection (stretch=1): clipped first when space limited
     d->actionLabel = new StatusBarLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    d->sizeLabel = new DimensionWidget(statusBar());
-
+    d->actionLabel->setWindowTitle(tr("Preselection"));
+    d->actionLabel->installEventFilter(this);
     statusBar()->addWidget(d->actionLabel, 1);
+
+    // Size/unit label with resize tracking for ellipsis refresh
+    d->sizeLabel = new DimensionWidget(statusBar());
+    d->sizeLabel->installEventFilter(this);
 
     QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
     statusBar()->addPermanentWidget(progressBar, 0);
@@ -450,21 +592,13 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     });
     statusBar()->addPermanentWidget(toggleBottomPanelsButton);
 
-    // hint label
-    d->hintLabel = new InputHintWidget(statusBar());
-    d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
-    //: A context menu action used to show or hide the input hints in the status bar
-    d->hintLabel->setWindowTitle(tr("Input Hints"));
-
-    statusBar()->addWidget(d->hintLabel);
-
-    // right side label
+    // Right-side label with ellipsis support (toggleable via context menu)
     d->rightSideLabel = new StatusBarLabel(statusBar(), "QuickMeasureEnabled");
-    d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    statusBar()->addPermanentWidget(d->rightSideLabel);
     d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
-    //: A context menu action used to enable or disable quick measure in the status bar
+    d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    d->rightSideLabel->installEventFilter(this);
     d->rightSideLabel->setWindowTitle(tr("Quick Measure"));
+    statusBar()->addPermanentWidget(d->rightSideLabel);
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NotificationArea"
@@ -1206,6 +1340,12 @@ bool MainWindow::event(QEvent* e)
 
 bool MainWindow::eventFilter(QObject* o, QEvent* e)
 {
+    // Refresh elided text when widgets resize to show/hide content appropriately
+    if (o->isWidgetType() && (e->type() == QEvent::Resize || e->type() == QEvent::LayoutRequest)) {
+        if (o == d->actionLabel || o == d->rightSideLabel || o == d->sizeLabel) {
+            refreshElidedText(static_cast<QWidget*>(o));
+        }
+    }
     if (o != this) {
         if (e->type() == QEvent::WindowStateChange) {
             // notify all mdi views when the active view receives a show normal, show minimized
@@ -2605,7 +2745,8 @@ void MainWindow::showMessage(const QString& message, int timeout)
         QApplication::postEvent(this, new CustomMessageEvent(MainWindow::Tmp, message, timeout));
         return;
     }
-    d->actionLabel->setText(message.simplified());
+    // Apply ellipsis to preselection text if it exceeds available width
+    setElidedText(d->actionLabel, message);
     if (timeout) {
         d->actionTimer->setSingleShot(true);
         d->actionTimer->start(timeout);
@@ -2617,7 +2758,7 @@ void MainWindow::showMessage(const QString& message, int timeout)
 
 void MainWindow::setRightSideMessage(const QString& message)
 {
-    d->rightSideLabel->setText(message.simplified());
+    setElidedText(d->rightSideLabel, message);
 }
 
 bool MainWindow::isRightSideMessageVisible() const
@@ -2663,12 +2804,12 @@ void MainWindow::showStatus(int type, const QString& message)
 
 void MainWindow::showHints(const std::list<InputHint>& hints)
 {
-    d->hintLabel->showHints(hints);
+    showInputHints(d->hintLabel, hints);
 }
 
 void MainWindow::hideHints()
 {
-    d->hintLabel->clearHints();
+    hideInputHints(d->hintLabel);
 }
 
 // set text to the pane
@@ -2678,7 +2819,7 @@ void MainWindow::setPaneText(int i, QString text)
         showStatus(MainWindow::Pane, text);
     }
     else if (i == 2) {
-        d->sizeLabel->setText(text);
+        setElidedText(d->sizeLabel, text);
     }
 }
 
