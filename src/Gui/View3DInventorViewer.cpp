@@ -119,6 +119,7 @@
 
 #include "View3DInventorViewer.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Command.h"
 #include "Document.h"
 #include "GLPainter.h"
@@ -4219,6 +4220,35 @@ SbBox3f View3DInventorViewer::getBoundingBox() const
     SoGetBoundingBoxAction action(vp);
     action.apply(this->getSoRenderManager()->getSceneGraph());
     return action.getBoundingBox();
+}
+
+void View3DInventorViewer::viewHome()
+{
+    SoCamera* camera = getCamera();
+    if (!camera) {
+        return;
+    }
+
+    const SbRotation orientation = Camera::defaultOrientation("Top");
+    if (Camera::rotationsMatch(camera->orientation.getValue(), orientation)) {
+        viewAll();
+        return;
+    }
+
+    auto animation = setCameraOrientation(orientation, true);
+    if (animation && animation->state() == QAbstractAnimation::Running) {
+        QObject::connect(
+            animation.get(),
+            &NavigationAnimation::completed,
+            this,
+            [this]() { viewAll(); },
+            // Let NavigationAnimator finish its cleanup before fitting the scene.
+            Qt::QueuedConnection
+        );
+        return;
+    }
+
+    viewAll();
 }
 
 void View3DInventorViewer::viewAll()
