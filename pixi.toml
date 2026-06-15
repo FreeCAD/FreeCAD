@@ -193,6 +193,8 @@ freecad = [{ task = "freecad-debug" }]
 
 build-debug = { cmd = ["cmake", "--build", "build/debug"]}
 build-release = { cmd = ["cmake", "--build", "build/release"]}
+build-debug-all = { cmd = ["cmake", "--build", "build/debug", "--", "-k", "0"]}
+build-release-all = { cmd = ["cmake", "--build", "build/release", "--", "-k", "0"]}
 install-debug = { cmd = ["cmake", "--install", "build/debug"]}
 install-release = { cmd = ["cmake", "--install", "build/release"]}
 test-debug = { cmd = ["ctest", "--test-dir", "build/debug"]}
