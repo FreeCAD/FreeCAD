@@ -227,7 +227,7 @@ private:
     MatrixXq A;
     VectorXq tmp;
     Eigen::LDLT<MatrixXq> ldlt;
-    Eigen::JacobiSVD<MatrixXq> svd;
+    Eigen::JacobiSVD<MatrixXq, Eigen::ComputeThinU | Eigen::ComputeThinV> svd;
     VectorXq diffq;
     VectorXq q_new;
     VectorXq original_Aii;

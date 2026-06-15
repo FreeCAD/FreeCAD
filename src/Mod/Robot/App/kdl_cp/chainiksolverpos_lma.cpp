@@ -72,12 +72,11 @@ ChainIkSolverPos_LMA::ChainIkSolverPos_LMA(
 	A(_chain.getNrOfJoints(), _chain.getNrOfJoints()),
 	tmp(_chain.getNrOfJoints()),
 	ldlt(_chain.getNrOfJoints()),
-	svd(6, _chain.getNrOfJoints(), Eigen::ComputeThinU | Eigen::ComputeThinV),
+	svd(6, _chain.getNrOfJoints()),
 	diffq(_chain.getNrOfJoints()),
 	q_new(_chain.getNrOfJoints()),
 	original_Aii(_chain.getNrOfJoints())
 {}
-
 ChainIkSolverPos_LMA::ChainIkSolverPos_LMA(
 		const KDL::Chain& _chain,
 		double _eps,
@@ -98,7 +97,7 @@ ChainIkSolverPos_LMA::ChainIkSolverPos_LMA(
 	q(_chain.getNrOfJoints()),
 	A(_chain.getNrOfJoints(), _chain.getNrOfJoints()),
 	ldlt(_chain.getNrOfJoints()),
-	svd(6, _chain.getNrOfJoints(), Eigen::ComputeThinU | Eigen::ComputeThinV),
+	svd(6, _chain.getNrOfJoints()),
 	diffq(_chain.getNrOfJoints()),
 	q_new(_chain.getNrOfJoints()),
 	original_Aii(_chain.getNrOfJoints())
