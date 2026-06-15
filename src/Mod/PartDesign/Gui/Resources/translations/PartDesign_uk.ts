@@ -964,7 +964,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="261"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Дзеркало</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="301"/>
@@ -1102,7 +1102,7 @@ Select a body from below, or create a new body.</translation>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="53"/>
       <source>Select an active body</source>
-      <translation type="unfinished">Select an active body</translation>
+      <translation>Вибрати активне тіло</translation>
     </message>
   </context>
   <context>

@@ -8718,11 +8718,6 @@ using the given X/Y spacings</source>
       <translation>值</translation>
     </message>
     <message>
-      <location filename="../../DlgTemplateField.ui" line="52"/>
-      <source>Reapplies auto-fill to this field</source>
-      <translation>重新应用自动填充到此字段</translation>
-    </message>
-    <message>
       <location filename="../../DlgTemplateField.ui" line="65"/>
       <source>The autofill replacement value</source>
       <translation>自动填充替换值</translation>
@@ -8731,6 +8726,11 @@ using the given X/Y spacings</source>
       <location filename="../../DlgTemplateField.ui" line="35"/>
       <source>TextLabel</source>
       <translation>文本标签</translation>
+    </message>
+    <message>
+      <location filename="../../DlgTemplateField.ui" line="52"/>
+      <source>Applies autofill to this field</source>
+      <translation>此字段应用自动填充</translation>
     </message>
     <message>
       <location filename="../../DlgTemplateField.ui" line="55"/>
