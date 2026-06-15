@@ -520,6 +520,32 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     event->setModifiers(originalModifiers);
 }
 
+void QGIView::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    auto* feature = getViewObject();
+    if (!feature) {
+        QGraphicsItemGroup::mouseDoubleClickEvent(event);
+        return;
+    }
+
+    // a projection group item should edit its parent group, not itself
+    App::DocumentObject* target = feature;
+    if (auto* dpgi = dynamic_cast<TechDraw::DrawProjGroupItem*>(feature)) {
+        if (auto* group = dpgi->getPGroup()) {
+            target = group;
+        }
+    }
+
+    auto* vp = getViewProvider(target);
+    if (vp && vp->doubleClicked()) {
+        event->accept();
+        return;
+    }
+
+    QGraphicsItemGroup::mouseDoubleClickEvent(event);
+}
+
+
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     QGraphicsItemGroup::hoverEnterEvent(event);
