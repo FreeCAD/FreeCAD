@@ -584,7 +584,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         )
 
         # Create the clone
-        cloned_window = Draft.clone(original_window)
+        cloned_window = Draft.make_clone(original_window)
         cloned_window.Label = "ClonedWindow"
 
         # Position the clone inside the wall
