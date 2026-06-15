@@ -62,6 +62,7 @@
 #include "Action.h"
 #include "MainWindow.h"
 #include "Navigation/NavigationAnimation.h"
+#include "Navigation/NavigationStyle.h"
 #include "Inventor/SoNaviCube.h"
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
@@ -109,8 +110,10 @@ private:
     bool mousePressed(short x, short y);
     bool mouseReleased(short x, short y);
     bool mouseMoved(short x, short y);
+    bool hasDraggedPastThreshold(short x, short y) const;
+    void startCameraRotationDrag();
+    void updateCameraRotationDrag(short x, short y);
     PickId pickFace(short x, short y);
-    bool inDragZone(short x, short y);
 
     void prepare();
     void handleResize(const SbVec2s& viewSize);
@@ -163,14 +166,23 @@ public:
     SbVec2s viewSize = SbVec2s(0, 0);
 
 private:
+    enum class MouseDragMode
+    {
+        None,
+        MoveNaviCube,
+        RotateCamera
+    };
+
     bool mouseDown = false;
-    bool dragging = false;
-    bool mightDrag = false;
+    bool dragStarted = false;
     bool hovering = false;
     QElapsedTimer clickTimer;
     PickId lastClickPickId = PickId::None;
     PickId pendingHiliteId = PickId::None;
     int pendingHiliteCount = 0;
+    MouseDragMode dragMode = MouseDragMode::None;
+    SbVec2s pressPos = SbVec2s(0, 0);
+    SbVec2s lastDragPos = SbVec2s(0, 0);
 
     SbVec2f relPos = SbVec2f(1.0f, 1.0f);
     SbVec2s posAreaBase = SbVec2s(0, 0);
@@ -906,11 +918,21 @@ PickId NaviCubeImplementation::pickFace(short x, short y)
 
 bool NaviCubeImplementation::mousePressed(short x, short y)
 {
-    mouseDown = true;
-    mightDrag = inDragZone(x, y);
     PickId pick = pickFace(x, y);
     setHilite(pick);
-    return pick != PickId::None;
+    if (pick == PickId::None) {
+        mouseDown = false;
+        dragStarted = false;
+        dragMode = MouseDragMode::None;
+        return false;
+    }
+
+    mouseDown = true;
+    dragStarted = false;
+    pressPos = SbVec2s(x, y);
+    lastDragPos = pressPos;
+    dragMode = draggable ? MouseDragMode::MoveNaviCube : MouseDragMode::RotateCamera;
+    return true;
 }
 
 void NaviCubeImplementation::handleMenu()
@@ -1027,10 +1049,22 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
     static const float pi = boost::math::constants::pi<float>();
 
     setHilite(PickId::None);
-    mouseDown = false;
+    if (!mouseDown) {
+        return false;
+    }
 
-    if (dragging) {
-        dragging = false;
+    const bool wasDragging = dragStarted;
+    const MouseDragMode releasedDragMode = dragMode;
+    mouseDown = false;
+    dragStarted = false;
+    dragMode = MouseDragMode::None;
+
+    if (wasDragging) {
+        if (releasedDragMode == MouseDragMode::RotateCamera) {
+            if (auto* navigation = viewer->navigationStyle()) {
+                navigation->endOrbitDrag();
+            }
+        }
         resetClickState();
     }
     else {
@@ -1102,7 +1136,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
         }
         else {
             resetClickState();
-            return false;
+            return true;
         }
     }
     return true;
@@ -1119,25 +1153,73 @@ void NaviCubeImplementation::setHilite(PickId hilite)
     }
 }
 
-bool NaviCubeImplementation::inDragZone(short x, short y)
+bool NaviCubeImplementation::hasDraggedPastThreshold(short x, short y) const
 {
-    qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
-    int limit = physicalCubeWidgetSize / 4;
-    return std::abs(x) < limit && std::abs(y) < limit;
+    const long dx = x - pressPos[0];
+    const long dy = y - pressPos[1];
+    constexpr long minimumDragThreshold = 3;
+    const long threshold
+        = std::max(minimumDragThreshold, static_cast<long>(std::lround(3.0 * devicePixelRatio)));
+    return dx * dx + dy * dy >= threshold * threshold;
+}
+
+void NaviCubeImplementation::startCameraRotationDrag()
+{
+    constexpr float minCameraDistanceFactor = 1.05F;
+    constexpr float clippingRadiusFactor = 1.0F;
+    constexpr float dragSensitivity = 0.45F;
+
+    dragStarted = true;
+    setHilite(PickId::None);
+
+    if (auto* navigation = viewer->navigationStyle()) {
+        NavigationStyle::OrbitDragOptions options;
+        options.centerMode = NavigationStyle::OrbitDragOptions::CenterMode::SceneBoundingSphere;
+        options.minDistanceFactor = minCameraDistanceFactor;
+        options.clippingRadiusFactor = clippingRadiusFactor;
+        options.sensitivity = dragSensitivity;
+        navigation->beginOrbitDrag(options);
+    }
+}
+
+void NaviCubeImplementation::updateCameraRotationDrag(short x, short y)
+{
+    const int dx = x - lastDragPos[0];
+    const int dy = y - lastDragPos[1];
+    if (dx == 0 && dy == 0) {
+        return;
+    }
+
+    auto* navigation = viewer->navigationStyle();
+    const qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
+    if (!navigation || physicalCubeWidgetSize <= 0) {
+        lastDragPos = SbVec2s(x, y);
+        return;
+    }
+
+    const auto toProjectorPos = [physicalCubeWidgetSize](short value) {
+        return 0.5F + static_cast<float>(value) / static_cast<float>(physicalCubeWidgetSize);
+    };
+    const SbVec2f curpos(toProjectorPos(x), toProjectorPos(y));
+    const SbVec2f prevpos(toProjectorPos(lastDragPos[0]), toProjectorPos(lastDragPos[1]));
+    navigation->updateOrbitDrag(curpos, prevpos);
+
+    lastDragPos = SbVec2s(x, y);
+    requestRedraw(false);
 }
 
 bool NaviCubeImplementation::mouseMoved(short x, short y)
 {
     qreal physicalCubeWidgetSize = getPhysicalCubeWidgetSize();
-    bool hovering = std::abs(x) <= physicalCubeWidgetSize / 2
-        && std::abs(y) <= physicalCubeWidgetSize / 2;
+    bool hovering = mouseDown
+        || (std::abs(x) <= physicalCubeWidgetSize / 2 && std::abs(y) <= physicalCubeWidgetSize / 2);
 
     if (hovering != this->hovering) {
         this->hovering = hovering;
         viewer->getSoRenderManager()->scheduleRedraw();
     }
 
-    if (!dragging) {
+    if (!dragStarted) {
         PickId pick = pickFace(x, y);
         if (!mouseDown) {
             setHiliteWithHysteresis(pick);
@@ -1147,21 +1229,34 @@ bool NaviCubeImplementation::mouseMoved(short x, short y)
         }
     }
 
-    if (mouseDown && draggable) {
-        if (mightDrag && !dragging) {
-            dragging = true;
+    if (mouseDown && dragMode == MouseDragMode::MoveNaviCube) {
+        const int dx = x - pressPos[0];
+        const int dy = y - pressPos[1];
+        if (!dragStarted && hasDraggedPastThreshold(x, y)) {
+            dragStarted = true;
             setHilite(PickId::None);
         }
-        if (dragging && (std::abs(x) || std::abs(y))) {
-            float newX = relPos[0] + (float)(x) / posAreaSize[0];
-            float newY = relPos[1] + (float)(y) / posAreaSize[1];
+        if (dragStarted && (dx != 0 || dy != 0)) {
+            float newX = relPos[0] + static_cast<float>(dx) / posAreaSize[0];
+            float newY = relPos[1] + static_cast<float>(dy) / posAreaSize[1];
             relPos[0] = std::min(std::max(newX, 0.0f), 1.0f);
             relPos[1] = std::min(std::max(newY, 0.0f), 1.0f);
 
             viewer->getSoRenderManager()->scheduleRedraw();
-            return true;
         }
+        return true;
     }
+
+    if (mouseDown && dragMode == MouseDragMode::RotateCamera) {
+        if (!dragStarted && hasDraggedPastThreshold(x, y)) {
+            startCameraRotationDrag();
+        }
+        if (dragStarted) {
+            updateCameraRotationDrag(x, y);
+        }
+        return true;
+    }
+
     return false;
 }
 
