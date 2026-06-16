@@ -109,10 +109,28 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
+    bool pressButton(Base::Vector2d onSketchPos) override
+    {
+        mousePressed = true;
+        return DrawSketchControllableHandler::pressButton(onSketchPos);
+    }
+
+    bool releaseButton(Base::Vector2d onSketchPos) override
+    {
+        mousePressed = false;
+        return DrawSketchControllableHandler::releaseButton(onSketchPos);
+    }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         trimPos = onSketchPos;
         geoIdToTrim = getPreselectCurve();
+
+        // Hold-and-drag trim
+        if (mousePressed) {
+            executeCommands();
+            return;
+        }
 
         if (geoIdToTrim < 0) {
             EditMarkers.resize(0);
@@ -235,6 +253,7 @@ private:
 
 private:
     std::vector<Base::Vector2d> EditMarkers;
+    bool mousePressed = false;
     Base::Vector2d trimPos;
     int geoIdToTrim = Sketcher::GeoEnum::GeoUndef;
     bool includeAxes = false;
