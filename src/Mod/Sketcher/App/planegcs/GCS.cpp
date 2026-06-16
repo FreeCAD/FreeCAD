@@ -2359,7 +2359,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 
         // get the steepest descent direction
         alpha = g.squaredNorm() / (Jx * g).squaredNorm();
-        h_sd = alpha * g;
+        h_sd = -alpha * g;
 
         // get the gauss-newton step
         // https://forum.freecad.org/viewtopic.php?f=10&t=12769&start=50#p106220
