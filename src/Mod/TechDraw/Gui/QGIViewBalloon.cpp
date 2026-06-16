@@ -65,6 +65,32 @@ using namespace TechDrawGui;
 using DU = DrawUtil;
 using DGU = DrawGuiUtil;
 
+// Bubble outline needs a filled hit region so its interior is hoverable
+namespace {
+class QGIBalloonBubble : public QGIDimLines {
+public:
+    explicit QGIBalloonBubble(QGIViewBalloon* b) : m_balloon(b) {
+        setAcceptHoverEvents(true);
+    }
+    QPainterPath shape() const override {
+        QPainterPath p = path();
+        p.setFillRule(Qt::WindingFill);
+        return p;
+    }
+protected:
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* e) override {
+        if (m_balloon) m_balloon->hover(true);
+        e->accept();
+    }
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* e) override {
+        if (m_balloon) m_balloon->hover(false);
+        e->accept();
+    }
+private:
+    QGIViewBalloon* m_balloon;
+};
+}
+
 QGIBalloonLabel::QGIBalloonLabel()
 {
     m_originDrag = false;
@@ -163,29 +189,13 @@ void QGIBalloonLabel::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
 {
     Q_EMIT hover(true);
     hasHover = true;
-    if (!isSelected()) {
-        setPrettyPre();
-    }
-    else {
-        setPrettySel();
-    }
     QGraphicsItem::hoverEnterEvent(event);
 }
 
 void QGIBalloonLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
-    QGIView* view = dynamic_cast<QGIView*>(parentItem());
-    assert(view);
-    Q_UNUSED(view);
-
     Q_EMIT hover(false);
     hasHover = false;
-    if (!isSelected()) {
-        setPrettyNormal();
-    }
-    else {
-        setPrettySel();
-    }
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
@@ -262,8 +272,9 @@ QGIViewBalloon::QGIViewBalloon()
     balloonLines->setNormalColor(prefNormalColor());
     balloonLines->setPrettyNormal();
 
-    balloonShape = new QGIDimLines();
+    balloonShape = new QGIBalloonBubble(this);
     addToGroup(balloonShape);
+    balloonShape->setHighlightFill(false);
     balloonShape->setNormalColor(prefNormalColor());
     balloonShape->setFill(Qt::transparent, Qt::SolidPattern);
     balloonShape->setPrettyNormal();
@@ -668,8 +679,8 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
 
     if (strcmp(balloonType, "Circular") == 0) {
         double balloonRadius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));
-        balloonRadius = balloonRadius * scale;
         balloonPath.moveTo(lblCenter.x, lblCenter.y);
+        balloonRadius = balloonRadius * scale;
         balloonPath.addEllipse(lblCenter.x - balloonRadius, lblCenter.y - balloonRadius,
                                balloonRadius * 2, balloonRadius * 2);
         offsetLR = balloonRadius;
@@ -867,25 +878,24 @@ void QGIViewBalloon::setPrettyPre(void)
     arrow->setPrettyPre();
     balloonShape->setPrettyPre();
     balloonLines->setPrettyPre();
+    balloonLabel->setPrettyPre();
 }
 
 void QGIViewBalloon::setPrettySel(void)
 {
-    //    Base::Console().message("QGIVBal::setPrettySel()\n");
     arrow->setPrettySel();
-    //    balloonShape->setFill(Qt::white, Qt::NoBrush);
     balloonShape->setPrettySel();
     balloonLines->setPrettySel();
+    balloonLabel->setPrettySel();
 }
 
 void QGIViewBalloon::setPrettyNormal(void)
 {
     arrow->setPrettyNormal();
-    //    balloonShape->setFill(Qt::white, Qt::SolidPattern);
     balloonShape->setPrettyNormal();
     balloonLines->setPrettyNormal();
+    balloonLabel->setPrettyNormal();
 }
-
 
 void QGIViewBalloon::drawBorder(void)
 {
@@ -1026,7 +1036,7 @@ QPainterPath QGIViewBalloon::shape() const
     if (balloonShape) {
         QPainterPath p = mapFromItem(balloonShape, balloonShape->path());
         p.setFillRule(Qt::WindingFill);
-        path.addPath(p);   // use the raw path (closed bubble) so the interior counts
+        path.addPath(p);
     }
     if (balloonLines) {
         path.addPath(mapFromItem(balloonLines, balloonLines->shape()));
@@ -1039,6 +1049,18 @@ QPainterPath QGIViewBalloon::shape() const
     }
 
     return path;
+}
+
+void QGIViewBalloon::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+{
+    hover(true);
+    QGIView::hoverEnterEvent(event);
+}
+
+void QGIViewBalloon::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
+{
+    hover(false);
+    QGIView::hoverLeaveEvent(event);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIViewBalloon.cpp>

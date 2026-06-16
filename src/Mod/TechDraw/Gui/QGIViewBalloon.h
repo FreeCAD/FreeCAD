@@ -233,6 +233,8 @@ protected:
                           bool isDragging,
                           Base::Vector3d& labelPos,
                           Base::Vector3d& arrowPos);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
 
 private:
