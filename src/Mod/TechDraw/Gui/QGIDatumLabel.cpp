@@ -179,7 +179,7 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
 void QGIDatumLabel::snapDistanceType(QPointF& pos, TechDraw::DrawViewDimension* dim,
                         QGIViewDimension* qgivd, bool& shouldSnap)
 {
-    qreal snapPercent = 0.4;
+    qreal snapTextPercent = Preferences::SnapDimensionsTextFactor();
     double dimSpacing = Rez::guiX(activeDimAttributes.getCascadeSpacing());
     std::string type = dim->Type.getValueAsString();
 
@@ -279,7 +279,7 @@ void QGIDatumLabel::snapDistanceType(QPointF& pos, TechDraw::DrawViewDimension* 
                 projPnt2.ProjectToLine(posV - posVi, idir);
                 projPnt2 = projPnt2 + posVi;
 
-                if ((projPnt2 - posV).Length() < dimSpacing * snapPercent) {
+                if ((projPnt2 - posV).Length() < dimSpacing * snapChainPercent) {
                     posV = projPnt2;
                     pos.setX(posV.x - toCenter.x);
                     pos.setY(posV.y - toCenter.y);
@@ -287,7 +287,7 @@ void QGIDatumLabel::snapDistanceType(QPointF& pos, TechDraw::DrawViewDimension* 
                     break;
                 }
                 else if (fabs((projPnt2 - posV).Length() - fabs(dimSpacing))
-                         < dimSpacing * snapPercent) {
+                         < dimSpacing * snapChainPercent) {
                     posV = projPnt2 + (posV - projPnt2).Normalize() * dimSpacing;
                     pos.setX(posV.x - toCenter.x);
                     pos.setY(posV.y - toCenter.y);
@@ -303,7 +303,7 @@ void QGIDatumLabel::snapDistanceType(QPointF& pos, TechDraw::DrawViewDimension* 
 void QGIDatumLabel::snapRadialType(QPointF& pos, TechDraw::DrawViewDimension* dim,
                         QGIViewDimension* qgivd, bool& shouldSnap)
 {
-    qreal snapPercent = 0.4;
+    qreal snapTextPercent = Preferences::SnapDimensionsTextFactor();
     double dimSpacing = Rez::guiX(activeDimAttributes.getCascadeSpacing());
     std::string type = dim->Type.getValueAsString();
 
@@ -339,7 +339,7 @@ void QGIDatumLabel::snapRadialType(QPointF& pos, TechDraw::DrawViewDimension* di
     projPnt.ProjectToLine(toMid, normal);
     double trigDist = (toMid - projPnt).Length();
 
-    if (trigDist < dimSpacing * snapPercent && toMid.Length() < dimSpacing) {
+    if (trigDist < dimSpacing * snapTextPercent && toMid.Length() < dimSpacing) {
         double perpDist = toMid.x * normal.x + toMid.y * normal.y;
         double lineLabelDistance = tightBoundingRect().height() * 0.5
             + Rez::guiX(qgivd->getIsoDimensionLineSpacing());
@@ -368,7 +368,7 @@ void QGIDatumLabel::snapAngleType(QPointF& pos, TechDraw::DrawViewDimension* dim
                         QGIViewDimension* qgivd, bool& shouldSnap)
 {
     using std::numbers::pi;
-    qreal snapPercent = 0.4;  // <- copied from original implementation
+    qreal snapTextPercent = Preferences::SnapDimensionsTextFactor();
     double dimSpacing = Rez::guiX(activeDimAttributes.getCascadeSpacing());
     std::string type = dim->Type.getValueAsString();
 
@@ -413,7 +413,7 @@ void QGIDatumLabel::snapAngleType(QPointF& pos, TechDraw::DrawViewDimension* dim
     projPnt = projPnt + mid;
 
     double centerDist = (projPnt - labelCenter).Length();
-    bool shouldSnap2Center = centerDist < dimSpacing * snapPercent;
+    bool shouldSnap2Center = centerDist < dimSpacing * snapTextPercent;
     Base::Vector2d centerSnapPnt = projPnt;
 
     // Neighbouring Angles Snap
@@ -433,11 +433,11 @@ void QGIDatumLabel::snapAngleType(QPointF& pos, TechDraw::DrawViewDimension* dim
         std::swap(startAngle, endAngle);
     }
 
+    double snapChainPercent = Preferences::SnapDimensionsChainFactor();
     auto* qgiv = dynamic_cast<QGIView*>(qgivd->parentItem());
     if (qgiv) {
         auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(qgiv->getViewObject());
         if (dvp) {
-            snapPercent = 0.2;  // <- copied from original implementation
 
             for (auto& d : dvp->getDimensions()) {
                 const std::string nbrType = d->Type.getValueAsString();
@@ -509,9 +509,9 @@ void QGIDatumLabel::snapAngleType(QPointF& pos, TechDraw::DrawViewDimension* dim
                     || std::fabs(nbrStartAngle - endAngle) < Precision::Angular();
                 bool cascadeEdge = std::fabs(nbrStartAngle - startAngle) < Precision::Angular()
                     || std::fabs(nbrEndAngle - endAngle) < Precision::Angular();
-                bool shouldAlign = nbrEdge && std::fabs(rNbr - rSelf) < dimSpacing * snapPercent;
+                bool shouldAlign = nbrEdge && std::fabs(rNbr - rSelf) < dimSpacing * snapChainPercent;
                 bool shouldCascade = cascadeEdge
-                    && std::fabs(std::fabs(rNbr - rSelf) - 2 * dimSpacing) < dimSpacing * snapPercent;
+                    && std::fabs(std::fabs(rNbr - rSelf) - 2 * dimSpacing) < dimSpacing * snapChainPercent;
                 if (!shouldAlign && !shouldCascade) {
                     continue;
                 }
