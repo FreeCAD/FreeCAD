@@ -108,9 +108,16 @@ class DraftWireGuiTools(GuiTools):
         obj.Points = pts
 
     def get_edit_point_context_menu(self, edit_command, obj, node_idx):
-        return [
+        menu = [
             (translate("draft", "Delete Point"), lambda: self.delete_point(obj, node_idx)),
         ]
+        if node_idx == 0 or not obj.Closed:
+            return menu
+        else:
+            return menu + [
+                (translate("draft", "Set Point as First"),
+                lambda: self.set_first_point(obj, node_idx)),
+            ]
 
     def get_edit_obj_context_menu(self, edit_command, obj, position):
         return [
@@ -188,6 +195,11 @@ class DraftWireGuiTools(GuiTools):
 
     def reverse_wire(self, obj):
         obj.Points = reversed(obj.Points)
+        obj.recompute()
+
+    def set_first_point(self, obj, node_idx):
+        pts = obj.Points
+        obj.Points = pts[node_idx:] + pts[0:node_idx]
         obj.recompute()
 
 
