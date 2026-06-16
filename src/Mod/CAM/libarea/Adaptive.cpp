@@ -1760,7 +1760,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
     }
 
-
     // 4) Turn profiles into areas; mark new paths as unfinished (Z=0) and then union
     if (opType == OperationType::otProfilingOutside || opType == OperationType::otProfilingInside) {
         // offset by an extra finishPassOffsetScaled to compensate for undoing that later
@@ -1797,8 +1796,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
 
         inputPaths = fullPaths;
-    }
-    else {
     }
 
     // 5) If going outside the stock is allowed, add regionOutsideStock to both inputPaths and
@@ -1849,8 +1846,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clip.AddPaths(stockRev, PolyType::ptClip, true);
         clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
         clip.Execute(ClipType::ctUnion, initialClearedPaths);
-    }
-    else {
     }
 
     // 6) Compute toolBounds = offset(input paths, -(toolRadius + finishingThickness)).
@@ -1980,8 +1975,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             }
 
             // 10) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
-
-
             ProcessPolyNode(boundPath, currentTBP, finishingPass, initialClearedPaths);
         }
     }
