@@ -242,10 +242,15 @@ private:
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return {
-            {tr("%1 pick edge to trim", "Sketcher Trimming: hint"),
-             {Gui::InputHint::UserInput::MouseLeft}},
-        };
+        using enum Gui::InputHint::UserInput;
+
+        return Gui::lookupHints<SelectMode>(
+            state(),
+            {{.state = SelectMode::SeekFirst,
+              .hints
+              = {{tr("%1 pick edge to trim", "Sketcher Trimming: hint"), {MouseLeft}},
+                 {tr("%1 toggle include axes as trim boundaries"), {KeyU}}}}}
+        );
     }
 };
 
@@ -255,7 +260,7 @@ void DSHTrimmingController::configureToolWidget()
     if (!init) {  // Code to be executed only upon initialisation
         toolWidget->setCheckboxLabel(
             WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_trimming", "Include axes")
+            QApplication::translate("TaskSketcherTool_c1_trimming", "Include axes (U)")
         );
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,

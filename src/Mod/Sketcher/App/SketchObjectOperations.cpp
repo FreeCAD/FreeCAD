@@ -424,15 +424,17 @@ bool SketchObject::seekTrimPoints(
     // remove the axes since they aren't infinite lines and not all intersections will count
     geos.resize(geos.size() - 2);
 
-    Part::GeomLine hAxis, vAxis;
-    int hAxisIndex, vAxisIndex = -1;
+    Part::GeomLine hAxis;
+    Part::GeomLine vAxis;
+    int hAxisIndex = -1;
+    int vAxisIndex = -1;
     if (includeSketchAxes) {
         // re-add the axes as infinite lines
-        hAxisIndex = geos.size();
+        hAxisIndex = static_cast<int>(geos.size());
         hAxis.setLine(Base::Vector3d(0, 0, 0), Base::Vector3d(1, 0, 0));
         geos.push_back(&hAxis);
 
-        vAxisIndex = geos.size();
+        vAxisIndex = static_cast<int>(geos.size());
         vAxis.setLine(Base::Vector3d(0, 0, 0), Base::Vector3d(0, 1, 0));
         geos.push_back(&vAxis);
     }
