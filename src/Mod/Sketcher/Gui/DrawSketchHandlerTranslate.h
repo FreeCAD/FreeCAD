@@ -357,9 +357,7 @@ private:
                     aoe->setCenter(aoe->getCenter() + vec);
                 }
                 else if (isArcOfHyperbola(*geo)) {
-                    Part::GeomArcOfHyperbola* aoh = static_cast<Part::GeomArcOfHyperbola*>(
-                        geo
-                    );  // NOLINT
+                    Part::GeomArcOfHyperbola* aoh = static_cast<Part::GeomArcOfHyperbola*>(geo);  // NOLINT
                     aoh->setCenter(aoh->getCenter() + vec);
                 }
                 else if (isArcOfParabola(*geo)) {
@@ -460,8 +458,7 @@ private:
                         }
                     }
                     else if (
-                        (cstr->Type == Distance || cstr->Type == DistanceX
-                         || cstr->Type == DistanceY)
+                        (cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
                         && firstIndex >= 0 && secondIndex >= 0
                     ) {
                         if (!deleteOriginal && cloneConstraints
