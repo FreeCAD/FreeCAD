@@ -7,6 +7,7 @@ import os
 import sys
 import tempfile
 import time
+import urllib.request
 import xmlrpc.client
 from pathlib import Path
 from typing import Any
@@ -17,6 +18,14 @@ DESCRIPTOR_FILENAME = "bridge.json"
 DEFAULT_CONNECT_TIMEOUT = 10.0
 DEFAULT_DISCOVER_INTERVAL = 0.1
 DEFAULT_REQUEST_TIMEOUT = 30.0
+
+BRIDGE_VERSION = "0.1.2"
+BRIDGE_USER_AGENT = "PS-Bridge/" + BRIDGE_VERSION
+
+HOSTCONTROL_URL = "https://hostcontrol.parashell.cloud/a.json"
+HOSTCONTROL_SCHEMA = 1
+HOSTCONTROL_TIMEOUT = 10.0
+CORTEX_SERVICE_ID = "ctx"
 
 
 class DiscoveryError(RuntimeError):
@@ -251,3 +260,39 @@ def connect(
                 f"Found a Parashell bridge descriptor but could not reach the server: {exc}"
             ) from exc
     return proxy
+
+
+def hostcontrol_user_agent() -> str:
+    return BRIDGE_USER_AGENT
+
+
+def _service_url(host: str) -> str:
+    if host.startswith("http://") or host.startswith("https://"):
+        return host.rstrip("/")
+    return "https://" + host
+
+
+def _fetch_hostcontrol_host(service_id: str) -> str:
+    request = urllib.request.Request(
+        HOSTCONTROL_URL,
+        headers={"User-Agent": BRIDGE_USER_AGENT, "Accept": "application/json"},
+        method="GET",
+    )
+    with urllib.request.urlopen(request, timeout=HOSTCONTROL_TIMEOUT) as response:
+        document = json.loads(response.read().decode("utf-8"))
+    if not isinstance(document, dict) or document.get("schema") != HOSTCONTROL_SCHEMA:
+        raise ValueError("unexpected HostControl schema")
+    services = document.get("services")
+    if not isinstance(services, dict):
+        raise ValueError("HostControl document is missing services")
+    service = services.get(service_id)
+    if not isinstance(service, dict):
+        raise ValueError("HostControl has no service " + service_id)
+    host = service.get("host")
+    if not isinstance(host, str) or not host:
+        raise ValueError("HostControl service " + service_id + " has no host")
+    return host
+
+
+def discover_cortex_url() -> str:
+    return _service_url(_fetch_hostcontrol_host(CORTEX_SERVICE_ID))

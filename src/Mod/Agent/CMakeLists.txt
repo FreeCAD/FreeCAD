@@ -5,15 +5,11 @@ file(GLOB Agent_Binaries CONFIGURE_DEPENDS RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}
     "${CMAKE_CURRENT_SOURCE_DIR}/*.so"
 )
 
-if(NOT Agent_Binaries)
-    message(FATAL_ERROR "No compiled Agent extensions (*.pyd/*.so) found in ${CMAKE_CURRENT_SOURCE_DIR}. "
-                        "Run the Build Cython Modules workflow and sync the output before building.")
-endif()
-
 SET(Agent_SRCS
     Init.py
     InitGui.py
     agent_config.py
+    agent_core.py
 )
 
 SET(Agent_ALL ${Agent_SRCS} ${Agent_Binaries})
