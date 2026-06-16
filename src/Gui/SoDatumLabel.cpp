@@ -39,6 +39,7 @@
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
@@ -1617,6 +1618,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
     // Annotation faces should stay visible even when an ancestor enables back-face culling.
     SoLazyElement::setBackfaceCulling(state, FALSE);
 
+    const auto type = static_cast<Type>(datumtype.getValue());
+    const int numPoints = this->pnts.getNum();
+    const bool isDistance = type == DISTANCE || type == DISTANCEX || type == DISTANCEY;
+    if (isDistance && numPoints < 2) {
+        SoDebugError::postWarning("SoDatumLabel::GLRender", "Too few points to render distance label");
+    }
+
     if (hasText) {
         // Text labels are rendered as SoTexture2 on a quad. Coin's default texture quality
         // (0.5) enables mipmaps, which can blur small UI text. Keep linear filtering but
@@ -1625,13 +1633,12 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
         SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
     }
 
-    ensureCoinGeometry(points, this->pnts.getNum());
+    ensureCoinGeometry(points, numPoints);
 
     float angle = 0.0F;
     SbVec3f textOffset;
     if (hasText) {
-        const auto type = static_cast<Type>(datumtype.getValue());
-        if (type == DISTANCE || type == DISTANCEX || type == DISTANCEY) {
+        if (isDistance && numPoints >= 2) {
             const DistanceGeometry geom = calculateDistanceGeometry(points);
             angle = geom.angle;
             textOffset = geom.textOffset;
