@@ -72,7 +72,6 @@ class AutoPreselection
 {
 public:
     void setEnabled(SbBool on);
-    void setMinumumFPS(double value);
     void addFrametime(double picktime);
     SbBool shouldDisablePreselection() const;
 
@@ -81,7 +80,6 @@ private:
 
 private:
     SbBool enabled = false;
-    double minFPS = 1000.0;
 
     struct Time
     {
@@ -94,10 +92,11 @@ private:
         }
     };
 
-    const int arraySize = 100;
-    std::array<Time, 100> frames;
+    static constexpr std::size_t FrameCount = 100;
+    static constexpr double MinimumFPS = 1000.0;
+    std::array<Time, FrameCount> frames;
     double totalcoin = 0.0;
-    int framecount = 0;
+    std::size_t framecount = 0;
 };
 
 /**  Unified Selection node

@@ -77,6 +77,7 @@
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/ElementNamingUtils.h>
+#include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 
@@ -190,20 +191,14 @@ void AutoPreselection::setEnabled(SbBool on)
     enabled = on;
 }
 
-void AutoPreselection::setMinumumFPS(double value)
-{
-    minFPS = value;
-}
-
 SbBool AutoPreselection::shouldDisablePreselection() const
 {
     if (!enabled) {
         return false;
     }
 
-    double min = minFPS;
-    return std::all_of(frames.cbegin(), frames.cend(), [min](const auto& time) {
-        return time.frmpersec > 0.0 && time.frmpersec < min;
+    return std::all_of(frames.cbegin(), frames.cend(), [](const auto& time) {
+        return time.frmpersec > 0.0 && time.frmpersec < MinimumFPS;
     });
 }
 
@@ -219,11 +214,11 @@ void AutoPreselection::resetFrameCounter()
 
 void AutoPreselection::addFrametime(double picktime)
 {
-    int index = framecount % arraySize;
+    auto index = framecount % FrameCount;
     framecount++;
 
     totalcoin += (picktime - frames[index].traversal);
-    double coinfps = totalcoin / std::min(framecount, arraySize);
+    double coinfps = totalcoin / std::min(framecount, FrameCount);
 
     frames[index].traversal = picktime;
     frames[index].frmpersec = 1.0 / coinfps;
@@ -1106,6 +1101,9 @@ void SoFCUnifiedSelection::handleEvent(SoHandleEventAction* action)
             if (autoPreselect.shouldDisablePreselection()) {
                 autoPreselect.setEnabled(false);
                 this->preselectionMode.setValue(SoFCUnifiedSelection::OFF);
+                Base::Console().warning(
+                    "Preselection disabled because picking performance is too slow\n"
+                );
             }
         }
     }
