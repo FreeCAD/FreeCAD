@@ -810,7 +810,10 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
             pObject->getTypeId().getName(),
             msg.x,
             msg.y,
-            msg.z
+            msg.z,
+            SelectionChanges::MsgSource::Any,
+            msg.hasPickedPoint ? SelectionChanges::PickedPoint::Valid
+                               : SelectionChanges::PickedPoint::Invalid
         );
 
         try {
@@ -908,7 +911,8 @@ int SelectionSingleton::setPreselect(
     float x,
     float y,
     float z,
-    SelectionChanges::MsgSource signal
+    SelectionChanges::MsgSource signal,
+    SelectionChanges::PickedPoint pickedPoint
 )
 {
     if (!pDocName || !pObjectName) {
@@ -999,7 +1003,8 @@ int SelectionSingleton::setPreselect(
         x,
         y,
         z,
-        signal
+        signal,
+        pickedPoint
     );
 
     if (Chng.Type == SelectionChanges::SetPreselect) {
@@ -1297,7 +1302,8 @@ bool SelectionSingleton::addSelection(
     float y,
     float z,
     const std::vector<SelObj>* pickedList,
-    bool clearPreselect
+    bool clearPreselect,
+    SelectionChanges::PickedPoint pickedPoint
 )
 {
     auto context = getSelectionContext(pDocName);
@@ -1373,7 +1379,9 @@ bool SelectionSingleton::addSelection(
         temp.TypeName,
         x,
         y,
-        z
+        z,
+        SelectionChanges::MsgSource::Any,
+        pickedPoint
     );
 
     FC_LOG(
