@@ -88,6 +88,7 @@
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <QBitmap>
+#include <QElapsedTimer>
 #include <QEventLoop>
 #if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
 # include <QGuiApplication>
@@ -184,6 +185,68 @@ private:
 
 namespace
 {
+constexpr qint64 DimensionPaneUpdateIntervalMs = 100;
+
+struct DimensionPaneState
+{
+    QString text;
+    QElapsedTimer updateTimer;
+};
+
+DimensionPaneState& dimensionPaneState()
+{
+    static DimensionPaneState state;
+    return state;
+}
+
+QString dimensionText(const View3DInventorViewer& viewer)
+{
+    float fHeight = -1.0;
+    float fWidth = -1.0;
+    viewer.getDimensions(fHeight, fWidth);
+
+    std::string dim;
+
+    if (fWidth >= 0.0 && fHeight >= 0.0) {
+        // Translate screen units into user's unit schema
+        Base::Quantity qWidth(Base::Quantity::MilliMetre);
+        Base::Quantity qHeight(Base::Quantity::MilliMetre);
+        qWidth.setValue(fWidth);
+        qHeight.setValue(fHeight);
+        auto wStr = Base::UnitsApi::schemaTranslate(qWidth);
+        auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
+
+        // Create final string and update window
+        dim = fmt::format("{} x {}", wStr, hStr);
+    }
+
+    return QString::fromStdString(dim);
+}
+
+void updateDimensionPane(const View3DInventorViewer& viewer, bool forceUpdate)
+{
+    auto& state = dimensionPaneState();
+    if (!forceUpdate && state.updateTimer.isValid()
+        && state.updateTimer.elapsed() < DimensionPaneUpdateIntervalMs) {
+        return;
+    }
+
+    auto text = dimensionText(viewer);
+    if (text == state.text) {
+        state.updateTimer.restart();
+        return;
+    }
+
+    state.text = text;
+    state.updateTimer.restart();
+    getMainWindow()->setPaneText(2, text);
+}
+
+void clearDimensionPaneState()
+{
+    dimensionPaneState() = {};
+}
+
 int qImageByteCount(const QImage& image)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
@@ -1267,6 +1330,7 @@ View3DInventorViewer::~View3DInventorViewer()
     if (getMainWindow()) {
         getMainWindow()->setPaneText(2, QLatin1String(""));
     }
+    clearDimensionPaneState();
 
     detachSelection();
 
@@ -2669,6 +2733,7 @@ void View3DInventorViewer::interactionFinishCB(void* ud, SoQTQuarterAdaptor* vie
     Q_UNUSED(ud)
     SoGLRenderAction* glra = viewer->getSoRenderManager()->getGLRenderAction();
     SoFCInteractiveElement::set(glra->getState(), viewer->getSceneGraph(), false);
+    updateDimensionPane(*static_cast<View3DInventorViewer*>(viewer), true);
     viewer->redraw();
 }
 
@@ -3336,26 +3401,7 @@ void View3DInventorViewer::getDimensions(float& fHeight, float& fWidth) const
 
 void View3DInventorViewer::printDimension() const
 {
-    float fHeight = -1.0;
-    float fWidth = -1.0;
-    getDimensions(fHeight, fWidth);
-
-    std::string dim;
-
-    if (fWidth >= 0.0 && fHeight >= 0.0) {
-        // Translate screen units into user's unit schema
-        Base::Quantity qWidth(Base::Quantity::MilliMetre);
-        Base::Quantity qHeight(Base::Quantity::MilliMetre);
-        qWidth.setValue(fWidth);
-        qHeight.setValue(fHeight);
-        auto wStr = Base::UnitsApi::schemaTranslate(qWidth);
-        auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
-
-        // Create final string and update window
-        dim = fmt::format("{} x {}", wStr, hStr);
-    }
-
-    getMainWindow()->setPaneText(2, QString::fromStdString(dim));
+    updateDimensionPane(*this, false);
 }
 
 void View3DInventorViewer::selectAll()
