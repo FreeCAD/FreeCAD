@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>გადაატარებს ბულევურ ოპერაციებს მონიშნული მოხაზულობებით</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -2261,7 +2261,7 @@ of the projection.</source>
       <translation>მყარი</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="423"/>
+      <location filename="../../TaskSweep.cpp" line="417"/>
       <source>Sweep</source>
       <translation>შლილი</translation>
     </message>
@@ -4890,7 +4890,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>ძალიან ცოტა ელემენტი</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
@@ -5258,12 +5258,12 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>ძალიან ცოტა ელემენტი</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="382"/>
       <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
+      <translation>არასწორი მონიშნული</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="393"/>
@@ -5276,39 +5276,39 @@ only created cuts will be visible</source>
       <translation>%1-ის გამოყენება პროფილად და ტრაექტორიად შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="431"/>
       <source>Input error</source>
       <translation>შეყვანის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="478"/>
+      <location filename="../../TaskSweep.cpp" line="472"/>
       <source>Done</source>
       <translation>მზადაა</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="481"/>
+      <location filename="../../TaskSweep.cpp" line="475"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>3D ხედში მონიშნეთ ერთი ან მეტი დაკავშირებული წიბო და დააწექით "დასრულება"-ს</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="505"/>
-      <location filename="../../TaskSweep.cpp" line="513"/>
+      <location filename="../../TaskSweep.cpp" line="499"/>
+      <location filename="../../TaskSweep.cpp" line="507"/>
       <source>The selected sweep path is invalid.</source>
       <translation>მონიშნული შლილის ტრაექტორია არასწორია.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="505"/>
-      <location filename="../../TaskSweep.cpp" line="513"/>
+      <location filename="../../TaskSweep.cpp" line="499"/>
+      <location filename="../../TaskSweep.cpp" line="507"/>
       <source>Sweep Path</source>
       <translation>შლილის ტრაექტორია</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="525"/>
+      <location filename="../../TaskSweep.cpp" line="519"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="526"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Sweep</source>
       <translation>შლილი</translation>
     </message>
@@ -5802,12 +5802,12 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1502"/>
       <source>%1 select reference</source>
-      <translation type="unfinished">%1 select reference</translation>
+      <translation>%1 აირჩიეთ მიმართვა</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1508"/>
       <source>2x%1 select and confirm</source>
-      <translation type="unfinished">2x%1 select and confirm</translation>
+      <translation>2x%1 მონიშვნა და დადასტურება</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1658"/>
@@ -5995,7 +5995,7 @@ Individual boolean operation checks:</source>
       <translation>ფრენე</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="551"/>
+      <location filename="../../TaskSweep.cpp" line="545"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>შლილი ტრაექტორიისთვის მონიშნეთ, სულ ცოტა 1 პროფილი და 
@@ -6140,7 +6140,7 @@ Continue?</source>
       <location filename="../../Command.cpp" line="1082"/>
       <location filename="../../Command.cpp" line="1152"/>
       <source>IGES with colors</source>
-      <translation type="unfinished">IGES with colors</translation>
+      <translation>IGES ფერებით</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1201"/>
@@ -6481,7 +6481,7 @@ Continue?</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="185"/>
       <source>Distance in Parameter Space</source>
-      <translation type="unfinished">Distance in Parameter Space</translation>
+      <translation>დაშორება პარამეტრის სივრცეში</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="186"/>
@@ -7722,7 +7722,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="940"/>
       <source>Reset spacing</source>
-      <translation type="unfinished">Reset spacing</translation>
+      <translation>დაშორების ჩამოყრა</translation>
     </message>
   </context>
   <context>

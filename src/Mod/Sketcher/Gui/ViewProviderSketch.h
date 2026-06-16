@@ -47,6 +47,8 @@
 
 #include "EditModeCoinManager.h"
 #include "PropertyVisualLayerList.h"
+#include "AutoConstraint.h"
+
 #include "ShortcutListener.h"
 #include "Utils.h"
 
@@ -103,6 +105,7 @@ namespace SketcherGui
 class EditModeCoinManager;
 class SnapManager;
 class DrawSketchHandler;
+class DrawSketchHandlerDragAutoConstraint;
 class ViewProviderSketchCommandConstraintsAttorney;
 
 using GeoList = Sketcher::GeoList;
@@ -866,7 +869,7 @@ private:
     //@{
     /// dragging helpers
     void initDragging(int geoId, Sketcher::PointPos pos, Gui::View3DInventorViewer* viewer);
-    void doDragStep(double x, double y);
+    bool doDragStep(double x, double y);
     void commitDragMove(double x, double y);
 
     //@}
@@ -984,6 +987,8 @@ private:
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
+    void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve);
+    bool isLineExtensionAutoConstraintHintVisible(const std::vector<Base::Vector2d>& HintCurve) const;
     /// draw the edit markers
     void drawEditMarkers(
         const std::vector<Base::Vector2d>& EditMarkers,
@@ -1051,6 +1056,8 @@ private:
     std::unique_ptr<ViewProviderSketch::ParameterObserver> pObserver;
 
     std::unique_ptr<DrawSketchHandler> sketchHandler;
+
+    std::unique_ptr<DrawSketchHandlerDragAutoConstraint> dragAutoConstraintHandler;
 
     ViewProviderParameters viewProviderParameters;
 

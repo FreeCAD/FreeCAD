@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <QString>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyUnits.h>

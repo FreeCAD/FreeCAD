@@ -26,7 +26,6 @@
 #include <memory>
 
 #include <QDialog>
-#include <QDir>
 #include <QIcon>
 #include <QPoint>
 #include <QStandardItem>

@@ -1,26 +1,30 @@
-/***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2004 Jürgen Riegel <juergen.riegel@web.de>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
+
+#include <algorithm>
+#include <cmath>
 
 #include <Inventor/SoFCPlacementIndicatorKit.h>
 
@@ -37,11 +41,15 @@
 
 #include <fmt/format.h>
 
+#include <algorithm>
+#include <array>
+
 #include <Inventor/SbBox.h>
 #include <Inventor/SoEventManager.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
@@ -74,6 +82,11 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoTextureCoordinate2.h>
+#include <Inventor/nodes/SoVertexProperty.h>
 #include <QBitmap>
 #include <QEventLoop>
 #if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
@@ -93,6 +106,7 @@
 #include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
 #include <Base/Profiler.h>
@@ -167,6 +181,452 @@ public:
 private:
     View3DInventorViewer& viewer;
 };
+
+namespace
+{
+int qImageByteCount(const QImage& image)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    return static_cast<int>(image.sizeInBytes());
+#else
+    return image.byteCount();
+#endif
+}
+
+void setOverlayCacheContext(SoGLRenderAction& action, const View3DInventorViewer* viewer)
+{
+    if (!viewer || !viewer->getSoRenderManager()) {
+        return;
+    }
+
+    if (auto* glra = viewer->getSoRenderManager()->getGLRenderAction()) {
+        action.setCacheContext(glra->getCacheContext());
+    }
+}
+
+SoSeparator* create2DOverlayRoot(int viewportWidth, int viewportHeight)
+{
+    auto* root = new SoSeparator;
+    root->ref();
+
+    auto* camera = new SoOrthographicCamera;
+    camera->aspectRatio.setValue(
+        static_cast<float>(viewportWidth) / static_cast<float>(viewportHeight)
+    );
+    camera->height.setValue(static_cast<float>(viewportHeight));
+    root->addChild(camera);
+
+    auto* depth = new SoDepthBuffer;
+    depth->test.setValue(false);
+    depth->write.setValue(false);
+    depth->function.setValue(SoDepthBuffer::ALWAYS);
+    root->addChild(depth);
+
+    auto* lightModel = new SoLightModel;
+    lightModel->model.setValue(SoLightModel::BASE_COLOR);
+    root->addChild(lightModel);
+
+    return root;
+}
+
+void applyOverlay(SoNode* root, int viewportWidth, int viewportHeight, const View3DInventorViewer* viewer)
+{
+    SoGLRenderAction action(SbViewportRegion(viewportWidth, viewportHeight));
+    setOverlayCacheContext(action, viewer);
+    action.setTransparencyType(SoGLRenderAction::BLEND);
+    action.apply(root);
+}
+
+struct OverlayImageState
+{
+    SoSeparator* root {nullptr};
+    SoOrthographicCamera* camera {nullptr};
+    SoDepthBuffer* depth {nullptr};
+    SoLightModel* lightModel {nullptr};
+    SoMaterial* material {nullptr};
+    SoTexture2* texture {nullptr};
+    SoTextureCoordinate2* texCoord {nullptr};
+    SoVertexProperty* vertices {nullptr};
+    SoFaceSet* quad {nullptr};
+    std::vector<unsigned char> pixelStorage;
+
+    void ensureCreated()
+    {
+        if (root) {
+            return;
+        }
+
+        root = new SoSeparator;
+        root->ref();
+
+        camera = new SoOrthographicCamera;
+        root->addChild(camera);
+
+        depth = new SoDepthBuffer;
+        depth->test.setValue(false);
+        depth->write.setValue(false);
+        depth->function.setValue(SoDepthBuffer::ALWAYS);
+        root->addChild(depth);
+
+        lightModel = new SoLightModel;
+        lightModel->model.setValue(SoLightModel::BASE_COLOR);
+        root->addChild(lightModel);
+
+        material = new SoMaterial;
+        material->diffuseColor.setValue(1.0f, 1.0f, 1.0f);
+        material->transparency.setValue(0.0f);
+        root->addChild(material);
+
+        texture = new SoTexture2;
+        texture->wrapS.setValue(SoTexture2::CLAMP);
+        texture->wrapT.setValue(SoTexture2::CLAMP);
+        root->addChild(texture);
+
+        texCoord = new SoTextureCoordinate2;
+        texCoord->point.set1Value(0, SbVec2f(0.0f, 0.0f));
+        texCoord->point.set1Value(1, SbVec2f(1.0f, 0.0f));
+        texCoord->point.set1Value(2, SbVec2f(1.0f, 1.0f));
+        texCoord->point.set1Value(3, SbVec2f(0.0f, 1.0f));
+        root->addChild(texCoord);
+
+        vertices = new SoVertexProperty;
+
+        quad = new SoFaceSet;
+        quad->vertexProperty.setValue(vertices);
+        quad->numVertices.setValue(4);
+        root->addChild(quad);
+    }
+};
+
+OverlayImageState& overlayImageState()
+{
+    static OverlayImageState state;
+    return state;
+}
+
+bool hasFramebufferBlitSupport()
+{
+    return QOpenGLFramebufferObject::hasOpenGLFramebufferBlit();
+}
+
+void renderOverlayImage(
+    const QImage& image,
+    int viewportWidth,
+    int viewportHeight,
+    float drawWidth,
+    float drawHeight,
+    const View3DInventorViewer* viewer
+)
+{
+    if (viewportWidth <= 0 || viewportHeight <= 0 || image.isNull()) {
+        return;
+    }
+
+    auto& overlay = overlayImageState();
+    overlay.ensureCreated();
+    if (!overlay.root || !overlay.camera || !overlay.texture || !overlay.vertices) {
+        return;
+    }
+
+    overlay.camera->aspectRatio.setValue(
+        static_cast<float>(viewportWidth) / static_cast<float>(viewportHeight)
+    );
+    overlay.camera->height.setValue(static_cast<float>(viewportHeight));
+
+    QImage rgba = image.convertToFormat(QImage::Format_RGBA8888);
+    overlay.pixelStorage.assign(rgba.constBits(), rgba.constBits() + qImageByteCount(rgba));
+    overlay.texture->image
+        .setValue(SbVec2s(rgba.width(), rgba.height()), 4, overlay.pixelStorage.data());
+
+    const float baseX = -0.5f * static_cast<float>(viewportWidth);
+    const float baseY = -0.5f * static_cast<float>(viewportHeight);
+
+    overlay.vertices->vertex.set1Value(0, SbVec3f(baseX, baseY, 0.0f));
+    overlay.vertices->vertex.set1Value(1, SbVec3f(baseX + drawWidth, baseY, 0.0f));
+    overlay.vertices->vertex.set1Value(2, SbVec3f(baseX + drawWidth, baseY + drawHeight, 0.0f));
+    overlay.vertices->vertex.set1Value(3, SbVec3f(baseX, baseY + drawHeight, 0.0f));
+
+    applyOverlay(overlay.root, viewportWidth, viewportHeight, viewer);
+}
+
+void renderOverlaySolidColor(
+    const QColor& col,
+    int viewportWidth,
+    int viewportHeight,
+    const View3DInventorViewer* viewer
+)
+{
+    SoSeparator* root = create2DOverlayRoot(viewportWidth, viewportHeight);
+
+    auto* material = new SoMaterial;
+    material->diffuseColor.setValue(
+        static_cast<float>(col.redF()),
+        static_cast<float>(col.greenF()),
+        static_cast<float>(col.blueF())
+    );
+    material->transparency.setValue(1.0f - static_cast<float>(col.alphaF()));
+    root->addChild(material);
+
+    auto* vertices = new SoVertexProperty;
+    vertices->vertex.set1Value(0, SbVec3f(-0.5f * viewportWidth, -0.5f * viewportHeight, 0.0f));
+    vertices->vertex.set1Value(1, SbVec3f(0.5f * viewportWidth, -0.5f * viewportHeight, 0.0f));
+    vertices->vertex.set1Value(2, SbVec3f(0.5f * viewportWidth, 0.5f * viewportHeight, 0.0f));
+    vertices->vertex.set1Value(3, SbVec3f(-0.5f * viewportWidth, 0.5f * viewportHeight, 0.0f));
+
+    auto* face = new SoFaceSet;
+    face->vertexProperty.setValue(vertices);
+    face->numVertices.setValue(4);
+    root->addChild(face);
+
+    applyOverlay(root, viewportWidth, viewportHeight, viewer);
+    root->unref();
+}
+
+SoSeparator* createAxisArrowGeometry()
+{
+    constexpr float shaftLength = 1.0f - 1.0f / 3.0f;
+    constexpr float halfThickness = 0.02f;
+    constexpr float headHalfExtent = 0.5f / 4.0f;
+
+    auto* root = new SoSeparator;
+
+    auto* vertices = new SoVertexProperty;
+    int v = 0;
+
+    auto add = [&](float x, float y, float z) {
+        vertices->vertex.set1Value(v++, SbVec3f(x, y, z));
+    };
+
+    // Shaft (5 quads)
+    add(0.0f, -halfThickness, halfThickness);
+    add(0.0f, halfThickness, halfThickness);
+    add(shaftLength, halfThickness, halfThickness);
+    add(shaftLength, -halfThickness, halfThickness);
+
+    add(0.0f, -halfThickness, -halfThickness);
+    add(0.0f, halfThickness, -halfThickness);
+    add(shaftLength, halfThickness, -halfThickness);
+    add(shaftLength, -halfThickness, -halfThickness);
+
+    add(0.0f, -halfThickness, halfThickness);
+    add(0.0f, -halfThickness, -halfThickness);
+    add(shaftLength, -halfThickness, -halfThickness);
+    add(shaftLength, -halfThickness, halfThickness);
+
+    add(0.0f, halfThickness, halfThickness);
+    add(0.0f, halfThickness, -halfThickness);
+    add(shaftLength, halfThickness, -halfThickness);
+    add(shaftLength, halfThickness, halfThickness);
+
+    add(0.0f, halfThickness, halfThickness);
+    add(0.0f, halfThickness, -halfThickness);
+    add(0.0f, -halfThickness, -halfThickness);
+    add(0.0f, -halfThickness, halfThickness);
+
+    // Tip (2 triangles)
+    add(1.0f, 0.0f, 0.0f);
+    add(shaftLength, headHalfExtent, 0.0f);
+    add(shaftLength, -headHalfExtent, 0.0f);
+
+    add(1.0f, 0.0f, 0.0f);
+    add(shaftLength, 0.0f, headHalfExtent);
+    add(shaftLength, 0.0f, -headHalfExtent);
+
+    // Tip base (1 quad)
+    add(shaftLength, headHalfExtent, 0.0f);
+    add(shaftLength, 0.0f, headHalfExtent);
+    add(shaftLength, -headHalfExtent, 0.0f);
+    add(shaftLength, 0.0f, -headHalfExtent);
+
+    static constexpr int faceCounts[] = {4, 4, 4, 4, 4, 3, 3, 4};
+    auto* faceSet = new SoFaceSet;
+    faceSet->vertexProperty.setValue(vertices);
+    faceSet->numVertices.setValues(0, static_cast<int>(std::size(faceCounts)), faceCounts);
+
+    root->addChild(faceSet);
+    return root;
+}
+
+struct OverlayAxisCrossState
+{
+    SoSeparator* axisRoot {nullptr};
+    SoPerspectiveCamera* axisCamera {nullptr};
+    SoDepthBuffer* axisDepth {nullptr};
+    SoLightModel* axisLightModel {nullptr};
+    SoTransform* axisTransform {nullptr};
+    SoSeparator* axisGroup {nullptr};
+
+    SoSeparator* xAxis {nullptr};
+    SoMaterial* xMaterial {nullptr};
+
+    SoSeparator* yAxis {nullptr};
+    SoMaterial* yMaterial {nullptr};
+    SoRotation* yRotation {nullptr};
+
+    SoSeparator* zAxis {nullptr};
+    SoMaterial* zMaterial {nullptr};
+    SoRotation* zRotation {nullptr};
+
+    SoSeparator* lettersRoot {nullptr};
+    SoOrthographicCamera* lettersCamera {nullptr};
+    SoDepthBuffer* lettersDepth {nullptr};
+    SoLightModel* lettersLightModel {nullptr};
+    SoMaterial* lettersMaterial {nullptr};
+
+    struct Letter
+    {
+        SoSeparator* root {nullptr};
+        SoTranslation* position {nullptr};
+        SoScale* scale {nullptr};
+        SoTexture2* texture {nullptr};
+        SoVertexProperty* vertices {nullptr};
+        SoFaceSet* quad {nullptr};
+    };
+
+    Letter xLetter;
+    Letter yLetter;
+    Letter zLetter;
+
+    void ensureCreated()
+    {
+        if (axisRoot) {
+            return;
+        }
+
+        axisRoot = new SoSeparator;
+        axisRoot->ref();
+
+        axisCamera = new SoPerspectiveCamera;
+        axisCamera->position.setValue(0.0f, 0.0f, 0.0f);
+        axisCamera->orientation.setValue(SbRotation::identity());
+        axisCamera->heightAngle.setValue(static_cast<float>(std::numbers::pi / 4.0));
+        axisCamera->nearDistance.setValue(0.1f);
+        axisCamera->farDistance.setValue(10.0f);
+        axisRoot->addChild(axisCamera);
+
+        axisDepth = new SoDepthBuffer;
+        axisDepth->test.setValue(false);
+        axisDepth->write.setValue(false);
+        axisDepth->function.setValue(SoDepthBuffer::ALWAYS);
+        axisRoot->addChild(axisDepth);
+
+        axisLightModel = new SoLightModel;
+        axisLightModel->model.setValue(SoLightModel::BASE_COLOR);
+        axisRoot->addChild(axisLightModel);
+
+        axisTransform = new SoTransform;
+        axisTransform->translation.setValue(0.0f, 0.0f, -3.5f);
+        axisRoot->addChild(axisTransform);
+
+        axisGroup = new SoSeparator;
+        axisRoot->addChild(axisGroup);
+
+        auto* arrow = createAxisArrowGeometry();
+
+        xAxis = new SoSeparator;
+        xAxis->ref();
+        xMaterial = new SoMaterial;
+        xAxis->addChild(xMaterial);
+        xAxis->addChild(arrow);
+
+        yAxis = new SoSeparator;
+        yAxis->ref();
+        yMaterial = new SoMaterial;
+        yAxis->addChild(yMaterial);
+        yRotation = new SoRotation;
+        yRotation->rotation.setValue(
+            SbVec3f(0.0f, 0.0f, 1.0f),
+            static_cast<float>(std::numbers::pi / 2.0)
+        );
+        yAxis->addChild(yRotation);
+        yAxis->addChild(arrow);
+
+        zAxis = new SoSeparator;
+        zAxis->ref();
+        zMaterial = new SoMaterial;
+        zAxis->addChild(zMaterial);
+        zRotation = new SoRotation;
+        zRotation->rotation.setValue(
+            SbVec3f(0.0f, 1.0f, 0.0f),
+            static_cast<float>(-std::numbers::pi / 2.0)
+        );
+        zAxis->addChild(zRotation);
+        zAxis->addChild(arrow);
+
+        lettersRoot = new SoSeparator;
+        lettersRoot->ref();
+
+        lettersCamera = new SoOrthographicCamera;
+        lettersRoot->addChild(lettersCamera);
+
+        lettersDepth = new SoDepthBuffer;
+        lettersDepth->test.setValue(false);
+        lettersDepth->write.setValue(false);
+        lettersDepth->function.setValue(SoDepthBuffer::ALWAYS);
+        lettersRoot->addChild(lettersDepth);
+
+        lettersLightModel = new SoLightModel;
+        lettersLightModel->model.setValue(SoLightModel::BASE_COLOR);
+        lettersRoot->addChild(lettersLightModel);
+
+        lettersMaterial = new SoMaterial;
+        lettersMaterial->diffuseColor.setValue(1.0f, 1.0f, 1.0f);
+        lettersMaterial->transparency.setValue(0.0f);
+        lettersRoot->addChild(lettersMaterial);
+
+        auto buildLetter = [](Letter& out, int w, int h) {
+            out.root = new SoSeparator;
+
+            out.position = new SoTranslation;
+            out.root->addChild(out.position);
+
+            out.scale = new SoScale;
+            out.root->addChild(out.scale);
+
+            out.texture = new SoTexture2;
+            out.texture->wrapS.setValue(SoTexture2::CLAMP);
+            out.texture->wrapT.setValue(SoTexture2::CLAMP);
+            out.texture->model.setValue(SoTexture2::MODULATE);
+            out.texture->enableCompressedTexture.setValue(FALSE);
+            out.root->addChild(out.texture);
+
+            out.vertices = new SoVertexProperty;
+            out.vertices->vertex.set1Value(0, SbVec3f(0.0f, 0.0f, 0.0f));
+            out.vertices->vertex.set1Value(1, SbVec3f(static_cast<float>(w), 0.0f, 0.0f));
+            out.vertices->vertex.set1Value(
+                2,
+                SbVec3f(static_cast<float>(w), static_cast<float>(h), 0.0f)
+            );
+            out.vertices->vertex.set1Value(3, SbVec3f(0.0f, static_cast<float>(h), 0.0f));
+
+            out.vertices->texCoord.set1Value(0, SbVec2f(0.0f, 0.0f));
+            out.vertices->texCoord.set1Value(1, SbVec2f(1.0f, 0.0f));
+            out.vertices->texCoord.set1Value(2, SbVec2f(1.0f, 1.0f));
+            out.vertices->texCoord.set1Value(3, SbVec2f(0.0f, 1.0f));
+
+            out.quad = new SoFaceSet;
+            out.quad->vertexProperty.setValue(out.vertices);
+            out.quad->numVertices.setValue(4);
+            out.root->addChild(out.quad);
+        };
+
+        buildLetter(xLetter, XPM_WIDTH, XPM_HEIGHT);
+        buildLetter(yLetter, YPM_WIDTH, YPM_HEIGHT);
+        buildLetter(zLetter, ZPM_WIDTH, ZPM_HEIGHT);
+
+        lettersRoot->addChild(xLetter.root);
+        lettersRoot->addChild(yLetter.root);
+        lettersRoot->addChild(zLetter.root);
+    }
+};
+
+OverlayAxisCrossState& overlayAxisCrossState()
+{
+    static OverlayAxisCrossState state;
+    return state;
+}
+
+}  // namespace
 
 /*!
 As ProgressBar has no chance to control the incoming Qt events of Quarter so we need to stop
@@ -2330,7 +2790,7 @@ void View3DInventorViewer::setRenderType(RenderType type)
                 fboFormat.setSamples(getNumSamples());
                 fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
                 auto fbo = new QOpenGLFramebufferObject(width, height, fboFormat);
-                if (fbo->format().samples() > 0) {
+                if (fbo->format().samples() > 0 && hasFramebufferBlitSupport()) {
                     renderToFramebuffer(fbo);
                     framebuffer = new QOpenGLFramebufferObject(fbo->size());
                     // this is needed to be able to render the texture later
@@ -2338,6 +2798,16 @@ void View3DInventorViewer::setRenderType(RenderType type)
                     delete fbo;
                 }
                 else {
+                    if (fbo->format().samples() > 0 && !hasFramebufferBlitSupport()) {
+                        Base::Console().warning(
+                            "Framebuffer blit is unavailable; falling back to a single-sample "
+                            "offscreen buffer\n"
+                        );
+                        delete fbo;
+                        QOpenGLFramebufferObjectFormat fallbackFormat;
+                        fallbackFormat.setAttachment(QOpenGLFramebufferObject::Depth);
+                        fbo = new QOpenGLFramebufferObject(width, height, fallbackFormat);
+                    }
                     renderToFramebuffer(fbo);
                     framebuffer = fbo;
                 }
@@ -2482,8 +2952,6 @@ void View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
     int width = fbo->size().width();
     int height = fbo->size().height();
 
-    glDisable(GL_TEXTURE_2D);
-    glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LINE_SMOOTH);
 
@@ -2541,68 +3009,74 @@ void View3DInventorViewer::renderFramebuffer()
 {
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
+    const int viewportWidth = size[0];
+    const int viewportHeight = size[1];
+    if (!this->framebuffer || viewportWidth <= 0 || viewportHeight <= 0) {
+        return;
+    }
 
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glDisable(GL_LIGHTING);
-    glViewport(0, 0, size[0], size[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glDisable(GL_DEPTH_TEST);
+    static_cast<QOpenGLWidget*>(this->viewport())->makeCurrent();  // NOLINT
+    glViewport(0, 0, viewportWidth, viewportHeight);
 
-    glClear(GL_COLOR_BUFFER_BIT);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, this->framebuffer->texture());
-    glColor3f(1.0, 1.0, 1.0);
-
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0F, 0.0F);
-    glVertex2f(-1.0, -1.0F);
-    glTexCoord2f(1.0F, 0.0F);
-    glVertex2f(1.0F, -1.0F);
-    glTexCoord2f(1.0F, 1.0F);
-    glVertex2f(1.0F, 1.0F);
-    glTexCoord2f(0.0F, 1.0F);
-    glVertex2f(-1.0F, 1.0F);
-    glEnd();
+    if (hasFramebufferBlitSupport()) {
+        const QSize srcSize = this->framebuffer->size();
+        QOpenGLFramebufferObject::blitFramebuffer(
+            nullptr,
+            QRect(0, 0, viewportWidth, viewportHeight),
+            this->framebuffer,
+            QRect(0, 0, srcSize.width(), srcSize.height()),
+            GL_COLOR_BUFFER_BIT,
+            GL_NEAREST
+        );
+    }
+    else {
+        renderOverlayImage(
+            this->framebuffer->toImage(false),
+            viewportWidth,
+            viewportHeight,
+            static_cast<float>(viewportWidth),
+            static_cast<float>(viewportHeight),
+            this
+        );
+    }
 
     printDimension();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
     }
-
-    glPopAttrib();
 }
 
 void View3DInventorViewer::renderGLImage()
 {
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
+    const int viewportWidth = size[0];
+    const int viewportHeight = size[1];
+    if (viewportWidth <= 0 || viewportHeight <= 0 || glImage.isNull()) {
+        return;
+    }
 
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glDisable(GL_LIGHTING);
-    glViewport(0, 0, size[0], size[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, size[0], 0, size[1], 0, 100);  // NOLINT
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glDisable(GL_DEPTH_TEST);
+    static_cast<QOpenGLWidget*>(this->viewport())->makeCurrent();  // NOLINT
+    glViewport(0, 0, viewportWidth, viewportHeight);
+    const QColor col = this->backgroundColor();
+    glClearColor(float(col.redF()), float(col.greenF()), float(col.blueF()), 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glRasterPos2f(0, 0);
-    glDrawPixels(glImage.width(), glImage.height(), GL_BGRA, GL_UNSIGNED_BYTE, glImage.bits());
+    renderOverlayImage(
+        glImage,
+        viewportWidth,
+        viewportHeight,
+        static_cast<float>(glImage.width()),
+        static_cast<float>(glImage.height()),
+        this
+    );
 
     printDimension();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
     }
-
-    glPopAttrib();
 }
 
 // #define ENABLE_GL_DEPTH_RANGE
@@ -2775,11 +3249,17 @@ void View3DInventorViewer::renderScene()
     // https://bugreports.qt.io/browse/QTBUG-119214
     // https://github.com/FreeCAD/FreeCAD/issues/8341
     // https://github.com/FreeCAD/FreeCAD/issues/6177
-    glPushAttrib(GL_COLOR_BUFFER_BIT);
+    GLboolean colorMask[4] = {GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE};
+    glGetBooleanv(GL_COLOR_WRITEMASK, colorMask);
+    GLfloat clearColor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    glGetFloatv(GL_COLOR_CLEAR_VALUE, clearColor);
+
     glColorMask(false, false, false, true);
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
-    glPopAttrib();
+
+    glColorMask(colorMask[0], colorMask[1], colorMask[2], colorMask[3]);
+    glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
 }
 
 void View3DInventorViewer::setSeekMode(bool on)
@@ -2951,9 +3431,14 @@ SbVec3f View3DInventorViewer::getViewDirection() const
 
 void View3DInventorViewer::setViewDirection(SbVec3f dir)
 {
-    if (SoCamera* cam = this->getSoRenderManager()->getCamera()) {
-        cam->orientation.setValue(SbRotation(SbVec3f(0, 0, -1), dir));
+    if (!navigation) {
+        return;
     }
+    navigation->setCameraOrientationValue(
+        getCamera(),
+        SbRotation(SbVec3f(0, 0, -1), dir),
+        NavigationStyle::OrientationChangeSource::Programmatic
+    );
 }
 
 SbVec3f View3DInventorViewer::getUpDirection() const
@@ -3480,6 +3965,17 @@ std::shared_ptr<NavigationAnimation> View3DInventorViewer::setCameraOrientation(
     const bool moveToCenter
 ) const
 {
+    SoCamera* camera = getCamera();
+    if (!camera) {
+        return {};
+    }
+    if (!navigation->canChangeCameraOrientation(
+            camera->orientation.getValue(),
+            orientation,
+            NavigationStyle::OrientationChangeSource::Programmatic
+        )) {
+        return {};
+    }
     return navigation->setCameraOrientation(orientation, moveToCenter);
 }
 
@@ -3509,11 +4005,6 @@ void View3DInventorViewer::setCameraType(SoType type)
 
 bool View3DInventorViewer::setCamera(const char* pCamera)
 {
-    SoCamera* CamViewer = getSoRenderManager()->getCamera();
-    if (!CamViewer) {
-        throw Base::RuntimeError("No camera set so far…");
-    }
-
     SoInput in;
     in.setBuffer(pCamera, std::strlen(pCamera));
 
@@ -3526,38 +4017,65 @@ bool View3DInventorViewer::setCamera(const char* pCamera)
 
     // this is to make sure to reliably delete the node
     CoinPtr<SoNode> camPtr {Cam};
+    auto* parsedCamera = static_cast<SoCamera*>(Cam);  // safe downward cast, checked above
+    return applyCameraState(*parsedCamera);
+}
 
-    // toggle between perspective and orthographic camera
-    if (Cam->getTypeId() != CamViewer->getTypeId()) {
-        setCameraType(Cam->getTypeId());
-        CamViewer = getSoRenderManager()->getCamera();
-
-        assert(Cam->getTypeId() == CamViewer->getTypeId());
+bool View3DInventorViewer::applyCameraState(const SoCamera& sourceCamera)
+{
+    SoCamera* targetCamera = getCamera();
+    if (!targetCamera) {
+        throw Base::RuntimeError("No camera set so far…");
     }
 
-    // we just made sure the cameras are the same type, now we can safely downcast
-    if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        auto CamViewerP = static_cast<SoPerspectiveCamera*>(CamViewer);
-        auto CamP = static_cast<SoPerspectiveCamera*>(Cam);
-
-        CamViewerP->position = CamP->position;
-        CamViewerP->orientation = CamP->orientation;
-        CamViewerP->nearDistance = CamP->nearDistance;
-        CamViewerP->farDistance = CamP->farDistance;
-        CamViewerP->focalDistance = CamP->focalDistance;
+    if (navigation
+        && !navigation->canChangeCameraOrientation(
+            targetCamera->orientation.getValue(),
+            sourceCamera.orientation.getValue(),
+            NavigationStyle::OrientationChangeSource::Programmatic
+        )) {
+        return false;
     }
-    else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        auto CamViewerO = static_cast<SoOrthographicCamera*>(CamViewer);
-        auto CamO = static_cast<SoOrthographicCamera*>(Cam);
 
-        CamViewerO->viewportMapping = CamO->viewportMapping;
-        CamViewerO->position = CamO->position;
-        CamViewerO->orientation = CamO->orientation;
-        CamViewerO->nearDistance = CamO->nearDistance;
-        CamViewerO->farDistance = CamO->farDistance;
-        CamViewerO->focalDistance = CamO->focalDistance;
-        CamViewerO->aspectRatio = CamO->aspectRatio;
-        CamViewerO->height = CamO->height;
+    if (sourceCamera.getTypeId() != targetCamera->getTypeId()) {
+        setCameraType(sourceCamera.getTypeId());
+        targetCamera = getCamera();
+        if (!targetCamera) {
+            throw Base::RuntimeError("No camera set so far…");
+        }
+    }
+
+    if (targetCamera->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+        auto* targetPerspective = static_cast<SoPerspectiveCamera*>(targetCamera);
+        if (sourceCamera.getTypeId() != SoPerspectiveCamera::getClassTypeId()) {
+            throw Base::TypeError("Camera type mismatch");
+        }
+
+        const auto& sourcePerspective = static_cast<const SoPerspectiveCamera&>(sourceCamera);
+        targetPerspective->position = sourcePerspective.position;
+        targetPerspective->orientation = sourcePerspective.orientation;
+        targetPerspective->nearDistance = sourcePerspective.nearDistance;
+        targetPerspective->farDistance = sourcePerspective.farDistance;
+        targetPerspective->focalDistance = sourcePerspective.focalDistance;
+    }
+    else if (targetCamera->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        auto* targetOrthographic = static_cast<SoOrthographicCamera*>(targetCamera);
+        if (sourceCamera.getTypeId() != SoOrthographicCamera::getClassTypeId()) {
+            throw Base::TypeError("Camera type mismatch");
+        }
+
+        const auto& sourceOrthographic = static_cast<const SoOrthographicCamera&>(sourceCamera);
+        targetOrthographic->viewportMapping = sourceOrthographic.viewportMapping;
+        targetOrthographic->position = sourceOrthographic.position;
+        targetOrthographic->orientation = sourceOrthographic.orientation;
+        targetOrthographic->nearDistance = sourceOrthographic.nearDistance;
+        targetOrthographic->farDistance = sourceOrthographic.farDistance;
+        targetOrthographic->focalDistance = sourceOrthographic.focalDistance;
+        targetOrthographic->aspectRatio = sourceOrthographic.aspectRatio;
+        targetOrthographic->height = sourceOrthographic.height;
+    }
+    else {
+        throw Base::TypeError("Camera type mismatch");
     }
 
     return true;
@@ -3567,6 +4085,13 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbV
 {
     SoCamera* camera = getCamera();
     if (!camera) {
+        return;
+    }
+    if (!navigation->canChangeCameraOrientation(
+            camera->orientation.getValue(),
+            orientation,
+            NavigationStyle::OrientationChangeSource::Programmatic
+        )) {
         return;
     }
 
@@ -3580,7 +4105,11 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbV
         );
     }
 
-    camera->orientation.setValue(orientation);
+    navigation->setCameraOrientationValue(
+        camera,
+        orientation,
+        NavigationStyle::OrientationChangeSource::Programmatic
+    );
     camera->position.setValue(position);
 }
 
@@ -4311,241 +4840,129 @@ void View3DInventorViewer::updateColors()
 
 void View3DInventorViewer::drawAxisCross()
 {
-    // NOLINTBEGIN
-    // FIXME: convert this to a superimposition scenegraph instead of
-    // OpenGL calls. 20020603 mortene.
+    const SbVec2s view = this->getSoRenderManager()->getSize();
+    const int viewWidth = view[0];
+    const int viewHeight = view[1];
+    if (viewWidth <= 0 || viewHeight <= 0) {
+        return;
+    }
 
-    // Store GL state.
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    GLfloat depthrange[2];
-    glGetFloatv(GL_DEPTH_RANGE, depthrange);
-    GLdouble projectionmatrix[16];
-    glGetDoublev(GL_PROJECTION_MATRIX, projectionmatrix);
+    const int pixelarea = static_cast<int>(
+        static_cast<float>(this->axiscrossSize) / 100.0F * std::min(viewWidth, viewHeight)
+    );
+    if (pixelarea <= 0) {
+        return;
+    }
 
-    glDepthFunc(GL_ALWAYS);
-    glDepthMask(GL_TRUE);
-    glDepthRange(0, 0);
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-    glDisable(GL_BLEND);  // Kills transparency.
+    const SbVec2s origin(viewWidth - pixelarea, 0);
 
-    // Set the viewport in the OpenGL canvas. Dimensions are calculated
-    // as a percentage of the total canvas size.
-    SbVec2s view = this->getSoRenderManager()->getSize();
-    const int pixelarea = int(float(this->axiscrossSize) / 100.0F * std::min(view[0], view[1]));
-    SbVec2s origin(view[0] - pixelarea, 0);
-    glViewport(origin[0], origin[1], pixelarea, pixelarea);
+    constexpr float nearVal = 0.1f;
+    constexpr float farVal = 10.0f;
+    const float dim = nearVal * static_cast<float>(std::tan(std::numbers::pi / 8.0));
 
-    // Set up the projection matrix.
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    const float NEARVAL = 0.1F;
-    const float FARVAL = 10.0F;
-    const float dim = NEARVAL * float(tan(std::numbers::pi / 8.0));  // FOV is 45 deg (45/360 = 1/8)
-    glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
-
-
-    // Set up the model matrix.
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    SbMatrix mx;
+    SbMatrix model;
     SoCamera* cam = this->getSoRenderManager()->getCamera();
-
-    // If there is no camera (like for an empty scene, for instance),
-    // just use an identity rotation.
     if (cam) {
-        mx = cam->orientation.getValue();
+        model = cam->orientation.getValue();
     }
     else {
-        mx = SbMatrix::identity();
+        model = SbMatrix::identity();
     }
+    model = model.inverse();
+    model[3][0] = 0.0f;
+    model[3][1] = 0.0f;
+    model[3][2] = -3.5f;
 
-    mx = mx.inverse();
-    mx[3][2] = -3.5;  // Translate away from the projection point (along z axis).
-    glLoadMatrixf((float*)mx);
+    SbViewVolume vv;
+    vv.frustum(-dim, dim, -dim, dim, nearVal, farVal);
+    SbMatrix affine;
+    SbMatrix projection;
+    vv.getMatrices(affine, projection);
 
-
-    // Find unit vector end points.
-    SbMatrix px;
-    glGetFloatv(GL_PROJECTION_MATRIX, (float*)px);
-    SbMatrix comb = mx.multRight(px);  // clazy:exclude=rule-of-two-soft
-
+    const SbMatrix comb = model.multRight(projection);
     SbVec3f xpos;
     comb.multVecMatrix(SbVec3f(1, 0, 0), xpos);
-    xpos[0] = (1 + xpos[0]) * view[0] / 2;
-    xpos[1] = (1 + xpos[1]) * view[1] / 2;
+    xpos[0] = (1 + xpos[0]) * static_cast<float>(viewWidth) / 2.0f;
+    xpos[1] = (1 + xpos[1]) * static_cast<float>(viewHeight) / 2.0f;
     SbVec3f ypos;
     comb.multVecMatrix(SbVec3f(0, 1, 0), ypos);
-    ypos[0] = (1 + ypos[0]) * view[0] / 2;
-    ypos[1] = (1 + ypos[1]) * view[1] / 2;
+    ypos[0] = (1 + ypos[0]) * static_cast<float>(viewWidth) / 2.0f;
+    ypos[1] = (1 + ypos[1]) * static_cast<float>(viewHeight) / 2.0f;
     SbVec3f zpos;
     comb.multVecMatrix(SbVec3f(0, 0, 1), zpos);
-    zpos[0] = (1 + zpos[0]) * view[0] / 2;
-    zpos[1] = (1 + zpos[1]) * view[1] / 2;
+    zpos[0] = (1 + zpos[0]) * static_cast<float>(viewWidth) / 2.0f;
+    zpos[1] = (1 + zpos[1]) * static_cast<float>(viewHeight) / 2.0f;
 
-
-    // Render the cross.
-    {
-        glLineWidth(2.0);
-
-        enum
-        {
-            XAXIS,
-            YAXIS,
-            ZAXIS
-        };
-        int idx[3] = {XAXIS, YAXIS, ZAXIS};
-        float val[3] = {xpos[2], ypos[2], zpos[2]};
-
-        // Bubble sort.. :-}
-        if (val[0] < val[1]) {
-            std::swap(val[0], val[1]);
-            std::swap(idx[0], idx[1]);
-        }
-
-        if (val[1] < val[2]) {
-            std::swap(val[1], val[2]);
-            std::swap(idx[1], idx[2]);
-        }
-
-        if (val[0] < val[1]) {
-            std::swap(val[0], val[1]);
-            std::swap(idx[0], idx[1]);
-        }
-
-        assert((val[0] >= val[1]) && (val[1] >= val[2]));  // Just checking..
-
-        for (const int& i : idx) {
-            glPushMatrix();
-
-            if (i == XAXIS) {                                             // X axis.
-                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO) {  // What is this
-                    glColor3f(0.500F, 0.5F, 0.5F);                        // Why different colors??
-                }
-                else {
-                    glColor3f(m_xColor.r, m_xColor.g, m_xColor.b);
-                }
-            }
-            else if (i == YAXIS) {  // Y axis.
-                glRotatef(90, 0, 0, 1);
-
-                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO) {
-                    glColor3f(0.400F, 0.4F, 0.4F);
-                }
-                else {
-                    glColor3f(m_yColor.r, m_yColor.g, m_yColor.b);
-                }
-            }
-            else {  // Z axis.
-                glRotatef(-90, 0, 1, 0);
-
-                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO) {
-                    glColor3f(0.300F, 0.3F, 0.3F);
-                }
-                else {
-                    glColor3f(m_zColor.r, m_zColor.g, m_zColor.b);
-                }
-            }
-
-            drawArrow();
-            glPopMatrix();
-        }
+    auto& overlay = overlayAxisCrossState();
+    overlay.ensureCreated();
+    if (!overlay.axisRoot || !overlay.axisTransform || !overlay.axisGroup || !overlay.lettersRoot
+        || !overlay.lettersCamera) {
+        return;
     }
 
-    // Render axis notation letters ("X", "Y", "Z").
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    GLint unpack {};
-    glGetIntegerv(GL_UNPACK_ALIGNMENT, &unpack);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-    if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO) {
-        glColor3fv(SbVec3f(1.0F, 1.0F, 1.0F).getValue());
+    SbRotation inv;
+    if (cam) {
+        inv = cam->orientation.getValue().inverse();
     }
     else {
-        glColor3fv(SbVec3f(0.0F, 0.0F, 0.0F).getValue());
+        inv = SbRotation::identity();
+    }
+    overlay.axisTransform->rotation.setValue(inv);
+    overlay.axisTransform->translation.setValue(0.0f, 0.0f, -3.5f);
+    overlay.xMaterial->diffuseColor.setValue(m_xColor.r, m_xColor.g, m_xColor.b);
+    overlay.yMaterial->diffuseColor.setValue(m_yColor.r, m_yColor.g, m_yColor.b);
+    overlay.zMaterial->diffuseColor.setValue(m_zColor.r, m_zColor.g, m_zColor.b);
+
+    std::array<std::pair<float, SoNode*>, 3> axes = {
+        std::pair<float, SoNode*> {xpos[2], overlay.xAxis},
+        std::pair<float, SoNode*> {ypos[2], overlay.yAxis},
+        std::pair<float, SoNode*> {zpos[2], overlay.zAxis},
+    };
+    std::sort(axes.begin(), axes.end(), [](const auto& a, const auto& b) {
+        return a.first > b.first;
+    });
+    overlay.axisGroup->removeAllChildren();
+    for (const auto& axis : axes) {
+        overlay.axisGroup->addChild(axis.second);
     }
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glPixelZoom((float)axiscrossSize / 30, (float)axiscrossSize / 30);  // 30 = 3 (character pixmap
-                                                                        // ratio) * 10 (default
-                                                                        // axiscrossSize)
-    glRasterPos2d(xpos[0], xpos[1]);
-    glDrawPixels(XPM_WIDTH, XPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, XPM_pixel_data);
-    glRasterPos2d(ypos[0], ypos[1]);
-    glDrawPixels(YPM_WIDTH, YPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, YPM_pixel_data);
-    glRasterPos2d(zpos[0], zpos[1]);
-    glDrawPixels(ZPM_WIDTH, ZPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, ZPM_pixel_data);
+    overlay.lettersCamera->aspectRatio.setValue(
+        static_cast<float>(viewWidth) / static_cast<float>(viewHeight)
+    );
+    overlay.lettersCamera->height.setValue(static_cast<float>(viewHeight));
 
-    glPixelStorei(GL_UNPACK_ALIGNMENT, unpack);
-    glPopMatrix();
+    // The overlay viewport above is sized in physical framebuffer pixels, so
+    // the axis letters must scale by the device pixel ratio to keep the same
+    // perceived size as the axis cross on HiDPI displays.
+    const float scale = static_cast<float>(axiscrossSize) / 30.0f
+        * static_cast<float>(devicePixelRatio());
+    overlay.xLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
+    overlay.yLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
+    overlay.zLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
 
-    // Reset original state.
+    overlay.xLetter.position->translation
+        .setValue(xpos[0] - 0.5f * viewWidth, xpos[1] - 0.5f * viewHeight, 0.0f);
+    overlay.yLetter.position->translation
+        .setValue(ypos[0] - 0.5f * viewWidth, ypos[1] - 0.5f * viewHeight, 0.0f);
+    overlay.zLetter.position->translation
+        .setValue(zpos[0] - 0.5f * viewWidth, zpos[1] - 0.5f * viewHeight, 0.0f);
 
-    // FIXME: are these 3 lines really necessary, as we push
-    // GL_ALL_ATTRIB_BITS at the start? 20000604 mortene.
-    glDepthRange(depthrange[0], depthrange[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(projectionmatrix);
+    overlay.xLetter.texture->image.setValue(SbVec2s(XPM_WIDTH, XPM_HEIGHT), 4, XPM_pixel_data);
+    overlay.yLetter.texture->image.setValue(SbVec2s(YPM_WIDTH, YPM_HEIGHT), 4, YPM_pixel_data);
+    overlay.zLetter.texture->image.setValue(SbVec2s(ZPM_WIDTH, ZPM_HEIGHT), 4, ZPM_pixel_data);
 
-    glPopAttrib();
-    // NOLINTEND
-}
+    SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    vp.setViewportPixels(origin[0], origin[1], pixelarea, pixelarea);
 
-// Draw an arrow for the axis representation directly through OpenGL.
-void View3DInventorViewer::drawArrow()
-{
-    // NOLINTBEGIN
-    glDisable(GL_CULL_FACE);
-    glBegin(GL_QUADS);
-    glVertex3f(0.0F, -0.02F, 0.02F);
-    glVertex3f(0.0F, 0.02F, 0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.02F, 0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.02F, 0.02F);
+    SoGLRenderAction axisAction(vp);
+    setOverlayCacheContext(axisAction, this);
+    axisAction.setTransparencyType(SoGLRenderAction::BLEND);
+    axisAction.apply(overlay.axisRoot);
 
-    glVertex3f(0.0F, -0.02F, -0.02F);
-    glVertex3f(0.0F, 0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.02F, -0.02F);
-
-    glVertex3f(0.0F, -0.02F, 0.02F);
-    glVertex3f(0.0F, -0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.02F, 0.02F);
-
-    glVertex3f(0.0F, 0.02F, 0.02F);
-    glVertex3f(0.0F, 0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.02F, 0.02F);
-
-    glVertex3f(0.0F, 0.02F, 0.02F);
-    glVertex3f(0.0F, 0.02F, -0.02F);
-    glVertex3f(0.0F, -0.02F, -0.02F);
-    glVertex3f(0.0F, -0.02F, 0.02F);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-    glVertex3f(1.0F, 0.0F, 0.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, +0.5F / 4.0F, 0.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.5F / 4.0F, 0.0F);
-    glVertex3f(1.0F, 0.0F, 0.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.0F, +0.5F / 4.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.0F, -0.5F / 4.0F);
-    glEnd();
-    glBegin(GL_QUADS);
-    glVertex3f(1.0F - 1.0F / 3.0F, +0.5F / 4.0F, 0.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.0F, +0.5F / 4.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.5F / 4.0F, 0.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.0F, -0.5F / 4.0F);
-    glEnd();
-    // NOLINTEND
+    SoGLRenderAction letterAction(vp);
+    setOverlayCacheContext(letterAction, this);
+    letterAction.setTransparencyType(SoGLRenderAction::BLEND);
+    letterAction.apply(overlay.lettersRoot);
 }
 
 void View3DInventorViewer::drawSingleBackground(const QColor& col)
@@ -4553,32 +4970,15 @@ void View3DInventorViewer::drawSingleBackground(const QColor& col)
     // Note: After changing the NaviCube code the content of an image plane may appear black.
     // A workaround is this function.
     // See also: https://github.com/FreeCAD/FreeCAD/pull/9356#issuecomment-1529521654
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(-1, 1, -1, 1, -1, 1);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glPushAttrib(GL_ENABLE_BIT);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    glBegin(GL_TRIANGLE_STRIP);
-    glColor3f(float(col.redF()), float(col.greenF()), float(col.blueF()));
-    glVertex2f(-1, 1);
-    glColor3f(float(col.redF()), float(col.greenF()), float(col.blueF()));
-    glVertex2f(-1, -1);
-    glColor3f(float(col.redF()), float(col.greenF()), float(col.blueF()));
-    glVertex2f(1, 1);
-    glColor3f(float(col.redF()), float(col.greenF()), float(col.blueF()));
-    glVertex2f(1, -1);
-    glEnd();
-    glPopAttrib();
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
+    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    const SbVec2s size = vp.getViewportSizePixels();
+    const int viewportWidth = size[0];
+    const int viewportHeight = size[1];
+    if (viewportWidth <= 0 || viewportHeight <= 0) {
+        return;
+    }
+
+    renderOverlaySolidColor(col, viewportWidth, viewportHeight, this);
 }
 
 // ************************************************************************

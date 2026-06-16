@@ -593,15 +593,14 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         linkingArgs = {
             "start_position": None,
             "target_position": None,
-            "local_clearance": safeHeight,
-            "global_clearance": clearanceHeight,
+            "heights_clearance": (safeHeight, clearanceHeight),
             "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
             "collision_clearance": obj.CollisionClearance.Value,
         }
         if obj.CollisionAvoidanceStrategy == "Clearance Height":
-            linkingArgs["local_clearance"] = clearanceHeight
+            linkingArgs["heights_clearance"] = clearanceHeight
         elif obj.CollisionAvoidanceStrategy == "Retract Height":
             pass
         elif obj.CollisionAvoidanceStrategy == "Line of Sight":

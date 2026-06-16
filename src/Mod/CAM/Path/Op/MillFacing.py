@@ -278,15 +278,14 @@ class ObjectMillFacing(PathOp.ObjectOp):
         linkingArgs = {
             "start_position": None,
             "target_position": None,
-            "local_clearance": obj.SafeHeight.Value,
-            "global_clearance": obj.ClearanceHeight.Value,
+            "heights_clearance": (obj.SafeHeight.Value, obj.ClearanceHeight.Value),
             "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
             "collision_clearance": obj.CollisionClearance.Value,
         }
         if obj.CollisionAvoidanceStrategy == "Clearance Height":
-            linkingArgs["local_clearance"] = obj.ClearanceHeight.Value
+            linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
         elif obj.CollisionAvoidanceStrategy == "Retract Height":
             pass
         elif obj.CollisionAvoidanceStrategy == "Line of Sight":

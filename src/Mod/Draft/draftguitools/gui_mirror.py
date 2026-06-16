@@ -95,6 +95,8 @@ class Mirror(gui_base_original.Modifier):
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick start point of mirror line"))
         self.ui.isCopy.hide()
+        self.selection_done = True
+        self.update_hints()
 
     def finish(self, cont=False):
         """Terminate the operation of the tool."""
@@ -165,6 +167,7 @@ class Mirror(gui_base_original.Modifier):
                         if self.ghost:
                             self.ghost.on()
                         _toolmsg(translate("draft", "Pick end point of mirror line"))
+                        self.update_hints()
                         if self.planetrack:
                             self.planetrack.set(self.point)
                     else:
@@ -192,6 +195,7 @@ class Mirror(gui_base_original.Modifier):
             if self.ghost:
                 self.ghost.on()
             _toolmsg(translate("draft", "Pick end point of mirror line"))
+            self.update_hints()
         else:
             last = self.node[-1]
             if self.ui.isCopy.isChecked():
@@ -199,6 +203,18 @@ class Mirror(gui_base_original.Modifier):
             else:
                 self.mirror(last, self.point)
             self.finish()
+
+    def get_action_hints(self):
+        if not self.node:
+            label = translate("draft", "%1 pick start point of mirror line")
+        else:
+            label = translate("draft", "%1 pick end point of mirror line")
+        return (
+            [Gui.InputHint(label, Gui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
 
 Gui.addCommand("Draft_Mirror", Mirror())

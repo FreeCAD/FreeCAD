@@ -43,12 +43,12 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="166"/>
       <source>Arrow Radius</source>
-      <translation type="unfinished">Arrow Radius</translation>
+      <translation>ისრის რადიუსი</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="198"/>
       <source>Arrow Height</source>
-      <translation type="unfinished">Arrow Height</translation>
+      <translation>ისრის სიმაღლე</translation>
     </message>
   </context>
   <context>
@@ -113,7 +113,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="265"/>
       <source>Angle: %1, Total length: %2</source>
-      <translation type="unfinished">Angle: %1, Total length: %2</translation>
+      <translation>კუთხე: %1, ჯამური სიგრძე: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="269"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="320"/>
       <source>Center surface distance: %1</source>
-      <translation type="unfinished">Center surface distance: %1</translation>
+      <translation>მანძილი ზედაპირის ცენტრებს შორის: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="325"/>
@@ -195,8 +195,8 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
-      <translation>თვისების გაზომვა</translation>
+      <source>Measures a feature</source>
+      <translation>ზომავს თვისებას</translation>
     </message>
   </context>
   <context>
@@ -289,7 +289,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="288"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>გაზომვის ამოცანის დახურვა.</translation>
     </message>
   </context>
   <context>
@@ -477,27 +477,40 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="650"/>
       <source>J1</source>
-      <translation type="unfinished">J1</translation>
+      <translation>J1</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="677"/>
       <source>J2</source>
-      <translation type="unfinished">J2</translation>
+      <translation>J2</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="704"/>
       <source>J3</source>
-      <translation type="unfinished">J3</translation>
+      <translation>J3</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="749"/>
       <source>Create Principal Axes LCS</source>
-      <translation type="unfinished">Create Principal Axes LCS</translation>
+      <translation>მთავარი ღერძების შექმნა ლოკალური კოორდინატების სისტემაში</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="790"/>
       <source>Inertia around axis</source>
       <translation>ინერცია ღერძის გარშემო</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>წონის თვისებები</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation type="unfinished">Calculates mass properties of selected objects</translation>
     </message>
   </context>
   <context>
@@ -546,19 +559,6 @@
       <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
       <translation> (საშუალო)</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>წონის თვისებები</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation type="unfinished">Calculates mass properties of selected objects</translation>
     </message>
   </context>
 </TS>
