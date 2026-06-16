@@ -66,11 +66,12 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         )
 
         self.write_z88_mesh()
+        # write first materials and elements. They may be used by constraints and loads.
+        self.write_z88_materials()
+        self.write_z88_elements_properties()
         self.write_z88_constraints()
         self.write_z88_face_loads()
         self.write_z88_section_prints()
-        self.write_z88_materials()
-        self.write_z88_elements_properties()
         self.write_z88_integration_properties()
         self.write_z88_memory_parameter()
         self.write_z88_solver_parameter()
@@ -261,9 +262,8 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
     def write_z88_mesh(self):
         mesh = self.mesh_object.FemMesh
         mesh_nodes = dict(sorted(mesh.Nodes.items()))
-        # save map node key -> array order
-        self.node_id_map = dict(zip(mesh_nodes.keys(), range(len(mesh_nodes))))
 
+        # initialize some variables
         nodes_dof_map = {}
         mesh_elem = mesh_nodes.keys()
         e_count = len(mesh_elem)
@@ -286,8 +286,32 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
             mesh_elem = mesh.Edges
             max_elem_nodes = 3
 
-        smesh_to_z88_type = z88utils.smesh_to_z88_type(self.solver_obj)
+        # get nodes from used elements
+        nodes_in_use = set()
+        for e in mesh_elem:
+            nodes_in_use.update(mesh.getElementNodes(e))
+        nodes_in_use = sorted(nodes_in_use)
 
+        # save map node key -> array order
+        # use masked array for nodes.
+        # start it from 0 for easy indexing from smesh node numbering
+        self.node_mask = np.ma.zeros(max(mesh_nodes.keys()) + 1, dtype=int)
+        self.nodes = np.zeros(
+            len(nodes_in_use), dtype=[("index", "u4"), ("coords", ("f8", (3,))), ("dof", "u1")]
+        )
+        self.node_mask.mask = np.full(self.node_mask.size, True)
+        self.node_mask.mask[nodes_in_use] = False
+        self.node_mask[nodes_in_use] = np.arange(len(nodes_in_use))
+        # For consistency in z88 node/element files, force nodes id start from 1
+        self.nodes["index"] = np.arange(1, len(nodes_in_use) + 1)
+
+        nodecoords = []
+        for n in nodes_in_use:
+            nodecoords.append(mesh_nodes[n])
+
+        self.nodes["coords"] = nodecoords
+
+        smesh_to_z88_type = z88utils.smesh_to_z88_type(self.solver_obj)
         dt_elements = np.dtype(
             {
                 "names": ["nodes", "index", "type", "size"],
@@ -298,7 +322,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         self.elements["index"] = mesh_elem
 
         for elem in self.elements:
-            nodes = mesh.getElementNodes(elem["index"])
+            nodes = list(mesh.getElementNodes(elem["index"]))
             n_len = len(nodes)
             smesh_type = smesh_type_from_nodes[n_len]
             try:
@@ -308,33 +332,28 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
                     f"Mesh element {elem['index']}: {z88utils.smesh_type_names[smesh_type]} type not supported by Z88"
                 )
             elem["type"] = z88_type
-            elem["nodes"][:n_len] = np.array(nodes)[z88utils.smesh_to_z88_order[smesh_type]]
+            elem["nodes"][:n_len] = self.nodes["index"][self.node_mask[nodes]][
+                z88utils.smesh_to_z88_order[smesh_type]
+            ]
             elem["size"] = n_len
             # set dof for each node
-            for n in nodes:
-                nodes_dof_map[n] = z88utils.z88_dof[elem["type"]]
+            self.nodes["dof"][self.node_mask[nodes]] = z88utils.z88_dof[elem["type"]]
 
-        nodes_dof_map = dict(sorted(nodes_dof_map.items()))
         self.element_id_map = dict(zip(self.elements["index"], range(e_count)))
-
-        self.nodes = np.array(
-            list(zip(mesh_nodes.keys(), mesh_nodes.values(), nodes_dof_map.values())),
-            dtype=[("index", "u4"), ("coords", ("f8", (3,))), ("dof", "u1")],
-        )
 
         self.z88i1 = open(os.path.join(self.solver_obj.WorkingDirectory, "z88i1.txt"), "w")
 
         dim = 3 if self.solver_obj.ModelSpace == "3D" else 2
         self.z88i1.writelines(
             "{0} {1} {2} {3} written by FreeCAD\n".format(
-                dim, self.nodes.size, self.elements.size, np.sum(self.nodes["dof"])
+                dim, self.nodes["index"].size, self.elements.size, np.sum(self.nodes["dof"])
             )
         )
 
         # Z88 elements ascending order and starting from 1
-        for i, node in enumerate(self.nodes, start=1):
+        for node in self.nodes:
             self.z88i1.writelines(
-                "{0} {1} {2:E} {3:E} {4:E}\n".format(i, node["dof"], *node["coords"])
+                "{0} {1} {2:E} {3:E} {4:E}\n".format(node["index"], node["dof"], *node["coords"])
             )
 
         for i, elem in enumerate(self.elements, start=1):
@@ -342,6 +361,12 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
             self.z88i1.writelines(" ".join(map(str, elem["nodes"][: elem["size"]])) + "\n")
 
         self.z88i1.close()
+
+    def node_id_map(self, idx):
+        n = self.node_mask[idx]
+        if n is np.ma.masked:
+            raise RuntimeError(f"Node {idx} is not part of any mesh element")
+        return n
 
 
 ##  @}

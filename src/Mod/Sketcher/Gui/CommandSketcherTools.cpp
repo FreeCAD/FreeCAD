@@ -74,6 +74,58 @@ using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
 
+bool isVertex(std::string_view name)
+{
+    const std::string_view vertex("Vertex");
+    return (name.size() > vertex.size() && name.substr(0, vertex.size()) == vertex);
+}
+
+int getVertexId(std::string_view name)
+{
+    const std::size_t maxlen = 4000;
+    const std::string_view vertex("Vertex");
+    return std::atoi(name.substr(vertex.size(), maxlen).data()) - 1;
+}
+
+bool isEdge(std::string_view name)
+{
+    const std::string_view edge("Edge");
+    return (name.size() > edge.size() && name.substr(0, edge.size()) == edge);
+}
+
+int getEdgeId(std::string_view name)
+{
+    const std::size_t maxlen = 4000;
+    const std::string_view edge("Edge");
+    return std::atoi(name.substr(edge.size(), maxlen).data()) - 1;
+}
+
+bool isExternalEdge(std::string_view name)
+{
+    const std::string_view extEdge("ExternalEdge");
+    return (name.size() > extEdge.size() && name.substr(0, extEdge.size()) == extEdge);
+}
+
+int getExternalEdgeId(std::string_view name)
+{
+    const std::size_t maxlen = 4000;
+    const std::string_view extEdge("ExternalEdge");
+    return -std::atoi(name.substr(extEdge.size(), maxlen).data()) - 2;
+}
+
+bool isConstraint(std::string_view name)
+{
+    const std::string_view constr("Constraint");
+    return (name.size() > constr.size() && name.substr(0, constr.size()) == constr);
+}
+
+int getConstraintId(std::string_view name)
+{
+    const std::size_t maxlen = 4000;
+    const std::string_view constr("Constraint");
+    return std::atoi(name.substr(constr.size(), maxlen).data()) - 1;
+}
+
 std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
 {
     std::vector<int> listOfGeoIds = {};
@@ -96,19 +148,19 @@ std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
     if (!subNames.empty()) {
 
         for (auto& name : subNames) {
-            if (name.size() > 4 && name.substr(0, 4) == "Edge") {
-                int geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
+            if (isEdge(name)) {
+                int geoId = getEdgeId(name);
                 listOfGeoIds.push_back(geoId);
             }
-            else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
-                int geoId = -std::atoi(name.substr(12, 4000).c_str()) - 2;
+            else if (isExternalEdge(name)) {
+                int geoId = getExternalEdgeId(name);
                 listOfGeoIds.push_back(geoId);
             }
-            else if (name.size() > 6 && name.substr(0, 6) == "Vertex") {
+            else if (isVertex(name)) {
                 // only if it is a GeomPoint
-                int VtId = std::atoi(name.substr(6, 4000).c_str()) - 1;
-                int geoId;
-                Sketcher::PointPos PosId;
+                int VtId = getVertexId(name);
+                int geoId {};
+                Sketcher::PointPos PosId {};
                 Obj->getGeoVertexIndex(VtId, geoId, PosId);
                 if (isPoint(*Obj->getGeometry(geoId))) {
                     if (geoId >= 0) {
@@ -158,7 +210,8 @@ Sketcher::SketchObject* getSketchObject()
 
 // Copy
 
-bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
+bool copySelectionToClipboard(Sketcher::SketchObject* obj)
+{
     std::vector<int> listOfGeoId = getListOfSelectedGeoIds(true);
     if (listOfGeoId.empty()) { return false; }
 
@@ -178,19 +231,24 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
     std::sort(listOfGeoId.begin(), listOfGeoId.end());
     listOfGeoId.erase(std::unique(listOfGeoId.begin(), listOfGeoId.end()), listOfGeoId.end());
 
-    std::vector<Part::Geometry*> shapeGeometry;
+    std::vector<std::unique_ptr<Part::Geometry>> shapeGeometry;
+    shapeGeometry.reserve(listOfGeoId.size());
     for (auto geoId : listOfGeoId) {
-        Part::Geometry* geoNew = obj->getGeometry(geoId)->copy();
-        shapeGeometry.push_back(geoNew);
+        shapeGeometry.emplace_back(obj->getGeometry(geoId)->copy());
+    }
+    std::vector<Part::Geometry*> rawGeos;
+    rawGeos.reserve(shapeGeometry.size());
+    for (const auto& g : shapeGeometry) {
+        rawGeos.push_back(g.get());
     }
 
     std::string geosAsStr = Sketcher::PythonConverter::convert(
         "objectStr",
-        shapeGeometry,
+        rawGeos,
         Sketcher::PythonConverter::Mode::OmitInternalGeometry);
 
     // Export constraints of selected geos.
-    std::vector<Sketcher::Constraint*> shapeConstraints;
+    std::vector<std::unique_ptr<Sketcher::Constraint>> shapeConstraints;
     for (auto constr : obj->Constraints.getValues()) {
 
         auto isSelectedGeoOrAxis = [](const std::vector<int>& vec, int value) {
@@ -215,7 +273,7 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
             continue;
         }
 
-        Constraint* temp = constr->copy();
+        std::unique_ptr<Constraint> temp(constr->copy());
         for (size_t j = 0; j < listOfGeoId.size(); j++) {
             for (int i = 0; temp->hasElement(i); ++i) {
                 int geoid = temp->getGeoId(i);
@@ -224,12 +282,24 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
                 }
             }
         }
-        shapeConstraints.push_back(temp);
+        shapeConstraints.push_back(std::move(temp));
     }
-    std::string cstrAsStr = Sketcher::PythonConverter::convert("objectStr", shapeConstraints, Sketcher::PythonConverter::GeoIdMode::AddLastGeoIdToGeoIds);
+    std::vector<Sketcher::Constraint*> rawCstrs;
+    rawCstrs.reserve(shapeConstraints.size());
+    for (const auto& c : shapeConstraints) {
+        rawCstrs.push_back(c.get());
+    }
+    std::string cstrAsStr = Sketcher::PythonConverter::convert(
+        "objectStr",
+        rawCstrs,
+        Sketcher::PythonConverter::GeoIdMode::AddLastGeoIdToGeoIds);
 
-    std::string exportedData = "# Copied from sketcher. From:\n#objectStr = " + Gui::Command::getObjectCmd(obj) + "\n"
-        + geosAsStr + "\n" + cstrAsStr;
+    std::string exportedData = "# Copied from sketcher. From:\n#objectStr = ";
+    exportedData.append(Gui::Command::getObjectCmd(obj));
+    exportedData.append("\n");
+    exportedData.append(geosAsStr);
+    exportedData.append("\n");
+    exportedData.append(cstrAsStr);
 
     if (!exportedData.empty()) {
         QClipboard* clipboard = QGuiApplication::clipboard();
@@ -831,8 +901,8 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
          ++it) {
         // only handle constraints
-        if (it->size() > 10 && it->substr(0, 10) == "Constraint") {
-            int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
+        if (isConstraint(*it)) {
+            int ConstrId = getConstraintId(*it);
 
             if (ConstrId < static_cast<int>(vals.size())) {
                 if (vals[ConstrId]->First != GeoEnum::GeoUndef) {
@@ -1392,8 +1462,8 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
          ++it) {
         // only handle non-external edges
-        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-            LastGeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+        if (isEdge(*it)) {
+            LastGeoId = getEdgeId(*it);
             LastPointPos = Sketcher::PointPos::none;
             LastGeo = Obj->getGeometry(LastGeoId);
             // lines to copy
@@ -1402,11 +1472,11 @@ void SketcherCopy::activate(SketcherCopy::Op op)
                 stream << LastGeoId << ",";
             }
         }
-        else if (it->size() > 6 && it->substr(0, 6) == "Vertex") {
+        else if (isVertex(*it)) {
             // only if it is a GeomPoint
-            int VtId = std::atoi(it->substr(6, 4000).c_str()) - 1;
-            int GeoId;
-            Sketcher::PointPos PosId;
+            int VtId = getVertexId(*it);
+            int GeoId {};
+            Sketcher::PointPos PosId {};
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
             if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                 LastGeoId = GeoId;
@@ -1421,10 +1491,10 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     }
 
     // check if last selected element is a Vertex, not being a GeomPoint
-    if (SubNames.rbegin()->size() > 6 && SubNames.rbegin()->substr(0, 6) == "Vertex") {
-        int VtId = std::atoi(SubNames.rbegin()->substr(6, 4000).c_str()) - 1;
-        int GeoId;
-        Sketcher::PointPos PosId;
+    if (isVertex(SubNames.back())) {
+        int VtId = getVertexId(SubNames.back());
+        int GeoId {};
+        Sketcher::PointPos PosId {};
         Obj->getGeoVertexIndex(VtId, GeoId, PosId);
         if (!Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
             LastGeoId = GeoId;
@@ -1997,8 +2067,8 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
          ++it) {
         // only handle non-external edges
-        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-            LastGeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+        if (isEdge(*it)) {
+            LastGeoId = getEdgeId(*it);
             LastPointPos = Sketcher::PointPos::none;
             LastGeo = Obj->getGeometry(LastGeoId);
 
@@ -2008,11 +2078,11 @@ void CmdSketcherRectangularArray::activated(int iMsg)
                 stream << LastGeoId << ",";
             }
         }
-        else if (it->size() > 6 && it->substr(0, 6) == "Vertex") {
+        else if (isVertex(*it)) {
             // only if it is a GeomPoint
-            int VtId = std::atoi(it->substr(6, 4000).c_str()) - 1;
-            int GeoId;
-            Sketcher::PointPos PosId;
+            int VtId = getVertexId(*it);
+            int GeoId {};
+            Sketcher::PointPos PosId {};
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
             if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                 LastGeoId = GeoId;
@@ -2027,10 +2097,10 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     }
 
     // check if last selected element is a Vertex, not being a GeomPoint
-    if (SubNames.rbegin()->size() > 6 && SubNames.rbegin()->substr(0, 6) == "Vertex") {
-        int VtId = std::atoi(SubNames.rbegin()->substr(6, 4000).c_str()) - 1;
-        int GeoId;
-        Sketcher::PointPos PosId;
+    if (isVertex(SubNames.back())) {
+        int VtId = getVertexId(SubNames.back());
+        int GeoId {};
+        Sketcher::PointPos PosId {};
         Obj->getGeoVertexIndex(VtId, GeoId, PosId);
         if (!Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
             LastGeoId = GeoId;
@@ -2279,8 +2349,8 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
          ++it) {
         // only handle non-external edges
-        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-            LastGeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+        if (isEdge(*it)) {
+            LastGeoId = getEdgeId(*it);
 
             // lines to copy
             if (LastGeoId >= 0) {
@@ -2288,11 +2358,11 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
                 stream << LastGeoId << ",";
             }
         }
-        else if (it->size() > 6 && it->substr(0, 6) == "Vertex") {
+        else if (isVertex(*it)) {
             // only if it is a GeomPoint
-            int VtId = std::atoi(it->substr(6, 4000).c_str()) - 1;
-            int GeoId;
-            Sketcher::PointPos PosId;
+            int VtId = getVertexId(*it);
+            int GeoId {};
+            Sketcher::PointPos PosId {};
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
             if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                 LastGeoId = GeoId;
@@ -2383,12 +2453,12 @@ void CmdSketcherOffset::activated(int iMsg)
     const std::vector<std::string>& subNames = selection[0].getSubNames();
     if (!subNames.empty()) {
         for (auto& name : subNames) {
-            int geoId;
-            if (name.size() > 4 && name.substr(0, 4) == "Edge") {
-                geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
+            int geoId {};
+            if (isEdge(name)) {
+                geoId = getEdgeId(name);
             }
-            else if (name.size() > 12 && name.substr(0, 12) == "ExternalEdge") {
-                geoId = -std::atoi(name.substr(12, 4000).c_str()) - 2;
+            else if (isExternalEdge(name)) {
+                geoId = getExternalEdgeId(name);
             }
             else {
                 continue;

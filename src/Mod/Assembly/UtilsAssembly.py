@@ -1259,7 +1259,11 @@ def getComponentReference(assembly, root_obj, sub_string):
 
         if isLink(obj):
             linkedObj = obj.getLinkedObject()
-            if linkedObj and not linkedObj.isDerivedFrom("App::GeoFeature"):
+            if (
+                linkedObj
+                and not isLink(linkedObj)
+                and not linkedObj.isDerivedFrom("App::GeoFeature")
+            ):
                 continue
         elif not obj.isDerivedFrom("App::GeoFeature"):
             continue

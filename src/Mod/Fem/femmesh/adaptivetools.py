@@ -148,7 +148,7 @@ def generate_view_code(objname, data, field, view_tag):
 
 
 def generate_closeout_code():
-    # make sure everything else is handled in annother model, to not interfere between mesh and geometry
+    # make sure everything else is handled in another model, to not interfere between mesh and geometry
     return f"NewModel;\n"
 
 
@@ -188,7 +188,7 @@ def write_result_settings(settings, geo, folder):
 
             # store field index, so that the size field finds back the correct view
             # we can simply increase idx, as we iterate
-            # all object after eachother in the order they are included, and all fields
+            # all object after each other in the order they are included, and all fields
             # for a single object file in the order it is appended to the mesh file
             obj_setting["settings"]["Option"]["ViewIndex"] = field_idx
             field_idx += 1

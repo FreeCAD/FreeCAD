@@ -41,11 +41,12 @@ class WriterForce(WriterList):
         has_x, has_y, has_z = [
             not math.isclose(i, 0, abs_tol=self._abs_tol) for i in obj.DirectionVector
         ]
+        index = self.writer.nodes["index"]
         for ref_shape in item["NodeLoadTable"]:
-            for n in sorted(ref_shape[1]):
+            for idx, node_load in sorted(ref_shape[1].items()):
                 # the loads in ref_shape[1][n] are without unit
-                node_load = ref_shape[1][n]
                 node_force = obj.DirectionVector * node_load
+                n = index[self.writer.node_id_map(idx)]
                 if has_x:
                     self.writer.z88i2_rows.append(f"{n}  1  1  {node_force.x}\n")
                 if has_y:

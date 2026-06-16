@@ -280,9 +280,9 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyBool",
-                name="BeamReducedIntegration",
+                name="ReducedIntegration",
                 group="ElementModel",
-                doc="Set to True to use beam elements with reduced integration",
+                doc="Set to True to use elements with reduced integration",
                 value=True,
             )
         )
@@ -429,6 +429,15 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             obj.Output3d = obj.getPropertyByName("BeamShellResultOutput3D")
             obj.setPropertyStatus("BeamShellResultOutput3D", "-LockDynamic")
             obj.removeProperty("BeamShellResultOutput3D")
+
+        except Base.PropertyError:
+            pass
+
+        # rename BeamReducedIntegration
+        try:
+            obj.ReducedIntegration = obj.getPropertyByName("BeamReducedIntegration")
+            obj.setPropertyStatus("BeamReducedIntegration", "-LockDynamic")
+            obj.removeProperty("BeamReducedIntegration")
 
         except Base.PropertyError:
             pass

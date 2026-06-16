@@ -26,6 +26,8 @@
 
 #include "ZoomableView.h"
 #include "ui_Sheet.h"
+#include "App/Application.h"
+#include "Base/Console.h"
 
 
 ZoomableView::ZoomableView(Ui::Sheet* ui)
@@ -204,7 +206,11 @@ void ZoomableView::updateView(void)
 
 void ZoomableView::focusOutEvent(QFocusEvent* event)
 {
-    Q_UNUSED(event);
+    if (event->reason() == Qt::FocusReason::PopupFocusReason) {
+        return;
+    }
+
+    QGraphicsView::focusOutEvent(event);
 }
 
 void ZoomableView::keyPressEvent(QKeyEvent* event)

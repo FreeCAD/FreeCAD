@@ -183,7 +183,7 @@ void ImageEdit::onFileSelect(bool checked)
     }
 }
 
-QString ImageEdit::selectFile(const QStringList& filePatterns)
+QString ImageEdit::selectFile(const Gui::FileDialog::FilterList& filters)
 {
     QFileDialog::Options dlgOpt;
     if (Gui::DialogOptions::dontUseNativeFileDialog()) {
@@ -194,7 +194,7 @@ QString ImageEdit::selectFile(const QStringList& filePatterns)
     QString fn = Gui::FileDialog::getOpenFileName(this,
                                                   tr("Select an image"),
                                                   directory,
-                                                  filePatterns,
+                                                  filters,
                                                   nullptr,
                                                   dlgOpt);
 
@@ -203,9 +203,10 @@ QString ImageEdit::selectFile(const QStringList& filePatterns)
 
 void ImageEdit::onFileSelectImage()
 {
-    QStringList filterList;
-    filterList << tr("Image files (*.jpg *.jpeg *.png *.bmp)");
-    filterList << tr("All files (*)");
+    const Gui::FileDialog::FilterList filterList {
+        {tr("Image files"), {"*.jpg", "*.jpeg", "*.png", "*.bmp"}},
+        {tr("All files"), {"(*)"}}
+    };
     QString fn = selectFile(filterList);
     if (!fn.isEmpty()) {
         fn = QDir::fromNativeSeparators(fn);
@@ -218,9 +219,10 @@ void ImageEdit::onFileSelectImage()
 
 void ImageEdit::onFileSelectSVG()
 {
-    QStringList filterList;
-    filterList << tr("Image files (*.svg)");
-    filterList << tr("All files (*)");
+    const Gui::FileDialog::FilterList filterList {
+        {tr("Image files"), {"*.svg"}},
+        {tr("All files"), {"(*)"}}
+    };
     QString fn = selectFile(filterList);
     if (!fn.isEmpty()) {
         fn = QDir::fromNativeSeparators(fn);

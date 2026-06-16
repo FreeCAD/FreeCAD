@@ -32,3 +32,4 @@ from bimtests.TestArchReportGui import TestArchReportGui
 from bimtests.TestArchSiteGui import TestArchSiteGui
 from bimtests.TestArchWallGui import TestArchWallGui
 from bimtests.TestWebGLExportGui import TestWebGLExportGui
+from bimtests.TestArchCoveringGui import TestArchCoveringGui

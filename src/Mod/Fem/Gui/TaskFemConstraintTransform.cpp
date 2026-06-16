@@ -306,14 +306,14 @@ void TaskFemConstraintTransform::addToSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
 
     if (rows == 1) {
         QMessageBox::warning(
             this,
-            tr("Selection error"),
+            tr("Selection Error"),
             tr("Only one face for rectangular local coordinate system!")
         );
         Gui::Selection().clearSelection();
@@ -323,7 +323,7 @@ void TaskFemConstraintTransform::addToSelection()
     if ((rows == 0) && (selection.size() >= 2)) {
         QMessageBox::warning(
             this,
-            tr("Selection error"),
+            tr("Selection Error"),
             tr("Only one face for rectangular local coordinate system!")
         );
         Gui::Selection().clearSelection();
@@ -338,7 +338,7 @@ void TaskFemConstraintTransform::addToSelection()
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -346,7 +346,7 @@ void TaskFemConstraintTransform::addToSelection()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -356,7 +356,7 @@ void TaskFemConstraintTransform::addToSelection()
         if (subNames.size() != 1) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("Only one face for local coordinate system!")
             );
             Gui::Selection().clearSelection();
@@ -365,7 +365,7 @@ void TaskFemConstraintTransform::addToSelection()
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
             if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+                QMessageBox::warning(this, tr("Selection Error"), tr("Only faces can be picked"));
                 return;
             }
             if (subName.substr(0, 4) == "Face") {
@@ -376,7 +376,7 @@ void TaskFemConstraintTransform::addToSelection()
                     if (surface.GetType() != GeomAbs_Cylinder) {
                         QMessageBox::warning(
                             this,
-                            tr("Selection error"),
+                            tr("Selection Error"),
                             tr("Only cylindrical faces can be picked")
                         );
                         return;
@@ -420,7 +420,7 @@ void TaskFemConstraintTransform::addToSelection()
                 if (Objects.empty()) {
                     QMessageBox::warning(
                         this,
-                        tr("Selection error"),
+                        tr("Selection Error"),
                         tr("Only transformable faces can be selected! Apply a "
                            "displacement boundary "
                            "condition or a force load to a face first then apply "
@@ -455,7 +455,7 @@ void TaskFemConstraintTransform::removeFromSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
@@ -464,7 +464,7 @@ void TaskFemConstraintTransform::removeFromSelection()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();
@@ -634,7 +634,7 @@ bool TaskDlgFemConstraintTransform::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
     /* */

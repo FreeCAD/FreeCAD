@@ -31,7 +31,7 @@ import Path.Op.Profile as PathProfile
 from CAMTests.PathTestUtils import PathTestBase
 
 
-class TestEngrave:
+class _TestEngrave:
     def __init__(self, path):
         self.Path = Path.Path(path)
         self.ToolController = None  # default tool 5mm
@@ -44,7 +44,7 @@ class TestEngrave:
         return False
 
 
-class TestFeature:
+class _TestFeature:
     def __init__(self):
         self.Path = Path.Path()
         self.Name = ""
@@ -66,8 +66,8 @@ class TestDressupArray(PathTestBase):
 
         expected_gcode = "G0 X0.000000 Y0.000000 Z0.000000\n" "G1 X10.000000 Y10.000000 Z0.000000\n"
 
-        base = TestEngrave(source_gcode)
-        obj = TestFeature()
+        base = _TestEngrave(source_gcode)
+        obj = _TestFeature()
         da = DressupArray(obj, base, None)
         da.execute(obj)
         self.assertTrue(obj.Path.toGCode() == expected_gcode, "Incorrect g-code generated")
@@ -84,8 +84,8 @@ class TestDressupArray(PathTestBase):
             "G1 X22.000000 Y22.000000 Z5.000000\n"
         )
 
-        base = TestEngrave(source_gcode)
-        obj = TestFeature()
+        base = _TestEngrave(source_gcode)
+        obj = _TestFeature()
         da = DressupArray(obj, base, None)
         obj.Copies = 1
         obj.Offset = FreeCAD.Vector(12, 12, 5)
@@ -113,8 +113,8 @@ class TestDressupArray(PathTestBase):
             "G1 X34.000000 Y16.000000 Z0.000000\n"
         )
 
-        base = TestEngrave(source_gcode)
-        obj = TestFeature()
+        base = _TestEngrave(source_gcode)
+        obj = _TestFeature()
         da = DressupArray(obj, base, None)
         obj.Type = "Linear2D"
         obj.Copies = 0

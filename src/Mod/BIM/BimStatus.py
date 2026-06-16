@@ -116,9 +116,7 @@ def setStatusIcons(show=True):
                 bimviewsbutton.setIcon(QtGui.QIcon(":/icons/BIM_Views.svg"))
 
                 bimviewsbutton.setText("")
-                bimviewsbutton.setToolTip(
-                    translate("BIM", "Toggles the BIM Views Manager on/off (Ctrl+9)")
-                )
+                bimviewsbutton.setToolTip(translate("BIM", "Toggles the BIM Views Manager on/off"))
                 bimviewsbutton.setCheckable(True)
                 if BimViews.findWidget():
                     bimviewsbutton.setChecked(True)

@@ -69,10 +69,16 @@ unsigned int PropertyContainer::getMemSize () const
 }
 
 App::Property* PropertyContainer::addDynamicProperty(
-    const char* type, const char* name, const char* group, const char* doc,
-    short attr, bool ro, bool hidden)
+    std::string_view type,
+    const char* name,
+    const char* group,
+    const char* doc,
+    short attr,
+    bool ro,
+    bool hidden
+)
 {
-    return dynamicProps.addDynamicProperty(*this,type,name,group,doc,attr,ro,hidden);
+    return dynamicProps.addDynamicProperty(*this, type, name, group, doc, attr, ro, hidden);
 }
 
 Property *PropertyContainer::getPropertyByName(const char* name) const
@@ -355,7 +361,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
                     prop->setStatusValue(status.to_ulong());
             }
             // name and type match
-            if (prop && strcmp(prop->getTypeId().getName(), TypeName.c_str()) == 0) {
+            if (prop && prop->getTypeId().getName() == TypeName) {
                 if (!prop->testStatus(Property::Transient)
                         && !status.test(Property::Transient)
                         && !status.test(Property::PropTransient)

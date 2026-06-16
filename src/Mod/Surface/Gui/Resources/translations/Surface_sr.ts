@@ -456,17 +456,17 @@ This command only works with a mesh object.</source>
   <context>
     <name>SurfaceGui::FillingEdgePanel</name>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="134"/>
+      <location filename="../../TaskFillingEdge.cpp" line="133"/>
       <source>Remove</source>
       <translation>Уклони</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="330"/>
+      <location filename="../../TaskFillingEdge.cpp" line="329"/>
       <source>Invalid object</source>
       <translation>Неисправан објекат</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskFillingEdge.cpp" line="408"/>
+      <location filename="../../TaskFillingEdge.cpp" line="407"/>
       <source>Edge has %n adjacent face(s)</source>
       <translation type="unfinished">
         <numerusform>Ивица има %n суседних страница</numerusform>
@@ -475,12 +475,12 @@ This command only works with a mesh object.</source>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="412"/>
+      <location filename="../../TaskFillingEdge.cpp" line="411"/>
       <source>None</source>
       <translation>Ниједан</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="433"/>
+      <location filename="../../TaskFillingEdge.cpp" line="432"/>
       <source>Edge has no adjacent faces</source>
       <translation>Ивица нема суседних страница</translation>
     </message>
@@ -489,7 +489,7 @@ This command only works with a mesh object.</source>
     <name>QObject</name>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
-      <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
       <translation>Уреди попуњавање</translation>
     </message>
@@ -512,17 +512,17 @@ This command only works with a mesh object.</source>
   <context>
     <name>SurfaceGui::FillingPanel</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="282"/>
+      <location filename="../../TaskFilling.cpp" line="281"/>
       <source>Remove</source>
       <translation>Уклони</translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="498"/>
+      <location filename="../../TaskFilling.cpp" line="497"/>
       <source>Invalid object</source>
       <translation>Неисправан објекат</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskFilling.cpp" line="616"/>
+      <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
       <translation type="unfinished">
         <numerusform>Ивица има %n суседних страница</numerusform>
@@ -531,12 +531,12 @@ This command only works with a mesh object.</source>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="620"/>
+      <location filename="../../TaskFilling.cpp" line="619"/>
       <source>None</source>
       <translation>Ниједан</translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="641"/>
+      <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
       <translation>Ивица нема суседних страница</translation>
     </message>

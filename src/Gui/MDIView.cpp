@@ -284,7 +284,7 @@ void MDIView::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringList(QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")))
+        FileDialog::FilterList {{QStringLiteral("PDF"), {"*.pdf"}}}
     );
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);

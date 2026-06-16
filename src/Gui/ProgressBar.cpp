@@ -169,6 +169,11 @@ void SequencerBar::startStep()
     }
 }
 
+void SequencerBar::stopStep()
+{
+    QMetaObject::invokeMethod(d->bar, "aboutToHide", Qt::QueuedConnection);
+}
+
 void SequencerBar::checkAbort()
 {
     if (d->bar->thread() != QThread::currentThread()) {

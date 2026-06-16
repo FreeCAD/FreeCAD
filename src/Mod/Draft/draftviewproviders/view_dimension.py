@@ -43,6 +43,9 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
+from draftgeoutils import edges as geo_edges
+from draftgeoutils import general as geo_general
+from draftgeoutils import geometry as geo_geometry
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import units
@@ -51,7 +54,6 @@ from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 ## \addtogroup draftviewproviders
 # @{
@@ -378,7 +380,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 proj = None
             else:
                 base = Part.LineSegment(self.p2, self.p3).toShape()
-                proj = DraftGeomUtils.findDistance(self.p1, base)
+                proj = geo_geometry.findDistance(self.p1, base)
                 if proj:
                     proj = proj.negative()
 
@@ -388,7 +390,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 proj = None
             else:
                 base = Part.LineSegment(self.p1, self.p4).toShape()
-                proj = DraftGeomUtils.findDistance(obj.Dimline, base)
+                proj = geo_geometry.findDistance(obj.Dimline, base)
 
             if proj:
                 self.p2 = self.p1 + proj.negative()
@@ -790,7 +792,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 sub = subelements[0]
                 index = int(sub[4:]) - 1
                 edge = linked_obj.Shape.Edges[index]
-                if DraftGeomUtils.geomType(edge) == "Circle":
+                if geo_general.geomType(edge) == "Circle":
                     return True
         return False
 
@@ -922,7 +924,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         )
         self.p2 = self.circle.Vertexes[0].Point
         self.p3 = self.circle.Vertexes[-1].Point
-        midp = DraftGeomUtils.findMidpoint(self.circle)
+        midp = geo_edges.findMidpoint(self.circle)
         ray = midp - obj.Center
 
         proj1 = obj.Center - self.p2

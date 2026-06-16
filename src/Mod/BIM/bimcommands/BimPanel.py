@@ -103,7 +103,8 @@ class Arch_Panel:
         # interactive mode
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
-        WorkingPlane.get_working_plane()
+        self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -120,6 +121,7 @@ class Arch_Panel:
 
         import DraftVecUtils
 
+        self.wp._restore()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         self.tracker.finalize()

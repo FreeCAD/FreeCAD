@@ -71,7 +71,7 @@ public:
     {
         return &this->Position;
     }
-    QString getResultString() override;
+    std::string getResultString() override;
 
     Base::Placement getPlacement() const override;
 

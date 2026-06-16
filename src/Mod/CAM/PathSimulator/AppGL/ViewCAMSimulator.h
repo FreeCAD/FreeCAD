@@ -24,13 +24,24 @@
 
 #pragma once
 
-#include <Gui/MDIView.h>
+#include <Gui/MDIViewWithCamera.h>
+
+class SoCamera;
+
+namespace Gui
+{
+class View3DSettings;
+}  // namespace Gui
 
 namespace CAMSimulator
 {
+class GuiDisplay;
 class DlgCAMSimulator;
+class Dummy3DViewer;
+class View3DSettings;
+class CAMSettings;
 
-class ViewCAMSimulator: public Gui::MDIView
+class ViewCAMSimulator: public Gui::MDIViewWithCamera
 {
 public:
     ViewCAMSimulator(
@@ -41,10 +52,30 @@ public:
 
     ViewCAMSimulator* clone() override;
 
+    static ViewCAMSimulator& instance();
     DlgCAMSimulator& dlg();
 
+    bool onMsg(const char* pMsg) override;
+    bool onHasMsg(const char* pMsg) const override;
+
+    const std::string& getCamera() const override;
+    bool setCamera(const char* pCamera) override;
+
+private Q_SLOTS:
+    void onSimulationStarted();
+
+private:
+    void initCamera();
+    void cloneCamera(SoCamera& camera);
+    void applySettings();
+
 protected:
-    DlgCAMSimulator* mDlg;
+    GuiDisplay* mGui = nullptr;
+    DlgCAMSimulator* mDlg = nullptr;
+    Dummy3DViewer* mDummyViewer = nullptr;
+
+    std::unique_ptr<View3DSettings> mViewSettings;
+    std::unique_ptr<CAMSettings> mCAMSettings;
 };
 
 }  // namespace CAMSimulator

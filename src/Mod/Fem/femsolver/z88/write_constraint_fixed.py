@@ -34,8 +34,11 @@ class WriterFixed(WriterList):
 
     def write_item(self, item):
         dofs = self.writer.nodes["dof"]
-        for n in item["Nodes"]:
-            dof = dofs[self.writer.node_id_map[n]]
+        index = self.writer.nodes["index"]
+        for idx in item["Nodes"]:
+            z88_n = self.writer.node_id_map(idx)
+            dof = dofs[z88_n]
+            n = index[z88_n]
             self.writer.z88i2_rows.append(f"{n}  1  2  0\n")
             self.writer.z88i2_rows.append(f"{n}  2  2  0\n")
             if dof >= 3:

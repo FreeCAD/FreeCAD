@@ -236,7 +236,6 @@ class _CommandStructure:
         self.Profile = None
         self.bpoint = None
         self.precastvalues = None
-        self.wp = None
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             st = Draft.getObjectsOfType(sel, "Structure")
@@ -262,6 +261,7 @@ class _CommandStructure:
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -289,6 +289,7 @@ class _CommandStructure:
 
         self.mode = StructureMode.BEAM if self.modeb.isChecked() else StructureMode.COLUMN
         if point is None:
+            self.wp._restore()
             FreeCAD.activeDraftCommand = None
             FreeCADGui.Snapper.off()
             self.tracker.finalize()
@@ -309,6 +310,7 @@ class _CommandStructure:
                 mode="line",
             )
             return
+        self.wp._restore()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         self.tracker.off()

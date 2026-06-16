@@ -27,6 +27,7 @@
 #include <App/PropertyStandard.h>
 
 #include "ViewProviderBuilder.h"
+#include "Selection/SelectionColors.h"
 #include "SoFCSelection.h"
 #include "Window.h"
 
@@ -57,7 +58,6 @@ Gui::SoFCSelection* ViewProviderBuilder::createSelection()
 {
     auto sel = new Gui::SoFCSelection();
 
-    float transparency;
     ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
     bool enablePre = hGrp->GetBool("EnablePreselection", true);
     bool enableSel = hGrp->GetBool("EnableSelection", true);
@@ -65,23 +65,13 @@ Gui::SoFCSelection* ViewProviderBuilder::createSelection()
         sel->preselectionMode = Gui::SoFCSelection::OFF;
     }
     else {
-        // Search for a user defined value with the current color as default
-        SbColor highlightColor = sel->colorHighlight.getValue();
-        auto highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        sel->colorHighlight.setValue(highlightColor);
+        sel->colorHighlight.setValue(SelectionColors::defaultHighlightColor());
     }
     if (!enableSel) {
         sel->selectionMode = Gui::SoFCSelection::SEL_OFF;
     }
     else {
-        // Do the same with the selection color
-        SbColor selectionColor = sel->colorSelection.getValue();
-        auto selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = hGrp->GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        sel->colorSelection.setValue(selectionColor);
+        sel->colorSelection.setValue(SelectionColors::defaultSelectionColor());
     }
 
     return sel;

@@ -36,9 +36,9 @@ constexpr auto EPSILON = 0.00001f;
 #define MS_KBD_CONTROL 0x10
 #define MS_KBD_ALT 0x20
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 extern const mat4x4 identityMat;
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
