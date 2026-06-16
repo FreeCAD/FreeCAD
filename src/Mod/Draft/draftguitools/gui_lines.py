@@ -242,11 +242,7 @@ class Line(gui_base_original.Creator):
 
     def _append_point(self, point):
         """Append a point unless it would create a zero-length segment."""
-        if (
-            self.__class__ in (Line, Wire)
-            and self.node
-            and DraftVecUtils.equals(self.node[-1], point)
-        ):
+        if self.node and DraftVecUtils.equals(self.node[-1], point):
             _wrn(translate("draft", "Point identical to previous point"))
             return False
 
