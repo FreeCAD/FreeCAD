@@ -115,8 +115,10 @@ class DraftWireGuiTools(GuiTools):
             return menu
         else:
             return menu + [
-                (translate("draft", "Set Point as First"),
-                lambda: self.set_first_point(obj, node_idx)),
+                (
+                    translate("draft", "Set Point as First"),
+                    lambda: self.set_first_point(obj, node_idx),
+                ),
             ]
 
     def get_edit_obj_context_menu(self, edit_command, obj, position):
