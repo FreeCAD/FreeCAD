@@ -113,7 +113,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="265"/>
       <source>Angle: %1, Total length: %2</source>
-      <translation type="unfinished">Angle: %1, Total length: %2</translation>
+      <translation>Kulma: %1, Kokonaispituus: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="269"/>
@@ -195,8 +195,8 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <source>Measures a feature</source>
+      <translation type="unfinished">Measures a feature</translation>
     </message>
   </context>
   <context>
@@ -315,7 +315,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="127"/>
       <source>Distance Free</source>
-      <translation type="unfinished">Distance Free</translation>
+      <translation>Vapaa pituus</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="135"/>
@@ -408,7 +408,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="214"/>
       <source>Surface area</source>
-      <translation type="unfinished">Surface area</translation>
+      <translation>Pinta-ala</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="254"/>
@@ -501,6 +501,19 @@
     </message>
   </context>
   <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation type="unfinished">Mass Properties</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation type="unfinished">Calculates mass properties of selected objects</translation>
+    </message>
+  </context>
+  <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="280"/>
@@ -515,7 +528,7 @@
     <message>
       <location filename="../../TaskMassProperties.cpp" line="286"/>
       <source>Center of Gravity</source>
-      <translation type="unfinished">Center of Gravity</translation>
+      <translation>Painopiste</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="287"/>
@@ -546,19 +559,6 @@
       <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
       <translation type="unfinished"> (Average)</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation type="unfinished">Mass Properties</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation type="unfinished">Calculates mass properties of selected objects</translation>
     </message>
   </context>
 </TS>

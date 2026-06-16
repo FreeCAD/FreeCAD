@@ -34,7 +34,7 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
       <source>Unit System</source>
-      <translation>단위 체계</translation>
+      <translation>단위계</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="240"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../StartView.cpp" line="227"/>
       <source>Assembly</source>
-      <translation>어셈블리</translation>
+      <translation>조립체</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="232"/>

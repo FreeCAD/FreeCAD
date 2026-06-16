@@ -881,8 +881,8 @@ hélicoïdale et la liaison engrenage et la liaison courroie (rayon1).</translat
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>Vous ne trouvez pas la pièce ?</translation>
+      <source>Cannot find the part?</source>
+      <translation>Impossible de trouver la pièce ?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -978,37 +978,37 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
       <translation>Déplacer une pièce</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1807"/>
       <source>Empty Assembly</source>
       <translation>Assemblage vide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Over-constrained:</source>
       <translation>Esquisse sur-contrainte :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
       <source>Malformed joints:</source>
       <translation>Liaisons défectueuses :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1792"/>
       <source>and %1 more</source>
       <translation>et %1 de plus</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1851"/>
       <source>Solver failed to converge</source>
       <translation>Le solveur n'a pas pu converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>Under-constrained:</source>
       <translation>L'esquisse manque de contraintes :</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n degrés de liberté</numerusform>
@@ -1016,7 +1016,7 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1865"/>
       <source>Fully constrained</source>
       <translation>Esquisse entièrement contrainte</translation>
     </message>
@@ -1582,28 +1582,28 @@ Le blocage d'une pièce fixe définitivement sa position dans l'assemblage, emp�
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Cliquer pour sélectionner ces liaisons problématiques</translation>
+      <source>Selects these conflicting joints</source>
+      <translation>Sélectionne ces liaisons en conflit.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Cliquer pour sélectionner ces liaisons redondantes</translation>
+      <source>Selects these redundant joints</source>
+      <translation>Sélectionne ces liaisons redondantes.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation>L'assemblage comporte des composants non contraints qui donnent lieu à ces degrés de liberté. Cliquer pour sélectionner ces composants
-non contraints.
-Remarque : pour l'instant, cette opération ne sélectionne que les pièces non connectées, et non les pièces contraintes qui disposent encore
+      <translation>L'assemblage comporte des composants non contraints qui donnent lieu à ces degrés de liberté.
+Sélectionne ces composants non contraints.
+Remarque : pour l'instant, cette fonction ne sélectionne que des pièces non connectées, et non des pièces contraintes qui disposent encore
 de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Cliquer pour sélectionner ces liaisons défectueuses</translation>
+      <source>Selects these malformed joints</source>
+      <translation>Sélectionne ces liaisons malformées.</translation>
     </message>
   </context>
   <context>
@@ -1615,8 +1615,8 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
-      <translation>Aller à l'assemblage lié</translation>
+      <source>Go to Linked Assembly</source>
+      <translation>Accéder à l'assemblage lié</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="103"/>
@@ -1633,8 +1633,8 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
-      <translation>Sélectionner les contraintes en conflit</translation>
+      <source>Select Conflicting Constraints</source>
+      <translation>Sélectionner des contraintes en conflit</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
@@ -1651,8 +1651,8 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
-      <translation>Sélectionner les contraintes redondantes</translation>
+      <source>Select Redundant Constraints</source>
+      <translation>Sélectionner des contraintes redondantes</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
@@ -1669,8 +1669,8 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
-      <translation>Sélectionner les contraintes défectueuses</translation>
+      <source>Select Malformed Constraints</source>
+      <translation>Sélectionner des contraintes défectueuses</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
@@ -1687,7 +1687,7 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
+      <source>Select Components With DoFs</source>
       <translation>Sélectionner des composants avec des degrés de liberté</translation>
     </message>
     <message>
@@ -1705,7 +1705,7 @@ de degrés de liberté.</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
+      <source>Select Component Joints</source>
       <translation>Sélectionner les liaisons des composants</translation>
     </message>
     <message>

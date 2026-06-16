@@ -237,8 +237,8 @@
       <translation>放置</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
-      <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <source>Fit B-spline</source>
       <translation>适用于贝塞尔曲线</translation>
     </message>
@@ -590,6 +590,26 @@
       <source>Reverse Engineering</source>
       <translation>逆向工程</translation>
     </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="36"/>
+      <source>&amp;Reverse Engineering</source>
+      <translation>逆向工程(&amp;R)</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Surface Reconstruction</source>
+      <translation>表面重建</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Segmentation</source>
+      <translation>段</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Approximation</source>
+      <translation>近似</translation>
+    </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineCurve</name>
@@ -620,8 +640,8 @@
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
-      <source>Iso-Parametric</source>
-      <translation>ISO 参数</translation>
+      <source>Equidistant</source>
+      <translation>等距</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -720,7 +740,7 @@
   <context>
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="89"/>
+      <location filename="../../FitBSplineCurve.cpp" line="103"/>
       <source>Input Error</source>
       <translation>输入错误</translation>
     </message>

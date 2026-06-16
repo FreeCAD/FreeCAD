@@ -383,11 +383,6 @@ Najmniejszą wartością jest 0.</translation>
       <translation>Użyj generatora siatek Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Stopień rozdrobnienia:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Bardzo zgrubna</translation>
@@ -438,6 +433,11 @@ Najmniejszą wartością jest 0.</translation>
 A value in the range of 0.1-1.</source>
       <translation>Jeśli ten parametr jest mniejszy, siatka staje się drobniejsza.
 Wartość w zakresie 0,1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Stopień rozdrobnienia</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

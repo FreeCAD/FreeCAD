@@ -132,6 +132,7 @@ from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
 from CAMTests.TestMarlinPost import TestMarlinPost
 from CAMTests.TestDxfPost import TestDxfPost
 from CAMTests.TestFanucPost import TestFanucPost
+from CAMTests.TestOpenSBPPost import TestOpenSBPPost
 
 from CAMTests.TestGrblPost import TestGrblPost
 from CAMTests.TestMassoG3Post import TestMassoG3Post

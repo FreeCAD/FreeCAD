@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation type="unfinished">Applies a boolean operations with the selected shapes</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -2262,7 +2262,7 @@ of the projection.</translation>
       <translation>Těleso</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="423"/>
+      <location filename="../../TaskSweep.cpp" line="417"/>
       <source>Sweep</source>
       <translation>Tažení</translation>
     </message>
@@ -5280,39 +5280,39 @@ budou viditelné pouze vytvořené řezy</translation>
       <translation>'%1' nemůže být použit jako profil a cesta.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="431"/>
       <source>Input error</source>
       <translation>Chyba zadání</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="478"/>
+      <location filename="../../TaskSweep.cpp" line="472"/>
       <source>Done</source>
       <translation>Hotovo</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="481"/>
+      <location filename="../../TaskSweep.cpp" line="475"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation type="unfinished">Select one or more connected edges in the 3D view and press 'Done'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="505"/>
-      <location filename="../../TaskSweep.cpp" line="513"/>
+      <location filename="../../TaskSweep.cpp" line="499"/>
+      <location filename="../../TaskSweep.cpp" line="507"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Vybraná dráha Tažení je neplatná.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="505"/>
-      <location filename="../../TaskSweep.cpp" line="513"/>
+      <location filename="../../TaskSweep.cpp" line="499"/>
+      <location filename="../../TaskSweep.cpp" line="507"/>
       <source>Sweep Path</source>
       <translation>Dráha Tažení</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="525"/>
+      <location filename="../../TaskSweep.cpp" line="519"/>
       <source>Vertex/Wire</source>
       <translation>Vrchol/Drát</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="526"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Sweep</source>
       <translation>Tažení</translation>
     </message>
@@ -6003,7 +6003,7 @@ Jednotlivé kontroly booleovských operací:</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="551"/>
+      <location filename="../../TaskSweep.cpp" line="545"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation type="unfinished">Select at least 1 profile and an edge or wire

@@ -1,3 +1,26 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2014 Stefan Tröger <stefantroeger@gmx.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
+
 /*
  * Extends the QuarterWidget with all functions the SoQtViewer has
  * Copyright (c) 2014 Stefan Tröger <stefantroeger@gmx.net>
@@ -154,8 +177,7 @@ private:
     SoNode * m_storedcamera = nullptr;
 
 protected:
-    static void draw2DString(const char * str, SbVec2s glsize, SbVec2f position, Base::Color color);
-    static void printString(const char * str);
+    void draw2DString(const char * str, SbVec2s glsize, SbVec2f position, Base::Color color);
     SbVec2f framesPerSecond;  // NOLINT
 };
 

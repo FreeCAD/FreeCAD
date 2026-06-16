@@ -1,4 +1,24 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 Joao Matos
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+# ******************************************************************************
+# *                                                                            *
+# *   FreeCAD is free software: you can redistribute it and/or modify          *
+# *   it under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the     *
+# *   License, or (at your option) any later version.                          *
+# *                                                                            *
+# *   FreeCAD is distributed in the hope that it will be useful, but           *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+# *   GNU Lesser General Public License for more details.                      *
+# *                                                                            *
+# *   You should have received a copy of the GNU Lesser General Public         *
+# *   License along with FreeCAD.  If not, see                                *
+# *   <https://www.gnu.org/licenses/>.                                         *
+# *                                                                            *
+# ******************************************************************************
 
 """
 Visual snapshot tests for selected Coin/Inventor nodes.
@@ -233,6 +253,9 @@ def _require_gui():
         raise RuntimeError("FreeCAD module not available") from exc
 
     _configure_software_gl_for_snapshots()
+
+    if os.environ.get("CI", "").strip() and not sys.platform.startswith("linux"):
+        raise unittest.SkipTest("Coin node snapshot visual tests are only supported on Linux CI")
 
     # `FreeCADCmd -t 0` runs the base test suite without X11/Wayland. Creating a Qt application
     # in that environment can abort the whole process (instead of raising a Python exception).
@@ -870,40 +893,50 @@ def _make_scene_for_node(coin, type_name: str):
     return root
 
 
-def _render_png(FreeCADGui, coin, root, out_path: Path, width: int, height: int) -> None:
+def _render_png(
+    FreeCADGui,
+    coin,
+    root,
+    out_path: Path,
+    width: int,
+    height: int,
+    *,
+    frame_camera: bool = True,
+) -> None:
     viewport = coin.SbViewportRegion(width, height)
-    # Tighten the camera to what we're rendering.
-    cam = root.getChild(0)
-    # Some GUI helper nodes (e.g. SoDatumLabel) compute a camera-dependent bounding box.
-    # That makes `SoCamera::viewAll()` unstable and can shift the framing of the snapshot.
-    # For these, frame the camera from the rest of the scene and render the full graph.
-    removed = None
-    dtype = coin.SoType.fromName("SoDatumLabel")
-    if not dtype.isBad():
-        search = coin.SoSearchAction()
-        search.setType(dtype)
-        search.setSearchingAll(False)
-        search.apply(root)
-        path = search.getPath()
-        if path is not None and path.getLength() >= 2:
-            label = path.getTail()
-            parent = path.getNode(path.getLength() - 2)
-            idx = parent.findChild(label)
-            if idx >= 0:
-                # Keep the node alive while it's detached (Coin ref-counting).
-                label.ref()
-                parent.removeChild(idx)
-                removed = (parent, idx, label)
+    if frame_camera:
+        # Tighten the camera to what we're rendering.
+        cam = root.getChild(0)
+        # Some GUI helper nodes (e.g. SoDatumLabel) compute a camera-dependent bounding box.
+        # That makes `SoCamera::viewAll()` unstable and can shift the framing of the snapshot.
+        # For these, frame the camera from the rest of the scene and render the full graph.
+        removed = None
+        dtype = coin.SoType.fromName("SoDatumLabel")
+        if not dtype.isBad():
+            search = coin.SoSearchAction()
+            search.setType(dtype)
+            search.setSearchingAll(False)
+            search.apply(root)
+            path = search.getPath()
+            if path is not None and path.getLength() >= 2:
+                label = path.getTail()
+                parent = path.getNode(path.getLength() - 2)
+                idx = parent.findChild(label)
+                if idx >= 0:
+                    # Keep the node alive while it's detached (Coin ref-counting).
+                    label.ref()
+                    parent.removeChild(idx)
+                    removed = (parent, idx, label)
 
-    cam.viewAll(root, viewport)
+        cam.viewAll(root, viewport)
 
-    if removed is not None:
-        parent, idx, label = removed
-        parent.insertChild(label, idx)
-        label.unref()
-    # `SoCamera::viewAll()` can choose a near plane that clips geometry located near the origin.
-    # This shows up particularly with `SoText2`/`SoTextLabel` (text draws, but gets clipped away).
-    cam.nearDistance.setValue(min(cam.nearDistance.getValue(), 0.1))
+        if removed is not None:
+            parent, idx, label = removed
+            parent.insertChild(label, idx)
+            label.unref()
+        # `SoCamera::viewAll()` can choose a near plane that clips geometry located near the origin.
+        # This shows up particularly with `SoText2`/`SoTextLabel` (text draws, but gets clipped away).
+        cam.nearDistance.setValue(min(cam.nearDistance.getValue(), 0.1))
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     off = FreeCADGui.SoQtOffscreenRenderer(width, height)
@@ -927,6 +960,93 @@ def _non_background_pixel_count(path: Path) -> int:
             if img.pixel(x, y) != white:
                 count += 1
     return count
+
+
+def _pixel_bbox(path: Path, predicate):
+    from PySide.QtGui import QImage  # type: ignore
+
+    img = QImage(str(path))
+    if img.isNull():
+        return None
+
+    min_x = img.width()
+    min_y = img.height()
+    max_x = -1
+    max_y = -1
+
+    for y in range(img.height()):
+        for x in range(img.width()):
+            pixel = img.pixel(x, y)
+            r = (pixel >> 16) & 0xFF
+            g = (pixel >> 8) & 0xFF
+            b = pixel & 0xFF
+            a = (pixel >> 24) & 0xFF
+            if not predicate(r, g, b, a):
+                continue
+
+            min_x = min(min_x, x)
+            min_y = min(min_y, y)
+            max_x = max(max_x, x)
+            max_y = max(max_y, y)
+
+    if max_x < min_x or max_y < min_y:
+        return None
+
+    return (min_x, min_y, max_x, max_y)
+
+
+def _mean_rgb(path: Path, x: int, y: int, radius: int = 2) -> tuple[float, float, float]:
+    from PySide.QtGui import QImage  # type: ignore
+
+    img = QImage(str(path)).convertToFormat(QImage.Format_ARGB32)
+    if img.isNull():
+        raise AssertionError(f"unreadable image: {path}")
+
+    r_total = 0
+    g_total = 0
+    b_total = 0
+    count = 0
+    for yy in range(max(0, y - radius), min(img.height(), y + radius + 1)):
+        for xx in range(max(0, x - radius), min(img.width(), x + radius + 1)):
+            pixel = img.pixel(xx, yy)
+            r_total += (pixel >> 16) & 0xFF
+            g_total += (pixel >> 8) & 0xFF
+            b_total += pixel & 0xFF
+            count += 1
+
+    if count == 0:
+        raise AssertionError(f"sample window around ({x}, {y}) is empty for {path}")
+
+    return (r_total / count, g_total / count, b_total / count)
+
+
+def _bbox_relative_point(
+    bbox: tuple[int, int, int, int], x_ratio: float, y_ratio: float
+) -> tuple[int, int]:
+    min_x, min_y, max_x, max_y = bbox
+    width = max(1, max_x - min_x)
+    height = max(1, max_y - min_y)
+    x = min_x + int(width * x_ratio)
+    y = min_y + int(height * y_ratio)
+    return (x, y)
+
+
+def _make_top_view_scene(coin, node, *, center: tuple[float, float, float], camera_height: float):
+    root = coin.SoSeparator()
+
+    cam = coin.SoOrthographicCamera()
+    cam.position.setValue(center[0], center[1], center[2] + 30.0)
+    cam.nearDistance.setValue(1.0)
+    cam.farDistance.setValue(100.0)
+    cam.height.setValue(camera_height)
+    root.addChild(cam)
+
+    light_model = coin.SoLightModel()
+    light_model.model.setValue(coin.SoLightModel.BASE_COLOR)
+    root.addChild(light_model)
+
+    root.addChild(node)
+    return root
 
 
 def _compare_images(
@@ -1083,16 +1203,400 @@ def _compare_images(
 class CoinNodeSnapshotTestCase(unittest.TestCase):
     """Render Coin nodes offscreen and compare against PNG baselines."""
 
+    def test_so_reg_point_unpickable_regression(self):
+        _, _, coin = _require_gui()
+
+        root = coin.SoSeparator()
+        probe = _instantiate(coin, "SoRegPoint")
+        probe.base.setValue(0.0, 0.0, 0.0)
+        probe.normal.setValue(0.0, 0.0, 1.0)
+        probe.length.setValue(1.0)
+        probe.text.setValue("probe")
+        root.addChild(probe)
+
+        pick = coin.SoRayPickAction(coin.SbViewportRegion(512, 512))
+        pick.setRadius(8.0)
+        pick.setPickAll(True)
+        pick.setRay(coin.SbVec3f(0.0, 0.0, 5.0), coin.SbVec3f(0.0, 0.0, -1.0), 0.0, 10.0)
+        pick.apply(root)
+
+        self.assertIsNone(
+            pick.getPickedPoint(),
+            "SoRegPoint should stay unpickable so manual-alignment markers do not intercept clicks",
+        )
+
+    def test_so_datum_label_ignores_parent_cull_face(self):
+        _, FreeCADGui, coin = _require_gui()
+
+        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
+        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        out_dir = Path(
+            os.environ.get(
+                "FC_VISUAL_OUT_DIR",
+                os.path.join(tempfile.gettempdir(), "FreeCADTesting", "CoinNodeSnapshots"),
+            )
+        )
+        actual_path = out_dir / "actual" / "SoDatumLabelCullFaceRegression.png"
+
+        root = coin.SoSeparator()
+
+        cam = coin.SoOrthographicCamera()
+        cam.position.setValue(0.0, 0.0, 2.0)
+        cam.nearDistance.setValue(1.0)
+        cam.farDistance.setValue(5.0)
+        cam.height.setValue(2.0)
+        root.addChild(cam)
+
+        light = coin.SoDirectionalLight()
+        root.addChild(light)
+
+        callback = coin.SoCallback()
+
+        def _enable_backface_culling(userdata, action):
+            coin.SoLazyElement.setBackfaceCulling(action.getState(), True)
+
+        callback.setCallback(_enable_backface_culling, None)
+        root.addChild(callback)
+
+        transform = coin.SoTransform()
+        transform.rotation.setValue(coin.SbRotation(coin.SbVec3f(0.0, 1.0, 0.0), 3.141592653589793))
+        root.addChild(transform)
+
+        label = _instantiate(coin, "SoDatumLabel")
+        label.string.setValue("CullFace")
+        label.textColor.setValue(0.0, 0.4, 0.9)
+        label.name.setValue(_DEFAULT_FONT_FAMILY)
+        label.size.setValue(28)
+        label.lineWidth.setValue(1.0)
+        label.sampling.setValue(2.0)
+        # `Gui::SoDatumLabel::Type::DISTANCE == 1`.
+        label.datumtype.setValue(1)
+        label.param1.setValue(0.18)
+        label.param2.setValue(0.0)
+        label.pnts.setValues(
+            0,
+            2,
+            [coin.SbVec3f(-0.08, -0.02, 0.0), coin.SbVec3f(0.08, 0.02, 0.0)],
+        )
+        root.addChild(label)
+
+        _render_png(FreeCADGui, coin, root, actual_path, width, height, frame_camera=False)
+        self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
+        self.assertGreater(
+            _non_background_pixel_count(actual_path),
+            50,
+            f"SoDatumLabel text disappeared under inherited face culling: {actual_path}",
+        )
+
+    def test_so_string_label_anchor_regression(self):
+        _, FreeCADGui, coin = _require_gui()
+
+        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
+        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        out_dir = Path(
+            os.environ.get(
+                "FC_VISUAL_OUT_DIR",
+                os.path.join(tempfile.gettempdir(), "FreeCADTesting", "CoinNodeSnapshots"),
+            )
+        )
+        actual_path = out_dir / "actual" / "SoStringLabelAnchorRegression.png"
+
+        root = coin.SoSeparator()
+
+        cam = coin.SoOrthographicCamera()
+        cam.position.setValue(0.0, 0.0, 2.0)
+        cam.nearDistance.setValue(1.0)
+        cam.farDistance.setValue(5.0)
+        cam.height.setValue(2.0)
+        root.addChild(cam)
+
+        light = coin.SoDirectionalLight()
+        root.addChild(light)
+
+        font = coin.SoFont()
+        font.name.setValue(_DEFAULT_FONT_FAMILY)
+        font.size.setValue(28.0)
+        root.addChild(font)
+
+        marker_material = coin.SoMaterial()
+        marker_material.diffuseColor.setValue(1.0, 0.0, 0.0)
+        root.addChild(marker_material)
+
+        marker_style = coin.SoDrawStyle()
+        marker_style.pointSize.setValue(11.0)
+        root.addChild(marker_style)
+
+        marker_coords = coin.SoCoordinate3()
+        marker_coords.point.setValues(0, 1, [coin.SbVec3f(0.0, 0.0, 0.0)])
+        root.addChild(marker_coords)
+
+        marker = coin.SoPointSet()
+        marker.numPoints.setValue(1)
+        root.addChild(marker)
+
+        text_material = coin.SoMaterial()
+        text_material.diffuseColor.setValue(0.05, 0.05, 0.05)
+        root.addChild(text_material)
+
+        label = _instantiate(coin, "SoStringLabel")
+        label.string.setValues(0, 2, ["OOOO", "OOOO"])
+        label.name.setValue(_DEFAULT_FONT_FAMILY)
+        label.size.setValue(28)
+        label.textColor.setValue(0.0, 0.0, 0.0)
+        root.addChild(label)
+
+        _render_png(FreeCADGui, coin, root, actual_path, width, height, frame_camera=False)
+        self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
+
+        marker_bbox = _pixel_bbox(
+            actual_path,
+            lambda r, g, b, _a: r >= 200 and g <= 80 and b <= 80,
+        )
+        text_bbox = _pixel_bbox(
+            actual_path,
+            lambda r, g, b, _a: max(r, g, b) <= 100 and (max(r, g, b) - min(r, g, b)) <= 24,
+        )
+
+        self.assertIsNotNone(marker_bbox, f"origin marker not visible: {actual_path}")
+        self.assertIsNotNone(text_bbox, f"text pixels not visible: {actual_path}")
+
+        marker_min_x, marker_min_y, marker_max_x, marker_max_y = marker_bbox
+        text_min_x, text_min_y, text_max_x, _text_max_y = text_bbox
+
+        marker_center_x = (marker_min_x + marker_max_x) / 2.0
+        marker_center_y = (marker_min_y + marker_max_y) / 2.0
+        text_center_x = (text_min_x + text_max_x) / 2.0
+
+        self.assertLessEqual(
+            abs(text_center_x - marker_center_x),
+            6.0,
+            (
+                "SoStringLabel should stay horizontally centered on its projected origin "
+                f"(marker bbox={marker_bbox}, text bbox={text_bbox}, image={actual_path})"
+            ),
+        )
+        self.assertGreaterEqual(
+            text_min_y,
+            marker_center_y - 2.0,
+            (
+                "SoStringLabel should extend downward from its projected origin "
+                f"(marker bbox={marker_bbox}, text bbox={text_bbox}, image={actual_path})"
+            ),
+        )
+
+    def test_so_brep_face_set_per_part_material_binding_regression(self):
+        _, FreeCADGui, coin = _require_gui()
+
+        if importlib.util.find_spec("PartGui") is not None:
+            importlib.import_module("PartGui")
+
+        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
+        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        out_dir = Path(
+            os.environ.get(
+                "FC_VISUAL_OUT_DIR",
+                os.path.join(tempfile.gettempdir(), "FreeCADTesting", "CoinNodeSnapshots"),
+            )
+        )
+        actual_path = out_dir / "actual" / "SoBrepFaceSetPerPartMaterialBindingRegression.png"
+
+        root = coin.SoSeparator()
+
+        cam = coin.SoOrthographicCamera()
+        cam.position.setValue(0.0, 0.0, 2.0)
+        cam.nearDistance.setValue(1.0)
+        cam.farDistance.setValue(5.0)
+        cam.height.setValue(2.0)
+        root.addChild(cam)
+
+        root.addChild(coin.SoDirectionalLight())
+
+        light_model = coin.SoLightModel()
+        light_model.model.setValue(coin.SoLightModel.BASE_COLOR)
+        root.addChild(light_model)
+
+        coords = coin.SoCoordinate3()
+        coords.point.setValues(
+            0,
+            8,
+            [
+                coin.SbVec3f(-0.7, -0.7, 0.0),
+                coin.SbVec3f(0.7, -0.7, 0.0),
+                coin.SbVec3f(0.7, 0.7, 0.0),
+                coin.SbVec3f(-0.7, 0.7, 0.0),
+                coin.SbVec3f(-0.7, -0.7, -0.2),
+                coin.SbVec3f(0.7, -0.7, -0.2),
+                coin.SbVec3f(0.7, 0.7, -0.2),
+                coin.SbVec3f(-0.7, 0.7, -0.2),
+            ],
+        )
+        root.addChild(coords)
+
+        material = coin.SoMaterial()
+        material.diffuseColor.setValues(
+            0,
+            2,
+            [
+                coin.SbColor(0.90, 0.15, 0.15),
+                coin.SbColor(0.15, 0.75, 0.20),
+            ],
+        )
+        root.addChild(material)
+
+        material_binding = coin.SoMaterialBinding()
+        material_binding.value = coin.SoMaterialBinding.PER_PART
+        root.addChild(material_binding)
+
+        faces = _instantiate(coin, "SoBrepFaceSet")
+        faces.coordIndex.setValues(
+            0,
+            16,
+            [
+                0,
+                1,
+                2,
+                -1,
+                0,
+                2,
+                3,
+                -1,
+                4,
+                5,
+                6,
+                -1,
+                4,
+                6,
+                7,
+                -1,
+            ],
+        )
+        faces.partIndex.setValues(0, 2, [2, 2])
+        root.addChild(faces)
+
+        _render_png(FreeCADGui, coin, root, actual_path, width, height, frame_camera=False)
+        self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
+        self.assertGreater(
+            _non_background_pixel_count(actual_path),
+            1000,
+            f"SoBrepFaceSet per-part regression render seems empty: {actual_path}",
+        )
+
+        top_left_rgb = _mean_rgb(actual_path, int(width * 0.35), int(height * 0.35), radius=8)
+        bottom_right_rgb = _mean_rgb(actual_path, int(width * 0.65), int(height * 0.65), radius=8)
+
+        for label, rgb in (
+            ("top-left triangle", top_left_rgb),
+            ("bottom-right triangle", bottom_right_rgb),
+        ):
+            r, g, b = rgb
+            self.assertGreater(
+                r,
+                g + 60.0,
+                f"{label} should keep the front face's red material (got {rgb}, image={actual_path})",
+            )
+            self.assertGreater(
+                r,
+                b + 60.0,
+                f"{label} should keep the front face's red material (got {rgb}, image={actual_path})",
+            )
+            self.assertGreater(
+                r,
+                120.0,
+                f"{label} should stay visibly red (got {rgb}, image={actual_path})",
+            )
+
+    def test_so_brep_face_set_partial_render_transparency_regression(self):
+        FreeCAD, FreeCADGui, coin = _require_gui()
+        importlib.import_module("Part")
+        importlib.import_module("PartGui")
+
+        width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
+        height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
+        out_dir = Path(
+            os.environ.get(
+                "FC_VISUAL_OUT_DIR",
+                os.path.join(tempfile.gettempdir(), "FreeCADTesting", "CoinNodeSnapshots"),
+            )
+        )
+        actual_path = out_dir / "actual" / "SoBrepFaceSetPartialRenderTransparencyRegression.png"
+
+        doc = FreeCAD.newDocument("SoBrepFaceSetPartialRenderTransparencyRegression")
+        try:
+            box = doc.addObject("Part::Box", "Box")
+            doc.recompute()
+            FreeCADGui.setActiveDocument(doc.Name)
+            gui_doc = FreeCADGui.getDocument(doc.Name) or FreeCADGui.activeDocument()
+            if gui_doc is None:
+                raise AssertionError(f"failed to resolve Gui document for {doc.Name}")
+
+            box.ViewObject.DiffuseColor = [
+                (0.90, 0.18, 0.18, 1.0),
+                (0.18, 0.78, 0.22, 1.0),
+                (0.18, 0.38, 0.92, 1.0),
+                (0.94, 0.82, 0.18, 1.0),
+                (0.82, 0.28, 0.86, 1.0),
+                (0.92, 0.18, 0.18, 1.0),
+            ]
+            box.ViewObject.Transparency = 35
+            box.ViewObject.partialRender(["Face6"], False)
+            FreeCADGui.updateGui()
+
+            root = _make_top_view_scene(
+                coin,
+                box.ViewObject.RootNode,
+                center=(5.0, 5.0, 5.0),
+                camera_height=14.0,
+            )
+            _render_png(FreeCADGui, coin, root, actual_path, width, height, frame_camera=False)
+
+            self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
+            self.assertGreater(
+                _non_background_pixel_count(actual_path),
+                1000,
+                f"partial transparent face render seems empty: {actual_path}",
+            )
+
+            bbox = _pixel_bbox(actual_path, lambda r, g, b, _a: min(r, g, b) < 250)
+            self.assertIsNotNone(
+                bbox, f"partial transparent face render produced no visible pixels: {actual_path}"
+            )
+
+            top_left_rgb = _mean_rgb(actual_path, *_bbox_relative_point(bbox, 0.35, 0.35), radius=8)
+            bottom_right_rgb = _mean_rgb(
+                actual_path, *_bbox_relative_point(bbox, 0.65, 0.65), radius=8
+            )
+
+            for label, rgb in (
+                ("top-left triangle", top_left_rgb),
+                ("bottom-right triangle", bottom_right_rgb),
+            ):
+                r, g, b = rgb
+                self.assertGreater(
+                    r,
+                    g + 30.0,
+                    f"{label} should keep the partially rendered top face's red color (got {rgb}, image={actual_path})",
+                )
+                self.assertGreater(
+                    r,
+                    b + 30.0,
+                    f"{label} should keep the partially rendered top face's red color (got {rgb}, image={actual_path})",
+                )
+                self.assertGreater(
+                    r,
+                    150.0,
+                    f"{label} should stay visibly red even with transparency (got {rgb}, image={actual_path})",
+                )
+        finally:
+            if getattr(FreeCADGui, "Selection", None) is not None:
+                FreeCADGui.Selection.clearSelection()
+            if FreeCAD.getDocument(doc.Name):
+                FreeCAD.closeDocument(doc.Name)
+
     def test_coin_node_snapshots(self):
         """Render each configured node and compare against baseline images."""
         is_ci = bool(os.environ.get("CI", "").strip())
         is_linux = sys.platform.startswith("linux")
         smoke_mode = is_ci and not is_linux
-
-        if is_ci and not is_linux:
-            raise unittest.SkipTest(
-                "Coin node snapshot visual tests are only supported on Linux CI"
-            )
 
         _, FreeCADGui, coin = _require_gui()
 

@@ -1572,6 +1572,10 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>நேரம்</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>நேரம்:</translation>
@@ -2260,8 +2264,8 @@ Visit https://openscad.org/ to install it.</source>
       <translation>காட்சி நிறங்கள்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
       <translation>செய்தி பயன்முறையை விட்டு வெளியேறவும்</translation>
     </message>

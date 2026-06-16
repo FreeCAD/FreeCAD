@@ -1244,8 +1244,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Logikai műveletet végez a kiválasztott formákon</translation>
+      <source>Applies a boolean operation with the selected shapes</source>
+      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -2262,7 +2262,7 @@ irányát.</translation>
       <translation>Szilárd test</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="423"/>
+      <location filename="../../TaskSweep.cpp" line="417"/>
       <source>Sweep</source>
       <translation>Húzás</translation>
     </message>
@@ -5274,39 +5274,39 @@ only created cuts will be visible</source>
       <translation>'%1' profilként és elérési útként nem használható.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="437"/>
+      <location filename="../../TaskSweep.cpp" line="431"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="478"/>
+      <location filename="../../TaskSweep.cpp" line="472"/>
       <source>Done</source>
       <translation>Kész</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="481"/>
+      <location filename="../../TaskSweep.cpp" line="475"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>Jelöljön ki egy vagy több összekapcsolt élt a 3D nézetben, majd nyomja meg a 'Kész' gombot</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="505"/>
-      <location filename="../../TaskSweep.cpp" line="513"/>
+      <location filename="../../TaskSweep.cpp" line="499"/>
+      <location filename="../../TaskSweep.cpp" line="507"/>
       <source>The selected sweep path is invalid.</source>
       <translation>A kijelölt pásztázási (sweep) út érvénytelen.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="505"/>
-      <location filename="../../TaskSweep.cpp" line="513"/>
+      <location filename="../../TaskSweep.cpp" line="499"/>
+      <location filename="../../TaskSweep.cpp" line="507"/>
       <source>Sweep Path</source>
       <translation>Pásztázás (Sweep) útvonala</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="525"/>
+      <location filename="../../TaskSweep.cpp" line="519"/>
       <source>Vertex/Wire</source>
       <translation>Végpont/Vonal</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="526"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Sweep</source>
       <translation>Húzás</translation>
     </message>
@@ -5989,7 +5989,7 @@ Egyedi logikai művelet ellenőrzés:</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="551"/>
+      <location filename="../../TaskSweep.cpp" line="545"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Válasszon ki legalább 1 szelvényt és egy élt vagy dróthálót a segédgörbe útvonalához a 3D nézetben.</translation>

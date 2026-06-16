@@ -95,8 +95,7 @@ def check_collision(
 def get_linking_moves(
     start_position: Vector,
     target_position: Vector,
-    local_clearance: float,
-    global_clearance: float,
+    heights_clearance: list[float],
     tool_shape: Optional[Part.Shape] = None,
     tool_diameter: Optional[float] = None,
     solids: Optional[List[Part.Shape]] = None,
@@ -124,9 +123,6 @@ def get_linking_moves(
         if not check_collision(start_position, target_position, solids):
             return []
 
-    if local_clearance > global_clearance:
-        raise ValueError("Local clearance must not exceed global clearance")
-
     if retract_height_offset is not None and retract_height_offset < 0:
         raise ValueError("Retract offset must be positive")
 
@@ -140,7 +136,10 @@ def get_linking_moves(
             collision_model = Part.makeCompound(solids)
 
     # Determine candidate heights
-    candidate_heights = {local_clearance, global_clearance}
+    if isinstance(heights_clearance, (float, int)):
+        candidate_heights = {heights_clearance}
+    else:
+        candidate_heights = set(heights_clearance)
     if retract_height_offset is not None:
         retract_height = max(start_position.z, target_position.z) + retract_height_offset
         candidate_heights.add(retract_height)
@@ -150,8 +149,8 @@ def get_linking_moves(
     collision_clearance = max(collision_clearance, 0) or 1
 
     # Try each height
-    for height in heights:
-        wire = make_linking_wire(start_position, target_position, height)
+    for i in range(len(heights)):
+        wire = make_linking_wire(start_position, target_position, heights[: i + 1])
         if is_travel_collision_free(
             wire, collision_model, tool_shape, tool_diameter, collision_clearance
         ):
@@ -165,14 +164,16 @@ def get_linking_moves(
     raise RuntimeError("No collision-free path found between start and target positions")
 
 
-def make_linking_wire(start: Vector, target: Vector, z: float) -> Part.Wire:
+def make_linking_wire(start: Vector, target: Vector, heights: list) -> Part.Wire:
     """Returns a wire connecting start and target points"""
-    p1 = Vector(start.x, start.y, z)
-    p2 = Vector(target.x, target.y, z)
+    top_z = heights[-1]
+    plunge_heights = reversed([target.z] + heights[:-1])
+    p1 = Vector(start.x, start.y, top_z)
+    p2 = Vector(target.x, target.y, top_z)
     edges = []
 
-    # Only add retract edge if there's actual movement
-    if not Path.Geom.pointsCoincide(start, p1):
+    # Only add retract edge if there's actual movement and p1 not on vertical line with p2
+    if not Path.Geom.pointsCoincide(start, p1) and not Path.Geom.pointsCoincide(p1, p2):
         edges.append(Part.makeLine(start, p1))
 
     # Only add traverse edge if there's actual movement
@@ -181,7 +182,12 @@ def make_linking_wire(start: Vector, target: Vector, z: float) -> Part.Wire:
 
     # Only add plunge edge if there's actual movement
     if not Path.Geom.pointsCoincide(p2, target):
-        edges.append(Part.makeLine(p2, target))
+        last = p2
+        for z in plunge_heights:
+            p = Vector(target.x, target.y, z)
+            if not Path.Geom.pointsCoincide(p, last):
+                edges.append(Part.makeLine(last, p))
+                last = p
 
     return Part.Wire(edges) if edges else Part.Wire([Part.makeLine(start, target)])
 

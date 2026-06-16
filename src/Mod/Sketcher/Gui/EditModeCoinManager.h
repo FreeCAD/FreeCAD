@@ -248,6 +248,7 @@ public:
     void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers, unsigned int augmentationlevel);
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve, GeometryCreationMode mode);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list, GeometryCreationMode mode);
+    void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve);
     void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
     void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();

@@ -2,6 +2,7 @@
 
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
+ *   Copyright (c) 2026 Loke S. Haugsnes <Lokesh@live.no>                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,10 +25,7 @@
 
 #pragma once
 
-#include <boost/math/special_functions/fpclassify.hpp>
-
 #include <Gui/Notifications.h>
-
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/InputHint.h>
@@ -40,310 +38,55 @@
 #include "ViewProviderSketch.h"
 #include "SnapManager.h"
 
+
+#include <Base/Tools.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
+#include <Mod/Part/App/Geometry2d.h>
+
+
+#include "DrawSketchDefaultWidgetController.h"
+#include "DrawSketchControllableHandler.h"
+
+#include <vector>
+#include <algorithm>
+
+// Parabola governing equation:
+// point(t) = origin + t*t/(4*focal)*XDir + t*YDir
+
 namespace SketcherGui
 {
 
 extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
-class DrawSketchHandlerArcOfParabola: public DrawSketchHandler
+class DrawSketchHandlerArcOfParabola;
+
+using DSHArcOfParabolaController = DrawSketchController<
+    DrawSketchHandlerArcOfParabola,
+    StateMachines::FourSeekEnd,
+    /*PAutoConstraintSize =*/4,
+    /*OnViewParametersT =*/OnViewParameters<6>>;
+
+using DrawSketchHandlerArcOfParabolaBase = DrawSketchControllableHandler<DSHArcOfParabolaController>;
+
+class DrawSketchHandlerArcOfParabola: public DrawSketchHandlerArcOfParabolaBase
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArcOfParabola)
 
+    friend DSHArcOfParabolaController;
+
 public:
-    DrawSketchHandlerArcOfParabola()
-        : Mode(STATUS_SEEK_First)
-        , EditCurve(34)
-        , startAngle(0)
-        , endAngle(0)
-        , arcAngle(0)
-        , arcAngle_t(0)
+    explicit DrawSketchHandlerArcOfParabola()
+        : DrawSketchHandlerArcOfParabolaBase()
+        , centerPoint({0.0, 0.0})
+        , focusPoint({0.0, 0.0})
+        , startPoint(0)
+        , endPoint(0)
+        , valid(true)
+        , parabolaGeoId(Sketcher::GeoEnum::GeoUndef)
     {}
 
     ~DrawSketchHandlerArcOfParabola() override = default;
-
-    /// mode table
-    enum SelectMode
-    {
-        STATUS_SEEK_First,
-        STATUS_SEEK_Second,
-        STATUS_SEEK_Third,
-        STATUS_SEEK_Fourth,
-        STATUS_Close
-    };
-
-    void mouseMove(SnapManager::SnapHandle snapHandle) override
-    {
-        Base::Vector2d onSketchPos = snapHandle.compute();
-        if (Mode == STATUS_SEEK_First) {
-            setPositionText(onSketchPos);
-            seekAndRenderAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f));
-        }
-        else if (Mode == STATUS_SEEK_Second) {
-            EditCurve[1] = onSketchPos;
-
-            // Display radius for user
-            float radius = (onSketchPos - focusPoint).Length();
-            if (showCursorCoords()) {
-                SbString text;
-                std::string radiusString = lengthToDisplayFormat(radius, 1);
-                text.sprintf(" (F%s)", radiusString.c_str());
-                setPositionText(onSketchPos, text);
-            }
-
-            drawEdit(EditCurve);
-            seekAndRenderAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f));
-        }
-        else if (Mode == STATUS_SEEK_Third) {
-            double focal = (axisPoint - focusPoint).Length();
-            double phi = atan2(focusPoint.y - axisPoint.y, focusPoint.x - axisPoint.x);
-
-            // P(U) = O + U*U/(4.*F)*XDir + U*YDir
-            //
-            // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle *
-            // sin(phi),
-            //                      pnt0.y + angle * angle / 4 / focal * sin(phi) + angle *
-            //                      cos(phi), 0.f);
-
-            // This is the angle at cursor point
-            double u
-                = (cos(phi) * (onSketchPos.y - axisPoint.y)
-                   - (onSketchPos.x - axisPoint.x) * sin(phi));
-
-            for (int i = 15; i >= -15; i--) {
-                double angle = i * u / 15;
-                double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
-                double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
-                EditCurve[15 + i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
-            }
-
-            // Display radius for user
-            if (showCursorCoords()) {
-                SbString text;
-                std::string focalString = lengthToDisplayFormat(focal, 1);
-                text.sprintf(" (F%s)", focalString.c_str());
-                setPositionText(onSketchPos, text);
-            }
-
-            drawEdit(EditCurve);
-
-            seekAndRenderAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f));
-        }
-        else if (Mode == STATUS_SEEK_Fourth) {
-            double focal = (axisPoint - focusPoint).Length();
-            double phi = atan2(focusPoint.y - axisPoint.y, focusPoint.x - axisPoint.x);
-
-            // P(U) = O + U*U/(4.*F)*XDir + U*YDir
-            //
-            // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle *
-            // sin(phi),
-            //                      pnt0.y + angle * angle / 4 / focal * sin(phi) + angle *
-            //                      cos(phi), 0.f);
-
-            // This is the angle at starting point
-            double ustartpoint
-                = (cos(phi) * (startingPoint.y - axisPoint.y)
-                   - (startingPoint.x - axisPoint.x) * sin(phi));
-
-            double startValue = ustartpoint;
-
-            double u
-                = (cos(phi) * (onSketchPos.y - axisPoint.y)
-                   - (onSketchPos.x - axisPoint.x) * sin(phi));
-
-
-            arcAngle = u - startValue;
-
-            if (!boost::math::isnan(arcAngle)) {
-                EditCurve.resize(33);
-                for (std::size_t i = 0; i < 33; i++) {
-                    double angle = startValue + i * arcAngle / 32.0;
-                    double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
-                    double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
-                    EditCurve[i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
-                }
-
-                if (showCursorCoords()) {
-                    SbString text;
-                    std::string focalString = lengthToDisplayFormat(focal, 1);
-                    text.sprintf(" (F%s)", focalString.c_str());
-                    setPositionText(onSketchPos, text);
-                }
-            }
-            else {
-                arcAngle = 0.;
-            }
-
-            drawEdit(EditCurve);
-            seekAndRenderAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f));
-        }
-    }
-
-    bool pressButton(Base::Vector2d onSketchPos) override
-    {
-        if (Mode == STATUS_SEEK_First) {
-            EditCurve[0] = onSketchPos;
-            focusPoint = onSketchPos;
-            EditCurve.resize(2);
-            Mode = STATUS_SEEK_Second;
-        }
-        else if (Mode == STATUS_SEEK_Second) {
-            EditCurve[1] = onSketchPos;
-            axisPoint = onSketchPos;
-            EditCurve.resize(31);
-            Mode = STATUS_SEEK_Third;
-        }
-        else if (Mode == STATUS_SEEK_Third) {
-            startingPoint = onSketchPos;
-            arcAngle = 0.;
-            arcAngle_t = 0.;
-            Mode = STATUS_SEEK_Fourth;
-        }
-        else {  // Fourth
-            endPoint = onSketchPos;
-            Mode = STATUS_Close;
-        }
-
-        updateHint();
-        return true;
-    }
-
-    bool releaseButton(Base::Vector2d /*onSketchPos*/) override
-    {
-        if (Mode == STATUS_Close) {
-            unsetCursor();
-            resetPositionText();
-
-            double phi = atan2(focusPoint.y - axisPoint.y, focusPoint.x - axisPoint.x);
-
-            double ustartpoint
-                = (cos(phi) * (startingPoint.y - axisPoint.y)
-                   - (startingPoint.x - axisPoint.x) * sin(phi));
-
-            double startAngle = ustartpoint;
-
-            double endAngle;
-
-            bool isOriginalArcCCW = true;
-
-            if (arcAngle > 0) {
-                endAngle = startAngle + arcAngle;
-            }
-            else {
-                endAngle = startAngle;
-                startAngle += arcAngle;
-                isOriginalArcCCW = false;
-            }
-
-            int currentgeoid = getHighestCurveIndex();
-
-            try {
-                openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of Parabola"));
-
-                // Add arc of parabola
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(),
-                    "addGeometry(Part.ArcOfParabola"
-                    "(Part.Parabola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App."
-                    "Vector(0,0,1)),%f,%f),%s)",
-                    focusPoint.x,
-                    focusPoint.y,
-                    axisPoint.x,
-                    axisPoint.y,
-                    startAngle,
-                    endAngle,
-                    constructionModeAsBooleanText()
-                );
-
-                currentgeoid++;
-
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
-            }
-            catch (const Base::Exception&) {
-                Gui::NotifyError(
-                    sketchgui,
-                    QT_TRANSLATE_NOOP("Notifications", "Error"),
-                    QT_TRANSLATE_NOOP("Notifications", "Cannot create arc of parabola")
-                );
-                abortCommand();
-
-                tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
-
-                return false;
-            }
-
-            commitCommand();
-
-            // add auto constraints for the focus point
-            if (!sugConstr1.empty()) {
-                createAutoConstraints(sugConstr1, currentgeoid + 1, Sketcher::PointPos::start);
-                sugConstr1.clear();
-            }
-
-            // add suggested constraints for vertex point
-            if (!sugConstr2.empty()) {
-                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::mid);
-                sugConstr2.clear();
-            }
-
-            // add suggested constraints for start of arc
-            if (!sugConstr3.empty()) {
-                createAutoConstraints(
-                    sugConstr3,
-                    currentgeoid,
-                    isOriginalArcCCW ? Sketcher::PointPos::start : Sketcher::PointPos::end
-                );
-                sugConstr3.clear();
-            }
-
-            // add suggested constraints for start of arc
-            if (!sugConstr4.empty()) {
-                createAutoConstraints(
-                    sugConstr4,
-                    currentgeoid,
-                    isOriginalArcCCW ? Sketcher::PointPos::end : Sketcher::PointPos::start
-                );
-                sugConstr4.clear();
-            }
-
-            tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
-
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher"
-            );
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
-            if (continuousMode) {
-                // This code enables the continuous creation mode.
-                Mode = STATUS_SEEK_First;
-                EditCurve.clear();
-                drawEdit(EditCurve);
-                EditCurve.resize(34);
-                applyCursor();
-                /* It is ok not to call to purgeHandler
-                 * in continuous creation mode because the
-                 * handler is destroyed by the quit() method on pressing the
-                 * right button of the mouse */
-            }
-            else {
-                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
-                                            // ViewProvider
-            }
-        }
-        updateHint();
-        return true;
-    }
-
-private:
-    QString getCrosshairCursorSVGName() const override
-    {
-        return QStringLiteral("Sketcher_Pointer_Create_ArcOfParabola");
-    }
-
-protected:
-    SelectMode Mode;
-    std::vector<Base::Vector2d> EditCurve;
-    Base::Vector2d focusPoint, axisPoint, startingPoint, endPoint;
-    double startAngle, endAngle, arcAngle, arcAngle_t;
-    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 
 private:
     std::list<Gui::InputHint> getToolHints() const override
@@ -351,30 +94,600 @@ private:
         using enum Gui::InputHint::UserInput;
 
         return Gui::lookupHints<SelectMode>(
-            Mode,
+            state(),
             {
-                {.state = STATUS_SEEK_First,
+                {.state = SelectMode::SeekFirst,
                  .hints =
                      {
                          {tr("%1 pick focus point"), {MouseLeft}},
                      }},
-                {.state = STATUS_SEEK_Second,
+                {.state = SelectMode::SeekSecond,
                  .hints =
                      {
                          {tr("%1 pick axis point"), {MouseLeft}},
                      }},
-                {.state = STATUS_SEEK_Third,
+                {.state = SelectMode::SeekThird,
                  .hints =
                      {
                          {tr("%1 pick starting point"), {MouseLeft}},
                      }},
-                {.state = STATUS_SEEK_Fourth,
+                {.state = SelectMode::SeekFourth,
                  .hints =
                      {
                          {tr("%1 pick end point"), {MouseLeft}},
                      }},
             });
     }
+
+    void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
+    {
+        using std::numbers::pi;
+        valid = true;
+        switch (state()) {
+            case SelectMode::SeekFirst: {
+                focusPoint = onSketchPos;
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
+            } break;
+            case SelectMode::SeekSecond: {
+                centerPoint = onSketchPos;
+                if ((centerPoint - focusPoint).Length() < Precision::Confusion()) {
+                    valid = false;
+                    break;
+                }
+
+                toolWidgetManager.drawDirectionAtCursor(onSketchPos, focusPoint);
+                seekAndRenderAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f));
+            } break;
+            case SelectMode::SeekThird: {
+                Base::Vector2d delta23 = onSketchPos - centerPoint;
+                startPoint = delta23.x * axis().Rotate(std::numbers::pi / 2).x
+                    + delta23.y * axis().Rotate(std::numbers::pi / 2).y;
+
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                seekAndRenderAutoConstraint(sugConstraints[2], onSketchPos, Base::Vector2d(0.f, 0.f));
+            } break;
+            case SelectMode::SeekFourth: {
+                Base::Vector2d delta24 = onSketchPos - centerPoint;
+                endPoint = delta24.x * axis().Rotate(std::numbers::pi / 2).x
+                    + delta24.y * axis().Rotate(std::numbers::pi / 2).y;
+
+                if (abs(endPoint - startPoint) < Precision::Confusion()) {
+                    valid = false;
+                    break;
+                }
+
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                seekAndRenderAutoConstraint(sugConstraints[3], onSketchPos, Base::Vector2d(0.f, 0.f));
+            } break;
+            default:
+                return;
+        }
+
+        CreateAndDrawShapeGeometry();
+    }
+
+    void executeCommands() override
+    {
+        try {
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of parabola"));
+
+            parabolaGeoId = getHighestCurveIndex() + 1;
+
+            createShape(true);
+
+            commandAddShapeGeometryAndConstraints();
+
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", parabolaGeoId);
+
+            commitCommand();
+        }
+        catch (const Base::Exception&) {
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to add arc of parabola")
+            );
+
+            abortCommand();
+            THROWM(
+                Base::RuntimeError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Tool execution aborted"
+                ) "\n"
+            )  // This prevents constraints from being
+               // applied on non existing geometry
+        }
+    }
+
+    void generateAutoConstraints() override
+    {
+        auto& ac1 = sugConstraints[0];
+        auto& ac2 = sugConstraints[1];
+        auto& ac3 = sugConstraints[2];
+        auto& ac4 = sugConstraints[3];
+
+        if (!ac1.empty()) {
+            generateAutoConstraintsOnElement(ac1, parabolaGeoId + 1, Sketcher::PointPos::start);
+        }
+
+        if (!ac2.empty()) {
+            generateAutoConstraintsOnElement(ac2, parabolaGeoId, Sketcher::PointPos::mid);
+        }
+
+        if (!ac3.empty()) {
+            generateAutoConstraintsOnElement(
+                ac3,
+                parabolaGeoId,
+                (startPoint < endPoint) ? Sketcher::PointPos::start : Sketcher::PointPos::end
+            );
+        }
+
+        if (!ac4.empty()) {
+            generateAutoConstraintsOnElement(
+                ac4,
+                parabolaGeoId,
+                (startPoint < endPoint) ? Sketcher::PointPos::end : Sketcher::PointPos::start
+            );
+        }
+
+        // Ensure temporary autoconstraints do not generate a redundancy and that the geometry
+        // parameters are accurate This is particularly important for adding widget mandated
+        // constraints.
+        removeRedundantAutoConstraints();
+    }
+
+    void createAutoConstraints() override
+    {
+        // execute python command to create autoconstraints
+        createGeneratedAutoConstraints(true);
+
+        sugConstraints[0].clear();
+        sugConstraints[1].clear();
+        sugConstraints[2].clear();
+        sugConstraints[3].clear();
+    }
+
+    std::string getToolName() const override
+    {
+        return "DSH_ArcOfParabola";
+    }
+
+    QString getCrosshairCursorSVGName() const override
+    {
+        return QStringLiteral("Sketcher_Pointer_Create_ArcOfParabola");
+    }
+
+    QPixmap getToolIcon() const override
+    {
+        return Gui::BitmapFactory().pixmap("Sketcher_CreateParabolic_Arc");
+    }
+
+    bool canGoToNextMode() override
+    {
+        if (!valid) {
+            return false;
+        }
+        return true;
+    }
+
+    void angleSnappingControl() override
+    {
+        setAngleSnapping(false);
+    }
+
+    void createShape(bool onlyeditoutline) override
+    {
+        Q_UNUSED(onlyeditoutline);
+
+        ShapeGeometry.clear();
+
+        if (!valid) {
+            return;
+        }
+
+        if (state() == SelectMode::SeekSecond) {
+            addLineToShapeGeometry(toVector3d(focusPoint), toVector3d(centerPoint), isConstructionMode());
+        }
+
+        // starting point can be 0 but then the curve cant be displayed
+        if (state() == SelectMode::SeekThird && abs(startPoint) > Precision::Confusion()) {
+            addArcOfParabolaToShapeGeometry(
+                toVector3d(axis()),
+                toVector3d(centerPoint),
+                focal(),
+                startPoint,
+                -startPoint,
+                isConstructionMode()
+            );
+        }
+
+        if (state() == SelectMode::SeekFourth || state() == SelectMode::End) {
+            addArcOfParabolaToShapeGeometry(
+                toVector3d(axis()),
+                toVector3d(centerPoint),
+                focal(),
+                (startPoint < endPoint) ? startPoint : endPoint,
+                (startPoint < endPoint) ? endPoint : startPoint,
+                isConstructionMode()
+            );
+        }
+    }
+
+private:
+    Base::Vector2d centerPoint, focusPoint;
+    double startPoint, endPoint;
+    bool valid;
+    int parabolaGeoId;
+
+    Base::Vector2d axis() const
+    {
+        return (focusPoint - centerPoint).Normalize();
+    }
+
+    double focal() const
+    {
+        return (focusPoint - centerPoint).Length();
+    }
 };
+
+template<>
+auto DSHArcOfParabolaController::getState(int labelindex) const
+{
+    switch (labelindex) {
+        case OnViewParameter::First:
+        case OnViewParameter::Second:
+            return SelectMode::SeekFirst;
+            break;
+        case OnViewParameter::Third:
+        case OnViewParameter::Fourth:
+            return SelectMode::SeekSecond;
+            break;
+        case OnViewParameter::Fifth:
+            return SelectMode::SeekThird;
+            break;
+        case OnViewParameter::Sixth:
+            return SelectMode::SeekFourth;
+            break;
+        default:
+            THROWM(Base::ValueError, "OnViewParameter index without an associated machine state")
+    }
+}
+
+template<>
+void DSHArcOfParabolaController::configureOnViewParameters()
+{
+    onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
+    onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+
+    onViewParameters[OnViewParameter::Third]->setLabelType(
+        Gui::SoDatumLabel::RADIUS,
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
+    onViewParameters[OnViewParameter::Fourth]->setLabelType(
+        Gui::SoDatumLabel::ANGLE,
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
+
+    onViewParameters[OnViewParameter::Fifth]->setLabelType(
+        Gui::SoDatumLabel::ANGLE,
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
+    onViewParameters[OnViewParameter::Sixth]->setLabelType(
+        Gui::SoDatumLabel::ANGLE,
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
+}
+
+template<>
+void DSHArcOfParabolaController::doEnforceControlParameters(Base::Vector2d& onSketchPos)
+{
+    handler->updateDataAndDrawToPosition(
+        onSketchPos
+    );  // ensure that the member variables are updated to date values before enforcing parameters
+    switch (handler->state()) {
+        case SelectMode::SeekFirst: {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->isSet) {
+                onSketchPos.x = firstParam->getValue();
+            }
+
+            if (secondParam->isSet) {
+                onSketchPos.y = secondParam->getValue();
+            }
+        } break;
+        case SelectMode::SeekSecond: {
+            auto& focalParam = onViewParameters[OnViewParameter::Third];
+            auto& angleParam = onViewParameters[OnViewParameter::Fourth];
+
+            if (!focalParam->isSet && !angleParam->isSet) {
+                return;
+            }
+
+            double focal = handler->focal();
+            auto axis = handler->axis();
+
+            if (focalParam->isSet) {
+                focal = focalParam->getValue();
+                if (focal < Precision::Confusion() && focalParam->hasFinishedEditing) {
+                    unsetOnViewParameter(focalParam.get());
+                    return;
+                }
+            }
+
+            if (angleParam->isSet) {
+                double angle = Base::toRadians(angleParam->getValue());
+                axis = {cos(angle), sin(angle)};
+            }
+
+            onSketchPos = handler->focusPoint + focal * -axis;
+        } break;
+        case SelectMode::SeekThird: {
+            auto& startParam = onViewParameters[OnViewParameter::Fifth];
+
+            if (!startParam->isSet) {
+                return;
+            }
+
+            auto start = startParam->getValue();
+
+            onSketchPos = handler->centerPoint + start * handler->axis().Rotate(std::numbers::pi / 2);
+        } break;
+        case SelectMode::SeekFourth: {
+            auto& arcParam = onViewParameters[OnViewParameter::Sixth];
+
+            if (!arcParam->isSet) {
+                return;
+            }
+
+            double arc = -arcParam->getValue();
+
+            if (std::abs(arc) < Precision::Confusion() && arcParam->hasFinishedEditing) {
+                unsetOnViewParameter(arcParam.get());
+                return;
+            }
+
+            double end = handler->endPoint;
+
+            onSketchPos = handler->centerPoint + end * handler->axis().Rotate(std::numbers::pi / 2);
+        } break;
+        default:
+            break;
+    }
+}
+
+template<>
+void DSHArcOfParabolaController::adaptParameters(Base::Vector2d onSketchPos)
+{
+    switch (handler->state()) {
+        case SelectMode::SeekFirst: {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (!firstParam->isSet) {
+                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
+            }
+
+            if (!secondParam->isSet) {
+                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
+            }
+
+            bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
+            firstParam->setLabelAutoDistanceReverse(!sameSign);
+            secondParam->setLabelAutoDistanceReverse(sameSign);
+            firstParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+            secondParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+        } break;
+        case SelectMode::SeekSecond: {
+            auto& focalParam = onViewParameters[OnViewParameter::Third];
+            auto& angleParam = onViewParameters[OnViewParameter::Fourth];
+
+            if (!focalParam->isSet) {
+                setOnViewParameterValue(OnViewParameter::Third, handler->focal());
+            }
+
+            if (!angleParam->isSet) {
+                setOnViewParameterValue(
+                    OnViewParameter::Fourth,
+                    Base::toDegrees(handler->axis().Angle()),
+                    Base::Unit::Angle
+                );
+            }
+
+            Base::Vector3d start = toVector3d(handler->focusPoint);
+            Base::Vector3d end = toVector3d(onSketchPos);
+
+            focalParam->setPoints(start, end);
+            angleParam->setPoints(start, Base::Vector3d());
+            angleParam->setLabelRange(handler->axis().Angle());
+        } break;
+        case SelectMode::SeekThird: {
+            auto& startAngleParam = onViewParameters[OnViewParameter::Fifth];
+
+            if (!startAngleParam->isSet) {
+                setOnViewParameterValue(OnViewParameter::Fifth, handler->startPoint, Base::Unit::One);
+            }
+
+            Base::Vector3d start = toVector3d(handler->centerPoint);
+
+            startAngleParam->setPoints(start, Base::Vector3d());
+            startAngleParam->setLabelStartAngle(handler->axis().Angle());
+            startAngleParam->setLabelRange(0);
+        } break;
+        case SelectMode::SeekFourth: {
+            auto& arcAngleParam = onViewParameters[OnViewParameter::Sixth];
+
+            if (!arcAngleParam->isSet) {
+                setOnViewParameterValue(
+                    OnViewParameter::Sixth,
+                    handler->endPoint - handler->startPoint,
+                    Base::Unit::One
+                );
+            }
+
+            Base::Vector3d start = toVector3d(handler->centerPoint);
+
+            arcAngleParam->setPoints(start, Base::Vector3d());
+            arcAngleParam->setLabelStartAngle(handler->axis().Angle());
+            arcAngleParam->setLabelRange(0);
+        } break;
+        default:
+            break;
+    }
+}
+
+template<>
+void DSHArcOfParabolaController::computeNextDrawSketchHandlerMode()
+{
+    switch (handler->state()) {
+        case SelectMode::SeekFirst: {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
+                handler->setNextState(SelectMode::SeekSecond);
+            }
+        } break;
+        case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
+            if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
+                handler->setNextState(SelectMode::SeekThird);
+            }
+        } break;
+        case SelectMode::SeekThird: {
+            auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
+
+            if (fifthParam->hasFinishedEditing) {
+                handler->setNextState(SelectMode::SeekFourth);
+            }
+        } break;
+        case SelectMode::SeekFourth: {
+            auto& sixth = onViewParameters[OnViewParameter::Sixth];
+
+            if (sixth->hasFinishedEditing) {
+                handler->setNextState(SelectMode::End);
+            }
+        } break;
+        default:
+            break;
+    }
+}
+
+template<>
+void DSHArcOfParabolaController::addConstraints()
+{
+    App::DocumentObject* obj = handler->sketchgui->getObject();
+
+    int firstCurve = handler->parabolaGeoId;
+    int focusPoint = firstCurve + 1;
+    int line = firstCurve + 2;
+
+    using namespace Sketcher;
+
+    bool x0set = onViewParameters[OnViewParameter::First]->isSet;
+    bool y0set = onViewParameters[OnViewParameter::Second]->isSet;
+    bool focalSet = onViewParameters[OnViewParameter::Third]->isSet;
+    bool axisSet = onViewParameters[OnViewParameter::Fourth]->isSet;
+    // can't constrain the parameters.
+
+    auto constraintx0 = [&]() {
+        ConstraintToAttachment(
+            GeoElementId(focusPoint, PointPos::mid),
+            GeoElementId::VAxis,
+            handler->focusPoint.x,
+            obj
+        );
+    };
+
+    auto constrainty0 = [&]() {
+        ConstraintToAttachment(
+            GeoElementId(focusPoint, PointPos::mid),
+            GeoElementId::HAxis,
+            handler->focusPoint.y,
+            obj
+        );
+    };
+
+    auto constraintFocal = [&]() {
+        Gui::cmdAppObjectArgs(
+            obj,
+            "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+            line,
+            1,
+            line,
+            2,
+            handler->focal()
+        );
+    };
+
+    auto constraintAngle = [&]() {
+        Gui::cmdAppObjectArgs(
+            obj,
+            "addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
+            line,
+            handler->axis().Angle()
+        );
+    };
+
+    if (handler->AutoConstraints.empty()) {  // No valid diagnosis. Every constraint can be added.
+        if (x0set && y0set && handler->focusPoint.IsNull(Precision::Confusion())) {
+            ConstraintToAttachment(GeoElementId(focusPoint, PointPos::mid), GeoElementId::RtPnt, 0., obj);
+        }
+        else {
+            if (x0set) {
+                constraintx0();
+            }
+
+            if (y0set) {
+                constrainty0();
+            }
+        }
+
+        if (focalSet) {
+            constraintFocal();
+        }
+        if (axisSet) {
+            constraintAngle();
+        }
+    }
+    else {  // Valid diagnosis. Must check which constraints may be added.
+        auto centerPointInfo = handler->getPointInfo(GeoElementId(focusPoint, PointPos::mid));
+
+        if (x0set && centerPointInfo.isXDoF()) {
+            constraintx0();
+
+            handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters after
+                                                     // each constraint addition
+            // get updated point position
+            centerPointInfo = handler->getPointInfo(GeoElementId(focusPoint, PointPos::mid));
+        }
+
+        if (y0set && centerPointInfo.isYDoF()) {
+            constrainty0();
+
+            handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters after
+                                                     // each constraint addition
+            // get updated point position
+            centerPointInfo = handler->getPointInfo(GeoElementId(firstCurve, PointPos::mid));
+        }
+
+        int lineDoFs = handler->getLineDoFs(line);
+
+        if (focalSet && lineDoFs > 0) {
+            constraintFocal();
+            handler->diagnoseWithAutoConstraints();
+            lineDoFs = handler->getLineDoFs(line);
+        }
+
+        if (axisSet && lineDoFs > 0) {
+            constraintAngle();
+        }
+    }
+}
 
 }  // namespace SketcherGui
