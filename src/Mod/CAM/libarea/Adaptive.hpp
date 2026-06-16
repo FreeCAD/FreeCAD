@@ -207,7 +207,6 @@ private:
         const Paths paths,
         MotionType mt = MotionType::mtCutting
     );
-    void AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt = MotionType::mtCutting);
     void ApplyStockToLeave(Paths& inputPaths);
 
 private:

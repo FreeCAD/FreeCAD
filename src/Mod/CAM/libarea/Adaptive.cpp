@@ -1037,19 +1037,6 @@ PerfCounter Perf_IsAllowedToCutTrough("IsAllowedToCutTrough");
 PerfCounter Perf_IsClearPath("IsClearPath");
 
 //***********************************
-// Helper function to calculate cleared area
-//***********************************
-double CalculateClearedArea(const Paths& clearedPaths)
-{
-    double totalArea = 0.0;
-    for (const Path& path : clearedPaths) {
-        int nesting = getPathNestingLevel(path, clearedPaths);
-        totalArea += (nesting % 2 == 1 ? 1 : -1) * fabs(Area(path));
-    }
-    return totalArea;
-}
-
-//***********************************
 // Cleared area bounding support
 //***********************************
 class ClearedArea
@@ -1078,13 +1065,12 @@ public:
         bboxClippedInvalid = true;
     }
 
-    void ExpandCleared(const Path toClearToolPath, const char* context = "")
+    void ExpandCleared(const Path toClearToolPath)
     {
         if (toClearToolPath.empty()) {
             return;
         }
         Perf_ExpandCleared.Start();
-
         clipof.Clear();
         clipof.AddPath(toClearToolPath, JoinType::jtRound, EndType::etOpenRound);
         Paths toolCoverPoly;
@@ -1096,7 +1082,6 @@ public:
         CleanPolygons(clearedPaths);
         bboxPathsInvalid = true;
         bboxClippedInvalid = true;
-
         Perf_ExpandCleared.Stop();
     }
 
@@ -1782,38 +1767,31 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     }
 
     // 3) Set Z=1 on all input paths to tag them as needing a finishing pass
-    cerr << "=== DEBUG Step 3: Set Z=1 on all input paths ===" << endl;
     for (Path& path : inputPaths) {
         for (IntPoint& p : path) {
             p.Z = 1;
         }
     }
-    cerr << "DEBUG:   Tagged " << inputPaths.size() << " paths" << endl;
 
     // Save step 3 result before step 4 modifies it
     step3Paths = inputPaths;
 
     // 4) Turn profiles into areas; mark new paths as unfinished (Z=0) and then union
     if (opType == OperationType::otProfilingOutside || opType == OperationType::otProfilingInside) {
-        cerr << "=== DEBUG Step 4: Turn profiles into areas ===" << endl;
         // offset by an extra finishPassOffsetScaled to compensate for undoing that later
         long offset = 2 * (toolRadiusScaled + helixRampMaxRadiusScaled + finishPassOffsetScaled)
             + MIN_STEP_CLIPPER;
         if (opType == OperationType::otProfilingInside) {
             offset = -offset;
         }
-        cerr << "DEBUG:   Offset: " << offset << " (scaled)" << endl;
 
         Paths fullPaths;
         Paths offsetPaths;
 
-        for (size_t i = 0; i < inputPaths.size(); i++) {
-            Path& path = inputPaths[i];
+        for (Path& path : inputPaths) {
             clipof.Clear();
             clipof.AddPath(path, JoinType::jtRound, EndType::etClosedPolygon);
             clipof.Execute(offsetPaths, offset);
-            cerr << "DEBUG:   Path " << i << " offset produced " << offsetPaths.size() << " paths"
-                 << endl;
 
             if (Orientation(path) ^ (offset > 0)) {
                 ReversePath(path);
@@ -1835,7 +1813,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
         inputPaths = fullPaths;
         step4Paths = fullPaths;
-        cerr << "DEBUG:   Result: " << step4Paths.size() << " paths" << endl;
     }
     else {
         step4Paths = inputPaths;  // No change for non-profiling operations
@@ -1844,30 +1821,24 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // 5) If going outside the stock is allowed, add regionOutsideStock to both inputPaths and
     // clearedArea. Use Z=0 to mark the stock boundary as not needing to be finished
     if (!forceInsideOut) {
-        cerr << "=== DEBUG Step 5: Add region outside stock ===" << endl;
 
         // 5a) Shrink the stock boundary to ensure overlap with input paths that hit the boundary
-        cerr << "DEBUG Step 5a: Shrink and reverse stock boundary" << endl;
         Paths stockRev;
         clipof.Clear();
         clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
         clipof.Execute(stockRev, -2);
         ReversePaths(stockRev);
         step5a_stockRev = stockRev;
-        cerr << "DEBUG:   Stock reversed paths: " << stockRev.size() << endl;
 
         // 5b) Create outside-of-stock region
-        cerr << "DEBUG Step 5b: Create outside-of-stock region" << endl;
         Paths outsideOfStock;
         double overshootDistance = 4 * toolRadiusScaled + stockToLeave * scaleFactor;
         clipof.Clear();
         clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
         clipof.Execute(outsideOfStock, overshootDistance);
         step5b_outsideOfStock = outsideOfStock;
-        cerr << "DEBUG:   Outside of stock paths: " << outsideOfStock.size() << endl;
 
         // 5c) Union input paths with stock regions
-        cerr << "DEBUG Step 5c: Union input paths with stock regions" << endl;
         clip.Clear();
         clip.AddPaths(inputPaths, PolyType::ptSubject, true);
         clip.AddPaths(stockRev, PolyType::ptClip, true);
@@ -1888,10 +1859,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clip.Execute(ClipType::ctUnion, inputPaths);
         step5c_inputPathsUnion = inputPaths;
         step5Paths = inputPaths;
-        cerr << "DEBUG:   Result: " << step5c_inputPathsUnion.size() << " paths" << endl;
 
         // 5d) Update cleared area
-        cerr << "DEBUG Step 5d: Update cleared area" << endl;
         clipof.Clear();
         clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
         clipof.Execute(outsideOfStock, 100 * toolRadiusScaled);
@@ -1901,7 +1870,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clip.AddPaths(stockRev, PolyType::ptClip, true);
         clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
         clip.Execute(ClipType::ctUnion, initialClearedPaths);
-        cerr << "DEBUG:   Cleared paths: " << initialClearedPaths.size() << endl;
     }
     else {
         step5Paths = inputPaths;  // No change when forceInsideOut is true
@@ -1911,8 +1879,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // Z is used to indicate which paths need a finish pass. Clipper1 doesn't
     // preserve Z with operations, so convert to Clipper2, perform the offset,
     // then back to Clipper1 for subsequent operations
-    cerr << "=== DEBUG Step 6: Compute tool bounds ===" << endl;
-    cerr << "DEBUG:   Input paths: " << inputPaths.size() << endl;
     Clipper2Lib::Paths64 inputPaths2;
     inputPaths2.reserve(inputPaths.size());
     for (const auto& path : inputPaths) {
@@ -1941,18 +1907,12 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
         toolBounds.emplace_back(p);
     }
-    cerr << "DEBUG:   Tool bounds computed: " << toolBounds.size() << " paths" << endl;
 
     // 7) Loop over connected components using nesting level.
-    cerr << "=== DEBUG Step 7: Loop over connected components ===" << endl;
-    int componentCount = 0;
     for (const auto& current : toolBounds) {
         // nesting counts itself and the number of polygons containing it
         int nesting = getPathNestingLevel(current, toolBounds);
         if (nesting % 2 != 0) {
-            componentCount++;
-            cerr << "DEBUG: Processing component #" << componentCount << " (nesting=" << nesting
-                 << ")" << endl;
             // current is an exterior boundary; now find all the holes directly inside it
             Paths currentTBP;
             currentTBP.push_back(current);
@@ -1969,11 +1929,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
             // 8) finishingPass = offset(currentTBP, finishingThickness)
             // Use Clipper2 to preserve Z values during offset operation
-            cerr << "=== DEBUG Step 8: Create finishing pass for component #" << componentCount
-                 << " ===" << endl;
-            cerr << "DEBUG: Creating finishing pass from " << currentTBP.size()
-                 << " tool bound paths" << endl;
-            cerr << "DEBUG: finishPassOffsetScaled = " << finishPassOffsetScaled << endl;
 
             // Convert currentTBP to Clipper2 format
             Clipper2Lib::Paths64 currentTBP2;
@@ -2023,7 +1978,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 }
                 finishingPass.emplace_back(p);
             }
-            cerr << "DEBUG: Total finishing paths: " << finishingPass.size() << endl;
 
             // 9) Compute bounds = offset(currentTBP, toolRadius)
             Paths boundPath;
@@ -2048,11 +2002,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             }
 
             // 10) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
-            cerr << "=== DEBUG Step 10: Calling ProcessPolyNode ===" << endl;
-            cerr << "DEBUG:   boundPath: " << boundPath.size() << " paths" << endl;
-            cerr << "DEBUG:   currentTBP (tool bound paths): " << currentTBP.size() << " paths"
-                 << endl;
-            cerr << "DEBUG:   finishingPass: " << finishingPass.size() << " paths" << endl;
 
             // Debug: accumulate paths from all regions for final SVG
             allToolBoundPaths.push_back(currentTBP);
@@ -2511,8 +2460,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
         svg << "</svg>";
         svg.close();
-        cerr << "DEBUG: Wrote adaptive_combined.svg with paths from all "
-             << allToolBoundPaths.size() << " regions" << endl;
     }
 
     return results;
@@ -2979,7 +2926,7 @@ bool Adaptive2d::MakeLeadPath(
             if (!leadIn) {
                 // For lead out paths, update/recompute the cleared area
                 checkPath.push_back(nextPoint);
-                clearedArea.ExpandCleared(checkPath, "MakeLeadPath lead-out");
+                clearedArea.ExpandCleared(checkPath);
                 checkPath.clear();
                 checkPath.push_back(nextPoint);
 
@@ -3292,7 +3239,7 @@ std::optional<std::pair<IntPoint, DoublePoint>> Adaptive2d::AppendToolPath(
                     out.second.push_back({((double)p.X) / scaleFactor, ((double)p.Y) / scaleFactor});
                 }
                 output.AdaptivePaths.push_back(out);
-                cleared.ExpandCleared(leadOutPath, "FindEntryPoint lead-out");
+                cleared.ExpandCleared(leadOutPath);
 
                 IntPoint p2 = leadOutPath.back();
                 IntPoint p1 = leadOutPath.size() >= 2 ? leadOutPath[leadOutPath.size() - 2]
@@ -3354,20 +3301,6 @@ void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, Paths paths, MotionTy
             progressPaths.back().second.emplace_back(
                 double(pth.front().X) / scaleFactor,
                 double(pth.front().Y) / scaleFactor
-            );
-        }
-    }
-}
-
-void Adaptive2d::AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt)
-{
-    if (!pth.empty()) {
-        progressPaths.push_back(TPath());
-        progressPaths.back().first = mt;
-        for (const auto pt : pth) {
-            progressPaths.back().second.emplace_back(
-                double(pt.X) / scaleFactor,
-                double(pt.Y) / scaleFactor
             );
         }
     }
@@ -3623,7 +3556,7 @@ void Adaptive2d::ProcessPolyNode(
             }
             else if (iteration == 3 && !foundArea) {
                 // Expand cleared area
-                cleared.ExpandCleared(toClearPath, "Iter 3 (expand cleared)");
+                cleared.ExpandCleared(toClearPath);
                 toClearPath.clear();
                 lastExpandToolDir = toolDir;
 
@@ -4076,7 +4009,7 @@ void Adaptive2d::ProcessPolyNode(
                             {(long long)(dp.first * scaleFactor), (long long)(dp.second * scaleFactor)}
                         );
                     }
-                    cleared.ExpandCleared(p, "AppendToolPath link");
+                    cleared.ExpandCleared(p);
                 }
             }
         }
@@ -4143,7 +4076,7 @@ void Adaptive2d::ProcessPolyNode(
                         {(long long)(p.first * scaleFactor), (long long)(p.second * scaleFactor)}
                     );
                 }
-                cleared.ExpandCleared(scaledP, "Entry point link");
+                cleared.ExpandCleared(scaledP);
             }
         }
 
@@ -4197,9 +4130,7 @@ void Adaptive2d::ProcessPolyNode(
                 if (lastExpandToolDir.X * itResult.newToolDir.X
                         + lastExpandToolDir.Y * itResult.newToolDir.Y
                     < cos(std::numbers::pi / 4)) {
-                    std::string context = "Pass " + std::to_string(pass) + ", Point "
-                        + std::to_string(point_index) + " (direction change >45deg)";
-                    cleared.ExpandCleared(toClearPath, context.c_str());
+                    cleared.ExpandCleared(toClearPath);
                     toClearPath.clear();
                     lastExpandToolDir = toolDir;
                 }
@@ -4240,8 +4171,7 @@ void Adaptive2d::ProcessPolyNode(
         } /* end of points loop*/
 
         if (!toClearPath.empty()) {
-            std::string context = "Pass " + std::to_string(pass) + " (end of points loop)";
-            cleared.ExpandCleared(toClearPath, context.c_str());
+            cleared.ExpandCleared(toClearPath);
             toClearPath.clear();
         }
 
@@ -4343,24 +4273,15 @@ void Adaptive2d::ProcessPolyNode(
     //*  FINISHING PASS                *
     //**********************************
     if (finishingProfile) {
-        cerr << "DEBUG: Starting finishing pass computation" << endl;
-
         // update tool bound paths to correspond to the finishing paths instead of the interior
         {
             Paths tbpModified;
-            for (size_t i = 0; i < finishingPaths.size(); i++) {
-                const Path& fp = finishingPaths[i];
-                cerr << "DEBUG: Processing finishing path " << i << " with " << fp.size()
-                     << " points" << endl;
-
+            for (const Path& fp : finishingPaths) {
                 clipof.Clear();
                 clipof.AddPath(fp, JoinType::jtRound, EndType::etClosedPolygon);
                 int offset = (getPathNestingLevel(fp, finishingPaths) % 2 == 1) ? 3 : -3;
-                cerr << "DEBUG:   Nesting level: " << getPathNestingLevel(fp, finishingPaths)
-                     << ", offset: " << offset << endl;
                 Paths out;
                 clipof.Execute(out, offset);
-                cerr << "DEBUG:   Offset produced " << out.size() << " paths" << endl;
 
                 bool orientation = Orientation(fp);
                 for (Path& p : out) {
@@ -4372,7 +4293,6 @@ void Adaptive2d::ProcessPolyNode(
             }
 
             toolBoundPaths = tbpModified;
-            cerr << "DEBUG: Modified tool bound paths: " << toolBoundPaths.size() << " paths" << endl;
         }
 
         // Split finishingPaths into closed (all Z=1) and open (partial Z=1) paths
@@ -4402,8 +4322,6 @@ void Adaptive2d::ProcessPolyNode(
                 else {
                     // Z=0: if we have accumulated points, save them to open list
                     if (!currentPath.empty()) {
-                        cerr << "DEBUG:     Extracted open segment with " << currentPath.size()
-                             << " points" << endl;
                         openFinishingPaths.push_back(currentPath);
                         currentPath.clear();
                     }
@@ -4413,22 +4331,16 @@ void Adaptive2d::ProcessPolyNode(
             // After loop completes, check what we accumulated
             if (currentPath.size() == p.size()) {
                 // All vertices were Z=1 - add to closed list
-                cerr << "DEBUG:   Path has all Z=1 (" << p.size() << " points) -> CLOSED" << endl;
                 closedFinishingPaths.emplace_back(p);
             }
             else if (currentPath.size() > 0) {
                 // Partial Z=1 segment remains - add to open list
-                cerr << "DEBUG:   Path has partial Z=1 (" << currentPath.size() << " of "
-                     << p.size() << " points) -> OPEN" << endl;
                 openFinishingPaths.push_back(currentPath);
             }
             else {
                 // No Z=1 vertices found
-                cerr << "DEBUG:   Path has no Z=1 points -> SKIPPED" << endl;
             }
         }
-        cerr << "DEBUG: Total closed finishing paths: " << closedFinishingPaths.size() << endl;
-        cerr << "DEBUG: Total open finishing segments: " << openFinishingPaths.size() << endl;
 
 
         Path finShiftedPath;
@@ -4442,18 +4354,10 @@ void Adaptive2d::ProcessPolyNode(
                 stepOverScaled
             );
             finishingPassCount++;
-            cerr << "DEBUG: Processing finishing pass #" << finishingPassCount
-                 << " (type: " << (isClosedPath ? "closed" : "open") << ")"
-                 << ", toolPos: (" << toolPos.X / scaleFactor << ", " << toolPos.Y / scaleFactor
-                 << ")" << endl;
 
             if (finShiftedPath.empty()) {
-                cerr << "DEBUG:   Skipping - empty path" << endl;
                 continue;
             }
-
-            cerr << "DEBUG:   Path has " << finShiftedPath.size() << " points" << endl;
-
             // skip finishing passes outside the stock boundary - no sense to cut where is no
             // material
             bool allPointsOutside = true;
@@ -4477,7 +4381,6 @@ void Adaptive2d::ProcessPolyNode(
                 p1 = pt;
             }
             if (allPointsOutside) {
-                cerr << "DEBUG:   Skipping - all points outside stock" << endl;
                 continue;
             }
 
@@ -4513,11 +4416,6 @@ void Adaptive2d::ProcessPolyNode(
                 }
                 finCleaned.push_back(endPoint);
             }
-            cerr << "DEBUG:   After CleanPath: " << finCleaned.size() << " points" << endl;
-
-            cerr << "DEBUG:   Finding link path from (" << toolPos.X / scaleFactor << ", "
-                 << toolPos.Y / scaleFactor << ") to (" << finCleaned[0].X / scaleFactor << ", "
-                 << finCleaned[0].Y / scaleFactor << ")" << endl;
 
             std::optional<TPaths> linkPath = FindLinkPath(
                 toolPos,
@@ -4530,26 +4428,19 @@ void Adaptive2d::ProcessPolyNode(
             if (!linkPath) {
                 output.FinishingLeadInFailed = true;
                 cerr << "Failed to generate lead-in for finishing pass; skipping pass" << endl;
-                cerr << "DEBUG:   Lead-in failed!" << endl;
             }
             else {
-                cerr << "DEBUG:   Link path found, appending tool path" << endl;
                 auto newPos = AppendToolPath(output, finCleaned, *linkPath, cleared, toolBoundPaths);
                 if (newPos) {
                     toolPos = newPos->first;
                     toolDir = newPos->second;
-                    cerr << "DEBUG:   New tool position: (" << toolPos.X / scaleFactor << ", "
-                         << toolPos.Y / scaleFactor << ")" << endl;
                 }
                 else {
                     toolPos = finCleaned.back();
                     toolDir = GetPathDirectionV(finCleaned, finCleaned.size() - 1);
-                    cerr << "DEBUG:   Using end of path as new position" << endl;
                 }
 
-                std::string finContext = "Finishing pass #" + std::to_string(finishingPassCount)
-                    + " (main path)";
-                cleared.ExpandCleared(finCleaned, finContext.c_str());
+                cleared.ExpandCleared(finCleaned);
                 for (TPath lp : *linkPath) {
                     if (lp.first == MotionType::mtCutting) {
                         Path scaledP;
@@ -4559,16 +4450,11 @@ void Adaptive2d::ProcessPolyNode(
                                  (long long)(p.second * scaleFactor)}
                             );
                         }
-                        std::string linkContext = "Finishing pass #"
-                            + std::to_string(finishingPassCount) + " (link path)";
-                        cleared.ExpandCleared(scaledP, linkContext.c_str());
+                        cleared.ExpandCleared(scaledP);
                     }
                 }
             }
         }
-
-        cerr << "DEBUG: Finished processing all finishing passes. Total count: " << finishingPassCount
-             << endl;
 
         Path returnPath;
         returnPath << toolPos;
