@@ -26,11 +26,12 @@ public:
     /// recalculate the feature
     App::DocumentObjectExecReturn* execute() override;
     // short mustExecute() const override;
+    
     /// returns the type name of the view provider
-    // const char* getViewProviderName() const override
-    // {
-    // return "PartDesignGui::ViewProviderThread";
-    // }
+    const char* getViewProviderName() const override
+    {
+    return "PartDesignGui::ViewProviderThread";
+    }
     //@}
 
 protected:

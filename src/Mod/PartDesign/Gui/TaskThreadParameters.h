@@ -39,9 +39,12 @@ public:
 
 protected:
     void changeEvent(QEvent* e) override;
+    // void referenceSele(const Gui::SelectionChanges& msg, QLineEdit* widget);
 
 private:
     std::unique_ptr<Ui_TaskThreadParameters> ui;
+
+    void setUpUI(PartDesign::Thread* pcThread);
 };
 
 class TaskDlgThreadParameters: public TaskDlgDressUpParameters
