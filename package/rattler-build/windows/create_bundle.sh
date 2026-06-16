@@ -32,6 +32,11 @@ cp -a ${conda_env}/Library/bin/FreeCAD* ${copy_dir}/bin
 cp -a ${conda_env}/Library/data ${copy_dir}/data
 cp -a ${conda_env}/Library/Ext ${copy_dir}/Ext
 cp -a ${conda_env}/Library/lib ${copy_dir}/lib
+mkdir -p ${copy_dir}/lib/qt6/bin
+cp -a ${copy_dir}/lib/qt6/QtWebEngineProcess.exe ${copy_dir}/lib/qt6/bin/QtWebEngineProcess.exe
+cp -a ${conda_env}/Library/share/qt6/resources ${copy_dir}/lib/qt6/resources
+mkdir -p ${copy_dir}/lib/qt6/translations
+cp -a ${conda_env}/Library/share/qt6/translations/qtwebengine_locales ${copy_dir}/lib/qt6/translations/qtwebengine_locales
 cp -a ${conda_env}/Library/Mod ${copy_dir}/Mod
 mkdir -p ${copy_dir}/doc
 cp -a ${conda_env}/Library/doc/{ThirdPartyLibraries.html,LICENSE.html} ${copy_dir}/doc
