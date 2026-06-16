@@ -1,8 +1,13 @@
 from __future__ import annotations
 
+import ipaddress
 import json
 import os
+import ssl
+import urllib.parse
 import urllib.request
+
+LOOPBACK_HOSTNAMES = {"localhost"}
 
 VERSION = "0.1.2"
 
@@ -29,10 +34,38 @@ def user_agent() -> str:
     return USER_AGENT_PREFIX + VERSION
 
 
+def _hostname(url: str) -> str:
+    target = url if "://" in url else "//" + url
+    return (urllib.parse.urlsplit(target).hostname or "").lower()
+
+
+def is_loopback_url(url: str) -> bool:
+    host = _hostname(url)
+    if not host:
+        return False
+    if host in LOOPBACK_HOSTNAMES:
+        return True
+    try:
+        return ipaddress.ip_address(host).is_loopback
+    except ValueError:
+        return False
+
+
+def _ssl_context_for(url: str) -> ssl.SSLContext | None:
+    if not is_loopback_url(url):
+        return None
+    context = ssl.create_default_context()
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
+    return context
+
+
 def _service_url(host: str) -> str:
     if host.startswith("http://") or host.startswith("https://"):
         return host.rstrip("/")
-    return "https://" + host
+    if is_loopback_url(host):
+        return "http://" + host.rstrip("/")
+    return "https://" + host.rstrip("/")
 
 
 def _fetch_service_host(service_id: str) -> str:
@@ -41,7 +74,10 @@ def _fetch_service_host(service_id: str) -> str:
         headers={"User-Agent": user_agent(), "Accept": "application/json"},
         method="GET",
     )
-    with urllib.request.urlopen(request, timeout=HOSTCONTROL_TIMEOUT) as response:
+    context = _ssl_context_for(HOSTCONTROL_URL)
+    with urllib.request.urlopen(
+        request, timeout=HOSTCONTROL_TIMEOUT, context=context
+    ) as response:
         document = json.loads(response.read().decode("utf-8"))
     if not isinstance(document, dict) or document.get("schema") != HOSTCONTROL_SCHEMA:
         raise ValueError("unexpected HostControl schema")
