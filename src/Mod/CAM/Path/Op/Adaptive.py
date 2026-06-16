@@ -42,7 +42,6 @@ import json
 import math
 import area
 import Constants
-import random
 from FreeCAD import BoundBox
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -420,7 +419,7 @@ def Execute(op, obj):
             "keepToolDownRatio": keepToolDownRatio,
             "stockToLeave": float(obj.StockToLeave),
             "modelAwareExperiment": obj.ModelAwareExperiment,
-            "adaptiveGeneratorVersion": random.random(),
+            "adaptiveGeneratorVersion": "1.0.2",
         }
 
         inputStateChanged = False
@@ -633,7 +632,7 @@ def ExecuteModelAware(op, obj):
             "stockToLeave": obj.StockToLeave.Value,
             "zStockToLeave": obj.ZStockToLeave.Value,
             "orderCutsByRegion": obj.OrderCutsByRegion,
-            "adaptiveGeneratorVersion": random.random(),
+            "adaptiveGeneratorVersion": "1.0.2",
         }
 
         insideInputStateObject = {
@@ -657,7 +656,7 @@ def ExecuteModelAware(op, obj):
             "zStockToLeave": obj.ZStockToLeave.Value,
             "orderCutsByRegion": obj.OrderCutsByRegion,
             "modelAwareExperiment": obj.ModelAwareExperiment,
-            "adaptiveGeneratorVersion": random.random(),
+            "adaptiveGeneratorVersion": "1.0.2",
         }
 
         inputStateObject = [outsideInputStateObject, insideInputStateObject]
