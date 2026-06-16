@@ -1941,21 +1941,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             finishingPass.reserve(finishingPass2.size());
 
             for (const auto& path : finishingPass2) {
-                // Check if path has at least one Z=1 point
-                bool hasZ1 = false;
-                for (const auto& pt : path) {
-                    if (pt.z == 1) {
-                        hasZ1 = true;
-                        break;
-                    }
-                }
-
-                // Skip paths with no Z=1 points (nothing to finish)
-                if (!hasZ1) {
-                    continue;
-                }
-
-                // Convert to Clipper1 format
                 Path p;
                 p.reserve(path.size());
                 for (const auto& pt : path) {
