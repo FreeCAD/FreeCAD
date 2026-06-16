@@ -67,6 +67,10 @@ StartupProcess::StartupProcess() = default;
 
 void StartupProcess::setupApplication()
 {
+    if (!qEnvironmentVariableIsSet("QSG_RHI_BACKEND")) {
+        qputenv("QSG_RHI_BACKEND", "opengl");
+    }
+
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 
