@@ -51,9 +51,18 @@ def is_loopback_url(url: str) -> bool:
         return False
 
 
-def _ssl_context_for(url: str) -> ssl.SSLContext | None:
+def _verifying_ssl_context() -> ssl.SSLContext:
+    try:
+        import certifi
+
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
+
+
+def _ssl_context_for(url: str) -> ssl.SSLContext:
     if not is_loopback_url(url):
-        return None
+        return _verifying_ssl_context()
     context = ssl.create_default_context()
     context.check_hostname = False
     context.verify_mode = ssl.CERT_NONE

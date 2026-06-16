@@ -9,7 +9,6 @@ SET(Agent_SRCS
     Init.py
     InitGui.py
     agent_config.py
-    agent_core.py
 )
 
 SET(Agent_ALL ${Agent_SRCS} ${Agent_Binaries})
