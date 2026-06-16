@@ -28,7 +28,7 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     ui->setupUi(proxy);
     this->groupLayout()->addWidget(proxy);
 
-    QMetaObject::connectSlotsByName(this); //TODO: what this does?
+    QMetaObject::connectSlotsByName(this);  // TODO: what this does?
 
     PartDesign::Thread* pcThread = DressUpView->getObject<PartDesign::Thread>();
 
@@ -36,7 +36,7 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
 
     std::vector<std::string> strings = pcThread->Base.getSubValues();
     // for (const auto& string : strings) {
-        // ui->listWidgetReferences->addItem(QString::fromStdString(string));
+    // ui->listWidgetReferences->addItem(QString::fromStdString(string));
     // }
 
     QMetaObject::connectSlotsByName(this);
@@ -52,9 +52,7 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
 }
 
 void TaskThreadParameters::setUpUI(PartDesign::Thread* pcThread)
-{
-    
-}
+{}
 
 TaskThreadParameters::~TaskThreadParameters()
 {
@@ -75,14 +73,10 @@ void TaskThreadParameters::changeEvent(QEvent* e)
 }
 
 void TaskThreadParameters::apply()
-{
-
-}
+{}
 
 void TaskThreadParameters::onRefDeleted()
-{
-    
-}
+{}
 
 void TaskThreadParameters::setButtons(const PartDesignGui::TaskDressUpParameters::selectionModes mode)
 {
@@ -102,7 +96,6 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             referenceQLineEditSelected(msg, ui->lateralFaceEdit);
         }
     }
- 
 }
 
 //**************************************************************************
