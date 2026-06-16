@@ -1862,12 +1862,27 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
         inputPaths2.emplace_back(p);
     }
-    Clipper2Lib::Paths64 toolBounds2 = Clipper2Lib::InflatePaths(
-        inputPaths2,
-        -(toolRadiusScaled + finishPassOffsetScaled),
-        Clipper2Lib::JoinType::Round,
-        Clipper2Lib::EndType::Polygon
-    );
+
+    // Use ClipperOffset with Z callback to preserve Z=1 marking
+    Clipper2Lib::ClipperOffset clipof2;
+    clipof2.AddPaths(inputPaths2, Clipper2Lib::JoinType::Round, Clipper2Lib::EndType::Polygon);
+
+    // Z callback: output Z=1 if both vertices of either input edge have Z=1
+    clipof2.SetZCallback([](const Clipper2Lib::Point64& e1bot,
+                            const Clipper2Lib::Point64& e1top,
+                            const Clipper2Lib::Point64& e2bot,
+                            const Clipper2Lib::Point64& e2top,
+                            Clipper2Lib::Point64& pt) {
+        // Check if both vertices of edge 1 have Z=1
+        bool edge1HasZ1 = (e1bot.z == 1 && e1top.z == 1);
+        // Check if both vertices of edge 2 have Z=1
+        bool edge2HasZ1 = (e2bot.z == 1 && e2top.z == 1);
+        // Set output Z=1 if either edge has both vertices with Z=1
+        pt.z = (edge1HasZ1 || edge2HasZ1) ? 1 : 0;
+    });
+
+    Clipper2Lib::Paths64 toolBounds2;
+    clipof2.Execute(-(toolRadiusScaled + finishPassOffsetScaled), toolBounds2);
 
     /* Convert results back to clipper1 */
     Paths toolBounds;
@@ -1915,14 +1930,11 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 currentTBP2.emplace_back(p);
             }
 
-            // Perform offset with Clipper2 on all paths as a single operation (preserves Z values
-            // automatically) Always use positive offset
-            Clipper2Lib::Paths64 finishingPass2 = Clipper2Lib::InflatePaths(
-                currentTBP2,
-                finishPassOffsetScaled,
-                Clipper2Lib::JoinType::Round,
-                Clipper2Lib::EndType::Polygon
-            );
+            clipof2.Clear();
+            clipof2.AddPaths(currentTBP2, Clipper2Lib::JoinType::Round, Clipper2Lib::EndType::Polygon);
+
+            Clipper2Lib::Paths64 finishingPass2;
+            clipof2.Execute(finishPassOffsetScaled, finishingPass2);
 
             // Convert results back to Clipper1 format (preserving Z values)
             Paths finishingPass;
