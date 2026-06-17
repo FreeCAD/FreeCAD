@@ -16,6 +16,7 @@ add_executable(App_tests_run
         ElementNamingUtils.cpp
         IndexedName.cpp
         License.cpp
+        Link.cpp
         MappedElement.cpp
         MappedName.cpp
         Metadata.cpp
