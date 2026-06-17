@@ -34,7 +34,10 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeatureCircularPattern.h>
 #include <Mod/PartDesign/App/FeatureLinearPattern.h>
+#include <Mod/PartDesign/App/FeaturePathPattern.h>
+#include <Mod/PartDesign/App/FeaturePointPattern.h>
 #include <Mod/PartDesign/App/FeatureMirrored.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
@@ -88,6 +91,30 @@ void TaskMultiTransformParameters::setupParameterUI(QWidget* widget)
         &QAction::triggered,
         this,
         &TaskMultiTransformParameters::onTransformAddLinearPattern
+    );
+    ui->listTransformFeatures->addAction(action);
+    action = new QAction(tr("Add Circular Pattern"), ui->listTransformFeatures);
+    action->connect(
+        action,
+        &QAction::triggered,
+        this,
+        &TaskMultiTransformParameters::onTransformAddCircularPattern
+    );
+    ui->listTransformFeatures->addAction(action);
+    action = new QAction(tr("Add Path Pattern"), ui->listTransformFeatures);
+    action->connect(
+        action,
+        &QAction::triggered,
+        this,
+        &TaskMultiTransformParameters::onTransformAddPathPattern
+    );
+    ui->listTransformFeatures->addAction(action);
+    action = new QAction(tr("Add Point Pattern"), ui->listTransformFeatures);
+    action->connect(
+        action,
+        &QAction::triggered,
+        this,
+        &TaskMultiTransformParameters::onTransformAddPointPattern
     );
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Add Polar Pattern"), ui->listTransformFeatures);
@@ -221,9 +248,11 @@ void TaskMultiTransformParameters::onTransformEdit()
     if (subFeature->is<PartDesign::Mirrored>()) {
         subTask = new TaskMirroredParameters(this, ui->subFeatureWidget);
     }
-    else if (
-        subFeature->is<PartDesign::LinearPattern>() || subFeature->is<PartDesign::PolarPattern>()
-    ) {
+    else if (subFeature->is<PartDesign::LinearPattern>()
+             || subFeature->is<PartDesign::CircularPattern>()
+             || subFeature->is<PartDesign::PathPattern>()
+             || subFeature->is<PartDesign::PointPattern>()
+             || subFeature->is<PartDesign::PolarPattern>()) {
         subTask = new TaskPatternParameters(this, ui->subFeatureWidget);
     }
     else if (subFeature->is<PartDesign::Scaled>()) {
@@ -372,6 +401,96 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     if (!Feat->isError()) {
         TransformedView->getObject()->Visibility.setValue(true);
     }
+}
+
+void TaskMultiTransformParameters::onTransformAddCircularPattern()
+{
+    closeSubTask();
+    std::string newFeatName =
+        TransformedView->getObject()->getDocument()->getUniqueObjectName("Circular Pattern");
+    auto pcBody = dynamic_cast<PartDesign::Body*>(
+        Part::BodyBase::findBodyOf(getTopTransformedObject())
+    );
+    if (!pcBody) {
+        return;
+    }
+
+    if (isEnabledTransaction()) {
+        pcBody->getDocument()->openTransaction(
+            QT_TRANSLATE_NOOP("Command", "Circular Pattern")
+        );
+    }
+
+    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::CircularPattern','" << newFeatName << "')");
+    auto Feat = pcBody->getDocument()->getObject(newFeatName.c_str());
+    if (!Feat) {
+        return;
+    }
+
+    App::DocumentObject* sketch = getSketchObject();
+    if (sketch) {
+        FCMD_OBJ_CMD(Feat,
+                     "Axis = (" << Gui::Command::getObjectCmd(sketch)
+                                << ",['N_Axis'])");
+    }
+    else {
+        FCMD_OBJ_CMD(
+            Feat,
+            "Axis = (" << Gui::Command::getObjectCmd(pcBody->getOrigin()->getZ())
+                       << ",[''])"
+        );
+    }
+
+    finishAdd(newFeatName);
+    if (!Feat->isError()) {
+        TransformedView->getObject()->Visibility.setValue(true);
+    }
+}
+
+void TaskMultiTransformParameters::onTransformAddPathPattern()
+{
+    closeSubTask();
+    std::string newFeatName =
+        TransformedView->getObject()->getDocument()->getUniqueObjectName("Path Pattern");
+    auto pcBody = dynamic_cast<PartDesign::Body*>(
+        Part::BodyBase::findBodyOf(getTopTransformedObject())
+    );
+    if (!pcBody) {
+        return;
+    }
+
+    if (isEnabledTransaction()) {
+        pcBody->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Path Pattern"));
+    }
+
+    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::PathPattern','" << newFeatName << "')");
+    if (!pcBody->getDocument()->getObject(newFeatName.c_str())) {
+        return;
+    }
+    finishAdd(newFeatName);
+}
+
+void TaskMultiTransformParameters::onTransformAddPointPattern()
+{
+    closeSubTask();
+    std::string newFeatName =
+        TransformedView->getObject()->getDocument()->getUniqueObjectName("Point Pattern");
+    auto pcBody = dynamic_cast<PartDesign::Body*>(
+        Part::BodyBase::findBodyOf(getTopTransformedObject())
+    );
+    if (!pcBody) {
+        return;
+    }
+
+    if (isEnabledTransaction()) {
+        pcBody->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Point Pattern"));
+    }
+
+    FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::PointPattern','" << newFeatName << "')");
+    if (!pcBody->getDocument()->getObject(newFeatName.c_str())) {
+        return;
+    }
+    finishAdd(newFeatName);
 }
 
 void TaskMultiTransformParameters::onTransformAddScaled()

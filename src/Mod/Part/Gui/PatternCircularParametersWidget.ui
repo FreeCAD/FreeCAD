@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartGui::PatternCircularParametersWidget</class>
+ <widget class="QWidget" name="PartGui::PatternCircularParametersWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>270</width>
+    <height>180</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Circular pattern</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="axisLabel">
+        <property name="text">
+         <string>Axis</string>
+        </property>
+        <property name="buddy">
+         <cstring>axisCombo</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="axisCombo"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="radialDistanceLabel">
+        <property name="text">
+         <string>Radial distance</string>
+        </property>
+        <property name="buddy">
+         <cstring>radialDistance</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="radialDistance" native="true">
+        <property name="keyboardTracking" stdset="0">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="tangentialDistanceLabel">
+        <property name="text">
+         <string>Tangential distance</string>
+        </property>
+        <property name="buddy">
+         <cstring>tangentialDistance</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="tangentialDistance" native="true">
+        <property name="keyboardTracking" stdset="0">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="numberCirclesLabel">
+        <property name="text">
+         <string>Concentric circles</string>
+        </property>
+        <property name="buddy">
+         <cstring>numberCircles</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::UIntSpinBox" name="numberCircles"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="symmetryLabel">
+        <property name="text">
+         <string>Symmetry</string>
+        </property>
+        <property name="buddy">
+         <cstring>symmetry</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::UIntSpinBox" name="symmetry"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::UIntSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/SpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

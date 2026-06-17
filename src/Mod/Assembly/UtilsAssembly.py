@@ -97,6 +97,10 @@ def number_of_components_in(assembly):
         return 0
     i = 0
     for obj in assembly.Group:
+        if isLinkArray(obj):
+            i = i + 1
+            continue
+
         if isLinkGroup(obj):
             i = i + obj.ElementCount
             continue
@@ -125,6 +129,10 @@ def isLink(obj):
     # If element count is not 0, then its a link group in which case the Link
     # is a container and it's the LinkElement that is linking to external doc.
     return (obj.TypeId == "App::Link" and obj.ElementCount == 0) or obj.TypeId == "App::LinkElement"
+
+
+def isLinkArray(obj):
+    return obj is not None and obj.isDerivedFrom("Part::LinkArray")
 
 
 def isLinkGroup(obj):
@@ -177,13 +185,10 @@ def getObject(ref):
                 if obj2 and obj2.isDerivedFrom("App::DatumElement"):
                     return obj2
 
-        elif obj.isDerivedFrom("App::DatumElement"):
-            return obj
-
         elif obj.TypeId == "PartDesign::Body":
             return process_body(obj, obj, names, i)
 
-        elif obj.isDerivedFrom("Part::Feature"):
+        elif isLinkArray(obj) or obj.isDerivedFrom("App::DatumElement") or obj.isDerivedFrom("Part::Feature"):
             # primitive, fastener, gear ...
             return obj
 
@@ -758,7 +763,7 @@ def getMovablePartsWithin(group, partsAsSolid=False):
 
 
 def getSubMovingParts(obj, partsAsSolid):
-    if obj.isDerivedFrom("Part::Feature"):
+    if isLinkArray(obj) or obj.isDerivedFrom("Part::Feature"):
         return [obj]
 
     elif obj.isDerivedFrom("App::Part"):
@@ -1285,7 +1290,7 @@ def getComponentReference(assembly, root_obj, sub_string):
                 and not linkedObj.isDerivedFrom("App::GeoFeature")
             ):
                 continue
-        elif not obj.isDerivedFrom("App::GeoFeature"):
+        elif not obj.isDerivedFrom("App::GeoFeature") and not isLinkArray(obj):
             continue
 
         component = obj

@@ -24,15 +24,15 @@
 
 #pragma once
 
-#include <QWidget>
 #include <memory>
 #include <vector>
 #include <App/PropertyStandard.h>  // For Property types
 #include <App/PropertyLinks.h>     // For PropertyLinkSub
-#include <Gui/ComboLinks.h>
 #include <Gui/EditableDatumLabel.h>
 
 #include <Mod/Part/PartGlobal.h>
+
+#include "PatternReferenceWidget.h"
 
 class Ui_PatternParametersWidget;
 
@@ -75,7 +75,7 @@ enum class PatternMode
  * Length/Spacing (including dynamic spacing), and Occurrences. It binds directly
  * to the corresponding properties of a Feature.
  */
-class PartGuiExport PatternParametersWidget: public QWidget
+class PartGuiExport PatternParametersWidget: public PatternReferenceWidget
 {
     Q_OBJECT
 
@@ -124,13 +124,6 @@ public:
      * @param link The PropertyLinkSub representing the custom direction.
      * @param text The user-visible text for the combo box item.
      */
-    void addDirection(
-        App::DocumentObject* linkObj,
-        const std::string& linkSubname,
-        const QString& itemText,
-        int userData = -1
-    );
-
     /**
      * @brief Updates the UI elements to reflect the current values of the bound properties.
      */
@@ -140,14 +133,6 @@ public:
      * @brief Returns the currently selected direction link from the combo box.
      * Returns an empty link if "Select reference..." is chosen.
      */
-    const App::PropertyLinkSub& getCurrentDirectionLink() const;
-
-    /**
-     * @brief Checks if the "Select reference..." item is currently selected.
-     */
-    bool isSelectReferenceMode() const;
-
-    void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     bool getReverse() const;
     int getMode() const;
     double getExtent() const;
@@ -171,25 +156,8 @@ public:
     void updateSpacingLabels(const Base::Vector3d& startPoint, const Base::Vector3d& direction);
     void clearAllSpacingLabels();
 
-    Gui::ComboLinks dirLinks;
-
-Q_SIGNALS:
-    /**
-     * @brief Emitted when the user selects the "Select reference..." option
-     *        in the direction combo box, indicating the need to enter selection mode.
-     */
-    void requestReferenceSelection();
-
-    /**
-     * @brief Emitted when any parameter value controlled by this widget changes
-     *        that requires a recompute of the feature.
-     */
-    void parametersChanged();
-
-
 private Q_SLOTS:
     // Slots connected to UI elements
-    void onDirectionChanged(int index);
     void onReversePressed();
     void onModeChanged(int index);
     // Note: Spinbox value changes are often handled by direct binding,
@@ -227,7 +195,6 @@ private:
     std::unique_ptr<Ui_PatternParametersWidget> ui;
 
     // Pointers to bound properties (raw pointers, lifetime managed externally)
-    App::PropertyLinkSub* m_directionProp = nullptr;
     App::PropertyBool* m_reversedProp = nullptr;
     App::PropertyEnumeration* m_modeProp = nullptr;
     App::PropertyQuantity* m_extentProp = nullptr;
