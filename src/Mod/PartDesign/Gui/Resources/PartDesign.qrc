@@ -16,6 +16,7 @@
         <file alias="icons/PartDesign_Body_Create_New.svg">icons/PartDesign_Body.svg</file>
         <file>icons/PartDesign_Boolean.svg</file>
         <file>icons/PartDesign_Chamfer.svg</file>
+        <file>icons/PartDesign_CircularPattern.svg</file>
         <file>icons/PartDesign_Clone.svg</file>
         <file>icons/PartDesign_CoordinateSystem.svg</file>
         <file>icons/PartDesign_Draft.svg</file>
@@ -34,9 +35,11 @@
         <file>icons/PartDesign_MultiTransform.svg</file>
         <file>icons/PartDesign_Overlay_Tip.svg</file>
         <file>icons/PartDesign_Pad.svg</file>
+        <file>icons/PartDesign_PathPattern.svg</file>
         <file>icons/PartDesign_Plane.svg</file>
         <file>icons/PartDesign_Pocket.svg</file>
         <file>icons/PartDesign_Point.svg</file>
+        <file>icons/PartDesign_PointPattern.svg</file>
         <file>icons/PartDesign_PolarPattern.svg</file>
         <file>icons/PartDesign_Revolution.svg</file>
         <file>icons/PartDesign_Scaled.svg</file>

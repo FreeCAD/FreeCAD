@@ -1522,6 +1522,12 @@ class MakeJointSelGate:
         ref = [obj, [sub]]
         sel_obj = UtilsAssembly.getObject(ref)
 
+        if not sel_obj:
+            return False
+
+        if UtilsAssembly.isLinkArray(sel_obj):
+            return True
+
         if UtilsAssembly.isLink(sel_obj):
             linked = sel_obj.getLinkedObject()
             if linked == sel_obj:

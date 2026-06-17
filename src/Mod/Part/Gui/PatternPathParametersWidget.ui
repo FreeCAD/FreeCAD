@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PartGui::PatternPathParametersWidget</class>
+ <widget class="QWidget" name="PartGui::PatternPathParametersWidget">
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0"><widget class="QLabel" name="pathLabel"><property name="text"><string>Path</string></property></widget></item>
+   <item row="0" column="1"><widget class="QPushButton" name="pathButton"><property name="text"><string>Select path...</string></property></widget></item>
+   <item row="1" column="0"><widget class="QLabel" name="spacingModeLabel"><property name="text"><string>Spacing mode</string></property></widget></item>
+   <item row="1" column="1"><widget class="QComboBox" name="spacingMode"/></item>
+   <item row="2" column="0"><widget class="QLabel" name="countLabel"><property name="text"><string>Occurrences</string></property></widget></item>
+   <item row="2" column="1"><widget class="Gui::UIntSpinBox" name="count"/></item>
+   <item row="3" column="0"><widget class="QLabel" name="spacingLabel"><property name="text"><string>Spacing</string></property></widget></item>
+   <item row="3" column="1"><widget class="Gui::QuantitySpinBox" name="spacing" native="true"><property name="keyboardTracking" stdset="0"><bool>false</bool></property></widget></item>
+   <item row="4" column="0"><widget class="QLabel" name="startOffsetLabel"><property name="text"><string>Start offset</string></property></widget></item>
+   <item row="4" column="1"><widget class="Gui::QuantitySpinBox" name="startOffset" native="true"><property name="keyboardTracking" stdset="0"><bool>false</bool></property></widget></item>
+   <item row="5" column="0"><widget class="QLabel" name="endOffsetLabel"><property name="text"><string>End offset</string></property></widget></item>
+   <item row="5" column="1"><widget class="Gui::QuantitySpinBox" name="endOffset" native="true"><property name="keyboardTracking" stdset="0"><bool>false</bool></property></widget></item>
+   <item row="6" column="0" colspan="2"><widget class="QCheckBox" name="reversePath"><property name="text"><string>Reverse path</string></property></widget></item>
+   <item row="7" column="0" colspan="2"><widget class="QCheckBox" name="align"><property name="text"><string>Align to path</string></property></widget></item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget><class>Gui::QuantitySpinBox</class><extends>QWidget</extends><header>Gui/QuantitySpinBox.h</header></customwidget>
+  <customwidget><class>Gui::UIntSpinBox</class><extends>QSpinBox</extends><header>Gui/SpinBox.h</header></customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

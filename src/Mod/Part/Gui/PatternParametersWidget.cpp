@@ -50,7 +50,7 @@ PatternParametersWidget::PatternParametersWidget(
     Gui::View3DInventorViewer* v,
     QWidget* parent
 )
-    : QWidget(parent)
+    : PatternReferenceWidget(parent)
     , ui(new Ui_PatternParametersWidget)
     , viewer(v)
     , type(type)
@@ -82,8 +82,7 @@ void PatternParametersWidget::setupUiElements()
         ui->labelOffset->setText(tr("Angular Spacing"));
     }
 
-    // Set combo box helper
-    dirLinks.setCombo(ui->comboDirection);
+    setupReferenceCombo(ui->comboDirection);
 
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Part"
@@ -95,12 +94,6 @@ void PatternParametersWidget::setupUiElements()
 
 void PatternParametersWidget::connectSignals()
 {
-    connect(
-        ui->comboDirection,
-        qOverload<int>(&QComboBox::activated),
-        this,
-        &PatternParametersWidget::onDirectionChanged
-    );
     connect(ui->PushButtonReverse, &QToolButton::pressed, this, &PatternParametersWidget::onReversePressed);
     connect(
         ui->comboMode,
@@ -159,7 +152,7 @@ void PatternParametersWidget::bindProperties(
 )
 {
     // Store pointers to the properties
-    m_directionProp = directionProp;
+    bindReference(directionProp);
     m_reversedProp = reversedProp;
     m_modeProp = modeProp;
     m_extentProp = lengthProp;
@@ -195,17 +188,6 @@ void PatternParametersWidget::bindProperties(
     updateUI();
 }
 
-void PatternParametersWidget::addDirection(
-    App::DocumentObject* linkObj,
-    const std::string& linkSubname,
-    const QString& itemText,
-    int userData
-)
-{
-    // Insert custom directions before "Select reference..."
-    dirLinks.addLink(linkObj, linkSubname, itemText, userData);
-}
-
 void PatternParametersWidget::updateUI()
 {
     if (blockUpdate || !m_feature) {  // Need properties to be bound
@@ -213,18 +195,7 @@ void PatternParametersWidget::updateUI()
     }
     Base::StateLocker locker(blockUpdate, true);
 
-    // Update direction combo
-    if (dirLinks.setCurrentLink(*m_directionProp) == -1) {
-        // failed to set current, because the link isn't in the list yet
-        if (m_directionProp->getValue()) {
-            QString refStr = QStringLiteral("%1:%2").arg(
-                QString::fromLatin1(m_directionProp->getValue()->getNameInDocument()),
-                QString::fromLatin1(m_directionProp->getSubValues().front().c_str())
-            );
-            dirLinks.addLink(*m_directionProp, refStr);
-            dirLinks.setCurrentLink(*m_directionProp);
-        }
-    }
+    updateReferenceUI();
 
     // Update other controls directly from properties
     ui->comboMode->setCurrentIndex(m_modeProp->getValue());
@@ -286,16 +257,6 @@ void PatternParametersWidget::adaptVisibilityToMode()
     ui->spacingControlsWidget->setVisible(mode == PartGui::PatternMode::Spacing);
 }
 
-const App::PropertyLinkSub& PatternParametersWidget::getCurrentDirectionLink() const
-{
-    return dirLinks.getCurrentLink();
-}
-
-bool PatternParametersWidget::isSelectReferenceMode() const
-{
-    return !dirLinks.getCurrentLink().getValue();
-}
-
 void PatternParametersWidget::setTitle(const QString& title)
 {
     ui->groupBox->setTitle(title);
@@ -313,22 +274,6 @@ void PatternParametersWidget::setChecked(bool on)
 }
 
 // --- Slots ---
-
-void PatternParametersWidget::onDirectionChanged(int /*index*/)
-{
-    if (blockUpdate || !m_directionProp) {
-        return;
-    }
-
-    if (isSelectReferenceMode()) {
-        // Emit signal for the task panel to handle reference selection
-        requestReferenceSelection();
-    }
-    else {
-        m_directionProp->Paste(dirLinks.getCurrentLink());  // Update the property
-        parametersChanged();                                // Notify change
-    }
-}
 
 void PatternParametersWidget::onReversePressed()
 {
@@ -545,13 +490,6 @@ void PatternParametersWidget::updateSpacingPatternProperty()
 }
 
 // --- Getters ---
-
-void PatternParametersWidget::getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
-{
-    const App::PropertyLinkSub& lnk = dirLinks.getCurrentLink();
-    obj = lnk.getValue();
-    sub = lnk.getSubValues();
-}
 
 bool PatternParametersWidget::getReverse() const
 {

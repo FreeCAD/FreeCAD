@@ -85,6 +85,12 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderMirrored.h
     ViewProviderLinearPattern.cpp
     ViewProviderLinearPattern.h
+    ViewProviderCircularPattern.cpp
+    ViewProviderCircularPattern.h
+    ViewProviderPathPattern.cpp
+    ViewProviderPathPattern.h
+    ViewProviderPointPattern.cpp
+    ViewProviderPointPattern.h
     ViewProviderPolarPattern.cpp
     ViewProviderPolarPattern.h
     ViewProviderScaled.cpp

@@ -51,9 +51,13 @@ set(PartGui_UIC_SRCS
     DlgSettingsObjectColor.ui
     DlgProjectionOnSurface.ui
     PatternParametersWidget.ui
+    PatternCircularParametersWidget.ui
+    PatternPathParametersWidget.ui
+    PatternPointParametersWidget.ui
     SectionCutting.ui
     ShapeFromMesh.ui
     TaskFaceAppearances.ui
+    TaskLinkArrayParameters.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
     TaskOffset.ui
@@ -137,9 +141,20 @@ SET(PartGui_SRCS
     DlgProjectionOnSurface.cpp
     DlgProjectionOnSurface.h
     DlgProjectionOnSurface.ui
+    PatternCircularParametersWidget.cpp
+    PatternCircularParametersWidget.h
+    PatternCircularParametersWidget.ui
+    PatternPathParametersWidget.cpp
+    PatternPathParametersWidget.h
+    PatternPathParametersWidget.ui
+    PatternPointParametersWidget.cpp
+    PatternPointParametersWidget.h
+    PatternPointParametersWidget.ui
     PatternParametersWidget.cpp
     PatternParametersWidget.h
     PatternParametersWidget.ui
+    PatternReferenceWidget.cpp
+    PatternReferenceWidget.h
     Resources/Part.qrc
     PreCompiled.h
     PreviewUpdateScheduler.cpp
@@ -174,6 +189,8 @@ SET(PartGui_SRCS
     ViewProviderCircleParametric.h
     ViewProviderLineParametric.cpp
     ViewProviderLineParametric.h
+    ViewProviderLinkArray.cpp
+    ViewProviderLinkArray.h
     ViewProviderPointParametric.cpp
     ViewProviderPointParametric.h
     ViewProviderEllipseParametric.cpp
@@ -234,6 +251,11 @@ SET(PartGui_SRCS
     TaskFaceAppearances.cpp
     TaskFaceAppearances.h
     TaskFaceAppearances.ui
+    TaskLinkArrayParameters.cpp
+    TaskLinkArrayParameters.h
+    TaskLinkArrayParameters.ui
+    TaskPatternParameters.cpp
+    TaskPatternParameters.h
     TaskShapeBuilder.cpp
     TaskShapeBuilder.h
     TaskShapeBuilder.ui

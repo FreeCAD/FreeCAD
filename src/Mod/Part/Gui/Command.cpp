@@ -31,6 +31,7 @@
 #include <TopoDS_Shape.hxx>
 
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/DocumentObjectGroup.h>
@@ -38,6 +39,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <App/Link.h>
+#include <Gui/ActiveObjectList.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -74,6 +76,16 @@
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+namespace PartGui
+{
+void showLinkArrayTask(App::DocumentObject* object);
+void showLinkArrayCircularTask(App::DocumentObject* object);
+void showLinkArrayLinearTask(App::DocumentObject* object);
+void showLinkArrayPathTask(App::DocumentObject* object);
+void showLinkArrayPointTask(App::DocumentObject* object);
+void showLinkArrayPolarTask(App::DocumentObject* object);
+}
 
 //===========================================================================
 // Part_PickCurveNet
@@ -2514,7 +2526,257 @@ QString getAutoGroupCommandStr()
 
     return QStringLiteral("# Object created at document root.");
 }
+
+QString getAutoAssemblyOrPartGroupCommandStr()
+// Helper function to add the newly created object to the active Assembly or Part if present.
+// Link arrays are App::Link objects and are not valid children of PartDesign Bodies.
+{
+    return QStringLiteral(
+        "activePart = Gui.activeView().getActiveObject('%1')\n"
+        "activeAsm = Gui.activeView().getActiveObject('%2')\n"
+        "if activePart and not activeAsm:\n"
+        "    activePart.addObject(obj)\n"
+        "elif not activePart and activeAsm:\n"
+        "    activeAsm.addObject(obj)\n"
+        "elif activePart and activeAsm:\n"
+        "    if activePart.hasObject(activeAsm, True):\n"
+        "        activeAsm.addObject(obj)\n"
+        "    elif activeAsm.hasObject(activePart, True):\n"
+        "        activePart.addObject(obj)\n"
+        "else:\n"
+        "    pass\n")
+        .arg(PARTKEY, ASSEMBLYKEY);
+}
+
+void activateLinkArrayCommand(Gui::Command& command,
+                              const char* transactionName,
+                              const char* objectType,
+                              const char* objectName,
+                              void (*showTask)(App::DocumentObject*))
+{
+    auto selection = Gui::Command::getSelection().getSelectionEx();
+    if (selection.size() > 1) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong Selection"),
+                             QObject::tr("Select at most one object to array."));
+        return;
+    }
+
+    App::DocumentObject* source = selection.empty() ? nullptr : selection.front().getObject();
+    if (source && source->getDocument() != App::GetApplication().getActiveDocument()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong Selection"),
+                             QObject::tr("Select one object from the active document."));
+        return;
+    }
+
+    if (Gui::Control().activeDialog(command.getDocument())) {
+        return;
+    }
+
+    command.openCommand(transactionName);
+    Gui::Command::_doCommand(__FILE__,
+                             __LINE__,
+                             Gui::Command::Doc,
+                             "obj = App.activeDocument().addObject('%s', '%s')",
+                             objectType,
+                             objectName);
+    if (source) {
+        Gui::Command::_doCommand(__FILE__,
+                                 __LINE__,
+                                 Gui::Command::Doc,
+                                 "obj.LinkedObject = %s",
+                                 Gui::Command::getObjectCmd(source).c_str());
+    }
+    Gui::Command::_doCommand(__FILE__,
+                             __LINE__,
+                             Gui::Command::Gui,
+                             getAutoAssemblyOrPartGroupCommandStr().toUtf8());
+
+    App::DocumentObject* array = App::GetApplication().getActiveDocument()->getActiveObject();
+    if (!array) {
+        command.abortCommand();
+        return;
+    }
+
+    if (source && array->getDocument()->recomputeFeature(array)) {
+        array->purgeTouched();
+    }
+
+    showTask(array);
+}
 }  // namespace
+
+//===========================================================================
+// Part_LinkArrayCircular
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayCircular)
+
+CmdPartLinkArrayCircular::CmdPartLinkArrayCircular()
+    : Command("Part_LinkArrayCircular")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Circular Link Array");
+    sToolTipText =
+        QT_TR_NOOP("Creates concentric circular arrays of linked objects");
+    sWhatsThis = "Part_LinkArrayCircular";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_CircularLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayCircular::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(*this,
+                             QT_TRANSLATE_NOOP("Command", "Create circular link array"),
+                             "Part::LinkArrayCircular",
+                             "CircularLinkArray",
+                             PartGui::showLinkArrayCircularTask);
+}
+
+bool CmdPartLinkArrayCircular::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayPath
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayPath)
+
+CmdPartLinkArrayPath::CmdPartLinkArrayPath()
+    : Command("Part_LinkArrayPath")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Path Link Array");
+    sToolTipText = QT_TR_NOOP("Creates linked copies distributed along a path");
+    sWhatsThis = "Part_LinkArrayPath";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_PathLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayPath::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(*this,
+                             QT_TRANSLATE_NOOP("Command", "Create path link array"),
+                             "Part::LinkArrayPath",
+                             "PathLinkArray",
+                             PartGui::showLinkArrayPathTask);
+}
+
+bool CmdPartLinkArrayPath::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayPoint
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayPoint)
+
+CmdPartLinkArrayPoint::CmdPartLinkArrayPoint()
+    : Command("Part_LinkArrayPoint")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Point Link Array");
+    sToolTipText = QT_TR_NOOP("Creates linked copies at every point of a sketch or shape");
+    sWhatsThis = "Part_LinkArrayPoint";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_PointLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayPoint::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(*this,
+                             QT_TRANSLATE_NOOP("Command", "Create point link array"),
+                             "Part::LinkArrayPoint",
+                             "PointLinkArray",
+                             PartGui::showLinkArrayPointTask);
+}
+
+bool CmdPartLinkArrayPoint::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayLinear
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayLinear)
+
+CmdPartLinkArrayLinear::CmdPartLinkArrayLinear()
+    : Command("Part_LinkArrayLinear")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Linear Link Array");
+    sToolTipText = QT_TR_NOOP("Creates a linear array of linked objects");
+    sWhatsThis = "Part_LinkArrayLinear";
+    sStatusTip = sToolTipText;
+    sPixmap = "LinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayLinear::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(*this,
+                             QT_TRANSLATE_NOOP("Command", "Create linear link array"),
+                             "Part::LinkArrayLinear",
+                             "LinearLinkArray",
+                             PartGui::showLinkArrayLinearTask);
+}
+
+bool CmdPartLinkArrayLinear::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
+// Part_LinkArrayPolar
+//===========================================================================
+DEF_STD_CMD_A(CmdPartLinkArrayPolar)
+
+CmdPartLinkArrayPolar::CmdPartLinkArrayPolar()
+    : Command("Part_LinkArrayPolar")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Polar Link Array");
+    sToolTipText = QT_TR_NOOP("Creates a polar array of linked objects");
+    sWhatsThis = "Part_LinkArrayPolar";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_PolarLinkArray";
+    eType = ForEdit;
+}
+
+void CmdPartLinkArrayPolar::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    activateLinkArrayCommand(*this,
+                             QT_TRANSLATE_NOOP("Command", "Create polar link array"),
+                             "Part::LinkArrayPolar",
+                             "PolarLinkArray",
+                             PartGui::showLinkArrayPolarTask);
+}
+
+bool CmdPartLinkArrayPolar::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+}
 
 DEF_STD_CMD_A(CmdPartCoordinateSystem)
 
@@ -2650,6 +2912,41 @@ bool CmdPartDatumPoint::isActive()
     return hasActiveDocument();
 }
 
+//===========================================================================
+// Part_LinkArrays
+//===========================================================================
+class CmdPartLinkArrays: public Gui::GroupCommand
+{
+public:
+    CmdPartLinkArrays()
+        : GroupCommand("Part_LinkArrays")
+    {
+        sGroup = QT_TR_NOOP("Part");
+        sMenuText = QT_TR_NOOP("Link Arrays");
+        sToolTipText = QT_TR_NOOP("Creates link arrays");
+        sWhatsThis = "Part_LinkArrays";
+        sStatusTip = sToolTipText;
+        sPixmap = "LinkArray";
+
+        setCheckable(false);
+
+        addCommand("Part_LinkArrayCircular");
+        addCommand("Part_LinkArrayLinear");
+        addCommand("Part_LinkArrayPath");
+        addCommand("Part_LinkArrayPoint");
+        addCommand("Part_LinkArrayPolar");
+    }
+
+    const char* className() const override
+    {
+        return "CmdPartLinkArrays";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
+    }
+};
 
 //===========================================================================
 // Part_Datums
@@ -2730,6 +3027,12 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
     rcCmdMgr.addCommand(new CmdPartSectionCut());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayCircular());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayLinear());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayPath());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayPoint());
+    rcCmdMgr.addCommand(new CmdPartLinkArrayPolar());
+    rcCmdMgr.addCommand(new CmdPartLinkArrays());
 
     rcCmdMgr.addCommand(new CmdPartCoordinateSystem());
     rcCmdMgr.addCommand(new CmdPartDatumPlane());

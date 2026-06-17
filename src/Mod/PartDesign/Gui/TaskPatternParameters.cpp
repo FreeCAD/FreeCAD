@@ -23,7 +23,6 @@
  ******************************************************************************/
 
 #include <QMessageBox>
-#include <QTimer>
 #include <QVBoxLayout>
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
@@ -50,7 +49,10 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/FeatureCircularPattern.h>
 #include <Mod/PartDesign/App/FeatureLinearPattern.h>
+#include <Mod/PartDesign/App/FeaturePathPattern.h>
+#include <Mod/PartDesign/App/FeaturePointPattern.h>
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Mod/Part/Gui/PatternParametersWidget.h>
@@ -72,7 +74,7 @@ TaskPatternParameters::TaskPatternParameters(ViewProviderTransformed* Transforme
     , ui(new Ui_TaskPatternParameters)
 {
     setupUI();
-    updateSpacingLabels();
+    updatePatternSpacingLabels();
 }
 
 TaskPatternParameters::TaskPatternParameters(
@@ -83,7 +85,7 @@ TaskPatternParameters::TaskPatternParameters(
     , ui(new Ui::TaskPatternParameters)
 {
     setupParameterUI(parameterWidget);
-    updateSpacingLabels();
+    updatePatternSpacingLabels();
 }
 
 void TaskPatternParameters::setupParameterUI(QWidget* widget)
@@ -91,126 +93,51 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
     ui->setupUi(widget);  // Setup the Task's own minimal UI (placeholder)
     QMetaObject::connectSlotsByName(this);
 
-    // --- Create and Embed the Parameter Widget ---
-    auto pattern = getObject();
-    if (!pattern) {
-        return;
+    if (auto* point = dynamic_cast<PartDesign::PointPattern*>(getObject())) {
+        ui->parametersWidgetPlaceholder2->hide();
+        setupPointPatternParameterUI(widget,
+                                     ui->parametersWidgetPlaceholder,
+                                     this,
+                                     &point->PointObject);
     }
-    PartGui::PatternType type = pattern->isDerivedFrom<PartDesign::LinearPattern>()
-        ? PartGui::PatternType::Linear
-        : PartGui::PatternType::Polar;
-
-    // Set first direction widget
-    auto* viewer = getTopTransformedView()->getViewer();
-    parametersWidget = new PartGui::PatternParametersWidget(type, viewer, widget);
-
-    auto* placeholderLayout = new QVBoxLayout(ui->parametersWidgetPlaceholder);
-    placeholderLayout->setContentsMargins(0, 0, 0, 0);
-    placeholderLayout->addWidget(parametersWidget);
-    ui->parametersWidgetPlaceholder->setLayout(placeholderLayout);
-
-    auto* sketch = dynamic_cast<Part::Part2DObject*>(getSketchObject());
-    this->fillAxisCombo(parametersWidget->dirLinks, sketch);
-    connect(
-        parametersWidget,
-        &PartGui::PatternParametersWidget::requestReferenceSelection,
-        this,
-        &TaskPatternParameters::onParameterWidgetRequestReferenceSelection
-    );
-    connect(
-        parametersWidget,
-        &PartGui::PatternParametersWidget::parametersChanged,
-        this,
-        &TaskPatternParameters::onParameterWidgetParametersChanged
-    );
-
-    // Add second direction widget if necessary
-    if (type == PartGui::PatternType::Linear) {
-        parametersWidget2 = new PartGui::PatternParametersWidget(type, viewer, widget);
-        auto* placeholderLayout2 = new QVBoxLayout(ui->parametersWidgetPlaceholder2);
-        placeholderLayout2->setContentsMargins(0, 0, 0, 0);
-        placeholderLayout2->addWidget(parametersWidget2);
-        ui->parametersWidgetPlaceholder2->setLayout(placeholderLayout2);
-
-        this->fillAxisCombo(parametersWidget2->dirLinks, sketch);
-        connect(
-            parametersWidget2,
-            &PartGui::PatternParametersWidget::requestReferenceSelection,
-            this,
-            &TaskPatternParameters::onParameterWidgetRequestReferenceSelection2
-        );
-        connect(
-            parametersWidget2,
-            &PartGui::PatternParametersWidget::parametersChanged,
-            this,
-            &TaskPatternParameters::onParameterWidgetParametersChanged
-        );
-        parametersWidget2->setTitle(tr("Direction 2"));
-        parametersWidget2->setCheckable(true);
+    else if (auto* path = dynamic_cast<PartDesign::PathPattern*>(getObject())) {
+        ui->parametersWidgetPlaceholder2->hide();
+        setupPathPatternParameterUI(widget,
+                                    ui->parametersWidgetPlaceholder,
+                                    this,
+                                    getUpdateViewTimeout(),
+                                    &path->Path,
+                                    &path->Count,
+                                    &path->SpacingMode,
+                                    &path->Spacing,
+                                    &path->StartOffset,
+                                    &path->EndOffset,
+                                    &path->ReversePath,
+                                    &path->Align);
     }
-
-    bindProperties();
+    else if (auto* circular = dynamic_cast<PartDesign::CircularPattern*>(getObject())) {
+        ui->parametersWidgetPlaceholder2->hide();
+        setupCircularPatternParameterUI(widget,
+                                        ui->parametersWidgetPlaceholder,
+                                        this,
+                                        getUpdateViewTimeout(),
+                                        &circular->Axis,
+                                        &circular->RadialDistance,
+                                        &circular->TangentialDistance,
+                                        &circular->NumberCircles,
+                                        &circular->Symmetry);
+    }
+    else {
+        setupPatternParameterUI(widget,
+                                ui->parametersWidgetPlaceholder,
+                                ui->parametersWidgetPlaceholder2,
+                                getTopTransformedView()->getViewer(),
+                                this,
+                                getUpdateViewTimeout());
+    }
 
     // --- Task Specific Setup ---
     showOriginAxes(true);  // Show origin helper axes
-
-    updateViewTimer = new QTimer(this);
-    updateViewTimer->setSingleShot(true);
-    updateViewTimer->setInterval(getUpdateViewTimeout());
-    connect(updateViewTimer, &QTimer::timeout, this, &TaskPatternParameters::onUpdateViewTimer);
-}
-
-void TaskPatternParameters::bindProperties()
-{
-    auto pattern = getObject();
-    if (!pattern) {
-        return;
-    }
-
-    if (pattern->isDerivedFrom<PartDesign::LinearPattern>()) {
-        auto* linear = static_cast<PartDesign::LinearPattern*>(pattern);
-        parametersWidget->bindProperties(
-            &linear->Direction,
-            &linear->Reversed,
-            &linear->Part::LinearPatternExtension::Mode,
-            &linear->Length,
-            &linear->Offset,
-            &linear->Spacings,
-            &linear->SpacingPattern,
-            &linear->Occurrences,
-            linear
-        );
-        parametersWidget2->bindProperties(
-            &linear->Direction2,
-            &linear->Reversed2,
-            &linear->Mode2,
-            &linear->Length2,
-            &linear->Offset2,
-            &linear->Spacings2,
-            &linear->SpacingPattern2,
-            &linear->Occurrences2,
-            linear
-        );
-    }
-    else if (pattern->isDerivedFrom<PartDesign::PolarPattern>()) {
-        auto* polar = static_cast<PartDesign::PolarPattern*>(pattern);
-        parametersWidget->bindProperties(
-            &polar->Axis,
-            &polar->Reversed,
-            &polar->Part::PolarPatternExtension::Mode,
-            &polar->Angle,
-            &polar->Offset,
-            &polar->Spacings,
-            &polar->SpacingPattern,
-            &polar->Occurrences,
-            polar
-        );
-    }
-    else {
-        Base::Console().warning(
-            "PatternParametersWidget property binding failed. Something is wrong please report.\n"
-        );
-    }
 }
 
 void TaskPatternParameters::retranslateParameterUI(QWidget* widget)
@@ -218,14 +145,58 @@ void TaskPatternParameters::retranslateParameterUI(QWidget* widget)
     ui->retranslateUi(widget);
 }
 
-void TaskPatternParameters::updateUI()
+App::DocumentObject* TaskPatternParameters::getPatternObject() const
 {
-    if (parametersWidget) {
-        parametersWidget->updateUI();
+    return getObject();
+}
+
+void TaskPatternParameters::fillDirectionCombo(Gui::ComboLinks& combo,
+                                               Part::LinearPatternDirection /*direction*/)
+{
+    auto* sketch = dynamic_cast<Part::Part2DObject*>(getSketchObject());
+    this->fillAxisCombo(combo, sketch);
+}
+
+void TaskPatternParameters::setupPatternTransaction()
+{
+    setupTransaction();
+}
+
+void TaskPatternParameters::recomputePatternFeature()
+{
+    recomputeFeature();
+}
+
+Base::Vector3d TaskPatternParameters::getPatternStartPoint() const
+{
+    return getStartPoint();
+}
+
+Base::Vector3d TaskPatternParameters::getLinearPatternFallbackDirection(
+    Part::LinearPatternDirection direction
+) const
+{
+    if (direction == Part::LinearPatternDirection::Second) {
+        return Base::Vector3d(0.0, 1.0, 0.0);
     }
-    if (parametersWidget2) {
-        parametersWidget2->updateUI();
+
+    return Base::Vector3d(0.0, 0.0, 1.0);
+}
+
+void TaskPatternParameters::transformPolarPatternAxis(gp_Ax2& axis) const
+{
+    auto* transformed = dynamic_cast<PartDesign::Transformed*>(getObject());
+    if (transformed) {
+        axis.Transform(transformed->getLocation().Transformation());
     }
+}
+
+std::string TaskPatternParameters::buildDirectionReferencePythonString(
+    const App::DocumentObject* obj,
+    const std::vector<std::string>& subs
+) const
+{
+    return buildLinkSingleSubPythonStr(obj, subs);
 }
 
 // --- Task-Specific Logic ---
@@ -261,11 +232,36 @@ void TaskPatternParameters::enterReferenceSelectionMode()
     hideObject();  // Hide the pattern feature itself
     showBase();    // Show the base features/body
     Gui::Selection().clearSelection();
-    // Add selection gate (allow edges, faces, potentially datums)
-    addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR);
-    Gui::getMainWindow()->showMessage(
-        tr("Select a direction reference (edge, face, datum line)")
-    );  // User feedback
+    if (getObject()->isDerivedFrom<PartDesign::PointPattern>()) {
+        // Clicking visible sketch/shape geometry produces a subelement selection, even though
+        // PointObject stores the whole object. Accept every shape subelement here and discard the
+        // subelement below when assigning the property.
+        addReferenceSelectionGate(
+            AllowSelection::POINT | AllowSelection::EDGE | AllowSelection::FACE
+            | AllowSelection::WHOLE
+        );
+        Gui::getMainWindow()->showMessage(
+            tr("Select a sketch or shape containing the pattern points")
+        );
+    }
+    else if (getObject()->isDerivedFrom<PartDesign::PathPattern>()) {
+        // Whole sketches and SubShapeBinders supply all their edges. A single selected edge is
+        // also supported until a proper multi-reference selection widget is available.
+        addReferenceSelectionGate(
+            AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::WHOLE
+        );
+        Gui::getMainWindow()->showMessage(
+            tr("Select a sketch, SubShapeBinder, or path edge")
+        );
+    }
+    else {
+        addReferenceSelectionGate(
+            AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR
+        );
+        Gui::getMainWindow()->showMessage(
+            tr("Select a direction reference (edge, face, datum line)")
+        );
+    }
 }
 
 void TaskPatternParameters::exitReferenceSelectionMode()
@@ -274,46 +270,26 @@ void TaskPatternParameters::exitReferenceSelectionMode()
 
     hideBase();
     Gui::getMainWindow()->showMessage(QString());
-    activeDirectionWidget = nullptr;
+    clearActiveDirectionWidget();
 }
 
 
 // --- SLOTS ---
 
-void TaskPatternParameters::onUpdateViewTimer()
-{
-    // Recompute is triggered when parameters change and this timer fires
-    setupTransaction();  // Group potential property changes
-    recomputeFeature();
-
-    updateSpacingLabels();
-
-    updateUI();
-}
-
-void TaskPatternParameters::onParameterWidgetRequestReferenceSelection()
+void TaskPatternParameters::onReferenceSelectionRequested()
 {
     // The embedded widget wants to enter reference selection mode
-    activeDirectionWidget = parametersWidget;
     enterReferenceSelectionMode();
     selectionMode = SelectionMode::Reference;
 }
 
-void TaskPatternParameters::onParameterWidgetRequestReferenceSelection2()
-{
-    // The embedded widget wants to enter reference selection mode
-    activeDirectionWidget = parametersWidget2;
-    enterReferenceSelectionMode();
-    selectionMode = SelectionMode::Reference;
-}
-
-void TaskPatternParameters::onParameterWidgetParametersChanged()
+void TaskPatternParameters::onPatternParametersChanged()
 {
     // A parameter in the embedded widget changed, trigger a recompute
     if (blockUpdate) {
         return;  // Avoid loops if change originated from Task update
     }
-    kickUpdateViewTimer();  // Debounce recompute
+    PartGui::TaskPatternParameters::kickUpdateViewTimer();  // Debounce recompute
 }
 
 void TaskPatternParameters::onUpdateView(bool on)
@@ -321,13 +297,8 @@ void TaskPatternParameters::onUpdateView(bool on)
     // This might be less relevant now if recomputes are triggered by parametersChanged
     blockUpdate = !on;
     if (on) {
-        kickUpdateViewTimer();
+        PartGui::TaskPatternParameters::kickUpdateViewTimer();
     }
-}
-
-void TaskPatternParameters::kickUpdateViewTimer() const
-{
-    updateViewTimer->start();
 }
 
 void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -351,9 +322,13 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     App::DocumentObject* selObj = nullptr;
     getReferencedSelection(patternObj, msg, selObj, directions);
     if (!selObj) {
-        Base::Console().warning(
-            tr("Invalid selection. Select an edge, planar face, or datum line.").toStdString().c_str()
-        );
+        const QString warning =
+            patternObj->isDerivedFrom<PartDesign::PointPattern>()
+            ? tr("Invalid selection. Select a sketch or shape containing points.")
+            : (patternObj->isDerivedFrom<PartDesign::PathPattern>()
+                   ? tr("Invalid selection. Select a sketch, SubShapeBinder, or path edge.")
+                   : tr("Invalid selection. Select an edge, planar face, or datum line."));
+        Base::Console().warning("%s\n", warning.toUtf8().constData());
         return;
     }
 
@@ -363,19 +338,31 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         if (patternObj->isDerivedFrom<PartDesign::LinearPattern>()) {
             auto* linearPattern = static_cast<PartDesign::LinearPattern*>(patternObj);
-            if (activeDirectionWidget == parametersWidget) {
+            if (getActiveDirectionWidget() == getPrimaryParametersWidget()) {
                 linearPattern->Direction.setValue(selObj, directions);
             }
             else {
                 linearPattern->Direction2.setValue(selObj, directions);
             }
         }
+        else if (patternObj->isDerivedFrom<PartDesign::CircularPattern>()) {
+            auto* circularPattern = static_cast<PartDesign::CircularPattern*>(patternObj);
+            circularPattern->Axis.setValue(selObj, directions);
+        }
+        else if (patternObj->isDerivedFrom<PartDesign::PathPattern>()) {
+            auto* pathPattern = static_cast<PartDesign::PathPattern*>(patternObj);
+            pathPattern->Path.setValue(selObj, directions);
+        }
+        else if (patternObj->isDerivedFrom<PartDesign::PointPattern>()) {
+            auto* pointPattern = static_cast<PartDesign::PointPattern*>(patternObj);
+            pointPattern->PointObject.setValue(selObj);
+        }
         else if (patternObj->isDerivedFrom<PartDesign::PolarPattern>()) {
             auto* polarPattern = static_cast<PartDesign::PolarPattern*>(patternObj);
             polarPattern->Axis.setValue(selObj, directions);
         }
         recomputeFeature();
-        updateUI();
+        updatePatternParameterUI();
     }
     exitReferenceSelectionMode();
 }
@@ -391,113 +378,19 @@ TaskPatternParameters::~TaskPatternParameters()
 void TaskPatternParameters::apply()
 {
     auto pattern = getObject();
-    if (!pattern || !parametersWidget) {
+    if (!pattern
+        || (!getPrimaryParametersWidget() && !getCircularParametersWidget()
+            && !getPathParametersWidget() && !getPointParametersWidget())) {
         return;
     }
 
-    std::vector<std::string> dirs;
-    App::DocumentObject* obj = nullptr;
-    parametersWidget->getAxis(obj, dirs);
-    std::string direction = buildLinkSingleSubPythonStr(obj, dirs);
-
-    bool isLinear = pattern->isDerivedFrom<PartDesign::LinearPattern>();
-    const char* propName = isLinear ? "Direction = " : "Axis = ";
-
-    FCMD_OBJ_CMD(pattern, propName << direction.c_str());
-    FCMD_OBJ_CMD(pattern, "Reversed = " << parametersWidget->getReverse());
-    FCMD_OBJ_CMD(pattern, "Mode = " << parametersWidget->getMode());
-    parametersWidget->applyQuantitySpinboxes();
-
-    FCMD_OBJ_CMD(pattern, "SpacingPattern = " << parametersWidget->getSpacingPatternsAsString());
-
-    if (parametersWidget2) {
-        parametersWidget2->getAxis(obj, dirs);
-        direction = buildLinkSingleSubPythonStr(obj, dirs);
-
-        FCMD_OBJ_CMD(pattern, "Direction2 = " << direction.c_str());
-        FCMD_OBJ_CMD(pattern, "Reversed2 = " << parametersWidget2->getReverse());
-        FCMD_OBJ_CMD(pattern, "Mode2 = " << parametersWidget2->getMode());
-        parametersWidget2->applyQuantitySpinboxes();
-
-        FCMD_OBJ_CMD(pattern, "SpacingPattern2 = " << parametersWidget2->getSpacingPatternsAsString());
-    }
+    applyPatternParameters(pattern);
 
     // The user may have changed a value and immediately hit 'OK' or Enter.
     // This triggers accept() before the update timer for the 3D view has a
     // chance to fire. If the timer is active, it means a recompute is
     // pending.
-    if (updateViewTimer && updateViewTimer->isActive()) {
-        updateViewTimer->stop();
-        recomputeFeature();
-    }
-}
-
-void TaskPatternParameters::updateSpacingLabels()
-{
-    Base::Vector3d startPoint = getStartPoint();
-
-    if (auto* linearPattern = getObject<PartDesign::LinearPattern>()) {
-        // Handle first direction widget
-        if (parametersWidget) {
-            // Get the direction vector using the feature's public method.
-            // calculateOffsetVector returns a vector whose magnitude is one step in 'Extent' mode,
-            // or a normalized vector in 'Spacing' mode. We normalize it to be safe.
-            gp_Vec offset1 = linearPattern->calculateOffsetVector(Part::LinearPatternDirection::First);
-            Base::Vector3d direction1(0, 0, 1);  // Default direction
-            if (offset1.Magnitude() > Precision::Confusion()) {
-                offset1.Normalize();
-                direction1.x = offset1.X();
-                direction1.y = offset1.Y();
-                direction1.z = offset1.Z();
-            }
-            parametersWidget->updateSpacingLabels(startPoint, direction1);
-        }
-
-        // Handle second direction widget
-        if (parametersWidget2) {
-            gp_Vec offset2 = linearPattern->calculateOffsetVector(Part::LinearPatternDirection::Second);
-            Base::Vector3d direction2(0, 1, 0);  // Default direction
-            if (offset2.Magnitude() > Precision::Confusion()) {
-                offset2.Normalize();
-                direction2.x = offset2.X();
-                direction2.y = offset2.Y();
-                direction2.z = offset2.Z();
-            }
-            parametersWidget2->updateSpacingLabels(startPoint, direction2);
-        }
-        return;
-    }
-
-    if (auto* polarPattern = getObject<PartDesign::PolarPattern>()) {
-        gp_Ax2 axisDef = polarPattern->getRotation();
-        axisDef.Transform(polarPattern->getLocation().Transformation());
-
-        gp_Pnt center_gp = axisDef.Location();
-        gp_Dir axis_gp = axisDef.Direction();
-        Base::Vector3d center(center_gp.X(), center_gp.Y(), center_gp.Z());
-        Base::Vector3d axis(axis_gp.X(), axis_gp.Y(), axis_gp.Z());
-
-        // Calculate X-axis for angular reference in the rotation plane
-        Base::Rotation labelRot(Base::Vector3d(0.0, 0.0, 1.0), axis);
-        Base::Vector3d xDir;
-        labelRot.multVec(Base::Vector3d(1.0, 0.0, 0.0), xDir);
-
-        Base::Vector3d startRadiusVec = startPoint - center;
-        double radius = startRadiusVec.Length();
-        if (radius < Precision::Confusion()) {
-            radius = 1.0;
-        }
-
-        double initialAngle_rad = 0.0;
-        Base::Vector3d projectedRadiusVec = startRadiusVec - (startRadiusVec.Dot(axis)) * axis;
-        if (projectedRadiusVec.Length() > 1e-6) {
-            initialAngle_rad = xDir.GetAngleOriented(projectedRadiusVec, axis);
-        }
-
-        if (parametersWidget) {
-            parametersWidget->updateSpacingLabels(center, axis, radius, initialAngle_rad);
-        }
-    }
+    consumePendingUpdate();
 }
 
 Base::Vector3d TaskPatternParameters::getStartPoint() const

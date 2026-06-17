@@ -74,10 +74,14 @@
         <file>icons/Part_2D_object.svg</file>
         <file>icons/Part_3D_object.svg</file>
         <file>icons/Part_BoxSelection.svg</file>
+        <file>icons/Part_CircularLinkArray.svg</file>
         <file>icons/Part_Export.svg</file>
         <file>icons/Part_Feature.svg</file>
         <file>icons/Part_FeatureImport.svg</file>
         <file>icons/Part_Import.svg</file>
+        <file>icons/Part_PathLinkArray.svg</file>
+        <file>icons/Part_PointLinkArray.svg</file>
+        <file>icons/Part_PolarLinkArray.svg</file>
         <file>icons/Part_SectionCut.svg</file>
         <file>icons/PartWorkbench.svg</file>
         <file>icons/preferences-part_design.svg</file>
