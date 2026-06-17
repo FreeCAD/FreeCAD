@@ -384,7 +384,11 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
                 if (!hEdges->IsEmpty()) {
                     Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
                     ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
-                        hEdges, Precision::Confusion(), false, hWires);
+                        hEdges,
+                        Precision::Confusion(),
+                        false,
+                        hWires
+                    );
 
                     FaceMakerBullseye fm;
                     fm.setPlane(slicePlane);

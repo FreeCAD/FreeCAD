@@ -77,8 +77,8 @@ private:
     /// A degenerate edge without a pcurve makes the boolean ProcessDE step
     /// dereference a null Geom2d_Curve and crash.
     /// This detects that condition and attempts a ShapeFix repair
-    /// returns a null shape if the solid is still unsafe so the caller can skip it instead of crashing.
-    /// Fingers crossed
+    /// returns a null shape if the solid is still unsafe so the caller can skip it instead of
+    /// crashing. Fingers crossed
     TopoDS_Shape prepareSolidForSection(const TopoDS_Shape& solid) const;
 };
 
