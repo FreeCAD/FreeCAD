@@ -69,7 +69,7 @@ cmake \
     -B build \
     -S .
 
-cmake --build build -- -k 0
+cmake --build build
 cmake --install build
 
 mv ${PREFIX}/bin/FreeCAD ${PREFIX}/bin/freecad || true

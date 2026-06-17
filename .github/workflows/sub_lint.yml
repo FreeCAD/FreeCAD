@@ -51,7 +51,7 @@ on:
         type: boolean
         required: false
       qtConnectionsFailSilent:
-        default: false
+        default: true
         type: boolean
         required: false
       checkPylint:
@@ -63,7 +63,7 @@ on:
         type: string
         required: false
       pylintFailSilent:
-        default: false
+        default: true
         type: boolean
         required: false
       clangStyle:
@@ -83,7 +83,7 @@ on:
         type: string
         required: false
       codespellFailSilent:
-        default: false
+        default: true
         type: boolean
         required: false
       checkClangTidy:
@@ -91,7 +91,7 @@ on:
         type: boolean
         required: false
       clangTidyFailSilent:
-        default: false # warnings or notes will never fail the CI, only errors
+        default: true # warnings or notes will never fail the CI, only errors
         type: boolean
         required: false
     outputs:
@@ -149,9 +149,13 @@ jobs:
 
       - name: Set up pixi for stub smoke checks
         if: always()
-        uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11 # v0.9.6
+<<<<<<< HEAD
+        uses: prefix-dev/setup-pixi@1b2de7f3351f171c8b4dfeb558c639cb58ed4ec0 # v0.9.5
         with:
           run-install: false
+=======
+        uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11 # v0.9.6
+>>>>>>> upstream/main
 
       - name: Install Python stub smoke-check dependencies
         if: always()

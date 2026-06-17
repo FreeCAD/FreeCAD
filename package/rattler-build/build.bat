@@ -33,7 +33,7 @@ cmake ^
     -S .
 if %ERRORLEVEL% neq 0 exit 1
 
-ninja -C build -k 0 install
+ninja -C build install
 if %ERRORLEVEL% neq 0 exit 1
 
 ren %LIBRARY_PREFIX%\bin\FreeCAD.exe freecad.exe
