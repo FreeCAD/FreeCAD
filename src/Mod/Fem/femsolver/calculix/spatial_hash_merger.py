@@ -109,13 +109,10 @@ def merge_inp_nodes(inp_file_path, tolerance=0.1):
         Merge threshold in mm. Default 0.1mm (FDM printing).
     """
     import FreeCAD
-    FreeCAD.Console.PrintMessage(
-        f"Q2 Computing: Merging nodes (tolerance={tolerance}mm)...\n"
-    )
 
-    node_pattern = re.compile(
-        r"^\s*(\d+)\s*,\s*([-\d.eE+]+)\s*,\s*([-\d.eE+]+)\s*,\s*([-\d.eE+]+)"
-    )
+    FreeCAD.Console.PrintMessage(f"Q2 Computing: Merging nodes (tolerance={tolerance}mm)...\n")
+
+    node_pattern = re.compile(r"^\s*(\d+)\s*,\s*([-\d.eE+]+)\s*,\s*([-\d.eE+]+)\s*,\s*([-\d.eE+]+)")
 
     with open(inp_file_path, "r", encoding="latin-1") as f:
         lines = f.readlines()
@@ -158,13 +155,15 @@ def merge_inp_nodes(inp_file_path, tolerance=0.1):
                 nid = int(match.group(1))
                 if nid not in current_block_map:
                     current_block_map[nid] = idx
-                    raw_nodes.append((
-                        idx,
-                        nid,
-                        float(match.group(2)),
-                        float(match.group(3)),
-                        float(match.group(4))
-                    ))
+                    raw_nodes.append(
+                        (
+                            idx,
+                            nid,
+                            float(match.group(2)),
+                            float(match.group(3)),
+                            float(match.group(4)),
+                        )
+                    )
                     idx += 1
 
     if current_block_map:
@@ -210,9 +209,7 @@ def merge_inp_nodes(inp_file_path, tolerance=0.1):
             current_block_index += 1
             new_lines.append(line)
             for new_id, (x, y, z) in enumerate(merged_nodes):
-                new_lines.append(
-                    f"{new_id + 1}, {x:.13G}, {y:.13G}, {z:.13G}\n"
-                )
+                new_lines.append(f"{new_id + 1}, {x:.13G}, {y:.13G}, {z:.13G}\n")
             node_block_written = True
             continue
 
@@ -236,9 +233,7 @@ def merge_inp_nodes(inp_file_path, tolerance=0.1):
             if len(parts) > 1:
                 try:
                     block_remap = (
-                        remap[current_block_index]
-                        if current_block_index < len(remap)
-                        else {}
+                        remap[current_block_index] if current_block_index < len(remap) else {}
                     )
                     remapped = [parts[0]]
                     for part in parts[1:]:

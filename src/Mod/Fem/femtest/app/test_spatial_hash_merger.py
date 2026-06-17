@@ -114,8 +114,7 @@ class TestSpatialHashMerger(unittest.TestCase):
         if t_1k > 0:
             ratio = t_10k / t_1k
             self.assertLess(
-                ratio, 30,
-                f"Complexity worse than O(N): 10x nodes took {ratio:.1f}x longer"
+                ratio, 30, f"Complexity worse than O(N): 10x nodes took {ratio:.1f}x longer"
             )
 
     def test_large_mesh_does_not_crash(self):
@@ -129,9 +128,7 @@ class TestSpatialHashMerger(unittest.TestCase):
 class TestMergeInpNodes(unittest.TestCase):
 
     def _make_inp(self, content):
-        f = tempfile.NamedTemporaryFile(
-            mode="w", suffix=".inp", delete=False, encoding="latin-1"
-        )
+        f = tempfile.NamedTemporaryFile(mode="w", suffix=".inp", delete=False, encoding="latin-1")
         f.write(content)
         f.close()
         return f.name
@@ -229,9 +226,9 @@ class TestMergeInpNodes(unittest.TestCase):
 
             # Unique line mesh node (5,5,5) is preserved
             found_555 = any(
-                abs(float(n.split(",")[1]) - 5) < 0.1 and
-                abs(float(n.split(",")[2]) - 5) < 0.1 and
-                abs(float(n.split(",")[3]) - 5) < 0.1
+                abs(float(n.split(",")[1]) - 5) < 0.1
+                and abs(float(n.split(",")[2]) - 5) < 0.1
+                and abs(float(n.split(",")[3]) - 5) < 0.1
                 for n in node_lines
             )
             self.assertTrue(found_555, "Unique line mesh node (5,5,5) not found")
@@ -275,10 +272,7 @@ class TestMergeInpNodes(unittest.TestCase):
             merge_inp_nodes(inp, tolerance=0.1)
             node_lines = self._count_nodes(inp)
             ids = [int(n.split(",")[0].strip()) for n in node_lines]
-            self.assertEqual(
-                ids, list(range(1, len(ids) + 1)),
-                "Node IDs are not sequential"
-            )
+            self.assertEqual(ids, list(range(1, len(ids) + 1)), "Node IDs are not sequential")
         finally:
             os.unlink(inp)
 
