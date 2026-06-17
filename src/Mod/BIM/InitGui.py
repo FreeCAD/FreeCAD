@@ -376,7 +376,12 @@ class BIMWorkbench(Workbench):
         # create 2D views command
         class BIM_Create2DViews:
             def GetCommands(self):
-                return ("BIM_DrawingView", "BIM_Shape2DView", "BIM_Shape2DCut")
+                return (
+                    "BIM_DrawingView",
+                    "BIM_Shape2DView",
+                    "BIM_Shape2DCut",
+                    "Draft_UpdateShape2DView",
+                )
 
             def GetResources(self):
                 t = QT_TRANSLATE_NOOP("BIM_Create2DViews", "Create 2D Views")
@@ -771,8 +776,19 @@ class BIMWorkbench(Workbench):
     def ContextMenu(self, recipient):
 
         import DraftTools
+        from draftutils import utils
 
         translate = FreeCAD.Qt.translate
+
+        if recipient == "View":
+            self.appendContextMenu(translate("BIM", "Snapping"), self.snapmenu)
+
+        if FreeCADGui.Selection.getSelection():
+            for obj in FreeCADGui.Selection.getSelection():
+                if utils.get_type(obj) != "Shape2DView":
+                    break
+            else:
+                self.appendContextMenu("", ["Draft_UpdateShape2DView"])
 
         if recipient == "Tree":
             groups = False
@@ -803,8 +819,7 @@ class BIMWorkbench(Workbench):
                 FreeCADGui.Selection.getSelection()[0].Name == "Trash"
             ):
                 self.appendContextMenu("", ["BIM_EmptyTrash"])
-        elif recipient == "View":
-            self.appendContextMenu(translate("BIM", "Snapping"), self.snapmenu)
+
         if FreeCADGui.Selection.getSelection():
             if FreeCADGui.Selection.getSelection()[0].Name != "Trash":
                 self.appendContextMenu("", ["BIM_Trash"])
