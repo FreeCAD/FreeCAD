@@ -51,7 +51,7 @@ on:
         type: boolean
         required: false
       qtConnectionsFailSilent:
-        default: true
+        default: false
         type: boolean
         required: false
       checkPylint:
@@ -63,7 +63,7 @@ on:
         type: string
         required: false
       pylintFailSilent:
-        default: true
+        default: false
         type: boolean
         required: false
       clangStyle:
@@ -83,7 +83,7 @@ on:
         type: string
         required: false
       codespellFailSilent:
-        default: true
+        default: false
         type: boolean
         required: false
       checkClangTidy:
@@ -91,7 +91,7 @@ on:
         type: boolean
         required: false
       clangTidyFailSilent:
-        default: true # warnings or notes will never fail the CI, only errors
+        default: false # warnings or notes will never fail the CI, only errors
         type: boolean
         required: false
     outputs:
