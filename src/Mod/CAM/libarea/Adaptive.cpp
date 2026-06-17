@@ -2820,11 +2820,13 @@ void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, Paths paths, MotionTy
     }
 }
 
-// performs the intersection of the closed path (subject) and the area (obj), preserving
+// performs the intersection of the path (subject) and the area (obj), preserving
 // orientation and (closed-path) connectivity
-Paths PathIntersectArea(Clipper& clip, Path& subject, Paths& obj)
+Paths PathIntersectArea(Clipper& clip, Path& subject, Paths& obj, bool isClosed = true)
 {
-    subject.push_back(subject[0]);  // close path explicitly before treating it as open
+    if (isClosed) {
+        subject.push_back(subject[0]);  // close path explicitly before treating it as open
+    }
 
     // init z-data: p[i].z = 2 * i + 1, and new points are the average of their neighbors
     // this ensures new points have unique z but come between the points they're made from
@@ -3879,28 +3881,11 @@ void Adaptive2d::ProcessPolyNode(
             if (finShiftedPath.empty()) {
                 continue;
             }
-            // skip finishing passes outside the stock boundary that do not touch the stock
-            bool allPointsOutside = true;
-            IntPoint p1 = finShiftedPath.front();
-            for (const auto& pt : finShiftedPath) {
-
-                // midpoint
-                if (IsPointWithinCutRegion(
-                        stockExpandedPaths,
-                        IntPoint((p1.X + pt.X) / 2, (p1.Y + pt.Y) / 2)
-                    )) {
-                    allPointsOutside = false;
-                    break;
-                }
-                // current point
-                if (IsPointWithinCutRegion(stockExpandedPaths, pt)) {
-                    allPointsOutside = false;
-                    break;
-                }
-
-                p1 = pt;
-            }
-            if (allPointsOutside) {
+            // skip finishing passes outside the stock boundary that do not cut any stock
+            Path finShiftedPathCopy = finShiftedPath;
+            Paths intersection
+                = PathIntersectArea(clip, finShiftedPathCopy, stockExpandedPaths, isClosedPath);
+            if (intersection.empty()) {
                 continue;
             }
 
