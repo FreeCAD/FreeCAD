@@ -227,9 +227,8 @@ void SoFCStencilCap::setSectionFaces(
 
         // Key the hatch angle off the source object, not the raw solid index,
         // so all solids of one body hatch identically. Subject to artistic license
-        int srcIndex = (s < solidSourceIndex.size())
-            ? static_cast<int>(solidSourceIndex[s])
-            : static_cast<int>(s);
+        int srcIndex = (s < solidSourceIndex.size()) ? static_cast<int>(solidSourceIndex[s])
+                                                     : static_cast<int>(s);
 
         solidRanges.push_back({cStart, cEnd - cStart, srcIndex});
         faceStart += numFaces;
