@@ -29,7 +29,6 @@ from unittest import mock
 
 import FreeCAD as App
 from draftguitools import gui_lines
-from draftguitools import gui_splines
 
 
 class DraftGuiLines(unittest.TestCase):
