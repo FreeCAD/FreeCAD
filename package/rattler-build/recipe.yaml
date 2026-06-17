@@ -113,6 +113,7 @@ requirements:
     - pyside6
     - python>=3.11,<3.12
     - qt6-main>=6.11,<6.12
+    - qt6-webengine>=6.11,<6.12
     - six
     - smesh
     - vtk
