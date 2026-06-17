@@ -150,7 +150,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="4" column="1">
        <widget class="QDoubleSpinBox" name="stepOver">
         <property name="toolTip">
-         <string>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool's diameter).</string>
+         <string>The sideways distance the cutting tool moves between successive passes, as percentage of the tool's diameter.</string>
         </property>
         <property name="suffix">
          <string>%</string>
@@ -175,7 +175,24 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Step over</string>
+         <string>Step over (percent)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::QuantitySpinBox" name="stepOverDistance" native="true">
+        <property name="toolTip">
+         <string>The sideways distance the cutting tool moves between successive passes.</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_stepOverDistance">
+        <property name="text">
+         <string>Step over (distance)</string>
         </property>
        </widget>
       </item>
