@@ -2317,8 +2317,10 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->Third
                 );
             }
-            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                     && constraint->Third == GeoEnum::GeoUndef) {
+            else if (
+                constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
+                && constraint->Third == GeoEnum::GeoUndef
+            ) {
                 // simple perpendicularity
                 rtn = addPerpendicularConstraint(constraint->First, constraint->Second);
             }
