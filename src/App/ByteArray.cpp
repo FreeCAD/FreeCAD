@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
- *                                                                          *
- *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                     *
+ *   Copyright (c) 2022 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2023 FreeCAD Project Association                         *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,46 +22,4 @@
  *                                                                          *
  ***************************************************************************/
 
-#pragma once
-
-#include <Attacher.h>
-#include <App/Services.h>
-
-class AttacherSubObjectPlacement final: public App::SubObjectPlacementProvider
-{
-public:
-    AttacherSubObjectPlacement();
-
-    Base::Placement calculate(App::SubObjectT object, Base::Placement basePlacement) const override;
-    std::optional<Base::Vector3d> snapPosition(
-        const App::SubObjectT& object,
-        std::optional<Base::Vector3d> worldCursor,
-        const Base::Matrix4D& objectToWorld
-    ) const override;
-
-private:
-    std::unique_ptr<Attacher::AttachEngine3D> attacher;
-};
-
-class PartCenterOfMass final: public App::CenterOfMassProvider
-{
-public:
-    std::optional<Base::Vector3d> ofDocumentObject(App::DocumentObject* object) const override;
-    bool supports(App::DocumentObject* object) const override;
-};
-
-class ShapeAttributeProvider final: public App::CustomAttributeProvider
-{
-public:
-    std::optional<PyObject*> getAttribute(App::DocumentObject* object, const char* attr) const override;
-};
-
-class PartPseudoShapeProvider final: public App::PseudoShapeProvider
-{
-public:
-    Py::Object getElement(
-        const Py::Object& module,
-        const Py::Object& object,
-        const std::string& subname
-    ) const override;
-};
+#include "ByteArray.h"
