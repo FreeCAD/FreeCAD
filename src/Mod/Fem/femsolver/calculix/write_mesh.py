@@ -40,6 +40,7 @@ def write_mesh(ccxwriter):
 
     is_reduced = ccxwriter.solver_obj.ReducedIntegration
 
+    # Use reduced integration solid/beam elements or replace beams with trusses if these settings are enabled in the ccx solver
     vol_variant = "reduced" if is_reduced else "standard"
     if ccxwriter.solver_obj.ExcludeBendingStiffness:
         edge_variant = "truss"
@@ -48,11 +49,13 @@ def write_mesh(ccxwriter):
             edge_variant = "beam reduced"
         else:
             edge_variant = "beam"
+        # Check to see if fluid sections are in analysis and use D network element type
         if ccxwriter.member.geos_fluidsection:
             edge_variant = "network"
 
     face_variant = "shell"
 
+    # Use 2D elements if model space is not set to 3D
     if ccxwriter.solver_obj.ModelSpace == "3D" and ccxwriter.solver_obj.ExcludeBendingStiffness:
         face_variant = "membrane"
     elif ccxwriter.solver_obj.ModelSpace == "plane stress":
@@ -62,6 +65,7 @@ def write_mesh(ccxwriter):
     elif ccxwriter.solver_obj.ModelSpace == "axisymmetric":
         face_variant = "axisymmetric"
 
+    # Add "reduced" to the face element group's name if Reduced Integration is enabled
     if is_reduced:
         face_variant += " reduced"
 
@@ -99,6 +103,7 @@ def write_mesh(ccxwriter):
             edgeVariant=edge_variant,
         )
 
+        # reopen file with "append" to add all the rest
         merge_inp_nodes(ccxwriter.femmesh_file, tolerance=merge_tolerance)
 
         inpfile = codecs.open(ccxwriter.femmesh_file, "a", encoding="utf-8")
