@@ -77,6 +77,7 @@ packages=(
   qt6-l10n-tools
   qt6-tools-dev
   qt6-tools-dev-tools
+  qt6-webengine-dev
   swig
   xvfb
 )
