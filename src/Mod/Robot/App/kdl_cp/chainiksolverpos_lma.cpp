@@ -153,7 +153,7 @@ void ChainIkSolverPos_LMA::display_jac(const KDL::JntArray& jval) {
 	q = jval.data.cast<ScalarType>();
 	compute_fwdpos(q);
 	compute_jacobian(q);
-	svd.compute(jac);
+	svd.compute(jac, Eigen::ComputeThinU | Eigen::ComputeThinV);
 	std::cout << "Singular values : " << svd.singularValues().transpose()<<"\n";
 }
 
@@ -181,7 +181,7 @@ int ChainIkSolverPos_LMA::CartToJnt(const KDL::JntArray& q_init, const KDL::Fram
 		lastDifference  = delta_pos.norm();
 		lastTransDiff   = delta_pos.topRows(3).norm();
 		lastRotDiff     = delta_pos.bottomRows(3).norm();
-		svd.compute(jac);
+		svd.compute(jac, Eigen::ComputeThinU | Eigen::ComputeThinV);
 		original_Aii    = svd.singularValues();
 		lastSV          = svd.singularValues();
 		q_out.data      = q.cast<double>();
@@ -194,7 +194,7 @@ int ChainIkSolverPos_LMA::CartToJnt(const KDL::JntArray& q_init, const KDL::Fram
 	double dnorm = 1;
 	for (unsigned int i=0;i<maxiter;++i) {
 
-		svd.compute(jac);
+		svd.compute(jac, Eigen::ComputeThinU | Eigen::ComputeThinV);
 		original_Aii = svd.singularValues();
 		for (auto j=0;j<original_Aii.rows();++j) {
 			original_Aii(j) = original_Aii(j)/( original_Aii(j)*original_Aii(j)+lambda);
