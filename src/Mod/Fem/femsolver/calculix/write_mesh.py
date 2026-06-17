@@ -30,9 +30,6 @@ import codecs
 from os.path import join
 
 from femmesh import meshtools
-
-# Q2 Computing: O(N) spatial hash node merger for coincident node resolution
-# RFC: https://github.com/FreeCAD/FreeCAD/issues/16674
 from .spatial_hash_merger import merge_inp_nodes
 
 
@@ -43,8 +40,6 @@ def write_mesh(ccxwriter):
 
     is_reduced = ccxwriter.solver_obj.ReducedIntegration
 
-    # Use reduced integration solid/beam elements or replace beams
-    # with trusses if these settings are enabled in the ccx solver
     vol_variant = "reduced" if is_reduced else "standard"
     if ccxwriter.solver_obj.ExcludeBendingStiffness:
         edge_variant = "truss"
@@ -53,14 +48,11 @@ def write_mesh(ccxwriter):
             edge_variant = "beam reduced"
         else:
             edge_variant = "beam"
-        # Check to see if fluid sections are in analysis
-        # and use D network element type
         if ccxwriter.member.geos_fluidsection:
             edge_variant = "network"
 
     face_variant = "shell"
 
-    # Use 2D elements if model space is not set to 3D
     if ccxwriter.solver_obj.ModelSpace == "3D" and ccxwriter.solver_obj.ExcludeBendingStiffness:
         face_variant = "membrane"
     elif ccxwriter.solver_obj.ModelSpace == "plane stress":
@@ -70,19 +62,10 @@ def write_mesh(ccxwriter):
     elif ccxwriter.solver_obj.ModelSpace == "axisymmetric":
         face_variant = "axisymmetric"
 
-    # Add "reduced" to the face element group's name
-    # if Reduced Integration is enabled
     if is_reduced:
         face_variant += " reduced"
 
-    # Get merge tolerance from Analysis object.
-    # Default 0.1mm suits FDM printing.
-    # Set explicitly for CNC (0.01mm) or slip fit (0.005mm).
-    merge_tolerance = getattr(
-        ccxwriter.analysis_obj,
-        "MergeTolerance",
-        0.1
-    )
+    merge_tolerance = getattr(ccxwriter.analysis_obj, "MergeTolerance", 0.1)
 
     if ccxwriter.split_inpfile:
         write_name = "femesh"
@@ -98,8 +81,6 @@ def write_mesh(ccxwriter):
             edgeVariant=edge_variant,
         )
 
-        # Q2 Computing: Merge coincident nodes after mesh export
-        # RFC: https://github.com/FreeCAD/FreeCAD/issues/16674
         merge_inp_nodes(ccxwriter.femmesh_file, tolerance=merge_tolerance)
 
         inpfile = codecs.open(ccxwriter.file_name, "w", encoding="utf-8")
@@ -118,11 +99,8 @@ def write_mesh(ccxwriter):
             edgeVariant=edge_variant,
         )
 
-        # Q2 Computing: Merge coincident nodes after mesh export
-        # RFC: https://github.com/FreeCAD/FreeCAD/issues/16674
         merge_inp_nodes(ccxwriter.femmesh_file, tolerance=merge_tolerance)
 
-        # reopen file with "append" to add all the rest
         inpfile = codecs.open(ccxwriter.femmesh_file, "a", encoding="utf-8")
         inpfile.write("\n\n")
 
