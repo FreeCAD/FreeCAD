@@ -3859,6 +3859,13 @@ void Adaptive2d::ProcessPolyNode(
 
         Path finShiftedPath;
         int finishingPassCount = 0;
+
+        // Create offset version of stock boundary to check if finishing passes are within tool radius
+        Paths stockExpandedPaths;
+        clipof.Clear();
+        clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(stockExpandedPaths, toolRadiusScaled);
+
         while (!stopProcessing && (!closedFinishingPaths.empty() || !openFinishingPaths.empty())) {
             bool isClosedPath = PopNextFinishingPass(
                 closedFinishingPaths,
@@ -3872,22 +3879,21 @@ void Adaptive2d::ProcessPolyNode(
             if (finShiftedPath.empty()) {
                 continue;
             }
-            // skip finishing passes outside the stock boundary - no sense to cut where is no
-            // material
+            // skip finishing passes outside the stock boundary that do not touch the stock
             bool allPointsOutside = true;
             IntPoint p1 = finShiftedPath.front();
             for (const auto& pt : finShiftedPath) {
 
                 // midpoint
                 if (IsPointWithinCutRegion(
-                        stockInputPaths,
+                        stockExpandedPaths,
                         IntPoint((p1.X + pt.X) / 2, (p1.Y + pt.Y) / 2)
                     )) {
                     allPointsOutside = false;
                     break;
                 }
                 // current point
-                if (IsPointWithinCutRegion(stockInputPaths, pt)) {
+                if (IsPointWithinCutRegion(stockExpandedPaths, pt)) {
                     allPointsOutside = false;
                     break;
                 }
