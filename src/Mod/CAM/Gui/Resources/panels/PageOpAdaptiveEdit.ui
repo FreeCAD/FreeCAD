@@ -148,24 +148,27 @@ Larger values (further to the right) will calculate faster; smaller values (furt
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QSpinBox" name="stepOver">
+       <widget class="QDoubleSpinBox" name="stepOver">
         <property name="toolTip">
          <string>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool's diameter).</string>
         </property>
         <property name="suffix">
          <string>%</string>
         </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
         <property name="minimum">
-         <number>1</number>
+         <double>0.1</double>
         </property>
         <property name="maximum">
-         <number>100</number>
+         <double>100.0</double>
         </property>
         <property name="singleStep">
-         <number>5</number>
+         <double>5.0</double>
         </property>
         <property name="value">
-         <number>20</number>
+         <double>20.0</double>
         </property>
        </widget>
       </item>
