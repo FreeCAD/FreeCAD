@@ -24,13 +24,14 @@
 
 #include <Base/Interpreter.h>
 #include <fastsignals/signal.h>
+#include <exception>
 #include <functional>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <tuple>
 #include <type_traits>
 #include <utility>
-#include <variant>
 
 namespace App
 {
@@ -73,6 +74,59 @@ public:
         }
         else {
             fn();  // no hooks, run inline
+        }
+    }
+
+    // Invoke synchronously on the main thread, return its value, and transport
+    // exceptions back to the calling thread. This deliberately does not manage
+    // the Python GIL; Python-facing callers must release it before blocking.
+    template<class Function>
+    static auto invokeBlocking(Function&& function) -> std::invoke_result_t<Function&&>
+    {
+        using Result = std::invoke_result_t<Function&&>;
+        static_assert(
+            !std::is_reference_v<Result>,
+            "Blocking main-thread calls must return by value"
+        );
+
+        if (isMainThread()) {
+            return std::invoke(std::forward<Function>(function));
+        }
+
+        using StoredResult =
+            std::conditional_t<std::is_void_v<Result>, bool, std::remove_cv_t<Result>>;
+        std::optional<StoredResult> result;
+        bool completed = false;
+        std::exception_ptr exception;
+
+        invoke(
+            [&]() {
+                try {
+                    if constexpr (std::is_void_v<Result>) {
+                        std::invoke(std::forward<Function>(function));
+                        result.emplace(true);
+                    }
+                    else {
+                        result.emplace(std::invoke(std::forward<Function>(function)));
+                    }
+                }
+                catch (...) {
+                    exception = std::current_exception();
+                }
+                completed = true;
+            },
+            true
+        );
+
+        if (!completed) {
+            throw std::runtime_error("Blocking main-thread invocation did not execute");
+        }
+        if (exception) {
+            std::rethrow_exception(exception);
+        }
+
+        if constexpr (!std::is_void_v<Result>) {
+            return std::move(*result);
         }
     }
 
@@ -132,8 +186,6 @@ auto captureSignalArg(PDecl&& x)
     }
 }
 
-template<class T>
-using non_void_t = std::conditional_t<std::is_void_v<T>, std::monostate, T>;
 }  // namespace detail
 
 // Wrapper that mirrors fastsignals::signal but executes slots on GUI thread.
@@ -240,26 +292,11 @@ private:
             detail::captureSignalArg<typename ::fastsignals::signal_arg_t<Arguments>>(args)...
         );
 
-        if constexpr (std::is_void_v<result_type>) {
-            MainThreadSignalConfig::invoke(
-                [self, caps = std::move(caps)]() mutable {
-                    std::apply([self](auto&... c) { self->sig_(c.get()...); }, caps);
-                },
-                /*blocking=*/true
-            );
-        }
-        else {
-            std::optional<detail::non_void_t<result_type>> result;
-            MainThreadSignalConfig::invoke(
-                [self, caps = std::move(caps), &result]() mutable {
-                    result.emplace(
-                        std::apply([self](auto&... c) { return self->sig_(c.get()...); }, caps)
-                    );
-                },
-                /*blocking=*/true
-            );
-            return std::move(*result);
-        }
+        return MainThreadSignalConfig::invokeBlocking(
+            [self, caps = std::move(caps)]() mutable {
+                return std::apply([self](auto&... c) { return self->sig_(c.get()...); }, caps);
+            }
+        );
     }
 
     mutable base_sig sig_;
