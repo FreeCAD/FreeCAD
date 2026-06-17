@@ -79,6 +79,7 @@ private:
     void activateWorkbench();
     void checkParameters();
     void checkVersionMigration() const;
+    void healVersionMigrationDuplication();
 
 private:
     bool loadFromPythonModule = false;

@@ -173,6 +173,16 @@ namespace App {
         static MigrationResult migrateConfig(const std::filesystem::path& oldPath,
                                               const std::filesystem::path& newPath);
 
+        /// Collapse a versioned directory erroneously nested inside an older one (issue #30409),
+        /// e.g. ".../v1-1/v1-2/Macro" becomes ".../v1-2/Macro"; idempotent and safe on any string.
+        /// NOTE: This was added in June 2026, and can be removed after a year or so.
+        std::string repairDuplicatedVersionPath(const std::string& path) const;
+
+        /// Merge a stray nested current-version directory (e.g. ".../v1-1/v1-2") back into the
+        /// correct directory and remove it (issue #30409); returns true if any repair was done.
+        /// NOTE: This was added in June 2026, and can be removed after a year or so.
+        bool repairDuplicatedVersionDirectories(const std::filesystem::path& currentVersionedDir) const;
+
 #ifdef FC_OS_WIN32
         /// On Windows, gets the location of the user's "AppData" directory. Invalid on other OSes.
         QString getOldGenericDataLocation();
