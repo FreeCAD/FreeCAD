@@ -35,7 +35,7 @@ protected:
     }
 
     // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
-    std::string _docName {};
+    std::string _docName;
     App::Document* _doc {};
     // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 };
