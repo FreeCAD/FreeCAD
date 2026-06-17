@@ -26,14 +26,12 @@ __author__ = "Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
 
-# standard library
 import codecs
 from os.path import join
 
-# FreeCAD FEM
 from femmesh import meshtools
 
-# Q2 Computing: O(N) spatial hash node merger for mixed mesh support
+# Q2 Computing: O(N) spatial hash node merger for coincident node resolution
 # RFC: https://github.com/FreeCAD/FreeCAD/issues/16674
 from .spatial_hash_merger import merge_inp_nodes
 
@@ -100,7 +98,7 @@ def write_mesh(ccxwriter):
             edgeVariant=edge_variant,
         )
 
-        # Q2 Computing: Merge coincident nodes from mixed meshes
+        # Q2 Computing: Merge coincident nodes after mesh export
         # RFC: https://github.com/FreeCAD/FreeCAD/issues/16674
         merge_inp_nodes(ccxwriter.femmesh_file, tolerance=merge_tolerance)
 
@@ -120,7 +118,7 @@ def write_mesh(ccxwriter):
             edgeVariant=edge_variant,
         )
 
-        # Q2 Computing: Merge coincident nodes from mixed meshes
+        # Q2 Computing: Merge coincident nodes after mesh export
         # RFC: https://github.com/FreeCAD/FreeCAD/issues/16674
         merge_inp_nodes(ccxwriter.femmesh_file, tolerance=merge_tolerance)
 
