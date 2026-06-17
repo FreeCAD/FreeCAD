@@ -1899,7 +1899,14 @@ if FreeCAD.GuiUp:
             # changed externally (e.g. by Draft-style node editing in the
             # 3D view) so the panel does not show stale values and does
             # not clobber them on accept().
+            self._observingDocument = True
             FreeCAD.addDocumentObserver(self)
+
+        def _removeDocumentObserver(self):
+            if not getattr(self, "_observingDocument", False):
+                return
+            FreeCAD.removeDocumentObserver(self)
+            self._observingDocument = False
 
         def slotChangedObject(self, obj, prop):
             if obj is not self.obj:
@@ -1921,14 +1928,14 @@ if FreeCAD.GuiUp:
             self.obj.recompute()
 
         def accept(self):
-            FreeCAD.removeDocumentObserver(self)
+            self._removeDocumentObserver()
             self.obj.Length = self.length.property("value")
             self.obj.Width = self.width.property("value")
             self.obj.Height = self.height.property("value")
             return super().accept()
 
         def reject(self):
-            FreeCAD.removeDocumentObserver(self)
+            self._removeDocumentObserver()
             return super().reject()
 
 
