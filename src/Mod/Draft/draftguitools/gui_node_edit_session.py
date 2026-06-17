@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2009, 2010 Yorik van Havre <yorik@uncreated.net>
+# SPDX-FileCopyrightText: 2009, 2010 Ken Cline <cline@frii.com>
+# SPDX-FileCopyrightText: 2019, 2020 Carlo Pavan <carlopav@gmail.com>
 # SPDX-FileCopyrightText: 2026 Max Wilfinger
 # SPDX-FileNotice: Part of the FreeCAD project.
 
@@ -21,11 +24,11 @@
 
 """Provides a viewport-only node-editing session.
 
-The session reuses the editTracker and GuiTools machinery from Draft_Edit
-but does not own a Draft toolbar / task panel and does not toggle the
-document's edit state. This lets a host view provider (e.g. an Arch wall)
-keep its own task panel open while still exposing draggable node handles
-in the 3D view.
+This module is derived from Draft_Edit and reuses the editTracker and
+GuiTools machinery without owning a Draft toolbar / task panel and without
+toggling the document's edit state. This lets a host view provider (e.g.
+an Arch wall) keep its own task panel open while still exposing draggable
+node handles in the 3D view.
 
 Compared to Draft_Edit, the session intentionally omits:
     - the numeric input panel (Gui.draftToolBar)
@@ -41,13 +44,15 @@ update_preview_object on the GuiTools) are preserved.
 # \brief Viewport-only node-editing session for use alongside host task panels.
 
 __title__ = "FreeCAD NodeEditSession"
-__author__ = "FreeCAD Project Association"
+__author__ = (
+    "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
+    "Dmitry Chigrin, Carlo Pavan, Max Wilfinger"
+)
 __url__ = "https://www.freecad.org"
 
 import pivy.coin as coin
 
 import FreeCAD as App
-import FreeCADGui as Gui
 import WorkingPlane
 from draftutils import gui_utils
 from draftutils import params
@@ -328,8 +333,8 @@ class NodeEditSession:
         self._rebuild_trackers(obj)
         try:
             gui_tool_utils.redraw_3d_view()
-        except AttributeError:
-            pass
+        except AttributeError as err:
+            self._log_ignored_exception("redrawing 3D view", err)
 
     # ------------------------------------------------------------------ ghost
 
@@ -339,7 +344,8 @@ class NodeEditSession:
             return
         try:
             self._ghost = tools.init_preview_object(obj)
-        except Exception:
+        except Exception as err:
+            self._log_ignored_exception("initializing preview object", err)
             self._ghost = None
 
     def _update_ghost(self, v):
@@ -349,16 +355,16 @@ class NodeEditSession:
         try:
             self._ghost.on()
             tools.update_preview_object(self, self._editing_obj, self._editing_idx, v)
-        except Exception:
-            pass
+        except Exception as err:
+            self._log_ignored_exception("updating preview object", err)
 
     def _finalize_ghost(self):
         if self._ghost is None:
             return
         try:
             self._ghost.finalize()
-        except Exception:
-            pass
+        except Exception as err:
+            self._log_ignored_exception("finalizing preview object", err)
         self._ghost = None
 
     # ------------------------------------------------------------------ formatting
@@ -368,8 +374,8 @@ class NodeEditSession:
             try:
                 self._objs_formats[obj.Name] = tools.get_object_style(obj)
                 tools.set_object_editing_style(obj)
-            except Exception:
-                pass
+            except Exception as err:
+                self._log_ignored_exception("applying edit style", err)
 
     def _deformat_objects(self):
         for obj, tools in self._targets:
@@ -377,8 +383,8 @@ class NodeEditSession:
                 continue
             try:
                 tools.restore_object_style(obj, self._objs_formats[obj.Name])
-            except Exception:
-                pass
+            except Exception as err:
+                self._log_ignored_exception("restoring edit style", err)
         self._objs_formats = {}
 
     # ------------------------------------------------------------------ picking
@@ -420,3 +426,7 @@ class NodeEditSession:
         if hasattr(obj, "getGlobalPlacement"):
             return obj.getGlobalPlacement().inverse().multVec(v)
         return v
+
+    @staticmethod
+    def _log_ignored_exception(action, err):
+        App.Console.PrintLog("NodeEditSession: ignored error while {}: {}\n".format(action, err))
