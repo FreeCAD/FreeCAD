@@ -44,6 +44,10 @@
 #include <QWindow>
 #include <QStyleFactory>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QtWebEngineQuick/QtWebEngineQuick>
+#endif
+
 #include <QLoggingCategory>
 #include <fmt/format.h>
 #include <list>
@@ -2654,6 +2658,10 @@ void Application::runApplication()
 #endif
         QSurfaceFormat::setDefaultFormat(defaultFormat);
     }
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QtWebEngineQuick::initialize();
+#endif
 
     // A new QApplication
     Base::Console().log("Init: Creating Gui::Application and QApplication\n");

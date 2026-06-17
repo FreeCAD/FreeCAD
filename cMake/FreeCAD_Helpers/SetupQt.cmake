@@ -25,6 +25,7 @@ if(BUILD_GUI)
         list (APPEND FREECAD_QT_COMPONENTS GuiTools)
         list (APPEND FREECAD_QT_COMPONENTS SvgWidgets)
         list (APPEND FREECAD_QT_COMPONENTS OpenGLWidgets)
+        list (APPEND FREECAD_QT_COMPONENTS WebEngineQuick)
     endif()
 
     list (APPEND FREECAD_QT_COMPONENTS OpenGL PrintSupport Svg UiTools Widgets LinguistTools)

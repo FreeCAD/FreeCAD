@@ -175,6 +175,12 @@ list(APPEND FreeCADGui_LIBS
     ${QtUiTools_LIBRARIES}
 )
 
+if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+    list(APPEND FreeCADGui_LIBS
+        ${QtWebEngineQuick_LIBRARIES}
+    )
+endif()
+
 link_directories(${YAML_CPP_LIBRARY_DIR})
 
 if(yaml-cpp_VERSION VERSION_LESS 0.8.0)
