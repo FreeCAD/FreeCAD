@@ -2030,16 +2030,6 @@ bool PropertyMap::deleteValue(const std::string& key)
     return true;
 }
 
-const char* PropertyMap::getValue(const char* key) const
-{
-    if (!key) {
-        return nullptr;
-    }
-
-    auto it = _lValueList.find(key);
-    return it == _lValueList.end() ? nullptr : it->second.c_str();
-}
-
 void PropertyMap::setValue(const char* key, const char* value)
 {
     if (!key) {

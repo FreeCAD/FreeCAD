@@ -502,7 +502,7 @@ public:
     void setValue(const std::string& key, const std::string& value);
     bool deleteValue(const std::string& key);
 
-    const char* getValue(const char* key) const;
+    /// Adds or updates entry for a non-null value, deletes entry for a null value
     void setValue(const char* key, const char* value);
 
     /**
@@ -511,6 +511,7 @@ public:
     const std::map<std::string, std::string>& getValues() const { return getValue(); }
     void setValues(const std::map<std::string, std::string>& map) { setValue(map); }
     void setValues(std::map<std::string, std::string>&& map) { setValue(map); }
+    void set1Value(const std::string& key, const std::string& value) { setValue(key, value); }
 
     const boost::any getPathValue(const ObjectIdentifier& path) const override;
     void setPathValue(const ObjectIdentifier& path, const boost::any& value) override;
