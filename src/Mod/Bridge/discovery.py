@@ -4,6 +4,7 @@ import ctypes
 import hmac
 import json
 import os
+import ssl
 import sys
 import tempfile
 import time
@@ -266,10 +267,31 @@ def hostcontrol_user_agent() -> str:
     return BRIDGE_USER_AGENT
 
 
+def verifying_ssl_context() -> ssl.SSLContext:
+    try:
+        import certifi
+
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
+
+
+def _is_loopback_host(hostname: str) -> bool:
+    name = hostname.split("/", 1)[0].rsplit(":", 1)[0].strip().strip("[]").lower()
+    return name in ("localhost", "::1") or name.startswith("127.")
+
+
 def _service_url(host: str) -> str:
-    if host.startswith("http://") or host.startswith("https://"):
-        return host.rstrip("/")
-    return "https://" + host
+    value = host.rstrip("/")
+    if value.startswith("http://"):
+        return value
+    if value.startswith("https://"):
+        remainder = value[len("https://") :]
+        if _is_loopback_host(remainder):
+            return "http://" + remainder
+        return value
+    scheme = "http://" if _is_loopback_host(value) else "https://"
+    return scheme + value
 
 
 def _fetch_hostcontrol_host(service_id: str) -> str:
@@ -278,7 +300,10 @@ def _fetch_hostcontrol_host(service_id: str) -> str:
         headers={"User-Agent": BRIDGE_USER_AGENT, "Accept": "application/json"},
         method="GET",
     )
-    with urllib.request.urlopen(request, timeout=HOSTCONTROL_TIMEOUT) as response:
+    context = verifying_ssl_context()
+    with urllib.request.urlopen(
+        request, timeout=HOSTCONTROL_TIMEOUT, context=context
+    ) as response:
         document = json.loads(response.read().decode("utf-8"))
     if not isinstance(document, dict) or document.get("schema") != HOSTCONTROL_SCHEMA:
         raise ValueError("unexpected HostControl schema")
