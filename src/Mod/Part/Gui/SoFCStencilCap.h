@@ -60,6 +60,9 @@ public:
     SoSFVec3f hatchDirT;
 
     /// Set section face tessellation data for per-solid hatching.
+    ///
+    /// `solidFaceCounts[s]` is the number of section faces from solids
+    /// `solidSourceIndex[s]` is the index of the source object that produced solids
     void setSectionFaces(
         const SbVec3f* verts,
         int numVerts,
@@ -67,7 +70,8 @@ public:
         int numIndices,
         const int32_t* partIdx,
         int numParts,
-        const std::vector<long>& solidFaceCounts
+        const std::vector<long>& solidFaceCounts,
+        const std::vector<long>& solidSourceIndex
     );
 
 protected:
@@ -76,11 +80,13 @@ protected:
 private:
     void renderPerSolidHatch();
 
-    // Per-solid hatching data (copied from faceset at update time)
+    // Per-solid hatching data
+    // sourceIndex groups solids by the body
     struct SolidRange
     {
         int indexStart;
         int indexCount;
+        int sourceIndex;
     };
     std::vector<SolidRange> solidRanges;
     std::vector<SbVec3f> sectionVerts;

@@ -491,44 +491,43 @@ void ViewProviderSectionAnalysis::applyPerSolidColors()
         return;
     }
 
-    // Collect source body materials from the source's child bodies
-    std::vector<App::Material> solidMats;
-    App::DocumentObject* source = feat->Source.getValue();
-    if (source) {
-        auto children = source->getOutList();
-        for (auto* child : children) {
-            if (!child->isDerivedFrom(Part::Feature::getClassTypeId())) {
-                continue;
-            }
-            auto* vp = Gui::Application::Instance->getViewProvider(child);
-            auto* vpPart = dynamic_cast<ViewProviderPartExt*>(vp);
-            if (vpPart) {
-                App::Material mat = vpPart->ShapeAppearance[0];
-                // Force fully opaque — section faces should never be
-                // transparent even if the source body has transparency.
-                mat.transparency = 0.0f;
-                mat.diffuseColor.a = 0.0f;  // a=0 means opaque in FreeCAD
-                solidMats.push_back(mat);
-            }
-        }
-    }
+    // Authoritative solid-to-source mapping computed in execute():
+    //   srcIdx[s] = index into `parts` of the object that produced solid s.
+    // If object contains several solids it will appear once in `parts`,
+    // so all of its solids get the same colour.
+    const auto& srcIdx = feat->SolidSourceIndex.getValues();
+    const auto& parts = feat->SourceParts.getValues();
 
-    // Fallback: use a predefined palette
-    if (solidMats.empty()) {
-        float palette[][3] = {
-            {0.8f, 0.3f, 0.2f},
-            {0.2f, 0.5f, 0.8f},
-            {0.3f, 0.7f, 0.3f},
-            {0.8f, 0.7f, 0.2f},
-            {0.6f, 0.3f, 0.7f},
-            {0.9f, 0.5f, 0.3f},
-        };
-        for (size_t i = 0; i < counts.size(); i++) {
-            App::Material mat;
-            auto& p = palette[i % 6];
-            mat.diffuseColor.set(p[0], p[1], p[2], 0.0f);
-            solidMats.push_back(mat);
+    // Predefined fallback palette
+    static const float palette[][3] = {
+        {0.8f, 0.3f, 0.2f},
+        {0.2f, 0.5f, 0.8f},
+        {0.3f, 0.7f, 0.3f},
+        {0.8f, 0.7f, 0.2f},
+        {0.6f, 0.3f, 0.7f},
+        {0.9f, 0.5f, 0.3f},
+    };
+    auto paletteMat = [](size_t i) {
+        App::Material mat;
+        const auto& p = palette[i % 6];
+        mat.diffuseColor.set(p[0], p[1], p[2], 0.0f);
+        return mat;
+    };
+
+    std::vector<App::Material> partMats;
+    partMats.reserve(parts.size());
+    for (size_t i = 0; i < parts.size(); i++) {
+        App::Material mat = paletteMat(i);
+        if (parts[i]) {
+            auto* vp = Gui::Application::Instance->getViewProvider(parts[i]);
+            if (auto* vpPart = dynamic_cast<ViewProviderPartExt*>(vp)) {
+                mat = vpPart->ShapeAppearance[0];
+            }
         }
+        // Force fully opaque — section faces should never be transparent
+        mat.transparency = 0.0f;
+        mat.diffuseColor.a = 0.0f;
+        partMats.push_back(mat);
     }
 
     // Build per-face material array
@@ -542,9 +541,12 @@ void ViewProviderSectionAnalysis::applyPerSolidColors()
 
     std::vector<App::Material> materials;
     materials.reserve(totalFaces);
-    for (size_t i = 0; i < counts.size(); i++) {
-        const auto& mat = (i < solidMats.size()) ? solidMats[i] : solidMats.back();
-        for (long j = 0; j < counts[i]; j++) {
+    for (size_t s = 0; s < counts.size(); s++) {
+        long pi = (s < srcIdx.size()) ? srcIdx[s] : static_cast<long>(s);
+        App::Material mat = (pi >= 0 && pi < static_cast<long>(partMats.size()))
+            ? partMats[pi]
+            : paletteMat(static_cast<size_t>(pi < 0 ? s : pi));
+        for (long j = 0; j < counts[s]; j++) {
             materials.push_back(mat);
         }
     }
@@ -575,6 +577,7 @@ void ViewProviderSectionAnalysis::updateStencilCap()
 
     // Pass section face tessellation data for per-solid hatching
     const auto& solidCounts = feat->SolidFaceCounts.getValues();
+    const auto& solidSrcIdx = feat->SolidSourceIndex.getValues();
     if (hatchEnabled && solidCounts.size() > 1 && coords && faceset) {
         int numVerts = coords->point.getNum();
         int numIndices = faceset->coordIndex.getNum();
@@ -587,7 +590,8 @@ void ViewProviderSectionAnalysis::updateStencilCap()
                 numIndices,
                 faceset->partIndex.getValues(0),
                 numParts,
-                solidCounts
+                solidCounts,
+                solidSrcIdx
             );
         }
     }
