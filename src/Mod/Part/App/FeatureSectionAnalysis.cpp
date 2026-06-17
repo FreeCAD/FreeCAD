@@ -29,18 +29,26 @@
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
+#include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <Geom2d_Curve.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Vec.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
+#include <ShapeFix_Shape.hxx>
 #include <ShapeFix_Wire.hxx>
+#include <Standard_Failure.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 
 #include <BRepAlgoAPI_Cut.hxx>
 #include <BRepAlgoAPI_Section.hxx>
 
+#include <algorithm>
 #include <functional>
+#include <utility>
+#include <vector>
 
 #include <Base/Console.h>
 
@@ -83,8 +91,23 @@ SectionAnalysis::SectionAnalysis()
         static_cast<App::PropertyType>(App::Prop_Output | App::Prop_Hidden),
         "Number of section faces per solid (for per-solid coloring)"
     );
+    ADD_PROPERTY_TYPE(
+        SourceParts,
+        (nullptr),
+        "Section Analysis",
+        static_cast<App::PropertyType>(App::Prop_Output | App::Prop_Hidden),
+        "Distinct source objects that contributed solids, in collection order"
+    );
+    ADD_PROPERTY_TYPE(
+        SolidSourceIndex,
+        ({}),
+        "Section Analysis",
+        static_cast<App::PropertyType>(App::Prop_Output | App::Prop_Hidden),
+        "Per-solid index into SourceParts (authoritative solid-to-source mapping)"
+    );
 
     Source.setScope(App::LinkScope::Global);
+    SourceParts.setScope(App::LinkScope::Global);
 }
 
 short SectionAnalysis::mustExecute() const
@@ -160,6 +183,60 @@ void SectionAnalysis::collectSectionFaces(
     }
 }
 
+namespace
+{
+/// True if the shape has a degenerate edge that lacks a pcurve on its face.
+/// This is the exact condition that makes OCCT's boolean ProcessDE step
+/// dereference a null Geom2d_Curve and crash with a signal we cannot catch
+/// portably, so it is what we detect and repair before sectioning.
+bool hasDegenerateEdgeWithoutPCurve(const TopoDS_Shape& shape)
+{
+    for (TopExp_Explorer faceXp(shape, TopAbs_FACE); faceXp.More(); faceXp.Next()) {
+        const TopoDS_Face& face = TopoDS::Face(faceXp.Current());
+        for (TopExp_Explorer edgeXp(face, TopAbs_EDGE); edgeXp.More(); edgeXp.Next()) {
+            const TopoDS_Edge& edge = TopoDS::Edge(edgeXp.Current());
+            if (!BRep_Tool::Degenerated(edge)) {
+                continue;
+            }
+            Standard_Real first = 0.0;
+            Standard_Real last = 0.0;
+            Handle(Geom2d_Curve) pcurve = BRep_Tool::CurveOnSurface(edge, face, first, last);
+            if (pcurve.IsNull()) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+}  // namespace
+
+TopoDS_Shape SectionAnalysis::prepareSolidForSection(const TopoDS_Shape& solid) const
+{
+    // Common case: the solid is already safe to section, pass it through.
+    if (!hasDegenerateEdgeWithoutPCurve(solid)) {
+        return solid;
+    }
+
+    // Try to repair the missing pcurves; ShapeFix_Shape rebuilds them as part
+    // of its wire/edge fixes.
+    try {
+        ShapeFix_Shape fixer(solid);
+        fixer.Perform();
+        TopoDS_Shape fixed = fixer.Shape();
+        if (!fixed.IsNull() && !hasDegenerateEdgeWithoutPCurve(fixed)) {
+            return fixed;
+        }
+    }
+    catch (const Standard_Failure&) {
+    }
+    catch (...) {
+    }
+
+    // Still unsafe — return null so the caller skips this solid rather than
+    // risk a hard crash in the boolean engine.
+    return {};
+}
+
 App::DocumentObjectExecReturn* SectionAnalysis::execute()
 {
     App::DocumentObject* source = Source.getValue();
@@ -168,24 +245,28 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
     }
 
     // Collect shapes recursively — handles nested App::Part containers
-    // (e.g., STEP imports from Fusion 360 with sub-assemblies).
+    // (e.g., STEP imports from Fusion 360 with sub-assemblies).  Each shape is
+    // kept paired with the object it came from so every resulting solid can be
+    // attributed to a source object for per-body colouring and hatching.
+    std::vector<std::pair<TopoDS_Shape, App::DocumentObject*>> parts;
+
     TopoDS_Shape sourceShape
         = Feature::getShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
 
-    if (sourceShape.IsNull()) {
-        // Try recursive collection for nested Part containers
-        BRep_Builder builder;
-        TopoDS_Compound compound;
-        builder.MakeCompound(compound);
-        bool found = false;
-
+    if (!sourceShape.IsNull()) {
+        // Single resolved shape (e.g. a Body or compound). Every solid it
+        // contains is attributed to the source object itself.
+        parts.emplace_back(sourceShape, source);
+    }
+    else {
+        // Recursive collection for nested Part containers — attribute each
+        // leaf shape to the leaf object that produced it.
         std::function<void(App::DocumentObject*)> collectShapes;
         collectShapes = [&](App::DocumentObject* obj) {
             TopoDS_Shape shape
                 = Feature::getShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
             if (!shape.IsNull()) {
-                builder.Add(compound, shape);
-                found = true;
+                parts.emplace_back(shape, obj);
                 return;
             }
             // Recurse into children (App::Part, App::DocumentObjectGroup, etc.)
@@ -197,13 +278,9 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         for (auto* child : source->getOutList()) {
             collectShapes(child);
         }
-
-        if (found) {
-            sourceShape = compound;
-        }
     }
 
-    if (sourceShape.IsNull()) {
+    if (parts.empty()) {
         return new App::DocumentObjectExecReturn("Source shape is empty.");
     }
 
@@ -231,11 +308,27 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
     std::vector<TopoDS_Face> sectionFaces;
     std::vector<long> faceCounts;
 
-    // Count solids in source shape
-    int solidCount = 0;
-    for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
-        solidCount++;
+    // Flatten all collected parts into solids, keeping each solid attributed to
+    // its source object. MAgic. This is the single source of truth for the
+    // solid-to-source mapping; SolidFaceCounts and SolidSourceIndex below are
+    // built in lockstep with this order so consumers never have to re-derive it.
+    std::vector<std::pair<TopoDS_Shape, App::DocumentObject*>> solids;
+    for (const auto& part : parts) {
+        for (xp.Init(part.first, TopAbs_SOLID); xp.More(); xp.Next()) {
+            // Repair (or drop) solids whose degenerate edges would crash the
+            // OCCT boolean engine; skipped solids simply produce no section.
+            TopoDS_Shape prepared = prepareSolidForSection(xp.Current());
+            if (prepared.IsNull()) {
+                Base::Console().warning(
+                    "SectionAnalysis: skipped a solid with unrepairable "
+                    "degenerate geometry to avoid a boolean engine crash.\n"
+                );
+                continue;
+            }
+            solids.emplace_back(prepared, part.second);
+        }
     }
+    int solidCount = static_cast<int>(solids.size());
 
     if (solidCount == 0) {
         Base::Console().warning(
@@ -245,83 +338,126 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         );
     }
 
-    // Primary approach: Section + FaceMakerBullseye per solid.
-    // BRepAlgoAPI_Section computes intersection edges, FaceMakerBullseye
-    // builds faces with proper hole nesting (inner wires inside outer).
-    for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
-        size_t facesBefore = sectionFaces.size();
+    // Build the distinct source-object list and the per-solid index into it.
+    // A single object contributing several solids appears once, so all its
+    // solids share one colour and hatch angle downstream.
+    std::vector<App::DocumentObject*> uniqueParts;
+    std::vector<long> solidSourceIdx;
+    solidSourceIdx.reserve(solids.size());
+    for (const auto& s : solids) {
+        auto it = std::find(uniqueParts.begin(), uniqueParts.end(), s.second);
+        long idx;
+        if (it == uniqueParts.end()) {
+            idx = static_cast<long>(uniqueParts.size());
+            uniqueParts.push_back(s.second);
+        }
+        else {
+            idx = static_cast<long>(std::distance(uniqueParts.begin(), it));
+        }
+        solidSourceIdx.push_back(idx);
+    }
+
+    // Section each solid, with a per-solid fallback. The primary path
+    // (BRepAlgoAPI_Section + FaceMakerBullseye) yields clean planar faces with
+    // proper hole nesting, but complex profiles can defeat FaceMakerBullseye.
+    // When a solid produces no face that way, fall back to the half-space
+    // Boolean cut for that solid alone. Doing this per solid (rather than only
+    // when every solid failed) ensures bodies whose profile beats the primary
+    // path still get a filled cap instead of being left clipped-but-uncapped.
+    const gp_Dir sliceNormal = slicePlane.Axis().Direction();
+    long cappedPrimary = 0;
+    long cappedFallback = 0;
+    long uncapped = 0;
+
+    for (const auto& solidEntry : solids) {
+        const TopoDS_Shape& currentSolid = solidEntry.first;
+        const size_t facesBefore = sectionFaces.size();
+
         try {
-            BRepAlgoAPI_Section cs(xp.Current(), slicePlane);
-            if (!cs.IsDone()) {
-                faceCounts.push_back(0);
-                continue;
-            }
+            BRepAlgoAPI_Section cs(currentSolid, slicePlane);
+            if (cs.IsDone()) {
+                Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+                TopExp_Explorer edgeXp;
+                for (edgeXp.Init(cs.Shape(), TopAbs_EDGE); edgeXp.More(); edgeXp.Next()) {
+                    hEdges->Append(edgeXp.Current());
+                }
+                if (!hEdges->IsEmpty()) {
+                    Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+                    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
+                        hEdges, Precision::Confusion(), false, hWires);
 
-            Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
-            TopExp_Explorer edgeXp;
-            for (edgeXp.Init(cs.Shape(), TopAbs_EDGE); edgeXp.More(); edgeXp.Next()) {
-                hEdges->Append(edgeXp.Current());
-            }
-            if (hEdges->IsEmpty()) {
-                faceCounts.push_back(0);
-                continue;
-            }
+                    FaceMakerBullseye fm;
+                    fm.setPlane(slicePlane);
+                    for (int i = 1; i <= hWires->Length(); i++) {
+                        TopoDS_Wire wire = TopoDS::Wire(hWires->Value(i));
+                        ShapeFix_Wire aFix;
+                        aFix.SetPrecision(Precision::Confusion());
+                        aFix.Load(wire);
+                        aFix.FixReorder();
+                        aFix.FixConnected();
+                        aFix.FixClosed();
+                        fm.addWire(aFix.Wire());
+                    }
+                    fm.Build();
 
-            Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-            ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), false, hWires);
-
-            FaceMakerBullseye fm;
-            fm.setPlane(slicePlane);
-            for (int i = 1; i <= hWires->Length(); i++) {
-                TopoDS_Wire wire = TopoDS::Wire(hWires->Value(i));
-                ShapeFix_Wire aFix;
-                aFix.SetPrecision(Precision::Confusion());
-                aFix.Load(wire);
-                aFix.FixReorder();
-                aFix.FixConnected();
-                aFix.FixClosed();
-                fm.addWire(aFix.Wire());
-            }
-            fm.Build();
-
-            if (fm.IsDone()) {
-                gp_Dir sliceNormal = slicePlane.Axis().Direction();
-                for (edgeXp.Init(fm.Shape(), TopAbs_FACE); edgeXp.More(); edgeXp.Next()) {
-                    TopoDS_Face face = TopoDS::Face(edgeXp.Current());
-                    BRepAdaptor_Surface adapt(face);
-                    if (adapt.GetType() == GeomAbs_Plane) {
-                        gp_Dir effectiveNormal = adapt.Plane().Axis().Direction();
-                        if (face.Orientation() == TopAbs_REVERSED) {
-                            effectiveNormal.Reverse();
-                        }
-                        if (effectiveNormal.Dot(sliceNormal) < 0) {
-                            face = TopoDS::Face(face.Reversed());
+                    if (fm.IsDone()) {
+                        for (edgeXp.Init(fm.Shape(), TopAbs_FACE); edgeXp.More(); edgeXp.Next()) {
+                            TopoDS_Face face = TopoDS::Face(edgeXp.Current());
+                            BRepAdaptor_Surface adapt(face);
+                            if (adapt.GetType() == GeomAbs_Plane) {
+                                gp_Dir effectiveNormal = adapt.Plane().Axis().Direction();
+                                if (face.Orientation() == TopAbs_REVERSED) {
+                                    effectiveNormal.Reverse();
+                                }
+                                if (effectiveNormal.Dot(sliceNormal) < 0) {
+                                    face = TopoDS::Face(face.Reversed());
+                                }
+                            }
+                            sectionFaces.push_back(face);
                         }
                     }
-                    sectionFaces.push_back(face);
                 }
             }
         }
         catch (...) {
         }
-        faceCounts.push_back(static_cast<long>(sectionFaces.size() - facesBefore));
-    }
 
-    // Fallback: Boolean Cut approach if Section produced nothing
-    if (sectionFaces.empty()) {
-        faceCounts.clear();
-        for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
-            size_t facesBefore = sectionFaces.size();
+        bool viaPrimary = sectionFaces.size() > facesBefore;
+
+        // Per-solid fallback: half-space Boolean cut caps closed solids robustly
+        // even when the section profile defeats the primary path.
+        if (!viaPrimary) {
             try {
-                collectSectionFaces(xp.Current(), slicePlane, sectionFaces);
+                collectSectionFaces(currentSolid, slicePlane, sectionFaces);
             }
             catch (...) {
             }
-            faceCounts.push_back(static_cast<long>(sectionFaces.size() - facesBefore));
         }
+
+        if (sectionFaces.size() > facesBefore) {
+            (viaPrimary ? cappedPrimary : cappedFallback)++;
+        }
+        else {
+            uncapped++;
+        }
+        faceCounts.push_back(static_cast<long>(sectionFaces.size() - facesBefore));
     }
 
+    if (uncapped > 0) {
+        Base::Console().log(
+            "SectionAnalysis: %d solids capped (primary), %d via fallback, "
+            "%d produced no cross-section face.\n",
+            cappedPrimary,
+            cappedFallback,
+            uncapped
+        );
+    }
+
+    // faceCounts, solidSourceIdx and the solids list are all in the same order
+    // and length, giving consumers an authoritative solid-to-source mapping.
     SolidFaceCounts.setValues(faceCounts);
+    SolidSourceIndex.setValues(solidSourceIdx);
+    SourceParts.setValues(uniqueParts);
     auto& faces = sectionFaces;
 
     if (faces.empty() && solidCount > 0) {

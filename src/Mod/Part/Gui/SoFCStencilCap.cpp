@@ -31,6 +31,7 @@
 # include <GL/gl.h>
 #endif
 
+#include <algorithm>
 #include <cmath>
 #include <cstring>
 
@@ -189,7 +190,8 @@ void SoFCStencilCap::setSectionFaces(
     int numIndices,
     const int32_t* partIdx,
     int numParts,
-    const std::vector<long>& solidFaceCounts
+    const std::vector<long>& solidFaceCounts,
+    const std::vector<long>& solidSourceIndex
 )
 {
     sectionVerts.assign(verts, verts + numVerts);
@@ -223,7 +225,13 @@ void SoFCStencilCap::setSectionFaces(
         int cStart = (piStart < (int)faceCoordStart.size()) ? faceCoordStart[piStart] : numIndices;
         int cEnd = (piEnd < (int)faceCoordStart.size()) ? faceCoordStart[piEnd] : numIndices;
 
-        solidRanges.push_back({cStart, cEnd - cStart});
+        // Key the hatch angle off the source object, not the raw solid index,
+        // so all solids of one body hatch identically. Subject to artistic license
+        int srcIndex = (s < solidSourceIndex.size())
+            ? static_cast<int>(solidSourceIndex[s])
+            : static_cast<int>(s);
+
+        solidRanges.push_back({cStart, cEnd - cStart, srcIndex});
         faceStart += numFaces;
     }
 }
@@ -237,6 +245,16 @@ void SoFCStencilCap::renderPerSolidHatch()
     int nSolids = static_cast<int>(solidRanges.size());
     if (nSolids <= 1) {
         return;  // single solid — Coin3D handles it
+    }
+
+    // Number of distinct source bodies drives the angle spacing; solids that
+    // share a source share an angle.
+    int nSources = 1;
+    for (const auto& range : solidRanges) {
+        nSources = std::max(nSources, range.sourceIndex + 1);
+    }
+    if (nSources <= 1) {
+        return;  // single body — base texture hatch already covers it
     }
 
     ensureHatchTexture();
@@ -254,17 +272,18 @@ void SoFCStencilCap::renderPerSolidHatch()
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, sectionVerts.data());
 
-    float angleStep = 180.0f / nSolids;
+    float angleStep = 180.0f / nSources;
 
-    // Skip solid 0 — Coin3D rendered it with the standard hatching angle.
-    // Only overdraw solids 1+ with rotated angles.
-    for (int s = 1; s < nSolids; s++) {
-        const auto& range = solidRanges[s];
-        if (range.indexCount <= 0) {
+    // Source 0 keeps the base texture-hatch angle Coin3D already rendered;
+    // optimisation: only overdraw solids belonging to sources 1+
+    // with a rotated angle keyed off their source
+    // so each body is visually distinct and self-consistent.
+    for (const auto& range : solidRanges) {
+        if (range.indexCount <= 0 || range.sourceIndex <= 0) {
             continue;
         }
 
-        float angle = s * angleStep;
+        float angle = range.sourceIndex * angleStep;
         if (angle != 0.0f) {
             pushTextureRotation(angle);
         }
