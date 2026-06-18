@@ -41,28 +41,17 @@ from draftutils.translate import translate
 
 def get_draft_drawing_commands():
     """Return the drawing commands list."""
-    from draftguitools import gui_arcs
-    from draftguitools import gui_beziers
-
-    arc_group = gui_arcs.ArcGroup
-    bez_group = gui_beziers.BezierGroup
-
     return [
         "Draft_Line",
         "Draft_Wire",
         "Draft_Fillet",
-        (
-            [QT_TRANSLATE_NOOP("Workbench", "Arc Tools")],
-            list(arc_group.GetCommands(arc_group)),
-        ),  # tuple len=2: submenu
-        ("Draft_ArcTools",),  # tuple len=1: toolbar flyout
+        "Draft_ArcTools",
         "Draft_Circle",
         "Draft_Ellipse",
         "Draft_Rectangle",
         "Draft_Polygon",
         "Draft_BSpline",
-        ([QT_TRANSLATE_NOOP("Workbench", "Bézier Tools")], list(bez_group.GetCommands(bez_group))),
-        ("Draft_BezierTools",),
+        "Draft_BezierTools",
         "Draft_Point",
         "Draft_Facebinder",
         "Draft_ShapeString",
@@ -72,15 +61,17 @@ def get_draft_drawing_commands():
 
 def get_draft_annotation_commands():
     """Return the annotation commands list."""
-    return ["Draft_Text", "Draft_Dimension", "Draft_Label", "Draft_AnnotationStyleEditor"]
-
+    # fmt: off
+    return [
+        "Draft_Text",
+        "Draft_Dimension",
+        "Draft_Label",
+        "Draft_AnnotationStyleEditor",
+    ]
+    # fmt: on
 
 def get_draft_modification_commands():
     """Return the modification commands list."""
-    from draftguitools import gui_arrays
-
-    arr_group = gui_arrays.ArrayGroup
-
     return [
         "Draft_Move",
         "Draft_Rotate",
@@ -91,11 +82,7 @@ def get_draft_modification_commands():
         "Draft_Stretch",
         "Separator",
         "Draft_Clone",
-        (
-            [QT_TRANSLATE_NOOP("Workbench", "Array Tools")],
-            list(arr_group.GetCommands(arr_group)),
-        ),  # tuple len=2: submenu
-        ("Draft_ArrayTools",),  # tuple len=1: toolbar flyout
+        "Draft_ArrayTools",
         "Separator",
         "Draft_Edit",
         "Draft_SubelementHighlight",
@@ -172,10 +159,7 @@ def get_draft_snap_commands():
         "Draft_Snap_Grid",
         "Draft_Snap_WorkingPlane",
         "Draft_Snap_Dimensions",
-        # "Separator", # Removed: if the Python generated BIM snap toolbar
-        # is displayed in the Draft WB the separator appears
-        # after the last button. Can be reinstated when the
-        # BIM WB has a `normal` snap toolbar as well.
+        "Separator",
         "Draft_ToggleGrid",
     ]
 
@@ -201,51 +185,6 @@ def get_draft_context_commands():
         "Draft_SelectPlane",
         "Draft_WorkingPlaneProxy",
     ]
-
-
-def init_toolbar(workbench, toolbar, cmd_list):
-    """Initialize a toolbar.
-
-    Parameters
-    ----------
-    workbench: Gui.Workbench
-        The workbench. The commands from cmd_list must be available.
-
-    toolbar: string
-        The name of the toolbar.
-
-    cmd_list: list of strings or list of strings and tuples
-        See f.e. the return value of get_draft_drawing_commands.
-    """
-    for cmd in cmd_list:
-        if isinstance(cmd, tuple):
-            if len(cmd) == 1:
-                workbench.appendToolbar(toolbar, [cmd[0]])
-        else:
-            workbench.appendToolbar(toolbar, [cmd])
-
-
-def init_menu(workbench, menu_list, cmd_list):
-    """Initialize a menu.
-
-    Parameters
-    ----------
-    workbench: Gui.Workbench
-        The workbench. The commands from cmd_list must be available.
-
-    menu_list: list of strings
-        The main and optional submenu(s). The commands, and additional
-        submenus (if any), are added to the last (sub)menu in the list.
-
-    cmd_list: list of strings or list of strings and tuples
-        See f.e. the return value of get_draft_drawing_commands.
-    """
-    for cmd in cmd_list:
-        if isinstance(cmd, tuple):
-            if len(cmd) == 2:
-                workbench.appendMenu(menu_list + cmd[0], cmd[1])
-        else:
-            workbench.appendMenu(menu_list, [cmd])
 
 
 ## @}
