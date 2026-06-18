@@ -34,6 +34,7 @@
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -54,6 +55,7 @@
 
 #include <App/Part.h>
 #include <Mod/Part/App/Datums.h>
+#include <Mod/Part/App/FeatureSectionAnalysis.h>
 #include <Mod/Part/App/Part2DObject.h>
 
 #include "BoxSelection.h"
@@ -72,6 +74,7 @@
 #include "TaskShapeBuilder.h"
 #include "TaskSweep.h"
 #include "ViewProvider.h"
+#include "ViewProviderSectionAnalysis.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2564,6 +2567,31 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     // Don't commitCommand() here — leave the transaction open.
     // The task panel's accept() commits it, reject()/Cancel aborts and removes the object.
     updateActive();
+
+    // Give each new section a distinct default colour so successive sections
+    // are easy to tell apart (pierreporte review feedback).
+    if (App::Document* appDoc = App::GetApplication().getActiveDocument()) {
+        if (App::DocumentObject* saObj = appDoc->getActiveObject()) {
+            auto* vp = dynamic_cast<PartGui::ViewProviderSectionAnalysis*>(
+                Gui::Application::Instance->getViewProvider(saObj)
+            );
+            if (vp) {
+                static const float palette[][3] = {
+                    {0.80F, 0.30F, 0.20F},
+                    {0.20F, 0.50F, 0.80F},
+                    {0.30F, 0.70F, 0.30F},
+                    {0.80F, 0.70F, 0.20F},
+                    {0.60F, 0.30F, 0.70F},
+                    {0.90F, 0.50F, 0.30F},
+                };
+                size_t count = appDoc->getObjectsOfType(Part::SectionAnalysis::getClassTypeId()).size();
+                const auto& p = palette[(count > 0 ? count - 1 : 0) % 6];
+                App::Material matSA;
+                matSA.diffuseColor.set(p[0], p[1], p[2], 0.0F);
+                vp->ShapeAppearance.setValues({matSA});
+            }
+        }
+    }
 
     // Enter edit mode
     doCommand(Gui, "Gui.ActiveDocument.setEdit(App.ActiveDocument.ActiveObject.Name)");
