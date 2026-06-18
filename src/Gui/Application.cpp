@@ -45,6 +45,8 @@
 #include <QStyleFactory>
 
 #ifdef FREECAD_HAVE_QTWEBENGINE
+#include <QQuickWindow>
+#include <QSGRendererInterface>
 #include <QtWebEngineQuick/QtWebEngineQuick>
 #endif
 
@@ -2660,6 +2662,7 @@ void Application::runApplication()
     }
 
 #ifdef FREECAD_HAVE_QTWEBENGINE
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
     QtWebEngineQuick::initialize();
 #endif
 
