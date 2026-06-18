@@ -227,7 +227,11 @@ private:
     MatrixXq A;
     VectorXq tmp;
     Eigen::LDLT<MatrixXq> ldlt;
+#if EIGEN_VERSION_AT_LEAST(3, 4, 90)
     Eigen::JacobiSVD<MatrixXq, Eigen::ComputeThinU | Eigen::ComputeThinV> svd;
+#else
+    Eigen::JacobiSVD<MatrixXq> svd;
+#endif
     VectorXq diffq;
     VectorXq q_new;
     VectorXq original_Aii;

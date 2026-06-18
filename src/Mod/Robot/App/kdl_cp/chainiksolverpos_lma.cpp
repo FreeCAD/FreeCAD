@@ -72,7 +72,11 @@ ChainIkSolverPos_LMA::ChainIkSolverPos_LMA(
 	A(_chain.getNrOfJoints(), _chain.getNrOfJoints()),
 	tmp(_chain.getNrOfJoints()),
 	ldlt(_chain.getNrOfJoints()),
+#if EIGEN_VERSION_AT_LEAST(3, 4, 90)
 	svd(6, _chain.getNrOfJoints()),
+#else
+	svd(6, _chain.getNrOfJoints(), Eigen::ComputeThinU | Eigen::ComputeThinV),
+#endif
 	diffq(_chain.getNrOfJoints()),
 	q_new(_chain.getNrOfJoints()),
 	original_Aii(_chain.getNrOfJoints())
@@ -97,7 +101,11 @@ ChainIkSolverPos_LMA::ChainIkSolverPos_LMA(
 	q(_chain.getNrOfJoints()),
 	A(_chain.getNrOfJoints(), _chain.getNrOfJoints()),
 	ldlt(_chain.getNrOfJoints()),
+#if EIGEN_VERSION_AT_LEAST(3, 4, 90)
 	svd(6, _chain.getNrOfJoints()),
+#else
+	svd(6, _chain.getNrOfJoints(), Eigen::ComputeThinU | Eigen::ComputeThinV),
+#endif
 	diffq(_chain.getNrOfJoints()),
 	q_new(_chain.getNrOfJoints()),
 	original_Aii(_chain.getNrOfJoints())
