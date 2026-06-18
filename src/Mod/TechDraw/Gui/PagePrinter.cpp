@@ -170,10 +170,16 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
             printer->newPage();
         }
         firstTime = false;
+
+        QGISVGTemplate* ourTemplate{nullptr};
+        QGSPage* ourScene{nullptr};
+        preRenderSetUp(vpp, ourScene, ourTemplate);
+
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
         renderPage(vpp, painter, sourceRect, targetRect);
-        dPage->redrawCommand();
+
+        postRenderCleanUp(ourScene, dPage, ourTemplate);
     }
 
     ourDoc->setModified(docModifiedState);
@@ -236,8 +242,9 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
             continue;// can't print this one
         }
 
-        auto ourScene = vpp->getQGSPage();
-        ourScene->setExportingPdf(true);
+        QGISVGTemplate* ourTemplate{nullptr};
+        QGSPage* ourScene{nullptr};
+        preRenderSetUp(vpp, ourScene, ourTemplate);
 
         auto dPage = static_cast<TechDraw::DrawPage*>(obj);
         double width{0};
@@ -253,9 +260,8 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
         renderPage(vpp, painter, sourceRect, targetRect);
-        dPage->redrawCommand();
 
-        ourScene->setExportingPdf(false);
+        postRenderCleanUp(ourScene, dPage, ourTemplate);
     }
 
     ourDoc->setModified(docModifiedState);
@@ -332,21 +338,19 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer, bool isPrev
 
     QPainter painter(printer);
 
-    auto ourScene = vpPage->getQGSPage();
-    if (!printer->outputFileName().isEmpty() ||
-        isPreview) {
-        ourScene->setExportingPdf(true);
-    }
     auto ourDoc = Gui::Application::Instance->getDocument(dPage->getDocument());
     auto docModifiedState = ourDoc->isModified();
+
+    QGISVGTemplate* ourTemplate{nullptr};
+    QGSPage* ourScene{nullptr};
+    preRenderSetUp(vpPage, ourScene, ourTemplate);
 
     QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
     QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
     renderPage(vpPage, painter, sourceRect, targetRect);
 
-    ourScene->setExportingPdf(false);  // doesn't hurt if not pdf
+    postRenderCleanUp(ourScene, dPage, ourTemplate);
     ourDoc->setModified(docModifiedState);
-    dPage->redrawCommand();
 }
 
 
@@ -390,10 +394,12 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     // pdfWriter layout is established.
     QPainter painter(&pdfWriter);
 
-    auto ourScene = vpPage->getQGSPage();
-    ourScene->setExportingPdf(true);
     auto ourDoc = Gui::Application::Instance->getDocument(dPage->getDocument());
     auto docModifiedState = ourDoc->isModified();
+
+    QGISVGTemplate* ourTemplate{nullptr};
+    QGSPage* ourScene{nullptr};
+    preRenderSetUp(vpPage, ourScene, ourTemplate);
 
     // render the page
     QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
@@ -403,9 +409,35 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     QRect targetRect(0, 0, twide, thigh);
     renderPage(vpPage, painter, sourceRect, targetRect);
 
-    ourScene->setExportingPdf(false);
+    postRenderCleanUp(ourScene, dPage, ourTemplate);
     ourDoc->setModified(docModifiedState);
+}
+
+void PagePrinter::preRenderSetUp(TechDrawGui::ViewProviderPage* vpp,
+                                 QGSPage*& ourScene,
+                                 QGISVGTemplate*& ourTemplate)
+{
+    if (!vpp) {
+        return;
+    }
+    ourScene = vpp->getQGSPage();
+    // setExportingPdf does not hurt anything here and protects against Windows
+    // Pdf writer not asking for file name until after rendering.
+    ourScene->setExportingPdf(true);
+    ourTemplate = static_cast<QGISVGTemplate*>(vpp->getQTemplate());
+    ourTemplate->updateView(true);
+}
+
+void PagePrinter::postRenderCleanUp(QGSPage* ourScene,
+                                    TechDraw::DrawPage* dPage,
+                                    QGISVGTemplate* ourTemplate)
+{
+    if (!ourScene) {
+        return;
+    }
+    ourScene->setExportingPdf(false);
     dPage->redrawCommand();
+    ourTemplate->updateView(true);
 }
 
 
