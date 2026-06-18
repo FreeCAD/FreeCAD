@@ -20,6 +20,9 @@ backend = { name = "pixi-build-rattler-build", version = "*" }
 [feature.freecad.dependencies]
 freecad = { path = "." }
 
+[feature.freecad.target.win-64.dependencies]
+ucrt = "==10.0.20348.0"
+
 [feature.package.dependencies]
 python = ">=3.11,<3.12"
 
@@ -55,6 +58,7 @@ sed = "*"
 git = "*"
 nsis = { version = "*", build = "*_log*" }
 7zip = "*"
+ucrt = "==10.0.20348.0"
 vs2022_win-64 = "*"
 
 [environments]

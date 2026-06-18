@@ -1222,7 +1222,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/ffmpeg-7.1.1-gpl_h70aa942_910.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/flann-1.9.2-h48fefe0_4.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/fltk-1.3.10-h5d05227_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/fmt-12.1.0-h7f4e812_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/fmt-12.2.0-h1ced75a_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/font-ttf-dejavu-sans-mono-2.37-hab24e00_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/font-ttf-inconsolata-3.000-h77eed37_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/font-ttf-source-code-pro-2.038-h77eed37_0.tar.bz2
@@ -1384,7 +1384,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/tk-8.6.13-h2c6b04d_3.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/typing_extensions-4.15.0-pyhcf101f3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tzdata-2025c-h8577fbf_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/ucrt-10.0.20348.0-h57928b3_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/win-64/unicodedata2-17.0.0-py311h3485c13_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/urllib3-2.6.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/utfcpp-4.0.8-h57928b3_0.conda
@@ -1567,7 +1567,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/python-3.11.14-h0159041_2_cpython.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/tk-8.6.13-h2c6b04d_3.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tzdata-2025c-h8577fbf_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/ucrt-10.0.20348.0-h57928b3_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/win-64/vc-14.3-h2b53caa_33.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vc14_runtime-14.44.35208-h818238b_33.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/vcomp14-14.44.35208-h818238b_33.conda
@@ -4018,17 +4018,17 @@ packages:
   license_family: MIT
   size: 180970
   timestamp: 1767681372955
-- conda: https://conda.anaconda.org/conda-forge/win-64/fmt-12.1.0-h7f4e812_0.conda
-  sha256: cce96406ec353692ab46cd9d992eddb6923979c1a342cbdba33521a7c234176f
-  md5: 6e226b58e18411571aaa57a16ad10831
+- conda: https://conda.anaconda.org/conda-forge/win-64/fmt-12.2.0-h1ced75a_0.conda
+  sha256: 295d61f20e3e0b826b20a660be887c50526df43f8665bc7feee96c10af69c82a
+  md5: 4eccabefe6fd1126ec053e622fc8df24
   depends:
   - ucrt >=10.0.20348.0
   - vc >=14.3,<15
   - vc14_runtime >=14.44.35208
   license: MIT
   license_family: MIT
-  size: 186390
-  timestamp: 1767681264793
+  size: 204060
+  timestamp: 1781603799521
 - conda: https://conda.anaconda.org/conda-forge/noarch/font-ttf-dejavu-sans-mono-2.37-hab24e00_0.tar.bz2
   sha256: 58d7f40d2940dd0a8aa28651239adbf5613254df0f75789919c4e6762054403b
   md5: 0c96522c6bdaed4b1566d11387caaf45
@@ -4265,11 +4265,11 @@ packages:
   - typing_extensions
   - vtk
   - xlutils
-  - smesh >=9.9.0.0,<9.9.1.0a0
-  - libboost >=1.86.0,<1.87.0a0
-  - pcl >=1.15.0,<1.15.1.0a0
   - coin3d >=4.0.3,<4.1.0a0
-  - fmt >=12.1.0,<12.2.0a0
+  - smesh >=9.9.0.0,<9.9.1.0a0
+  - pcl >=1.15.0,<1.15.1.0a0
+  - libboost >=1.86.0,<1.87.0a0
+  - fmt >=12.2.0,<12.3.0a0
   - libfreetype >=2.14.3
   - libfreetype6 >=2.14.3
   - libzlib >=1.3.2,<2.0a0
@@ -15881,15 +15881,15 @@ packages:
   license: LicenseRef-Public-Domain
   size: 119204
   timestamp: 1765745742795
-- conda: https://conda.anaconda.org/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
-  sha256: 3005729dce6f3d3f5ec91dfc49fc75a0095f9cd23bab49efb899657297ac91a5
-  md5: 71b24316859acd00bdb8b38f5e2ce328
+- conda: https://conda.anaconda.org/conda-forge/win-64/ucrt-10.0.20348.0-h57928b3_0.tar.bz2
+  sha256: e5a8634df6ee84745dfe27f40ace7b6e45646a4b7bc7dbeb1efe1bb6128e44b9
+  md5: 6d666b6ea8251231ff508062d1e41f9c
   constrains:
-  - vc14_runtime >=14.29.30037
   - vs2015_runtime >=14.29.30037
-  license: LicenseRef-MicrosoftWindowsSDK10
-  size: 694692
-  timestamp: 1756385147981
+  license: LicenseRef-Proprietary
+  license_family: PROPRIETARY
+  size: 1233285
+  timestamp: 1624476303271
 - conda: https://conda.anaconda.org/conda-forge/linux-64/unicodedata2-17.0.0-py311h49ec1c0_1.conda
   sha256: d3c0e3ca6eb49095159d8c78970a279a30b98863eff5c3eeb037296d2e1d1670
   md5: 5e6d4026784e83c0a51c86ec428e8cc8
