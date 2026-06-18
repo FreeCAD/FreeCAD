@@ -175,7 +175,7 @@ list(APPEND FreeCADGui_LIBS
     ${QtUiTools_LIBRARIES}
 )
 
-if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+if(FREECAD_QT_MAJOR_VERSION EQUAL 6 AND QtWebEngineQuick_FOUND)
     list(APPEND FreeCADGui_LIBS
         ${QtWebEngineQuick_LIBRARIES}
     )
@@ -1507,7 +1507,7 @@ endif ()
 target_sources(FreeCADGui PRIVATE ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui PUBLIC ${FreeCADGui_LIBS})
 
-if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+if(FREECAD_QT_MAJOR_VERSION EQUAL 6 AND QtWebEngineQuick_FOUND)
     target_compile_definitions(FreeCADGui PRIVATE FREECAD_HAVE_QTWEBENGINE)
 endif()
 
