@@ -70,6 +70,7 @@ class InputFieldLockGroup:
 
     def __init__(self, on_change=None):
         self._on_change = on_change
+        self._active = True
         self._locked = {}
         self._fields = {}
         self._actions = {}
@@ -97,24 +98,30 @@ class InputFieldLockGroup:
         self._locked[key] = False
 
     def _queue_edit(self, key):
+        if not self._active:
+            return
         revision = self._edit_revisions.get(key, 0) + 1
         self._edit_revisions[key] = revision
         QtCore.QTimer.singleShot(0, lambda k=key, r=revision: self._finish_edit(k, r))
 
     def _finish_edit(self, key, revision):
-        if self._edit_revisions.get(key) != revision:
+        if not self._active or self._edit_revisions.get(key) != revision:
             return
         locked = self._has_lockable_input(key)
         self.set_locked(key, locked)
 
     def queue_locked_value_refresh(self, key):
+        if not self._active:
+            return
         QtCore.QTimer.singleShot(0, lambda k=key: self._refresh_locked_value(k))
 
     def _refresh_locked_value(self, key):
-        if self.is_locked(key):
+        if self._active and self.is_locked(key):
             self._notify_change(key, True)
 
     def _has_lockable_input(self, key, text=None):
+        if not self._active:
+            return False
         field = self._fields.get(key)
         if field is None:
             return False
@@ -145,6 +152,8 @@ class InputFieldLockGroup:
         return any(self._locked.values())
 
     def set_locked(self, key, locked):
+        if not self._active:
+            return
         if self._locked.get(key) == locked:
             return
         self._locked[key] = locked
@@ -158,11 +167,23 @@ class InputFieldLockGroup:
             self._on_change(key, locked)
 
     def unlock(self, key):
+        self._edit_revisions[key] = self._edit_revisions.get(key, 0) + 1
         self.set_locked(key, False)
 
     def unlock_keys(self, keys):
         for key in keys:
-            self.set_locked(key, False)
+            self.unlock(key)
 
     def unlock_all(self):
         self.unlock_keys(list(self._locked))
+
+    def dispose(self):
+        """Release all locks and ignore callbacks from discarded fields."""
+        if not self._active:
+            return
+        self._active = False
+        for key, locked in self._locked.items():
+            self._edit_revisions[key] = self._edit_revisions.get(key, 0) + 1
+            self._locked[key] = False
+            if locked:
+                self._notify_change(key, False)

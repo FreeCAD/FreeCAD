@@ -498,6 +498,17 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
 
     auto selectedObjectPlacement = rootPlacement.inverse() * globalPlacement * attachedPlacement;
 
+    std::optional<Base::Vector3d> worldCursor;
+    if (msg.hasPickedPoint) {
+        worldCursor = Base::Vector3d(msg.x, msg.y, msg.z);
+    }
+    if (auto snapPos = subObjectPlacementProvider
+                           ->snapPosition(msg.Object, worldCursor, globalPlacement.toMatrix())) {
+        Base::Vector3d rootLocalSnapPos;
+        rootPlacement.inverse().toMatrix().multVec(*snapPos, rootLocalSnapPos);
+        selectedObjectPlacement.setPosition(rootLocalSnapPos);
+    }
+
     auto label = QStringLiteral("%1#%2.%3")
                      .arg(
                          QLatin1String(msg.pOriginalMsg->pObjectName),
