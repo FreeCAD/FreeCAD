@@ -70,6 +70,7 @@ def get_draft_annotation_commands():
     ]
     # fmt: on
 
+
 def get_draft_modification_commands():
     """Return the modification commands list."""
     return [
