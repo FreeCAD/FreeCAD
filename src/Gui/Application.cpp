@@ -44,7 +44,7 @@
 #include <QWindow>
 #include <QStyleFactory>
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#ifdef FREECAD_HAVE_QTWEBENGINE
 #include <QtWebEngineQuick/QtWebEngineQuick>
 #endif
 
@@ -2659,7 +2659,7 @@ void Application::runApplication()
         QSurfaceFormat::setDefaultFormat(defaultFormat);
     }
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#ifdef FREECAD_HAVE_QTWEBENGINE
     QtWebEngineQuick::initialize();
 #endif
 

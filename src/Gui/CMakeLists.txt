@@ -1507,6 +1507,10 @@ endif ()
 target_sources(FreeCADGui PRIVATE ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui PUBLIC ${FreeCADGui_LIBS})
 
+if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+    target_compile_definitions(FreeCADGui PRIVATE FREECAD_HAVE_QTWEBENGINE)
+endif()
+
 if (MSVC)
     target_compile_definitions(FreeCADGui PRIVATE WIN32_LEAN_AND_MEAN)
     target_compile_options(FreeCADGui PRIVATE /wd4251 /wd4273 /wd4275)
