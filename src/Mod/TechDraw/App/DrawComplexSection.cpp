@@ -128,6 +128,14 @@ using namespace TechDraw;
 using namespace std;
 using DU = DrawUtil;
 
+namespace
+{
+constexpr long StrategyOffset = 0;
+constexpr long StrategyNoParallel = 2;
+constexpr long StrategyBrokenOut = 3;
+constexpr double DefaultBrokenOutDepth = 1.0;
+}
+
 //===========================================================================
 // DrawComplexSection
 //===========================================================================
@@ -136,7 +144,7 @@ using DU = DrawUtil;
 PROPERTY_SOURCE(TechDraw::DrawComplexSection, TechDraw::DrawViewSection)
 
 const char* DrawComplexSection::ProjectionStrategyEnums[] = {"Offset", "Aligned", "NoParallel",
-                                                             nullptr};
+                                                             "BrokenOut", nullptr};
 //NOLINTEND
 
 DrawComplexSection::DrawComplexSection() :
@@ -151,7 +159,19 @@ DrawComplexSection::DrawComplexSection() :
     ProjectionStrategy.setEnums(ProjectionStrategyEnums);
     ADD_PROPERTY_TYPE(ProjectionStrategy, ((long)0), fgroup, App::Prop_None,
                       "Make a single cut, or use the profile in pieces");
+    ADD_PROPERTY_TYPE(BrokenOutDepth, (DefaultBrokenOutDepth), fgroup, App::Prop_None,
+                      "Depth of the local broken-out section cut");
 //NOLINTEND
+}
+
+short DrawComplexSection::mustExecute() const
+{
+    if (ProjectionStrategy.isTouched() || CuttingToolWireObject.isTouched()
+        || BrokenOutDepth.isTouched()) {
+        return 1;
+    }
+
+    return DrawViewSection::mustExecute();
 }
 
 TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
@@ -166,7 +186,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
     }
 
     // use "canBuild(profile, sectionnormal)" or validateProfileDirection?
-    if (ProjectionStrategy.getValue() == 0) {
+    if (ProjectionStrategy.getValue() == StrategyOffset) {
         // Offset. Warn if profile is not quite aligned with section normal. if
         // the profile and normal are misaligned, the check below for empty "solids"
         // will not be correct.
@@ -181,6 +201,13 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
         if (!validateSketchNormal(CuttingToolWireObject.getValue())) {
             Base::Console().warning("cutting object not aligned with section normal in %s\n", Label.getValue());
         }
+    }
+
+    if (isBrokenOut()) {
+        if (!BRep_Tool::IsClosed(profileWire)) {
+            throw Base::RuntimeError("Broken-out sections require a closed profile");
+        }
+        return makeBrokenOutCuttingTool(profileWire);
     }
 
     if (BRep_Tool::IsClosed(profileWire)) {
@@ -214,7 +241,7 @@ TopoDS_Shape DrawComplexSection::makeCuttingTool(double dMax)
 
 TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 {
-    if (ProjectionStrategy.getValue() == 0) {
+    if (ProjectionStrategy.getValue() == StrategyOffset || isBrokenOut()) {
         //Offset. Use regular section behaviour
         return DrawViewSection::getShapeToPrepare();
     }
@@ -225,7 +252,7 @@ TopoDS_Shape DrawComplexSection::getShapeToPrepare() const
 //get the shape ready for projection and cut surface finding
 TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, double shapeSize)
 {
-    if (ProjectionStrategy.getValue() == 0) {
+    if (ProjectionStrategy.getValue() == StrategyOffset || isBrokenOut()) {
         //Offset. Use regular section behaviour
         return DrawViewSection::prepareShape(cutShape, shapeSize);
     }
@@ -253,7 +280,7 @@ TopoDS_Shape DrawComplexSection::prepareShape(const TopoDS_Shape& cutShape, doub
 
 void DrawComplexSection::makeSectionCut(const TopoDS_Shape& baseShape)
 {
-    if (ProjectionStrategy.getValue() == 0) {
+    if (ProjectionStrategy.getValue() == StrategyOffset || isBrokenOut()) {
         //Offset. Use regular section behaviour
         return DrawViewSection::makeSectionCut(baseShape);
     }
@@ -465,7 +492,7 @@ DrawComplexSection::findSectionPlaneIntersections(const TopoDS_Shape& shapeToInt
                                 getNameInDocument());
         return {};
     }
-    if (ProjectionStrategy.getValue() == 0) {//Offset
+    if (ProjectionStrategy.getValue() == StrategyOffset || isBrokenOut()) {
         return singleToolIntersections(shapeToIntersect);
     }
 
@@ -542,7 +569,7 @@ TopoDS_Compound DrawComplexSection::alignedToolIntersections(const TopoDS_Shape&
 
 TopoDS_Compound DrawComplexSection::alignSectionFaces(const TopoDS_Shape& faceIntersections)
 {
-    if (ProjectionStrategy.getValue() == 0) {
+    if (ProjectionStrategy.getValue() == StrategyOffset || isBrokenOut()) {
         //Offset. Use regular section behaviour
         return DrawViewSection::alignSectionFaces(faceIntersections);
     }
@@ -552,7 +579,7 @@ TopoDS_Compound DrawComplexSection::alignSectionFaces(const TopoDS_Shape& faceIn
 
 TopoDS_Shape DrawComplexSection::getShapeToIntersect()
 {
-    if (ProjectionStrategy.getValue() == 0) {//Offset
+    if (ProjectionStrategy.getValue() == StrategyOffset || isBrokenOut()) {
         return DrawViewSection::getShapeToIntersect();
     }
     //Aligned
@@ -561,7 +588,7 @@ TopoDS_Shape DrawComplexSection::getShapeToIntersect()
 
 TopoDS_Shape DrawComplexSection::getShapeForDetail() const
 {
-    if (ProjectionStrategy.getValue() == 0) {//Offset
+    if (ProjectionStrategy.getValue() == StrategyOffset || isBrokenOut()) {
         return DrawViewSection::getShapeForDetail();
     }
     //Aligned
@@ -858,7 +885,7 @@ std::pair<Base::Vector3d, Base::Vector3d>
 //the regular sectionPlane for Offset.
 gp_Pln DrawComplexSection::getSectionPlane() const
 {
-    if (ProjectionStrategy.getValue() == 0) {
+    if (ProjectionStrategy.getValue() == StrategyOffset || isBrokenOut()) {
         //Offset. Use regular section behaviour
         return DrawViewSection::getSectionPlane();
     }
@@ -935,8 +962,8 @@ bool DrawComplexSection::validateProfilePosition(const TopoDS_Wire& profileWire,
 
 bool DrawComplexSection::showSegment(gp_Dir segmentNormal) const
 {
-    if (ProjectionStrategy.getValue() < 2) {
-        //Offset or Aligned are always true
+    if (ProjectionStrategy.getValue() != StrategyNoParallel) {
+        //Offset, Aligned, and BrokenOut are always true
         return true;
     }
 
@@ -1611,10 +1638,49 @@ TopoDS_Shape DrawComplexSection::makeCuttingToolFromClosedProfile(const TopoDS_W
     return prism;
 }
 
+TopoDS_Shape DrawComplexSection::makeBrokenOutCuttingTool(const TopoDS_Wire& profileWire)
+{
+    const double cutDepth = BrokenOutDepth.getValue();
+    if (cutDepth <= Precision::Confusion()) {
+        throw Base::RuntimeError("Broken-out section depth must be greater than zero");
+    }
+
+    TopoDS_Face profileFace;
+    try {
+        BRepBuilderAPI_MakeFace mkFace(profileWire);
+        profileFace = mkFace.Face();
+        if (profileFace.IsNull()) {
+            return {};
+        }
+    }
+    catch (...) {
+        Base::Console().error("%s could not make broken-out profile face\n", Label.getValue());
+        return {};
+    }
+
+    auto* baseDvp = getBaseDVP();
+    Base::Vector3d viewDirection = baseDvp ? baseDvp->Direction.getValue() : Direction.getValue();
+    if (DrawUtil::fpCompare(viewDirection.Length(), 0.0)) {
+        viewDirection = SectionNormal.getValue();
+    }
+    viewDirection.Normalize();
+
+    Base::Vector3d cutDirection = viewDirection * -1.0;
+    gp_Vec cutVector = Base::convertTo<gp_Vec>(cutDirection * cutDepth);
+    TopoDS_Shape prism = BRepPrimAPI_MakePrism(profileFace, cutVector).Shape();
+
+    m_toolFaceShape = ShapeUtils::moveShape(profileFace, cutDirection * cutDepth);
+    if (debugSection()) {
+        BRepTools::Write(m_toolFaceShape, "DCSmakeBrokenOutCuttingTool_m_toolFaceShape.brep");
+    }
+
+    return prism;
+}
+
 bool DrawComplexSection::validateProfileAlignment(const TopoDS_Wire& profileWire) const
 {
     // use "canBuild(profile, sectionnormal)"?
-    if (ProjectionStrategy.getValue() == 0) {
+    if (ProjectionStrategy.getValue() == StrategyOffset) {
         // Offset. Warn if profile is not quite aligned with section normal. if
         // the profile and normal are misaligned, the check below for empty "solids"
         // will not be correct.
@@ -1635,6 +1701,11 @@ bool DrawComplexSection::validateProfileAlignment(const TopoDS_Wire& profileWire
     }
 
     return true;
+}
+
+bool DrawComplexSection::isBrokenOut() const
+{
+    return ProjectionStrategy.getValue() == StrategyBrokenOut;
 }
 
 

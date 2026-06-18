@@ -80,19 +80,34 @@ QGISectionLine::QGISectionLine() :
 void QGISectionLine::draw()
 {
     prepareGeometryChange();
-    int format = Preferences::sectionLineConvention();
-    if (format == ANSISTANDARD) {                           //"ASME"/"ANSI"
-        extensionEndsTrad();
-    } else {
-        extensionEndsISO();
-    }
 
     if (!pathMode()) {
         makeSectionLine();
     }
-    makeExtensionLine();
-    makeArrows();
-    makeSymbols();
+    if (m_showAnnotations) {
+        m_arrow1->show();
+        m_arrow2->show();
+        m_symbol1->show();
+        m_symbol2->show();
+
+        int format = Preferences::sectionLineConvention();
+        if (format == ANSISTANDARD) {                           //"ASME"/"ANSI"
+            extensionEndsTrad();
+        } else {
+            extensionEndsISO();
+        }
+        makeExtensionLine();
+        makeArrows();
+        makeSymbols();
+    }
+    else {
+        QPainterPath emptyPath;
+        m_extend->setPath(emptyPath);
+        m_arrow1->hide();
+        m_arrow2->hide();
+        m_symbol1->hide();
+        m_symbol2->hide();
+    }
     makeChangePointMarks();
     update();
 }

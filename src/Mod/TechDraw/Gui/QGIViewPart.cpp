@@ -828,16 +828,11 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     }
 
     auto dcs = static_cast<DrawComplexSection*>(viewSection);
-    std::pair<Base::Vector3d, Base::Vector3d> ends = dcs->sectionLineEnds();
-    Base::Vector3d vStart = Rez::guiX(ends.first);//already scaled by dcs
-    Base::Vector3d vEnd = Rez::guiX(ends.second);
-    if (vStart.IsEqual(vEnd, EWTOLERANCE) ) {
-        Base::Console().message("QGIVP::drawComplexSectionLine - line endpoints are equal. No section line created.\n");
+    BaseGeomPtrVector edges = dcs->makeSectionLineGeometry();
+    if (edges.empty()) {
         return;
     }
 
-
-    BaseGeomPtrVector edges = dcs->makeSectionLineGeometry();
     QPainterPath wirePath;
     QPainterPath firstSeg = drawPainterPath(edges.front());
     wirePath.connectPath(firstSeg);
@@ -851,6 +846,29 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
         wirePath.connectPath(edgePath);
     }
 
+    Base::Vector3d vStart;
+    Base::Vector3d vEnd;
+    if (dcs->isBrokenOut()) {
+        QRectF pathBounds = wirePath.boundingRect();
+        if (pathBounds.isEmpty()) {
+            return;
+        }
+        QPointF left = pathBounds.center();
+        left.setX(pathBounds.left());
+        QPointF right = pathBounds.center();
+        right.setX(pathBounds.right());
+        vStart = Base::Vector3d(left.x(), left.y(), 0.0);
+        vEnd = Base::Vector3d(right.x(), right.y(), 0.0);
+    }
+    else {
+        std::pair<Base::Vector3d, Base::Vector3d> ends = dcs->sectionLineEnds();
+        vStart = Rez::guiX(ends.first);//already scaled by dcs
+        vEnd = Rez::guiX(ends.second);
+    }
+    if (vStart.IsEqual(vEnd, EWTOLERANCE) ) {
+        Base::Console().message("QGIVP::drawComplexSectionLine - line endpoints are equal. No section line created.\n");
+        return;
+    }
 
     QGISectionLine* sectionLine = new QGISectionLine();
     addToGroupWithoutUpdate(sectionLine);
@@ -860,15 +878,20 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     sectionLine->setPathMode(true);
     sectionLine->setPath(wirePath);
     sectionLine->setEnds(vStart, vEnd);
-    if (vp->SectionLineMarks.getValue()) {
+    if (vp->SectionLineMarks.getValue() && !dcs->isBrokenOut()) {
         sectionLine->setChangePoints(dcs->getChangePointsFromSectionLine());
     }
     else {
         sectionLine->clearChangePoints();
     }
 
-    std::pair<Base::Vector3d, Base::Vector3d> dirsDCS = dcs->sectionLineArrowDirsMapped();
-    sectionLine->setArrowDirections(dirsDCS.first, dirsDCS.second);
+    if (dcs->isBrokenOut()) {
+        sectionLine->setShowAnnotations(false);
+    }
+    else {
+        std::pair<Base::Vector3d, Base::Vector3d> dirsDCS = dcs->sectionLineArrowDirsMapped();
+        sectionLine->setArrowDirections(dirsDCS.first, dirsDCS.second);
+    }
 
     //set the general parameters
     sectionLine->setPos(0.0, 0.0);
@@ -1505,5 +1528,4 @@ void QGIViewPart::setMovableFlagProjGroupItem()
     // not locked, not autoDistribute
     setFlag(QGraphicsItem::ItemIsMovable, true);
 }
-
 
