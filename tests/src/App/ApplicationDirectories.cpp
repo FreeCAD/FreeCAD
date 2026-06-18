@@ -6,7 +6,6 @@
 #include <random>
 #include <fstream>
 #include "Base/Exception.h"
-#include "Base/FileInfo.h"
 
 /* NOLINTBEGIN(
     readability-magic-numbers,
@@ -942,81 +941,6 @@ TEST_F(ApplicationDirectoriesTest, appendCreateAlreadyVersionedBails)
     auto before = sub;
     appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
     EXPECT_EQ(sub, before);
-}
-
-// repairDuplicatedVersionPath: collapses an older version nested before the current one
-TEST_F(ApplicationDirectoriesTest, repairDuplicatedVersionPathCollapsesNestedVersion)
-{
-    auto appDirs = makeAppDirsForVersion(5, 4);
-    std::string corrupted = Base::FileInfo::pathToString(
-        versionedPath(versionedPath(tempDir(), 5, 1), 5, 4) / "Macro"
-    );
-    std::string expected = Base::FileInfo::pathToString(versionedPath(tempDir(), 5, 4) / "Macro");
-    EXPECT_EQ(appDirs->repairDuplicatedVersionPath(corrupted), expected);
-}
-
-// repairDuplicatedVersionPath: handles a trailing version with no following component
-TEST_F(ApplicationDirectoriesTest, repairDuplicatedVersionPathCollapsesTrailingVersion)
-{
-    auto appDirs = makeAppDirsForVersion(5, 4);
-    std::string corrupted = Base::FileInfo::pathToString(
-        versionedPath(versionedPath(tempDir(), 5, 1), 5, 4)
-    );
-    std::string expected = Base::FileInfo::pathToString(versionedPath(tempDir(), 5, 4));
-    EXPECT_EQ(appDirs->repairDuplicatedVersionPath(corrupted), expected);
-}
-
-// repairDuplicatedVersionPath: a correct path is unchanged and the operation is idempotent
-TEST_F(ApplicationDirectoriesTest, repairDuplicatedVersionPathLeavesCorrectPathUnchanged)
-{
-    auto appDirs = makeAppDirsForVersion(5, 4);
-    std::string correct = Base::FileInfo::pathToString(versionedPath(tempDir(), 5, 4) / "Macro");
-    EXPECT_EQ(appDirs->repairDuplicatedVersionPath(correct), correct);
-    auto once = appDirs->repairDuplicatedVersionPath(correct);
-    EXPECT_EQ(appDirs->repairDuplicatedVersionPath(once), once);
-}
-
-// repairDuplicatedVersionPath: only collapses when the inner version is the current one
-TEST_F(ApplicationDirectoriesTest, repairDuplicatedVersionPathIgnoresNonCurrentInnerVersion)
-{
-    auto appDirs = makeAppDirsForVersion(5, 4);
-    std::string other = Base::FileInfo::pathToString(
-        versionedPath(versionedPath(tempDir(), 5, 1), 5, 2) / "Macro"
-    );
-    EXPECT_EQ(appDirs->repairDuplicatedVersionPath(other), other);
-}
-
-// repairDuplicatedVersionDirectories: merges a stray nested directory and removes it
-TEST_F(ApplicationDirectoriesTest, repairDuplicatedVersionDirectoriesMergesAndRemovesStray)
-{
-    auto appDirs = makeAppDirsForVersion(5, 4);
-    fs::path base = tempDir() / "FreeCAD";
-    fs::path current = versionedPath(base, 5, 4);
-    fs::path stray = versionedPath(versionedPath(base, 5, 1), 5, 4);
-
-    writeFile(current / "Macro" / "existing.txt", "keep");
-    writeFile(stray / "Macro" / "existing.txt", "should-not-overwrite");
-    writeFile(stray / "Macro" / "fresh.txt", "rescued");
-
-    EXPECT_TRUE(appDirs->repairDuplicatedVersionDirectories(current));
-
-    EXPECT_FALSE(fs::exists(stray));
-    EXPECT_TRUE(fs::exists(versionedPath(base, 5, 1)));  // The real old install is untouched
-    EXPECT_EQ(readFile(current / "Macro" / "existing.txt"), "keep");  // Existing file preserved
-    EXPECT_EQ(readFile(current / "Macro" / "fresh.txt"), "rescued");  // Unique file rescued
-}
-
-// repairDuplicatedVersionDirectories: no stray present -> nothing to do
-TEST_F(ApplicationDirectoriesTest, repairDuplicatedVersionDirectoriesNoStrayReturnsFalse)
-{
-    auto appDirs = makeAppDirsForVersion(5, 4);
-    fs::path base = tempDir() / "FreeCAD";
-    fs::path current = versionedPath(base, 5, 4);
-    writeFile(current / "Macro" / "a.txt", "alpha");
-    fs::create_directories(versionedPath(base, 5, 1));  // A sibling, but with no nested current dir
-
-    EXPECT_FALSE(appDirs->repairDuplicatedVersionDirectories(current));
-    EXPECT_TRUE(fs::exists(current / "Macro" / "a.txt"));
 }
 
 /* NOLINTEND(

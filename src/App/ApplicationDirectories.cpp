@@ -21,7 +21,6 @@
  **************************************************************************************************/
 
 #include <fmt/format.h>
-#include <regex>
 #include <utility>
 #include <QDir>
 #include <QProcessEnvironment>
@@ -616,63 +615,6 @@ ApplicationDirectories::MigrationResult ApplicationDirectories::migrateConfig(
                                 errorCode.message().c_str());
     }
     return result;
-}
-
-std::string ApplicationDirectories::repairDuplicatedVersionPath(const std::string& path) const
-{
-    auto [major, minor] = _currentVersion;
-    std::string current = versionStringForPath(major, minor);
-    // Match an older versioned component directly followed by the current versioned component and
-    // drop the older one, keeping the surrounding separators (which may be '/' or '\').
-    std::regex pattern(R"(([/\\]|^)v[0-9]+-[0-9]+[/\\]()" + current + ")([/\\\\]|$)");
-    return std::regex_replace(path, pattern, "$1$2$3");
-}
-
-bool ApplicationDirectories::repairDuplicatedVersionDirectories(const fs::path& currentVersionedDir) const
-{
-    auto [major, minor] = _currentVersion;
-    std::string current = versionStringForPath(major, minor);
-    fs::path versionedDir = currentVersionedDir;
-    if (versionedDir.filename().empty()) {
-        versionedDir = versionedDir.parent_path();
-    }
-    if (versionedDir.filename() != current) {
-        return false;  // Only ever repair the current version's directory
-    }
-    std::error_code errorCode;
-    fs::path base = versionedDir.parent_path();
-    if (!fs::is_directory(base, errorCode)) {
-        return false;
-    }
-    bool healedAny = false;
-    for (const auto& entry : fs::directory_iterator(base, errorCode)) {
-        const fs::path& sibling = entry.path();
-        if (sibling == versionedDir || !isVersionedPath(sibling)
-            || !entry.is_directory(errorCode)) {
-            continue;
-        }
-        fs::path stray = sibling / current;
-        if (!fs::is_directory(stray, errorCode)) {
-            continue;
-        }
-        Base::Console().message("Repairing stray migrated directory %s\n",
-                                Base::FileInfo::pathToString(stray));
-        fs::copy(stray,
-                 versionedDir,
-                 fs::copy_options::recursive | fs::copy_options::skip_existing,
-                 errorCode);
-        if (errorCode) {
-            Base::Console().warning("Migration repair: failed to merge '%s': %s\n",
-                                    Base::FileInfo::pathToString(stray).c_str(),
-                                    errorCode.message().c_str());
-            errorCode.clear();
-            continue;
-        }
-        fs::remove_all(stray, errorCode);
-        errorCode.clear();
-        healedAny = true;
-    }
-    return healedAny;
 }
 
 ApplicationDirectories::MigrationResult ApplicationDirectories::migrateAllPaths(

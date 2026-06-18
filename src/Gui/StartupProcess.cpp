@@ -58,7 +58,6 @@
 #include <App/Application.h>
 #include <App/ApplicationDirectories.h>
 #include <Base/Console.h>
-#include <Base/Parameter.h>
 
 
 using namespace Gui;
@@ -238,7 +237,6 @@ void StartupPostProcess::execute()
     showMainWindow();
     activateWorkbench();
     checkParameters();
-    healVersionMigrationDuplication();
     checkVersionMigration();
 }
 
@@ -627,44 +625,4 @@ void StartupPostProcess::checkVersionMigration() const
     auto migrator = new Dialog::DlgVersionMigrator(mainWindow);
     migrator->exec();
     migrator->deleteLater();
-}
-
-// Recursively repair any stored paths corrupted by the migration bug in issue #30409.
-static bool healParameterGroupPaths(
-    const Base::Reference<ParameterGrp>& group,
-    const App::ApplicationDirectories* directories
-)
-{
-    bool changed = false;
-    for (const auto& [name, value] : group->GetASCIIMap()) {
-        std::string repaired = directories->repairDuplicatedVersionPath(value);
-        if (repaired != value) {
-            group->SetASCII(name.c_str(), repaired);
-            changed = true;
-        }
-    }
-    for (const auto& subgroup : group->GetGroups()) {
-        changed = healParameterGroupPaths(subgroup, directories) || changed;
-    }
-    return changed;
-}
-
-// One-time repair for installations affected by the migration bug in issue #30409, where the
-// current versioned directory was erroneously nested inside an older one.
-void StartupPostProcess::healVersionMigrationDuplication()
-{
-    auto migrationPrefs = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Migration"
-    );
-    if (migrationPrefs->GetBool("DuplicatedVersionPathHealed", false)) {
-        return;
-    }
-    const auto& directories = App::Application::directories();
-    if (!directories->usingCustomDirectories()) {
-        directories->repairDuplicatedVersionDirectories(directories->getUserAppDataDir());
-        directories->repairDuplicatedVersionDirectories(directories->getUserConfigPath());
-        Base::Reference<ParameterGrp> userParameterRoot(&App::GetApplication().GetUserParameter());
-        healParameterGroupPaths(userParameterRoot, directories.get());
-    }
-    migrationPrefs->SetBool("DuplicatedVersionPathHealed", true);
 }
