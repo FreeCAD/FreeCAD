@@ -190,20 +190,19 @@ void SectionAnalysisWidget::setupUi()
         }
     }
 
-    // Offset
-    planeLayout->addWidget(new QLabel(tr("Distance:"), this), 3, 0);
+    // Offset is driven by the cutting-plane dragger and, per review pierreporte feedback
+    // Intentionally not shown in the task panel.
     offsetSpin = new Gui::QuantitySpinBox(this);
     offsetSpin->setUnit(Base::Unit::Length);
     offsetSpin->setRange(-1e9, 1e9);
     offsetSpin->setSingleStep(0.01);
     offsetSpin->setValue(feature->PlaneOffset.getValue());
-    planeLayout->addWidget(offsetSpin, 3, 1);
+    offsetSpin->hide();
 
-    // Offset slider
     offsetSlider = new QSlider(Qt::Horizontal, this);
     offsetSlider->setRange(0, 1000);
     offsetSlider->setValue(500);
-    planeLayout->addWidget(offsetSlider, 4, 0, 1, 2);
+    offsetSlider->hide();
 
     // Flip
     flipCheck = new QCheckBox(tr("Flip Direction"), this);
@@ -218,7 +217,16 @@ void SectionAnalysisWidget::setupUi()
 
     appearLayout->addWidget(new QLabel(tr("Section Color:"), this), 0, 0);
     sectionColorBtn = new Gui::ColorButton(this);
-    sectionColorBtn->setColor(QColor(204, 76, 51));  // default reddish-orange
+    {
+        // Reflect the section's actual colour (each new section gets a distinct
+        // default colour assigned at creation) rather than a fixed swatch.
+        const App::Material& curMat = viewProvider->ShapeAppearance[0];
+        sectionColorBtn->setColor(QColor::fromRgbF(
+            curMat.diffuseColor.r,
+            curMat.diffuseColor.g,
+            curMat.diffuseColor.b
+        ));
+    }
     appearLayout->addWidget(sectionColorBtn, 0, 1);
 
     hatchCheck = new QCheckBox(tr("Show Hatching"), this);
