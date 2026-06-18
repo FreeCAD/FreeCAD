@@ -221,11 +221,9 @@ void SectionAnalysisWidget::setupUi()
         // Reflect the section's actual colour (each new section gets a distinct
         // default colour assigned at creation) rather than a fixed swatch.
         const App::Material& curMat = viewProvider->ShapeAppearance[0];
-        sectionColorBtn->setColor(QColor::fromRgbF(
-            curMat.diffuseColor.r,
-            curMat.diffuseColor.g,
-            curMat.diffuseColor.b
-        ));
+        sectionColorBtn->setColor(
+            QColor::fromRgbF(curMat.diffuseColor.r, curMat.diffuseColor.g, curMat.diffuseColor.b)
+        );
     }
     appearLayout->addWidget(sectionColorBtn, 0, 1);
 
