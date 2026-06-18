@@ -10,7 +10,7 @@ Var FileAssociation
 
 # ----------------------------------
 
-Section "un.FreeCAD" un.SecUnProgramFiles
+Section "un.${APP_NAME}" un.SecUnProgramFiles
 
   SectionIn RO
     
