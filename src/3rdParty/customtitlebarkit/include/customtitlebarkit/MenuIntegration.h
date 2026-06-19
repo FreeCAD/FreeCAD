@@ -40,7 +40,7 @@ private:
 };
 
 /// Foldable menu integration: wraps QMenuBar inside a FoldableMenuBar
-/// with an optional brand widget. Collapsed shows only brand, hover expands.
+/// with an optional brand widget. Collapsed shows only the brand; clicking it expands.
 class CUSTOMTITLEBARKIT_EXPORT FoldableMenuIntegration : public MenuIntegration {
     Q_OBJECT
 public:

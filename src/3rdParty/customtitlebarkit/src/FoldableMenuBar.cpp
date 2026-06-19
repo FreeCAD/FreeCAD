@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 #include <QMenu>
 #include <QMenuBar>
+#include <QMouseEvent>
 #include <QPropertyAnimation>
 #include <QTimer>
 
@@ -252,12 +253,14 @@ QMenu *FoldableMenuBar::addMenu(const QString &title)
 void FoldableMenuBar::setBrandWidget(QWidget *brand)
 {
     if (d->brandWidget) {
+        d->brandWidget->removeEventFilter(this);
         d->layout->removeWidget(d->brandWidget);
         d->brandWidget->setParent(nullptr);
     }
     d->brandWidget = brand;
     if (brand) {
         brand->setParent(this);
+        brand->installEventFilter(this);
         d->layout->insertWidget(0, brand);
     }
 }
@@ -391,9 +394,6 @@ bool FoldableMenuBar::isExpanded() const
 void FoldableMenuBar::enterEvent(QEnterEvent *event)
 {
     d->collapseTimer->stop();
-    if (d->foldable && !d->expanded) {
-        setExpanded(true);
-    }
     QWidget::enterEvent(event);
 }
 
@@ -416,6 +416,16 @@ void FoldableMenuBar::resizeEvent(QResizeEvent *event)
 
 bool FoldableMenuBar::eventFilter(QObject *obj, QEvent *event)
 {
+    if (obj == d->brandWidget && event->type() == QEvent::MouseButtonRelease) {
+        auto *mouseEvent = static_cast<QMouseEvent *>(event);
+        if (mouseEvent->button() == Qt::LeftButton
+            && d->brandWidget->rect().contains(mouseEvent->position().toPoint())
+            && d->foldable) {
+            d->collapseTimer->stop();
+            setExpanded(!d->expanded);
+        }
+    }
+
     // Watch for menus being added to the external QMenuBar
     if (obj == d->menuBar && event->type() == QEvent::ActionAdded) {
         auto *actionEvent = static_cast<QActionEvent *>(event);
