@@ -1240,7 +1240,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/ffmpeg-7.1.1-gpl_h70aa942_910.conda
       - conda: https://prefix.dev/conda-forge/win-64/flann-1.9.2-h48fefe0_4.conda
       - conda: https://prefix.dev/conda-forge/win-64/fltk-1.3.10-h5d05227_0.conda
-      - conda: https://prefix.dev/conda-forge/win-64/fmt-12.2.0-h1ced75a_0.conda
+      - conda: https://prefix.dev/conda-forge/win-64/fmt-12.1.0-h7f4e812_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/font-ttf-dejavu-sans-mono-2.37-hab24e00_0.tar.bz2
       - conda: https://prefix.dev/conda-forge/noarch/font-ttf-inconsolata-3.000-h77eed37_0.tar.bz2
       - conda: https://prefix.dev/conda-forge/noarch/font-ttf-source-code-pro-2.038-h77eed37_0.tar.bz2
@@ -4078,17 +4078,17 @@ packages:
   license_family: MIT
   size: 180970
   timestamp: 1767681372955
-- conda: https://prefix.dev/conda-forge/win-64/fmt-12.2.0-h1ced75a_0.conda
-  sha256: 295d61f20e3e0b826b20a660be887c50526df43f8665bc7feee96c10af69c82a
-  md5: 4eccabefe6fd1126ec053e622fc8df24
+- conda: https://prefix.dev/conda-forge/win-64/fmt-12.1.0-h7f4e812_0.conda
+  sha256: cce96406ec353692ab46cd9d992eddb6923979c1a342cbdba33521a7c234176f
+  md5: 6e226b58e18411571aaa57a16ad10831
   depends:
   - ucrt >=10.0.20348.0
   - vc >=14.3,<15
   - vc14_runtime >=14.44.35208
   license: MIT
   license_family: MIT
-  size: 204060
-  timestamp: 1781603799521
+  size: 186390
+  timestamp: 1767681264793
 - conda: https://prefix.dev/conda-forge/noarch/font-ttf-dejavu-sans-mono-2.37-hab24e00_0.tar.bz2
   sha256: 58d7f40d2940dd0a8aa28651239adbf5613254df0f75789919c4e6762054403b
   md5: 0c96522c6bdaed4b1566d11387caaf45
@@ -4323,23 +4323,23 @@ packages:
   - typing_extensions
   - vtk
   - xlutils
+  - fmt >=12.1.0,<12.2.0a0
   - coin3d >=4.0.3,<4.1.0a0
   - smesh >=9.9.0.0,<9.9.1.0a0
-  - pcl >=1.15.0,<1.15.1.0a0
-  - libboost >=1.86.0,<1.87.0a0
-  - fmt >=12.2.0,<12.3.0a0
   - libfreetype >=2.14.3
   - libfreetype6 >=2.14.3
   - libzlib >=1.3.2,<2.0a0
+  - pcl >=1.15.0,<1.15.1.0a0
   - vtk-base >=9.3.1,<9.3.2.0a0
   - hdf5 >=1.14.3,<1.14.4.0a0
+  - libboost >=1.86.0,<1.87.0a0
   - python_abi 3.11.* *_cp311
   - xerces-c >=3.3.0,<3.4.0a0
   - yaml-cpp >=0.8.0,<0.9.0a0
   - libwinpthread >=12.0.0.r4.gg4f2fc60ca
   - tbb >=2022.3.0
   input:
-    hash: 1e66a133830a44bac191206d54fcbf9c37a76c18fd5246d009673965ca5c1776
+    hash: 21eae90d94d7a0b3e932347cb335ecbe12d4c50f390661ade94863ccb03c0677
     globs:
     - recipe.yaml
     - variants.yaml
