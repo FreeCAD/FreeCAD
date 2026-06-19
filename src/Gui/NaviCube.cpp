@@ -1030,11 +1030,11 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
 {
     static const float pi = boost::math::constants::pi<float>();
 
-    setHilite(PickId::None);
     mouseDown = false;
 
     if (dragging) {
         dragging = false;
+        setHilite(PickId::None);
         resetClickState();
     }
     else {
@@ -1066,18 +1066,20 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
                 lastClickPickId = pickId;
                 clickTimer.start();
             }
+            setHilite(PickId::None);
         }
         else if (faceType == FaceType::Button) {
             // Handle the menu
             if (pickId == PickId::ViewMenu) {
                 resetClickState();
+                setHilite(PickId::None);
                 handleMenu();
                 return true;
             }
             else if (pickId == PickId::Home) {
-                CommandManager& rcCmdMgr = Application::Instance->commandManager();
-                rcCmdMgr.runCommandByName("Std_ViewHome");
-
+                resetClickState();
+                viewer->viewHome();
+                setHilite(pickId);
                 return true;
             }
 
@@ -1103,8 +1105,10 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
             }
 
             flatButtonAnimation = viewer->setCameraOrientation(flatButtonTargetOrientation);
+            setHilite(pickId);
         }
         else {
+            setHilite(PickId::None);
             resetClickState();
             return false;
         }

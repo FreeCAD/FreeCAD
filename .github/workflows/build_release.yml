@@ -116,7 +116,7 @@ jobs:
           - { target: linux-64, os: ubuntu-22.04 }
           - { target: osx-arm64, os: macos-latest, deploy_target: "11.0" }
           - { target: osx-arm64, os: macos-latest, deploy_target: "15.0" }
-          - { target: win-64, os: windows-latest }
+          - { target: win-64, os: windows-2022 }
       fail-fast: false
 
     runs-on: ${{ matrix.os }}

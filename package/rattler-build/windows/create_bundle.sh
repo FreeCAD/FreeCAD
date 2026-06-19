@@ -137,6 +137,12 @@ else
   echo "Not logged into Azure -- skipping signing."
 fi
 
+echo "Running FreeCAD command-line smoke test..."
+if ! "$SIGN_DIR/bin/freecadcmd.exe" --safe-mode --version; then
+  echo "FreeCAD command-line smoke test failed; the Windows bundle cannot start."
+  exit 1
+fi
+
 7z a -t7z -mx9 -mmt=${NUMBER_OF_PROCESSORS} ${version_name}.7z ${version_name} -bb
 # create hash
 sha256sum ${version_name}.7z > ${version_name}.7z-SHA256.txt

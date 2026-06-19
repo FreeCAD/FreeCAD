@@ -97,44 +97,42 @@ class DraftWorkbench(FreeCADGui.Workbench):
                 "Draft will not work as expected.\n"
             )
 
-        # Set up command lists
-        import draftutils.init_tools as it
+        from draftutils import init_tools as it
 
-        self.drawing_commands = it.get_draft_drawing_commands()
-        self.annotation_commands = it.get_draft_annotation_commands()
-        self.modification_commands = it.get_draft_modification_commands()
-        self.utility_commands_menu = it.get_draft_utility_commands_menu()
-        self.utility_commands_toolbar = it.get_draft_utility_commands_toolbar()
-        self.context_commands = it.get_draft_context_commands()
+        # fmt: off
 
         # Set up toolbars
-        it.init_toolbar(
-            self, QT_TRANSLATE_NOOP("Workbench", "Draft Creation"), self.drawing_commands
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Draft Creation"), it.get_draft_drawing_commands()
         )
-        it.init_toolbar(
-            self, QT_TRANSLATE_NOOP("Workbench", "Draft Annotation"), self.annotation_commands
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Draft Annotation"), it.get_draft_annotation_commands()
         )
-        it.init_toolbar(
-            self, QT_TRANSLATE_NOOP("Workbench", "Draft Modification"), self.modification_commands
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Draft Modification"), it.get_draft_modification_commands()
         )
-        it.init_toolbar(
-            self, QT_TRANSLATE_NOOP("Workbench", "Draft Utility"), self.utility_commands_toolbar
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Draft Utility"), it.get_draft_utility_commands_toolbar()
         )
-        it.init_toolbar(
-            self, QT_TRANSLATE_NOOP("Workbench", "Draft Snap"), it.get_draft_snap_commands()
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Draft Snap"), it.get_draft_snap_commands()
         )
 
         # Set up menus
-        it.init_menu(self, [QT_TRANSLATE_NOOP("Workbench", "&Drafting")], self.drawing_commands)
-        it.init_menu(
-            self, [QT_TRANSLATE_NOOP("Workbench", "&Annotation")], self.annotation_commands
+        self.appendMenu(
+            QT_TRANSLATE_NOOP("Workbench", "&Drafting"), it.get_draft_drawing_commands()
         )
-        it.init_menu(
-            self, [QT_TRANSLATE_NOOP("Workbench", "&Modification")], self.modification_commands
+        self.appendMenu(
+            QT_TRANSLATE_NOOP("Workbench", "&Annotation"), it.get_draft_annotation_commands()
         )
-        it.init_menu(
-            self, [QT_TRANSLATE_NOOP("Workbench", "&Utilities")], self.utility_commands_menu
+        self.appendMenu(
+            QT_TRANSLATE_NOOP("Workbench", "&Modification"), it.get_draft_modification_commands()
         )
+        self.appendMenu(
+            QT_TRANSLATE_NOOP("Workbench", "&Utilities"), it.get_draft_utility_commands_menu()
+        )
+
+        # fmt: on
 
         # Set up preferences pages
         if hasattr(FreeCADGui, "draftToolBar"):
@@ -234,7 +232,9 @@ class DraftWorkbench(FreeCADGui.Workbench):
             ]:
                 self.appendContextMenu("", ["Draft_Hyperlink"])
 
-        self.appendContextMenu("Utilities", self.context_commands)
+        from draftutils import init_tools as it
+
+        self.appendContextMenu("Utilities", it.get_draft_context_commands())
 
     def GetClassName(self):
         """Type of workbench."""

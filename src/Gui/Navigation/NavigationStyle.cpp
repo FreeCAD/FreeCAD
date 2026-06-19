@@ -49,6 +49,7 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Command.h"
 #include "Action.h"
 #include "Inventor/SoMouseWheelEvent.h"
@@ -59,25 +60,9 @@
 #include "Selection.h"
 #include "SoFullPathHelper.h"
 #include "View3DInventorViewer.h"
+#include "ViewParams.h"
 
 using namespace Gui;
-
-namespace
-{
-bool rotationsMatch(const SbRotation& lhs, const SbRotation& rhs, float squaredTolerance = 1e-6F)
-{
-    float l0, l1, l2, l3;
-    float r0, r1, r2, r3;
-    lhs.getValue(l0, l1, l2, l3);
-    rhs.getValue(r0, r1, r2, r3);
-    const float dot = l0 * r0 + l1 * r1 + l2 * r2 + l3 * r3;
-    const float absDot = std::fabs(dot);
-    // For unit quaternions, ||a - b||^2 = 2 - 2 * dot(a, b). Since q and -q
-    // encode the same rotation, use abs(dot) to compare against the closer sign.
-    const float squaredDistance = 2.0F * (1.0F - absDot);
-    return squaredDistance <= squaredTolerance;
-}
-}  // namespace
 
 class FCSphereSheetProjector: public SbSphereSheetProjector
 {
@@ -1550,7 +1535,7 @@ SbBool NavigationStyle::canChangeCameraOrientation(
     const OrientationChangeSource source
 ) const
 {
-    if (rotationsMatch(current, target)) {
+    if (Camera::rotationsMatch(current, target)) {
         return true;
     }
     if (isOrientationLocked()) {
@@ -1787,6 +1772,22 @@ bool NavigationStyle::tryStartBoxSelection(const SoLocation2Event* const ev, boo
     return tryStartBoxSelection(*selectionStartPosition, ev, additiveSelection, false);
 }
 
+bool NavigationStyle::handleSelectionDragMotion(
+    const SoLocation2Event* const ev,
+    ViewerMode& newmode,
+    bool additiveSelection,
+    bool allowBoxSelection
+)
+{
+    if (offerEventToViewer(ev)) {
+        // Once the viewer owns the drag, keep selection handling out of the way until release.
+        newmode = NavigationStyle::INTERACT;
+        return true;
+    }
+
+    return allowBoxSelection && tryStartBoxSelection(ev, additiveSelection);
+}
+
 bool NavigationStyle::tryStartBoxSelection(
     const SbVec2s& startPosition,
     const SoLocation2Event* const ev,
@@ -1795,6 +1796,11 @@ bool NavigationStyle::tryStartBoxSelection(
 )
 {
     if (!ev || mouseSelection || !viewer || !viewer->isSelectionEnabled()) {
+        return false;
+    }
+    // Some interactive tools temporarily disable selection through view preferences to keep
+    // drag/release events on their own callbacks. Rubberband selection must honor that too.
+    if (!ViewParams::instance()->getEnableSelection()) {
         return false;
     }
     if (viewer->isEditing() || viewer->isEditingViewProvider()) {
@@ -1823,10 +1829,15 @@ bool NavigationStyle::tryStartBoxSelection(
 
 bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
 {
+    auto* sceneGraph = this->viewer->getSoRenderManager()->getSceneGraph();
+    if (!sceneGraph) {
+        return false;
+    }
+
     SoRayPickAction rp(this->viewer->getSoRenderManager()->getViewportRegion());
     rp.setRadius(viewer->getPickRadius());
     rp.setPoint(pos);
-    rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
+    rp.apply(sceneGraph);
     SoPickedPoint* pick = rp.getPickedPoint();
     if (pick) {
         const auto fullpath = Gui::toFullPath(pick->getPath());
@@ -1835,8 +1846,8 @@ bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
                 return true;
             }
         }
-        return false;
     }
+
     return false;
 }
 
@@ -2055,6 +2066,11 @@ SbBool NavigationStyle::processSoEvent(const SoEvent* const ev)
     }
 
     return processed;
+}
+
+bool NavigationStyle::offerEventToViewer(const SoEvent* const ev)
+{
+    return viewer ? viewer->processSoEventBase(ev) : false;
 }
 
 void NavigationStyle::syncWithEvent(const SoEvent* const ev)
