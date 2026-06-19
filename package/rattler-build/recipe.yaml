@@ -101,7 +101,7 @@ requirements:
 
   host:
     - eigen >=3.3,<5
-    - fmt >=12.1,<12.2
+    - fmt
     - freetype
     - hdf5
     - lark
