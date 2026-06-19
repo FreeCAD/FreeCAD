@@ -110,7 +110,6 @@ public:
 
     ~TaskBox() override;
     void hideGroupBox();
-    bool isGroupVisible() const;
 
 protected:
     void showEvent(QShowEvent*) override;

@@ -31,11 +31,13 @@ class QSINT_EXPORT ActionGroup : public QWidget
     Q_OBJECT
 
     Q_PROPERTY(bool expandable READ isExpandable WRITE setExpandable NOTIFY expandableChanged)
+    Q_PROPERTY(bool expanded READ isExpanded WRITE setExpanded NOTIFY expandedChanged)
     Q_PROPERTY(bool header READ hasHeader WRITE setHeader NOTIFY headerChanged)
     Q_PROPERTY(QString headerText READ headerText WRITE setHeaderText NOTIFY headerTextChanged)
 
 Q_SIGNALS:
     void expandableChanged();
+    void expandedChanged();
     void headerChanged();
     void headerTextChanged();
 
@@ -120,6 +122,18 @@ public:
     void setExpandable(bool expandable);
 
     /**
+     * @brief Checks if the group is expanded.
+     * @return `true` if the group is expanded, `false` if collapsed.
+     */
+    bool isExpanded() const;
+
+    /**
+     * @brief Sets whether the group is expanded.
+     * @param expanded If `true`, the group contents are shown.
+     */
+    void setExpanded(bool expanded);
+
+    /**
      * @brief Checks if the group has a header.
      * @return `true` if the group has a header, `false` otherwise.
      */
@@ -185,11 +199,18 @@ protected:
      */
     void init(bool hasHeader);
 
+    /**
+     * @brief Sets the logical expansion state.
+     * @param expanded If `true`, the group is considered expanded.
+     */
+    void setExpandedState(bool expanded);
+
     double m_foldStep = 0;      ///< Current folding animation step.
     double m_foldDelta = 0;     ///< Change in height per animation step.
     double m_fullHeight = 0;    ///< Full (expanded) height of the group.
     double m_tempHeight = 0;    ///< Temporary height during animation.
     int m_foldDirection = 0;    ///< Direction of folding animation.
+    bool m_expanded = true;     ///< Logical expansion state.
 
     QPixmap m_foldPixmap;       ///< Pixmap for the fold/unfold icon.
 

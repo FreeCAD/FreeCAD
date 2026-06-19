@@ -188,6 +188,7 @@ void TaskBox::hideGroupBox()
     m_foldStep = 0.0;
     m_foldDirection = -1;
 
+    setExpandedState(false);
     myHeader->setFold(false);
 
     myDummy->setFixedHeight(0);
@@ -197,11 +198,6 @@ void TaskBox::hideGroupBox()
     m_foldPixmap = QPixmap();
     setFixedHeight(myHeader->height());
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-}
-
-bool TaskBox::isGroupVisible() const
-{
-    return myGroup->isVisible();
 }
 
 void TaskBox::actionEvent(QActionEvent* e)

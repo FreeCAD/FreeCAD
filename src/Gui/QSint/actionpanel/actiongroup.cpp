@@ -111,7 +111,10 @@ void ActionGroup::showHide()
 {
     if (m_foldStep || !myHeader->expandable()) return;
 
-    if (myGroup->isVisible())
+    const bool expand = !m_expanded;
+    setExpandedState(expand);
+
+    if (!expand)
     {
         m_foldPixmap = myGroup->transparentRender();
         m_tempHeight = m_fullHeight = myGroup->height();
@@ -137,6 +140,10 @@ void ActionGroup::showHide()
 
 void ActionGroup::processHide()
 {
+    if (m_foldStep <= 0) {
+        return;
+    }
+
     if (--m_foldStep == 0)
     {
         myDummy->hide();
@@ -155,6 +162,10 @@ void ActionGroup::processHide()
 
 void ActionGroup::processShow()
 {
+    if (m_foldStep <= 0) {
+        return;
+    }
+
     if (--m_foldStep == 0)
     {
         myDummy->hide();
@@ -213,6 +224,47 @@ bool ActionGroup::isExpandable() const
 void ActionGroup::setExpandable(bool expandable)
 {
     myHeader->setExpandable(expandable);
+}
+
+bool ActionGroup::isExpanded() const
+{
+    return m_expanded;
+}
+
+void ActionGroup::setExpanded(bool expanded)
+{
+    m_foldStep = 0;
+    m_foldDirection = expanded ? 1 : -1;
+    m_foldPixmap = QPixmap();
+
+    setExpandedState(expanded);
+
+    myDummy->setFixedHeight(0);
+    myDummy->hide();
+    myHeader->setFold(expanded);
+
+    if (expanded) {
+        myGroup->show();
+        setMinimumHeight(0);
+        setMaximumHeight(QWIDGETSIZE_MAX);
+    }
+    else {
+        myGroup->hide();
+        setFixedHeight(myHeader->height() + separatorHeight);
+    }
+
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    updateGeometry();
+}
+
+void ActionGroup::setExpandedState(bool expanded)
+{
+    if (m_expanded == expanded) {
+        return;
+    }
+
+    m_expanded = expanded;
+    Q_EMIT expandedChanged();
 }
 
 bool ActionGroup::hasHeader() const
