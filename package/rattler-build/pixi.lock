@@ -1397,7 +1397,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/tbb-2023.0.0-hd3d4ead_2.conda
       - conda: https://prefix.dev/conda-forge/win-64/tbb-devel-2023.0.0-h7c1ad13_2.conda
       - conda: https://prefix.dev/conda-forge/win-64/tk-8.6.13-h6ed50ae_3.conda
-      - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
+      - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.20348.0-h57928b3_0.tar.bz2
       - conda: https://prefix.dev/conda-forge/win-64/unicodedata2-17.0.1-py311h3485c13_0.conda
       - conda: https://prefix.dev/conda-forge/win-64/utfcpp-4.09-h57928b3_0.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-h1b7c187_38.conda
@@ -1540,7 +1540,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/win-64/openssl-3.6.2-hf411b9b_0.conda
       - conda: https://prefix.dev/conda-forge/win-64/python-3.11.15-h0159041_0_cpython.conda
       - conda: https://prefix.dev/conda-forge/win-64/tk-8.6.13-h6ed50ae_3.conda
-      - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
+      - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.20348.0-h57928b3_0.tar.bz2
       - conda: https://prefix.dev/conda-forge/win-64/vc-14.5-h1b7c187_38.conda
       - conda: https://prefix.dev/conda-forge/win-64/vc14_runtime-14.51.36231-h1b9f54f_38.conda
       - conda: https://prefix.dev/conda-forge/win-64/vcomp14-14.51.36231-h1b9f54f_38.conda
@@ -24333,6 +24333,16 @@ packages:
     - tk >=8.6.13,<8.7.0a0
   size: 3526350
   timestamp: 1769460339384
+- conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.20348.0-h57928b3_0.tar.bz2
+  sha256: e5a8634df6ee84745dfe27f40ace7b6e45646a4b7bc7dbeb1efe1bb6128e44b9
+  md5: 6d666b6ea8251231ff508062d1e41f9c
+  constrains:
+  - vs2015_runtime >=14.29.30037
+  license: LicenseRef-Proprietary
+  license_family: PROPRIETARY
+  run_exports: {}
+  size: 1233285
+  timestamp: 1624476303271
 - conda: https://prefix.dev/conda-forge/win-64/ucrt-10.0.26100.0-h57928b3_0.conda
   sha256: 3005729dce6f3d3f5ec91dfc49fc75a0095f9cd23bab49efb899657297ac91a5
   md5: 71b24316859acd00bdb8b38f5e2ce328
