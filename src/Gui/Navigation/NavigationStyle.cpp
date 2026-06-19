@@ -49,6 +49,7 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Command.h"
 #include "Action.h"
 #include "Inventor/SoMouseWheelEvent.h"
@@ -62,23 +63,6 @@
 #include "ViewParams.h"
 
 using namespace Gui;
-
-namespace
-{
-bool rotationsMatch(const SbRotation& lhs, const SbRotation& rhs, float squaredTolerance = 1e-6F)
-{
-    float l0, l1, l2, l3;
-    float r0, r1, r2, r3;
-    lhs.getValue(l0, l1, l2, l3);
-    rhs.getValue(r0, r1, r2, r3);
-    const float dot = l0 * r0 + l1 * r1 + l2 * r2 + l3 * r3;
-    const float absDot = std::fabs(dot);
-    // For unit quaternions, ||a - b||^2 = 2 - 2 * dot(a, b). Since q and -q
-    // encode the same rotation, use abs(dot) to compare against the closer sign.
-    const float squaredDistance = 2.0F * (1.0F - absDot);
-    return squaredDistance <= squaredTolerance;
-}
-}  // namespace
 
 class FCSphereSheetProjector: public SbSphereSheetProjector
 {
@@ -1551,7 +1535,7 @@ SbBool NavigationStyle::canChangeCameraOrientation(
     const OrientationChangeSource source
 ) const
 {
-    if (rotationsMatch(current, target)) {
+    if (Camera::rotationsMatch(current, target)) {
         return true;
     }
     if (isOrientationLocked()) {
