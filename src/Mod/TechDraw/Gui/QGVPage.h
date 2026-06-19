@@ -124,6 +124,8 @@ public:
 
     void centerOnPage();
 
+    QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
+
     TechDraw::DrawView* getBalloonParent() { return m_balloonParent; }
 
     void zoomIn();
@@ -151,7 +153,6 @@ protected:
 
     QColor getBackgroundColor();
 
-    QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
 
     void drawForeground(QPainter* painter, const QRectF& rect) override;
 
