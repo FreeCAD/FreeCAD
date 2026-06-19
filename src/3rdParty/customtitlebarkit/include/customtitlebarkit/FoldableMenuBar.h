@@ -30,11 +30,11 @@ public:
     void setMenuBar(QMenuBar *menuBar);
 
     /// Set a brand widget (logo/icon) shown at the left edge.
-    /// When foldable, this is always visible; menu items expand on hover.
+    /// When foldable, this is always visible; clicking it toggles the menu items.
     void setBrandWidget(QWidget *brand);
     QWidget *brandWidget() const;
 
-    /// Foldable mode: collapsed shows only brand, hover expands menu items.
+    /// Foldable mode: collapsed shows only the brand; clicking it expands menu items.
     void setFoldable(bool foldable);
     bool isFoldable() const;
 
