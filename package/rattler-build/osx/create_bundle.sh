@@ -62,6 +62,12 @@ sed -i "s/APPLICATION_MENU_NAME/${application_menu_name}/" ${conda_env}/../Info.
 pixi list -e default > FreeCAD.app/Contents/packages.txt
 sed -i '1s/.*/\nLIST OF PACKAGES:/' FreeCAD.app/Contents/packages.txt
 
+echo "Running FreeCAD command-line smoke test..."
+if ! "${conda_env}/bin/freecadcmd" --safe-mode --version; then
+    echo "FreeCAD command-line smoke test failed; the macOS bundle cannot start."
+    exit 1
+fi
+
 # copy the plugin into its final location
 cp -a ${conda_env}/Library ${conda_env}/..
 rm -rf ${conda_env}/Library
