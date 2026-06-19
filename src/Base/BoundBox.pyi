@@ -10,7 +10,6 @@ from typing import overload, Any, Final, Tuple, Union
 
 @export(
     TwinPointer="BoundBox3d",
-    Constructor=True,
     Delete=True,
 )
 class BoundBox(PyObjectBase):

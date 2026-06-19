@@ -5,10 +5,8 @@ from Base.Persistence import Persistence
 from Base.Placement import Placement
 
 @export(
-    Include="Mod/CAM/App/Command.h",
     Namespace="Path",
     Delete=True,
-    Constructor=True,
 )
 @class_declarations("mutable Py::Dict parameters_copy_dict;")
 class Command(Persistence):
@@ -20,6 +18,7 @@ class Command(Persistence):
     annotations (optional) is a dictionary containing string:string or string:number pairs
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def toGCode(self) -> str:
         """returns a GCode representation of the command"""

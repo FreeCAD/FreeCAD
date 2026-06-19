@@ -9,9 +9,7 @@ from TopoShape import TopoShape
 from typing import overload
 
 @export(
-    PythonName="Part.BRepOffsetAPI_MakePipeShell",
     Include="BRepOffsetAPI_MakePipeShell.hxx",
-    Constructor=True,
     Delete=True,
 )
 class BRepOffsetAPI_MakePipeShell(PyObjectBase):
@@ -24,6 +22,7 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def setFrenetMode(self, mode: bool, /) -> None:
         """
         setFrenetMode(True|False)

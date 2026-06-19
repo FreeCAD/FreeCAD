@@ -10,8 +10,9 @@ BINDINGS_DIR = Path(__file__).resolve().parents[1]
 SRC_DIR = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(BINDINGS_DIR))
 
-from generate import generate
+from generate import generate, source_dependency_map
 from model.generateModel_Python import parse, parse_python_code
+from model.typedModel import ParameterType
 
 
 class GenerateModelPythonTests(unittest.TestCase):
@@ -25,7 +26,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Base.PyObjectBase import PyObjectBase
 
 
-            @export(Constructor=True)
+            @export()
             class Example(PyObjectBase):
                 \"\"\"Example class doc.\"\"\"
 
@@ -46,6 +47,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             model = parse_python_code(str(path))
 
         export = model.PythonExport[0]
+        self.assertTrue(export.Constructor)
         self.assertEqual([method.Name for method in export.Methode], [])
         self.assertIn("Example class doc.", export.Documentation.UserDocu)
         self.assertIn("Example()", export.Documentation.UserDocu)
@@ -63,7 +65,7 @@ class GenerateModelPythonTests(unittest.TestCase):
             from Base.PyObjectBase import PyObjectBase
 
 
-            @export(Constructor=True)
+            @export()
             class Example(PyObjectBase):
                 \"\"\"
                 Example class doc.
@@ -90,11 +92,511 @@ class GenerateModelPythonTests(unittest.TestCase):
             model = parse_python_code(str(path))
 
         export = model.PythonExport[0]
+        self.assertTrue(export.Constructor)
         user_doc = export.Documentation.UserDocu
         self.assertIn("The following constructors are supported:", user_doc)
         self.assertEqual(user_doc.count("Example()"), 1)
         self.assertEqual(user_doc.count("Example(value)"), 1)
         self.assertNotIn("--\n", user_doc)
+
+    def test_plain_constructor_is_not_exported_as_method(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Example(PyObjectBase):
+                def __init__(self) -> None: ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse_python_code(str(path))
+
+        export = model.PythonExport[0]
+        self.assertTrue(export.Constructor)
+        self.assertEqual([method.Name for method in export.Methode], [])
+
+    def test_constructor_is_not_inferred_without_init(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Example(PyObjectBase):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse_python_code(str(path))
+
+        export = model.PythonExport[0]
+        self.assertFalse(export.Constructor)
+
+    def test_constructor_export_keyword_is_rejected(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Constructor=True)
+            class Example(PyObjectBase):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "define __init__"):
+                parse_python_code(str(path))
+
+    def test_father_include_is_inferred_from_same_directory_parent_pyi(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Name="NativeParentPy")
+            class Parent(PyObjectBase):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export()
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            (app_dir / "Parent.pyi").write_text(parent_source, encoding="utf-8")
+            child_path = app_dir / "Child.pyi"
+            child_path.write_text(child_source, encoding="utf-8")
+
+            model = parse_python_code(str(child_path))
+            self.assertEqual(
+                model.SourceDependencies,
+                [(app_dir / "Parent.pyi").resolve().as_posix()],
+            )
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.Father, "NativeParentPy")
+        self.assertEqual(export.FatherNamespace, Path(temp_dir).name)
+        self.assertEqual(
+            export.FatherInclude,
+            f"Mod/{Path(temp_dir).name}/App/NativeParentPy.h",
+        )
+
+    def test_father_namespace_is_inferred_from_parent_pyi(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Namespace="NativeParentNamespace")
+            class Parent(PyObjectBase):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export()
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            parent_path = app_dir / "Parent.pyi"
+            parent_path.write_text(parent_source, encoding="utf-8")
+            child_path = app_dir / "Child.pyi"
+            child_path.write_text(child_source, encoding="utf-8")
+
+            model = parse_python_code(str(child_path))
+            self.assertEqual(
+                model.SourceDependencies,
+                [parent_path.resolve().as_posix()],
+            )
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.FatherNamespace, "NativeParentNamespace")
+
+    def test_father_include_is_inferred_from_runtime_style_parent_import(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.PyObjectBase import PyObjectBase
+
+
+            class Parent(PyObjectBase):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            module_name = Path(temp_dir).name
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            (app_dir / "Parent.pyi").write_text(parent_source, encoding="utf-8")
+            child_path = app_dir / "Child.pyi"
+            child_path.write_text(
+                textwrap.dedent(f"""
+                    from __future__ import annotations
+
+                    from Base.Metadata import export
+                    from {module_name}.Parent import Parent
+
+
+                    @export()
+                    class Child(Parent):
+                        ...
+                    """),
+                encoding="utf-8",
+            )
+
+            model = parse_python_code(str(child_path))
+            self.assertEqual(
+                model.SourceDependencies,
+                [(app_dir / "Parent.pyi").resolve().as_posix()],
+            )
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.Father, "ParentPy")
+        self.assertEqual(export.FatherInclude, f"Mod/{module_name}/App/ParentPy.h")
+
+    def test_generation_writes_depfile_for_inferred_parent_pyi(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.PyObjectBase import PyObjectBase
+
+
+            class Parent(PyObjectBase):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export()
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            parent_path = app_dir / "Parent.pyi"
+            child_path = app_dir / "Child.pyi"
+            output_dir = Path(temp_dir) / "generated"
+            depfile = output_dir / "ChildPy.d"
+            parent_path.write_text(parent_source, encoding="utf-8")
+            child_path.write_text(child_source, encoding="utf-8")
+
+            generate(str(child_path), str(output_dir), str(depfile))
+            depfile_text = depfile.read_text(encoding="utf-8")
+
+        self.assertIn((output_dir / "ChildPy.h").resolve().as_posix(), depfile_text)
+        self.assertIn((output_dir / "ChildPy.cpp").resolve().as_posix(), depfile_text)
+        self.assertIn(child_path.resolve().as_posix(), depfile_text)
+        self.assertIn(parent_path.resolve().as_posix(), depfile_text)
+
+    def test_source_dependency_map_groups_dependencies_by_input(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.PyObjectBase import PyObjectBase
+
+
+            class Parent(PyObjectBase):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export()
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            parent_path = app_dir / "Parent.pyi"
+            first_child_path = app_dir / "FirstChild.pyi"
+            second_child_path = app_dir / "SecondChild.pyi"
+            parent_path.write_text(parent_source, encoding="utf-8")
+            first_child_path.write_text(
+                child_source.replace("Child", "FirstChild"), encoding="utf-8"
+            )
+            second_child_path.write_text(
+                child_source.replace("Child", "SecondChild"), encoding="utf-8"
+            )
+
+            dependency_map = source_dependency_map([first_child_path, second_child_path])
+
+        self.assertEqual(
+            dependency_map,
+            [
+                {
+                    "source": first_child_path.resolve().as_posix(),
+                    "dependencies": [parent_path.resolve().as_posix()],
+                },
+                {
+                    "source": second_child_path.resolve().as_posix(),
+                    "dependencies": [parent_path.resolve().as_posix()],
+                },
+            ],
+        )
+
+    def test_annotated_vector_attributes_add_geometry_header_include(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from typing import Annotated
+
+            from Base import Vector
+            from Base.Metadata import cxx_type, export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Example(PyObjectBase):
+                Position: Annotated[Vector, cxx_type("Vector")]
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            example_path = app_dir / "Example.pyi"
+            output_dir = Path(temp_dir) / "generated"
+            example_path.write_text(source, encoding="utf-8")
+
+            model = parse_python_code(str(example_path))
+            export = model.PythonExport[0]
+            generate(str(example_path), str(output_dir))
+            header_text = (output_dir / "ExamplePy.h").read_text(encoding="utf-8")
+
+        self.assertEqual(export.FatherInclude, "Base/PyObjectBase.h")
+        self.assertEqual(export.HeaderIncludes, ["Base/GeometryPyCXX.h"])
+        self.assertIn("#include <Base/PyObjectBase.h>", header_text)
+        self.assertIn("#include <Base/GeometryPyCXX.h>", header_text)
+        self.assertIn("ExamplePy : public Base::PyObjectBase", header_text)
+
+    def test_vector_attributes_remain_object_attributes_without_cxx_type(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            import Base
+            from Base.Vector import Vector
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Example(PyObjectBase):
+                Position: Vector
+                Direction: Base.Vector
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            example_path = app_dir / "Example.pyi"
+            example_path.write_text(source, encoding="utf-8")
+            export = parse_python_code(str(example_path)).PythonExport[0]
+
+        self.assertEqual(export.HeaderIncludes, [])
+        self.assertEqual(
+            [attr.Parameter.Type for attr in export.Attribute],
+            [ParameterType.OBJECT, ParameterType.OBJECT],
+        )
+
+    def test_include_is_inferred_from_pyi_path(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Example(PyObjectBase):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            module_name = Path(temp_dir).name
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            example_path = app_dir / "Example.pyi"
+            output_dir = Path(temp_dir) / "generated"
+            example_path.write_text(source, encoding="utf-8")
+
+            model = parse_python_code(str(example_path))
+            export = model.PythonExport[0]
+            generate(str(example_path), str(output_dir))
+            header_text = (output_dir / "ExamplePy.h").read_text(encoding="utf-8")
+
+        self.assertEqual(export.Include, f"Mod/{module_name}/App/Example.h")
+        self.assertIn(f"#include <Mod/{module_name}/App/Example.h>", header_text)
+
+    def test_include_is_inherited_from_parent_pyi_when_child_header_is_missing(self):
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Parent(PyObjectBase):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export()
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            module_name = Path(temp_dir).name
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            parent_path = app_dir / "Parent.pyi"
+            parent_path.write_text(parent_source, encoding="utf-8")
+            (app_dir / "Parent.h").write_text("", encoding="utf-8")
+            child_path = app_dir / "Child.pyi"
+            child_path.write_text(child_source, encoding="utf-8")
+
+            model = parse_python_code(str(child_path))
+            self.assertEqual(
+                model.SourceDependencies,
+                [parent_path.resolve().as_posix()],
+            )
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.Include, f"Mod/{module_name}/App/Parent.h")
+
+    def test_include_inheritance_tracks_ancestor_pyi_dependencies(self):
+        ancestor_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export()
+            class Ancestor(PyObjectBase):
+                ...
+            """)
+        parent_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Ancestor import Ancestor
+
+
+            @export()
+            class Parent(Ancestor):
+                ...
+            """)
+        child_source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Parent import Parent
+
+
+            @export()
+            class Child(Parent):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR / "Mod") as temp_dir:
+            module_name = Path(temp_dir).name
+            app_dir = Path(temp_dir) / "App"
+            app_dir.mkdir()
+            ancestor_path = app_dir / "Ancestor.pyi"
+            ancestor_path.write_text(ancestor_source, encoding="utf-8")
+            (app_dir / "Ancestor.h").write_text("", encoding="utf-8")
+            parent_path = app_dir / "Parent.pyi"
+            parent_path.write_text(parent_source, encoding="utf-8")
+            child_path = app_dir / "Child.pyi"
+            child_path.write_text(child_source, encoding="utf-8")
+
+            model = parse_python_code(str(child_path))
+            self.assertEqual(
+                model.SourceDependencies,
+                [
+                    parent_path.resolve().as_posix(),
+                    ancestor_path.resolve().as_posix(),
+                ],
+            )
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.Include, f"Mod/{module_name}/App/Ancestor.h")
+
+    def test_twin_pointer_defaults_to_twin(self):
+        source = textwrap.dedent("""
+            from __future__ import annotations
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export(Twin="NativeTwin")
+            class Example(PyObjectBase):
+                ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse_python_code(str(path))
+
+        export = model.PythonExport[0]
+        self.assertEqual(export.Twin, "NativeTwin")
+        self.assertEqual(export.TwinPointer, "NativeTwin")
 
     def test_module_stub_parses_to_python_module_export(self):
         source = textwrap.dedent("""
@@ -183,7 +685,8 @@ class GenerateModelPythonTests(unittest.TestCase):
             path.write_text(source, encoding="utf-8")
 
             with self.assertRaisesRegex(
-                ValueError, "Module-level function 'ping' cannot use bound-method decorators"
+                ValueError,
+                "Module-level function 'ping' cannot use bound-method decorators",
             ):
                 parse(str(path))
 

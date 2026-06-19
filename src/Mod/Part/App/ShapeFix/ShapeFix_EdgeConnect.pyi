@@ -11,7 +11,6 @@ from typing import overload
 @export(
     PythonName="Part.ShapeFix.EdgeConnect",
     Include="ShapeFix_EdgeConnect.hxx",
-    Constructor=True,
     Delete=True,
 )
 class ShapeFix_EdgeConnect(PyObjectBase):
@@ -22,6 +21,7 @@ class ShapeFix_EdgeConnect(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     @overload
     def add(self, edge1: TopoShapeEdge, edge2: TopoShapeEdge, /) -> None: ...
     @overload

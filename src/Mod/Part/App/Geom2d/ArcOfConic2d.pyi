@@ -9,11 +9,6 @@ from Part.Geom2d import Curve2d
 @export(
     PythonName="Part.Geom2d.ArcOfConic2d",
     Twin="Geom2dArcOfConic",
-    TwinPointer="Geom2dArcOfConic",
-    Include="Mod/Part/App/Geometry2d.h",
-    Namespace="Part",
-    FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h",
-    Constructor=True,
 )
 class ArcOfConic2d(Curve2d):
     """
@@ -22,6 +17,8 @@ class ArcOfConic2d(Curve2d):
     Author: Werner Mayer (wmayer[at]users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Location: object = ...
     """Location of the conic."""

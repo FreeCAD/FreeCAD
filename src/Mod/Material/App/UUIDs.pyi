@@ -6,14 +6,11 @@ from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Final
 
-
 @export(
     PythonName="Material.UUIDs",
     Twin="ModelUUIDs",
-    TwinPointer="ModelUUIDs",
     Include="Mod/Material/App/ModelUuids.h",
     Namespace="Materials",
-    Constructor=True,
     Delete=True,
 )
 class UUIDs(BaseClass):
@@ -23,6 +20,8 @@ class UUIDs(BaseClass):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Father: Final[str] = ...
     """UUID for model System:Legacy/Father"""

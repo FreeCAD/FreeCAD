@@ -8,7 +8,6 @@ from Base.PyObjectBase import PyObjectBase
 @export(
     PythonName="Part.ShapeFix.Edge",
     Include="ShapeFix_Edge.hxx",
-    Constructor=True,
 )
 @class_declarations("""
 private:
@@ -28,6 +27,7 @@ class ShapeFix_Edge(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def fixRemovePCurve(self) -> bool:
         """
         Removes the pcurve(s) of the edge if it does not match the

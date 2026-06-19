@@ -14,13 +14,7 @@ from Part.App.TopoShapeEdge import TopoShapeEdge
 from Part.App.TopoShapeSolid import TopoShapeSolid
 from Part.App.TopoShapeVertex import TopoShapeVertex
 
-@export(
-    Include="Mod/Fem/App/FemMesh.h",
-    Namespace="Fem",
-    FatherInclude="App/ComplexGeoDataPy.h",
-    FatherNamespace="Data",
-    Constructor=True,
-)
+@export()
 class FemMesh(ComplexGeoData):
     """
     FemMesh class
@@ -29,6 +23,7 @@ class FemMesh(ComplexGeoData):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def setShape(self, shape: TopoShape, /) -> None:
         """Set the Part shape to mesh"""
         ...
@@ -101,7 +96,11 @@ class FemMesh(ComplexGeoData):
 
     @constmethod
     def write(
-        self, file_name: str, highest: bool, vtk_cell_group_array: str, vtk_group_id_map: dict
+        self,
+        file_name: str,
+        highest: bool,
+        vtk_cell_group_array: str,
+        vtk_group_id_map: dict,
     ) -> None:
         """
         Write out various FEM mesh file formats.

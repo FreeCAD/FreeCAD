@@ -8,10 +8,6 @@ from Part.Geom2d.Curve2d import Curve2d
 @export(
     PythonName="Part.Geom2d.Line2d",
     Twin="Geom2dLine",
-    TwinPointer="Geom2dLine",
-    Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h",
-    Constructor=True,
 )
 class Line2d(Curve2d):
     """
@@ -29,6 +25,8 @@ class Line2d(Curve2d):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Location: object = ...
     """Returns the location of this line."""

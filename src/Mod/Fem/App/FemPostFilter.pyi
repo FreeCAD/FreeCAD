@@ -9,12 +9,7 @@ from Fem.FemPostObject import FemPostObject
 
 vtkAlgorithm: TypeAlias = object
 
-@export(
-    Include="Mod/Fem/App/FemPostFilter.h",
-    Namespace="Fem",
-    FatherInclude="Mod/Fem/App/FemPostObjectPy.h",
-    FatherNamespace="Fem",
-)
+@export()
 class FemPostFilter(FemPostObject):
     """
     The FemPostFilter class.

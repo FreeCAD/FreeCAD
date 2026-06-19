@@ -9,11 +9,7 @@ from Base.Vector import Vector
 
 @export(
     Twin="Geom2dBSplineCurve",
-    TwinPointer="Geom2dBSplineCurve",
     PythonName="Part.Geom2d.BSplineCurve2d",
-    FatherInclude="Mod/Part/App/Geom2d/Curve2dPy.h",
-    Include="Mod/Part/App/Geometry2d.h",
-    Constructor=True,
 )
 class BSplineCurve2d(Curve2d):
     """
@@ -22,6 +18,8 @@ class BSplineCurve2d(Curve2d):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Degree: Final[int] = ...
     """Returns the polynomial degree of this B-Spline curve."""

@@ -11,8 +11,6 @@ from typing import Union
 @export(
     PythonName="Part.ShapeFix.Face",
     Include="ShapeFix_Face.hxx",
-    FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
-    Constructor=True,
 )
 class ShapeFix_Face(ShapeFix_Root):
     """
@@ -21,6 +19,8 @@ class ShapeFix_Face(ShapeFix_Root):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     FixWireMode: bool = ...
     """Mode for applying fixes of ShapeFix_Wire"""

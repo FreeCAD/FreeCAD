@@ -8,7 +8,6 @@ from typing import Any, Final, List, Dict, Tuple, overload
 
 @export(
     Include="Gui/ViewProviderLink.h",
-    Constructor=True,
     Delete=True,
 )
 class LinkView(BaseClass):
@@ -19,6 +18,7 @@ class LinkView(BaseClass):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def reset(self) -> None:
         """
         Reset the link view and clear the links

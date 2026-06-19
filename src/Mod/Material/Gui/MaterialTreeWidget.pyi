@@ -7,19 +7,15 @@ from Metadata import (
 )
 from Base.BaseClass import BaseClass
 
-
 @export(
-    Twin="MaterialTreeWidget",
-    TwinPointer="MaterialTreeWidget",
-    Include="Mod/Material/Gui/MaterialTreeWidget.h",
     Namespace="MatGui",
-    Constructor=True,
-    Delete=False,
 )
 class MaterialTreeWidget(BaseClass):
     """
     Material tree widget.
     """
+
+    def __init__(self) -> None: ...
 
     UUID: str = ...
     """Material UUID."""

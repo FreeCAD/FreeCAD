@@ -8,9 +8,6 @@ from Base.Metadata import export
 from Base.Persistence import Persistence
 
 @export(
-    Include="Mod/Robot/App/Trajectory.h",
-    Namespace="Robot",
-    Constructor=True,
     Delete=True,
 )
 class Trajectory(Persistence):
@@ -21,6 +18,7 @@ class Trajectory(Persistence):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     def insertWaypoints(self) -> Any:
         """adds one or a list of waypoint to the end of the trajectory"""
         ...

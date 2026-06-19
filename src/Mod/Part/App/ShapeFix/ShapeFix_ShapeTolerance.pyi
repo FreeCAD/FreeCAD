@@ -10,7 +10,6 @@ from typing import overload
 @export(
     PythonName="Part.ShapeFix.ShapeTolerance",
     Include="ShapeFix_ShapeTolerance.hxx",
-    Constructor=True,
     Delete=True,
 )
 class ShapeFix_ShapeTolerance(PyObjectBase):
@@ -21,6 +20,7 @@ class ShapeFix_ShapeTolerance(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     @overload
     def limitTolerance(self, shape: TopoShape, tmin: float, /) -> None: ...
     @overload

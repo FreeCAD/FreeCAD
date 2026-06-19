@@ -71,7 +71,6 @@ from PyObjectBase import PyObjectBase
     TwinPointer="Precision",
     Include="Base/Precision.h",
     Namespace="Base",
-    FatherInclude="Base/PyObjectBase.h",
     FatherNamespace="Base",
 )
 class PrecisionPy(PyObjectBase):
@@ -148,16 +147,22 @@ The `@overload` variants are not used for method code generation and primarily e
 provide Python type hinting for type checkers like mypy. Overload-only constructors are the
 exception: when the overload set carries constructor documentation, that documentation is
 folded into the exported class documentation, because constructor bindings are generated
-through `Constructor=True` rather than a normal method stub.
+from the presence of `__init__` rather than as a normal method stub.
 
 ### Attributes and Read-Only Properties
 
 Attributes defined as read-only are annotated with `Final` from Python’s `typing` module to indicate immutability.
 
+When the Python-facing type and generated PyCXX accessor type differ, use `Annotated`
+with `cxx_type()` metadata. Type checkers see the first argument, while the binding
+generator uses the metadata to select the generated accessor type.
+
 **Example:**
 
 ```python
-from typing import Final, Tuple
+from typing import Annotated, Final, Tuple
+from Base import Vector
+from Metadata import cxx_type
 
 class UnitPy(PyObjectBase):
     # holds the unit type as a string, e.g. 'Area'.
@@ -165,6 +170,9 @@ class UnitPy(PyObjectBase):
 
     # Returns the signature.
     Signature: Final[Tuple] = ...
+
+class CosmeticEdgePy(PyObjectBase):
+    Start: Annotated[Vector, cxx_type("Vector")]
 ```
 
 * * *
@@ -193,7 +201,6 @@ from Metadata import export
     TwinPointer="Precision",
     Include="Base/Precision.h",
     Namespace="Base",
-    FatherInclude="Base/PyObjectBase.h",
     FatherNamespace="Base",
 )
 class PrecisionPy(PyObjectBase):
@@ -217,7 +224,7 @@ class PrecisionPy(PyObjectBase):
     * `TwinPointer`: The pointer type of the twin C++ class.
     * `Include`: The header file where the C++ class is declared.
     * `Namespace`: The C++ namespace of the class.
-    * `FatherInclude`: The header file for the parent class.
+    * `FatherInclude`: The header file for the parent class. For `.pyi` inputs this is inferred from the parent class stub when possible; specify it only for nonstandard includes.
     * `FatherNamespace`: The C++ namespace for the parent class.
 
     _(Additional keys can be added as required by the binding generator.)_

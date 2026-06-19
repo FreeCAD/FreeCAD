@@ -8,9 +8,6 @@ from Base.Metadata import export
 from Base.Persistence import Persistence
 
 @export(
-    Include="Mod/Robot/App/Waypoint.h",
-    Namespace="Robot",
-    Constructor=True,
     Delete=True,
 )
 class Waypoint(Persistence):
@@ -20,6 +17,8 @@ class Waypoint(Persistence):
     Author: Juergen Riegel (Juergen.Riegel@web.de)
     License: LGPL-2.1-or-later
     """
+
+    def __init__(self) -> None: ...
 
     Name: str
     """Name of the waypoint"""

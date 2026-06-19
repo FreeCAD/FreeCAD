@@ -8,9 +8,7 @@ from Base.Metadata import constmethod, export
 from Base.Vector import Vector
 
 @export(
-    Include="Mod/CAM/App/Voronoi.h",
     Namespace="Path",
-    Constructor=True,
     Delete=True,
 )
 class Voronoi(BaseClass):
@@ -21,6 +19,7 @@ class Voronoi(BaseClass):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def numCells(self) -> Any:
         """Return number of cells"""

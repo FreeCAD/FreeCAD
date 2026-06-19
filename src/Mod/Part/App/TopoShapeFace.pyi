@@ -9,10 +9,6 @@ from typing import Final, Tuple, Dict, Optional, List, Sequence, overload
 
 @export(
     Twin="TopoShape",
-    TwinPointer="TopoShape",
-    Include="Mod/Part/App/TopoShape.h",
-    FatherInclude="Mod/Part/App/TopoShapePy.h",
-    Constructor=True,
 )
 class TopoShapeFace(TopoShape):
     """

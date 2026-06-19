@@ -9,11 +9,7 @@ from typing import Final, List
 
 @export(
     Twin="GeomBezierCurve",
-    TwinPointer="GeomBezierCurve",
     PythonName="Part.BezierCurve",
-    FatherInclude="Mod/Part/App/BoundedCurvePy.h",
-    Include="Mod/Part/App/Geometry.h",
-    Constructor=True,
 )
 class BezierCurve(BoundedCurve):
     """
@@ -33,6 +29,8 @@ class BezierCurve(BoundedCurve):
         bc.setPoles([p1, p2, p3, p4])
         curveShape = bc.toShape()
     """
+
+    def __init__(self) -> None: ...
 
     Degree: Final[int] = 0
     """

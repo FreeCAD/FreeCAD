@@ -8,10 +8,6 @@ from typing import Final, Dict
 
 @export(
     Twin="TopoShape",
-    TwinPointer="TopoShape",
-    Include="Mod/Part/App/TopoShape.h",
-    FatherInclude="Mod/Part/App/TopoShapePy.h",
-    Constructor=True,
 )
 class TopoShapeShell(TopoShape):
     """
@@ -20,6 +16,8 @@ class TopoShapeShell(TopoShape):
     Author: Juergen Riegel (Juergen.Riegel@web.de)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Mass: Final[object] = ...
     """Returns the mass of the current system."""

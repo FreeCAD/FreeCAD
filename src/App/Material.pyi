@@ -6,9 +6,7 @@ from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Any, overload
 
-
 @export(
-    Constructor=True,
     Delete=True,
 )
 @class_declarations("""public:
@@ -23,6 +21,7 @@ class Material(PyObjectBase):
     UserDocu: This is the Material class
     """
 
+    def __init__(self) -> None: ...
     def set(self, string: str, /) -> None:
         """
         Set(string) -- Set the material.
@@ -32,7 +31,6 @@ class Material(PyObjectBase):
         Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or Emerald.
         """
         ...
-
     AmbientColor: Any = ...
     """Ambient color"""
 

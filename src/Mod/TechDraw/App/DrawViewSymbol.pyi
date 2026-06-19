@@ -7,12 +7,7 @@ from typing import Any
 from Base.Metadata import export
 from TechDraw.DrawView import DrawView
 
-
-@export(
-    Include="Mod/TechDraw/App/DrawViewSymbol.h",
-    Namespace="TechDraw",
-    FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
-)
+@export()
 class DrawViewSymbol(DrawView):
     """
     Feature for creating and manipulating Drawing SVG Symbol Views

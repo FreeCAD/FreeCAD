@@ -5,12 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from TechDraw.DrawView import DrawView
 
-
-@export(
-    Include="Mod/TechDraw/App/DrawRichAnno.h",
-    Namespace="TechDraw",
-    FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
-)
+@export()
 class DrawRichAnno(DrawView):
     """
     Feature for adding rich annotation blocks to Technical Drawings

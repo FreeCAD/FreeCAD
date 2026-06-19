@@ -8,7 +8,6 @@ from Base.PyObjectBase import PyObjectBase
 @export(
     PythonName="Part.ShapeFix.FaceConnect",
     Include="ShapeFix_FaceConnect.hxx",
-    Constructor=True,
     Delete=True,
 )
 class ShapeFix_FaceConnect(PyObjectBase):
@@ -19,6 +18,7 @@ class ShapeFix_FaceConnect(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def add(self, face, /) -> None:
         """
         add(face, face)

@@ -10,10 +10,6 @@ from typing import Final, Dict, Tuple, overload
 
 @export(
     Twin="TopoShape",
-    TwinPointer="TopoShape",
-    Include="Mod/Part/App/TopoShape.h",
-    FatherInclude="Mod/Part/App/TopoShapePy.h",
-    Constructor=True,
 )
 class TopoShapeSolid(TopoShape):
     """
@@ -22,6 +18,8 @@ class TopoShapeSolid(TopoShape):
     Author: Juergen Riegel (Juergen.Riegel@web.de)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Mass: Final[float] = 0.0
     """Returns the mass of the current system."""

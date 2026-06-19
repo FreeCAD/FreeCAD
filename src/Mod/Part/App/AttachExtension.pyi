@@ -6,12 +6,7 @@ from Base.Metadata import export
 from App.DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, Final
 
-@export(
-    Twin="AttachExtension",
-    TwinPointer="AttachExtension",
-    Include="Mod/Part/App/AttachExtension.h",
-    FatherInclude="App/DocumentObjectExtensionPy.h",
-)
+@export()
 class AttachExtension(DocumentObjectExtension):
     """
     This object represents an attachable object with OCC shape.

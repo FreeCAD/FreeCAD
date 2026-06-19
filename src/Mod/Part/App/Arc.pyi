@@ -9,13 +9,8 @@ from Geometry import Geom_Circle, Geom_Ellipse
 from typing import overload
 
 @export(
-    Father="TrimmedCurvePy",
     PythonName="Part.Arc",
     Twin="GeomTrimmedCurve",
-    TwinPointer="GeomTrimmedCurve",
-    Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/TrimmedCurvePy.h",
-    Constructor=True,
 )
 class Arc(TrimmedCurve):
     """

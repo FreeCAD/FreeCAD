@@ -6,9 +6,7 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Any, Final, overload, Dict
 
-
 @export(
-    Constructor=True,
     Reference=True,
 )
 class StringHasher(BaseClass):
@@ -19,14 +17,11 @@ class StringHasher(BaseClass):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     @overload
-    def getID(self, txt: str, base64: bool = False, /) -> Any:
-        ...
-
+    def getID(self, txt: str, base64: bool = False, /) -> Any: ...
     @overload
-    def getID(self, id: int, base64: bool = False, /) -> Any:
-        ...
-
+    def getID(self, id: int, base64: bool = False, /) -> Any: ...
     def getID(self, arg: Any, base64: bool = False, /) -> Any:
         """
         If the input is text, return a StringID object that is unique within this hasher. This
@@ -45,7 +40,6 @@ class StringHasher(BaseClass):
         Check if two hasher are the same
         """
         ...
-
     Count: Final[int] = 0
     """Return count of used hashes"""
 

@@ -2,20 +2,15 @@
 
 from __future__ import annotations
 
-from typing import Final, TypeAlias
+from typing import Annotated, Final
 
 from Base.PyObjectBase import PyObjectBase
-from Base.Metadata import export
+from Base.Metadata import cxx_type, export
 from Base import Vector
-
-PyCXXVector: TypeAlias = Vector  # Dirty trick to workaround current generator limitations
 
 
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
-    Namespace="TechDraw",
-    FatherInclude="Base/GeometryPyCXX.h",
-    Constructor=True,
     Delete=True,
 )
 class CosmeticEdge(PyObjectBase):
@@ -26,16 +21,18 @@ class CosmeticEdge(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
+
     Tag: Final[str]
     """Gives the tag of the CosmeticEdge as string."""
 
-    Start: PyCXXVector
+    Start: Annotated[Vector, cxx_type("Vector")]
     """Gives the position of one end of this CosmeticEdge as vector."""
 
-    End: PyCXXVector
+    End: Annotated[Vector, cxx_type("Vector")]
     """Gives the position of one end of this CosmeticEdge as vector."""
 
-    Center: PyCXXVector
+    Center: Annotated[Vector, cxx_type("Vector")]
     """Gives the position of center point of this CosmeticEdge as vector."""
 
     Radius: float

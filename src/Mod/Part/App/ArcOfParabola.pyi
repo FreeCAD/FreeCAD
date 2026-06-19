@@ -7,16 +7,8 @@ from ArcOfConic import ArcOfConic
 from typing import Final
 
 @export(
-    Father="ArcOfConicPy",
-    Name="ArcOfParabolaPy",
     PythonName="Part.ArcOfParabola",
     Twin="GeomArcOfParabola",
-    TwinPointer="GeomArcOfParabola",
-    Include="Mod/Part/App/Geometry.h",
-    Namespace="Part",
-    FatherInclude="Mod/Part/App/ArcOfConicPy.h",
-    FatherNamespace="Part",
-    Constructor=True,
 )
 class ArcOfParabola(ArcOfConic):
     """
@@ -25,6 +17,8 @@ class ArcOfParabola(ArcOfConic):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Focal: float = ...
     """The focal length of the parabola."""

@@ -7,11 +7,8 @@ from typing import Any, Final
 from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
-
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
-    Namespace="TechDraw",
-    Constructor=True,
     Delete=True,
 )
 class CosmeticVertex(PyObjectBase):
@@ -22,6 +19,7 @@ class CosmeticVertex(PyObjectBase):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def clone(self) -> Any:
         """Create a clone of this CosmeticVertex"""
@@ -31,7 +29,6 @@ class CosmeticVertex(PyObjectBase):
     def copy(self) -> Any:
         """Create a copy of this CosmeticVertex"""
         ...
-
     Tag: Final[str]
     """Gives the tag of the CosmeticVertex as string."""
 

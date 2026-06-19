@@ -9,7 +9,6 @@ from Base.Metadata import export
 from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 
 @export(
-    Include="Mod/Fem/Gui/ViewProviderFemMesh.h",
     Namespace="FemGui",
 )
 class ViewProviderFemMesh(ViewProviderGeometryObject):

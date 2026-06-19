@@ -6,10 +6,8 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod, export
 
 @export(
-    Include="Mod/CAM/App/VoronoiEdge.h",
     Namespace="Path",
     RichCompare=True,
-    Constructor=True,
     Delete=True,
 )
 class VoronoiEdge(BaseClass):
@@ -20,6 +18,7 @@ class VoronoiEdge(BaseClass):
     License: LGPL-2.1-or-later
     """
 
+    def __init__(self) -> None: ...
     @constmethod
     def isFinite(self) -> Any:
         """Returns true if both vertices are finite"""

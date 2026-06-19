@@ -12,10 +12,6 @@ from typing import Final, List, overload, Any
 @export(
     PythonName="Part.BSplineCurve",
     Twin="GeomBSplineCurve",
-    TwinPointer="GeomBSplineCurve",
-    Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/BoundedCurvePy.h",
-    Constructor=True,
 )
 class BSplineCurve(BoundedCurve):
     """
@@ -24,6 +20,8 @@ class BSplineCurve(BoundedCurve):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Degree: Final[int] = 0
     """Returns the polynomial degree of this B-Spline curve."""

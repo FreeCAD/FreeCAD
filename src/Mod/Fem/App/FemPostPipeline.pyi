@@ -11,12 +11,7 @@ from App.DocumentObject import DocumentObject
 
 vtkAlgorithm: TypeAlias = object
 
-@export(
-    Include="Mod/Fem/App/FemPostPipeline.h",
-    Namespace="Fem",
-    FatherInclude="Mod/Fem/App/FemPostObjectPy.h",
-    FatherNamespace="Fem",
-)
+@export()
 class FemPostPipeline(FemPostObject):
     """
     The FemPostPipeline class.

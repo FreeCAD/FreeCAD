@@ -9,16 +9,14 @@ from typing import Final
 
 @export(
     Twin="GeomParabola",
-    TwinPointer="GeomParabola",
     PythonName="Part.Parabola",
-    FatherInclude="Mod/Part/App/ConicPy.h",
-    Include="Mod/Part/App/Geometry.h",
-    Constructor=True,
 )
 class Parabola(Conic):
     """
     Describes a parabola in 3D space
     """
+
+    def __init__(self) -> None: ...
 
     Focal: float = ...
     """

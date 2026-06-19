@@ -15,6 +15,8 @@ _FuncT = TypeVar("_FuncT", bound=Callable[..., Any])
 def export(**kwargs: Any) -> Callable[[_ClassT], _ClassT]:
     """
     A decorator to attach metadata to a class.
+
+    Constructibility is inferred from __init__; do not pass Constructor.
     """
     ...
 
@@ -26,6 +28,12 @@ def module(**kwargs: Any) -> None:
 
 def constmethod(method: _FuncT, /) -> _FuncT: ...
 def no_args(method: _FuncT, /) -> _FuncT: ...
+def cxx_type(name: str, /) -> str:
+    """
+    Mark a generated PyCXX accessor type in typing.Annotated metadata.
+    """
+    ...
+
 def forward_declarations(source_code: str, /) -> Callable[[_ClassT], _ClassT]:
     """
     A decorator to attach forward declarations to a class.

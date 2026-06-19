@@ -7,12 +7,7 @@ from typing import Any
 from Base.Metadata import export
 from TechDraw.DrawViewPart import DrawViewPart
 
-
-@export(
-    Include="Mod/TechDraw/App/DrawBrokenView.h",
-    Namespace="TechDraw",
-    FatherInclude="Mod/TechDraw/App/DrawViewPartPy.h",
-)
+@export()
 class DrawBrokenView(DrawViewPart):
     """
     Feature for creating and manipulating Technical Drawing broken views

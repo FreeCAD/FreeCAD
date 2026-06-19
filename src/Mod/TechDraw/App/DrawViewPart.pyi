@@ -7,12 +7,7 @@ from typing import Any
 from Base.Metadata import export
 from TechDraw.rawView import DrawView
 
-
-@export(
-    Include="Mod/TechDraw/App/DrawViewPart.h",
-    Namespace="TechDraw",
-    FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
-)
+@export()
 class DrawViewPart(DrawView):
     """
     Feature for creating and manipulating Technical Drawing Part Views

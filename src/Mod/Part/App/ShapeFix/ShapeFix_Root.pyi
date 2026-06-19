@@ -8,7 +8,6 @@ from Base.PyObjectBase import PyObjectBase
 @export(
     PythonName="Part.ShapeFix.Root",
     Include="ShapeFix_Root.hxx",
-    Constructor=True,
 )
 @class_declarations("""
 private:
@@ -27,6 +26,8 @@ class ShapeFix_Root(PyObjectBase):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Precision: float = ...
     """Basic precision value"""

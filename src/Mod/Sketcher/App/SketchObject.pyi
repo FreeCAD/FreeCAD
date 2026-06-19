@@ -11,10 +11,7 @@ from Part.App.Geometry import Geometry
 from Sketcher.App.Constraint import Constraint
 from typing import List, Tuple, Union, Final, overload
 
-@export(
-    Include="Mod/Sketcher/App/SketchObject.h",
-    FatherInclude="Mod/Part/App/Part2DObjectPy.h",
-)
+@export()
 class SketchObject(Part2DObject):
     """
     Represents a sketch object

@@ -9,11 +9,7 @@ from Base.Vector import Vector
 
 @export(
     Twin="GeomSurfaceOfExtrusion",
-    TwinPointer="GeomSurfaceOfExtrusion",
     PythonName="Part.SurfaceOfExtrusion",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
-    Include="Mod/Part/App/Geometry.h",
-    Constructor=True,
 )
 class SurfaceOfExtrusion(GeometrySurface):
     """
@@ -21,6 +17,8 @@ class SurfaceOfExtrusion(GeometrySurface):
     Author: Werner Mayer (<wmayer@users.sourceforge.net>)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Direction: Vector = ...
     """Sets or gets the direction of revolution."""

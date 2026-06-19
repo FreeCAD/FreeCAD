@@ -6,14 +6,9 @@ from Base.Metadata import export
 from ModelProperty import ModelProperty
 from typing import Final
 
-
 @export(
     Include="Mod/Material/App/Materials.h",
     Namespace="Materials",
-    FatherInclude="Mod/Material/App/Model.h",
-    FatherNamespace="Materials",
-    Constructor=True,
-    Delete=False,
 )
 class MaterialProperty(ModelProperty):
     """
@@ -22,6 +17,8 @@ class MaterialProperty(ModelProperty):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Value: Final[object] = None
     """The value of the material property."""

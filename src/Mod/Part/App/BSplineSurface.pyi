@@ -9,10 +9,6 @@ from typing import Final, List, Any
 @export(
     PythonName="Part.BSplineSurface",
     Twin="GeomBSplineSurface",
-    TwinPointer="GeomBSplineSurface",
-    Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometrySurfacePy.h",
-    Constructor=True,
 )
 class BSplineSurface(GeometrySurface):
     """
@@ -22,6 +18,8 @@ class BSplineSurface(GeometrySurface):
     Licence: LGPL
     DeveloperDocu: Describes a B-Spline surface in 3D space
     """
+
+    def __init__(self) -> None: ...
 
     UDegree: Final[int] = 0
     """Returns the degree of this B-Spline surface in the u parametric direction."""

@@ -10,10 +10,6 @@ from typing import Final
 @export(
     PythonName="Part.Conic",
     Twin="GeomConic",
-    TwinPointer="GeomConic",
-    Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometryCurvePy.h",
-    Constructor=True,
 )
 class Conic(GeometryCurve):
     """
@@ -22,6 +18,8 @@ class Conic(GeometryCurve):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Location: Vector = ...
     """Location of the conic."""

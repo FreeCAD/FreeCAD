@@ -6,10 +6,7 @@ from Base.Metadata import export
 from GeometryExtension import GeometryExtension
 
 @export(
-    PythonName="Part.GeometryStringExtension",
     Include="Mod/Part/App/GeometryDefaultExtension.h",
-    FatherInclude="Mod/Part/App/GeometryExtensionPy.h",
-    Constructor=True,
 )
 class GeometryStringExtension(GeometryExtension):
     """
@@ -18,6 +15,8 @@ class GeometryStringExtension(GeometryExtension):
     Author: Abdullah Tahiri (abdullah.tahiri.yo@gmail.com)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Value: str = ...
     """returns the value of the GeometryStringExtension."""

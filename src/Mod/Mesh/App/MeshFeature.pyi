@@ -10,10 +10,6 @@ from App.GeoFeature import GeoFeature
 
 @export(
     Twin="Feature",
-    TwinPointer="Feature",
-    Include="Mod/Mesh/App/MeshFeature.h",
-    Namespace="Mesh",
-    FatherInclude="App/GeoFeaturePy.h",
 )
 class MeshFeature(GeoFeature):
     """

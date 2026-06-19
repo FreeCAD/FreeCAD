@@ -8,7 +8,6 @@ from typing import List, Final
 
 @export(
     Twin="BaseType",
-    TwinPointer="BaseType",
     Delete=True,
 )
 @forward_declarations("""

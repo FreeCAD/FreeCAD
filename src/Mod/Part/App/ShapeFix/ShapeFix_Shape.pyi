@@ -9,8 +9,6 @@ from Part.TopoShape import TopoShape
 @export(
     PythonName="Part.ShapeFix.Shape",
     Include="ShapeFix_Shape.hxx",
-    FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
-    Constructor=True,
 )
 class ShapeFix_Shape(ShapeFix_Root):
     """
@@ -19,6 +17,8 @@ class ShapeFix_Shape(ShapeFix_Root):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     FixSolidMode: bool = ...
     """Mode for applying fixes of ShapeFix_Solid"""

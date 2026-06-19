@@ -17,7 +17,6 @@ class ScaleType(IntEnum):
 
 @export(
     TwinPointer="Matrix4D",
-    Constructor=True,
     Delete=True,
     NumberProtocol=True,
     RichCompare=True,
@@ -67,6 +66,8 @@ class Matrix(PyObjectBase):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     A11: float = 0.0
     """The (1,1) matrix element."""

@@ -5,11 +5,9 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
 
-
 @export(
     Include="Mod/Material/App/MaterialFilter.h",
     Namespace="Materials",
-    Constructor=True,
     Delete=True,
 )
 class MaterialFilterOptions(BaseClass):
@@ -19,6 +17,8 @@ class MaterialFilterOptions(BaseClass):
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     IncludeFavorites: bool = ...
     """Include materials marked as favorite."""

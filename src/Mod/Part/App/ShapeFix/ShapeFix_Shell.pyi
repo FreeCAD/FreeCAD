@@ -7,11 +7,7 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 
 @export(
     PythonName="Part.ShapeFix.Shell",
-    Twin="ShapeFix_Shell",
-    TwinPointer="ShapeFix_Shell",
     Include="ShapeFix_Shell.hxx",
-    FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
-    Constructor=True,
 )
 class ShapeFix_Shell(ShapeFix_Root):
     """
@@ -20,6 +16,8 @@ class ShapeFix_Shell(ShapeFix_Root):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     FixOrientationMode: bool = ...
     """Mode for applying fixes of orientation of faces"""

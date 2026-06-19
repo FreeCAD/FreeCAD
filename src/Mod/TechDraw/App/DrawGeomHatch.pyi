@@ -7,11 +7,7 @@ from typing import Any
 from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
-
-@export(
-    Include="Mod/TechDraw/App/DrawGeomHatch.h",
-    Namespace="TechDraw",
-)
+@export()
 class DrawGeomHatch(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing GeomHatch areas

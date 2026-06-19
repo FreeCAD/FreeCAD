@@ -7,12 +7,8 @@ from Part.App.Geom2d.Conic2d import Conic2d
 from typing import Final
 
 @export(
-    Include="Mod/Part/App/Geometry2d.h",
-    FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h",
     Twin="Geom2dParabola",
-    TwinPointer="Geom2dParabola",
     PythonName="Part.Geom2d.Parabola2d",
-    Constructor=True,
 )
 class Parabola2d(Conic2d):
     """
@@ -21,6 +17,8 @@ class Parabola2d(Conic2d):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
+    def __init__(self) -> None: ...
 
     Focal: float = ...
     """

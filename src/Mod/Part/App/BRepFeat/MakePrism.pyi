@@ -9,9 +9,7 @@ from typing import List
 @export(
     PythonName="Part.BRepFeat.MakePrism",
     Twin="BRepFeat_MakePrism",
-    TwinPointer="BRepFeat_MakePrism",
     Include="BRepFeat_MakePrism.hxx",
-    Constructor=True,
     Delete=True,
 )
 class MakePrism(PyObjectBase):
@@ -22,6 +20,7 @@ class MakePrism(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def init(self, **kwargs) -> None:
         """
         Initializes this algorithm for building prisms along surfaces.

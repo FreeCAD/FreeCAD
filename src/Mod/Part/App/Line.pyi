@@ -10,10 +10,6 @@ from typing import overload
 @export(
     PythonName="Part.Line",
     Twin="GeomLine",
-    TwinPointer="GeomLine",
-    Include="Mod/Part/App/Geometry.h",
-    FatherInclude="Mod/Part/App/GeometryCurvePy.h",
-    Constructor=True,
 )
 class Line(GeometryCurve):
     """

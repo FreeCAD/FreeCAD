@@ -6,10 +6,7 @@ from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Twin="HLRBRep_Algo",
-    TwinPointer="HLRBRep_Algo",
     Include="HLRBRep_Algo.hxx",
-    Constructor=True,
 )
 @class_declarations("""
 private:
@@ -63,6 +60,7 @@ class HLRBRep_Algo(PyObjectBase):
     Licence: LGPL
     """
 
+    def __init__(self) -> None: ...
     def add(self, S, nbIso: int = 0, /) -> None:
         """
         add(S, nbIso=0)

@@ -10,7 +10,6 @@ from Unit import Unit as UnitPy
 @export(
     NumberProtocol=True,
     RichCompare=True,
-    Constructor=True,
     Delete=True,
 )
 class Quantity(PyObjectBase):
