@@ -102,7 +102,7 @@ requirements:
   host:
     - coin3d ==4.0.3
     - eigen >=3.3,<5
-    - fmt
+    - fmt >=12.1,<12.2
     - freetype
     - hdf5
     - lark
