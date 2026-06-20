@@ -37,6 +37,8 @@
 #include "GeoEnum3D.h"
 #include "PropertyConstraint3DList.h"
 
+class TopoDS_Shape;
+
 namespace Part
 {
 class Geometry;
@@ -61,6 +63,9 @@ public:
 
     Part::PropertyGeometryList Geometry;
     PropertyConstraint3DList Constraints;
+    Part::PropertyPartShape ReferenceShape;
+
+    static const std::string& referencePrefix();
 
     const char* getViewProviderName() const override
     {
@@ -69,6 +74,9 @@ public:
 
     /// add a geometry primitive. Returns assigned GeoId.
     int addGeometry(std::unique_ptr<Part::Geometry> geom);
+    int addGeometry(std::unique_ptr<Part::Geometry> geom, bool construction);
+
+    bool getConstruction(int geoId) const;
 
     /// add a constraint. Returns its index in Constraints.
     int addConstraint(const Constraint3D& c);
@@ -82,9 +90,12 @@ public:
         return static_cast<const GeometryT*>(_getGeometry(geoId));
     }
 
-    /// Resolve a shape subname like "Edge1" or "Vertex2" to the owning
-    /// sketch geometry. Uses stable element map names so references survives
+    /// Resolve a shape subname like "Edge1" or "RefVertex2" to the owning
+    /// sketch geometry. Uses stable element map names so references survive.
     GeoElementId3D resolveSubName(const std::string& subname) const;
+
+    /// Return the OCCT sub shape for normal and reference geometry.
+    TopoDS_Shape getSubShape(const std::string& subname, bool silent = true) const;
 
     /// Write the world position of target to point.
     bool getPointAt(const GeoElementId3D& target, Base::Vector3d& point) const;
@@ -116,9 +127,11 @@ private:
     /// to null geometry slots. Runs at the top of execute().
     void acceptGeometry();
 
-    /// Build the output TopoShape from the current (solved) geometry,
-    /// the built Shape property will have resolveSubName.
-    void buildShape();
+    /// Build a TopoShape for normal or reference geometry.
+    Part::TopoShape buildShapeForGeometry(bool construction) const;
+
+    /// Build Shape and ReferenceShape from the current (solved) geometry.
+    void buildShapes();
 
     /// Build a named edge shape and name its endpoint vertices
     Part::TopoShape makeNamedEdge(const Part::Geometry* geo, const std::string& edgeName) const;

@@ -40,9 +40,17 @@ class QMenu;
 class SbVec2s;
 class SoCoordinate3;
 class SoMaterial;
+class SoNormal;
 class SoSeparator;
 class SoSwitch;
 class SoTranslation;
+
+namespace PartGui
+{
+class SoBrepFaceSet;
+class SoBrepEdgeSet;
+class SoBrepPointSet;
+}  // namespace PartGui
 
 namespace Sketcher3D
 {
@@ -75,6 +83,7 @@ constexpr Color3f kInactiveAxisHandleColor {0.36F, 0.40F, 0.48F};
 constexpr Color3f kPlaneOverlayColor {0.25F, 0.45F, 0.90F};
 constexpr Color3f kSnapMarkerDiffuseColor {1.0F, 0.55F, 0.0F};
 constexpr Color3f kSnapMarkerEmissiveColor {0.6F, 0.3F, 0.0F};
+constexpr Color3f kReferenceColor {0.0F, 0.0F, 0.86F};
 
 class Sketcher3DGuiExport ViewProviderSketch3D: public PartGui::ViewProviderPart
 {
@@ -117,6 +126,8 @@ public:
     }
 
     void updateData(const App::Property* prop) override;
+    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 
     Sketcher3D::Sketch3DObject* getSketch3DObject() const;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
@@ -152,14 +163,27 @@ public:
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum) override;
 
 private:
+    // ---------------Workplane overlay----------------------------------------
+
     /// Project screen space cursor onto the active sketch workplane.
     /// Falls back to the focal plane if the camera ray is parallel to the workplane.
     Base::Vector3d projectToSketchPlane(
         const SbVec2s& cursorPx,
         const Gui::View3DInventorViewer* viewer
     ) const;
+
+    void ensurePlaneOverlay();
+    void updatePlaneOverlay();
+    void redrawPlaneQuad();
+    void updatePlaneOverlayTranslation();
+    void updatePlaneOverlaySize(const Base::Vector3d& cursorPos);
+    void updateAxisHandleColors();
+
+    // ---------------Snap overlay----------------------------------------------
+
     std::string getPickedSubName(const SbVec2s& cursorPx, const Gui::View3DInventorViewer* viewer) const;
 
     /// Resolve a snap target for the given cursor position. Updates snapTarget
@@ -170,20 +194,17 @@ private:
         const Gui::View3DInventorViewer* viewer
     );
 
-    void ensurePlaneOverlay();
-    void updatePlaneOverlay();
-    void redrawPlaneQuad();
-    void updatePlaneOverlayTranslation();
-    void updatePlaneOverlaySize(const Base::Vector3d& cursorPos);
-    void updateAxisHandleColors();
-
     void ensureSnapMarker();
     void hideSnapMarker();
     void showSnapMarker(const Base::Vector3d& pos);
 
-    std::unique_ptr<DrawSketchHandler3D> handler;
-    TaskSketcher3DTool* taskPanel {nullptr};
+    // ---------------Reference overlay-----------------------
 
+    void ensureReferenceGeometry();
+    void updateReferenceGeometry();
+    bool isEditingSketch3D() const;
+
+    // Workplane overlay nodes
     ActivePlane activePlane {ActivePlane::XY};
     Base::Vector3d planeBase {0.0, 0.0, 0.0};
     SoSeparator* planeOverlay {nullptr};
@@ -192,11 +213,26 @@ private:
     float planeOverlaySize {0.0F};
     std::array<SoMaterial*, 3> axisHandleMaterials {};
 
+    // Reference geometry overlay nodes
+    SoSeparator* referenceGeometryRoot {nullptr};
+    SoSwitch* referenceGeometrySwitch {nullptr};
+    SoSeparator* referenceGeometryContent {nullptr};
+    TopoDS_Shape lastRenderedRefShape;
+    SoCoordinate3* referenceCoords {nullptr};
+    SoNormal* referenceNormals {nullptr};
+    PartGui::SoBrepFaceSet* referenceFaceset {nullptr};
+    PartGui::SoBrepEdgeSet* referenceLineset {nullptr};
+    PartGui::SoBrepPointSet* referencePointset {nullptr};
+
+    // Snap overlay nodes
     std::unique_ptr<SnapManager3D> snapManager;
     SoSeparator* snapMarker {nullptr};
     SoSwitch* snapMarkerSwitch {nullptr};
     SoTranslation* snapMarkerXf {nullptr};
     Sketcher3D::GeoElementId3D snapTarget {};
+
+    std::unique_ptr<DrawSketchHandler3D> handler;
+    TaskSketcher3DTool* taskPanel {nullptr};
 
     /// Workbench name from before setEdit.same as partdesign
     std::string oldWb;

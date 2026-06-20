@@ -41,6 +41,7 @@
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DrawSketchHandlerPolyline3D.h"
+#include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
 
@@ -58,7 +59,8 @@ void DrawSketchHandlerPolyline3D::onActivated()
     }
 
     auto* material = new SoMaterial();
-    material->diffuseColor.setValue(1.0F, 1.0F, 1.0F);
+    previewMaterial = material;
+    applyConstructionPreviewColor(previewMaterial);
     root->addChild(material);
 
     auto* style = new SoDrawStyle();
@@ -86,6 +88,7 @@ void DrawSketchHandlerPolyline3D::onActivated()
 
 bool DrawSketchHandlerPolyline3D::mouseMove(const Base::Vector3d& pos)
 {
+    applyConstructionPreviewColor(previewMaterial);
     if (state == State::PickNext && rubberCoords) {
         rubberCoords->point.set1Value(
             1,
@@ -146,7 +149,7 @@ bool DrawSketchHandlerPolyline3D::pressButton(const Base::Vector3d& pos)
     );
     auto seg = std::make_unique<Part::GeomLineSegment>();
     seg->setPoints(lastPos, pos);
-    const int newGeoId = sketch->addGeometry(std::move(seg));
+    const int newGeoId = sketch->addGeometry(std::move(seg), isConstructionMode());
 
     // Chain the segments with a Coincident3D constraint so they stay connected when constraints are
     // applied.

@@ -79,6 +79,7 @@ void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
     *editTb << "Sketcher3D_CreatePoint"
             << "Sketcher3D_CreateLine"
             << "Sketcher3D_CreatePolyline"
+            << "Sketcher3D_ToggleConstruction"
             << "Separator"
             << "Sketcher3D_CompDimensionTools"
             << "Sketcher3D_ConstrainCoincident"

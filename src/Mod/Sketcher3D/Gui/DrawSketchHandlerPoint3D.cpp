@@ -37,6 +37,7 @@
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DrawSketchHandlerPoint3D.h"
+#include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
 
@@ -54,7 +55,8 @@ void DrawSketchHandlerPoint3D::onActivated()
     }
 
     auto* material = new SoMaterial();
-    material->diffuseColor.setValue(1.0F, 1.0F, 1.0F);
+    previewMaterial = material;
+    applyConstructionPreviewColor(previewMaterial);
     root->addChild(material);
 
     auto* style = new SoDrawStyle();
@@ -73,6 +75,7 @@ void DrawSketchHandlerPoint3D::onActivated()
 
 bool DrawSketchHandlerPoint3D::mouseMove(const Base::Vector3d& pos)
 {
+    applyConstructionPreviewColor(previewMaterial);
     if (previewCoords) {
         previewCoords->point.set1Value(
             0,
@@ -95,7 +98,8 @@ bool DrawSketchHandlerPoint3D::pressButton(const Base::Vector3d& pos)
     seekAutoConstraint(sugConstr, pos, Base::Vector3d());
 
     int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create 3D point"));
-    const int newGeoId = sketch->addGeometry(std::make_unique<Part::GeomPoint>(pos));
+    const int newGeoId
+        = sketch->addGeometry(std::make_unique<Part::GeomPoint>(pos), isConstructionMode());
     createAutoConstraints(sugConstr, newGeoId, Sketcher3D::PointPos::none, Sketcher3D::GeoKind::Point);
 
     sketch->recomputeFeature();

@@ -27,9 +27,11 @@
 
 #include <BRep_Tool.hxx>
 #include <Standard_Failure.hxx>
+#include <TopAbs_ShapeEnum.hxx>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
 
 #include <App/Document.h>
 #include <App/ElementMap.h>
@@ -68,18 +70,47 @@ Sketch3DObject::Sketch3DObject()
         (App::PropertyType)(App::Prop_None),
         "Sketcher3D constraints"
     );
+    ADD_PROPERTY_TYPE(
+        ReferenceShape,
+        (Part::TopoShape()),
+        "Sketcher3D",
+        (App::PropertyType)(App::Prop_Output | App::Prop_Hidden),
+        "Reference geometry shape"
+    );
+    registerElementCache(referencePrefix(), &ReferenceShape);
+}
+
+const std::string& Sketch3DObject::referencePrefix()
+{
+    static const std::string prefix = "Ref";
+    return prefix;
 }
 
 Sketch3DObject::~Sketch3DObject() = default;
 
 int Sketch3DObject::addGeometry(std::unique_ptr<Part::Geometry> geom)
 {
+    return addGeometry(std::move(geom), false);
+}
+
+int Sketch3DObject::addGeometry(std::unique_ptr<Part::Geometry> geom, bool construction)
+{
     if (!geom) {
         return -1;
     }
     int idx = Geometry.getSize();
     Geometry.set1Value(-1, std::move(geom));
+    const auto& geos = Geometry.getValues();
+    if (idx >= 0 && idx < static_cast<int>(geos.size()) && geos[idx]) {
+        Sketcher::GeometryFacade::setConstruction(geos[idx], construction);
+    }
     return idx;
+}
+
+bool Sketch3DObject::getConstruction(int geoId) const
+{
+    const Part::Geometry* geo = _getGeometry(geoId);
+    return geo && Sketcher::GeometryFacade::getConstruction(geo);
 }
 
 int Sketch3DObject::addConstraint(const Constraint3D& c)
@@ -141,15 +172,19 @@ GeoKind kindFromGeometry(const Part::Geometry* g)
     // Extend with Circle/Arc once they're wired through buildShape.
     return GeoKind::Unknown;
 }
-}  // namespace
 
-GeoElementId3D Sketch3DObject::resolveSubName(const std::string& subname) const
+GeoElementId3D resolveSubNameInShape(
+    const Part::TopoShape& shape,
+    const std::map<long, int>& stableToIndex,
+    const std::vector<Part::Geometry*>& geos,
+    const std::string& subname
+)
 {
-    if (subname.empty()) {
+    if (subname.empty() || shape.isNull()) {
         return {};
     }
 
-    Data::MappedElement el = Shape.getShape().getElementName(subname.c_str());
+    Data::MappedElement el = shape.getElementName(subname.c_str());
     if (!el.name) {
         return {};
     }
@@ -161,18 +196,65 @@ GeoElementId3D Sketch3DObject::resolveSubName(const std::string& subname) const
         return {};
     }
 
-    // Stable id is current positional GeoId.
     auto it = stableToIndex.find(stableId);
     if (it == stableToIndex.end()) {
         return {};
     }
     const int geoId = it->second;
 
-    const auto& geos = Geometry.getValues();
     if (geoId < 0 || geoId >= static_cast<int>(geos.size())) {
         return {};
     }
     return {geoId, pos, kindFromGeometry(geos[geoId])};
+}
+
+}  // namespace
+
+GeoElementId3D Sketch3DObject::resolveSubName(const std::string& subname) const
+{
+    if (subname.empty()) {
+        return {};
+    }
+
+    const auto& geos = Geometry.getValues();
+    const auto prefix = referencePrefix();
+
+    if (subname.size() >= prefix.size() && subname.compare(0, prefix.size(), prefix) == 0) {
+        return resolveSubNameInShape(
+            ReferenceShape.getShape(),
+            stableToIndex,
+            geos,
+            subname.substr(prefix.size())
+        );
+    }
+
+    return resolveSubNameInShape(Shape.getShape(), stableToIndex, geos, subname);
+}
+
+TopoDS_Shape Sketch3DObject::getSubShape(const std::string& subname, bool silent) const
+{
+    if (subname.empty()) {
+        return {};
+    }
+
+    const auto shapeForSubName =
+        [this](const std::string& name, std::string& localSub) -> const Part::TopoShape& {
+        const auto& prefix = referencePrefix();
+        if (name.size() >= prefix.size() && name.compare(0, prefix.size(), prefix) == 0) {
+            localSub = name.substr(prefix.size());
+            return ReferenceShape.getShape();
+        }
+        localSub = name;
+        return Shape.getShape();
+    };
+
+    std::string localSub;
+    const Part::TopoShape& shape = shapeForSubName(subname, localSub);
+    if (shape.isNull()) {
+        return {};
+    }
+
+    return shape.getSubShape(localSub.c_str(), silent);
 }
 
 bool Sketch3DObject::getPointAt(const GeoElementId3D& target, Base::Vector3d& point) const
@@ -385,7 +467,7 @@ App::DocumentObjectExecReturn* Sketch3DObject::execute()
                 break;
         }
 
-        buildShape();
+        buildShapes();
         return Part::Feature::StdReturn;
     }
     catch (const Standard_Failure& e) {
@@ -436,7 +518,7 @@ Part::TopoShape Sketch3DObject::makeNamedEdge(const Part::Geometry* geo, const s
     return shape;
 }
 
-void Sketch3DObject::buildShape()
+Part::TopoShape Sketch3DObject::buildShapeForGeometry(bool construction) const
 {
     std::vector<Part::TopoShape> edges;
     std::vector<Part::TopoShape> vertices;
@@ -448,6 +530,10 @@ void Sketch3DObject::buildShape()
         if (!g) {
             continue;
         }
+        if (Sketcher::GeometryFacade::getConstruction(g) != construction) {
+            continue;
+        }
+
         TopoDS_Shape occtShape = g->toShape();
         if (occtShape.IsNull()) {
             continue;
@@ -476,28 +562,34 @@ void Sketch3DObject::buildShape()
     }
 
     if (edges.empty() && vertices.empty()) {
-        Shape.setValue(Part::TopoShape());
-        return;
+        return Part::TopoShape();
     }
 
     auto* doc = getDocument();
     Part::TopoShape result(0, doc ? doc->getStringHasher() : nullptr);
 
-    if (vertices.empty()) {
-        result.makeElementWires(edges, Part::OpCodes::Sketch3D);
+    std::vector<Part::TopoShape> all;
+    if (!edges.empty()) {
+        auto wires = Part::TopoShape().makeElementWires(edges, Part::OpCodes::Sketch3D);
+        for (const auto& w : wires.getSubTopoShapes(TopAbs_WIRE)) {
+            all.push_back(w);
+        }
+    }
+    all.insert(all.end(), vertices.begin(), vertices.end());
+
+    if (all.size() == 1) {
+        result = all[0];
     }
     else {
-        std::vector<Part::TopoShape> all;
-        if (!edges.empty()) {
-            auto wires = Part::TopoShape().makeElementWires(edges, Part::OpCodes::Sketch3D);
-            for (const auto& w : wires.getSubTopoShapes(TopAbs_WIRE)) {
-                all.push_back(w);
-            }
-        }
-        all.insert(all.end(), vertices.begin(), vertices.end());
         result.makeElementCompound(all);
     }
 
     result.Tag = getID();
-    Shape.setValue(result);
+    return result;
+}
+
+void Sketch3DObject::buildShapes()
+{
+    Shape.setValue(buildShapeForGeometry(/*construction=*/false));
+    ReferenceShape.setValue(buildShapeForGeometry(/*construction=*/true));
 }

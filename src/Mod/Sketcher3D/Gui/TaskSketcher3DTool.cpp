@@ -126,56 +126,6 @@ QString displayNameForRef(
     return QStringLiteral("G%1%2").arg(ref.GeoId).arg(posName(ref.Pos));
 }
 
-QString subNameForRef(const Sketcher3D::Sketch3DObject* sketch, const Sketcher3D::GeoElementId3D& ref)
-{
-    if (!sketch || !ref.isValid()) {
-        return {};
-    }
-
-    const Part::TopoShape& shape = sketch->Shape.getShape();
-    if (ref.Pos == Sketcher3D::PointPos::none && ref.Kind != Sketcher3D::GeoKind::Point) {
-        const unsigned long edgeCount = shape.countSubShapes(TopAbs_EDGE);
-        for (unsigned long i = 1; i <= edgeCount; ++i) {
-            TopoDS_Shape sub;
-            try {
-                sub = shape.getSubShape(TopAbs_EDGE, static_cast<int>(i), true);
-            }
-            catch (const Standard_Failure&) {
-                continue;
-            }
-            if (sub.IsNull() || sub.ShapeType() != TopAbs_EDGE) {
-                continue;
-            }
-            const QString subname = QStringLiteral("Edge%1").arg(static_cast<qulonglong>(i));
-            const auto id = sketch->resolveSubName(subname.toStdString());
-            if (id == ref) {
-                return subname;
-            }
-        }
-    }
-
-    const unsigned long vertexCount = shape.countSubShapes(TopAbs_VERTEX);
-    for (unsigned long i = 1; i <= vertexCount; ++i) {
-        TopoDS_Shape sub;
-        try {
-            sub = shape.getSubShape(TopAbs_VERTEX, static_cast<int>(i), true);
-        }
-        catch (const Standard_Failure&) {
-            continue;
-        }
-        if (sub.IsNull() || sub.ShapeType() != TopAbs_VERTEX) {
-            continue;
-        }
-        const QString subname = QStringLiteral("Vertex%1").arg(static_cast<qulonglong>(i));
-        const auto id = sketch->resolveSubName(subname.toStdString());
-        if (id == ref) {
-            return subname;
-        }
-    }
-
-    return {};
-}
-
 QIcon iconForConstraint(Sketcher3D::Constraint3D::Constraint3DType type)
 {
     switch (type) {
@@ -367,84 +317,92 @@ void TaskSketcher3DTool::populateElements()
         item->setData(Qt::UserRole, subname);
     };
 
-    const Part::TopoShape& shape = sketch->Shape.getShape();
     const auto& geos = sketch->Geometry.getValues();
 
     std::map<int, int> lineLabelForGeoId;
     std::map<int, int> pointLabelForGeoId;
     buildGeometryLabels(geos, pointLabelForGeoId, lineLabelForGeoId);
 
-    const unsigned long edgeCount = shape.countSubShapes(TopAbs_EDGE);
-    for (unsigned long i = 1; i <= edgeCount; ++i) {
-        TopoDS_Shape sub;
-        try {
-            sub = shape.getSubShape(TopAbs_EDGE, static_cast<int>(i), true);
-        }
-        catch (const Standard_Failure&) {
-            continue;
-        }
-        if (sub.IsNull()) {
-            continue;
-        }
+    const auto appendFromShape = [&](const Part::TopoShape& src, const QString& prefix) {
+        const unsigned long edgeCount = src.countSubShapes(TopAbs_EDGE);
+        for (unsigned long i = 1; i <= edgeCount; ++i) {
+            TopoDS_Shape sub;
+            try {
+                sub = src.getSubShape(TopAbs_EDGE, static_cast<int>(i), true);
+            }
+            catch (const Standard_Failure&) {
+                continue;
+            }
+            if (sub.IsNull()) {
+                continue;
+            }
 
-        const QString subname = QStringLiteral("Edge%1").arg(static_cast<qulonglong>(i));
-        const auto id = sketch->resolveSubName(subname.toStdString());
-        if (!id.isValid()) {
-            continue;
-        }
-        if (id.GeoId < 0 || id.GeoId >= static_cast<int>(geos.size())) {
-            continue;
-        }
-        const auto* ls = dynamic_cast<const Part::GeomLineSegment*>(geos[id.GeoId]);
-        if (!ls) {
-            continue;
-        }
-        const int label = lineLabelForGeoId[id.GeoId];
-        const double length = (ls->getEndPoint() - ls->getStartPoint()).Length();
-        addRow(
-            tr("Line%1  length %2").arg(label).arg(length, 0, 'f', 3),
-            subname,
-            Gui::BitmapFactory().iconFromTheme("Sketcher_CreateLine")
-        );
-    }
-
-    const unsigned long vertexCount = shape.countSubShapes(TopAbs_VERTEX);
-    for (unsigned long i = 1; i <= vertexCount; ++i) {
-        TopoDS_Shape sub;
-        try {
-            sub = shape.getSubShape(TopAbs_VERTEX, static_cast<int>(i), true);
-        }
-        catch (const Standard_Failure&) {
-            continue;
-        }
-        if (sub.IsNull()) {
-            continue;
-        }
-
-        const QString subname = QStringLiteral("Vertex%1").arg(static_cast<qulonglong>(i));
-        const auto id = sketch->resolveSubName(subname.toStdString());
-        if (!id.isValid()) {
-            continue;
-        }
-
-        const gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(sub));
-        const Base::Vector3d pos(p.X(), p.Y(), p.Z());
-
-        QString text;
-        if (id.Kind == Sketcher3D::GeoKind::Point) {
-            const int label = pointLabelForGeoId[id.GeoId];
-            text = tr("Point%1  %2").arg(label).arg(fmtVec(pos));
-        }
-        else if (id.Kind == Sketcher3D::GeoKind::Line) {
+            const QString subname = prefix + QStringLiteral("Edge%1").arg(static_cast<qulonglong>(i));
+            const auto id = sketch->resolveSubName(subname.toStdString());
+            if (!id.isValid()) {
+                continue;
+            }
+            if (id.GeoId < 0 || id.GeoId >= static_cast<int>(geos.size())) {
+                continue;
+            }
+            const auto* ls = dynamic_cast<const Part::GeomLineSegment*>(geos[id.GeoId]);
+            if (!ls) {
+                continue;
+            }
             const int label = lineLabelForGeoId[id.GeoId];
-            text = id.Pos == Sketcher3D::PointPos::start
-                ? tr("  Line%1.start  %2").arg(label).arg(fmtVec(pos))
-                : tr("  Line%1.end  %2").arg(label).arg(fmtVec(pos));
+            const double length = (ls->getEndPoint() - ls->getStartPoint()).Length();
+            addRow(
+                tr("Line%1  length %2").arg(label).arg(length, 0, 'f', 3),
+                subname,
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateLine")
+            );
         }
-        if (!text.isEmpty()) {
-            addRow(text, subname, Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePoint"));
+
+        const unsigned long vertexCount = src.countSubShapes(TopAbs_VERTEX);
+        for (unsigned long i = 1; i <= vertexCount; ++i) {
+            TopoDS_Shape sub;
+            try {
+                sub = src.getSubShape(TopAbs_VERTEX, static_cast<int>(i), true);
+            }
+            catch (const Standard_Failure&) {
+                continue;
+            }
+            if (sub.IsNull()) {
+                continue;
+            }
+
+            const QString subname = prefix
+                + QStringLiteral("Vertex%1").arg(static_cast<qulonglong>(i));
+            const auto id = sketch->resolveSubName(subname.toStdString());
+            if (!id.isValid()) {
+                continue;
+            }
+
+            const gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(sub));
+            const Base::Vector3d pos(p.X(), p.Y(), p.Z());
+
+            QString text;
+            if (id.Kind == Sketcher3D::GeoKind::Point) {
+                const int label = pointLabelForGeoId[id.GeoId];
+                text = tr("Point%1  %2").arg(label).arg(fmtVec(pos));
+            }
+            else if (id.Kind == Sketcher3D::GeoKind::Line) {
+                const int label = lineLabelForGeoId[id.GeoId];
+                text = id.Pos == Sketcher3D::PointPos::start
+                    ? tr("  Line%1.start  %2").arg(label).arg(fmtVec(pos))
+                    : tr("  Line%1.end  %2").arg(label).arg(fmtVec(pos));
+            }
+            if (!text.isEmpty()) {
+                addRow(text, subname, Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePoint"));
+            }
         }
-    }
+    };
+
+    appendFromShape(sketch->Shape.getShape(), {});
+    appendFromShape(
+        sketch->ReferenceShape.getShape(),
+        QString::fromStdString(Sketcher3D::Sketch3DObject::referencePrefix())
+    );
 
     elementsHeader->setText(tr("Elements (%1)").arg(elementsList->count()));
 }
@@ -474,10 +432,6 @@ void TaskSketcher3DTool::populateConstraints()
         QStringList subnames;
         for (const auto& r : c.getElements()) {
             refs << displayNameForRef(r, pointLabelForGeoId, lineLabelForGeoId);
-            const QString subname = subNameForRef(sketch, r);
-            if (!subname.isEmpty()) {
-                subnames << subname;
-            }
         }
         QString text = tr("%1  %2  [%3]")
                            .arg(static_cast<int>(i + 1))

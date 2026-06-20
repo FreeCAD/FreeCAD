@@ -25,12 +25,60 @@
 
 #include "PreCompiled.h"
 
+#include <Inventor/nodes/SoMaterial.h>
+
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
+using namespace Sketcher3DGui;
+
+namespace Sketcher3DGui
+{
+
+GeometryCreationMode3D geometryCreationMode3D = GeometryCreationMode3D::Normal;
+
+}  // namespace Sketcher3DGui
+
+Sketcher3DGui::GeometryCreationMode3D Sketcher3DGui::currentGeometryCreationMode3D()
+{
+    return geometryCreationMode3D;
+}
+
+bool Sketcher3DGui::isConstructionMode()
+{
+    return geometryCreationMode3D == GeometryCreationMode3D::Construction;
+}
+
+void Sketcher3DGui::toggleConstructionCreationMode()
+{
+    if (geometryCreationMode3D == GeometryCreationMode3D::Construction) {
+        geometryCreationMode3D = GeometryCreationMode3D::Normal;
+    }
+    else {
+        geometryCreationMode3D = GeometryCreationMode3D::Construction;
+    }
+
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    rcCmdMgr.updateCommands("ToggleConstruction3D", static_cast<int>(geometryCreationMode3D));
+}
+
+void Sketcher3DGui::applyConstructionPreviewColor(SoMaterial* material)
+{
+    if (!material) {
+        return;
+    }
+    if (isConstructionMode()) {
+        material->diffuseColor.setValue(kReferenceColor[0], kReferenceColor[1], kReferenceColor[2]);
+    }
+    else {
+        material->diffuseColor.setValue(1.0F, 1.0F, 1.0F);
+    }
+}
 
 bool Sketcher3DGui::isSketch3DInEdit()
 {

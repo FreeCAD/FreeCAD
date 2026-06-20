@@ -31,6 +31,7 @@
 
 class SoCoordinate3;
 class SoLineSet;
+class SoMaterial;
 class SoSwitch;
 
 namespace Sketcher3DGui
@@ -64,6 +65,7 @@ private:
 
     SoCoordinate3* rubberCoords {nullptr};
     SoSwitch* rubberSwitch {nullptr};
+    SoMaterial* previewMaterial {nullptr};
 };
 
 }  // namespace Sketcher3DGui

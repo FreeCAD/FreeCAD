@@ -24,32 +24,11 @@
 
 #pragma once
 
-#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
-
-#include "GeometryCreationMode3D.h"
-
-class SoMaterial;
-
-namespace App
-{
-class DocumentObject;
-}
-
-
 namespace Sketcher3DGui
 {
-
-class ViewProviderSketch3D;
-
-// Returns true if a Sketch3DObject is currently being edited.
-Sketcher3DGuiExport bool isSketch3DInEdit();
-
-// Returns the ViewProviderSketch3D of the sketch currently being edited,
-Sketcher3DGuiExport ViewProviderSketch3D* getActiveSketch3DVP();
-
-Sketcher3DGuiExport GeometryCreationMode3D currentGeometryCreationMode3D();
-Sketcher3DGuiExport bool isConstructionMode();
-Sketcher3DGuiExport void toggleConstructionCreationMode();
-Sketcher3DGuiExport void applyConstructionPreviewColor(SoMaterial* material);
-
+enum class GeometryCreationMode3D
+{
+    Normal = 0,
+    Construction = 1,
+};
 }  // namespace Sketcher3DGui

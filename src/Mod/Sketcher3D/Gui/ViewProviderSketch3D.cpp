@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <QMenu>
@@ -32,6 +31,8 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/details/SoLineDetail.h>
+#include <Inventor/details/SoPointDetail.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -39,6 +40,7 @@
 #include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSphere.h>
@@ -54,6 +56,11 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/Part/Gui/SoBrepPointSet.h>
+#include <Mod/Part/Gui/ViewProviderExt.h>
 #include <Mod/Sketcher3D/App/GeoEnum3D.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
@@ -61,8 +68,8 @@
 #include "SnapManager3D.h"
 #include "TaskDlgEditSketch3D.h"
 #include "TaskSketcher3DTool.h"
+#include "Utils.h"
 #include "ViewProviderSketch3D.h"
-
 
 using namespace Sketcher3DGui;
 
@@ -232,7 +239,193 @@ ViewProviderSketch3D::ViewProviderSketch3D()
     LineWidth.setValue(2.0F);
 }
 
-ViewProviderSketch3D::~ViewProviderSketch3D() = default;
+ViewProviderSketch3D::~ViewProviderSketch3D()
+{
+    if (referenceFaceset) {
+        referenceFaceset->unref();
+    }
+    if (referenceGeometryRoot) {
+        referenceGeometryRoot->unref();
+    }
+}
+
+bool ViewProviderSketch3D::isEditingSketch3D() const
+{
+    return getActiveSketch3DVP() == this;
+}
+
+void ViewProviderSketch3D::ensureReferenceGeometry()
+{
+    if (referenceGeometryRoot) {
+        return;
+    }
+
+    referenceGeometryRoot = new SoSeparator();
+    referenceGeometryRoot->setName("Sketcher3DReferenceGeometry");
+    referenceGeometryRoot->ref();
+
+    referenceGeometrySwitch = new SoSwitch();
+    referenceGeometrySwitch->whichChild = SO_SWITCH_NONE;
+    referenceGeometryRoot->addChild(referenceGeometrySwitch);
+
+    referenceGeometryContent = new SoSeparator();
+
+    referenceFaceset = new PartGui::SoBrepFaceSet();
+    referenceFaceset->ref();
+
+    auto* material = new SoMaterial();
+    setDiffuseColor(material, kReferenceColor);
+    referenceGeometryContent->addChild(material);
+
+    auto* style = new SoDrawStyle();
+    style->lineWidth.setValue(LineWidth.getValue());
+    style->pointSize.setValue(PointSize.getValue());
+    referenceGeometryContent->addChild(style);
+
+    referenceCoords = new SoCoordinate3();
+    referenceGeometryContent->addChild(referenceCoords);
+
+    referenceNormals = new SoNormal();
+    referenceGeometryContent->addChild(referenceNormals);
+
+    referenceLineset = new PartGui::SoBrepEdgeSet();
+    referenceGeometryContent->addChild(referenceLineset);
+
+    referencePointset = new PartGui::SoBrepPointSet();
+    referenceGeometryContent->addChild(referencePointset);
+
+    referenceGeometrySwitch->addChild(referenceGeometryContent);
+    pcRoot->addChild(referenceGeometryRoot);
+}
+
+void ViewProviderSketch3D::updateReferenceGeometry()
+{
+    ensureReferenceGeometry();
+    if (!referenceGeometrySwitch) {
+        return;
+    }
+
+    if (!isEditingSketch3D()) {
+        referenceGeometrySwitch->whichChild = SO_SWITCH_NONE;
+        return;
+    }
+
+    auto* sketch = getSketch3DObject();
+    TopoDS_Shape shape;
+    if (sketch) {
+        shape = sketch->ReferenceShape.getValue();
+    }
+
+    if (lastRenderedRefShape.IsPartner(shape)) {
+        return;
+    }
+    lastRenderedRefShape = shape;
+
+    if (shape.IsNull()) {
+        referenceGeometrySwitch->whichChild = SO_SWITCH_NONE;
+        return;
+    }
+
+    Gui::SoSelectionElementAction saction(Gui::SoSelectionElementAction::None);
+    saction.apply(referenceLineset);
+    saction.apply(referencePointset);
+
+    Gui::SoHighlightElementAction haction;
+    haction.apply(referenceLineset);
+    haction.apply(referencePointset);
+
+    try {
+        PartGui::ViewProviderPartExt::setupCoinGeometry(
+            shape,
+            referenceCoords,
+            referenceFaceset,
+            referenceNormals,
+            referenceLineset,
+            referencePointset,
+            Deviation.getValue(),
+            AngularDeflection.getValue()
+        );
+        referenceGeometrySwitch->whichChild = SO_SWITCH_ALL;
+    }
+    catch (const Standard_Failure&) {
+        referenceGeometrySwitch->whichChild = SO_SWITCH_NONE;
+    }
+}
+
+bool ViewProviderSketch3D::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
+{
+    const SoDetail* detail = pp->getDetail();
+
+    if (detail && referenceLineset && pp->getPath()->containsNode(referenceLineset)
+        && detail->getTypeId() == SoLineDetail::getClassTypeId()) {
+        const int edge = static_cast<const SoLineDetail*>(detail)->getLineIndex() + 1;
+        subname = Sketcher3D::Sketch3DObject::referencePrefix() + "Edge" + std::to_string(edge);
+        return true;
+    }
+    if (detail && referencePointset && pp->getPath()->containsNode(referencePointset)
+        && detail->getTypeId() == SoPointDetail::getClassTypeId()) {
+        const int vertex = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex()
+            - referencePointset->startIndex.getValue() + 1;
+        subname = Sketcher3D::Sketch3DObject::referencePrefix() + "Vertex" + std::to_string(vertex);
+        return true;
+    }
+    return PartGui::ViewProviderPart::getElementPicked(pp, subname);
+}
+
+bool ViewProviderSketch3D::getDetailPath(
+    const char* subname,
+    SoFullPath* pPath,
+    bool append,
+    SoDetail*& det
+) const
+{
+    const auto& prefix = Sketcher3D::Sketch3DObject::referencePrefix();
+    if (subname && std::string(subname).compare(0, prefix.size(), prefix) == 0) {
+        if (!isEditingSketch3D() || !referenceGeometrySwitch
+            || referenceGeometrySwitch->whichChild.getValue() == SO_SWITCH_NONE) {
+            return false;
+        }
+
+        auto type = Part::TopoShape::getElementTypeAndIndex(subname + prefix.size());
+        std::string element = type.first;
+        int index = type.second;
+
+        if (append && pPath) {
+            pPath->append(pcRoot);
+            if (referenceGeometryRoot) {
+                pPath->append(referenceGeometryRoot);
+                pPath->append(referenceGeometrySwitch);
+                if (referenceGeometryContent) {
+                    pPath->append(referenceGeometryContent);
+                    if (element == "Edge" && referenceLineset) {
+                        pPath->append(referenceLineset);
+                    }
+                    else if (element == "Vertex" && referencePointset) {
+                        pPath->append(referencePointset);
+                    }
+                }
+            }
+        }
+
+        if (element == "Edge") {
+            auto* detail = new SoLineDetail();
+            detail->setLineIndex(index - 1);
+            det = detail;
+            return true;
+        }
+        if (element == "Vertex") {
+            auto* detail = new SoPointDetail();
+            detail->setCoordinateIndex(
+                index + (referencePointset ? referencePointset->startIndex.getValue() : 0) - 1
+            );
+            det = detail;
+            return true;
+        }
+        return false;
+    }
+
+    return PartGui::ViewProviderPart::getDetailPath(subname, pPath, append, det);
+}
 
 Sketcher3D::Sketch3DObject* ViewProviderSketch3D::getSketch3DObject() const
 {
@@ -242,10 +435,13 @@ Sketcher3D::Sketch3DObject* ViewProviderSketch3D::getSketch3DObject() const
 void ViewProviderSketch3D::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
+    auto* sketch = getSketch3DObject();
+    if (sketch && prop == &sketch->ReferenceShape) {
+        updateReferenceGeometry();
+    }
     if (!taskPanel) {
         return;
     }
-    auto* sketch = getSketch3DObject();
     if (!sketch) {
         return;
     }
@@ -294,12 +490,20 @@ bool ViewProviderSketch3D::setEdit(int ModNum)
 
     ensurePlaneOverlay();
     ensureSnapMarker();
+    ensureReferenceGeometry();
+    updateReferenceGeometry();
     snapManager = std::make_unique<SnapManager3D>(*this);
 
     auto* dlg = new TaskDlgEditSketch3D(this);
     Gui::Control().showDialog(dlg);
 
     return true;
+}
+
+void ViewProviderSketch3D::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
+{
+    PartGui::ViewProviderPart::setEditViewer(viewer, ModNum);
+    updateReferenceGeometry();
 }
 
 void ViewProviderSketch3D::unsetEdit(int ModNum)
@@ -311,6 +515,8 @@ void ViewProviderSketch3D::unsetEdit(int ModNum)
 
     purgeHandler();
     snapManager.reset();
+    lastRenderedRefShape.Nullify();
+    updateReferenceGeometry();
 
     if (snapMarker) {
         pcRoot->removeChild(snapMarker);

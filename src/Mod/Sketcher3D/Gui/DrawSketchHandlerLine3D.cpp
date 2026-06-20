@@ -39,6 +39,7 @@
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DrawSketchHandlerLine3D.h"
+#include "Utils.h"
 #include "ViewProviderSketch3D.h"
 
 
@@ -56,7 +57,7 @@ void DrawSketchHandlerLine3D::onActivated()
     }
 
     auto* material = new SoMaterial();
-    material->diffuseColor.setValue(1.0F, 1.0F, 1.0F);
+    applyConstructionPreviewColor(material);
     root->addChild(material);
 
     auto* style = new SoDrawStyle();
@@ -84,6 +85,7 @@ void DrawSketchHandlerLine3D::onActivated()
 
 bool DrawSketchHandlerLine3D::mouseMove(const Base::Vector3d& pos)
 {
+    applyConstructionPreviewColor(previewMaterial);
     if (state == State::PickSecond && rubberCoords) {
         rubberCoords->point.set1Value(
             1,
@@ -141,7 +143,7 @@ bool DrawSketchHandlerLine3D::pressButton(const Base::Vector3d& pos)
     int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create 3D line"));
     auto seg = std::make_unique<Part::GeomLineSegment>();
     seg->setPoints(startPos, pos);
-    const int newGeoId = sketch->addGeometry(std::move(seg));
+    const int newGeoId = sketch->addGeometry(std::move(seg), isConstructionMode());
     if (newGeoId >= 0) {
         createAutoConstraints(sugConstr1, newGeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
         createAutoConstraints(sugConstr2, newGeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);

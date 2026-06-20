@@ -31,7 +31,9 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/Unit.h>
+#include <Gui/Action.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
@@ -190,6 +192,57 @@ bool CmdSketcher3DCreatePolyline::isActive()
     return isSketch3DInEdit();
 }
 
+DEF_STD_CMD_AU(CmdSketcher3DToggleConstruction)
+
+CmdSketcher3DToggleConstruction::CmdSketcher3DToggleConstruction()
+    : Command("Sketcher3D_ToggleConstruction")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Toggle reference geometry");
+    sToolTipText = QT_TR_NOOP(
+        "Toggle between normal and reference (construction) geometry while drawing"
+    );
+    sWhatsThis = "Sketcher3D_ToggleConstruction";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_ToggleConstruction";
+    sAccel = "G, N";
+    eType = ForEdit;
+
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreatePoint");
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreateLine");
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_CreatePolyline");
+    rcCmdMgr.addCommandMode("ToggleConstruction3D", "Sketcher3D_ToggleConstruction");
+}
+
+void CmdSketcher3DToggleConstruction::updateAction(int mode)
+{
+    auto* act = getAction();
+    if (!act) {
+        return;
+    }
+    switch (static_cast<GeometryCreationMode3D>(mode)) {
+        case GeometryCreationMode3D::Normal:
+            act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction"));
+            break;
+        case GeometryCreationMode3D::Construction:
+            act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction_Constr"));
+            break;
+    }
+}
+
+void CmdSketcher3DToggleConstruction::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    toggleConstructionCreationMode();
+}
+
+bool CmdSketcher3DToggleConstruction::isActive()
+{
+    return isSketch3DInEdit();
+}
+
 // ---------------------------------------------------------------------------
 // Selection helpers
 // ---------------------------------------------------------------------------
@@ -213,19 +266,12 @@ Sketch3DCollectedSelection collectSketch3DSelection(
 
     auto& geos = sketch->Geometry.getValues();
     auto sels = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
-    auto shape = sketch->Shape.getShape();
     for (auto& s : sels) {
         if (s.getObject() != sketch) {
             continue;
         }
         for (auto& subname : s.getSubNames()) {
-            TopoDS_Shape sub;
-            try {
-                sub = shape.getSubShape(subname.c_str(), /*silent=*/true);
-            }
-            catch (const Standard_Failure&) {
-                continue;
-            }
+            const TopoDS_Shape sub = sketch->getSubShape(subname);
             if (sub.IsNull()) {
                 continue;
             }
@@ -310,20 +356,13 @@ void CmdSketcher3DConstrainDistance::activated(int iMsg)
     std::vector<Base::Vector3d> positions;
     const auto sels
         = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
-    const Part::TopoShape& shape = sketch->Shape.getShape();
     const auto& geos = sketch->Geometry.getValues();
     for (const auto& s : sels) {
         if (s.getObject() != sketch) {
             continue;
         }
         for (const std::string& subname : s.getSubNames()) {
-            TopoDS_Shape sub;
-            try {
-                sub = shape.getSubShape(subname.c_str(), /*silent=*/true);
-            }
-            catch (const Standard_Failure&) {
-                continue;
-            }
+            const TopoDS_Shape sub = sketch->getSubShape(subname);
             if (sub.IsNull()) {
                 continue;
             }
@@ -1286,6 +1325,7 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreatePoint());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreateLine());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCreatePolyline());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DToggleConstruction());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistance());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainAngle());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainDistanceX());

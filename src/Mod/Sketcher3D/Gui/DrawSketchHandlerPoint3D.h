@@ -28,6 +28,7 @@
 #include "DrawSketchHandler3D.h"
 
 class SoCoordinate3;
+class SoMaterial;
 
 namespace Sketcher3DGui
 {
@@ -46,6 +47,7 @@ protected:
 
 private:
     SoCoordinate3* previewCoords {nullptr};
+    SoMaterial* previewMaterial {nullptr};
 };
 
 }  // namespace Sketcher3DGui
