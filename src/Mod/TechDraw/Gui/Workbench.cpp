@@ -354,6 +354,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* extcenter = new Gui::ToolBarItem(root);
     extcenter->setCommand("TechDraw Centerlines");
+    *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
     *extcenter << "TechDraw_CommandVertexCreationGroup";
     //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
@@ -451,7 +452,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 
     Gui::ToolBarItem* extcenter = new Gui::ToolBarItem(root);
     extcenter->setCommand("TechDraw Centerlines");
-    *extcenter << "TechDraw_ExtensionCircleCenterLine";
+    *extcenter << "TechDraw_ExtensionCircleCenterLineGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
     *extcenter << "TechDraw_CommandVertexCreationGroup";
     //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
