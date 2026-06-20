@@ -143,7 +143,7 @@
     <text id="date_of_issue_data_field" x="331" y="284.2" freecad:editable="date_of_issue" freecad:autofill="date"><tspan>DD. MM. YYYY</tspan></text>
     <text id="sheet_number_data_field" x="400" y="284.2" freecad:editable="sheet_number" freecad:autofill="sheet" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
     <text id="language_code_data_field" x="320" y="284.2" freecad:editable="language_code" style="text-align:center;text-anchor:middle"><tspan>CS</tspan></text>
-    <text id="title_data_field" x="231" y="260.2" freecad:editable="title" freecad:autofill="title"><tspan>ISO 5457 template</tspan></text>
+    <text id="title_data_field" x="231" y="260.2" freecad:editable="title" freecad:autofill="title"><tspan>Šablona ISO 5457</tspan></text>
     <text id="approval_person_data_field" x="311" y="272.2" freecad:editable="approval_person"><tspan>P. Svoboda</tspan></text>
     <text id="creator_data_field" x="311" y="260.2" freecad:editable="creator" freecad:autofill="author"><tspan>J. Novák</tspan></text>
     <text id="document_type_data_field" x="231" y="272.2" freecad:editable="document_type"><tspan>Výkres součásti</tspan></text>
