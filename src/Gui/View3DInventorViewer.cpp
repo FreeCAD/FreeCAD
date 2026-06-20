@@ -1256,6 +1256,9 @@ void View3DInventorViewer::init()
     );
 
     naviCube = new NaviCube(this);
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     naviCubeEnabled = hViewGrp->GetBool("ShowNaviCube", true);
     syncNaviCubeVisibility();
 
