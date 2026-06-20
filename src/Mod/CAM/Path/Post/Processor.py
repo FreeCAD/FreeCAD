@@ -2373,7 +2373,7 @@ class PostProcessor:
                 gcode.append(self._convert_probe_close(command))
 
             # drop None/""
-            return "\n".join([l for l in gcode if l])
+            return "\n".join(s for s in gcode if s)
 
         # Rapid moves
         if command_name in Constants.GCODE_MOVE_RAPID:
