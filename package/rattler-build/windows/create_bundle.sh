@@ -138,7 +138,7 @@ else
 fi
 
 echo "Running FreeCAD command-line smoke test..."
-if ! "$SIGN_DIR/bin/freecadcmd.exe" --safe-mode --version; then
+if ! "$SIGN_DIR/bin/ParashellCmd.exe" --safe-mode --version; then
   echo "FreeCAD command-line smoke test failed; the Windows bundle cannot start."
   exit 1
 fi
