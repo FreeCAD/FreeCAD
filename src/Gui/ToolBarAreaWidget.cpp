@@ -31,6 +31,55 @@
 
 using namespace Gui;
 
+namespace
+{
+QString widgetPersistenceKey(QWidget* widget)
+{
+    if (!widget) {
+        return {};
+    }
+
+    if (auto toolbar = qobject_cast<QToolBar*>(widget)) {
+        return ToolBarManager::toolBarPersistenceKey(toolbar);
+    }
+
+    return widget->objectName();
+}
+QString widgetLegacyPersistenceKey(QWidget* widget)
+{
+    auto toolbar = qobject_cast<QToolBar*>(widget);
+    if (!toolbar) {
+        return {};
+    }
+
+    const auto legacyKey = toolbar->objectName();
+    if (legacyKey.isEmpty() || legacyKey == ToolBarManager::toolBarPersistenceKey(toolbar)) {
+        return {};
+    }
+
+    return legacyKey;
+}
+
+QWidget* findRestorableWidget(ToolBarAreaWidget* area, const QString& key)
+{
+    if (!area || key.isEmpty()) {
+        return nullptr;
+    }
+
+    if (auto widget = area->findChild<QWidget*>(key)) {
+        return widget;
+    }
+
+    for (auto toolbar : area->findChildren<QToolBar*>()) {
+        if (ToolBarManager::toolBarPersistenceKey(toolbar) == key || toolbar->objectName() == key) {
+            return toolbar;
+        }
+    }
+
+    return nullptr;
+}
+}  // namespace
+
 ToolBarAreaWidget::ToolBarAreaWidget(
     QWidget* parent,
     ToolBarArea area,
@@ -62,11 +111,14 @@ void ToolBarAreaWidget::addWidget(QWidget* widget)
     _layout->addWidget(widget);
     adjustParent();
 
-    QString name = widget->objectName();
+    QString name = widgetPersistenceKey(widget);
 
     if (!name.isEmpty()) {
         Base::ConnectionBlocker block(_conn);
-        _hParam->SetInt(widget->objectName().toUtf8().constData(), _layout->count() - 1);
+        _hParam->SetInt(name.toUtf8().constData(), _layout->count() - 1);
+        if (const auto legacyKey = widgetLegacyPersistenceKey(widget); !legacyKey.isEmpty()) {
+            _hParam->RemoveInt(legacyKey.toUtf8().constData());
+        }
     }
 }
 
@@ -102,13 +154,21 @@ void ToolBarAreaWidget::removeWidget(QWidget* widget)
         toolbar->updateCustomGripVisibility();
     }
 
-    QString name = widget->objectName();
+    QString name = widgetPersistenceKey(widget);
     if (!name.isEmpty()) {
         Base::ConnectionBlocker block(_conn);
         _hParam->RemoveInt(name.toUtf8().constData());
+        if (const auto legacyKey = widgetLegacyPersistenceKey(widget); !legacyKey.isEmpty()) {
+            _hParam->RemoveInt(legacyKey.toUtf8().constData());
+        }
     }
 
     adjustParent();
+}
+
+void ToolBarAreaWidget::setParameters(const ParameterGrp::handle& hParam)
+{
+    _hParam = hParam;
 }
 
 void ToolBarAreaWidget::adjustParent()
@@ -127,11 +187,15 @@ void ToolBarAreaWidget::saveState()
     }
 
     foreachToolBar([this](QToolBar* toolbar, int idx, ToolBarAreaWidget*) {
-        _hParam->SetInt(toolbar->objectName().toUtf8().constData(), idx);
+        auto key = ToolBarManager::toolBarPersistenceKey(toolbar);
+        _hParam->SetInt(key.toUtf8().constData(), idx);
     });
 }
 
-void ToolBarAreaWidget::restoreState(const std::map<int, QToolBar*>& toolbars)
+void ToolBarAreaWidget::restoreState(
+    const std::map<int, QToolBar*>& toolbars,
+    const QMap<QString, bool>& widgetVisibility
+)
 {
     for (const auto& [index, toolbar] : toolbars) {
         bool visible = toolbar->isVisible();
@@ -141,11 +205,11 @@ void ToolBarAreaWidget::restoreState(const std::map<int, QToolBar*>& toolbars)
         toolbar->setVisible(visible);
     }
 
-    for (const auto& [name, visible] : _hParam->GetBoolMap()) {
-        auto widget = findChild<QWidget*>(QString::fromUtf8(name.c_str()));
+    for (auto it = widgetVisibility.cbegin(); it != widgetVisibility.cend(); ++it) {
+        auto widget = findRestorableWidget(this, it.key());
 
         if (widget) {
-            widget->setVisible(visible);
+            widget->setVisible(it.value());
         }
     }
 }

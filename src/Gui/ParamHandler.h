@@ -23,6 +23,7 @@
 
 #include <map>
 #include <memory>
+#include <set>
 #include <fastsignals/signal.h>
 #include <QTimer>
 
@@ -143,10 +144,22 @@ public:
     virtual ~ParamHandlers();
 
     void addHandler(const ParamKey& key, const std::shared_ptr<ParamHandler>& handler);
+    void addGroupHandler(ParameterGrp* hGrp, const std::shared_ptr<ParamHandler>& handler);
+
+    fastsignals::advanced_scoped_connection& connection()
+    {
+        ensureConnected();
+        return conn;
+    }
 
     void addHandler(const char* path, const char* key, const std::shared_ptr<ParamHandler>& handler)
     {
         addHandler(ParamKey(path, key), handler);
+    }
+
+    void addGroupHandler(const char* path, const std::shared_ptr<ParamHandler>& handler)
+    {
+        addGroupHandler(App::GetApplication().GetUserParameter().GetGroup(path), handler);
     }
 
     void addHandler(ParameterGrp* hGrp, const char* key, const std::shared_ptr<ParamHandler>& handler)
@@ -196,6 +209,23 @@ public:
     {
         std::shared_ptr<ParamHandler> handler(new ParamHandlerT<Func>(func));
         addHandler(hGrp, key, handler);
+        return handler;
+    }
+
+    template<class Func>
+    std::shared_ptr<ParamHandler> addGroupHandler(const char* path, Func func)
+    {
+        auto hGrp = App::GetApplication().GetUserParameter().GetGroup(path);
+        std::shared_ptr<ParamHandler> handler(new ParamHandlerT<Func>(func));
+        addGroupHandler(hGrp, handler);
+        return handler;
+    }
+
+    template<class Func>
+    std::shared_ptr<ParamHandler> addGroupHandler(ParameterGrp* hGrp, Func func)
+    {
+        std::shared_ptr<ParamHandler> handler(new ParamHandlerT<Func>(func));
+        addGroupHandler(hGrp, handler);
         return handler;
     }
 
@@ -257,10 +287,36 @@ public:
         return handler;
     }
 
+    template<class Func>
+    std::shared_ptr<ParamHandler> addDelayedGroupHandler(const char* path, Func func)
+    {
+        auto hGrp = App::GetApplication().GetUserParameter().GetGroup(path);
+        auto wrap = [hGrp, func]() {
+            func(hGrp);
+        };
+        std::shared_ptr<ParamHandler> handler(new ParamDelayedHandlerT<decltype(wrap)>(wrap));
+        addGroupHandler(hGrp, handler);
+        return handler;
+    }
+
+    template<class Func>
+    std::shared_ptr<ParamHandler> addDelayedGroupHandler(ParameterGrp::handle hGrp, Func func)
+    {
+        auto wrap = [hGrp, func]() {
+            func(hGrp);
+        };
+        std::shared_ptr<ParamHandler> handler(new ParamDelayedHandlerT<decltype(wrap)>(wrap));
+        addGroupHandler(hGrp, handler);
+        return handler;
+    }
+
 protected:
+    void ensureConnected();
+
     std::map<ParamKey, std::shared_ptr<ParamHandler>> handlers;
+    std::multimap<ParameterGrp::handle, std::shared_ptr<ParamHandler>> groupHandlers;
     std::set<std::shared_ptr<ParamHandler>> pendings;
-    fastsignals::scoped_connection conn;
+    fastsignals::advanced_scoped_connection conn;
     QTimer timer;
 };
 

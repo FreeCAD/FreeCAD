@@ -253,6 +253,22 @@
           <widget class="QComboBox" name="workbenchBox"/>
          </item>
          <item>
+          <widget class="QLabel" name="layoutScopeLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Layout scope: Current workbench</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QTreeWidget" name="toolbarTreeWidget">
            <property name="columnCount">
             <number>0</number>
@@ -309,9 +325,16 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="deleteButton">
+         <widget class="QPushButton" name="deleteButton">
            <property name="text">
             <string>Delete</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="resetLayoutButton">
+           <property name="text">
+            <string>Reset Layout</string>
            </property>
           </widget>
          </item>
@@ -362,6 +385,7 @@
   <tabstop>newButton</tabstop>
   <tabstop>renameButton</tabstop>
   <tabstop>deleteButton</tabstop>
+  <tabstop>resetLayoutButton</tabstop>
  </tabstops>
  <resources>
   <include location="../Icons/resource.qrc"/>
