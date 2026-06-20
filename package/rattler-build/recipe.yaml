@@ -100,7 +100,7 @@ requirements:
     - fmt
     - freetype
     - hdf5
-    - icu
+    - icu >=78,<79
     - lark
     - libboost-devel
     - matplotlib-base
@@ -145,6 +145,7 @@ requirements:
     - docutils
     - gmsh
     - graphviz
+    - icu >=78,<79
     - ifcopenshell
     - lark
     - lxml
