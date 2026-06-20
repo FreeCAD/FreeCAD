@@ -28,6 +28,7 @@
 #include <QAction>
 #include <QContextMenuEvent>
 #include <QHideEvent>
+#include <QResizeEvent>
 
 #include "StatusBarLabel.h"
 #include <App/Application.h>
@@ -86,6 +87,37 @@ void StatusBarLabel::contextMenuEvent(QContextMenuEvent* event)
 
     menu.exec(event->globalPos());
 }
+
+void StatusBarLabel::setText(const QString& text)
+{
+    m_fullText = text;
+    setToolTip(text);
+    updateElidedText();
+}
+
+void StatusBarLabel::clearText()
+{
+    m_fullText.clear();
+    setToolTip(QString());
+    QLabel::clear();
+}
+
+void StatusBarLabel::resizeEvent(QResizeEvent* event)
+{
+    QLabel::resizeEvent(event);
+    updateElidedText();
+}
+
+void StatusBarLabel::updateElidedText()
+{
+    if (m_fullText.isEmpty()) {
+        QLabel::setText(QString());
+        return;
+    }
+    const QString elided = fontMetrics().elidedText(m_fullText, Qt::ElideMiddle, width());
+    QLabel::setText(elided);
+}
+
 
 void StatusBarLabel::setVisible(bool visible)
 {

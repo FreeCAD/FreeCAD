@@ -305,7 +305,7 @@ private:
 struct MainWindowP
 {
     DimensionWidget* sizeLabel;
-    QLabel* actionLabel;
+    StatusBarLabel* actionLabel;
     InputHintWidget* hintLabel;
     QLabel* rightSideLabel;
     QTimer* actionTimer;
@@ -421,6 +421,8 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->status = new StatusBarObserver();
     d->actionLabel = new StatusBarLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    d->actionLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    d->actionLabel->setMinimumWidth(0);
     d->sizeLabel = new DimensionWidget(statusBar());
 
     statusBar()->addWidget(d->actionLabel, 1);
@@ -484,7 +486,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // clears the action label
     d->actionTimer = new QTimer(this);
     d->actionTimer->setObjectName(QStringLiteral("actionTimer"));
-    connect(d->actionTimer, &QTimer::timeout, d->actionLabel, &QLabel::clear);
+    connect(d->actionTimer, &QTimer::timeout, d->actionLabel, &StatusBarLabel::clearText);
 
     // clear status type
     d->statusTimer = new QTimer(this);
