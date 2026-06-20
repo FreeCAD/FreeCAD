@@ -71,10 +71,6 @@ if(BUILD_GUI AND FREECAD_QT_MAJOR_VERSION EQUAL 6)
         set(QtWebEngineQuick_FOUND FALSE)
         message(STATUS "Qt6 WebEngineQuick not found: in-application WebEngine views disabled")
     endif()
-
-    if(NOT QtWebEngineQuick_FOUND AND CMAKE_BUILD_TYPE STREQUAL "Release")
-        message(FATAL_ERROR "Qt6 WebEngineQuick is required for Release builds.")
-    endif()
 endif()
 
 set(CMAKE_AUTOMOC TRUE)
