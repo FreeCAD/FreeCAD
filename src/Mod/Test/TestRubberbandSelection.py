@@ -216,6 +216,89 @@ class TestRubberbandSelection(unittest.TestCase):
                     "Viewer callbacks should receive drag motion before box selection starts",
                 )
 
+    def test_scene_graph_handled_press_keeps_release(self):
+        for label, style in self.VIEWER_HANDOFF_STYLES:
+            with self.subTest(style=label):
+                FreeCADGui.Selection.clearSelection()
+                self.view.setNavigationType(style)
+                self._refresh_view()
+
+                state = {"presses": 0, "releases": 0}
+
+                def on_button(event_callback):
+                    event = event_callback.getEvent()
+                    if event.getButton() != coin.SoMouseButtonEvent.BUTTON1:
+                        return
+                    if event.getState() == coin.SoButtonEvent.DOWN:
+                        state["presses"] += 1
+                    else:
+                        state["releases"] += 1
+                    event_callback.setHandled()
+
+                button_callback = self.view.addEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(),
+                    on_button,
+                )
+
+                try:
+                    start = self.viewport.rect().center() + QtCore.QPoint(-60, 0)
+                    end = start + QtCore.QPoint(90, 0)
+                    self._drag_path(start, end)
+                finally:
+                    self.view.removeEventCallbackPivy(
+                        coin.SoMouseButtonEvent.getClassTypeId(),
+                        button_callback,
+                    )
+
+                self.assertEqual(state["presses"], 1)
+                self.assertEqual(
+                    state["releases"],
+                    1,
+                    "Box selection must not steal release after the scene graph handles press",
+                )
+
+    def test_box_select_does_not_swallow_next_viewer_press(self):
+        for label, style in self.VIEWER_HANDOFF_STYLES:
+            with self.subTest(style=label):
+                FreeCADGui.Selection.clearSelection()
+                self.view.setNavigationType(style)
+                self._refresh_view()
+
+                first_start = self.viewport.rect().center() + QtCore.QPoint(-120, 0)
+                first_end = first_start + QtCore.QPoint(90, 0)
+                self._drag_path(first_start, first_end)
+
+                state = {"presses": 0}
+
+                def on_button(event_callback):
+                    event = event_callback.getEvent()
+                    if event.getButton() != coin.SoMouseButtonEvent.BUTTON1:
+                        return
+                    if event.getState() == coin.SoButtonEvent.DOWN:
+                        state["presses"] += 1
+                    event_callback.setHandled()
+
+                button_callback = self.view.addEventCallbackPivy(
+                    coin.SoMouseButtonEvent.getClassTypeId(),
+                    on_button,
+                )
+
+                try:
+                    second_start = self.viewport.rect().center() + QtCore.QPoint(-20, 0)
+                    second_end = second_start + QtCore.QPoint(90, 0)
+                    self._drag_path(second_start, second_end)
+                finally:
+                    self.view.removeEventCallbackPivy(
+                        coin.SoMouseButtonEvent.getClassTypeId(),
+                        button_callback,
+                    )
+
+                self.assertEqual(
+                    state["presses"],
+                    1,
+                    "A fast drag after box selection must still deliver its press to the viewer",
+                )
+
     def test_cubic_bezier_drag_release_is_not_stolen_when_selection_is_disabled(self):
         try:
             from draftguitools import gui_beziers

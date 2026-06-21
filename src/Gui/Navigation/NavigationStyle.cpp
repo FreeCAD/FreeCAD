@@ -23,10 +23,15 @@
 
 
 #include <Inventor/SbViewportRegion.h>
+#include <Inventor/SoEventManager.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/details/SoNodeKitDetail.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -64,6 +69,84 @@
 #include "ViewParams.h"
 
 using namespace Gui;
+
+namespace
+{
+
+bool pickedPathContainsDragger(const SoPickedPoint* pick)
+{
+    if (!pick->getPath()) {
+        return false;
+    }
+
+    const auto fullpath = Gui::toFullPath(pick->getPath());
+    for (int i = 0; i < fullpath->getLength(); ++i) {
+        const auto* node = fullpath->getNode(i);
+        if (node->isOfType(SoDragger::getClassTypeId())) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool nodeKitDetailReferencesDragger(const SoDetail* detail)
+{
+    if (!detail || !detail->isOfType(SoNodeKitDetail::getClassTypeId())) {
+        return false;
+    }
+
+    const auto* nodeKitDetail = static_cast<const SoNodeKitDetail*>(detail);
+    const auto* nodeKit = nodeKitDetail->getNodeKit();
+    return nodeKit && nodeKit->isOfType(SoDragger::getClassTypeId());
+}
+
+bool pickedNodeKitOwnerIsDragger(const SoPickedPoint* pick)
+{
+    if (nodeKitDetailReferencesDragger(pick->getDetail())) {
+        return true;
+    }
+
+    if (!pick->getPath()) {
+        return false;
+    }
+
+    const auto fullpath = Gui::toFullPath(pick->getPath());
+    for (int i = 0; i < fullpath->getLength(); ++i) {
+        if (nodeKitDetailReferencesDragger(pick->getDetail(fullpath->getNode(i)))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool pickedPointBelongsToDragger(const SoPickedPoint* pick)
+{
+    return pick && (pickedPathContainsDragger(pick) || pickedNodeKitOwnerIsDragger(pick));
+}
+
+bool sceneGraphHasEventGrabber(View3DInventorViewer* viewer)
+{
+    if (!viewer) {
+        return false;
+    }
+
+    auto* manager = viewer->getSoEventManager();
+    if (!manager) {
+        return false;
+    }
+
+    auto* action = manager->getHandleEventAction();
+    return action && action->getGrabber();
+}
+
+bool isLeftButtonPress(const SoEvent* const ev)
+{
+    return SoMouseButtonEvent::isButtonPressEvent(ev, SoMouseButtonEvent::BUTTON1);
+}
+
+}  // namespace
 
 class FCSphereSheetProjector: public SbSphereSheetProjector
 {
@@ -1875,6 +1958,13 @@ void NavigationStyle::clearSelectionStartPosition()
     selectionStartPosition.reset();
 }
 
+void NavigationStyle::clearPendingClickEvent()
+{
+    mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
+    // A cleared event must not remain a click candidate for the next double-click check.
+    mouseDownConsumedEvent.setTime(SbTime::zero());
+}
+
 int NavigationStyle::selectionMoveThreshold() const
 {
     return QApplication::startDragDistance();
@@ -1923,6 +2013,10 @@ bool NavigationStyle::tryStartBoxSelection(
     if (viewer->isEditing() || viewer->isEditingViewProvider()) {
         return false;
     }
+    // An active grabber means an Inventor node already owns this drag stream.
+    if (sceneGraphHasEventGrabber(viewer)) {
+        return false;
+    }
 
     const SbVec2s current = ev->getPosition();
     const SbVec2f movedBy(current - startPosition);
@@ -1935,8 +2029,7 @@ bool NavigationStyle::tryStartBoxSelection(
     }
 
     Gui::Selection().rmvPreselect();
-    mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
-    mouseDownConsumedEvent.setTime(ev->getTime());
+    clearPendingClickEvent();
 
     auto* selection = new BoxSelectSelection(additiveSelection, selectElement);
     selection->setAnchor(startPosition, current);
@@ -1954,14 +2047,16 @@ bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
     SoRayPickAction rp(this->viewer->getSoRenderManager()->getViewportRegion());
     rp.setRadius(viewer->getPickRadius());
     rp.setPoint(pos);
+    rp.setPickAll(true);
     rp.apply(sceneGraph);
-    SoPickedPoint* pick = rp.getPickedPoint();
-    if (pick) {
-        const auto fullpath = Gui::toFullPath(pick->getPath());
-        for (int i = 0; i < fullpath->getLength(); ++i) {
-            if (fullpath->getNode(i)->isOfType(SoDragger::getClassTypeId())) {
-                return true;
-            }
+
+    // Dragger surrogate parts can be arbitrary scene paths set via setPartAsPath().
+    // In that case the picked path need not contain the dragger, but Coin keeps the
+    // owning nodekit in SoNodeKitDetail.
+    const SoPickedPointList& picks = rp.getPickedPointList();
+    for (int i = 0; i < picks.getLength(); ++i) {
+        if (pickedPointBelongsToDragger(picks[i])) {
+            return true;
         }
     }
 
@@ -2180,6 +2275,11 @@ SbBool NavigationStyle::processSoEvent(const SoEvent* const ev)
 
     if (!processed && !offeredtoViewerEventBase) {
         processed = viewer->processSoEventBase(ev);
+    }
+    if (processed && isLeftButtonPress(ev) && currentmode == NavigationStyle::SELECTION) {
+        // A handled press gives the scene graph ownership of this pointer stream.
+        clearSelectionStartPosition();
+        setViewingMode(NavigationStyle::INTERACT);
     }
 
     return processed;

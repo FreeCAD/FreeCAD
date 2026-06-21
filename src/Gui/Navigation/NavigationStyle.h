@@ -356,6 +356,7 @@ protected:
     void updateSelectionStartPosition(SbBool press, const SbVec2s& position);
     void setSelectionStartPosition(const SbVec2s& position);
     void clearSelectionStartPosition();
+    void clearPendingClickEvent();
     bool handleSelectionDragMotion(
         const SoLocation2Event* const ev,
         ViewerMode& newmode,
