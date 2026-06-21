@@ -118,6 +118,7 @@ private:
 private:
     SoCoordinate3* pCoords;
     SoImage* pImage;
+    SoImage* pImageHitProxy;
     SoBaseColor* pColor;
     SoTranslation* pBaseTranslation;
     TranslateManip* pTextTranslation;

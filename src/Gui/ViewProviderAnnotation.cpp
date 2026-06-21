@@ -41,6 +41,7 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
 
@@ -64,6 +65,31 @@
 
 
 using namespace Gui;
+
+namespace
+{
+
+SoSeparator* createLabelDragHandle(SoImage* image, SoImage* hitProxy)
+{
+    auto* handle = new SoSeparator();
+    auto* pickStyle = new SoPickStyle();
+    pickStyle->style = SoPickStyle::BOUNDING_BOX_ON_TOP;
+    handle->addChild(pickStyle);
+    handle->addChild(hitProxy);
+
+    // Let the transparent proxy own picking for the full label bounds.
+    // The rendered image is visual-only so it cannot compete with the dragger path.
+    auto* visual = new SoSeparator();
+    auto* visualPickStyle = new SoPickStyle();
+    visualPickStyle->style = SoPickStyle::UNPICKABLE;
+    visual->addChild(visualPickStyle);
+    visual->addChild(image);
+    handle->addChild(visual);
+
+    return handle;
+}
+
+}  // namespace
 
 const char* ViewProviderAnnotation::JustificationEnums[] = {"Left", "Right", "Center", nullptr};
 const char* ViewProviderAnnotation::RotationAxisEnums[] = {"X", "Y", "Z", nullptr};
@@ -292,6 +318,8 @@ ViewProviderAnnotationLabel::ViewProviderAnnotationLabel()
     pCoords->ref();
     pImage = new SoImage();
     pImage->ref();
+    pImageHitProxy = new SoImage();
+    pImageHitProxy->ref();
 
     BackgroundColor.touch();
 
@@ -305,6 +333,7 @@ ViewProviderAnnotationLabel::~ViewProviderAnnotationLabel()
     pTextTranslation->unref();
     pCoords->unref();
     pImage->unref();
+    pImageHitProxy->unref();
 }
 
 void ViewProviderAnnotationLabel::onChanged(const App::Property* prop)
@@ -358,7 +387,7 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
     pickStyleObj->style = SoPickStyle::SHAPE_ON_TOP;
     textsep->addChild(pickStyleObj);
     textsep->addChild(pBaseTranslation);
-    textsep->addChild(pImage);
+    textsep->addChild(createLabelDragHandle(pImage, pImageHitProxy));
 
     // image with line
     SoSeparator* linesep = new SoAnnotation();
@@ -366,24 +395,32 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
     pickStyleLine->style = SoPickStyle::SHAPE_ON_TOP;
     linesep->addChild(pickStyleLine);
     linesep->addChild(pBaseTranslation);
-    linesep->addChild(pColor);
-    linesep->addChild(pCoords);
-    linesep->addChild(new SoLineSet());
+
+    // Keep the leader as visual-only so it cannot steal label-corner drags.
+    auto lineVisual = new SoSeparator();
+    auto linePickStyle = new SoPickStyle();
+    linePickStyle->style = SoPickStyle::UNPICKABLE;
+    lineVisual->addChild(linePickStyle);
+    lineVisual->addChild(pColor);
+    lineVisual->addChild(pCoords);
+    lineVisual->addChild(new SoLineSet());
     auto ds = new SoDrawStyle();
     ds->pointSize.setValue(3.0f);
-    linesep->addChild(ds);
-    linesep->addChild(new SoPointSet());
+    lineVisual->addChild(ds);
+    lineVisual->addChild(new SoPointSet());
+    linesep->addChild(lineVisual);
+
     linesep->addChild(pTextTranslation);
-    linesep->addChild(pImage);
+    linesep->addChild(createLabelDragHandle(pImage, pImageHitProxy));
 
     addDisplayMaskMode(linesep, "Line");
     addDisplayMaskMode(textsep, "Object");
 
-    // Use the image node as the transform handle
+    // Use the image bounds as the transform handle
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
     sa.setSearchingAll(true);
-    sa.setNode(this->pImage);
+    sa.setNode(this->pImageHitProxy);
     sa.apply(pcRoot);
     SoPath* imagePath = sa.getPath();
     if (imagePath) {
@@ -471,6 +508,7 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
 {
     if (s.empty()) {
         pImage->image = SoSFImage();
+        pImageHitProxy->image = SoSFImage();
         this->hide();
         return;
     }
@@ -526,4 +564,11 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
     SoSFImage sfimage;
     Gui::BitmapFactory().convert(image, sfimage);
     pImage->image = sfimage;
+
+    QImage hitProxy(image.size(), QImage::Format_ARGB32_Premultiplied);
+    hitProxy.fill(Qt::transparent);
+
+    SoSFImage sfHitProxy;
+    Gui::BitmapFactory().convert(hitProxy, sfHitProxy);
+    pImageHitProxy->image = sfHitProxy;
 }
