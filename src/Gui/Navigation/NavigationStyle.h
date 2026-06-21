@@ -346,6 +346,12 @@ private:
     bool getObjectBoundingSphere(SbSphere& sphere) const;
     bool getObjectBoundingBoxCenter(SbVec3f& center) const;
     void applyOrbitDragCameraConstraints(const OrbitDragState& state);
+    bool isDoubleClickCandidate(const SoMouseButtonEvent* event) const;
+    void deferMouseDownEvent(const SoMouseButtonEvent* event);
+    void clearDeferredMouseDownEvent();
+    void replayDeferredMouseDownEvent();
+    void recordClickCandidate(const SoMouseButtonEvent* event);
+    void clearClickCandidateState();
 
 protected:
     void clearLog();
@@ -356,7 +362,6 @@ protected:
     void updateSelectionStartPosition(SbBool press, const SbVec2s& position);
     void setSelectionStartPosition(const SbVec2s& position);
     void clearSelectionStartPosition();
-    void clearPendingClickEvent();
     bool handleSelectionDragMotion(
         const SoLocation2Event* const ev,
         ViewerMode& newmode,
@@ -384,7 +389,9 @@ protected:
     NavigationAnimator* animator;
     SbBool animationEnabled;
     ViewerMode currentmode;
-    SoMouseButtonEvent mouseDownConsumedEvent;
+    SoMouseButtonEvent deferredMouseDownEvent;
+    bool hasDeferredMouseDownEvent {false};
+    SbTime lastClickCandidateTime;
     SbVec2f lastmouseposition;
     SbVec2s globalPos;
     SbVec2s localPos;

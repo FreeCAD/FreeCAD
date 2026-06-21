@@ -456,6 +456,7 @@ void NavigationStyle::initialize()
     this->button1down = false;
     this->button2down = false;
     this->button3down = false;
+    clearClickCandidateState();
     this->ctrldown = false;
     this->shiftdown = false;
     this->altdown = false;
@@ -1958,11 +1959,16 @@ void NavigationStyle::clearSelectionStartPosition()
     selectionStartPosition.reset();
 }
 
-void NavigationStyle::clearPendingClickEvent()
+void NavigationStyle::recordClickCandidate(const SoMouseButtonEvent* event)
 {
-    mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
-    // A cleared event must not remain a click candidate for the next double-click check.
-    mouseDownConsumedEvent.setTime(SbTime::zero());
+    clearDeferredMouseDownEvent();
+    lastClickCandidateTime = event->getTime();
+}
+
+void NavigationStyle::clearClickCandidateState()
+{
+    clearDeferredMouseDownEvent();
+    lastClickCandidateTime = SbTime::zero();
 }
 
 int NavigationStyle::selectionMoveThreshold() const
@@ -2029,7 +2035,8 @@ bool NavigationStyle::tryStartBoxSelection(
     }
 
     Gui::Selection().rmvPreselect();
-    clearPendingClickEvent();
+    // A drag is not a click candidate for the next double-click check.
+    clearClickCandidateState();
 
     auto* selection = new BoxSelectSelection(additiveSelection, selectElement);
     selection->setAnchor(startPosition, current);
@@ -2473,30 +2480,54 @@ SbBool NavigationStyle::processClickEvent(const SoMouseButtonEvent* const event)
     SbBool processed = false;
     const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
     if (press) {
-        SbTime tmp = (event->getTime() - mouseDownConsumedEvent.getTime());
-        float dci = (float)QApplication::doubleClickInterval() / 1000.0f;
-        // a double-click?
-        if (tmp.getValue() < dci) {
-            mouseDownConsumedEvent = *event;
-            mouseDownConsumedEvent.setTime(event->getTime());
+        if (isDoubleClickCandidate(event)) {
+            deferMouseDownEvent(event);
             processed = true;
         }
         else {
-            mouseDownConsumedEvent.setTime(event->getTime());
-            // 'ANY' is used to mark that we don't know yet if it will
-            // be a double-click event.
-            mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
+            recordClickCandidate(event);
         }
     }
     else if (!press) {
-        if (mouseDownConsumedEvent.getButton() == SoMouseButtonEvent::BUTTON1) {
-            // now handle the postponed event
-            NavigationStyle::processSoEvent(&mouseDownConsumedEvent);
-            mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
-        }
+        replayDeferredMouseDownEvent();
     }
 
     return processed;
+}
+
+bool NavigationStyle::isDoubleClickCandidate(const SoMouseButtonEvent* event) const
+{
+    if (lastClickCandidateTime == SbTime::zero()) {
+        return false;
+    }
+
+    const SbTime elapsed = event->getTime() - lastClickCandidateTime;
+    const auto doubleClickInterval = static_cast<float>(QApplication::doubleClickInterval())
+        / 1000.0F;
+    return elapsed.getValue() < doubleClickInterval;
+}
+
+void NavigationStyle::deferMouseDownEvent(const SoMouseButtonEvent* event)
+{
+    deferredMouseDownEvent = *event;
+    deferredMouseDownEvent.setTime(event->getTime());
+    hasDeferredMouseDownEvent = true;
+    lastClickCandidateTime = event->getTime();
+}
+
+void NavigationStyle::clearDeferredMouseDownEvent()
+{
+    hasDeferredMouseDownEvent = false;
+}
+
+void NavigationStyle::replayDeferredMouseDownEvent()
+{
+    if (!hasDeferredMouseDownEvent) {
+        return;
+    }
+
+    NavigationStyle::processSoEvent(&deferredMouseDownEvent);
+    clearDeferredMouseDownEvent();
 }
 
 SbBool NavigationStyle::processWheelEvent(const SoMouseWheelEvent* const event)
