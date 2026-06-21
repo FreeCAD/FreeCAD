@@ -16,7 +16,7 @@ Section -InstallData
   # Registry information
   WriteRegStr SHCTX ${APP_REGKEY} "" $INSTDIR
   WriteRegStr SHCTX ${APP_REGKEY} "Version" "${APP_VERSION_NUMBER}"
-  
+
   # Start Menu shortcut
   SetOutPath "$INSTDIR\bin" # this is the folder in which the shortcut is executed
   # we must assure that the folder is not empty (happens on silent install and can accidentally happen)
@@ -33,14 +33,14 @@ Section -InstallData
    SetOutPath "$INSTDIR\bin"
    CreateShortCut "$DESKTOP\${APP_NAME} ${APP_SERIES_NAME}.lnk" "$INSTDIR\${APP_RUN}" "" "$INSTDIR\${APP_RUN}" "" "" "" "${APP_SHORTCUT_INFO}"
   ${endif}
-  
+
   # Uninstaller information
   ${If} $MultiUser.InstallMode == "CurrentUser"
     WriteRegStr SHCTX ${APP_UNINST_KEY} "DisplayName" "${APP_NAME} ${APP_VERSION} $(TEXT_INSTALL_CURRENTUSER)"
   ${Else}
     WriteRegStr SHCTX ${APP_UNINST_KEY} "DisplayName" "${APP_NAME} ${APP_VERSION}"
   ${EndIf}
-  
+
   WriteRegStr SHCTX ${APP_UNINST_KEY} "UninstallString" '"$INSTDIR\${SETUP_UNINSTALLER}"'
   WriteRegStr SHCTX ${APP_UNINST_KEY} "QuietUninstallString" "$\"$INSTDIR\${SETUP_UNINSTALLER}$\" /S"
   WriteRegStr SHCTX ${APP_UNINST_KEY} "DisplayVersion" "${APP_VERSION}"
@@ -52,7 +52,7 @@ Section -InstallData
   WriteRegDWORD SHCTX ${APP_UNINST_KEY} "NoModify" 0x00000001
   WriteRegDWORD SHCTX ${APP_UNINST_KEY} "NoRepair" 0x00000001
   WriteRegStr SHCTX ${APP_UNINST_KEY} "StartMenu" "$SMPROGRAMS\$StartmenuFolder"
-  
+
   # if we install over an older existing version, remove the old uninstaller information
   # NSIS cannot handle numbers with leading zero, thus cut it off before comparing
   StrCpy $1 $OldVersionNumber "" 1
@@ -64,7 +64,7 @@ Section -InstallData
    DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}$OldVersionNumber1"
    DeleteRegKey SHCTX "SOFTWARE\${APP_NAME}$OldVersionNumber1"
   ${endif}
-  
+
 SectionEnd
 
 #--------------------------------
@@ -95,11 +95,11 @@ Section -Configure
    ${endif}
    # in any case remove the FCStdThumbnail.dll
    RMDir /r "$INSTDIR\thumbnail"
-   
+
    # Eventually refresh shell icons
    ${RefreshShellIcons}
   ${endif}
-  
+
 SectionEnd
 
 #--------------------------------

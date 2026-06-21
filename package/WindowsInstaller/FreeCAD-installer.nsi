@@ -1,4 +1,4 @@
-﻿/*
+/*
 FreeCAD Installer for Windows
 Author: Uwe Stöhr
 Compatible with NSIS 3.x
@@ -69,4 +69,3 @@ ManifestDPIAware true
 # Output file
 
 Outfile "${SETUP_EXE}"
-

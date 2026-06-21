@@ -1,4 +1,4 @@
-﻿# This script contains the following functions:
+# This script contains the following functions:
 #
 # - un.DelAppPathSub and UnAppPreSuff,
 #    (delete the folder ~\Documents and Settings\username\Application Data\FreeCAD for all users), uses:
@@ -17,7 +17,7 @@
  # searches for a string/character (SearchStr) in another string (FindStr)
  # and returns the number of the character in the FindStr where the SearchStr was found (Pointer)
  # if nothing was found or the search is impossible the Pointer is set to -1
- 
+
  StrLen $R2 "${SearchStr}"
  StrLen $R4 "${FindStr}"
  StrCpy $R5 0
@@ -40,7 +40,7 @@
  done:
 
 !macroend
- 
+
 #--------------------------------
 
 Function StrPoint
@@ -53,7 +53,7 @@ FunctionEnd
  # searches for a string/character (SearchStr) in another string (FindStr) in reverse order
  # and returns the number of the character in the FindStr where the SearchStr was found (Pointer)
  # if nothing was found or the search is impossible the Pointer is set to +1
- 
+
  StrLen $R2 ${SearchStr}
  StrLen $R4 ${FindStr}
  ${if} $R2 == 0
@@ -76,7 +76,7 @@ FunctionEnd
  done:
 
 !macroend
- 
+
 #--------------------------------
 
 !macro AppPreSuff AppPre AppSuff
@@ -86,9 +86,9 @@ FunctionEnd
  # C:\Users\username\AppData\Roaming
  # this macro saves the "C:\Documents and Settings\" substring into the variable "AppPre"
  # and the "Application Data" substring into the variable "AppSuff"
-  
+
   # switch temporarily to local user because the all users application data path is in
-  # Vista only C:\ProgramData 
+  # Vista only C:\ProgramData
   SetShellVarContext current
   StrCpy $String "$APPDATA"
   Var /GLOBAL APPDATemp
@@ -137,7 +137,7 @@ Function un.GetParentA
    Pop $R2
    Pop $R1
    Exch $R0
-   
+
 FunctionEnd
 
 #--------------------------------
@@ -159,7 +159,7 @@ Function un.GetUsers
    StrCmp $R1 "All Users" notDir
    StrCmp $R1 "Default User" notDir
    StrCmp $R1 "All Users.WINNT" notDir
-   StrCmp $R1 "Default User.WINNT" notDir  
+   StrCmp $R1 "Default User.WINNT" notDir
   StrCpy $R3 "$R3|$R1"
   notDir:
    FindNext $R0 $R1
@@ -167,7 +167,7 @@ Function un.GetUsers
   Goto findloop
   findend:
    FindClose $R0
-  
+
 FunctionEnd
 
 #--------------------------------
@@ -185,7 +185,7 @@ FunctionEnd
  # C:\Users\username\AppData\Roaming
  # this macro saves the "C:\Documents and Settings\" substring into the variable "AppPre"
  # and the "Application Data" substring into the variable "AppSuff"
-  
+
   SetShellVarContext current # switch temoprarily to local user
   StrCpy $String "$APPDATA"
   StrCpy $APPDATemp "$APPDATA"
@@ -225,7 +225,7 @@ Function un.DelAppPathSub
   Pop $R2
   Pop $R1
   Pop $R0
-  
+
   # the usernames in the list of all users is separated by "|"
   loop:
    StrCpy $String "$UserList"
@@ -242,7 +242,7 @@ Function un.DelAppPathSub
   ready:
   StrCpy $0 $UserList
   RMDir /r "$AppPre\$0\$AppSuff\$AppSubfolder" # delete the folder
-  
+
 FunctionEnd
 
 #--------------------------------
