@@ -145,7 +145,7 @@ jobs:
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
-          extraParameters: -G Ninja --preset ${{ env.config }} -DFREECAD_USE_EXTERNAL_PYCXX=ON
+          extraParameters: -G Ninja --preset ${{ env.config }} -DFREECAD_USE_EXTERNAL_PYCXX=ON -DFREECAD_USE_EXTERNAL_JSON=ON
           builddir: ${{ env.builddir }}
           logFile: ${{ env.logdir }}Cmake.log
           errorFile: ${{ env.logdir }}CmakeErrors.log
