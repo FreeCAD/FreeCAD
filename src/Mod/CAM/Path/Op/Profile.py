@@ -546,7 +546,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         self.solids = [base.Shape for base in self.model]
         self.tol = self.job.GeometryTolerance.Value
-
+        zFin = None
         bases = []
         edgeslist = []
         horFaces = []
@@ -559,6 +559,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 bases.append(base)
             for subName in subsList:
                 sub = getattr(base.Shape, subName)
+                zFin = max(sub.BoundBox.ZMin, zFin) if zFin is not None else sub.BoundBox.ZMin
                 if isinstance(sub, Part.Edge):
                     edgeslist.append(sub)
                 elif isinstance(sub, Part.Face):
@@ -578,6 +579,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             fzMin = min(e.BoundBox.ZMin for e in face.Edges)
             bEs = [e for e in face.Edges if Path.Geom.isRoughly(e.BoundBox.ZMax, fzMin)]
             edgeslist.extend(bEs)
+
+        for edge in edgeslist:
+            if Path.Geom.isHorizontal(edge):
+                edge.translate(FreeCAD.Vector(0, 0, zFin - edge.BoundBox.ZMin))
 
         for se in Part.getSortedClusters(edgeslist):
             for base in bases:
