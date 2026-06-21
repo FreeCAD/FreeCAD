@@ -242,6 +242,12 @@ class Scale(gui_base_original.Modifier):
         This function is called by the toolbar or taskpanel interface
         when valid x, y, and z have been entered in the input fields.
         """
+
+        def _show_dialog():
+            dia = Gui.Control.showDialog(self.task)
+            dia.setDocumentName(self.doc.Name)
+            dia.setAutoCloseOnDeletedDocument(True)
+
         self.point = App.Vector(numx, numy, numz)
         self.node.append(self.point)
         if not self.pickmode:
@@ -252,7 +258,8 @@ class Scale(gui_base_original.Modifier):
                 self.view.removeEventCallback("SoEvent", self.call)
             self.task = task_scale.ScaleTaskPanel()
             self.task.sourceCmd = self
-            todo.ToDo.delay(Gui.Control.showDialog, self.task)
+            # Delays required to ensure the 1st task panel of the command has closed.
+            todo.ToDo.delay(_show_dialog, None)
             todo.ToDo.delay(self.task.xValue.selectAll, None)
             todo.ToDo.delay(self.task.xValue.setFocus, None)
             for ghost in self.ghosts:
