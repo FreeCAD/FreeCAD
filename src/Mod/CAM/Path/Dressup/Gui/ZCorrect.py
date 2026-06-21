@@ -399,10 +399,10 @@ class CommandPathDressup:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "ZCorrectDressup")'
         )
         FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ObjectDressup(obj)")
-        FreeCADGui.doCommand("obj.Base = FreeCAD.ActiveDocument." + op.Name)
+        FreeCADGui.doCommand(f"obj.Base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
         FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ViewProviderDressup(obj.ViewObject)")
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
-        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False")
+        FreeCADGui.doCommand("obj.Base.Visibility = False")
         FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()

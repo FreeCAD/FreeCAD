@@ -613,14 +613,14 @@ class CommandDressupDragknife:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","DragknifeDressup")'
         )
         FreeCADGui.doCommand("Path.Dressup.Gui.Dragknife.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + op.Name)
+        FreeCADGui.doCommand(f"base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
         FreeCADGui.doCommand(
             "obj.ViewObject.Proxy = Path.Dressup.Gui.Dragknife.ViewProviderDressup(obj.ViewObject)"
         )
-        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
+        FreeCADGui.doCommand("base.Visibility = False")
         FreeCADGui.doCommand("obj.filterAngle = 20")
         FreeCADGui.doCommand("obj.offset = 2")
         FreeCADGui.doCommand("obj.pivotheight = 4")
