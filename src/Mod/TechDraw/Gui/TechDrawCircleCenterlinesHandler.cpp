@@ -22,29 +22,17 @@
 #include "TechDrawCircleCenterlinesHandler.h"
 
 #include <QMouseEvent>
-#include <QMessageBox>
 #include <QKeyEvent>
 #include <QPointF>
-#include <QObject>
 #include <QGraphicsItem>
 #include <vector>
 #include <string>
 #include <cmath>
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/SelectionObject.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/Selection/Selection.h>
 
-#include <Mod/TechDraw/App/DrawPage.h>
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
-#include <Mod/TechDraw/App/ArrowPropEnum.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/Geometry.h>
@@ -52,22 +40,10 @@
 #include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/CosmeticVertex.h>
 
-#include <Base/Tools.h>
-
 #include "QGIEdge.h"
-#include "QGIFace.h"
-#include "QGIVertex.h"
-#include "QGIViewPart.h"
-#include "QGIViewBalloon.h"
-#include "QGSPage.h"
 #include "QGIView.h"
 #include "QGVPage.h"
-#include "Rez.h"
-#include "ViewProviderPage.h"
-#include "TechDrawHandler.h"
 #include "CommandHelpers.h"
-#include "ViewProviderDrawingView.h"
-#include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 
 
@@ -114,7 +90,8 @@ void execHoleCircle(std::vector<std::string> SubNames, TechDraw::DrawViewPart* o
     constexpr double ExtendFactor{1.1};
     for (const TechDraw::CirclePtr& oneCircle : Circles) {
         // If it is not on the big circle it should skip it
-        if (std::sqrt(std::pow(oneCircle->center.x - bigCenter.x, 2) + std::pow(oneCircle->center.y - bigCenter.y, 2)) != bigRadius) {
+        double distance = std::sqrt(std::pow(oneCircle->center.x - bigCenter.x, 2) + std::pow(oneCircle->center.y - bigCenter.y, 2));
+        if (std::abs(distance - bigRadius) > Precision::Confusion()) {
             continue;
         }
         // convert the center to canonical form
@@ -179,7 +156,7 @@ void TechDrawBoltCenterlinesHandler::mouseReleaseEvent(QMouseEvent* event)
         subNames = selection[0].getSubNames();
 
         // If the user clicks on cosmetic edges we stop the selection
-        // So we dont attemt to reference it when we remove the former lines
+        // So we dont attempt to reference it when we remove the former lines
         if (!currentLines.empty()) {
             for (const std::string& name : subNames) {
                 TechDraw::CosmeticEdge* cosmeticEdge = objFeat->getCosmeticEdgeBySelection(name);
@@ -348,7 +325,11 @@ void TechDrawCircleCenterlinesHandler::mouseMoveEvent(QMouseEvent* event)
     if (!viewPage) {
         return;
     }
-    auto items = viewPage->scene()->items(viewPage->mapToScene(event->pos()));
+    
+    QPointF scenePos = viewPage->mapToScene(event->pos());
+    QPainterPath circle;
+    circle.addEllipse(scenePos, 5.0, 5.0);
+    auto items = viewPage->scene()->items(circle);
     
     std::vector<std::string> SubNames;
     TechDraw::DrawViewPart* objFeat{nullptr};
@@ -385,6 +366,13 @@ void TechDrawCircleCenterlinesHandler::mouseMoveEvent(QMouseEvent* event)
         }
     }
     else {
+        if (!previewLines.empty() && previewObjFeat) {
+            previewObjFeat->removeCosmeticEdge(previewLines);
+            previewObjFeat->refreshCEGeoms();
+            previewObjFeat->requestPaint();
+            previewLines.clear();
+            previewObjFeat = nullptr;
+        }
         execCircleCenterLines(SubNames, objFeat, previewLines);
         previewObjFeat = objFeat;
     }
@@ -392,24 +380,14 @@ void TechDrawCircleCenterlinesHandler::mouseMoveEvent(QMouseEvent* event)
 
 void TechDrawCircleCenterlinesHandler::mouseReleaseEvent(QMouseEvent* event)
 {
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    Q_UNUSED(event);
 
-    if (!selection.empty()) {
-        TechDraw::DrawViewPart* objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
-        std::vector<std::string> SubNames = selection[0].getSubNames();
-        std::vector<std::string> lines;
-
-        int GeoId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-        TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
-
-        if (geom->getGeomType() != GeomType::CIRCLE && geom->getGeomType() != GeomType::ARCOFCIRCLE) {
-            return;
-        }
-
-        execCircleCenterLines(SubNames, objFeat, lines);
+    if (previewLines.empty()) {
+        return;
     }
 
-    Gui::Selection().clearSelection();
+    previewLines.clear();
+    previewObjFeat = nullptr;
 }
 
 void TechDrawCircleCenterlinesHandler::mousePressEvent(QMouseEvent* event)
