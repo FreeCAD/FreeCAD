@@ -90,6 +90,13 @@ class SketcherGuiTestCase(unittest.TestCase):
             remaining -= step_ms
         return predicate()
 
+    def activate_window(self, widget):
+        window = widget.window()
+        if window is not None:
+            window.activateWindow()
+            window.raise_()
+            QtGui.QApplication.processEvents()
+
     def send_mouse(self, widget, event_type, pos, button, buttons):
         global_pos = widget.mapToGlobal(pos)
         event = QtGui.QMouseEvent(
@@ -103,6 +110,7 @@ class SketcherGuiTestCase(unittest.TestCase):
         QtGui.QApplication.sendEvent(widget, event)
 
     def click(self, widget, pos):
+        self.activate_window(widget)
         self.send_mouse(
             widget,
             QtCore.QEvent.MouseButtonPress,
@@ -120,6 +128,7 @@ class SketcherGuiTestCase(unittest.TestCase):
         self.pump(120)
 
     def right_click(self, widget, pos):
+        self.activate_window(widget)
         self.send_mouse(
             widget,
             QtCore.QEvent.MouseButtonPress,
@@ -148,7 +157,9 @@ class SketcherGuiTestCase(unittest.TestCase):
 
     def key_click(self, widget, key, text=""):
         press = QtGui.QKeyEvent(QtCore.QEvent.KeyPress, key, QtCore.Qt.NoModifier, text)
-        release = QtGui.QKeyEvent(QtCore.QEvent.KeyRelease, key, QtCore.Qt.NoModifier, text)
+        release = QtGui.QKeyEvent(
+            QtCore.QEvent.KeyRelease, key, QtCore.Qt.NoModifier, text
+        )
         QtGui.QApplication.sendEvent(widget, press)
         QtGui.QApplication.sendEvent(widget, release)
         self.pump(60)
