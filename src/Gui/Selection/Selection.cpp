@@ -515,7 +515,11 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(
             if (subelement && *subelement) {
                 temp.back().SubNames.emplace_back(subelement);
                 temp.back().SelPoses.emplace_back(sel.x, sel.y, sel.z);
-                temp.back().evaluateLinkParent(Base::Tools::splitSubName(sel.SubName));
+                auto linkCandidates = Base::Tools::splitSubName(sel.SubName);
+                if (sel.pObject && sel.pObject->getNameInDocument()) {
+                    linkCandidates.emplace_back(sel.pObject->getNameInDocument());
+                }
+                temp.back().evaluateLinkParent(linkCandidates);
                 if (resolve != ResolveMode::NoResolve) {
                     temp.back()._SubNameSet.insert(subelement);
                 }

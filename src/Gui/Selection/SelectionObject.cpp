@@ -65,7 +65,11 @@ SelectionObject::~SelectionObject() = default;
 
 std::string SelectionObject::evaluateLinkParent(const std::vector<std::string>& candidates)
 {
-    const auto doc = getObject()->getDocument();
+    auto* selObj = getObject();
+    if (!selObj) {
+        return {};
+    }
+    const auto doc = selObj->getDocument();
     auto it = std::ranges::find_if(candidates, [doc](const std::string& name) {
         const App::DocumentObject* obj = doc->getObject(name.c_str());
         return obj && obj->isLink();
