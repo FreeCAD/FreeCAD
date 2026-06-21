@@ -274,7 +274,7 @@ the characters listed here will be drawn using a substitute font.</string>
          <number>100</number>
         </property>
         <property name="value">
-         <number>0</number>
+         <number>30</number>
         </property>
         <property name="singleStep">
          <number>10</number>
@@ -312,7 +312,7 @@ the characters listed here will be drawn using a substitute font.</string>
          <number>100</number>
         </property>
         <property name="value">
-         <number>70</number>
+         <number>90</number>
         </property>
         <property name="singleStep">
          <number>10</number>
