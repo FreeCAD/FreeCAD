@@ -89,6 +89,32 @@ SoSeparator* createLabelDragHandle(SoImage* image, SoImage* hitProxy)
     return handle;
 }
 
+bool projectPointerToPlane(
+    SoDragger& drag,
+    const Base::Vector3d& planePoint,
+    const Base::Vector3d& planeNormal,
+    Base::Vector3d& intersection
+)
+{
+    const SoEvent* event = drag.getEvent();
+    if (!event) {
+        return false;
+    }
+
+    SbViewVolume viewVolume = drag.getViewVolume();
+    SbLine pointerLine;
+    viewVolume.projectPointToLine(event->getNormalizedPosition(drag.getViewportRegion()), pointerLine);
+
+    SbVec3f point;
+    const SbPlane dragPlane(Base::convertTo<SbVec3f>(planeNormal), Base::convertTo<SbVec3f>(planePoint));
+    if (!dragPlane.intersect(pointerLine, point)) {
+        return false;
+    }
+
+    intersection = Base::convertTo<Base::Vector3d>(point);
+    return true;
+}
+
 }  // namespace
 
 const char* ViewProviderAnnotation::JustificationEnums[] = {"Left", "Right", "Center", nullptr};
@@ -457,16 +483,44 @@ void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 }
 
 
-void ViewProviderAnnotationLabel::dragStartCallback(void*, SoDragger*)
+void ViewProviderAnnotationLabel::dragStartCallback(void* data, SoDragger* drag)
 {
+    auto that = static_cast<ViewProviderAnnotationLabel*>(data);
+    that->dragState.reset();
+    if (auto* obj = that->getObject<App::AnnotationLabel>()) {
+        const Base::Vector3d basePosition = obj->BasePosition.getValue();
+        const Base::Vector3d startTextPosition = obj->TextPosition.getValue();
+        const Base::Vector3d pickedPoint = Base::convertTo<Base::Vector3d>(
+            drag->getWorldStartingPoint()
+        );
+
+        DragState state;
+        state.basePosition = basePosition;
+        state.currentTextPosition = startTextPosition;
+        state.pickOffset = pickedPoint - (basePosition + startTextPosition);
+        state.planePoint = pickedPoint;
+        state.planeNormal = Base::convertTo<Base::Vector3d>(
+            drag->getViewVolume().getProjectionDirection()
+        );
+        that->dragState = state;
+    }
+
     // This is called when a manipulator is about to manipulating
     Gui::Application::Instance->activeDocument()->openCommand(
         QT_TRANSLATE_NOOP("Command", "Transform")
     );
 }
 
-void ViewProviderAnnotationLabel::dragFinishCallback(void*, SoDragger*)
+void ViewProviderAnnotationLabel::dragFinishCallback(void* data, SoDragger*)
 {
+    auto that = static_cast<ViewProviderAnnotationLabel*>(data);
+    if (that->dragState) {
+        if (auto* obj = that->getObject<App::AnnotationLabel>()) {
+            obj->TextPosition.setValue(that->dragState->currentTextPosition);
+        }
+        that->dragState.reset();
+    }
+
     // This is called when a manipulator has done manipulating
     Gui::Application::Instance->activeDocument()->commitCommand();
 }
@@ -474,34 +528,22 @@ void ViewProviderAnnotationLabel::dragFinishCallback(void*, SoDragger*)
 void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag)
 {
     auto that = static_cast<ViewProviderAnnotationLabel*>(data);
-    if (auto* obj = that->getObject<App::AnnotationLabel>()) {
-        Base::Vector3d basepos = obj->BasePosition.getValue();
-        Base::Vector3d textpos = obj->TextPosition.getValue();
-
-        auto globalText = Base::convertTo<SbVec3f>(basepos + textpos);
-        SbVec3f pnt = drag->getWorldStartingPoint();
-        // difference between the label's origin and the picked point
-        SbVec3f move = pnt - globalText;
-
-        SbViewVolume vv = drag->getViewVolume();
-        SbVec3f normal = vv.getProjectionDirection();
-
-        SbPlane plane(normal, pnt);
-
-        const SoEvent* ev = drag->getEvent();
-        const SbViewportRegion& vpr = drag->getViewportRegion();
-
-        SbLine line;
-        vv.projectPointToLine(ev->getNormalizedPosition(vpr), line);
-
-        SbVec3f intersect;
-        plane.intersect(line, intersect);
-        drag->setStartingPoint(intersect);
-
-        auto text = Base::convertTo<Base::Vector3d>(intersect - move);
-        text = text - basepos;
-        obj->TextPosition.setValue(text);
+    if (!that->dragState) {
+        return;
     }
+
+    DragState& state = *that->dragState;
+    Base::Vector3d pointerPosition;
+    if (projectPointerToPlane(*drag, state.planePoint, state.planeNormal, pointerPosition)) {
+        that->previewTextPosition(state, pointerPosition - state.pickOffset - state.basePosition);
+    }
+}
+
+void ViewProviderAnnotationLabel::previewTextPosition(DragState& state, const Base::Vector3d& textPosition)
+{
+    state.currentTextPosition = textPosition;
+    pCoords->point.set1Value(1, SbVec3f(textPosition.x, textPosition.y, textPosition.z));
+    pTextTranslation->translation.setValue(textPosition.x, textPosition.y, textPosition.z);
 }
 
 void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
