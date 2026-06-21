@@ -317,6 +317,7 @@ SET(FreeCADApp_CPP_SRCS
     ProgramInformation.cpp
     SafeMode.cpp
     Services.cpp
+    SentryReporting.cpp
     StringHasher.cpp
     StringHasherPyImp.cpp
     StringIDPyImp.cpp
@@ -344,6 +345,7 @@ SET(FreeCADApp_HPP_SRCS
     ElementNamingUtils.h
     ProgramInformation.h
     Services.h
+    SentryReporting.h
     StringHasher.h
     MainThreadSignal.h
 )
@@ -375,6 +377,11 @@ endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADApp PRIVATE ${FreeCADApp_SRCS})
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
+
+if(FREECAD_USE_SENTRY AND sentry_FOUND)
+    target_link_libraries(FreeCADApp sentry::sentry)
+    target_compile_definitions(FreeCADApp PRIVATE FC_HAVE_SENTRY)
+endif()
 
 if (MSVC)
     target_compile_definitions(FreeCADApp PRIVATE WIN32_LEAN_AND_MEAN)

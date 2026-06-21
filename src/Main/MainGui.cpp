@@ -46,6 +46,7 @@
 // FreeCAD header
 #include <App/Application.h>
 #include <App/ProgramInformation.h>
+#include <App/SentryReporting.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
@@ -241,6 +242,8 @@ int main(int argc, char** argv)
         dmpfile += "crash.dmp";
         InitMiniDumpWriter(dmpfile);
 #endif
+
+        App::SentryReporting::instance().initialize();
         std::map<std::string, std::string>::iterator it = App::Application::Config().find(
             "NavigationStyle"
         );
@@ -369,6 +372,8 @@ int main(int argc, char** argv)
 
     // Destruction phase ===========================================================
     Base::Console().log("%s terminating...\n", App::Application::getExecutableName().c_str());
+
+    App::SentryReporting::instance().shutdown();
 
     // cleans up
     App::Application::destruct();

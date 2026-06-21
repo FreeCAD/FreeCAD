@@ -33,6 +33,7 @@
 #include <algorithm>
 
 #include <App/Document.h>
+#include <App/SentryReporting.h>
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 
@@ -235,6 +236,9 @@ void DlgSettingsGeneral::saveSettings()
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
     ui->ActivateOverlay->onSave();
+    ui->CrashReporting->onSave();
+    App::SentryReporting::instance().markConsentAsked();
+    App::SentryReporting::instance().setConsentGiven(ui->CrashReporting->isChecked());
     if (property("ActivateOverlay").toBool() != ui->ActivateOverlay->isChecked()) {
         requireRestart();
     }
@@ -286,6 +290,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->EnableCursorBlinking->onRestore();
     ui->SplashScreen->onRestore();
     ui->ActivateOverlay->onRestore();
+    ui->CrashReporting->onRestore();
     setProperty("ActivateOverlay", ui->ActivateOverlay->isChecked());
 
     // search for the language files

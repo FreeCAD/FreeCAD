@@ -69,6 +69,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Application.h>
+#include <App/SentryReporting.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -1709,6 +1710,30 @@ void MainWindow::showEvent(QShowEvent* e)
 {
     std::clog << "Show main window" << std::endl;
     QMainWindow::showEvent(e);
+
+    static bool consentPromptScheduled = false;
+    if (!consentPromptScheduled && !App::SentryReporting::instance().hasAskedForConsent()) {
+        consentPromptScheduled = true;
+        QTimer::singleShot(0, this, [this]() {
+            auto& reporting = App::SentryReporting::instance();
+            if (reporting.hasAskedForConsent()) {
+                return;
+            }
+            QMessageBox box(this);
+            box.setWindowTitle(tr("Help improve Parashell"));
+            box.setIcon(QMessageBox::Question);
+            box.setText(tr("Send issues, errors and crashes to improve the product?"));
+            box.setInformativeText(
+                tr("Diagnostic data, including device information, will be sent when errors or "
+                   "crashes occur. You can change this at any time in Preferences > General.")
+            );
+            box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            box.setDefaultButton(QMessageBox::Yes);
+            const bool enabled = box.exec() == QMessageBox::Yes;
+            reporting.setConsentGiven(enabled);
+            reporting.markConsentAsked();
+        });
+    }
 }
 
 void MainWindow::hideEvent(QHideEvent* e)

@@ -328,6 +328,25 @@ display the splash screen.</string>
          </property>
         </widget>
        </item>
+       <item row="5" column="0" colspan="2">
+        <widget class="Gui::PrefCheckBox" name="CrashReporting">
+         <property name="toolTip">
+          <string>When enabled, issues, errors and crashes (including device information) are sent to help improve the product.</string>
+         </property>
+         <property name="text">
+          <string>Send issues, errors and crashes to improve the product</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>CrashReportingEnabled</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>General</cstring>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
@@ -508,6 +527,7 @@ display the splash screen.</string>
   <tabstop>RecentFiles</tabstop>
   <tabstop>EnableCursorBlinking</tabstop>
   <tabstop>SplashScreen</tabstop>
+  <tabstop>CrashReporting</tabstop>
  </tabstops>
  <resources/>
  <connections/>
