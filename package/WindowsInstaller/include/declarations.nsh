@@ -1,4 +1,4 @@
-﻿/*
+/*
 declaration.nsh
 
 Configuration and variables of FreeCAD installer

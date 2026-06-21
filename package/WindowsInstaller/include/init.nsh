@@ -1,4 +1,4 @@
-﻿/*
+/*
 init.nsh
 
 Initialization functions
@@ -14,13 +14,13 @@ Var FCLangName
 Function InitUser
 
   # Get FreeCAD language
-  
+
   ReadRegStr $FCLangName SHELL_CONTEXT "${APP_REGKEY_SETUP}" "FreeCAD Language"
-  
+
   ${If} $FCLangName != ""
     StrCpy $LangName $FCLangName
   ${EndIf}
-  
+
 FunctionEnd
 
 #--------------------------------
@@ -92,7 +92,7 @@ Section "!${APP_NAME}" SecCore
 SectionEnd
 
 Section "$(SecFileAssocTitle)" SecFileAssoc
- StrCpy $CreateFileAssociations "true" 
+ StrCpy $CreateFileAssociations "true"
 SectionEnd
 
 Section "$(SecDesktopTitle)" SecDesktop
@@ -119,13 +119,13 @@ Function .onInit
     MessageBox MB_OK|MB_ICONSTOP "${APP_NAME} ${APP_VERSION} requires Windows 10 or newer." /SD IDOK
     Quit
   ${endif}
-  
+
   # check if it is a 64bit system
   ${if} ${RunningX64}
    SetRegView 64
    !define LIBRARY_X64
   ${endif}
-  
+
   # Check that FreeCAD is not currently running
   ${nsProcess::FindProcess} ${BIN_FREECAD} $R0
   # if running result is '0', if not running it is '603'
@@ -142,9 +142,9 @@ Function .onInit
   # this can be reset to "true" in section SecDesktop
   StrCpy $CreateDesktopIcon "false"
   StrCpy $CreateFileAssociations "false"
- 
+
   ${IfNot} ${Silent}
-    # Show banner while installer is initializing 
+    # Show banner while installer is initializing
     Banner::show /NOUNLOAD "Checking system"
     Banner::destroy
   ${EndIf}

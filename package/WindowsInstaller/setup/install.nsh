@@ -8,7 +8,6 @@ Installation of program files, dictionaries and external components
 
 #--------------------------------
 # Program files
-!include LogicLib.nsh
 
 Section -ProgramFiles SecProgramFiles
   # this can make install significantly faster but disables output to "details view"
@@ -31,7 +30,7 @@ Section -ProgramFiles SecProgramFiles
   LogSet on
 
   # Install and register the core FreeCAD files
-  
+
   # Initializes the plug-ins dir ($PLUGINSDIR) if not already initialized.
   # $PLUGINSDIR is automatically deleted when the installer exits.
   InitPluginsDir
@@ -43,14 +42,14 @@ Section -ProgramFiles SecProgramFiles
   SetOutPath "$INSTDIR\bin"
   # recursively copy all files under bin
   File /r "${FILES_FREECAD}\bin\*.*"
-  
+
   # MSVC redistributable DLLs
   !ifdef FILES_DEPS
     !echo "Including MSVC Redist files from ${FILES_DEPS}"
     SetOutPath "$INSTDIR\bin"
     File "${FILES_DEPS}\*.*"
   !endif
-  
+
   # Others
   ${DetailPrintToBoth} "Extracting files to '$INSTDIR\data\'"
   SetOutPath "$INSTDIR\data"
