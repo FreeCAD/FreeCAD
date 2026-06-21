@@ -416,6 +416,12 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
             }
         }
         else if (ke->key() == Qt::Key_Escape && active->ActiveDialog->isEscapeButtonEnabled()) {
+            // If a child popup (e.g. the expression editor) already handled ESC,
+            // don't also close the active task. see #23518.
+            if (ke->isAccepted()) {
+                return;
+            }
+
             // get only the buttons of the button box
             QDialogButtonBox* box = active->ActiveCtrl->standardButtons();
             QList<QAbstractButton*> list = box->buttons();

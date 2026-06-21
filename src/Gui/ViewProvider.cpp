@@ -224,7 +224,7 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
             auto ke = static_cast<const SoKeyboardEvent*>(ev);
             const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
             switch (ke->getKey()) {
-                case SoKeyboardEvent::ESCAPE:
+                case SoKeyboardEvent::ESCAPE: {
                     if (self->keyPressed(press, ke->getKey())) {
                         node->setHandled();
                     }
@@ -263,6 +263,7 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
                         FC_WARN("Release all mouse buttons before exiting editing");
                     }
                     break;
+                }
                 default:
                     // call the virtual method
                     if (self->keyPressed(press, ke->getKey())) {
