@@ -257,7 +257,6 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
             return;
         }
         positionSpinbox();
-        setFocusToSpinbox();
     });
 
     connect(
@@ -432,7 +431,10 @@ void EditableDatumLabel::setFocusToSpinbox()
         return;
     }
     if (!spinBox->hasFocus()) {
-        spinBox->setFocus();
+        if (QWidget* window = spinBox->window()) {
+            window->activateWindow();
+        }
+        spinBox->setFocus(Qt::OtherFocusReason);
         spinBox->selectNumber();
     }
 }
