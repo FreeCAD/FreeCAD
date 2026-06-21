@@ -33,6 +33,7 @@
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
@@ -42,8 +43,8 @@
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/actions/SoSearchAction.h>
 
+#include <Gui/Selection/SelectionColors.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
-#include <Gui/Selection/Selection.h>
 #include <Base/Color.h>
 #include "SoBrepEdgeSet.h"
 #include "ViewProviderExt.h"
@@ -54,6 +55,12 @@
 using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepEdgeSet)
+
+namespace
+{
+constexpr float defaultPresentationLineWidth = 3.0F;
+constexpr float defaultPresentationHaloLineWidth = 5.0F;
+}  // namespace
 
 struct SoBrepEdgeSet::SelContext: Gui::SoFCSelectionContextEx
 {
@@ -111,7 +118,8 @@ static void renderOverlayLines(
     const int32_t* indices,
     int numIndices,
     const Base::Color& color,
-    OverlayDepthMode depthMode
+    OverlayDepthMode depthMode,
+    float lineWidth = 0.0F
 )
 {
     if (!action || !lineSet || !indices || numIndices <= 0) {
@@ -146,6 +154,9 @@ static void renderOverlayLines(
 
     applyOverlayPrimitiveState(state, lineSet);
     applyOverlayDepthState(state, depthMode);
+    if (lineWidth > 0.0F) {
+        SoLineWidthElement::set(state, lineSet, lineWidth);
+    }
 
     const SbColor sbColor(color.r, color.g, color.b);
     const float transparency = std::max(0.0f, 1.0f - color.a);
@@ -177,7 +188,8 @@ static void renderOverlayLines(
     const int32_t* indices,
     int numIndices,
     const SbColor& color,
-    OverlayDepthMode depthMode
+    OverlayDepthMode depthMode,
+    float lineWidth = 0.0F
 )
 {
     renderOverlayLines(
@@ -186,7 +198,8 @@ static void renderOverlayLines(
         indices,
         numIndices,
         Base::Color(color[0], color[1], color[2], 1.0f),
-        depthMode
+        depthMode,
+        lineWidth
     );
 }
 
@@ -267,11 +280,13 @@ SoBrepEdgeSet::SoBrepEdgeSet()
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
     SO_NODE_ADD_FIELD(highlightCoordIndex, (0));
     SO_NODE_ADD_FIELD(selectionCoordIndex, (0));
+    SO_NODE_ADD_FIELD(faceEdgeIndex, (0));
     SO_NODE_ADD_FIELD(highlightColor, (SbColor(1.0f, 0.0f, 0.0f)));
     SO_NODE_ADD_FIELD(selectionColor, (SbColor(0.0f, 0.6f, 0.0f)));
 
     highlightCoordIndex.setNum(0);
     selectionCoordIndex.setNum(0);
+    faceEdgeIndex.setNum(0);
     overlayLineSet = new SoIndexedLineSet;
     overlayLineSet->ref();
 }
@@ -284,6 +299,38 @@ SoBrepEdgeSet::~SoBrepEdgeSet()
     }
 }
 
+void SoBrepEdgeSet::setFaceHighlight(
+    int faceIndex,
+    const SbColor& accentColor,
+    const SbColor& haloColor,
+    Gui::HighlightPresentation presentation,
+    float lineWidth,
+    float haloLineWidth
+)
+{
+    faceHighlightActive = faceIndex >= 0;
+    faceHighlightIndex = faceIndex;
+    faceHighlightAccentColor = accentColor;
+    faceHighlightHaloColor = haloColor;
+    faceHighlightPresentation = presentation;
+    faceHighlightLineWidth = std::max(1.0F, lineWidth);
+    faceHighlightHaloLineWidth = std::max(faceHighlightLineWidth, haloLineWidth);
+    touch();
+}
+
+void SoBrepEdgeSet::clearFaceHighlight()
+{
+    if (!faceHighlightActive && faceHighlightPresentation == Gui::HighlightPresentation::None) {
+        return;
+    }
+    faceHighlightActive = false;
+    faceHighlightIndex = -1;
+    faceHighlightPresentation = Gui::HighlightPresentation::None;
+    faceHighlightLineWidth = 1.0F;
+    faceHighlightHaloLineWidth = 1.0F;
+    touch();
+}
+
 void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
 {
     auto state = action->getState();
@@ -292,26 +339,6 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this, selContext, ctx2);
     if (ctx2 && ctx2->selectionIndex.empty() && ctx2->colors.empty()) {
-        return;
-    }
-
-
-    bool hasContextHighlight = ctx && !ctx->hl.empty();
-    bool hasFaceHighlight = viewProvider && viewProvider->isFaceHighlightActive();
-    bool hasAnyHighlight = hasContextHighlight || hasFaceHighlight;
-
-    if (Gui::Selection().isClarifySelectionActive()
-        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight) {
-        // if we are using clarifyselection - add this to delayed paths with priority
-        // as we want to get this rendered on top of everything
-        if (viewProvider) {
-            viewProvider->setFaceHighlightActive(true);
-        }
-        Gui::SoDelayedAnnotationsElement::addDelayedPath(
-            action->getState(),
-            action->getCurPath()->copy(),
-            200
-        );
         return;
     }
 
@@ -331,6 +358,25 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
             selContext2->hl = ctx->hl;
         }
         ctx = selContext2;
+    }
+
+    const bool hasContextHighlight = ctx && !ctx->hl.empty();
+    const bool hasFaceHighlight = faceHighlightActive
+        && Gui::hasHighlightPresentation(
+                                      faceHighlightPresentation,
+                                      Gui::HighlightPresentation::DrawOnTop
+        );
+    const bool hasOnTopHighlight
+        = (hasContextHighlight && ctx->hasHighlightPresentation(Gui::HighlightPresentation::DrawOnTop))
+        || hasFaceHighlight;
+
+    if (!Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasOnTopHighlight) {
+        Gui::SoDelayedAnnotationsElement::addDelayedPath(
+            action->getState(),
+            action->getCurPath()->copy(),
+            200
+        );
+        return;
     }
 
     bool hasColorOverride = (ctx2 && !ctx2->colors.empty());
@@ -396,19 +442,12 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
     else if (ctx2 && !ctx2->selectionIndex.empty()) {
         renderSelection(action, ctx2, false);
     }
-    else if (
-        Gui::Selection().isClarifySelectionActive()
-        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight
-    ) {
-        state->push();
-        SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
-
-        inherited::GLRender(action);
-
-        state->pop();
-    }
     else {
         inherited::GLRender(action);
+    }
+
+    if (Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasFaceHighlight) {
+        renderFaceHighlight(action);
     }
 
     // Workaround for #0000433
@@ -493,6 +532,136 @@ void SoBrepEdgeSet::getBoundingBox(SoGetBoundingBoxAction* action)
     }
 }
 
+void SoBrepEdgeSet::appendLineCoordIndex(int lineIndex, std::vector<int32_t>& out) const
+{
+    if (lineIndex < 0) {
+        return;
+    }
+
+    const int32_t* cindices = this->coordIndex.getValues(0);
+    const int numcindices = this->coordIndex.getNum();
+    int section = 0;
+    bool found = false;
+    for (int i = 0; i < numcindices; ++i) {
+        if (cindices[i] < 0) {
+            if (found) {
+                out.push_back(-1);
+                return;
+            }
+            ++section;
+            continue;
+        }
+        if (section == lineIndex) {
+            out.push_back(cindices[i]);
+            found = true;
+        }
+    }
+    if (found) {
+        out.push_back(-1);
+    }
+}
+
+void SoBrepEdgeSet::appendFaceEdgeCoordIndex(int faceIndex, std::vector<int32_t>& out) const
+{
+    if (faceIndex < 0) {
+        return;
+    }
+
+    const int32_t* edgeIndices = this->faceEdgeIndex.getValues(0);
+    const int numEdgeIndices = this->faceEdgeIndex.getNum();
+    int face = 0;
+    for (int i = 0; i < numEdgeIndices; ++i) {
+        const int32_t edgeIndex = edgeIndices[i];
+        if (edgeIndex < 0) {
+            if (face == faceIndex) {
+                return;
+            }
+            ++face;
+            continue;
+        }
+        if (face == faceIndex) {
+            appendLineCoordIndex(edgeIndex, out);
+        }
+    }
+}
+
+void SoBrepEdgeSet::renderFaceHighlight(SoGLRenderAction* action)
+{
+    if (!faceHighlightActive) {
+        return;
+    }
+
+    std::vector<int32_t> indices;
+    appendFaceEdgeCoordIndex(faceHighlightIndex, indices);
+    if (indices.empty()) {
+        return;
+    }
+
+    renderPresentationLines(
+        action,
+        indices.data(),
+        static_cast<int>(indices.size()),
+        faceHighlightAccentColor,
+        faceHighlightHaloColor,
+        faceHighlightPresentation,
+        faceHighlightLineWidth,
+        faceHighlightHaloLineWidth
+    );
+}
+
+void SoBrepEdgeSet::renderPresentationLines(
+    SoGLRenderAction* action,
+    const int32_t* indices,
+    int numIndices,
+    const SbColor& accentColor,
+    const SbColor& haloColor,
+    Gui::HighlightPresentation presentation,
+    float lineWidth,
+    float haloLineWidth
+)
+{
+    const bool drawOnTop
+        = Gui::hasHighlightPresentation(presentation, Gui::HighlightPresentation::DrawOnTop)
+        && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths;
+
+    if (!drawOnTop) {
+        renderOverlayLines(
+            action,
+            overlayLineSet,
+            indices,
+            numIndices,
+            accentColor,
+            OverlayDepthMode::DrawOnTop,
+            lineWidth
+        );
+        return;
+    }
+
+    const float accentLineWidth = lineWidth > 0.0F ? lineWidth : defaultPresentationLineWidth;
+    const float outlineLineWidth = haloLineWidth > 0.0F
+        ? std::max(haloLineWidth, accentLineWidth)
+        : std::max(defaultPresentationHaloLineWidth, accentLineWidth + 2.0F);
+
+    renderOverlayLines(
+        action,
+        overlayLineSet,
+        indices,
+        numIndices,
+        haloColor,
+        OverlayDepthMode::DrawOnTop,
+        outlineLineWidth
+    );
+    renderOverlayLines(
+        action,
+        overlayLineSet,
+        indices,
+        numIndices,
+        accentColor,
+        OverlayDepthMode::DrawOnTop,
+        accentLineWidth
+    );
+}
+
 void SoBrepEdgeSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
 {
     if (!ctx || ctx->highlightIndex < 0) {
@@ -506,14 +675,18 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
 
     int num = (int)ctx->hl.size();
     if (num > 0) {
+        const SbColor haloColor = Gui::SelectionColors::contrastOutlineColor(
+            ctx->highlightColor,
+            Gui::SelectionColors::defaultBackgroundColor()
+        );
         if (ctx->hl[0] < 0) {
-            renderOverlayLines(
+            renderPresentationLines(
                 action,
-                overlayLineSet,
                 this->coordIndex.getValues(0),
                 this->coordIndex.getNum(),
                 ctx->highlightColor,
-                OverlayDepthMode::DrawOnTop
+                haloColor,
+                ctx->highlightPresentation
             );
         }
         else {
@@ -524,13 +697,13 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
                 );
             }
             else {
-                renderOverlayLines(
+                renderPresentationLines(
                     action,
-                    overlayLineSet,
                     ctx->hl.data(),
                     num,
                     ctx->highlightColor,
-                    OverlayDepthMode::DrawOnTop
+                    haloColor,
+                    ctx->highlightPresentation
                 );
             }
         }
@@ -600,7 +773,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             SelContextPtr ctx
                 = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
             if (ctx) {
-                ctx->highlightIndex = -1;
+                ctx->removeHighlight();
                 ctx->hl.clear();
                 touch();
             }
@@ -611,6 +784,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext);
             ctx->highlightColor = hlaction->getColor();
             ctx->highlightIndex = std::numeric_limits<int>::max();
+            ctx->highlightPresentation = hlaction->getHighlightPresentation();
             ctx->hl.clear();
             ctx->hl.push_back(-1);
             touch();
@@ -621,7 +795,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             SelContextPtr ctx
                 = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
             if (ctx) {
-                ctx->highlightIndex = -1;
+                ctx->removeHighlight();
                 ctx->hl.clear();
                 touch();
             }
@@ -630,6 +804,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
 
         SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext);
         ctx->highlightColor = hlaction->getColor();
+        ctx->highlightPresentation = hlaction->getHighlightPresentation();
         int index = static_cast<const SoLineDetail*>(detail)->getLineIndex();
         const int32_t* cindices = this->coordIndex.getValues(0);
         int numcindices = this->coordIndex.getNum();
@@ -649,7 +824,7 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             ctx->highlightIndex = index;
         }
         else {
-            ctx->highlightIndex = -1;
+            ctx->removeHighlight();
         }
         touch();
         return;

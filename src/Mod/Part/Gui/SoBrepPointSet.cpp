@@ -201,13 +201,8 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
 
     bool hasContextHighlight = ctx && ctx->isHighlighted() && !ctx->isHighlightAll()
         && ctx->highlightIndex >= 0;
-    // for clarifyselection, add this node to delayed path if it is highlighted and render it on
-    // top of everything else (highest priority)
-    if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight
+    if (hasContextHighlight && ctx->hasHighlightPresentation(Gui::HighlightPresentation::DrawOnTop)
         && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
-        if (viewProvider) {
-            viewProvider->setFaceHighlightActive(true);
-        }
         Gui::SoDelayedAnnotationsElement::addDelayedPath(
             action->getState(),
             action->getCurPath()->copy(),
@@ -461,7 +456,7 @@ void SoBrepPointSet::doAction(SoAction* action)
             SelContextPtr ctx
                 = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
             if (ctx) {
-                ctx->highlightIndex = -1;
+                ctx->removeHighlight();
                 touch();
             }
             return;
@@ -471,21 +466,20 @@ void SoBrepPointSet::doAction(SoAction* action)
         if (!detail) {
             ctx->highlightIndex = std::numeric_limits<int>::max();
             ctx->highlightColor = hlaction->getColor();
+            ctx->highlightPresentation = hlaction->getHighlightPresentation();
             touch();
             return;
         }
         else if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
-            ctx->highlightIndex = -1;
+            ctx->removeHighlight();
             touch();
             return;
         }
 
-        int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
-        if (index != ctx->highlightIndex) {
-            ctx->highlightIndex = index;
-            ctx->highlightColor = hlaction->getColor();
-            touch();
-        }
+        ctx->highlightIndex = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
+        ctx->highlightColor = hlaction->getColor();
+        ctx->highlightPresentation = hlaction->getHighlightPresentation();
+        touch();
         return;
     }
     else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {

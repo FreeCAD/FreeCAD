@@ -29,7 +29,9 @@
 
 #include <map>
 
+#include <Inventor/SbColor.h>
 #include <App/PropertyUnits.h>
+#include <Gui/Selection/SoFCSelectionContext.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderTextureExtension.h>
 
@@ -163,14 +165,8 @@ public:
 
     bool allowOverride(const App::DocumentObject&) const override;
 
-    void setFaceHighlightActive(bool active)
-    {
-        faceHighlightActive = active;
-    }
-    bool isFaceHighlightActive() const
-    {
-        return faceHighlightActive;
-    }
+    void setFaceHighlight(int faceIndex, const SbColor& color, Gui::HighlightPresentation presentation);
+    void clearFaceHighlight();
 
     /** @name Edit methods */
     //@{
@@ -235,7 +231,6 @@ protected:
 
     bool VisualTouched;
     bool NormalsFromUV;
-    bool faceHighlightActive = false;
 
 private:
     Gui::ViewProviderFaceTexture texture;

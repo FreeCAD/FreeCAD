@@ -47,7 +47,6 @@
 #include <Base/Profiler.h>
 
 #include <Gui/SoFCInteractiveElement.h>
-#include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SoFCSelectionAction.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/So3DAnnotation.h>
@@ -222,11 +221,11 @@ void SoBrepFaceSet::doAction(SoAction* action)
             SelContextPtr ctx
                 = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
             if (ctx) {
-                ctx->highlightIndex = -1;
+                ctx->removeHighlight();
                 touch();
             }
             if (viewProvider) {
-                viewProvider->setFaceHighlightActive(false);
+                viewProvider->clearFaceHighlight();
             }
             return;
         }
@@ -236,6 +235,10 @@ void SoBrepFaceSet::doAction(SoAction* action)
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext);
             ctx->highlightIndex = std::numeric_limits<int>::max();
             ctx->highlightColor = hlaction->getColor();
+            ctx->highlightPresentation = hlaction->getHighlightPresentation();
+            if (viewProvider) {
+                viewProvider->clearFaceHighlight();
+            }
             touch();
         }
         else {
@@ -243,11 +246,11 @@ void SoBrepFaceSet::doAction(SoAction* action)
                 SelContextPtr ctx
                     = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
                 if (ctx) {
-                    ctx->highlightIndex = -1;
+                    ctx->removeHighlight();
                     touch();
                 }
                 if (viewProvider) {
-                    viewProvider->setFaceHighlightActive(false);
+                    viewProvider->clearFaceHighlight();
                 }
             }
             else {
@@ -255,6 +258,14 @@ void SoBrepFaceSet::doAction(SoAction* action)
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext);
                 ctx->highlightIndex = index;
                 ctx->highlightColor = hlaction->getColor();
+                ctx->highlightPresentation = hlaction->getHighlightPresentation();
+                if (viewProvider) {
+                    viewProvider->setFaceHighlight(
+                        index,
+                        hlaction->getColor(),
+                        hlaction->getHighlightPresentation()
+                    );
+                }
                 touch();
             }
         }
@@ -411,7 +422,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
     }
     buildOverlayCoordIndex(overlayCoordIndex, ci, ciCount, partCounts, partCount, parts, selectAll);
 
-    const bool onTop = Gui::Selection().isClarifySelectionActive()
+    const bool onTop = ctx->hasHighlightPresentation(Gui::HighlightPresentation::DrawOnTop)
         && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths;
 
     renderOverlayFaces(action, overlayFaceSet, overlayCoordIndex, ctx->highlightColor, onTop);
@@ -693,19 +704,15 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction* action)
     const bool hasContextHighlight = ctx && ctx->isHighlighted() && !ctx->isHighlightAll()
         && ctx->highlightIndex >= 0 && ctx->highlightIndex < partIndex.getNum();
 
-    // Clarify selection: render highlight as delayed annotation on top.
-    if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight) {
+    if (hasContextHighlight && ctx->hasHighlightPresentation(Gui::HighlightPresentation::DrawOnTop)) {
         if (!Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
-            if (viewProvider) {
-                viewProvider->setFaceHighlightActive(true);
-            }
             const SoPath* currentPath = action->getCurPath();
             Gui::SoDelayedAnnotationsElement::addDelayedPath(state, currentPath->copy(), 100);
+        }
+        else {
+            renderHighlight(action, ctx);
             return;
         }
-        inherited::GLRender(action);
-        renderHighlight(action, ctx);
-        return;
     }
 
     SoMaterialBundle mb(action);

@@ -37,6 +37,17 @@ class SoState;
 namespace Gui
 {
 
+enum class HighlightPresentation : unsigned int
+{
+    None = 0,
+    DrawOnTop = 1u << 0,
+};
+
+inline bool hasHighlightPresentation(HighlightPresentation presentation, HighlightPresentation flag)
+{
+    return (static_cast<unsigned int>(presentation) & static_cast<unsigned int>(flag)) != 0u;
+}
+
 class SoFCSelectionRoot;
 struct SoFCSelectionContextBase;
 using SoFCSelectionContextBasePtr = std::shared_ptr<SoFCSelectionContextBase>;
@@ -61,6 +72,7 @@ struct GuiExport SoFCSelectionContext: SoFCSelectionContextBase
     std::set<int> selectionIndex;
     SbColor selectionColor;
     SbColor highlightColor;
+    HighlightPresentation highlightPresentation {HighlightPresentation::None};
     std::shared_ptr<int> counter;
 
     ~SoFCSelectionContext() override;
@@ -100,6 +112,12 @@ struct GuiExport SoFCSelectionContext: SoFCSelectionContextBase
     void removeHighlight()
     {
         highlightIndex = -1;
+        highlightPresentation = HighlightPresentation::None;
+    }
+
+    bool hasHighlightPresentation(HighlightPresentation flag) const
+    {
+        return Gui::hasHighlightPresentation(highlightPresentation, flag);
     }
 
     bool removeIndex(int index);

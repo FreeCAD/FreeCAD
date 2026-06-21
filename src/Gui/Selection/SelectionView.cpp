@@ -52,6 +52,33 @@ FC_LOG_LEVEL_INIT("Selection", true, true, true)
 using namespace Gui;
 using namespace Gui::DockWnd;
 
+namespace
+{
+
+class ClarifySelectionScope
+{
+public:
+    ClarifySelectionScope()
+        : wasActive(Gui::Selection().isClarifySelectionActive())
+    {
+        Gui::Selection().setClarifySelectionActive(true);
+    }
+
+    ClarifySelectionScope(const ClarifySelectionScope&) = delete;
+    ClarifySelectionScope& operator=(const ClarifySelectionScope&) = delete;
+
+    ~ClarifySelectionScope()
+    {
+        Gui::Selection().rmvPreselect();
+        Gui::Selection().setClarifySelectionActive(wasActive);
+    }
+
+private:
+    bool wasActive;
+};
+
+}  // namespace
+
 
 /* TRANSLATOR Gui::DockWnd::SelectionView */
 
@@ -735,17 +762,21 @@ struct SubMenuInfo
 
 PickData SelectionMenu::doPick(const std::vector<PickData>& sels, const QPoint& pos)
 {
-    clear();
-    Gui::Selection().setClarifySelectionActive(true);
+    ClarifySelectionScope clarifySelection;
+    populateMenu(sels);
 
+    QAction* picked = this->exec(pos);
+    return onPicked(picked, currentSelections);
+}
+
+void SelectionMenu::populateMenu(const std::vector<PickData>& sels)
+{
+    clear();
     currentSelections = sels;
 
     std::map<std::string, SubMenuInfo> menus;
     processSelections(currentSelections, menus);
     buildMenuStructure(menus, currentSelections);
-
-    QAction* picked = this->exec(pos);
-    return onPicked(picked, currentSelections);
 }
 
 void SelectionMenu::processSelections(
@@ -851,9 +882,6 @@ void SelectionMenu::buildMenuStructure(
 
 PickData SelectionMenu::onPicked(QAction* picked, const std::vector<PickData>& sels)
 {
-    // Clear the ClarifySelection active flag when menu is done
-    Gui::Selection().setClarifySelectionActive(false);
-
     Gui::Selection().rmvPreselect();
     if (!picked) {
         return PickData {};
@@ -872,12 +900,11 @@ PickData SelectionMenu::onPicked(QAction* picked, const std::vector<PickData>& s
 
 void SelectionMenu::onHover(QAction* action)
 {
+    Gui::Selection().rmvPreselect();
+
     if (!action || currentSelections.empty()) {
         return;
     }
-
-    // Clear previous preselection
-    Gui::Selection().rmvPreselect();
 
     // Get the selection index from the action data
     bool ok;
@@ -973,9 +1000,11 @@ QIcon SelectionMenu::getOrCreateIcon(
 {
     auto& icon = icons[sobj];
     if (icon.isNull()) {
-        auto vp = Application::Instance->getViewProvider(sobj);
-        if (vp) {
-            icon = vp->getIcon();
+        if (Application::Instance) {
+            auto vp = Application::Instance->getViewProvider(sobj);
+            if (vp) {
+                icon = vp->getIcon();
+            }
         }
     }
     return icon;

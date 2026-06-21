@@ -161,7 +161,7 @@ void SoFCSelection::doAction(SoAction* action)
             if (!hlaction->isHighlighted()) {
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
                 if (ctx && ctx->isHighlighted()) {
-                    ctx->highlightIndex = -1;
+                    ctx->removeHighlight();
                     touch();
                 }
             }
@@ -169,10 +169,11 @@ void SoFCSelection::doAction(SoAction* action)
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext);
                 if (ctx) {
                     ctx->highlightColor = hlaction->getColor();
+                    ctx->highlightPresentation = hlaction->getHighlightPresentation();
                     if (!ctx->isHighlighted()) {
                         ctx->highlightIndex = 0;
-                        touch();
                     }
+                    touch();
                 }
             }
             return;

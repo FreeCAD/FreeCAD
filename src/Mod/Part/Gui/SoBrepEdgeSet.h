@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <Inventor/SbColor.h>
 #include <boost/algorithm/string/predicate.hpp>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -57,8 +58,19 @@ public:
 
     SoMFInt32 highlightCoordIndex;
     SoMFInt32 selectionCoordIndex;
+    SoMFInt32 faceEdgeIndex;
     SoSFColor highlightColor;
     SoSFColor selectionColor;
+
+    void setFaceHighlight(
+        int faceIndex,
+        const SbColor& accentColor,
+        const SbColor& haloColor,
+        Gui::HighlightPresentation presentation,
+        float lineWidth,
+        float haloLineWidth
+    );
+    void clearFaceHighlight();
 
 protected:
     ~SoBrepEdgeSet() override;
@@ -80,7 +92,20 @@ private:
 
     void renderHighlight(SoGLRenderAction* action, SelContextPtr);
     void renderSelection(SoGLRenderAction* action, SelContextPtr, bool push = true);
+    void renderFaceHighlight(SoGLRenderAction* action);
+    void renderPresentationLines(
+        SoGLRenderAction* action,
+        const int32_t* indices,
+        int numIndices,
+        const SbColor& accentColor,
+        const SbColor& haloColor,
+        Gui::HighlightPresentation presentation,
+        float lineWidth = 0.0F,
+        float haloLineWidth = 0.0F
+    );
     bool validIndexes(const SoCoordinateElement*, const std::vector<int32_t>&) const;
+    void appendLineCoordIndex(int lineIndex, std::vector<int32_t>& out) const;
+    void appendFaceEdgeCoordIndex(int faceIndex, std::vector<int32_t>& out) const;
 
 
 private:
@@ -88,6 +113,14 @@ private:
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
     SoIndexedLineSet* overlayLineSet {nullptr};
+
+    bool faceHighlightActive {false};
+    int faceHighlightIndex {-1};
+    SbColor faceHighlightAccentColor;
+    SbColor faceHighlightHaloColor;
+    Gui::HighlightPresentation faceHighlightPresentation {Gui::HighlightPresentation::None};
+    float faceHighlightLineWidth {1.0F};
+    float faceHighlightHaloLineWidth {1.0F};
 
     // backreference to viewprovider that owns this node
     ViewProviderPartExt* viewProvider = nullptr;

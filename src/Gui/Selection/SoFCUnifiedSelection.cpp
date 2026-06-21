@@ -602,6 +602,9 @@ void SoFCUnifiedSelection::doAction(SoAction* action)
                 highlightAction.setHighlighted(true);
                 highlightAction.setColor(this->colorHighlight.getValue());
                 highlightAction.setElement(detail);
+                if (Gui::Selection().isClarifySelectionActive()) {
+                    highlightAction.setHighlightPresentation(HighlightPresentation::DrawOnTop);
+                }
                 highlightAction.apply(pathToHighlight);
 
                 currentHighlightPath = Gui::toFullPath(pathToHighlight->copy());
@@ -1239,6 +1242,21 @@ const SoDetail* SoHighlightElementAction::getElement() const
     return this->_det;
 }
 
+void SoHighlightElementAction::setHighlightPresentation(HighlightPresentation presentation)
+{
+    this->_presentation = presentation;
+}
+
+HighlightPresentation SoHighlightElementAction::getHighlightPresentation() const
+{
+    return this->_presentation;
+}
+
+bool SoHighlightElementAction::hasHighlightPresentation(HighlightPresentation presentation) const
+{
+    return Gui::hasHighlightPresentation(this->_presentation, presentation);
+}
+
 // ---------------------------------------------------------------
 
 SO_ACTION_SOURCE(SoSelectionElementAction)
@@ -1471,7 +1489,7 @@ static void so_bbox_cleanup()
 SoFCSelectionRoot::Stack SoFCSelectionRoot::SelStack;
 std::unordered_map<SoAction*, SoFCSelectionRoot::Stack> SoFCSelectionRoot::ActionStacks;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
-SoFCSelectionRoot::ColorStack SoFCSelectionRoot::HlColorStack;
+SoFCSelectionRoot::HighlightStack SoFCSelectionRoot::HlStack;
 SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
 
 SO_NODE_SOURCE(SoFCSelectionRoot)
@@ -1792,7 +1810,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
         }
 
         if ((hlPushed = ctx->hlAll)) {
-            HlColorStack.push_back(ctx->hlColor);
+            HlStack.push_back({ctx->hlColor, ctx->hlPresentation});
         }
 
         if (inPath) {
@@ -1810,7 +1828,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
             }
         }
         if (hlPushed) {
-            HlColorStack.pop_back();
+            HlStack.pop_back();
         }
     }
 
@@ -1859,15 +1877,23 @@ bool SoFCSelectionRoot::checkColorOverride(SoState* state)
     return false;
 }
 
-void SoFCSelectionRoot::checkSelection(bool& sel, SbColor& selColor, bool& hl, SbColor& hlColor)
+void SoFCSelectionRoot::checkSelection(
+    bool& sel,
+    SbColor& selColor,
+    bool& hl,
+    SbColor& hlColor,
+    HighlightPresentation& hlPresentation
+)
 {
     sel = false;
     hl = false;
+    hlPresentation = HighlightPresentation::None;
     if ((sel = !SelColorStack.empty())) {
         selColor = SelColorStack.back();
     }
-    if ((hl = !HlColorStack.empty())) {
-        hlColor = HlColorStack.back();
+    if ((hl = !HlStack.empty())) {
+        hlColor = HlStack.back().color;
+        hlPresentation = HlStack.back().presentation;
     }
 }
 
@@ -2105,6 +2131,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
                 assert(ctx);
                 ctx->hlAll = true;
                 ctx->hlColor = highlightAction->getColor();
+                ctx->hlPresentation = highlightAction->getHighlightPresentation();
                 touch();
                 return false;
             }
@@ -2113,6 +2140,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack& stack, SoAction* action)
             auto ctx = getActionContext(action, this, SelContextPtr(), false);
             if (ctx && ctx->hlAll) {
                 ctx->hlAll = false;
+                ctx->hlPresentation = HighlightPresentation::None;
                 touch();
                 return false;
             }
@@ -2250,7 +2278,8 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                 bool sel = false;
                 bool hl = false;
                 SbColor selColor, hlColor;
-                SoFCSelectionRoot::checkSelection(sel, selColor, hl, hlColor);
+                HighlightPresentation hlPresentation = HighlightPresentation::None;
+                SoFCSelectionRoot::checkSelection(sel, selColor, hl, hlColor, hlPresentation);
                 if (sel || hl) {
                     SoFCSelectionRoot::renderBBox(action, this, (hl && !sel) ? hlColor : selColor);
                 }
