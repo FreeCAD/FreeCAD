@@ -82,7 +82,9 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         FreeCADGui.ActiveDocument.setEdit(self.sketch.Name)
         self.pump(200)
         self.assert_sketch_edit_active()
-        self.assertIsNotNone(self.active_task_dialog(), "Expected the Sketcher task dialog to open")
+        self.assertIsNotNone(
+            self.active_task_dialog(), "Expected the Sketcher task dialog to open"
+        )
 
     def begin_rectangle_with_visible_ovp(self):
         self.begin_sketch_edit_with_task_dialog()
@@ -113,8 +115,16 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         self.move(viewport, move_target)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000),
+            self.wait_until(
+                lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000
+            ),
             "Expected the rectangle OVPs to become visible after the first click",
+        )
+
+        self.activate_window(viewport)
+        self.assertTrue(
+            self.wait_until(lambda: self.active_spinbox() is not None, timeout_ms=1000),
+            "Expected the first rectangle OVP to receive focus after becoming visible",
         )
 
         return viewport, first_point
@@ -163,7 +173,9 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         self.begin_rectangle_with_visible_ovp()
 
         first_spinbox = self.active_spinbox()
-        self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
+        self.assertIsNotNone(
+            first_spinbox, "Expected the first rectangle OVP to have focus"
+        )
         self.key_text(first_spinbox, "10")
         self.key_click(first_spinbox, QtCore.Qt.Key_Tab, "\t")
 
@@ -177,7 +189,9 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         )
 
         second_spinbox = self.active_spinbox()
-        self.assertIsNotNone(second_spinbox, "Expected the second rectangle OVP to have focus")
+        self.assertIsNotNone(
+            second_spinbox, "Expected the second rectangle OVP to have focus"
+        )
         self.key_text(second_spinbox, "20")
         self.key_click(second_spinbox, QtCore.Qt.Key_Return, "\r")
 
@@ -193,11 +207,15 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         viewport, first_point = self.begin_rectangle_with_visible_ovp()
 
         first_spinbox = self.active_spinbox()
-        self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
+        self.assertIsNotNone(
+            first_spinbox, "Expected the first rectangle OVP to have focus"
+        )
         self.key_click(first_spinbox, QtCore.Qt.Key_Escape)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000),
+            self.wait_until(
+                lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000
+            ),
             "Expected Esc to close the rectangle OVPs",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
@@ -217,21 +235,31 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         self.move(viewport, restart_move)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000),
+            self.wait_until(
+                lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000
+            ),
             "Expected Esc to reset the rectangle tool back to its first stage",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
-        self.assertIsNotNone(self.active_spinbox())
+        self.activate_window(viewport)
+        self.assertTrue(
+            self.wait_until(lambda: self.active_spinbox() is not None, timeout_ms=1000),
+            "Expected the restarted rectangle tool to refocus its first OVP",
+        )
 
     def test_rectangle_ovp_escape_then_right_click_exits_tool(self):
         viewport, first_point = self.begin_rectangle_with_visible_ovp()
 
         first_spinbox = self.active_spinbox()
-        self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
+        self.assertIsNotNone(
+            first_spinbox, "Expected the first rectangle OVP to have focus"
+        )
         self.key_click(first_spinbox, QtCore.Qt.Key_Escape)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000),
+            self.wait_until(
+                lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000
+            ),
             "Expected Esc to close the rectangle OVPs",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
@@ -268,11 +296,15 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         viewport, first_point = self.begin_rectangle_with_visible_ovp()
 
         first_spinbox = self.active_spinbox()
-        self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
+        self.assertIsNotNone(
+            first_spinbox, "Expected the first rectangle OVP to have focus"
+        )
         self.key_click(first_spinbox, QtCore.Qt.Key_Escape)
 
         self.assertTrue(
-            self.wait_until(lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000),
+            self.wait_until(
+                lambda: len(self.visible_spinboxes()) == 0, timeout_ms=1000
+            ),
             "Expected the first Esc to close the rectangle OVPs",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
