@@ -97,6 +97,7 @@ requirements:
   host:
     - coin3d >=4.0.8,<4.1.0a0
     - eigen >=3.3,<6
+    - flask
     - fmt
     - freetype
     - hdf5
@@ -111,10 +112,12 @@ requirements:
     - pivy
     - ply
     - pybind11
+    - pyjwt
     - pyside6
     - python>=3.11,<3.12
     - qt6-main>=6.11,<6.12
     - qt6-webengine>=6.11,<6.12
+    - sentry-sdk
     - six
     - smesh
     - vtk
@@ -126,10 +129,12 @@ requirements:
       then:
         - winpthreads-devel
         - tbb-devel
+        - winloop
 
     - if: unix
       then:
         - sed
+        - uvloop
 
     - if: linux
       then:
@@ -143,6 +148,7 @@ requirements:
     - debugpy
     - defusedxml
     - docutils
+    - flask
     - gmsh
     - graphviz
     - icu >=78,<79
@@ -164,6 +170,7 @@ requirements:
     - pivy
     - ply
     - pycollada
+    - pyjwt
     - pyside6
     - python>=3.11,<3.12
     - pythonocc-core
@@ -171,6 +178,7 @@ requirements:
     - qt6-main>=6.11,<6.12
     - requests
     - scipy
+    - sentry-sdk
     - sympy
     - typing_extensions
     - validators>=0.35,<1.0
@@ -184,9 +192,14 @@ requirements:
         - qt6-webengine>=6.11,<6.12
         - xcb-util-cursor>=0.1.6,<0.2.0a0
 
+    - if: unix
+      then:
+        - uvloop
+
     - if: win
       then:
         - qt6-webengine>=6.11,<6.12
+        - winloop
 
     - if: osx and arm64
       then:

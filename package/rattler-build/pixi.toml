@@ -18,9 +18,22 @@ backend = { name = "pixi-build-rattler-build", version = "*" }
 
 [feature.freecad.dependencies]
 freecad = { path = "." }
+flask = "*"
+sentry-sdk = "*"
+pyjwt = "*"
+
+[feature.freecad.target.linux-64.dependencies]
+uvloop = "*"
+
+[feature.freecad.target.linux-aarch64.dependencies]
+uvloop = "*"
+
+[feature.freecad.target.osx-arm64.dependencies]
+uvloop = "*"
 
 [feature.freecad.target.win-64.dependencies]
 ucrt = "==10.0.20348.0"
+winloop = "*"
 
 [feature.package.dependencies]
 python = ">=3.11,<3.12"
