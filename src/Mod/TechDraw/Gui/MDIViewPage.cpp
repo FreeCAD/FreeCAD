@@ -97,13 +97,13 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
 {
     setMouseTracking(true);
 
-    m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
+    m_toggleKeepUpdatedAction = new QAction(tr("&Keep Updated"), this);
     connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
 
-    m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
+    m_toggleFrameAction = new QAction(tr("Show &Frames"), this);
     connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
 
-    m_toggleGridAction = new QAction(tr("Toggle &Grid"), this);
+    m_toggleGridAction = new QAction(tr("Show &Grid"), this);
     connect(m_toggleGridAction, &QAction::triggered, this, &MDIViewPage::toggleGrid);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
