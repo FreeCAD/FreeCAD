@@ -1115,7 +1115,7 @@ bool QGIView::shouldShowFrame() const
         return false;
     }
 
-    if (isViewSelected()) {
+    if (isSelected()) {
         return true;
     }
 
