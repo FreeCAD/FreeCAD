@@ -138,6 +138,7 @@ public:
         const TopoShape& profileshape,
         const TopoDS_Shape& protohole
     ) const;
+    std::vector<gp_Pnt> getHoleLocations() const;
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -196,6 +197,9 @@ private:
     static const char* ThreadClass_BSF_Enums[];
 
     static const double ThreadRunout[ThreadRunout_size][2];
+    // Populated during findHoles() and consumed by
+    // ViewProviderHole for cosmetic thread matching.
+    mutable std::vector<gp_Pnt> _holeLocations;
 
     /* Counter-xxx */
     // public:
