@@ -573,17 +573,23 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
         lines << line;
     }
 
-    QImage image(w + 10, h + 10, QImage::Format_ARGB32_Premultiplied);
+    constexpr int textPadding = 5;
+    constexpr qreal frameWidth = 2.0;
+    constexpr qreal cornerRadius = 5.0;
+
+    QImage image(w + 2 * textPadding, h + 2 * textPadding, QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
     QPainter painter(&image);
     painter.setRenderHint(QPainter::Antialiasing);
 
     bool drawFrame = this->Frame.getValue();
     if (drawFrame) {
-        painter.setPen(QPen(QColor(0, 0, 127), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter.setPen(QPen(QColor(0, 0, 127), frameWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter.setBrush(QBrush(brush, Qt::SolidPattern));
-        QRectF rectangle(0.0, 0.0, w + 10, h + 10);
-        painter.drawRoundedRect(rectangle, 5, 5);
+        const QRectF rectangle
+            = QRectF(image.rect())
+                  .adjusted(frameWidth / 2.0, frameWidth / 2.0, -frameWidth / 2.0, -frameWidth / 2.0);
+        painter.drawRoundedRect(rectangle, cornerRadius, cornerRadius);
     }
 
     painter.setPen(front);
@@ -600,7 +606,7 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
     }
     QString text = lines.join(QLatin1String("\n"));
     painter.setFont(font);
-    painter.drawText(5, 5, w, h, align, text);
+    painter.drawText(textPadding, textPadding, w, h, align, text);
     painter.end();
 
     SoSFImage sfimage;
