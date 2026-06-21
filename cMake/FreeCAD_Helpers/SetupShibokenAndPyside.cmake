@@ -9,14 +9,8 @@ macro(SetupShibokenAndPyside)
         find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
     endif()
 
-    if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
-        set(SHIBOKEN_MAJOR_VERSION 2)
-        set(PYSIDE_MAJOR_VERSION 2)
-    else()
-        set(SHIBOKEN_MAJOR_VERSION ${FREECAD_QT_MAJOR_VERSION})
-        set(PYSIDE_MAJOR_VERSION ${FREECAD_QT_MAJOR_VERSION})
-    endif()
-
+    set(SHIBOKEN_MAJOR_VERSION ${FREECAD_QT_MAJOR_VERSION})
+    set(PYSIDE_MAJOR_VERSION ${FREECAD_QT_MAJOR_VERSION})
 
     # Shiboken2Config.cmake may explicitly set CMAKE_BUILD_TYPE to Release which causes
     # CMake to fail to create Makefiles for a debug build.
@@ -59,21 +53,6 @@ macro(SetupShibokenAndPyside)
 
     find_package(PySide${PYSIDE_MAJOR_VERSION} QUIET)
 
-    if(${PYSIDE_MAJOR_VERSION} EQUAL 2)
-        # Our internal FindPySide6.cmake file already provides these for PySide6
-        if(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
-            get_property(PYSIDE_INCLUDE_DIR TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-        endif()
-
-        if(NOT PYSIDE_INCLUDE_DIR)
-            find_pip_package(PySide${PYSIDE_MAJOR_VERSION})
-            if(PySide${PYSIDE_MAJOR_VERSION}_FOUND)
-                set(PYSIDE_INCLUDE_DIR ${PySide${PYSIDE_MAJOR_VERSION}_INCLUDE_DIRS})
-                set(PYSIDE_LIBRARY ${PySide${PYSIDE_MAJOR_VERSION}_LIBRARIES})
-            endif()
-        endif()
-    endif()
-
     find_package(PySide${PYSIDE_MAJOR_VERSION}Tools QUIET) # PySide utilities (uic & rcc executables)
     if(NOT PYSIDE_TOOLS_FOUND)
         message("=======================\n"
@@ -96,15 +75,10 @@ macro(SetupShibokenAndPyside)
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtSvg import *\n")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtUiTools.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtUiTools import *\n")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWidgets import *\n")
-        if(PYSIDE_MAJOR_VERSION LESS 6)
-            file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvgWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtSvg import QGraphicsSvgItem\n"
-                                                                       "from PySide${PYSIDE_MAJOR_VERSION}.QtSvg import QSvgWidget\n")
-            file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n")
-        else()
-            file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvgWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtSvgWidgets import *\n")
-            file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n"
-                                                                              "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineCore import QWebEnginePage\n")
-        endif()
+        
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvgWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtSvgWidgets import *\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtWebEngineWidgets.py  "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineWidgets import *\n"
+                                                                            "from PySide${PYSIDE_MAJOR_VERSION}.QtWebEngineCore import QWebEnginePage\n")
     endif()
 
     if(APPLE AND NOT BUILD_WITH_CONDA)

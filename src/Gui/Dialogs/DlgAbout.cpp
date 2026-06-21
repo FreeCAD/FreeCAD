@@ -337,9 +337,6 @@ void AboutDialog::showCredits()
               .arg(tr("Individuals", "Header for the list of individual people in the Credits list."));
 
     QTextStream stream(&creditsFile);
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    stream.setCodec("UTF-8");
-#endif
     QString line;
     while (stream.readLineInto(&line)) {
         if (!line.isEmpty()) {

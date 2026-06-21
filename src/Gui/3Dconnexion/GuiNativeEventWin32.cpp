@@ -397,11 +397,7 @@ unsigned short HidToVirtualKey(unsigned long pid, unsigned short hidKeyCode)
     return virtualkey;
 }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-bool Gui::GuiNativeEvent::RawInputEventFilter(void* msg, long* result)
-#else
 bool Gui::GuiNativeEvent::RawInputEventFilter(void* msg, qintptr* result)
-#endif
 {
     if (gMouseInput == 0) {
         return false;

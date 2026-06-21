@@ -136,14 +136,12 @@ endif()
 if (WIN32)
     # In order to make menus and tooltips usable in fullscreen under Windows we need to call setHasBorderInFullScreen(),
     # defined in Qt's private Gui code. See issue #7563, and the calls to QNativeInterface::Private in MainWindow.cpp
-    if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
-        if(Qt6_VERSION VERSION_GREATER_EQUAL "6.10.0")
-            find_package(Qt6 REQUIRED COMPONENTS GuiPrivate)
-        endif()
-        list(APPEND FreeCADGui_LIBS
-            Qt6::GuiPrivate
-        )
+    if(Qt6_VERSION VERSION_GREATER_EQUAL "6.10.0")
+        find_package(Qt6 REQUIRED COMPONENTS GuiPrivate)
     endif()
+    list(APPEND FreeCADGui_LIBS
+        Qt6::GuiPrivate
+    )
 endif()
 
 target_include_directories(
@@ -187,33 +185,10 @@ else()
     )
 endif()
 
-if(${Qt5WinExtras_FOUND})
-    target_include_directories(
-        FreeCADGui
-        SYSTEM
-        PUBLIC
-        ${Qt5WinExtras_INCLUDE_DIRS}
-    )
-    list(APPEND FreeCADGui_LIBS
-        ${Qt5WinExtras_LIBRARIES}
-    )
-endif()
-
 IF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
     add_definitions(-D_USE_3DCONNEXION_SDK)
     if(SPNAV_USE_X11)
         add_definitions(-DSPNAV_USE_X11)
-        if (FREECAD_QT_MAJOR_VERSION EQUAL 5 AND UNIX AND NOT APPLE)
-            find_package(Qt5X11Extras REQUIRED)
-            target_include_directories(
-                FreeCADGui
-                SYSTEM
-                PUBLIC
-                ${Qt5X11Extras_INCLUDE_DIRS}
-            )
-            list(APPEND FreeCADGui_LIBS ${Qt5X11Extras_LIBRARIES})
-            # Note that Qt6 has removed the QtX11Extras files
-        endif()
         find_package(X11 QUIET)
         if (X11_FOUND)
             list(APPEND FreeCADGui_LIBS
@@ -311,15 +286,9 @@ if(FREECAD_USE_PYSIDE)
             ${PYSIDE_LIBRARY}
         )
     else (PYSIDE_LIBRARY)
-        if (TARGET PySide2::pyside2)
-            list(APPEND FreeCADGui_LIBS
-                PySide2::pyside2
-            )
-        elseif (TARGET PySide6::pyside6)
-            list(APPEND FreeCADGui_LIBS
-                PySide6::pyside6
-            )
-        endif ()
+        list(APPEND FreeCADGui_LIBS
+            PySide6::pyside6
+        )
     endif (PYSIDE_LIBRARY)
 
     add_definitions(-DHAVE_PYSIDE${PYSIDE_MAJOR_VERSION})

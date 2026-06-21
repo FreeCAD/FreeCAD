@@ -156,32 +156,6 @@ MaterialValue::ValueType MaterialValue::mapType(const QString& stringType)
 
 void MaterialValue::setInitialValue(ValueType inherited)
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    if (_valueType == String || _valueType == MultiLineString || _valueType == SVG) {
-        _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
-    }
-    else if (_valueType == Boolean) {
-        _value = QVariant(static_cast<QVariant::Type>(QMetaType::Bool));
-    }
-    else if (_valueType == Integer) {
-        _value = QVariant(static_cast<QVariant::Type>(QMetaType::Int));
-    }
-    else if (_valueType == Float) {
-        _value = QVariant(static_cast<QVariant::Type>(QMetaType::Float));
-    }
-    else if (_valueType == URL) {
-        _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
-    }
-    else if (_valueType == Color) {
-        _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
-    }
-    else if (_valueType == File) {
-        _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
-    }
-    else if (_valueType == Image) {
-        _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
-    }
-#else
     if (_valueType == String || _valueType == MultiLineString || _valueType == SVG) {
         _value = QVariant(QMetaType(QMetaType::QString));
     }
@@ -206,7 +180,6 @@ void MaterialValue::setInitialValue(ValueType inherited)
     else if (_valueType == Image) {
         _value = QVariant(QMetaType(QMetaType::QString));
     }
-#endif
     else if (_valueType == Quantity) {
         Base::Quantity qu;
         qu.setInvalid();
