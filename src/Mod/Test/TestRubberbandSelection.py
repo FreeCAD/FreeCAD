@@ -112,6 +112,8 @@ class TestRubberbandSelection(unittest.TestCase):
         self._refresh_view()
 
     def tearDown(self):
+        self._set_selection_mode(0, require=False)
+        FreeCADGui.Selection.removeSelectionGate()
         FreeCADGui.Selection.clearSelection()
         if hasattr(self, "view_preferences"):
             self.view_preferences.SetBool("EnableSelection", self.old_enable_selection)
@@ -147,7 +149,7 @@ class TestRubberbandSelection(unittest.TestCase):
             self.assertTrue(sub_elements)
             self.assertTrue(all(name.startswith("Face") for name in sub_elements))
         finally:
-            FreeCADGui.Selection.removeSelectionGate()
+            self._set_selection_mode(0)
 
     def test_plain_drag_keeps_object_selection_when_object_filter_is_active(self):
         self._ensure_selection_objects()
@@ -162,6 +164,36 @@ class TestRubberbandSelection(unittest.TestCase):
             self.assertEqual(self._selected_sub_element_names(self.left_box), set())
         finally:
             FreeCADGui.Selection.removeSelectionGate()
+
+    def test_plain_drag_selects_faces_when_global_face_mode_is_active(self):
+        self._ensure_selection_objects()
+        self.view.setNavigationType("Gui::CADNavigationStyle")
+        self._refresh_view()
+
+        self._set_selection_mode(4)
+        try:
+            self._drag_select(self._selection_rect(self.left_box))
+
+            self.assertEqual(self._selected_names(), {self.left_box.Name})
+            sub_elements = self._selected_sub_element_names(self.left_box)
+            self.assertTrue(sub_elements)
+            self.assertTrue(all(name.startswith("Face") for name in sub_elements))
+        finally:
+            self._set_selection_mode(0)
+
+    def test_plain_drag_keeps_object_selection_when_global_object_mode_is_active(self):
+        self._ensure_selection_objects()
+        self.view.setNavigationType("Gui::CADNavigationStyle")
+        self._refresh_view()
+
+        self._set_selection_mode(1)
+        try:
+            self._drag_select(self._selection_rect(self.left_box))
+
+            self.assertEqual(self._selected_names(), {self.left_box.Name})
+            self.assertEqual(self._selected_sub_element_names(self.left_box), set())
+        finally:
+            self._set_selection_mode(0)
 
     def test_ctrl_drag_adds_in_supported_styles(self):
         self._ensure_selection_objects()
@@ -423,6 +455,15 @@ class TestRubberbandSelection(unittest.TestCase):
             if selection.ObjectName == obj.Name:
                 sub_element_names.update(selection.SubElementNames)
         return sub_element_names
+
+    def _set_selection_mode(self, mode_index, require=True):
+        if "Std_SelectionMode" not in FreeCADGui.listCommands():
+            if require:
+                self.fail("Std_SelectionMode is unavailable")
+            return
+
+        FreeCADGui.runCommand("Std_SelectionMode", mode_index)
+        self._process_events()
 
     def _send_mouse_event(self, event_type, pos, button, buttons, modifiers):
         self._refresh_view_widgets()
