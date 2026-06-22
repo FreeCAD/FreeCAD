@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <functional>
 #include <optional>
 #include <vector>
@@ -178,13 +179,20 @@ public:
      */
     struct PreselectionResult
     {
-        enum class HitKind
+        enum class HitKind : std::int8_t
         {
             None = -1,
             Point = 0,
             Edge = 1,
             Axis = 2,
             Constraint = 3
+        };
+
+        enum class ConstraintHitKind : std::uint8_t
+        {
+            None,
+            Icon,
+            DatumLabel
         };
 
         enum SpecialValues
@@ -208,6 +216,7 @@ public:
                                       // -3,-4,-5,... for external geometry
         Axes Cross = Axes::None;
         std::set<int> ConstrIndices;
+        ConstraintHitKind ConstraintKind = ConstraintHitKind::None;
         std::optional<Base::Vector3d> PickedPoint;
 
         [[nodiscard]] inline bool hasWinner() const
@@ -235,15 +244,14 @@ public:
             GeoIndex = InvalidCurve;
             Cross = Axes::None;
             ConstrIndices.clear();
+            ConstraintKind = ConstraintHitKind::None;
             PickedPoint.reset();
         }
     };
 
     struct PreselectionCandidates
     {
-        PreselectionResult Constraint;
-        PreselectionResult Geometry;
-        PreselectionResult Axis;
+        std::vector<PreselectionResult> Items;
     };
 
 public:

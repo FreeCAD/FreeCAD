@@ -2181,18 +2181,18 @@ QString EditModeConstraintCoinManager::getPresentationString(
     return fixedValueStr;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
+EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionConstr(
     const SoPickedPoint* Point,
     const SbVec2s& cursorScreenPos
 )
 {
-    std::set<int> constrIndices;
+    ConstraintPreselectionResult result;
     SoPath* path = Point->getPath();
 
     // The picked node must be a child of the main constraint group.
     SoNode* tailFather2 = path->getNode(path->getLength() - 3);
     if (tailFather2 != editModeScenegraphNodes.constrGroup) {
-        return constrIndices;
+        return result;
     }
 
     SoNode* tail = path->getTail();  // This is the SoImage or SoDatumLabel node that was picked.
@@ -2208,21 +2208,23 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
     if (dynamic_cast<SoDatumLabel*>(tail)) {
         for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
             if (editModeScenegraphNodes.constrGroup->getChild(i) == sep) {
-                constrIndices.insert(i);
+                result.Kind = ConstraintPreselectionResult::HitKind::DatumLabel;
+                result.ConstrIndices.insert(i);
+                result.PickedPoint = Base::convertTo<Base::Vector3d>(Point->getPoint());
                 break;
             }
         }
     }
 
-    return constrIndices;
+    return result;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
+EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionConstr(
     const SbVec2s& cursorScreenPos,
     Base::Vector3d* pickedPoint
 )
 {
-    std::set<int> constrIndices;
+    ConstraintPreselectionResult result;
 
     for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
         auto* sep = dynamic_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
@@ -2234,10 +2236,9 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
             iconIndex < sep->getNumChildren()) {
             auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
             if (iconNode) {
-                constrIndices
-                    = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
-                if (!constrIndices.empty()) {
-                    return constrIndices;
+                result = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                if (result.hasHit()) {
+                    return result;
                 }
             }
         }
@@ -2246,16 +2247,15 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(
             iconIndex < sep->getNumChildren()) {
             auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
             if (iconNode) {
-                constrIndices
-                    = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
-                if (!constrIndices.empty()) {
-                    return constrIndices;
+                result = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                if (result.hasHit()) {
+                    return result;
                 }
             }
         }
     }
 
-    return constrIndices;
+    return result;
 }
 
 std::set<int> EditModeConstraintCoinManager::parseConstraintIds(const QString& constrIdsStr) const
@@ -2326,7 +2326,7 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
     return true;
 }
 
-std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
+EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionIcon(
     SoSeparator* sep,
     SoImage* iconNode,
     int iconIndex,
@@ -2334,7 +2334,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
     Base::Vector3d* pickedPoint
 ) const
 {
-    std::set<int> constrIndices;
+    ConstraintPreselectionResult result;
     SbVec2f iconScreenCenter;
     SbVec3s iconSize;
     QString constrIdsStr;
@@ -2344,7 +2344,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
     if (
         !resolveIconScreenGeometry(sep, iconNode, iconIndex, iconScreenCenter, iconSize, constrIdsStr, resultPoint)
     ) {
-        return constrIndices;
+        return result;
     }
 
     int relativeX = static_cast<int>(cursorScreenPos[0] - iconScreenCenter[0] + iconSize[0] / 2.0f);
@@ -2359,18 +2359,25 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionIcon(
     if (combinedConstrBoxes.count(constrIdsStr)) {
         for (const auto& boxInfo : combinedConstrBoxes.at(constrIdsStr)) {
             if (boxInfo.first.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
-                constrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
+                result.ConstrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
             }
         }
-        return constrIndices;
+        if (!result.ConstrIndices.empty()) {
+            result.Kind = ConstraintPreselectionResult::HitKind::Icon;
+            result.PickedPoint = *resultPoint;
+        }
+        return result;
     }
 
     QRect iconBounds(0, 0, iconSize[0], iconSize[1]);
     if (iconBounds.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
-        return parseConstraintIds(constrIdsStr);
+        result.Kind = ConstraintPreselectionResult::HitKind::Icon;
+        result.ConstrIndices = parseConstraintIds(constrIdsStr);
+        result.PickedPoint = *resultPoint;
+        return result;
     }
 
-    return constrIndices;
+    return result;
 }
 
 SbVec3s EditModeConstraintCoinManager::getDisplayedSize(const SoImage* iconPtr) const
