@@ -641,7 +641,6 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonEditorView, Gui::EditorView)
 
 PythonEditorView::PythonEditorView(PythonEditor* editor, QWidget* parent)
     : EditorView(editor, parent)
-    , _pye(editor)
     , watcher(new PythonTracingWatcher(this))
 {}
 

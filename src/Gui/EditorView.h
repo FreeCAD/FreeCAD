@@ -139,7 +139,6 @@ public Q_SLOTS:
     void executeScript();
 
 private:
-    PythonEditor* _pye;
     PythonTracingWatcher* watcher;
 };
 
