@@ -805,13 +805,19 @@ class TestArcFittingBooleans(PathTestBase):
         """Test subtracting semicircle from square (square - semicircle)."""
         self.assert_boolean_line_and_arc_count(self.square, self.semicircle, "Subtract", 1, 5, 0, 1)
 
-    def assert_open_path_reversal_identical(self, open_curve, closed_curve):
+
+class TestArcFittingOpenPathReversal(PathTestBase):
+    """Tests for open path reversal handling in clipper operations."""
+
+    def assert_open_path_reversal_identical(self, closed_curve):
         """Helper: Assert that TestIntersectOpenPathReversal produces identical results for all reversal permutations.
 
         Args:
-            open_area: Area containing open path(s)
             closed_area: Area containing closed path(s) to intersect with
         """
+        # Use the same open curve for all tests
+        open_curve = make_curve([(1, 1), (3, 3), (5, 3), (7, 1)])
+
         a = [make_area(open_curve) for i in range(4)]
         closed_area = make_area(closed_curve)
 
@@ -821,23 +827,107 @@ class TestArcFittingBooleans(PathTestBase):
         a[2].TestIntersectOpenPathReversal(closed_area, True, False)
         a[3].TestIntersectOpenPathReversal(closed_area, True, True)
 
+        def format_area(area_obj, label):
+            """Format area for debug output."""
+            lines = [f"\n{label}:"]
+            for i, curve in enumerate(area_obj.getCurves()):
+                vertices = list(curve.getVertices())
+                lines.append(f"  Curve {i} ({len(vertices)} vertices):")
+                for j, v in enumerate(vertices):
+                    lines.append(
+                        f"    [{j}] type={v.type}, p=({v.p.x:.2f}, {v.p.y:.2f}), c=({v.c.x:.2f}, {v.c.y:.2f})"
+                    )
+            return "\n".join(lines)
+
+        # Assert that output points have increasing x values across all curves
+        lastX = None
+        for curve_idx, curve in enumerate(a[0].getCurves()):
+            vertices = list(curve.getVertices())
+            for vert_idx, v in enumerate(vertices):
+                if lastX is not None and v.p.x < lastX:
+                    msg = f"Output (no reversal) vertices do not have increasing x values: "
+                    msg += f"curve[{curve_idx}] vertex[{vert_idx}].x={v.p.x} < lastX={lastX}"
+                    msg += format_area(make_area(open_curve), "Input open curve")
+                    msg += format_area(closed_area, "Input closed curve")
+                    msg += format_area(a[0], "Output (no reversal)")
+                    self.fail(msg)
+                lastX = v.p.x
+
         # All results should be identical
-        self.assertTrue(
-            areas_equal(a[0], a[1]), "Results differ: no reversal vs path order reversed"
-        )
-        self.assertTrue(
-            areas_equal(a[0], a[2]), "Results differ: no reversal vs path contents reversed"
-        )
-        self.assertTrue(
-            areas_equal(a[0], a[3]),
-            "Results differ: no reversal vs both path contents and order reversed",
-        )
+        if not areas_equal(a[0], a[1]):
+            msg = "Results differ: 'no reversal' vs 'path order reversed'"
+            msg += format_area(make_area(open_curve), "Input open curve")
+            msg += format_area(closed_area, "Input closed curve")
+            msg += format_area(a[0], "Output (no reversal)")
+            msg += format_area(a[1], "Output (path order reversed)")
+            self.fail(msg)
+
+        if not areas_equal(a[0], a[2]):
+            msg = "Results differ: 'no reversal' vs 'path contents reversed'"
+            msg += format_area(make_area(open_curve), "Input open curve")
+            msg += format_area(closed_area, "Input closed curve")
+            msg += format_area(a[0], "Output (no reversal)")
+            msg += format_area(a[2], "Output (path contents reversed)")
+            self.fail(msg)
+
+        if not areas_equal(a[0], a[3]):
+            msg = "Results differ: 'no reversal' vs both 'path contents and order reversed'"
+            msg += format_area(make_area(open_curve), "Input open curve")
+            msg += format_area(closed_area, "Input closed curve")
+            msg += format_area(a[0], "Output (no reversal)")
+            msg += format_area(a[3], "Output (both path contents and order reversed)")
+            self.fail(msg)
 
     def test_open_path_reversal_no_clip(self):
         """Test open path reversal when path is fully contained in box (no clipping)."""
-        open_curve = make_curve([(1, 1), (3, 3), (5, 5), (7, 7)])
-        closed_curve = make_curve([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)])
-        self.assert_open_path_reversal_identical(open_curve, closed_curve)
+        closed_curve = make_curve([(0, 0), (8, 0), (8, 8), (0, 8), (0, 0)])
+        self.assert_open_path_reversal_identical(closed_curve)
+
+    def test_open_path_reversal_clip_first_vertex(self):
+        """Test open path reversal when box removes the first vertex."""
+        closed_curve = make_curve([(2, 0), (8, 0), (8, 8), (2, 8), (2, 0)])
+        self.assert_open_path_reversal_identical(closed_curve)
+
+    def test_open_path_reversal_clip_first_segment(self):
+        """Test open path reversal when box removes the first segment."""
+        closed_curve = make_curve([(4, 0), (8, 0), (8, 8), (4, 8), (4, 0)])
+        self.assert_open_path_reversal_identical(closed_curve)
+
+    def test_open_path_reversal_clip_last_segment(self):
+        """Test open path reversal when box removes the last segment."""
+        closed_curve = make_curve([(0, 0), (4, 0), (4, 8), (0, 8), (0, 0)])
+        self.assert_open_path_reversal_identical(closed_curve)
+
+    def test_open_path_reversal_clip_last_vertex(self):
+        """Test open path reversal when box removes the last vertex."""
+        closed_curve = make_curve([(0, 0), (6, 0), (6, 8), (0, 8), (0, 0)])
+        self.assert_open_path_reversal_identical(closed_curve)
+
+    def test_open_path_reversal_keep_segment_middle(self):
+        """Test open path reversal when box keeps only the middle of one segment."""
+        closed_curve = make_curve([(1.5, 0), (2.5, 0), (2.5, 8), (1.5, 8), (1.5, 0)])
+        self.assert_open_path_reversal_identical(closed_curve)
+
+    def test_open_path_reversal_split_path(self):
+        """Test open path reversal when box splits the path in two."""
+        closed_curve = make_curve([(0, 0), (8, 0), (8, 2.5), (0, 2.5), (0, 0)])
+        self.assert_open_path_reversal_identical(closed_curve)
+
+    def test_open_path_reversal_split_single_segment(self):
+        """Test open path reversal when a single segment is split in two by an L-shaped area."""
+        # Create an L-shaped closed curve that captures two separate parts of the first segment
+        closed_curve = make_curve(
+            [
+                (1.25, 0),
+                (1.75, 0),
+                (1.75, 2.25),
+                (3, 2.25),
+                (3, 2.75),
+                (1.25, 2.75),
+                (1.25, 0),
+            ]
+        )
+        self.assert_open_path_reversal_identical(closed_curve)
 
 
 if __name__ == "__main__":
