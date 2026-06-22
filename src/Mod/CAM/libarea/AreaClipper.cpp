@@ -183,13 +183,6 @@ static void SetFromResult(CCurve& curve, Path64& path, bool is_closed, const Arc
 
     const double max_arc_length = 2 * M_PI * .99;
 
-    // TODO for open paths start at one end and iterate in the direction of
-    // decreasing z (which may be a nuanced notion given newly generated z
-    // values)
-    // Actually this order issue may need to be tagged/documented somehow when
-    // mapping new zs back to the old ones they came from; the new path may *only* have new zs.
-    // Yeah, do that. But only for open paths. Also write a test for it.
-
     // Loop through points
     int64_t prevZ = -1;
     heeks::Point prevP;
@@ -729,15 +722,21 @@ ZCallback64 CArea::MakeZCallback()
     );
 }
 
-void CArea::ProcessIntersectionPoints(const Paths64& paths, bool is_closed)
+void CArea::ProcessIntersectionPoints(Paths64& paths, bool is_closed)
 {
     // Process each path
-    for (const Path64& path : paths) {
+    // For open paths, check z-order ensure that paths come in order
+    std::vector<std::pair<int64_t, int64_t>> pathOrder;  // (zMax, dsqMax)
+    pathOrder.reserve(paths.size());
+    for (Path64& path : paths) {
+        pathOrder.push_back({0, 0});
         if (path.empty()) {
             continue;
         }
 
         // Loop over edges, including wraparound edge if closed
+        // For open paths, check z-order to ensure points come in order
+        bool needsReversal = false;
         size_t num_edges = is_closed ? path.size() : path.size() - 1;
         for (size_t i = 0; i < num_edges; i++) {
             size_t idx1 = i;
@@ -769,19 +768,33 @@ void CArea::ProcessIntersectionPoints(const Paths64& paths, bool is_closed)
 
                 std::pair<int64_t, int64_t> new_edge = {std::min(p1.z, p2.z), std::max(p1.z, p2.z)};
 
-                // Check if p1_edge1 matches either p2 edge
+                std::optional<std::pair<int64_t, int64_t>> sharedEdge;
                 if (p1_edge1 == p2_edge1 || p1_edge1 == p2_edge2) {
-                    auto arc_it = m_arc_fitting_map.arc_centers.find(p1_edge1);
+                    // p1_edge1 matches one of the p2 edges
+                    sharedEdge = p1_edge1;
+                }
+                else if (p1_edge2 == p2_edge1 || p1_edge2 == p2_edge2) {
+                    // p1_edge2 matches one of the p2 edges
+                    sharedEdge = p1_edge2;
+                }
+
+                if (sharedEdge) {
+                    auto arc_it = m_arc_fitting_map.arc_centers.find(*sharedEdge);
                     if (arc_it != m_arc_fitting_map.arc_centers.end()) {
                         m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
                     }
-                }
 
-                // Check if p1_edge2 matches either p2 edge
-                if (p1_edge2 == p2_edge1 || p1_edge2 == p2_edge2) {
-                    auto arc_it = m_arc_fitting_map.arc_centers.find(p1_edge2);
-                    if (arc_it != m_arc_fitting_map.arc_centers.end()) {
-                        m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
+                    if (!is_closed) {
+                        // check if the open path needs reversal
+                        const Point& pRef = m_arc_fitting_map.point_map[sharedEdge->first];
+                        const int64_t p1dsq = (p1.x - pRef.x) * (p1.x - pRef.x)
+                            + (p1.y - pRef.y) * (p1.y - pRef.y);
+                        const int64_t p2dsq = (p2.x - pRef.x) * (p2.x - pRef.x)
+                            + (p2.y - pRef.y) * (p2.y - pRef.y);
+                        needsReversal = p1dsq > p2dsq;
+
+                        std::pair<int64_t, int64_t> currentZ = {sharedEdge->first, max(p1dsq, p2dsq)};
+                        pathOrder.back() = max(pathOrder.back(), currentZ);
                     }
                 }
             }
@@ -796,26 +809,69 @@ void CArea::ProcessIntersectionPoints(const Paths64& paths, bool is_closed)
                 std::pair<int64_t, int64_t> new_edge
                     = {std::min(p_new.z, p_old.z), std::max(p_new.z, p_old.z)};
 
-                // Check if p_old.z is an endpoint of edge1
+                std::optional<std::pair<int64_t, int64_t>> sharedEdge;
                 if (p_old.z == p_new_e1bot || p_old.z == p_new_e1top) {
-                    std::pair<int64_t, int64_t> parent_edge
+                    // p_old.z is an endpoint of edge1
+                    sharedEdge
                         = {std::min(p_new_e1bot, p_new_e1top), std::max(p_new_e1bot, p_new_e1top)};
-                    auto arc_it = m_arc_fitting_map.arc_centers.find(parent_edge);
+                }
+                else if (p_old.z == p_new_e2bot || p_old.z == p_new_e2top) {
+                    // p_old.z is an endpoint of edge2
+                    sharedEdge
+                        = {std::min(p_new_e2bot, p_new_e2top), std::max(p_new_e2bot, p_new_e2top)};
+                }
+
+                if (sharedEdge) {
+                    auto arc_it = m_arc_fitting_map.arc_centers.find(*sharedEdge);
                     if (arc_it != m_arc_fitting_map.arc_centers.end()) {
                         m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
                     }
-                }
 
-                // Check if p_old.z is an endpoint of edge2
-                if (p_old.z == p_new_e2bot || p_old.z == p_new_e2top) {
-                    std::pair<int64_t, int64_t> parent_edge
-                        = {std::min(p_new_e2bot, p_new_e2top), std::max(p_new_e2bot, p_new_e2top)};
-                    auto arc_it = m_arc_fitting_map.arc_centers.find(parent_edge);
-                    if (arc_it != m_arc_fitting_map.arc_centers.end()) {
-                        m_arc_fitting_map.arc_centers[new_edge] = arc_it->second;
+                    if (!is_closed) {
+                        // check if the open path needs reversal
+                        const Point& pRef = m_arc_fitting_map.point_map[sharedEdge->first];
+                        const int64_t p1dsq = (p1.x - pRef.x) * (p1.x - pRef.x)
+                            + (p1.y - pRef.y) * (p1.y - pRef.y);
+                        const int64_t p2dsq = (p2.x - pRef.x) * (p2.x - pRef.x)
+                            + (p2.y - pRef.y) * (p2.y - pRef.y);
+                        needsReversal = p1dsq > p2dsq;
+
+                        std::pair<int64_t, int64_t> currentZ = {sharedEdge->first, max(p1dsq, p2dsq)};
+                        pathOrder.back() = max(pathOrder.back(), currentZ);
                     }
                 }
             }
+            else {
+                // neither point is new; just check if open path reversal is required
+                if (!is_closed) {
+                    needsReversal = p1.z > p2.z;
+
+                    std::pair<int64_t, int64_t> currentZ = {max(p1.z, p2.z), 0};
+                    pathOrder.back() = max(pathOrder.back(), currentZ);
+                }
+            }
+        }
+
+        if (needsReversal) {
+            std::reverse(path.begin(), path.end());
+        }
+    }
+
+    if (!is_closed) {
+        // sort paths based on pathOrder value
+        std::vector<std::pair<std::pair<int64_t, int64_t>, Path64>> sorter;
+        sorter.reserve(paths.size());
+        for (int i = 0; i < paths.size(); i++) {
+            sorter.emplace_back(pathOrder[i], std::move(paths[i]));
+        }
+
+        std::sort(sorter.begin(), sorter.end(), [](const auto& a, const auto& b) {
+            return a.first < b.first;
+        });
+
+        paths.clear();
+        for (auto& pair : sorter) {
+            paths.push_back(std::move(pair.second));
         }
     }
 }

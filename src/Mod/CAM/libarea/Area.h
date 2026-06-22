@@ -173,8 +173,10 @@ public:
     // edges, that map will need to be updated to show that the resulting
     // partial edge came from the same arc. This function does that update.
     //
+    // This function also validates the order of open paths, and reverses it if needed
+    //
     // This must be run after Clipper operations, before converting back to arcs.
-    void ProcessIntersectionPoints(const Clipper2Lib::Paths64& paths, bool is_closed);
+    void ProcessIntersectionPoints(Clipper2Lib::Paths64& paths, bool is_closed);
 
 private:
     // Z-callback for Clipper intersection handling

@@ -28,6 +28,7 @@ from CAMTests.TestArcFitting import (
     TestArcFittingRoundTrip,
     TestArcFittingOffsets,
     TestArcFittingBooleans,
+    TestArcFittingOpenPathReversal,
 )
 from CAMTests.TestCAMSanity import TestCAMSanity
 
