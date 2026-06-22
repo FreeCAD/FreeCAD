@@ -113,12 +113,12 @@
       <translation>파트 추가하기</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="138"/>
+      <location filename="../CommandStructure.cpp" line="147"/>
       <source>Add a group</source>
       <translation>모둠 추가</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="207"/>
+      <location filename="../CommandStructure.cpp" line="216"/>
       <source>Add a variable set</source>
       <translation>변수 집합 추가</translation>
     </message>
@@ -133,10 +133,10 @@
       <translation>배치</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="415"/>
       <location filename="../TaskTransform.cpp" line="129"/>
       <location filename="../TaskTransform.cpp" line="807"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="415"/>
+      <location filename="../Transform.cpp" line="108"/>
       <source>Transform</source>
       <translation>변환하기</translation>
     </message>
@@ -5830,13 +5830,13 @@ Save all changes?</source>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="557"/>
+      <location filename="../FileDialog.cpp" line="558"/>
       <source>Save As</source>
       <translation>다른 이름으로 저장</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="692"/>
-      <location filename="../FileDialog.cpp" line="787"/>
+      <location filename="../FileDialog.cpp" line="693"/>
+      <location filename="../FileDialog.cpp" line="788"/>
       <source>Open</source>
       <translation>열기</translation>
     </message>
@@ -5844,12 +5844,12 @@ Save all changes?</source>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="935"/>
+      <location filename="../FileDialog.cpp" line="936"/>
       <source>Extended</source>
       <translation>확장</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="972"/>
+      <location filename="../FileDialog.cpp" line="973"/>
       <source>All files (*.*)</source>
       <translation>모든 파일 (*.*)</translation>
     </message>
@@ -6006,66 +6006,66 @@ Save all changes?</source>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="131"/>
       <location filename="../InputVector.h" line="154"/>
       <location filename="../InputVector.h" line="277"/>
       <location filename="../InputVector.h" line="300"/>
       <location filename="../InputVector.h" line="475"/>
       <location filename="../InputVector.h" line="489"/>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="159"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="305"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="494"/>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>사용자 정의…</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="240"/>
       <location filename="../InputVector.h" line="375"/>
       <location filename="../InputVector.h" line="564"/>
-      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>잘못된 방향</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
-      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>방향은 null 벡터가 아니어야 합니다</translation>
     </message>
@@ -6866,12 +6866,12 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1351"/>
+      <location filename="../FileDialog.cpp" line="1352"/>
       <source>Select Module</source>
       <translation>모듈 선택</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1353"/>
+      <location filename="../FileDialog.cpp" line="1354"/>
       <source>Open %1 as</source>
       <translation>다음으로 %1 열기</translation>
     </message>
@@ -7588,7 +7588,7 @@ Specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3901"/>
-      <location filename="../Tree.cpp" line="6544"/>
+      <location filename="../Tree.cpp" line="6556"/>
       <source>Rename</source>
       <translation>이름 바꾸기</translation>
     </message>
@@ -7608,12 +7608,12 @@ Specify another directory?</source>
       <translation>파일 위치 열기</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6512"/>
+      <location filename="../Tree.cpp" line="6524"/>
       <source> (but must be executed)</source>
       <translation>(단, 실행해야 함)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6515"/>
+      <location filename="../Tree.cpp" line="6527"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, 내부 이름: %2</translation>
     </message>
@@ -8084,13 +8084,6 @@ Check the report view for more details.</source>
       <translation>문서 병합하기</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="621"/>
-      <location filename="../Document.cpp" line="1715"/>
-      <location filename="../Document.cpp" line="1845"/>
-      <source>%1 document</source>
-      <translation>%1 문서</translation>
-    </message>
-    <message>
       <location filename="../CommandDoc.cpp" line="632"/>
       <source>Cannot merge document with itself.</source>
       <translation>문서를 자기 자신과 병합할 수 없습니다.</translation>
@@ -8537,6 +8530,13 @@ Use 'Save As…' to preserve the original file.
       <translation>문서를 새 파일 이름으로 저장…</translation>
     </message>
     <message>
+      <location filename="../Document.cpp" line="1715"/>
+      <location filename="../Document.cpp" line="1845"/>
+      <location filename="../CommandDoc.cpp" line="621"/>
+      <source>%1 document</source>
+      <translation>%1 문서</translation>
+    </message>
+    <message>
       <location filename="../Document.cpp" line="1831"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>문서 사본을 새 파일 이름으로 저장…</translation>
@@ -8667,12 +8667,12 @@ Choose 'Abort' to abort</source>
       <translation>시스템 브라우저를 열 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3157"/>
+      <location filename="../View3DInventorViewer.cpp" line="3161"/>
       <source>Out of memory</source>
       <translation>메모리 부족</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3158"/>
+      <location filename="../View3DInventorViewer.cpp" line="3162"/>
       <source>Not enough memory available to display the data.</source>
       <translation>데이터를 표시할 수 있는 메모리가 충분하지 않습니다.</translation>
     </message>
@@ -8688,7 +8688,7 @@ Choose 'Abort' to abort</source>
       <translation>%2 또는 %3에서 %1 파일을 찾을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2202"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2324"/>
       <source>Clarify Selection</source>
       <translation>선택 명확히 하기</translation>
     </message>
@@ -8818,8 +8818,8 @@ Choose 'Abort' to abort</source>
       <translation>드래그 및 드롭 실패(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3046"/>
       <location filename="../MainWindow.cpp" line="903"/>
+      <location filename="../ViewProviderLink.cpp" line="3046"/>
       <source>Apply to all</source>
       <translation>모두에 적용하기</translation>
     </message>
@@ -9130,12 +9130,12 @@ the current copy will be lost.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="959"/>
+      <location filename="../Selection/Selection.cpp" line="964"/>
       <source>Not allowed:</source>
       <translation>허용 안 됨:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1342"/>
+      <location filename="../Selection/Selection.cpp" line="1347"/>
       <source>Selection not allowed by filter</source>
       <translation>필터에서 허용되지 않는 선택</translation>
     </message>
@@ -9762,45 +9762,6 @@ the current copy will be lost.
     </message>
   </context>
   <context>
-    <name>StdCmdViewIvStereoInterleavedColumns</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2696"/>
-      <source>Stereo Interleaved &amp;Columns</source>
-      <translation>스테레오 인터리브 열(&amp;C)</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2697"/>
-      <source>Switches stereo viewing to interleaved columns</source>
-      <translation>스테레오 보기를 인터리브 열 방식으로 전환합니다</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewIvStereoInterleavedRows</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2668"/>
-      <source>Stereo Interleaved &amp;Rows</source>
-      <translation>스테레오 인터리브 행(&amp;R)</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2669"/>
-      <source>Switches stereo viewing to interleaved rows</source>
-      <translation>스테레오 보기를 인터리브 행 방식으로 전환합니다</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewIvStereoOff</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2583"/>
-      <source>Stereo &amp;Off</source>
-      <translation>스테레오 끔(&amp;O)</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2584"/>
-      <source>Switches stereo viewing off</source>
-      <translation>스테레오 보기 끄기 전환합니다</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewLeft</name>
     <message>
       <location filename="../CommandView.cpp" line="1506"/>
@@ -9959,12 +9920,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3496"/>
+      <location filename="../CommandView.cpp" line="3354"/>
       <source>Collapse/E&amp;xpand</source>
       <translation>접기/펼치기(&amp;X)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3497"/>
+      <location filename="../CommandView.cpp" line="3355"/>
       <source>Expands the active document and collapses all others</source>
       <translation>활성 문서를 펼치고 나머지는 모두 접습니다</translation>
     </message>
@@ -9972,12 +9933,12 @@ the current copy will be lost.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3598"/>
+      <location filename="../CommandView.cpp" line="3456"/>
       <source>Preselection</source>
       <translation>사전 선택</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3599"/>
+      <location filename="../CommandView.cpp" line="3457"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
       <translation>커서를 트리 항목 위에 올리면 3D 보기에서 해당 객체를 사전 선택합니다.</translation>
     </message>
@@ -10037,12 +9998,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2783"/>
+      <location filename="../CommandView.cpp" line="2641"/>
       <source>Zoom &amp;In</source>
       <translation>확대(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2784"/>
+      <location filename="../CommandView.cpp" line="2642"/>
       <source>Increases the zoom factor by a fixed amount</source>
       <translation>확대/축소 배율을 일정량 늘립니다</translation>
     </message>
@@ -10050,12 +10011,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2812"/>
+      <location filename="../CommandView.cpp" line="2670"/>
       <source>Zoom &amp;Out</source>
       <translation>축소(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2813"/>
+      <location filename="../CommandView.cpp" line="2671"/>
       <source>Decreases the zoom factor by a fixed amount</source>
       <translation>확대/축소 배율을 일정량 줄입니다</translation>
     </message>
@@ -10170,7 +10131,7 @@ Save the document now?</source>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="142"/>
+      <location filename="../CommandStructure.cpp" line="151"/>
       <source>Group</source>
       <translation>그룹</translation>
     </message>
@@ -13520,12 +13481,12 @@ Proceed?</source>
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="123"/>
+      <location filename="../CommandStructure.cpp" line="132"/>
       <source>New Group</source>
       <translation>새 그룹</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="124"/>
+      <location filename="../CommandStructure.cpp" line="133"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation>그룹을 생성합니다. 그룹은 데이터 유형과 관계없이 트리 보기에서 객체를 묶는 범용 컨테이너입니다. 모델에서 객체를 정리하는 간단한 폴더입니다.</translation>
     </message>
@@ -13533,12 +13494,12 @@ Proceed?</source>
   <context>
     <name>StdCmdVarSet</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="195"/>
+      <location filename="../CommandStructure.cpp" line="204"/>
       <source>Variable Set</source>
       <translation>변수 집합</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="197"/>
+      <location filename="../CommandStructure.cpp" line="206"/>
       <source>Creates a variable set, which is an object that maintains a set of properties to be used as variables</source>
       <translation>매개변수로 사용할 속성들을 한 데 모아 유지하는 변수집합 객체를 생성합니다</translation>
     </message>
@@ -13843,40 +13804,14 @@ Proceed?</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewIvStereoRedGreen</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2612"/>
-      <source>Stereo Re&amp;d/Cyan</source>
-      <translation>스테레오 적색/청록(&amp;D)</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2613"/>
-      <source>Switches stereo viewing to red/cyan</source>
-      <translation>스테레오 보기를 적색/청록 방식으로 전환합니다</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewIvStereoQuadBuff</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2640"/>
-      <source>Stereo &amp;Quad Buffer</source>
-      <translation>스테레오 쿼드 버퍼(&amp;Q)</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2641"/>
-      <source>Switches stereo viewing to quad buffer</source>
-      <translation>스테레오 보기를 쿼드 버퍼 방식으로 전환합니다</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2725"/>
+      <location filename="../CommandView.cpp" line="2583"/>
       <source>Issue Camera &amp;Position</source>
       <translation>카메라 위치 적용(&amp;P)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2726"/>
+      <location filename="../CommandView.cpp" line="2584"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
       <translation>이 카메라 위치를 쉽게 다시 불러올 수 있도록 콘솔과 매크로에 카메라 위치를 출력합니다.</translation>
     </message>
@@ -13884,12 +13819,12 @@ Proceed?</source>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2978"/>
+      <location filename="../CommandView.cpp" line="2836"/>
       <source>&amp;Box Zoom</source>
       <translation>상자 확대/축소(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2979"/>
+      <location filename="../CommandView.cpp" line="2837"/>
       <source>Activates the box zoom tool</source>
       <translation>상자 확대 도구를 활성화합니다</translation>
     </message>
@@ -13897,12 +13832,12 @@ Proceed?</source>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3012"/>
+      <location filename="../CommandView.cpp" line="2870"/>
       <source>&amp;Box Selection</source>
       <translation>상자 선택(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3013"/>
+      <location filename="../CommandView.cpp" line="2871"/>
       <source>Activates the box selection tool</source>
       <translation>상자 선택 도구를 활성화합니다</translation>
     </message>
@@ -13910,12 +13845,12 @@ Proceed?</source>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3079"/>
+      <location filename="../CommandView.cpp" line="2937"/>
       <source>Bo&amp;x Element Selection</source>
       <translation>상자 요소 선택(&amp;X)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3080"/>
+      <location filename="../CommandView.cpp" line="2938"/>
       <source>Activates box element selection</source>
       <translation>상자 요소 선택 활성화</translation>
     </message>
@@ -13923,12 +13858,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3135"/>
+      <location filename="../CommandView.cpp" line="2993"/>
       <source>&amp;Go to Selection</source>
       <translation>선택으로 가기(&amp;G)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3136"/>
+      <location filename="../CommandView.cpp" line="2994"/>
       <source>Scrolls to the first selected item</source>
       <translation>첫 번째 선택 항목으로 스크롤합니다</translation>
     </message>
@@ -13936,12 +13871,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3160"/>
+      <location filename="../CommandView.cpp" line="3018"/>
       <source>Collapse Selected Items</source>
       <translation>선택한 항목 접기</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3161"/>
+      <location filename="../CommandView.cpp" line="3019"/>
       <source>Collapses the currently selected tree items</source>
       <translation>현재 선택한 트리 항목을 접습니다</translation>
     </message>
@@ -13949,12 +13884,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3186"/>
+      <location filename="../CommandView.cpp" line="3044"/>
       <source>Expand Selected Items</source>
       <translation>선택한 항목 확장</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3187"/>
+      <location filename="../CommandView.cpp" line="3045"/>
       <source>Expands the currently selected tree items</source>
       <translation>현재 선택한 트리 항목을 펼칩니다</translation>
     </message>
@@ -13962,12 +13897,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3212"/>
+      <location filename="../CommandView.cpp" line="3070"/>
       <source>Select All Instances</source>
       <translation>모든 인스턴스 선택</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3213"/>
+      <location filename="../CommandView.cpp" line="3071"/>
       <source>Selects all instances of the currently selected object</source>
       <translation>현재 선택한 객체의 모든 인스턴스를 선택합니다</translation>
     </message>
@@ -13975,12 +13910,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3280"/>
+      <location filename="../CommandView.cpp" line="3138"/>
       <source>Scene I&amp;nspector</source>
       <translation>장면 검사기(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3281"/>
+      <location filename="../CommandView.cpp" line="3139"/>
       <source>Opens the scene inspector</source>
       <translation>장면 검사기를 엽니다</translation>
     </message>
@@ -13988,12 +13923,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3314"/>
+      <location filename="../CommandView.cpp" line="3172"/>
       <source>Text&amp;ure Mapping</source>
       <translation>텍스처 매핑(&amp;U)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3315"/>
+      <location filename="../CommandView.cpp" line="3173"/>
       <source>Maps textures to shapes</source>
       <translation>형상에 텍스처를 매핑합니다</translation>
     </message>
@@ -14001,12 +13936,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3340"/>
+      <location filename="../CommandView.cpp" line="3198"/>
       <source>View &amp;Turntable</source>
       <translation>보기 턴테이블(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3341"/>
+      <location filename="../CommandView.cpp" line="3199"/>
       <source>Opens a turntable view</source>
       <translation>턴테이블 보기 엽니다</translation>
     </message>
@@ -14014,12 +13949,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3370"/>
+      <location filename="../CommandView.cpp" line="3228"/>
       <source>Selection &amp;Back</source>
       <translation>선택 이전으로(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3372"/>
+      <location filename="../CommandView.cpp" line="3230"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>이전 트리 보기 선택을 복원합니다. 트리 RecordSelection 모드가 켜져 있을 때만 작동합니다.</translation>
     </message>
@@ -14027,12 +13962,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3404"/>
+      <location filename="../CommandView.cpp" line="3262"/>
       <source>Selection &amp;Forward</source>
       <translation>선택 다음으로(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3406"/>
+      <location filename="../CommandView.cpp" line="3264"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>다음 트리 보기 선택을 복원합니다. 트리 RecordSelection 모드가 켜져 있을 때만 작동합니다.</translation>
     </message>
@@ -14040,12 +13975,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3462"/>
+      <location filename="../CommandView.cpp" line="3320"/>
       <source>&amp;Single Document</source>
       <translation>단일 문서(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3463"/>
+      <location filename="../CommandView.cpp" line="3321"/>
       <source>Displays only the active document in the tree view</source>
       <translation>만 활성 문서 트리 보기 표시합니다</translation>
     </message>
@@ -14053,12 +13988,12 @@ Proceed?</source>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3479"/>
+      <location filename="../CommandView.cpp" line="3337"/>
       <source>&amp;Multi Document</source>
       <translation>다중 문서(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3480"/>
+      <location filename="../CommandView.cpp" line="3338"/>
       <source>Displays all documents in the tree view</source>
       <translation>모든 문서 트리 보기 표시합니다</translation>
     </message>
@@ -14066,12 +14001,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3539"/>
+      <location filename="../CommandView.cpp" line="3397"/>
       <source>Sync View</source>
       <translation>보기 동기화</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3540"/>
+      <location filename="../CommandView.cpp" line="3398"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
       <translation>3D 보기 포함한 선택한 항목 에서 트리 보기 전환합니다</translation>
     </message>
@@ -14079,12 +14014,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3559"/>
+      <location filename="../CommandView.cpp" line="3417"/>
       <source>Sync Selection</source>
       <translation>선택 동기화</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3560"/>
+      <location filename="../CommandView.cpp" line="3418"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
       <translation>3D 보기에서 해당 객체를 선택하면 트리 항목을 펼칩니다.</translation>
     </message>
@@ -14092,12 +14027,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3579"/>
+      <location filename="../CommandView.cpp" line="3437"/>
       <source>Sync Placement</source>
       <translation>배치 동기화</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3581"/>
+      <location filename="../CommandView.cpp" line="3439"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
       <translation>좌표계가 다른 객체(예: 파트 컨테이너 안의 객체)를 드래그 앤 드롭할 때 배치를 조정합니다.</translation>
     </message>
@@ -14105,12 +14040,12 @@ Proceed?</source>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3618"/>
+      <location filename="../CommandView.cpp" line="3476"/>
       <source>Record Selection</source>
       <translation>선택 기록</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3620"/>
+      <location filename="../CommandView.cpp" line="3478"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
       <translation>탐색 버튼으로 이전/다음 이동을 할 수 있도록 트리 보기의 선택 기록을 저장합니다.</translation>
     </message>
@@ -14118,12 +14053,12 @@ Proceed?</source>
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3637"/>
+      <location filename="../CommandView.cpp" line="3495"/>
       <source>Initiate &amp;Dragging</source>
       <translation>드래그 시작(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3638"/>
+      <location filename="../CommandView.cpp" line="3496"/>
       <source>Initiates dragging of the currently selected tree items</source>
       <translation>현재 선택한 트리 항목의 드래그를 시작합니다</translation>
     </message>
@@ -14131,12 +14066,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3670"/>
+      <location filename="../CommandView.cpp" line="3528"/>
       <source>Tree View Actions</source>
       <translation>트리 보기 작업</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3671"/>
+      <location filename="../CommandView.cpp" line="3529"/>
       <source>Tree view behavior options and actions</source>
       <translation>트리 보기 동작 옵션 및 작업</translation>
     </message>
@@ -14144,12 +14079,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3715"/>
+      <location filename="../CommandView.cpp" line="3573"/>
       <source>&amp;Bounding Box</source>
       <translation>경계 상자(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3716"/>
+      <location filename="../CommandView.cpp" line="3574"/>
       <source>Shows selection bounding box</source>
       <translation>선택 경계 상자를 표시합니다</translation>
     </message>
@@ -14157,12 +14092,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3762"/>
+      <location filename="../CommandView.cpp" line="3620"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
       <translation>모든 패널 오버레이 전환(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3763"/>
+      <location filename="../CommandView.cpp" line="3621"/>
       <source>Toggles overlay mode for all docked panels</source>
       <translation type="unfinished">Toggles overlay mode for all docked panels</translation>
     </message>
@@ -14170,12 +14105,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3785"/>
+      <location filename="../CommandView.cpp" line="3643"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
       <translation>투명 패널 전환(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3786"/>
+      <location filename="../CommandView.cpp" line="3644"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation>모든 도킹된 오버레이 패널의 투명 모드를 전환합니다.
@@ -14185,12 +14120,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3811"/>
+      <location filename="../CommandView.cpp" line="3669"/>
       <source>Toggle &amp;Overlay</source>
       <translation>오버레이 전환(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3812"/>
+      <location filename="../CommandView.cpp" line="3670"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation>커서 아래의 도킹된 창에 대한 오버레이 모드를 전환합니다</translation>
     </message>
@@ -14198,12 +14133,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3834"/>
+      <location filename="../CommandView.cpp" line="3692"/>
       <source>Toggle Tran&amp;sparent Mode</source>
       <translation>투명 모드 전환(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3835"/>
+      <location filename="../CommandView.cpp" line="3693"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation>커서 아래의 도킹 패널에 대한 투명 모드를 전환합니다.
@@ -14213,12 +14148,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3860"/>
+      <location filename="../CommandView.cpp" line="3718"/>
       <source>Toggle &amp;Left</source>
       <translation>왼쪽 전환(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3861"/>
+      <location filename="../CommandView.cpp" line="3719"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation>왼쪽 오버레이 패널의 표시를 전환합니다</translation>
     </message>
@@ -14226,12 +14161,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3885"/>
+      <location filename="../CommandView.cpp" line="3743"/>
       <source>Toggle &amp;Right</source>
       <translation>오른쪽 전환(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3886"/>
+      <location filename="../CommandView.cpp" line="3744"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation>오른쪽 오버레이 패널의 표시를 전환합니다</translation>
     </message>
@@ -14239,12 +14174,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="3910"/>
+      <location filename="../CommandView.cpp" line="3768"/>
       <source>Toggle &amp;Top</source>
       <translation>상단 전환(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3911"/>
+      <location filename="../CommandView.cpp" line="3769"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation>상단 오버레이 패널의 표시를 전환합니다</translation>
     </message>
@@ -14252,12 +14187,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="3935"/>
+      <location filename="../CommandView.cpp" line="3793"/>
       <source>Toggle &amp;Bottom</source>
       <translation>하단 전환(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3936"/>
+      <location filename="../CommandView.cpp" line="3794"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation>하단 오버레이 패널의 표시를 전환합니다</translation>
     </message>
@@ -14265,12 +14200,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3960"/>
+      <location filename="../CommandView.cpp" line="3818"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
       <translation>오버레이 패널에서 마우스 이벤트 우회(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3961"/>
+      <location filename="../CommandView.cpp" line="3819"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation>도킹된 오버레이 패널의 모든 마우스 이벤트를 우회합니다</translation>
     </message>
@@ -14278,12 +14213,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="4006"/>
+      <location filename="../CommandView.cpp" line="3864"/>
       <source>Overlay Docked Panel</source>
       <translation>오버레이 도킹 패널</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4007"/>
+      <location filename="../CommandView.cpp" line="3865"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation>도킹된 패널을 오버레이 모드로 설정합니다</translation>
     </message>
@@ -14291,12 +14226,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4140"/>
+      <location filename="../CommandView.cpp" line="3998"/>
       <source>St&amp;ore Working View</source>
       <translation>작업 보기 저장(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4141"/>
+      <location filename="../CommandView.cpp" line="3999"/>
       <source>Stores a temporary working view for the current document</source>
       <translation>현재 문서에 대한 임시 작업 보기를 저장합니다</translation>
     </message>
@@ -14304,12 +14239,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4168"/>
+      <location filename="../CommandView.cpp" line="4026"/>
       <source>R&amp;ecall Working View</source>
       <translation>작업 보기 불러오기(&amp;E)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4169"/>
+      <location filename="../CommandView.cpp" line="4027"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation>이전에 저장한 임시 작업 보기를 불러옵니다</translation>
     </message>
@@ -14317,12 +14252,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4196"/>
+      <location filename="../CommandView.cpp" line="4054"/>
       <source>&amp;Align to Selection</source>
       <translation>선택에 정렬(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4197"/>
+      <location filename="../CommandView.cpp" line="4055"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation>3D 보기에서 선택한 요소에 맞춰 카메라 보기를 정렬합니다.</translation>
     </message>
@@ -14385,13 +14320,13 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1238"/>
-      <location filename="../FileDialog.cpp" line="1248"/>
+      <location filename="../FileDialog.cpp" line="1239"/>
+      <location filename="../FileDialog.cpp" line="1249"/>
       <source>Select a File</source>
       <translation>파일 선택</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1258"/>
+      <location filename="../FileDialog.cpp" line="1259"/>
       <source>Select a Directory</source>
       <translation>디렉터리 선택</translation>
     </message>
@@ -14607,12 +14542,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4224"/>
+      <location filename="../CommandView.cpp" line="4082"/>
       <source>Clarify Selection</source>
       <translation>선택 명확히 하기</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4225"/>
+      <location filename="../CommandView.cpp" line="4083"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation>3D 보기에서 겹치거나 가려진 형상을 선택할 수 있도록 마우스 커서 위치에 컨텍스트 메뉴를 표시합니다.
@@ -14710,19 +14645,19 @@ This makes the docked panel stay transparent at all times.</source>
     </message>
   </context>
   <context>
-    <name>FileFormat</name>
-    <message>
-      <location filename="../FreeCADGuiInit.py" line="470"/>
-      <source>Portable Document Format</source>
-      <translation>이동식 문서 형식</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::TaskCommandLinkDialog</name>
     <message>
       <location filename="../TaskCommandLink.ui" line="14"/>
       <source>Insert</source>
       <translation>삽입</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../FreeCADGuiInit.py" line="470"/>
+      <source>Portable Document Format</source>
+      <translation>이동식 문서 형식</translation>
     </message>
   </context>
   <context>
@@ -14848,12 +14783,12 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../CommandView.cpp" line="4042"/>
+      <location filename="../CommandView.cpp" line="3900"/>
       <source>Toggle Bottom Panels</source>
       <translation>하단 패널 전환하기</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4043"/>
+      <location filename="../CommandView.cpp" line="3901"/>
       <source>Toggles the bottom dock panels</source>
       <translation>하단 도킹 패널의 표시를 전환합니다</translation>
     </message>

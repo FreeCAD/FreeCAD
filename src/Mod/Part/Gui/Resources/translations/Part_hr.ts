@@ -2222,7 +2222,7 @@ Pogled kamere određuje smjer projekcije.</translation>
       <translation>Pretvori mrežu</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1589"/>
+      <location filename="../../TaskAttacher.cpp" line="1579"/>
       <source>Edit attachment</source>
       <translation>Uređivanje privitka</translation>
     </message>
@@ -5457,12 +5457,12 @@ predmeta koji se pridružuje.</translation>
       <translation>Pričvršćen u načinu rada %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1037"/>
+      <location filename="../../TaskAttacher.cpp" line="1027"/>
       <source>Selecting…</source>
       <translation>Odabiranje...</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="940"/>
+      <location filename="../../TaskAttacher.cpp" line="930"/>
       <source>Face</source>
       <translation>Površina</translation>
     </message>
@@ -5477,37 +5477,37 @@ predmeta koji se pridružuje.</translation>
       <translation>Dodavanje pomaka (neaktivno - nije dodano):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="947"/>
+      <location filename="../../TaskAttacher.cpp" line="937"/>
       <source>Edge</source>
       <translation>Rub</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="954"/>
+      <location filename="../../TaskAttacher.cpp" line="944"/>
       <source>Vertex</source>
       <translation>Vrh</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1043"/>
+      <location filename="../../TaskAttacher.cpp" line="1033"/>
       <source>Reference%1</source>
       <translation>Referenca%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1112"/>
+      <location filename="../../TaskAttacher.cpp" line="1102"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Nije moguće uređivati rotaciju  pomaka pridruženja jer je ograničena sa izrazom.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1195"/>
+      <location filename="../../TaskAttacher.cpp" line="1185"/>
       <source>Reference combinations:</source>
       <translation>Kombinacija referenci:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1217"/>
+      <location filename="../../TaskAttacher.cpp" line="1207"/>
       <source>%1 (add %2)</source>
       <translation>%1 (dodaj %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1220"/>
+      <location filename="../../TaskAttacher.cpp" line="1210"/>
       <source>%1 (add more references)</source>
       <translation>%1 (dodaj više referenci)</translation>
     </message>
@@ -5809,22 +5809,22 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1481"/>
+      <location filename="../../TaskAttacher.cpp" line="1471"/>
       <source>Attachment</source>
       <translation>Dodatak</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1502"/>
+      <location filename="../../TaskAttacher.cpp" line="1492"/>
       <source>%1 select reference</source>
       <translation type="unfinished">%1 select reference</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1508"/>
+      <location filename="../../TaskAttacher.cpp" line="1498"/>
       <source>2x%1 select and confirm</source>
       <translation type="unfinished">2x%1 select and confirm</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1658"/>
+      <location filename="../../TaskAttacher.cpp" line="1648"/>
       <source>Datum dialog: input error</source>
       <translation>Dijalog oznake: ulazne pogreške</translation>
     </message>
@@ -6564,12 +6564,12 @@ Nastaviti?</translation>
       <translation>Presjek</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="94"/>
       <source>Delete compound content?</source>
       <translation>izbriši sadržaj složenog spoja?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="77"/>
+      <location filename="../../ViewProviderCompound.cpp" line="95"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>Složen spoj %1 ima '%2' objekta potomka.  Želite li i njih izbrisati?</translation>
     </message>
@@ -6731,10 +6731,10 @@ Nastaviti?</translation>
       <translation>Nevažeći Odabir</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Nastavi</translation>
     </message>
@@ -6928,117 +6928,117 @@ za koliziju ili filtriranje udaljenosti.</translation>
   <context>
     <name>TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="30"/>
       <source>Shape type</source>
       <translation>Vrsta oblika</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="33"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="32"/>
       <source>Vertices</source>
       <translation>Vrhovi</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="34"/>
       <source>Edges</source>
       <translation>Rubovi</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="36"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
       <source>Wires</source>
       <translation>Žice</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="37"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="36"/>
       <source>Faces</source>
       <translation>Plohe</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="38"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="37"/>
       <source>Shells</source>
       <translation>Omotači</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="39"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="38"/>
       <source>Solids</source>
       <translation>Tijela</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="42"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="41"/>
       <source>CompSolids</source>
       <translation>Višeslojni čvrsti spojevi</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="46"/>
       <source>Compounds</source>
       <translation>Spojevi</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="51"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="50"/>
       <source>Shapes</source>
       <translation>Oblici</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="76"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="75"/>
       <source>Area</source>
       <translation>Područje</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="89"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="88"/>
       <source>Volume</source>
       <translation>Obujam</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="96"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="95"/>
       <source>Mass</source>
       <translation>Masa</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="103"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="102"/>
       <source>Length</source>
       <translation>Dužina</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="110"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="109"/>
       <source>Radius</source>
       <translation>Polumjer</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="117"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="116"/>
       <source>Curve center</source>
       <translation>Središte krivulje</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="124"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="123"/>
       <source>Continuity</source>
       <translation>Kontinuitet</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="131"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="130"/>
       <source>Center of mass</source>
       <translation>Centar mase</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="152"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="151"/>
       <source>Is closed</source>
       <translation>zatvoren</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="159"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="158"/>
       <source>Orientation</source>
       <translation>Orijentacija</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="177"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="176"/>
       <source>Global center of mass</source>
       <translation>Globalni centar mase</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="195"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="194"/>
       <source>Global placement</source>
       <translation>Globalno postavljanje</translation>
     </message>
     <message>
-      <location filename="../../../BasicShapes/ShapeContent.py" line="197"/>
+      <location filename="../../../BasicShapes/ShapeContent.py" line="196"/>
       <source>Placement</source>
       <translation>Položaj</translation>
     </message>

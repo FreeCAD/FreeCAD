@@ -840,7 +840,7 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
       <source>Rotate the joint 90 degrees</source>
-      <translation type="unfinished">Rotate the joint 90 degrees</translation>
+      <translation>Obróć łącznik o 90 stopni</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
@@ -1163,7 +1163,7 @@ Bryły (np. zawartości, elementy złączne, prymitywy) są pomijane.</translati
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="689"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Połączenia</translation>
     </message>
@@ -1591,14 +1591,13 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
 Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Selects these unconstrained components.
-Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
+      <translation>Złożenie zawiera niezwiązane komponenty, które powodują powstawanie tych stopni swobody. Zaznacza te nieustalone komponenty. 
+Uwaga: Obecnie ta opcja wybiera tylko niepołączone części, a nie części zdefiniowane więzami, które wciąż posiadają wolne stopnie swobody.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
       <source>Selects these malformed joints</source>
-      <translation type="unfinished">Selects these malformed joints</translation>
+      <translation>Zaznacza wadliwe połączenia</translation>
     </message>
   </context>
   <context>

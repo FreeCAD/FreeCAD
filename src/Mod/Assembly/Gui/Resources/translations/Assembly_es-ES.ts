@@ -1138,7 +1138,7 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="689"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Articulaciones</translation>
     </message>

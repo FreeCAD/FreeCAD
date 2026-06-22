@@ -2239,8 +2239,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Дадаць вяршыні па чатырох крайніх кропках</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="543"/>
+      <location filename="../../TaskRichAnno.cpp" line="112"/>
+      <source>Edit Annotation</source>
+      <translation>Правіць заметку</translation>
+    </message>
+    <message>
       <location filename="../../TaskRichAnno.cpp" line="153"/>
+      <location filename="../../CommandAnnotate.cpp" line="543"/>
       <source>Create Annotation</source>
       <translation>Стварыць заметку</translation>
     </message>
@@ -2528,8 +2533,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Стварыць складовы перасек</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="572"/>
       <location filename="../../TaskComplexSection.cpp" line="648"/>
+      <location filename="../../TaskSectionView.cpp" line="572"/>
       <source>Edit Section View</source>
       <translation>Змяніць выгляд перасеку</translation>
     </message>
@@ -2813,11 +2818,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <source>Edit Weld Symbol</source>
       <translation>Змяніць знак зварнога злучэння</translation>
     </message>
-    <message>
-      <location filename="../../TaskRichAnno.cpp" line="112"/>
-      <source>Edit Annotation</source>
-      <translation>Правіць заметку</translation>
-    </message>
   </context>
   <context>
     <name>CompassWidget</name>
@@ -3080,6 +3080,26 @@ If no object is selected, a file browser opens to select an SVG or image file.</
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../Command.cpp" line="865"/>
+      <location filename="../../Command.cpp" line="982"/>
+      <location filename="../../Command.cpp" line="989"/>
+      <location filename="../../Command.cpp" line="994"/>
+      <location filename="../../Command.cpp" line="1032"/>
+      <location filename="../../Command.cpp" line="1131"/>
+      <location filename="../../Command.cpp" line="1398"/>
+      <location filename="../../Command.cpp" line="1415"/>
+      <location filename="../../Command.cpp" line="1420"/>
+      <location filename="../../Command.cpp" line="1429"/>
+      <location filename="../../Command.cpp" line="1482"/>
+      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1627"/>
+      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1711"/>
+      <location filename="../../Command.cpp" line="1770"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../CommandAnnotate.cpp" line="115"/>
       <location filename="../../CommandAnnotate.cpp" line="120"/>
       <location filename="../../CommandAnnotate.cpp" line="311"/>
@@ -3107,26 +3127,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1354"/>
       <location filename="../../CommandAnnotate.cpp" line="1361"/>
       <location filename="../../CommandAnnotate.cpp" line="1425"/>
-      <location filename="../../Command.cpp" line="638"/>
-      <location filename="../../Command.cpp" line="648"/>
-      <location filename="../../Command.cpp" line="865"/>
-      <location filename="../../Command.cpp" line="982"/>
-      <location filename="../../Command.cpp" line="989"/>
-      <location filename="../../Command.cpp" line="994"/>
-      <location filename="../../Command.cpp" line="1032"/>
-      <location filename="../../Command.cpp" line="1131"/>
-      <location filename="../../Command.cpp" line="1398"/>
-      <location filename="../../Command.cpp" line="1415"/>
-      <location filename="../../Command.cpp" line="1420"/>
-      <location filename="../../Command.cpp" line="1429"/>
-      <location filename="../../Command.cpp" line="1482"/>
-      <location filename="../../Command.cpp" line="1501"/>
-      <location filename="../../Command.cpp" line="1627"/>
-      <location filename="../../Command.cpp" line="1705"/>
-      <location filename="../../Command.cpp" line="1711"/>
-      <location filename="../../Command.cpp" line="1770"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
@@ -3203,6 +3203,24 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Без фігур, суполак ці сувязяў у абраным</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="748"/>
+      <location filename="../../Command.cpp" line="841"/>
+      <location filename="../../Command.cpp" line="904"/>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../CommandCreateDims.cpp" line="1499"/>
+      <location filename="../../CommandCreateDims.cpp" line="1547"/>
+      <location filename="../../CommandCreateDims.cpp" line="1595"/>
+      <location filename="../../CommandCreateDims.cpp" line="1643"/>
+      <location filename="../../CommandCreateDims.cpp" line="1694"/>
+      <location filename="../../CommandCreateDims.cpp" line="1744"/>
+      <location filename="../../CommandCreateDims.cpp" line="1791"/>
+      <location filename="../../CommandCreateDims.cpp" line="1838"/>
+      <location filename="../../CommandCreateDims.cpp" line="1885"/>
+      <location filename="../../CommandCreateDims.cpp" line="1981"/>
+      <location filename="../../CommandCreateDims.cpp" line="2106"/>
       <location filename="../../CommandExtensionDims.cpp" line="310"/>
       <location filename="../../CommandExtensionDims.cpp" line="519"/>
       <location filename="../../CommandExtensionDims.cpp" line="807"/>
@@ -3230,28 +3248,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1260"/>
       <location filename="../../CommandAnnotate.cpp" line="1341"/>
       <location filename="../../CommandAnnotate.cpp" line="1407"/>
-      <location filename="../../Command.cpp" line="748"/>
-      <location filename="../../Command.cpp" line="841"/>
-      <location filename="../../Command.cpp" line="904"/>
-      <location filename="../../CommandCreateDims.cpp" line="1499"/>
-      <location filename="../../CommandCreateDims.cpp" line="1547"/>
-      <location filename="../../CommandCreateDims.cpp" line="1595"/>
-      <location filename="../../CommandCreateDims.cpp" line="1643"/>
-      <location filename="../../CommandCreateDims.cpp" line="1694"/>
-      <location filename="../../CommandCreateDims.cpp" line="1744"/>
-      <location filename="../../CommandCreateDims.cpp" line="1791"/>
-      <location filename="../../CommandCreateDims.cpp" line="1838"/>
-      <location filename="../../CommandCreateDims.cpp" line="1885"/>
-      <location filename="../../CommandCreateDims.cpp" line="1981"/>
-      <location filename="../../CommandCreateDims.cpp" line="2106"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
       <source>Task in progress</source>
       <translation>Задача ў працэсе</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="905"/>
       <location filename="../../CommandExtensionDims.cpp" line="311"/>
       <location filename="../../CommandExtensionDims.cpp" line="520"/>
       <location filename="../../CommandExtensionDims.cpp" line="808"/>
@@ -3274,9 +3277,6 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../Command.cpp" line="749"/>
-      <location filename="../../Command.cpp" line="842"/>
-      <location filename="../../Command.cpp" line="905"/>
       <source>Close active task dialog and try again</source>
       <translation>Зачыніць дыялогавае акно бягучай задачы і паўтарыць спробу</translation>
     </message>
@@ -3472,19 +3472,18 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Абраць файл SVG, каб адчыніць</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1878"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2002"/>
       <location filename="../../CommandDecorate.cpp" line="418"/>
       <location filename="../../CommandDecorate.cpp" line="425"/>
       <location filename="../../CommandDecorate.cpp" line="432"/>
       <location filename="../../CommandDecorate.cpp" line="439"/>
       <location filename="../../CommandDecorate.cpp" line="445"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../Command.cpp" line="1200"/>
       <location filename="../../Command.cpp" line="1207"/>
       <location filename="../../Command.cpp" line="1215"/>
       <location filename="../../Command.cpp" line="1227"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../CommandCreateDims.cpp" line="2007"/>
       <location filename="../../CommandCreateDims.cpp" line="2023"/>
       <location filename="../../CommandCreateDims.cpp" line="2049"/>
@@ -3497,8 +3496,9 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2370"/>
       <location filename="../../CommandCreateDims.cpp" line="2378"/>
       <location filename="../../CommandCreateDims.cpp" line="2387"/>
-      <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../TaskDimension.cpp" line="551"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1878"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2002"/>
       <source>Incorrect Selection</source>
       <translation>Няправільны выбар</translation>
     </message>
@@ -3537,8 +3537,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Зачыніце дыялогавае акно бягучай задачы і паўтарыце спробу.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="998"/>
       <location filename="../../CommandStack.cpp" line="369"/>
+      <location filename="../../CommandExtensionPack.cpp" line="998"/>
       <source>Task In Progress</source>
       <translation>Задача ў працэсе</translation>
     </message>
@@ -3549,29 +3549,13 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Тэхнічны чарцёж: акружнасць адтуліны</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="120"/>
-      <source>Can not make hole circle for %1</source>
-      <translation>Не атрымалася зрабіць акружнасць з адтулінай для %1</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="239"/>
-      <source>TechDraw circle centerlines</source>
-      <translation>Цэнтральныя лініі акружнасці тэхнічнага чарцяжа</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="240"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1673"/>
-      <source>Can not make centerlines for %1</source>
-      <translation>Не атрымалася стварыць восевыя лініі для %1</translation>
-    </message>
-    <message>
+      <location filename="../../CommandStack.cpp" line="370"/>
       <location filename="../../CommandExtensionPack.cpp" line="300"/>
       <location filename="../../CommandExtensionPack.cpp" line="603"/>
       <location filename="../../CommandExtensionPack.cpp" line="999"/>
       <location filename="../../CommandExtensionPack.cpp" line="1223"/>
       <location filename="../../CommandExtensionPack.cpp" line="1468"/>
       <location filename="../../CommandExtensionPack.cpp" line="1766"/>
-      <location filename="../../CommandStack.cpp" line="370"/>
       <source>Close active task dialog and try again.</source>
       <translation>Зачыніце дыялогавае акно бягучай задачы і паўтарыце спробу.</translation>
     </message>
@@ -3589,6 +3573,22 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandExtensionPack.cpp" line="943"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
       <translation>Абрана не касметычная акружнасць ці не касметычная дуга акружнасці.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="120"/>
+      <source>Can not make hole circle for %1</source>
+      <translation>Не атрымалася зрабіць акружнасць з адтулінай для %1</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="239"/>
+      <source>TechDraw circle centerlines</source>
+      <translation>Цэнтральныя лініі акружнасці тэхнічнага чарцяжа</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="240"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1673"/>
+      <source>Can not make centerlines for %1</source>
+      <translation>Не атрымалася стварыць восевыя лініі для %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="979"/>
@@ -3862,8 +3862,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
 Магчыма, файл адчынены ў іншай праграме.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
       <location filename="../../ViewProviderPage.cpp" line="219"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ці сапраўды працягнуць?</translation>
@@ -3939,14 +3939,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Змяніць складовы перасек</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="228"/>
       <location filename="../../TaskComplexSection.cpp" line="215"/>
+      <location filename="../../TaskSectionView.cpp" line="228"/>
       <source>Current View Direction</source>
       <translation>Бягучы напрамак выгляду</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="229"/>
       <location filename="../../TaskComplexSection.cpp" line="216"/>
+      <location filename="../../TaskSectionView.cpp" line="229"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Напрамак выгляду ў каардынатах асноўнага выгляду</translation>
     </message>
@@ -3961,8 +3961,8 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Праверыць SectionNormal, Direction ці XDirection.</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="638"/>
       <location filename="../../TaskComplexSection.cpp" line="714"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>Аперацыя завяршылася няўдачай</translation>
     </message>
@@ -4333,14 +4333,14 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Змяніць памер адфарматаванага тэксту заметкі</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="54"/>
-      <source>Updates the text</source>
-      <translation>Абнаўляе тэкст</translation>
-    </message>
-    <message>
       <location filename="../../SymbolChooser.cpp" line="59"/>
       <source>Select a Symbol</source>
       <translation>Абраць знак</translation>
+    </message>
+    <message>
+      <location filename="../../TemplateTextField.cpp" line="54"/>
+      <source>Updates the text</source>
+      <translation>Абнаўляе тэкст</translation>
     </message>
   </context>
   <context>
@@ -4362,18 +4362,18 @@ it has a weld symbol that would become broken.</source>
       <translation>Вы не можаце выдаліць выгляд, бо ў ім ёсць адзін ці некалькі залежных выглядаў, якія могуць стаць пашкоджанымі.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderWeld.cpp" line="143"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
       <location filename="../../ViewProviderPage.cpp" line="222"/>
       <location filename="../../ViewProviderLeader.cpp" line="212"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
+      <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <source>Object dependencies</source>
       <translation>Залежнасці аб'екта</translation>
     </message>
@@ -6609,47 +6609,37 @@ Do you want to continue?</source>
   <context>
     <name>TechDrawGui::TaskCenterLine</name>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="52"/>
+      <location filename="../../TaskCenterLine.ui" line="55"/>
       <source>Elements</source>
       <translation>Элементы</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="83"/>
+      <location filename="../../TaskCenterLine.ui" line="89"/>
       <source>Orientation</source>
       <translation>Арыентацыя</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="92"/>
+      <location filename="../../TaskCenterLine.ui" line="98"/>
       <source>Vertical</source>
       <translation>Па вертыкалі</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="111"/>
+      <location filename="../../TaskCenterLine.ui" line="117"/>
       <source>Horizontal</source>
       <translation>Па гарызанталі</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="131"/>
+      <location filename="../../TaskCenterLine.ui" line="137"/>
       <source>Aligned</source>
       <translation>Выраўнаваны</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="261"/>
+      <location filename="../../TaskCenterLine.ui" line="207"/>
       <source>Rotate</source>
       <translation>Павярнуць</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="274"/>
-      <source>Rotate line +CCW or -CW</source>
-      <translation>Паварот лініі +Супраць гадзінніка ці -Па гадзінніку</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="303"/>
-      <source>Make the line a little longer.</source>
-      <translation>Зрабіць лінію крыху даўжэй.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="146"/>
+      <location filename="../../TaskCenterLine.ui" line="275"/>
       <source>Color</source>
       <translation>Колер</translation>
     </message>
@@ -6659,22 +6649,27 @@ Do you want to continue?</source>
       <translation>Цэнтральная лінія</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="29"/>
+      <location filename="../../TaskCenterLine.ui" line="32"/>
       <source>Base view</source>
       <translation>Асноўны выгляд</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="89"/>
+      <location filename="../../TaskCenterLine.ui" line="77"/>
+      <source>The centerline is positioned at the center of the combined bounding box of the selected elements</source>
+      <translation type="unfinished">The centerline is positioned at the center of the combined bounding box of the selected elements</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="95"/>
       <source>Top to bottom line</source>
       <translation>Лінія зверху ўніз</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="108"/>
+      <location filename="../../TaskCenterLine.ui" line="114"/>
       <source>Left to right line</source>
       <translation>Лінія злева направа</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="124"/>
+      <location filename="../../TaskCenterLine.ui" line="130"/>
       <source>
          Centerline between:
          - Lines: equidistant from both lines and at half the angle between them
@@ -6687,37 +6682,57 @@ Do you want to continue?</source>
  </translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="177"/>
+      <location filename="../../TaskCenterLine.ui" line="150"/>
+      <source>Position</source>
+      <translation type="unfinished">Position</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="174"/>
+      <source>Shifts the line up (+) or down (-)</source>
+      <translation type="unfinished">Shifts the line up (+) or down (-)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="190"/>
+      <source>Shifts the line left (-) or right (+)</source>
+      <translation type="unfinished">Shifts the line left (-) or right (+)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="220"/>
+      <source>Rotates the line counterclockwise (+) or clockwise (-)</source>
+      <translation type="unfinished">Rotates the line counterclockwise (+) or clockwise (-)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="246"/>
+      <source>Extends the line by the specified amount beyond its natural endpoints</source>
+      <translation type="unfinished">Extends the line by the specified amount beyond its natural endpoints</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="264"/>
+      <source>Appearance</source>
+      <translation>Знешні выгляд</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCenterLine.ui" line="303"/>
       <source>Weight</source>
       <translation>Вага</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="184"/>
+      <location filename="../../TaskCenterLine.ui" line="310"/>
       <source>Style</source>
       <translation>Стыль</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="209"/>
+      <location filename="../../TaskCenterLine.ui" line="161"/>
       <source>Shift horizontal</source>
       <translation>Гарызантальны зрух</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="222"/>
-      <source>Move line +up or -down</source>
-      <translation>Рухаць лінію +уверх ці -уніз</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="241"/>
-      <source>Move line -left or +right</source>
-      <translation>Рухаць лінію -налева ці +направа</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCenterLine.ui" line="254"/>
+      <location filename="../../TaskCenterLine.ui" line="200"/>
       <source>Shift vertical</source>
       <translation>Вертыкальны зрух</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.ui" line="290"/>
+      <location filename="../../TaskCenterLine.ui" line="233"/>
       <source>Extend by</source>
       <translation>Выцягнуць на</translation>
     </message>
@@ -6897,23 +6912,25 @@ Do you want to continue?</source>
       <translation>Касметычная вяршыня</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="26"/>
+      <location filename="../../TaskCosVertex.ui" line="29"/>
       <source>Base view</source>
       <translation>Асноўны выгляд</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="66"/>
+      <location filename="../../TaskCosVertex.ui" line="85"/>
       <location filename="../../TaskCosVertex.cpp" line="111"/>
-      <source>Point Picker</source>
-      <translation>Сродак выбару кропкі</translation>
+      <location filename="../../TaskCosVertex.cpp" line="156"/>
+      <location filename="../../TaskCosVertex.cpp" line="248"/>
+      <source>Pick Point</source>
+      <translation type="unfinished">Pick Point</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="95"/>
+      <location filename="../../TaskCosVertex.ui" line="114"/>
       <source>Position from the view center</source>
       <translation>Становішча з цэнтра выгляду</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.ui" line="98"/>
+      <location filename="../../TaskCosVertex.ui" line="117"/>
       <source>Position</source>
       <translation>Становішча</translation>
     </message>
@@ -6921,12 +6938,6 @@ Do you want to continue?</source>
       <location filename="../../TaskCosVertex.cpp" line="170"/>
       <source>Pick a point for cosmetic vertex</source>
       <translation>Выбар кропкі для касметычнай вяршыні</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCosVertex.cpp" line="156"/>
-      <location filename="../../TaskCosVertex.cpp" line="248"/>
-      <source>Pick Points</source>
-      <translation>Выбраць кропкі</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="173"/>
@@ -7582,69 +7593,64 @@ by negative value of &apos;Overtolerance&apos;.</source>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="330"/>
-      <source>Lines</source>
-      <translation>Лініі</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="338"/>
-      <source>Use override angles if checked. Use default angles if unchecked.</source>
-      <translation>Ужывайце перавызначаныя вуглы, калі птушка.
-Ужывайце першапачатковыя вуглы, калі не птушка.</translation>
+      <source>Override Angles</source>
+      <translation type="unfinished">Override Angles</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="341"/>
-      <source>Override angles</source>
-      <translation>Перавызначыць вуглы</translation>
+      <source>Sets the extension line angle to match the selected edge or vertices</source>
+      <translation type="unfinished">Sets the extension line angle to match the selected edge or vertices</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="348"/>
+      <location filename="../../TaskDimension.ui" line="357"/>
+      <location filename="../../TaskDimension.ui" line="403"/>
+      <source>°</source>
+      <translation>°</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="370"/>
+      <source>Sets the dimension line angle to match the selected edge or vertices</source>
+      <translation type="unfinished">Sets the dimension line angle to match the selected edge or vertices</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="380"/>
+      <source>Resets the dimension line angle to the default orthographic value</source>
+      <translation type="unfinished">Resets the dimension line angle to the default orthographic value</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="423"/>
+      <source>Resets the extension line angle to the default orthographic value</source>
+      <translation type="unfinished">Resets the extension line angle to the default orthographic value</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="390"/>
       <source>Dimension line angle</source>
       <translation>Вугал лініі вымярэння</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="355"/>
+      <location filename="../../TaskDimension.ui" line="351"/>
       <source>Angle of dimension line with drawing X axis (degrees)</source>
       <translation>Вугал паміж лініяй вымярэння з воссю X чарцяжа (градусы)</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="371"/>
-      <source>Set dimension line angle to default (orthographic view)</source>
-      <translation>Задаць першапачатковы вугал лініі вымярэння (артаганальны выгляд)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="374"/>
-      <location filename="../../TaskDimension.ui" line="417"/>
+      <location filename="../../TaskDimension.ui" line="383"/>
+      <location filename="../../TaskDimension.ui" line="426"/>
       <source>Use Default</source>
       <translation>Ужыць першапачатковы</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="381"/>
-      <source>Set dimension line angle to match selected edge or vertices</source>
-      <translation>Задаць вугал лініі вымярэння так, каб ён адпавядаў абраным рэбрам ці вяршыням</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="384"/>
-      <location filename="../../TaskDimension.ui" line="427"/>
+      <location filename="../../TaskDimension.ui" line="344"/>
+      <location filename="../../TaskDimension.ui" line="373"/>
       <source>Use Selection</source>
       <translation>Ужываць выбар</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="414"/>
-      <source>Set extension line angle to default (orthographic)</source>
-      <translation>Задаць першапачатковы вугал вынасной лініі (артаганальны выгляд)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="424"/>
-      <source>Set extension line angle to match selected edge or vertices</source>
-      <translation>Задаць вугал вынасной лініі, каб ён адпавядаў абраным рэбрам ці вяршыням</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="391"/>
+      <location filename="../../TaskDimension.ui" line="416"/>
       <source>Extension line angle</source>
       <translation>Вугал вынасной лініі</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="398"/>
+      <location filename="../../TaskDimension.ui" line="397"/>
       <source>Angle of extension lines with drawing X axis (degrees)</source>
       <translation>Вугал паміж вынасной лініяй з воссю X чарцяжа (градусы)</translation>
     </message>
@@ -7803,24 +7809,24 @@ by negative value of &apos;Overtolerance&apos;.</source>
       <translation>Лінія зноскі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="93"/>
+      <location filename="../../TaskLeaderLine.ui" line="91"/>
       <source>Discard Changes</source>
       <translation>Скасаваць змены</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="118"/>
+      <location filename="../../TaskLeaderLine.ui" line="84"/>
       <location filename="../../TaskLeaderLine.cpp" line="224"/>
       <location filename="../../TaskLeaderLine.cpp" line="499"/>
       <source>Pick Points</source>
       <translation>Выбраць кропкі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="38"/>
+      <location filename="../../TaskLeaderLine.ui" line="41"/>
       <source>Base view</source>
       <translation>Асноўны выгляд</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="113"/>
+      <location filename="../../TaskLeaderLine.ui" line="79"/>
       <source>First pick the start point of the line,
 then at least one more point.
 You can pick further points to get line segments.</source>
@@ -7828,72 +7834,77 @@ You can pick further points to get line segments.</source>
 Вы можаце абраць дадатковыя кропкі, каб атрымаць адрэзкі лініі.</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="149"/>
+      <location filename="../../TaskLeaderLine.ui" line="210"/>
       <source>Start symbol</source>
       <translation>Пачатковы знак</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="169"/>
+      <location filename="../../TaskLeaderLine.ui" line="111"/>
       <source>End symbol</source>
       <translation>Канцавы знак</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="199"/>
+      <location filename="../../TaskLeaderLine.ui" line="244"/>
       <source>Color</source>
       <translation>Колер</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="212"/>
+      <location filename="../../TaskLeaderLine.ui" line="223"/>
       <source>Line color</source>
       <translation>Колер лініі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="226"/>
+      <location filename="../../TaskLeaderLine.ui" line="274"/>
       <source>Width</source>
       <translation>Шырыня</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="242"/>
+      <location filename="../../TaskLeaderLine.ui" line="127"/>
       <source>Line width</source>
       <translation>Шырыня лініі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="258"/>
+      <location filename="../../TaskLeaderLine.ui" line="237"/>
       <source>Style</source>
       <translation>Стыль</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="271"/>
+      <location filename="../../TaskLeaderLine.ui" line="146"/>
       <source>Line style</source>
       <translation>Стыль лініі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="278"/>
+      <location filename="../../TaskLeaderLine.ui" line="100"/>
+      <source>Appearance</source>
+      <translation>Знешні выгляд</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLeaderLine.ui" line="153"/>
       <source>No line</source>
       <translation>Без лініі</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="287"/>
+      <location filename="../../TaskLeaderLine.ui" line="162"/>
       <source>Continuous</source>
       <translation>Бесперапынны</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="296"/>
+      <location filename="../../TaskLeaderLine.ui" line="171"/>
       <source>Dash</source>
       <translation>Штрыхавы</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="305"/>
+      <location filename="../../TaskLeaderLine.ui" line="180"/>
       <source>Dot</source>
       <translation>Пункцірны</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="314"/>
+      <location filename="../../TaskLeaderLine.ui" line="189"/>
       <source>DashDot</source>
       <translation>Штрых-пункцірны</translation>
     </message>
     <message>
-      <location filename="../../TaskLeaderLine.ui" line="323"/>
+      <location filename="../../TaskLeaderLine.ui" line="198"/>
       <source>DashDotDot</source>
       <translation>Штрых-пункцірны з дзвюма кропкамі</translation>
     </message>
@@ -7952,55 +7963,60 @@ You can pick further points to get line segments.</source>
       <translation>Упрыгожванне лініі</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="92"/>
+      <location filename="../../TaskLineDecor.ui" line="37"/>
       <source>View</source>
       <translation>Від</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="99"/>
+      <location filename="../../TaskLineDecor.ui" line="44"/>
+      <source>Selection</source>
+      <translation>Выдзяленне</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLineDecor.ui" line="76"/>
+      <source>Appearance</source>
+      <translation>Знешні выгляд</translation>
+    </message>
+    <message>
+      <location filename="../../TaskLineDecor.ui" line="87"/>
       <source>The use of the Qt line style is being phased out. Use a standard line style instead.</source>
       <translation>Ужыванне лінейнага стылю Qt паступова спыняецца.
 Ужываць стандартны лінейны стыль.</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="145"/>
+      <location filename="../../TaskLineDecor.ui" line="103"/>
       <source>Thickness of pattern lines</source>
       <translation>Таўшчыня ліній шаблону</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="52"/>
-      <source>Lines</source>
-      <translation>Лініі</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLineDecor.ui" line="115"/>
+      <location filename="../../TaskLineDecor.ui" line="113"/>
       <source>Style</source>
       <translation>Стыль</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="85"/>
+      <location filename="../../TaskLineDecor.ui" line="120"/>
       <source>Color</source>
       <translation>Колер</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="45"/>
+      <location filename="../../TaskLineDecor.ui" line="127"/>
       <source>Weight</source>
       <translation>Таўшчыня</translation>
     </message>
     <message>
-      <location filename="../../TaskLineDecor.ui" line="158"/>
+      <location filename="../../TaskLineDecor.ui" line="145"/>
       <source>Visible</source>
       <translation>Бачныя</translation>
     </message>
-    <message>
-      <location filename="../../TaskLineDecor.ui" line="72"/>
-      <source>False</source>
-      <translation>Не</translation>
-    </message>
-    <message>
-      <location filename="../../TaskLineDecor.ui" line="77"/>
-      <source>True</source>
-      <translation>Так</translation>
+    <message numerus="yes">
+      <location filename="../../TaskLineDecor.cpp" line="79"/>
+      <source>%n line(s)</source>
+      <translation type="unfinished">
+        <numerusform>%n line(s)</numerusform>
+        <numerusform>%n line(s)</numerusform>
+        <numerusform>%n line(s)</numerusform>
+        <numerusform>%n line(s)</numerusform>
+      </translation>
     </message>
   </context>
   <context>
@@ -9071,49 +9087,56 @@ using the given X/Y spacings</source>
       <translation>Вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="28"/>
+      <location filename="../../TaskDimRepair.ui" line="38"/>
       <source>Name</source>
       <translation>Назва</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="35"/>
+      <location filename="../../TaskDimRepair.ui" line="91"/>
+      <source>Replace References With Selection</source>
+      <translation type="unfinished">Replace References With Selection</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="107"/>
+      <source>2D References</source>
+      <translation type="unfinished">2D References</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="202"/>
+      <source>3D References</source>
+      <translation type="unfinished">3D References</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="246"/>
+      <source>Sub-Element</source>
+      <translation type="unfinished">Sub-Element</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimRepair.ui" line="31"/>
+      <location filename="../../TaskDimRepair.ui" line="241"/>
       <source>Label</source>
       <translation>Метка</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="119"/>
+      <location filename="../../TaskDimRepair.ui" line="127"/>
       <source>The view that owns this dimension</source>
       <translation>Выгляд, якому належыць дадзенае вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="163"/>
+      <location filename="../../TaskDimRepair.ui" line="178"/>
       <source>The sub-elements of the view that define the geometry for this dimension</source>
       <translation>Укладзеныя элементы выгляду, якія вызначаюць геаметрыю для дадзенага вымярэння</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="98"/>
-      <source>References 2D</source>
-      <translation>Спасылкі на двухмернае прадстаўленне</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimRepair.ui" line="86"/>
-      <source>Replace References With Current Selection</source>
-      <translation>Замяніць спасылкі на бягучы выбар</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimRepair.ui" line="106"/>
+      <location filename="../../TaskDimRepair.ui" line="140"/>
+      <location filename="../../TaskDimRepair.ui" line="236"/>
       <source>Object</source>
       <translation>Аб'ект</translation>
     </message>
     <message>
-      <location filename="../../TaskDimRepair.ui" line="138"/>
+      <location filename="../../TaskDimRepair.ui" line="153"/>
       <source>Geometry</source>
       <translation>Геаметрыя</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimRepair.ui" line="187"/>
-      <source>References 3D</source>
-      <translation>Спасылкі на трохмернае прадстаўленне</translation>
     </message>
   </context>
   <context>
@@ -9566,35 +9589,45 @@ there is an open task dialog.</source>
       <translation>Касметычная вяршыня</translation>
     </message>
     <message>
-      <location filename="../../TaskAddOffsetVertex.ui" line="31"/>
+      <location filename="../../TaskAddOffsetVertex.ui" line="29"/>
+      <source>Reference</source>
+      <translation>Адносіны</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAddOffsetVertex.ui" line="36"/>
+      <source>The selected vertex this offset vertex is based on</source>
+      <translation type="unfinished">The selected vertex this offset vertex is based on</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAddOffsetVertex.ui" line="45"/>
       <source>Position from the view center</source>
       <translation>Становішча з цэнтра выгляду</translation>
     </message>
     <message>
-      <location filename="../../TaskAddOffsetVertex.ui" line="34"/>
+      <location filename="../../TaskAddOffsetVertex.ui" line="48"/>
       <source>Position</source>
       <translation>Становішча</translation>
     </message>
     <message>
-      <location filename="../../TaskAddOffsetVertex.ui" line="48"/>
-      <source>X-offset</source>
-      <translation>Зрушэнне ў напрамку восі X</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAddOffsetVertex.ui" line="55"/>
-      <source>Y-offset</source>
-      <translation>Зрушэнне ў напрамку восі Y</translation>
+      <location filename="../../TaskAddOffsetVertex.ui" line="59"/>
+      <source>The X offset distance from the source vertex</source>
+      <translation type="unfinished">The X offset distance from the source vertex</translation>
     </message>
     <message>
       <location filename="../../TaskAddOffsetVertex.ui" line="72"/>
-      <source>Enter X offset value</source>
-      <translation>Увядзіце значэнне зрушэння ў напрамку восі X</translation>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAddOffsetVertex.ui" line="79"/>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
   </context>
   <context>
     <name>TechDraw_AddOffsetVertex</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="45"/>
+      <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="47"/>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="81"/>
       <source>Offset Vertex</source>
       <translation>Зрушэнне вяршыні</translation>
@@ -10296,18 +10329,18 @@ there is an open task dialog.</source>
     <name>TechDrawGui::TaskDimRepair</name>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
-      <source>Object name</source>
-      <translation>Назва аб'екту</translation>
+      <source>Object</source>
+      <translation>Аб'ект</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
-      <source>Object label</source>
-      <translation>Метка аб'екту</translation>
+      <source>Label</source>
+      <translation>Метка</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
-      <source>Sub-element</source>
-      <translation>Укладзены элемент</translation>
+      <source>Sub-Element</source>
+      <translation type="unfinished">Sub-Element</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="245"/>
@@ -10386,7 +10419,7 @@ there is an open task dialog.</source>
   <context>
     <name>TechDrawGui::TaskDlgLineDecor</name>
     <message>
-      <location filename="../../TaskLineDecor.cpp" line="463"/>
+      <location filename="../../TaskLineDecor.cpp" line="454"/>
       <source>Restore Invisible Lines</source>
       <translation>Аднавіць нябачныя лініі</translation>
     </message>

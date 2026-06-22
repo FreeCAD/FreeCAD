@@ -1137,7 +1137,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="689"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Juntures</translation>
     </message>

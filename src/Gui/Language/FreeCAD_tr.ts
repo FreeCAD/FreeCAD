@@ -113,12 +113,12 @@
       <translation>Bir parça ekle</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="138"/>
+      <location filename="../CommandStructure.cpp" line="147"/>
       <source>Add a group</source>
       <translation>Bir grup ekle</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="207"/>
+      <location filename="../CommandStructure.cpp" line="216"/>
       <source>Add a variable set</source>
       <translation>Bir Değişken Kümesi ekle</translation>
     </message>
@@ -133,10 +133,10 @@
       <translation>Yerleşim</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="415"/>
       <location filename="../TaskTransform.cpp" line="129"/>
       <location filename="../TaskTransform.cpp" line="807"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="415"/>
+      <location filename="../Transform.cpp" line="108"/>
       <source>Transform</source>
       <translation>Dönüştür</translation>
     </message>
@@ -5838,13 +5838,13 @@ Tüm değişiklikler kaydedilsin mi?</translation>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="557"/>
+      <location filename="../FileDialog.cpp" line="558"/>
       <source>Save As</source>
       <translation>Farklı Kaydet</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="692"/>
-      <location filename="../FileDialog.cpp" line="787"/>
+      <location filename="../FileDialog.cpp" line="693"/>
+      <location filename="../FileDialog.cpp" line="788"/>
       <source>Open</source>
       <translation>Aç</translation>
     </message>
@@ -5852,12 +5852,12 @@ Tüm değişiklikler kaydedilsin mi?</translation>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="935"/>
+      <location filename="../FileDialog.cpp" line="936"/>
       <source>Extended</source>
       <translation>Genişletilmiş</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="972"/>
+      <location filename="../FileDialog.cpp" line="973"/>
       <source>All files (*.*)</source>
       <translation>Tüm dosyalar (*. *)</translation>
     </message>
@@ -6014,66 +6014,66 @@ Tüm değişiklikler kaydedilsin mi?</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="131"/>
       <location filename="../InputVector.h" line="154"/>
       <location filename="../InputVector.h" line="277"/>
       <location filename="../InputVector.h" line="300"/>
       <location filename="../InputVector.h" line="475"/>
       <location filename="../InputVector.h" line="489"/>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="159"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="305"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="494"/>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Kullanıcı tanımlı…</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="240"/>
       <location filename="../InputVector.h" line="375"/>
       <location filename="../InputVector.h" line="564"/>
-      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Yanlış yön</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
-      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>Yön, boş vektör olmamalıdır</translation>
     </message>
@@ -6874,12 +6874,12 @@ Tüm verileri kaydetmeden çıkılsın mı?</translation>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1351"/>
+      <location filename="../FileDialog.cpp" line="1352"/>
       <source>Select Module</source>
       <translation>Modül Seç</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1353"/>
+      <location filename="../FileDialog.cpp" line="1354"/>
       <source>Open %1 as</source>
       <translation>%1 Olarak açın</translation>
     </message>
@@ -7596,7 +7596,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3901"/>
-      <location filename="../Tree.cpp" line="6544"/>
+      <location filename="../Tree.cpp" line="6556"/>
       <source>Rename</source>
       <translation>Yeniden Adlandır</translation>
     </message>
@@ -7616,12 +7616,12 @@ Başka bir dizin belirlemek ister misiniz?</translation>
       <translation>Dosya Konumunu Aç</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6512"/>
+      <location filename="../Tree.cpp" line="6524"/>
       <source> (but must be executed)</source>
       <translation> (ama çalıştırılmalı)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6515"/>
+      <location filename="../Tree.cpp" line="6527"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Dahili adı: %2</translation>
     </message>
@@ -8091,13 +8091,6 @@ Ayrıntılar için Rapor Görünümünü kontrol edin.</translation>
       <translation>Belge Birleştirme</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="621"/>
-      <location filename="../Document.cpp" line="1715"/>
-      <location filename="../Document.cpp" line="1845"/>
-      <source>%1 document</source>
-      <translation>%1 belge</translation>
-    </message>
-    <message>
       <location filename="../CommandDoc.cpp" line="632"/>
       <source>Cannot merge document with itself.</source>
       <translation>Belge kendisiyle birleştirilemez.</translation>
@@ -8546,6 +8539,13 @@ Use 'Save As…' to preserve the original file.
       <translation>Belgeyi yeni bir dosya adıyla kaydet…</translation>
     </message>
     <message>
+      <location filename="../Document.cpp" line="1715"/>
+      <location filename="../Document.cpp" line="1845"/>
+      <location filename="../CommandDoc.cpp" line="621"/>
+      <source>%1 document</source>
+      <translation>%1 belge</translation>
+    </message>
+    <message>
       <location filename="../Document.cpp" line="1831"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Belgenin bir kopyasını yeni bir dosya adıyla kaydet…</translation>
@@ -8676,12 +8676,12 @@ Yalnızca etkin belgedeki işlemleri geri almak için 'Hayır'ı seçin.
       <translation>Sistem tarayıcı açılamıyor.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3157"/>
+      <location filename="../View3DInventorViewer.cpp" line="3161"/>
       <source>Out of memory</source>
       <translation>Yetersiz bellek</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3158"/>
+      <location filename="../View3DInventorViewer.cpp" line="3162"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Verileri görüntülemek için yetersiz bellek.</translation>
     </message>
@@ -8697,7 +8697,7 @@ Yalnızca etkin belgedeki işlemleri geri almak için 'Hayır'ı seçin.
       <translation>%1 Dosyası %2 veya %3 içinde bulunamıyor</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2202"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2324"/>
       <source>Clarify Selection</source>
       <translation>Seçimi Netleştir</translation>
     </message>
@@ -8827,8 +8827,8 @@ Yalnızca etkin belgedeki işlemleri geri almak için 'Hayır'ı seçin.
       <translation>&amp;Sürükle ve bırak başarısız oldu</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3046"/>
       <location filename="../MainWindow.cpp" line="903"/>
+      <location filename="../ViewProviderLink.cpp" line="3046"/>
       <source>Apply to all</source>
       <translation>Tümüne uygula</translation>
     </message>
@@ -9139,12 +9139,12 @@ her türlü değişiklik kaybolacaktır.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="959"/>
+      <location filename="../Selection/Selection.cpp" line="964"/>
       <source>Not allowed:</source>
       <translation>İzin verilmiyor:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1342"/>
+      <location filename="../Selection/Selection.cpp" line="1347"/>
       <source>Selection not allowed by filter</source>
       <translation>Seçime filtre tarafından izin verilmiyor</translation>
     </message>
@@ -9771,45 +9771,6 @@ her türlü değişiklik kaybolacaktır.
     </message>
   </context>
   <context>
-    <name>StdCmdViewIvStereoInterleavedColumns</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2696"/>
-      <source>Stereo Interleaved &amp;Columns</source>
-      <translation>Stereo İç İçe &amp;Sütunlar</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2697"/>
-      <source>Switches stereo viewing to interleaved columns</source>
-      <translation>Stereo görüntülemeyi iç içe geçmiş sütunlara geçirir</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewIvStereoInterleavedRows</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2668"/>
-      <source>Stereo Interleaved &amp;Rows</source>
-      <translation>Stereo İç İçe Geçmeli &amp;Satırlar</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2669"/>
-      <source>Switches stereo viewing to interleaved rows</source>
-      <translation>Stereo görüntülemeyi iç içe geçmiş satırlara geçirir</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewIvStereoOff</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2583"/>
-      <source>Stereo &amp;Off</source>
-      <translation>Stereo &amp;Kapalı</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2584"/>
-      <source>Switches stereo viewing off</source>
-      <translation>Stereo görüntülemeyi kapatır</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewLeft</name>
     <message>
       <location filename="../CommandView.cpp" line="1506"/>
@@ -9968,12 +9929,12 @@ her türlü değişiklik kaybolacaktır.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3496"/>
+      <location filename="../CommandView.cpp" line="3354"/>
       <source>Collapse/E&amp;xpand</source>
       <translation>Daralt/&amp;Genişlet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3497"/>
+      <location filename="../CommandView.cpp" line="3355"/>
       <source>Expands the active document and collapses all others</source>
       <translation>Etkin belgeyi genişletir ve diğerlerinin tümünü daraltır</translation>
     </message>
@@ -9981,12 +9942,12 @@ her türlü değişiklik kaybolacaktır.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3598"/>
+      <location filename="../CommandView.cpp" line="3456"/>
       <source>Preselection</source>
       <translation>Önseçim</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3599"/>
+      <location filename="../CommandView.cpp" line="3457"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
       <translation>İmleç ağaç öğesinin üzerinde gezinirken nesneyi 3B görünümde önceden seçer</translation>
     </message>
@@ -10046,12 +10007,12 @@ her türlü değişiklik kaybolacaktır.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2783"/>
+      <location filename="../CommandView.cpp" line="2641"/>
       <source>Zoom &amp;In</source>
       <translation>&amp;Yakınlaştır</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2784"/>
+      <location filename="../CommandView.cpp" line="2642"/>
       <source>Increases the zoom factor by a fixed amount</source>
       <translation>Yakınlaştırma oranını sabit bir miktar artırır</translation>
     </message>
@@ -10059,12 +10020,12 @@ her türlü değişiklik kaybolacaktır.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2812"/>
+      <location filename="../CommandView.cpp" line="2670"/>
       <source>Zoom &amp;Out</source>
       <translation>&amp;Uzaklaştır</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2813"/>
+      <location filename="../CommandView.cpp" line="2671"/>
       <source>Decreases the zoom factor by a fixed amount</source>
       <translation>Yakınlaştırma oranını sabit bir miktar azaltır</translation>
     </message>
@@ -10178,7 +10139,7 @@ Belge şimdi kaydedilsin mi?</translation>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="142"/>
+      <location filename="../CommandStructure.cpp" line="151"/>
       <source>Group</source>
       <translation>Grup</translation>
     </message>
@@ -13532,12 +13493,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="123"/>
+      <location filename="../CommandStructure.cpp" line="132"/>
       <source>New Group</source>
       <translation>Yeni Grup</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="124"/>
+      <location filename="../CommandStructure.cpp" line="133"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation>Bir Grup oluşturur. Grup, veri türlerinden bağımsız olarak nesneleri ağaç görünümünde gruplamak için genel amaçlı bir kapsayıcıdır. Modeldeki nesneleri düzenlemek için basit bir klasördür.</translation>
     </message>
@@ -13545,12 +13506,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdVarSet</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="195"/>
+      <location filename="../CommandStructure.cpp" line="204"/>
       <source>Variable Set</source>
       <translation>Değişken Kümesi</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="197"/>
+      <location filename="../CommandStructure.cpp" line="206"/>
       <source>Creates a variable set, which is an object that maintains a set of properties to be used as variables</source>
       <translation>Değişken olarak kullanılacak bir özellik kümesini tutan bir Değişken Kümesi oluşturur</translation>
     </message>
@@ -13855,40 +13816,14 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
     </message>
   </context>
   <context>
-    <name>StdCmdViewIvStereoRedGreen</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2612"/>
-      <source>Stereo Re&amp;d/Cyan</source>
-      <translation>Stereo Kır&amp;mızı/Camgöbeği</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2613"/>
-      <source>Switches stereo viewing to red/cyan</source>
-      <translation>Stereo görüntülemeyi kırmızı/camgöbeği kipine geçirir</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewIvStereoQuadBuff</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2640"/>
-      <source>Stereo &amp;Quad Buffer</source>
-      <translation>Stereo &amp;Dörtlü Arabellek</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2641"/>
-      <source>Switches stereo viewing to quad buffer</source>
-      <translation>Stereo görüntülemeyi dörtlü arabellek kipine geçirir</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2725"/>
+      <location filename="../CommandView.cpp" line="2583"/>
       <source>Issue Camera &amp;Position</source>
       <translation>Kamera &amp;Konumunu Yazdır</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2726"/>
+      <location filename="../CommandView.cpp" line="2584"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
       <translation>Bu konumu kolayca geri çağırmak için kamera konumunu konsola ve bir makroya yazdırır</translation>
     </message>
@@ -13896,12 +13831,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2978"/>
+      <location filename="../CommandView.cpp" line="2836"/>
       <source>&amp;Box Zoom</source>
       <translation>&amp;Kutu Yakınlaştırma</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2979"/>
+      <location filename="../CommandView.cpp" line="2837"/>
       <source>Activates the box zoom tool</source>
       <translation>Kutu yakınlaştırma aracını etkinleştirir</translation>
     </message>
@@ -13909,12 +13844,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3012"/>
+      <location filename="../CommandView.cpp" line="2870"/>
       <source>&amp;Box Selection</source>
       <translation>&amp;Kutu Seçimi</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3013"/>
+      <location filename="../CommandView.cpp" line="2871"/>
       <source>Activates the box selection tool</source>
       <translation>Kutu seçim aracını etkinleştirir</translation>
     </message>
@@ -13922,12 +13857,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3079"/>
+      <location filename="../CommandView.cpp" line="2937"/>
       <source>Bo&amp;x Element Selection</source>
       <translation>K&amp;utu Eleman Seçimi</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3080"/>
+      <location filename="../CommandView.cpp" line="2938"/>
       <source>Activates box element selection</source>
       <translation>Kutu eleman seçimini etkinleştirir</translation>
     </message>
@@ -13935,12 +13870,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3135"/>
+      <location filename="../CommandView.cpp" line="2993"/>
       <source>&amp;Go to Selection</source>
       <translation>&amp;Seçime Git</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3136"/>
+      <location filename="../CommandView.cpp" line="2994"/>
       <source>Scrolls to the first selected item</source>
       <translation>İlk seçili öğeye kaydırır</translation>
     </message>
@@ -13948,12 +13883,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3160"/>
+      <location filename="../CommandView.cpp" line="3018"/>
       <source>Collapse Selected Items</source>
       <translation>Seçili Öğeleri Daralt</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3161"/>
+      <location filename="../CommandView.cpp" line="3019"/>
       <source>Collapses the currently selected tree items</source>
       <translation>Şu anda seçili ağaç öğelerini daraltır</translation>
     </message>
@@ -13961,12 +13896,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3186"/>
+      <location filename="../CommandView.cpp" line="3044"/>
       <source>Expand Selected Items</source>
       <translation>Seçili Öğeleri Genişlet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3187"/>
+      <location filename="../CommandView.cpp" line="3045"/>
       <source>Expands the currently selected tree items</source>
       <translation>Şu anda seçili ağaç öğelerini genişletir</translation>
     </message>
@@ -13974,12 +13909,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3212"/>
+      <location filename="../CommandView.cpp" line="3070"/>
       <source>Select All Instances</source>
       <translation>Tüm Örnekleri Seç</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3213"/>
+      <location filename="../CommandView.cpp" line="3071"/>
       <source>Selects all instances of the currently selected object</source>
       <translation>Şu anda seçili nesnenin tüm örneklerini seçer</translation>
     </message>
@@ -13987,12 +13922,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3280"/>
+      <location filename="../CommandView.cpp" line="3138"/>
       <source>Scene I&amp;nspector</source>
       <translation>Sahne D&amp;enetçisi</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3281"/>
+      <location filename="../CommandView.cpp" line="3139"/>
       <source>Opens the scene inspector</source>
       <translation>Sahne denetçisini açar</translation>
     </message>
@@ -14000,12 +13935,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3314"/>
+      <location filename="../CommandView.cpp" line="3172"/>
       <source>Text&amp;ure Mapping</source>
       <translation>D&amp;oku Eşleme</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3315"/>
+      <location filename="../CommandView.cpp" line="3173"/>
       <source>Maps textures to shapes</source>
       <translation>Dokuları şekillere eşler</translation>
     </message>
@@ -14013,12 +13948,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3340"/>
+      <location filename="../CommandView.cpp" line="3198"/>
       <source>View &amp;Turntable</source>
       <translation>Döner Tabla &amp;Görünümü</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3341"/>
+      <location filename="../CommandView.cpp" line="3199"/>
       <source>Opens a turntable view</source>
       <translation>Döner tabla görünümünü açar</translation>
     </message>
@@ -14026,12 +13961,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3370"/>
+      <location filename="../CommandView.cpp" line="3228"/>
       <source>Selection &amp;Back</source>
       <translation>Seçim &amp;Geri</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3372"/>
+      <location filename="../CommandView.cpp" line="3230"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>Önceki ağaç görünümü seçimini geri yükler. Yalnızca ağaç RecordSelection kipi açıksa çalışır.</translation>
     </message>
@@ -14039,12 +13974,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3404"/>
+      <location filename="../CommandView.cpp" line="3262"/>
       <source>Selection &amp;Forward</source>
       <translation>Seçim &amp;İleri</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3406"/>
+      <location filename="../CommandView.cpp" line="3264"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>Sonraki ağaç görünümü seçimini geri yükler. Yalnızca ağaç RecordSelection kipi açıksa çalışır.</translation>
     </message>
@@ -14052,12 +13987,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3462"/>
+      <location filename="../CommandView.cpp" line="3320"/>
       <source>&amp;Single Document</source>
       <translation>&amp;Tek Belge</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3463"/>
+      <location filename="../CommandView.cpp" line="3321"/>
       <source>Displays only the active document in the tree view</source>
       <translation>Ağaç görünümünde yalnızca etkin belgeyi gösterir</translation>
     </message>
@@ -14065,12 +14000,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3479"/>
+      <location filename="../CommandView.cpp" line="3337"/>
       <source>&amp;Multi Document</source>
       <translation>Ç&amp;oklu Belge</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3480"/>
+      <location filename="../CommandView.cpp" line="3338"/>
       <source>Displays all documents in the tree view</source>
       <translation>Ağaç görünümünde tüm belgeleri gösterir</translation>
     </message>
@@ -14078,12 +14013,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3539"/>
+      <location filename="../CommandView.cpp" line="3397"/>
       <source>Sync View</source>
       <translation>Görünümü Eşitle</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3540"/>
+      <location filename="../CommandView.cpp" line="3398"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
       <translation>Ağaç görünümünden seçili öğeyi içeren 3B görünüme geçer</translation>
     </message>
@@ -14091,12 +14026,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3559"/>
+      <location filename="../CommandView.cpp" line="3417"/>
       <source>Sync Selection</source>
       <translation>Seçimi Eşitle</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3560"/>
+      <location filename="../CommandView.cpp" line="3418"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
       <translation>3B görünümde ilgili nesne seçildiğinde ağaç öğesini genişletir</translation>
     </message>
@@ -14104,12 +14039,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3579"/>
+      <location filename="../CommandView.cpp" line="3437"/>
       <source>Sync Placement</source>
       <translation>Yerleşimi Eşitle</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3581"/>
+      <location filename="../CommandView.cpp" line="3439"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
       <translation>Nesneleri koordinat sistemleri arasında sürükleyip bırakırken yerleşimi ayarlar (örn. parça kapsayıcılarında)</translation>
     </message>
@@ -14117,12 +14052,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3618"/>
+      <location filename="../CommandView.cpp" line="3476"/>
       <source>Record Selection</source>
       <translation>Seçimi Kaydet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3620"/>
+      <location filename="../CommandView.cpp" line="3478"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
       <translation>Gezinme düğmeleriyle geri/ileri gidebilmek için ağaç görünümündeki seçimi kaydeder</translation>
     </message>
@@ -14130,12 +14065,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3637"/>
+      <location filename="../CommandView.cpp" line="3495"/>
       <source>Initiate &amp;Dragging</source>
       <translation>&amp;Sürüklemeyi Başlat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3638"/>
+      <location filename="../CommandView.cpp" line="3496"/>
       <source>Initiates dragging of the currently selected tree items</source>
       <translation>Şu anda seçili ağaç öğelerinin sürüklemesini başlatır</translation>
     </message>
@@ -14143,12 +14078,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3670"/>
+      <location filename="../CommandView.cpp" line="3528"/>
       <source>Tree View Actions</source>
       <translation>Ağaç Görünümü Eylemleri</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3671"/>
+      <location filename="../CommandView.cpp" line="3529"/>
       <source>Tree view behavior options and actions</source>
       <translation>Ağaç görünümü davranışı seçenekleri ve eylemleri</translation>
     </message>
@@ -14156,12 +14091,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3715"/>
+      <location filename="../CommandView.cpp" line="3573"/>
       <source>&amp;Bounding Box</source>
       <translation>&amp;Sınırlayıcı Kutu</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3716"/>
+      <location filename="../CommandView.cpp" line="3574"/>
       <source>Shows selection bounding box</source>
       <translation>Seçimin sınırlayıcı kutusunu gösterir</translation>
     </message>
@@ -14169,12 +14104,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3762"/>
+      <location filename="../CommandView.cpp" line="3620"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
       <translation>Tüm Paneller için Ka&amp;plamayı Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3763"/>
+      <location filename="../CommandView.cpp" line="3621"/>
       <source>Toggles overlay mode for all docked panels</source>
       <translation type="unfinished">Toggles overlay mode for all docked panels</translation>
     </message>
@@ -14182,12 +14117,12 @@ Daha fazla ayrıntı için rapor görünümüne göz atın.
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3785"/>
+      <location filename="../CommandView.cpp" line="3643"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
       <translation>Say&amp;dam Panelleri Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3786"/>
+      <location filename="../CommandView.cpp" line="3644"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation>Tüm kenetlenmiş kaplama panelleri için saydam kipini açıp kapatır.
@@ -14197,12 +14132,12 @@ Bu, kenetlenmiş panellerin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3811"/>
+      <location filename="../CommandView.cpp" line="3669"/>
       <source>Toggle &amp;Overlay</source>
       <translation>Ka&amp;plamayı Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3812"/>
+      <location filename="../CommandView.cpp" line="3670"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation>İmleç altındaki kenetlenmiş pencere için kaplama kipini açıp kapatır</translation>
     </message>
@@ -14210,12 +14145,12 @@ Bu, kenetlenmiş panellerin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3834"/>
+      <location filename="../CommandView.cpp" line="3692"/>
       <source>Toggle Tran&amp;sparent Mode</source>
       <translation>S&amp;aydam Kipi Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3835"/>
+      <location filename="../CommandView.cpp" line="3693"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation>İmleç altındaki kenetlenmiş panel için saydam kipini açıp kapatır.
@@ -14225,12 +14160,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3860"/>
+      <location filename="../CommandView.cpp" line="3718"/>
       <source>Toggle &amp;Left</source>
       <translation>So&amp;lu Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3861"/>
+      <location filename="../CommandView.cpp" line="3719"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation>Sol kaplama panelinin görünürlüğünü açıp kapatır</translation>
     </message>
@@ -14238,12 +14173,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3885"/>
+      <location filename="../CommandView.cpp" line="3743"/>
       <source>Toggle &amp;Right</source>
       <translation>&amp;Sağı Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3886"/>
+      <location filename="../CommandView.cpp" line="3744"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation>Sağ kaplama panelinin görünürlüğünü açıp kapatır</translation>
     </message>
@@ -14251,12 +14186,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="3910"/>
+      <location filename="../CommandView.cpp" line="3768"/>
       <source>Toggle &amp;Top</source>
       <translation>&amp;Üstü Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3911"/>
+      <location filename="../CommandView.cpp" line="3769"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation>Üst kaplama panelinin görünürlüğünü açıp kapatır</translation>
     </message>
@@ -14264,12 +14199,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="3935"/>
+      <location filename="../CommandView.cpp" line="3793"/>
       <source>Toggle &amp;Bottom</source>
       <translation>&amp;Altı Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3936"/>
+      <location filename="../CommandView.cpp" line="3794"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation>Alt kaplama panelinin görünürlüğünü açıp kapatır</translation>
     </message>
@@ -14277,12 +14212,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3960"/>
+      <location filename="../CommandView.cpp" line="3818"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
       <translation>Kaplama Panellerinde &amp;Fare Olaylarını Yoksay</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3961"/>
+      <location filename="../CommandView.cpp" line="3819"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation>Kenetlenmiş kaplama panellerindeki tüm fare olaylarını yoksayar</translation>
     </message>
@@ -14290,12 +14225,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="4006"/>
+      <location filename="../CommandView.cpp" line="3864"/>
       <source>Overlay Docked Panel</source>
       <translation>Kenetlenmiş Paneli Kaplama Kipine Al</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4007"/>
+      <location filename="../CommandView.cpp" line="3865"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation>Kenetlenmiş paneli kaplama kipine alır</translation>
     </message>
@@ -14303,12 +14238,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4140"/>
+      <location filename="../CommandView.cpp" line="3998"/>
       <source>St&amp;ore Working View</source>
       <translation>Çalışma Görünümünü &amp;Kaydet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4141"/>
+      <location filename="../CommandView.cpp" line="3999"/>
       <source>Stores a temporary working view for the current document</source>
       <translation>Geçerli belge için geçici bir çalışma görünümünü kaydeder</translation>
     </message>
@@ -14316,12 +14251,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4168"/>
+      <location filename="../CommandView.cpp" line="4026"/>
       <source>R&amp;ecall Working View</source>
       <translation>Çalışma Görünümünü &amp;Geri Çağır</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4169"/>
+      <location filename="../CommandView.cpp" line="4027"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation>Daha önce kaydedilmiş geçici bir çalışma görünümünü geri çağırır</translation>
     </message>
@@ -14329,12 +14264,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4196"/>
+      <location filename="../CommandView.cpp" line="4054"/>
       <source>&amp;Align to Selection</source>
       <translation>&amp;Seçime Hizala</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4197"/>
+      <location filename="../CommandView.cpp" line="4055"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation>Kamera görünümünü 3B görünümde seçili öğelere hizalar</translation>
     </message>
@@ -14397,13 +14332,13 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1238"/>
-      <location filename="../FileDialog.cpp" line="1248"/>
+      <location filename="../FileDialog.cpp" line="1239"/>
+      <location filename="../FileDialog.cpp" line="1249"/>
       <source>Select a File</source>
       <translation>Bir Dosya Seç</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1258"/>
+      <location filename="../FileDialog.cpp" line="1259"/>
       <source>Select a Directory</source>
       <translation>Bir Dizin Seç</translation>
     </message>
@@ -14619,12 +14554,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4224"/>
+      <location filename="../CommandView.cpp" line="4082"/>
       <source>Clarify Selection</source>
       <translation>Seçimi Netleştir</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4225"/>
+      <location filename="../CommandView.cpp" line="4083"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation>3B görünümde üst üste gelen veya engellenen geometrileri seçmek için fare imlecinde bir bağlam menüsü gösterir.
@@ -14722,19 +14657,19 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
     </message>
   </context>
   <context>
-    <name>FileFormat</name>
-    <message>
-      <location filename="../FreeCADGuiInit.py" line="470"/>
-      <source>Portable Document Format</source>
-      <translation>Taşınabilir Belge Formatı (PDF)</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::TaskCommandLinkDialog</name>
     <message>
       <location filename="../TaskCommandLink.ui" line="14"/>
       <source>Insert</source>
       <translation>Ekle</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../FreeCADGuiInit.py" line="470"/>
+      <source>Portable Document Format</source>
+      <translation>Taşınabilir Belge Formatı (PDF)</translation>
     </message>
   </context>
   <context>
@@ -14860,12 +14795,12 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../CommandView.cpp" line="4042"/>
+      <location filename="../CommandView.cpp" line="3900"/>
       <source>Toggle Bottom Panels</source>
       <translation>Alt panelleri aç/kapat</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4043"/>
+      <location filename="../CommandView.cpp" line="3901"/>
       <source>Toggles the bottom dock panels</source>
       <translation type="unfinished">Toggles the bottom dock panels</translation>
     </message>

@@ -1197,14 +1197,14 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="567"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>Επιβεβαίωση διαγραφής</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="144"/>
       <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
       <translation>Διαγραφή της γραμμής;</translation>
     </message>
