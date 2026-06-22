@@ -935,16 +935,16 @@ void DocumentObject::arrangeMoveProperty(Property* toBeMovedProp,
     moveExpressionTargetingProp(toBeMovedProp, newProp, targetObj);
 
     // do not record the following changes since we are defining a transaction
-    targetObj->_pDoc->setDefiningTransaction(true);
+    auto guard = targetObj->_pDoc->setDefiningTransaction();
 
     // Phase 3: Paste the property
     newProp->Paste(*toBeMovedProp);
 
-    // Phase 4: Rewrite expressions that reference the propertyy to be moved
+    // Phase 4: Rewrite expressions that reference the property to be moved
     GetApplication().signalMoveDynamicProperty(*toBeMovedProp, *targetObj);
 
-    // enable recording changes in the transaction again
-    targetObj->_pDoc->setDefiningTransaction(false);
+    // The guard goes out of scope which enables recording changes in the
+    // transaction again.
 }
 
 Property* DocumentObject::moveDynamicProperty(Property* prop,

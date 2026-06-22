@@ -281,9 +281,12 @@ bool Document::redo(const int id)
     return false;
 }
 
-void Document::setDefiningTransaction(bool definingTransaction)
+Base::ScopeGuard Document::setDefiningTransaction()
 {
-    d->definingTransaction = definingTransaction;
+    d->definingTransaction = true;
+    return Base::ScopeGuard([this]() {
+        d->definingTransaction = false;
+    });
 }
 
 void Document::changePropertyOfObject(TransactionalObject* obj,

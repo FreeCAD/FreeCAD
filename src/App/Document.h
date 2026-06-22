@@ -27,6 +27,7 @@
 #include <CXX/Objects.hxx>
 #include <Base/Observer.h>
 #include <Base/Persistence.h>
+#include <Base/Tools.h>
 #include <Base/Type.h>
 #include <Base/Handle.h>
 #include <Base/Bitmask.h>
@@ -1482,7 +1483,7 @@ protected:
 private:
     void changePropertyOfObject(TransactionalObject* obj, const Property* prop,
                                 const std::function<void()>& changeFunc);
-    void setDefiningTransaction(bool definingTransaction);
+    [[nodiscard]] Base::ScopeGuard setDefiningTransaction();
 
 private:
     // # Data Member of the document
