@@ -36,6 +36,10 @@ try:
     import Part
 except ImportError:
     Part = None
+try:
+    import PartGui
+except ImportError:
+    PartGui = None
 from PySide import QtCore, QtGui
 
 LEFT_BUTTON = QtCore.Qt.LeftButton
@@ -124,6 +128,40 @@ class TestRubberbandSelection(unittest.TestCase):
 
                 self._drag_select(self._selection_rect(self.left_box))
                 self.assertEqual(self._selected_names(), {self.left_box.Name})
+
+    def test_plain_drag_selects_faces_when_part_face_filter_is_active(self):
+        self._ensure_selection_objects()
+        if PartGui is None or "Part_FaceSelection" not in FreeCADGui.listCommands():
+            self.skipTest("Part GUI selection commands are unavailable in this build")
+
+        self.view.setNavigationType("Gui::CADNavigationStyle")
+        self._refresh_view()
+
+        FreeCADGui.runCommand("Part_FaceSelection")
+        self._process_events()
+        try:
+            self._drag_select(self._selection_rect(self.left_box))
+
+            self.assertEqual(self._selected_names(), {self.left_box.Name})
+            sub_elements = self._selected_sub_element_names(self.left_box)
+            self.assertTrue(sub_elements)
+            self.assertTrue(all(name.startswith("Face") for name in sub_elements))
+        finally:
+            FreeCADGui.Selection.removeSelectionGate()
+
+    def test_plain_drag_keeps_object_selection_when_object_filter_is_active(self):
+        self._ensure_selection_objects()
+        self.view.setNavigationType("Gui::CADNavigationStyle")
+        self._refresh_view()
+
+        FreeCADGui.Selection.addSelectionGate("SELECT Part::Feature")
+        try:
+            self._drag_select(self._selection_rect(self.left_box))
+
+            self.assertEqual(self._selected_names(), {self.left_box.Name})
+            self.assertEqual(self._selected_sub_element_names(self.left_box), set())
+        finally:
+            FreeCADGui.Selection.removeSelectionGate()
 
     def test_ctrl_drag_adds_in_supported_styles(self):
         self._ensure_selection_objects()
@@ -378,6 +416,13 @@ class TestRubberbandSelection(unittest.TestCase):
 
     def _selected_names(self):
         return {obj.Name for obj in FreeCADGui.Selection.getSelection()}
+
+    def _selected_sub_element_names(self, obj):
+        sub_element_names = set()
+        for selection in FreeCADGui.Selection.getSelectionEx(self.doc.Name):
+            if selection.ObjectName == obj.Name:
+                sub_element_names.update(selection.SubElementNames)
+        return sub_element_names
 
     def _send_mouse_event(self, event_type, pos, button, buttons, modifiers):
         self._refresh_view_widgets()

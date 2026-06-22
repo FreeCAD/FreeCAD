@@ -161,18 +161,19 @@ std::vector<std::string> getBoxSelection(
     auto bbox3 = vp->getBoundingBox(nullptr, transform);
     Base::BoundBox2d bbox;
     const bool isBBox3Valid = bbox3.IsValid();
-    if (isBBox3Valid && selectionGate == nullptr) {
+    if (isBBox3Valid) {
         bbox = bbox3.Transformed(mat).ProjectBox(&proj);
 
         // check if both two boundary points are inside polygon, only
         // valid since we know the given polygon is a box.
-        if (polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
+        if (!selectElement && selectionGate == nullptr
+            && polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
             && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY))) {
             ret.emplace_back("");
             return ret;
         }
 
-        if (!bbox.Intersect(polygon)) {
+        if (!selectElement && selectionGate == nullptr && !bbox.Intersect(polygon)) {
             return ret;
         }
     }
@@ -264,6 +265,26 @@ std::vector<std::string> getBoxSelection(
 }
 
 }  // namespace
+
+bool Gui::boxSelectionUsesElementGate(const App::Document* doc)
+{
+    const auto selectionGate = SelectionSingleton::instance().getSelectionGate(doc);
+    if (!selectionGate) {
+        return false;
+    }
+
+    static const std::vector<const char*> representativeElementTypes {
+        "Face",
+        "Edge",
+        "Vertex",
+        "Volume",
+        "Mesh",
+        "Segment",
+    };
+
+    const auto gatedTypes = selectionGate->getGatedTypes(representativeElementTypes);
+    return !gatedTypes.empty() && gatedTypes.size() < representativeElementTypes.size();
+}
 
 void Gui::applyBoxSelection(
     View3DInventorViewer* viewer,

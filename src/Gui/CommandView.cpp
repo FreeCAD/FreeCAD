@@ -2868,8 +2868,9 @@ StdBoxSelection::StdBoxSelection()
 
 static void doSelect(void* ud, SoEventCallback* cb)
 {
-    bool selectElement = ud ? true : false;
     auto viewer = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    bool selectElement = ud || boxSelectionUsesElementGate(doc);
 
     viewer->setSelectionEnabled(true);
     cb->setHandled();
