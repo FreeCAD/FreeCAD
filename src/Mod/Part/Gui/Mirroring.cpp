@@ -354,8 +354,7 @@ bool Mirroring::accept()
     double basez = ui->baseZ->value().getValue();
     for (auto item : items) {
         shape = item->data(0, Qt::UserRole).toString();
-        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(item->text(0).toUtf8());
-        label = QString::fromStdString(escapedstr);
+        label = item->text(0);
         selectionString = QString::fromStdString(selection);
 
         // if we already have the suffix " (Mirror #<number>)" remove it
