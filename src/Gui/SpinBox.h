@@ -28,6 +28,7 @@
 
 
 class QStyleOptionSpinBox;
+class QContextMenuEvent;
 
 namespace App
 {
@@ -48,6 +49,9 @@ public:
     int getMargin();
     void stashExpression();
     void restoreExpression();
+    void clearExpressionBinding();
+    void clearExpressionBindingAndValue();
+    bool handleContextMenuEvent(QContextMenuEvent* event);
     bool isTentativeDiscard() const
     {
         return m_tentativeDiscard;
