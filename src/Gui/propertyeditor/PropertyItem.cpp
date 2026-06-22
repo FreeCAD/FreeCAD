@@ -4976,14 +4976,12 @@ QString PropertyMapItem::toString(const QVariant& prop) const
     QString result("");
     QVariantMap map = prop.toMap();
 
-    size_t size = map.size();
-    if (size > 10) {
-        size = 10;
-    }
+    auto total = map.size();
+    auto shown = std::min<decltype(total)>(total, 10);
 
     result += QStringLiteral("{ ");
     auto it = map.keyValueBegin();
-    for (size_t i = 0; i < size; i++, it++) {
+    for (size_t i = 0; i < shown; i++, it++) {
         if (i > 0) {
             result += QStringLiteral(" | ");
         }
@@ -4992,7 +4990,7 @@ QString PropertyMapItem::toString(const QVariant& prop) const
         result += it->second.toString();
     }
 
-    if (it != map.keyValueEnd()) {
+    if (shown < total) {
         result += QStringLiteral(" …");
     }
     result += QStringLiteral(" }");

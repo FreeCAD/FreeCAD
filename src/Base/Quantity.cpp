@@ -336,11 +336,6 @@ void Quantity::setInvalid()
     myValue = std::numeric_limits<double>::quiet_NaN();
 }
 
-bool Quantity::isFinite() const
-{
-    return std::isfinite(myValue);
-}
-
 // === Predefined types =====================================================
 // clang-format off
 using namespace Base::UnitsConvData;

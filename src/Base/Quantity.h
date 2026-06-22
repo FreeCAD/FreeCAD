@@ -198,8 +198,6 @@ public:
     bool isValid() const;
     /// sets the quantity invalid
     void setInvalid();
-    /// true if it holds a valid finite value (not +/- Infinity or NaN)
-    bool isFinite() const;
 
     /** Predefined Unit types. */
     //@{

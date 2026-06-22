@@ -575,24 +575,12 @@ std::string anyToString(const App::any &value) {
         return std::to_string(cast<long>(value));
     }
     else if (is_type(value, typeid(float)) || is_type(value, typeid(double))) {
-        double d = is_type(value, typeid(float)) ? cast<float>(value) : cast<double>(value);
-        if (std::isnan(d)) {
-            return QObject::tr("Not a Number").toStdString();
-        } else if (std::isinf(d)) {
-            return ((d < 0.0 ? "-" : "") + QObject::tr("Infinity")).toStdString();
-        } else {
-            return std::to_string(d);
-        }
+        Quantity q(is_type(value, typeid(float)) ? cast<float>(value) : cast<double>(value));
+        return q.getUserString();
     }
     else if (is_type(value, typeid(Quantity))) {
         const Quantity& q = cast<Quantity>(value);
-        if (!q.isValid()) {
-            return QObject::tr("Not a Number").toStdString();
-        } else if (!q.isFinite()) {
-            return ((q.getValue() < 0.0 ? "-" : "") + QObject::tr("Infinity")).toStdString();
-        } else {
-            return q.getUserString();
-        }
+        return q.getUserString();
     }
     else if (is_type(value, typeid(const char*))) {
         const char* p = cast<const char*>(value);
