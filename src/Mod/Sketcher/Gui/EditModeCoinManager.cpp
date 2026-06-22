@@ -1543,6 +1543,13 @@ void EditModeCoinManager::createEditModeInventorNodes()
 
     editModeScenegraphNodes.RootCrossCoordinate = new SoCoordinate3;
     editModeScenegraphNodes.RootCrossCoordinate->setName("RootCrossCoordinate");
+    // The cross is two lines (H and V axes); RootCrossSet->numVertices is set to {2, 2}
+    // in EditModeGeometryCoinManager, i.e. 4 coordinates. updateAxesLength() fills the
+    // real positions later, but it runs from a camera-update handler, not before the
+    // first render. Pre-size the coordinate buffer to 4 so the line set can never read
+    // past it (a fresh SoCoordinate3 holds a single default point), which otherwise
+    // causes an out-of-bounds read in SoLineSet::GLRender on entering edit mode.
+    editModeScenegraphNodes.RootCrossCoordinate->point.setNum(4);
     crossRoot->addChild(editModeScenegraphNodes.RootCrossCoordinate);
 
     editModeScenegraphNodes.RootCrossSet = new SoLineSet;
