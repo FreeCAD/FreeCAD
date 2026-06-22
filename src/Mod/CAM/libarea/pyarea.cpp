@@ -86,6 +86,21 @@ static double get_accuracy()
     return CArea::get_accuracy();
 }
 
+static void set_accuracy(double accuracy)
+{
+    CArea::set_accuracy(accuracy);
+}
+
+static double get_clipper_scale()
+{
+    return CArea::get_clipper_scale();
+}
+
+static void set_clipper_scale(double scale)
+{
+    CArea::set_clipper_scale(scale);
+}
+
 static CArea copy_area(const CArea& area)
 {
     CArea copy;
@@ -297,6 +312,9 @@ void init_pyarea(py::module& m)
         .def("TestIntersectOpenPathReversal", &CArea::TestIntersectOpenPathReversal);
 
     m.def("get_accuracy", get_accuracy);
+    m.def("set_accuracy", set_accuracy);
+    m.def("get_clipper_scale", get_clipper_scale);
+    m.def("set_clipper_scale", set_clipper_scale);
     m.def("copy_area", copy_area);
     m.def("holes_linked", holes_linked);
 
