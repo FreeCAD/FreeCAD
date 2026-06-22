@@ -5559,6 +5559,48 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     if (!selected && !item->selected) {
         return;
     }
+    auto computeObjAndSubname =
+        [](DocumentObjectItem* treeItem, App::DocumentObject*& outObj, std::string& outSubname) {
+            std::ostringstream str;
+            App::DocumentObject* topParent = nullptr;
+            treeItem->getSubName(str, topParent);
+            if (topParent) {
+                if (!outObj->redirectSubName(str, topParent, nullptr)) {
+                    str << outObj->getNameInDocument() << '.';
+                }
+                outObj = topParent;
+            }
+            outSubname = str.str();
+        };
+
+    // do not select the entire object if only a sub-element is
+    // selected ie. see https://github.com/freecad/freecad/issues/30161
+    // it's not the user's intent to select the whole object
+    // when selecting additional items via the tree menu
+    if (selected) {
+        auto guardObj = item->object()->getObject();
+        if (guardObj && guardObj->isAttachedToDocument()) {
+            // compute this item's full subname ie. matching what would be pushed below
+            std::string guardSubname;
+            computeObjAndSubname(item, guardObj, guardSubname);
+            const char* docname = guardObj->getDocument()->getName();
+
+            // Look for any existing selection entry on the same (object, subname-prefix)
+            // that carries an additional sub-element. If found, this Qt item is selected
+            // only as a visual reflection of the sub-element selection — don't re-push
+            // it as a whole-object selection. See #30161.
+            for (const auto& sel : Gui::Selection().getSelection(docname, ResolveMode::NoResolve)) {
+                if (sel.pObject != guardObj || !sel.SubName) {
+                    continue;
+                }
+                std::string_view existing(sel.SubName);
+                if (existing.starts_with(guardSubname) && existing.size() > guardSubname.size()) {
+                    return;
+                }
+            }
+        }
+    }
+
     if (item->selected != -1) {
         item->mySubs.clear();
     }
@@ -5569,18 +5611,10 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
         return;
     }
 
-    std::ostringstream str;
-    App::DocumentObject* topParent = nullptr;
-    item->getSubName(str, topParent);
-    if (topParent) {
-        if (!obj->redirectSubName(str, topParent, nullptr)) {
-            str << obj->getNameInDocument() << '.';
-        }
-        obj = topParent;
-    }
+    std::string subname;
+    computeObjAndSubname(item, obj, subname);
     const char* objname = obj->getNameInDocument();
     const char* docname = obj->getDocument()->getName();
-    const auto& subname = str.str();
 
 #ifdef FC_DEBUG
     if (!subname.empty()) {
@@ -5600,18 +5634,10 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
                     continue;
                 }
 
-                std::ostringstream str2;
-                App::DocumentObject* topParent2 = nullptr;
-                docitem->getSubName(str2, topParent2);
+                std::string subname2;
+                computeObjAndSubname(docitem, obj2, subname2);
 
-                if (topParent2) {
-                    if (!obj2->redirectSubName(str2, topParent2, nullptr)) {
-                        str2 << obj2->getNameInDocument() << '.';
-                    }
-                    obj2 = topParent2;
-                }
-
-                if (obj2 == obj && str2.str() == subname) {
+                if (obj2 == obj && subname2 == subname) {
                     keep = true;
                     break;
                 }
