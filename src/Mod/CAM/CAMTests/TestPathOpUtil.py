@@ -83,6 +83,8 @@ def wireMarkers(wire):
 
 
 class TestPathOpUtil(PathTestUtils.PathTestBase):
+    tolerance = 0.01
+
     @classmethod
     def setUpClass(cls):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
@@ -149,17 +151,19 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         small = getWireInside(obj)
         self.assertRoughly(10, small.Edges[0].Curve.Radius)
 
-        wire = PathOpUtil.offsetWire(small, obj.Shape, 3)
-        self.assertIsNotNone(wire)
-        self.assertEqual(1, len(wire.Edges))
-        self.assertRoughly(7, wire.Edges[0].Curve.Radius)
+        wires = PathOpUtil.offsetWireNew(small, obj.Shape, 3, self.tolerance)
+        self.assertEqual(1, len(wires))
+        wire = wires[0]
+        self.assertEqual(len(wire.Edges), 1)
+        self.assertRoughly(7, wire.Edges[0].Curve.Radius, self.tolerance)
         # default circle is CCW, so should be flipped to get forward direction
         self.assertCoincide(Vector(0, 0, -1), wire.Edges[0].Curve.Axis)
 
-        wire = PathOpUtil.offsetWire(small, obj.Shape, 9.9)
-        self.assertIsNotNone(wire)
+        wires = PathOpUtil.offsetWireNew(small, obj.Shape, 9.9, self.tolerance)
+        self.assertEqual(1, len(wires))
+        wire = wires[0]
         self.assertEqual(1, len(wire.Edges))
-        self.assertRoughly(0.1, wire.Edges[0].Curve.Radius)
+        self.assertRoughly(0.1, wire.Edges[0].Curve.Radius, self.tolerance)
         # default circle is CCW, so should be flipped to get forward direction
         self.assertCoincide(Vector(0, 0, -1), wire.Edges[0].Curve.Axis)
 

@@ -27,6 +27,7 @@ import Path
 import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 import math
+import area
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -225,6 +226,208 @@ def approximateWire(wire, tolerance=0.01):
     if modified:
         return Part.Wire(Part.__sortEdges__(processed_edges))
     return wire
+
+
+def wireToCArea(wire, tolerance=0.01):
+    """wireToCArea(wire) ... converts a FreeCAD wire to a Clipper Area representation.
+
+    Parameters:
+        wire: Part.Wire to convert
+
+    Returns:
+        area.Area object containing a single curve representing the wire's geometry
+    """
+    a = area.Area()
+    c = area.Curve()
+
+    # Approximate wire as lines and arcs, sorted
+    wire = approximateWire(wire, tolerance)
+    edges = Part.__sortEdges__(wire.Edges)
+
+    # Add the first point (start of first edge)
+    if len(edges) > 0:
+        first_point = edges[0].firstVertex().Point
+        c.append(area.Vertex(area.Point(first_point.x, first_point.y)))
+
+    # Process each edge, adding its endpoint
+    for edge in edges:
+        curve = edge.Curve
+        p1 = edge.lastVertex().Point
+
+        if isinstance(curve, (Part.Line, Part.LineSegment)):
+            # Add endpoint as straight line vertex
+            c.append(area.Vertex(area.Point(p1.x, p1.y)))
+
+        elif isinstance(curve, Part.Circle):
+            center = curve.Center
+            direction = -1 if curve.Axis.z < 0 else 1
+
+            # Check if this is a full circle (start == end)
+            if Path.Geom.pointsCoincide(p0, p1):
+                # Full circle - split into two semicircles
+                # Find the midpoint opposite the start point
+                radius = curve.Radius
+                mid_x = center.x - (p0.x - center.x)
+                mid_y = center.y - (p0.y - center.y)
+                midpoint = FreeCAD.Vector(mid_x, mid_y, p0.z)
+
+                c.append(
+                    area.Vertex(
+                        direction,
+                        area.Point(midpoint.x, midpoint.y),
+                        area.Point(center.x, center.y),
+                    )
+                )
+
+                c.append(
+                    area.Vertex(direction, area.Point(p1.x, p1.y), area.Point(center.x, center.y))
+                )
+            else:
+                # Regular arc - add as single vertex
+                c.append(
+                    area.Vertex(direction, area.Point(p1.x, p1.y), area.Point(center.x, center.y))
+                )
+        else:
+            raise ValueError(f"Unsupported curve type: {type(curve).__name__}")
+
+    a.append(c)
+    return a
+
+
+def cAreaToWires(carea, z=0.0, tolerance=0.01):
+    """cAreaToWires(carea, z, tolerance) ... converts a Clipper Area to FreeCAD wires.
+
+    Parameters:
+        carea: area.Area object to convert
+        z: Z-coordinate for the wires (default: 0.0)
+        tolerance: Tolerance to set on vertices (default: 0.01)
+
+    Returns:
+        list of Part.Wire objects
+    """
+    wires = []
+
+    # Get clipper scale for line segment tolerance
+    line_tolerance = math.sqrt(2) / area.get_clipper_scale()
+
+    # Process each curve in the area
+    for curve in carea.getCurves():
+        edges = []
+        vertices = curve.getVertices()
+
+        if len(vertices) < 2:
+            continue
+
+        # Process each segment
+        v0 = None
+        for i in range(len(vertices)):
+            v1 = vertices[i]
+            if v0 is None:
+                v0 = v1
+                continue
+
+            p0 = FreeCAD.Vector(v0.p.x, v0.p.y, z)
+            p1 = FreeCAD.Vector(v1.p.x, v1.p.y, z)
+
+            if v1.type == 0:
+                # Straight line segment
+                edge = Part.LineSegment(p0, p1).toShape()
+                # Set tolerance on line segment vertices
+                for vertex in edge.Vertexes:
+                    vertex.Tolerance = line_tolerance
+                edges.append(edge)
+            else:
+                # Arc: type == 1 for CCW, type == -1 for CW
+                center = FreeCAD.Vector(v1.c.x, v1.c.y, z)
+                if i + 1 < len(vertices):
+                    v2 = vertices[i + 1]
+                    if v2.type == v1.type and v2.c.x == v1.c.x and v2.c.y == v1.c.y:
+                        # merge arcs of the same circle and same direction
+                        continue
+
+                radius = (p0 - center).Length
+
+                # Create axis direction: CCW uses +Z, CW uses -Z
+                axis = FreeCAD.Vector(0, 0, 1 if v1.type == 1 else -1)
+
+                # Calculate angles for the arc
+                angle0 = math.atan2(p0.y - center.y, p0.x - center.x)
+                angle1 = math.atan2(p1.y - center.y, p1.x - center.x)
+
+                # Adjust angle1 to agree with arc direction
+                if v1.type == 1:  # CCW: want angle1 > angle0
+                    while angle1 <= angle0:
+                        angle1 += 2 * math.pi
+                else:  # CW: want angle1 < angle0
+                    while angle1 >= angle0:
+                        angle1 -= 2 * math.pi
+
+                # Create circle with center, axis, and radius, then extract arc
+                circle = Part.Circle(center, axis, radius)
+                edge = Part.ArcOfCircle(circle, angle0, angle1).toShape()
+
+                # Set tolerance on arc vertices
+                for vertex in edge.Vertexes:
+                    vertex.Tolerance = tolerance
+
+                result_center = edge.Curve.Center
+                edge_p0 = edge.firstVertex().Point
+                edge_p1 = edge.lastVertex().Point
+                edges.append(edge)
+
+            v0 = v1
+
+        if edges:
+            wire = Part.Wire(edges)
+            wires.append(wire)
+
+    return wires
+
+
+def offsetWireNew(wire, base, offset, tolerance=0.01):
+    """offsetWireNew ... offsets the wire away from base using Clipper library.
+    This is an alternative implementation to offsetWire that uses the Clipper library.
+    tolerance: Deflection tolerance for discretization. Must be positive
+    """
+    # Store original accuracy and set to tolerance/10 for better precision
+    original_accuracy = area.get_accuracy()
+    try:
+        area.set_accuracy(min(original_accuracy, tolerance))
+
+        # Convert wire to Clipper Area (approximation done inside)
+        carea = wireToCArea(wire, tolerance)
+
+        # Save a copy of the original carea in case we need to offset in the other direction
+        carea_original = area.copy_area(carea)
+
+        # Try offsetting outward (positive offset expands the shape)
+        carea.Offset(offset)
+
+        # Convert back to FreeCAD wires
+        z_coord = wire.Edges[0].Vertexes[0].Point.z
+        result_wires = cAreaToWires(carea, z_coord, tolerance)
+
+        if not result_wires:
+            return []
+
+        # Check if the offset went in the right direction
+        # This test is copied from the original offsetWire implementation; it's a bit brittle
+        test_point = result_wires[0].Edges[0].Vertexes[0].Point
+        is_inside = base.isInside(test_point, offset / 2, True)
+
+        if is_inside:
+            # Offset went the wrong way - use original carea and offset in opposite direction
+            carea = carea_original
+            carea.Offset(-offset)
+            result_wires = cAreaToWires(carea, z_coord, tolerance)
+            result_wires = [Path.Geom.flipWire(w) for w in result_wires]
+
+        # Return all wires, oriented appropriately
+        # For inside wires (holes), orientation is reversed
+        return result_wires
+    finally:
+        # Restore original accuracy
+        area.set_accuracy(original_accuracy)
 
 
 def offsetWire(wire, base, offset, tolerance=0.01):
