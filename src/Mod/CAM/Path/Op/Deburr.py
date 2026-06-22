@@ -379,7 +379,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             for w in basewires:
                 self.adjusted_basewires.append(w)
                 wire = PathOpUtil.offsetWire(
-                    w, base.Shape, offset, True, side, self.job.GeometryTolerance.Value
+                    w, base.Shape, offset, side, self.job.GeometryTolerance.Value
                 )
                 if wire:
                     wires.append(wire)

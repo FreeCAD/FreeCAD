@@ -227,7 +227,7 @@ def approximateWire(wire, tolerance=0.01):
     return wire
 
 
-def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
+def offsetWire(wire, base, offset, Side=None, tolerance=0.01):
     """offsetWire ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
@@ -247,7 +247,7 @@ def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
             # it's easy to construct them manually though
             center = curve.Center
             radius = curve.Radius
-            axis = FreeCAD.Vector(0, 0, -1) if forward else FreeCAD.Vector(0, 0, 1)
+            axis = FreeCAD.Vector(0, 0, -1)
             checkSidePoint = FreeCAD.Vector(center.x + radius + tolerance * 2, center.y, center.z)
             if base.isInside(checkSidePoint, tolerance, True):
                 if offset > radius or Path.Geom.isRoughly(offset, radius):
@@ -305,9 +305,8 @@ def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
 
             arc = Part.ArcOfCircle(circle, start_angle, end_angle)
             edge = arc.toShape()
-            if forward:
-                # default arc is CCW, so edge should be flipped to get forward direction
-                edge = Path.Geom.flipEdge(edge)
+            # default arc is CCW, so edge should be flipped to get forward direction
+            edge = Path.Geom.flipEdge(edge)
 
             return Part.Wire([edge])
 
@@ -330,11 +329,10 @@ def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
                 edge.translate(-2 * o)
 
             # flip the edge if it's not on the right side of the original edge
-            if forward is not None:
-                v1 = edge.Vertexes[1].Point - p0
-                left = Path.Geom.Side.Left == Path.Geom.Side.of(v0, v1)
-                if left != forward:
-                    edge = Path.Geom.flipEdge(edge)
+            v1 = edge.Vertexes[1].Point - p0
+            left = Path.Geom.Side.Left == Path.Geom.Side.of(v0, v1)
+            if not left:
+                edge = Path.Geom.flipEdge(edge)
             return Part.Wire([edge])
 
         # if we get to this point the assumption is that makeOffset2D can deal with the edge
@@ -347,7 +345,7 @@ def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
             Path.Log.track("closed - outside")
             if Side:
                 Side[0] = "Outside"
-            return orientWire(owire, forward)
+            return orientWire(owire)
         Path.Log.track("closed - inside")
         if Side:
             Side[0] = "Inside"
@@ -358,9 +356,7 @@ def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
             # and the offset is too big - making the hole vanish
             return None
         # For negative offsets (holes) 'forward' is the other way
-        if forward is None:
-            return orientWire(owire, None)
-        return orientWire(owire, not forward)
+        return orientWire(owire, False)
 
     # An edge is considered to be inside of shape if the mid point is inside
     # Of the remaining edges we take the longest wire to be the engraving side
@@ -460,18 +456,12 @@ def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
                 if Path.Geom.edgesMatch(e, e0):
                     edges = rightSideEdges
                     Path.Log.debug("#use right side edges")
-                    if not forward:
-                        Path.Log.debug("#reverse")
-                        edges.reverse()
                     return orientWire(Part.Wire(edges), None)
 
     # at this point we have the correct edges and they are in the order for forward
-    # traversal (climb milling). If that's not what we want just reverse the order,
+    # traversal (climb milling).
     # orientWire takes care of orienting the edges appropriately.
     Path.Log.debug("#use left side edges")
-    if not forward:
-        Path.Log.debug("#reverse")
-        edges.reverse()
 
     return orientWire(Part.Wire(edges), None)
 
