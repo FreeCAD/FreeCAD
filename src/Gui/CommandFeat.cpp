@@ -254,11 +254,11 @@ void StdCmdToggleSuppress::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
+    auto sels = Gui::Selection().getCompleteSelection();
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Toggle suppress"));
-    for (Gui::SelectionSingleton::SelObj& sel : sels) {
-        if (App::DocumentObject* obj = sel.pObject) {
+    for (auto& sel : sels) {
+        if (auto* obj = sel.pObject) {
             if (auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true)) {
                 if (ext && !ext->Suppressed.testStatus(App::Property::Hidden)) {
                     ext->Suppressed.setValue(!ext->Suppressed.getValue());
@@ -271,17 +271,16 @@ void StdCmdToggleSuppress::activated(int iMsg)
 
 bool StdCmdToggleSuppress::isActive()
 {
-    std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
-    for (Gui::SelectionSingleton::SelObj& sel : sels) {
-        if (App::DocumentObject* obj = sel.pObject) {
-            if (auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true)) {
-                if (ext && !ext->Suppressed.testStatus(App::Property::Hidden)) {
-                    return true;
-                }
-            }
+    auto sels = Gui::Selection().getCompleteSelection();
+    return std::any_of(sels.begin(), sels.end(), [](const auto& sel) {
+        auto* obj = sel.pObject;
+        if (!obj) {
+            return false;
         }
-    }
-    return false;
+
+        auto ext = obj->template getExtensionByType<App::SuppressibleExtension>(true);
+        return ext && !ext->Suppressed.testStatus(App::Property::Hidden);
+    });
 }
 
 
