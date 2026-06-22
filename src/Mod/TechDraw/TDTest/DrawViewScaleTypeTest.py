@@ -19,10 +19,6 @@ class DrawViewScaleTypeTest(unittest.TestCase):
     def setUp(self):
         self.document = FreeCAD.newDocument("TDScaleType")
         self.page = createPageWithSVGTemplate(self.document)
-        # A page scale other than the view's default Scale of 1.0 is what makes a
-        # missing Scale sync observable: validateScale() on reload compares the
-        # stored Scale against the page scale and downgrades Page -> Custom on a
-        # mismatch.
         self.page.Scale = 0.05
         self.savedFile = None
 
@@ -38,9 +34,6 @@ class DrawViewScaleTypeTest(unittest.TestCase):
         with codecs.open(path + "/TestSymbol.svg", "r", encoding="utf-8") as f:
             sym.Symbol = f.read()
         self.page.addView(sym)
-        # DrawViewSymbol (like DraftView / ArchView) defaults ScaleType to Custom,
-        # so checkScale() at addView() leaves the stored Scale untouched. Switching
-        # to Page is the path that must sync the stored Scale to the page scale.
         sym.ScaleType = "Page"
         return sym
 

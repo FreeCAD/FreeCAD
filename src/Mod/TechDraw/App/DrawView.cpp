@@ -198,11 +198,6 @@ void DrawView::onChanged(const App::Property* prop)
         }
         if (ScaleType.isValue("Page")) {
             Scale.setStatus(App::Property::ReadOnly, true);
-            // Compare the raw Scale property, not getScale(): while ScaleType is
-            // "Page" getScale() already returns page->Scale, so the test compared
-            // the page scale to itself and never wrote it to the stored Scale. The
-            // stale value then made validateScale() flip back to Custom on reload
-            // for views (Draft/Arch) that default ScaleType to Custom (#30186).
             if (std::abs(page->Scale.getValue() - Scale.getValue())
                 > std::numeric_limits<float>::epsilon()) {
                 Scale.setValue(page->Scale.getValue());
