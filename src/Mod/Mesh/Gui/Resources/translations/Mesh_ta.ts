@@ -2264,8 +2264,8 @@ Visit https://openscad.org/ to install it.</source>
       <translation>காட்சி நிறங்கள்</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
       <source>Leave Info Mode</source>
       <translation>செய்தி பயன்முறையை விட்டு வெளியேறவும்</translation>
     </message>

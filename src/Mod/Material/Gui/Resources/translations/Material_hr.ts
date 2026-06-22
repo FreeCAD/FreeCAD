@@ -1197,14 +1197,14 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="567"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>Potvrdite Brisanje</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="144"/>
       <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
       <translation>Izbriši redak?</translation>
     </message>

@@ -3175,11 +3175,11 @@ valittuun suuntaan</translation>
       <translation>Asiakirjassa ei ole soveltuvaa tasomuotoa</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../ViewProvider.cpp" line="137"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
-      <location filename="../../Command.cpp" line="1142"/>
       <location filename="../../SketchWorkflow.cpp" line="761"/>
+      <location filename="../../Command.cpp" line="1142"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProvider.cpp" line="137"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Valintaikkuna on jo avoinna tehtäväpaneelissa</translation>
     </message>
@@ -3229,11 +3229,11 @@ valittuun suuntaan</translation>
       <translation type="unfinished">Select only one feature in an active body.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../ViewProvider.cpp" line="138"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
-      <location filename="../../Command.cpp" line="1143"/>
       <location filename="../../SketchWorkflow.cpp" line="762"/>
+      <location filename="../../Command.cpp" line="1143"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProvider.cpp" line="138"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
@@ -3461,14 +3461,14 @@ Tämä voi johtaa odottamattomiin tuloksiin.</translation>
       <translation>Vähentävää ominaisuutta ei voi tehdä ilman käytössä olevaa perusominaisuutta</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
       <source>Vertical sketch axis</source>
       <translation>Pystysuuntaisen luonnoksen akseli</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="440"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="440"/>
       <source>Horizontal sketch axis</source>
       <translation>Vaakasuuntaisen luonnoksen akseli</translation>
     </message>
@@ -3523,8 +3523,8 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
       <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>Muokkaa %1</translation>
@@ -4422,12 +4422,12 @@ over 90: larger hole radius at the bottom</translation>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="405"/>
+      <location filename="../../../App/Body.cpp" line="406"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation type="unfinished">Linked object is not a PartDesign feature</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="414"/>
+      <location filename="../../../App/Body.cpp" line="415"/>
       <source>Tip shape is empty</source>
       <translation type="unfinished">Tip shape is empty</translation>
     </message>
@@ -4462,23 +4462,23 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Cannot do boolean operation with invalid base shape</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
       <location filename="../../../App/FeatureLoft.cpp" line="333"/>
       <location filename="../../../App/FeatureLoft.cpp" line="377"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="142"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
       <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4513,9 +4513,9 @@ over 90: larger hole radius at the bottom</translation>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureLoft.cpp" line="370"/>
       <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="370"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <source>Resulting shape is not a solid</source>
       <translation>Lopputulos ei ole kiinteä objekti</translation>
@@ -4659,9 +4659,9 @@ Intersecting sketch entities in a sketch are not allowed.</translation>
       <translation type="unfinished">Error: Face must be planar</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
       <source>Error: Result is not a solid</source>
       <translation type="unfinished">Error: Result is not a solid</translation>
     </message>
@@ -4814,8 +4814,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation type="unfinished">Loft: Creating a face from sketch failed</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <location filename="../../../App/FeatureLoft.cpp" line="303"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <source>Loft: Failed to create shell</source>
       <translation type="unfinished">Loft: Failed to create shell</translation>
     </message>
@@ -4922,14 +4922,14 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
       <translation type="unfinished">Cannot subtract primitive feature without base feature</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="125"/>
       <source>Unknown operation type</source>
       <translation type="unfinished">Unknown operation type</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <location filename="../../../App/FeatureLoft.cpp" line="363"/>
+      <location filename="../../../App/FeaturePrimitive.cpp" line="133"/>
       <source>Failed to perform boolean operation</source>
       <translation type="unfinished">Failed to perform boolean operation</translation>
     </message>
@@ -5433,6 +5433,14 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</tra
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Virhe syötetyissä tiedoissa</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -5455,14 +5463,6 @@ Adjust the parameters and try again.</source>
       <translation type="unfinished">The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Adjust the parameters and try again.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Virhe syötetyissä tiedoissa</translation>
     </message>
   </context>
 </TS>

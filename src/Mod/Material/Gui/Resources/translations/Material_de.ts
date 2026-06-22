@@ -1196,14 +1196,14 @@ Wenn deaktiviert, werden sie nach ihrem Namen sortiert.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="567"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>Löschen bestätigen</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="144"/>
       <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
       <translation>Zeile löschen?</translation>
     </message>

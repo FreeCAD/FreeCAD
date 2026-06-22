@@ -1140,7 +1140,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="689"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>关节</translation>
     </message>
@@ -1369,12 +1369,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="150"/>
       <source>Slider Joint</source>
-      <translation>滑块连接</translation>
+      <translation>滑块配合</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="155"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
-      <translation>创建滑块配合，允许所选零件之间沿单轴线移动，但它们之间的旋转</translation>
+      <translation>创建滑块配合，允许所选零件之间沿单轴线移动，但限制它们之间的旋转</translation>
     </message>
   </context>
   <context>
