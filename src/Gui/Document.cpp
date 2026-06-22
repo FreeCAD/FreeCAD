@@ -539,6 +539,7 @@ Document::Document(App::Document* pcDocument, Application* app)
         "User parameter:BaseApp/Preferences/Document"
     );
 
+    d->_pcDocument->setMaxUndoStackSize(hGrp->GetInt("MaxUndoSize", 20));
     d->_changeViewTouchDocument = hGrp->GetBool("ChangeViewProviderTouchDocument", true);
 }
 
