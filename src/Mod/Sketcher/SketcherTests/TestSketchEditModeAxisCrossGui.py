@@ -81,9 +81,7 @@ class SketchEditModeAxisCrossTest(unittest.TestCase):
         view = FreeCADGui.ActiveDocument.ActiveView
         root = view.getViewer().getSceneGraph()
 
-        line_set = _find_node_by_name(
-            root, coin.SoLineSet.getClassTypeId(), "RootCrossLineSet"
-        )
+        line_set = _find_node_by_name(root, coin.SoLineSet.getClassTypeId(), "RootCrossLineSet")
         coordinate = _find_node_by_name(
             root, coin.SoCoordinate3.getClassTypeId(), "RootCrossCoordinate"
         )
