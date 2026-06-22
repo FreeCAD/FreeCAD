@@ -30,6 +30,13 @@ using namespace Base;
 
 ParameterObserver::ParameterObserver() = default;
 
+ParameterObserver::~ParameterObserver()
+{
+    if (handle) {
+        handle->Detach(this);
+    }
+}
+
 void ParameterObserver::attachToParameter(ParameterGrp::handle parameter)
 {
     handle = parameter;

@@ -244,6 +244,7 @@ private:
 
 protected:
     ParameterObserver();
+    ~ParameterObserver() override;
 
     void attachToParameter(ParameterGrp::handle parameter);
     ParameterGrp::handle getHandle() const
