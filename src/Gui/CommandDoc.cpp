@@ -1506,11 +1506,7 @@ bool isActivePartDesignBodyContext(App::DocumentObject* context)
 
     App::DocumentObject* activeParent = nullptr;
     std::string activeSubName;
-    if (!activeView->getActiveObject<App::DocumentObject*>(
-            PDBODYKEY,
-            &activeParent,
-            &activeSubName
-        )) {
+    if (!activeView->getActiveObject<App::DocumentObject*>(PDBODYKEY, &activeParent, &activeSubName)) {
         return false;
     }
 
