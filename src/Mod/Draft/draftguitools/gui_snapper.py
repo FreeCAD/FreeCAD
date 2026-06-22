@@ -58,7 +58,6 @@ from draftgeoutils import intersections as geo_intersections
 from draftguitools import gui_trackers as trackers
 from draftutils import gui_utils
 from draftutils import params
-from draftutils import todo
 from draftutils import utils
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _wrn
