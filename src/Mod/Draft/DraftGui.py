@@ -855,6 +855,7 @@ class DraftToolBar:
         task.setAutoCloseOnDeletedDocument(True)
 
     def taskUi(self, title="Draft", extra=None, icon="Draft_Draft"):
+        self._locks.dispose()
         # reset InputField values
         self.reset_ui_values()
         self.isTaskOn = True
@@ -1096,6 +1097,7 @@ class DraftToolBar:
         todo.delay(self.setFocus, "radius")
 
     def offUi(self):
+        self._locks.dispose()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.clearPointConstraintProvider(self)
         todo.delay(FreeCADGui.Control.closeDialog, None)

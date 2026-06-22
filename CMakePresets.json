@@ -83,6 +83,10 @@
             "type": "BOOL",
             "value": "ON"
           },
+          "FREECAD_USE_EXTERNAL_JSON": {
+            "type": "BOOL",
+            "value": "ON"
+          },
           "FREECAD_USE_PCH": {
             "type": "BOOL",
             "value": "OFF"

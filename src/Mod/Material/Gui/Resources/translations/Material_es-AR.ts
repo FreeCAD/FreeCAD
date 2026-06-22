@@ -1196,14 +1196,14 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="567"/>
-      <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>Confirmar eliminación</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="144"/>
       <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
       <translation>¿Eliminar la fila?</translation>
     </message>
