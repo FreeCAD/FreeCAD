@@ -958,6 +958,173 @@ bool StdCmdDrawStyle::isActive()
 }
 
 //===========================================================================
+// Std_SelectionMode
+//===========================================================================
+class StdCmdSelectionMode: public Gui::Command
+{
+public:
+    StdCmdSelectionMode();
+    ~StdCmdSelectionMode() override = default;
+    void languageChange() override;
+    const char* className() const override
+    {
+        return "StdCmdSelectionMode";
+    }
+
+protected:
+    void activated(int iMsg) override;
+    bool isActive() override;
+    Gui::Action* createAction() override;
+};
+
+namespace
+{
+
+SelectionFilterMode selectionFilterModeFromIndex(int index)
+{
+    switch (index) {
+        case 1:
+            return SelectionFilterMode::Object;
+        case 2:
+            return SelectionFilterMode::Vertex;
+        case 3:
+            return SelectionFilterMode::Edge;
+        case 4:
+            return SelectionFilterMode::Face;
+        case 0:
+        default:
+            return SelectionFilterMode::Any;
+    }
+}
+
+int indexFromSelectionFilterMode(SelectionFilterMode mode)
+{
+    switch (mode) {
+        case SelectionFilterMode::Object:
+            return 1;
+        case SelectionFilterMode::Vertex:
+            return 2;
+        case SelectionFilterMode::Edge:
+            return 3;
+        case SelectionFilterMode::Face:
+            return 4;
+        case SelectionFilterMode::Any:
+        default:
+            return 0;
+    }
+}
+
+}  // namespace
+
+StdCmdSelectionMode::StdCmdSelectionMode()
+    : Command("Std_SelectionMode")
+{
+    sGroup = "Standard-View";
+    sMenuText = QT_TR_NOOP("Selection Mode");
+    sToolTipText = QT_TR_NOOP("Changes the selection mode");
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Std_SelectionMode";
+    sPixmap = "clear-selection";
+    eType = AlterSelection;
+}
+
+Gui::Action* StdCmdSelectionMode::createAction()
+{
+    auto pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    pcAction->setIsMode(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* any = pcAction->addAction(QString());
+    any->setCheckable(true);
+    any->setIcon(BitmapFactory().iconFromTheme("clear-selection"));
+    any->setObjectName(QStringLiteral("Std_SelectionModeAny"));
+    any->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+
+    QAction* object = pcAction->addAction(QString());
+    object->setCheckable(true);
+    object->setIcon(BitmapFactory().iconFromTheme("Feature"));
+    object->setObjectName(QStringLiteral("Std_SelectionModeObject"));
+    object->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+
+    QAction* vertex = pcAction->addAction(QString());
+    vertex->setCheckable(true);
+    vertex->setIcon(BitmapFactory().iconFromTheme("vertex-selection"));
+    vertex->setObjectName(QStringLiteral("Std_SelectionModeVertex"));
+    vertex->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+
+    QAction* edge = pcAction->addAction(QString());
+    edge->setCheckable(true);
+    edge->setIcon(BitmapFactory().iconFromTheme("edge-selection"));
+    edge->setObjectName(QStringLiteral("Std_SelectionModeEdge"));
+    edge->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+
+    QAction* face = pcAction->addAction(QString());
+    face->setCheckable(true);
+    face->setIcon(BitmapFactory().iconFromTheme("face-selection"));
+    face->setObjectName(QStringLiteral("Std_SelectionModeFace"));
+    face->setWhatsThis(QString::fromLatin1(getWhatsThis()));
+
+    pcAction->setCheckedAction(indexFromSelectionFilterMode(Selection().getSelectionFilterMode()));
+    _pcAction = pcAction;
+    languageChange();
+    return pcAction;
+}
+
+void StdCmdSelectionMode::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction) {
+        return;
+    }
+
+    auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> actions = pcAction->actions();
+    if (actions.size() < 5) {
+        return;
+    }
+
+    actions[0]->setText(QCoreApplication::translate("Std_SelectionMode", "Any"));
+    actions[0]->setToolTip(QCoreApplication::translate("Std_SelectionMode", "Allow any selection"));
+
+    actions[1]->setText(QCoreApplication::translate("Std_SelectionMode", "Object"));
+    actions[1]->setToolTip(QCoreApplication::translate("Std_SelectionMode", "Only select objects"));
+
+    actions[2]->setText(QCoreApplication::translate("Std_SelectionMode", "Vertex"));
+    actions[2]->setToolTip(QCoreApplication::translate("Std_SelectionMode", "Only select vertices"));
+
+    actions[3]->setText(QCoreApplication::translate("Std_SelectionMode", "Edge"));
+    actions[3]->setToolTip(QCoreApplication::translate("Std_SelectionMode", "Only select edges"));
+
+    actions[4]->setText(QCoreApplication::translate("Std_SelectionMode", "Face"));
+    actions[4]->setToolTip(QCoreApplication::translate("Std_SelectionMode", "Only select faces"));
+}
+
+void StdCmdSelectionMode::activated(int iMsg)
+{
+    if (iMsg < 0 || iMsg > 4) {
+        iMsg = 0;
+    }
+
+    Selection().setSelectionFilterMode(selectionFilterModeFromIndex(iMsg));
+
+    if (auto actionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction)) {
+        actionGroup->setCheckedAction(iMsg);
+    }
+}
+
+bool StdCmdSelectionMode::isActive()
+{
+    if (auto actionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction)) {
+        actionGroup->setCheckedAction(
+            indexFromSelectionFilterMode(Selection().getSelectionFilterMode())
+        );
+    }
+    return Gui::Application::Instance->activeDocument();
+}
+
+//===========================================================================
 // Std_ToggleVisibility
 //===========================================================================
 DEF_STD_CMD_A(StdCmdToggleVisibility)
@@ -4300,6 +4467,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdPerspectiveCamera());
     rcCmdMgr.addCommand(new StdCmdToggleClipPlane());
     rcCmdMgr.addCommand(new StdCmdDrawStyle());
+    rcCmdMgr.addCommand(new StdCmdSelectionMode());
     rcCmdMgr.addCommand(new StdCmdViewSaveCamera());
     rcCmdMgr.addCommand(new StdCmdViewRestoreCamera());
     rcCmdMgr.addCommand(new StdCmdFreezeViews());
