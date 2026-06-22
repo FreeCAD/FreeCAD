@@ -441,7 +441,7 @@ void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag
         Base::Vector3d basepos = obj->BasePosition.getValue();
         Base::Vector3d textpos = obj->TextPosition.getValue();
 
-        SbVec3f globalText = Base::convertTo<SbVec3f>(basepos + textpos);
+        auto globalText = Base::convertTo<SbVec3f>(basepos + textpos);
         SbVec3f pnt = drag->getWorldStartingPoint();
         // difference between the label's origin and the picked point
         SbVec3f move = pnt - globalText;
@@ -461,7 +461,7 @@ void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag
         plane.intersect(line, intersect);
         drag->setStartingPoint(intersect);
 
-        Base::Vector3d text = Base::convertTo<Base::Vector3d>(intersect - move);
+        auto = Base::convertTo<Base::Vector3d>(intersect - move);
         text = text - basepos;
         obj->TextPosition.setValue(text);
     }
