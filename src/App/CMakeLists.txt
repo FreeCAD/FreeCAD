@@ -93,6 +93,7 @@ list(APPEND FreeCADApp_LIBS
 )
 
 generate_from_py(ApplicationDirectories)
+generate_from_py(DepEdge)
 generate_from_py(Document)
 generate_from_py(DocumentObject)
 generate_from_py(Extension)
@@ -126,6 +127,7 @@ SET(FreeCADApp_Pyi_SRCS
     GroupExtension.pyi
     LinkBaseExtension.pyi
     Metadata.pyi
+    DepEdge.pyi
     DocumentObjectGroup.pyi
     DocumentObject.pyi
     GeoFeature.pyi
@@ -150,6 +152,7 @@ SET(Document_CPP_SRCS
     Document.cpp
     RecoverySnapshot.cpp
     DocumentObject.cpp
+    DepEdgePyImp.cpp
     Extension.cpp
     ExtensionPyImp.cpp
     DocumentObjectExtension.cpp
@@ -205,6 +208,7 @@ SET(Document_HPP_SRCS
     BackupPolicy.h
     Document.h
     RecoverySnapshot.h
+    DepEdge.h
     DocumentObject.h
     Extension.h
     ExtensionContainer.h
