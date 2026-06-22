@@ -1014,6 +1014,21 @@ int indexFromSelectionFilterMode(SelectionFilterMode mode)
     }
 }
 
+void updateSelectionModeAction(Gui::ActionGroup* actionGroup, SelectionFilterMode mode)
+{
+    if (!actionGroup) {
+        return;
+    }
+
+    const int index = indexFromSelectionFilterMode(mode);
+    actionGroup->setCheckedAction(index);
+
+    const auto actions = actionGroup->actions();
+    if (index >= 0 && index < actions.size()) {
+        actionGroup->setToolButtonText(actions[index]->text());
+    }
+}
+
 }  // namespace
 
 StdCmdSelectionMode::StdCmdSelectionMode()
@@ -1033,6 +1048,7 @@ Gui::Action* StdCmdSelectionMode::createAction()
     auto pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
     pcAction->setIsMode(true);
+    pcAction->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     applyCommandData(this->className(), pcAction);
 
     QAction* any = pcAction->addAction(QString());
@@ -1065,7 +1081,6 @@ Gui::Action* StdCmdSelectionMode::createAction()
     face->setObjectName(QStringLiteral("Std_SelectionModeFace"));
     face->setWhatsThis(QString::fromLatin1(getWhatsThis()));
 
-    pcAction->setCheckedAction(indexFromSelectionFilterMode(Selection().getSelectionFilterMode()));
     _pcAction = pcAction;
     languageChange();
     return pcAction;
@@ -1099,6 +1114,8 @@ void StdCmdSelectionMode::languageChange()
 
     actions[4]->setText(QCoreApplication::translate("Std_SelectionMode", "Face"));
     actions[4]->setToolTip(QCoreApplication::translate("Std_SelectionMode", "Only select faces"));
+
+    updateSelectionModeAction(pcAction, Selection().getSelectionFilterMode());
 }
 
 void StdCmdSelectionMode::activated(int iMsg)
@@ -1109,18 +1126,18 @@ void StdCmdSelectionMode::activated(int iMsg)
 
     Selection().setSelectionFilterMode(selectionFilterModeFromIndex(iMsg));
 
-    if (auto actionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction)) {
-        actionGroup->setCheckedAction(iMsg);
-    }
+    updateSelectionModeAction(
+        qobject_cast<Gui::ActionGroup*>(_pcAction),
+        selectionFilterModeFromIndex(iMsg)
+    );
 }
 
 bool StdCmdSelectionMode::isActive()
 {
-    if (auto actionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction)) {
-        actionGroup->setCheckedAction(
-            indexFromSelectionFilterMode(Selection().getSelectionFilterMode())
-        );
-    }
+    updateSelectionModeAction(
+        qobject_cast<Gui::ActionGroup*>(_pcAction),
+        Selection().getSelectionFilterMode()
+    );
     return Gui::Application::Instance->activeDocument();
 }
 
