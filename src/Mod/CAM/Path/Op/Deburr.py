@@ -425,16 +425,8 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
             for i, w in enumerate(basewires):
                 self.adjusted_basewires.append(w)
-                # Debug: examine the wire geometry
-                Path.Log.debug(f"  Wire {i}: {len(w.Edges)} edges")
-                for j, e in enumerate(w.Edges):
-                    if hasattr(e, "Curve") and e.Curve:
-                        Path.Log.debug(f"    Edge {j} type: {type(e.Curve).__name__}")
-                        if hasattr(e.Curve, "Radius"):
-                            Path.Log.debug(f"    Edge {j} radius: {e.Curve.Radius}")
                 tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
-                wire = PathOpUtil.offsetWire(w, base.Shape, offset, True, side, tol)
-                Path.Log.debug(f"  offsetWire returned: {wire is not None}")
+                wire = PathOpUtil.offsetWire(w, base.Shape, offset, side, tol)
                 if wire:
                     wires.append(wire)
 
