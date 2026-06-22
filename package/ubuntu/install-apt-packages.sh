@@ -54,6 +54,7 @@ packages=(
   netgen
   netgen-headers
   ninja-build
+  nlohmann-json3-dev
   occt-draw
   pyside6-tools
   python3-cxx-dev
