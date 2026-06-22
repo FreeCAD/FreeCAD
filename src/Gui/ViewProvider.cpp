@@ -764,6 +764,11 @@ bool ViewProvider::onDelete(const vector<string>& subNames)
     return del;
 }
 
+App::DocumentObject* ViewProvider::getDeleteTarget(App::DocumentObject*) const
+{
+    return nullptr;
+}
+
 bool ViewProvider::canDelete(App::DocumentObject*) const
 {
     return false;
