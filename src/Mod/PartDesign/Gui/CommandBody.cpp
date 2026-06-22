@@ -35,7 +35,7 @@
 #include <App/Part.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>
@@ -45,6 +45,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/PartDesignParameter.h>
 
 #include "TaskFeaturePick.h"
 #include "Utils.h"
@@ -110,11 +111,7 @@ void CmdPartDesignBody::activated(int iMsg)
     App::DocumentObject* baseFeature = nullptr;
     bool addtogroup = false;
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup(
-        "BaseApp/Preferences/Mod/PartDesign"
-    );
-
-    bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
+    bool allowCompound = PartDesign::PartDesignParameter::instance()->getAllowCompoundDefault();
 
     if (!features.empty()) {
         if (features.size() == 1) {
@@ -237,7 +234,7 @@ void CmdPartDesignBody::activated(int iMsg)
         Doc,
         "App.ActiveDocument.getObject('%s').AllowCompound = %s",
         bodyString,
-        allowCompound ? "True" : "False"
+        Gui::asString(allowCompound)
     );
     if (baseFeature) {
         if (partOfBaseFeature) {
@@ -565,12 +562,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
         std::string bodyName = getUniqueObjectName(
             std::string(chainIt->back()->getNameInDocument()).append("Body").c_str()
         );
-
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup(
-            "BaseApp/Preferences/Mod/PartDesign"
-        );
-
-        bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
+        bool allowCompound = PartDesign::PartDesignParameter::instance()->getAllowCompoundDefault();
 
         // Create a body for the chain
         doCommand(Doc, "App.activeDocument().addObject('PartDesign::Body','%s')", bodyName.c_str());
@@ -578,7 +570,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
             Doc,
             "App.ActiveDocument.getObject('%s').AllowCompound = %s",
             bodyName.c_str(),
-            allowCompound ? "True" : "False"
+            Gui::asString(allowCompound)
         );
         doCommand(
             Doc,
