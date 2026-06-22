@@ -1047,13 +1047,18 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             )
             return
 
-        formats = {"MP4 Video": ".mp4", "Animated GIF": ".gif", "AVI Video": ".avi",}
+        formats = {
+            "MP4 Video": ".mp4",
+            "Animated GIF": ".gif",
+            "AVI Video": ".avi",
+        }
 
         try:
             import av
-            # 05/26 libvpx has no Windows conda package 
+
+            # 05/26 libvpx has no Windows conda package
             if "libvpx-vp9" in av.codecs_available:
-                 formats["WebM Video"] = ".webm"
+                formats["WebM Video"] = ".webm"
         except ImportError:
             pass
 
@@ -1062,7 +1067,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
             self.form,
             translate("Assembly", "Save Animation"),
             "",
-            ";;".join(f"{k} (*{v})" for k,v in formats.items())
+            ";;".join(f"{k} (*{v})" for k, v in formats.items()),
         )
 
         if not file_path:
@@ -1126,7 +1131,9 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
                 success = False
                 file_extension = Path(file_path).suffix.lower()
                 if not file_extension:
-                    file_extension = [filter for filter in formats.values() if filter in selected_filter][0]
+                    file_extension = [
+                        filter for filter in formats.values() if filter in selected_filter
+                    ][0]
                     file_path += file_extension
 
                 if file_extension == ".gif":
@@ -1153,6 +1160,7 @@ class TaskAssemblyCreateSimulation(QtCore.QObject):
     def create_gif(self, output_path, frame_files, fps):
         """Creates an animated GIF from a list of image files using Pillow."""
         from PIL import Image
+
         pil_images = [Image.open(f) for f in frame_files]
         duration_ms = int(1000 / fps)
         pil_images[0].save(
