@@ -4981,7 +4981,7 @@ QString PropertyMapItem::toString(const QVariant& prop) const
 
     result += QStringLiteral("{ ");
     auto it = map.keyValueBegin();
-    for (size_t i = 0; i < shown; i++, it++) {
+    for (decltype(shown) i = 0; i < shown; i++, it++) {
         if (i > 0) {
             result += QStringLiteral(" | ");
         }
