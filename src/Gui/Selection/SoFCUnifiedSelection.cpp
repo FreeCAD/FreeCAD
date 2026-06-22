@@ -118,20 +118,21 @@ namespace Gui::SelectionPickPolicy
 
 bool canFinalizeSinglePick(const std::vector<Candidate>& picked)
 {
-    bool foundSelectionGate = false;
+    bool foundSelectionConstraint = false;
     for (const auto& info : picked) {
-        if (!info.hasGate) {
+        if (!info.hasConstraint) {
             continue;
         }
 
-        foundSelectionGate = true;
-        if (info.passesGate) {
+        foundSelectionConstraint = true;
+        if (info.passesConstraint) {
             return true;
         }
     }
 
-    // Preserve the existing first-object behavior unless an active gate rejected every pick so far.
-    return !foundSelectionGate;
+    // Preserve the existing first-object behavior unless an active constraint rejected every pick
+    // so far.
+    return !foundSelectionConstraint;
 }
 
 std::size_t choosePreferredPick(const std::vector<Candidate>& picked)
@@ -166,9 +167,9 @@ std::size_t choosePreferredPick(const std::vector<Candidate>& picked)
         }
     }
 
-    if (!picked[preferred].passesGate) {
+    if (!picked[preferred].passesConstraint) {
         for (std::size_t i = 0; i < picked.size(); ++i) {
-            if (picked[i].passesGate) {
+            if (picked[i].passesConstraint) {
                 preferred = i;
                 break;
             }
@@ -369,7 +370,7 @@ int SoFCUnifiedSelection::getPriority(const SoPickedPoint* p)
     return 0;
 }
 
-bool SoFCUnifiedSelection::passesSelectionGate(const PickedInfo& info)
+bool SoFCUnifiedSelection::passesSelectionConstraint(const PickedInfo& info)
 {
     if (!info.vpd) {
         return false;
@@ -380,10 +381,11 @@ bool SoFCUnifiedSelection::passesSelectionGate(const PickedInfo& info)
         return false;
     }
 
-    return Selection().testSelection(obj->getDocument(), obj, info.element.c_str());
+    const bool objectMode = Gui::Selection().getSelectionFilterMode() == SelectionFilterMode::Object;
+    return Selection().testSelection(obj->getDocument(), obj, objectMode ? "" : info.element.c_str());
 }
 
-bool SoFCUnifiedSelection::hasSelectionGate(const PickedInfo& info)
+bool SoFCUnifiedSelection::hasSelectionConstraint(const PickedInfo& info)
 {
     if (!info.vpd) {
         return false;
@@ -394,7 +396,7 @@ bool SoFCUnifiedSelection::hasSelectionGate(const PickedInfo& info)
         return false;
     }
 
-    return Selection().hasSelectionGate(obj->getDocument());
+    return Selection().hasSelectionConstraint(obj->getDocument());
 }
 
 SelectionPickPolicy::Candidate SoFCUnifiedSelection::getPickCandidate(
@@ -407,8 +409,8 @@ SelectionPickPolicy::Candidate SoFCUnifiedSelection::getPickCandidate(
     candidate.owner = info.vpd;
     candidate.priority = getPriority(info.pp);
     candidate.isAnnotation = doc && info.pp && isAnnotationPick(info.pp, doc);
-    candidate.hasGate = hasSelectionGate(info);
-    candidate.passesGate = passesSelectionGate(info);
+    candidate.hasConstraint = hasSelectionConstraint(info);
+    candidate.passesConstraint = passesSelectionConstraint(info);
 
     if (firstPicked && info.pp && firstPicked->pp) {
         candidate.closeToFirst = info.pp->getPoint().equals(firstPicked->pp->getPoint(), 0.2F);
@@ -770,11 +772,12 @@ bool SoFCUnifiedSelection::setPreselect(const PickedInfo& info)
     }
 
     const auto& pt = info.pp->getPoint();
+    const bool objectMode = Gui::Selection().getSelectionFilterMode() == SelectionFilterMode::Object;
     return setPreselect(
         Gui::toFullPath(info.pp->getPath()),
-        info.pp->getDetail(),
+        objectMode ? nullptr : info.pp->getDetail(),
         info.vpd,
-        info.element.c_str(),
+        objectMode ? "" : info.element.c_str(),
         pt[0],
         pt[1],
         pt[2]
@@ -854,6 +857,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
         return false;
     }
 
+    const bool objectMode = Gui::Selection().getSelectionFilterMode() == SelectionFilterMode::Object;
     std::vector<SelectionSingleton::SelObj> sels;
     if (infos.size() > 1) {
         for (auto& info : infos) {
@@ -868,7 +872,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
             sel.DocName = sel.pDoc->getName();
             sel.FeatName = sel.pObject->getNameInDocument();
             sel.TypeName = sel.pObject->getTypeId().getName();
-            sel.SubName = info.element.c_str();
+            sel.SubName = objectMode ? "" : info.element.c_str();
             const auto& pt = info.pp->getPoint();
             sel.x = pt[0];
             sel.y = pt[1];
@@ -889,6 +893,9 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
     const char* docname = vpd->getObject()->getDocument()->getName();
 
     auto getFullSubElementName = [vpd](std::string& subName) {
+        if (subName.empty()) {
+            return;
+        }
         App::ElementNamePair elementName;
         App::GeoFeature::resolveElement(vpd->getObject(), subName.c_str(), elementName);
         if (!elementName.newName.empty()) {  // If we have a mapped name use it
@@ -907,12 +914,12 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
     SoSelectionElementAction::Type type = SoSelectionElementAction::None;
     auto preselectionMode = static_cast<SelectionModes>(this->preselectionMode.getValue());
     static char buf[513];
-    auto subName = info.element;
+    auto subName = objectMode ? std::string() : info.element;
     std::string objectName = objname;
 
     if (ctrlDown) {
-        if (Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve)) {
-            Gui::Selection().rmvSelection(docname, objname, info.element.c_str(), &sels);
+        if (Gui::Selection().isSelected(docname, objname, subName.c_str(), ResolveMode::NoResolve)) {
+            Gui::Selection().rmvSelection(docname, objname, subName.c_str(), &sels);
             return true;
         }
         else {
@@ -942,7 +949,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
                     "Selected: %s.%s.%s (%g, %g, %g)",
                     docname,
                     objname,
-                    info.element.c_str(),
+                    subName.c_str(),
                     fabs(pt[0]) > 1e-7 ? pt[0] : 0.0,
                     fabs(pt[1]) > 1e-7 ? pt[1] : 0.0,
                     fabs(pt[2]) > 1e-7 ? pt[2] : 0.0
@@ -950,20 +957,27 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
 
                 getMainWindow()->showMessage(QString::fromLatin1(buf));
             }
-            detailPath->truncate(0);
-            if (vpd->getDetailPath(info.element.c_str(), detailPath, true, detNext)
-                && detailPath->getLength()) {
-                pPath = detailPath;
-                det = detNext;
-                FC_TRACE("select next " << objectName << ", " << subName);
-                if (ok) {
-                    type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
-                }
-                else {
-                    // don't apply any visual action when selection fails -
-                    // in a case when we press ctrl and select a geometry that should be
-                    // filtered out, we don't want to apply any visual action
-                    pPath = nullptr;
+            if (objectMode) {
+                det = nullptr;
+                type = ok ? SoSelectionElementAction::All : SoSelectionElementAction::None;
+            }
+            else {
+                detailPath->truncate(0);
+                if (vpd->getDetailPath(info.element.c_str(), detailPath, true, detNext)
+                    && detailPath->getLength()) {
+                    pPath = detailPath;
+                    det = detNext;
+                    FC_TRACE("select next " << objectName << ", " << subName);
+                    if (ok) {
+                        type = hasNext ? SoSelectionElementAction::All
+                                       : SoSelectionElementAction::Append;
+                    }
+                    else {
+                        // don't apply any visual action when selection fails -
+                        // in a case when we press ctrl and select a geometry that should be
+                        // filtered out, we don't want to apply any visual action
+                        pPath = nullptr;
+                    }
                 }
             }
         }
@@ -984,44 +998,49 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
 
         // We need to convert the short name in the selection to a full element path to look it up
         // Ex:  Body.Pad.Face9  to Body.Pad.;g3;SKT;:H12dc,E;FAC;:H12dc:4,F;:G0;XTR;:H12dc:8,F.Face9
-        getFullSubElementName(subName);
-        std::string subSelected
-            = Gui::Selection().getSelectedElement(vpd->getObject(), subName.c_str());
+        if (objectMode) {
+            det = nullptr;
+        }
+        else {
+            getFullSubElementName(subName);
+            std::string subSelected
+                = Gui::Selection().getSelectedElement(vpd->getObject(), subName.c_str());
 
-        FC_TRACE(
-            "select " << (!subSelected.empty() ? subSelected : "'null'") << ", " << objectName
-                      << ", " << subName
-        );
-        std::string newElement;
-        if (!subSelected.empty()) {
-            newElement = Data::newElementName(subSelected.c_str());
-            subSelected = newElement.c_str();
-            std::string nextsub;
-            size_t next = subSelected.rfind('.');
-            if (next != std::string::npos && next != 0) {
-                if (next == subSelected.size() - 1) {
-                    // The convention of dot separated SubName demands a mandatory
-                    // ending dot for every object name reference inside SubName.
-                    // The non-object sub-element, however, must not end with a dot.
-                    // So, next[1]==0 here means current selection is a whole object
-                    // selection (because no sub-element), so we shall search
-                    // upwards for the second last dot, which is the end of the
-                    // parent name of the current selected object
-                    next = subSelected.rfind('.', next - 1);
+            FC_TRACE(
+                "select " << (!subSelected.empty() ? subSelected : "'null'") << ", " << objectName
+                          << ", " << subName
+            );
+            std::string newElement;
+            if (!subSelected.empty()) {
+                newElement = Data::newElementName(subSelected.c_str());
+                subSelected = newElement.c_str();
+                std::string nextsub;
+                size_t next = subSelected.rfind('.');
+                if (next != std::string::npos && next != 0) {
+                    if (next == subSelected.size() - 1) {
+                        // The convention of dot separated SubName demands a mandatory
+                        // ending dot for every object name reference inside SubName.
+                        // The non-object sub-element, however, must not end with a dot.
+                        // So, next[1]==0 here means current selection is a whole object
+                        // selection (because no sub-element), so we shall search
+                        // upwards for the second last dot, which is the end of the
+                        // parent name of the current selected object
+                        next = subSelected.rfind('.', next - 1);
+                    }
+                    if (next != std::string::npos) {
+                        nextsub = subSelected.substr(0, next + 1);
+                    }
                 }
-                if (next != std::string::npos) {
-                    nextsub = subSelected.substr(0, next + 1);
-                }
-            }
-            if (!nextsub.empty() || !subSelected.empty()) {
-                hasNext = true;
-                subName = nextsub;
-                detailPath->truncate(0);
-                if (vpd->getDetailPath(subName.c_str(), detailPath, true, detNext)
-                    && detailPath->getLength()) {
-                    pPath = detailPath;
-                    det = detNext;
-                    FC_TRACE("select next " << objectName << ", " << subName);
+                if (!nextsub.empty() || !subSelected.empty()) {
+                    hasNext = true;
+                    subName = nextsub;
+                    detailPath->truncate(0);
+                    if (vpd->getDetailPath(subName.c_str(), detailPath, true, detNext)
+                        && detailPath->getLength()) {
+                        pPath = detailPath;
+                        det = detNext;
+                        FC_TRACE("select next " << objectName << ", " << subName);
+                    }
                 }
             }
         }
@@ -1041,7 +1060,8 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
             Gui::SelectionChanges::PickedPoint::Valid
         );
         if (ok) {
-            type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
+            type = (hasNext || objectMode) ? SoSelectionElementAction::All
+                                           : SoSelectionElementAction::Append;
         }
 
         if (preselectionMode == SoFCUnifiedSelection::OFF) {

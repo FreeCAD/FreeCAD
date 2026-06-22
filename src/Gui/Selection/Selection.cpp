@@ -23,9 +23,12 @@
  ***************************************************************************/
 
 
+#include <algorithm>
 #include <array>
-#include <set>
 #include <cstdint>
+#include <iterator>
+#include <set>
+#include <string_view>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
@@ -70,6 +73,42 @@ FC_LOG_LEVEL_INIT("Selection", false, true, true)
 using namespace Gui;
 using namespace std;
 namespace sp = std::placeholders;
+
+namespace
+{
+
+const char* elementPrefixForSelectionFilterMode(SelectionFilterMode mode)
+{
+    switch (mode) {
+        case SelectionFilterMode::Vertex:
+            return "Vertex";
+        case SelectionFilterMode::Edge:
+            return "Edge";
+        case SelectionFilterMode::Face:
+            return "Face";
+        case SelectionFilterMode::Any:
+        case SelectionFilterMode::Object:
+            return nullptr;
+    }
+
+    return nullptr;
+}
+
+bool matchesSelectionFilterModeElement(SelectionFilterMode mode, std::string_view element)
+{
+    const char* prefix = elementPrefixForSelectionFilterMode(mode);
+    if (!prefix) {
+        return false;
+    }
+
+    if (element.starts_with(prefix)) {
+        return true;
+    }
+
+    return mode == SelectionFilterMode::Face && element.starts_with("InternalFace");
+}
+
+}  // namespace
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -540,7 +579,7 @@ SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(
     const SelectionDescription& sel
 )
 {
-    if (!context.info || !context.info->gate) {
+    if (!context.info) {
         return {.allowed = true, .reason = ""};
     }
     const char* subelement = nullptr;
@@ -552,7 +591,12 @@ SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(
     );
 
 
-    if (!context.info->gate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
+    if (!isAllowedBySelectionFilterMode(subelement)) {
+        return {.allowed = false, .reason = QT_TR_NOOP("Selection not allowed by selection mode")};
+    }
+
+    if (context.info->gate
+        && !context.info->gate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
         std::string copyNotAllowedReason = context.info->gate->notAllowedReason;
         context.info->gate->notAllowedReason.clear();
         return {.allowed = false, .reason = copyNotAllowedReason};
@@ -859,10 +903,11 @@ bool SelectionSingleton::testSelection(
     }
 
     auto foundContext = docSelectionContext.find(pDoc);
-    if (foundContext == docSelectionContext.end() || !foundContext->second.gate) {
+    const SelectionInfo* info = foundContext != docSelectionContext.end() ? &foundContext->second
+                                                                          : nullptr;
+    if ((!info || !info->gate) && selectionFilterMode == SelectionFilterMode::Any) {
         return true;
     }
-    const auto& info = foundContext->second;
 
     const char* objectName = pObject->getNameInDocument();
     if (!objectName) {
@@ -876,17 +921,29 @@ bool SelectionSingleton::testSelection(
         pSubName,
         ResolveMode::NoResolve,
         temp,
-        &info.selList
+        info ? &info->selList : nullptr
     );
     if (ret < 0) {
         return false;
     }
 
     const char* subelement = nullptr;
-    auto gateObject
-        = getObjectOfType(temp, App::DocumentObject::getClassTypeId(), info.resolveMode, &subelement);
+    auto gateObject = getObjectOfType(
+        temp,
+        App::DocumentObject::getClassTypeId(),
+        info ? info->resolveMode : ResolveMode::NoResolve,
+        &subelement
+    );
 
-    auto* gate = info.gate;
+    if (!isAllowedBySelectionFilterMode(subelement)) {
+        return false;
+    }
+
+    if (!info || !info->gate) {
+        return true;
+    }
+
+    auto* gate = info->gate;
     std::string notAllowedReason = gate->notAllowedReason;
     bool allowed
         = gate->allow(gateObject ? gateObject->getDocument() : temp.pDoc, gateObject, subelement);
@@ -902,6 +959,62 @@ bool SelectionSingleton::hasSelectionGate(App::Document* pDoc) const
 
     auto foundContext = docSelectionContext.find(pDoc);
     return foundContext != docSelectionContext.end() && foundContext->second.gate;
+}
+
+bool SelectionSingleton::hasSelectionConstraint(App::Document* pDoc) const
+{
+    return selectionFilterMode != SelectionFilterMode::Any || hasSelectionGate(pDoc);
+}
+
+void SelectionSingleton::setSelectionFilterMode(SelectionFilterMode mode)
+{
+    selectionFilterMode = mode;
+}
+
+SelectionFilterMode SelectionSingleton::getSelectionFilterMode() const
+{
+    return selectionFilterMode;
+}
+
+bool SelectionSingleton::isSelectionFilterModeElement() const
+{
+    return elementPrefixForSelectionFilterMode(selectionFilterMode) != nullptr;
+}
+
+bool SelectionSingleton::isAllowedBySelectionFilterMode(const char* subelement) const
+{
+    switch (selectionFilterMode) {
+        case SelectionFilterMode::Any:
+            return true;
+        case SelectionFilterMode::Object:
+            return !subelement || !subelement[0];
+        case SelectionFilterMode::Vertex:
+        case SelectionFilterMode::Edge:
+        case SelectionFilterMode::Face:
+            return subelement && matchesSelectionFilterModeElement(selectionFilterMode, subelement);
+    }
+
+    return true;
+}
+
+std::unordered_set<std::string> SelectionSingleton::getSelectionFilterModeTypes(
+    const std::vector<const char*>& allTypesForGeometry
+) const
+{
+    std::unordered_set<std::string> allowedTypes;
+    if (!isSelectionFilterModeElement()) {
+        return allowedTypes;
+    }
+
+    std::ranges::copy_if(
+        allTypesForGeometry.begin(),
+        allTypesForGeometry.end(),
+        std::inserter(allowedTypes, allowedTypes.begin()),
+        [this](const char* type) {
+            return type && matchesSelectionFilterModeElement(selectionFilterMode, type);
+        }
+    );
+    return allowedTypes;
 }
 
 int SelectionSingleton::setPreselect(
@@ -936,7 +1049,8 @@ int SelectionSingleton::setPreselect(
     }
     auto context = getSelectionContext(pDocName);
 
-    if (context.info->gate && signal != SelectionChanges::MsgSource::Internal) {
+    if ((context.info->gate || selectionFilterMode != SelectionFilterMode::Any)
+        && signal != SelectionChanges::MsgSource::Internal) {
         App::ElementNamePair elementName;
         auto pObject = pDoc->getObject(pObjectName);
         if (!pObject) {
@@ -944,7 +1058,7 @@ int SelectionSingleton::setPreselect(
         }
 
         const char* subelement = pSubName;
-        if (context.info->resolveMode != ResolveMode::NoResolve) {
+        if (context.info->gate && context.info->resolveMode != ResolveMode::NoResolve) {
             auto& newElementName = elementName.newName;
             auto& oldElementName = elementName.oldName;
             pObject = App::GeoFeature::resolveElement(pObject, pSubName, elementName);
@@ -959,10 +1073,21 @@ int SelectionSingleton::setPreselect(
                 subelement = oldElementName.c_str();
             }
         }
-        if (!context.info->gate->allow(pObject->getDocument(), pObject, subelement)) {
+        SelectionAllowance allowance {.allowed = true, .reason = ""};
+        if (!isAllowedBySelectionFilterMode(subelement)) {
+            allowance
+                = {.allowed = false, .reason = QT_TR_NOOP("Selection not allowed by selection mode")};
+        }
+        else if (
+            context.info->gate
+            && !context.info->gate->allow(pObject->getDocument(), pObject, subelement)
+        ) {
+            allowance = {.allowed = false, .reason = context.info->gate->notAllowedReason};
+        }
+        if (!allowance.allowed) {
             QString msg;
-            if (context.info->gate->notAllowedReason.length() > 0) {
-                msg = QObject::tr(context.info->gate->notAllowedReason.c_str());
+            if (allowance.reason.length() > 0) {
+                msg = QObject::tr(allowance.reason.c_str());
             }
             else {
                 msg = QCoreApplication::translate("SelectionFilter", "Not allowed:");

@@ -75,16 +75,16 @@ Gui::SelectionPickPolicy::Candidate pickCandidate(
     const void* owner,
     int priority,
     bool closeToFirst,
-    bool hasGate,
-    bool passesGate
+    bool hasConstraint,
+    bool passesConstraint
 )
 {
     Gui::SelectionPickPolicy::Candidate candidate;
     candidate.owner = owner;
     candidate.priority = priority;
     candidate.closeToFirst = closeToFirst;
-    candidate.hasGate = hasGate;
-    candidate.passesGate = passesGate;
+    candidate.hasConstraint = hasConstraint;
+    candidate.passesConstraint = passesConstraint;
     return candidate;
 }
 

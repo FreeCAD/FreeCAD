@@ -22,6 +22,7 @@
 #include "BoxSelection.h"
 
 #include <memory>
+#include <unordered_set>
 #include <vector>
 
 #include <CXX/Objects.hxx>
@@ -203,14 +204,27 @@ std::vector<std::string> getBoxSelection(
         auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
         const auto& allAllowedDocumentTypes = data->getElementTypes();
 
+        auto filteredTypes = Gui::Selection().getSelectionFilterModeTypes(allAllowedDocumentTypes);
+        bool useFilteredTypes = Gui::Selection().isSelectionFilterModeElement();
         if (selectionGate) {
-            auto filteredTypes = selectionGate->getGatedTypes(allAllowedDocumentTypes);
-            if (!filteredTypes.empty()) {
-                for (const auto& type : filteredTypes) {
-                    findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode);
+            auto gateTypes = selectionGate->getGatedTypes(allAllowedDocumentTypes);
+            if (!gateTypes.empty()) {
+                if (useFilteredTypes) {
+                    std::erase_if(filteredTypes, [&gateTypes](const auto& type) {
+                        return !gateTypes.contains(type);
+                    });
                 }
-                return ret;
+                else {
+                    filteredTypes = gateTypes;
+                    useFilteredTypes = true;
+                }
             }
+        }
+        if (useFilteredTypes) {
+            for (const auto& type : filteredTypes) {
+                findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode);
+            }
+            return ret;
         }
 
         for (auto type : allAllowedDocumentTypes) {
@@ -268,6 +282,13 @@ std::vector<std::string> getBoxSelection(
 
 bool Gui::boxSelectionUsesElementGate(const App::Document* doc)
 {
+    if (Gui::Selection().isSelectionFilterModeElement()) {
+        return true;
+    }
+    if (Gui::Selection().getSelectionFilterMode() == SelectionFilterMode::Object) {
+        return false;
+    }
+
     const auto selectionGate = SelectionSingleton::instance().getSelectionGate(doc);
     if (!selectionGate) {
         return false;
