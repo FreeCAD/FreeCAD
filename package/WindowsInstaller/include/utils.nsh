@@ -297,3 +297,10 @@ Function ValidateInstallDir
   ${EndIf}
   Pop $R0
 FunctionEnd
+
+!macro _DetailPrintToBoth DETAIL_MESSAGE
+  SetDetailsPrint both
+  DetailPrint "${DETAIL_MESSAGE}"
+  SetDetailsPrint lastused
+!macroend
+!define DetailPrintToBoth `!insertmacro _DetailPrintToBoth`

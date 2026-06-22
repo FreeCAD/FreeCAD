@@ -50,8 +50,11 @@ Section "un.FreeCAD" un.SecUnProgramFiles
   
   # Application folder
   SetOutPath "$TEMP"
+  DetailPrint "Uninstalling files from '$INSTDIR'"
+  SetDetailsPrint textonly
   RMDir /r "$INSTDIR"
-  
+  SetDetailsPrint both
+
   # Registry keys and values
   DeleteRegKey SHCTX "${APP_REGKEY_SETUP}"
   DeleteRegKey SHCTX "${APP_REGKEY}"
