@@ -227,7 +227,7 @@ def approximateWire(wire, tolerance=0.01):
     return wire
 
 
-def offsetWire(wire, base, offset, Side=None, tolerance=0.01):
+def offsetWire(wire, base, offset, tolerance=0.01):
     """offsetWire ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
@@ -253,8 +253,6 @@ def offsetWire(wire, base, offset, Side=None, tolerance=0.01):
                 if offset > radius or Path.Geom.isRoughly(offset, radius):
                     # offsetting a hole by its own radius (or more) makes the hole vanish
                     return None
-                if Side:
-                    Side[0] = "Inside"
                 new_edge = Part.makeCircle(radius - offset, center, axis)  # inside
             else:
                 new_edge = Part.makeCircle(radius + offset, center, axis)  # outside
@@ -297,8 +295,6 @@ def offsetWire(wire, base, offset, Side=None, tolerance=0.01):
                 if offset > radius or Path.Geom.isRoughly(offset, radius):
                     # inner offset should not be equal or greater than arc radius
                     return None
-                if Side:
-                    Side[0] = "Inside"
                 circle = Part.Circle(center, axis, radius - offset)  # inside
             else:
                 circle = Part.Circle(center, axis, radius + offset)  # outside
@@ -343,12 +339,8 @@ def offsetWire(wire, base, offset, Side=None, tolerance=0.01):
     if wire.isClosed():
         if not base.isInside(owire.Edges[0].Vertexes[0].Point, offset / 2, True):
             Path.Log.track("closed - outside")
-            if Side:
-                Side[0] = "Outside"
             return orientWire(owire)
         Path.Log.track("closed - inside")
-        if Side:
-            Side[0] = "Inside"
         try:
             owire = wire.makeOffset2D(-offset)
         except Exception:
