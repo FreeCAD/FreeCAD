@@ -28,6 +28,7 @@
 #include <Base/Vector3D.h>
 #include <FCGlobal.h>
 #include <string>
+#include <optional>
 
 namespace App
 {
@@ -92,7 +93,7 @@ public:
     /// get cached name of parent Link object
     /// - returns empty string, if there is no link parent
     /// - returns std::nullopt, if there was no evaluation for link parent
-    inline const std::optional<std::string> getLinkParent() const
+    inline std::optional<std::string> getLinkParent() const
     {
         return LinkParentName;
     }
