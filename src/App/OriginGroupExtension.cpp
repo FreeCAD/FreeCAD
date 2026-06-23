@@ -153,8 +153,8 @@ App::DocumentObjectExecReturn* OriginGroupExtension::extensionExecute()
 App::DocumentObject* OriginGroupExtension::getLocalizedOrigin(App::Document* doc)
 {
     auto* originObject = doc->addObject<App::Origin>("Origin");
-    QByteArray byteArray = tr("Origin").toUtf8();
-    originObject->Label.setValue(byteArray.constData());
+    const std::string label = tr("Origin");
+    originObject->Label.setValue(label.c_str());
     return originObject;
 }
 
