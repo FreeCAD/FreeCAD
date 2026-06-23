@@ -304,7 +304,7 @@ void CmdFemConstraintContact::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintContact");
+    std::string FeatName = getUniqueObjectName("Contact");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make contact constraint on a face"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintContact\",\"%s\")", FeatName.c_str());
@@ -382,7 +382,7 @@ void CmdFemConstraintDisplacement::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintDisplacement");
+    std::string FeatName = getUniqueObjectName("Displacement");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make displacement boundary condition on face"));
     doCommand(
@@ -436,7 +436,7 @@ void CmdFemConstraintFixed::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintFixed");
+    std::string FeatName = getUniqueObjectName("Fixed");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make fixed boundary condition for geometry"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")", FeatName.c_str());
@@ -486,7 +486,7 @@ void CmdFemConstraintRigidBody::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintRigidBody");
+    std::string FeatName = getUniqueObjectName("RigidBody");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make rigid body constraint"));
     doCommand(
@@ -605,7 +605,7 @@ void CmdFemConstraintForce::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintForce");
+    std::string FeatName = getUniqueObjectName("Force");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make force load on geometry"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")", FeatName.c_str());
@@ -716,7 +716,7 @@ void CmdFemConstraintHeatflux::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintHeatflux");
+    std::string FeatName = getUniqueObjectName("HeatFlux");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make heat flux load on face"));
     doCommand(
@@ -789,7 +789,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintInitialTemperature");
+    std::string FeatName = getUniqueObjectName("InitialTemperature");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make initial temperature condition on body"));
     doCommand(
@@ -846,7 +846,7 @@ void CmdFemConstraintPlaneRotation::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintPlaneRotation");
+    std::string FeatName = getUniqueObjectName("PlaneRotation");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make plane multi-point constraint on face"));
     doCommand(
@@ -903,7 +903,7 @@ void CmdFemConstraintPressure::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintPressure");
+    std::string FeatName = getUniqueObjectName("Pressure");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make pressure load on face"));
     doCommand(
@@ -967,7 +967,7 @@ void CmdFemConstraintSpring::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintSpring");
+    std::string FeatName = getUniqueObjectName("Spring");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make Spring Constraint"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintSpring\",\"%s\")", FeatName.c_str());
@@ -1079,7 +1079,7 @@ void CmdFemConstraintTemperature::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintTemperature");
+    std::string FeatName = getUniqueObjectName("Temperature");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make temperature boundary condition on face"));
     doCommand(
@@ -1136,7 +1136,7 @@ void CmdFemConstraintTransform::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintTransform");
+    std::string FeatName = getUniqueObjectName("Transform");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make local coordinate system on face"));
     doCommand(

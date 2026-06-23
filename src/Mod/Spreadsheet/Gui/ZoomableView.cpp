@@ -26,8 +26,8 @@
 
 #include "ZoomableView.h"
 #include "ui_Sheet.h"
-#include "App/Application.h"
 #include "Base/Console.h"
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 
 ZoomableView::ZoomableView(Ui::Sheet* ui)
@@ -176,10 +176,7 @@ void ZoomableView::zoomOut(void)
 
 void ZoomableView::resetZoom(void)
 {
-    constexpr const char* path = "User parameter:BaseApp/Preferences/Mod/Spreadsheet";
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(path);
-    const int defaultZoomLevel = static_cast<int>(hGrp->GetInt("DefaultZoomLevel", 100));
-
+    const int defaultZoomLevel = Spreadsheet::SheetParameter::instance()->getDefaultZoomLevel();
     setZoomLevel(defaultZoomLevel);
 }
 

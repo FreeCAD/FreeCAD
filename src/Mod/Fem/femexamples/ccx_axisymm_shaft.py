@@ -115,12 +115,12 @@ def setup(doc=None, solvertype="calculix"):
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(face_obj, "Edge2")]
     analysis.addObject(con_fixed)
     
     # constraint pressure
-    con_press = ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
+    con_press = ObjectsFem.makeConstraintPressure(doc, "Pressure")
     con_press.References = [(face_obj, "Edge7")]
     con_press.Pressure = "0.509 MPa"
     con_press.Reversed = True

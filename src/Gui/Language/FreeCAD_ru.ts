@@ -113,12 +113,12 @@
       <translation>Добавить деталь</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="138"/>
+      <location filename="../CommandStructure.cpp" line="147"/>
       <source>Add a group</source>
       <translation>Добавить группу</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="207"/>
+      <location filename="../CommandStructure.cpp" line="216"/>
       <source>Add a variable set</source>
       <translation>Добавить набор переменной</translation>
     </message>
@@ -133,10 +133,10 @@
       <translation>Размещение</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="415"/>
       <location filename="../TaskTransform.cpp" line="129"/>
       <location filename="../TaskTransform.cpp" line="807"/>
-      <location filename="../ViewProviderAnnotation.cpp" line="415"/>
+      <location filename="../Transform.cpp" line="108"/>
       <source>Transform</source>
       <translation>Переместить</translation>
     </message>
@@ -5831,13 +5831,13 @@ Save all changes?</source>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="557"/>
+      <location filename="../FileDialog.cpp" line="558"/>
       <source>Save As</source>
       <translation>Сохранить как</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="692"/>
-      <location filename="../FileDialog.cpp" line="787"/>
+      <location filename="../FileDialog.cpp" line="693"/>
+      <location filename="../FileDialog.cpp" line="788"/>
       <source>Open</source>
       <translation>Открыть</translation>
     </message>
@@ -5845,12 +5845,12 @@ Save all changes?</source>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="935"/>
+      <location filename="../FileDialog.cpp" line="936"/>
       <source>Extended</source>
       <translation>Расширенный</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="972"/>
+      <location filename="../FileDialog.cpp" line="973"/>
       <source>All files (*.*)</source>
       <translation>Все файлы (*.*)</translation>
     </message>
@@ -6007,66 +6007,66 @@ Save all changes?</source>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="131"/>
       <location filename="../InputVector.h" line="154"/>
       <location filename="../InputVector.h" line="277"/>
       <location filename="../InputVector.h" line="300"/>
       <location filename="../InputVector.h" line="475"/>
       <location filename="../InputVector.h" line="489"/>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="159"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="305"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="494"/>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Определено пользователем…</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="240"/>
       <location filename="../InputVector.h" line="375"/>
       <location filename="../InputVector.h" line="564"/>
-      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Неправильное направление</translation>
     </message>
     <message>
+      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
-      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>Направление не должно быть нулевым вектором</translation>
     </message>
@@ -6866,12 +6866,12 @@ Exit without saving all data?</source>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1351"/>
+      <location filename="../FileDialog.cpp" line="1352"/>
       <source>Select Module</source>
       <translation>Выбрать модуль</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1353"/>
+      <location filename="../FileDialog.cpp" line="1354"/>
       <source>Open %1 as</source>
       <translation>Открыть %1 как</translation>
     </message>
@@ -7588,7 +7588,7 @@ Specify another directory?</source>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3901"/>
-      <location filename="../Tree.cpp" line="6544"/>
+      <location filename="../Tree.cpp" line="6556"/>
       <source>Rename</source>
       <translation>Переименовать</translation>
     </message>
@@ -7608,12 +7608,12 @@ Specify another directory?</source>
       <translation>Открыть расположение файла</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6512"/>
+      <location filename="../Tree.cpp" line="6524"/>
       <source> (but must be executed)</source>
       <translation> (но должно быть выполнено)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6515"/>
+      <location filename="../Tree.cpp" line="6527"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, внутреннее название: %2</translation>
     </message>
@@ -8087,13 +8087,6 @@ Check the report view for more details.</source>
       <translation>Объединить документ </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="621"/>
-      <location filename="../Document.cpp" line="1715"/>
-      <location filename="../Document.cpp" line="1845"/>
-      <source>%1 document</source>
-      <translation>%1 документ </translation>
-    </message>
-    <message>
       <location filename="../CommandDoc.cpp" line="632"/>
       <source>Cannot merge document with itself.</source>
       <translation>Невозможно объединить документ с самим собой.</translation>
@@ -8542,6 +8535,13 @@ Use 'Save As…' to preserve the original file.
       <translation>Сохранить документ под новым именем файла…</translation>
     </message>
     <message>
+      <location filename="../Document.cpp" line="1715"/>
+      <location filename="../Document.cpp" line="1845"/>
+      <location filename="../CommandDoc.cpp" line="621"/>
+      <source>%1 document</source>
+      <translation>%1 документ </translation>
+    </message>
+    <message>
       <location filename="../Document.cpp" line="1831"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Сохранить копию документа под новым именем файла…</translation>
@@ -8672,12 +8672,12 @@ Choose 'Abort' to abort</source>
       <translation>Не удается открыть ваш системный браузере.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3157"/>
+      <location filename="../View3DInventorViewer.cpp" line="3161"/>
       <source>Out of memory</source>
       <translation>Недостаточно памяти</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3158"/>
+      <location filename="../View3DInventorViewer.cpp" line="3162"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Недостаточно памяти для отображения данных.</translation>
     </message>
@@ -8693,7 +8693,7 @@ Choose 'Abort' to abort</source>
       <translation>Не удается найти файл %1, ни в %2 ни в %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2202"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2324"/>
       <source>Clarify Selection</source>
       <translation>Уточнить выбор</translation>
     </message>
@@ -8823,8 +8823,8 @@ Choose 'Abort' to abort</source>
       <translation>Перетаскивание не удалось</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3046"/>
       <location filename="../MainWindow.cpp" line="903"/>
+      <location filename="../ViewProviderLink.cpp" line="3046"/>
       <source>Apply to all</source>
       <translation>Применить ко всем</translation>
     </message>
@@ -9134,12 +9134,12 @@ the current copy will be lost.
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="959"/>
+      <location filename="../Selection/Selection.cpp" line="964"/>
       <source>Not allowed:</source>
       <translation>Не допускается:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1342"/>
+      <location filename="../Selection/Selection.cpp" line="1347"/>
       <source>Selection not allowed by filter</source>
       <translation>Выбор отвергнут фильтром</translation>
     </message>
@@ -9766,45 +9766,6 @@ the current copy will be lost.
     </message>
   </context>
   <context>
-    <name>StdCmdViewIvStereoInterleavedColumns</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2696"/>
-      <source>Stereo Interleaved &amp;Columns</source>
-      <translation>Стерео с чередованием столбцов</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2697"/>
-      <source>Switches stereo viewing to interleaved columns</source>
-      <translation>Переключает стереопросмотр на чередующиеся столбцы</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewIvStereoInterleavedRows</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2668"/>
-      <source>Stereo Interleaved &amp;Rows</source>
-      <translation>Стерео с чередованием строк</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2669"/>
-      <source>Switches stereo viewing to interleaved rows</source>
-      <translation>Переключает стереопросмотр на чередующиеся строки</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewIvStereoOff</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2583"/>
-      <source>Stereo &amp;Off</source>
-      <translation>Выключить стерео</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2584"/>
-      <source>Switches stereo viewing off</source>
-      <translation>Выключает режим стереопросмотра</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewLeft</name>
     <message>
       <location filename="../CommandView.cpp" line="1506"/>
@@ -9963,12 +9924,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3496"/>
+      <location filename="../CommandView.cpp" line="3354"/>
       <source>Collapse/E&amp;xpand</source>
       <translation>Свернуть/Развернуть</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3497"/>
+      <location filename="../CommandView.cpp" line="3355"/>
       <source>Expands the active document and collapses all others</source>
       <translation>Разворачивает активный документ и сворачивает все остальные</translation>
     </message>
@@ -9976,12 +9937,12 @@ the current copy will be lost.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3598"/>
+      <location filename="../CommandView.cpp" line="3456"/>
       <source>Preselection</source>
       <translation>Предварительный отбор </translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3599"/>
+      <location filename="../CommandView.cpp" line="3457"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
       <translation>Предварительно выделяет объект в 3D-виде при наведении курсора на элемент в дереве проекта</translation>
     </message>
@@ -10041,12 +10002,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2783"/>
+      <location filename="../CommandView.cpp" line="2641"/>
       <source>Zoom &amp;In</source>
       <translation>&amp;Увеличить</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2784"/>
+      <location filename="../CommandView.cpp" line="2642"/>
       <source>Increases the zoom factor by a fixed amount</source>
       <translation>Увеличивает масштаб в 3Д виде на фиксированную величину</translation>
     </message>
@@ -10054,12 +10015,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2812"/>
+      <location filename="../CommandView.cpp" line="2670"/>
       <source>Zoom &amp;Out</source>
       <translation>У&amp;меньшить</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2813"/>
+      <location filename="../CommandView.cpp" line="2671"/>
       <source>Decreases the zoom factor by a fixed amount</source>
       <translation>Уменьшает масштаб в 3Д виде на фиксированную величину</translation>
     </message>
@@ -10181,7 +10142,7 @@ Save the document now?</source>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="142"/>
+      <location filename="../CommandStructure.cpp" line="151"/>
       <source>Group</source>
       <translation>Группа</translation>
     </message>
@@ -13525,12 +13486,12 @@ Proceed?</source>
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="123"/>
+      <location filename="../CommandStructure.cpp" line="132"/>
       <source>New Group</source>
       <translation>Новая Группа</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="124"/>
+      <location filename="../CommandStructure.cpp" line="133"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation>Создаёт группу, которая представляет собой контейнер общего назначения для группировки объектов в дереве проекта, независимо от их типа данных. Это простая папка для организации объектов внутри модели.</translation>
     </message>
@@ -13538,12 +13499,12 @@ Proceed?</source>
   <context>
     <name>StdCmdVarSet</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="195"/>
+      <location filename="../CommandStructure.cpp" line="204"/>
       <source>Variable Set</source>
       <translation>Набор переменных</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="197"/>
+      <location filename="../CommandStructure.cpp" line="206"/>
       <source>Creates a variable set, which is an object that maintains a set of properties to be used as variables</source>
       <translation>Создаёт набор переменных - это объект, содержащий набор свойств, которые используются в качестве переменных</translation>
     </message>
@@ -13848,40 +13809,14 @@ Proceed?</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewIvStereoRedGreen</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2612"/>
-      <source>Stereo Re&amp;d/Cyan</source>
-      <translation>Стерео красный/голубой</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2613"/>
-      <source>Switches stereo viewing to red/cyan</source>
-      <translation>Переключает стерео режим на красный/голубой</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdViewIvStereoQuadBuff</name>
-    <message>
-      <location filename="../CommandView.cpp" line="2640"/>
-      <source>Stereo &amp;Quad Buffer</source>
-      <translation>Стерео 4-х канальный буфер</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="2641"/>
-      <source>Switches stereo viewing to quad buffer</source>
-      <translation>Переключает стерео просмотр на четырехканальный режим</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2725"/>
+      <location filename="../CommandView.cpp" line="2583"/>
       <source>Issue Camera &amp;Position</source>
       <translation>Вывести положение камеры</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2726"/>
+      <location filename="../CommandView.cpp" line="2584"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
       <translation>Отправляет положение камеры на консоль и в макрос, для быстрого вызова этого положения</translation>
     </message>
@@ -13889,12 +13824,12 @@ Proceed?</source>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2978"/>
+      <location filename="../CommandView.cpp" line="2836"/>
       <source>&amp;Box Zoom</source>
       <translation>&amp;Увеличить область</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2979"/>
+      <location filename="../CommandView.cpp" line="2837"/>
       <source>Activates the box zoom tool</source>
       <translation>Активирует инструмент масштабирования области рамкой</translation>
     </message>
@@ -13902,12 +13837,12 @@ Proceed?</source>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3012"/>
+      <location filename="../CommandView.cpp" line="2870"/>
       <source>&amp;Box Selection</source>
       <translation>&amp;Выделить область</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3013"/>
+      <location filename="../CommandView.cpp" line="2871"/>
       <source>Activates the box selection tool</source>
       <translation>Активирует инструмент выделения области рамкой</translation>
     </message>
@@ -13915,12 +13850,12 @@ Proceed?</source>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3079"/>
+      <location filename="../CommandView.cpp" line="2937"/>
       <source>Bo&amp;x Element Selection</source>
       <translation>Область выбора элементов</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3080"/>
+      <location filename="../CommandView.cpp" line="2938"/>
       <source>Activates box element selection</source>
       <translation>Активирует инструмент выделения элементов рамкой</translation>
     </message>
@@ -13928,12 +13863,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3135"/>
+      <location filename="../CommandView.cpp" line="2993"/>
       <source>&amp;Go to Selection</source>
       <translation>&amp;Перейти к выделенному</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3136"/>
+      <location filename="../CommandView.cpp" line="2994"/>
       <source>Scrolls to the first selected item</source>
       <translation>Перемещается к первому выбранному элементу</translation>
     </message>
@@ -13941,12 +13876,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3160"/>
+      <location filename="../CommandView.cpp" line="3018"/>
       <source>Collapse Selected Items</source>
       <translation>Свернуть выбранные элементы</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3161"/>
+      <location filename="../CommandView.cpp" line="3019"/>
       <source>Collapses the currently selected tree items</source>
       <translation>Сворачивает выбранные в данный момент элементы в дереве проекта</translation>
     </message>
@@ -13954,12 +13889,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3186"/>
+      <location filename="../CommandView.cpp" line="3044"/>
       <source>Expand Selected Items</source>
       <translation>Развернуть выбранные элементы</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3187"/>
+      <location filename="../CommandView.cpp" line="3045"/>
       <source>Expands the currently selected tree items</source>
       <translation>Разворачивает выбранные в данный момент элементы в дереве проекта</translation>
     </message>
@@ -13967,12 +13902,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3212"/>
+      <location filename="../CommandView.cpp" line="3070"/>
       <source>Select All Instances</source>
       <translation>Выделить все экземпляры</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3213"/>
+      <location filename="../CommandView.cpp" line="3071"/>
       <source>Selects all instances of the currently selected object</source>
       <translation>Выделяет все экземпляры выбранного в данный момент объекта в дереве проекта</translation>
     </message>
@@ -13980,12 +13915,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3280"/>
+      <location filename="../CommandView.cpp" line="3138"/>
       <source>Scene I&amp;nspector</source>
       <translation>Инспектор сцены</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3281"/>
+      <location filename="../CommandView.cpp" line="3139"/>
       <source>Opens the scene inspector</source>
       <translation>Открывает инспектор сцены</translation>
     </message>
@@ -13993,12 +13928,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3314"/>
+      <location filename="../CommandView.cpp" line="3172"/>
       <source>Text&amp;ure Mapping</source>
       <translation>Наложение текстур</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3315"/>
+      <location filename="../CommandView.cpp" line="3173"/>
       <source>Maps textures to shapes</source>
       <translation>Накладывает текстуры на фигуры</translation>
     </message>
@@ -14006,12 +13941,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3340"/>
+      <location filename="../CommandView.cpp" line="3198"/>
       <source>View &amp;Turntable</source>
       <translation>Поворотный стол</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3341"/>
+      <location filename="../CommandView.cpp" line="3199"/>
       <source>Opens a turntable view</source>
       <translation>Открывает просмотр вида в режиме поворотный стол</translation>
     </message>
@@ -14019,12 +13954,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3370"/>
+      <location filename="../CommandView.cpp" line="3228"/>
       <source>Selection &amp;Back</source>
       <translation>Откатить выделение</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3372"/>
+      <location filename="../CommandView.cpp" line="3230"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>Восстанавливает предыдущий выбор в дереве проекта. Работает только в том случае, если включен режим записи выбора в дереве проекта.</translation>
     </message>
@@ -14032,12 +13967,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3404"/>
+      <location filename="../CommandView.cpp" line="3262"/>
       <source>Selection &amp;Forward</source>
       <translation>Восстановить выделение</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3406"/>
+      <location filename="../CommandView.cpp" line="3264"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>Восстанавливает последующий, только что отменённый выбор в дереве проекта. Работает только в том случае, если включен режим записи выбора в дереве проекта.</translation>
     </message>
@@ -14045,12 +13980,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3462"/>
+      <location filename="../CommandView.cpp" line="3320"/>
       <source>&amp;Single Document</source>
       <translation>&amp;Одиночный документ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3463"/>
+      <location filename="../CommandView.cpp" line="3321"/>
       <source>Displays only the active document in the tree view</source>
       <translation>Отображает только активный документ в дереве проекта</translation>
     </message>
@@ -14058,12 +13993,12 @@ Proceed?</source>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3479"/>
+      <location filename="../CommandView.cpp" line="3337"/>
       <source>&amp;Multi Document</source>
       <translation>&amp;Множество документов</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3480"/>
+      <location filename="../CommandView.cpp" line="3338"/>
       <source>Displays all documents in the tree view</source>
       <translation>Отображает все документы в дереве проекта</translation>
     </message>
@@ -14071,12 +14006,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3539"/>
+      <location filename="../CommandView.cpp" line="3397"/>
       <source>Sync View</source>
       <translation>Синхронизация просмотра </translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3540"/>
+      <location filename="../CommandView.cpp" line="3398"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
       <translation>Переключается на 3D-вид, содержащий выбранный элемент в дереве проекта</translation>
     </message>
@@ -14084,12 +14019,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3559"/>
+      <location filename="../CommandView.cpp" line="3417"/>
       <source>Sync Selection</source>
       <translation>Синхронизировать выбранные элементы </translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3560"/>
+      <location filename="../CommandView.cpp" line="3418"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
       <translation>Разворачивает элемент в дереве проекта при выборе соответствующего объекта в 3D-виде</translation>
     </message>
@@ -14097,12 +14032,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3579"/>
+      <location filename="../CommandView.cpp" line="3437"/>
       <source>Sync Placement</source>
       <translation>Синхронизация размещения </translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3581"/>
+      <location filename="../CommandView.cpp" line="3439"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
       <translation>Настраивает размещение при перетаскивании объектов между системами координат (например, в контейнерах Деталь)</translation>
     </message>
@@ -14110,12 +14045,12 @@ Proceed?</source>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3618"/>
+      <location filename="../CommandView.cpp" line="3476"/>
       <source>Record Selection</source>
       <translation>Сохранять в избранное </translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3620"/>
+      <location filename="../CommandView.cpp" line="3478"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
       <translation>Записывает выделение в дереве проекта для перехода назад/вперед с помощью кнопок навигации</translation>
     </message>
@@ -14123,12 +14058,12 @@ Proceed?</source>
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3637"/>
+      <location filename="../CommandView.cpp" line="3495"/>
       <source>Initiate &amp;Dragging</source>
       <translation>Инициировать перетаскивание</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3638"/>
+      <location filename="../CommandView.cpp" line="3496"/>
       <source>Initiates dragging of the currently selected tree items</source>
       <translation>Инициирует перетаскивание выбранных элементов внутри дерева проекта</translation>
     </message>
@@ -14136,12 +14071,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3670"/>
+      <location filename="../CommandView.cpp" line="3528"/>
       <source>Tree View Actions</source>
       <translation>Действия с деревом</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3671"/>
+      <location filename="../CommandView.cpp" line="3529"/>
       <source>Tree view behavior options and actions</source>
       <translation>Параметры поведения и действия внутри дерева проекта</translation>
     </message>
@@ -14149,12 +14084,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3715"/>
+      <location filename="../CommandView.cpp" line="3573"/>
       <source>&amp;Bounding Box</source>
       <translation>Габаритная рамка</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3716"/>
+      <location filename="../CommandView.cpp" line="3574"/>
       <source>Shows selection bounding box</source>
       <translation>Показывает ограничительную рамку вокруг выделения в 3D-виде</translation>
     </message>
@@ -14162,12 +14097,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3762"/>
+      <location filename="../CommandView.cpp" line="3620"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
       <translation>Переключить наложение для всех панелей</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3763"/>
+      <location filename="../CommandView.cpp" line="3621"/>
       <source>Toggles overlay mode for all docked panels</source>
       <translation type="unfinished">Toggles overlay mode for all docked panels</translation>
     </message>
@@ -14175,12 +14110,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3785"/>
+      <location filename="../CommandView.cpp" line="3643"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
       <translation>Переключить прозрачность панелей</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3786"/>
+      <location filename="../CommandView.cpp" line="3644"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation>Включает/выключает Прозрачный режим для всех закреплённых наложенных панелей.
@@ -14190,12 +14125,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3811"/>
+      <location filename="../CommandView.cpp" line="3669"/>
       <source>Toggle &amp;Overlay</source>
       <translation>Переключить наложение</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3812"/>
+      <location filename="../CommandView.cpp" line="3670"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation>Переключает режим наложения для закреплённых панелей под курсором</translation>
     </message>
@@ -14203,12 +14138,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3834"/>
+      <location filename="../CommandView.cpp" line="3692"/>
       <source>Toggle Tran&amp;sparent Mode</source>
       <translation>Переключить прозрачность</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3835"/>
+      <location filename="../CommandView.cpp" line="3693"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation>Включает/выключает Прозрачный режим для закреплённой панели под курсором. Благодаря этому закреплённая панель всегда остаётся прозрачной.</translation>
@@ -14217,12 +14152,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3860"/>
+      <location filename="../CommandView.cpp" line="3718"/>
       <source>Toggle &amp;Left</source>
       <translation>Переключить влево</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3861"/>
+      <location filename="../CommandView.cpp" line="3719"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation>Включает/выключает Видимость левой накладной панели</translation>
     </message>
@@ -14230,12 +14165,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3885"/>
+      <location filename="../CommandView.cpp" line="3743"/>
       <source>Toggle &amp;Right</source>
       <translation>Переключить вправо</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3886"/>
+      <location filename="../CommandView.cpp" line="3744"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation>Включает/выключает Видимость правой накладной панели</translation>
     </message>
@@ -14243,12 +14178,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="3910"/>
+      <location filename="../CommandView.cpp" line="3768"/>
       <source>Toggle &amp;Top</source>
       <translation>Переключить сверху</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3911"/>
+      <location filename="../CommandView.cpp" line="3769"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation>Включает/выключает Видимость верхней накладной панели</translation>
     </message>
@@ -14256,12 +14191,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="3935"/>
+      <location filename="../CommandView.cpp" line="3793"/>
       <source>Toggle &amp;Bottom</source>
       <translation>Переключить снизу</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3936"/>
+      <location filename="../CommandView.cpp" line="3794"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation>Включает/выключает Видимость нижней накладной панели</translation>
     </message>
@@ -14269,12 +14204,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3960"/>
+      <location filename="../CommandView.cpp" line="3818"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
       <translation>Пропускать события мыши в накладных панелях</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3961"/>
+      <location filename="../CommandView.cpp" line="3819"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation>Игнорирует все события мыши в закреплённых накладных панелях</translation>
     </message>
@@ -14282,12 +14217,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="4006"/>
+      <location filename="../CommandView.cpp" line="3864"/>
       <source>Overlay Docked Panel</source>
       <translation>Накладная закреплённая панель</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4007"/>
+      <location filename="../CommandView.cpp" line="3865"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation>Устанавливает закреплённую панель в режим наложения</translation>
     </message>
@@ -14295,12 +14230,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4140"/>
+      <location filename="../CommandView.cpp" line="3998"/>
       <source>St&amp;ore Working View</source>
       <translation>Сохранить рабочий вид</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4141"/>
+      <location filename="../CommandView.cpp" line="3999"/>
       <source>Stores a temporary working view for the current document</source>
       <translation>Сохраняет временный рабочий вид для текущего документа</translation>
     </message>
@@ -14308,12 +14243,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4168"/>
+      <location filename="../CommandView.cpp" line="4026"/>
       <source>R&amp;ecall Working View</source>
       <translation>Вызвать рабочий вид</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4169"/>
+      <location filename="../CommandView.cpp" line="4027"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation>Возвращает ранее сохранённый временный рабочий режим</translation>
     </message>
@@ -14321,12 +14256,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4196"/>
+      <location filename="../CommandView.cpp" line="4054"/>
       <source>&amp;Align to Selection</source>
       <translation>&amp;Выровнять по выделенному</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4197"/>
+      <location filename="../CommandView.cpp" line="4055"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation>Выравнивает вид камеры по выделенным элементам в 3D-виде</translation>
     </message>
@@ -14389,13 +14324,13 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="1238"/>
-      <location filename="../FileDialog.cpp" line="1248"/>
+      <location filename="../FileDialog.cpp" line="1239"/>
+      <location filename="../FileDialog.cpp" line="1249"/>
       <source>Select a File</source>
       <translation>Выберите файл</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="1258"/>
+      <location filename="../FileDialog.cpp" line="1259"/>
       <source>Select a Directory</source>
       <translation>Выберите папку</translation>
     </message>
@@ -14611,12 +14546,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4224"/>
+      <location filename="../CommandView.cpp" line="4082"/>
       <source>Clarify Selection</source>
       <translation>Уточнить выбор</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4225"/>
+      <location filename="../CommandView.cpp" line="4083"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation>Показывает контекстное меню при наведении курсора мыши для выбора перекрывающей или мешающей геометрии в 3D-виде.
@@ -14714,19 +14649,19 @@ This makes the docked panel stay transparent at all times.</source>
     </message>
   </context>
   <context>
-    <name>FileFormat</name>
-    <message>
-      <location filename="../FreeCADGuiInit.py" line="470"/>
-      <source>Portable Document Format</source>
-      <translation>Портативный формат документа </translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::TaskCommandLinkDialog</name>
     <message>
       <location filename="../TaskCommandLink.ui" line="14"/>
       <source>Insert</source>
       <translation>Вставить</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../FreeCADGuiInit.py" line="470"/>
+      <source>Portable Document Format</source>
+      <translation>Портативный формат документа </translation>
     </message>
   </context>
   <context>
@@ -14852,12 +14787,12 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../CommandView.cpp" line="4042"/>
+      <location filename="../CommandView.cpp" line="3900"/>
       <source>Toggle Bottom Panels</source>
       <translation>Переключить нижние панели </translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4043"/>
+      <location filename="../CommandView.cpp" line="3901"/>
       <source>Toggles the bottom dock panels</source>
       <translation>Переключает нижние панели док-станции </translation>
     </message>

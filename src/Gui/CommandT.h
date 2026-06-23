@@ -80,6 +80,11 @@ public:
     }
 };
 
+inline const char* asString(bool value)
+{
+    return value ? "True" : "False";
+}
+
 /** @defgroup CommandFuncs Helper functions for running commands through Python interpreter */
 //@{
 
