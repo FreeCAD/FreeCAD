@@ -57,6 +57,7 @@
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include <Inventor/details/SoDetail.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -272,6 +273,29 @@ void setOverlayCacheContext(SoGLRenderAction& action, const View3DInventorViewer
     }
 }
 
+/**
+ * Reset the main render action's lazy GL cache after overlay rendering.
+ *
+ * Overlay render actions share the viewer's OpenGL context, but keep their own
+ * Coin lazy state. They can leave the real GL state different from what the
+ * main render action has cached, so reset the cache and let the next traversal
+ * resend the state through Coin instead of restoring individual GL flags here.
+ */
+void resetMainLazyGLState(const View3DInventorViewer* viewer)
+{
+    if (!viewer || !viewer->getSoRenderManager()) {
+        return;
+    }
+
+    SoGLRenderAction* mainAction = viewer->getSoRenderManager()->getGLRenderAction();
+    if (!mainAction || !mainAction->getState()) {
+        return;
+    }
+
+    SoGLLazyElement::getInstance(mainAction->getState())
+        ->reset(mainAction->getState(), SoLazyElement::ALL_MASK);
+}
+
 SoSeparator* create2DOverlayRoot(int viewportWidth, int viewportHeight)
 {
     auto* root = new SoSeparator;
@@ -303,6 +327,7 @@ void applyOverlay(SoNode* root, int viewportWidth, int viewportHeight, const Vie
     setOverlayCacheContext(action, viewer);
     action.setTransparencyType(SoGLRenderAction::BLEND);
     action.apply(root);
+    resetMainLazyGLState(viewer);
 }
 
 struct OverlayImageState
@@ -5260,15 +5285,21 @@ void View3DInventorViewer::drawAxisCross()
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     vp.setViewportPixels(origin[0], origin[1], pixelarea, pixelarea);
 
-    SoGLRenderAction axisAction(vp);
-    setOverlayCacheContext(axisAction, this);
-    axisAction.setTransparencyType(SoGLRenderAction::BLEND);
-    axisAction.apply(overlay.axisRoot);
+    {
+        SoGLRenderAction axisAction(vp);
+        setOverlayCacheContext(axisAction, this);
+        axisAction.setTransparencyType(SoGLRenderAction::BLEND);
+        axisAction.apply(overlay.axisRoot);
+    }
 
-    SoGLRenderAction letterAction(vp);
-    setOverlayCacheContext(letterAction, this);
-    letterAction.setTransparencyType(SoGLRenderAction::BLEND);
-    letterAction.apply(overlay.lettersRoot);
+    {
+        SoGLRenderAction letterAction(vp);
+        setOverlayCacheContext(letterAction, this);
+        letterAction.setTransparencyType(SoGLRenderAction::BLEND);
+        letterAction.apply(overlay.lettersRoot);
+    }
+
+    resetMainLazyGLState(this);
 }
 
 void View3DInventorViewer::drawSingleBackground(const QColor& col)
