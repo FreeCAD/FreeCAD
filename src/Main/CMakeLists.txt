@@ -66,8 +66,6 @@ endif()
 
 SET(FreeCADMainCmd_LIBS
     FreeCADApp
-    ${QtCore_LIBRARIES}
-    ${QtXml_LIBRARIES}
 )
 
 if(NOT BUILD_DYNAMIC_LINK_PYTHON)
