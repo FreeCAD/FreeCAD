@@ -1086,6 +1086,7 @@ protected:
 
     // migration functions
     void migrateSketch();
+    void migrateConstraintOrientations();
 
     static void appendConstraintsMsg(
         const std::vector<int>& vector,

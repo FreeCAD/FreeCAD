@@ -1372,6 +1372,12 @@ void SketchObject::onSketchRestore()
             acceptGeometry();
 
         synchroniseGeometryState();
+
+        // Orientations must be migrated after external refs
+        // are resolved because their underlying geometry might 
+        // get accessed
+        migrateConstraintOrientations();
+
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
         if (Shape.getValue().IsNull() && hasConflicts() == 0) {
@@ -1467,16 +1473,6 @@ void SketchObject::migrateSketch()
 
             g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
         }
-    }
-
-    {
-        // Migrate point-line, circle-circle and circle-line distance from abs to signed
-        auto constraints = Constraints.getValues();
-        for (auto& constr : constraints) {
-            setOrientation(constr, false);
-        }
-
-        Constraints.setValues(std::move(constraints));
     }
 
     /* parabola axis as internal geometry */
