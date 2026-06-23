@@ -27,7 +27,6 @@
 #include <Mod/Measure/MeasureGlobal.h>
 
 #include <memory>
-#include <QString>
 
 #include <App/DocumentObject.h>
 #include <App/MeasureManager.h>
@@ -56,6 +55,9 @@ public:
     ~MeasureBase() override = default;
 
     App::PropertyPlacement Placement;
+    App::PropertyString DisplayUnit;
+
+    std::string formatQuantity(const Base::Quantity& qty) const;
 
     // fastsignals::signal<void (const MeasureBase*)> signalGuiInit;
 
@@ -66,7 +68,7 @@ public:
     virtual void parseSelection(const App::MeasureSelection& selection);
 
 
-    virtual QString getResultString();
+    virtual std::string getResultString();
 
     virtual std::vector<std::string> getInputProps();
     virtual App::Property* getResultProp()

@@ -65,12 +65,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="380"/>
       <source>Edge to Trajectory</source>
-      <translation type="unfinished">Edge to Trajectory</translation>
+      <translation>Arista a trayectoria</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="381"/>
       <source>Generates a trajectory from the selected edges</source>
-      <translation type="unfinished">Generates a trajectory from the selected edges</translation>
+      <translation>Genera una trayectoria a partir de las aristas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
       <source>Exports the trajectory as a compact KRL subroutine</source>
-      <translation type="unfinished">Exports the trajectory as a compact KRL subroutine</translation>
+      <translation>Exporta la trayectoria como una subrutina compacta de KRL</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="166"/>
       <source>Inserts the preselection position into the trajectory (W)</source>
-      <translation type="unfinished">Inserts the preselection position into the trajectory (W)</translation>
+      <translation>Inserta la posición de preselección en la trayectoria (W)</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="508"/>
       <source>Groups and connects multiple trajectories into one</source>
-      <translation type="unfinished">Groups and connects multiple trajectories into one</translation>
+      <translation>Agrupa y conecta múltiples trayectorias en una</translation>
     </message>
   </context>
   <context>
@@ -296,12 +296,12 @@
       <location filename="../../CommandTrajectory.cpp" line="180"/>
       <location filename="../../CommandTrajectory.cpp" line="201"/>
       <location filename="../../CommandTrajectory.cpp" line="486"/>
-      <location filename="../../CommandExport.cpp" line="63"/>
-      <location filename="../../CommandExport.cpp" line="145"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="167"/>
       <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../CommandExport.cpp" line="63"/>
+      <location filename="../../CommandExport.cpp" line="145"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -337,9 +337,9 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="110"/>
+      <location filename="../../Command.cpp" line="270"/>
       <location filename="../../CommandExport.cpp" line="64"/>
       <location filename="../../CommandExport.cpp" line="146"/>
-      <location filename="../../Command.cpp" line="270"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Seleccione un robot y un objeto trayectoria.</translation>
     </message>

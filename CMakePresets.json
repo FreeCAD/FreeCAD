@@ -79,11 +79,11 @@
             "type": "BOOL",
             "value": "OFF"
           },
-          "FREECAD_USE_EXTERNAL_FMT": {
+          "FREECAD_USE_EXTERNAL_SMESH": {
             "type": "BOOL",
             "value": "ON"
           },
-          "FREECAD_USE_EXTERNAL_SMESH": {
+          "FREECAD_USE_EXTERNAL_JSON": {
             "type": "BOOL",
             "value": "ON"
           },
@@ -226,13 +226,7 @@
         "inherits": [
           "debug",
           "conda"
-        ],
-        "cacheVariables": {
-            "FREECAD_WARN_ERROR": {
-            "type": "BOOL",
-            "value": "ON"
-          }
-        }
+        ]
       },
       {
         "name": "conda-release",
@@ -242,7 +236,13 @@
         "inherits": [
           "release",
           "conda"
-        ]
+        ],
+        "cacheVariables": {
+            "FREECAD_WARN_ERROR": {
+            "type": "BOOL",
+            "value": "ON"
+          }
+        }
       },
       {
         "name": "conda-linux-debug",
@@ -393,10 +393,6 @@
                     "type": "BOOL",
                     "value": "TRUE"
                 },
-                "FREECAD_USE_EXTERNAL_FMT": {
-                    "type": "BOOL",
-                    "value": "TRUE"
-                },
                 "FREECAD_USE_PCL": {
                     "type": "BOOL",
                     "value": "OFF"
@@ -422,10 +418,6 @@
                     "value": "/usr/src/CXX"
                 },
                 "ENABLE_DEVELOPER_TESTS": {
-                    "type": "BOOL",
-                    "value": "TRUE"
-                },
-                "FREECAD_USE_EXTERNAL_GTEST": {
                     "type": "BOOL",
                     "value": "TRUE"
                 },

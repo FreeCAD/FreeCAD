@@ -1083,7 +1083,7 @@ void CmdPartImport::activated(int iMsg)
         {QStringLiteral("BREP"), {"*.brp", "*.brep"}},
     };
 
-    qsizetype select;
+    qsizetype select = -1;
     QString fn
         = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter, &select);
     if (!fn.isEmpty()) {
@@ -1153,7 +1153,7 @@ void CmdPartExport::activated(int iMsg)
         {QStringLiteral("BREP"), {"*.brp", "*.brep"}},
     };
 
-    qsizetype select;
+    qsizetype select = -1;
     QString fn
         = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter, &select);
     if (!fn.isEmpty()) {
@@ -1402,7 +1402,7 @@ CmdPartBoolean::CmdPartBoolean()
     sAppModule = "Part";
     sGroup = QT_TR_NOOP("Part");
     sMenuText = QT_TR_NOOP("Boolean Operation");
-    sToolTipText = QT_TR_NOOP("Applies a boolean operations with the selected shapes");
+    sToolTipText = QT_TR_NOOP("Applies a boolean operation with the selected shapes");
     sWhatsThis = "Part_Boolean";
     sStatusTip = sToolTipText;
     sPixmap = "Part_Booleans";

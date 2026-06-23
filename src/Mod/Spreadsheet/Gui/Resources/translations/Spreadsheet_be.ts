@@ -382,11 +382,6 @@
       <translation>Ачысціць колер фону</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="224"/>
-      <source>Recompute Cells</source>
-      <translation>Пералічыць клеткі</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="326"/>
       <source>Insert Rows</source>
       <translation>Уставіць радкі</translation>
@@ -397,18 +392,23 @@
       <translation>Выдаліць радкі</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="366"/>
-      <source>Remove Columns</source>
-      <translation>Выдаліць слупкі</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="339"/>
       <source>Insert Columns</source>
       <translation>Уставіць слупкі</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="224"/>
+      <source>Recompute Cells</source>
+      <translation>Пералічыць клеткі</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="366"/>
+      <source>Remove Columns</source>
+      <translation>Выдаліць слупкі</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="581"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Ачысціць клеткі</translation>
     </message>

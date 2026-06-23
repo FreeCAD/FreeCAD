@@ -64,7 +64,7 @@ bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
     if (!vpViewer) {
         return false;
     }
-    if (event->type() == QEvent::KeyPress) {
+    if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
         // Here we decide if we redirect the input the viewer
         auto keyEvent = static_cast<QKeyEvent*>(event);
 

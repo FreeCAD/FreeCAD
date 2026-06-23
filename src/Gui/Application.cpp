@@ -98,6 +98,7 @@
 #include "Selection.h"
 #include "SelectionFilterPy.h"
 #include "SoQtOffscreenRendererPy.h"
+#include "SpaceMouseParameter.h"
 #include "SplitView3DInventor.h"
 #include "StartupProcess.h"
 #include "TaskView/TaskView.h"
@@ -2723,16 +2724,13 @@ void Application::init3DMouse(MainWindow* mainWindow, QApplication* qtApp)
 {
     Instance->pNavlibInterface = nullptr;
 #ifdef USE_3DCONNEXION_NAVLIB
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
     if (NlErrorCode) {
         Base::Console().log("Init: 3Dconnexion driver not installed\n");
     }
     else {
         Base::Console().log("Init: 3Dconnexion Navigation Framework present\n");
     }
-    if (!hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+    if (!SpaceMouseParameter::instance()->getLegacySpaceMouseDevices()) {
         if (!NlErrorCode) {
             // Instantiate the 3Dconnexion controller
             Instance->pNavlibInterface = new NavlibInterface();

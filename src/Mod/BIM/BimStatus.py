@@ -102,12 +102,16 @@ def setStatusIcons(show=True):
                     "BIM Status Widget",
                     "A context menu action used to show or hide this toolbar widget",
                 )
-                statuswidget.setWindowTitle(text)
-                s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt(
-                    "ToolbarIconSize", 24
+                statuswidget.setIconSize(QtCore.QSize(16, 16))
+                # MainWindow owns placement/ordering/persistence/menu; we only register.
+                mw.addStatusBarItem(
+                    statuswidget,
+                    id="BIMStatusWidget",
+                    title=text,
+                    slot="Right",
+                    # Workbench band (550-699): just left of the Bottom Panel Toggle.
+                    order=570,
                 )
-                statuswidget.setIconSize(QtCore.QSize(s, s))
-                st.insertPermanentWidget(2, statuswidget)
 
                 # bim views widget toggle button
                 from bimcommands import BimViews
@@ -116,9 +120,7 @@ def setStatusIcons(show=True):
                 bimviewsbutton.setIcon(QtGui.QIcon(":/icons/BIM_Views.svg"))
 
                 bimviewsbutton.setText("")
-                bimviewsbutton.setToolTip(
-                    translate("BIM", "Toggles the BIM Views Manager on/off (Ctrl+9)")
-                )
+                bimviewsbutton.setToolTip(translate("BIM", "Toggles the BIM Views Manager on/off"))
                 bimviewsbutton.setCheckable(True)
                 if BimViews.findWidget():
                     bimviewsbutton.setChecked(True)

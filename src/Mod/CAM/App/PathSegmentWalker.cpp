@@ -406,7 +406,10 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             plist.push_back(p2r);
             plist.push_back(p3r);
 
-            cb.g8x(i, last, next, points, plist, qlist);
+            // Calculate rotation-compensated next point for the hole bottom
+            Base::Vector3d nextr = compensateRotation(next, nrot, rotCenter);
+
+            cb.g8x(i, last, nextr, points, plist, qlist);
 
             last = p3;
             A = a;

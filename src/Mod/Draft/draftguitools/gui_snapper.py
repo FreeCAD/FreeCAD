@@ -131,6 +131,7 @@ class Snapper:
         self.callbackClick = None
         self.callbackMove = None
         self.snapObjectIndex = 0
+        self.pointConstraintProvider = None
 
         # snap keys, it's important that they are in this order for
         # saving in preferences and for properly restoring the toolbar
@@ -330,6 +331,7 @@ class Snapper:
         if self.snapInfo and "Component" in self.snapInfo:
             osnap = self.snapToObject(lastpoint, active, constrain, eline, point)
             if osnap:
+                osnap = self._apply_point_constraint(osnap, lastpoint, noTracker)
                 self.running = False
                 return osnap
 
@@ -342,6 +344,7 @@ class Snapper:
             else:
                 point = self.snapToGrid(point)
         fp = self.cstr(lastpoint, constrain, point)
+        fp = self._apply_point_constraint(fp, lastpoint, noTracker)
         if self.trackLine and lastpoint and (not noTracker):
             self.trackLine.p2(fp)
             self.trackLine.setColor()
@@ -1256,6 +1259,33 @@ class Snapper:
         if self.grid:
             self.grid.lowerTracker()
 
+    def setPointConstraintProvider(self, provider):
+        """Set the active task panel that constrains snapped points."""
+        self.pointConstraintProvider = provider
+
+    def clearPointConstraintProvider(self, provider=None):
+        """Clear the active provider if it matches ``provider``."""
+        if provider is None or self.pointConstraintProvider is provider:
+            self.pointConstraintProvider = None
+
+    def _apply_point_constraint(self, point, lastpoint, noTracker):
+        """Apply the active task panel's point constraints."""
+        provider = self.pointConstraintProvider
+        if provider is None:
+            return point
+        locked = provider.constrain_point(point, lastpoint)
+        if noTracker or locked is None:
+            return locked
+        if self.tracker:
+            self.tracker.setCoords(locked)
+            self.tracker.on()
+        if self.trackLine and lastpoint:
+            self.trackLine.p2(locked)
+            self.trackLine.setColor()
+            self.trackLine.on()
+            self.setArchDims(lastpoint, locked)
+        return locked
+
     def off(self):
         """Finish snapping."""
         if self.tracker:
@@ -1396,11 +1426,18 @@ class Snapper:
             self.constrainLine.off()
 
     def getPoint(
-        self, last=None, callback=None, movecallback=None, extradlg=None, title=None, mode="point"
+        self,
+        last=None,
+        callback=None,
+        movecallback=None,
+        extradlg=None,
+        title=None,
+        mode="point",
+        hints=None,
     ):
         """Get a 3D point from the screen.
 
-        getPoint([last],[callback],[movecallback],[extradlg],[title]):
+        getPoint([last],[callback],[movecallback],[extradlg],[title],[mode],[hints]):
         gets a 3D point from the screen. You can provide an existing point,
         in that case additional snap options and a tracker are available.
         You can also pass a function as callback, which will get called
@@ -1427,6 +1464,10 @@ class Snapper:
 
         If getPoint() is invoked without any argument, nothing is done
         but the callbacks are removed, so it can be used as a cancel function.
+
+        ``hints`` is an optional list of ``Gui.InputHint`` instances to
+        display in the status bar for the duration of the point pick. They are
+        cleared automatically when the user picks a point or cancels.
         """
         self.pt = None
         self.holdPoints = []
@@ -1505,6 +1546,8 @@ class Snapper:
             self.callbackMove = None
             Gui.Snapper.off()
             self.ui.offUi()
+            if hints:
+                QtCore.QTimer.singleShot(0, Gui.HintManager.hide)
             if callback:
                 if len(inspect.getfullargspec(callback).args) > 1:
                     obj = None
@@ -1535,6 +1578,8 @@ class Snapper:
             self.callbackMove = None
             Gui.Snapper.off()
             self.ui.offUi()
+            if hints:
+                QtCore.QTimer.singleShot(0, Gui.HintManager.hide)
             if callback:
                 if len(inspect.getfullargspec(callback).args) > 1:
                     callback(None, None)
@@ -1561,6 +1606,17 @@ class Snapper:
             self.callbackMove = self.view.addEventCallbackPivy(
                 coin.SoLocation2Event.getClassTypeId(), move
             )
+            self._schedule_hints(hints)
+
+    def _schedule_hints(self, hints):
+        """Show ``hints`` in the status bar after the task panel has opened."""
+        if not hints:
+            return
+
+        def _show():
+            Gui.HintManager.show(*hints)
+
+        QtCore.QTimer.singleShot(0, _show)
 
     def get_snap_toolbar(self):
         """Get the snap toolbar."""

@@ -23,82 +23,110 @@
 #pragma once
 
 
-#include <Base/Parameter.h>
+#include <Base/ParameterObserver.h>
 
 namespace Gui
 {
 
-/** Convenient class to obtain view provider related parameters
- *
- * The parameters are under group "User parameter:BaseApp/Preferences/View"
- */
-class GuiExport ViewParams: public ParameterGrp::ObserverType
+class GuiExport ViewParams: public Base::ParameterObserver
 {
 public:
     ViewParams();
-    ~ViewParams() override;
-    void OnChange(Base::Subject<const char*>&, const char* sReason) override;
     static ViewParams* instance();
+    using Base::ParameterObserver::getHandle;
 
-    ParameterGrp::handle getHandle()
-    {
-        return handle;
-    }
+    bool getUseNewSelection() const;
+    void setUseNewSelection(bool v);
 
-#define FC_VIEW_PARAMS \
-    FC_VIEW_PARAM(UseNewSelection, bool, Bool, true) \
-    FC_VIEW_PARAM(UseSelectionRoot, bool, Bool, true) \
-    FC_VIEW_PARAM(EnableSelection, bool, Bool, true) \
-    FC_VIEW_PARAM(RenderCache, int, Int, 0) \
-    FC_VIEW_PARAM(RandomColor, bool, Bool, false) \
-    FC_VIEW_PARAM(BoundingBoxColor, unsigned long, Unsigned, 4294967295UL) \
-    FC_VIEW_PARAM(AnnotationTextColor, unsigned long, Unsigned, 4294967295UL) \
-    FC_VIEW_PARAM(MarkerSize, int, Int, 9) \
-    FC_VIEW_PARAM(DefaultLinkColor, unsigned long, Unsigned, 0x66FFFF00) \
-    FC_VIEW_PARAM(DefaultShapeLineColor, unsigned long, Unsigned, 421075455UL) \
-    FC_VIEW_PARAM(DefaultShapeVertexColor, unsigned long, Unsigned, 421075455UL) \
-    FC_VIEW_PARAM(DefaultShapeColor, unsigned long, Unsigned, 0xCCCCCC00) \
-    FC_VIEW_PARAM(DefaultShapeTransparency, int, Int, 0) \
-    FC_VIEW_PARAM(DefaultShapeLineWidth, int, Int, 2) \
-    FC_VIEW_PARAM(DefaultShapePointSize, int, Int, 2) \
-    FC_VIEW_PARAM(CoinCycleCheck, bool, Bool, true) \
-    FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument, bool, Bool, true) \
-    FC_VIEW_PARAM(ShowSelectionBoundingBox, bool, Bool, false) \
-    FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100) \
-    FC_VIEW_PARAM(AxisXColor, unsigned long, Unsigned, 0xCC333300) \
-    FC_VIEW_PARAM(AxisYColor, unsigned long, Unsigned, 0x33CC3300) \
-    FC_VIEW_PARAM(AxisZColor, unsigned long, Unsigned, 0x3333CC00) \
-    FC_VIEW_PARAM(OriginColor, unsigned long, Unsigned, 0xFBD62900) \
-    FC_VIEW_PARAM(NeutralColor, unsigned long, Unsigned, 0xB3B38000) \
-    FC_VIEW_PARAM(PlacementIndicatorScale, double, Float, 40.0) \
-    FC_VIEW_PARAM(DraggerScale, double, Float, 0.03) \
-    FC_VIEW_PARAM(DatumScale, double, Float, 100.0) \
-    FC_VIEW_PARAM(DatumPlaneSize, double, Float, 62.0) \
-    FC_VIEW_PARAM(DatumLineSize, double, Float, 70.0) \
-    FC_VIEW_PARAM(DatumTemporaryScaleFactor, double, Float, 2.0)
+    bool getUseSelectionRoot() const;
+    void setUseSelectionRoot(bool v);
 
-#undef FC_VIEW_PARAM
-#define FC_VIEW_PARAM(_name, _ctype, _type, _def) \
-    _ctype get##_name() const \
-    { \
-        return _name; \
-    } \
-    void set##_name(_ctype _v) \
-    { \
-        handle->Set##_type(#_name, _v); \
-        _name = _v; \
-    }
+    bool getEnableSelection() const;
+    void setEnableSelection(bool v);
 
-    FC_VIEW_PARAMS
+    long getRenderCache() const;
+    void setRenderCache(long);
+
+    bool getRandomColor() const;
+    void setRandomColor(bool);
+
+    unsigned long getBoundingBoxColor() const;
+    void setBoundingBoxColor(unsigned long);
+
+    unsigned long getAnnotationTextColor() const;
+    void setAnnotationTextColor(unsigned long);
+
+    long getMarkerSize() const;
+    void setMarkerSize(long);
+
+    unsigned long getDefaultLinkColor() const;
+    void setDefaultLinkColor(unsigned long);
+
+    unsigned long getDefaultShapeLineColor() const;
+    void setDefaultShapeLineColor(unsigned long);
+
+    unsigned long getDefaultShapeVertexColor() const;
+    void setDefaultShapeVertexColor(unsigned long);
+
+    unsigned long getDefaultShapeColor() const;
+    void setDefaultShapeColor(unsigned long);
+
+    long getDefaultShapeTransparency() const;
+    void setDefaultShapeTransparency(long);
+
+    long getDefaultShapeLineWidth() const;
+    void setDefaultShapeLineWidth(long);
+
+    long getDefaultShapePointSize() const;
+    void setDefaultShapePointSize(long);
+
+    bool getCoinCycleCheck() const;
+    void setCoinCycleCheck(bool);
+
+    bool getEnablePropertyViewForInactiveDocument() const;
+    void setEnablePropertyViewForInactiveDocument(bool);
+
+    bool getShowSelectionBoundingBox() const;
+    void setShowSelectionBoundingBox(bool);
+
+    unsigned long getPropertyViewTimer() const;
+    void setPropertyViewTimer(unsigned long);
+
+    unsigned long getAxisXColor() const;
+    void setAxisXColor(unsigned long);
+
+    unsigned long getAxisYColor() const;
+    void setAxisYColor(unsigned long);
+
+    unsigned long getAxisZColor() const;
+    void setAxisZColor(unsigned long);
+
+    unsigned long getOriginColor() const;
+    void setOriginColor(unsigned long);
+
+    unsigned long getNeutralColor() const;
+    void setNeutralColor(unsigned long);
+
+    double getPlacementIndicatorScale() const;
+    void setPlacementIndicatorScale(double);
+
+    double getDraggerScale() const;
+    void setDraggerScale(double);
+
+    double getDatumScale() const;
+    void setDatumScale(double);
+
+    double getDatumPlaneSize() const;
+    void setDatumPlaneSize(double);
+
+    double getDatumLineSize() const;
+    void setDatumLineSize(double);
+
+    double getDatumTemporaryScaleFactor() const;
+    void setDatumTemporaryScaleFactor(double);
 
 private:
-#undef FC_VIEW_PARAM
-#define FC_VIEW_PARAM(_name, _ctype, _type, _def) _ctype _name;
-
-    FC_VIEW_PARAMS
-    ParameterGrp::handle handle;
+    void setup();
 };
-
-#undef FC_VIEW_PARAM
 
 }  // namespace Gui

@@ -382,11 +382,6 @@
       <translation type="unfinished">Clear background color</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="224"/>
-      <source>Recompute Cells</source>
-      <translation type="unfinished">Recompute Cells</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="326"/>
       <source>Insert Rows</source>
       <translation type="unfinished">Insert Rows</translation>
@@ -397,18 +392,23 @@
       <translation type="unfinished">Remove Rows</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="366"/>
-      <source>Remove Columns</source>
-      <translation type="unfinished">Remove Columns</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="339"/>
       <source>Insert Columns</source>
       <translation type="unfinished">Insert Columns</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="224"/>
+      <source>Recompute Cells</source>
+      <translation type="unfinished">Recompute Cells</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="366"/>
+      <source>Remove Columns</source>
+      <translation type="unfinished">Remove Columns</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="581"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation type="unfinished">Clear Cells</translation>
     </message>

@@ -382,11 +382,6 @@
       <translation>Háttér színének törlése</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="224"/>
-      <source>Recompute Cells</source>
-      <translation>Cellák újraszámítása</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="326"/>
       <source>Insert Rows</source>
       <translation>Sorok beszúrása</translation>
@@ -397,18 +392,23 @@
       <translation>Sorok eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="366"/>
-      <source>Remove Columns</source>
-      <translation>Oszlopok eltávolítása</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="339"/>
       <source>Insert Columns</source>
       <translation>Oszlopok beszúrása</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="224"/>
+      <source>Recompute Cells</source>
+      <translation>Cellák újraszámítása</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="366"/>
+      <source>Remove Columns</source>
+      <translation>Oszlopok eltávolítása</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="581"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Cellák törlése</translation>
     </message>

@@ -54,7 +54,7 @@ class PathDressupTagTaskPanel:
         self.obj.Proxy.obj = obj
         self.viewProvider = viewProvider
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
-        self.getPoint = PathGetPoint.TaskPanel(self.form.removeEditAddGroup, True)
+        self.getPoint = PathGetPoint.TaskPanel(self.form.cbTagGeneration, True)
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
             FreeCAD.ActiveDocument.openTransaction("Edit HoldingTags Dress-up")
@@ -130,6 +130,8 @@ class PathDressupTagTaskPanel:
         height = FreeCAD.Units.Quantity(self.form.ifHeight.text()).Value
         angle = self.form.dsbAngle.value()
         radius = FreeCAD.Units.Quantity(self.form.ifRadius.text()).Value
+        minCount = self.form.sbMinCount.value()
+        maxCount = self.form.sbMaxCount.value()
 
         tags = self.getTags(True)
         positions = []
@@ -157,6 +159,12 @@ class PathDressupTagTaskPanel:
         if disabled != self.obj.Disabled:
             self.obj.Disabled = disabled
             self.isDirty = True
+        if minCount != self.obj.Proxy.minCount:
+            self.obj.Proxy.minCount = minCount
+            self.isDirty = True
+        if maxCount != self.obj.Proxy.maxCount:
+            self.obj.Proxy.maxCount = maxCount
+            self.isDirty = True
 
     def updateTagsView(self):
         Path.Log.track()
@@ -181,36 +189,43 @@ class PathDressupTagTaskPanel:
         self.form.lwTags.blockSignals(False)
         self.whenTagSelectionChanged()
         self.viewProvider.updatePositions(self.Positions, self.Disabled)
+        self.updateButtonEnable()
+
+    def updateButtonEnable(self):
+        if self.Disabled:
+            self.form.pbSwitch.setText("Enable All")
+        else:
+            self.form.pbSwitch.setText("Disable All")
 
     def generateNewTags(self):
-        count = self.form.sbCount.value()
-        Path.Log.track(count)
-        if not self.obj.Proxy.generateTags(self.obj, count):
+        self.getFields()
+        if not self.obj.Proxy.generateTags(self.obj):
             self.obj.Proxy.execute(self.obj)
         self.Positions = self.obj.Positions
         self.Disabled = self.obj.Disabled
         self.updateTagsView()
 
     def copyNewTags(self):
-        sel = self.form.cbSource.currentText()
-        tags = [o for o in FreeCAD.ActiveDocument.Objects if sel == o.Label]
-        if 1 == len(tags):
-            if not self.obj.Proxy.copyTags(self.obj, tags[0]):
+        objs = FreeCAD.ActiveDocument.Objects
+        tags = [o for o in objs if "DressupTag" in o.Name and self.obj.Name != o.Name]
+        tagsLabels = [t.Label for t in tags]
+        form = FreeCADGui.PySideUic.loadUi(":/panels/DlgTCChooser.ui")
+        form.setWindowTitle("Dressup Tag")
+        form.label.setText("Copy tags from")
+        form.uiToolController.addItems(tagsLabels)
+        r = form.exec()
+        if r:
+            index = form.uiToolController.currentIndex()
+            if not self.obj.Proxy.copyTags(self.obj, tags[index]):
                 self.obj.Proxy.execute(self.obj)
             self.Positions = self.obj.Positions
             self.Disabled = self.obj.Disabled
             self.updateTagsView()
-        else:
-            Path.Log.error("Cannot copy tags - internal error")
 
     def updateModel(self):
         self.getFields()
         self.updateTagsView()
         self.isDirty = True
-
-    def whenCountChanged(self):
-        count = self.form.sbCount.value()
-        self.form.pbGenerate.setEnabled(count)
 
     def selectTagWithId(self, index):
         Path.Log.track(index)
@@ -218,8 +233,7 @@ class PathDressupTagTaskPanel:
 
     def whenTagSelectionChanged(self):
         index = self.form.lwTags.currentRow()
-        count = self.form.lwTags.count()
-        self.form.pbDelete.setEnabled(index != -1 and count > 2)
+        self.form.pbRemove.setEnabled(index != -1)
         self.form.pbEdit.setEnabled(index != -1)
         self.viewProvider.selectTag(index)
 
@@ -229,11 +243,22 @@ class PathDressupTagTaskPanel:
     def updateTagsViewWith(self, tags):
         self.tags = tags
         self.Positions = [FreeCAD.Vector(t[0], t[1], 0) for t in tags]
-        self.Disabled = [i for (i, t) in enumerate(self.tags) if not t[2]]
+        self.Disabled = [i for i, t in enumerate(tags) if not t[2]]
         self.updateTagsView()
 
-    def deleteSelectedTag(self):
+    def removeSelectedTag(self):
         self.updateTagsViewWith(self.getTags(False))
+
+    def clearTagsList(self):
+        self.updateTagsViewWith([])  # remove all tags
+
+    def switchTags(self):
+        if self.Disabled:  # enable all tags
+            self.Disabled = []
+        else:  # disable all tags
+            tags = self.getTags(True)
+            self.Disabled = list(range(len(tags)))
+        self.updateTagsView()
 
     def addNewTagAt(self, point, obj):
         if point and obj and self.obj.Proxy.pointIsOnPath(self.obj, point):
@@ -272,7 +297,6 @@ class PathDressupTagTaskPanel:
 
     def setFields(self):
         self.updateTagsView()
-        self.form.sbCount.setValue(int(len(self.Positions) / self.obj.Proxy.amountClosedWires))
         self.form.ifHeight.setText(
             FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString
         )
@@ -283,38 +307,34 @@ class PathDressupTagTaskPanel:
         self.form.ifRadius.setText(
             FreeCAD.Units.Quantity(self.obj.Radius, FreeCAD.Units.Length).UserString
         )
+        self.form.sbMinCount.setValue(self.obj.Proxy.minCount)
+        self.form.sbMaxCount.setValue(self.obj.Proxy.maxCount)
 
     def setupUi(self):
         self.Positions = self.obj.Positions
         self.Disabled = self.obj.Disabled
 
         self.setFields()
-        self.whenCountChanged()
+        self.updateButtonEnable()
 
         if self.obj.Proxy.supportsTagGeneration(self.obj):
-            self.form.sbCount.valueChanged.connect(self.whenCountChanged)
             self.form.pbGenerate.clicked.connect(self.generateNewTags)
-        else:
-            self.form.cbTagGeneration.setEnabled(False)
 
-        enableCopy = False
-        for tags in sorted(
-            [o.Label for o in FreeCAD.ActiveDocument.Objects if "DressupTag" in o.Name]
-        ):
-            if tags != self.obj.Label:
-                enableCopy = True
-                self.form.cbSource.addItem(tags)
-        if enableCopy:
-            self.form.gbCopy.setEnabled(True)
+        objs = FreeCAD.ActiveDocument.Objects
+        if any(o for o in objs if "DressupTag" in o.Name and self.obj.Name != o.Name):
             self.form.pbCopy.clicked.connect(self.copyNewTags)
+        else:
+            self.form.pbCopy.hide()
 
         self.form.lwTags.itemChanged.connect(self.whenTagsViewChanged)
         self.form.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
         self.form.lwTags.itemActivated.connect(self.editTag)
 
-        self.form.pbDelete.clicked.connect(self.deleteSelectedTag)
+        self.form.pbClear.clicked.connect(self.clearTagsList)
+        self.form.pbRemove.clicked.connect(self.removeSelectedTag)
         self.form.pbEdit.clicked.connect(self.editSelectedTag)
         self.form.pbAdd.clicked.connect(self.addNewTag)
+        self.form.pbSwitch.clicked.connect(self.switchTags)
 
         self.viewProvider.turnMarkerDisplayOn(True)
 

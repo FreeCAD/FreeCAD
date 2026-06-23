@@ -594,7 +594,7 @@ void SketcherSettingsDisplay::onFontNameChanged(const QFont& font)
     auto testChars = QString::fromUtf8(RequiredCharacters).toUcs4();
 
     QString missingChars;
-    for (uint testChar : testChars) {
+    for (char32_t testChar : testChars) {
         if (!metrics.inFontUcs4(testChar)) {
             missingChars += QString::fromUtf8("  ");
             missingChars += QString::fromUcs4(&testChar, 1);

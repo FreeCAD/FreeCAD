@@ -257,7 +257,7 @@ def GenerateGCode(op, obj, adaptiveResults):
                     spiralArgs = {
                         "center": centerBottom,
                         "outer_radius": r,
-                        "step": op.tool.Diameter.Value * obj.StepOver / 100,
+                        "step": op.tool.Diameter.Value * obj.StepOverPercent / 100,
                         "inner_radius": r_bottom,
                         "direction": "CCW",
                         "startAt": "Inside",
@@ -409,7 +409,7 @@ def Execute(op, obj):
             "geometry": path2d,
             "clearedArea": clearedArea,
             "stockGeometry": stockPath2d,
-            "stepover": float(obj.StepOver),
+            "stepover": float(obj.StepOverPercent),
             "effectiveHelixDiameter": float(helixDiameter),
             "helixMinDiameter": float(helixMinDiameter),
             "operationType": obj.OperationType,
@@ -441,7 +441,7 @@ def Execute(op, obj):
 
         if inputStateChanged or adaptiveResults is None:
             a2d = area.Adaptive2d()
-            a2d.stepOverFactor = 0.01 * obj.StepOver
+            a2d.stepOverFactor = 0.01 * obj.StepOverPercent
             a2d.toolDiameter = float(op.tool.Diameter)
             a2d.helixRampTargetDiameter = helixDiameter
             a2d.helixRampMinDiameter = helixMinDiameter
@@ -539,7 +539,6 @@ def ExecuteModelAware(op, obj):
     try:
         obj.HelixMinDiameterPercent = max(obj.HelixMinDiameterPercent, 10)
         obj.HelixMaxDiameterPercent = max(obj.HelixMaxDiameterPercent, obj.HelixMinDiameterPercent)
-        obj.StepOver = max(obj.StepOver, 1)
 
         helixDiameter = obj.HelixMaxDiameterPercent / 100 * op.tool.Diameter.Value
         helixMinDiameter = obj.HelixMinDiameterPercent / 100 * op.tool.Diameter.Value
@@ -621,7 +620,7 @@ def ExecuteModelAware(op, obj):
                 if k["opType"] in [outsideClearing, outsideProfiling]
             ],
             "stockGeometry": stockPaths,
-            "stepover": obj.StepOver,
+            "stepover": obj.StepOverPercent,
             "effectiveHelixDiameter": helixDiameter,
             "helixMinDiameter": helixMinDiameter,
             "operationType": "Clearing",
@@ -643,7 +642,7 @@ def ExecuteModelAware(op, obj):
                 if k["opType"] in [insideClearing, insideProfiling]
             ],
             "stockGeometry": stockPaths,
-            "stepover": obj.StepOver,
+            "stepover": obj.StepOverPercent,
             "effectiveHelixDiameter": helixDiameter,
             "helixMinDiameter": helixMinDiameter,
             "operationType": "Clearing",
@@ -699,7 +698,7 @@ def ExecuteModelAware(op, obj):
                 opType = rdict["opType"]
 
                 a2d = area.Adaptive2d()
-                a2d.stepOverFactor = 0.01 * obj.StepOver
+                a2d.stepOverFactor = 0.01 * obj.StepOverPercent
                 a2d.toolDiameter = op.tool.Diameter.Value
                 a2d.helixRampTargetDiameter = helixDiameter
                 a2d.helixRampMinDiameter = helixMinDiameter
@@ -1099,7 +1098,7 @@ def _workingEdgeHelperManual(op, obj, depths):
                 for f in ext.getExtensionFaces(wire):
                     selectedRegions.extend(f.Faces)
 
-    for base, subs in obj.Base:
+    for base, subs in op.baseShapes(obj):
         for sub in subs:
             element = base.Shape.getElement(sub)
             if sub.startswith("Face") and sub not in avoidFeatures:
@@ -1241,7 +1240,7 @@ def _get_working_edges(op, obj):
     avoidFeatures = [e.feature for e in extensions if e.avoid]
 
     # Get faces selected by user
-    for base, subs in obj.Base:
+    for base, subs in op.baseShapes(obj):
         for sub in subs:
             if sub.startswith("Face"):
                 if sub not in avoidFeatures:
@@ -1255,8 +1254,8 @@ def _get_working_edges(op, obj):
                         shape = base.Shape.getElement(sub)
                     all_regions.append(shape)
             elif sub.startswith("Edge"):
-                # Save edges for later processing
-                rawEdges.append(base.Shape.getElement(sub))
+                if sub not in avoidFeatures:
+                    rawEdges.append(base.Shape.getElement(sub))
     # Efor
 
     # Process selected edges
@@ -1563,8 +1562,8 @@ class PathAdaptive(PathOp.ObjectOp):
             ),
         )
         obj.addProperty(
-            "App::PropertyPercent",
-            "StepOver",
+            "App::PropertyFloat",
+            "StepOverPercent",
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
@@ -1765,7 +1764,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.Side = "Inside"
         obj.OperationType = "Clearing"
         obj.Tolerance = 0.1
-        obj.StepOver = 20
+        obj.StepOverPercent = 20
         obj.LiftDistance = 0
         # obj.ProcessHoles = True
         obj.ForceInsideOut = False
@@ -1791,6 +1790,12 @@ class PathAdaptive(PathOp.ObjectOp):
         """opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses."""
+
+        # Enforce StepOverPercent constraints
+        if obj.StepOverPercent > 100.0:
+            obj.StepOverPercent = 100.0
+        if obj.StepOverPercent < 0.1:
+            obj.StepOverPercent = 0.1
 
         obj.setEditorMode("OrderCutsByRegion", 0 if obj.ModelAwareExperiment else 2)
         obj.setEditorMode("ZStockToLeave", 0 if obj.ModelAwareExperiment else 2)
@@ -1915,8 +1920,8 @@ class PathAdaptive(PathOp.ObjectOp):
                 "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "The maximum allowable descent in a single revolution of the helix"
-                    "Set to zero to disable limitation by pitch",
+                    "The maximum allowable descent in a single revolution of the helix. "
+                    "Set to 0 to disable the pitch limit.",
                 ),
             )
         helixProps = (
@@ -1930,6 +1935,27 @@ class PathAdaptive(PathOp.ObjectOp):
             if obj.getGroupOfProperty(prop) != "AdaptiveHelixEntry":
                 obj.setGroupOfProperty(prop, "AdaptiveHelixEntry")
 
+        # Migrate StepOver to StepOverPercent
+        if not hasattr(obj, "StepOverPercent"):
+            # Get value from old StepOver property or use default
+            if hasattr(obj, "StepOver"):
+                oldValue = obj.StepOver
+                obj.removeProperty("StepOver")
+            else:
+                oldValue = 20
+
+            # Create new StepOverPercent property
+            obj.addProperty(
+                "App::PropertyFloat",
+                "StepOverPercent",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Percent of cutter diameter to step over on each pass",
+                ),
+            )
+            obj.StepOverPercent = float(oldValue)
+
         FeatureExtensions.initialize_properties(obj)
 
 
@@ -1938,7 +1964,7 @@ def SetupProperties():
         "Side",
         "OperationType",
         "Tolerance",
-        "StepOver",
+        "StepOverPercent",
         "LiftDistance",
         "KeepToolDownRatio",
         "StockToLeave",

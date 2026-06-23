@@ -348,9 +348,12 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         )
         if filename and filename[0]:
             self.update_style()
-            with open(filename[0], "w") as f:
+            filename = filename[0]
+            if not filename.lower().endswith(".json"):
+                filename += ".json"
+            with open(filename, "w") as f:
                 json.dump(self.styles, f, indent=4)
-            print("Styles saved to " + filename[0])
+            print("Styles saved to " + filename)
 
     def fill_editor(self, style=None):
         """Fill the editor fields with the contents of a style."""

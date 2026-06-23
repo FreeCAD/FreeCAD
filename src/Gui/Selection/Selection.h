@@ -98,6 +98,12 @@ public:
         TreeView = 2
     };
 
+    enum class PickedPoint
+    {
+        Invalid = 0,
+        Valid = 1,
+    };
+
     SelectionChanges(
         MsgType type = ClrSelection,
         const char* docName = nullptr,
@@ -107,13 +113,15 @@ public:
         float x = 0,
         float y = 0,
         float z = 0,
-        MsgSource subtype = MsgSource::Any
+        MsgSource subtype = MsgSource::Any,
+        PickedPoint pickedPoint = PickedPoint::Invalid
     )
         : Type(type)
         , SubType(subtype)
         , x(x)
         , y(y)
         , z(z)
+        , hasPickedPoint(pickedPoint == PickedPoint::Valid)
         , Object(docName, objName, subName)
         , TypeName(typeName)
     {
@@ -132,13 +140,15 @@ public:
         float x = 0,
         float y = 0,
         float z = 0,
-        MsgSource subtype = MsgSource::Any
+        MsgSource subtype = MsgSource::Any,
+        PickedPoint pickedPoint = PickedPoint::Invalid
     )
         : Type(type)
         , SubType(subtype)
         , x(x)
         , y(y)
         , z(z)
+        , hasPickedPoint(pickedPoint == PickedPoint::Valid)
         , Object(docName.c_str(), objName.c_str(), subName.c_str())
         , TypeName(typeName)
     {
@@ -160,6 +170,7 @@ public:
         x = other.x;
         y = other.y;
         z = other.z;
+        hasPickedPoint = other.hasPickedPoint;
         Object = other.Object;
         TypeName = other.TypeName;
         pDocName = Object.getDocumentName().c_str();
@@ -182,6 +193,7 @@ public:
         x = other.x;
         y = other.y;
         z = other.z;
+        hasPickedPoint = other.hasPickedPoint;
         Object = std::move(other.Object);
         TypeName = std::move(other.TypeName);
         pDocName = Object.getDocumentName().c_str();
@@ -202,6 +214,10 @@ public:
     float x;
     float y;
     float z;
+    /// True when x/y/z came from a real 3D viewport pick.
+    /// False for tree clicks, programmatic selections, and calls that rely on
+    /// the default (0,0,0) coordinates.
+    bool hasPickedPoint = false;
 
     App::SubObjectT Object;
     std::string TypeName;
@@ -341,7 +357,8 @@ public:
         float y = 0,
         float z = 0,
         const std::vector<SelObj>* pickedList = nullptr,
-        bool clearPreSelect = true
+        bool clearPreSelect = true,
+        SelectionChanges::PickedPoint pickedPoint = SelectionChanges::PickedPoint::Invalid
     );
     bool addSelection2(
         const char* pDocName,
@@ -417,7 +434,8 @@ public:
         float x = 0,
         float y = 0,
         float z = 0,
-        SelectionChanges::MsgSource signal = SelectionChanges::MsgSource::Any
+        SelectionChanges::MsgSource signal = SelectionChanges::MsgSource::Any,
+        SelectionChanges::PickedPoint pickedPoint = SelectionChanges::PickedPoint::Invalid
     );
     /// remove the present preselection
     void rmvPreselect(bool signal = false);
@@ -750,6 +768,10 @@ protected:
     static PyObject* sSetPreselection(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sGetPreselection(PyObject* self, PyObject* args);
     static PyObject* sRemPreselection(PyObject* self, PyObject* args);
+    static PyObject* sApplyCoinHighlight(PyObject* self, PyObject* args, PyObject* kwd);
+    static PyObject* sClearCoinHighlight(PyObject* self, PyObject* args, PyObject* kwd);
+    static PyObject* sApplyCoinSelection(PyObject* self, PyObject* args, PyObject* kwd);
+    static PyObject* sClearCoinSelection(PyObject* self, PyObject* args, PyObject* kwd);
     static PyObject* sGetCompleteSelection(PyObject* self, PyObject* args);
     static PyObject* sGetSelectionEx(PyObject* self, PyObject* args);
     static PyObject* sGetSelectionObject(PyObject* self, PyObject* args);

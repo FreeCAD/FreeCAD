@@ -40,6 +40,7 @@ import os
 import os.path
 import shutil
 import tempfile
+from traceback import format_exception_only
 from PySide import QtCore
 
 # import threading  # not used ATM
@@ -130,7 +131,7 @@ def run_fem_solver(solver, working_dir=None, blocking=False):
         except Exception as e:
             if App.GuiUp:
                 QtGui.QApplication.restoreOverrideCursor()
-            raise e
+            App.Console.PrintError("".join(format_exception_only(e)))
         return
 
     # code for old solver implementations

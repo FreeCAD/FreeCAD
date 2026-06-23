@@ -652,7 +652,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../ImageEdit.cpp" line="207"/>
       <location filename="../../ImageEdit.cpp" line="223"/>
       <source>Image files</source>
-      <translation type="unfinished">Image files</translation>
+      <translation>Cликовне датотеке</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="208"/>
@@ -1195,15 +1195,15 @@ If unchecked, they will be sorted by their name.</source>
       <translation>У супротном, све промене ће бити изгубљене.</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../MaterialSave.cpp" line="567"/>
+      <location filename="../../Array2D.cpp" line="170"/>
+      <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>
       <translation>Потврди брисање</translation>
     </message>
     <message>
-      <location filename="../../ListEdit.cpp" line="144"/>
       <location filename="../../Array2D.cpp" line="172"/>
+      <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
       <translation>Обриши ред?</translation>
     </message>
@@ -1444,7 +1444,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="263"/>
       <source>Set Material</source>
-      <translation type="unfinished">Set Material</translation>
+      <translation>Задај материјал</translation>
     </message>
   </context>
 </TS>

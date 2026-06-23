@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="613"/>
+      <location filename="../../Application.cpp" line="618"/>
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>
@@ -66,7 +66,7 @@ Användaren bör sedan klicka på knappen Uppdatera i huvudverktygsfältet.
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation type="unfinished">Origin-Point</translation>
+      <translation>Källa</translation>
     </message>
   </context>
   <context>

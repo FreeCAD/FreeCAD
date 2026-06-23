@@ -221,6 +221,7 @@ private:
     void tryRestoreWidth();
     void slotActiveDocument(const App::Document&);
     void slotInEdit(const Gui::ViewProviderDocumentObject&);
+    void slotResetEdit(const Gui::ViewProviderDocumentObject&);
     void slotDeletedDocument(const App::Document&);
     void slotViewClosed(const Gui::MDIView*);
     void slotUndoDocument(const App::Document&);
@@ -259,6 +260,7 @@ protected:
     Connection connectApplicationUndoDocument;
     Connection connectApplicationRedoDocument;
     Connection connectApplicationInEdit;
+    Connection connectApplicationResetEdit;
     Connection connectShowTaskWatcherSetting;
 };
 

@@ -49,6 +49,7 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Command.h"
 #include "Action.h"
 #include "Inventor/SoMouseWheelEvent.h"
@@ -59,6 +60,7 @@
 #include "Selection.h"
 #include "SoFullPathHelper.h"
 #include "View3DInventorViewer.h"
+#include "ViewParams.h"
 
 using namespace Gui;
 
@@ -323,6 +325,8 @@ NavigationStyle& NavigationStyle::operator=(const NavigationStyle& ns)
     this->menuenabled = ns.menuenabled;
     this->animationEnabled = ns.animationEnabled;
     this->spinningAnimationEnabled = ns.spinningAnimationEnabled;
+    this->rotationEnabled = ns.rotationEnabled;
+    this->orientationLocked = ns.orientationLocked;
     static_cast<FCSphereSheetProjector*>(this->spinprojector)
         ->setOrbitStyle(static_cast<FCSphereSheetProjector*>(ns.spinprojector)->getOrbitStyle());
     return *this;
@@ -342,6 +346,8 @@ void NavigationStyle::initialize()
     this->currentmode = NavigationStyle::IDLE;
     this->animationEnabled = true;
     this->spinningAnimationEnabled = false;
+    this->rotationEnabled = true;
+    this->orientationLocked = false;
     this->spinsamplecounter = 0;
     this->spinincrement = SbRotation::identity();
     this->rotationCenterFound = false;
@@ -523,6 +529,13 @@ std::shared_ptr<NavigationAnimation> NavigationStyle::setCameraOrientation(
     if (!camera) {
         return {};
     }
+    if (!canChangeCameraOrientation(
+            camera->orientation.getValue(),
+            orientation,
+            OrientationChangeSource::Programmatic
+        )) {
+        return {};
+    }
 
     animator->stop();
 
@@ -549,7 +562,7 @@ std::shared_ptr<NavigationAnimation> NavigationStyle::setCameraOrientation(
     const SbVec3f rotationCenterDistanceCam = camera->focalDistance.getValue() * SbVec3f(0, 0, 1);
 
     // Set to the given orientation
-    camera->orientation = orientation;
+    setCameraOrientationValue(camera, orientation, OrientationChangeSource::Programmatic);
 
     // Distance from rotation center to new camera position in global coordinate system
     SbVec3f newRotationCenterDistance;
@@ -701,9 +714,13 @@ void NavigationStyle::findBoundingSphere()
 /** Rotate the camera by the given amount, then reposition it so we're still pointing at the same
  * focal point
  */
-void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotation)
+void NavigationStyle::reorientCamera(
+    SoCamera* camera,
+    const SbRotation& rotation,
+    const OrientationChangeSource source
+)
 {
-    reorientCamera(camera, rotation, viewer->getFocalPoint());
+    reorientCamera(camera, rotation, viewer->getFocalPoint(), source);
 }
 
 /** Rotate the camera by the given amount, then reposition it so the rotation center stays in the
@@ -712,22 +729,29 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
 void NavigationStyle::reorientCamera(
     SoCamera* camera,
     const SbRotation& rotation,
-    const SbVec3f& rotationCenter
+    const SbVec3f& rotationCenter,
+    const OrientationChangeSource source
 )
 {
     if (!camera) {
         return;
     }
 
+    const SbRotation currentOrientation = camera->orientation.getValue();
+    const SbRotation targetOrientation = rotation * currentOrientation;
+    if (!canChangeCameraOrientation(currentOrientation, targetOrientation, source)) {
+        return;
+    }
+
     // Distance from rotation center to camera position in camera coordinate system
     SbVec3f rotationCenterDistanceCam;
-    camera->orientation.getValue().inverse().multVec(
+    currentOrientation.inverse().multVec(
         camera->position.getValue() - rotationCenter,
         rotationCenterDistanceCam
     );
 
     // Set new orientation value by accumulating the new rotation
-    camera->orientation = rotation * camera->orientation.getValue();
+    camera->orientation = targetOrientation;
 
     // Distance from rotation center to new camera position in global coordinate system
     SbVec3f newRotationCenterDistance;
@@ -1027,6 +1051,10 @@ void NavigationStyle::doScale(SoCamera* cam, float factor)
 }
 void NavigationStyle::doRotate(SoCamera* camera, float angle, const SbVec2f& pos)
 {
+    if (!isRotationEnabled()) {
+        return;
+    }
+
     SbBool zoomAtCur = this->zoomAtCursor;
     if (zoomAtCur) {
         const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
@@ -1042,7 +1070,7 @@ void NavigationStyle::doRotate(SoCamera* camera, float angle, const SbVec2f& pos
     rotcam.multVec(SbVec3f(0, 0, -1), vdir);
     // rotate
     SbRotation drot(vdir, angle);
-    camera->orientation.setValue(rotcam * drot);
+    setCameraOrientationValue(camera, rotcam * drot, OrientationChangeSource::Interactive);
 
     if (zoomAtCur) {
         const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
@@ -1089,6 +1117,10 @@ void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
  */
 void NavigationStyle::spin(const SbVec2f& pointerpos)
 {
+    if (!isRotationEnabled()) {
+        return;
+    }
+
     if (this->log.historysize < 2) {
         return;
     }
@@ -1201,6 +1233,10 @@ void NavigationStyle::spinInternal(const SbVec2f& pointerpos, const SbVec2f& las
  */
 void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
 {
+    if (!isRotationEnabled()) {
+        return;
+    }
+
     assert(this->spinprojector);
 
     if (getOrbitStyle() == FreeTurntable) {
@@ -1474,6 +1510,70 @@ SbBool NavigationStyle::isSpinning() const
     return currentmode == NavigationStyle::SPINNING;
 }
 
+/**
+ * @return Whether or not viewer rotation is enabled
+ */
+SbBool NavigationStyle::isRotationEnabled() const
+{
+    return rotationEnabled;
+}
+
+/**
+ * @brief Decide if camera rotation should be possible
+ */
+void NavigationStyle::setRotationEnabled(const SbBool enable)
+{
+    rotationEnabled = enable;
+    if (!enable && isSpinning()) {
+        stopAnimating();
+    }
+}
+
+SbBool NavigationStyle::canChangeCameraOrientation(
+    const SbRotation& current,
+    const SbRotation& target,
+    const OrientationChangeSource source
+) const
+{
+    if (Camera::rotationsMatch(current, target)) {
+        return true;
+    }
+    if (isOrientationLocked()) {
+        return false;
+    }
+    if (source == OrientationChangeSource::Interactive && !isRotationEnabled()) {
+        return false;
+    }
+    return true;
+}
+
+SbBool NavigationStyle::setCameraOrientationValue(
+    SoCamera* camera,
+    const SbRotation& orientation,
+    const OrientationChangeSource source
+) const
+{
+    if (!camera) {
+        return false;
+    }
+    if (!canChangeCameraOrientation(camera->orientation.getValue(), orientation, source)) {
+        return false;
+    }
+
+    camera->orientation = orientation;
+    return true;
+}
+
+SbBool NavigationStyle::isOrientationLocked() const
+{
+    return orientationLocked;
+}
+
+void NavigationStyle::setOrientationLocked(const SbBool enable)
+{
+    orientationLocked = enable;
+}
+
 void NavigationStyle::startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait) const
 {
     if (wait) {
@@ -1672,6 +1772,22 @@ bool NavigationStyle::tryStartBoxSelection(const SoLocation2Event* const ev, boo
     return tryStartBoxSelection(*selectionStartPosition, ev, additiveSelection, false);
 }
 
+bool NavigationStyle::handleSelectionDragMotion(
+    const SoLocation2Event* const ev,
+    ViewerMode& newmode,
+    bool additiveSelection,
+    bool allowBoxSelection
+)
+{
+    if (offerEventToViewer(ev)) {
+        // Once the viewer owns the drag, keep selection handling out of the way until release.
+        newmode = NavigationStyle::INTERACT;
+        return true;
+    }
+
+    return allowBoxSelection && tryStartBoxSelection(ev, additiveSelection);
+}
+
 bool NavigationStyle::tryStartBoxSelection(
     const SbVec2s& startPosition,
     const SoLocation2Event* const ev,
@@ -1680,6 +1796,11 @@ bool NavigationStyle::tryStartBoxSelection(
 )
 {
     if (!ev || mouseSelection || !viewer || !viewer->isSelectionEnabled()) {
+        return false;
+    }
+    // Some interactive tools temporarily disable selection through view preferences to keep
+    // drag/release events on their own callbacks. Rubberband selection must honor that too.
+    if (!ViewParams::instance()->getEnableSelection()) {
         return false;
     }
     if (viewer->isEditing() || viewer->isEditingViewProvider()) {
@@ -1708,10 +1829,15 @@ bool NavigationStyle::tryStartBoxSelection(
 
 bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
 {
+    auto* sceneGraph = this->viewer->getSoRenderManager()->getSceneGraph();
+    if (!sceneGraph) {
+        return false;
+    }
+
     SoRayPickAction rp(this->viewer->getSoRenderManager()->getViewportRegion());
     rp.setRadius(viewer->getPickRadius());
     rp.setPoint(pos);
-    rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
+    rp.apply(sceneGraph);
     SoPickedPoint* pick = rp.getPickedPoint();
     if (pick) {
         const auto fullpath = Gui::toFullPath(pick->getPath());
@@ -1720,8 +1846,8 @@ bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
                 return true;
             }
         }
-        return false;
     }
+
     return false;
 }
 
@@ -1942,6 +2068,11 @@ SbBool NavigationStyle::processSoEvent(const SoEvent* const ev)
     return processed;
 }
 
+bool NavigationStyle::offerEventToViewer(const SoEvent* const ev)
+{
+    return viewer ? viewer->processSoEventBase(ev) : false;
+}
+
 void NavigationStyle::syncWithEvent(const SoEvent* const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
@@ -2034,12 +2165,19 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
         useMotionRotationCenter = true;
     }
 
-    SbRotation newRotation(ev->getRotation() * camera->orientation.getValue());
+    const SbRotation currentRotation(camera->orientation.getValue());
+    SbRotation newRotation(currentRotation);
+    const SbRotation requestedRotation(ev->getRotation() * currentRotation);
+    if (
+        canChangeCameraOrientation(currentRotation, requestedRotation, OrientationChangeSource::Interactive)
+    ) {
+        newRotation = requestedRotation;
+    }
     SbVec3f newPosition, newDirection;
     if (useMotionRotationCenter) {
         // Reposition the camera so the rotation center stays in the same place
         SbVec3f rotationCenterDistanceCam;
-        camera->orientation.getValue().inverse().multVec(
+        currentRotation.inverse().multVec(
             camera->position.getValue() - motionRotationCenter,
             rotationCenterDistanceCam
         );
@@ -2057,7 +2195,7 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
     SbVec3f finalPosition = newPosition + (dir * translationFactor);
 
     camera->enableNotify(false);
-    camera->orientation.setValue(newRotation);
+    setCameraOrientationValue(camera, newRotation, OrientationChangeSource::Interactive);
     camera->position = finalPosition;
     camera->enableNotify(true);
     camera->touch();

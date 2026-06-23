@@ -976,7 +976,7 @@ CmdTechDraw2PointCosmeticLine::CmdTechDraw2PointCosmeticLine()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Cosmetic Line Through 2 Points");
-    sToolTipText    = QT_TR_NOOP("Add a cosmetic line that passes through 2 selected points");
+    sToolTipText    = QT_TR_NOOP("Adds a cosmetic line that passes through 2 selected points");
     sWhatsThis      = "TechDraw_2PointCosmeticLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_Line2Points";

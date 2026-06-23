@@ -28,6 +28,7 @@
 
 #include <Base/Color.h>
 #include <Gui/ViewParams.h>
+#include <memory>
 
 #include "EditModeCoinManagerParameters.h"
 
@@ -40,7 +41,9 @@ int GeometryLayerParameters::getSubLayerIndex(const int geoId, const Sketcher::G
     bool isInternal = geom->isInternalAligned();
     bool isExternal = geoId <= Sketcher::GeoEnum::RefExt;
     if (isExternal) {
-        auto egf = Sketcher::ExternalGeometryFacade::getFacade(geom->clone());
+        // The ExternalGeometryFacade is not the owner of the geometry
+        std::unique_ptr<Part::Geometry> geomCopy(geom->clone());
+        auto egf = Sketcher::ExternalGeometryFacade::getFacade(geomCopy.get());
         if (egf->testFlag(Sketcher::ExternalGeometryExtension::Defining)) {
             return static_cast<int>(SubLayer::ExternalDefining);
         }

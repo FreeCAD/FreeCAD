@@ -34,6 +34,8 @@
 
 
 #include <array>
+#include <unordered_map>
+#include <algorithm>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -89,7 +91,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     }
 
     const char* err = nullptr;
-    const std::vector<App::DocumentObject*>& originals = Originals.getValues();
+    const std::vector<App::DocumentObject*>& originals = getOriginals();
     // NOTE: may be here supposed to be last origin but in order to keep the old behaviour keep here
     // first
     App::DocumentObject* firstOriginal = originals.empty() ? nullptr : originals.front();
@@ -121,6 +123,29 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     return rv;
 }
 
+std::vector<App::DocumentObject*> Transformed::getSortedOriginals() const
+{
+    std::vector<DocumentObject*> originals = Originals.getValues();
+
+    // Sort originals in chronological order of the body's group history
+    if (auto body = getFeatureBody()) {
+        const auto& group = body->Group.getValues();
+        std::unordered_map<const DocumentObject*, size_t> indexMap;
+        for (size_t i = 0; i < group.size(); ++i) {
+            indexMap[group[i]] = i;
+        }
+        std::ranges::sort(originals, [&indexMap](const DocumentObject* a, const DocumentObject* b) {
+            auto itA = indexMap.find(a);
+            auto itB = indexMap.find(b);
+            size_t idxA = (itA != indexMap.end()) ? itA->second : std::numeric_limits<size_t>::max();
+            size_t idxB = (itB != indexMap.end()) ? itB->second : std::numeric_limits<size_t>::max();
+            return idxA < idxB;
+        });
+    }
+
+    return originals;
+}
+
 std::vector<App::DocumentObject*> Transformed::getOriginals() const
 {
     auto const mode = static_cast<Mode>(TransformMode.getValue());
@@ -129,7 +154,7 @@ std::vector<App::DocumentObject*> Transformed::getOriginals() const
         return {};
     }
 
-    std::vector<DocumentObject*> originals = Originals.getValues();
+    std::vector<DocumentObject*> originals = getSortedOriginals();
 
     const auto isSuppressed = [](const DocumentObject* obj) {
         auto feature = freecad_cast<Feature*>(obj);
@@ -440,8 +465,13 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     supportShape = refineShapeIfActive((supportShape));
 
-    this->Shape.setValue(getSolid(supportShape));  // picking the first solid
-    rejected = getRemainingSolids(supportShape.getShape());
+    this->Shape.setValue(getSolid(supportShape));
+    if (singleSolidRuleMode() == SingleSolidRuleMode::Enforced) {
+        rejected = getRemainingSolids(supportShape.getShape());
+    }
+    else {
+        rejected.Nullify();
+    }
 
     return App::DocumentObject::StdReturn;
 }

@@ -236,7 +236,6 @@ CmdSketcherCreatePolylineLegacy::CmdSketcherCreatePolylineLegacy()
     sWhatsThis = "Sketcher_CreatePolylineLegacy";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePolyline";
-    sAccel = "G, M";
     eType = ForEdit;
 }
 
@@ -266,7 +265,7 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sWhatsThis = "Sketcher_CreatePolyline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePolyline";
-    sAccel = "L";
+    sAccel = "G, M";
     eType = ForEdit;
 }
 

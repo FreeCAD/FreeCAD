@@ -252,7 +252,7 @@ public:
     {}
 
     /// function to create constraints based on control information for infinite DSH (polyline).
-    virtual void addStepConstraints()
+    void addStepConstraints() override
     {}
 
     /// function to configure the default widget.

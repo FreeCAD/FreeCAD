@@ -2586,6 +2586,31 @@ static void buildDependencyList(const std::vector<DocumentObject*>& objectArray,
         depList->clear();
     }
 
+    auto getOutListFineGrained = [](DocumentObject* obj, int op) {
+        // Convert an OutListProp to a regular outlist with only DocumentObject*
+        std::vector<DocumentObject*> outList;
+        std::unordered_set<DocumentObject*> outListSet; // For O(1) avg lookup
+
+        std::vector<DepEdge> outListProp = obj->getOutListProp(op);
+        for (const auto& [objFrom, propFrom, objTo, propNameTo] : outListProp) {
+            // Add dependencies on HEAD
+            if (propNameTo.empty()) {
+                if (outListSet.insert(objTo).second) {
+                    outList.push_back(objTo);
+                }
+                continue;
+            }
+            // Add additional dependencies on specific properties unless it is
+            // an input property.  This to avoid over dependencies.
+            if (!outListSet.contains(objTo) && !objTo->isInputProperty(propNameTo)) {
+                outListSet.insert(objTo);
+                outList.push_back(objTo);
+            }
+        }
+
+        return outList;
+    };
+
     const int op = ((options & Document::DepNoXLinked) != 0) ? DocumentObject::OutListNoXLinked : 0;
     for (auto obj : objectArray) {
         objs.push_back(obj);
@@ -2616,7 +2641,12 @@ static void buildDependencyList(const std::vector<DocumentObject*>& objectArray,
             }
 
             auto& outList = outLists[objF];
-            outList = objF->getOutList(op);
+            if (GetApplication().isFineGrainedRecomputeEnabled()) {
+                outList = getOutListFineGrained(objF, op);
+            }
+            else {
+                outList = objF->getOutList(op);
+            }
             objs.insert(objs.end(), outList.begin(), outList.end());
         }
     }
@@ -2868,6 +2898,8 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
 
     signalBeforeRecompute(*this);
 
+    bool fineGrained = GetApplication().isFineGrainedRecomputeEnabled();
+
     //////////////////////////////////////////////////////////////////////////
     // FIXME Comment by Realthunder:
     // the topologicalSrot() below cannot handle partial recompute, haven't got
@@ -2940,10 +2972,22 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                 }
                 if (obj->isTouched() || doRecompute) {
                     signalRecomputedObject(*obj);
-                    obj->purgeTouched();
-                    // set all dependent object touched to force recompute
-                    for (auto inObjIt : obj->getInList()) {
-                        inObjIt->enforceRecompute();
+                    if (fineGrained) {
+                        // set all dependent objects touched based on properties
+                        std::vector<DepEdge> inList = obj->getInListProp();
+                        for (auto& [objFrom, propFrom, objTo, propTo] : inList) {
+                            if (obj->touchedProps.contains(propTo) || propTo.empty()) {
+                                objFrom->enforceRecompute(propFrom);
+                            }
+                        }
+                        obj->purgeTouched();
+                    }
+                    else {
+                        obj->purgeTouched();
+                        // set all dependent objects touched to force recompute
+                        for (auto inObjIt : obj->getInList()) {
+                            inObjIt->enforceRecompute();
+                        }
                     }
                 }
                 if (seq) {
@@ -3472,6 +3516,11 @@ void Document::removeObject(const char* sName)
         return;
     }
 
+    if (pos->second->testStatus(ObjectStatus::Remove)) {
+        FC_LOG("Avoid recursive deletion of " << pos->second->getFullName());
+        return;
+    }
+
     if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
         // TODO: shall we allow removal if there is active undo transaction?
         FC_MSG("pending remove of " << sName << " after recomputing document " << getName());
@@ -3495,6 +3544,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
     if (pos == d->objectMap.end()) {
         FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
+        return;
     }
 
     if (options.testFlag(RemoveObjectOption::PreserveChildrenVisibility)

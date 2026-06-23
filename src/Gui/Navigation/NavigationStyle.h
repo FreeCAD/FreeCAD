@@ -133,6 +133,12 @@ public:
     };
     Q_DECLARE_FLAGS(RotationCenterModes, RotationCenterMode)
 
+    enum class OrientationChangeSource
+    {
+        Interactive,
+        Programmatic
+    };
+
 public:
     NavigationStyle();
     ~NavigationStyle() override;
@@ -147,6 +153,21 @@ public:
     SbBool isSpinningAnimationEnabled() const;
     SbBool isAnimating() const;
     SbBool isSpinning() const;
+    SbBool isRotationEnabled() const;
+    void setRotationEnabled(SbBool enable);
+    SbBool isOrientationLocked() const;
+    void setOrientationLocked(SbBool enable);
+    SbBool canChangeCameraOrientation(
+        const SbRotation& current,
+        const SbRotation& target,
+        OrientationChangeSource source
+    ) const;
+    SbBool setCameraOrientationValue(
+        SoCamera* camera,
+        const SbRotation& orientation,
+        OrientationChangeSource source
+    ) const;
+
     void startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait = false) const;
     void stopAnimating() const;
 
@@ -178,8 +199,17 @@ public:
     void findBoundingSphere();
 #endif
 
-    void reorientCamera(SoCamera* camera, const SbRotation& rotation);
-    void reorientCamera(SoCamera* camera, const SbRotation& rotation, const SbVec3f& rotationCenter);
+    void reorientCamera(
+        SoCamera* camera,
+        const SbRotation& rotation,
+        OrientationChangeSource source = OrientationChangeSource::Interactive
+    );
+    void reorientCamera(
+        SoCamera* camera,
+        const SbRotation& rotation,
+        const SbVec3f& rotationCenter,
+        OrientationChangeSource source = OrientationChangeSource::Interactive
+    );
 
     void boxZoom(const SbBox2s& box);
     // Scale the camera inplace
@@ -266,6 +296,7 @@ protected:
 
     SbBool handleEventInForeground(const SoEvent* const e);
     virtual SbBool processSoEvent(const SoEvent* const ev);
+    bool offerEventToViewer(const SoEvent* const ev);
     void syncWithEvent(const SoEvent* const ev);
     virtual void openPopupMenu(const SbVec2s& position);
 
@@ -283,6 +314,12 @@ protected:
     void updateSelectionStartPosition(SbBool press, const SbVec2s& position);
     void setSelectionStartPosition(const SbVec2s& position);
     void clearSelectionStartPosition();
+    bool handleSelectionDragMotion(
+        const SoLocation2Event* const ev,
+        ViewerMode& newmode,
+        bool additiveSelection = false,
+        bool allowBoxSelection = true
+    );
     bool tryStartBoxSelection(const SoLocation2Event* const ev, bool additiveSelection = false);
     bool tryStartBoxSelection(
         const SbVec2s& startPosition,
@@ -332,6 +369,8 @@ protected:
     /** @name Spinning data */
     //@{
     SbBool spinningAnimationEnabled;
+    SbBool rotationEnabled;
+    SbBool orientationLocked;
     int spinsamplecounter;
     SbRotation spinincrement;
     SbSphereSheetProjector* spinprojector;
