@@ -116,9 +116,8 @@ ParameterGrp::handle LinkParams::getHandle() {
 
 // Auto generated code (App/params_utils.py:352)
 const char *LinkParams::docCopyOnChangeApplyToAll() {
-    return QT_TRANSLATE_NOOP("LinkParams",
-"Stores the last user choice of whether to apply CopyOnChange setup to all link\n"
-"that links to the same configurable object");
+    return "Stores the last user choice of whether to apply CopyOnChange setup to all link\n"
+           "that links to the same configurable object";
 }
 
 // Auto generated code (App/params_utils.py:360)

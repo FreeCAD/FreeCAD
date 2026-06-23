@@ -1258,11 +1258,10 @@ void Document::Restore(Base::XMLReader& reader)
 void DocumentP::checkStringHasher(const Base::XMLReader& reader)
 {
     if (reader.hasReadFailed("StringHasher.Table.txt")) {
-        Base::Console().error(QT_TRANSLATE_NOOP(
-            "Notifications",
+        Base::Console().error(
             "\nIt is recommended that the user right-click the root of "
             "the document and select Mark to recompute.\n"
-            "The user should then click the Refresh button in the main toolbar.\n"));
+            "The user should then click the Refresh button in the main toolbar.\n");
     }
 }
 
