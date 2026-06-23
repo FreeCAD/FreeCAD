@@ -54,7 +54,7 @@ class AppExport DecodedMappedSection {
         char elementType = (*Data::EMPTY_VALUE);
         std::string duplicateCount = Data::EMPTY_VALUE;
         std::vector<std::string> mapperFlags;
-        // std::vector<std::string> connectedElements;
+        std::vector<std::string> connectedElements;
     
         inline bool hasMapperFlag(std::string flag) const {
             return (std::find(mapperFlags.begin(), mapperFlags.end(), flag) != mapperFlags.end());
@@ -69,7 +69,8 @@ class AppExport DecodedMappedSection {
                 index == other.index &&
                 elementType == other.elementType &&
                 duplicateCount == other.duplicateCount &&
-                mapperFlags == other.mapperFlags
+                mapperFlags == other.mapperFlags &&
+                connectedElements == other.connectedElements
             );
         };
 };
@@ -1210,7 +1211,8 @@ public:
                                    int index = 0,
                                    char elementType = 'E',
                                    int duplicateCount = 0,
-                                   std::vector<std::string> mapperFlags = { });
+                                   std::vector<std::string> mapperFlags = { },
+                                   std::vector<MappedName> connectedElements = { });
     
     static std::string makeSection(std::vector<std::string> referenceIDs = { },
                                    std::vector<MappedName> linkedNames = { },
@@ -1219,7 +1221,8 @@ public:
                                    std::string index = 0,
                                    char elementType = 'E',
                                    std::string duplicateCount = 0,
-                                   std::vector<std::string> mapperFlags = { });
+                                   std::vector<std::string> mapperFlags = { },
+                                   std::vector<MappedName> connectedElements = { });
     
 private:
     QByteArray data;

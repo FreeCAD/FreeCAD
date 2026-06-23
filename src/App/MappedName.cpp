@@ -133,6 +133,9 @@ DecodedMappedName MappedName::getDecodedMappedName(std::string mappedNameString)
                         case Data::SECTION_MAPPER_FLAGS_INDEX:
                             section.mapperFlags = entryList;
                             break;
+                        case Data::SECTION_CONNECTED_ELEMENTS_INDEX:
+                            section.connectedElements = entryList;
+                            break;
                     }
                 }
             }
@@ -213,7 +216,8 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
                                     int index,
                                     char elementType,
                                     int duplicateCount,
-                                    std::vector<std::string> mapperFlags) // TODO: switch to vector of individual flags
+                                    std::vector<std::string> mapperFlags,
+                                    std::vector<MappedName> connectedElements) // TODO: switch to vector of individual flags
 {
     return MappedName::makeSection(
         referenceIDs,
@@ -223,7 +227,8 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
         std::to_string(index),
         elementType,
         std::to_string(duplicateCount),
-        mapperFlags
+        mapperFlags,
+        connectedElements
     );
 }
 
@@ -236,7 +241,8 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
                                     std::string index,
                                     char elementType,
                                     std::string duplicateCount,
-                                    std::vector<std::string> mapperFlags) // TODO: switch to vector of individual flags
+                                    std::vector<std::string> mapperFlags,
+                                    std::vector<MappedName> connectedElements) // TODO: switch to vector of individual flags
 {
     std::stringstream ss;
     std::string opCodeString = (opCode == nullptr || strlen(opCode) == 0) ? "MKR" : opCode;
@@ -259,8 +265,9 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
         ss << Data::EMPTY_VALUE;
     } else {
         for (size_t i = 0; i < linkedNames.size(); i++) {
-            if (i != 0)
+            if (i != 0) {
                 ss << Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
 
             ss << MappedName::escapeString(linkedNames[i].toString());
         }
@@ -287,6 +294,20 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
             }
 
             ss << mapperFlags[i];
+        }
+    }
+    
+    ss << Data::SECTION_SUB_DELIMINATOR;
+
+    if (connectedElements.empty()) {
+        ss << Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < connectedElements.size(); i++) {
+            if (i != 0) {
+                ss << Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            ss << MappedName::escapeString(connectedElements[i].toString());
         }
     }
     

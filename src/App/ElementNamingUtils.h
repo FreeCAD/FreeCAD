@@ -132,9 +132,11 @@ constexpr const int   SECTION_ELEMENT_TYPE_INDEX        = 5;
 constexpr const int   SECTION_DUPLICATE_COUNT_INDEX     = 6;
 /// `Mapper Flags` entry index.
 constexpr const int   SECTION_MAPPER_FLAGS_INDEX        = 7;
+/// `Connect Elements` entry index.
+constexpr const int   SECTION_CONNECTED_ELEMENTS_INDEX  = 8;
 
 /// Size of sections used in MappedNames by the V2 Topological Naming System
-constexpr const int   SECTION_SIZE                      = 8;
+constexpr const int   SECTION_SIZE                      = 9;
 
 /// @}
 
