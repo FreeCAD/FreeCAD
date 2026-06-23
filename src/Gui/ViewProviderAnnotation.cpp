@@ -461,7 +461,7 @@ void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag
         plane.intersect(line, intersect);
         drag->setStartingPoint(intersect);
 
-        auto = Base::convertTo<Base::Vector3d>(intersect - move);
+        auto text = Base::convertTo<Base::Vector3d>(intersect - move);
         text = text - basepos;
         obj->TextPosition.setValue(text);
     }
