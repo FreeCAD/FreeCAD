@@ -807,7 +807,7 @@ bool DrawSketchHandler::seekAlignmentAutoConstraint(
         if (bestConstraint != Sketcher::None) {
             AutoConstraint constr;
             constr.Type = bestConstraint;
-            constr.GeoId = bestIndex;
+            constr.GeoId = obj->getGeoIdFromCompleteGeometryIndex(bestIndex);
             constr.PosId = PointPos::none;  // or set appropriately
             suggestedConstraints.push_back(constr);
         }
