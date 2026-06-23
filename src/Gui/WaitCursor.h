@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <QFlags>
+
 #include <FCGlobal.h>
 
 namespace Gui
