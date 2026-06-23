@@ -352,6 +352,38 @@ bool CmdSurfaceSections::isActive()
     return hasActiveDocument();
 }
 
+//===========================================================================
+// Gordon surface
+//===========================================================================
+DEF_STD_CMD_A(CmdSurfaceGordonSurface)
+
+CmdSurfaceGordonSurface::CmdSurfaceGordonSurface()
+    : Command("Surface_GordonSurface")
+{
+    sAppModule = "Surface";
+    sGroup = QT_TR_NOOP("Surface");
+    sMenuText = QT_TR_NOOP("Gordon surface");
+    sToolTipText = QT_TR_NOOP("Creates a surface from a network of intersecting profiles and guides.");
+    sWhatsThis = "Surface_GordonSurface";
+    sStatusTip = sToolTipText;
+    sPixmap = "Surface_GordonSurface";
+}
+
+bool CmdSurfaceGordonSurface::isActive()
+{
+    return hasActiveDocument();
+}
+
+void CmdSurfaceGordonSurface::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::string FeatName = getUniqueObjectName("Surface");
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create surface"));
+    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::GordonSurface\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
+}
+
 void CreateSurfaceCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -364,4 +396,5 @@ void CreateSurfaceCommands()
     rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
     rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
     rcCmdMgr.addCommand(new CmdBlendCurve());
+    rcCmdMgr.addCommand(new CmdSurfaceGordonSurface());
 }
