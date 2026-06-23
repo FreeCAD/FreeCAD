@@ -313,6 +313,8 @@ SET(FreeCADBase_HPP_SRCS
 
 SET (FreeCADBase_CrashReporter_SRCS
     CrashReporter/Format.h
+    CrashReporter/Manager.h
+    CrashReporter/Manager.cpp
     CrashReporter/Reader.h
     CrashReporter/Reader.cpp
     CrashReporter/Writer.h

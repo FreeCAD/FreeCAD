@@ -78,9 +78,9 @@ namespace Base::CrashReporter
 {
 void WindowsCrashReporter::install(const std::string& crashReportDirectory)
 {
-    auto timestamp = std::time(nullptr);
-    std::string minidumpFilename = crashReportDirectory + "\\crash-" +
-        std::to_string(timestamp) + "-" + std::to_string(GetCurrentProcessId()) + ".dmp";
+    FileInfo fcrash(Writer::crashReportFilePath());
+    std::string minidumpFilename = FileInfo::pathToString(
+        FileInfo::stringToPath(fcrash.dirPath()) / (fcrash.fileNamePure() + ".dmp"));
     if (minidumpFilename.length() > MAX_PATH-1) {
         Console().warning("CrashReporter: Crash file path too long: %s\n", minidumpFilename);
         return;

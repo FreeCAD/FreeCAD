@@ -57,6 +57,7 @@
 #endif
 
 static std::atomic_flag writing;
+static std::string resolvedCrashFilePath;  // Stored in UTF-8 (so on Windows, convert first)
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
 #include <fcntl.h>
@@ -323,6 +324,7 @@ void Writer::install(const std::string& crashReportDirectory)
         Console().warning("CrashReporter: Crash file path too long: %s\n", fcrash);
         return;
     }
+    resolvedCrashFilePath = fcrash;
 
 #ifdef FC_OS_WIN32
     Base::FileInfo fi(fcrash);
@@ -359,6 +361,11 @@ void Writer::install(const std::string& crashReportDirectory)
     }
 
 #endif
+}
+
+std::string Writer::crashReportFilePath()
+{
+    return resolvedCrashFilePath;
 }
 
 // NOLINTEND(modernize-avoid-c-arrays,cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-pro-bounds-constant-array-index,readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers,clang-diagnostic-unsafe-buffer-usage)

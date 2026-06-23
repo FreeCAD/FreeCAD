@@ -21,6 +21,7 @@
 
 #include "Reader.h"
 #include "Format.h"
+#include <algorithm>
 #include <cstring>
 #include <string>
 #include <string_view>
@@ -189,6 +190,34 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string &pathToRawReportF
 #endif
 
     return parsedReport;
+}
+
+std::vector<ParsedFrame> Base::CrashReporter::trimLeadingPlumbingFrames(const std::vector<ParsedFrame>& frames)
+{
+    // To detect the first real frame of the crash stack, we detect the OS-specific "trampoline"
+    // function:
+    static constexpr std::array dispatchAnchors {
+        std::string_view {"KiUserExceptionDispatcher"},  // Windows
+        std::string_view {"__restore_rt"},               // glibc rt_sigreturn
+        std::string_view {"__kernel_rt_sigreturn"},      // vDSO (ARM and others)
+        std::string_view {"__sigtramp"},                 // macOS / BSD
+    };
+
+    auto isAnchor = [&](const ParsedFrame& frame) {
+        return std::ranges::any_of(dispatchAnchors, [&](std::string_view anchor) {
+            return frame.symbol.find(anchor) != std::string::npos;
+        });
+    };
+
+    auto anchor = std::ranges::find_if(frames, isAnchor);
+    if (anchor == frames.end()) {
+        return frames;  // no recognizable trampoline, do nothing
+    }
+    auto firstReal = std::next(anchor);
+    if (firstReal == frames.end()) {
+        return frames;  // trampoline was the deepest frame?! Seems sketchy, return everything
+    }
+    return {firstReal, frames.end()};
 }
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic, hicpp-exception-baseclass)
