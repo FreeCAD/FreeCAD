@@ -807,7 +807,7 @@ bool DrawSketchHandler::seekAlignmentAutoConstraint(
         if (bestConstraint != Sketcher::None) {
             AutoConstraint constr;
             constr.Type = bestConstraint;
-            constr.GeoId = bestIndex;
+            constr.GeoId = obj->getGeoIdFromCompleteGeometryIndex(bestIndex);
             constr.PosId = PointPos::none;  // or set appropriately
             suggestedConstraints.push_back(constr);
         }
@@ -1022,12 +1022,9 @@ bool DrawSketchHandler::seekTangentAutoConstraint(
     }
 
     if (tangId != GeoEnum::GeoUndef) {
-        if (tangId > getHighestCurveIndex()) {  // external Geometry
-            tangId = getHighestCurveIndex() - tangId;
-        }
         AutoConstraint constr;
         constr.Type = Tangent;
-        constr.GeoId = tangId;
+        constr.GeoId = obj->getGeoIdFromCompleteGeometryIndex(tangId);
         constr.PosId = tanPos;
         suggestedConstraints.push_back(constr);
         return true;
