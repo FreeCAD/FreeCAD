@@ -86,7 +86,6 @@
 #include <boost/scope_exit.hpp>
 
 // Qt -- only QtCore
-#include <QDir>
-#include <QProcessEnvironment>
-#include <QStandardPaths>
+#if defined(FREECAD_BUILD_QT) && FREECAD_BUILD_QT
 #include <QString>
+#endif
