@@ -201,8 +201,22 @@ void AssemblyObject::updateSolveStatus()
 {
     lastRedundantJoints.clear();
     lastHasRedundancies = false;
-    //+1 because there's a grounded joint to origin
-    lastDoF = (1 + numberOfComponents()) * 6;
+
+    int numberOfSolverBodies = numberOfComponents();
+    if (!objectPartMap.empty()) {
+        std::unordered_set<MbD::ASMTPart*> uniqueParts;
+        for (const auto& entry : objectPartMap) {
+            if (entry.second.part) {
+                uniqueParts.insert(entry.second.part.get());
+            }
+        }
+
+        const int bundledParts = static_cast<int>(objectPartMap.size() - uniqueParts.size());
+        numberOfSolverBodies -= bundledParts;
+    }
+
+    // +1 because the assembly origin is also represented by a solver body.
+    lastDoF = (1 + numberOfSolverBodies) * 6;
 
     if (!mbdAssembly || !mbdAssembly->mbdSystem) {
         solve();
