@@ -45,8 +45,35 @@
 
 # The output variable is FREECAD_QT_MAJOR_VERSION, which will be either 5 or 6
 
+function(_freecad_select_qt_major_version out_var)
+  unset(${out_var} PARENT_SCOPE)
+
+  if (NOT FREECAD_QT_VERSION STREQUAL "Auto")
+    if (NOT FREECAD_QT_VERSION IN_LIST freecad_supported_qt_versions)
+      message(FATAL_ERROR
+        "Supported Qt versions are \"${freecad_supported_qt_versions}\". But "
+        "FREECAD_QT_VERSION is set to ${FREECAD_QT_VERSION}.")
+    endif ()
+    set(${out_var} "${FREECAD_QT_VERSION}" PARENT_SCOPE)
+    return()
+  endif()
+
+  find_package(Qt6 QUIET COMPONENTS ${FREECAD_QT_BASE_COMPONENTS})
+  if (Qt6_FOUND)
+    set(${out_var} 6 PARENT_SCOPE)
+    return()
+  endif()
+
+  find_package(Qt5 QUIET COMPONENTS ${FREECAD_QT_BASE_COMPONENTS})
+  if (Qt5_FOUND)
+    set(${out_var} 5 PARENT_SCOPE)
+  endif()
+endfunction()
+
 macro(ChooseQtVersion)
   set(freecad_supported_qt_versions "Auto" 5 6)
+  set(FREECAD_QT_BASE_COMPONENTS Core Concurrent Network Xml LinguistTools)
+  set(FREECAD_HAS_QT OFF)
 
   # The following `if` check can be removed once CMake 3.21 is required and
   # the policy CMP0126 is set to NEW.
@@ -56,7 +83,12 @@ macro(ChooseQtVersion)
     set_property(CACHE FREECAD_QT_VERSION PROPERTY STRINGS "${freecad_supported_qt_versions}")
   endif()
 
-  if(FREECAD_LIBPACK_USE)
+  set(_FREECAD_QT_REQUIRED OFF)
+  if (BUILD_GUI OR NOT FREECAD_QT_VERSION STREQUAL "Auto")
+    set(_FREECAD_QT_REQUIRED ON)
+  endif()
+
+  if (FREECAD_LIBPACK_USE)
     find_file(FREECAD_LIBPACK_CHECKFILE_VERSION NAMES FREECAD_LIBPACK_VERSION PATHS ${FREECAD_LIBPACK_DIR} NO_DEFAULT_PATH)
     if(FREECAD_LIBPACK_CHECKFILE_VERSION)
       file(READ ${FREECAD_LIBPACK_CHECKFILE_VERSION} FREECAD_LIBPACK_VERSION)
@@ -76,26 +108,19 @@ macro(ChooseQtVersion)
     endif()
   endif()
 
-  if (NOT FREECAD_QT_VERSION STREQUAL "Auto")
-    if (NOT FREECAD_QT_VERSION IN_LIST freecad_supported_qt_versions)
+  _freecad_select_qt_major_version(_FREECAD_QT_VERSION)
+
+  if (NOT DEFINED _FREECAD_QT_VERSION)
+    if (_FREECAD_QT_REQUIRED)
       message(FATAL_ERROR
-        "Supported Qt versions are \"${freecad_supported_qt_versions}\". But "
-        "FREECAD_QT_VERSION is set to ${FREECAD_QT_VERSION}.")
-    endif ()
-    set(_FREECAD_QT_VERSION "${FREECAD_QT_VERSION}")
-  else ()
-    find_package(Qt6 QUIET COMPONENTS Core)
-    set(_FREECAD_QT_VERSION 6)
-    if (NOT Qt6_FOUND)
-      find_package(Qt5 QUIET COMPONENTS Core)
-      if (NOT Qt5_FOUND)
-        message(FATAL_ERROR
-          "Could not find a valid Qt installation. Consider setting Qt5_DIR or Qt6_DIR (as needed).")
-      endif ()
-      set(_FREECAD_QT_VERSION 5)
-    endif ()
-  endif ()
-  set(FREECAD_QT_MAJOR_VERSION "${_FREECAD_QT_VERSION}" CACHE INTERNAL
-    "Major version number for the Qt installation used.")
-  message(STATUS  "Compiling with Qt ${FREECAD_QT_MAJOR_VERSION}")
+        "Could not find a valid Qt installation. Consider setting Qt5_DIR or Qt6_DIR (as needed).")
+    endif()
+    unset(FREECAD_QT_MAJOR_VERSION CACHE)
+    message(STATUS "Qt not found; Qt-dependent support is disabled")
+  else()
+    set(FREECAD_HAS_QT ON)
+    set(FREECAD_QT_MAJOR_VERSION "${_FREECAD_QT_VERSION}" CACHE INTERNAL
+      "Major version number for the Qt installation used.")
+    message(STATUS  "Compiling with Qt ${FREECAD_QT_MAJOR_VERSION}")
+  endif()
 endmacro()
