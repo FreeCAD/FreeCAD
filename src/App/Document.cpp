@@ -61,6 +61,7 @@
 #include <Base/PathUtils.h>
 #include <Base/Sha1.h>
 #include <Base/TimeInfo.h>
+#include <Base/Translation.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Profiler.h>
