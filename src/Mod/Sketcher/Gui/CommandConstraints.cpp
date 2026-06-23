@@ -2373,7 +2373,7 @@ protected:
             }
             if (selection.has2Circles()) {
                 return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to distance")},
-                                    {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to concentric distance")},
+                                    {AvailableConstraint::SECOND, getTwoCircleSecondModeHint()},
                                     {AvailableConstraint::THIRD, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to equal radius")}},
                                    constraint);
             }
@@ -2395,6 +2395,23 @@ protected:
         }
 
         return QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to angle");
+    }
+
+    const char* getTwoCircleSecondModeHint() const
+    {
+        const int geoId1 = selCircleArc[0].GeoId;
+        const int geoId2 = selCircleArc[1].GeoId;
+
+        if (areBothPointsOrSegmentsFixed(Obj, geoId1, geoId2)
+            || Obj->arePointsCoincident(geoId1,
+                                        Sketcher::PointPos::mid,
+                                        geoId2,
+                                        Sketcher::PointPos::mid)
+            || geoId1 == geoId2) {
+            return QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to equal radius");
+        }
+
+        return QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to concentric distance");
     }
 
     const char* getSingleCircleModeHint(AvailableConstraint constraint) const
