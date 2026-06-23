@@ -56,6 +56,8 @@
 #include "TaskWeldingSymbol.h"
 #include "ViewProviderViewPart.h"
 #include "CommandHelpers.h"
+#include "QGVPage.h"
+#include "TechDrawCosmeticLinesHandler.h"
 
 
 using namespace TechDrawGui;
@@ -963,156 +965,56 @@ void exec2PointCenterLine(Gui::Command* cmd)
         return;
     }
 }
-
 //===========================================================================
-// TechDraw_2PointCosmeticLine
+// TechDraw_CosmeticLine
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDraw2PointCosmeticLine)
+DEF_STD_CMD_A(CmdTechDrawCosmeticLine)
 
-CmdTechDraw2PointCosmeticLine::CmdTechDraw2PointCosmeticLine()
-  : Command("TechDraw_2PointCosmeticLine")
+CmdTechDrawCosmeticLine::CmdTechDrawCosmeticLine()
+  : Command("TechDraw_CosmeticLine")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Cosmetic Line Through 2 Points");
-    sToolTipText    = QT_TR_NOOP("Adds a cosmetic line that passes through 2 selected points");
+    sMenuText       = QT_TR_NOOP("Cosmetic Line");
+    sToolTipText    = QT_TR_NOOP("Adds a cosmetic line");
     sWhatsThis      = "TechDraw_2PointCosmeticLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_Line2Points";
 }
 
-void CmdTechDraw2PointCosmeticLine::activated(int iMsg)
+void CmdTechDrawCosmeticLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-            QObject::tr("Close active task dialog and try again"));
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
         return;
     }
 
-    execLine2Points(this);
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
 
-    updateActive();
-    Gui::Selection().clearSelection();
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    TechDrawCosmeticLinesHandler* handler = new TechDrawCosmeticLinesHandler();
+
+    // Post selection handler
+    viewPage->activateHandler(handler);
+
+    handler->addPreselected();
 }
 
-bool CmdTechDraw2PointCosmeticLine::isActive()
+bool CmdTechDrawCosmeticLine::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
     return (havePage && haveView);
-}
-
-void execLine2Points(Gui::Command* cmd)
-{
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    TechDraw::DrawViewPart* baseFeat = nullptr;
-    std::vector<std::string> subNames2D;
-    std::vector< std::pair<Part::Feature*, std::string> > objs3D;
-    if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Selection is empty"));
-        return;
-    }
-
-    for (auto& so: selection) {
-        if (so.getObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
-            baseFeat = static_cast<TechDraw::DrawViewPart*> (so.getObject());
-            subNames2D = so.getSubNames();
-        } else if (so.getObject()->isDerivedFrom<Part::Feature>()) {
-            std::vector<std::string> subNames3D = so.getSubNames();
-            for (auto& sub3D: subNames3D) {
-                std::pair<Part::Feature*, std::string> temp;
-                temp.first = static_cast<Part::Feature*>(so.getObject());
-                temp.second = sub3D;
-                objs3D.push_back(temp);
-            }
-        } else {
-            //garbage
-        }
-    }
-
-    if (!baseFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You must select a base view for the line"));
-        return;
-    }
-
-    //TODO: should be a smarter check
-    if ( (subNames2D.empty()) &&
-         (objs3D.empty()) )  {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Not enough points in the selection"));
-        return;
-    }
-
-    std::vector<std::string> edgeNames;
-    std::vector<std::string> vertexNames;
-    for (auto& s: subNames2D) {
-        std::string geomType = DrawUtil::getGeomTypeFromName(s);
-        if (geomType == "Vertex") {
-            vertexNames.push_back(s);
-        } else if (geomType == "Edge") {
-            edgeNames.push_back(s);
-        }
-    }
-
-    //check if editing existing edge
-    if (!edgeNames.empty() && (edgeNames.size() == 1)) {
-        TechDraw::CosmeticEdge* ce = baseFeat->getCosmeticEdgeBySelection(edgeNames.front());
-        if (!ce || ce->m_geometry->getGeomType() != GeomType::GENERIC) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Selection is not a cosmetic line"));
-            return;
-        }
-
-        Gui::Control().showDialog(new TaskDlgCosmeticLine(baseFeat,
-                                                          edgeNames.front()));
-        return;
-    }
-
-    std::vector<Base::Vector3d> points;
-    std::vector<bool> is3d;
-    //get the 2D points
-    if (!vertexNames.empty()) {
-        for (auto& v2d: vertexNames) {
-            int idx = DrawUtil::getIndexFromName(v2d);
-            TechDraw::VertexPtr v = baseFeat->getProjVertexByIndex(idx);
-            if (v) {
-                points.push_back(v->point());
-                is3d.push_back(false);
-            }
-        }
-    }
-    //get the 3D points
-    if (!objs3D.empty()) {
-        for (auto& o3D: objs3D) {
-            int idx = DrawUtil::getIndexFromName(o3D.second);
-            Part::TopoShape s = o3D.first->Shape.getShape();
-            TopoDS_Vertex v = TopoDS::Vertex(s.getSubShape(TopAbs_VERTEX, idx));
-            Base::Vector3d p = DrawUtil::vertex2Vector(v);
-            points.push_back(p);
-            is3d.push_back(true);
-        }
-    }
-
-    if (points.size() != 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You must select 2 vertices"));
-        return;
-    }
-
-    Gui::Control().showDialog(new TaskDlgCosmeticLine(baseFeat,
-                                                      points,
-                                                      is3d));
 }
 
 //===========================================================================
@@ -1523,7 +1425,7 @@ void CreateTechDrawCommandsAnnotate()
     rcCmdMgr.addCommand(new CmdTechDrawFaceCenterLine());
     rcCmdMgr.addCommand(new CmdTechDraw2LineCenterLine());
     rcCmdMgr.addCommand(new CmdTechDraw2PointCenterLine());
-    rcCmdMgr.addCommand(new CmdTechDraw2PointCosmeticLine());
+    rcCmdMgr.addCommand(new CmdTechDrawCosmeticLine());
     rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticEraser());
     rcCmdMgr.addCommand(new CmdTechDrawDecorateLine());
