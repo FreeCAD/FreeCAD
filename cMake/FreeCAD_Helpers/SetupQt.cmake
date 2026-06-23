@@ -1,6 +1,6 @@
 # -------------------------------- Qt --------------------------------
 
-set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml)
+set(FREECAD_QT_COMPONENTS ${FREECAD_QT_BASE_COMPONENTS})
 set(Qt6Core_MOC_EXECUTABLE Qt6::moc)
 
 if(BUILD_GUI)
@@ -8,7 +8,7 @@ if(BUILD_GUI)
     list (APPEND FREECAD_QT_COMPONENTS SvgWidgets)
     list (APPEND FREECAD_QT_COMPONENTS OpenGLWidgets)
 
-    list (APPEND FREECAD_QT_COMPONENTS OpenGL PrintSupport Svg UiTools Widgets LinguistTools)
+    list (APPEND FREECAD_QT_COMPONENTS OpenGL PrintSupport Svg UiTools Widgets)
 
     if(BUILD_DESIGNER_PLUGIN)
         list (APPEND FREECAD_QT_COMPONENTS Designer)
