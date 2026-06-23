@@ -67,6 +67,7 @@ public:
     void setSectionColor(QColor c);
     void setPathMode(bool mode) { m_pathMode = mode; }
     void setShowLine(bool state) { m_showLine = state; }
+    void setShowAnnotations(bool state) { m_showAnnotations = state; }
     bool pathMode() { return m_pathMode; }
     void setChangePoints(TechDraw::ChangePointVector changePoints);
     void clearChangePoints();
@@ -128,6 +129,7 @@ private:
     TechDraw::ChangePointVector m_changePointData;
 
     bool m_showLine{true};
+    bool m_showAnnotations{true};
 };
 
 }

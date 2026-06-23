@@ -180,6 +180,7 @@ void TaskComplexSection::setUiEdit()
         ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
     }
     ui->cmbStrategy->setCurrentIndex(m_section->ProjectionStrategy.getValue());
+    ui->sbBrokenOutDepth->setValue(m_section->BrokenOutDepth.getValue());
     ui->leSymbol->setText(QString::fromStdString(m_section->SectionSymbol.getValue()));
     ui->sbScale->setValue(m_section->Scale.getValue());
     ui->cmbScaleType->setCurrentIndex(m_section->getScaleType());
@@ -584,6 +585,8 @@ void TaskComplexSection::createComplexSection()
         int projectionStrategy = ui->cmbStrategy->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ProjectionStrategy = %d",
                            m_sectionName.c_str(), projectionStrategy);
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.BrokenOutDepth = %0.7f",
+                           m_sectionName.c_str(), ui->sbBrokenOutDepth->value());
 
         Command::doCommand(Command::Doc,
                            "App.activeDocument().%s.SectionOrigin = FreeCAD.Vector(0.0, 0.0, 0.0)",
@@ -668,6 +671,8 @@ void TaskComplexSection::updateComplexSection()
         int projectionStrategy = ui->cmbStrategy->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ProjectionStrategy = %d",
                            m_sectionName.c_str(), projectionStrategy);
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.BrokenOutDepth = %0.7f",
+                           m_sectionName.c_str(), ui->sbBrokenOutDepth->value());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.SectionDirection = 'Aligned'",
                            m_sectionName.c_str());
         //NOLINTEND

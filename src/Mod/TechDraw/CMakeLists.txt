@@ -184,6 +184,7 @@ SET(TDTest_SRCS
     TDTest/DrawViewDimensionTest.py
     TDTest/DrawViewPartTest.py
     TDTest/DrawViewSectionTest.py
+    TDTest/DrawComplexSectionTest.py
     TDTest/DrawViewBalloonTest.py
     TDTest/DrawViewDetailTest.py
     TDTest/DrawViewScaleTypeTest.py
@@ -212,4 +213,3 @@ fc_copy_sources(TDTestTarget "${CMAKE_BINARY_DIR}/Mod/TechDraw" ${TDAllTest})
 # install Python packages (for make install)
 INSTALL(FILES ${TDTest_SRCS} DESTINATION Mod/TechDraw/TDTest)
 INSTALL(FILES ${TDTestFile_SRCS} DESTINATION Mod/TechDraw/TDTest)
-

@@ -61,13 +61,16 @@ public:
 //NOLINTBEGIN
     App::PropertyLink CuttingToolWireObject;
     App::PropertyEnumeration ProjectionStrategy;//Offset or Aligned
+    App::PropertyLength BrokenOutDepth;
 //NOLINTEND
 
+    short mustExecute() const override;
     TopoDS_Shape makeCuttingTool(double dMax) override;
     void makeSectionCut(const TopoDS_Shape& baseShape) override;
     TopoDS_Wire closeProfileForCut(const TopoDS_Wire& profileWire,
                                    double dMax) const;
     TopoDS_Shape makeCuttingToolFromClosedProfile(const TopoDS_Wire& profileWire, double dMax);
+    TopoDS_Shape makeBrokenOutCuttingTool(const TopoDS_Wire& profileWire);
     TopoDS_Shape cuttingToolFromProfile(const TopoDS_Wire& inProfileWire,
                                         double dMax) const;
     TopoDS_Wire closeSingleEdgeProfile(const TopoDS_Edge& singleEdge,
@@ -117,6 +120,7 @@ public:
 
     bool showSegment(gp_Dir segmentNormal) const;
     bool showSegment(const Base::Vector3d& segmentNormal) const;
+    bool isBrokenOut() const;
     void waitingForAlign(bool s) { m_waitingForAlign = s; }
     bool waitingForAlign() const { return m_waitingForAlign; }
 
