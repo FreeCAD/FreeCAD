@@ -2612,10 +2612,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             if (lowerSubshapeIndexName) {
                                 Data::MappedName lowerSubshapeName = getMappedName(lowerSubshapeIndexName);
 
-                                // if (mainElementIndexedName.toString() == "Face15") {
-                                    FC_WARN("index: " << lowerSubshapeIndexName.toString());
-                                // }
-
                                 if (lowerSubshapeName && std::find(linkedConnectedNames.begin(), linkedConnectedNames.end(), lowerSubshapeName) == linkedConnectedNames.end()) {
                                     linkedConnectedNames.push_back(lowerSubshapeName);
                                 }
