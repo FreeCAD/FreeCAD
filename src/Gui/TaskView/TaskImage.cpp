@@ -239,6 +239,9 @@ void TaskImage::startScale()
         ui->groupBoxCalibration->show();
         ui->pushButtonApply->setEnabled(false);
 
+        ui->spinBoxWidth->setEnabled(false);
+        ui->spinBoxHeight->setEnabled(false);
+
         showToolHints();
     }
 }
@@ -304,6 +307,9 @@ void TaskImage::rejectScale()
         scale->deactivate();
         ui->pushButtonScale->show();
         ui->groupBoxCalibration->hide();
+
+        ui->spinBoxWidth->setEnabled(true);
+        ui->spinBoxHeight->setEnabled(true);
 
         showToolHints();
     }
@@ -583,6 +589,8 @@ void InteractiveScale::activate()
         viewer->addEventCallback(SoButtonEvent::getClassTypeId(), InteractiveScale::soEventFilter, this);
         viewer->setSelectionEnabled(false);
         viewer->getWidget()->setCursor(QCursor(Qt::CrossCursor));
+        // Focus the 3D view so our keybinds won't appear to be broken
+        viewer->setFocus();
         active = true;
     }
 }
