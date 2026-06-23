@@ -2440,6 +2440,7 @@ StdCmdAxisCross::StdCmdAxisCross()
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_AxisCross";
     sPixmap = "Std_AxisCross";
+    eType = Alter3DView;
     sAccel = "A,C";
 }
 
