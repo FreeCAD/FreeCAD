@@ -28,6 +28,8 @@
 #include <list>
 #include <unordered_map>
 
+#include <QVector>
+
 #include <App/ComplexGeoData.h>
 #include <Base/Exception.h>
 #include <Mod/Part/PartGlobal.h>
