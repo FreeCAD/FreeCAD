@@ -139,7 +139,9 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
     SetupEigen()
     # This file is included directly due to some cMake macros that are defined within.
     # If these macro definitions are embedded within another macro, it causes problems.
-    include(cMake/FreeCAD_Helpers/SetupQt.cmake)
+    if(FREECAD_HAS_QT)
+        include(cMake/FreeCAD_Helpers/SetupQt.cmake)
+    endif()
     SetupFreetype()
 
     if(BUILD_GUI)

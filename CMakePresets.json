@@ -44,6 +44,33 @@
         }
       },
       {
+        "name": "qtless",
+        "displayName": "Qt-less",
+        "description": "Build core FreeCAD targets without Qt support",
+        "binaryDir": "${sourceDir}/build/qtless",
+        "inherits": [
+          "common"
+        ],
+        "cacheVariables": {
+          "BUILD_GUI": {
+            "type": "BOOL",
+            "value": "OFF"
+          },
+          "BUILD_TEST": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "ENABLE_DEVELOPER_TESTS": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "FREECAD_QT_VERSION": {
+            "type": "STRING",
+            "value": "None"
+          }
+        }
+      },
+      {
         "name": "release",
         "displayName": "Release",
         "description": "Default release profile",
