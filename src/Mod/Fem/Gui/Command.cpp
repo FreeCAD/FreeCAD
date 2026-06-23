@@ -2123,6 +2123,9 @@ void setupFilter(Gui::Command* cmd, std::string Name)
         );
     }
 
+    // show active filter
+    cmd->doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.ViewObject.Visibility = True");
+
     cmd->updateActive();
     // open the dialog to edit the filter
     cmd->doCommand(Gui::Command::Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
