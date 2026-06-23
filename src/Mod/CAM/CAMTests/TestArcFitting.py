@@ -576,13 +576,13 @@ class TestArcFittingOffsets(PathTestBase):
 
     def test_two_circles_offset_outward(self):
         """Test offsetting two overlapping circles outward."""
-        # Lens shape: top circle (0,4) r=5 from (3,0) to (-3,0), bottom circle (0,-4) r=5 back to (3,0)
+        # 8 shape: top circle (0,4) r=5 from (3,0) to (-3,0), bottom circle (0,-4) r=5 back to (3,0)
         a = make_area(make_curve([(3, 0), (-3, 0, 1, 0, 4), (3, 0, 1, 0, -4)]))
         self.assert_offset_line_and_arc_count(a, 1.0, 1, 0, 2)  # 1 curve, 2 CCW arcs
 
     def test_two_circles_offset_inward(self):
         """Test offsetting two overlapping circles inward."""
-        # Lens shape: top circle (0,4) r=5 from (3,0) to (-3,0), bottom circle (0,-4) r=5 back to (3,0)
+        # 8 shape: top circle (0,4) r=5 from (3,0) to (-3,0), bottom circle (0,-4) r=5 back to (3,0)
         a = make_area(make_curve([(3, 0), (-3, 0, 1, 0, 4), (3, 0, 1, 0, -4)]))
         self.assert_offset_line_and_arc_count(a, -1.0, 1, 0, 2, 2)  # 1 curve, 2 CCW arcs, 2 CW arcs
 
@@ -604,9 +604,13 @@ class TestArcFittingOffsets(PathTestBase):
         # Offset by 2.0 (merges --> +1 line, +1 arc)
         self.assert_offset_line_and_arc_count(a2, 2, 1, 8, 8)  # 1 curve, 8 lines, 8 CCW arcs
 
+    def test_sharp_triangle(self):
+        a = make_area(make_curve([(-1, 0), (1, 0), (0, 10), (-1, 0)]))
+        self.assert_offset_line_and_arc_count(a, 150, 1, 3, 3)  # 1 curve, 3 lines, 3 CCW arcs
+
     def test_mirrored_semicircles(self):
         a = make_mirrored_arcs(5, 0)  # arcs about (0, 0) that hit x-axis at 5
-        self.assert_offset_line_and_arc_count(a, 1, 1, 0, 2)  # 1 curve, 0 lines, 2 CCW arcs
+        self.assert_offset_line_and_arc_count(a, 150, 1, 0, 2)  # 1 curve, 0 lines, 2 CCW arcs
 
     def test_mirrored_less_than_semicircles(self):
         # choose y big enough to not round the point expansion to nothing, but just barely
