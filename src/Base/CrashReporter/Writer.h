@@ -41,6 +41,13 @@ public:
      */
     static void install(const std::string& crashReportDirectory);
 
+    /**
+     * Get the generated name of the fcrash file.
+     *
+     * @return The UTF-8-encoded file path
+     */
+    static std::string crashReportFilePath();
+
 #ifdef FC_OS_WIN32
     static void handleException(_EXCEPTION_POINTERS* exceptionInfo);
 

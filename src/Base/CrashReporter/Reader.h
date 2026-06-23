@@ -90,5 +90,15 @@ struct ParsedCrashReport
  */
 [[nodiscard]] ParsedCrashReport BaseExport parse(const std::string &pathToRawReportFile);
 
+/**
+ * Clean up a set of stack frames from a crash report by eliminating the top few frames that
+ * represent the crash handling code itself.
+ *
+ * @param frames The original list of stack frames from a parsed crash report
+ * @return An updated list, stripped of the report-generation plumbing
+ */
+[[nodiscard]] std::vector<ParsedFrame> BaseExport
+ trimLeadingPlumbingFrames(const std::vector<ParsedFrame>& frames);
+
 }  // namespace Base::CrashReporter
 
