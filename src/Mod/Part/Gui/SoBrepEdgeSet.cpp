@@ -60,6 +60,15 @@ struct SoBrepEdgeSet::SelContext: Gui::SoFCSelectionContextEx
     std::vector<int32_t> hl, sl;
 };
 
+/// Controls how B-rep overlay primitives interact with the scene depth buffer.
+enum class OverlayDepthMode
+{
+    /// Keep normal occlusion so committed selection does not expose hidden geometry.
+    RespectDepth,
+    /// Render above model geometry for hover and preselection feedback.
+    DrawOnTop,
+};
+
 static void applyOverlayPrimitiveState(SoState* state, SoNode* node)
 {
     if (!state || !node) {
@@ -72,12 +81,37 @@ static void applyOverlayPrimitiveState(SoState* state, SoNode* node)
     SoOverrideElement::setMaterialBindingOverride(state, node, true);
 }
 
+static void applyOverlayDepthState(SoState* state, OverlayDepthMode depthMode)
+{
+    switch (depthMode) {
+        case OverlayDepthMode::DrawOnTop:
+            SoDepthBufferElement::set(
+                state,
+                FALSE,
+                FALSE,
+                SoDepthBufferElement::ALWAYS,
+                SbVec2f(0.0f, 1.0f)
+            );
+            return;
+        case OverlayDepthMode::RespectDepth:
+            SoDepthBufferElement::set(
+                state,
+                TRUE,
+                FALSE,
+                SoDepthBufferElement::LEQUAL,
+                SbVec2f(0.0f, 1.0f)
+            );
+            return;
+    }
+}
+
 static void renderOverlayLines(
     SoGLRenderAction* action,
     SoIndexedLineSet* lineSet,
     const int32_t* indices,
     int numIndices,
-    const Base::Color& color
+    const Base::Color& color,
+    OverlayDepthMode depthMode
 )
 {
     if (!action || !lineSet || !indices || numIndices <= 0) {
@@ -111,7 +145,7 @@ static void renderOverlayLines(
     state->push();
 
     applyOverlayPrimitiveState(state, lineSet);
-    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+    applyOverlayDepthState(state, depthMode);
 
     const SbColor sbColor(color.r, color.g, color.b);
     const float transparency = std::max(0.0f, 1.0f - color.a);
@@ -142,7 +176,8 @@ static void renderOverlayLines(
     SoIndexedLineSet* lineSet,
     const int32_t* indices,
     int numIndices,
-    const SbColor& color
+    const SbColor& color,
+    OverlayDepthMode depthMode
 )
 {
     renderOverlayLines(
@@ -150,7 +185,8 @@ static void renderOverlayLines(
         lineSet,
         indices,
         numIndices,
-        Base::Color(color[0], color[1], color[2], 1.0f)
+        Base::Color(color[0], color[1], color[2], 1.0f),
+        depthMode
     );
 }
 
@@ -213,7 +249,8 @@ static void renderColorOverrides(
             lineSet,
             group.indices.data(),
             static_cast<int>(group.indices.size()),
-            group.color
+            group.color,
+            OverlayDepthMode::DrawOnTop
         );
     }
 }
@@ -298,8 +335,8 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
 
     bool hasColorOverride = (ctx2 && !ctx2->colors.empty());
 
-    if (ctx && ctx->highlightIndex == std::numeric_limits<int>::max()) {
-        if (ctx->selectionIndex.empty() || ctx->isSelectAll()) {
+    if (ctx && ctx->highlightIndex == std::numeric_limits<int>::max() && !ctx->isSelectAll()) {
+        if (ctx->selectionIndex.empty()) {
             if (ctx2) {
                 ctx2->selectionColor = ctx->highlightColor;
                 renderSelection(action, ctx2);
@@ -395,7 +432,8 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
             overlayLineSet,
             highlightCoordIndex.getValues(0),
             hlNum,
-            highlightColor.getValue()
+            highlightColor.getValue(),
+            OverlayDepthMode::DrawOnTop
         );
     }
     const int selNum = selectionCoordIndex.getNum();
@@ -405,7 +443,8 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
             overlayLineSet,
             selectionCoordIndex.getValues(0),
             selNum,
-            selectionColor.getValue()
+            selectionColor.getValue(),
+            OverlayDepthMode::DrawOnTop
         );
     }
 }
@@ -473,7 +512,8 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
                 overlayLineSet,
                 this->coordIndex.getValues(0),
                 this->coordIndex.getNum(),
-                ctx->highlightColor
+                ctx->highlightColor,
+                OverlayDepthMode::DrawOnTop
             );
         }
         else {
@@ -484,7 +524,14 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
                 );
             }
             else {
-                renderOverlayLines(action, overlayLineSet, ctx->hl.data(), num, ctx->highlightColor);
+                renderOverlayLines(
+                    action,
+                    overlayLineSet,
+                    ctx->hl.data(),
+                    num,
+                    ctx->highlightColor,
+                    OverlayDepthMode::DrawOnTop
+                );
             }
         }
     }
@@ -509,7 +556,8 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
                 overlayLineSet,
                 this->coordIndex.getValues(0),
                 this->coordIndex.getNum(),
-                ctx->selectionColor
+                ctx->selectionColor,
+                OverlayDepthMode::RespectDepth
             );
         }
         else {
@@ -520,7 +568,14 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
                 );
             }
             else {
-                renderOverlayLines(action, overlayLineSet, ctx->sl.data(), num, ctx->selectionColor);
+                renderOverlayLines(
+                    action,
+                    overlayLineSet,
+                    ctx->sl.data(),
+                    num,
+                    ctx->selectionColor,
+                    OverlayDepthMode::RespectDepth
+                );
             }
         }
     }

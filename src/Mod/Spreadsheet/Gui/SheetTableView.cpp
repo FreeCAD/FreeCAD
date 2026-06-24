@@ -47,11 +47,13 @@
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Mod/Spreadsheet/App/Cell.h>
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 #include "DlgBindSheet.h"
 #include "DlgSheetConf.h"
 #include "PropertiesDialog.h"
 #include "SheetTableView.h"
+#include "SheetModel.h"
 
 
 using namespace SpreadsheetGui;
@@ -488,7 +490,7 @@ bool SheetTableView::event(QEvent* event)
                 break;
         }
         if (kevent->matches(QKeySequence::SelectAll)) {
-            QTableView::selectAll();
+            selectAll();
             return true;
         }
         if (kevent->matches(QKeySequence::Delete) || kevent->matches(QKeySequence::Backspace)) {
@@ -992,6 +994,20 @@ void SheetTableView::ModifyBlockSelection(int targetRow, int targetCol)
         model()->index(targetRow, targetCol),
         QItemSelectionModel::Current
     );
+}
+
+void SheetTableView::selectAll()
+{
+    auto* sheetModel = qobject_cast<SheetModel*>(model());
+    if (!sheetModel) {
+        return;
+    }
+
+    auto* param = SheetParameter::instance();
+    if (sheetModel->rowCount() <= param->getMaximumRowCount()
+        && sheetModel->columnCount() <= param->getMaximumColumnCount()) {
+        QTableView::selectAll();
+    }
 }
 
 void SheetTableView::mergeCells()

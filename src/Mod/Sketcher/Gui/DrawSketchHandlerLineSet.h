@@ -41,7 +41,6 @@
 #include "DrawSketchControllableHandler.h"
 
 #include "DrawSketchHandler.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "SnapManager.h"
@@ -50,8 +49,6 @@ using namespace Sketcher;
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerLineSet: public DrawSketchHandler
 {
@@ -1068,6 +1065,10 @@ private:
             // We create the geometry first.
             createShape(false);
 
+            if (ShapeGeometry.empty()) {
+                return false;
+            }
+
             commandAddShapeGeometryAndConstraints();
 
             int geoId = getHighestCurveIndex();
@@ -1565,12 +1566,7 @@ private:
             double radius = getArcCenter(center, prevCursorPos);
 
             if (radius == 0.0) {
-                // fall back to a line
-                addLineToShapeGeometry(
-                    toVector3d(points[points.size() - 1]),
-                    toVector3d(prevCursorPos),
-                    isConstructionMode()
-                );
+                return;
             }
 
             double rx = lastPoint.x - center.x;
@@ -1736,7 +1732,7 @@ void DSHPolyLineController::configureToolWidget()
         );
         syncCheckboxToHandler(WCheckbox::FirstBox, handler->fillet);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,

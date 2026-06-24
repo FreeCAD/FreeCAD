@@ -109,6 +109,7 @@ SET(FemExamples_SRCS
     femexamples/material_nl_platewithhole.py
     femexamples/mystran_plate.py
     femexamples/rc_wall_2d.py
+    femexamples/spark_gap.py
     femexamples/square_pipe_end_twisted_edgeforces.py
     femexamples/square_pipe_end_twisted_nodeforces.py
     femexamples/thermomech_bimetal.py
