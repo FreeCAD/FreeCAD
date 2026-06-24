@@ -50,5 +50,5 @@ from bimtests.TestArchComponent import TestArchComponent
 from bimtests.TestWebGLExport import TestWebGLExport
 from bimtests.TestArchReport import TestArchReport
 from bimtests.TestArchCovering import TestArchCovering
-from bimtests.TestBsdd import TestBsdd 
-from bimtests.TestBsddContract import TestBsddContract  
+from bimtests.TestBsdd import TestBsdd
+from bimtests.TestBsddContract import TestBsddContract
