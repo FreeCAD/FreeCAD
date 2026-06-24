@@ -224,10 +224,12 @@ int main(int argc, char** argv)
         // Inits the Application
 #if defined(FC_OS_WIN32)
         App::Application::init(argc_, argv_.data());
-#ifdef _MSC_VER
+# ifdef _MSC_VER
         // *Not* installed on mingw, etc.
-        Base::CrashReporter::WindowsCrashReporter::install(App::Application::getUserAppDataDir() + "CrashReports");
-#endif
+        Base::CrashReporter::WindowsCrashReporter::install(
+            App::Application::getUserAppDataDir() + "CrashReports"
+        );
+# endif
 #else
         App::Application::init(argc, argv);
 #endif
@@ -374,4 +376,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-

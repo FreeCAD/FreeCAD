@@ -23,14 +23,14 @@
 
 #ifdef _MSC_VER
 
-#include <FCGlobal.h>
-#include <string>
+# include <FCGlobal.h>
+# include <string>
 
 namespace Base::CrashReporter
 {
 class BaseExport WindowsCrashReporter
 {
-    public:
+public:
     /**
      * Resolve the .dmp path and register the SEH filter. Call once **after**
      * App::Application::init().
@@ -39,6 +39,6 @@ class BaseExport WindowsCrashReporter
      */
     static void install(const std::string& crashReportDirectory);
 };
-}
+}  // namespace Base::CrashReporter
 
 #endif  // _MSC_VER

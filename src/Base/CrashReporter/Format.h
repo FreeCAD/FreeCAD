@@ -37,6 +37,8 @@
 
 #include <array>
 #include <bit>
+#include <cstddef>  // IWYU pragma: keep
+#include <cstdint>  // IWYU pragma: keep
 #include <span>
 #include <type_traits>
 
@@ -59,13 +61,14 @@ static_assert(std::endian::native == std::endian::little);
 
 namespace Base::CrashReporter
 {
-enum class Flags : std::uint32_t {
+enum class Flags : std::uint32_t
+{
     None = 0,
     HasMiniDump = 1U << 0,
     PartialWrite = 1U << 1,
     CaptureWasSignalSafe = 1U << 2
 };
-}
+}  // namespace Base::CrashReporter
 ENABLE_BITMASK_OPERATORS(Base::CrashReporter::Flags);
 
 namespace Base::CrashReporter
@@ -75,14 +78,16 @@ namespace Base::CrashReporter
     return (flags & flag) != Flags::None;
 }
 
-enum class OS : std::uint8_t {
+enum class OS : std::uint8_t
+{
     None,
     Linux,
     macOS,
     Windows
 };
 
-enum class Architecture : std::uint8_t {
+enum class Architecture : std::uint8_t
+{
     None,
     x64,
     aarch64
@@ -92,8 +97,9 @@ static constexpr std::uint32_t NoString = 0xFFFFFFFFU;
 
 
 static constexpr std::size_t HeaderSize = 128;
-static constexpr std::uint32_t MagicNumber = 0x52434346; // hedxump gives 'FCCR' (little endian!)
-struct Header {
+static constexpr std::uint32_t MagicNumber = 0x52434346;  // hedxump gives 'FCCR' (little endian!)
+struct Header
+{
     std::uint32_t magic = MagicNumber;
     std::uint32_t version = 1;  // The fcrash format version
 
@@ -109,7 +115,7 @@ struct Header {
 
     std::uint32_t frameTableOffset = 0;
     std::uint32_t stringTableOffset = 0;
-    
+
     // Strings, stored as offsets into the string table
     std::uint32_t buildIDStringOffset = NoString;
     std::uint32_t freecadVersionSuffixStringOffset = NoString;
@@ -123,7 +129,7 @@ struct Header {
     std::uint8_t freecadVersionPatch = 0;
 
     // The real data above takes up 81 bytes: pad it out to the HeaderSize
-    std::array<std::uint8_t, HeaderSize-81> padding = {};
+    std::array<std::uint8_t, HeaderSize - 81> padding = {};
 };
 
 static_assert(sizeof(Header) == HeaderSize);
@@ -169,7 +175,7 @@ static_assert(std::is_trivially_copyable_v<Footer>);
 [[nodiscard]] constexpr std::uint32_t crc32(std::span<const char> data) noexcept
 {
     constexpr auto table = [] {
-        std::array<std::uint32_t, 256> t{};
+        std::array<std::uint32_t, 256> t {};
         for (std::uint32_t i = 0; i < 256; ++i) {
             std::uint32_t c = i;
             for (int j = 0; j < 8; ++j) {
@@ -188,7 +194,6 @@ static_assert(std::is_trivially_copyable_v<Footer>);
 }
 
 
-
 // The actual maximum file size is:
 // sizeof(Header)                                                    = 128     +
 // MaxFrames * sizeof(Frame) = 128 * 74                              = 3072    +
@@ -203,4 +208,3 @@ constexpr std::uint64_t MaxFileSize = 1U << 20;  // 1 MiB
 
 
 }  // namespace Base::CrashReporter
-

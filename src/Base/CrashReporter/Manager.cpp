@@ -28,9 +28,13 @@
 #include <algorithm>
 #include <charconv>
 #include <chrono>
+#include <cstdint>
 #include <iterator>
 #include <optional>
+#include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
 using namespace Base::CrashReporter;
 
@@ -51,7 +55,7 @@ void Manager::scan(const std::string& crashReportDirectory, RetentionPolicy poli
     s_crashReportDirectory = crashReportDirectory;
 
     s_reports.clear();
-    for (const auto &contentItem : fileInfo.getDirectoryContent()) {
+    for (const auto& contentItem : fileInfo.getDirectoryContent()) {
         if (!contentItem.isFile()) {
             continue;  // Do not recurse
         }
@@ -62,10 +66,15 @@ void Manager::scan(const std::string& crashReportDirectory, RetentionPolicy poli
                 archive(report);
                 report.stackFrames = trimLeadingPlumbingFrames(report.stackFrames);
                 s_reports.push_back(report);
-            } catch (const Base::Exception &e) {
+            }
+            catch (const Base::Exception& e) {
                 // Some sort of corrupt report: log it
-                Console().warning("Corrupted crash report file found: %s\n%s\n",  contentItem.filePath().c_str(), e.what());
-                FileInfo bad{contentItem.filePath()};
+                Console().warning(
+                    "Corrupted crash report file found: %s\n%s\n",
+                    contentItem.filePath().c_str(),
+                    e.what()
+                );
+                FileInfo bad {contentItem.filePath()};
                 bad.renameFile((contentItem.filePath() + ".corrupt").c_str());
             }
         }
@@ -81,7 +90,7 @@ const std::vector<ParsedCrashReport>& Manager::reports()
 void Manager::clear()
 {
     if (s_crashReportDirectory.empty()) {
-        return;   // never scanned: nothing to clear
+        return;  // never scanned: nothing to clear
     }
 
     FileInfo fileInfo {s_crashReportDirectory};
@@ -118,18 +127,18 @@ std::optional<std::int64_t> crashTimestampFromName(const Base::FileInfo& f)
 {
     std::string stem = f.fileNamePure();  // "crash-<timestamp>-<pid>"
     auto first = stem.find('-');
-    auto last  = stem.rfind('-');
+    auto last = stem.rfind('-');
     if (first == std::string::npos || last == first) {
         return std::nullopt;
     }
     std::int64_t timestamp = 0;
-    std::string_view mid{stem.data() + first + 1, last - first - 1};
-    if (std::from_chars(mid.data(), mid.data() + mid.size(), timestamp).ec != std::errc{}) {
+    std::string_view mid {stem.data() + first + 1, last - first - 1};
+    if (std::from_chars(mid.data(), mid.data() + mid.size(), timestamp).ec != std::errc {}) {
         return std::nullopt;
     }
     return timestamp;
 }
-}
+}  // namespace
 
 void Manager::enforceRetention(RetentionPolicy policy)
 {
@@ -171,7 +180,7 @@ void Manager::enforceRetention(RetentionPolicy policy)
         auto nowTimepoint = ch::system_clock::now();
         auto timeDiff = nowTimepoint - fileTimepoint;
         if (timeDiff <= policy.maxAge) {
-            break; // No need to continue since we sorted by age to begin with
+            break;  // No need to continue since we sorted by age to begin with
         }
 
         // Delete the old fcrash file and its optional minidump companion
@@ -188,12 +197,15 @@ void Manager::enforceRetention(RetentionPolicy policy)
 
         ++deleteCounter;
         if (deleteCounter >= maxNumToDelete) {
-            break; // Done!
+            break;  // Done!
         }
     }
 }
 
-std::pair<std::string, std::string> Manager::archiveFile(const std::string& fcrashPath, const std::string& dumpPath)
+std::pair<std::string, std::string> Manager::archiveFile(
+    const std::string& fcrashPath,
+    const std::string& dumpPath
+)
 {
     std::pair<std::string, std::string> newPaths {fcrashPath, dumpPath};
     auto archivePath = getArchive();
@@ -204,7 +216,7 @@ std::pair<std::string, std::string> Manager::archiveFile(const std::string& fcra
     }
     auto archiveBase = archivePath.filePath();
     if (FileInfo fcrashInfo {fcrashPath}; fcrashInfo.exists()) {
-        fcrashInfo.renameFile((archiveBase +"/" + fcrashInfo.fileName()).c_str());
+        fcrashInfo.renameFile((archiveBase + "/" + fcrashInfo.fileName()).c_str());
         newPaths.first = fcrashInfo.filePath();
     }
     if (!dumpPath.empty()) {
@@ -215,4 +227,3 @@ std::pair<std::string, std::string> Manager::archiveFile(const std::string& fcra
     }
     return newPaths;
 }
-

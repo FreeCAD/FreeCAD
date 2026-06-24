@@ -24,13 +24,15 @@
 #include "Format.h"
 
 #include <chrono>
+#include <cstdint>
 #include <string>
 #include <vector>
 #include <optional>
 
 #include <Base/Exception.h>
 
-namespace Base::CrashReporter {
+namespace Base::CrashReporter
+{
 
 struct ParsedFrame
 {
@@ -55,8 +57,8 @@ struct ParsedCrashReport
     std::chrono::system_clock::time_point timestamp;
 
     std::uint32_t processID = 0;
-    std::uint32_t code = 0; // Signal number or SEH ExceptionCode
-    
+    std::uint32_t code = 0;  // Signal number or SEH ExceptionCode
+
     bool partialWrite {false};
     bool captureWasSignalSafe {false};
 
@@ -67,28 +69,33 @@ struct ParsedCrashReport
     OS osID = OS::None;
     std::string osVersion;
     Architecture architectureID = Architecture::None;
-    
+
     std::uint8_t freecadVersionMajor = 0;
     std::uint8_t freecadVersionMinor = 0;
     std::uint8_t freecadVersionPatch = 0;
     std::string freecadVersionSuffix;
-    std::uint32_t freecadVersionRevision = 0;
 
+    bool symbolicated = false;
     std::vector<ParsedFrame> stackFrames;
 };
 
 /**
  * Parse and symbolicate a FreeCAD Crash Report file
  *
- * This *must* be run with the exact version of FreeCAD that created the file in the first place,
- * and is expected to be run on the next successful startup of FreeCAD after the crash occurred.
- * Throws a Base::BadFormatError if the file format is broken, or some other derivative of
- * Base::Exception for various file-reading errors, etc.
+ * This should be run with the exact version of FreeCAD that created the file in the first place.
+ * If it's run on a different version (maybe because of a software upgrade), the stack is *not*
+ * symbolicated, even if cpptrace is available.
+ *
+ * It is expected to be run on the next successful startup of FreeCAD after the crash occurred.
+ * Throws a `Base::BadFormatError` if the file format is broken, or some other derivative of
+ * `Base::Exception` for various file-reading errors, etc. A *truncated* file is treated as a
+ * non-fatal failure. The parser will do its best to read the file, and will set the `partialWrite`
+ * flag.
  *
  * \returns a ParsedCrashReport with symbol information (depending on the availability of debug
  * symbols that symbolication may be more or less complete).
  */
-[[nodiscard]] ParsedCrashReport BaseExport parse(const std::string &pathToRawReportFile);
+[[nodiscard]] ParsedCrashReport BaseExport parse(const std::string& pathToRawReportFile);
 
 /**
  * Clean up a set of stack frames from a crash report by eliminating the top few frames that
@@ -97,8 +104,8 @@ struct ParsedCrashReport
  * @param frames The original list of stack frames from a parsed crash report
  * @return An updated list, stripped of the report-generation plumbing
  */
-[[nodiscard]] std::vector<ParsedFrame> BaseExport
- trimLeadingPlumbingFrames(const std::vector<ParsedFrame>& frames);
+[[nodiscard]] std::vector<ParsedFrame> BaseExport trimLeadingPlumbingFrames(
+    const std::vector<ParsedFrame>& frames
+);
 
 }  // namespace Base::CrashReporter
-

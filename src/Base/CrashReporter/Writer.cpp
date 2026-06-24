@@ -40,9 +40,10 @@
 
 #include <atomic>
 #include <charconv>
-#include <climits>
+#include <climits>  // IWYU pragma: keep
 #include <csignal>
-#include <cstring>
+#include <cstdint>
+#include <cstring>  // IWYU pragma: keep
 #include <fstream>
 #include <string>
 #include <string_view>
@@ -50,34 +51,36 @@
 #include <Build/Version.h>
 #include <FCConfig.h>
 
+// The Writer is intentionally C-style (fixed static buffers, raw write) for async-signal-safety,
+// so array decay and pointer arithmetic are pervasive and deliberate, not bounds hazards.
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
 // NOLINTBEGIN(modernize-avoid-c-arrays,cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-pro-bounds-constant-array-index,readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers,clang-diagnostic-unsafe-buffer-usage)
 
 #ifdef FC_HAVE_CPPTRACE
-#include <cpptrace/cpptrace.hpp>
+# include <cpptrace/cpptrace.hpp>
 #endif
 
 static std::atomic_flag writing;
 static std::string resolvedCrashFilePath;  // Stored in UTF-8 (so on Windows, convert first)
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
-#include <fcntl.h>
-#include <pthread.h>
-#include <unistd.h>
+# include <fcntl.h>
+# include <pthread.h>
+# include <unistd.h>
 constexpr size_t MaxPathLength = PATH_MAX;
 static char crashReportFilePOSIX[MaxPathLength];
-static char alternateStack[64 * 1024]; // Used in the event of a SIGSEGV stack overrun
+static char alternateStack[64 * 1024];  // Used in the event of a SIGSEGV stack overrun
 #else
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# ifndef NOMINMAX
+#  define NOMINMAX
+# endif
+# include <windows.h>
 constexpr size_t MaxPathLength = MAX_PATH;
 static std::wstring crashReportFileWindows;
 #endif
-
 
 
 using namespace Base::CrashReporter;
@@ -103,8 +106,8 @@ std::uint32_t addToStringTable(std::string_view string)
     if (string.length() > MaxStringLength) {
         return NoString;
     }
-    std::uint32_t stringPosition = stringTablePosition;
-    std::uint16_t stringLength = string.length();
+    const std::uint32_t stringPosition = stringTablePosition;
+    const std::uint16_t stringLength = string.length();
     std::memcpy(&stringTable[stringTablePosition], &stringLength, sizeof(std::uint16_t));
     stringTablePosition += sizeof(std::uint16_t);
     std::memcpy(&stringTable[stringTablePosition], string.data(), string.length());
@@ -116,9 +119,9 @@ std::uint32_t finishHeader(std::uint32_t frameCount)
 {
     header.frameCount = frameCount;
 
-    header.frameTableOffset  = sizeof(Header);
-    header.stringTableOffset = sizeof(Header) + frameCount * sizeof(Frame);
-    std::uint32_t fileSize = header.stringTableOffset + stringTablePosition + sizeof(Footer);
+    header.frameTableOffset = sizeof(Header);
+    header.stringTableOffset = sizeof(Header) + (frameCount * sizeof(Frame));
+    const std::uint32_t fileSize = header.stringTableOffset + stringTablePosition + sizeof(Footer);
     if (fileSize > MaxFileSize) {
         return 0;
     }
@@ -129,12 +132,13 @@ std::uint32_t finishHeader(std::uint32_t frameCount)
     std::memcpy(&fileBuffer[fileSize - sizeof(Footer)], &crc, sizeof(crc));
     return fileSize;
 }
-}
+}  // namespace
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
 extern "C" {
 
-void writeRawBufferPOSIX(std::uint32_t fileSize) {
+void writeRawBufferPOSIX(std::uint32_t fileSize)
+{
     // Raw syscalls only!!
     int fd = open(crashReportFilePOSIX, O_WRONLY | O_CREAT | O_TRUNC, 0600);
     if (fd != -1) {
@@ -164,7 +168,7 @@ void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
 
     // Now the call stack, if we have cpptrace:
     std::uint32_t frameCount = 0;
-#ifdef FC_HAVE_CPPTRACE
+# ifdef FC_HAVE_CPPTRACE
     cpptrace::frame_ptr rawFrames[MaxFrames];
     constexpr std::size_t skip {0};  // Don't skip any frames at this stage
     std::size_t nFrames = cpptrace::safe_generate_raw_trace(rawFrames, MaxFrames, skip);
@@ -175,11 +179,14 @@ void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
         extractedFrame.rawAddress = objectFrame.raw_address;
         extractedFrame.moduleOffset = objectFrame.address_relative_to_object_start;
         extractedFrame.moduleStringOffset = addToStringTable(objectFrame.object_path);
-        std::memcpy(&fileBuffer[sizeof(Header) + frameCount * sizeof(Frame)],
-            &extractedFrame, sizeof(Frame));
+        std::memcpy(
+            &fileBuffer[sizeof(Header) + frameCount * sizeof(Frame)],
+            &extractedFrame,
+            sizeof(Frame)
+        );
         ++frameCount;
     }
-#endif
+# endif
     std::uint32_t fileSize = finishHeader(frameCount);
     if (fileSize > 0) {
         writeRawBufferPOSIX(fileSize);
@@ -188,7 +195,7 @@ void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
     std::signal(sig, SIG_DFL);  // Make sure to reset, or we infinite loop
     std::raise(sig);
 }
-} // extern "C"
+}  // extern "C"
 #elif defined(FC_OS_WIN32)
 namespace
 {
@@ -199,10 +206,11 @@ void writeRawBufferWindows(std::uint32_t fileSize)
     if (!fcrashFile) {
         return;
     }
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
     fcrashFile.write(fileBuffer, fileSize);
     fcrashFile.close();
 }
-}
+}  // namespace
 
 void Writer::handleException(_EXCEPTION_POINTERS* exceptionInfo)
 {
@@ -210,28 +218,32 @@ void Writer::handleException(_EXCEPTION_POINTERS* exceptionInfo)
         return;
     }
     header.code = exceptionInfo->ExceptionRecord->ExceptionCode;
+    // NOLINTNEXTLINE
     header.faultAddress = reinterpret_cast<uint64_t>(exceptionInfo->ExceptionRecord->ExceptionAddress);
     header.threadID = GetCurrentThreadId();
     header.timestamp = std::time(nullptr);
 
     std::uint32_t frameCount = 0;
-#ifdef FC_HAVE_CPPTRACE
+# ifdef FC_HAVE_CPPTRACE
     // Windows SEH is NOT async-signal-safe anyway, so no need to take the long path we do on POSIX:
     constexpr std::size_t skip {0};  // Don't skip any frames at this stage
     auto trace = cpptrace::generate_object_trace(skip);
-    for (const auto &objectFrame : trace) {
+    for (const auto& objectFrame : trace) {
         Frame extractedFrame;
         extractedFrame.rawAddress = objectFrame.raw_address;
         extractedFrame.moduleOffset = objectFrame.object_address;
         extractedFrame.moduleStringOffset = addToStringTable(objectFrame.object_path);
-        std::memcpy(&fileBuffer[sizeof(Header) + frameCount * sizeof(Frame)],
-            &extractedFrame, sizeof(Frame));
+        std::memcpy(
+            &fileBuffer[sizeof(Header) + (frameCount * sizeof(Frame))],
+            &extractedFrame,
+            sizeof(Frame)
+        );
         ++frameCount;
         if (frameCount >= MaxFrames) {
             break;
         }
     }
-#endif
+# endif
     std::uint32_t fileSize = finishHeader(frameCount);
     if (fileSize == 0) {
         return;
@@ -259,9 +271,9 @@ void Writer::prewarm()
     // any needed dynamic loading mechanism is run (we can't let those loads run during a signal
     // handler).
 
-#ifdef FC_OS_WIN32
+# ifdef FC_OS_WIN32
     [[maybe_unused]] auto trace = cpptrace::generate_object_trace();
-#else
+# else
     cpptrace::frame_ptr buffer[MaxFrames];
     auto frameCount = cpptrace::safe_generate_raw_trace(buffer, MaxFrames, 0);
 
@@ -274,7 +286,7 @@ void Writer::prewarm()
     if (cpptrace::can_signal_safe_unwind() && cpptrace::can_get_safe_object_frame()) {
         header.flags |= Flags::CaptureWasSignalSafe;
     }
-#endif
+# endif
 #endif
 }
 
@@ -284,18 +296,22 @@ void Writer::install(const std::string& crashReportDirectory)
     header.freecadVersionMinor = extractVersionComponent(FCVersionMinor);
     header.freecadVersionPatch = extractVersionComponent(FCVersionPoint);
     header.freecadVersionSuffixStringOffset = addToStringTable(FCVersionSuffix);
+#ifdef FCRepositoryHash
+    header.buildIDStringOffset = addToStringTable(FCRepositoryHash);
+#else
     header.buildIDStringOffset = addToStringTable(FCRevision);
-#if defined(FC_OS_WIN32)
+#endif
+#ifdef FC_OS_WIN32
     header.processID = GetCurrentProcessId();
 #else
     header.processID = getpid();
 #endif
 
-#if defined(FC_OS_MACOSX)
+#ifdef FC_OS_MACOSX
     header.osID = OS::macOS;
-#elif defined (FC_OS_WIN32)
+#elif defined(FC_OS_WIN32)
     header.osID = OS::Windows;
-#elif defined (FC_OS_LINUX)
+#elif defined(FC_OS_LINUX)
     header.osID = OS::Linux;
 #endif
 
@@ -305,29 +321,28 @@ void Writer::install(const std::string& crashReportDirectory)
     header.architectureID = Architecture::aarch64;
 #endif
 
-#if defined(FC_OS_WIN32)
-    char separator = '\\';
+#ifdef FC_OS_WIN32
+    constexpr char separator = '\\';
 #else
-    char separator = '/';
+    constexpr char separator = '/';
 #endif
 
-    FileInfo info(crashReportDirectory);
-    if (!info.createDirectories()) {
+    if (FileInfo info(crashReportDirectory); !info.createDirectories()) {
         Console().warning("CrashReporter: Failed to create %s\n", crashReportDirectory);
         return;
     }
 
-    auto timestamp = std::time(nullptr);
-    std::string fcrash = crashReportDirectory + separator + "crash-" +
-        std::to_string(timestamp) + "-" + std::to_string(header.processID) + ".fcrash";
-    if (fcrash.length() > MaxPathLength-1) {
+    const auto timestamp = std::time(nullptr);
+    std::string fcrash = crashReportDirectory + separator + "crash-" + std::to_string(timestamp)
+        + "-" + std::to_string(header.processID) + ".fcrash";
+    if (fcrash.length() > MaxPathLength - 1) {
         Console().warning("CrashReporter: Crash file path too long: %s\n", fcrash);
         return;
     }
     resolvedCrashFilePath = fcrash;
 
 #ifdef FC_OS_WIN32
-    Base::FileInfo fi(fcrash);
+    const FileInfo fi(fcrash);
     crashReportFileWindows = fi.toStdWString();
 #else
     std::memcpy(crashReportFilePOSIX, fcrash.data(), fcrash.length());
@@ -351,7 +366,7 @@ void Writer::install(const std::string& crashReportDirectory)
     // https://man7.org/linux/man-pages/man2/sigaction.2.html
     struct sigaction sa {};
     sa.sa_sigaction = &crashHandler;
-    sa.sa_flags = SA_SIGINFO | SA_ONSTACK; // Because we want the three-arg form
+    sa.sa_flags = SA_SIGINFO | SA_ONSTACK;  // Because we want the three-arg form
     sigemptyset(&sa.sa_mask);
     for (int sig : {SIGSEGV, SIGABRT, SIGBUS, SIGFPE, SIGILL}) {
         sigaddset(&sa.sa_mask, sig);
@@ -369,3 +384,4 @@ std::string Writer::crashReportFilePath()
 }
 
 // NOLINTEND(modernize-avoid-c-arrays,cppcoreguidelines-avoid-c-arrays,cppcoreguidelines-pro-bounds-constant-array-index,readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers,clang-diagnostic-unsafe-buffer-usage)
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay)
