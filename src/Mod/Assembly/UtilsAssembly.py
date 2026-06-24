@@ -907,9 +907,7 @@ def openEditingPlacementDialog(obj, propName, onChanged=None):
         if buttonBox is not None:
             applyButton = buttonBox.button(QtWidgets.QDialogButtonBox.Apply)
             if applyButton is not None:
-                applyButton.clicked.connect(
-                    lambda: QtCore.QTimer.singleShot(0, onChanged)
-                )
+                applyButton.clicked.connect(lambda: QtCore.QTimer.singleShot(0, onChanged))
 
     dialog.findChild(QtWidgets.QPushButton, "selectedVertex").hide()
     dialog.exec_()

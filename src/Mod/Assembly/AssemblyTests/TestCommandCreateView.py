@@ -364,14 +364,20 @@ class TestCommandCreateView(unittest.TestCase):
     def test_editing_previous_rotation_updates_later_translation_direction(self):
         center = App.Vector(0, 100, 0)
         axis = App.Vector(1, 0, 0)
-        oldRotation = App.Placement(center, App.Rotation(axis, 45)) * App.Placement(
-            center,
-            App.Rotation(),
-        ).inverse()
-        newRotation = App.Placement(center, App.Rotation(axis, 30)) * App.Placement(
-            center,
-            App.Rotation(),
-        ).inverse()
+        oldRotation = (
+            App.Placement(center, App.Rotation(axis, 45))
+            * App.Placement(
+                center,
+                App.Rotation(),
+            ).inverse()
+        )
+        newRotation = (
+            App.Placement(center, App.Rotation(axis, 30))
+            * App.Placement(
+                center,
+                App.Rotation(),
+            ).inverse()
+        )
         move1 = _Move("Normal", App.Placement(App.Vector(0, 100, 0), App.Rotation()))
         move2 = _Move("Normal", newRotation)
         oldDirection = App.Rotation(axis, 45).multVec(App.Vector(0, 70, 0))
@@ -398,10 +404,13 @@ class TestCommandCreateView(unittest.TestCase):
     def test_rotation_center_is_recovered_from_transform(self):
         center = App.Vector(10, 20, 0)
         pivot = App.Placement(center, App.Rotation())
-        transform = App.Placement(
-            center,
-            App.Rotation(App.Vector(0, 0, 1), 60),
-        ) * pivot.inverse()
+        transform = (
+            App.Placement(
+                center,
+                App.Rotation(App.Vector(0, 0, 1), 60),
+            )
+            * pivot.inverse()
+        )
 
         recovered = CommandCreateView.rotationCenterFromTransform(transform)
 
@@ -412,10 +421,13 @@ class TestCommandCreateView(unittest.TestCase):
         axis = App.Vector(1, 2, 3)
         axis.normalize()
         pivot = App.Placement(center, App.Rotation())
-        transform = App.Placement(
-            center,
-            App.Rotation(axis, 60),
-        ) * pivot.inverse()
+        transform = (
+            App.Placement(
+                center,
+                App.Rotation(axis, 60),
+            )
+            * pivot.inverse()
+        )
 
         recovered = CommandCreateView.rotationCenterFromTransform(transform)
 

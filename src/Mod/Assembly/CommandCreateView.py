@@ -1082,14 +1082,10 @@ class TaskAssemblyCreateView(QtCore.QObject):
                     if placementIsIdentity(delta):
                         continue
 
-                    move.MovementTransform = (
-                        delta * move.MovementTransform * delta.inverse()
-                    )
+                    move.MovementTransform = delta * move.MovementTransform * delta.inverse()
                     break
 
-            oldTransform = (
-                oldChangedTransform if move == changedMove else transformBeforeAdjustment
-            )
+            oldTransform = oldChangedTransform if move == changedMove else transformBeforeAdjustment
             newTransform = move.MovementTransform
             for objName in objNames:
                 if objName in oldPlacements:
@@ -1274,9 +1270,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         ):
             self.currentStep.MovementTransform.Base = (
                 self.initialDraggerPlc.Base
-                - self.currentStep.MovementTransform.Rotation.multVec(
-                    self.initialDraggerPlc.Base
-                )
+                - self.currentStep.MovementTransform.Rotation.multVec(self.initialDraggerPlc.Base)
             )
         elif translation > translationTolerance:
             self.currentStep.MovementTransform = App.Placement(
