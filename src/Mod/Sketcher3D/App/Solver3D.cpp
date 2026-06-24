@@ -199,10 +199,26 @@ void Solver3D::addConstraintDistance(int tagId, int pointHandleA, int pointHandl
 {
     if (pointHandleA < 0 || pointHandleA >= static_cast<int>(points.size()) || pointHandleB < 0
         || pointHandleB >= static_cast<int>(points.size())) {
-        throw Base::IndexError("Solver3D::addConstraintDistance handle out of range");
+        throw Base::IndexError("Solver3D::addConstraintDistance index out of range");
     }
     double* d = allocFixParam(distance);
     GCSsys.addConstraintP2PDistance3D(points[pointHandleA], points[pointHandleB], d, tagId);
+}
+
+void Solver3D::addConstraintDistancePointToLine(int tagId, int pointHandle, int lineHandle, double distance)
+{
+    if (pointHandle < 0 || pointHandle >= static_cast<int>(points.size())) {
+        throw Base::IndexError("Solver3D::addConstraintDistancePointToLine pointHandle out of range");
+    }
+    if (lineHandle < 0 || lineHandle >= static_cast<int>(lines.size())) {
+        throw Base::IndexError("Solver3D::addConstraintDistancePointToLine lineHandle out of range");
+    }
+    double* d = allocFixParam(distance);
+
+    GCS::Point3D& p = points[pointHandle];
+    GCS::Line3D& l = lines[lineHandle];
+
+    GCSsys.addConstraintP2LDistance3D(p, l, d, tagId);
 }
 
 void Solver3D::addConstraintDistanceX(int tagId, int pointHandleA, int pointHandleB, double distance)

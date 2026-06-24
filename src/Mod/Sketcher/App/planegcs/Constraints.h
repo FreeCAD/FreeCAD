@@ -89,6 +89,7 @@ enum ConstraintType
     Parallel3D = 38,
     L2LAngle3D = 39,
     EqualLineLength3D = 40,
+    P2LDistance3D = 42,
 };
 
 enum InternalAlignmentType
@@ -1607,6 +1608,66 @@ private:
 public:
     ConstraintEqualLineLength3D(Line3D& l1, Line3D& l2);
     ConstraintType getTypeId() override;
+};
+
+// P2LDistance3D
+class ConstraintP2LDistance3D: public Constraint
+{
+private:
+    double* p0x()
+    {
+        return pvec[0];
+    }
+    double* p0y()
+    {
+        return pvec[1];
+    }
+    double* p0z()
+    {
+        return pvec[2];
+    }
+    double* p1x()
+    {
+        return pvec[3];
+    }
+    double* p1y()
+    {
+        return pvec[4];
+    }
+    double* p1z()
+    {
+        return pvec[5];
+    }
+    double* p2x()
+    {
+        return pvec[6];
+    }
+    double* p2y()
+    {
+        return pvec[7];
+    }
+    double* p2z()
+    {
+        return pvec[8];
+    }
+    double* distance()
+    {
+        return pvec[9];
+    }
+
+    double value();
+
+public:
+    ConstraintP2LDistance3D(Point3D& p, Line3D& l, double* d);
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ConstraintP2LDistance3D()
+    {}
+#endif
+    ConstraintType getTypeId() override;
+    double error() override;
+    double grad(double*) override;
+    double maxStep(MAP_pD_D& dir, double lim = 1.) override;
+    void evaluate() override;
 };
 
 }  // namespace GCS

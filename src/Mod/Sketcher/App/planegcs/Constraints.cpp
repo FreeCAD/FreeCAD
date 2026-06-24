@@ -3734,4 +3734,151 @@ void ConstraintEqualLineLength3D::errorgrad(double* err, double* grad, double* p
     }
 }
 
+// --------------------------------------------------------
+// P2LDistance3D
+ConstraintP2LDistance3D::ConstraintP2LDistance3D(Point3D& p, Line3D& l, double* d)
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    pvec.push_back(p.z);
+    pvec.push_back(l.p1.x);
+    pvec.push_back(l.p1.y);
+    pvec.push_back(l.p1.z);
+    pvec.push_back(l.p2.x);
+    pvec.push_back(l.p2.y);
+    pvec.push_back(l.p2.z);
+    pvec.push_back(d);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintP2LDistance3D::getTypeId()
+{
+    return P2LDistance3D;
+}
+
+double ConstraintP2LDistance3D::value()
+{
+    double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
+    double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
+    double z0 = *p0z(), z1 = *p1z(), z2 = *p2z();
+
+    double vx = x0 - x1;
+    double vy = y0 - y1;
+    double vz = z0 - z1;
+    double dx = x2 - x1;
+    double dy = y2 - y1;
+    double dz = z2 - z1;
+
+    double cx = vy * dz - vz * dy;
+    double cy = vz * dx - vx * dz;
+    double cz = vx * dy - vy * dx;
+    double len = std::sqrt(dx * dx + dy * dy + dz * dz);
+    if (len < 1e-18) {
+        return 0.0;
+    }
+    double cross = std::sqrt(cx * cx + cy * cy + cz * cz);
+    return cross / len;
+}
+
+double ConstraintP2LDistance3D::error()
+{
+    double dist = std::fabs(*distance());
+    return scale * (value() - dist);
+}
+
+double ConstraintP2LDistance3D::grad(double* param)
+{
+    double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
+    double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
+    double z0 = *p0z(), z1 = *p1z(), z2 = *p2z();
+
+    double vx = x0 - x1;
+    double vy = y0 - y1;
+    double vz = z0 - z1;
+    double dx = x2 - x1;
+    double dy = y2 - y1;
+    double dz = z2 - z1;
+
+    double cx = vy * dz - vz * dy;
+    double cy = vz * dx - vx * dz;
+    double cz = vx * dy - vy * dx;
+
+    double len2 = dx * dx + dy * dy + dz * dz;
+    double len = std::sqrt(len2);
+
+    if (len < 1e-18) {
+        return 0.0;
+    }
+    double crossLen = std::sqrt(cx * cx + cy * cy + cz * cz);
+
+    if (crossLen < 1e-18) {
+        if (param == distance()) {
+            return -1.0;
+        }
+        return 0.0;
+    }
+
+    double nx = cx / crossLen;
+    double ny = cy / crossLen;
+    double nz = cz / crossLen;
+
+    double deriv = 0.0;
+
+    auto grad = [&](double dCrossX, double dCrossY, double dCrossZ, double dBaseLen) {
+        double dCrossLen = (nx * dCrossX) + (ny * dCrossY) + (nz * dCrossZ);
+        return (dCrossLen * len - crossLen * dBaseLen) / len2;
+    };
+
+    if (param == p0x()) {
+        deriv += grad(0.0, -dz, dy, 0.0);
+    }
+    if (param == p0y()) {
+        deriv += grad(dz, 0.0, -dx, 0.0);
+    }
+    if (param == p0z()) {
+        deriv += grad(-dy, dx, 0.0, 0.0);
+    }
+
+    if (param == p1x()) {
+        deriv += grad(0.0, dz - vz, vy - dy, -dx / len);
+    }
+    if (param == p1y()) {
+        deriv += grad(vz - dz, 0.0, dx - vx, -dy / len);
+    }
+    if (param == p1z()) {
+        deriv += grad(dy - vy, vx - dx, 0.0, -dz / len);
+    }
+
+    if (param == p2x()) {
+        deriv += grad(0.0, vz, -vy, dx / len);
+    }
+    if (param == p2y()) {
+        deriv += grad(-vz, 0.0, vx, dy / len);
+    }
+    if (param == p2z()) {
+        deriv += grad(vy, -vx, 0.0, dz / len);
+    }
+
+    if (param == distance()) {
+        deriv -= 1.0;
+    }
+
+    return scale * deriv;
+}
+
+double ConstraintP2LDistance3D::maxStep(MAP_pD_D& dir, double lim)
+{
+    MAP_pD_D::iterator it = dir.find(distance());
+    if (it != dir.end() && it->second < 0.0) {
+        lim = std::min(lim, -(*distance()) / it->second);
+    }
+    return lim;
+}
+
+void ConstraintP2LDistance3D::evaluate()
+{
+    *distance() = value();
+}
+
 }  // namespace GCS

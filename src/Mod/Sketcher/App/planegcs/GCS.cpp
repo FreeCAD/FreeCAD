@@ -1128,6 +1128,14 @@ int System::addConstraintCollinear3D(Line3D& l1, Line3D& l2, int tagId, bool dri
     return addConstraintPointOnLine3D(l2.p2, l1, tagId, driving);
 }
 
+int System::addConstraintP2LDistance3D(Point3D& p, Line3D& l, double* distance, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintP2LDistance3D(p, l, distance);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 int System::addConstraintArcRules(Arc& a, int tagId, bool driving)
 {
     addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);

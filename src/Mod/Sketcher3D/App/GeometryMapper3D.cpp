@@ -113,13 +113,31 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             if (elements.size() != 2) {
                 return -1;
             }
-            const int a = getPointId(elements[0]);
-            const int b = getPointId(elements[1]);
-            if (a < 0 || b < 0) {
-                return -1;
+
+            // P2P
+            int a = getPointId(elements[0]);
+            int b = getPointId(elements[1]);
+            if (a >= 0 && b >= 0) {
+                solver.addConstraintDistance(tagId, a, b, constraint.Value);
+                return tagId;
             }
-            solver.addConstraintDistance(tagId, a, b, constraint.Value);
-            return tagId;
+
+            // P2L
+            int lineId = -1;
+            int pointId = -1;
+            if (a >= 0 && (lineId = getLineId(elements[1])) >= 0) {
+                pointId = a;
+            }
+            else if (b >= 0 && (lineId = getLineId(elements[0])) >= 0) {
+                pointId = b;
+            }
+
+            if (pointId >= 0 && lineId >= 0) {
+                solver.addConstraintDistancePointToLine(tagId, pointId, lineId, constraint.Value);
+                return tagId;
+            }
+
+            return -1;
         }
         case Constraint3D::DistanceX3D:
         case Constraint3D::DistanceY3D:

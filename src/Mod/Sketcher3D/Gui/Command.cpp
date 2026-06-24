@@ -332,7 +332,7 @@ CmdSketcher3DConstrainDistance::CmdSketcher3DConstrainDistance()
     sAppModule = "Sketcher3D";
     sGroup = QT_TR_NOOP("Sketcher3D");
     sMenuText = QT_TR_NOOP("Constrain distance");
-    sToolTipText = QT_TR_NOOP("Force a 3D line length, or the distance between two 3D points");
+    sToolTipText = QT_TR_NOOP("Force a 3D line length, P2P distance, or P2L distance");
     sWhatsThis = "Sketcher3D_ConstrainDistance";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Length";
@@ -352,59 +352,66 @@ void CmdSketcher3DConstrainDistance::activated(int iMsg)
         return;
     }
 
+    auto sel = collectSketch3DSelection(sketch, true, true);
+
     std::vector<Sketcher3D::GeoElementId3D> refs;
-    std::vector<Base::Vector3d> positions;
-    const auto sels
-        = Gui::Selection().getSelectionEx(nullptr, Sketcher3D::Sketch3DObject::getClassTypeId());
-    const auto& geos = sketch->Geometry.getValues();
-    for (const auto& s : sels) {
-        if (s.getObject() != sketch) {
-            continue;
-        }
-        for (const std::string& subname : s.getSubNames()) {
-            const TopoDS_Shape sub = sketch->getSubShape(subname);
-            if (sub.IsNull()) {
-                continue;
-            }
+    double seedValue = 0.0;
 
-            auto id = sketch->resolveSubName(subname);
-            if (!id.isValid()) {
-                continue;
-            }
-
-            if (sub.ShapeType() == TopAbs_VERTEX) {
-                const TopoDS_Vertex v = TopoDS::Vertex(sub);
-                const gp_Pnt p = BRep_Tool::Pnt(v);
-                refs.push_back(id);
-                positions.emplace_back(p.X(), p.Y(), p.Z());
-            }
-            else if (
-                sub.ShapeType() == TopAbs_EDGE && id.Kind == Sketcher3D::GeoKind::Line
-                && id.Pos == Sketcher3D::PointPos::none && id.GeoId >= 0
-                && id.GeoId < static_cast<int>(geos.size())
-            ) {
-                if (const auto* line = dynamic_cast<const Part::GeomLineSegment*>(geos[id.GeoId])) {
-                    refs.emplace_back(id.GeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
-                    positions.push_back(line->getStartPoint());
-                    refs.emplace_back(id.GeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);
-                    positions.push_back(line->getEndPoint());
-                }
-            }
+    if (sel.points.size() == 2 && sel.lines.size() == 0) {
+        // P2P
+        if (sel.points[0] == sel.points[1]) {
+            Base::Console().warning("Sketcher3D: Distance needs two distinct points.\n");
+            return;
         }
+        refs.push_back(sel.points[0]);
+        refs.push_back(sel.points[1]);
+        Base::Vector3d p1, p2;
+        sketch->getPointAt(refs[0], p1);
+        sketch->getPointAt(refs[1], p2);
+        seedValue = (p2 - p1).Length();
     }
+    else if (sel.points.size() == 0 && sel.lines.size() == 1) {
+        // Line
+        refs.emplace_back(sel.lines[0].GeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
+        refs.emplace_back(sel.lines[0].GeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);
+        Base::Vector3d p1, p2;
+        sketch->getPointAt(refs[0], p1);
+        sketch->getPointAt(refs[1], p2);
+        seedValue = (p2 - p1).Length();
+    }
+    else if (sel.points.size() == 1 && sel.lines.size() == 1) {
+        // P2L
+        refs.push_back(sel.points[0]);
+        refs.push_back(sel.lines[0]);
 
-    if (refs.size() != 2) {
+        Base::Vector3d pt, pStart, pEnd;
+        sketch->getPointAt(sel.points[0], pt);
+
+        Sketcher3D::GeoElementId3D lStart(
+            sel.lines[0].GeoId,
+            Sketcher3D::PointPos::start,
+            Sketcher3D::GeoKind::Line
+        );
+        Sketcher3D::GeoElementId3D lEnd(
+            sel.lines[0].GeoId,
+            Sketcher3D::PointPos::end,
+            Sketcher3D::GeoKind::Line
+        );
+        sketch->getPointAt(lStart, pStart);
+        sketch->getPointAt(lEnd, pEnd);
+
+        Base::Vector3d dir = pEnd - pStart;
+        double lineLen = dir.Length();
+        Base::Vector3d cross = dir.Cross(pt - pStart);
+        seedValue = cross.Length() / lineLen;
+    }
+    else {
         Base::Console().warning(
-            "Sketcher3D: select one 3D sketch line or exactly two 3D sketch points for Distance.\n"
+            "Sketcher3D: select one 3D sketch line, exactly two 3D sketch points, or one point and "
+            "one line for Distance.\n"
         );
         return;
     }
-    if (refs[0] == refs[1]) {
-        Base::Console().warning("Sketcher3D: Distance needs two distinct points.\n");
-        return;
-    }
-
-    const double seedValue = (positions[1] - positions[0]).Length();
 
     DlgEditConstraintValue dlg(
         QObject::tr("Constrain distance"),
@@ -422,7 +429,7 @@ void CmdSketcher3DConstrainDistance::activated(int iMsg)
     Sketcher3D::Constraint3D c;
     c.Type = Sketcher3D::Constraint3D::Distance3D;
     c.Value = finalValue;
-    c.setElements({refs[0], refs[1]});
+    c.setElements(refs);
     sketch->addConstraint(c);
     sketch->recomputeFeature();
     commitCommand();

@@ -567,6 +567,15 @@ public:
     // Two lines share the same infinite line.
     int addConstraintCollinear3D(Line3D& l1, Line3D& l2, int tagId = 0, bool driving = true);
 
+    // absolute distance from point to line.
+    int addConstraintP2LDistance3D(
+        Point3D& p,
+        Line3D& l,
+        double* distance,
+        int tagId = 0,
+        bool driving = true
+    );
+
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(
         Ellipse& e,

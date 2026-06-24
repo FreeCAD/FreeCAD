@@ -105,26 +105,28 @@ public:
     /// Constraint to align a line along the Z axis.
     void addConstraintAlongZ(int tagId, int lineHandle);
 
-    /// Distance constraint between two points.
+    /// P2P distance constraint.
     void addConstraintDistance(int tagId, int pointHandleA, int pointHandleB, double distance);
 
-    /// Signed X-distance constraint between two points (x_b - x_a == distance).
+    /// P2L distance constraint.
+    void addConstraintDistancePointToLine(int tagId, int pointHandle, int lineHandle, double distance);
+
+    /// Signed X-distance constraint between two points.
     void addConstraintDistanceX(int tagId, int pointHandleA, int pointHandleB, double distance);
 
-    /// Signed Y-distance constraint between two points (y_b - y_a == distance).
+    /// Signed Y-distance constraint between two points.
     void addConstraintDistanceY(int tagId, int pointHandleA, int pointHandleB, double distance);
 
-    /// Signed Z-distance constraint between two points (z_b - z_a == distance).
+    /// Signed Z-distance constraint between two points.
     void addConstraintDistanceZ(int tagId, int pointHandleA, int pointHandleB, double distance);
 
-    /// Lock the X coordinate of a single point to a value
-    /// (signed distance from the global YZ plane).
+    /// Lock the X coordinate of a single point.
     void addConstraintCoordinateX(int tagId, int pointHandle, double value);
 
-    /// Lock the Y coordinate of a single point to a value.
+    /// Lock the Y coordinate of a single point.
     void addConstraintCoordinateY(int tagId, int pointHandle, double value);
 
-    /// Lock the Z coordinate of a single point to a value.
+    /// Lock the Z coordinate of a single point.
     void addConstraintCoordinateZ(int tagId, int pointHandle, double value);
 
     int solve();
