@@ -26,7 +26,10 @@
 #include <QFontMetrics>
 #include <QImage>
 #include <QPainter>
+#include <Inventor/SbLine.h>
+#include <Inventor/SbPlane.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/events/SoEvent.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -35,6 +38,7 @@
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
 #include <Inventor/nodes/SoText2.h>
@@ -54,6 +58,8 @@
 #include "Document.h"
 #include "SoFCSelection.h"
 #include "Tools.h"
+#include "Utilities.h"
+#include "ViewParams.h"
 #include "Window.h"
 
 
@@ -348,11 +354,17 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
 
     // plain image
     SoSeparator* textsep = new SoAnnotation();
+    auto pickStyleObj = new SoPickStyle();
+    pickStyleObj->style = SoPickStyle::SHAPE_ON_TOP;
+    textsep->addChild(pickStyleObj);
     textsep->addChild(pBaseTranslation);
     textsep->addChild(pImage);
 
     // image with line
     SoSeparator* linesep = new SoAnnotation();
+    auto pickStyleLine = new SoPickStyle();
+    pickStyleLine->style = SoPickStyle::SHAPE_ON_TOP;
+    linesep->addChild(pickStyleLine);
     linesep->addChild(pBaseTranslation);
     linesep->addChild(pColor);
     linesep->addChild(pCoords);
@@ -425,10 +437,33 @@ void ViewProviderAnnotationLabel::dragFinishCallback(void*, SoDragger*)
 void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag)
 {
     auto that = static_cast<ViewProviderAnnotationLabel*>(data);
-    const SbMatrix& mat = drag->getMotionMatrix();
-    App::DocumentObject* obj = that->getObject();
-    if (obj && obj->is<App::AnnotationLabel>()) {
-        static_cast<App::AnnotationLabel*>(obj)->TextPosition.setValue(mat[3][0], mat[3][1], mat[3][2]);
+    if (auto* obj = that->getObject<App::AnnotationLabel>()) {
+        Base::Vector3d basepos = obj->BasePosition.getValue();
+        Base::Vector3d textpos = obj->TextPosition.getValue();
+
+        auto globalText = Base::convertTo<SbVec3f>(basepos + textpos);
+        SbVec3f pnt = drag->getWorldStartingPoint();
+        // difference between the label's origin and the picked point
+        SbVec3f move = pnt - globalText;
+
+        SbViewVolume vv = drag->getViewVolume();
+        SbVec3f normal = vv.getProjectionDirection();
+
+        SbPlane plane(normal, pnt);
+
+        const SoEvent* ev = drag->getEvent();
+        const SbViewportRegion& vpr = drag->getViewportRegion();
+
+        SbLine line;
+        vv.projectPointToLine(ev->getNormalizedPosition(vpr), line);
+
+        SbVec3f intersect;
+        plane.intersect(line, intersect);
+        drag->setStartingPoint(intersect);
+
+        auto text = Base::convertTo<Base::Vector3d>(intersect - move);
+        text = text - basepos;
+        obj->TextPosition.setValue(text);
     }
 }
 

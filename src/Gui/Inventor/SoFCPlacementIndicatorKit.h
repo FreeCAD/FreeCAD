@@ -25,6 +25,7 @@
 
 #include <Inventor/nodekits/SoBaseKit.h>
 
+#include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -92,6 +93,7 @@ public:
     SoSFBool coloredAxis;
     SoSFFloat scaleFactor;
     SoSFFloat axisLength;
+    SoMFString axisLabels;
 
 private:
     void recomputeGeometry();

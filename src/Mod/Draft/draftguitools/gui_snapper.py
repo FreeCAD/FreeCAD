@@ -1396,11 +1396,18 @@ class Snapper:
             self.constrainLine.off()
 
     def getPoint(
-        self, last=None, callback=None, movecallback=None, extradlg=None, title=None, mode="point"
+        self,
+        last=None,
+        callback=None,
+        movecallback=None,
+        extradlg=None,
+        title=None,
+        mode="point",
+        hints=None,
     ):
         """Get a 3D point from the screen.
 
-        getPoint([last],[callback],[movecallback],[extradlg],[title]):
+        getPoint([last],[callback],[movecallback],[extradlg],[title],[mode],[hints]):
         gets a 3D point from the screen. You can provide an existing point,
         in that case additional snap options and a tracker are available.
         You can also pass a function as callback, which will get called
@@ -1427,6 +1434,10 @@ class Snapper:
 
         If getPoint() is invoked without any argument, nothing is done
         but the callbacks are removed, so it can be used as a cancel function.
+
+        ``hints`` is an optional list of ``Gui.InputHint`` instances to
+        display in the status bar for the duration of the point pick. They are
+        cleared automatically when the user picks a point or cancels.
         """
         self.pt = None
         self.holdPoints = []
@@ -1505,6 +1516,8 @@ class Snapper:
             self.callbackMove = None
             Gui.Snapper.off()
             self.ui.offUi()
+            if hints:
+                QtCore.QTimer.singleShot(0, Gui.HintManager.hide)
             if callback:
                 if len(inspect.getfullargspec(callback).args) > 1:
                     obj = None
@@ -1535,6 +1548,8 @@ class Snapper:
             self.callbackMove = None
             Gui.Snapper.off()
             self.ui.offUi()
+            if hints:
+                QtCore.QTimer.singleShot(0, Gui.HintManager.hide)
             if callback:
                 if len(inspect.getfullargspec(callback).args) > 1:
                     callback(None, None)
@@ -1561,6 +1576,17 @@ class Snapper:
             self.callbackMove = self.view.addEventCallbackPivy(
                 coin.SoLocation2Event.getClassTypeId(), move
             )
+            self._schedule_hints(hints)
+
+    def _schedule_hints(self, hints):
+        """Show ``hints`` in the status bar after the task panel has opened."""
+        if not hints:
+            return
+
+        def _show():
+            Gui.HintManager.show(*hints)
+
+        QtCore.QTimer.singleShot(0, _show)
 
     def get_snap_toolbar(self):
         """Get the snap toolbar."""

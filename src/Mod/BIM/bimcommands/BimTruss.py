@@ -72,7 +72,22 @@ class Arch_Truss:
             self.wp = WorkingPlane.get_working_plane()
             self.wp._save()
             self.points = []
-            FreeCADGui.Snapper.getPoint(callback=self.getPoint)
+            FreeCADGui.Snapper.getPoint(callback=self.getPoint, hints=self.get_hints())
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        if not self.points:
+            label = translate("Arch", "%1 pick first point")
+        else:
+            label = translate("Arch", "%1 pick next point")
+        return (
+            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def getPoint(self, point=None, obj=None):
         """Callback for clicks during interactive mode"""
@@ -85,7 +100,9 @@ class Arch_Truss:
             return
         self.points.append(point)
         if len(self.points) == 1:
-            FreeCADGui.Snapper.getPoint(last=self.points[0], callback=self.getPoint)
+            FreeCADGui.Snapper.getPoint(
+                last=self.points[0], callback=self.getPoint, hints=self.get_hints()
+            )
         elif len(self.points) == 2:
             self.wp._restore()
             FreeCAD.activeDraftCommand = None

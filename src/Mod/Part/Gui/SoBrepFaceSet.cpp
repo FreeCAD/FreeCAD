@@ -513,7 +513,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
 
     uint32_t diffuseColor = diffuse[0].getPackedValue(trans0);
     int singleColor = 0;
-    if (ctx && ctx->isHighlightAll()) {
+    if (ctx && ctx->isHighlightAll() && !ctx->isSelectAll()) {
         singleColor = 1;
         diffuseColor = ctx->highlightColor.getPackedValue(trans0);
     }

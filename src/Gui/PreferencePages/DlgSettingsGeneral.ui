@@ -347,6 +347,25 @@ display the splash screen.</string>
          </property>
         </widget>
        </item>
+       <item row="7" column="0">
+        <widget class="Gui::PrefCheckBox" name="FineGrainedRecompute">
+         <property name="toolTip">
+          <string>Activate fine-grained recomputation of documents</string>
+         </property>
+         <property name="text">
+          <string>Fine-grained recompute (experimental)</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>FineGrainedRecompute</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>General</cstring>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>

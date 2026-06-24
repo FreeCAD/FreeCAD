@@ -242,6 +242,7 @@ void DlgSettingsGeneral::saveSettings()
     if (property("ActivateOverlay").toBool() != ui->ActivateOverlay->isChecked()) {
         requireRestart();
     }
+    ui->FineGrainedRecompute->onSave();
 
     setRecentFileSize();
     bool force = setLanguage();
@@ -292,6 +293,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->ActivateOverlay->onRestore();
     ui->CrashReporting->onRestore();
     setProperty("ActivateOverlay", ui->ActivateOverlay->isChecked());
+    ui->FineGrainedRecompute->onRestore();
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");

@@ -169,6 +169,13 @@ public:
     static Base::Color decodeColor(const std::string& color, const Base::Color& defaultColor);
 
 private:
+    void _setAlignment(int _alignment);
+    void _setStyle(const std::set<std::string>& _style);
+    void _setForeground(const Base::Color& color);
+    void _setBackground(const Base::Color& color);
+    void _setDisplayUnit(const std::string& unit);
+    void _setComputedUnit(const Base::Unit& unit);
+
     void setParseException(const std::string& e);
 
     void setExpression(App::ExpressionPtr&& expr);

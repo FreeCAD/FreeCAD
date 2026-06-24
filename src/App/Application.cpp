@@ -825,6 +825,15 @@ bool Application::isAsyncRecomputeEnabled()
     return enableAsyncRecompute;
 }
 
+bool Application::isFineGrainedRecomputeEnabled()
+{
+    static const ParameterGrp::handle hGrp = GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute");
+    return enableFineGrainedRecompute;
+}
+
 bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const
 {
     if (DocumentObject* documentObject = req.resolveDocumentObject()) {

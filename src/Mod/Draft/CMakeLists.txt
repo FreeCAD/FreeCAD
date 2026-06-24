@@ -65,6 +65,8 @@ SET(Draft_tests
     drafttests/test_import.py
     drafttests/test_import_gui.py
     drafttests/test_import_tools.py
+    drafttests/test_lines_gui.py
+    drafttests/test_manual_input_gui.py
     drafttests/test_modification.py
     drafttests/test_oca.py
     drafttests/test_pivy.py

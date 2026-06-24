@@ -63,7 +63,7 @@ runs:
       run: |
         mkdir -p ${{ inputs.libpackdir }}
     - name: Get cached version
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       id: getCached
       with:
         path: ${{ inputs.libpackdir }}
@@ -96,7 +96,7 @@ runs:
         rm -rf qtwebengine_tmp
     - name: Save version to cache
       if: steps.getCached.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: ${{ inputs.libpackdir }}
         key: ${{ steps.getCached.outputs.cache-primary-key }}
