@@ -59,4 +59,4 @@ public:
     static void setMinidumpPath(const std::string& path);
 #endif
 };
-} // namespace Base::CrashReporter
+}  // namespace Base::CrashReporter

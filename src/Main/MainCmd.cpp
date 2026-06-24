@@ -85,7 +85,9 @@ int main(int argc, char** argv)
         // Inits the Application
         App::Application::init(argc, argv);
 #ifdef _MSC_VER
-        Base::CrashReporter::WindowsCrashReporter::install(App::Application::getUserAppDataDir() + "CrashReports");
+        Base::CrashReporter::WindowsCrashReporter::install(
+            App::Application::getUserAppDataDir() + "CrashReports"
+        );
 #endif
     }
     catch (const Base::UnknownProgramOption& e) {

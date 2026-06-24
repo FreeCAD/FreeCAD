@@ -23,6 +23,7 @@
 #include "Reader.h"
 
 #include <chrono>
+#include <cstddef>
 #include <string>
 #include <utility>
 #include <vector>
@@ -35,15 +36,15 @@ namespace Base::CrashReporter
  * exceed *both* of these values. So if there are fewer than maxReports reports, nothing is ever
  * deleted. The same is true if no report is older than maxAge.
  */
-struct RetentionPolicy {
+struct RetentionPolicy
+{
     std::size_t maxReports = 10;
     std::chrono::days maxAge {90};
 };
 
 class BaseExport Manager
 {
-    public:
-
+public:
     /**
      * Scan a directory for new crash reports
      *
@@ -71,8 +72,7 @@ class BaseExport Manager
      */
     static void clear();
 
-    private:
-
+private:
     /**
      * Move the crash report file(s) to the archive subdirectory.
      *
@@ -100,7 +100,10 @@ class BaseExport Manager
      * @returns a pair of new path strings pointing to the archived files (the minidump string will
      * be empty if there was no minidump file).
      */
-    static std::pair<std::string, std::string> archiveFile(const std::string& fcrashPath, const std::string& dumpPath = {});
+    static std::pair<std::string, std::string> archiveFile(
+        const std::string& fcrashPath,
+        const std::string& dumpPath = {}
+    );
 };
 
 }  // namespace Base::CrashReporter
