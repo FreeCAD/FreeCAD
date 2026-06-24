@@ -23,25 +23,26 @@
 // This entire file is purely Windows-only
 #if defined(_MSC_VER)
 
-#include "WindowsMiniDump.h"
+# include "WindowsMiniDump.h"
 
-#include <FCConfig.h>
+# include <FCConfig.h>
 
-#include <windows.h>
-#include <DbgHelp.h>
+# include <windows.h>
+# include <DbgHelp.h>
 
-#include <atomic>
-#include <ctime>
-#include <string>
+# include <atomic>
+# include <ctime>
+# include <string>
 
-#include "Writer.h"
-#include "Base/Console.h"
-#include "Base/FileInfo.h"
+# include "Writer.h"
+# include "Base/Console.h"
+# include "Base/FileInfo.h"
 
-namespace {
+namespace
+{
 
 MINIDUMP_TYPE s_dumpTyp = MiniDumpNormal;
-std::wstring s_dumpPathW; // Set by install()
+std::wstring s_dumpPathW;  // Set by install()
 std::atomic_flag writing;
 
 LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
@@ -63,7 +64,7 @@ LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
         NULL
     );
     if (hFile != INVALID_HANDLE_VALUE) {
-        MINIDUMP_EXCEPTION_INFORMATION stMDEI{};
+        MINIDUMP_EXCEPTION_INFORMATION stMDEI {};
         stMDEI.ThreadId = GetCurrentThreadId();
         stMDEI.ExceptionPointers = pEx;
         stMDEI.ClientPointers = false;
@@ -72,7 +73,7 @@ LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
     }
     return EXCEPTION_CONTINUE_SEARCH;  // this will trigger the "normal" OS error-dialog
 }
-} // Anonymous namespace
+}  // Anonymous namespace
 
 namespace Base::CrashReporter
 {
@@ -80,8 +81,9 @@ void WindowsCrashReporter::install(const std::string& crashReportDirectory)
 {
     FileInfo fcrash(Writer::crashReportFilePath());
     std::string minidumpFilename = FileInfo::pathToString(
-        FileInfo::stringToPath(fcrash.dirPath()) / (fcrash.fileNamePure() + ".dmp"));
-    if (minidumpFilename.length() > MAX_PATH-1) {
+        FileInfo::stringToPath(fcrash.dirPath()) / (fcrash.fileNamePure() + ".dmp")
+    );
+    if (minidumpFilename.length() > MAX_PATH - 1) {
         Console().warning("CrashReporter: Crash file path too long: %s\n", minidumpFilename);
         return;
     }
@@ -92,5 +94,5 @@ void WindowsCrashReporter::install(const std::string& crashReportDirectory)
     // exception -- we don't want a partially-initialized filter to get installed.
     SetUnhandledExceptionFilter(MyCrashHandlerExceptionFilter);
 }
-}
+}  // namespace Base::CrashReporter
 #endif
