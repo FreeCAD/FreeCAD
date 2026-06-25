@@ -1231,20 +1231,21 @@ private:
     enum App::HistoryAlgorithm usedHistoryAlgorithm = App::HistoryAlgorithm::V2;
 };
 
-struct AppExport MappedNameHasher {
-    std::size_t operator()(const MappedName& name) const {
-        return name.hash();
-    };
+class AppExport MappedNameHasher {
+    public:
+        std::size_t operator()(const MappedName& name) const {
+            return name.hash();
+        };
 
-    std::size_t operator()(const std::vector<MappedName>& names) const {
-        std::size_t seed = names.size();
+        std::size_t operator()(const std::vector<MappedName>& names) const {
+            std::size_t seed = names.size();
 
-        for (const MappedName& name : names) {
-            seed ^= name.hash() + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
+            for (const MappedName& name : names) {
+                seed ^= name.hash() + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            }
 
-        return seed;
-    };
+            return seed;
+        };
 };
 
 using ElementIDRefs = QVector<::App::StringIDRef>;

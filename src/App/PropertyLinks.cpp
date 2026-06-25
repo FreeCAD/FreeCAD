@@ -511,7 +511,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         // map for the first time, or we are re-generating the element map due
         // to version change, i.e. 'reverse', try search by geometry first
         const char* oldElement = Data::findElementName(shadow.oldName.c_str());
-        if (!Data::hasMissingElement(oldElement)) {
+        if (!Data::hasMissingElement(oldElement) && !resolvedMissing) {
             auto names = geo->searchElementCache(oldElement, Data::SearchOption::CheckGeometry);
             if (names.empty()) {
                 // try floating point tolerance
