@@ -47,6 +47,8 @@
 
 #include "EditModeCoinManager.h"
 #include "PropertyVisualLayerList.h"
+#include "AutoConstraint.h"
+
 #include "ShortcutListener.h"
 #include "Utils.h"
 
@@ -103,6 +105,7 @@ namespace SketcherGui
 class EditModeCoinManager;
 class SnapManager;
 class DrawSketchHandler;
+class DrawSketchHandlerDragAutoConstraint;
 class ViewProviderSketchCommandConstraintsAttorney;
 
 using GeoList = Sketcher::GeoList;
@@ -556,6 +559,13 @@ public:
     void purgeHandler();
     //@}
 
+    bool isConstructionMode() const;
+
+    // set the current GeometryCreationMode mode
+    void setGeometryCreationMode(GeometryCreationMode geometryCreationMode);
+
+    // gets the GeometryCreationMode
+    GeometryCreationMode getGeometryCreationMode() const;
 
     // TODO: SketchMode should be refactored. DrawSketchHandler, its inheritance and free functions
     // should access this mode via the DrawSketchHandler Attorney. I will not refactor this at this
@@ -866,10 +876,13 @@ private:
     //@{
     /// dragging helpers
     void initDragging(int geoId, Sketcher::PointPos pos, Gui::View3DInventorViewer* viewer);
-    void doDragStep(double x, double y);
+    bool doDragStep(double x, double y);
     void commitDragMove(double x, double y);
 
     //@}
+
+    // the active sketch GeometryCreationMode
+    GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
 
     /** @name Selection functions */
     //@{
@@ -1053,6 +1066,8 @@ private:
     std::unique_ptr<ViewProviderSketch::ParameterObserver> pObserver;
 
     std::unique_ptr<DrawSketchHandler> sketchHandler;
+
+    std::unique_ptr<DrawSketchHandlerDragAutoConstraint> dragAutoConstraintHandler;
 
     ViewProviderParameters viewProviderParameters;
 

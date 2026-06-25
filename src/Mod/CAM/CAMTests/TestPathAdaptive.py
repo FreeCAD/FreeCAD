@@ -478,7 +478,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
         # Have to set expression to None before numerical value assignment
@@ -510,7 +510,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
         # Have to set expression to None before numerical value assignment
@@ -536,7 +536,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = True
         adaptive.setExpression("StepDown", None)
         # Have to set expression to None before numerical value assignment
@@ -575,7 +575,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
         # Have to set expression to None before numerical value assignment
@@ -616,7 +616,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
         # Have to set expression to None before numerical value assignment
@@ -657,7 +657,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
         # Have to set expression to None before numerical value assignment
@@ -698,7 +698,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
         # Have to set expression to None before numerical value assignment
@@ -757,7 +757,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
         adaptive.ModelAwareExperiment = True
@@ -821,7 +821,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
         # Have to set expression to None before numerical value assignment
@@ -881,7 +881,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
         adaptive.ModelAwareExperiment = True
@@ -957,7 +957,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.FinishingProfile = False
         adaptive.HelixMaxRampAngle = 75.0
         adaptive.LiftDistance.Value = 1.0
-        adaptive.StepOver = 75
+        adaptive.StepOverPercent = 75
         adaptive.UseOutline = False
         adaptive.setExpression("StepDown", None)
         adaptive.ModelAwareExperiment = True

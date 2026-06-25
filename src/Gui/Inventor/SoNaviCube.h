@@ -146,6 +146,15 @@ private:
         ::SoTexture2* texture {nullptr};
     };
 
+    struct ButtonHitRect
+    {
+        bool active {false};
+        float left {0.0F};
+        float top {0.0F};
+        float right {0.0F};
+        float bottom {0.0F};
+    };
+
     void renderCoin(SoGLRenderAction* action);
     void ensureSceneGraph() const;
     void rebuildSceneGraph() const;
@@ -271,6 +280,7 @@ private:
     mutable std::array<std::vector<SbVec3f>, kPickIdCount> buttonOverlayVerts;
     mutable std::array<std::vector<int>, kPickIdCount> buttonTriangleIndices;
     mutable std::array<std::vector<std::int32_t>, kPickIdCount> buttonOutlineIndices;
+    mutable std::array<ButtonHitRect, kPickIdCount> buttonHitRects;
     mutable std::vector<SbVec3f> cubeCoordsData;
     mutable std::vector<std::int32_t> cubeCoordIndexData;
     mutable std::vector<SbVec3f> edgeCoordsData;

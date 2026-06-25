@@ -85,7 +85,7 @@ jobs:
         remove-docker-images: 'true' # (frees ~3.2 GB)
 
     - name: Checkout repository
-      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       with:
         fetch-depth: 2
         submodules: recursive
@@ -141,7 +141,7 @@ jobs:
         upload: failure-only
 
     - name: filter-sarif
-      uses: advanced-security/filter-sarif@v1
+      uses: advanced-security/filter-sarif@f3b8118a9349d88f7b1c0c488476411145b6270d # v1.0.1
       with:
         patterns: |
           -tests/**/*
@@ -152,12 +152,12 @@ jobs:
         output: sarif-results/cpp.sarif
 
     - name: Upload SARIF
-      uses: github/codeql-action/upload-sarif@v3
+      uses: github/codeql-action/upload-sarif@03e4368ac7daa2bd82b3e85262f3bf87ee112f57 # v3.36.0
       with:
         sarif_file: sarif-results/cpp.sarif
 
     - name: Upload loc as a Build Artifact
-      uses: actions/upload-artifact@v7.0.1
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: sarif-results
         path: sarif-results

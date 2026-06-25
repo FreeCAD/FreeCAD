@@ -54,7 +54,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation>Granice</translation>
+      <translation>Granične ivice</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
@@ -142,12 +142,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="20"/>
       <source>Filling</source>
-      <translation>Popunjavanje</translation>
+      <translation>Složena zakrpa</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="26"/>
       <source>Fill Type</source>
-      <translation>Vrsta popunjavanja</translation>
+      <translation>Vrsta zakrpe</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="38"/>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation>Popunjavanje</translation>
+      <translation>Složena zakrpa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -320,7 +320,7 @@
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
       <translation>Napravi površ pomoću izabranih graničnih kriva tj. ivica.
-Površ može biti prisiljena da prolazi kroz dodatne krive i tačke.</translation>
+Površ može biti prisiljena da prolazi kroz dodatne unutrašnje krive i tačke.</translation>
     </message>
   </context>
   <context>
@@ -358,7 +358,7 @@ Površ može biti prisiljena da prolazi kroz dodatne krive i tačke.</translatio
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation>Popuni između graničnih kriva</translation>
+      <translation>Zakrpa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
@@ -491,7 +491,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
-      <translation>Uredi popunjavanje</translation>
+      <translation>Uredi složenu zakrpu</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="667"/>

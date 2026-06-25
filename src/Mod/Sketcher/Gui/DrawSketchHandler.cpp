@@ -316,6 +316,16 @@ bool DrawSketchHandler::isWidgetVisible() const
     return false;
 };
 
+bool DrawSketchHandler::isConstructionMode() const
+{
+    return sketchgui->isConstructionMode();
+}
+
+const char* DrawSketchHandler::constructionModeAsBooleanText()
+{
+    return sketchgui->isConstructionMode() ? "True" : "False";
+}
+
 QPixmap DrawSketchHandler::getToolIcon() const
 {
     return QPixmap();
@@ -452,7 +462,9 @@ std::vector<QPixmap> DrawSketchHandler::suggestedConstraintsPixmaps(
                 iconType.toStdString().c_str(),
                 QSize(iconWidth, iconWidth)
             );
-            pixmaps.push_back(icon);
+            if (!icon.isNull()) {
+                pixmaps.push_back(icon);
+            }
         }
     }
     return pixmaps;
@@ -1296,6 +1308,10 @@ int DrawSketchHandler::seekAndRenderAutoConstraint(
 void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstraint>& suggestedConstraints)
 {
     std::vector<QPixmap> pixmaps = suggestedConstraintsPixmaps(suggestedConstraints);
+    if (pixmaps.empty()) {
+        applyCursor();
+        return;
+    }
     addCursorTail(pixmaps);
 }
 

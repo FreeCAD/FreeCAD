@@ -140,7 +140,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint selfweight
-    con_selfweight = ObjectsFem.makeConstraintSelfWeight(doc, "ConstraintSelfWeight")
+    con_selfweight = ObjectsFem.makeConstraintSelfWeight(doc, "Gravity")
     con_selfweight.GravityDirection = (-1, 0, 0)
     con_selfweight.GravityAcceleration = "9810 mm/s^2"
     analysis.addObject(con_selfweight)
