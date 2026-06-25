@@ -52,6 +52,7 @@
 # include <tuple>
 # include <vector>
 # include <fmt/format.h>
+# include <fmt/ranges.h>
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
@@ -822,6 +823,15 @@ bool Application::isAsyncRecomputeEnabled()
     );
     bool enableAsyncRecompute = hGrp->GetBool("EnableAsyncRecompute", true);
     return enableAsyncRecompute;
+}
+
+bool Application::isFineGrainedRecomputeEnabled()
+{
+    static const ParameterGrp::handle hGrp = GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/General"
+    );
+    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute");
+    return enableFineGrainedRecompute;
 }
 
 bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const

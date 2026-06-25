@@ -295,6 +295,8 @@ protected:
     void setAxisPickStyle(bool on);
     void moveCursorToSketchPoint(Base::Vector2d point);
     void ensureFocus();
+    bool isConstructionMode() const;
+    const char* constructionModeAsBooleanText();
     void preselectAtPoint(Base::Vector2d point);
 
     void drawPositionAtCursor(const Base::Vector2d& position);

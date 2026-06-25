@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # ***************************************************************************
@@ -49,22 +48,29 @@ class TestToolLengthOffset(unittest.TestCase):
         machine = Machine("Test Machine")
         machine.output.output_tool_length_offset = False
 
-        # Create a simple path with G43 command
-        path = Path.Path()
-        g43_cmd = Path.Command("G43", {"H": 1})
-        path.addCommands(g43_cmd)
-
         # Create post processor
         processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
         processor._machine = machine
         processor.values["OUTPUT_TOOL_LENGTH_OFFSET"] = False
+        processor.values["OUTPUT_DUPLICATE_COMMANDS"] = True
+        processor.values["FILTER_INEFFICIENT_MOVES"] = False
+        processor.values["OUTPUT_LINE_NUMBERS"] = False
+
+        # Create a simple path with G43 command
+        commands = [Path.Command("G43", {"H": 1})]
+        sections = [("test", [processor._make_postable("g43", commands, {"optimizable": True})])]
 
         # Convert G43 command
-        result = processor.convert_command_to_gcode(g43_cmd)
+        processor._expand_tool_length_offset(sections)
+        result = processor._convert_job_sections(sections)[0][1]
+
+        extant_g43 = [l for l in result.split("\n") if l.startswith("G43")]
 
         # Should return None (suppressed)
-        self.assertIsNone(
-            result, "G43 command should be suppressed when output_tool_length_offset is False"
+        self.assertEqual(
+            extant_g43,
+            [],
+            f"G43 command should be suppressed when output_tool_length_offset is False, saw\n{extant_g43}\nin---\n{result}\n---",
         )
 
     def test_g43_output_enabled(self):
@@ -73,45 +79,32 @@ class TestToolLengthOffset(unittest.TestCase):
         machine = Machine("Test Machine")
         machine.output.output_tool_length_offset = True
 
-        # Create a simple path with G43 command
-        path = Path.Path()
-        g43_cmd = Path.Command("G43", {"H": 1})
-        path.addCommands(g43_cmd)
-
         # Create post processor
         processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
         processor._machine = machine
         processor.values["OUTPUT_TOOL_LENGTH_OFFSET"] = True
+        processor.values["OUTPUT_DUPLICATE_COMMANDS"] = True
+        processor.values["FILTER_INEFFICIENT_MOVES"] = False
+        processor.values["OUTPUT_LINE_NUMBERS"] = False
+
+        # Create a simple path with G43 command
+        commands = [Path.Command("G43", {"H": 1})]
+        sections = [("test", [processor._make_postable("g43", commands, {"optimizable": True})])]
 
         # Convert G43 command
-        result = processor.convert_command_to_gcode(g43_cmd)
+        processor._expand_tool_length_offset(sections)
+        result = processor._convert_job_sections(sections)[0][1]
 
-        # Should return the G43 command
-        self.assertIsNotNone(
-            result, "G43 command should be output when output_tool_length_offset is True"
+        extant_g43 = [l for l in result.split("\n") if l.startswith("G43")]
+
+        # Should return None (suppressed)
+        self.assertNotEqual(
+            extant_g43,
+            [],
+            f"G43 command when output_tool_length_offset is True in---\n{result}\n---",
         )
-        self.assertIn("G43", result, "Result should contain G43 command")
+
         self.assertIn("H1", result, "Result should contain H parameter")
-
-    def test_machine_config_mapping(self):
-        """Test that machine config field is properly mapped to processor values."""
-        # Create machine config with G43 disabled
-        machine = Machine("Test Machine")
-        machine.output.output_tool_length_offset = False
-
-        # Create post processor
-        processor = PostProcessor(None, tooltip=None, tooltipargs=None, units=None)
-        processor._machine = machine
-
-        # Simulate the mapping that happens in export2
-        if hasattr(machine.output, "output_tool_length_offset"):
-            processor.values["OUTPUT_TOOL_LENGTH_OFFSET"] = machine.output.output_tool_length_offset
-
-        # Check that the value was mapped correctly
-        self.assertFalse(
-            processor.values["OUTPUT_TOOL_LENGTH_OFFSET"],
-            "Machine config field should be mapped to processor values",
-        )
 
 
 class TestToolProcessing(unittest.TestCase):
@@ -233,7 +226,8 @@ class TestToolProcessing(unittest.TestCase):
                     "postamble": "M05\nG17 G54 G90 G80 G40\nM2",
                     "supported_commands": Constants.GCODE_SUPPORTED
                     + Constants.GCODE_FIXTURES
-                    + Constants.MCODE_SUPPORTED,
+                    + Constants.MCODE_SUPPORTED
+                    + Constants.GCODE_NON_CONFORMING,
                 },
             },
             "processing": {"tool_change": True, "early_tool_prep": False},
@@ -505,7 +499,9 @@ class TestToolProcessing(unittest.TestCase):
 
             for pre_idx, post_idx in zip(pretool_indices, posttool_indices):
                 self.assertLess(
-                    pre_idx, post_idx, "Pre-tool-change should come before post-tool-change"
+                    pre_idx,
+                    post_idx,
+                    f"Pre-tool-change should come before post-tool-change in---\n{all_output}\n--",
                 )
 
             # Verify tool change commands (M6) are present

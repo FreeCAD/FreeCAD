@@ -29,7 +29,6 @@ __url__ = "https://www.freecad.org"
 from PySide.QtCore import QProcess, QProcessEnvironment
 import os
 import re
-import shutil
 
 import FreeCAD
 
@@ -90,10 +89,10 @@ class ElmerTools(ObjectTools):
 
         if num_proc > 1:
             # MPI parallel computing version
-            mpi = shutil.which("mpiexec")
+            mpi_bin = settings.get_binary("MPIElmer")
             self._result_format = ".pvtu"
             command_list = ["-n", str(num_proc), elmer_bin]
-            self.process.start(mpi, command_list)
+            self.process.start(mpi_bin, command_list)
         else:
             self._result_format = ".vtu"
             command_list = []

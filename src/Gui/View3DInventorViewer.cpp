@@ -88,6 +88,7 @@
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <QBitmap>
+#include <QElapsedTimer>
 #include <QEventLoop>
 #if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
 # include <QGuiApplication>
@@ -119,6 +120,7 @@
 
 #include "View3DInventorViewer.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Command.h"
 #include "Document.h"
 #include "GLPainter.h"
@@ -143,6 +145,7 @@
 #include "SoFCVectorizeU3DAction.h"
 #include "SoTouchEvents.h"
 #include "SpaceballEvent.h"
+#include "SpaceMouseParameter.h"
 #include "View3DInventorRiftViewer.h"
 #include "View3DViewerPy.h"
 #include "ViewParams.h"
@@ -184,6 +187,68 @@ private:
 
 namespace
 {
+constexpr qint64 DimensionPaneUpdateIntervalMs = 100;
+
+struct DimensionPaneState
+{
+    QString text;
+    QElapsedTimer updateTimer;
+};
+
+DimensionPaneState& dimensionPaneState()
+{
+    static DimensionPaneState state;
+    return state;
+}
+
+QString dimensionText(const View3DInventorViewer& viewer)
+{
+    float fHeight = -1.0;
+    float fWidth = -1.0;
+    viewer.getDimensions(fHeight, fWidth);
+
+    std::string dim;
+
+    if (fWidth >= 0.0 && fHeight >= 0.0) {
+        // Translate screen units into user's unit schema
+        Base::Quantity qWidth(Base::Quantity::MilliMetre);
+        Base::Quantity qHeight(Base::Quantity::MilliMetre);
+        qWidth.setValue(fWidth);
+        qHeight.setValue(fHeight);
+        auto wStr = Base::UnitsApi::schemaTranslate(qWidth);
+        auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
+
+        // Create final string and update window
+        dim = fmt::format("{} x {}", wStr, hStr);
+    }
+
+    return QString::fromStdString(dim);
+}
+
+void updateDimensionPane(const View3DInventorViewer& viewer, bool forceUpdate)
+{
+    auto& state = dimensionPaneState();
+    if (!forceUpdate && state.updateTimer.isValid()
+        && state.updateTimer.elapsed() < DimensionPaneUpdateIntervalMs) {
+        return;
+    }
+
+    auto text = dimensionText(viewer);
+    if (text == state.text) {
+        state.updateTimer.restart();
+        return;
+    }
+
+    state.text = text;
+    state.updateTimer.restart();
+    getMainWindow()->setPaneText(2, text);
+}
+
+void clearDimensionPaneState()
+{
+    dimensionPaneState() = {};
+}
+
 int qImageByteCount(const QImage& image)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
@@ -1161,11 +1226,8 @@ void View3DInventorViewer::init()
     // filter a few qt events
     viewerEventFilter = new ViewerEventFilter;
     installEventFilter(viewerEventFilter);
-    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
 #if defined(USE_3DCONNEXION_NAVLIB)
-    if (hViewGrp->GetBool("LegacySpaceMouseDevices", false)) {
+    if (SpaceMouseParameter::instance()->getLegacySpaceMouseDevices()) {
         getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
     }
 #else
@@ -1194,6 +1256,9 @@ void View3DInventorViewer::init()
     );
 
     naviCube = new NaviCube(this);
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
     naviCubeEnabled = hViewGrp->GetBool("ShowNaviCube", true);
     syncNaviCubeVisibility();
 
@@ -1267,6 +1332,7 @@ View3DInventorViewer::~View3DInventorViewer()
     if (getMainWindow()) {
         getMainWindow()->setPaneText(2, QLatin1String(""));
     }
+    clearDimensionPaneState();
 
     detachSelection();
 
@@ -2669,6 +2735,7 @@ void View3DInventorViewer::interactionFinishCB(void* ud, SoQTQuarterAdaptor* vie
     Q_UNUSED(ud)
     SoGLRenderAction* glra = viewer->getSoRenderManager()->getGLRenderAction();
     SoFCInteractiveElement::set(glra->getState(), viewer->getSceneGraph(), false);
+    updateDimensionPane(*static_cast<View3DInventorViewer*>(viewer), true);
     viewer->redraw();
 }
 
@@ -3336,26 +3403,7 @@ void View3DInventorViewer::getDimensions(float& fHeight, float& fWidth) const
 
 void View3DInventorViewer::printDimension() const
 {
-    float fHeight = -1.0;
-    float fWidth = -1.0;
-    getDimensions(fHeight, fWidth);
-
-    std::string dim;
-
-    if (fWidth >= 0.0 && fHeight >= 0.0) {
-        // Translate screen units into user's unit schema
-        Base::Quantity qWidth(Base::Quantity::MilliMetre);
-        Base::Quantity qHeight(Base::Quantity::MilliMetre);
-        qWidth.setValue(fWidth);
-        qHeight.setValue(fHeight);
-        auto wStr = Base::UnitsApi::schemaTranslate(qWidth);
-        auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
-
-        // Create final string and update window
-        dim = fmt::format("{} x {}", wStr, hStr);
-    }
-
-    getMainWindow()->setPaneText(2, QString::fromStdString(dim));
+    updateDimensionPane(*this, false);
 }
 
 void View3DInventorViewer::selectAll()
@@ -4219,6 +4267,35 @@ SbBox3f View3DInventorViewer::getBoundingBox() const
     SoGetBoundingBoxAction action(vp);
     action.apply(this->getSoRenderManager()->getSceneGraph());
     return action.getBoundingBox();
+}
+
+void View3DInventorViewer::viewHome()
+{
+    SoCamera* camera = getCamera();
+    if (!camera) {
+        return;
+    }
+
+    const SbRotation orientation = Camera::defaultOrientation("Top");
+    if (Camera::rotationsMatch(camera->orientation.getValue(), orientation)) {
+        viewAll();
+        return;
+    }
+
+    auto animation = setCameraOrientation(orientation, true);
+    if (animation && animation->state() == QAbstractAnimation::Running) {
+        QObject::connect(
+            animation.get(),
+            &NavigationAnimation::completed,
+            this,
+            [this]() { viewAll(); },
+            // Let NavigationAnimator finish its cleanup before fitting the scene.
+            Qt::QueuedConnection
+        );
+        return;
+    }
+
+    viewAll();
 }
 
 void View3DInventorViewer::viewAll()

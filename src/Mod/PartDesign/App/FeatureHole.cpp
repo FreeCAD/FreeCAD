@@ -2202,8 +2202,10 @@ TopoShape Hole::findHoles(
 ) const
 {
     TopoShape result(0);
+    _holeLocations.clear();
 
     auto addHole = [&](Part::TopoShape const& baseshape, gp_Pnt loc) {
+        _holeLocations.push_back(loc);
         gp_Trsf localSketchTransformation;
         localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0), gp_Pnt(loc.X(), loc.Y(), loc.Z()));
 
@@ -2269,6 +2271,11 @@ TopoShape Hole::findHoles(
         }
     }
     return TopoShape().makeElementCompound(holes);
+}
+
+std::vector<gp_Pnt> Hole::getHoleLocations() const
+{
+    return _holeLocations;
 }
 
 TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)

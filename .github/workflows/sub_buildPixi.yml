@@ -82,7 +82,7 @@ jobs:
       max-parallel: 6
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-2022, ubuntu-latest, macos-latest]
 
     steps:
     - name: Harden the runner (Audit all outbound calls)
@@ -105,7 +105,7 @@ jobs:
 
     - name: Checkout
       if: "!inputs.skipBuild"
-      uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
     - name: Add GCC Problem Matcher
       if: runner.os == 'Linux' && !inputs.skipBuild
@@ -134,7 +134,7 @@ jobs:
     - if: "!inputs.skipBuild"
       uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11 # v0.9.6
       with:
-        pixi-version: v0.59.0
+        pixi-version: v0.68.1
         cache: false
 
     - name: Restore Compiler Cache

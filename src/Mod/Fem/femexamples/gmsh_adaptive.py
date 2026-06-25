@@ -75,12 +75,12 @@ def create_analysis(doc, name, part_obj):
     analysis.addObject(gmsh)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "FemConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(part_obj, "Face1")]
     analysis.addObject(con_fixed)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "FemConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     con_force.References = [(part_obj, "Face4")]
     con_force.Force = "4000.0 N"
     analysis.addObject(con_force)

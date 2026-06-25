@@ -50,6 +50,15 @@ using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepPointSet)
 
+/// Controls how B-rep overlay primitives interact with the scene depth buffer.
+enum class OverlayDepthMode
+{
+    /// Keep normal occlusion so committed selection does not expose hidden geometry.
+    RespectDepth,
+    /// Render above model geometry for hover and preselection feedback.
+    DrawOnTop,
+};
+
 static void applyOverlayPrimitiveState(SoState* state, SoNode* node)
 {
     if (!state || !node) {
@@ -62,12 +71,37 @@ static void applyOverlayPrimitiveState(SoState* state, SoNode* node)
     SoOverrideElement::setMaterialBindingOverride(state, node, true);
 }
 
+static void applyOverlayDepthState(SoState* state, OverlayDepthMode depthMode)
+{
+    switch (depthMode) {
+        case OverlayDepthMode::DrawOnTop:
+            SoDepthBufferElement::set(
+                state,
+                FALSE,
+                FALSE,
+                SoDepthBufferElement::ALWAYS,
+                SbVec2f(0.0f, 1.0f)
+            );
+            return;
+        case OverlayDepthMode::RespectDepth:
+            SoDepthBufferElement::set(
+                state,
+                TRUE,
+                FALSE,
+                SoDepthBufferElement::LEQUAL,
+                SbVec2f(0.0f, 1.0f)
+            );
+            return;
+    }
+}
+
 static void renderOverlayPoints(
     SoGLRenderAction* action,
     SoIndexedPointSet* pointSet,
     const int32_t* indices,
     int numIndices,
-    const SbColor& color
+    const SbColor& color,
+    OverlayDepthMode depthMode
 )
 {
     if (!action || !pointSet || !indices || numIndices <= 0) {
@@ -93,7 +127,7 @@ static void renderOverlayPoints(
     state->push();
 
     applyOverlayPrimitiveState(state, pointSet);
-    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+    applyOverlayDepthState(state, depthMode);
 
     SoLazyElement::setEmissive(state, &color);
     uint32_t packedColor = color.getPackedValue(0.0);
@@ -182,8 +216,8 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
         return;
     }
 
-    if (ctx && ctx->highlightIndex == std::numeric_limits<int>::max()) {
-        if (ctx->selectionIndex.empty() || ctx->isSelectAll()) {
+    if (ctx && ctx->highlightIndex == std::numeric_limits<int>::max() && !ctx->isSelectAll()) {
+        if (ctx->selectionIndex.empty()) {
             if (ctx2) {
                 ctx2->selectionColor = ctx->highlightColor;
                 renderSelection(action, ctx2);
@@ -265,7 +299,8 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
             overlayPointSet,
             highlightCoordIndex.getValues(0),
             hlNum,
-            highlightColor.getValue()
+            highlightColor.getValue(),
+            OverlayDepthMode::DrawOnTop
         );
     }
     const int selNum = selectionCoordIndex.getNum();
@@ -275,7 +310,8 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
             overlayPointSet,
             selectionCoordIndex.getValues(0),
             selNum,
-            selectionColor.getValue()
+            selectionColor.getValue(),
+            OverlayDepthMode::DrawOnTop
         );
     }
 }
@@ -339,7 +375,8 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx
             overlayPointSet,
             pointIndices.data(),
             static_cast<int>(pointIndices.size()),
-            ctx->highlightColor
+            ctx->highlightColor,
+            OverlayDepthMode::DrawOnTop
         );
         return;
     }
@@ -349,7 +386,14 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx
     }
 
     const int32_t pointIndices[1] = {static_cast<int32_t>(id)};
-    renderOverlayPoints(action, overlayPointSet, pointIndices, 1, ctx->highlightColor);
+    renderOverlayPoints(
+        action,
+        overlayPointSet,
+        pointIndices,
+        1,
+        ctx->highlightColor,
+        OverlayDepthMode::DrawOnTop
+    );
 }
 
 void SoBrepPointSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx, bool /*push*/)
@@ -375,7 +419,8 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx
             overlayPointSet,
             pointIndices.data(),
             static_cast<int>(pointIndices.size()),
-            ctx->selectionColor
+            ctx->selectionColor,
+            OverlayDepthMode::RespectDepth
         );
     }
     else {
@@ -397,7 +442,8 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx
             overlayPointSet,
             pointIndices.data(),
             static_cast<int>(pointIndices.size()),
-            ctx->selectionColor
+            ctx->selectionColor,
+            OverlayDepthMode::RespectDepth
         );
 
         if (warn) {

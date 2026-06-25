@@ -1083,7 +1083,7 @@ void CmdPartImport::activated(int iMsg)
         {QStringLiteral("BREP"), {"*.brp", "*.brep"}},
     };
 
-    qsizetype select;
+    qsizetype select = -1;
     QString fn
         = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter, &select);
     if (!fn.isEmpty()) {
@@ -1153,7 +1153,7 @@ void CmdPartExport::activated(int iMsg)
         {QStringLiteral("BREP"), {"*.brp", "*.brep"}},
     };
 
-    qsizetype select;
+    qsizetype select = -1;
     QString fn
         = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter, &select);
     if (!fn.isEmpty()) {

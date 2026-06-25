@@ -747,7 +747,7 @@ class TestConfigurationBundle(unittest.TestCase):
 
 
 class TestPostProcessorMBPPMethods(unittest.TestCase):
-    def test_add_post_items(self):
+    def test_edit_postable_list(self):
         """test the several cases of appending/not-appending"""
 
         # we shouldn't need any of the arguments
@@ -783,7 +783,7 @@ class TestPostProcessorMBPPMethods(unittest.TestCase):
 
         unmodified = initial_sections()
 
-        sections = pp._add_post_items(initial_sections(), lambda sn, i, ss: [])
+        sections = pp._edit_postable_list(initial_sections(), lambda sn, i, ss: (None, None))
 
         # unchanged
         self.assertEqual(len(sections), len(unmodified))
@@ -803,15 +803,22 @@ class TestPostProcessorMBPPMethods(unittest.TestCase):
         def append_s1_p1(sn, postable, section_state):
             if postable.Name == "p1":
                 section_state["dumy"] = 1
-                return [
-                    Postable(
-                        label=f"append_p1", item_type=f"itemp1_a", data={}, path=None, source=None
-                    )
-                ]
+                return (
+                    1,
+                    [
+                        Postable(
+                            label=f"append_p1",
+                            item_type=f"itemp1_a",
+                            data={},
+                            path=None,
+                            source=None,
+                        )
+                    ],
+                )
             else:
-                return []
+                return (None, None)
 
-        sections = pp._add_post_items(initial_sections(), append_s1_p1)
+        sections = pp._edit_postable_list(initial_sections(), append_s1_p1)
         self.assertEqual(len(sections), len(unmodified))
         self.assertEqual(
             sections[0][1][1].Name,
