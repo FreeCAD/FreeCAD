@@ -28,3 +28,5 @@ from TDTest.DrawViewPartTest import DrawViewPartTest  # noqa: F401
 from TDTest.DrawViewDetailTest import DrawViewDetailTest  # noqa: F401
 from TDTest.DrawViewDimensionTest import DrawViewDimensionTest  # noqa: F401
 
+# dummy usage to get flake8 and lgtm quiet
+False if DrawComplexSectionTest.__name__ else True

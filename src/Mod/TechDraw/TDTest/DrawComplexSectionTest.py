@@ -72,7 +72,7 @@ class DrawComplexSectionTest(unittest.TestCase):
         self.assertEqual(section.ProjectionStrategy, "BrokenOut")
         self.assertEqual(section.BrokenOutDepth, 3.0)
         self.assertGreater(len(section.getVisibleEdges()), 0)
-        self.assertTrue("Up-to-date" in section.State)
+        self.assertIn("Up-to-date", section.State)
 
 
 if __name__ == "__main__":
