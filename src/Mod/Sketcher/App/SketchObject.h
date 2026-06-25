@@ -1279,6 +1279,15 @@ inline int SketchObject::initTemporaryBSplinePieceMove(
 inline int SketchObject::
     moveGeometriesTemporary(std::vector<GeoElementId> geoEltIds, Base::Vector3d toPoint, bool relative /*=false*/)
 {
+    // Re-sync the solver's cached Constraint* before solving: a driven/reference dimension
+    // can replace a Constraint object mid-drag, leaving solvedSketch.Constrs dangling (UAF).
+    const std::vector<Constraint*>& currentConstraints = Constraints.getValues();
+    std::vector<int> constraintIds(currentConstraints.size());
+    for (std::size_t i = 0; i < currentConstraints.size(); ++i) {
+        constraintIds[i] = static_cast<int>(i);
+    }
+    solvedSketch.updateConstraints(constraintIds, currentConstraints);
+
     return solvedSketch.moveGeometries(geoEltIds, toPoint, relative);
 }
 inline int SketchObject::moveGeometryTemporary(int geoId, PointPos pos, Base::Vector3d toPoint, bool relative /*=false*/)
