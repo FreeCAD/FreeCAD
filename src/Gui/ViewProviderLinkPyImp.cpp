@@ -20,9 +20,11 @@
  *                                                                          *
  ****************************************************************************/
 
+#include <cstring>
 #include <sstream>
 
 #include <Base/PlacementPy.h>
+#include <App/PropertyStandard.h>
 
 // generated out of ViewProviderLink.pyi
 #include "ViewProviderLinkPy.h"
@@ -61,12 +63,25 @@ Py::Object ViewProviderLinkPy::getLinkView() const
     return Py::Object(getViewProviderLinkPtr()->getPyLinkView(), true);
 }
 
-PyObject* ViewProviderLinkPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* ViewProviderLinkPy::getCustomAttributes(const char* attr) const
 {
+    if (strcmp(attr, "ShapeMaterial") == 0) {
+        // Deprecated Python compatibility alias for ShapeAppearance[0].
+        App::PropertyMaterial prop;
+        prop.setValue(getViewProviderLinkPtr()->ShapeAppearance[0]);
+        return prop.getPyObject();
+    }
     return nullptr;
 }
 
-int ViewProviderLinkPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int ViewProviderLinkPy::setCustomAttributes(const char* attr, PyObject* obj)
 {
+    if (strcmp(attr, "ShapeMaterial") == 0) {
+        // Deprecated Python compatibility alias for ShapeAppearance[0].
+        App::PropertyMaterial prop;
+        prop.setPyObject(obj);
+        getViewProviderLinkPtr()->ShapeAppearance.setValue(prop.getValue());
+        return 1;
+    }
     return 0;
 }
