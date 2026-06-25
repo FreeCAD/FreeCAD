@@ -52,6 +52,7 @@
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
@@ -2208,9 +2209,17 @@ TopoShape Hole::findHoles(
         gp_Trsf localSketchTransformation;
         localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0), gp_Pnt(loc.X(), loc.Y(), loc.Z()));
 
+        Part::MappingStatus status = Part::MappingStatus::Modified;
+
+        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            // we want to use generated here, because when an element is modified, it is usually split apart into similar elements
+            // which is not happening here. what is happening is an edge is creating a face, which is only possible with generated.
+            status = Part::MappingStatus::Generated;
+        }
+
         Part::ShapeMapper mapper;
         mapper.populate(
-            Part::MappingStatus::Modified,
+            status,
             baseshape,
             TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE)
         );

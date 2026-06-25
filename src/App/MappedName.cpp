@@ -26,11 +26,14 @@
 
 #include "MappedName.h"
 
+
 #include "Base/Console.h"
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <iostream>
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
+#include <unordered_set>
 
 
 FC_LOG_LEVEL_INIT("MappedName", true, 2);  // NOLINT
@@ -49,6 +52,267 @@ void MappedName::compact() const
     }
 }
 
+std::vector<std::string> MappedName::splitToSections(const std::string data, const char* deliminator) {
+    if (strlen(deliminator)) {
+        return MappedName::splitToSections(data, *deliminator);
+    }
+
+    return { };
+}
+
+std::vector<std::string> MappedName::splitToSections(const std::string data, const char deliminator) {
+    std::stringstream ss;
+    std::vector<std::string> sections { };
+    int escapeLevel = 0;
+    
+    for (size_t i = 0; i < data.size(); i++) {
+        char currentChar = data[i];
+
+        if (currentChar == '^') {
+            escapeLevel++;
+        } else if ((currentChar == deliminator && escapeLevel == 0) || (i + 1) == data.size()) {
+            if (currentChar != deliminator) {
+                ss << currentChar;
+            }
+
+            sections.push_back(ss.str());
+            ss.str("");
+            
+            continue;
+        } else {
+            escapeLevel = 0;
+        }
+
+        // if the escaped character is the same as the selected deliminator, then remove just one escape
+        if (escapeLevel > 0 && ((i + 1) != data.size() && data[i + 1] == deliminator)) {
+            continue;
+        }
+
+        ss << currentChar;
+    }
+
+    return sections;
+}
+
+DecodedMappedName MappedName::getDecodedMappedName(std::string mappedNameString) {
+    if (decodedMappedNameCache.find(mappedNameString) == decodedMappedNameCache.end()) {
+        DecodedMappedName name = { };
+        std::vector<std::string> mainSections = MappedName::splitToSections(mappedNameString, Data::NAME_SECTION_DELIMINATOR);
+
+        for (const auto &mainSection : mainSections) {
+            std::vector<std::string> sectionDataSplit = MappedName::splitToSections(mainSection, Data::SECTION_SUB_DELIMINATOR);
+            DecodedMappedSection section = { };
+            std::vector<std::string> entryList; 
+        
+            for (size_t i = 0; i < sectionDataSplit.size(); i++) {
+                entryList = MappedName::splitToSections(sectionDataSplit[i], Data::SUB_SECTION_LIST_DELIMINATOR);
+                
+                if (entryList.size() && entryList.front() != "_") {
+                    switch (i) {
+                        case Data::SECTION_REFERENCE_ID_INDEX:
+                            section.referenceIDs = entryList;
+                            break;
+                        case Data::SECTION_LINKED_NAME_INDEX:
+                            section.linkedNames = entryList;
+                            break;
+                        case Data::SECTION_ITERATION_TAG_INDEX:
+                            section.iterationTag = entryList.front();
+                            break;
+                        case Data::SECTION_OPCODE_INDEX:
+                            section.opCode = entryList.front();
+                            break;
+                        case Data::SECTION_INDEX_NUM_INDEX:
+                            section.index = entryList.front();
+                            break;
+                        case Data::SECTION_ELEMENT_TYPE_INDEX:
+                            section.elementType = entryList.front().front();
+                            break;
+                        case Data::SECTION_DUPLICATE_COUNT_INDEX:
+                            section.duplicateCount = entryList.front();
+                            break;
+                        case Data::SECTION_MAPPER_FLAGS_INDEX:
+                            section.mapperFlags = entryList;
+                            break;
+                        case Data::SECTION_CONNECTED_ELEMENTS_INDEX:
+                            section.connectedElements = entryList;
+                            break;
+                    }
+                }
+            }
+
+            name.push_back(section);
+        }
+
+        decodedMappedNameCache[mappedNameString] = name;
+
+        return name;
+    } else {
+        return decodedMappedNameCache[mappedNameString];
+    }
+}
+
+DecodedMappedName MappedName::getDecodedMappedName() const {
+    return MappedName::getDecodedMappedName(toString());
+}
+
+MappedName MappedName::fromDecodedMappedName(const DecodedMappedName tree) {
+    std::stringstream ss;
+    DecodedMappedSection section;
+
+    for (size_t i = 0; i < tree.size(); ++i) {
+        section = tree[i];
+        std::vector<MappedName> formattedLinkedNames;
+
+        for (const std::string& linkedName : section.linkedNames) {
+            formattedLinkedNames.push_back(MappedName(linkedName));
+        }
+
+        ss << MappedName::makeSection(
+            section.referenceIDs,
+            formattedLinkedNames,
+            section.iterationTag,
+            section.opCode.c_str(),
+            section.index,
+            section.elementType,
+            section.duplicateCount,
+            section.mapperFlags
+        );
+
+        if ((i + 1) < tree.size())
+            ss << Data::NAME_SECTION_DELIMINATOR;
+    }
+
+    return MappedName(ss.str());
+}
+
+std::string MappedName::escapeString(const std::string stringToEscape) {
+    std::stringstream ss;
+    std::unordered_set<char> charsToEscape {
+        (*Data::NAME_SECTION_DELIMINATOR),
+        (*Data::SECTION_SUB_DELIMINATOR),
+        (*Data::SUB_SECTION_LIST_DELIMINATOR)
+    };
+
+    for (size_t i = 0; i < stringToEscape.size(); i++) {
+        char currentChar = stringToEscape[i];
+
+        if (charsToEscape.contains(currentChar)) {
+            ss << Data::SUB_SECTION_ESCAPE_CHAR;
+        }
+
+        ss << currentChar;
+    }
+
+    return ss.str();
+}
+
+
+// IMPORTANT: make sure the placement of the sub-sections in the return
+// string matches what is described in ElementNamingUtils.h
+std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
+                                    std::vector<MappedName> linkedNames,
+                                    int iterationTag,
+                                    const char* opCode,
+                                    int index,
+                                    char elementType,
+                                    int duplicateCount,
+                                    std::vector<std::string> mapperFlags,
+                                    std::vector<MappedName> connectedElements) // TODO: switch to vector of individual flags
+{
+    return MappedName::makeSection(
+        referenceIDs,
+        linkedNames,
+        std::to_string(iterationTag),
+        opCode,
+        std::to_string(index),
+        elementType,
+        std::to_string(duplicateCount),
+        mapperFlags,
+        connectedElements
+    );
+}
+
+// IMPORTANT: make sure the placement of the sub-sections in the return
+// string matches what is described in ElementNamingUtils.h
+std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
+                                    std::vector<MappedName> linkedNames,
+                                    std::string iterationTag,
+                                    const char* opCode,
+                                    std::string index,
+                                    char elementType,
+                                    std::string duplicateCount,
+                                    std::vector<std::string> mapperFlags,
+                                    std::vector<MappedName> connectedElements) // TODO: switch to vector of individual flags
+{
+    std::stringstream ss;
+    std::string opCodeString = (opCode == nullptr || strlen(opCode) == 0) ? "MKR" : opCode;
+
+    if (referenceIDs.empty()) {
+        ss << Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < referenceIDs.size(); i++) {
+            if (i != 0) {
+                ss << Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            ss << referenceIDs[i];
+        }
+    }
+
+    ss << Data::SECTION_SUB_DELIMINATOR;
+
+    if (linkedNames.empty()) {
+        ss << Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < linkedNames.size(); i++) {
+            if (i != 0) {
+                ss << Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            ss << MappedName::escapeString(linkedNames[i].toString());
+        }
+    }
+
+    ss << Data::SECTION_SUB_DELIMINATOR 
+       << iterationTag
+       << Data::SECTION_SUB_DELIMINATOR
+       << opCodeString
+       << Data::SECTION_SUB_DELIMINATOR
+       << index
+       << Data::SECTION_SUB_DELIMINATOR
+       << elementType
+       << Data::SECTION_SUB_DELIMINATOR
+       << duplicateCount
+       << Data::SECTION_SUB_DELIMINATOR;
+
+    if (mapperFlags.empty()) {
+        ss << Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < mapperFlags.size(); i++) {
+            if (i != 0) {
+                ss << Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            ss << mapperFlags[i];
+        }
+    }
+    
+    ss << Data::SECTION_SUB_DELIMINATOR;
+
+    if (connectedElements.empty()) {
+        ss << Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < connectedElements.size(); i++) {
+            if (i != 0) {
+                ss << Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            ss << MappedName::escapeString(connectedElements[i].toString());
+        }
+    }
+    
+    return ss.str();
+}
 
 MappedName::MappedName(const char* name, int size) : raw(false)
 {
@@ -62,8 +326,9 @@ MappedName::MappedName(const char* name, int size) : raw(false)
     data = size < 0 ? QByteArray(name) : QByteArray(name, size);
 }
 
-MappedName::MappedName(const std::string& nameString)
+MappedName::MappedName(const std::string& nameString, const App::HistoryAlgorithm historyAlgorithm)
     : raw(false)
+    , usedHistoryAlgorithm(historyAlgorithm)
 {
     auto size = nameString.size();
     const char* name = nameString.c_str();

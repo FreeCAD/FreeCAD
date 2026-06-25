@@ -202,26 +202,55 @@ bool Feature::relinkToMatchingSubelements(
     std::vector<std::string> newSubs;
     newSubs.reserve(oldSubs.size());
 
+    App::HistoryAlgorithm selectedHistoryAlgorithm = App::getSelectedHistoryAlgorithm();
+
     for (const auto& sub : oldSubs) {
         if (sub.empty()) {
             newSubs.emplace_back();
             continue;
         }
 
-        auto oldSubShape = oldShape.getSubTopoShape(sub.c_str(), true);
+        Data::MappedElement subMappedElement = oldShape.getElementName(sub.c_str());
+        
+        if (!subMappedElement.index) {
+            return false;
+        }
+
+        std::pair<TopAbs_ShapeEnum, int> subDecodedIndexedName = Part::TopoShape::shapeTypeAndIndex(subMappedElement.index);
+        if (subDecodedIndexedName.second <= 0) {
+            return false;
+        }
+
+        auto oldSubShape = oldShape.getSubTopoShape(subDecodedIndexedName.first, subDecodedIndexedName.second, true);
+
         if (oldSubShape.isNull()) {
             return false;
         }
 
         std::vector<std::string> names;
-        auto matches = newShape.findSubShapesWithSharedVertex(
-            oldSubShape,
-            &names,
-            Data::SearchOption::CheckGeometry
-        );
-        if (matches.size() != 1 || names.size() != 1) {
+
+        if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V1) {
+            auto matches = newShape.findSubShapesWithSharedVertex(
+                oldSubShape,
+                &names,
+                Data::SearchOption::CheckGeometry
+            );
+
+            if (matches.size() != 1) {
+                return false;
+            }
+        } else if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V2) {
+            std::vector<Data::MappedElement> foundNames = findSimilarNames(subMappedElement.name, newShape);
+
+            if (foundNames.size()) {
+                names.push_back(foundNames.front().name.toString());
+            }
+        }
+
+        if (names.size() != 1) {
             return false;
         }
+
         newSubs.push_back(names.front());
     }
 

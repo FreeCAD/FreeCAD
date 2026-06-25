@@ -193,6 +193,12 @@ public:
         return result;
     }
 
+    /// Get a hash for this IndexedName
+    std::size_t hash() const
+    {
+        return qHash(type, qHash(index));
+    }
+
     /**
      * @brief Append this indexed name to an output stream.
      *
@@ -395,6 +401,23 @@ protected:
 private:
     const char* type;
     int index;
+};
+
+
+struct AppExport IndexedNameHasher {
+    std::size_t operator()(const IndexedName& name) const {
+        return name.hash();
+    };
+
+    std::size_t operator()(const std::vector<IndexedName>& names) const {
+        std::size_t seed = names.size();
+
+        for (const IndexedName& name : names) {
+            seed ^= name.hash() + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+
+        return seed;
+    };
 };
 
 }  // namespace Data

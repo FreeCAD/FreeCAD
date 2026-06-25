@@ -3,12 +3,24 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <string_view>
 #include <utility>
 #include "FCGlobal.h"
 
 namespace App
 {
+
+enum HistoryAlgorithm : int {
+    V1 = 0,
+    V2 = 1
+};
+
+AppExport HistoryAlgorithm getSelectedHistoryAlgorithm();
+AppExport HistoryAlgorithm getDefaultHistoryAlgorithm();
+AppExport std::vector<std::string> getAllHistoryAlgorithms();
+AppExport HistoryAlgorithm getHistoryAlgorithmFromString(std::string historyAlgorithmTypeString);
+AppExport std::string getStringNameOfHistoryAlgorithm(HistoryAlgorithm historyAlgorithmTypeEnum);
 
 /// Return type for lookups of new and old style sub-element names
 struct ElementNamePair
@@ -90,6 +102,41 @@ constexpr const char* POSTFIX_MODGEN                    = ";:MG";
 constexpr const char* POSTFIX_DUPLICATE                 = ";D";
 /// Label to use for element index in element mapping.
 constexpr const char* ELEMENT_MAP_INDEX                 = "_";
+/// Empty sub-section value for V2.
+constexpr const char* EMPTY_VALUE                       = "_";
+/// Sub-section list deliminator.
+constexpr const char* SUB_SECTION_LIST_DELIMINATOR      = ",";
+/// Section sub deliminator.
+constexpr const char* SECTION_SUB_DELIMINATOR           = ";";
+/// Name section deliminator.
+constexpr const char* NAME_SECTION_DELIMINATOR          = "|";
+/// Escape character for mapped names in sub-sections
+constexpr const char* SUB_SECTION_ESCAPE_CHAR           = "^";
+
+// Placement indexes of data in sections of MappedNames used by the V2 Topological Naming System.
+// DO NOT CHANGE THESE VALUES EVER!!! Data should only be added to sections, not removed or otherwise altered.
+
+/// `Reference IDs` entry index.
+constexpr const int   SECTION_REFERENCE_ID_INDEX        = 0;
+/// `Reference Names` entry index.
+constexpr const int   SECTION_LINKED_NAME_INDEX         = 1;
+/// `Iteration Tag` entry index.
+constexpr const int   SECTION_ITERATION_TAG_INDEX       = 2;
+/// `OpCode` entry index.
+constexpr const int   SECTION_OPCODE_INDEX              = 3;
+/// `Index` entry index. (index index index)
+constexpr const int   SECTION_INDEX_NUM_INDEX           = 4;
+/// `Element Type` entry index.
+constexpr const int   SECTION_ELEMENT_TYPE_INDEX        = 5;
+/// `Duplicate count` entry index.
+constexpr const int   SECTION_DUPLICATE_COUNT_INDEX     = 6;
+/// `Mapper Flags` entry index.
+constexpr const int   SECTION_MAPPER_FLAGS_INDEX        = 7;
+/// `Connect Elements` entry index.
+constexpr const int   SECTION_CONNECTED_ELEMENTS_INDEX  = 8;
+
+/// Size of sections used in MappedNames by the V2 Topological Naming System
+constexpr const int   SECTION_SIZE                      = 9;
 
 /// @}
 

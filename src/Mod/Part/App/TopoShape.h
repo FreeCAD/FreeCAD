@@ -1614,6 +1614,18 @@ public:
         return TopoShape(0, Hasher).makeElementXor({*this, source}, op, tol, elementMapPolicy);
     }
 
+    App::HistoryAlgorithm getHistoryAlgorithm() const {
+        if (elementMap() != nullptr) {
+            return elementMap()->getHistoryAlgorithm();
+        } else {
+            return App::HistoryAlgorithm::V2;
+        }
+    };
+
+    void setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm) {
+        ensureElementMap()->setHistoryAlgorithm(newAlgorithm);
+    };
+
     /** Try to simplify geometry of any linear/planar subshape to line/plane
      *
      * @return Return true if the shape is modified
@@ -1646,7 +1658,8 @@ public:
     void reTagElementMap(
         long tag,  // NOLINT google-default-arguments
         App::StringHasherRef hasher,
-        const char* postfix = nullptr
+        const char* postfix = nullptr,
+        bool force = true // force retag a section if the tag is not 0
     ) override;
 
     long isElementGenerated(const Data::MappedName& name, int depth = 1) const;

@@ -423,7 +423,8 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                                                std::string& sub,
                                                ShadowSub& shadow,
                                                bool reverse,
-                                               bool notify)
+                                               bool notify,
+                                               std::vector<Data::MappedElement> *matchedNames)
 {
     if (!obj || !obj->getNameInDocument()) {
         return false;
@@ -472,6 +473,40 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
 
     bool missing = GeoFeature::hasMissingElement(elementName.oldName.c_str());
     if (feature == geo && (missing || reverse)) {
+        bool resolvedMissing = false;
+
+        if (elementName.newName.size()) {
+            const char* mappedNameString = Data::isMappedElement(elementName.newName.c_str());
+            Data::MappedName searchName;
+
+            if (mappedNameString) {
+                const char* dot = strchr(mappedNameString, '.');
+
+                if (dot) {
+                    searchName = Data::MappedName(mappedNameString, static_cast<int>(dot - mappedNameString));
+                } else {
+                    searchName = mappedNameString;
+                }
+
+                std::vector<Data::MappedElement> foundMappedElements = geo->findSimilarNames(searchName);
+                
+                if (foundMappedElements.size()) {
+                    elementName.oldName = foundMappedElements.front().index.toString();
+
+                    std::ostringstream ss;
+                    ss << Data::ComplexGeoData::elementMapPrefix() << foundMappedElements.front().name << '.' << elementName.oldName;
+
+                    elementName.newName = ss.str();
+
+                    missing = false;
+                    resolvedMissing = true;
+                }
+
+                if (matchedNames != nullptr)
+                    *matchedNames = foundMappedElements;
+            }
+        }
+
         // If the referenced element is missing, or we are generating element
         // map for the first time, or we are re-generating the element map due
         // to version change, i.e. 'reverse', try search by geometry first
@@ -1564,21 +1599,56 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
     if (owner && owner->isRestoring()) {
         return false;
     }
-    int i = 0;
     bool touched = false;
-    for (auto& sub : subs) {
+    std::vector<Data::MappedElement> extraMatchedNames;
+    std::ostringstream ss;
+
+    std::vector<std::string> newSubs = { };
+    std::vector<PropertyLinkBase::ShadowSub> newShadows = { };
+
+    for (size_t i = 0; i < subs.size(); i++) {
         if (prop->_updateElementReference(feature,
                                           link,
-                                          sub,
-                                          shadows[i++],
+                                          subs[i],
+                                          shadows[i],
                                           reverse,
-                                          notify && !touched)) {
+                                          notify && !touched,
+                                          &extraMatchedNames))
+        {
+            // let's do the name matching here
+            if (extraMatchedNames.size() > 1 && prop->canUseMultipleMatchedNames()) {
+                extraMatchedNames.erase(extraMatchedNames.begin());
+
+                for (const Data::MappedElement &mappedElement : extraMatchedNames) {
+                    std::string name = mappedElement.name.toString();
+                    std::string index = mappedElement.index.toString();
+
+                    ss << Data::ComplexGeoData::elementMapPrefix() << name << '.' << index;
+
+                    if (prop->canHaveDuplicateLinks() || std::find(newSubs.begin(), newSubs.end(), index) == newSubs.end()) {
+                        newShadows.emplace_back(ss.str(), index);
+                        newSubs.push_back(index);
+                    }
+                    
+                    ss.str("");
+                }
+            }
+
+            extraMatchedNames.clear();
+
             touched = true;
+        }
+
+        if (prop->canHaveDuplicateLinks() || std::find(newSubs.begin(), newSubs.end(), subs[i]) == newSubs.end()) {
+            newShadows.push_back(shadows[i]);
+            newSubs.push_back(subs[i]);
         }
     }
     if (!touched) {
         return false;
     }
+    subs = newSubs;
+    shadows = newShadows;
     for (int idx : mapped) {
         if (idx < (int)subs.size() && !shadows[idx].newName.empty()) {
             subs[idx] = shadows[idx].newName;
