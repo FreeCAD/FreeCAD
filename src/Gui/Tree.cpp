@@ -1188,8 +1188,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
 void TreeWidget::showContextMenuForSelection()
 {
-    // Programmatic entry point: use the current selection as the context item,
-    // then build the same menu (exec'd at the cursor by buildAndExecContextMenu).
+    // Resolve the context item from the current selection, then build the menu.
     const QList<QTreeWidgetItem*> sel = selectedItems();
     this->contextItem = sel.isEmpty() ? nullptr : sel.front();
     buildAndExecContextMenu();
