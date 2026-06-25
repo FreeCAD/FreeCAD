@@ -2351,7 +2351,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
             contextMenu->addSeparator();
         }
     }
-    
+
     QMenu* objectMenu = nullptr;
     QList<QAction*> objectActions;
     auto selection = Gui::Selection().getSelectionEx();
