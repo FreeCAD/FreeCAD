@@ -26,6 +26,8 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 
+#include <Mod/Assembly/App/Groups.h>
+
 #include "ViewProviderGroups.h"
 
 using namespace AssemblyGui;
@@ -61,3 +63,15 @@ QIcon ViewProviderViewGroup::getIcon() const
 {
     return Gui::BitmapFactory().pixmap("Assembly_ExplodedViewGroup.svg");
 }
+
+bool ViewProviderJointGroup::onDelete(const std::vector<std::string>&)
+{
+    auto* group = getObject<Assembly::JointGroup>();
+
+    // if empty or orphaned ok to delete.
+    if (group && (group->Group.getValues().empty() || group->getParents().empty())) {
+        return true;
+    }
+
+    return false;
+};
