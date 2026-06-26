@@ -272,8 +272,9 @@ PyObject* TopoShapeVertexPy::richCompare(PyObject* self, PyObject* object, int o
 		res=0;
 
 	if (op == Py_EQ)
-		retval = res? Py_False : Py_True;
-	retval = (!res)? Py_False : Py_True;
+		retval = (!res)? Py_False : Py_True;
+	else
+		retval = (res)? Py_False : Py_True;
 	Py_INCREF(retval);
 	return retval;
     }
