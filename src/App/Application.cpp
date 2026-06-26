@@ -2138,15 +2138,7 @@ void Application::init(int argc, char ** argv)
 
         // Set up our crash reporting AFTER the call to initConfig, but BEFORE we start doing
         // things that might crash...
-        try {
-            const std::string crashReportsDirectory {getUserAppDataDir() + "CrashReports"};
-            Base::CrashReporter::Writer::prewarm();
-            Base::CrashReporter::Writer::install(crashReportsDirectory);
-            Base::CrashReporter::Manager::scan(crashReportsDirectory);
-        } catch (...) {
-            // Make sure anything that escapes doesn't abort startup: this is non-fatal
-            Base::Console().log("Crash reporting failed during startup\n");
-        }
+        initCrashReporter();
 
         initApplication();
         initExceptions();
@@ -2998,6 +2990,23 @@ void Application::SaveEnv(const char* s)
 {
     if (auto c = getenvUTF8(s)) {
         mConfig[s] = c.value();
+    }
+}
+
+void Application::initCrashReporter()
+{
+    // Make sure anything that escapes doesn't abort startup: this is non-fatal
+    try {
+        const std::string crashReportsDirectory {getUserAppDataDir() + "CrashReports"};
+        Base::CrashReporter::Writer::prewarm();
+        Base::CrashReporter::Writer::install(crashReportsDirectory);
+        Base::CrashReporter::Manager::scan(crashReportsDirectory);
+    } catch (Base::Exception &e) {
+        Base::Console().warning("Crash reporting failed during startup:\n%s\n", e.getMessage());
+    } catch (std::exception &e) {
+        Base::Console().warning("Crash reporting failed during startup:\n%s\n", e.what());
+    } catch (...) {
+        Base::Console().warning("Crash reporting failed during startup\n");
     }
 }
 
