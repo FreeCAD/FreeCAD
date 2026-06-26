@@ -493,11 +493,8 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
         if (ungroundedJointDrag) {
             SbVec3f vec = viewer->getPointOnFocalPlane(cursorPos);
             Base::Vector3d currentUngroundedDragPosition(vec[0], vec[1], vec[2]);
-            ungroundedDragTranslation =
-                currentUngroundedDragPosition - initialUngroundedDragPosition;
-            dragJcsGlobalPlc.setPosition(
-                jcsGlobalPlc.getPosition() + ungroundedDragTranslation
-            );
+            ungroundedDragTranslation = currentUngroundedDragPosition - initialUngroundedDragPosition;
+            dragJcsGlobalPlc.setPosition(jcsGlobalPlc.getPosition() + ungroundedDragTranslation);
         }
 
         if (dragMode == DragMode::RotationOnPlane) {
@@ -590,9 +587,7 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                     plc.setPosition(pos);
 
                     Base::Placement newJcsGlobalPlc = dragJcsGlobalPlc;
-                    newJcsGlobalPlc.setPosition(
-                        dragJcsGlobalPlc.getPosition() + delta
-                    );
+                    newJcsGlobalPlc.setPosition(dragJcsGlobalPlc.getPosition() + delta);
 
                     Base::Vector3d center = jcsGlobalPlc.getPosition() + delta;
                     Base::Vector3d norm = newJcsGlobalPlc.getRotation().multVec(
@@ -603,10 +598,7 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                         = initialPositionRot.ProjectToPlane(center, norm);
                     boost::ignore_unused(projInitialPositionRot);
                     double angle
-                        = (newPosRot - center).GetAngleOriented(
-                            initialPositionRot - center,
-                            norm
-                        );
+                        = (newPosRot - center).GetAngleOriented(initialPositionRot - center, norm);
                     Base::Rotation zRotation = Base::Rotation(Base::Vector3d(0., 0., 1.), angle);
                     Base::Placement rotatedGlovalJcsPlc = newJcsGlobalPlc
                         * Base::Placement(Base::Vector3d(), zRotation);

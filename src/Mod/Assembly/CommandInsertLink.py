@@ -472,9 +472,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         if fixPartPref == 0:  # unset
             msgBox = QtWidgets.QMessageBox()
             msgBox.setWindowTitle("Ground Part?")
-            msgBox.setText(
-                "Do you want to ground the first inserted part automatically?"
-            )
+            msgBox.setText("Do you want to ground the first inserted part automatically?")
             msgBox.setIcon(QtWidgets.QMessageBox.Question)
 
             yesButton = msgBox.addButton("Yes", QtWidgets.QMessageBox.YesRole)

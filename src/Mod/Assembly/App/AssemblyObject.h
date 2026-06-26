@@ -165,10 +165,7 @@ public:
         std::string& name,
         const std::vector<App::DocumentObject*>& excludeJoints = {}
     );
-    App::DocumentObject* getJointOfPartForUngroundedDrag(
-        App::DocumentObject* part,
-        std::string& name
-    );
+    App::DocumentObject* getJointOfPartForUngroundedDrag(App::DocumentObject* part, std::string& name);
     std::unordered_set<App::DocumentObject*> getGroundedParts();
     std::unordered_set<App::DocumentObject*> fixGroundedParts();
     void fixGroundedPart(App::DocumentObject* obj, Base::Placement& plc, std::string& jointName);

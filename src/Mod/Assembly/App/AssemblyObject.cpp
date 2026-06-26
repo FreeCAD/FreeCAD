@@ -349,12 +349,9 @@ size_t Assembly::AssemblyObject::numberOfFrames()
 void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 {
     bundleFixed = true;
-    bool hasUnconnectedDragPart = std::ranges::any_of(
-        dragParts,
-        [this](App::DocumentObject* part) {
-            return part && !isPartConnected(part);
-        }
-    );
+    bool hasUnconnectedDragPart = std::ranges::any_of(dragParts, [this](App::DocumentObject* part) {
+        return part && !isPartConnected(part);
+    });
 
     if (hasUnconnectedDragPart) {
         prepareMbdForIslandDrag(dragParts);
