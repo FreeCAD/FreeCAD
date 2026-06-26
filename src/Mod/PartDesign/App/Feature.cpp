@@ -425,12 +425,6 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
 
     if (BaseObject != BaseFeature.getValue()) {
         auto body = getFeatureBody();
-        if (!body) {
-            if (silent) {
-                return result;
-            }
-            throw Base::RuntimeError("Missing container body");
-        }
         if (BaseObject->isDerivedFrom<PartDesign::ShapeBinder>()
             || BaseObject->isDerivedFrom<PartDesign::SubShapeBinder>()) {
             if (silent) {
