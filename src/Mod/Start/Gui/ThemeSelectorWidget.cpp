@@ -34,6 +34,7 @@
 #include <App/Application.h>
 #include <Gui/Command.h>
 #include <Gui/PreferencePackManager.h>
+#include <Gui/Utilities.h>
 
 #include <FCConfig.h>
 
@@ -193,6 +194,10 @@ void ThemeSelectorWidget::onLinkActivated(const QString& link)
 
 void ThemeSelectorWidget::preselectThemeFromSystemSettings()
 {
+    if (Gui::isInternalGuiTestRun()) {
+        return;
+    }
+
     auto nullStyle("<N/A>");
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow"

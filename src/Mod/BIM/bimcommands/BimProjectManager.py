@@ -130,7 +130,7 @@ class BIM_ProjectManager:
                 elif hasattr(self.site, "RefElevation"):
                     self.form.siteElevation.setText(self.site.RefElevation.UserString)
                 if hasattr(self.site, "Declination"):
-                    self.form.siteElevation.setText(str(self.site.Declination))
+                    self.form.siteDeclination.setValue(self.site.Declination)
             buildings = []
             if self.site and self.project:
                 from nativeifc import ifc_tools
@@ -246,10 +246,8 @@ class BIM_ProjectManager:
                 self.site.Latitude = self.form.siteLatitude.value()
             elif hasattr(self.site, "RefLatitude"):
                 self.site.RefLatitude = self.form.siteLatitude.value()
-            if hasattr(self.site, "NorthDeviation"):
-                self.site.NorthDeviation = self.form.siteDeviation.value()
-            elif hasattr(self.site, "Declination"):
-                self.site.Declination = self.form.siteDeviation.value()
+            if hasattr(self.site, "Declination"):
+                self.site.Declination = self.form.siteDeclination.value()
             elev = FreeCAD.Units.Quantity(self.form.siteElevation.text()).Value
             if hasattr(self.site, "Elevation"):
                 self.site.Elevation = elev
@@ -378,7 +376,7 @@ class BIM_ProjectManager:
                 msg.setWindowTitle(translate("BIM", "Zero Level Height"))
                 msg.setText(translate("BIM", "Level height is zero. No levels will be created."))
                 msg.setInformativeText(
-                    translate("BIM", "Please set the level height to a non-zero value.")
+                    translate("BIM", "Set the level height to a non-zero value.")
                 )
                 msg.exec()
             if self.form.countLevels.value() and levelHeight:
@@ -475,7 +473,7 @@ class BIM_ProjectManager:
                 "siteAddress": form.siteAddress.text(),
                 "siteLongitude": form.siteLongitude.value(),
                 "siteLatitude": form.siteLatitude.value(),
-                "siteDeviation": form.siteDeviation.value(),
+                "siteDeclination": form.siteDeclination.value(),
                 "siteElevation": form.siteElevation.text(),
                 "groupBuilding": int(form.groupBuilding.isChecked()),
                 "buildingName": form.buildingName.text(),
@@ -542,8 +540,8 @@ class BIM_ProjectManager:
                             self.form.siteLongitude.setValue(float(s[1]))
                         elif s[0] == "siteLatitude":
                             self.form.siteLatitude.setValue(float(s[1]))
-                        elif s[0] == "siteDeviation":
-                            self.form.siteDeviation.setValue(float(s[1]))
+                        elif s[0] in ("siteDeclination", "siteDeviation"):
+                            self.form.siteDeclination.setValue(float(s[1]))
                         elif s[0] == "siteElevation":
                             self.form.siteElevation.setText(s[1])
                         elif s[0] == "groupBuilding":

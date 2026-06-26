@@ -24,6 +24,7 @@
 #include <QCheckBox>
 #include <QClipboard>
 #include <QDateTime>
+#include <QLabel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLineEdit>
@@ -55,6 +56,11 @@
 
 #include <Gui/PreferencePages/DlgSettingsPDF.h>
 
+
+namespace
+{
+constexpr int SearchSelectionProperty = QTextFormat::UserProperty + 1;
+}
 
 using namespace Gui;
 namespace Gui
@@ -377,7 +383,7 @@ bool EditorView::saveAs()
         this,
         QObject::tr("Save Macro"),
         QString(),
-        QStringLiteral("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro"))
+        FileDialog::FilterList {{tr("FreeCAD macro"), {"*.FCMacro"}}, {"Python", {"*.py"}}}
     );
     if (fn.isEmpty()) {
         return false;
@@ -508,7 +514,7 @@ void EditorView::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file"))
+        FileDialog::FilterList {{QStringLiteral("PDF"), {"*.pdf"}}}
     );
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
@@ -762,8 +768,17 @@ SearchBar::SearchBar(QWidget* parent)
     searchText->setClearButtonEnabled(true);
     horizontalLayout->addWidget(searchText);
     connect(searchText, &QLineEdit::returnPressed, this, &SearchBar::findNext);
-    connect(searchText, &QLineEdit::textChanged, this, &SearchBar::findCurrent);
+    connect(searchText, &QLineEdit::textChanged, this, [this]() {
+        if (!skipSearch) {
+            findCurrent();
+        }
+    });
     connect(searchText, &QLineEdit::textChanged, this, &SearchBar::updateButtons);
+
+    resultLabel = new QLabel(this);
+    resultLabel->setMinimumWidth(60);
+    resultLabel->setAlignment(Qt::AlignCenter);
+    horizontalLayout->addWidget(resultLabel);
 
     prevButton = new QToolButton(this);
     prevButton->setIcon(style()->standardIcon(QStyle::SP_ArrowBack));
@@ -794,6 +809,7 @@ SearchBar::SearchBar(QWidget* parent)
 
     setMinimumWidth(minimumSizeHint().width());
     updateButtons();
+    resultLabel->setText("");
     hide();
 }
 
@@ -828,13 +844,18 @@ void SearchBar::activate(const QString& prefill)
     show();
 
     if (!prefill.isEmpty()) {
-        QSignalBlocker blocker(searchText);  // block auto-search jump to next match after prefill
+        skipSearch = true;  // prevent cursor jump to next search match after prefill
         searchText->setText(prefill);
+        skipSearch = false;
     }
 
     searchText->selectAll();
     searchText->setFocus(Qt::ShortcutFocusReason);
     updateButtons();
+
+    if (!searchText->text().isEmpty()) {
+        updateSearchResults(searchText->text());
+    }
 }
 
 void SearchBar::deactivate()
@@ -843,6 +864,141 @@ void SearchBar::deactivate()
         textEditor->setFocus();
     }
     hide();
+}
+
+/**
+ * Get all search result matches in document.
+ */
+SearchBar::SearchResults SearchBar::findAllMatches(const QString& str)
+{
+    SearchResults matches;
+
+    if (!textEditor || str.isEmpty()) {
+        return matches;
+    }
+
+    QTextDocument* doc = textEditor->document();
+    if (!doc) {
+        return matches;
+    }
+
+    QTextDocument::FindFlags options = {};
+    if (matchCase->isChecked()) {
+        options |= QTextDocument::FindCaseSensitively;
+    }
+    if (matchWord->isChecked()) {
+        options |= QTextDocument::FindWholeWords;
+    }
+
+    QTextCursor cursor(doc);
+    QTextCursor currentCursor = textEditor->textCursor();
+
+    while (true) {
+        cursor = doc->find(str, cursor, options);
+        if (cursor.isNull()) {
+            break;
+        }
+
+        const int start = cursor.selectionStart();
+        const int end = cursor.selectionEnd();
+
+        matches.matchRanges.push_back({start, end});
+
+        if (currentCursor.position() >= start && currentCursor.position() <= end) {
+            matches.currentIndex = matches.matchRanges.size();
+        }
+    }
+
+    return matches;
+}
+
+/**
+ * Show current search result position and total matches count.
+ */
+void SearchBar::updateSearchResults(const QString& str)
+{
+    if (!textEditor || str.isEmpty()) {
+        resultLabel->clear();
+        return;
+    }
+
+    SearchResults matches = findAllMatches(str);
+
+    if (matches.matchRanges.isEmpty()) {
+        resultLabel->setText(tr("No results"));
+        highlightSearchResults(matches);
+        return;
+    }
+
+    int total = matches.matchRanges.size();
+    int currentIndex = matches.currentIndex;
+
+    if (currentIndex == -1) {
+        resultLabel->setText(QString("0 / %1").arg(total));
+    }
+    else {
+        resultLabel->setText(QString("%1 / %2").arg(currentIndex).arg(total));
+    }
+
+    highlightSearchResults(matches);
+}
+
+/**
+ * Highlight visually all search result matches.
+ * Note: highlight stays after closing search bar, but disappears after any subsequent click.
+ */
+void SearchBar::highlightSearchResults(const SearchResults& matches)
+{
+    if (!textEditor || !textEditor->document()) {
+        return;
+    }
+
+    const auto& selections = textEditor->extraSelections();
+
+    QVector<QTextEdit::ExtraSelection> cleaned;
+    cleaned.reserve(selections.size());
+
+    for (const auto& sel : selections) {
+        if (!sel.format.property(SearchSelectionProperty).toBool()) {
+            cleaned.push_back(sel);
+        }
+    }
+
+    QVector<QTextEdit::ExtraSelection> searchSelections;
+    searchSelections.reserve(matches.matchRanges.size());
+
+    QTextCursor currentCursor = textEditor->textCursor();
+
+    const QPalette pal = textEditor->palette();
+    const QColor highlightColor = pal.color(QPalette::Highlight);
+
+    QColor matchColor = highlightColor;
+    matchColor.setAlphaF(0.75);
+
+    QTextDocument* doc = textEditor->document();
+
+    for (const auto& range : matches.matchRanges) {
+        QTextCursor cursor(doc);
+        cursor.setPosition(range.first);
+        cursor.setPosition(range.second, QTextCursor::KeepAnchor);
+
+        QTextEdit::ExtraSelection sel;
+        sel.cursor = cursor;
+
+        const int pos = currentCursor.position();
+        const bool isCurrent = (pos >= range.first && pos <= range.second);
+
+        QTextCharFormat format;
+        format.setBackground(isCurrent ? highlightColor : matchColor);
+        format.setProperty(QTextFormat::FullWidthSelection, true);
+        format.setProperty(SearchSelectionProperty, true);
+
+        sel.format = format;
+        searchSelections.push_back(sel);
+    }
+
+    cleaned += searchSelections;
+    textEditor->setExtraSelections(cleaned);
 }
 
 void SearchBar::findPrevious()
@@ -879,7 +1035,7 @@ void SearchBar::findText(bool skip, bool next, const QString& str)
     bool found = true;
     QTextCursor newCursor = cursor;
     if (!str.isEmpty()) {
-        QTextDocument::FindFlags options;
+        QTextDocument::FindFlags options = {};
         if (!next) {
             options |= QTextDocument::FindBackward;
         }
@@ -920,6 +1076,7 @@ void SearchBar::findText(bool skip, bool next, const QString& str)
     }
 
     searchText->setStyleSheet(styleSheet);
+    updateSearchResults(str);
 }
 
 void SearchBar::updateButtons()

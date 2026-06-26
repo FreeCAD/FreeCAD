@@ -460,7 +460,7 @@ bool TaskPipeParameters::accept()
     auto pipe = getObject<PartDesign::Pipe>();
     auto pcActiveBody = PartDesignGui::getBodyFor(pipe, false);
     if (!pcActiveBody) {
-        QMessageBox::warning(this, tr("Input error"), tr("No active body"));
+        QMessageBox::warning(this, tr("Input Error"), tr("No active body"));
         return false;
     }
     // auto pcActivePart = PartDesignGui::getPartFor (pcActiveBody, false);
@@ -581,7 +581,7 @@ bool TaskPipeParameters::accept()
     }
     catch (const Base::Exception& e) {
         pipe->getDocument()->abortTransaction();
-        QMessageBox::warning(this, tr("Input error"), QApplication::translate("Exception", e.what()));
+        QMessageBox::warning(this, tr("Input Error"), QApplication::translate("Exception", e.what()));
         return false;
     }
 

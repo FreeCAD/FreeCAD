@@ -219,13 +219,22 @@ TaskPostWidget::TaskPostWidget(
     setWindowIcon(icon);
     m_icon = icon;
 
-    m_connection = m_object->signalChanged.connect(
-        boost::bind(
-            &TaskPostWidget::handlePropertyChange,
-            this,
-            boost::placeholders::_1,
-            boost::placeholders::_2
-        )
+    auto object = getObject();
+    if (!object) {
+        return;
+    }
+
+    auto document = object->getDocument();
+    if (!document) {
+        return;
+    }
+
+    m_connection = document->signalChangedObject.connect(
+        [this, object](const App::DocumentObject& changedObject, const App::Property& prop) {
+            if (&changedObject == object) {
+                handlePropertyChange(changedObject, prop);
+            }
+        }
     );
 }
 
@@ -391,7 +400,7 @@ bool TaskDlgPost::accept()
     }
     catch (const Base::Exception& e) {
         m_view->getDocument()->abortCommand();
-        QMessageBox::warning(nullptr, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(nullptr, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 
@@ -526,7 +535,7 @@ TaskPostFunction::TaskPostFunction(ViewProviderFemPostFunction* view, QWidget* p
     : TaskPostWidget(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent)
 {
     // we load the views widget
-    FunctionWidget* w = getTypedView<ViewProviderFemPostFunction>()->createControlWidget();
+    ShapeWidget* w = getTypedView<ViewProviderFemPostFunction>()->createControlWidget();
     w->setParent(this);
     w->setViewProvider(getTypedView<ViewProviderFemPostFunction>());
 

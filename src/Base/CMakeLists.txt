@@ -198,14 +198,15 @@ SET(FreeCADBase_CPP_SRCS
     Observer.cpp
     Parameter.xsd
     Parameter.cpp
+    ParameterObserver.cpp
     ParameterPy.cpp
     Persistence.cpp
     PersistencePyImp.cpp
     Placement.cpp
     PlacementPyImp.cpp
     PrecisionPyImp.cpp
-    ProgressIndicator.cpp
     ProgressIndicatorPy.cpp
+    PyException.cpp
     PyExport.cpp
     PyObjectBase.cpp
     PythonTypeExt.cpp
@@ -268,11 +269,12 @@ SET(FreeCADBase_HPP_SRCS
     Matrix.h
     Observer.h
     Parameter.h
+    ParameterObserver.h
     Persistence.h
     Placement.h
     Precision.h
     ProgressIndicatorPy.h
-    ProgressIndicator.h
+    PyException.h
     PyExport.h
     PyObjectBase.h
     PyWrapParseTupleAndKeywords.h

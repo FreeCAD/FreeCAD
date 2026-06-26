@@ -25,9 +25,11 @@
 #pragma once
 
 #include <functional>
+#include <optional>
 #include <vector>
 
 #include <App/Application.h>
+#include <Base/Vector3D.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include "GeometryCreationMode.h"
 
@@ -35,8 +37,10 @@
 
 
 class SbVec3f;
+class SbVec2s;
 class SoRayPickAction;
 class SoPickedPoint;
+class SoPickedPointList;
 class SbVec3s;
 
 namespace Base
@@ -174,6 +178,15 @@ public:
      */
     struct PreselectionResult
     {
+        enum class HitKind
+        {
+            None = -1,
+            Point = 0,
+            Edge = 1,
+            Axis = 2,
+            Constraint = 3
+        };
+
         enum SpecialValues
         {
             InvalidPoint = -1,
@@ -189,18 +202,40 @@ public:
             VerticalAxis = 2
         };
 
+        HitKind Kind = HitKind::None;
         int PointIndex = InvalidPoint;
         int GeoIndex = InvalidCurve;  // valid values are 0,1,2,... for normal geometry and
                                       // -3,-4,-5,... for external geometry
         Axes Cross = Axes::None;
         std::set<int> ConstrIndices;
+        std::optional<Base::Vector3d> PickedPoint;
+
+        [[nodiscard]] inline bool hasWinner() const
+        {
+            return Kind != HitKind::None;
+        }
+
+        [[nodiscard]] inline bool hasPickedPoint() const
+        {
+            return PickedPoint.has_value();
+        }
+
+        [[nodiscard]] inline const Base::Vector3d& pickedPoint() const
+        {
+            return PickedPoint.value();
+        }
+
+        void setPickedPoint(const Base::Vector3d& point);
+        void setPickedPoint(const SoPickedPoint* point);
 
         inline void clear()
         {
+            Kind = HitKind::None;
             PointIndex = InvalidPoint;
             GeoIndex = InvalidCurve;
             Cross = Axes::None;
             ConstrIndices.clear();
+            PickedPoint.reset();
         }
     };
 
@@ -213,6 +248,7 @@ public:
     void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers, unsigned int augmentationlevel);
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve, GeometryCreationMode mode);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list, GeometryCreationMode mode);
+    void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve);
     void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
     void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();
@@ -221,7 +257,11 @@ public:
 
     /** @name handle preselection and selection of points */
     //@{
-    PreselectionResult detectPreselection(SoPickedPoint* Point);
+    PreselectionResult detectPreselection(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos,
+        int hoveredPointIndex = PreselectionResult::InvalidPoint
+    );
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}
@@ -265,6 +305,24 @@ public:
     void updateElementSizeParameters();
 
 private:
+    PreselectionResult detectConstraintPreselection(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos
+    );
+    bool detectOriginPreselection(const SoPickedPoint* point, PreselectionResult& result);
+    bool detectGeometryPreselection(
+        const SoPickedPointList& points,
+        const SbVec2s& cursorPos,
+        int hoveredPointIndex,
+        PreselectionResult& result
+    );
+    bool detectPointPreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectCurvePreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectAxisPreselection(const SoPickedPointList& points, PreselectionResult& result);
+    bool detectPointPreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
+    bool detectCurvePreselection(const SoPickedPoint* point, int layerIndex, PreselectionResult& result);
+    bool detectAxisPreselection(const SoPickedPoint* point, PreselectionResult& result);
+
     // This function populates the coin nodes with the information of the current geometry
     void processGeometry(const GeoListFacade& geolistfacade);
 

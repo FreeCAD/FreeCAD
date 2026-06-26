@@ -44,7 +44,7 @@ from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftutils import utils
 from draftutils import gui_utils
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _wrn
 from draftutils.translate import translate
 
 
@@ -84,9 +84,12 @@ class SubelementHighlight(gui_base_original.Modifier):
             self.view.removeEventCallback("SoEvent", self.call)
         self.get_editable_objects_from_selection()
         if not self.editable_objects:
+            _wrn(translate("draft", "Only Draft lines, wires, and curves can be highlighted"))
             return self.finish()
         self.call = self.view.addEventCallback("SoEvent", self.action)
         self.highlight_editable_objects()
+        self.selection_done = True
+        self.update_hints()
 
     def finish(self):
         """Terminate the operation.
@@ -129,7 +132,7 @@ class SubelementHighlight(gui_base_original.Modifier):
                 "Wire",
             ]:
                 self.editable_objects.append(obj)
-            elif hasattr(obj, "Base") and (
+            elif getattr(obj, "Base", None) and (
                 obj.Base.isDerivedFrom("Part::Part2DObject")
                 or utils.get_type(obj.Base) in ["BezCurve", "BSpline", "Wire"]
             ):
@@ -167,6 +170,15 @@ class SubelementHighlight(gui_base_original.Modifier):
             except Exception:
                 # This can occur if objects have had graph changing operations
                 pass
+
+    def get_action_hints(self):
+        return [
+            Gui.InputHint(
+                translate("draft", "%1 run Move, Rotate or Scale on subelements"),
+                Gui.UserInput.MouseLeft,
+            ),
+            Gui.InputHint(translate("draft", "%1 finish"), Gui.UserInput.KeyEscape),
+        ]
 
 
 Gui.addCommand("Draft_SubelementHighlight", SubelementHighlight())

@@ -2,21 +2,13 @@
 # regression test for sketch placement updates during edit mode
 # when sketcher workbench is active and has not be closed / exited
 
-import unittest
 import FreeCAD
 
-# check if GUI is available
-try:
-    import FreeCADGui
-
-    GUI_AVAILABLE = FreeCADGui.getMainWindow() is not None
-except (ImportError, AttributeError):
-    GUI_AVAILABLE = False
-
 from FreeCAD import Base
+from SketcherTests.GuiTestCase import FreeCADGui, SketcherGuiTestCase
 
 
-class TestSketchPlacementUpdate(unittest.TestCase):
+class TestSketchPlacementUpdate(SketcherGuiTestCase):
     """
     test that sketch placement/attachment changes update the 3D view
     when the sketch is in edit mode.
@@ -36,8 +28,7 @@ class TestSketchPlacementUpdate(unittest.TestCase):
         then attach a sketch to the cylinder to the bottom round face of the
         cylinder.
         """
-        if not GUI_AVAILABLE:
-            self.skipTest("GUI not available")
+        super().setUp()
 
         self.doc = FreeCAD.newDocument("TestPlacementUpdate")
 
@@ -73,12 +64,6 @@ class TestSketchPlacementUpdate(unittest.TestCase):
 
         self.doc.recompute()
 
-    def tearDown(self):
-        """clean up the test document"""
-        if GUI_AVAILABLE:
-            FreeCAD.closeDocument(self.doc.Name)
-
-    @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def test_attachment_offset_updates_in_edit_mode(self):
         """
         test that changing AttachmentOffset while editing updates the transform.
@@ -110,10 +95,6 @@ class TestSketchPlacementUpdate(unittest.TestCase):
             "Editing transform should update when AttachmentOffset changes",
         )
 
-        # exit edit mode
-        FreeCADGui.ActiveDocument.resetEdit()
-
-    @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def test_multiple_attachment_offset_updates(self):
         """
         test that multiple AttachmentOffset changes in edit mode all update correctly.
@@ -142,10 +123,6 @@ class TestSketchPlacementUpdate(unittest.TestCase):
                     f"Transform {i} should differ from transform {i-1}",
                 )
 
-        # exit edit mode
-        FreeCADGui.ActiveDocument.resetEdit()
-
-    @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def test_no_update_when_not_editing(self):
         """
         verify that attachment offset changes don't cause issues when sketch is not in edit mode.
@@ -163,7 +140,6 @@ class TestSketchPlacementUpdate(unittest.TestCase):
         )
         self.assertEqual(self.sketch.MapMode, "FlatFace", "Sketch should still be attached")
 
-    @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def test_unattached_sketch_placement_updates(self):
         """
         test that unattached sketches also work correctly.
@@ -195,6 +171,3 @@ class TestSketchPlacementUpdate(unittest.TestCase):
             updated_transform,
             "Editing transform should update when Placement changes for unattached sketch",
         )
-
-        # exit edit mode
-        FreeCADGui.ActiveDocument.resetEdit()

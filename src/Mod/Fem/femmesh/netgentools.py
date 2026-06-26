@@ -396,7 +396,7 @@ run_netgen(**{kwds})
         from Part import Shape as PartShape
 
         result = []
-        for reg in self.obj.MeshRegionList:
+        for reg in self.obj.MeshRefinementList:
             if reg.Suppressed:
                 continue
             for s, sub_list in reg.References:

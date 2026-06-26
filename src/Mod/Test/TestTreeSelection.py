@@ -108,8 +108,6 @@ class TestSelectAllInstances(unittest.TestCase):
         self.doc.recompute()
         FreeCADGui.updateGui()
 
-        self._debug_print_document_structure()
-
         # Get tree widget
         tree = self._get_tree_widget()
         self.assertIsNotNone(tree, "Could not find tree widget")
@@ -184,8 +182,6 @@ class TestSelectAllInstances(unittest.TestCase):
         self.doc.recompute()
         FreeCADGui.updateGui()
 
-        self._debug_print_document_structure()
-
         # Get tree widget
         tree = self._get_tree_widget()
         self.assertIsNotNone(tree, "Could not find tree widget")
@@ -204,8 +200,6 @@ class TestSelectAllInstances(unittest.TestCase):
 
         # Count selected Cube items in tree
         count = self._count_tree_selections_by_name("Cube")
-
-        self._debug_print_tree_selection(tree, count)
 
         # We expect 3 instances:
         # 1. Cube under Cut

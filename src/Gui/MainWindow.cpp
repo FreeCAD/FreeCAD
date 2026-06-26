@@ -31,6 +31,7 @@
 #include <QDesktopServices>
 #include <QDockWidget>
 #include <QFontMetrics>
+#include <QHash>
 #include <QKeySequence>
 #include <QLabel>
 #include <QMdiSubWindow>
@@ -66,6 +67,7 @@
 #endif
 
 #include <algorithm>
+#include <vector>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Application.h>
@@ -82,6 +84,7 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Inventor/SoDB.h>
 #include <DAGView/DAGView.h>
 #include <TaskView/TaskView.h>
 
@@ -108,6 +111,7 @@
 #include "StatusBarLabel.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
+#include "Utilities.h"
 #include "Tree.h"
 #include "WaitCursor.h"
 #include "WorkbenchManager.h"
@@ -195,6 +199,9 @@ public:
         setFlat(true);
         setText(qApp->translate("Gui::MainWindow", "Dimension"));
         setMinimumWidth(120);
+        //: A context menu action used to show or hide the unit system chooser in the status bar
+        setWindowTitle(qApp->translate("Gui::MainWindow", "Unit System"));
+        // Visibility is owned and persisted by MainWindow's status-bar registry.
 
         // create the action buttons
         auto* menu = new QMenu(this);
@@ -299,13 +306,28 @@ private:
 };
 
 // -------------------------------------
+
+/// One entry in the status-bar item registry owned by MainWindow.
+struct StatusBarItem
+{
+    StatusBarItemSpec spec;
+    QPointer<QWidget> widget;
+    /// The user's show/hide intent. Tracked here rather than read from
+    /// widget->isVisible(), which is unreliable while MainWindow is still being
+    /// constructed (the window is not shown yet, so every child reports hidden).
+    bool enabled = true;
+};
+
+// -------------------------------------
 // Pimpl class
 struct MainWindowP
 {
     DimensionWidget* sizeLabel;
-    QLabel* actionLabel;
+    StatusBarLabel* actionLabel;
     InputHintWidget* hintLabel;
     QLabel* rightSideLabel;
+    std::vector<StatusBarItem> statusBarItems;
+    ParameterGrp::handle hStatusBar;
     QTimer* actionTimer;
     QTimer* statusTimer;
     QTimer* activityTimer;
@@ -376,6 +398,9 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow"
     );
+    d->hStatusBar = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/StatusBar"
+    );
     d->saveStateTimer.setSingleShot(true);
     connect(&d->saveStateTimer, &QTimer::timeout, [this]() { this->saveWindowSettings(); });
 
@@ -415,32 +440,115 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     statusBar()->setObjectName(QStringLiteral("statusBar"));
     connect(statusBar(), &QStatusBar::messageChanged, this, &MainWindow::statusMessageChanged);
 
-    // labels and progressbar
+    // Status bar items are registered through addStatusBarItem(); MainWindow owns
+    // their placement, ordering, visibility persistence and context-menu entry.
+    // Core widgets that already persist their own visibility register with
+    // persistentVisibility=false; the registry just preserves their state.
     d->status = new StatusBarObserver();
+
+    // Canonical status-bar order (slot + order). Items always appear in this fixed
+    // sequence regardless of the order they register at runtime. The menu uses the
+    // same order. Workbenches use the 550-699 band so they land just left of the
+    // Bottom Panel Toggle; see also Draft/BIM/Tux and ToolBarManager::setupStatusBar.
+    //   Left : Preselection(0), Progress(50), Input Hints(100)
+    //   Right: Quick Measure(400), ToolBarArea(500), [workbench 550-699],
+    //          Bottom Panel Toggle(700), Notifications(800), Navigation Styles(900),
+    //          Unit System(1000, rightmost)
     d->actionLabel = new StatusBarLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    d->sizeLabel = new DimensionWidget(statusBar());
+    // Preselection text yields under width pressure: it elides with an ellipsis
+    // rather than crowding out higher-priority widgets like Input Hints.
+    d->actionLabel->setElideMode(Qt::ElideRight);
+    d->actionLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    addStatusBarItem(
+        d->actionLabel,
+        {.id = "actionLabel",
+         //: A context menu action used to show or hide the preselection info in the status bar
+         .title = tr("Preselection"),
+         .slot = StatusBarSlot::Left,
+         .order = 0,
+         .persistentVisibility = true,
+         .stretch = 1}
+    );
 
-    statusBar()->addWidget(d->actionLabel, 1);
-    QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
-    statusBar()->addPermanentWidget(progressBar, 0);
-    statusBar()->addPermanentWidget(d->sizeLabel, 0);
-
-    // hint label
     d->hintLabel = new InputHintWidget(statusBar());
-    d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
-    //: A context menu action used to show or hide the input hints in the status bar
-    d->hintLabel->setWindowTitle(tr("Input Hints"));
+    // Tool hints have the highest priority: they must keep their full sizeHint
+    // and never be clipped (issue #29632).
+    d->hintLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+    addStatusBarItem(
+        d->hintLabel,
+        {.id = "hintLabel",
+         //: A context menu action used to show or hide the input hints in the status bar
+         .title = tr("Input Hints"),
+         .slot = StatusBarSlot::Left,
+         .order = 100,
+         .persistentVisibility = true}
+    );
 
-    statusBar()->addWidget(d->hintLabel);
+    // Progress bar sits in the Left (non-permanent) slot, between Preselection and
+    // Input Hints. Preselection (stretch=1) absorbs its show/hide so Input Hints
+    // does not shift (issue #29808). Trade-off: as a non-permanent widget it can be
+    // briefly obscured by QStatusBar status messages during an operation. Its
+    // menu/persistence intent is the userEnabled property the registry drives.
+    QProgressBar* progressBar = Gui::SequencerBar::instance()->getProgressBar(statusBar());
+    addStatusBarItem(
+        progressBar,
+        {.id = "progressBar",
+         .title = {},  // title already set by ProgressBar; keep its own
+         .slot = StatusBarSlot::Left,
+         .order = 50,
+         .persistentVisibility = true}
+    );
 
-    // right side label
-    d->rightSideLabel = new StatusBarLabel(statusBar(), "QuickMeasureEnabled");
+    d->sizeLabel = new DimensionWidget(statusBar());
+    addStatusBarItem(
+        d->sizeLabel,
+        {.id = "sizeLabel",
+         .title = {},  // DimensionWidget sets its own "Unit System" title
+         .slot = StatusBarSlot::Right,
+         .order = 1000,  // rightmost item on the status bar
+         .persistentVisibility = true}
+    );
+
+    d->rightSideLabel = new StatusBarLabel(statusBar());
     d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    statusBar()->addPermanentWidget(d->rightSideLabel);
-    d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
-    //: A context menu action used to enable or disable quick measure in the status bar
-    d->rightSideLabel->setWindowTitle(tr("Quick Measure"));
+    // Other status-bar widgets must not be shortened under width pressure
+    // (issue #29632); only Preselection yields.
+    d->rightSideLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+    addStatusBarItem(
+        d->rightSideLabel,
+        {.id = "rightSideLabel",
+         //: A context menu action used to enable or disable quick measure in the status bar
+         .title = tr("Quick Measure"),
+         .slot = StatusBarSlot::Right,
+         .order = 400,
+         .persistentVisibility = true}
+    );
+
+    auto* toggleBottomPanelsButton = new QToolButton(statusBar());
+    toggleBottomPanelsButton->setIconSize(QSize(16, 16));
+    toggleBottomPanelsButton->setIcon(BitmapFactory().pixmap("Std_ToggleBottomPanels"));
+    toggleBottomPanelsButton->setCheckable(true);
+    // Starts checked because FreeCAD shows bottom panels by default on first launch. On subsequent
+    // launches the command restores the persisted state, but that happens after this point, so
+    // the button state is always an approximation until the first toggle.
+    toggleBottomPanelsButton->setChecked(true);
+    //: Tooltip for the status bar button that toggles bottom dock panels
+    toggleBottomPanelsButton->setToolTip(tr("Toggles the bottom dock panels"));
+    toggleBottomPanelsButton->setAutoRaise(true);
+    connect(toggleBottomPanelsButton, &QToolButton::clicked, this, []() {
+        Application::Instance->commandManager().runCommandByName("Std_ToggleBottomPanels");
+    });
+    addStatusBarItem(
+        toggleBottomPanelsButton,
+        {.id = "toggleBottomPanelsButton",
+         //: A context menu action used to show or hide the Toggle Bottom Panels button in the
+         //: status bar
+         .title = tr("Bottom Panel Toggle"),
+         .slot = StatusBarSlot::Right,
+         .order = 700,
+         .persistentVisibility = true}
+    );
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NotificationArea"
@@ -450,12 +558,30 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
     if (notificationAreaEnabled) {
         NotificationArea* notificationArea = new NotificationArea(statusBar());
-        notificationArea->setObjectName(QStringLiteral("notificationArea"));
-        //: A context menu action used to show or hide the 'notificationArea' toolbar widget
-        notificationArea->setWindowTitle(tr("Notification Area"));
         notificationArea->setStyleSheet(QStringLiteral("text-align:center;"));
-        statusBar()->addPermanentWidget(notificationArea);
+        addStatusBarItem(
+            notificationArea,
+            {.id = "notificationArea",
+             //: A context menu action used to show or hide the 'notificationArea' toolbar widget
+             .title = tr("Notifications"),
+             .slot = StatusBarSlot::Right,
+             .order = 800,
+             .persistentVisibility = true}
+        );
     }
+
+    // Right-clicking anywhere on the status bar (including empty background) shows
+    // the registry-driven toggle menu. Deferred so the originating right-click
+    // can't re-trigger a second menu on some platforms.
+    statusBar()->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(statusBar(), &QWidget::customContextMenuRequested, this, [this](const QPoint& pos) {
+        const QPoint globalPos = statusBar()->mapToGlobal(pos);
+        QTimer::singleShot(0, this, [this, globalPos]() {
+            QMenu menu(statusBar());
+            buildStatusBarContextMenu(menu);
+            menu.exec(globalPos);
+        });
+    });
 
     // clears the action label
     d->actionTimer = new QTimer(this);
@@ -500,6 +626,12 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
 MainWindow::~MainWindow()
 {
+    // QWidget teardown may still emit subWindowActivated while child MDI
+    // windows are being destroyed. Disconnect first so shutdown cannot re-enter
+    // MainWindow slots after derived destruction has started.
+    if (d->mdiArea) {
+        disconnect(d->mdiArea, &QMdiArea::subWindowActivated, this, &MainWindow::onWindowActivated);
+    }
     delete d->status;
     delete d;
     instance = nullptr;
@@ -655,36 +787,6 @@ bool MainWindow::setupPythonConsole()
 
     return false;
 }
-
-bool MainWindow::checkFirstRun()
-{
-    ParameterGrp::handle hGrpRF = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/RecentFiles"
-    );
-    auto RecentFilesCount = hGrpRF->GetInt("RecentFiles");
-    ParameterGrp::handle hGrpFS2024 = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start"
-    );
-    auto firstStart = hGrpFS2024->GetBool("FirstStart2024", true);  // NOLINT
-    if (firstStart && RecentFilesCount < 1) {
-        return true;
-    }
-    return false;
-}
-
-
-void MainWindow::moveToDefaultPosition(QRect rect, QPoint pos)
-{
-    int x1 {}, x2 {}, y1 {}, y2 {};
-    // make sure that the main window is not totally out of the visible rectangle
-    rect.getCoords(&x1, &y1, &x2, &y2);
-    const int offsetX = 30;
-    const int offsetY = 10;
-    pos.setX(qMin(qMax(pos.x(), x1 - this->width() + offsetX), x2 - offsetX));
-    pos.setY(qMin(qMax(pos.y(), y1 - offsetY), y2 - offsetY));
-    this->move(pos);
-}
-
 
 bool MainWindow::updateTreeView(bool show)
 {
@@ -1095,6 +1197,25 @@ void MainWindow::showDocumentation(const QString& help)
     }
 }
 
+static View3DInventorViewer* spaceballMotionEventTarget()
+{
+    // check if the active window has a 3d view
+
+    if (auto viewer = getMainWindow()->activeWindow()->findChild<View3DInventorViewer*>()) {
+        return viewer;
+    }
+
+    // check active view for the document
+
+    if (Gui::Document* doc = Application::Instance->activeDocument()) {
+        if (auto view = dynamic_cast<View3DInventor*>(doc->getActiveView())) {
+            return view->getViewer();
+        }
+    }
+
+    return nullptr;
+}
+
 bool MainWindow::event(QEvent* e)
 {
     if (e->type() == QEvent::EnterWhatsThisMode) {
@@ -1169,15 +1290,7 @@ bool MainWindow::event(QEvent* e)
             return true;
         }
         motionEvent->setHandled(true);
-        Gui::Document* doc = Application::Instance->activeDocument();
-        if (!doc) {
-            return true;
-        }
-        auto temp = dynamic_cast<View3DInventor*>(doc->getActiveView());
-        if (!temp) {
-            return true;
-        }
-        View3DInventorViewer* view = temp->getViewer();
+        View3DInventorViewer* view = spaceballMotionEventTarget();
         if (view) {
             Spaceball::MotionEvent anotherEvent(*motionEvent);
             qApp->sendEvent(view, &anotherEvent);
@@ -1429,7 +1542,6 @@ void MainWindow::setActiveWindow(MDIView* view)
     if (!view) {
         return;
     }
-
     // always update the focus and active sub window
 
     // We need the explicit call to setFocus because it seems the focus window and the
@@ -1439,8 +1551,16 @@ void MainWindow::setActiveWindow(MDIView* view)
     // switching from a 3d view to a spreadsheet using the "Windows..." dialog or when docking a
     // spreadsheet that was in top-level/fullscreen mode. Why this could only be reproduced with a
     // spreadsheet remains a mystery.
-
-    view->setFocus();
+    //
+    // However, only do this when the active view is actually changing. Calling setFocus
+    // unconditionally also stomps focus that the user has placed on a dock widget (e.g. the
+    // tree view): closing a modal popup triggers ActivationChange -> setActiveSubWindow ->
+    // setActiveWindow with the same view that is already active, which has no real reason
+    // to take focus.
+    // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+    if (view != d->activeView) {
+        view->setFocus();
+    }
 
     auto subwindow = qobject_cast<QMdiSubWindow*>(view->parentWidget());
     if (subwindow) {
@@ -1448,7 +1568,6 @@ void MainWindow::setActiveWindow(MDIView* view)
     }
 
     // if active view changed, notify rest of the application
-
     if (view == d->activeView) {
         return;
     }
@@ -1727,31 +1846,31 @@ void MainWindow::processMessages(const QList<QString>& msg)
 void MainWindow::delayedStartup()
 {
     // automatically run unit tests in Gui
-    if (App::Application::Config()["RunMode"] == "Internal") {
-        QTimer::singleShot(1000, this, [] {
-            try {
-                string command = "import sys\n"
-                                 "import FreeCAD\n"
-                                 "import QtUnitGui\n\n"
-                                 "testCase = FreeCAD.ConfigGet(\"TestCase\")\n"
-                                 "QtUnitGui.addTest(testCase)\n"
-                                 "QtUnitGui.setTest(testCase)\n"
-                                 "result = QtUnitGui.runTest()\n"
-                                 "sys.stdout.flush()\n";
-                if (App::Application::Config()["ExitTests"] == "yes") {
-                    command += "sys.exit(0 if result else 1)";
-                }
-                Base::Interpreter().runString(command.c_str());
+    if (Gui::isInternalGuiTestRun()) {
+        try {
+            // Command-line GUI tests should not depend on the interactive QtUnitGui
+            // dialog. In headless runs such as QT_QPA_PLATFORM=offscreen/minimal,
+            // that dialog path can hang before the test body executes. Run the
+            // embedded text-based GUI test script directly once startup reaches
+            // delayedStartup().
+            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiTest"));
+            if (App::Application::Config()["ExitTests"] == "yes") {
+                Base::Interpreter().runString(
+                    "import sys\n"
+                    "sys.exit(0 if test_result.wasSuccessful() else 1)\n"
+                );
             }
-            catch (const Base::SystemExitException&) {
-                // Properly quit the Qt event loop before propagating the exception
-                QApplication::quit();
-                throw;
-            }
-            catch (const Base::Exception& e) {
-                e.reportException();
-            }
-        });
+        }
+        catch (const Base::SystemExitException&) {
+            // Properly quit the Qt event loop before propagating the exception
+            QApplication::quit();
+            throw;
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+            QApplication::quit();
+            throw;
+        }
         return;
     }
 
@@ -1996,56 +2115,75 @@ void MainWindow::loadWindowSettings()
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
+    // Put window in center of screen position by default (e.g. first run and safe-mode)
+    // Note that pos refers to frameGeometry(), while size refers to geometry()
+    QSize frameSizeDiff = frameSize() - size();
     QRect rect = QApplication::primaryScreen()->availableGeometry();
-    int maxHeight = rect.height();
-    int maxWidth = rect.width();
+    QSize winSize
+        = (QSize(1800, 1000).boundedTo(rect.size()) - frameSizeDiff).expandedTo(minimumSize());
+    QPoint winPos = rect.center() - QRect({}, (winSize + frameSizeDiff) / 2).bottomRight();
 
+    // Read stored values from config (deprecated, not written since 1.0rc1)
     config.beginGroup(qtver);
-    QPoint pos = config.value(QStringLiteral("Position"), this->pos()).toPoint();
-    maxWidth -= pos.x();
-    maxHeight -= pos.y();
-    QSize size = config.value(QStringLiteral("Size"), QSize(maxWidth, maxHeight)).toSize();
+    winPos = config.value(QStringLiteral("Position"), winPos).toPoint();
+    winSize = config.value(QStringLiteral("Size"), winSize).toSize();
     bool max = config.value(QStringLiteral("Maximized"), false).toBool();
     bool showStatusBar = config.value(QStringLiteral("StatusBar"), true).toBool();
     QByteArray windowState = config.value(QStringLiteral("MainWindowState")).toByteArray();
     config.endGroup();
 
-
-    std::string geometry = d->hGrp->GetASCII("Geometry");
-    std::istringstream iss(geometry);
-    int x, y, w, h;
-    if (iss >> x >> y >> w >> h) {
-        pos = QPoint(x, y);
-        size = QSize(w, h);
+    // Read stored values from user parameters
+    std::istringstream iss(d->hGrp->GetASCII("Geometry"));
+    if (int x, y, w, h; iss >> x >> y >> w >> h) {
+        winPos = QPoint(x, y);
+        winSize = QSize(w, h);
     }
-
     max = d->hGrp->GetBool("Maximized", max);
     showStatusBar = d->hGrp->GetBool("StatusBar", showStatusBar);
-    std::string wstate = d->hGrp->GetASCII("MainWindowState");
-    if (!wstate.empty()) {
+    if (auto wstate = d->hGrp->GetASCII("MainWindowState"); !wstate.empty()) {
         windowState = QByteArray::fromBase64(wstate.c_str());
     }
 
-    resize(size);
-    // TODO: Hotfix to be removed as soon as possible after 1.1.0 Release
-#ifdef FC_OS_WIN64
-    if (checkFirstRun()) {
-        const int topLeftXY = 10;
-        this->move(topLeftXY, topLeftXY);
+    winSize = winSize.expandedTo(minimumSize());
+
+    // Check that no part of window outside all screens
+    QRect winGeometry = QRect(winPos, winSize + frameSizeDiff);
+    const auto screens = QApplication::screens();
+    auto invisible = QPolygon(winGeometry);
+    for (auto s : screens) {
+        invisible = invisible.subtracted(s->geometry().adjusted(-10, -10, 10, 10));
     }
-    else {
-        moveToDefaultPosition(rect, pos);
+    if (!invisible.empty()) {
+        // If not, move it inside the most overlapped or closest screen
+        // Union of screens are not considered, as it e.g. may have holes in general case
+        QRect screen {};
+        for (int screenArea = 0; auto s : screens) {
+            auto overlap = s->availableGeometry().intersected(winGeometry);
+            int overlapArea = overlap.width() * overlap.height();
+            if (overlapArea > screenArea) {
+                screen = s->availableGeometry();
+                screenArea = overlapArea;
+            }
+        }
+        if (screen.isEmpty()) {
+            for (int screenDist = -1; auto s : screens) {
+                auto dist = (winGeometry.center() - s->availableGeometry().center()).manhattanLength();
+                if (screenDist == -1 || dist < screenDist) {
+                    screen = s->availableGeometry();
+                    screenDist = dist;
+                }
+            }
+        }
+        winSize = winSize.boundedTo(screen.size() - frameSizeDiff).expandedTo(minimumSize());
+        winGeometry = QRect(winPos, winSize + frameSizeDiff);
+        winPos.setX(qMax(qMin(winPos.x(), screen.right() - winGeometry.width()), screen.x()));
+        winPos.setY(qMax(qMin(winPos.y(), screen.bottom() - winGeometry.height()), screen.y()));
     }
-#else
-    // TODO: Hotfix to be removed as soon as possible after 1.1.0 Release
-    if (QGuiApplication::platformName() == QString::fromStdString("wayland") && checkFirstRun()) {
-        const int topLeftXY = 10;
-        this->move(topLeftXY, topLeftXY);
-    }
-    else {  // all Linux x11 and Mac
-        moveToDefaultPosition(rect, pos);
-    }
-#endif
+
+    // Scale before move reducing, or vice versa, so a dpi change wont force window to be moved
+    resize(winSize.boundedTo(size()));
+    move(winPos);
+    resize(winSize);
 
     Base::StateLocker guard(d->_restoring);
 
@@ -2116,13 +2254,6 @@ void MainWindow::saveWindowSettings(bool canDelay)
         d->saveStateTimer.start(100);
         return;
     }
-
-    QString vendor = QString::fromUtf8(App::Application::Config()["ExeVendor"].c_str());
-    QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
-    int major = (QT_VERSION >> 0x10) & 0xff;
-    int minor = (QT_VERSION >> 0x08) & 0xff;
-    QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
-    QSettings config(vendor, application);
 
     Base::ConnectionBlocker block(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
@@ -2533,9 +2664,16 @@ void MainWindow::changeEvent(QEvent* e)
         App::GetApplication().retranslateExportTypes();
     }
     else if (e->type() == QEvent::ActivationChange) {
+        static SbTime savedRealTimeInterval = SoDB::getRealTimeInterval();
         if (isActiveWindow()) {
             QMdiSubWindow* mdi = d->mdiArea->currentSubWindow();
             setActiveSubWindow(mdi);
+            SoDB::enableRealTimeSensor(true);
+            SoDB::setRealTimeInterval(savedRealTimeInterval);
+        }
+        else {
+            savedRealTimeInterval = SoDB::getRealTimeInterval();
+            SoDB::enableRealTimeSensor(false);
         }
     }
     else {
@@ -2587,6 +2725,171 @@ void MainWindow::setRightSideMessage(const QString& message)
 bool MainWindow::isRightSideMessageVisible() const
 {
     return d->rightSideLabel->isVisible();
+}
+
+namespace
+{
+// Whether a widget owns its own show/hide lifecycle (the progress bar, which the
+// sequencer shows only while an operation runs). Such widgets expose a userEnabled
+// Q_PROPERTY that the registry drives instead of toggling visibility directly.
+bool ownsVisibility(QWidget* widget)
+{
+    return widget->property("userEnabled").isValid();
+}
+
+// Applies a registry item's enabled state to its widget.
+void applyStatusBarItemEnabled(QWidget* widget, bool enabled)
+{
+    if (ownsVisibility(widget)) {
+        widget->setProperty("userEnabled", enabled);
+    }
+    else {
+        widget->setVisible(enabled);
+    }
+}
+}  // namespace
+
+void MainWindow::addStatusBarItem(QWidget* widget, const StatusBarItemSpec& spec)
+{
+    if (!widget) {
+        return;
+    }
+
+    // Replace any existing registration with the same id.
+    removeStatusBarItem(spec.id);
+
+    if (!spec.id.isEmpty()) {
+        widget->setObjectName(QString::fromUtf8(spec.id));
+    }
+    if (!spec.title.isEmpty()) {
+        widget->setWindowTitle(spec.title);
+    }
+
+    StatusBarItem item;
+    item.spec = spec;
+    item.widget = widget;
+    // Resolve the show/hide intent. Fresh installs default every item to visible,
+    // and safe mode forces all items visible regardless of any persisted choice.
+    item.enabled = true;
+    if (spec.persistentVisibility && !spec.id.isEmpty() && !SafeMode::SafeModeEnabled()) {
+        item.enabled = d->hStatusBar->GetBool(spec.id.constData(), true);
+    }
+    d->statusBarItems.push_back(item);
+
+    relayoutStatusBar();
+}
+
+void MainWindow::removeStatusBarItem(const QByteArray& id)
+{
+    auto& items = d->statusBarItems;
+    auto it = std::find_if(items.begin(), items.end(), [&](const StatusBarItem& i) {
+        return i.spec.id == id;
+    });
+    if (it == items.end()) {
+        return;
+    }
+    if (it->widget) {
+        statusBar()->removeWidget(it->widget);
+    }
+    items.erase(it);
+    relayoutStatusBar();
+}
+
+void MainWindow::relayoutStatusBar()
+{
+    QStatusBar* sb = statusBar();
+
+    // For widgets that own their visibility (progress bar), remember the actual
+    // shown state so a relayout that happens mid-operation doesn't hide a running
+    // bar. addWidget()/addPermanentWidget() force-show, so we re-apply afterwards.
+    QHash<QWidget*, bool> wasVisible;
+    for (auto& item : d->statusBarItems) {
+        if (item.widget) {
+            wasVisible.insert(item.widget, item.widget->isVisible());
+            sb->removeWidget(item.widget);
+        }
+    }
+
+    // Left slot before Right slot; within a slot, ascending order.
+    std::stable_sort(
+        d->statusBarItems.begin(),
+        d->statusBarItems.end(),
+        [](const StatusBarItem& a, const StatusBarItem& b) {
+            if (a.spec.slot != b.spec.slot) {
+                return a.spec.slot == StatusBarSlot::Left;
+            }
+            return a.spec.order < b.spec.order;
+        }
+    );
+
+    for (auto& item : d->statusBarItems) {
+        if (!item.widget) {
+            continue;
+        }
+        if (item.spec.slot == StatusBarSlot::Left) {
+            sb->addWidget(item.widget, item.spec.stretch);
+        }
+        else {
+            sb->addPermanentWidget(item.widget, item.spec.stretch);
+        }
+
+        if (ownsVisibility(item.widget)) {
+            // Progress bar: registry drives userEnabled; actual visibility stays
+            // owned by the widget/sequencer. Preserve its prior shown state, gated
+            // by enabled (so a disabled bar never shows).
+            item.widget->setProperty("userEnabled", item.enabled);
+            item.widget->setVisible(item.enabled && wasVisible.value(item.widget, false));
+        }
+        else {
+            // Use the registry's intent, not isVisible(): during construction the
+            // window is not shown yet, so isVisible() would report false for all.
+            item.widget->setVisible(item.enabled);
+        }
+    }
+}
+
+void MainWindow::buildStatusBarContextMenu(QMenu& menu)
+{
+    // d->statusBarItems is kept sorted by relayoutStatusBar(), so the menu order
+    // follows the on-bar order.
+    for (auto& item : d->statusBarItems) {
+        QWidget* widget = item.widget;
+        if (!widget) {
+            continue;
+        }
+        // Widgets that set their own window title (progress bar, unit chooser)
+        // register with an empty spec title; fall back to the widget's title.
+        const QString title = item.spec.title.isEmpty() ? widget->windowTitle() : item.spec.title;
+        if (title.isEmpty()) {
+            continue;
+        }
+        QAction* action = menu.addAction(title);
+        action->setCheckable(true);
+        action->setChecked(item.enabled);
+        const QByteArray id = item.spec.id;
+        QObject::connect(action, &QAction::toggled, this, [this, id](bool on) {
+            setStatusBarItemEnabled(id, on);
+        });
+    }
+}
+
+void MainWindow::setStatusBarItemEnabled(const QByteArray& id, bool enabled)
+{
+    auto it = std::find_if(
+        d->statusBarItems.begin(),
+        d->statusBarItems.end(),
+        [&](const StatusBarItem& i) { return i.spec.id == id; }
+    );
+    if (it == d->statusBarItems.end()) {
+        return;
+    }
+    it->enabled = enabled;
+    if (it->widget) {
+        applyStatusBarItemEnabled(it->widget, enabled);
+    }
+    if (it->spec.persistentVisibility && !id.isEmpty()) {
+        d->hStatusBar->SetBool(id.constData(), enabled);
+    }
 }
 
 void MainWindow::showStatus(int type, const QString& message)

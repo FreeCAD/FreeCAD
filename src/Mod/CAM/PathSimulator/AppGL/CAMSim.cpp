@@ -22,28 +22,28 @@
  *                                                                         *
  ***************************************************************************/
 
+
+#include "CAMSim.h"
+
+#include "DlgCAMSimulator.h"
 #include <string>
 #include <vector>
 
-
-#include "CAMSim.h"
-#include "DlgCAMSimulator.h"
-#include <Mod/Part/App/BRepMesh.h>
-
-
 using namespace Base;
-using namespace CAMSimulator;
 
 TYPESYSTEM_SOURCE(CAMSimulator::CAMSim, Base::BaseClass);
+
+namespace CAMSimulator
+{
 
 void CAMSim::BeginSimulation(const Part::TopoShape& stock, float quality)
 {
     DlgCAMSimulator::instance()->startSimulation(stock, quality);
 }
 
-void CAMSimulator::CAMSim::resetSimulation()
+void CAMSim::resetSimulation(Gui::Document* doc)
 {
-    DlgCAMSimulator::instance()->resetSimulation();
+    DlgCAMSimulator::instance()->resetSimulation(doc);
 }
 
 void CAMSim::addTool(
@@ -56,7 +56,7 @@ void CAMSim::addTool(
     DlgCAMSimulator::instance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
 }
 
-void CAMSimulator::CAMSim::SetBaseShape(const Part::TopoShape& baseShape, float resolution)
+void CAMSim::SetBaseShape(const Part::TopoShape& baseShape, float resolution)
 {
     if (baseShape.isNull()) {
         return;
@@ -70,3 +70,5 @@ void CAMSim::AddCommand(Command* cmd)
     std::string gline = cmd->toGCode();
     DlgCAMSimulator::instance()->addGcodeCommand(gline.c_str());
 }
+
+}  // namespace CAMSimulator

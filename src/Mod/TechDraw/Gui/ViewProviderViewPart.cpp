@@ -46,6 +46,7 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/CenterLine.h>
@@ -361,10 +362,23 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
     }
 }
 
-bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
+bool ViewProviderViewPart::onDelete(const std::vector<std::string>& subNames)
 {
+    // If cosmetic sub-elements (edges, vertices, centerlines) are selected,
+    // delete only those and veto the object deletion.  This mirrors the
+    // behaviour of the normal (non-safe) mode and fixes issue #28574 where
+    // pressing Del in safe mode deleted the whole view instead of the
+    // selected cosmetic element.
+    if (!subNames.empty()) {
+        if (TechDraw::DrawViewPart* dvp = getViewObject()) {
+            dvp->deleteCosmeticElements(subNames);
+            dvp->refreshAllCosmetic();
+            dvp->requestPaint();
+            return false;  // veto deletion of the object itself
+        }
+    }
+
     // we cannot delete if the view has a section or detail view
-    (void) subNames;
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
 

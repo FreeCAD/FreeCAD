@@ -555,6 +555,13 @@ def _get_param_dictionary():
     param_dict["Mod/Arch"] = {
         "applyConstructionStyle":      ("bool",      True),
         "ClaimHosted":                 ("bool",      True),
+        "CoveringAlignment":           ("string",    "Center"),
+        "CoveringFinishMode":          ("string",    "Parametric Pattern"),
+        "CoveringJoint":               ("float",     5.0),
+        "CoveringLength":              ("float",     300.0),
+        "CoveringThickness":           ("float",     10.0),
+        "CoveringRotation":            ("float",     0.0),
+        "CoveringWidth":               ("float",     300.0),
         "CustomIfcSchema":             ("string",    ""),     # importIFClegacy.py
         "createIfcGroups":             ("bool",      False),  # importIFClegacy.py
         "DoorHeight":                  ("float",     2100.0),
@@ -697,7 +704,9 @@ def _get_param_dictionary():
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)
         if fd.open(QtCore.QIODevice.ReadOnly | QtCore.QFile.Text):
-            text = QtCore.QTextStream(fd).readAll()
+            # avoid using QTextStream due to bug in PySide6.11
+            # text = QtCore.QTextStream(fd).readAll()
+            text = fd.readAll().data().decode()
             fd.close()
         else:
             continue

@@ -7,6 +7,9 @@
 #include "AreaDxf.h"
 #include "Area.h"
 
+namespace heeks
+{
+
 AreaDxfRead::AreaDxfRead(CArea* area, const char* filepath)
     : CDxfRead(filepath)
     , m_area(area)
@@ -41,3 +44,5 @@ void AreaDxfRead::OnReadArc(
     m_area->m_curves.back()
         .m_vertices.emplace_back(dir ? 1 : 0, Point(end.x, end.y), Point(center.x, center.y));
 }
+
+}  // namespace heeks

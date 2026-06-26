@@ -96,7 +96,14 @@ void Thumbnail::SaveDocFile(Base::Writer& writer) const
         }
         else {
             QColor invalid;
-            this->viewer->imageFromFramebuffer(this->size, this->size, 4, invalid, img);
+            this->viewer->imageFromFramebuffer(
+                this->size,
+                this->size,
+                4,
+                invalid,
+                img,
+                View3DInventorViewer::RenderIntent::RasterCapture
+            );
             created = !img.isNull();
         }
     }

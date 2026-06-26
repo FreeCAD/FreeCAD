@@ -433,8 +433,17 @@ void ToolBarManager::setupStatusBar()
         sb->installEventFilter(this);
         statusBarAreaWidget
             = new ToolBarAreaWidget(sb, ToolBarArea::StatusBarToolBarArea, hStatusBar, connParam);
-        statusBarAreaWidget->setObjectName(QStringLiteral("StatusBarArea"));
-        sb->insertPermanentWidget(2, statusBarAreaWidget);
+        // Register through MainWindow's status-bar registry so ordering/layout is
+        // owned centrally. No title => not user-toggleable; it is an infrastructure
+        // host for toolbars the user drags into the status bar.
+        getMainWindow()->addStatusBarItem(
+            statusBarAreaWidget,
+            {.id = "StatusBarArea",
+             .title = {},
+             .slot = StatusBarSlot::Right,
+             .order = 500,
+             .persistentVisibility = false}
+        );
         statusBarAreaWidget->show();
     }
 }

@@ -34,15 +34,17 @@ import math
 
 import FreeCAD as App
 import DraftVecUtils
-from draftutils import gui_utils
-from draftutils import params
-from draftutils import utils
-
+from draftgeoutils import general as geo_general
+from draftgeoutils import offsets as geo_offsets
+from draftgeoutils import wires as geo_wires
 from draftmake.make_rectangle import make_rectangle
 from draftmake.make_wire import make_wire
 from draftmake.make_polygon import make_polygon
 from draftmake.make_circle import make_circle
 from draftmake.make_bspline import make_bspline
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 
 
 def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
@@ -72,7 +74,6 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
         sides, the total width being the given delta length.
     """
     import Part
-    import DraftGeomUtils
 
     newwire = None
     delete = None
@@ -128,8 +129,8 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
         if sym:
             d1 = App.Vector(delta).multiply(0.5)
             d2 = d1.negative()
-            n1 = DraftGeomUtils.offsetWire(obj.Shape, d1)
-            n2 = DraftGeomUtils.offsetWire(obj.Shape, d2)
+            n1 = geo_offsets.offsetWire(obj.Shape, d1)
+            n2 = geo_offsets.offsetWire(obj.Shape, d2)
         else:
             if isinstance(delta, float) and (len(obj.Shape.Edges) == 1):
                 # circle
@@ -142,19 +143,19 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
                 newwire = Part.Wire(nc.toShape())
                 p = []
             else:
-                newwire = DraftGeomUtils.offsetWire(obj.Shape, delta)
-                if DraftGeomUtils.hasCurves(newwire) and copy:
+                newwire = geo_offsets.offsetWire(obj.Shape, delta)
+                if geo_general.hasCurves(newwire) and copy:
                     p = []
                 else:
-                    p = DraftGeomUtils.getVerts(newwire)
+                    p = geo_general.getVerts(newwire)
     if occ:
         newobj = App.ActiveDocument.addObject("Part::Feature", "Offset")
-        newobj.Shape = DraftGeomUtils.offsetWire(obj.Shape, delta, occ=True)
+        newobj.Shape = geo_offsets.offsetWire(obj.Shape, delta, occ=True)
         gui_utils.formatObject(newobj, obj)
         if not copy:
             delete = obj.Name
     elif bind:
-        if not DraftGeomUtils.isReallyClosed(obj.Shape):
+        if not geo_wires.isReallyClosed(obj.Shape):
             if sym:
                 s1 = n1
                 s2 = n2
@@ -217,7 +218,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
             try:
                 if p:
                     newobj = make_wire(p)
-                    newobj.Closed = DraftGeomUtils.isReallyClosed(obj.Shape)
+                    newobj.Closed = geo_wires.isReallyClosed(obj.Shape)
             except Part.OCCError:
                 pass
             if (not newobj) and newwire:

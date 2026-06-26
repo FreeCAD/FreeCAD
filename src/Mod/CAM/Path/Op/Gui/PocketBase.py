@@ -34,7 +34,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Base page controller and command implementation for pocket operations."
 
-if False:
+if True:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -100,28 +100,28 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if setModel and obj.MinTravel != self.form.minTravel.isChecked():
             obj.MinTravel = self.form.minTravel.isChecked()
 
-    def updateZigZagAngle(self, obj, setModel=True):
-        if obj.ClearingPattern in ["Offset"]:
-            self.form.zigZagAngle.setEnabled(False)
+    def updateAngle(self, obj, setModel=True):
+        if obj.ClearingPattern == "Offset":
+            self.form.angle.setEnabled(False)
         else:
-            self.form.zigZagAngle.setEnabled(True)
+            self.form.angle.setEnabled(True)
 
         if setModel:
-            PathGuiUtil.updateInputField(obj, "ZigZagAngle", self.form.zigZagAngle)
+            PathGuiUtil.updateInputField(obj, "Angle", self.form.angle)
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
-        if obj.StepOver != self.form.stepOverPercent.value():
-            obj.StepOver = self.form.stepOverPercent.value()
+        if obj.StepOver != self.form.stepOver.value():
+            obj.StepOver = self.form.stepOver.value()
         if obj.ClearingPattern != str(self.form.clearingPattern.currentData()):
             obj.ClearingPattern = str(self.form.clearingPattern.currentData())
 
         PathGuiUtil.updateInputField(obj, "ExtraOffset", self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
-        self.updateZigZagAngle(obj)
+        self.updateAngle(obj)
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
@@ -146,7 +146,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
-        self.form.stepOverPercent.setValue(obj.StepOver)
+        self.form.stepOver.setValue(obj.StepOver)
         self.form.extraOffset.setText(
             FreeCAD.Units.Quantity(obj.ExtraOffset.Value, FreeCAD.Units.Length).UserString
         )
@@ -155,10 +155,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if FeatureOutline & self.pocketFeatures():
             self.form.useOutline.setChecked(obj.UseOutline)
 
-        self.form.zigZagAngle.setText(
-            FreeCAD.Units.Quantity(obj.ZigZagAngle, FreeCAD.Units.Angle).UserString
-        )
-        self.updateZigZagAngle(obj, False)
+        self.form.angle.setText(FreeCAD.Units.Quantity(obj.Angle, FreeCAD.Units.Angle).UserString)
+        self.updateAngle(obj, False)
 
         self.form.minTravel.setChecked(obj.MinTravel)
         self.updateMinTravel(obj, False)
@@ -178,8 +176,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.clearingPattern.currentIndexChanged)
-        signals.append(self.form.stepOverPercent.editingFinished)
-        signals.append(self.form.zigZagAngle.editingFinished)
+        signals.append(self.form.stepOver.editingFinished)
+        signals.append(self.form.angle.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.useStartPoint.clicked)
@@ -193,3 +191,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             signals.append(self.form.clearEdges.clicked)
 
         return signals
+
+    def registerSignalHandlers(self, obj):
+        self.form.setStartPoint.clicked.connect(self.setStartPoint)
+
+    def setStartPoint(self):
+        selEx = FreeCADGui.Selection.getSelectionEx()
+        if selEx and selEx[0].PickedPoints:
+            point = selEx[0].PickedPoints[0]
+            self.obj.StartPoint = point
+            self.setDirty()
+            Path.Log.info(
+                translate("CAM_Pocket", "Set start point: %s, %s")
+                % (round(point.x, 3), round(point.y, 3))
+            )

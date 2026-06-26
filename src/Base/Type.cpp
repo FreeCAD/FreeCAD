@@ -24,9 +24,8 @@
 
 #include <cassert>
 
-#include "Type.h"
 #include "Interpreter.h"
-#include "Console.h"
+#include "Type.h"
 
 
 using namespace Base;
@@ -46,33 +45,33 @@ static_assert(
 
 struct Base::TypeData
 {
-    TypeData(const char* name, const Type type, const Type parent, const Type::instantiationMethod instMethod)
+    TypeData(std::string_view name, Type type, Type parent, Type::instantiationMethod instMethod)
         : name(name)
         , parent(parent)
         , type(type)
         , instMethod(instMethod)
     {}
 
-    const std::string name;
-    const Type parent;
-    const Type type;
-    const Type::instantiationMethod instMethod;
+    std::string name;
+    Type parent;
+    Type type;
+    Type::instantiationMethod instMethod;
 };
 
 namespace
 {
-constexpr const char* BadTypeName = "BadType";
+constexpr const std::string_view BadTypeName = "BadType";
 }
 
-std::map<std::string, unsigned int> Type::typemap;
+std::map<std::string, unsigned int, std::less<>> Type::typemap;
 std::vector<TypeData*> Type::typedata;
-std::set<std::string> Type::loadModuleSet;
+std::set<std::string, std::less<>> Type::loadModuleSet;
 
 const Type Type::BadType;
 
 Type::instantiationMethod Type::getInstantiationMethod() const
 {
-    assert(typedata.size() >= 1 && "Type::init() must be called before creating instances");
+    assert(!typedata.empty() && "Type::init() must be called before creating instances");
     assert(typedata.size() > index && "Type index out of bounds");
     if (isBad() || typedata.size() <= index) {
         return nullptr;
@@ -92,7 +91,7 @@ bool Type::canInstantiate() const
     return method != nullptr;
 }
 
-void* Type::createInstanceByName(const char* typeName, bool loadModule)
+void* Type::createInstanceByName(std::string_view typeName, bool loadModule)
 {
     // if not already, load the module
     if (loadModule) {
@@ -105,7 +104,7 @@ void* Type::createInstanceByName(const char* typeName, bool loadModule)
     return type.createInstance();
 }
 
-void Type::importModule(const char* typeName)
+void Type::importModule(std::string_view typeName)
 {
     // cut out the module name
     const std::string mod = getModuleName(typeName);
@@ -128,18 +127,17 @@ void Type::importModule(const char* typeName)
     loadModuleSet.insert(mod);
 }
 
-const std::string Type::getModuleName(const char* className)
+std::string Type::getModuleName(std::string_view className)
 {
-    std::string_view classNameView(className);
-    auto pos = classNameView.find("::");
+    auto pos = className.find("::");
 
-    return pos != std::string_view::npos ? std::string(classNameView.substr(0, pos)) : std::string();
+    return pos != std::string_view::npos ? std::string(className.substr(0, pos)) : std::string();
 }
 
 
-const Type Type::createType(const Type parent, const char* name, instantiationMethod method)
+const Type Type::createType(const Type parent, std::string_view name, instantiationMethod method)
 {
-    assert(name && name[0] != '\0' && "Type name must not be empty");
+    assert(!name.empty() && "Type name must not be empty");
 
     Type newType;
     newType.index = static_cast<unsigned int>(Type::typedata.size());
@@ -154,9 +152,9 @@ const Type Type::createType(const Type parent, const char* name, instantiationMe
 
 void Type::init()
 {
-    assert(Type::typedata.size() == 0 && "Type::init() should only be called once");
+    assert(Type::typedata.empty() && "Type::init() should only be called once");
     typedata.emplace_back(new TypeData(BadTypeName, BadType, BadType, nullptr));
-    typemap[BadTypeName] = 0;
+    typemap.emplace(BadTypeName, 0);
 }
 
 void Type::destruct()
@@ -169,7 +167,7 @@ void Type::destruct()
     loadModuleSet.clear();
 }
 
-const Type Type::fromName(const char* name)
+Type Type::fromName(std::string_view name)
 {
     const auto pos = typemap.find(name);
     if (pos == typemap.end()) {
@@ -179,7 +177,7 @@ const Type Type::fromName(const char* name)
     return typedata[pos->second]->type;
 }
 
-const Type Type::fromKey(TypeId key)
+Type Type::fromKey(TypeId key)
 {
     if (key < typedata.size()) {
         return typedata[key]->type;
@@ -188,18 +186,18 @@ const Type Type::fromKey(TypeId key)
     return BadType;
 }
 
-const char* Type::getName() const
+std::string_view Type::getName() const
 {
     assert(
-        typedata.size() >= 1 && "Type::init() must be called before fetching names, even for bad types"
+        !typedata.empty() && "Type::init() must be called before fetching names, even for bad types"
     );
-    return typedata[index]->name.c_str();
+    return typedata[index]->name;
 }
 
-const Type Type::getParent() const
+Type Type::getParent() const
 {
     assert(
-        typedata.size() >= 1 && "Type::init() must be called before fetching parents, even for bad types"
+        !typedata.empty() && "Type::init() must be called before fetching parents, even for bad types"
     );
     return typedata[index]->parent;
 }
@@ -235,7 +233,7 @@ int Type::getNumTypes()
     return static_cast<int>(typedata.size());
 }
 
-const Type Type::getTypeIfDerivedFrom(const char* name, const Type parent, bool loadModule)
+Type Type::getTypeIfDerivedFrom(std::string_view name, const Type parent, bool loadModule)
 {
     if (loadModule) {
         importModule(name);

@@ -1,27 +1,24 @@
 # -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 sliptonic sliptonic@freecad.org                    *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
+# SPDX-FileNotice: Part of the FreeCAD project.
 
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 """
 Common helper functions for facing toolpath generators.
 
@@ -38,6 +35,36 @@ if False:
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
+def _wire_has_curves(wire):
+    """Check if a wire contains any non-linear (curved) edges."""
+    for edge in wire.Edges:
+        if len(edge.Vertexes) < 2:
+            return True
+        chord = edge.Vertexes[0].Point.distanceToPoint(edge.Vertexes[1].Point)
+        if edge.Length - chord > 1e-6:
+            return True
+    return False
+
+
+def ensure_polygon(wire, num_segments=64):
+    """Convert a wire with curved edges into a polygonal approximation.
+
+    If the wire already consists entirely of line segments, it is returned
+    unchanged.  Otherwise the wire is discretized into *num_segments*
+    straight segments so that downstream functions which iterate vertices
+    and treat edges as line segments produce correct results.
+    """
+    if not _wire_has_curves(wire):
+        return wire
+
+    Path.Log.debug("Discretizing curved wire into polygon")
+    points = wire.discretize(Number=num_segments + 1)
+    # Ensure the polygon is closed
+    if points[0].distanceToPoint(points[-1]) > 1e-6:
+        points.append(FreeCAD.Vector(points[0]))
+    return Part.makePolygon(points)
 
 
 def extract_polygon_geometry(polygon):
@@ -368,6 +395,7 @@ def unit_vectors_from_angle(angle_degrees):
 
 def project_bounds(wire, vec, origin):
     """Project all vertices of wire onto vec relative to origin and return (min_t, max_t)."""
+    wire = ensure_polygon(wire)
     ts = []
     for v in wire.Vertexes:
         ts.append(vec.dot(v.Point.sub(origin)))
@@ -412,6 +440,8 @@ def slice_wire_segments(wire, primary_vec, step_vec, t, origin):
     Returns a sorted list of (s_in, s_out) intervals along primary_vec within the polygon.
     """
     import math
+
+    wire = ensure_polygon(wire)
 
     # For diagnostics
     bb = wire.BoundBox

@@ -79,8 +79,16 @@ ADD_CUSTOM_TARGET(AssemblyTests ALL
     SOURCES ${test_files}
 )
 
+# Target AssemblyScripts handles copying AssemblyTests_SRCS and AssemblyScripts_SRCS
 fc_copy_sources(AssemblyScripts "${CMAKE_BINARY_DIR}/Mod/Assembly" ${all_files})
-fc_copy_sources(AssemblyTests "${CMAKE_BINARY_DIR}/Mod/Assembly" ${test_files})
+
+# Target AssemblyTests should only handle copying the remaining Assembly_Scripts
+# to avoid racing with AssemblyScripts over the same files.
+fc_copy_sources(AssemblyTests "${CMAKE_BINARY_DIR}/Mod/Assembly" ${Assembly_Scripts})
+
+# Ensure AssemblyScripts finishes its directory creation and copying before
+# AssemblyTests begins.
+add_dependencies(AssemblyTests AssemblyScripts)
 
 INSTALL(
     FILES

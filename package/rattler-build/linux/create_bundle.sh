@@ -55,6 +55,12 @@ echo -e "################"
 pixi list -e default > AppDir/packages.txt
 sed -i "1s/.*/\nLIST OF PACKAGES:/" AppDir/packages.txt
 
+echo "Running FreeCAD command-line smoke test..."
+if ! "${conda_env}/bin/freecadcmd" --safe-mode --version; then
+    echo "FreeCAD command-line smoke test failed; the Linux bundle cannot start."
+    exit 1
+fi
+
 curl -LO https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$(uname -m).AppImage
 chmod a+x appimagetool-$(uname -m).AppImage
 

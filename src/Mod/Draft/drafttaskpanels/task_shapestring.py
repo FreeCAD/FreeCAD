@@ -192,6 +192,8 @@ class ShapeStringTaskPanel:
             self.point = point
         else:
             self.point = self.wp.get_global_coords(point)
+        self.pointPicked = True
+        self.update_hints()
 
     def set_point_x(self, val):
         self.set_point_coord("x", val)
@@ -210,9 +212,10 @@ class ShapeStringTaskPanel:
         if self.pointPicked:
             Gui.HintManager.hide()
         else:
-            Gui.HintManager.show(
+            hints = [
                 Gui.InputHint(translate("draft", "%1 pick point"), Gui.UserInput.MouseLeft)
-            )
+            ] + gui_tool_utils._get_hint_mod_snap()
+            Gui.HintManager.show(*hints)
 
 
 class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):

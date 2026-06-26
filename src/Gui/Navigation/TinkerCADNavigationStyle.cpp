@@ -85,6 +85,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
     // event, we only need this flag to see if any processing happened
     // at all.
     SbBool processed = false;
+    bool triedSelectionDrag = false;
 
     const ViewerMode curmode = this->currentmode;
     ViewerMode newmode = curmode;
@@ -116,6 +117,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
         switch (button) {
             case SoMouseButtonEvent::BUTTON1:
                 this->button1down = press;
+                updateSelectionStartPosition(press, pos);
                 if (press && (curmode == NavigationStyle::SEEK_WAIT_MODE)) {
                     newmode = NavigationStyle::SEEK_MODE;
                     this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
@@ -180,7 +182,11 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
     // Mouse Movement handling
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         const auto event = (const SoLocation2Event*)ev;
-        if (curmode == NavigationStyle::PANNING) {
+        if (curmode == NavigationStyle::SELECTION && this->button1down) {
+            triedSelectionDrag = true;
+            processed = handleSelectionDragMotion(event, newmode, this->ctrldown);
+        }
+        else if (curmode == NavigationStyle::PANNING) {
             float ratio = vp.getViewportAspectRatio();
             panCamera(
                 viewer->getSoRenderManager()->getCamera(),
@@ -228,7 +234,10 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
             newmode = NavigationStyle::IDLE;
             break;
         case BUTTON1DOWN:
-            newmode = NavigationStyle::SELECTION;
+        case CTRLDOWN | BUTTON1DOWN:
+            if (newmode != NavigationStyle::INTERACT) {
+                newmode = NavigationStyle::SELECTION;
+            }
             break;
         case BUTTON2DOWN:
             if (newmode != NavigationStyle::DRAGGING) {
@@ -269,7 +278,7 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (!processed) {
+    if (!processed && !triedSelectionDrag) {
         processed = inherited::processSoEvent(ev);
     }
     return processed;

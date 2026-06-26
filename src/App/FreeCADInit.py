@@ -677,6 +677,7 @@ class PropertyType(IntEnum):
     Prop_Output = 8
     Prop_NoRecompute = 16
     Prop_NoPersist = 32
+    Prop_Input = 64
 
 App.PropertyType = PropertyType
 
@@ -725,6 +726,10 @@ class Transient:
 
 transient = Transient()
 
+@transient
+@functools.cache
+def resolve_path(path: Path) -> Path:
+    return path.resolve()
 
 @transient
 def call_in_place(fn):
@@ -1277,7 +1282,7 @@ class DirModScanner:
         """
         Scan in base with higher priority.
         """
-        if (key := str(base.resolve())) in self.visited:
+        if (key := str(resolve_path(base))) in self.visited:
             return
 
         self.visited.add(key)
@@ -1291,6 +1296,9 @@ class DirModScanner:
             Wrn(warning)
 
         if flat:
+            resolved = resolve_path(base)
+            if any(resolve_path(mod.path) == resolved for mod in self.mods.values()):
+                return
             self.mods[str(base)] = DirMod(base)
             return
 

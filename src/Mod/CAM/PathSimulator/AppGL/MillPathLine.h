@@ -4,7 +4,7 @@
 
 #include <vector>
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 struct MillPathPosition
@@ -29,4 +29,4 @@ protected:
     int mNumVerts;
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
