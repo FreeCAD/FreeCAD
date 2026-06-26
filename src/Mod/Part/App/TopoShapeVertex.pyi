@@ -16,7 +16,6 @@ from typing import Final, overload
     Constructor=True,
     RichCompare=True,
 )
-
 @sequence_protocol(
     sq_length=True,
     sq_concat=False,
@@ -29,7 +28,6 @@ from typing import Final, overload
     sq_inplace_concat=False,
     sq_inplace_repeat=False,
 )
-
 class TopoShapeVertex(TopoShape):
     """
     TopoShapeVertex is the OpenCasCade topological vertex wrapper
@@ -62,4 +60,3 @@ class TopoShapeVertex(TopoShape):
 
     Tolerance: float = ...
     """Set or get the tolerance of the vertex"""
-

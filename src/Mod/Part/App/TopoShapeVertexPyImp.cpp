@@ -167,13 +167,13 @@ PyObject* TopoShapeVertexPy::sequence_item(PyObject* self, Py_ssize_t index)
         return nullptr;
     }
 
-    switch(index) {
-	case 0:
-		return PyObject_GetAttrString(self, (char *) "X");
-	case 1:
-		return PyObject_GetAttrString(self, (char *) "Y");
-	case 2:
-		return PyObject_GetAttrString(self, (char *) "Z");
+    switch (index) {
+        case 0:
+            return PyObject_GetAttrString(self, (char*)"X");
+        case 1:
+            return PyObject_GetAttrString(self, (char*)"Y");
+        case 2:
+            return PyObject_GetAttrString(self, (char*)"Z");
     }
     return Py_None;
 }
@@ -227,7 +227,7 @@ Py::Float TopoShapeVertexPy::getZ() const
     }
 }
 
-PyObject* TopoShapeVertexPy::richCompare( PyObject *self, PyObject *object, int op)
+PyObject* TopoShapeVertexPy::richCompare(PyObject* self, PyObject* object, int op)
 {
     if (!PyObject_TypeCheck(object, &(TopoShapeVertexPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "Comparison of Vertex and non-Vertex not implemented");
@@ -279,7 +279,7 @@ PyObject* TopoShapeVertexPy::richCompare( PyObject *self, PyObject *object, int 
     }
     catch (Standard_Failure& e) {
         throw Py::RuntimeError(e.GetMessageString());
-	return Py_False;
+        return Py_False;
     }
 }
 
