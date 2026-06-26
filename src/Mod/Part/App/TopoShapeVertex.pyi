@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export
+from Base.Metadata import export, sequence_protocol
 from Base.Vector import Vector
 from Point import Point
 from TopoShape import TopoShape

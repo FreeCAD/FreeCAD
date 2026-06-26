@@ -46,15 +46,20 @@ using namespace Part;
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapeVertexPy::representation() const
 {
-    const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
-    double x = BRep_Tool::Pnt(v).X();
-    double y = BRep_Tool::Pnt(v).Y();
-    double z = BRep_Tool::Pnt(v).Z();
-
     std::stringstream str;
-    str << "< Part.Vertex (";
-    str << x << ", " << y << ", " << z;
-    str << ") >";
+    try {
+        const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
+        double x = BRep_Tool::Pnt(v).X();
+        double y = BRep_Tool::Pnt(v).Y();
+        double z = BRep_Tool::Pnt(v).Z();
+
+        str << "< Part.Vertex (";
+        str << x << ", " << y << ", " << z;
+        str << ") >";
+    }
+    catch (...) {
+        str << "< Part.Vertex() >";
+    }
 
     return str.str();
 }
@@ -229,14 +234,30 @@ PyObject* TopoShapeVertexPy::richCompare( PyObject *self, PyObject *object, int 
         return nullptr;
     }
     try {
-        double X = PyFloat_AsDouble(PyObject_GetAttrString(self, (char *) "X"));
-        double Y = PyFloat_AsDouble(PyObject_GetAttrString(self, (char *) "Y"));
-        double Z = PyFloat_AsDouble(PyObject_GetAttrString(self, (char *) "Z"));
+        PyObject* o = PyObject_GetAttrString(self, (char *) "X");
+        double X = PyFloat_AsDouble(o);
+	Py_DecRef(o);
 
-        double oX = PyFloat_AsDouble(PyObject_GetAttrString(object, (char *) "X"));
-        double oY = PyFloat_AsDouble(PyObject_GetAttrString(object, (char *) "Y"));
-        double oZ = PyFloat_AsDouble(PyObject_GetAttrString(object, (char *) "Z"));
-	
+        o = PyObject_GetAttrString(self, (char *) "Y");
+        double Y = PyFloat_AsDouble(o);
+	Py_DecRef(o);
+
+        o = PyObject_GetAttrString(self, (char *) "Z");
+        double Z = PyFloat_AsDouble(o);
+	Py_DecRef(o);
+
+        o = PyObject_GetAttrString(object, (char *) "X");
+        double oX = PyFloat_AsDouble(o);
+	Py_DecRef(o);
+
+        o = PyObject_GetAttrString(object, (char *) "Y");
+        double oY = PyFloat_AsDouble(o);
+	Py_DecRef(o);
+
+        o = PyObject_GetAttrString(object, (char *) "Z");
+        double oZ = PyFloat_AsDouble(o);
+	Py_DecRef(o);
+
 	int res=1;
 	PyObject *retval=nullptr;
 	if (op != Py_EQ && op != Py_NE) {
