@@ -260,12 +260,12 @@ TaskMeasure::TaskMeasure()
         mTargetDoc = doc;
 
         m_deletedConnection = Gui::Application::Instance->signalDeleteDocument.connect(
-                [this, doc](const Gui::Document& deletedDoc) {
-                    if (&deletedDoc == doc) {
-                        this->mTargetDoc = nullptr;
-                    }
+            [this, doc](const Gui::Document& deletedDoc) {
+                if (&deletedDoc == doc) {
+                    this->mTargetDoc = nullptr;
                 }
-            );
+            }
+        );
         mTargetDoc->openCommand("Add Measurement");
     }
 
