@@ -227,6 +227,7 @@ public:
     bool moveOnlyPreselected;
     bool moveInCommand;
     bool ctrlPressed;
+    bool ungroundedJointDrag;
 
     long lastClickTime;  // Store last click time as milliseconds
 
@@ -234,6 +235,7 @@ public:
     Base::Vector3d prevPosition;
     Base::Vector3d initialPosition;
     Base::Vector3d initialPositionRot;
+    Base::Vector3d initialUngroundedDragPosition;
     Base::Placement jcsPlc;
     Base::Placement jcsGlobalPlc;
     Base::Placement draggerInitPlc;
