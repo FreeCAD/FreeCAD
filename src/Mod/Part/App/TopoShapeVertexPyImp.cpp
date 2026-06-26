@@ -234,49 +234,54 @@ PyObject* TopoShapeVertexPy::richCompare(PyObject* self, PyObject* object, int o
         return nullptr;
     }
     try {
-        PyObject* o = PyObject_GetAttrString(self, (char *) "X");
+        PyObject* o = PyObject_GetAttrString(self, (char*)"X");
         double X = PyFloat_AsDouble(o);
-	Py_DecRef(o);
+        Py_DecRef(o);
 
-        o = PyObject_GetAttrString(self, (char *) "Y");
+        o = PyObject_GetAttrString(self, (char*)"Y");
         double Y = PyFloat_AsDouble(o);
-	Py_DecRef(o);
+        Py_DecRef(o);
 
-        o = PyObject_GetAttrString(self, (char *) "Z");
+        o = PyObject_GetAttrString(self, (char*)"Z");
         double Z = PyFloat_AsDouble(o);
-	Py_DecRef(o);
+        Py_DecRef(o);
 
-        o = PyObject_GetAttrString(object, (char *) "X");
+        o = PyObject_GetAttrString(object, (char*)"X");
         double oX = PyFloat_AsDouble(o);
-	Py_DecRef(o);
+        Py_DecRef(o);
 
-        o = PyObject_GetAttrString(object, (char *) "Y");
+        o = PyObject_GetAttrString(object, (char*)"Y");
         double oY = PyFloat_AsDouble(o);
-	Py_DecRef(o);
+        Py_DecRef(o);
 
-        o = PyObject_GetAttrString(object, (char *) "Z");
+        o = PyObject_GetAttrString(object, (char*)"Z");
         double oZ = PyFloat_AsDouble(o);
-	Py_DecRef(o);
+        Py_DecRef(o);
 
-	int res=1;
-	PyObject *retval=nullptr;
-	if (op != Py_EQ && op != Py_NE) {
-		PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vertex.");
-		return nullptr;
-	}
-	if  (X!=oX)
-		res=0;
-	if  (Y!=oY)
-		res=0;
-	if  (Z!=oZ)
-		res=0;
+        int res = 1;
+        PyObject* retval = nullptr;
+        if (op != Py_EQ && op != Py_NE) {
+            PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vertex.");
+            return nullptr;
+        }
+        if (X != oX) {
+            res = 0;
+        }
+        if (Y != oY) {
+            res = 0;
+        }
+        if (Z != oZ) {
+            res = 0;
+        }
 
-	if (op == Py_EQ)
-		retval = (!res)? Py_False : Py_True;
-	else
-		retval = (res)? Py_False : Py_True;
-	Py_INCREF(retval);
-	return retval;
+        if (op == Py_EQ) {
+            retval = (!res) ? Py_False : Py_True;
+        }
+        else {
+            retval = (res) ? Py_False : Py_True;
+        }
+        Py_INCREF(retval);
+        return retval;
     }
     catch (Standard_Failure& e) {
         throw Py::RuntimeError(e.GetMessageString());
