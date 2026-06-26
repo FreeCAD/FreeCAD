@@ -14,7 +14,22 @@ from typing import Final, overload
     FatherInclude="Mod/Part/App/TopoShapePy.h",
     Include="Mod/Part/App/TopoShape.h",
     Constructor=True,
+    RichCompare=True,
 )
+
+@sequence_protocol(
+    sq_length=True,
+    sq_concat=False,
+    sq_repeat=False,
+    sq_item=True,
+    mp_subscript=False,
+    sq_ass_item=False,
+    mp_ass_subscript=False,
+    sq_contains=False,
+    sq_inplace_concat=False,
+    sq_inplace_repeat=False,
+)
+
 class TopoShapeVertex(TopoShape):
     """
     TopoShapeVertex is the OpenCasCade topological vertex wrapper
@@ -47,3 +62,4 @@ class TopoShapeVertex(TopoShape):
 
     Tolerance: float = ...
     """Set or get the tolerance of the vertex"""
+

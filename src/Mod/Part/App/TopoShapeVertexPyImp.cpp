@@ -46,8 +46,15 @@ using namespace Part;
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapeVertexPy::representation() const
 {
+    const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
+    double x = BRep_Tool::Pnt(v).X();
+    double y = BRep_Tool::Pnt(v).Y();
+    double z = BRep_Tool::Pnt(v).Z();
+
     std::stringstream str;
-    str << "<Vertex object at " << getTopoShapePtr() << ">";
+    str << "< Part.Vertex (";
+    str << x << ", " << y << ", " << z;
+    str << ") >";
 
     return str.str();
 }
@@ -138,6 +145,34 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return 0;
 }
 
+
+Py_ssize_t TopoShapeVertexPy::sequence_length(PyObject* /*unused*/)
+{
+    return 3;
+}
+
+PyObject* TopoShapeVertexPy::sequence_item(PyObject* self, Py_ssize_t index)
+{
+    if (!PyObject_TypeCheck(self, &(TopoShapeVertexPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "first arg must be Vertex");
+        return nullptr;
+    }
+    if ((index < 0) || (index > 2)) {
+        PyErr_SetString(PyExc_IndexError, "index out of range");
+        return nullptr;
+    }
+
+    switch(index) {
+	case 0:
+		return PyObject_GetAttrString(self, (char *) "X");
+	case 1:
+		return PyObject_GetAttrString(self, (char *) "Y");
+	case 2:
+		return PyObject_GetAttrString(self, (char *) "Z");
+    }
+    return Py_None;
+}
+
 Py::Float TopoShapeVertexPy::getTolerance() const
 {
     const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
@@ -184,6 +219,46 @@ Py::Float TopoShapeVertexPy::getZ() const
     catch (Standard_Failure& e) {
 
         throw Py::RuntimeError(e.GetMessageString());
+    }
+}
+
+PyObject* TopoShapeVertexPy::richCompare( PyObject *self, PyObject *object, int op)
+{
+    if (!PyObject_TypeCheck(object, &(TopoShapeVertexPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "Comparison of Vertex and non-Vertex not implemented");
+        return nullptr;
+    }
+    try {
+        double X = PyFloat_AsDouble(PyObject_GetAttrString(self, (char *) "X"));
+        double Y = PyFloat_AsDouble(PyObject_GetAttrString(self, (char *) "Y"));
+        double Z = PyFloat_AsDouble(PyObject_GetAttrString(self, (char *) "Z"));
+
+        double oX = PyFloat_AsDouble(PyObject_GetAttrString(object, (char *) "X"));
+        double oY = PyFloat_AsDouble(PyObject_GetAttrString(object, (char *) "Y"));
+        double oZ = PyFloat_AsDouble(PyObject_GetAttrString(object, (char *) "Z"));
+	
+	int res=1;
+	PyObject *retval=nullptr;
+	if (op != Py_EQ && op != Py_NE) {
+		PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vertex.");
+		return nullptr;
+	}
+	if  (X!=oX)
+		res=0;
+	if  (Y!=oY)
+		res=0;
+	if  (Z!=oZ)
+		res=0;
+
+	if (op == Py_EQ)
+		retval = res? Py_False : Py_True;
+	retval = (!res)? Py_False : Py_True;
+	Py_INCREF(retval);
+	return retval;
+    }
+    catch (Standard_Failure& e) {
+        throw Py::RuntimeError(e.GetMessageString());
+	return Py_False;
     }
 }
 
