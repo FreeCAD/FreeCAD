@@ -57,11 +57,13 @@ public:
 protected:
     void findShapes();
     bool canFlex(const TopoDS_Shape&) const;
+    void findEdges();
+    bool isEdge(const TopoDS_Shape& shape) const;
     void changeEvent(QEvent* e) override;
 
 private:
     void setupConnections();
-    void onUniformFlexToggled(bool on);
+    void onModeChanged(int index);
 
 private:
     /// returns link to any of selected source shapes. Throws if nothing is selected for scaling.

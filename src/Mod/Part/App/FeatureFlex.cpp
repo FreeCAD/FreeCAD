@@ -345,6 +345,7 @@ App::DocumentObjectExecReturn* Flex::execute()
         if (result.isNull()) {
             return new App::DocumentObjectExecReturn("Null shape");
         }
+        result.bakeInTransform();
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }
