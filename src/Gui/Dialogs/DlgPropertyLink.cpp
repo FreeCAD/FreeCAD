@@ -39,6 +39,7 @@
 #include "ui_DlgPropertyLink.h"
 #include "Application.h"
 #include "Document.h"
+#include "MainWindow.h"
 #include "BitmapFactory.h"
 #include "PropertyView.h"
 #include "Selection.h"
@@ -497,6 +498,8 @@ void DlgPropertyLink::attachObserver()
         return;
     }
 
+    savedActiveView = Gui::getMainWindow()->activeWindow();
+
     Gui::Selection().selStackPush();
     attachSelection();
 
@@ -567,6 +570,11 @@ void DlgPropertyLink::detachObserver()
     }
     if (view) {
         view->blockSelection(false);
+    }
+
+    if (savedActiveView) {
+        Gui::getMainWindow()->setActiveWindow(savedActiveView);
+        savedActiveView = nullptr;
     }
 
     parentView = nullptr;
