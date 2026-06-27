@@ -76,6 +76,7 @@ from CAMTests.TestPostOutput import (
     TestExport2Integration,
 )
 
+from CAMTests.TestPathCustom import TestPathCustomConverted
 from CAMTests.TestPathPreferences import TestPathPreferences
 from CAMTests.TestPathPocket import TestPathPocket
 from CAMTests.TestPathProfile import TestPathProfile, TestPathOpenProfile
