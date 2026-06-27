@@ -80,6 +80,7 @@ class _CommandSelectLoop:
         newSelection = []
         for sel in selection:
             obj = sel.Object
+            obj.recompute()  # need in some cases to get identical hash codes
             subs = sel.SubObjects
             edges = None
             names = None

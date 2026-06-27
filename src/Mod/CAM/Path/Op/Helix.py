@@ -695,8 +695,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         # exclude overlap inner and outer helices
                         args["inner_radius"] = args["outer_radius"]
 
-            if (args["outer_radius"] < 0 and not Path.Geom.isRoughly(args["outer_radius"], 0)) or (
-                args["inner_radius"] < 0 and not Path.Geom.isRoughly(args["inner_radius"], 0)
+            if (args["outer_radius"] < 0 and not isRoughly(args["outer_radius"], 0)) or (
+                args["inner_radius"] < 0 and not isRoughly(args["inner_radius"], 0)
             ):
                 # skip hole which can not be processed
                 posX = hole["x"]
@@ -713,7 +713,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             work_distance = obj.StartDepth.Value - obj.FinalDepth.Value
             iters = math.ceil(round(work_distance / obj.StepDown.Value, 6))
             centerTop = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
-            centerBottom = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
+            centerBottom = FreeCAD.Vector(centerTop.x, centerTop.y, centerTop.z)
             retractDistance = safeHeight - obj.StartDepth.Value
             for iter_num in range(iters):
                 if iters > 1:
@@ -722,15 +722,12 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     )
                 else:
                     self.commandlist.append(Path.Command(f"(hole {hole_index + 1})"))
-                centerBottom.z -= obj.StepDown.Value
-                if centerBottom.z < obj.FinalDepth.Value or isRoughly(
-                    centerBottom.z, obj.FinalDepth.Value
-                ):
+                centerBottom.z = max(centerTop.z - obj.StepDown.Value, obj.FinalDepth.Value)
+                if isRoughly(centerBottom.z, obj.FinalDepth.Value):
                     centerBottom.z = obj.FinalDepth.Value
 
                 args["edge"] = Part.makeLine(centerTop, centerBottom)
                 retractHeight = centerTop.z + retractDistance
-                centerTop.z = centerBottom.z  # top point for next iteration
 
                 if isRoughly(args["inner_radius"], 0) or isRoughly(args["outer_radius"], 0):
                     # vertical drilling for zero radius
@@ -748,10 +745,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         linkingMoves = linking.get_linking_moves(**linkingArgs)
                         self.commandlist.extend(linkingMoves)
                         machinestate.addCommands(linkingMoves)
-                    zDrill = retractHeight
-                    while zDrill > centerBottom.z:
+                    drillStep = obj.HelixMaxPitch.Value or obj.StepDown.Value
+                    drillSteps = math.ceil(round((centerTop.z - centerBottom.z) / drillStep, 6))
+                    for iDrill in range(1, drillSteps + 1):
                         # drilling in peck mode
-                        zDrill -= obj.StepDown.Value
+                        zDrill = centerTop.z - drillStep * iDrill
                         if zDrill < centerBottom.z or isRoughly(zDrill, centerBottom.z):
                             zDrill = centerBottom.z
                         self.commandlist.append(Path.Command("G0", {"Z": retractHeight}))
@@ -858,6 +856,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         )
                         self.commandlist.append(cmd)
                         machinestate.addCommand(cmd)
+
+                centerTop.z = centerBottom.z  # top point for next iteration
 
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
