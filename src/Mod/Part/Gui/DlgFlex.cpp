@@ -65,7 +65,12 @@ DlgFlex::DlgFlex(QWidget* parent, Qt::WindowFlags fl)
     setupConnections();
 
     ui->dsbPitch->setDecimals(Base::UnitsApi::getDecimals());
+    ui->cmbMode->addItems(
+        {tr("Bend", "FeatureFlex"), tr("Twist", "FeatureFlex"), tr("UserDefined", "FeatureFlex")}
+    );
+
     findShapes();
+    findEdges();
 
     // this will mark as selected all the items in treeWidget that are selected in the document
     Gui::ItemViewSelection sel(ui->treeWidget);
@@ -76,8 +81,30 @@ DlgFlex::DlgFlex(QWidget* parent, Qt::WindowFlags fl)
 
 void DlgFlex::setupConnections()
 {
-    // connect(ui->rbUniform, &QRadioButton::toggled, this, &DlgFlex::onUniformFlexToggled);
+    connect(ui->cmbMode, &QComboBox::currentIndexChanged, this, &DlgFlex::onModeChanged);
 }
+
+void DlgFlex::onModeChanged(int index)
+{
+    ui->frmBend->hide();
+    ui->frmTwist->hide();
+    ui->frmUserDefined->hide();
+    switch (index) {
+        case 0:
+            // Bend
+            ui->frmBend->show();
+            break;
+        case 1:
+            // Twist
+            ui->frmTwist->show();
+            break;
+        default:
+            // UserDefined
+            ui->frmUserDefined->show();
+            break;
+    }
+}
+
 
 void DlgFlex::changeEvent(QEvent* e)
 {
@@ -125,6 +152,68 @@ void DlgFlex::findShapes()
     }
 }
 
+//! find all the edge objects in the active document and load them into the
+//! list widget
+void DlgFlex::findEdges()
+{
+    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    if (!activeDoc) {
+        return;
+    }
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
+    m_document = activeDoc->getName();
+    m_label = activeDoc->Label.getValue();
+
+    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
+
+    for (auto obj : objs) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(
+            obj,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
+        if (topoShape.isNull()) {
+            continue;
+        }
+        TopoDS_Shape shape = topoShape.getShape();
+        if (isEdge(shape)) {
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->twEdges);
+            item->setText(0, QString::fromUtf8(obj->Label.getValue()));
+            item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
+            if (vp) {
+                item->setIcon(0, vp->getIcon());
+            }
+        }
+    }
+}
+
+//! return true if shape is an edge.
+bool DlgFlex::isEdge(const TopoDS_Shape& shape) const
+{
+    if (shape.IsNull()) {
+        return false;
+    }
+    TopAbs_ShapeEnum type = shape.ShapeType();
+    if (type == TopAbs_EDGE) {
+        return true;
+    }
+
+    bool oneFind = false;
+    TopExp_Explorer xp;
+    xp.Init(shape, TopAbs_EDGE);
+    for (; xp.More(); xp.Next()) {
+        if (!xp.Current().IsNull()) {
+            // found a non-null edge
+            if (oneFind) {
+                // more than one edge
+                return false;
+            }
+            oneFind = true;
+        }
+    }
+    return oneFind;
+}
+
 //! return true if shape can be Flexd.
 bool DlgFlex::canFlex(const TopoDS_Shape& shape) const
 {
@@ -166,17 +255,16 @@ void DlgFlex::accept()
         QDialog::accept();
     }
     catch (Base::AbortException&) {
-        Base::Console().message("DS::accept - apply failed!\n");
+        Base::Console().message("DF::accept - apply failed!\n");
     };
 }
 
-// create a FeatureFlex for each scalable object
+// create a FeatureFlex for each object
 void DlgFlex::apply()
 {
-    //    Base::Console().message("DS::apply()\n");
     try {
         if (!validate()) {
-            QMessageBox::critical(this, windowTitle(), tr("No scalable shapes selected"));
+            QMessageBox::critical(this, windowTitle(), tr("No deformable shapes selected"));
             return;
         }
 
@@ -210,7 +298,7 @@ void DlgFlex::apply()
                     .isNull()) {
                 FC_ERR(
                     "Object " << sourceObj->getFullName()
-                              << " is not a shape object. Scaling is not possible."
+                              << " is not a shape object. Deformation is not possible."
                 );
                 continue;
             }
@@ -328,8 +416,10 @@ void DlgFlex::writeParametersToFeature(App::DocumentObject& feature, App::Docume
         base->getDocument()->getName(),
         base->getNameInDocument()
     );
+    Gui::Command::doCommand(Gui::Command::Doc, "f.Mode = %i", ui->cmbMode->currentIndex());
     Gui::Command::doCommand(Gui::Command::Doc, "f.Samples = %i", ui->dsbSamples->value());
     Gui::Command::doCommand(Gui::Command::Doc, "f.Pitch = %.7f", ui->dsbPitch->value());
+    Gui::Command::doCommand(Gui::Command::Doc, "f.Factor = %.7f", ui->dsbFactor->value());
 }
 
 // ---------------------------------------
