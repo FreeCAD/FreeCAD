@@ -139,3 +139,7 @@ endif(BUILD_BRIDGE)
 if(BUILD_AGENT)
     add_subdirectory(Agent)
 endif(BUILD_AGENT)
+
+if(BUILD_AUTH)
+    add_subdirectory(Auth)
+endif(BUILD_AUTH)
