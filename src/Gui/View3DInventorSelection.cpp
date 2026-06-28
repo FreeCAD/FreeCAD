@@ -22,6 +22,7 @@
 
 
 #include <Inventor/details/SoDetail.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -29,6 +30,7 @@
 
 #include "Application.h"
 #include "Document.h"
+#include "Inventor/SoFCSwitch.h"
 #include "SoFCUnifiedSelection.h"
 #include "View3DInventorSelection.h"
 #include "ViewProviderDocumentObject.h"
@@ -64,6 +66,15 @@ View3DInventorSelection::View3DInventorSelection(SoFCUnifiedSelection* root)
     pcGroupOnTopMaterial->setOverride(true);
     pcGroupOnTopMaterial->setName("GroupOnTopMaterial");
     pcGroupOnTop->addChild(pcGroupOnTopMaterial);
+
+    // Depth off so a previewed hidden object doesn't z-fight the visible result
+    // in the transparency pass. Must live on the parent group: the Sel/PreSel
+    // children are wiped by coinRemoveAllChildren() on every selection change.
+    auto pcGroupOnTopDepth = new SoDepthBuffer;
+    pcGroupOnTopDepth->test = FALSE;
+    pcGroupOnTopDepth->write = FALSE;
+    pcGroupOnTopDepth->setName("GroupOnTopDepthBuffer");
+    pcGroupOnTop->addChild(pcGroupOnTopDepth);
 
     {
         auto selRoot = new SoFCSelectionRoot;
@@ -169,7 +180,9 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         return;
     }
     auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
-    if (!vp || !vp->isSelectable() || !vp->isShow()) {
+    // preselection may target hidden objects, which are rendered on top instead
+    const bool isPreselect = Reason.Type == SelectionChanges::SetPreselect;
+    if (!vp || !vp->isSelectable() || (!isPreselect && !vp->isShow())) {
         return;
     }
     auto svp = vp;
@@ -185,6 +198,18 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
             if (!svp || !svp->isSelectable()) {
                 return;
             }
+        }
+    }
+    if (isPreselect) {
+        // Some view providers build geometry lazily and skip it while hidden;
+        // the true/false pair forces a one-time rebuild (no-op without it).
+        if (!vp->isShow()) {
+            vp->forceUpdate(true);
+            vp->forceUpdate(false);
+        }
+        if (svp != vp && !svp->isShow()) {
+            svp->forceUpdate(true);
+            svp->forceUpdate(false);
         }
     }
     int onTop;
@@ -255,11 +280,14 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         auto modeSwitch = grpVp->getModeSwitch();
         auto idx = modeSwitch->whichChild.getValue();
         if (idx < 0 || idx >= modeSwitch->getNumChildren() || modeSwitch->getChild(idx) != childRoot) {
-            FC_LOG(
-                "skip " << obj->getFullName() << '.' << (subname ? subname : "")
-                        << ", hidden inside geo group"
-            );
-            return;
+            if (!isPreselect) {
+                FC_LOG(
+                    "skip " << obj->getFullName() << '.' << (subname ? subname : "")
+                            << ", hidden inside geo group"
+                );
+                return;
+            }
+            // preselect: keep the path through the hidden group; the override draws it
         }
         if (childRoot->findChild(childVp->getRoot()) < 0) {
             FC_LOG(
@@ -294,6 +322,8 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
             tmpPath.append(pcGroup);
             tmpPath.append(node);
             tmpPath.append(&path);
+            // reach the element even when the object is hidden
+            SoFCSwitch::OverrideScope switchOverride(&path);
             action.apply(&tmpPath);
             tmpPath.unrefNoDelete();
             node->setDetail(det);
