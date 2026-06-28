@@ -24,13 +24,21 @@
  ***************************************************************************/
 
 
-#ifndef APP_TRANSACTION_H
-#define APP_TRANSACTION_H
+#pragma once
 
 #include <unordered_map>
 #include <Base/Factory.h>
 #include <Base/Persistence.h>
 #include <App/PropertyContainer.h>
+#include "TransactionDefs.h"
+
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
+#include <boost/multi_index/member.hpp>
+#include <boost/multi_index/mem_fun.hpp>
+
+namespace bmi = boost::multi_index;
 
 namespace App
 {
@@ -54,6 +62,7 @@ class AppExport Transaction: public Base::Persistence
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
+
 public:
     /**
      * @brief Construct a transaction.
@@ -64,7 +73,7 @@ public:
      * transactions from different document, so that they can be undone/redone
      * together.
      */
-    explicit Transaction(int id = 0);
+    explicit Transaction(int id = NullTransaction);
 
     ~Transaction() override;
 
@@ -338,5 +347,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_TRANSACTION_H

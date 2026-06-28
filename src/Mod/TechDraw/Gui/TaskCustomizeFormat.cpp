@@ -181,7 +181,8 @@ bool TaskCustomizeFormat::accept()
     // Slot: the OK button has been pressed
     QString formatPreview = ui->leFormat->text();
     std::string formatString = formatPreview.toUtf8().constData();
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Customize Format"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Customize Format"));
+
     if (isDimension)
     {
         auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selectedObject);
@@ -192,7 +193,7 @@ bool TaskCustomizeFormat::accept()
         auto balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(selectedObject);
         balloon->Text.setValue(formatString);
     }
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
     return true;
 }
 

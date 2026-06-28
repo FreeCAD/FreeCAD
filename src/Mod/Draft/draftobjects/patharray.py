@@ -61,28 +61,25 @@ the logic in `execute` would have to be changed to account for multiple
 objects. Therefore, the first solution is simpler, that is, using
 a single property of type `App::PropertyLinkSub`.
 """
+
 ## @package patharray
 # \ingroup draftobjects
 # \brief Provides the object code for the PathArray object.
 
+import lazy_loader.lazy_loader as lz
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 import FreeCAD as App
 import DraftVecUtils
-import lazy_loader.lazy_loader as lz
-
+from draftgeoutils import geometry as geo_geometry
+from draftgeoutils import wires as geo_wires
+from draftobjects.base import DraftObject
+from draftobjects.draftlink import DraftLink
 from draftutils.messages import _err, _log, _wrn
 from draftutils.translate import translate
 
-
-def QT_TRANSLATE_NOOP(ctx, txt):
-    return txt
-
-
-from draftobjects.base import DraftObject
-from draftobjects.draftlink import DraftLink
-
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
-DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 ## \addtogroup draftobjects
 # @{
@@ -604,7 +601,7 @@ def placements_on_path(
     if forceNormal and normalOverride:
         normal = normalOverride
     else:
-        normal = DraftGeomUtils.get_normal(pathwire)
+        normal = geo_geometry.get_shape_normal(pathwire)
         if normal is None:
             normal = App.Vector(0, 0, 1)
 
@@ -660,7 +657,7 @@ def placements_on_path(
     if sum(spacingPattern) == 0:
         spacingPattern = [spacingUnit]
 
-    isClosedPath = DraftGeomUtils.isReallyClosed(pathwire) and not (startOffset or endOffset)
+    isClosedPath = geo_wires.isReallyClosed(pathwire) and not (startOffset or endOffset)
 
     count = max(count, 1)
 

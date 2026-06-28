@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_DLGINSPECTMATERIAL_H
-#define MATGUI_DLGINSPECTMATERIAL_H
+#pragma once
 
 #include <memory>
 
@@ -119,5 +118,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_DLGINSPECTMATERIAL_H

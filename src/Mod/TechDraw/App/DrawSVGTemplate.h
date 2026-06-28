@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_DrawSVGTemplate_h_
-#define TECHDRAW_DrawSVGTemplate_h_
+#pragma once
 
 # include <QDomDocument>
 
@@ -82,5 +81,3 @@ private:
 using DrawSVGTemplatePython = App::FeaturePythonT<DrawSVGTemplate>;
 
 } //namespace TechDraw
-
-#endif //TECHDRAW_DrawSVGTemplate_h_

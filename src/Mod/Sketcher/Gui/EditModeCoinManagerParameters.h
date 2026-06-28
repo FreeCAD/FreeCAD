@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditModeCoinManagerParameters_H
-#define SKETCHERGUI_EditModeCoinManagerParameters_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -137,8 +136,10 @@ struct DrawingParameters
     int coinFontSize = 17;            // Font size to be used by coin
     int labelFontSize = 17;  // Font size to be used by SoDatumLabel, which uses a QPainter and a
                              // QFont internally
-    int constraintIconSize = 15;  // Size of constraint icons
-    int markerSize = 7;           // Size used for markers
+    static QString labelFontName;        // Font face to be used by SoDatumLabel
+    int constraintIconSize = 15;         // Size of constraint icons
+    int constraintIconHitPaddingPx = 3;  // Extra hit padding for constraint icons
+    int markerSize = 7;                  // Size used for markers
 
     int CurveWidth = 2;             // width of normal edges
     int ConstructionWidth = 1;      // width of construction edges
@@ -447,6 +448,14 @@ struct EditModeScenegraphNodes
     SoPickStyle* pickStyleAxes;
     //@}
 
+    /** @name Line-extension auto-constraint hint nodes */
+    //@{
+    SoMaterial* LineExtensionAutoConstraintHintMaterials;
+    SoCoordinate3* LineExtensionAutoConstraintHintCoordinate;
+    SoLineSet* LineExtensionAutoConstraintHintSet;
+    SoDrawStyle* LineExtensionAutoConstraintHintDrawStyle;
+    //@}
+
     /** @name Temporal edit markers nodes- For operation rendering, such as trimming green circles*/
     //@{
     SoMaterial* EditMarkersMaterials;
@@ -593,5 +602,3 @@ struct CoinMapping
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_EditModeCoinManagerParameters_H

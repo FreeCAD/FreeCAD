@@ -191,7 +191,7 @@ std::shared_ptr<Model> ModelManagerLocal::getModelByPath(const QString& path) co
     for (auto& library : *_libraryList) {
         if (library->isLocal()) {
             auto localLibrary = std::static_pointer_cast<Materials::ModelLibraryLocal> (library);
-            if (cleanPath.startsWith(localLibrary->getDirectory())) {
+            if (cleanPath.startsWith(localLibrary->getDirectory(), localLibrary->caseSensitivity())) {
                 return localLibrary->getModelByPath(cleanPath);
             }
         }

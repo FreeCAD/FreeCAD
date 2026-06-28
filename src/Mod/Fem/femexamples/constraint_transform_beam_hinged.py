@@ -34,6 +34,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -132,7 +133,7 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
-        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.GeometricalNonlinearity = False
         solver_obj.ThermoMechSteadyState = False
         solver_obj.MatrixSolverType = "default"
         solver_obj.IterationsControlParameterTimeUse = False
@@ -148,26 +149,26 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_obj)
 
     # constraint pressure
-    con_pressure = ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
+    con_pressure = ObjectsFem.makeConstraintPressure(doc, name="Pressure")
     con_pressure.References = [(geom_obj, "Face8")]
     con_pressure.Pressure = "10.0 MPa"
     con_pressure.Reversed = False
     analysis.addObject(con_pressure)
 
     # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="FemConstraintDisplacement")
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, name="Displacement")
     con_disp.References = [(geom_obj, "Face4"), (geom_obj, "Face5")]
     con_disp.xFree = False
     con_disp.xDisplacement = 0.0
     analysis.addObject(con_disp)
 
     # constraints transform
-    con_transform1 = ObjectsFem.makeConstraintTransform(doc, name="FemConstraintTransform1")
+    con_transform1 = ObjectsFem.makeConstraintTransform(doc, name="Transform1")
     con_transform1.References = [(geom_obj, "Face4")]
     con_transform1.TransformType = "Cylindrical"
     analysis.addObject(con_transform1)
 
-    con_transform2 = ObjectsFem.makeConstraintTransform(doc, name="FemConstraintTransform2")
+    con_transform2 = ObjectsFem.makeConstraintTransform(doc, name="Transform2")
     con_transform2.References = [(geom_obj, "Face5")]
     con_transform2.TransformType = "Cylindrical"
     analysis.addObject(con_transform2)
@@ -175,13 +176,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # mesh
     from .meshes.mesh_transform_beam_hinged_tetra10 import create_nodes, create_elements
 
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
+    fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Shape = geom_obj

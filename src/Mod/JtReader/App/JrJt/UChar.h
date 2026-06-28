@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef UChar_HEADER
-#define UChar_HEADER
+#pragma once
 
 #include "Context.h"
 #include <istream>
@@ -52,6 +51,3 @@ struct UChar
 
     uint8_t _UChar;
 };
-
-
-#endif

@@ -78,7 +78,7 @@ class BIM_Text:
             anno.TextColor = (r, g, b)
             self.finish()
 
-    def finish(self, arg=False):
+    def finish(self, cont=False):
         FreeCADGui.draftToolBar.sourceCmd = None
         FreeCADGui.draftToolBar.offUi()
 

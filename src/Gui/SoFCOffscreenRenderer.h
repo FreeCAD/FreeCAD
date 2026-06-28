@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCOFFSCREENRENDERER_H
-#define GUI_SOFCOFFSCREENRENDERER_H
+#pragma once
 
 #include <Inventor/SbColor4f.h>
 #include <Inventor/SbMatrix.h>
@@ -168,6 +167,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_SOFCOFFSCREENRENDERER_H

@@ -6,17 +6,17 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="20"/>
       <source>Edge Constraints</source>
-      <translation type="unfinished">Edge Constraints</translation>
+      <translation>Restrição de arestas</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="26"/>
       <source>Constrains the surface to pass through the selected edges</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected edges</translation>
+      <translation>Restringe a superfície para passar pelas arestas selecionadas</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="29"/>
       <source>Non-Boundary Edges</source>
-      <translation type="unfinished">Non-Boundary Edges</translation>
+      <translation>Arestas sem limites</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="146"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Aceitar</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
@@ -54,22 +54,22 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation type="unfinished">Boundaries</translation>
+      <translation>Limites</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
       <source>Support Surface</source>
-      <translation type="unfinished">Support Surface</translation>
+      <translation>Suportar superfície</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="44"/>
       <source>Edges that will limit the surface</source>
-      <translation type="unfinished">Edges that will limit the surface</translation>
+      <translation>Arestas que vão limitar a superfície</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="47"/>
       <source>Boundary Edges</source>
-      <translation type="unfinished">Boundary Edges</translation>
+      <translation>Limitar arestas</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="64"/>
@@ -85,7 +85,7 @@
       <location filename="../../TaskFilling.ui" line="95"/>
       <location filename="../../TaskFilling.ui" line="111"/>
       <source>Drag the items to reorder the list</source>
-      <translation type="unfinished">Drag the items to reorder the list</translation>
+      <translation>Move os itens para reordenar a lista</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Aceitar</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -114,12 +114,12 @@
       <location filename="../../TaskSections.ui" line="14"/>
       <location filename="../../TaskSections.ui" line="23"/>
       <source>Sectional Edges</source>
-      <translation type="unfinished">Sectional Edges</translation>
+      <translation>Arestas Seccionais</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="20"/>
       <source>Constrains the surface to follow the selected sectional edges</source>
-      <translation type="unfinished">Constrains the surface to follow the selected sectional edges</translation>
+      <translation>Restringe a superfície para seguir as arestas seccionais selecionadas</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="40"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lista pode ser reordenada arrastando-a&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -185,23 +185,23 @@
       <translation type="unfinished">Flip orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="378"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="384"/>
       <source>Too many edges</source>
       <translation type="unfinished">Too many edges</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="379"/>
-      <location filename="../../TaskGeomFillSurface.cpp" line="387"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="385"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="393"/>
       <source>The tool requires two, three or four edges</source>
       <translation type="unfinished">The tool requires two, three or four edges</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="386"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="392"/>
       <source>Too less edges</source>
       <translation type="unfinished">Too less edges</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="398"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="404"/>
       <source>Invalid object</source>
       <translation type="unfinished">Invalid object</translation>
     </message>
@@ -279,7 +279,7 @@
   <context>
     <name>SurfaceGui::FillingVertexPanel</name>
     <message>
-      <location filename="../../TaskFillingVertex.cpp" line="129"/>
+      <location filename="../../TaskFillingVertex.cpp" line="127"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
@@ -344,7 +344,7 @@ vertices that are not on the boundary.</translation>
       <translation type="unfinished">Extend surface</translation>
     </message>
     <message>
-      <location filename="../../Blending/TaskBlendCurve.cpp" line="409"/>
+      <location filename="../../Blending/TaskBlendCurve.cpp" line="410"/>
       <source>Edit blending curve</source>
       <translation type="unfinished">Edit blending curve</translation>
     </message>
@@ -457,17 +457,17 @@ This command only works with a mesh object.</translation>
   <context>
     <name>SurfaceGui::FillingEdgePanel</name>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="136"/>
+      <location filename="../../TaskFillingEdge.cpp" line="133"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="326"/>
+      <location filename="../../TaskFillingEdge.cpp" line="329"/>
       <source>Invalid object</source>
       <translation type="unfinished">Invalid object</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskFillingEdge.cpp" line="406"/>
+      <location filename="../../TaskFillingEdge.cpp" line="407"/>
       <source>Edge has %n adjacent face(s)</source>
       <translation type="unfinished">
         <numerusform>Edge has %n adjacent face(s)</numerusform>
@@ -475,12 +475,12 @@ This command only works with a mesh object.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="410"/>
+      <location filename="../../TaskFillingEdge.cpp" line="411"/>
       <source>None</source>
       <translation>Nenhum</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="431"/>
+      <location filename="../../TaskFillingEdge.cpp" line="432"/>
       <source>Edge has no adjacent faces</source>
       <translation type="unfinished">Edge has no adjacent faces</translation>
     </message>
@@ -489,12 +489,12 @@ This command only works with a mesh object.</translation>
     <name>QObject</name>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
-      <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
       <translation type="unfinished">Edit Filling</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="661"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="667"/>
       <source>Surface</source>
       <translation>Superfície</translation>
     </message>
@@ -512,12 +512,12 @@ This command only works with a mesh object.</translation>
   <context>
     <name>SurfaceGui::FillingPanel</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="284"/>
+      <location filename="../../TaskFilling.cpp" line="281"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="494"/>
+      <location filename="../../TaskFilling.cpp" line="497"/>
       <source>Invalid object</source>
       <translation type="unfinished">Invalid object</translation>
     </message>
@@ -543,12 +543,12 @@ This command only works with a mesh object.</translation>
   <context>
     <name>SurfaceGui::SectionsPanel</name>
     <message>
-      <location filename="../../TaskSections.cpp" line="281"/>
+      <location filename="../../TaskSections.cpp" line="279"/>
       <source>Remove</source>
       <translation>Remover</translation>
     </message>
     <message>
-      <location filename="../../TaskSections.cpp" line="420"/>
+      <location filename="../../TaskSections.cpp" line="424"/>
       <source>Invalid object</source>
       <translation type="unfinished">Invalid object</translation>
     </message>

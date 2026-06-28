@@ -22,14 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TRANSLATOR_H
-#define GUI_TRANSLATOR_H
+#pragma once
 
 #include <QObject>
-#include <list>
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 #include <FCGlobal.h>
 
 
@@ -38,7 +37,7 @@ class QDir;
 namespace Gui
 {
 
-using TStringList = std::list<std::string>;
+using TLanguageList = std::vector<std::string>;
 using TStringMap = std::map<std::string, std::string>;
 
 /**
@@ -56,6 +55,12 @@ class GuiExport Translator: public QObject
 
 public:
     class ParameterObserver;
+    enum class LocaleFormattingPreference : int
+    {
+        OperatingSystem = 0,
+        SelectedLanguage = 1,
+        CLocale = 2
+    };
     static constexpr std::initializer_list<const char*> formattingOptions {
         QT_TR_NOOP("Operating system"),
         QT_TR_NOOP("Selected language"),
@@ -81,8 +86,10 @@ public:
     std::string locale(const std::string&) const;
     /** Sets default Qt locale based on given language name **/
     void setLocale(const std::string& = "") const;
+    /** Applies the current locale formatting preference to Qt and ICU. **/
+    void applyLocaleFormattingPreference() const;
     /** Returns a list of supported languages. */
-    TStringList supportedLanguages() const;
+    TLanguageList supportedLanguages() const;
     /** Returns a map of supported languages/locales. */
     TStringMap supportedLocales() const;
     /** Adds a path where localization files can be found */
@@ -110,5 +117,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TRANSLATOR_H

@@ -1,30 +1,33 @@
-/***************************************************************************
- *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2005 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QApplication>
 #include <QDir>
 #include <QPrinter>
 #include <QFileInfo>
+#include <map>
 #include <Inventor/SoInput.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <xercesc/util/TranscodingException.hpp>
@@ -35,6 +38,7 @@
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
+#include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -68,9 +72,175 @@
 #include "WorkbenchManipulatorPython.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Language/Translator.h"
+#include "Selection/SoFCUnifiedSelection.h"
 
 
 using namespace Gui;
+
+namespace
+{
+void requirePythonMainThread(const char* api)
+{
+    try {
+        Gui::requireMainThread(api);
+    }
+    catch (const Base::Exception& exception) {
+        throw Py::RuntimeError(exception.what());
+    }
+}
+
+struct CoinActionTarget
+{
+    SoNode* node {nullptr};
+    SoPath* path {nullptr};
+};
+
+std::string pythonStringToStdString(PyObject* value)
+{
+    if (PyUnicode_Check(value)) {
+        const char* utf8 = PyUnicode_AsUTF8(value);
+        if (!utf8) {
+            throw Py::Exception();
+        }
+        return utf8;
+    }
+
+    if (PyBytes_Check(value)) {
+        char* data = nullptr;
+        Py_ssize_t size = 0;
+        if (PyBytes_AsStringAndSize(value, &data, &size) != 0) {
+            throw Py::Exception();
+        }
+        return std::string(data, static_cast<std::size_t>(size));
+    }
+
+    throw Py::TypeError("color override keys must be strings");
+}
+
+Base::Color pythonToColor(PyObject* value)
+{
+    Base::Color color;
+    if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
+        PyObject* item = PyTuple_GetItem(value, 0);
+        if (PyFloat_Check(item)) {
+            color.r = static_cast<float>(PyFloat_AsDouble(item));
+            item = PyTuple_GetItem(value, 1);
+            if (!PyFloat_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent float components");
+            }
+            color.g = static_cast<float>(PyFloat_AsDouble(item));
+            item = PyTuple_GetItem(value, 2);
+            if (!PyFloat_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent float components");
+            }
+            color.b = static_cast<float>(PyFloat_AsDouble(item));
+            if (PyTuple_Size(value) == 4) {
+                item = PyTuple_GetItem(value, 3);
+                if (!PyFloat_Check(item)) {
+                    throw Py::TypeError("color tuples must use consistent float components");
+                }
+                color.a = static_cast<float>(PyFloat_AsDouble(item));
+            }
+            return color;
+        }
+
+        if (PyLong_Check(item)) {
+            color.r = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            item = PyTuple_GetItem(value, 1);
+            if (!PyLong_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent integer components");
+            }
+            color.g = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            item = PyTuple_GetItem(value, 2);
+            if (!PyLong_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent integer components");
+            }
+            color.b = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            if (PyTuple_Size(value) == 4) {
+                item = PyTuple_GetItem(value, 3);
+                if (!PyLong_Check(item)) {
+                    throw Py::TypeError("color tuples must use consistent integer components");
+                }
+                color.a = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            }
+            return color;
+        }
+
+        throw Py::TypeError("color tuples must contain either floats or integers");
+    }
+
+    if (PyLong_Check(value)) {
+        color.setPackedValue(PyLong_AsUnsignedLong(value));
+        return color;
+    }
+
+    throw Py::TypeError("colors must be packed integers or RGB/RGBA tuples");
+}
+
+std::map<std::string, Base::Color> pythonToColorOverrideMap(PyObject* value)
+{
+    if (!PyDict_Check(value)) {
+        throw Py::TypeError("colors must be a dict mapping element names to colors");
+    }
+
+    std::map<std::string, Base::Color> colors;
+    PyObject* key = nullptr;
+    PyObject* item = nullptr;
+    Py_ssize_t pos = 0;
+    while (PyDict_Next(value, &pos, &key, &item)) {
+        colors.emplace(pythonStringToStdString(key), pythonToColor(item));
+    }
+    return colors;
+}
+
+CoinActionTarget pythonToCoinActionTarget(PyObject* proxy)
+{
+    CoinActionTarget target;
+    void* ptr = nullptr;
+
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPath *", proxy, &ptr, 0);
+    }
+    catch (const Base::Exception&) {
+        ptr = nullptr;
+    }
+    if (ptr) {
+        target.path = static_cast<SoPath*>(ptr);
+        return target;
+    }
+
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
+    }
+    catch (const Base::Exception&) {
+        ptr = nullptr;
+    }
+    if (ptr) {
+        target.node = static_cast<SoNode*>(ptr);
+        return target;
+    }
+
+    throw Py::TypeError("target must be of type coin.SoNode or coin.SoPath");
+}
+
+void applyElementColorOverrideAction(
+    const CoinActionTarget& target,
+    std::map<std::string, Base::Color> colors
+)
+{
+    SoSelectionElementAction action(SoSelectionElementAction::Color, true);
+    action.swapColors(colors);
+    if (target.path) {
+        action.apply(target.path);
+    }
+    else if (target.node) {
+        action.apply(target.node);
+    }
+    else {
+        throw Py::TypeError("target must be of type coin.SoNode or coin.SoPath");
+    }
+}
+}  // namespace
 
 // Application methods structure
 PyMethodDef ApplicationPy::Methods[] = {
@@ -253,7 +423,7 @@ PyMethodDef ApplicationPy::Methods[] = {
     {"SendMsgToActiveView",
      (PyCFunction)ApplicationPy::sSendActiveView,
      METH_VARARGS,
-     "SendMsgToActiveView(name, suppress=False) -> str or None\n"
+     "SendMsgToActiveView(name, suppress=False) -> None\n"
      "\n"
      "Send message to the active view. Deprecated, use class View.\n"
      "\n"
@@ -262,7 +432,7 @@ PyMethodDef ApplicationPy::Methods[] = {
     {"sendMsgToFocusView",
      (PyCFunction)ApplicationPy::sSendFocusView,
      METH_VARARGS,
-     "sendMsgToFocusView(name, suppress=False) -> str or None\n"
+     "sendMsgToFocusView(name, suppress=False) -> None\n"
      "\n"
      "Send message to the focused view.\n"
      "\n"
@@ -540,6 +710,26 @@ PyMethodDef ApplicationPy::Methods[] = {
      "Remove all children from a group node.\n"
      "\n"
      "node : object"},
+    {"applyElementColorOverride",
+     (PyCFunction)ApplicationPy::sApplyElementColorOverride,
+     METH_VARARGS,
+     "applyElementColorOverride(target, colors) -> None\n"
+     "\n"
+     "Apply a secondary element color override to a Coin node or path.\n"
+     "\n"
+     "target : coin.SoNode | coin.SoPath\n"
+     "colors : dict[str, color]\n"
+     "    Maps element names such as 'Face', 'Face1', 'Edge3', or '' to colors.\n"
+     "    Color values use the same packed-int or RGB/RGBA tuple formats accepted by\n"
+     "    FreeCAD material colors."},
+    {"clearElementColorOverride",
+     (PyCFunction)ApplicationPy::sClearElementColorOverride,
+     METH_VARARGS,
+     "clearElementColorOverride(target) -> None\n"
+     "\n"
+     "Clear a previously applied secondary element color override from a Coin node or path.\n"
+     "\n"
+     "target : coin.SoNode | coin.SoPath"},
     {"suspendWaitCursor",
      (PyCFunction)ApplicationPy::sSuspendWaitCursor,
      METH_VARARGS,
@@ -559,6 +749,8 @@ PyObject* Gui::ApplicationPy::sEditDocument(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.editDocument");
+
     Document* pcDoc = Application::Instance->editDocument();
     if (pcDoc) {
         return pcDoc->getPyObject();
@@ -572,6 +764,8 @@ PyObject* Gui::ApplicationPy::sActiveDocument(PyObject* /*self*/, PyObject* args
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.activeDocument");
 
     Document* pcDoc = Application::Instance->activeDocument();
     if (pcDoc) {
@@ -587,6 +781,8 @@ PyObject* Gui::ApplicationPy::sActiveView(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "|s", &typeName)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.activeView");
 
     PY_TRY
     {
@@ -630,6 +826,8 @@ PyObject* Gui::ApplicationPy::sActivateView(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.activateView");
+
     Base::Type type = Base::Type::fromName(typeStr);
     Application::Instance->activateView(type, Base::asBoolean(create));
 
@@ -671,6 +869,8 @@ PyObject* Gui::ApplicationPy::sSetActiveDocument(PyObject* /*self*/, PyObject* a
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.setActiveDocument");
+
     if (Application::Instance->activeDocument() != pcDoc) {
         Gui::MDIView* view = pcDoc->getActiveView();
         getMainWindow()->setActiveWindow(view);
@@ -681,6 +881,8 @@ PyObject* Gui::ApplicationPy::sSetActiveDocument(PyObject* /*self*/, PyObject* a
 
 PyObject* ApplicationPy::sGetDocument(PyObject* /*self*/, PyObject* args)
 {
+    requirePythonMainThread("FreeCADGui.getDocument");
+
     char* pstr = nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         Document* pcDoc = Application::Instance->getDocument(pstr);
@@ -716,6 +918,8 @@ PyObject* ApplicationPy::sHide(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.hide");
+
     Document* pcDoc = Application::Instance->activeDocument();
 
     if (pcDoc) {
@@ -731,6 +935,8 @@ PyObject* ApplicationPy::sShow(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "s;Name of the object to show has to be given!", &psFeatStr)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.show");
 
     Document* pcDoc = Application::Instance->activeDocument();
 
@@ -748,6 +954,8 @@ PyObject* ApplicationPy::sHideObject(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.hideObject");
+
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-static-cast-downcast)
     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
     Application::Instance->hideViewProvider(obj);
@@ -761,6 +969,8 @@ PyObject* ApplicationPy::sShowObject(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &object)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.showObject");
 
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-static-cast-downcast)
     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
@@ -928,16 +1138,12 @@ PyObject* ApplicationPy::sSendActiveView(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    const char* ppReturn = nullptr;
-    if (!Application::Instance->sendMsgToActiveView(psCommandStr, &ppReturn)) {
+    requirePythonMainThread("FreeCADGui.SendMsgToActiveView");
+
+    if (!Application::Instance->sendMsgToActiveView(psCommandStr)) {
         if (!Base::asBoolean(suppress)) {
             Base::Console().warning("Unknown view command: %s\n", psCommandStr);
         }
-    }
-
-    // Print the return value to the output
-    if (ppReturn) {
-        return Py_BuildValue("s", ppReturn);
     }
 
     Py_Return;
@@ -952,16 +1158,12 @@ PyObject* ApplicationPy::sSendFocusView(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    const char* ppReturn = nullptr;
-    if (!Application::Instance->sendMsgToFocusView(psCommandStr, &ppReturn)) {
+    requirePythonMainThread("FreeCADGui.SendMsgToFocusView");
+
+    if (!Application::Instance->sendMsgToFocusView(psCommandStr)) {
         if (!Base::asBoolean(suppress)) {
             Base::Console().warning("Unknown view command: %s\n", psCommandStr);
         }
-    }
-
-    // Print the return value to the output
-    if (ppReturn) {
-        return Py_BuildValue("s", ppReturn);
     }
 
     Py_Return;
@@ -972,6 +1174,8 @@ PyObject* ApplicationPy::sGetMainWindow(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.getMainWindow");
 
     try {
         return Py::new_reference_to(MainWindowPy::createWrapper(Gui::getMainWindow()));
@@ -986,6 +1190,8 @@ PyObject* ApplicationPy::sUpdateGui(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.updateGui");
 
     qApp->processEvents();
 
@@ -1105,6 +1311,8 @@ PyObject* ApplicationPy::sActivateWorkbenchHandler(PyObject* /*self*/, PyObject*
     if (!PyArg_ParseTuple(args, "s", &psKey)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.activateWorkbench");
 
     // search for workbench handler from the dictionary
     PyObject* pcWorkbench = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary, psKey);
@@ -1416,6 +1624,8 @@ PyObject* ApplicationPy::sAddCommand(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.addCommand");
+
     // get the call stack to find the Python module name
     //
     std::string module;
@@ -1513,6 +1723,8 @@ PyObject* ApplicationPy::sRunCommand(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.runCommand");
+
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
 
@@ -1532,6 +1744,8 @@ PyObject* ApplicationPy::sDoCommand(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "s", &sCmd)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.doCommand");
 
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
@@ -1563,6 +1777,8 @@ PyObject* ApplicationPy::sDoCommandGui(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.doCommandGui");
+
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
 
@@ -1593,6 +1809,8 @@ PyObject* ApplicationPy::sDoCommandEval(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.doCommandEval");
+
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
 
@@ -1619,6 +1837,8 @@ PyObject* ApplicationPy::sDoCommandSkip(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "s", &sCmd)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.doCommandSkip");
 
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
@@ -1651,6 +1871,8 @@ PyObject* ApplicationPy::sShowDownloads(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.showDownloads");
+
     Gui::Dialog::DownloadManager::getInstance();
 
     Py_Return;
@@ -1663,6 +1885,8 @@ PyObject* ApplicationPy::sShowPreferences(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "|si", &pstr, &idx)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.showPreferences");
 
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
     if (pstr) {
@@ -1684,6 +1908,8 @@ PyObject* ApplicationPy::sShowPreferencesByName(PyObject* /*self*/, PyObject* ar
     if (!PyArg_ParseTuple(args, "s|s", &pstr, &prefType)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.showPreferences");
 
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
     if (pstr && prefType) {
@@ -1711,6 +1937,7 @@ PyObject* ApplicationPy::sCreateViewer(PyObject* /*self*/, PyObject* args)
         PyErr_Format(PyExc_ValueError, "views must be > 0");
         return nullptr;
     }
+    requirePythonMainThread("FreeCADGui.createViewer");
     if (num_of_views == 1) {
         auto viewer = new View3DInventor(nullptr, nullptr);
         if (title) {
@@ -1907,6 +2134,42 @@ PyObject* ApplicationPy::sCoinRemoveAllChildren(PyObject* /*self*/, PyObject* ar
         }
 
         coinRemoveAllChildren(static_cast<SoGroup*>(ptr));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* ApplicationPy::sApplyElementColorOverride(PyObject* /*self*/, PyObject* args)
+{
+    PyObject* targetObj = nullptr;
+    PyObject* colorsObj = nullptr;
+    if (!PyArg_ParseTuple(args, "OO", &targetObj, &colorsObj)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        requirePythonMainThread("FreeCADGui.applyElementColorOverride");
+        auto target = pythonToCoinActionTarget(targetObj);
+        auto colors = pythonToColorOverrideMap(colorsObj);
+        applyElementColorOverrideAction(target, std::move(colors));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* ApplicationPy::sClearElementColorOverride(PyObject* /*self*/, PyObject* args)
+{
+    PyObject* targetObj = nullptr;
+    if (!PyArg_ParseTuple(args, "O", &targetObj)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        requirePythonMainThread("FreeCADGui.clearElementColorOverride");
+        auto target = pythonToCoinActionTarget(targetObj);
+        applyElementColorOverrideAction(target, {});
         Py_Return;
     }
     PY_CATCH;

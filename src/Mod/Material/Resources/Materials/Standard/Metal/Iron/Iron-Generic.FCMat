@@ -3,6 +3,7 @@
 General:
   UUID: "1826c364-d26a-43fb-8f61-288281236836"
   Author: "Uwe Stöhr"
+  License: "LGPL-2.1-or-later"
   Name: "Iron Generic"
 Inherits:
   Steel:

@@ -22,16 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SEGMENTATION_H
-#define MESHGUI_SEGMENTATION_H
+#pragma once
 
 #include <QWidget>
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
-#endif
+#include <Mod/Mesh/MeshGlobal.h>
 
 
 // forward declarations
@@ -86,5 +83,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_SEGMENTATION_H

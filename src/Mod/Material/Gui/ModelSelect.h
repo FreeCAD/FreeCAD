@@ -21,13 +21,11 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_MODELSELECT_H
-#define MATGUI_MODELSELECT_H
+#pragma once
 
 #include <memory>
 
 #include <QDialog>
-#include <QDir>
 #include <QStandardItem>
 #include <QTableView>
 #include <QTreeView>
@@ -103,5 +101,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_MODELSELECT_H

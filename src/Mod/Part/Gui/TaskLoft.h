@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_TASKLOFT_H
-#define PARTGUI_TASKLOFT_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -81,5 +80,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_TASKLOFT_H

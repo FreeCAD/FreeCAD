@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SELECTIONFILTERPY_H
-#define GUI_SELECTIONFILTERPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 
@@ -66,5 +65,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SELECTIONFILTERPY_H

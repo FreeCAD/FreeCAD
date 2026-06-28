@@ -34,29 +34,11 @@ import FreeCAD
 from FreeCAD import Units
 
 from . import femutils
-from femsolver.calculix.solver import ANALYSIS_TYPES
 
 
 def check_member_for_solver_calculix(analysis, solver, mesh, member):
 
     message = ""
-
-    # solver
-    if solver.AnalysisType not in ANALYSIS_TYPES:
-        message += f"Unknown analysis type: {solver.AnalysisType}\n"
-    if solver.AnalysisType == "frequency":
-        if not hasattr(solver, "EigenmodeHighLimit"):
-            message += "Frequency analysis: Solver has no EigenmodeHighLimit.\n"
-        elif not hasattr(solver, "EigenmodeLowLimit"):
-            message += "Frequency analysis: Solver has no EigenmodeLowLimit.\n"
-        elif not hasattr(solver, "EigenmodesCount"):
-            message += "Frequency analysis: Solver has no EigenmodesCount.\n"
-    if hasattr(solver, "MaterialNonlinearity") and solver.MaterialNonlinearity == "nonlinear":
-        if not member.mats_nonlinear:
-            message += (
-                "Solver is set to nonlinear materials, "
-                "but there is no nonlinear material in the analysis.\n"
-            )
 
     # mesh
     if not mesh:
@@ -204,17 +186,6 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
                 "Only one material object, but this one has a reference shape. "
                 "The reference shape will be ignored.\n"
             )
-    for m in member.mats_linear:
-        has_nonlinear_material = False
-        for nlm in member.mats_nonlinear:
-            if nlm["Object"].LinearBaseMaterial == m["Object"]:
-                if has_nonlinear_material is False:
-                    has_nonlinear_material = True
-                else:
-                    message += (
-                        "At least two nonlinear materials use the same linear base material. "
-                        "Only one nonlinear material for each linear material allowed.\n"
-                    )
 
     # which analysis needs which constraints
     # no check in the regard of loads existence (constraint force, pressure, self weight)

@@ -152,7 +152,6 @@ void DrawProjGroupItem::autoPosition()
     if (!pGroup) {
         return;
     }
-//    Base::Console().message("DPGI::autoPosition(%s)\n", Label.getValue());
     if (LockPosition.getValue()) {
         return;
     }

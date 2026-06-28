@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2023 Werner Mayer <wmayer[at]users.sourceforge.net>     *
 # *   Copyright (c) 2023 <bgbsww@gmail.com>                                 *
@@ -339,7 +341,7 @@ class TestHelix(unittest.TestCase):
         geoList.append(Part.LineSegment(FreeCAD.Vector(-3, 0, 0), FreeCAD.Vector(-2, 0, 0)))
         geoList.append(Part.LineSegment(FreeCAD.Vector(-2, 0, 0), FreeCAD.Vector(-4, -5, 0)))
         geoList.append(Part.LineSegment(FreeCAD.Vector(-4, -5, 0), FreeCAD.Vector(-5, -5, 0)))
-        (l1, l2, l3, l4) = coneSketch.addGeometry(geoList)
+        l1, l2, l3, l4 = coneSketch.addGeometry(geoList)
 
         conList = []
         conList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
@@ -391,7 +393,7 @@ class TestHelix(unittest.TestCase):
         geoList.append(Part.LineSegment(FreeCAD.Vector(3, 0, 0), FreeCAD.Vector(2, 0, 0)))
         geoList.append(Part.LineSegment(FreeCAD.Vector(2, 0, 0), FreeCAD.Vector(4, 5, 0)))
         geoList.append(Part.LineSegment(FreeCAD.Vector(4, 5, 0), FreeCAD.Vector(5, 5, 0)))
-        (l1, l2, l3, l4) = coneSketch.addGeometry(geoList)
+        l1, l2, l3, l4 = coneSketch.addGeometry(geoList)
 
         conList = []
         conList.append(Sketcher.Constraint("Coincident", 0, 2, 1, 1))

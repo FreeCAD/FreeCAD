@@ -41,6 +41,7 @@
 
 #include <App/Document.h>
 #include <Base/Exception.h>
+#include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
 
 #include "FeatureExtrusion.h"
@@ -53,10 +54,11 @@ using namespace Part;
 PROPERTY_SOURCE(Part::Extrusion, Part::Feature)
 
 const char* Extrusion::eDirModeStrings[] = {"Custom", "Edge", "Normal", nullptr};
+const char* Extrusion::eInnerWireTaperStrings[] = {"Inverted", "SameAsOuter", nullptr};
 
 namespace
 {
-std::vector<std::string> MakerEnums = {"Simple", "Cheese", "Extrusion", "Bullseye"};
+std::vector<std::string> MakerEnums = {"Simple", "Cheese", "Extrusion", "Bullseye", "Unified"};
 
 const char* enumToClass(const char* mode)
 {
@@ -72,8 +74,11 @@ const char* enumToClass(const char* mode)
     if (MakerEnums.at(3) == mode) {
         return "Part::FaceMakerBullseye";
     }
+    if (MakerEnums.at(4) == mode) {
+        return "Part::FaceMakerUnified";
+    }
 
-    return "Part::FaceMakerBullseye";
+    return "Part::FaceMakerUnified";
 }
 
 const char* classToEnum(const char* type)
@@ -90,8 +95,11 @@ const char* classToEnum(const char* type)
     if (strcmp(type, "Part::FaceMakerBullseye") == 0) {
         return MakerEnums.at(3).c_str();
     }
+    if (strcmp(type, "Part::FaceMakerUnified") == 0) {
+        return MakerEnums.at(4).c_str();
+    }
 
-    return MakerEnums.at(3).c_str();
+    return MakerEnums.at(4).c_str();
 }
 
 void restoreFaceMakerMode(Extrusion* self)
@@ -136,6 +144,9 @@ Extrusion::Extrusion()
     ADD_PROPERTY_TYPE(FaceMakerMode, (3L), "Extrude", App::Prop_None,
                       "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored.");
     FaceMakerMode.setEnums(MakerEnums);
+    ADD_PROPERTY_TYPE(InnerWireTaper, (static_cast<long>(InnerWireTaper::Inverted)), "Compatibility", App::Prop_Hidden,
+                      "Controls taper direction for inner wires (holes).");
+    InnerWireTaper.setEnums(eInnerWireTaperStrings);
     // clang-format on
 }
 
@@ -144,7 +155,7 @@ short Extrusion::mustExecute() const
     if (Base.isTouched() || Dir.isTouched() || DirMode.isTouched() || DirLink.isTouched()
         || LengthFwd.isTouched() || LengthRev.isTouched() || Solid.isTouched()
         || Reversed.isTouched() || Symmetric.isTouched() || TaperAngle.isTouched()
-        || TaperAngleRev.isTouched() || FaceMakerClass.isTouched()) {
+        || TaperAngleRev.isTouched() || FaceMakerClass.isTouched() || InnerWireTaper.isTouched()) {
         return 1;
     }
     return 0;
@@ -267,6 +278,7 @@ ExtrusionParameters Extrusion::computeFinalParameters()
     }
 
     result.faceMakerClass = this->FaceMakerClass.getValue();
+    result.innerWireTaper = static_cast<Part::InnerWireTaper>(this->InnerWireTaper.getValue());
 
     return result;
 }
@@ -343,7 +355,7 @@ void Extrusion::extrudeShape(TopoShape& result, const TopoShape& source, const E
         std::vector<TopoShape> drafts;
         ExtrusionHelper::makeElementDraft(params, myShape, drafts, result.Hasher);
         if (drafts.empty()) {
-            Standard_Failure::Raise("Drafting shape failed");
+            throw Standard_Failure("Drafting shape failed");
         }
         else {
             result.makeElementCompound(
@@ -356,7 +368,7 @@ void Extrusion::extrudeShape(TopoShape& result, const TopoShape& source, const E
     else {
         // Regular (non-tapered) extrusion!
         if (source.isNull()) {
-            Standard_Failure::Raise("Cannot extrude empty shape");
+            throw Standard_Failure("Cannot extrude empty shape");
         }
 
         // apply reverse part of extrusion by shifting the source shape
@@ -468,31 +480,35 @@ void FaceMakerExtrusion::Build()
     }
 
     if (!wires.empty()) {
-        // try {
         TopoDS_Shape res = FaceMakerCheese::makeFace(wires);
         if (!res.IsNull()) {
             this->myShape = res;
         }
-        //}
-        // catch (...) {
-
-        //}
     }
-
-    this->Done();
+    postBuild();
 }
 
 void Part::Extrusion::setupObject()
 {
     Part::Feature::setupObject();
     // default for newly created features
-    this->FaceMakerMode.setValue(MakerEnums.at(3).c_str());
-    this->FaceMakerClass.setValue("Part::FaceMakerBullseye");
+    this->FaceMakerMode.setValue(MakerEnums.at(4).c_str());
+    this->FaceMakerClass.setValue("Part::FaceMakerUnified");
 }
 
 void Extrusion::onDocumentRestored()
 {
     restoreFaceMakerMode(this);
+}
+
+void Extrusion::Restore(Base::XMLReader& reader)
+{
+    Part::Feature::Restore(reader);
+
+    // for 1.0 the inner wire taper was not inverted due to a bug
+    if (Base::getVersion(reader.ProgramVersion) == Base::Version::v1_0) {
+        InnerWireTaper.setValue(static_cast<long>(Part::InnerWireTaper::SameAsOuter));
+    }
 }
 
 void Part::Extrusion::onChanged(const App::Property* prop)

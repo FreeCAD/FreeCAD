@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYEDITORITEM_H
-#define PROPERTYEDITORITEM_H
+#pragma once
 
 #include <QItemEditorFactory>
 #include <QObject>
@@ -169,6 +168,10 @@ public:
     {
         return false;
     }
+    virtual bool commitOnEditorClose() const
+    {
+        return false;
+    }
 
     QWidget* createExpressionEditor(QWidget* parent, const std::function<void()>& method) const;
     void setExpressionEditorData(QWidget* editor, const QVariant& data) const;
@@ -274,6 +277,11 @@ class GuiExport PropertyStringItem: public PropertyItem
     ) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
+    QVariant toolTip(const App::Property*) const override;
+    bool commitOnEditorClose() const override
+    {
+        return true;
+    }
 
 protected:
     QVariant value(const App::Property*) const override;
@@ -1425,5 +1433,3 @@ public:
 
 }  // namespace PropertyEditor
 }  // namespace Gui
-
-#endif  // PROPERTYEDITORITEM_H

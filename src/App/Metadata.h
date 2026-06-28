@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_METADATAREADER_H
-#define BASE_METADATAREADER_H
+#pragma once
 
 #include "FCConfig.h"
 
@@ -402,5 +401,3 @@ private:
 };
 
 }  // namespace App
-
-#endif

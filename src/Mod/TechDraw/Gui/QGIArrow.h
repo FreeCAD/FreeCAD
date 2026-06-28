@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMARROW_H
-#define DRAWINGGUI_QGRAPHICSITEMARROW_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
@@ -91,5 +90,3 @@ private:
 };
 
 }
-
-#endif // DRAWINGGUI_QGRAPHICSITEMARROW_H

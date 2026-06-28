@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TOOLBOXMANAGER_H
-#define GUI_TOOLBOXMANAGER_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -65,6 +64,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_TOOLBOXMANAGER_H

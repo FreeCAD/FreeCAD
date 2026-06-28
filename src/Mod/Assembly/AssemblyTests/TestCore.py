@@ -131,6 +131,42 @@ class TestCore(unittest.TestCase):
             "'{}' failed: ObjectToGround not set correctly.".format(operation),
         )
 
+    def test_toggle_grounded_joint(self):
+        """test grounding and ungrounding a part, added because of github.com/freecad/freecad/issues/28440"""
+        operation = "Toggle Grounded Joint"
+        _msg("  Test '{}'".format(operation))
+
+        box = self.assembly.newObject("Part::Box", "Box")
+
+        # ground the part
+        groundedjoint = self.jointgroup.newObject("App::FeaturePython", "GroundedJoint")
+        JointObject.GroundedJoint(groundedjoint, box)
+        self.doc.recompute()
+
+        # verify grounded
+        self.assertTrue(
+            hasattr(groundedjoint, "ObjectToGround"),
+            "'{}' failed: No attribute 'ObjectToGround'".format(operation),
+        )
+        self.assertEqual(
+            groundedjoint.ObjectToGround,
+            box,
+            "'{}' failed: ObjectToGround not set correctly".format(operation),
+        )
+
+        # unground the part
+        self.doc.removeObject(groundedjoint.Name)
+        self.doc.recompute()
+
+        # verify no grounded joints remain in this part
+        for joint in self.jointgroup.Group:
+            if hasattr(joint, "ObjectToGround"):
+                self.assertNotEqual(
+                    joint.ObjectToGround,
+                    box,
+                    "'{}' failed: part still grounded after toggle".format(operation),
+                )
+
     def test_find_placement(self):
         """Test find placement of joint."""
         operation = "Find placement"
@@ -206,8 +242,8 @@ class TestCore(unittest.TestCase):
         JointObject.Joint(joint, 0)
 
         refs = [
-            [self.assembly, [box2.Name + ".Face6", box2.Name + ".Vertex7"]],
-            [self.assembly, [box.Name + ".Face6", box.Name + ".Vertex7"]],
+            [box2, ["Face6", "Vertex7"]],
+            [box, ["Face6", "Vertex7"]],
         ]
 
         joint.Proxy.setJointConnectors(joint, refs)

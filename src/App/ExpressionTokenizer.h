@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONTOKENIZER_H
-#define EXPRESSIONTOKENIZER_H
+#pragma once
 
 #include <QString>
 #include <FCGlobal.h>
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // EXPRESSIONTOKENIZER_H

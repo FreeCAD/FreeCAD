@@ -8,8 +8,7 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4BOX2_H
-#define WM4BOX2_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Vector2.h"
@@ -46,5 +45,3 @@ typedef Box2<float> Box2f;
 typedef Box2<double> Box2d;
 
 }
-
-#endif

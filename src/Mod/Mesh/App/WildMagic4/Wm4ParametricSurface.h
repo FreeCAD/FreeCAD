@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4PARAMETRICSURFACE_H
-#define WM4PARAMETRICSURFACE_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Surface.h"
@@ -77,5 +76,3 @@ typedef ParametricSurface<float> ParametricSurfacef;
 typedef ParametricSurface<double> ParametricSurfaced;
 
 }
-
-#endif

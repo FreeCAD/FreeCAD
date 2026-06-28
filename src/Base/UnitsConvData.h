@@ -21,8 +21,7 @@
  *                                                                      *
  ************************************************************************/
 
-#ifndef BASE_UNITSCONVDATA_H
-#define BASE_UNITSCONVDATA_H
+#pragma once
 
 namespace Base::UnitsConvData
 {
@@ -36,5 +35,3 @@ constexpr auto lbf {9.80665 * lb};
 constexpr auto psi {lbf / (in * in) * 1000};
 
 }  // namespace Base::UnitsConvData
-
-#endif

@@ -34,6 +34,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -41,7 +42,7 @@ def get_information():
         "name": "Electrostatics Capacitance Two Balls CCX",
         "meshtype": "solid",
         "meshelement": "Tet4",
-        "constraints": ["electrostatic potential", "electric charge density"],
+        "constraints": ["electromagnetic", "electric charge density"],
         "solvers": ["calculix"],
         "material": "fluid",
         "equations": ["electrostatic"],
@@ -147,7 +148,7 @@ def setup(doc=None, solvertype="calculix"):
 
     # constraint potential large sphere
     name_pot1 = "ElectrostaticPotential1"
-    con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
+    con_elect_pot1 = ObjectsFem.makeConstraintElectromagnetic(doc, name_pot1)
     con_elect_pot1.References = [(geom_obj, "Face1")]
     con_elect_pot1.Potential = "0.0 mV"
     analysis.addObject(con_elect_pot1)
@@ -182,28 +183,15 @@ def setup(doc=None, solvertype="calculix"):
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh
-    from femmesh import gmshtools
-
-    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    try:
-        error = gmsh_mesh.create_mesh()
-    except Exception:
-        error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
-    if error:
+    success = generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
+    if not success:
         # try to create from existing rough mesh
         from .meshes.mesh_capacitance_two_balls_tetra10 import (
             create_nodes,
             create_elements,
         )
 
-        fem_mesh = Fem.FemMesh()
-        control = create_nodes(fem_mesh)
-        if not control:
-            FreeCAD.Console.PrintError("Error on creating nodes.\n")
-        control = create_elements(fem_mesh)
-        if not control:
-            FreeCAD.Console.PrintError("Error on creating elements.\n")
+        fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
         femmesh_obj.FemMesh = fem_mesh
 
     doc.recompute()

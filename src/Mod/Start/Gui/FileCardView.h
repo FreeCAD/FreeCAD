@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_FILECARDVIEW_H
-#define FREECAD_START_FILECARDVIEW_H
+#pragma once
 
 #include <QListView>
 
@@ -45,5 +44,3 @@ private:
 };
 
 }  // namespace StartGui
-
-#endif  // FREECAD_START_FILECARDVIEW_H

@@ -402,6 +402,16 @@ class _ArchReportDocObserver:
     def slotRecomputedDocument(self, doc):
         if doc != self.doc:
             return
+        # Guard against executing after the Report object has been removed.
+        # During deletion the observer may not yet be unregistered when the
+        # post-removal recompute fires.
+        try:
+            if not self.report.isAttachedToDocument():
+                FreeCAD.removeDocumentObserver(self)
+                return
+        except RuntimeError:
+            FreeCAD.removeDocumentObserver(self)
+            return
         self.report.Proxy.execute(self.report)
 
 
@@ -676,8 +686,18 @@ class _ArchReport:
 
         return current_row  # Return the next available row
 
+    def unsetupObject(self, obj):
+        """Remove the document observer so that recomputes after removal do not
+        call execute() on a stale reference and create an orphaned spreadsheet.
+        """
+        if getattr(self, "docObserver", None) is not None:
+            FreeCAD.removeDocumentObserver(self.docObserver)
+            self.docObserver = None
+
     def execute(self, obj):
         """Executes all statements and writes the results to the target spreadsheet."""
+        if not getattr(obj, "AutoUpdate", True):
+            return
         if not self.live_statements:
             return
 
@@ -687,7 +707,20 @@ class _ArchReport:
                 f"Report '{getattr(obj, 'Label', '')}': No target spreadsheet found.\n"
             )
             return
-        sp.clearAll()
+        # Save column widths before clearing so user adjustments survive recomputes.
+        used_range = sp.getUsedRange()
+        saved_widths = {}
+        if used_range:
+            first_col = ord(used_range[0].rstrip("0123456789"))
+            last_col = ord(used_range[1].rstrip("0123456789"))
+            for col in range(first_col, last_col + 1):
+                saved_widths[chr(col)] = sp.getColumnWidth(chr(col))
+            first_row = int(used_range[0].lstrip("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+            last_row = int(used_range[1].lstrip("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+            for row in range(first_row, last_row + 1):
+                # Splitting the 1st cell in each row is enough.
+                sp.splitCell("A" + str(row))
+            sp.clear(f"{used_range[0]}:{used_range[1]}")
 
         # Reset the row counter for a new report build.
         self.spreadsheet_current_row = 1
@@ -709,6 +742,8 @@ class _ArchReport:
                 print_results_in_bold=statement.print_results_in_bold,
             )
 
+        for col, width in saved_widths.items():
+            sp.setColumnWidth(col, width)
         sp.recompute()
         sp.purgeTouched()
 
@@ -759,6 +794,7 @@ class ViewProviderReport:
     def __init__(self, vobj):
         vobj.Proxy = self
         self.vobj = vobj
+        vobj.ToggleVisibility = "NoToggleVisibility"
 
     def getIcon(self):
         return ":/icons/Arch_Schedule.svg"
@@ -779,9 +815,24 @@ class ViewProviderReport:
             return True
         return False
 
+    def onDelete(self, vobj, subelements):
+        """Remove the document observer so that recomputes after removal do not
+        call execute() on a stale reference and create an orphaned spreadsheet.
+        """
+        proxy = getattr(vobj.Object, "Proxy", None)
+        if proxy and getattr(proxy, "docObserver", None) is not None:
+            FreeCAD.removeDocumentObserver(proxy.docObserver)
+            proxy.docObserver = None
+        return True
+
     def attach(self, vobj):
         """Called by the C++ loader when the view provider is rehydrated."""
-        self.vobj = vobj  # Ensure self.vobj is set for consistent access
+        self.vobj = vobj
+        vobj.ToggleVisibility = "NoToggleVisibility"
+
+    def isShow(self):
+        """Always return True so the Tree View does not fade this object."""
+        return True
 
     def claimChildren(self):
         """
@@ -907,11 +958,11 @@ class ReportTaskPanel:
         )
         # Enable per-item tooltips in the dropdown view
         self.template_dropdown.view().setToolTip("")
-        self.btn_manage_templates = QtWidgets.QPushButton(translate("Arch", "Manage..."))
+        self.btn_manage_templates = QtWidgets.QPushButton(translate("Arch", "Manage…"))
         self.btn_manage_templates.setToolTip(
             translate("Arch", "Rename, delete, or edit saved report templates.")
         )
-        self.btn_save_template = QtWidgets.QPushButton(translate("Arch", "Save as Template..."))
+        self.btn_save_template = QtWidgets.QPushButton(translate("Arch", "Save as Template…"))
         self.btn_save_template.setToolTip(
             translate("Arch", "Save the current set of statements as a new report template.")
         )
@@ -978,11 +1029,11 @@ class ReportTaskPanel:
         )
         # Enable per-item tooltips in the dropdown view
         self.query_preset_dropdown.view().setToolTip("")
-        self.btn_manage_queries = QtWidgets.QPushButton(translate("Arch", "Manage..."))
+        self.btn_manage_queries = QtWidgets.QPushButton(translate("Arch", "Manage…"))
         self.btn_manage_queries.setToolTip(
             translate("Arch", "Rename, delete, or edit your saved query presets.")
         )
-        self.btn_save_query_preset = QtWidgets.QPushButton(translate("Arch", "Save..."))
+        self.btn_save_query_preset = QtWidgets.QPushButton(translate("Arch", "Save…"))
         self.btn_save_query_preset.setToolTip(
             translate("Arch", "Save the current query as a new preset.")
         )
@@ -1297,7 +1348,7 @@ class ReportTaskPanel:
             else:
                 pipe_item.setToolTip(
                     translate(
-                        "Arch", "Toggle whether to use the previous statement's results as input."
+                        "Arch", "Toggles whether to use the previous statement's results as input"
                     )
                 )
             self.table_statements.setItem(row_idx, 1, pipe_item)
@@ -1313,7 +1364,7 @@ class ReportTaskPanel:
             header_item.setToolTip(
                 translate(
                     "Arch",
-                    "Toggle whether to use this statement's Description as a section header.",
+                    "Toggles whether to use this statement's Description as a section header",
                 )
             )
             self.table_statements.setItem(row_idx, 2, header_item)
@@ -1328,7 +1379,8 @@ class ReportTaskPanel:
             )
             cols_item.setToolTip(
                 translate(
-                    "Arch", "Toggle whether to include this statement's column names in the report."
+                    "Arch",
+                    "Toggles whether to include this statement's column names in the report",
                 )
             )
             self.table_statements.setItem(row_idx, 3, cols_item)
@@ -1348,11 +1400,10 @@ class ReportTaskPanel:
 
         # After populating all rows, trigger a validation for all statements.
         # This ensures the counts and statuses are up-to-date when the panel opens.
-        for statement in self.obj.Proxy.live_statements:
-            statement.validate_and_update_status()
-            self._update_table_row_status(
-                self.obj.Proxy.live_statements.index(statement), statement
-            )
+        statements = self.obj.Proxy.live_statements
+        for index, statement in enumerate(statements):
+            statement.validate_and_update_status(statements, index)
+            self._update_table_row_status(index, statement)
 
         # Re-enable signals after population so user edits are handled
         self.table_statements.blockSignals(False)
@@ -1540,7 +1591,9 @@ class ReportTaskPanel:
             statement.include_column_names = self.chk_include_column_names.isChecked()
             statement.add_empty_row_after = self.chk_add_empty_row_after.isChecked()
             statement.print_results_in_bold = self.chk_print_results_in_bold.isChecked()
-            statement.validate_and_update_status()  # Update status in the statement object
+            statement.validate_and_update_status(
+                self.obj.Proxy.live_statements, self.current_edited_statement_index
+            )
             self._update_table_row_status(
                 self.current_edited_statement_index, statement
             )  # Refresh table status
@@ -1813,7 +1866,7 @@ class ReportTaskPanel:
         elif status == "ERROR":
             return ICON_STATUS_ERROR, message
         elif status == "INCOMPLETE":
-            return ICON_STATUS_INCOMPLETE, translate("Arch", "Query incomplete or typing...")
+            return ICON_STATUS_INCOMPLETE, translate("Arch", "Query incomplete or typing…")
         return QtGui.QIcon(), translate("Arch", "Ready")  # Default/initial state
 
     def _set_dirty(self, dirty_state):
@@ -1957,7 +2010,9 @@ class ReportTaskPanel:
         statement.add_empty_row_after = self.chk_add_empty_row_after.isChecked()
         statement.print_results_in_bold = self.chk_print_results_in_bold.isChecked()
 
-        statement.validate_and_update_status()
+        statement.validate_and_update_status(
+            self.obj.Proxy.live_statements, self.current_edited_statement_index
+        )
         self._update_table_row_status(self.current_edited_statement_index, statement)
         self._set_dirty(True)
 
@@ -2027,7 +2082,11 @@ class ReportTaskPanel:
 
             for row_idx, row_data in enumerate(data_rows):
                 for col_idx, cell_value in enumerate(row_data):
-                    item = QtWidgets.QTableWidgetItem(str(cell_value))
+                    if isinstance(cell_value, FreeCAD.Units.Quantity):
+                        display_text = cell_value.toStr()
+                    else:
+                        display_text = str(cell_value)
+                    item = QtWidgets.QTableWidgetItem(display_text)
                     self.table_preview_results.setItem(row_idx, col_idx, item)
             self.table_preview_results.horizontalHeader().setSectionResizeMode(
                 QtWidgets.QHeaderView.Interactive
@@ -2125,9 +2184,9 @@ if FreeCAD.GuiUp:
             self.layout.addWidget(self.preset_list)
 
             self.buttons_layout = QtWidgets.QHBoxLayout()
-            self.btn_rename = QtWidgets.QPushButton(translate("Arch", "Rename..."))
+            self.btn_rename = QtWidgets.QPushButton(translate("Arch", "Rename…"))
             self.btn_delete = QtWidgets.QPushButton(translate("Arch", "Delete"))
-            self.btn_edit_source = QtWidgets.QPushButton(translate("Arch", "Edit Source..."))
+            self.btn_edit_source = QtWidgets.QPushButton(translate("Arch", "Edit Source…"))
             self.btn_close = QtWidgets.QPushButton(translate("Arch", "Close"))
 
             self.buttons_layout.addWidget(self.btn_rename)

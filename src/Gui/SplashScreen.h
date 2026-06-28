@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SPLASHSCREEN_H
-#define GUI_SPLASHSCREEN_H
+#pragma once
 
 #include <QSplashScreen>
 
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SPLASHSCREEN_H

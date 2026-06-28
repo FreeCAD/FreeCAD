@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_NEWFILEBUTTON_H
-#define FREECAD_NEWFILEBUTTON_H
+#pragma once
 
 #include <QLabel>
 #include <QString>
@@ -60,5 +59,3 @@ protected:
 };
 
 }  // namespace StartGui
-
-#endif  // FREECAD_NEWFILEBUTTON_H

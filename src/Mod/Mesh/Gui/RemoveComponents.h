@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_REMOVECOMPONENTS_H
-#define MESHGUI_REMOVECOMPONENTS_H
+#pragma once
 
 #include <QDialog>
 #include <Gui/TaskView/TaskDialog.h>
@@ -129,5 +128,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_REMOVECOMPONENTS_H

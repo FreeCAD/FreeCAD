@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Creates a section from a mesh and plane</source>
-      <translation>Créer une section à partir d'un maillage et d'un plan</translation>
+      <translation>Crée une section à partir d'un maillage et d'un plan.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim Mesh</source>
-      <translation>Découper le maillage</translation>
+      <translation>Découper un maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
@@ -352,8 +352,8 @@ cette fonction (par exemple le format OBJ).</translation>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation>La déviation linéaire maximale d'un segment de maillage sera égale à la déviation
-de surface spécifiée multipliée par la longueur du segment de maillage en cous (arête).</translation>
+      <translation>La déviation linéaire maximale d'un segment de maillage sera égale à la déviation de surface spécifiée multipliée par la longueur du
+segment de maillage en cous (arête).</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
@@ -381,11 +381,6 @@ La valeur la plus petite est 0.</translation>
       <location filename="../../Tessellation.ui" line="209"/>
       <source>Use the Netgen mesher</source>
       <translation>Utiliser le mailleur Netgen</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Finesse :</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
@@ -440,6 +435,11 @@ A value in the range of 0.1-1.</source>
 Une valeur dans la plage de 0.1-1.</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Finesse</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -490,22 +490,20 @@ Une valeur dans la plage de 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Aucun document actif</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
-      <translation>Erreur : le corps est sans pointe sélectionnée.
-Définir la pointe du corps ou sélectionner une autre forme.</translation>
+      <translation>Erreur : le corps est sans pointe sélectionnée. Définir la pointe du corps ou sélectionner une autre forme.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="288"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation>Erreur : forme sans faces sélectionnées.
-Sélectionnez une forme différente.</translation>
+      <translation>Erreur : forme sans faces sélectionnées. Sélectionner une forme différente.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="293"/>
@@ -523,7 +521,7 @@ Sélectionnez une forme différente.</translation>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <source>Select a plane to section the mesh with.</source>
-      <translation>Sélectionnez un plan avec lequel couper le maillage.</translation>
+      <translation>Sélectionner un plan avec lequel couper le maillage</translation>
     </message>
   </context>
   <context>
@@ -536,7 +534,7 @@ Sélectionnez une forme différente.</translation>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Select a plane to trim the mesh with.</source>
-      <translation>Sélectionnez un plan pour couper le maillage.</translation>
+      <translation>Sélectionner un plan pour couper le maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>

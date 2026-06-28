@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ASSISTANT_H
-#define GUI_ASSISTANT_H
+#pragma once
 
 #include <QObject>
 
@@ -50,5 +49,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_ASSISTANT_H

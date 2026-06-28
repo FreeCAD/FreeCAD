@@ -144,6 +144,7 @@ class Arch_Window:
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.length(self.Width)
         self.tracker.width(self.W1)
@@ -153,9 +154,27 @@ class Arch_Window:
             translate("Arch", "Choose a face on an existing object or select a preset") + "\n"
         )
         FreeCADGui.Snapper.getPoint(
-            callback=self.getPoint, movecallback=self.update, extradlg=self.taskbox()
+            callback=self.getPoint,
+            movecallback=self.update,
+            extradlg=self.taskbox(),
+            hints=self.get_hints(),
         )
         # FreeCADGui.Snapper.setSelectMode(True)
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        return (
+            [
+                FreeCADGui.InputHint(
+                    translate("Arch", "%1 pick point on host"), FreeCADGui.UserInput.MouseLeft
+                )
+            ]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def has_width_and_height_constraint(self, sketch):
         width_found = False
@@ -181,6 +200,7 @@ class Arch_Window:
 
         SketchArch = False
 
+        self.wp._restore()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         self.tracker.off()
@@ -230,7 +250,7 @@ class Arch_Window:
             # library object
             col = self.doc.Objects
             path = self.librarypresets[self.Preset - len(WindowPresets)][1]
-            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject('" + path + "')")
+            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject(" + repr(path) + ")")
             # find the latest added window
             nol = self.doc.Objects
             for o in nol[len(col) :]:
@@ -377,7 +397,7 @@ class Arch_Window:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch", "Window options"))
+        w.setWindowTitle(translate("Arch", "Window Options"))
         grid = QtGui.QGridLayout(w)
 
         # include box
@@ -541,17 +561,17 @@ class Arch_Window:
             self.im.show()
             if i == 0:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
-            elif i in [1, 8]:
+            elif i in [1, 9]:
                 self.im.load(":/ui/ParametersWindowSimple.svg")
-            elif i in [2, 4, 7]:
+            elif i in [2, 4, 8]:
                 self.im.load(":/ui/ParametersWindowDouble.svg")
             elif i == 3:
                 self.im.load(":/ui/ParametersWindowStash.svg")
-            elif i == 5:
+            elif i in [5, 6]:
                 self.im.load(":/ui/ParametersDoorSimple.svg")
-            elif i == 6:
+            elif i == 7:
                 self.im.load(":/ui/ParametersDoorGlass.svg")
-            elif i == 9:
+            elif i == 10:
                 self.im.load(":/ui/ParametersOpening.svg")
             else:
                 # From Library

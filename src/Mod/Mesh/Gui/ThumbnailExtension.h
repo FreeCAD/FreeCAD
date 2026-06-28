@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_THUMBNAIL_EXTENSION_H
-#define MESHGUI_THUMBNAIL_EXTENSION_H
+#pragma once
 
 #include <Mod/Mesh/App/Exporter.h>
 #include <Mod/Mesh/MeshGlobal.h>
@@ -55,6 +54,3 @@ public:
 };
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_THUMBNAIL_EXTENSION_H

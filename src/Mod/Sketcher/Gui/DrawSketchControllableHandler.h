@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchControllableHandler_H
-#define SKETCHERGUI_DrawSketchControllableHandler_H
+#pragma once
 
 #include <type_traits>
 
@@ -126,6 +125,11 @@ protected:
     }
     //@}
 
+    void addStepControlConstraints()
+    {
+        toolWidgetManager.addStepConstraints();
+    }
+
 private:
     /** @name functions requiring specialisation */
     //@{
@@ -181,6 +185,7 @@ private:
 
     void onConstructionMethodChanged() override
     {
+        DrawSketchHandler::updateHint();
         toolWidgetManager.onConstructionMethodChanged();
     }
 
@@ -215,6 +220,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchControllableHandler_H

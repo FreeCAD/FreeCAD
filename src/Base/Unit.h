@@ -19,8 +19,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef BASE_Unit_H
-#define BASE_Unit_H
+#pragma once
 
 #include <array>
 #include <cstdint>
@@ -121,6 +120,7 @@ public:
     static const Unit AngleOfFriction;
     static const Unit Area;
     static const Unit CompressiveStrength;
+    static const Unit Concentration;
     static const Unit CurrentDensity;
     static const Unit Density;
     static const Unit DissipationRate;
@@ -137,6 +137,7 @@ public:
     static const Unit Force;
     static const Unit Frequency;
     static const Unit HeatFlux;
+    static const Unit Inertia;
     static const Unit InverseArea;
     static const Unit InverseLength;
     static const Unit InverseVolume;
@@ -177,5 +178,3 @@ public:
 };
 
 }  // namespace Base
-
-#endif  // BASE_Unit_H

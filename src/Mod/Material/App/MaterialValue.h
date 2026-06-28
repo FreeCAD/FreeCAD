@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALVALUE_H
-#define MATERIAL_MATERIALVALUE_H
+#pragma once
 
 #include <memory>
 
@@ -288,5 +287,3 @@ protected:
 Q_DECLARE_METATYPE(Materials::MaterialValue)
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::Array2D>)
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::Array3D>)
-
-#endif  // MATERIAL_MATERIALVALUE_H

@@ -28,6 +28,7 @@ import Part
 import Path
 import Path.Base.FeedRate as PathFeedRate
 import Path.Base.Generator.drill as drill
+import Path.Base.Generator.tapping as tapping
 import Path.Base.Generator.linking as linking
 import Path.Base.MachineState as PathMachineState
 import Path.Op.Base as PathOp
@@ -66,6 +67,10 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
+            "Strategy": [
+                (translate("CAM_Drilling", "Drilling"), "Drilling"),
+                (translate("CAM_Drilling", "Tapping"), "Tapping"),
+            ],  # hole-making strategy
             "ExtraOffset": [
                 (translate("CAM_Drilling", "None"), "None"),
                 (translate("CAM_Drilling", "Drill Tip"), "Drill Tip"),
@@ -91,24 +96,68 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         """circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations."""
         return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
-    def onDocumentRestored(self, obj):
-        if not hasattr(obj, "chipBreakEnabled"):
+    def opOnDocumentRestored(self, obj):
+        # Add Strategy property if missing (old drilling operations)
+        if not hasattr(obj, "Strategy"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Strategy",
+                "Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Hole-making strategy (Drilling, Tapping, etc.)",
+                ),
+            )
+            # Set enumerations
+            for n in self.propertyEnumerations():
+                if n[0] == "Strategy":
+                    setattr(obj, n[0], n[1])
+            # Default to Drilling for old operations
+            obj.Strategy = "Drilling"
+
+        if hasattr(obj, "chipBreakEnabled"):
+            obj.renameProperty("chipBreakEnabled", "ChipBreakEnabled")
+        elif not hasattr(obj, "ChipBreakEnabled"):
             obj.addProperty(
                 "App::PropertyBool",
-                "chipBreakEnabled",
+                "ChipBreakEnabled",
                 "Drill",
                 QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
             )
 
-        if not hasattr(obj, "feedRetractEnabled"):
+        if hasattr(obj, "feedRetractEnabled"):
+            obj.renameProperty("feedRetractEnabled", "FeedRetractEnabled")
+        elif not hasattr(obj, "FeedRetractEnabled"):
             obj.addProperty(
                 "App::PropertyBool",
-                "feedRetractEnabled",
+                "FeedRetractEnabled",
                 "Drill",
                 QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
             )
+
         if hasattr(obj, "RetractMode"):
             obj.removeProperty("RetractMode")
+
+        # Migration: Remove RetractHeight property and adjust StartDepth if needed
+        # This handles old Tapping operations that used RetractHeight
+        if hasattr(obj, "RetractHeight"):
+            # If RetractHeight was higher than StartDepth, migrate to StartDepth
+            if obj.RetractHeight.Value > obj.StartDepth.Value:
+                Path.Log.warning(
+                    f"Migrating RetractHeight ({obj.RetractHeight.Value}) to StartDepth. "
+                    f"Old StartDepth was {obj.StartDepth.Value}"
+                )
+                obj.StartDepth = obj.RetractHeight.Value
+            obj.removeProperty("RetractHeight")
+
+        # Migration: Old Tapping ReturnLevel to KeepToolDown
+        # This handles old Tapping operations that used ReturnLevel enum
+        if hasattr(obj, "ReturnLevel"):
+            if obj.ReturnLevel == "G99":
+                obj.KeepToolDown = True
+            else:
+                obj.KeepToolDown = False
+            obj.removeProperty("ReturnLevel")
 
         if not hasattr(obj, "KeepToolDown"):
             obj.addProperty(
@@ -117,12 +166,21 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
+                    "Apply G99 retraction: only retract to StartDepth between holes in this operation",
                 ),
             )
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add drilling specific properties to obj."""
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Strategy",
+            "Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Hole-making strategy (Drilling, Tapping, etc.)",
+            ),
+        )
         obj.addProperty(
             "App::PropertyLength",
             "PeckDepth",
@@ -140,7 +198,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyBool",
-            "chipBreakEnabled",
+            "ChipBreakEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
         )
@@ -166,15 +224,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             ),
         )
         obj.addProperty(
-            "App::PropertyDistance",
-            "RetractHeight",
-            "Drill",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The height where cutting feed rate starts and retract height for peck operation",
-            ),
-        )
-        obj.addProperty(
             "App::PropertyEnumeration",
             "ExtraOffset",
             "Drill",
@@ -186,22 +235,48 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
+                "Apply G99 retraction: only retract to StartDepth between holes in this operation",
             ),
         )
         obj.addProperty(
             "App::PropertyBool",
-            "feedRetractEnabled",
+            "FeedRetractEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
         )
 
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
+
     def circularHoleExecute(self, obj, holes):
-        """circularHoleExecute(obj, holes) ... generate drill operation for each hole in holes."""
+        """circularHoleExecute(obj, holes) ... generate operation for each hole based on strategy."""
+        Path.Log.track()
+
+        strategy = obj.Strategy if hasattr(obj, "Strategy") else "Drilling"
+
+        if strategy == "Drilling":
+            self._executeDrilling(obj, holes)
+        elif strategy == "Tapping":
+            self._executeTapping(obj, holes)
+        else:
+            Path.Log.error(f"Unknown strategy: {strategy}")
+
+    def _executeDrilling(self, obj, holes):
+        """_executeDrilling(obj, holes) ... generate drilling operation for each hole in holes."""
         Path.Log.track()
         machinestate = PathMachineState.MachineState()
+        # We should be at clearance height.
 
         mode = "G99" if obj.KeepToolDown else "G98"
+
+        # Validate that SafeHeight doesn't exceed ClearanceHeight
+        safe_height = obj.SafeHeight.Value
+        if safe_height > obj.ClearanceHeight.Value:
+            Path.Log.warning(
+                f"SafeHeight ({safe_height}) is above ClearanceHeight ({obj.ClearanceHeight.Value}). "
+                f"Using ClearanceHeight instead."
+            )
+            safe_height = obj.ClearanceHeight.Value
 
         # Calculate offsets to add to target edge
         endoffset = 0.0
@@ -217,11 +292,30 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             v2 = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value - endoffset)
             edgelist.append(Part.makeLine(v1, v2))
 
-        # build list of solids for collision detection.
-        # Include base objects from job
-        solids = []
-        for base in job.BaseObjects:
-            solids.append(base.Shape)
+        # Prepare linking parameters
+        # Use self.model which is transformed when 3+2 workplane is active
+        solids = [base.Shape for base in self.model]
+        linkingArgs = {
+            "start_position": None,
+            "target_position": None,
+            "heights_clearance": (safe_height, obj.ClearanceHeight.Value),
+            "solids": None,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "collision_clearance": obj.CollisionClearance.Value,
+        }
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_diameter"] = obj.ToolController.Tool.Diameter.Value
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
 
@@ -235,6 +329,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Make sure tool is at a clearance height
         command = Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
+        machinestate.addCommand(command)
+
         # machine.addCommand(command)
         self.commandlist.append(command)
 
@@ -251,31 +347,38 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 command = Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y})
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
-                command = Path.Command("G0", {"Z": obj.SafeHeight.Value})
+                command = Path.Command("G0", {"Z": safe_height})
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
                 firstMove = False
 
-            else:  # Use get_linking_moves generator
-                linking_moves = linking.get_linking_moves(
-                    machinestate.getPosition(),
-                    startPoint,
-                    obj.ClearanceHeight.Value,
-                    obj.SafeHeight.Value,
-                    self.tool,
-                    solids,
-                    obj.RetractHeight.Value,
-                )
-                if len(linking_moves) == 1:  # straight move possible.  Do nothing.
-                    pass
-                else:
+            else:  # Check if we need linking moves
+                # For G99 mode, tool is at StartDepth (R-plane) after previous hole
+                # Check if direct move at retract plane would collide with model
+                current_pos = machinestate.getPosition()
+                target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
+                linkingArgs["start_position"] = current_pos
+                linkingArgs["target_position"] = target_at_safe_height
+                linking_moves = linking.get_linking_moves(**linkingArgs)
+
+                """if linking_moves contains only 2 commands this means
+                it not contains vertical moves to clearance height
+                and this commands should be skipped"""
+                if len(linking_moves) > 2:
+                    # Cannot traverse at retract plane - need to break cycle group
+                    # Retract to safe height, traverse, then plunge to safe height for new cycle
                     self.commandlist.extend(linking_moves)
+                    machinestate.addCommands(linking_moves)
+                # else: no collision - G99 cycle continues, tool stays at retract plane
 
             # Perform drilling
             dwelltime = obj.DwellTime if obj.DwellEnabled else 0.0
             peckdepth = obj.PeckDepth.Value if obj.PeckEnabled else 0.0
             repeat = 1  # technical debt:  Add a repeat property for user control
-            chipBreak = obj.chipBreakEnabled and obj.PeckEnabled
+            chipBreak = obj.ChipBreakEnabled and obj.PeckEnabled
+
+            # Save Z position before canned cycle for G98 retract
+            z_before_cycle = machinestate.Z
 
             try:
                 drillcommands = drill.generate(
@@ -283,9 +386,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     dwelltime,
                     peckdepth,
                     repeat,
-                    obj.RetractHeight.Value,
+                    obj.StartDepth.Value,
                     chipBreak=chipBreak,
-                    feedRetract=obj.feedRetractEnabled,
+                    feedRetract=obj.FeedRetractEnabled,
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored
@@ -294,27 +397,158 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Set RetractMode annotation for each command
             for command in drillcommands:
-                annotations = command.Annotations
-                annotations["RetractMode"] = mode
-                command.Annotations = annotations
+                command.addAnnotations({"RetractMode": mode, "operation": "drilling"})
                 self.commandlist.append(command)
-                # machine.addCommand(command)
+                machinestate.addCommand(command)
+
+            # Update Z position based on RetractMode
+            # G98: retract to initial Z (Z before cycle started)
+            # G99: retract to R parameter (StartDepth)
+            if mode == "G98":
+                machinestate.Z = z_before_cycle
+            else:  # G99
+                machinestate.Z = obj.StartDepth.Value
 
         # Apply feedrates to commands
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
+    def _executeTapping(self, obj, holes):
+        """_executeTapping(obj, holes) ... generate tapping operation for each hole in holes."""
+        Path.Log.track()
+        machinestate = PathMachineState.MachineState()
+
+        if not hasattr(obj.ToolController.Tool, "Pitch"):
+            Path.Log.error(
+                translate(
+                    "CAM_Drilling",
+                    "Tapping strategy requires a Tap tool with Pitch",
+                )
+            )
+            return
+
+        self.commandlist.append(Path.Command("(Begin Tapping)"))
+
+        # Determine retract mode
+        mode = "G99" if obj.KeepToolDown else "G98"
+
+        # Validate that SafeHeight doesn't exceed ClearanceHeight
+        safe_height = obj.SafeHeight.Value
+        if safe_height > obj.ClearanceHeight.Value:
+            Path.Log.warning(
+                f"SafeHeight ({safe_height}) is above ClearanceHeight ({obj.ClearanceHeight.Value}). "
+                f"Using ClearanceHeight instead."
+            )
+            safe_height = obj.ClearanceHeight.Value
+
+        # Calculate offsets to add to target edge
+        endoffset = 0.0
+        if obj.ExtraOffset == "Drill Tip":
+            endoffset = PathUtils.drillTipLength(self.tool)
+        elif obj.ExtraOffset == "2x Drill Tip":
+            endoffset = PathUtils.drillTipLength(self.tool) * 2
+
+        # compute the tapping targets
+        edgelist = []
+        for hole in holes:
+            v1 = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
+            v2 = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value - endoffset)
+            edgelist.append(Part.makeLine(v1, v2))
+
+        # Start computing the Path
+        # Make sure tool is at clearance height
+        command = Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
+        machinestate.addCommand(command)
+        self.commandlist.append(command)
+
+        # iterate the edgelist and generate gcode
+        firstMove = True
+        for edge in edgelist:
+            Path.Log.debug(edge)
+
+            # Get the target start point
+            startPoint = edge.Vertexes[0].Point
+
+            # Get linking moves from current to start of target
+            if firstMove:  # Build manually
+                command = Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y})
+                self.commandlist.append(command)
+                machinestate.addCommand(command)
+                command = Path.Command("G0", {"Z": safe_height})
+                self.commandlist.append(command)
+                machinestate.addCommand(command)
+                firstMove = False
+            # For subsequent holes, the canned cycle handles positioning
+
+            # Perform tapping
+            dwelltime = obj.DwellTime if obj.DwellEnabled else 0.0
+            repeat = 1  # technical debt:  Add a repeat property for user control
+
+            # Get attribute from obj.tool, assign default and set to bool for passing to generate
+            isRightHand = (
+                getattr(obj.ToolController.Tool, "SpindleDirection", "Forward") == "Forward"
+            )
+
+            # Get pitch in mm as a float (no unit string)
+            pitch = getattr(obj.ToolController.Tool, "Pitch", None)
+            if pitch is None or pitch == 0:
+                Path.Log.error(
+                    translate(
+                        "CAM_Drilling",
+                        "Tapping strategy requires a Tap tool with non-zero Pitch",
+                    )
+                )
+                continue
+
+            spindle_speed = getattr(obj.ToolController, "SpindleSpeed", None)
+            if spindle_speed is None or spindle_speed == 0:
+                Path.Log.error(
+                    translate(
+                        "CAM_Drilling",
+                        "Tapping strategy requires a ToolController with non-zero SpindleSpeed",
+                    )
+                )
+                continue
+
+            # Save Z position before canned cycle for G98 retract
+            z_before_cycle = machinestate.Z
+
+            try:
+                tappingcommands = tapping.generate(
+                    edge,
+                    dwelltime,
+                    repeat,
+                    obj.StartDepth.Value,
+                    isRightHand,
+                    pitch,
+                    spindle_speed,
+                )
+
+            except ValueError as e:  # any targets that fail the generator are ignored
+                Path.Log.info(e)
+                continue
+
+            # Set RetractMode annotation for each command
+            for command in tappingcommands:
+                command.addAnnotations({"RetractMode": mode, "operation": "tapping"})
+                self.commandlist.append(command)
+                machinestate.addCommand(command)
+
+            # Update Z position based on RetractMode
+            # G98: retract to initial Z (Z before cycle started)
+            # G99: retract to R parameter (StartDepth)
+            if mode == "G98":
+                machinestate.Z = z_before_cycle
+            else:  # G99
+                machinestate.Z = obj.StartDepth.Value
+
+        # Apply feed rates to commands
+        PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
+
     def opSetDefaultValues(self, obj, job):
-        """opSetDefaultValues(obj, job) ... set default value for RetractHeight"""
+        """opSetDefaultValues(obj, job) ... set default values for drilling operation"""
+        obj.Strategy = "Drilling"
         obj.ExtraOffset = "None"
         obj.KeepToolDown = False  # default to safest option: G98
-
-        if hasattr(job.SetupSheet, "RetractHeight"):
-            obj.RetractHeight = job.SetupSheet.RetractHeight
-        elif self.applyExpression(obj, "RetractHeight", "StartDepth+SetupSheet.SafeHeightOffset"):
-            if not job:
-                obj.RetractHeight = 10
-            else:
-                obj.RetractHeight.Value = obj.StartDepth.Value + 1.0
 
         if hasattr(job.SetupSheet, "PeckDepth"):
             obj.PeckDepth = job.SetupSheet.PeckDepth
@@ -328,14 +562,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
+    setup.append("Strategy")
     setup.append("PeckDepth")
     setup.append("PeckEnabled")
     setup.append("DwellTime")
     setup.append("DwellEnabled")
     setup.append("AddTipLength")
     setup.append("ExtraOffset")
-    setup.append("RetractHeight")
     setup.append("KeepToolDown")
     return setup
 
@@ -344,9 +578,5 @@ def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Drilling operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-
     obj.Proxy = ObjectDrilling(obj, name, parentJob)
-    if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
-
     return obj

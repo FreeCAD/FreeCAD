@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ViewProviderLine_H
-#define GUI_ViewProviderLine_H
+#pragma once
 
 #include "ViewProviderDatum.h"
 
@@ -63,6 +62,3 @@ protected:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_ViewProviderLine_H

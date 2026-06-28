@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -57,6 +56,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERCYLINDERPARAMETRIC_H

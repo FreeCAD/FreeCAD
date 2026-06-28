@@ -51,13 +51,13 @@ bool isSketcherVirtualSpaceActive(Gui::Document* doc, bool actsOnSelection)
 {
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
-            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
-                == ViewProviderSketch::STATUS_NONE) {
+        auto vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (vp && vp->isInEditMode()) {
+            if (vp->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
                 if (!actsOnSelection) {
                     return true;
                 }
-                else if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
+                if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
                     return true;
                 }
             }
@@ -70,10 +70,8 @@ void ActivateVirtualSpaceHandler(Gui::Document* doc, DrawSketchHandler* handler)
 {
     std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
-            SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(
-                doc->getInEdit()
-            );
+        auto vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (vp && vp->isInEditMode()) {
             vp->purgeHandler();
             vp->activateHandler(std::move(ptr));
         }
@@ -173,20 +171,19 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
 
         int successful = SubNames.size();
         // go through the selected subelements
-        for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-             ++it) {
+        for (const std::string& subName : SubNames) {
             // only handle constraints
-            if (it->size() > 10 && it->substr(0, 10) == "Constraint") {
-                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
-                Gui::Command::openCommand(
-                    QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space")
-                );
+            if (subName.size() > 10 && subName.substr(0, 10) == "Constraint") {
+                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(subName);
                 try {
                     Gui::cmdAppObjectArgs(Obj, "toggleVirtualSpace(%d)", ConstrId);
                 }
                 catch (const Base::Exception&) {
                     successful--;
                 }
+            }
+            else {
+                successful--;  // Not a failure, but not applicable
             }
         }
 

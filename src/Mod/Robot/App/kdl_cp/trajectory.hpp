@@ -56,8 +56,7 @@
  *     CONSEQUENCE : everything has to be declared public.
  ****************************************************************************/
 
-#ifndef TRAJECTORY_H
-#define TRAJECTORY_H
+#pragma once
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -108,6 +107,3 @@ namespace KDL {
 
 
 }
-
-
-#endif

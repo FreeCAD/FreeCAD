@@ -23,26 +23,23 @@
 
 #include <FCGlobal.h>
 
-#ifndef LAUNCHER_GLOBAL_H
-# define LAUNCHER_GLOBAL_H
+#pragma once
 
 
 // Start
-# ifndef StartExport
-#  ifdef Start_EXPORTS
-#   define StartExport FREECAD_DECL_EXPORT
-#  else
-#   define StartExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef StartExport
+# ifdef Start_EXPORTS
+#  define StartExport FREECAD_DECL_EXPORT
+# else
+#  define StartExport FREECAD_DECL_IMPORT
 # endif
+#endif
 
 // StartGui
-# ifndef StartGuiExport
-#  ifdef StartGui_EXPORTS
-#   define StartGuiExport FREECAD_DECL_EXPORT
-#  else
-#   define StartGuiExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef StartGuiExport
+# ifdef StartGui_EXPORTS
+#  define StartGuiExport FREECAD_DECL_EXPORT
+# else
+#  define StartGuiExport FREECAD_DECL_IMPORT
 # endif
-
-#endif  // LAUNCHER_GLOBAL_H
+#endif

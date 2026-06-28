@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_BASE_READER_H_
-#define SRC_BASE_READER_H_
+#pragma once
 
 #include <bitset>
 #include <map>
@@ -244,13 +243,11 @@ public:
         requires Base::XMLReader::instantiated<T>
     T getAttribute(const char* AttrName) const;
 
-    /// E.g. std::string, QString
     template<typename T>
     T getAttribute(const char* AttrName) const
     {
         return T(getAttribute<const char*>(AttrName));
     }
-    /// E.g. std::string, QString
     template<typename T>
     T getAttribute(const char* AttrName, T defaultValue) const
     {
@@ -418,6 +415,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif  // SRC_BASE_READER_H_

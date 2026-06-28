@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_NAVIGATIONANIMATOR_H
-#define GUI_NAVIGATIONANIMATOR_H
+#pragma once
 
 #include "Navigation/NavigationStyle.h"
 #include <QObject>
@@ -49,5 +48,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_NAVIGATIONANIMATOR_H

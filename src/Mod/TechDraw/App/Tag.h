@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_TAG_H
-#define TECHDRAW_TAG_H
+#pragma once
 
 #include <string>
 #include <string_view>
@@ -62,5 +61,3 @@ private:
     boost::uuids::uuid tag{};
 };
 }
-
-#endif

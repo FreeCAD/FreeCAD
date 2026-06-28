@@ -2,8 +2,7 @@
 
 // Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
 
-#ifndef KDL_CHAIN_IKSOLVERVEL_PINV_GIVENS_HPP
-#define KDL_CHAIN_IKSOLVERVEL_PINV_GIVENS_HPP
+#pragma once
 
 #include "chainiksolver.hpp"
 #include "chainjnttojacsolver.hpp"
@@ -52,4 +51,3 @@ namespace KDL
         VectorXd S,tempi,tempj,UY,SUY,qdot_eigen,v_in_eigen;
     };
 }
-#endif

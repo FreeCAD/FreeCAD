@@ -5,18 +5,27 @@ on:
   schedule:
     - cron: "0 0 * * 1"
 
+permissions:
+  contents: read
+
 jobs:
   update-crowdin:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: Checkout repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
           fetch-depth: 0
-          ref: releases/FreeCAD-1-1
+          ref: main
 
       - name: Install Qt ≥ 6.8
-        uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005
+        uses: jurplel/install-qt-action@48d3ad6db93f3627c8ee7a0454bc6f3744f7e730
         with:
           aqtversion: "==3.1.*"
           version: "6.8.3"
@@ -25,7 +34,7 @@ jobs:
           arch: "linux_gcc_64"
 
       - name: Setup Python & dependencies
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
         with:
           python-version: "3.13"
       - name: Install Python packages

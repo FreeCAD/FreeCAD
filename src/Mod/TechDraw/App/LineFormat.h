@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_LINEFORMAT_H
-#define TECHDRAW_LINEFORMAT_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -63,7 +62,7 @@ public:
     Base::Color getColor() const { return m_color; }
     void setColor(Base::Color color) { m_color = color; }
     QColor getQColor() const { return m_color.asValue<QColor>(); }
-    void setQColor(QColor qColor) { m_color.set(qColor.redF(), qColor.greenF(), qColor.blueF(), 1.0 - qColor.alphaF()); }
+    void setQColor(const QColor& qColor) { m_color.setValue(qColor); }
 
     bool getVisible() const { return m_visible; }
     void setVisible(bool viz) { m_visible = viz; }
@@ -91,6 +90,3 @@ private:
 };
 
 } //end namespace TechDraw
-
-#endif //TECHDRAW_LINEFORMAT_H
-

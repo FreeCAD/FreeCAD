@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_REFERENCEHIGHLIGHTER_H
-#define PARTGUI_REFERENCEHIGHLIGHTER_H
+#pragma once
 
 #include <vector>
 
@@ -119,6 +118,3 @@ private:
 
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_REFERENCEHIGHLIGHTER_H

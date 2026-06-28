@@ -30,6 +30,7 @@
 
 #include <QMessageBox>
 
+#include <Base/ProgramVersion.h>
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -107,6 +108,8 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(LineSpacingFactorISO, (Preferences::LineSpacingISO()), group, App::Prop_None,
                       "Adjusts the gap between dimension line and dimension text");
 
+    ADD_PROPERTY_TYPE(AllowSnap, (Preferences::SnapDimensions()), group, App::Prop_None,
+                      "Dimension will snap to position if true");
    StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
@@ -179,7 +182,8 @@ void ViewProviderDimension::updateData(const App::Property* prop)
         prop == &(getViewObject()->EqualTolerance) ||
         prop == &(getViewObject()->OverTolerance) ||
         prop == &(getViewObject()->UnderTolerance) ||
-        prop == &(getViewObject()->Inverted)) {
+        prop == &(getViewObject()->Inverted) ||
+        prop == &(getViewObject()->ShowSupplementary)) {
 
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -232,7 +236,8 @@ void ViewProviderDimension::onChanged(const App::Property* prop)
         (prop == &FlipArrowheads) ||
         (prop == &GapFactorASME) ||
         (prop == &GapFactorISO) ||
-        prop == &LineSpacingFactorISO)  {
+        prop == &LineSpacingFactorISO ||
+        prop == &AllowSnap)  {
         auto* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
@@ -361,7 +366,7 @@ void ViewProviderDimension::finishRestoring()
 void ViewProviderDimension::fixTextSize()
 {
     App::Document* ourDoc = getDocument()->getDocument();
-    if (checkMiniumumDocumentVersion(ourDoc, 1, 1)) {
+    if (checkMinimumDocumentVersion(ourDoc, Base::Version::v1_1)) {
         return;
     }
 
@@ -376,7 +381,7 @@ void ViewProviderDimension::fixTextSize()
 void ViewProviderDimension::fixArrowSize()
 {
     App::Document* ourDoc = getDocument()->getDocument();
-    if (checkMiniumumDocumentVersion(ourDoc, 1, 1)) {
+    if (checkMinimumDocumentVersion(ourDoc, Base::Version::v1_1)) {
         return;
     }
 

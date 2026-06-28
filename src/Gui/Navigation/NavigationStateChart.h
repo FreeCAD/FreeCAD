@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef GUI_NAVIGATIONSTATECHART_H
-#define GUI_NAVIGATIONSTATECHART_H
+#pragma once
 
 #include <boost/statechart/event.hpp>
 #include <Gui/Navigation/NavigationStyle.h>
@@ -148,5 +147,3 @@ private:
 
 }  // namespace Gui
 // NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
-
-#endif  // GUI_NAVIGATIONSTATECHART_H

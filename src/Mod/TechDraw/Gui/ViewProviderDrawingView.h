@@ -21,13 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_VIEWPROVIDERVIEW_H
-#define TECHDRAWGUI_VIEWPROVIDERVIEW_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <fastsignals/signal.h>
 
+#include <Base/ProgramVersion.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
@@ -69,9 +69,11 @@ public:
     void dropObject(App::DocumentObject* docObj) override;
 
     void onChanged(const App::Property *prop) override;
-    void updateData(const App::Property*) override;
+    void updateData(const App::Property* prop) override;
 
     QGIView* getQView();
+    static QGIView* getOwnerQView(const QGIView* qgiv);
+
     MDIViewPage* getMDIViewPage() const;
     Gui::MDIView *getMDIView() const override;
     ViewProviderPage* getViewProviderPage() const;
@@ -105,9 +107,14 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
 
     void fixColorAlphaValues();
-    bool checkMiniumumDocumentVersion(int minMajor, int minMinor) const
-        { return checkMiniumumDocumentVersion(this->getDocument()->getDocument(), minMajor, minMinor); }
-    static bool checkMiniumumDocumentVersion(App::Document* toBeChecked, int minMajor, int minMinor);
+    bool checkMinimumDocumentVersion(Base::Version minimumVersion) const
+        { return checkMinimumDocumentVersion(this->getDocument()->getDocument(), minimumVersion); }
+
+    //! True if document toBeChecked was written by a program with version >= minimumVersion.
+    //! Note that we cannot check patch releases as only the major and minor are recorded in the
+    //! Document.xml file.
+    //! (ex <Document SchemaVersion="4" ProgramVersion="1.2R44322 +1 (Git)" FileVersion="1" StringHasher="1">)
+    static bool checkMinimumDocumentVersion(App::Document* toBeChecked, Base::Version minimumVersion);
 
 
 private:
@@ -118,6 +125,3 @@ private:
 };
 
 } // namespace TechDrawGui
-
-
-#endif // TECHDRAWGUI_VIEWPROVIDERVIEW_H

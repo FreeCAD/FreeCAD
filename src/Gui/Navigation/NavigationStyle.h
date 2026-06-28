@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_NAVIGATIONSTYLE_H
-#define GUI_NAVIGATIONSTYLE_H
+#pragma once
 
 #include <Inventor/C/basic.h>
 #include <Inventor/SbBox2s.h>
@@ -134,6 +133,12 @@ public:
     };
     Q_DECLARE_FLAGS(RotationCenterModes, RotationCenterMode)
 
+    enum class OrientationChangeSource
+    {
+        Interactive,
+        Programmatic
+    };
+
 public:
     NavigationStyle();
     ~NavigationStyle() override;
@@ -148,6 +153,21 @@ public:
     SbBool isSpinningAnimationEnabled() const;
     SbBool isAnimating() const;
     SbBool isSpinning() const;
+    SbBool isRotationEnabled() const;
+    void setRotationEnabled(SbBool enable);
+    SbBool isOrientationLocked() const;
+    void setOrientationLocked(SbBool enable);
+    SbBool canChangeCameraOrientation(
+        const SbRotation& current,
+        const SbRotation& target,
+        OrientationChangeSource source
+    ) const;
+    SbBool setCameraOrientationValue(
+        SoCamera* camera,
+        const SbRotation& orientation,
+        OrientationChangeSource source
+    ) const;
+
     void startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait = false) const;
     void stopAnimating() const;
 
@@ -167,7 +187,6 @@ public:
     void setRotationCenterMode(RotationCenterModes);
     RotationCenterModes getRotationCenterMode() const;
     void setRotationCenter(const SbVec3f& cnt);
-    SbVec3f getFocalPoint() const;
 
     SoCamera* getCamera() const;
     std::shared_ptr<NavigationAnimation> setCameraOrientation(
@@ -180,8 +199,17 @@ public:
     void findBoundingSphere();
 #endif
 
-    void reorientCamera(SoCamera* camera, const SbRotation& rotation);
-    void reorientCamera(SoCamera* camera, const SbRotation& rotation, const SbVec3f& rotationCenter);
+    void reorientCamera(
+        SoCamera* camera,
+        const SbRotation& rotation,
+        OrientationChangeSource source = OrientationChangeSource::Interactive
+    );
+    void reorientCamera(
+        SoCamera* camera,
+        const SbRotation& rotation,
+        const SbVec3f& rotationCenter,
+        OrientationChangeSource source = OrientationChangeSource::Interactive
+    );
 
     void boxZoom(const SbBox2s& box);
     // Scale the camera inplace
@@ -203,6 +231,7 @@ public:
     void startSelection(SelectionMode = Lasso);
     void abortSelection();
     void stopSelection();
+    void resetButtonState();
     SbBool isSelecting() const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role = nullptr) const;
 
@@ -212,6 +241,7 @@ public:
     {
         return ClarifySelectionMode::Default;
     }
+
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
@@ -266,21 +296,37 @@ protected:
 
     SbBool handleEventInForeground(const SoEvent* const e);
     virtual SbBool processSoEvent(const SoEvent* const ev);
+    bool offerEventToViewer(const SoEvent* const ev);
     void syncWithEvent(const SoEvent* const ev);
     virtual void openPopupMenu(const SbVec2s& position);
 
 private:
     void spinInternal(const SbVec2f& pointerpos, const SbVec2f& lastpos);
     void spinSimplifiedInternal(const SbVec2f curpos, const SbVec2f prevpos);
-    bool isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const;
-    QWidget* findView3DInventorWidget() const;
-    void applyNavigationStyleChange(QAction* selectedAction);
+    bool getObjectBoundingBoxCenter(SbVec3f& center) const;
 
 protected:
     void clearLog();
     void addToLog(const SbVec2s pos, const SbTime time);
 
     void syncModifierKeys(const SoEvent* const ev);
+    virtual int selectionMoveThreshold() const;
+    void updateSelectionStartPosition(SbBool press, const SbVec2s& position);
+    void setSelectionStartPosition(const SbVec2s& position);
+    void clearSelectionStartPosition();
+    bool handleSelectionDragMotion(
+        const SoLocation2Event* const ev,
+        ViewerMode& newmode,
+        bool additiveSelection = false,
+        bool allowBoxSelection = true
+    );
+    bool tryStartBoxSelection(const SoLocation2Event* const ev, bool additiveSelection = false);
+    bool tryStartBoxSelection(
+        const SbVec2s& startPosition,
+        const SoLocation2Event* const ev,
+        bool additiveSelection = false,
+        bool selectElement = false
+    );
 
 protected:
     struct
@@ -317,11 +363,14 @@ protected:
     AbstractMouseSelection* mouseSelection {nullptr};
     std::vector<SbVec2s> pcPolygon;
     SelectionRole selectedRole;
+    std::optional<SbVec2s> selectionStartPosition;
     //@}
 
     /** @name Spinning data */
     //@{
     SbBool spinningAnimationEnabled;
+    SbBool rotationEnabled;
+    SbBool orientationLocked;
     int spinsamplecounter;
     SbRotation spinincrement;
     SbSphereSheetProjector* spinprojector;
@@ -474,6 +523,7 @@ public:
 
 protected:
     void zoomByCursor(const SbVec2f& thispos, const SbVec2f& prevpos) override;
+    int selectionMoveThreshold() const override;
 
     SbBool processSoEvent(const SoEvent* const ev) override;
 
@@ -563,5 +613,3 @@ protected:
 // NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
-
-#endif  // GUI_NAVIGATIONSTYLE_H

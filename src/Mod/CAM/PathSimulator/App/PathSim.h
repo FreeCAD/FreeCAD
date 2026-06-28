@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATHSIMULATOR_PathSim_H
-#define PATHSIMULATOR_PathSim_H
+#pragma once
 
 #include <memory>
 #include <TopoDS_Shape.hxx>
@@ -60,6 +59,3 @@ public:
 };
 
 }  // namespace PathSimulator
-
-
-#endif  // PATHSIMULATOR_PathSim_H

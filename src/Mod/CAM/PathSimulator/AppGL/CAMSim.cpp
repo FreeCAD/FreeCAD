@@ -22,28 +22,28 @@
  *                                                                         *
  ***************************************************************************/
 
+
+#include "CAMSim.h"
+
+#include "DlgCAMSimulator.h"
 #include <string>
 #include <vector>
 
-
-#include "CAMSim.h"
-#include "DlgCAMSimulator.h"
-#include <Mod/Part/App/BRepMesh.h>
-
-
 using namespace Base;
-using namespace CAMSimulator;
 
 TYPESYSTEM_SOURCE(CAMSimulator::CAMSim, Base::BaseClass);
 
+namespace CAMSimulator
+{
+
 void CAMSim::BeginSimulation(const Part::TopoShape& stock, float quality)
 {
-    DlgCAMSimulator::GetInstance()->startSimulation(stock, quality);
+    DlgCAMSimulator::instance()->startSimulation(stock, quality);
 }
 
-void CAMSimulator::CAMSim::resetSimulation()
+void CAMSim::resetSimulation(Gui::Document* doc)
 {
-    DlgCAMSimulator::GetInstance()->resetSimulation();
+    DlgCAMSimulator::instance()->resetSimulation(doc);
 }
 
 void CAMSim::addTool(
@@ -53,20 +53,22 @@ void CAMSim::addTool(
     float resolution
 )
 {
-    DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
+    DlgCAMSimulator::instance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
 }
 
-void CAMSimulator::CAMSim::SetBaseShape(const Part::TopoShape& baseShape, float resolution)
+void CAMSim::SetBaseShape(const Part::TopoShape& baseShape, float resolution)
 {
     if (baseShape.isNull()) {
         return;
     }
 
-    DlgCAMSimulator::GetInstance()->SetBaseShape(baseShape, resolution);
+    DlgCAMSimulator::instance()->setBaseShape(baseShape, resolution);
 }
 
 void CAMSim::AddCommand(Command* cmd)
 {
     std::string gline = cmd->toGCode();
-    DlgCAMSimulator::GetInstance()->addGcodeCommand(gline.c_str());
+    DlgCAMSimulator::instance()->addGcodeCommand(gline.c_str());
 }
+
+}  // namespace CAMSimulator

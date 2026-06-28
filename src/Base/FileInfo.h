@@ -24,12 +24,12 @@
  ***************************************************************************/
 
 
-#ifndef BASE_FILEINFO_H
-#define BASE_FILEINFO_H
+#pragma once
 
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <optional>
 
 #include <FCGlobal.h>
 
@@ -63,16 +63,17 @@ public:
     };
 
     /// Construction
-    explicit FileInfo(const char* fileName = "");
-    explicit FileInfo(const std::string& fileName);
+    explicit FileInfo(std::string fileName);
+    explicit FileInfo(const char* fileName = "")
+        : FileInfo(std::string {fileName})
+    {}
     /// Set a new file name
-    void setFile(const char* name);
+    void setFile(std::string name);
     /// Set a new file name
-    void setFile(const std::string& name)
+    void setFile(const char* name)
     {
-        setFile(name.c_str());
+        setFile(std::string {name});
     }
-
 
     /** @name extraction of information */
     //@{
@@ -125,6 +126,8 @@ public:
     bool isFile() const;
     /// Checks if it is a directory (not a file)
     bool isDir() const;
+    /// Checks if it is a symbolic link (returns false if the file doesn't exist)
+    bool isSymlink() const;
     /// The size of the file
     unsigned int size() const;
     /// Returns the time when the file was last modified.
@@ -153,6 +156,11 @@ public:
     /// Rename the file
     bool copyTo(const char* NewName) const;
 
+    /// Returns the folder or directory the symlink points
+    std::optional<std::string> getSymlinkTarget();
+    /// Returns the absolute path without any "..", "." or symlinks
+    std::optional<std::string> getCannonicalPath();
+
     /** @name Tools */
     //@{
     /// Get a unique File Name in the given or (if 0) in the temp path
@@ -170,6 +178,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif  // BASE_FILEINFO_H

@@ -97,12 +97,103 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject* index_or_value;
     PyObject* oNumArg4;
     PyObject* oNumArg5;
+    PyObject* py_elements_list = nullptr;
+    char* text_str = nullptr;  // Variable for the text content
+    char* font_str = nullptr;  // Variable for the font name
     int any_index;
 
     PyObject* activated;
     PyObject* driving;
+    PyObject* py_is_height = nullptr;
 
     Sketcher::Constraint* constraint = this->getConstraintPtr();
+
+    auto parseElementsList = [](PyObject* list, Sketcher::Constraint* constr_ptr) -> bool {
+        Py_ssize_t list_size = PyList_Size(list);
+
+        // The list should contain pairs of (geoId, posId), so its size must be even.
+        if (list_size % 2 != 0) {
+            PyErr_SetString(
+                PyExc_ValueError,
+                "Element list must have an even number of items (pairs of GeoId, PosId)."
+            );
+            return false;  // Failure
+        }
+
+        constr_ptr->truncateElements(0);
+
+        for (Py_ssize_t i = 0; i < list_size; i += 2) {
+            PyObject* py_geoId_obj = PyList_GetItem(list, i);
+            PyObject* py_posId_obj = PyList_GetItem(list, i + 1);
+
+            // Perform crucial type checking on list items
+            if (!py_geoId_obj || !py_posId_obj || !PyLong_Check(py_geoId_obj)
+                || !PyLong_Check(py_posId_obj)) {
+                PyErr_SetString(PyExc_TypeError, "Element list items must be integers.");
+                return false;  // Failure
+            }
+
+            int geoId = PyLong_AsLong(py_geoId_obj);
+            int posId = PyLong_AsLong(py_posId_obj);
+
+            // Use the C++ API to populate the constraint
+            constr_ptr->setElement(
+                i / 2,
+                Sketcher::GeoElementId(geoId, static_cast<Sketcher::PointPos>(posId))
+            );
+        }
+
+        return true;  // Success
+    };
+
+    // Attempt to parse (string, list) for 'Group'
+    if (PyArg_ParseTuple(args, "sO!", &ConstraintType, &PyList_Type, &py_elements_list)) {
+        if (strcmp(ConstraintType, "Group") == 0) {
+            constraint->Type = Sketcher::Group;
+            if (!parseElementsList(py_elements_list, constraint)) {
+                return -1;  // The lambda set the Python error, so just return.
+            }
+            return 0;  // Success!
+        }
+    }
+    PyErr_Clear();
+
+    // Attempt to parse (string, list, string, string, bool) for 'Text'
+    if (PyArg_ParseTuple(
+            args,
+            "sO!ss|O",
+            &ConstraintType,
+            &PyList_Type,
+            &py_elements_list,
+            &text_str,
+            &font_str,
+            &py_is_height
+        )) {
+
+        if (strcmp(ConstraintType, "Text") == 0) {
+            constraint->Type = Sketcher::Text;
+
+            // Call the shared lambda for list parsing
+            if (!parseElementsList(py_elements_list, constraint)) {
+                return -1;  // The lambda set the Python error.
+            }
+
+            // Set the specific members for the Text constraint
+            constraint->setText(text_str);
+            constraint->setFont(font_str);
+
+            // Check and set the optional boolean
+            if (py_is_height && PyBool_Check(py_is_height)) {
+                constraint->setIsTextHeight(py_is_height == Py_True);
+            }
+            else {
+                constraint->setIsTextHeight(true);
+            }
+
+            return 0;  // Success!
+        }
+    }
+    PyErr_Clear();
 
     auto handleSi = [&]() -> bool {
         if (strcmp("Horizontal", ConstraintType) == 0) {
@@ -262,7 +353,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "siOOO", &ConstraintType, &FirstIndex, &index_or_value, &activated, &driving)) {
+    if (
+        PyArg_ParseTuple(args, "siOOO", &ConstraintType, &FirstIndex, &index_or_value, &activated, &driving)
+    ) {
         if (PyBool_Check(activated) && PyBool_Check(driving)) {
             if (handleSiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -376,7 +469,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "siiOO", &ConstraintType, &FirstIndex, &any_index, &index_or_value, &activated)) {
+    if (
+        PyArg_ParseTuple(args, "siiOO", &ConstraintType, &FirstIndex, &any_index, &index_or_value, &activated)
+    ) {
         if (PyBool_Check(activated)) {
             if (handleSiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -456,11 +551,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 constraint->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
                 return true;
             }
-            else if (strstr(
-                         ConstraintType,
-                         "InternalAlignment"
-                     )) {  // InteralAlignment with
-                           // InternalElementIndex argument
+            else if (
+                strstr(
+                    ConstraintType,
+                    "InternalAlignment"
+                )
+            ) {  // InteralAlignment with
+                 // InternalElementIndex argument
                 constraint->Type = InternalAlignment;
 
                 valid = true;
@@ -514,7 +611,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "siiiOO", &ConstraintType, &intArg1, &intArg2, &intArg3, &oNumArg4, &activated)) {
+    if (
+        PyArg_ParseTuple(args, "siiiOO", &ConstraintType, &intArg1, &intArg2, &intArg3, &oNumArg4, &activated)
+    ) {
         if (PyBool_Check(activated)) {
             if (handleSiiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -554,6 +653,15 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             intArg5 = PyLong_AsLong(oNumArg5);
             if (strcmp("Symmetric", ConstraintType) == 0) {
                 constraint->Type = Symmetric;
+                constraint->First = intArg1;
+                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
+                constraint->Second = intArg3;
+                constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->Third = intArg5;
+                return true;
+            }
+            if (strcmp("Perpendicular", ConstraintType) == 0) {
+                constraint->Type = Perpendicular;
                 constraint->First = intArg1;
                 constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
                 constraint->Second = intArg3;
@@ -615,7 +723,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return false;
     };
 
-    if (PyArg_ParseTuple(args, "siiiiO", &ConstraintType, &intArg1, &intArg2, &intArg3, &intArg4, &oNumArg5)) {
+    if (
+        PyArg_ParseTuple(args, "siiiiO", &ConstraintType, &intArg1, &intArg2, &intArg3, &intArg4, &oNumArg5)
+    ) {
         if (handleSiiiiO()) {
             return 0;
         }
@@ -895,6 +1005,12 @@ std::string ConstraintPy::representation() const
             result << "'PointOnObject' (" << getConstraintPtr()->First << ","
                    << getConstraintPtr()->Second << ")>";
             break;
+        case Group:
+            result << "'Group'>";
+            break;
+        case Text:
+            result << "'Text'>";
+            break;
         default:
             result << "'?'>";
             break;
@@ -964,6 +1080,12 @@ Py::String ConstraintPy::getType() const
             break;
         case PointOnObject:
             return Py::String("PointOnObject");
+            break;
+        case Group:
+            return Py::String("Group");
+            break;
+        case Text:
+            return Py::String("Text");
             break;
         default:
             return Py::String("Undefined");

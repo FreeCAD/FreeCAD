@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef APP_MEASUREPOSITION_H
-#define APP_MEASUREPOSITION_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -72,7 +71,7 @@ public:
     {
         return &this->Position;
     }
-    QString getResultString() override;
+    std::string getResultString() override;
 
     Base::Placement getPlacement() const override;
 
@@ -84,6 +83,3 @@ private:
 };
 
 }  // namespace Measure
-
-
-#endif  // APP_MEASUREPOSITION_H

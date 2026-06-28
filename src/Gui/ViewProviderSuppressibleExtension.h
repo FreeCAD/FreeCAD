@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDERSUPPRESSIBLEEXTENSION_H
-#define VIEWPROVIDERSUPPRESSIBLEEXTENSION_H
+#pragma once
 
 #include "ViewProviderExtensionPython.h"
 
@@ -41,7 +40,6 @@ public:
 
     void setSuppressedIcon(bool onoff);
     QIcon extensionMergeColorfullOverlayIcons(const QIcon& orig) const override;
-    void extensionSetupContextMenu(QMenu* menu, QObject*, const char*) override;
 
 private:
     bool isSetSuppressedIcon {false};
@@ -51,5 +49,3 @@ using ViewProviderSuppressibleExtensionPython
     = ViewProviderExtensionPythonT<Gui::ViewProviderSuppressibleExtension>;
 
 }  // namespace Gui
-
-#endif  // VIEWPROVIDERSUPPRESSIBLEEXTENSION_H

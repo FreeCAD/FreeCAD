@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+#include <cctype>
 #include <cmath>
 #include <iomanip>
 #include <sstream>
@@ -41,6 +42,21 @@
 
 
 using namespace TechDraw;
+
+namespace
+{
+void trimPatternLineEnd(std::string& line)
+{
+    while (!line.empty()) {
+        unsigned char ch = static_cast<unsigned char>(line.back());
+        if (std::isspace(ch) || std::iscntrl(ch)) {
+            line.pop_back();
+            continue;
+        }
+        break;
+    }
+}
+}
 
 double LineSet::getMinX()
 {
@@ -338,9 +354,9 @@ bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName
 std::vector<std::string> PATLineSpec::loadPatternDef(std::ifstream& inFile)
 {
     std::vector<std::string> result;
-    while ( inFile.good() ){
-        std::string line;
-        std::getline(inFile, line);
+    std::string line;
+    while (std::getline(inFile, line)) {
+        trimPatternLineEnd(line);
         std::string nameTag = line.substr(0, 1);
         if ((nameTag == ";")  ||
              (nameTag == " ") ||
@@ -457,8 +473,6 @@ void DashSpec::dump(const char* title)
     }
     Base::Console().message("DUMP - DashSpec - %s\n", ss.str().c_str());
 }
-
-
 
 
 

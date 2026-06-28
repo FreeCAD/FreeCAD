@@ -315,10 +315,7 @@ bool ShortcutManager::eventFilter(QObject* o, QEvent* ev)
                 auto* maybeProxy = focus->focusProxy();
                 auto* focusOrProxy = maybeProxy ? maybeProxy : focus;
 
-                bool isFocusedWidgetTextInput = focusOrProxy->inherits("QLineEdit")
-                    || focusOrProxy->inherits("QTextEdit")
-                    || focusOrProxy->inherits("QPlainTextEdit");
-                if (isFocusedWidgetTextInput) {
+                if (focusOrProxy->inherits("QLineEdit")) {
                     ev->accept();
                     return true;
                 }

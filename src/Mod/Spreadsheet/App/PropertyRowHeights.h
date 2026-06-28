@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYROWHEIGHTS_H
-#define PROPERTYROWHEIGHTS_H
+#pragma once
 
 #include <App/Property.h>
 #include <CXX/Objects.hxx>
@@ -96,5 +95,3 @@ private:
 };
 
 }  // namespace Spreadsheet
-
-#endif  // PROPERTYROWHEIGHTS_H

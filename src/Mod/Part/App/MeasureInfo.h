@@ -24,8 +24,7 @@
 //! MeasureInfo.h
 //! ancestor class and the various flavours of MeasureXXXXXInfo.
 
-#ifndef PART_MEASUREINFO_H
-#define PART_MEASUREINFO_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -152,17 +151,23 @@ class PartExport MeasureRadiusInfo: public MeasureInfo
 {
 public:
     MeasureRadiusInfo() = default;
-    MeasureRadiusInfo(bool val, double rad, Base::Vector3d point, Base::Placement plm)
+    MeasureRadiusInfo(bool val, double rad, Base::Vector3d pointOnCurve, Base::Vector3d center)
         : MeasureInfo(val)
         , radius(rad)
-        , pointOnCurve(point)
-        , placement(plm)
+        , pointOnCurve(pointOnCurve)
+        , center(center)
     {}
     ~MeasureRadiusInfo() override = default;
 
     double radius {};
+    // This is where the label is placed
+    // For now not necessarily on the curve as the name implies
     Base::Vector3d pointOnCurve;
-    Base::Placement placement;  // curve center & circle orientation
+    // Currently not in use but useful for the future
+    Base::Vector3d center;
+    // These things should be fixed when this is implemented:
+    // https://github.com/FreeCAD/FreeCAD/issues/28937,
+    // annotation arrows for radius and diameter measurement.
 };
 
 //! callback registrations
@@ -191,5 +196,3 @@ public:
 using CallbackRegistrationList = std::vector<CallbackRegistrationRecord>;
 
 }  // end namespace Part
-
-#endif

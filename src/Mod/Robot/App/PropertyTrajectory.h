@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYTRAJECTORY_H
-#define PROPERTYTRAJECTORY_H
+#pragma once
 
 #include <App/Property.h>
 #include <Base/BoundBox.h>
@@ -84,6 +83,3 @@ private:
 
 
 }  // namespace Robot
-
-
-#endif  // PROPERTYTOPOSHAPE_H

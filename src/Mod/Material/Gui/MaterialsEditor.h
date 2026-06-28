@@ -21,13 +21,11 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_MATERIALSEDITOR_H
-#define MATGUI_MATERIALSEDITOR_H
+#pragma once
 
 #include <memory>
 
 #include <QDialog>
-#include <QDir>
 #include <QIcon>
 #include <QPoint>
 #include <QStandardItem>
@@ -241,5 +239,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_MATERIALSEDITOR_H

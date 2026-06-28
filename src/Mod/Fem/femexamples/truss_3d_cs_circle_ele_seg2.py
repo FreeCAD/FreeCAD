@@ -28,6 +28,7 @@ import Fem
 from .truss_3d_cs_circle_ele_seg3 import setup as setup_truss_seg3
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -59,13 +60,7 @@ def setup(doc=None, solvertype="z88"):
     # mesh
     from .meshes.mesh_truss_crane_seg2 import create_nodes, create_elements
 
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
+    fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
 
     # overwrite mesh with the hexa20 mesh
     femmesh_obj.FemMesh = fem_mesh

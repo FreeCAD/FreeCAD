@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GESTURENAVIGATIONSTYLE2_H
-#define GESTURENAVIGATIONSTYLE2_H
+#pragma once
 
 #include "Navigation/NavigationStyle.h"
 
@@ -50,6 +49,7 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent* const ev) override;
+    int selectionMoveThreshold() const override;
 
 public:
     /// calls processSoEvent of NavigationStyle.
@@ -120,4 +120,3 @@ public:  // gesture reactions
 };
 
 }  // namespace Gui
-#endif  // GESTURENAVIGATIONSTYLE2_H

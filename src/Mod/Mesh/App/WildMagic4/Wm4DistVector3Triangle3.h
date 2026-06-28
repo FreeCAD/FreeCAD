@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DISTVECTOR3TRIANGLE3_H
-#define WM4DISTVECTOR3TRIANGLE3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Distance.h"
@@ -66,5 +65,3 @@ typedef DistVector3Triangle3<float> DistVector3Triangle3f;
 typedef DistVector3Triangle3<double> DistVector3Triangle3d;
 
 }
-
-#endif

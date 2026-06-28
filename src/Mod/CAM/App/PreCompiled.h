@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_PRECOMPILED_H
-#define PATH_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -84,5 +83,3 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
-
-#endif

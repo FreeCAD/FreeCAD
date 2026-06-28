@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherMessages_H
-#define GUI_TASKVIEW_TaskSketcherMessages_H
+#pragma once
 
 #include <Gui/TaskView/TaskSolverMessages.h>
 
@@ -51,5 +50,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TaskSketcherMessages_H

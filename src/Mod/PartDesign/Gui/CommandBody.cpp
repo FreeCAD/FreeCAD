@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
@@ -33,7 +35,7 @@
 #include <App/Part.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Application.h>
@@ -43,6 +45,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/PartDesignParameter.h>
 
 #include "TaskFeaturePick.h"
 #include "Utils.h"
@@ -108,11 +111,7 @@ void CmdPartDesignBody::activated(int iMsg)
     App::DocumentObject* baseFeature = nullptr;
     bool addtogroup = false;
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup(
-        "BaseApp/Preferences/Mod/PartDesign"
-    );
-
-    bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
+    bool allowCompound = PartDesign::PartDesignParameter::instance()->getAllowCompoundDefault();
 
     if (!features.empty()) {
         if (features.size() == 1) {
@@ -220,6 +219,7 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a Body"));
+    bool openedModal = false;
 
     std::string bodyName = getUniqueObjectName("Body");
     const char* bodyString = bodyName.c_str();
@@ -234,7 +234,7 @@ void CmdPartDesignBody::activated(int iMsg)
         Doc,
         "App.ActiveDocument.getObject('%s').AllowCompound = %s",
         bodyString,
-        allowCompound ? "True" : "False"
+        Gui::asString(allowCompound)
     );
     if (baseFeature) {
         if (partOfBaseFeature) {
@@ -365,6 +365,10 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     updateActive();
+
+    if (!openedModal) {
+        commitCommand();
+    }
 }
 
 bool CmdPartDesignBody::isActive()
@@ -519,9 +523,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    Gui::Command::openCommand(
-        QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies")
-    );
+    openCommand(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies"));
 
     for (auto chainIt = featureChains.begin(); !featureChains.empty();
          featureChains.erase(chainIt), chainIt = featureChains.begin()) {
@@ -560,12 +562,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
         std::string bodyName = getUniqueObjectName(
             std::string(chainIt->back()->getNameInDocument()).append("Body").c_str()
         );
-
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup(
-            "BaseApp/Preferences/Mod/PartDesign"
-        );
-
-        bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
+        bool allowCompound = PartDesign::PartDesignParameter::instance()->getAllowCompoundDefault();
 
         // Create a body for the chain
         doCommand(Doc, "App.activeDocument().addObject('PartDesign::Body','%s')", bodyName.c_str());
@@ -573,7 +570,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
             Doc,
             "App.ActiveDocument.getObject('%s').AllowCompound = %s",
             bodyName.c_str(),
-            allowCompound ? "True" : "False"
+            Gui::asString(allowCompound)
         );
         doCommand(
             Doc,
@@ -615,7 +612,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
                                 Gui::getMainWindow(),
                                 QObject::tr("Sketch plane cannot be migrated"),
                                 QObject::tr(
-                                    "Please edit '%1' and redefine it to use a Base or "
+                                    "Edit '%1' and redefine it to use a Base or "
                                     "Datum plane as the sketch plane."
                                 )
                                     .arg(QString::fromUtf8(sketch->Label.getValue()))
@@ -704,8 +701,10 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         );
         return;
     }
-    else if (!selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && selFeature != body
-             && body->BaseFeature.getValue() != selFeature) {
+    else if (
+        !selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && selFeature != body
+        && body->BaseFeature.getValue() != selFeature
+    ) {
         QMessageBox::warning(
             nullptr,
             QObject::tr("Selection error"),
@@ -801,6 +800,8 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
     }
 
     updateActive();
+
+    commitCommand();
 }
 
 bool CmdPartDesignDuplicateSelection::isActive()
@@ -1000,6 +1001,8 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     }*/
 
     updateActive();
+
+    commitCommand();
 }
 
 bool CmdPartDesignMoveFeature::isActive()
@@ -1033,6 +1036,11 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         App::DatumElement::getClassTypeId()
     );
     features.insert(features.end(), datums.begin(), datums.end());
+
+    std::vector<App::DocumentObject*> lcs = getSelection().getObjectsOfType(
+        App::LocalCoordinateSystem::getClassTypeId()
+    );
+    features.insert(features.end(), lcs.begin(), lcs.end());
 
     if (features.empty()) {
         return;
@@ -1192,6 +1200,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
 
     updateActive();
+
+    commitCommand();
 }
 
 bool CmdPartDesignMoveFeatureInTree::isActive()

@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_VIEW3DINVENTORSELECTION_H
-#define GUI_VIEW3DINVENTORSELECTION_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -66,5 +65,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW3DINVENTORSELECTION_H

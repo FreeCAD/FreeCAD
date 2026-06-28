@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCH_H
-#define SKETCHER_SKETCH_H
+#pragma once
 
 #include <Base/Persistence.h>
 #include <CXX/Objects.hxx>
@@ -89,7 +88,11 @@ public:
     int addGeometry(const std::vector<Part::Geometry*>& geos, bool fixed = false);
     /// add unspecified geometry, where each element's "fixed" status is given by the
     /// blockedGeometry array
-    int addGeometry(const std::vector<Part::Geometry*>& geos, const std::vector<bool>& blockedGeometry);
+    int addGeometry(
+        const std::vector<Part::Geometry*>& geos,
+        const std::vector<bool>& blockedGeometry,
+        const std::set<int>& inGroupGeoIds
+    );
     /// get boolean list indicating whether the geometry is to be blocked or not
     void getBlockedGeometry(
         std::vector<bool>& blockedGeometry,
@@ -247,6 +250,12 @@ public:
     /// add one constraint to the sketch
     int addConstraint(const Constraint* constraint);
 
+    /// Updates the internal constraints of the given indexes
+    bool updateConstraints(
+        const std::vector<int>& constrIds,
+        const std::vector<Constraint*>& ConstraintList
+    );
+
     /**
      *   add a fixed X coordinate constraint to a point
      *
@@ -332,7 +341,14 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double* value, bool driving = true);
+    int addDistanceConstraint(
+        int geoId1,
+        PointPos pos1,
+        int geoId2,
+        double* value,
+        ConstraintOrientation orientation,
+        bool driving = true
+    );
     /**
      *   add a length or distance constraint
      *
@@ -355,14 +371,22 @@ public:
      *   constraint value and already inserted into either the FixParameters or
      *   Parameters array, as the case may be.
      */
-    int addDistanceConstraint(int geoId1, int geoId2, double* value, bool driving = true);
+    int addDistanceConstraint(
+        int geoId1,
+        int geoId2,
+        double* value,
+        ConstraintOrientation orientation,
+        bool driving = true
+    );
 
     /// add a parallel constraint between two lines
     int addParallelConstraint(int geoId1, int geoId2);
     /// add a perpendicular constraint between two lines
     int addPerpendicularConstraint(int geoId1, int geoId2);
+    /// add a perpendicular constraint between two points and a line
+    int addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3);
     /// add a tangency constraint between two geometries
-    int addTangentConstraint(int geoId1, int geoId2);
+    int addTangentConstraint(int geoId1, int geoId2, ConstraintOrientation orientation);
     int addTangentLineAtBSplineKnotConstraint(
         int checkedlinegeoId,
         int checkedbsplinegeoId,
@@ -625,6 +649,34 @@ private:
     Base::Vector3d initToPoint;
     double moveStep;
 
+    // Group related things :
+    /// container to store information about groups
+    struct GroupLineState
+    {
+        Base::Vector3d startPoint;
+        Base::Vector3d endPoint;
+
+        // Convenience method to get the length (scale)
+        double getLength() const
+        {
+            return (endPoint - startPoint).Length();
+        }
+
+        // Convenience method to get the orientation vector
+        Base::Vector3d getVec() const
+        {
+            return endPoint - startPoint;
+        }
+    };
+    // This map stores the state of group lines just BEFORE a solve.
+    // We will use this to calculate the transformation AFTER the solve.
+    // Key: GeoId of the frame line.
+    // Value: it's initial position.
+    std::map<int, GroupLineState> preSolveGroupStates;
+    void captureGroupStates();
+    void applyGroupTransformations();
+    GroupLineState getGroupLineState(int geoId) const;
+
 public:
     GCS::Algorithm defaultSolver;
     GCS::Algorithm defaultSolverRedundant;
@@ -844,6 +896,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_SKETCH_H

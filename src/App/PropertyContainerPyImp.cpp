@@ -130,6 +130,9 @@ PyObject* PropertyContainerPy::getTypeOfProperty(PyObject* args)
     if (Type & Prop_Output) {
         ret.append(Py::String("Output"));
     }
+    if (Type & Prop_Input) {
+        ret.append(Py::String("Input"));
+    }
     if (Type & Prop_NoRecompute) {
         ret.append(Py::String("NoRecompute"));
     }
@@ -153,7 +156,7 @@ PyObject* PropertyContainerPy::getTypeIdOfProperty(PyObject* args)
         return nullptr;
     }
 
-    Py::String str(prop->getTypeId().getName());
+    Py::String str = Base::toPyString(prop->getTypeId().getName());
     return Py::new_reference_to(str);
 }
 
@@ -222,6 +225,7 @@ static const std::map<std::string, int>& getStatusMap()
         statusMap["MaterialEdit"] = Property::MaterialEdit;
         statusMap["NoMaterialListEdit"] = Property::NoMaterialListEdit;
         statusMap["Output"] = Property::Output;
+        statusMap["Input"] = Property::Input;
         statusMap["LockDynamic"] = Property::LockDynamic;
         statusMap["NoModify"] = Property::NoModify;
         statusMap["PartialTrigger"] = Property::PartialTrigger;
@@ -649,42 +653,6 @@ PyObject* PropertyContainerPy::getCustomAttributes(const char* attr) const
             dict.setItem(it.first, Py::String(""));
         }
         return Py::new_reference_to(dict);
-    }
-    /// FIXME: For v0.20: Do not use stuff from Part module here!
-    if (Base::streq(attr, "Shape")
-         && getPropertyContainerPtr()->isDerivedFrom<App::DocumentObject>()) {
-        // Special treatment of Shape property
-        static PyObject* _getShape = nullptr;
-        if (!_getShape) {
-            _getShape = Py_None;
-            PyObject* mod = PyImport_ImportModule("Part");
-            if (!mod) {
-                PyErr_Clear();
-            }
-            else {
-                Py::Object pyMod = Py::asObject(mod);
-                if (pyMod.hasAttr("getShape")) {
-                    _getShape = Py::new_reference_to(pyMod.getAttr("getShape"));
-                }
-            }
-        }
-        if (_getShape != Py_None) {
-            Py::Tuple args(1);
-            args.setItem(0, Py::Object(const_cast<PropertyContainerPy*>(this)));
-            auto res = PyObject_CallObject(_getShape, args.ptr());
-            if (!res) {
-                PyErr_Clear();
-            }
-            else {
-                Py::Object pyres(res, true);
-                if (pyres.hasAttr("isNull")) {
-                    Py::Callable func(pyres.getAttr("isNull"));
-                    if (!func.apply().isTrue()) {
-                        return Py::new_reference_to(res);
-                    }
-                }
-            }
-        }
     }
 
     return nullptr;

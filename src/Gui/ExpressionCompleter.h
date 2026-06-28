@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONCOMPLETER_H
-#define EXPRESSIONCOMPLETER_H
+#pragma once
 
 #include <QCompleter>
 #include <QLineEdit>
@@ -184,5 +183,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // EXPRESSIONCOMPLETER_H

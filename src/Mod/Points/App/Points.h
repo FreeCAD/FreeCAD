@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef POINTS_POINT_H
-#define POINTS_POINT_H
+#pragma once
 
 #include <iterator>
 #include <vector>
@@ -238,6 +237,3 @@ public:
 };
 
 }  // namespace Points
-
-
-#endif  // POINTS_POINTPROPERTIES_H

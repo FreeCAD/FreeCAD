@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskExtrudeParameters_H
-#define GUI_TASKVIEW_TaskExtrudeParameters_H
+#pragma once
 
 #include <Gui/Inventor/Draggers/Gizmo.h>
 
@@ -296,5 +297,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskExtrudeParameters_H

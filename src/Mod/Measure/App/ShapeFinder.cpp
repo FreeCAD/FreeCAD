@@ -106,9 +106,17 @@ ResolveResult ShapeFinder::resolveSelection(
 //       and ShapeFinder::getLinkAttachParent()
 TopoDS_Shape ShapeFinder::getLocatedShape(const App::DocumentObject& rootObject, const std::string& leafSub)
 {
-    auto resolved = resolveSelection(rootObject, leafSub);
-    auto target = &resolved.getTarget();
-    auto shortSub = resolved.getShortSub();
+    // point objects are weird.
+    const std::string VertexTag {"Vertex"};
+    const std::string PointTag {"Point"};
+    std::string objName {rootObject.getNameInDocument()};
+    if (objName.find(VertexTag) != std::string::npos || objName.find(PointTag) != std::string::npos) {
+        return Part::Feature::getShape(&rootObject, Part::ShapeOption::Transform);
+    }
+
+    ResolveResult resolved = resolveSelection(rootObject, leafSub);
+    App::DocumentObject* target = &resolved.getTarget();
+    std::string shortSub = resolved.getShortSub();
     if (!target) {
         return {};
     }

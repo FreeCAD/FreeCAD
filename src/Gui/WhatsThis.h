@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WHATSTHIS_H
-#define GUI_WHATSTHIS_H
+#pragma once
 
 #include <QString>
 #include "Command.h"
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_WHATSTHIS_H

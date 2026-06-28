@@ -22,8 +22,7 @@
  */
 
 
-#ifndef KDL_UTILITY_H
-#define KDL_UTILITY_H
+#pragma once
 
 #include "kdl-config.h"
 #include <cstdlib>
@@ -295,7 +294,3 @@ inline double addDelta(double a,double da,double dt) {
 
 
 }
-
-
-
-#endif

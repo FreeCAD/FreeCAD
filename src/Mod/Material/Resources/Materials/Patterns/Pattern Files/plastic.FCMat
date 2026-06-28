@@ -4,7 +4,7 @@ General:
   UUID: "2fc720b1-19b3-4a30-a0f4-a782135559f5"
   Name: "plastic"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"

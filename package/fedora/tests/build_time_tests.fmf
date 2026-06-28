@@ -4,9 +4,4 @@
         if [ -f /usr/share/freecad/tests_result/`uname -m`/ctest.failed ]; then
             exit 1
         fi
-/ctest_gui :
-    test: |
-        cat /usr/share/freecad/tests_result/`uname -m`/ctest_gui.result
-        if [ -f /usr/share/freecad/tests_result/`uname -m`/ctest_gui.failed ]; then
-            exit 1
-        fi
+

@@ -249,29 +249,59 @@
       <translation>Diffus farve</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="211"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="204"/>
+      <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
+      <translation>Definerer grundfarven for en overflade, når den belyses, og repræsenterer hvordan objekter spreder lyset jævnt i alle retninger, uafhængigt af synsvinklen. Denne egenskab vil påvirke materialets farve mest.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="215"/>
       <source>Ambient color</source>
       <translation>Baggrundsfarve</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="220"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="217"/>
+      <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
+      <translation>Definerer farven for en overflade den belyses af et indirekte, ensartet lys, og repræsenterer hvordan objekter vises, når de kun belyses af baggrundsbelysningen i en scene uden direkte lys, skygger eller genskin</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="228"/>
       <source>Emissive color</source>
       <translation>Fluorescerende farve</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="229"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="230"/>
+      <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
+      <translation>Definerer farven på en overflade, der synes at udsende lys uafhængig af ekstern belysning, og får objekter til at virke selvlysende. Sæt til farven til sort til hvis der ikke ønskes en fluorescerende farve.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="241"/>
       <source>Specular color</source>
       <translation>Blank farve</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="238"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="243"/>
+      <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
+      <translation>Definerer farven og intensiteten på de lyse, spejllignende refleksioner, der optræder på skinnende eller reflekterende overflader, når lys rammer dem direkte. Vælg lyse farver til skinnende objekter.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="254"/>
       <source>Shininess</source>
       <translation>Glans</translation>
     </message>
     <message>
-      <location filename="../../DlgInspectAppearance.cpp" line="248"/>
+      <location filename="../../DlgInspectAppearance.cpp" line="256"/>
+      <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
+      <translation>Definerer størrelsen og skarpheden af skinnende refleksioner på en overflade. Højere værdier producerer små, skarpe refleksioner, mens lavere værdier skaber store, bløde refleksioner. Bemærk at intensiteten defineres af den blanke farve.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="268"/>
       <source>Transparency</source>
       <translation>Transparens</translation>
+    </message>
+    <message>
+      <location filename="../../DlgInspectAppearance.cpp" line="269"/>
+      <source>Defines how much light passes through an object, making it partially or fully see-through</source>
+      <translation>Definerer hvor meget lys der passerer gennem et objekt, og gør det delvist eller fuldstændigt gennemsigtigt</translation>
     </message>
   </context>
   <context>
@@ -453,7 +483,7 @@
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="14"/>
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="20"/>
       <source>Default Material</source>
-      <translation>Standard materiale</translation>
+      <translation>Standardmaterialer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="52"/>
@@ -619,14 +649,16 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <translation>Vælg et bllede</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="206"/>
-      <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation>Billedfiler (*.jpg *.jpeg *.png *.bmp);;Alle filer (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="207"/>
+      <location filename="../../ImageEdit.cpp" line="223"/>
+      <source>Image files</source>
+      <translation>Billedfiler</translation>
     </message>
     <message>
-      <location filename="../../ImageEdit.cpp" line="218"/>
-      <source>Image files (*.svg);;All files (*)</source>
-      <translation>Billedfiler (*.svg);;Alle filer (*)</translation>
+      <location filename="../../ImageEdit.cpp" line="208"/>
+      <location filename="../../ImageEdit.cpp" line="224"/>
+      <source>All files</source>
+      <translation>Alle filer</translation>
     </message>
   </context>
   <context>
@@ -688,63 +720,63 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <translation>Slet</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="196"/>
+      <location filename="../../MaterialSave.cpp" line="198"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Overskrivning af den oprindelige fil kan få andre dokumenter til at gå itu. Det anbefales ikke.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="220"/>
+      <location filename="../../MaterialSave.cpp" line="222"/>
       <source>Save as new material</source>
       <translation>Gem som nyt materiale</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="193"/>
+      <location filename="../../MaterialSave.cpp" line="195"/>
       <source>Save over &apos;%1&apos;?</source>
       <translation>Overskriv &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="218"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>Confirm Save as New Material</source>
       <translation>Bekræft Gem som nyt materiale</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="223"/>
+      <location filename="../../MaterialSave.cpp" line="225"/>
       <source>This material already exists in this library. Save as a new material?</source>
       <translation>Dette materiale findes allerede i dette bibliotek. Gem som nyt materiale?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Confirm Save as Copy</source>
       <translation>Bekræft Gem som kopi</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="247"/>
+      <location filename="../../MaterialSave.cpp" line="249"/>
       <source>Save as copy</source>
       <translation>Gem som kopi</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="250"/>
+      <location filename="../../MaterialSave.cpp" line="252"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
       <translation>At gemme en kopi anbefales ikke, da det kan ødelægge andre dokumenter. Det anbefales at gemme som et nyt materiale.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="253"/>
+      <location filename="../../MaterialSave.cpp" line="255"/>
       <source>Save Copy</source>
       <translation>Gem en kopi</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="254"/>
+      <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save As New</source>
       <translation>Gem som nyt</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="486"/>
-      <location filename="../../MaterialSave.cpp" line="496"/>
+      <location filename="../../MaterialSave.cpp" line="488"/>
+      <location filename="../../MaterialSave.cpp" line="498"/>
       <source>New folder</source>
       <translation>Ny mappe</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="536"/>
+      <location filename="../../MaterialSave.cpp" line="538"/>
       <source>Context Menu</source>
       <translation>Kontekstmenu</translation>
     </message>
@@ -1102,7 +1134,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgMaterialImp.cpp" line="56"/>
+      <location filename="../../DlgMaterialImp.cpp" line="57"/>
       <source>Material</source>
       <translation>Materiale</translation>
     </message>
@@ -1122,23 +1154,23 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <translation>Materiale</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="190"/>
+      <location filename="../../MaterialSave.cpp" line="192"/>
       <source>Confirm Overwrite</source>
       <translation>Bekræft overskrivning</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="380"/>
-      <location filename="../../MaterialSave.cpp" line="381"/>
+      <location filename="../../MaterialSave.cpp" line="382"/>
+      <location filename="../../MaterialSave.cpp" line="383"/>
       <source>No writeable library</source>
       <translation>Intet skrivbart bibliotek</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../MaterialSave.cpp" line="570"/>
       <source>Delete &apos;%1&apos;?</source>
       <translation>Slet &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="572"/>
+      <location filename="../../MaterialSave.cpp" line="574"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Fjernelse af dette vil også fjerne alt indhold.</translation>
     </message>
@@ -1163,9 +1195,9 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <translation>Ellers vil alle ændringer gå tabt.</translation>
     </message>
     <message>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="565"/>
       <source>Confirm Delete</source>
       <translation>Bekræft sletning</translation>
     </message>
@@ -1363,7 +1395,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>
@@ -1405,6 +1437,14 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="190"/>
       <source>All materials</source>
       <translation>Alle materialer</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../DlgMaterialImp.cpp" line="263"/>
+      <source>Set Material</source>
+      <translation>Gem materiale</translation>
     </message>
   </context>
 </TS>

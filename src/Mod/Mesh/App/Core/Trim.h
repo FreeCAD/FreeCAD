@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHTRIM_H
-#define MESHTRIM_H
+#pragma once
 
 #include <Base/ViewProj.h>
 
@@ -124,5 +123,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESHTRIM_H

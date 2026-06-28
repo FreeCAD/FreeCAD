@@ -30,6 +30,7 @@ This creates a 2D shape in the 3D view itself. This projection
 can be further used to create a technical drawing using
 the TechDraw Workbench.
 """
+
 ## @package gui_shape2dview
 # \ingroup draftguitools
 # \brief Provides GUI tools to project an object into a 2D plane.

@@ -140,12 +140,10 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
-                                "Instead, the linked object(s) reside within '%s'.\n",
+        Base::Console().warning("%s: %s links are out of scope. Out of scope links to: %s\n",
                                 getTypeId().getName(),
-                                objnames.c_str(),
                                 getNameInDocument(),
-                                scopenames.c_str());
+                                objnames.c_str());
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -206,13 +204,15 @@ bool DocumentObject::recomputeFeature(bool recursive)
     return isValid();
 }
 
-/**
- * @brief Set this document object touched.
- * Touching a document object does not mean to recompute it, it only means that
- * other document objects that link it (i.e. its InList) will be recomputed.
- * If it should be forced to recompute a document object then use
- * \ref enforceRecompute() instead.
- */
+void DocumentObject::setTouched(const char* name)
+{
+    // This function is not a replacement for touch(), it is only
+    // used internally for fine-grained document recompute and replaces
+    // the coarse grained equivalent of StatusBits.set(ObjectStatus::Touch);
+    touchedProps.insert(name);
+    StatusBits.set(ObjectStatus::Touch);
+}
+
 void DocumentObject::touch(bool noRecompute)
 {
     if (!noRecompute) {
@@ -224,10 +224,6 @@ void DocumentObject::touch(bool noRecompute)
     }
 }
 
-/**
- * @brief Set this document object freezed.
- * A freezed document object does not recompute ever.
- */
 void DocumentObject::freeze()
 {
     StatusBits.set(ObjectStatus::Freeze);
@@ -250,10 +246,6 @@ void DocumentObject::freeze()
     }
 }
 
-/**
- * @brief Set this document object unfreezed.
- * A freezed document object does not recompute ever.
- */
 void DocumentObject::unfreeze(bool noRecompute)
 {
     StatusBits.reset(ObjectStatus::Freeze);
@@ -271,31 +263,22 @@ void DocumentObject::unfreeze(bool noRecompute)
     touch(noRecompute);
 }
 
-/**
- * @brief Check whether the document object is touched or not.
- * @return true if document object is touched, false if not.
- */
 bool DocumentObject::isTouched() const
 {
     return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
 }
 
-/**
- * @brief Enforces this document object to be recomputed.
- * This can be useful to recompute the feature without
- * having to change one of its input properties.
- */
+void DocumentObject::enforceRecompute(const std::string& propName)
+{
+    touch(false);
+    touchedProps.insert(propName);
+}
+
 void DocumentObject::enforceRecompute()
 {
     touch(false);
 }
 
-/**
- * @brief Check whether the document object must be recomputed or not.
- * This means that the 'Enforce' flag is set or that \ref mustExecute()
- * returns a value > 0.
- * @return true if document object must be recomputed, false if not.
- */
 bool DocumentObject::mustRecompute() const
 {
     if (StatusBits.test(ObjectStatus::Freeze)) {
@@ -424,6 +407,72 @@ const char* DocumentObject::detachFromDocument()
     return name ? name->c_str() : nullptr;
 }
 
+// Fully mimics getOutList()
+const std::vector<DepEdge>& DocumentObject::getOutListProp()
+{
+    if (!_outListCachedProp) {
+        _outListProp.clear();
+        getOutListProp(0, _outListProp);
+        _outListCachedProp = true;
+    }
+    return _outListProp;
+}
+
+// Fully mimics getOutList(int options)
+std::vector<DepEdge>
+DocumentObject::getOutListProp(int options)
+{
+    std::vector<DepEdge> res;
+    getOutListProp(options, res);
+    return res;
+}
+
+// Mimics getOutList(int options, std::vector<DocumentObject*>& res) except for
+// an extra filter for ExpressionEngine that is handled in a later case.
+void DocumentObject::getOutListProp(int options, std::vector<DepEdge>& res)
+{
+    if (_outListCachedProp && !options) {
+        res.insert(res.end(), _outListProp.begin(), _outListProp.end());
+        return;
+    }
+    std::vector<Property*> props;
+    getPropertyList(props);
+    bool noHidden = !!(options & OutListNoHidden);
+    std::size_t size = res.size();
+    for (auto prop : props) {
+        std::vector<DocumentObject*> objs;
+        auto* linkProp = freecad_cast<PropertyLinkBase*>(prop);
+        // Filter for ExpressionEngine, because it is handled in the next if
+        // outside of this for loop.
+        if (linkProp && linkProp != &ExpressionEngine) {
+            linkProp->getLinks(objs, noHidden);
+        }
+        for (auto* obj : objs) {
+            res.emplace_back(this, prop->getName(), obj, "");
+        }
+    }
+
+    if (!(options & OutListNoExpression)) {
+        std::vector<std::pair<std::string, DocumentObject*>> linksProp;
+        ExpressionEngine.getLinksProp(linksProp);
+        for (auto& [propObj, obj] : linksProp) {
+            res.emplace_back(this, "ExpressionEngine", obj, propObj);
+        }
+    }
+
+    if (options & OutListNoXLinked) {
+        for (auto it = res.begin() + size; it != res.end();) {
+            auto& [objFrom, propFrom, objTo, propTo] = *it;
+            if (objTo && objTo->getDocument() != getDocument()) {
+                it = res.erase(it);
+            }
+            else {
+                ++it;
+            }
+        }
+    }
+}
+
 const std::vector<DocumentObject*>& DocumentObject::getOutList() const
 {
     if (!_outListCached) {
@@ -493,6 +542,12 @@ const std::vector<App::DocumentObject*>& DocumentObject::getInList() const
     return _inList;
 }
 
+// Fully mimics getInList()
+const std::vector<DepEdge>& DocumentObject::getInListProp() const
+{
+    return _inListProp;
+}
+
 // The original algorithm is highly inefficient in some special case.
 // Considering an object is linked by every other objects. After excluding this
 // object, there is another object linked by every other of the remaining
@@ -541,12 +596,48 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*>& inSet,
     }
 }
 
+// Fully mimics getInListExProp(std::set<App::DocumentObject*>& inSet, bool
+// recursive, std::vector<App::DocumentObject*>*) except for the extra vector
+// parameter that is not needed here.
+void DocumentObject::getInListExProp(
+    std::set<DepEdge>& inSet,
+    bool recursive) const
+{
+    if (!recursive) {
+        inSet.insert(_inListProp.begin(), _inListProp.end());
+        return;
+    }
+
+    std::stack<DocumentObject*> pendings;
+    pendings.push(const_cast<DocumentObject*>(this));
+    while (!pendings.empty()) {
+        auto obj = pendings.top();
+        pendings.pop();
+        for (const auto& edge : obj->getInListProp()) {
+            if (edge.fromObj && edge.fromObj->isAttachedToDocument()
+                && inSet.insert(edge).second) {
+                pendings.push(edge.fromObj);
+            }
+        }
+    }
+}
+
 std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
 {
     std::set<App::DocumentObject*> ret;
     getInListEx(ret, recursive);
     return ret;
 }
+
+// Fully mimics getInListEx(bool recursive)
+std::set<DepEdge>
+DocumentObject::getInListExProp(bool recursive) const
+{
+    std::set<DepEdge> ret;
+    getInListExProp(ret, recursive);
+    return ret;
+}
+
 
 void _getOutListRecursive(std::set<DocumentObject*>& objSet,
                           const DocumentObject* obj,
@@ -646,7 +737,7 @@ bool DocumentObject::isInOutListRecursive(DocumentObject* linkTo) const
 }
 
 std::vector<std::list<App::DocumentObject*>>
-DocumentObject::getPathsByOutList(App::DocumentObject* to) const
+DocumentObject::getPathsByOutList(const App::DocumentObject* to) const
 {
     return _pDoc->getPathsByOutList(this, to);
 }
@@ -687,6 +778,34 @@ bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub& linkTo) const
     linkTo_in_vector.reserve(1);
     linkTo_in_vector.push_back(linkTo.getValue());
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
+}
+
+bool DocumentObject::isInputProperty(const std::string& propName) const
+{
+    Property* prop = getPropertyByName(propName.c_str());
+    if (!prop) {
+        return false;
+    }
+    return isInputProperty(prop);
+}
+
+bool DocumentObject::isInputProperty(const Property* prop) const
+{
+    return (prop->getType() & Prop_Input) || prop->testStatus(Property::Input);
+}
+
+bool DocumentObject::isOutputProperty(const std::string& propName) const
+{
+    Property* prop = getPropertyByName(propName.c_str());
+    if (!prop) {
+        return false;
+    }
+    return isOutputProperty(prop);
+}
+
+bool DocumentObject::isOutputProperty(const Property* prop) const
+{
+    return (prop->getType() & Prop_Output) || prop->testStatus(Property::Output);
 }
 
 void DocumentObject::onLostLinkToObject(DocumentObject*)
@@ -769,13 +888,15 @@ bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
     return renamed;
 }
 
-App::Property* DocumentObject::addDynamicProperty(const char* type,
-                                                  const char* name,
-                                                  const char* group,
-                                                  const char* doc,
-                                                  short attr,
-                                                  bool ro,
-                                                  bool hidden)
+App::Property* DocumentObject::addDynamicProperty(
+    std::string_view type,
+    const char* name,
+    const char* group,
+    const char* doc,
+    short attr,
+    bool ro,
+    bool hidden
+)
 {
     auto prop = TransactionalObject::addDynamicProperty(type, name, group, doc, attr, ro, hidden);
     if (prop && _pDoc) {
@@ -810,7 +931,7 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
 
     // We re only called if the new label differs from the old one, and our code to check duplicates
     // may not work if this is not the case.
-    std::string oldLabel = Label.getStrValue();
+    std::string_view oldLabel = Label.getStrValue();
     assert(newLabel != oldLabel);
     if (!isAttachedToDocument()) {
         return {};
@@ -828,7 +949,7 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
     if (doc && !newLabel.empty() && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
         && doc->containsLabel(newLabel)) {
         // The label already exists but settings are such that duplicate labels should not be assigned.
-        std::string objName = getNameInDocument();
+        std::string_view objName = getNameInDocument();
         if (!doc->containsLabel(objName) && doc->haveSameBaseName(objName, newLabel)) {
             // The object name is not already a Label and the base name of the proposed label
             // equals the base name of the object Name, so we use the object Name as the replacement Label.
@@ -861,6 +982,10 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
         // See PropertyLinkBase::restoreLabelReference() for more details.
         return {};
     }
+
+    // Remove the old label to free it up for future use.
+    doc->unregisterLabel(oldLabel);
+    
     return PropertyLinkBase::updateLabelReferences(this, newLabel.c_str());
 }
 
@@ -922,16 +1047,40 @@ void DocumentObject::onChanged(const Property* prop)
         _pDoc->signalRelabelObject(*this);
     }
 
-    // set object touched if it is an input property
-    if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
-        && !prop->testStatus(Property::Output)) {
-        if (!StatusBits.test(ObjectStatus::Touch)) {
-            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
-            StatusBits.set(ObjectStatus::Touch);
+    bool fineGrained = GetApplication().isFineGrainedRecomputeEnabled();
+
+    auto outputHasDeps = [this](const Property* prop) {
+        return std::ranges::any_of(getInListProp(), [this, prop](const DepEdge& edge) {
+            return edge.toObj == this && edge.toProp == prop->getName();
+        });
+    };
+
+    if (fineGrained) {
+        // set object touched if it is not an output property unless it has dependencies
+        if (!testStatus(ObjectStatus::NoTouch)
+            && ((isOutputProperty(prop) && outputHasDeps(prop)) ||
+                !isOutputProperty(prop))) {
+            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName()
+                     << "'");
+            setTouched(prop->getName());
+            // must execute on document recompute
+            if (!(prop->getType() & Prop_NoRecompute)) {
+                StatusBits.set(ObjectStatus::Enforce);
+            }
         }
-        // must execute on document recompute
-        if (!(prop->getType() & Prop_NoRecompute)) {
-            StatusBits.set(ObjectStatus::Enforce);
+    }
+    else {
+        // set object touched if it is not an output property
+        if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
+            && !prop->testStatus(Property::Output)) {
+            if (!StatusBits.test(ObjectStatus::Touch)) {
+                FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+                StatusBits.set(ObjectStatus::Touch);
+            }
+            // must execute on document recompute
+            if (!(prop->getType() & Prop_NoRecompute)) {
+                StatusBits.set(ObjectStatus::Enforce);
+            }
         }
     }
 
@@ -951,6 +1100,9 @@ void DocumentObject::clearOutListCache() const
     _outList.clear();
     _outListMap.clear();
     _outListCached = false;
+
+    _outListProp.clear();
+    _outListCachedProp = false;
 }
 
 PyObject* DocumentObject::getPyObject()
@@ -1200,42 +1352,21 @@ DocumentObject* DocumentObject::getLinkedObject(bool recursive,
 
 void DocumentObject::Save(Base::Writer& writer) const
 {
-    if (this->isFreezed()) {
-        throw Base::AbortException("At least one object is frozen, unable to save.");
-    }
-
-    if (this->isAttachedToDocument()){
+    if (this->isAttachedToDocument()) {
         writer.ObjectName = this->getNameInDocument();
     }
     App::ExtensionContainer::Save(writer);
 }
-
-/**
- * @brief Associate the expression \expr with the object identifier \a path in this document object.
- * @param path Target object identifier for the result of the expression
- * @param expr Expression tree
- */
 
 void DocumentObject::setExpression(const ObjectIdentifier& path, std::shared_ptr<Expression> expr)
 {
     ExpressionEngine.setValue(path, std::move(expr));
 }
 
-/**
- * @brief Clear the expression of the object identifier \a path in this document object.
- * @param path Target object identifier
- */
-
 void DocumentObject::clearExpression(const ObjectIdentifier& path)
 {
     setExpression(path, std::shared_ptr<Expression>());
 }
-
-/**
- * @brief Get expression information associated with \a path.
- * @param path Object identifier
- * @return Expression info, containing expression and optional comment.
- */
 
 const PropertyExpressionEngine::ExpressionInfo
 DocumentObject::getExpression(const ObjectIdentifier& path) const
@@ -1249,13 +1380,6 @@ DocumentObject::getExpression(const ObjectIdentifier& path) const
         return PropertyExpressionEngine::ExpressionInfo();
     }
 }
-
-/**
- * @brief Invoke ExpressionEngine's renameObjectIdentifier, to possibly rewrite expressions using
- * the \a paths map with current and new identifiers.
- *
- * @param paths
- */
 
 void DocumentObject::renameObjectIdentifiers(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths)
@@ -1336,6 +1460,22 @@ void App::DocumentObject::_addBackLink(DocumentObject* newObj)
     // only once this removal would clear the object from the inlist, even though there may be other
     // link properties from this object that link to us.
     _inList.push_back(newObj);
+}
+
+// Fully mimics _removeBackLink()
+void App::DocumentObject::_removeBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp)
+{
+    DepEdge key(obj, objProp, this, myProp ? myProp : "");
+    auto it = std::ranges::find(_inListProp, key);
+    if (it != _inListProp.end()) {
+        _inListProp.erase(it);
+    }
+}
+
+// Fully mimics _addBackLink()
+void App::DocumentObject::_addBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp)
+{
+    _inListProp.emplace_back(obj, objProp, this, myProp ? myProp : "");
 }
 
 int DocumentObject::setElementVisible(const char* element, bool visible)
@@ -1668,4 +1808,64 @@ App::PropertyPlacement* DocumentObject::getPlacementProperty() const
     return getPropertyByName<App::PropertyPlacement>("Placement");
 }
 
+bool DocumentObject::canPropBeReferenced(const App::Property* prop)
+{
+    if (!prop) {
+        return false;
+    }
 
+    App::PropertyContainer* container = prop->getContainer();
+    if (!container) {
+        return false;
+    }
+
+    auto* obj = freecad_cast<App::DocumentObject*>(container);
+    return obj && obj->isAttachedToDocument();
+}
+
+static void getPropertyUsesObj(std::set<ObjectIdentifier>& uses,
+                               App::DocumentObject* obj,
+                               const App::Property* prop)
+{
+    if (!obj || !obj->isAttachedToDocument()) {
+        return;
+    }
+
+    auto idIsProp = [prop](const std::pair<App::ObjectIdentifier, bool>& idPair) {
+        return idPair.first.getProperty() == prop;
+    };
+
+    auto referencesProperty = [&idIsProp](const App::Expression* expr) {
+        if (!expr) {
+            return false;
+        }
+
+        return std::ranges::any_of(expr->getIdentifiers(), idIsProp);
+    };
+
+    std::map<App::ObjectIdentifier, const App::Expression*> exprs =
+        obj->ExpressionEngine.getExpressions();
+
+    for (const auto& [id, expr] : exprs) {
+        if (referencesProperty(expr)) {
+            uses.insert(id);
+        }
+    }
+}
+
+std::set<ObjectIdentifier> DocumentObject::getPropertyUses(const App::Property *prop)
+{
+    std::set<ObjectIdentifier> uses;
+    if (!canPropBeReferenced(prop)) {
+        return uses;
+    }
+
+    auto* objProp = freecad_cast<DocumentObject*>(prop->getContainer());
+    std::vector<App::DocumentObject*> inList = objProp->getInList();
+
+    for (auto* obj : inList) {
+        getPropertyUsesObj(uses, obj, prop);
+    }
+
+    return uses;
+}

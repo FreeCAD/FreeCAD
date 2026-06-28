@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerLine_H
-#define SKETCHERGUI_DrawSketchHandlerLine_H
+#pragma once
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
@@ -37,7 +36,6 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 #include <vector>
@@ -45,8 +43,6 @@
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerLine;
 
@@ -71,6 +67,7 @@ using DSHLineController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0, 0>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1, 1>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0, 0>,
     ConstructionMethods::LineConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -102,24 +99,28 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
-                toolWidgetManager.drawPositionAtCursor(onSketchPos);
-
-                startPoint = onSketchPos;
-
                 seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
+
+                Base::Vector2d snapPoint;
+                startPoint = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint
+                                                                                : onSketchPos;
+
+                toolWidgetManager.drawPositionAtCursor(startPoint);
             } break;
             case SelectMode::SeekSecond: {
-                toolWidgetManager.drawDirectionAtCursor(onSketchPos, startPoint);
+                seekAndRenderAutoConstraint(sugConstraints[1], onSketchPos, onSketchPos - startPoint);
 
-                endPoint = onSketchPos;
+                Base::Vector2d snapPoint;
+                endPoint = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint
+                                                                              : onSketchPos;
+
+                toolWidgetManager.drawDirectionAtCursor(endPoint, startPoint);
 
                 try {
                     CreateAndDrawShapeGeometry();
                 }
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
-
-                seekAndRenderAutoConstraint(sugConstraints[1], onSketchPos, onSketchPos - startPoint);
             } break;
             default:
                 break;
@@ -131,11 +132,11 @@ private:
         try {
             createShape(false);
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -144,7 +145,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add line")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -358,7 +359,7 @@ void DSHLineController::configureToolWidget()
         };
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
@@ -791,8 +792,10 @@ void DSHLineController::addConstraints()
                 constraintp4DistanceY();
             }
         }
-        else if (handler->constructionMethod()
-                 == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle) {
+        else if (
+            handler->constructionMethod()
+            == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle
+        ) {
             if (p3set) {
                 constraintp3length();
             }
@@ -853,8 +856,10 @@ void DSHLineController::addConstraints()
                 constraintp4DistanceY();
             }
         }
-        else if (handler->constructionMethod()
-                 == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle) {
+        else if (
+            handler->constructionMethod()
+            == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle
+        ) {
 
             int DoFs = startpointinfo.getDoFs();
             DoFs += endpointinfo.getDoFs();
@@ -889,6 +894,3 @@ void DSHLineController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerLine_H

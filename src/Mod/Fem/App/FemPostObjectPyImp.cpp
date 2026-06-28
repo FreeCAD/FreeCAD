@@ -23,7 +23,6 @@
 
 #include <Python.h>
 
-
 #include "FemPostObjectPy.h"
 #include "FemPostObjectPy.cpp"
 
@@ -57,7 +56,7 @@ PyObject* FemPostObjectPy::writeVTK(PyObject* args)
     Py_Return;
 }
 
-PyObject* FemPostObjectPy::getDataSet(PyObject* args)
+PyObject* FemPostObjectPy::getDataSet([[maybe_unused]] PyObject* args)
 {
 #ifdef FC_USE_VTK_PYTHON
     // we take no arguments
@@ -74,7 +73,6 @@ PyObject* FemPostObjectPy::getDataSet(PyObject* args)
 
     Py_Return;
 #else
-    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
     return nullptr;
 #endif

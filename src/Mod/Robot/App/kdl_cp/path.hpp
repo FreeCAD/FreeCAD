@@ -43,8 +43,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_PATH_H
-#define KDL_MOTION_PATH_H
+#pragma once
 
 #include "frames.hpp"
 
@@ -133,6 +132,3 @@ class Path
 	};
 
 }
-
-
-#endif

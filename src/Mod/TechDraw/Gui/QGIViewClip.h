@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMCLIP_H
-#define DRAWINGGUI_QGRAPHICSITEMCLIP_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -57,6 +56,8 @@ public:
     QGCustomRect* getFrame() {return m_frame;}
     QGCustomClip* getClipArea() {return m_cliparea;}
 
+    void setPositionInClip(QGIView* qgiv, qreal xPos, qreal yPos);
+
 protected:
     void drawClip();
 
@@ -67,5 +68,3 @@ private:
 };
 
 } // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGRAPHICSITEMCLIP_H

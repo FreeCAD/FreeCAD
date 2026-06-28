@@ -146,7 +146,9 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 
     PyErr_Clear();
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::ParabolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+    if (
+        PyArg_ParseTuple(args, "O!dd|O!", &(Part::ParabolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)
+    ) {
         try {
             Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(
                 static_cast<ParabolaPy*>(o)->getGeomParabolaPtr()->handle()
@@ -172,7 +174,9 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::HyperbolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+    if (
+        PyArg_ParseTuple(args, "O!dd|O!", &(Part::HyperbolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)
+    ) {
         try {
             Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
                 static_cast<HyperbolaPy*>(o)->getGeomHyperbolaPtr()->handle()

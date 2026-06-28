@@ -21,19 +21,25 @@
  ***************************************************************************/
 
 
-#ifndef TASK_TRANSFORM_DRAGGER_H
-#define TASK_TRANSFORM_DRAGGER_H
+#pragma once
 
 #include "TaskView/TaskDialog.h"
 #include "TaskView/TaskView.h"
 #include "ViewProviderDragger.h"
+
+#include <Inventor/nodes/SoSeparator.h>
 
 #include <Base/ServiceProvider.h>
 
 #include <App/Application.h>
 #include <App/Services.h>
 
+#include <array>
+#include <optional>
+#include <string>
+
 class SoDragger;
+class SoTransform;
 
 namespace Gui
 {
@@ -53,7 +59,8 @@ public:
     {
         None,
         SelectTransformOrigin,
-        SelectAlignTarget
+        SelectAlignTarget,
+        SelectCustomCS
     };
     enum class PlacementMode
     {
@@ -64,7 +71,8 @@ public:
     enum class PositionMode
     {
         Local,
-        Global
+        Global,
+        Custom
     };
 
     struct CoordinateSystem
@@ -95,6 +103,7 @@ private Q_SLOTS:
     void onPlacementModeChange(int index);
 
     void onPickTransformOrigin();
+    void onPickCoordinateSystemReference();
     void onTransformOriginReset();
     void onAlignRotationChanged();
 
@@ -116,6 +125,7 @@ private:
 
     CoordinateSystem globalCoordinateSystem() const;
     CoordinateSystem localCoordinateSystem() const;
+    CoordinateSystem customCoordinateSystem() const;
     CoordinateSystem currentCoordinateSystem() const;
 
     Base::Rotation::EulerSequence eulerSequence() const;
@@ -137,6 +147,7 @@ private:
 
     void resetReferencePlacement();
     void resetReferenceRotation();
+    void setCustomCoordinateSystemFromSelection(const SelectionChanges& msg);
 
     ViewProviderDragger::DraggerComponents getRelevantComponents();
     void moveObjectToDragger(
@@ -145,12 +156,18 @@ private:
 
     bool isDraggerAlignedToCoordinateSystem() const;
 
+    void showCoordinateSystemIndicator();
+    void hideCoordinateSystemIndicator();
+    void updateCoordinateSystemIndicator();
+
     ViewProviderDragger* vp;
 
     const App::SubObjectPlacementProvider* subObjectPlacementProvider;
     const App::CenterOfMassProvider* centerOfMassProvider;
 
     CoinPtr<SoTransformDragger> dragger;
+    CoinPtr<SoSeparator> csIndicatorRoot;
+    CoinPtr<SoTransform> csIndicatorTransform;
 
     Ui_TaskTransformDialog* ui;
 
@@ -159,6 +176,7 @@ private:
     PositionMode positionMode {PositionMode::Local};
 
     std::optional<Base::Placement> customTransformOrigin {};
+    std::optional<Base::Placement> customCoordinateSystemPlacement {};
     Base::Placement referencePlacement {};
     Base::Placement globalOrigin {};
     Base::Rotation referenceRotation {};
@@ -196,5 +214,3 @@ private:
     TaskTransform* transform;
 };
 }  // namespace Gui
-
-#endif  // TASK_TRANSFORM_DRAGGER_H

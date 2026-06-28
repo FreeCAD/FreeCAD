@@ -71,6 +71,11 @@
         </item>
         <item row="8" column="0">
          <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
            <string>Edge fuzz</string>
           </property>
@@ -261,6 +266,11 @@ can be a performance penalty in complex models.</string>
         </item>
         <item row="9" column="0">
          <widget class="QLabel" name="label_4">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
            <string>Mark fuzz</string>
           </property>

@@ -24,9 +24,13 @@
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/SoFullPath.h>
 
+#include <Base/Interpreter.h>
+
+#include "SoFullPathHelper.h"
+
+// generated out of AxisOrigin.pyi
 #include "AxisOriginPy.h"
 #include "AxisOriginPy.cpp"
-#include <Base/Interpreter.h>
 
 using namespace Gui;
 
@@ -87,7 +91,7 @@ PyObject* AxisOriginPy::getDetailPath(PyObject* args) const
 
     auto pPath = static_cast<SoPath*>(ptr);
     SoDetail* det = nullptr;
-    if (!getAxisOriginPtr()->getDetailPath(sub, static_cast<SoFullPath*>(pPath), det)) {
+    if (!getAxisOriginPtr()->getDetailPath(sub, Gui::toFullPath(pPath), det)) {
         delete det;
         Py_Return;
     }

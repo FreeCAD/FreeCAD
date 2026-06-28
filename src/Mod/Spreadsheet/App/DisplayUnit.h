@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DISPLAYUNIT_H
-#define DISPLAYUNIT_H
+#pragma once
 
 #include <Base/Unit.h>
 #include <string>
@@ -65,5 +64,3 @@ public:
 };
 
 }  // namespace Spreadsheet
-
-#endif  // DISPLAYUNIT_H

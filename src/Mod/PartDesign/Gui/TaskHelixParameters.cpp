@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                 2020 David Österberg                                    *
@@ -296,6 +298,9 @@ void TaskHelixParameters::updateStatus()
     // if the helix touches itself along a single helical edge we get this error
     else if (status.compare("NCollection_IndexedDataMap::FindFromKey") == 0) {
         translatedStatus = tr("Error: helix touches itself");
+    }
+    else {
+        translatedStatus = QString::fromStdString(status);
     }
     ui->labelMessage->setText(translatedStatus);
 }
@@ -727,6 +732,7 @@ void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
     setGizmoPositions();
 
     ui->inputMode->currentIndexChanged(ui->inputMode->currentIndex());
+    showDraggerHints();
 }
 
 void TaskHelixParameters::setGizmoPositions()

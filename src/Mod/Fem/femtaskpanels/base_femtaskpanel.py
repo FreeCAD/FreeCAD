@@ -53,3 +53,11 @@ class _BaseTaskPanel:
         gui_doc.Document.recompute()
 
         return True
+
+    def activate(self):
+        if self._selectionWidget:
+            self._selectionWidget.attachSelection()
+
+    def deactivate(self):
+        if self._selectionWidget:
+            self._selectionWidget.detachSelection()

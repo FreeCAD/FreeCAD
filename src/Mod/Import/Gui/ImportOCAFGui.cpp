@@ -52,6 +52,15 @@ void ImportOCAFGui::applyFaceColors(Part::Feature* part, const std::vector<Base:
     }
     else {
         vp->ShapeAppearance.setDiffuseColors(colors);
+        std::vector<float> transp;
+        transp.reserve(colors.size());
+        std::transform(
+            colors.cbegin(),
+            colors.cend(),
+            std::back_inserter(transp),
+            [](const Base::Color& col) { return col.transparency(); }
+        );
+        vp->ShapeAppearance.setTransparencies(transp);
     }
 }
 
@@ -79,7 +88,7 @@ void ImportOCAFGui::applyLinkColor(App::DocumentObject* obj, int index, Base::Co
     }
     if (index < 0) {
         vp->OverrideMaterial.setValue(true);
-        vp->ShapeMaterial.setDiffuseColor(color);
+        vp->ShapeAppearance.setDiffuseColor(color);
         return;
     }
     if (vp->OverrideMaterialList.getSize() <= index) {

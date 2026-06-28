@@ -22,18 +22,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="151"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Points</source>
       <translation>Точки</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="151"/>
       <source>Export Points…</source>
       <translation>Экспорт точек…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
-      <location filename="../../Command.cpp" line="155"/>
+      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Exports a point cloud</source>
       <translation>Экспортировать облако точек</translation>
     </message>
@@ -107,13 +107,13 @@
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Converts points to a structured point cloud</source>
-      <translation>Преобразует точки в облако структурированных точек</translation>
+      <translation>Преобразует точки в структурированное облако точек</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="93"/>
       <source>Import points</source>
       <translation>Импортировать точки</translation>
     </message>
@@ -246,7 +246,7 @@
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
       <source>I (gray value)</source>
-      <translation>I (серый значение)</translation>
+      <translation>I (gray value)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
@@ -262,26 +262,20 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Point formats</source>
       <translation>Форматы точек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="173"/>
-      <source>All Files</source>
-      <translation>Все файлы</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Points not at Origin</source>
       <translation>Точки не в начале координат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="115"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation>Граница импортируемых точек не содержит начала координат. переместить их в начало координат?</translation>
+      <translation>Бокс, ограничивающий импортируемые точки, не содержит начала координат. Переместить бокс?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="224"/>
@@ -299,12 +293,20 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Points Tools</source>
-      <translation>Инструменты точек</translation>
+      <translation>Инструменты работы с точками</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Points</source>
       <translation>&amp;Точки</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../../../Init.py" line="35"/>
+      <source>Point formats</source>
+      <translation>Форматы точек</translation>
     </message>
   </context>
 </TS>

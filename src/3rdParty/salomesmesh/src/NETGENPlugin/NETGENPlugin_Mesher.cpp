@@ -62,7 +62,12 @@
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <BRep_Tool.hxx>
+#include <Standard_Version.hxx>
+#if OCC_VERSION_HEX >= 0x080000
+#include <Bnd_B3.hxx>
+#else
 #include <Bnd_B3d.hxx>
+#endif
 #include <NCollection_Map.hxx>
 #include <Standard_ErrorHandler.hxx>
 #include <Standard_ProgramError.hxx>
@@ -70,8 +75,10 @@
 #include <TColStd_MapOfInteger.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeInteger.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+#if OCC_VERSION_HEX < 0x080000
+# include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+# include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
+#endif
 #include <TopTools_DataMapOfShapeInteger.hxx>
 #include <TopTools_DataMapOfShapeShape.hxx>
 #include <TopTools_MapOfShape.hxx>
@@ -126,7 +133,11 @@ namespace netgen {
 #endif
   //extern void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
   DLL_HEADER extern MeshingParameters mparam;
-  DLL_HEADER extern volatile multithreadt multithread;
+#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2601)
+    using ngcore::multithread;
+#else
+    DLL_HEADER extern volatile multithreadt multithread;
+#endif
   DLL_HEADER extern bool merge_solids;
 }
 
@@ -735,7 +746,7 @@ double NETGENPlugin_Mesher::GetDefaultMinSize(const TopoDS_Shape& geom,
         return triangulation->Node(index);
     };
 #endif
-    const Poly_Array1OfTriangle& trias = triangulation->Triangles();
+    const auto& trias = triangulation->Triangles();
     for ( int iT = trias.Lower(); iT <= trias.Upper(); ++iT )
     {
       trias(iT).Get( i1, i2, i3 );
@@ -2403,8 +2414,11 @@ namespace
   {
     SMESH_Comment str("Exception in netgen::OCCGenerateMesh()");
     str << " at " << netgen::multithread.task
-        << ": " << ex.DynamicType()->Name();
-    if ( ex.GetMessageString() && strlen( ex.GetMessageString() ))
+#if OCC_VERSION_HEX < 0x080000
+            << ": " << ex.DynamicType()->Name();
+#else
+      << ": " << ex.ExceptionType();
+#endif    if ( ex.GetMessageString() && strlen( ex.GetMessageString() ))
       str << ": " << ex.GetMessageString();
     return std::move(str);
   }

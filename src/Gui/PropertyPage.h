@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_PROPERTYPAGE_H
-#define GUI_DIALOG_PROPERTYPAGE_H
+#pragma once
 
 #include <QWidget>
 #include <FCGlobal.h>
@@ -149,5 +148,3 @@ protected Q_SLOTS:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_PROPERTYPAGE_H

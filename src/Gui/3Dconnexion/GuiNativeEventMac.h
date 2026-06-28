@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
+#pragma once
 
 #include "GuiAbstractNativeEvent.h"
 
@@ -78,5 +77,3 @@ private:
     static void tdx_drv_handler(io_connect_t connection, natural_t messageType, void* messageArgument);
 };
 }  // namespace Gui
-
-#endif  // GUINATIVEEVENT_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -922,7 +924,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
             result = result.makeElementWires();
             if (MakeFace.getValue()) {
                 try {
-                    result = result.makeElementFace(nullptr);
+                    result = result.makeElementFace(nullptr, "Part::FaceMakerBuildFace");
                 }
                 catch (...) {
                 }

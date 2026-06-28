@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskObjectName_H
-#define GUI_TASKVIEW_TaskObjectName_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 
@@ -67,5 +66,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskObjectName_H

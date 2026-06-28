@@ -41,6 +41,7 @@
 
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 
 using namespace Data;
@@ -121,6 +122,16 @@ void ComplexGeoData::getLinesFromSubElement(const Segment* segment,
     (void)segment;
     (void)Points;
     (void)lines;
+}
+
+bool ComplexGeoData::getFirstVertexFromSubElement(
+    const Data::Segment* segment,
+    Base::Vector3d& Point
+) const
+{
+    (void)segment;
+    (void)Point;
+    return false;
 }
 
 void ComplexGeoData::getFacesFromSubElement(const Segment* segment,

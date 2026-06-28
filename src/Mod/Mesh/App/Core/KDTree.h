@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESH_KDTREE_H
-#define MESH_KDTREE_H
+#pragma once
 
 #include "Elements.h"
 
@@ -63,6 +62,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_KDTREE_H

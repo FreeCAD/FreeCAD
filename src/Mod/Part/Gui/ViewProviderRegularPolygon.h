@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
-#define PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -51,6 +50,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERREGULARPOLYGON_H

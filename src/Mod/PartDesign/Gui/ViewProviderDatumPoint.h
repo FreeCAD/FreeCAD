@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -22,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatumPoint_H
-#define PARTGUI_ViewProviderDatumPoint_H
+#pragma once
 
 #include "ViewProviderDatum.h"
 
@@ -48,6 +49,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderDatumPoint_H

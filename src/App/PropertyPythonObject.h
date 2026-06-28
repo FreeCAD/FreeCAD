@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYPYTHONOBJECT_H
-#define APP_PROPERTYPYTHONOBJECT_H
+#pragma once
 
 #include <string>
 #include <CXX/Objects.hxx>
@@ -78,11 +77,8 @@ private:
     void restoreObject(Base::XMLReader& reader);
     std::string encodeValue(const std::string& str) const;
     std::string decodeValue(const std::string& str) const;
-    void loadPickle(const std::string& str);
     Py::Object object;
 };
 
 
 }  // namespace App
-
-#endif  // APP_PROPERTYPYTHONOBJECT_H

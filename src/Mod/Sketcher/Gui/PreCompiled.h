@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_GUI_PRECOMPILED_H
-#define SKETCHER_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -38,6 +37,7 @@
 #include <limits>
 #include <map>
 #include <memory>
+#include <string_view>
 #include <vector>
 
 // Boost
@@ -70,5 +70,3 @@
 
 // all of Inventor
 #include <Gui/InventorAll.h>
-
-#endif  // SKETCHER_GUI_PRECOMPILED_H

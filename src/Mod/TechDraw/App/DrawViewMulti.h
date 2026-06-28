@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewMulti_h_
-#define DrawViewMulti_h_
+#pragma once
 
 #include <TopoDS_Compound.hxx>
 
@@ -82,5 +81,3 @@ protected:
 using DrawViewMultiPython = App::FeaturePythonT<DrawViewMulti>;
 
 } //namespace TechDraw
-
-#endif

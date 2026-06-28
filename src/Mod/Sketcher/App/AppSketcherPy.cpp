@@ -59,7 +59,6 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        // Base::Console().log("Open in Part with %s",Name);
         Base::FileInfo file(EncodedName.c_str());
 
         // extract extension
@@ -82,7 +81,6 @@ private:
         PyMem_Free(Name);
 
         try {
-            // Base::Console().log("Insert in Part with %s",Name);
             Base::FileInfo file(EncodedName.c_str());
 
             // extract extension

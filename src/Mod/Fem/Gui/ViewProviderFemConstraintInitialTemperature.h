@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H
+#pragma once
 
 #include "ViewProviderFemConstraint.h"
 
@@ -46,5 +45,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTInitialTemperature_H

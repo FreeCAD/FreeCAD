@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MDIVIEWPY_H
-#define GUI_MDIVIEWPY_H
+#pragma once
 
 #include <Base/PyObjectBase.h>
 #include <CXX/Extensions.hxx>
@@ -79,5 +78,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MDIVIEWPY_H

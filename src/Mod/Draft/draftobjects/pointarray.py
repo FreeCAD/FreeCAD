@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the PointArray object."""
+
 ## @package pointarray
 # \ingroup draftobjects
 # \brief Provides the object code for the PointArray object.

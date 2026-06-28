@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -32,11 +34,13 @@
 
 
 #include <array>
+#include <unordered_map>
+#include <algorithm>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/ProgressIndicator.h>
 #include <Base/Reader.h>
+#include <Base/Sequencer.h>
 #include <Mod/Part/App/modelRefine.h>
 
 #include "FeatureTransformed.h"
@@ -48,14 +52,12 @@
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
-#include "Mod/Part/App/OCCTProgressIndicator.h"
 
 
 using namespace PartDesign;
 
 namespace PartDesign
 {
-using Part::OCCTProgressIndicator;
 extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
@@ -89,7 +91,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     }
 
     const char* err = nullptr;
-    const std::vector<App::DocumentObject*>& originals = Originals.getValues();
+    const std::vector<App::DocumentObject*>& originals = getOriginals();
     // NOTE: may be here supposed to be last origin but in order to keep the old behaviour keep here
     // first
     App::DocumentObject* firstOriginal = originals.empty() ? nullptr : originals.front();
@@ -121,6 +123,29 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     return rv;
 }
 
+std::vector<App::DocumentObject*> Transformed::getSortedOriginals() const
+{
+    std::vector<DocumentObject*> originals = Originals.getValues();
+
+    // Sort originals in chronological order of the body's group history
+    if (auto body = getFeatureBody()) {
+        const auto& group = body->Group.getValues();
+        std::unordered_map<const DocumentObject*, size_t> indexMap;
+        for (size_t i = 0; i < group.size(); ++i) {
+            indexMap[group[i]] = i;
+        }
+        std::ranges::sort(originals, [&indexMap](const DocumentObject* a, const DocumentObject* b) {
+            auto itA = indexMap.find(a);
+            auto itB = indexMap.find(b);
+            size_t idxA = (itA != indexMap.end()) ? itA->second : std::numeric_limits<size_t>::max();
+            size_t idxB = (itB != indexMap.end()) ? itB->second : std::numeric_limits<size_t>::max();
+            return idxA < idxB;
+        });
+    }
+
+    return originals;
+}
+
 std::vector<App::DocumentObject*> Transformed::getOriginals() const
 {
     auto const mode = static_cast<Mode>(TransformMode.getValue());
@@ -129,7 +154,7 @@ std::vector<App::DocumentObject*> Transformed::getOriginals() const
         return {};
     }
 
-    std::vector<DocumentObject*> originals = Originals.getValues();
+    std::vector<DocumentObject*> originals = getSortedOriginals();
 
     const auto isSuppressed = [](const DocumentObject* obj) {
         auto feature = freecad_cast<Feature*>(obj);
@@ -235,18 +260,33 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
 {
     const auto mode = static_cast<Mode>(TransformMode.getValue());
 
-    const auto makeCompoundOfToolShapes = [this]() {
+    const Part::Feature* supportFeature = getBaseObject();
+    const Part::TopoShape supportShape = supportFeature->Shape.getShape();
+
+    if (supportShape.isNull()) {
+        return App::DocumentObject::StdReturn;
+    }
+
+    gp_Trsf supportTransform = supportShape.getShape().Location().Transformation();
+
+    const auto makeCompoundOfToolShapes = [this, &supportTransform]() {
         BRep_Builder builder;
         TopoDS_Compound compound;
 
         builder.MakeCompound(compound);
         for (const auto& original : getOriginals()) {
             if (auto* feature = freecad_cast<FeatureAddSub*>(original)) {
-                const auto& shape = feature->AddSubShape.getShape();
+                auto shape = feature->AddSubShape.getShape();
+
+                gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(
+                    supportTransform.Inverted()
+                );
 
                 if (shape.isNull()) {
                     continue;
                 }
+
+                shape = shape.makeElementTransform(trsf);
 
                 builder.Add(compound, shape.getShape());
             }
@@ -260,9 +300,14 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
             PreviewShape.setValue(makeCompoundOfToolShapes());
             return StdReturn;
 
-        case Mode::WholeShape:
-            PreviewShape.setValue(getBaseShape());
+        case Mode::WholeShape: {
+            auto shape = getBaseTopoShape();
+            shape = shape.makeElementTransform(supportTransform.Inverted());
+
+            PreviewShape.setValue(shape.getShape());
+
             return StdReturn;
+        }
 
         default:
             return FeatureRefine::recomputePreview();
@@ -349,7 +394,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
         auto transformIter = transformations.cbegin();
         transformIter++;
         for (; transformIter != transformations.end(); transformIter++) {
-            if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+            if (Base::Sequencer().wasCanceled()) {
                 return std::vector<TopoShape>();
             }
             auto opName = Data::indexSuffix(idx++);
@@ -394,14 +439,14 @@ App::DocumentObjectExecReturn* Transformed::execute()
                 }
                 if (!fuseShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, fuseShape);
-                    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+                    if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementFuse(shapes);
                 }
                 if (!cutShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, cutShape);
-                    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+                    if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
                     supportShape.makeElementCut(shapes);
@@ -410,7 +455,7 @@ App::DocumentObjectExecReturn* Transformed::execute()
             break;
         case Mode::WholeShape: {
             auto shapes = getTransformedCompShape(supportShape, supportShape);
-            if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+            if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
             supportShape.makeElementFuse(shapes);
@@ -420,8 +465,13 @@ App::DocumentObjectExecReturn* Transformed::execute()
 
     supportShape = refineShapeIfActive((supportShape));
 
-    this->Shape.setValue(getSolid(supportShape));  // picking the first solid
-    rejected = getRemainingSolids(supportShape.getShape());
+    this->Shape.setValue(getSolid(supportShape));
+    if (singleSolidRuleMode() == SingleSolidRuleMode::Enforced) {
+        rejected = getRemainingSolids(supportShape.getShape());
+    }
+    else {
+        rejected.Nullify();
+    }
 
     return App::DocumentObject::StdReturn;
 }
@@ -433,7 +483,7 @@ TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
     builder.MakeCompound(compShape);
 
     if (shape.IsNull()) {
-        Standard_Failure::Raise("Shape is null");
+        throw Standard_Failure("Shape is null");
     }
     TopExp_Explorer xp;
     xp.Init(shape, TopAbs_SOLID);

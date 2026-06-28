@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherConstraints_H
-#define GUI_TASKVIEW_TaskSketcherConstraints_H
+#pragma once
 
 #include <QListWidget>
 
@@ -71,12 +70,16 @@ Q_SIGNALS:
     void emitCenterSelectedItems();
     void emitHideSelection3DVisibility();
     void emitShowSelection3DVisibility();
+    void emitDeleteAllConstraints();
+    void emitDeleteConstraints(const QList<int>&);
 
 protected Q_SLOTS:
     void modifyCurrentItem();
     void renameCurrentItem();
     void centerSelectedItems();
     void deleteSelectedItems();
+    void deleteAllItems();
+    void deleteFilterItems();
     void doSelectConstraints();
     void updateDrivingStatus();
     void updateActiveStatus();
@@ -120,6 +123,8 @@ private:
         {QT_TR_NOOP("Equality"), 1},
         {QT_TR_NOOP("Symmetric"), 1},
         {QT_TR_NOOP("Block"), 1},
+        {QT_TR_NOOP("Group"), 1},
+        {QT_TR_NOOP("Text"), 1},
         {QT_TR_NOOP("Internal Alignment"), 1},
         {QT_TR_NOOP("Datums"), 0},
         {QT_TR_NOOP("Horizontal Distance"), 1},
@@ -188,6 +193,8 @@ public:
     void onListWidgetConstraintsEmitCenterSelectedItems();
     void onListWidgetConstraintsEmitShowSelection3DVisibility();
     void onListWidgetConstraintsEmitHideSelection3DVisibility();
+    void onDeleteAllConstraints();
+    void onDeleteConstraints(const QList<int>&);
     void onFilterBoxStateChanged(int val);
     void onShowHideButtonClicked(bool);
     void onSettingsRestrictVisibilityChanged(bool value = false);
@@ -238,5 +245,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

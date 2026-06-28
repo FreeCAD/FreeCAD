@@ -183,7 +183,7 @@ class BIM_IfcExplorer:
         )
         filename = QtGui.QFileDialog.getOpenFileName(
             None,
-            translate("BIM", "Select an IFC file"),
+            translate("BIM", "Select an IFC File"),
             lastfolder,
             translate("BIM", "IFC files (*.ifc)"),
         )

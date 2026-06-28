@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -217,6 +219,7 @@ void TaskFilletParameters::setupGizmos(ViewProviderDressUp* vp)
     gizmoContainer = GizmoContainer::create({radiusGizmo, radiusGizmo2}, vp);
 
     setGizmoPositions();
+    showDraggerHints();
 }
 
 void TaskFilletParameters::setGizmoPositions()

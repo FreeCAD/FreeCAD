@@ -287,7 +287,13 @@ class Arch_RemoveShape:
         import Arch
 
         sel = FreeCADGui.Selection.getSelection()
-        Arch.removeShape(sel)
+        if sel:
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Remove shape"))
+            Arch.removeShape(sel)
+            FreeCAD.ActiveDocument.commitTransaction()
+            # Clear the selection to deselect the base line if a wall is created:
+            FreeCADGui.Selection.clearSelection()
+            FreeCAD.ActiveDocument.recompute()
 
 
 class Arch_CloseHoles:

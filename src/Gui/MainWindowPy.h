@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MAINWINDOWPY_H
-#define GUI_MAINWINDOWPY_H
+#pragma once
 
 #include <Base/PyObjectBase.h>
 #include <CXX/Extensions.hxx>
@@ -58,10 +57,11 @@ public:
     Py::Object showHint(const Py::Tuple&);
     Py::Object hideHint(const Py::Tuple&);
 
+    Py::Object addStatusBarItem(const Py::Tuple&, const Py::Dict&);
+    Py::Object removeStatusBarItem(const Py::Tuple&);
+
 private:
     QPointer<MainWindow> _mw;
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MAINWINDOWPY_H

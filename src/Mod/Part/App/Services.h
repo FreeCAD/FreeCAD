@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef PART_SERVICES_H
-#define PART_SERVICES_H
+#pragma once
 
 #include <Attacher.h>
 #include <App/Services.h>
@@ -33,6 +32,11 @@ public:
     AttacherSubObjectPlacement();
 
     Base::Placement calculate(App::SubObjectT object, Base::Placement basePlacement) const override;
+    std::optional<Base::Vector3d> snapPosition(
+        const App::SubObjectT& object,
+        std::optional<Base::Vector3d> worldCursor,
+        const Base::Matrix4D& objectToWorld
+    ) const override;
 
 private:
     std::unique_ptr<Attacher::AttachEngine3D> attacher;
@@ -45,4 +49,18 @@ public:
     bool supports(App::DocumentObject* object) const override;
 };
 
-#endif  // PART_SERVICES_H
+class ShapeAttributeProvider final: public App::CustomAttributeProvider
+{
+public:
+    std::optional<PyObject*> getAttribute(App::DocumentObject* object, const char* attr) const override;
+};
+
+class PartPseudoShapeProvider final: public App::PseudoShapeProvider
+{
+public:
+    Py::Object getElement(
+        const Py::Object& module,
+        const Py::Object& object,
+        const std::string& subname
+    ) const override;
+};

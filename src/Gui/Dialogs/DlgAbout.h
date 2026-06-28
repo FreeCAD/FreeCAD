@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DLG_ABOUT_H
-#define GUI_DLG_ABOUT_H
+#pragma once
 
 #include <QDialog>
 #include <QTextBrowser>
@@ -91,7 +90,6 @@ protected:
     void showCollectionInformation();
     void showPrivacyPolicy();
     void showOrHideImage(const QRect& rect);
-    void addModuleInfo(QTextStream& inout_str, const QString& modPath, bool& inout_first);
 
 protected:
     QPixmap aboutImage() const;
@@ -104,5 +102,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DLG_ABOUT_H

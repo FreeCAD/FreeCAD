@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerOffset_H
-#define SKETCHERGUI_DrawSketchHandlerOffset_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -44,6 +43,7 @@
 #include <BRepBuilderAPI.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <TopoDS.hxx>
+#include <TopExp_Explorer.hxx>
 #include <gp_Pln.hxx>
 
 #include <Base/Exception.h>
@@ -60,7 +60,6 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 
@@ -68,8 +67,6 @@ using namespace Sketcher;
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerOffset;
 
@@ -106,6 +103,7 @@ using DSHOffsetController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::OffsetConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -398,11 +396,16 @@ private:
 
     void drawOffsetPreview()
     {
-        std::vector<Part::Geometry*> geometriesToAdd;
-        std::vector<int> listOfOffsetGeoIds;
-        getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
+        try {
+            std::vector<Part::Geometry*> geometriesToAdd;
+            std::vector<int> listOfOffsetGeoIds;
+            getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
 
-        drawEdit(geometriesToAdd);
+            drawEdit(geometriesToAdd);
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+        }
     }
 
     void createOffset()
@@ -422,7 +425,7 @@ private:
             return;
         }
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
 
         // Create geos
         Obj->addGeometry(std::move(geometriesToAdd));
@@ -437,7 +440,7 @@ private:
             makeOffsetConstraint(listOfOffsetGeoIds);
         }
 
-        Gui::Command::commitCommand();
+        commitCommand();
     }
 
     void jointOffsetCurves(std::vector<int>& listOfOffsetGeoIds)
@@ -783,8 +786,10 @@ private:
                                 break;
                             }
                         }
-                        else if (isLineSegment(*geo2) || isBSplineCurve(*geo2)
-                                 || geo2->is<Part::GeomArcOfConic>()) {
+                        else if (
+                            isLineSegment(*geo2) || isBSplineCurve(*geo2)
+                            || geo2->is<Part::GeomArcOfConic>()
+                        ) {
                             // cases where arc is created by arc join mode.
                             Base::Vector3d p2, p3;
 
@@ -1045,8 +1050,10 @@ private:
             endPoint = line->getEndPoint();
             return true;
         }
-        else if (isArcOfCircle(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo)
-                 || isArcOfParabola(*geo)) {
+        else if (
+            isArcOfCircle(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo)
+            || isArcOfParabola(*geo)
+        ) {
             const auto* arcOfConic = static_cast<const Part::GeomArcOfConic*>(geo);
             startPoint = arcOfConic->getStartPoint(true);
             endPoint = arcOfConic->getEndPoint(true);
@@ -1190,6 +1197,23 @@ void DSHOffsetController::configureToolWidget()
             WCheckbox::SecondBox,
             QApplication::translate("TaskSketcherTool_c2_offset", "Add offset constraint (J)")
         );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::FirstBox,
+            QApplication::translate(
+                "TaskSketcherTool_c1_offset",
+                "Deletes the original geometry. If creating a single copy, this effectively "
+                "performs a 'Move' operation."
+            )
+        );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::SecondBox,
+            QApplication::translate(
+                "TaskSketcherTool_c2_offset",
+                "Adds a distance constraint with additional construction geometries that allows "
+                "the distance to modify the entire offset geometry"
+
+            )
+        );
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(
@@ -1315,6 +1339,3 @@ void DSHOffsetController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerOffset_H

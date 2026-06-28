@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALCONFIGLOADER_H
-#define MATERIAL_MATERIALCONFIGLOADER_H
+#pragma once
 
 #include <memory>
 
@@ -164,5 +163,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_MATERIALCONFIGLOADER_H

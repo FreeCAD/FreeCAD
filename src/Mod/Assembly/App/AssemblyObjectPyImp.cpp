@@ -112,6 +112,16 @@ PyObject* AssemblyObjectPy::numberOfFrames(PyObject* args) const
     return Py_BuildValue("k", ret);
 }
 
+PyObject* AssemblyObjectPy::updateSolveStatus(PyObject* args) const
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    this->getAssemblyObjectPtr()->updateSolveStatus();
+    Py_Return;
+}
+
 PyObject* AssemblyObjectPy::undoSolve(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
@@ -190,7 +200,7 @@ PyObject* AssemblyObjectPy::exportAsASMT(PyObject* args) const
 Py::List AssemblyObjectPy::getJoints() const
 {
     Py::List ret;
-    std::vector<App::DocumentObject*> list = getAssemblyObjectPtr()->getJoints(false);
+    std::vector<App::DocumentObject*> list = getAssemblyObjectPtr()->getJoints();
 
     for (auto It : list) {
         ret.append(Py::Object(It->getPyObject(), true));

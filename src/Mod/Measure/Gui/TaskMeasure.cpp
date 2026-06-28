@@ -37,6 +37,9 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/InputHint.h>
+
+using enum Gui::InputHint::UserInput;
 
 #include <QFormLayout>
 #include <QVBoxLayout>
@@ -46,6 +49,11 @@
 #include <QMenu>
 #include <QShortcut>
 #include <QToolTip>
+#include <QSignalBlocker>
+
+#include <Base/Quantity.h>
+#include <Base/UnitsApi.h>
+#include <array>
 
 using namespace MeasureGui;
 
@@ -57,11 +65,73 @@ constexpr auto taskMeasureAutoSaveSettingsName = "AutoSave";
 constexpr auto taskMeasureGreedySelection = "GreedySelection";
 
 using SelectionStyle = Gui::SelectionSingleton::SelectionStyle;
+
+constexpr std::array
+    lengthUnitLabels {"nm", "µm", "mm", "cm", "dm", "m", "km", "in", "ft", "thou", "yd", "mi"};
+
+constexpr std::array angleUnitLabels {"deg", "rad", "gon"};
+
+constexpr std::array areaUnitLabels {"mm^2", "cm^2", "m^2", "km^2", "in^2", "ft^2", "yd^2", "mi^2"};
+
+template<std::size_t N>
+void populateUnitCombo(QComboBox* combo, const std::array<const char*, N>& labels)
+{
+    for (const char* s : labels) {
+        QString display = QString::fromStdString(Base::UnitsApi::toUnicodeSuperscript(s));
+        // store (mm²,mm^2)
+        combo->addItem(display, QString::fromUtf8(s));
+    }
+}
+
+Base::Unit unitForMeasureType(const App::MeasureType* measureType)
+{
+    if (!measureType) {
+        return Base::Unit();
+    }
+
+    const std::string& type = measureType->identifier;
+    if (type == "LENGTH" || type == "DISTANCE" || type == "DISTANCEFREE" || type == "RADIUS"
+        || type == "DIAMETER" || type == "POSITION" || type == "CENTEROFMASS") {
+        return Base::Unit::Length;
+    }
+    if (type == "ANGLE") {
+        return Base::Unit::Angle;
+    }
+    if (type == "AREA") {
+        return Base::Unit::Area;
+    }
+    return Base::Unit();
+}
+
+void addUnitLabels(QComboBox* combo, const Base::Unit& unit)
+{
+    if (unit == Base::Unit::Length) {
+        populateUnitCombo(combo, lengthUnitLabels);
+    }
+    else if (unit == Base::Unit::Area) {
+        populateUnitCombo(combo, areaUnitLabels);
+    }
+    else if (unit == Base::Unit::Angle) {
+        populateUnitCombo(combo, angleUnitLabels);
+    }
+}
+
+QString preferredUnitForMeasureType(const App::MeasureType* measureType)
+{
+    Base::Unit unit = unitForMeasureType(measureType);
+    if (unit == Base::Unit()) {
+        return QString();
+    }
+    double factor;
+    std::string unitString;
+    Base::UnitsApi::schemaTranslate(Base::Quantity(1.0, unit), factor, unitString);
+    return QString::fromStdString(unitString);
+}
+
 }  // namespace
 
 TaskMeasure::TaskMeasure()
 {
-    this->setButtonPosition(TaskMeasure::South);
     auto taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("umf-measurement"),
         tr("Measurement"),
@@ -75,17 +145,12 @@ TaskMeasure::TaskMeasure()
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
     mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave).toBool();
-    if (settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool()) {
-        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
-    }
-    else {
-        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
-    }
+    mGreedySelection = settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool();
     settings.endGroup();
 
     showDelta = new QCheckBox();
     showDelta->setChecked(delta);
-    showDeltaLabel = new QLabel(tr("Show Delta:"));
+    showDeltaLabel = new QLabel(tr("Show Delta"));
 #if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     connect(showDelta, &QCheckBox::checkStateChanged, this, &TaskMeasure::showDeltaChanged);
 #else
@@ -140,6 +205,11 @@ TaskMeasure::TaskMeasure()
     // Connect dropdown's change signal to our onModeChange slot
     connect(modeSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onModeChanged);
 
+    unitSwitch = new QComboBox();
+    unitSwitch->addItem(QLatin1String("-"));
+    connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+
+
     // Result widget
     valueResult = new QLineEdit();
     valueResult->setReadOnly(true);
@@ -149,6 +219,7 @@ TaskMeasure::TaskMeasure()
 
     QFormLayout* formLayout = new QFormLayout();
     formLayout->setHorizontalSpacing(10);
+    formLayout->setVerticalSpacing(6);
     // Note: How can the split between columns be kept in the middle?
     // formLayout->setFieldGrowthPolicy(QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow);
     formLayout->setFormAlignment(Qt::AlignCenter);
@@ -157,15 +228,27 @@ TaskMeasure::TaskMeasure()
     settingsLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
     settingsLayout->addWidget(mSettings);
     formLayout->addRow(QLatin1String(), settingsLayout);
-    formLayout->addRow(tr("Mode:"), modeSwitch);
-    formLayout->addRow(showDeltaLabel, showDelta);
-    formLayout->addRow(tr("Result:"), valueResult);
+    formLayout->addRow(tr("Mode"), modeSwitch);
+
+    auto* deltaLayout = new QHBoxLayout();
+    deltaLayout->setContentsMargins(0, 0, 0, 0);
+    deltaLayout->setSpacing(8);
+    deltaLayout->addWidget(showDelta, 0, Qt::AlignVCenter | Qt::AlignLeft);
+    deltaLayout->addWidget(showDeltaLabel, 0, Qt::AlignVCenter | Qt::AlignLeft);
+    deltaLayout->addStretch(1);
+
+
+    auto* resultLayout = new QHBoxLayout();
+    resultLayout->setSpacing(8);
+    resultLayout->addWidget(valueResult, 65);
+    resultLayout->addWidget(unitSwitch, 30);
+    formLayout->addRow(tr("Result"), resultLayout);
+    formLayout->addRow(deltaLayout);
     layout->addLayout(formLayout);
 
     Content.emplace_back(taskbox);
 
     // engage the selectionObserver
-    attachSelection();
 
     if (auto* doc = App::GetApplication().getActiveDocument()) {
         m_deletedConnection = doc->signalDeletedObject.connect([this](auto&& obj) {
@@ -173,8 +256,9 @@ TaskMeasure::TaskMeasure()
         });
     }
 
-    if (!App::GetApplication().getActiveTransaction()) {
-        App::GetApplication().setActiveTransaction("Add Measurement");
+    if (auto* doc = Gui::Application::Instance->activeDocument()) {
+        mTargetDoc = doc;
+        mTargetDoc->openCommand("Add Measurement");
     }
 
     setAutoCloseOnDeletedDocument(true);
@@ -307,13 +391,9 @@ void TaskMeasure::tryUpdate()
 
 
     if (!measureType) {
-
-        // Note: If there's no valid measure type we might just restart the selection,
-        // however this requires enough coverage of measuretypes that we can access all of them
-
-        // std::tuple<std::string, std::string> sel = selection.back();
-        // clearSelection();
-        // addElement(measureModule.c_str(), get<0>(sel).c_str(), get<1>(sel).c_str());
+        QSignalBlocker unitSwitchBlocker(unitSwitch);
+        unitSwitch->clear();
+        unitSwitch->addItem(QLatin1String("-"));
 
         // Reset measure object
         if (!explicitMode) {
@@ -323,6 +403,8 @@ void TaskMeasure::tryUpdate()
         enableAnnotateButton(false);
         return;
     }
+
+    updateUnitDropdown(measureType);
 
     // Update tool mode display
     setModeSilent(measureType);
@@ -341,13 +423,63 @@ void TaskMeasure::tryUpdate()
         // Fill measure object's properties from selection
         _mMeasureObject->parseSelection(selection);
 
-        // Get result
-        valueResult->setText(_mMeasureObject->getResultString());
-
+        syncDisplayUnit();
+        refreshResult();
 
         // Initialite the measurement's viewprovider
         initViewObject(_mMeasureObject);
     }
+    _mMeasureObject->purgeTouched();
+}
+
+void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
+{
+    const QString previousUnit = unitSwitch->currentData().toString();
+    const Base::Unit unit = unitForMeasureType(measureType);
+    const QString defaultUnit = preferredUnitForMeasureType(measureType);
+
+    QSignalBlocker unitSwitchBlocker(unitSwitch);
+
+    unitSwitch->clear();
+    addUnitLabels(unitSwitch, unit);
+
+    if (unitSwitch->count() > 0) {
+        if (!previousUnit.isEmpty()) {
+            int unitIndex = unitSwitch->findData(previousUnit);
+            if (unitIndex >= 0) {
+                unitSwitch->setCurrentIndex(unitIndex);
+                return;
+            }
+        }
+
+        int unitIndex = unitSwitch->findData(defaultUnit);
+        if (unitIndex >= 0) {
+            unitSwitch->setCurrentIndex(unitIndex);
+        }
+    }
+}
+
+void TaskMeasure::syncDisplayUnit()
+{
+    if (!_mMeasureObject) {
+        return;
+    }
+
+    // get the raw parseable unit (^2)
+    const std::string unit = unitSwitch->currentData().toString().toStdString();
+    if (_mMeasureObject->DisplayUnit.getStrValue() != unit) {
+        _mMeasureObject->DisplayUnit.setValue(unit);
+    }
+}
+
+void TaskMeasure::refreshResult()
+{
+    if (!_mMeasureObject) {
+        return;
+    }
+    valueResult->setText(
+        QString::fromStdString(Base::UnitsApi::toUnicodeSuperscript(_mMeasureObject->getResultString()))
+    );
 }
 
 
@@ -379,6 +511,7 @@ void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
 void TaskMeasure::closeDialog()
 {
     Gui::Control().closeDialog();
+    Gui::getMainWindow()->hideHints();
 }
 
 
@@ -402,6 +535,7 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
     }
 
     group->addObject(measurement);
+    group->purgeTouched();
 }
 
 
@@ -409,6 +543,21 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
 void TaskMeasure::invoke()
 {
     update();
+
+    bool greedy = Gui::Selection().getSelectionStyle() == SelectionStyle::GreedySelection;
+
+    const std::list<Gui::InputHint> hints {
+        {
+            .message = tr("%1 auto-save"),
+            .sequences = {ModifierShift},
+        },
+        {
+            .message = greedy ? tr("%1 start new measurement") : tr("%1 add to measurement"),
+            .sequences = {ModifierCtrl},
+        },
+    };
+
+    Gui::getMainWindow()->showHints(hints);
 }
 
 bool TaskMeasure::apply()
@@ -425,19 +574,29 @@ bool TaskMeasure::apply(bool reset)
     }
 
     // Commit transaction
-    App::GetApplication().closeActiveTransaction();
-    App::GetApplication().setActiveTransaction("Add Measurement");
+    if (mTargetDoc) {
+        mTargetDoc->commitCommand();
+        mTargetDoc->openCommand("Add Measurement");
+    }
     return false;
 }
 
 bool TaskMeasure::reject()
 {
     removeObject();
-    closeDialog();
 
-    // Abort transaction
-    App::GetApplication().closeActiveTransaction(true);
+    // Commit after removing the preview measurement so only intended changes (sector flip)
+    // remain in the document transaction.
+    if (mTargetDoc) {
+        mTargetDoc->commitCommand();
+    }
+    closeDialog();
     return false;
+}
+
+void TaskMeasure::closed()
+{
+    reject();
 }
 
 void TaskMeasure::reset()
@@ -450,6 +609,15 @@ void TaskMeasure::reset()
     // explicitMode = false;
 
     this->update();
+}
+void TaskMeasure::activate()
+{
+    updateSelectionType();
+    qApp->installEventFilter(this);
+}
+void TaskMeasure::deactivate()
+{
+    qApp->removeEventFilter(this);
 }
 
 
@@ -557,6 +725,13 @@ void TaskMeasure::onModeChanged(int index)
     this->update();
 }
 
+void TaskMeasure::onUnitChanged(int index)
+{
+    Q_UNUSED(index);
+    syncDisplayUnit();
+    refreshResult();
+}
+
 void TaskMeasure::showDeltaChanged(int checkState)
 {
     delta = checkState == Qt::CheckState::Checked;
@@ -584,15 +759,33 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
 {
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    if (!checked) {
-        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
-        settings.setValue(QLatin1String(taskMeasureGreedySelection), false);
+    settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
+    mGreedySelection = checked;
+    updateSelectionType();
+
+    settings.endGroup();
+}
+void TaskMeasure::updateSelectionType()
+{
+    if (mGreedySelection) {
+        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
     }
     else {
-        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
-        settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
+        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
     }
-    settings.endGroup();
+
+    std::list<Gui::InputHint> hints;
+    if (mGreedySelection) {
+        hints = std::list<Gui::InputHint> {
+            {tr("%1 new measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+        };
+    }
+    else {
+        hints = std::list<Gui::InputHint> {
+            {tr("%1 add to measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+        };
+    }
+    Gui::getMainWindow()->showHints(hints);
 }
 
 void TaskMeasure::setModeSilent(App::MeasureType* mode)

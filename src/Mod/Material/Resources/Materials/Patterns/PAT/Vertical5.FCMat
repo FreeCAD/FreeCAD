@@ -4,7 +4,7 @@ General:
   UUID: "eaa335a5-3bee-4da7-9e26-0ebbdac2e182"
   Name: "Vertical5"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   PAT:
     UUID: "0326c759-4e3d-46ca-bb7d-146ebebea65e"

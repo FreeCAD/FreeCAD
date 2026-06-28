@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_BITMAPFACTORY_H
-#define GUI_BITMAPFACTORY_H
+#pragma once
 
 #include <Base/Factory.h>
 #include <QPixmap>
@@ -178,5 +177,3 @@ inline BitmapFactoryInst& BitmapFactory()
 }
 
 }  // namespace Gui
-
-#endif  // GUI_BITMAPFACTORY_H

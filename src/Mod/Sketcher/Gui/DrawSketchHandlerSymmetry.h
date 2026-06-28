@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerSymmetry_H
-#define SKETCHERGUI_DrawSketchHandlerSymmetry_H
+#pragma once
 
 #include <QApplication>
 
@@ -39,7 +38,6 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 using namespace Sketcher;
@@ -47,18 +45,17 @@ using namespace Sketcher;
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
-
 class DrawSketchHandlerSymmetry;
 
 using DSHSymmetryController = DrawSketchDefaultWidgetController<
     DrawSketchHandlerSymmetry,
     StateMachines::OneSeekEnd,
     /*PAutoConstraintSize =*/0,
-    /*OnViewParametersT =*/OnViewParameters<0>,
-    /*WidgetParametersT =*/WidgetParameters<0>,
-    /*WidgetCheckboxesT =*/WidgetCheckboxes<2>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*OnViewParametersT =*/OnViewParameters<0>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<0>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<2>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;   // NOLINT
 
 using DSHSymmetryControllerBase = DSHSymmetryController::ControllerBase;
 
@@ -77,7 +74,7 @@ public:
         , refGeoId(Sketcher::GeoEnum::GeoUndef)
         , refPosId(Sketcher::PointPos::none)
         , deleteOriginal(false)
-        , createSymConstraints(false)
+        , createSymConstraints(true)
     {}
 
     DrawSketchHandlerSymmetry(const DrawSketchHandlerSymmetry&) = delete;
@@ -114,8 +111,10 @@ private:
                     refGeoId = Sketcher::GeoEnum::VAxis;
                     refPosId = Sketcher::PointPos::none;
                 }
-                else if ((CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt)
-                         && isLineSegment(*obj->getGeometry(CrvId))) {  // Curves
+                else if (
+                    (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt)
+                    && isLineSegment(*obj->getGeometry(CrvId))
+                ) {  // Curves
                     refGeoId = CrvId;
                     refPosId = Sketcher::PointPos::none;
                 }
@@ -135,7 +134,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Symmetry geometries"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Symmetry geometries"));
 
             SketchObject* Obj = sketchgui->getSketchObject();
             createSymConstraints = !deleteOriginal && createSymConstraints;
@@ -146,7 +145,7 @@ private:
             }
             tryAutoRecomputeIfNotSolve(Obj);
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -156,7 +155,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to create symmetry")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -280,11 +279,28 @@ void DSHSymmetryController::configureToolWidget()
             WCheckbox::FirstBox,
             QApplication::translate("TaskSketcherTool_c1_symmetry", "Delete original geometries (U)")
         );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::FirstBox,
+            QApplication::translate(
+                "TaskSketcherTool_c1_symmetry",
+                "Removes the original geometry and keeps only the mirrored result."
+
+            )
+        );
         toolWidget->setCheckboxLabel(
             WCheckbox::SecondBox,
             QApplication::translate("TaskSketcherTool_c2_symmetry", "Create symmetry constraints (J)")
         );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::SecondBox,
+            QApplication::translate(
+                "TaskSketcherTool_c2_symmetry",
+                "Create symmetry constraints between the original and mirrored geometries"
+            )
+        );
     }
+
+    syncCheckboxToHandler(WCheckbox::SecondBox, handler->createSymConstraints);
 }
 
 template<>
@@ -308,6 +324,3 @@ void DSHSymmetryController::adaptDrawingToCheckboxChange(int checkboxindex, bool
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerSymmetry_H

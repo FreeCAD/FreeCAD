@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft Scale tool."""
+
 ## @package task_scale
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft Scale tool.

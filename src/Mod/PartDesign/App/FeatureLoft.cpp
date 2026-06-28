@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -251,6 +253,7 @@ App::DocumentObjectExecReturn* Loft::execute()
                 "Part::FaceMakerBullseye",
                 "Part::FaceMakerCheese",
                 "Part::FaceMakerSimple",
+                "Part::FaceMakerUnified",
             };
             for (size_t i = 0; i < std::size(faceMaker); i++) {
                 try {
@@ -354,7 +357,7 @@ App::DocumentObjectExecReturn* Loft::execute()
                 );
         }
         try {
-            boolOp.makeElementBoolean(maker, {base, result});
+            boolOp.makeElementBoolean(maker, {base, result}, nullptr, FuzzyTolerance.getValue());
         }
         catch (Standard_Failure&) {
             return new App::DocumentObjectExecReturn(

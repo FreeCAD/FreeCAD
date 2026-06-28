@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEW_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEW_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -128,11 +127,11 @@ public:
 
     /** Methods to ensure that Y-Coordinates are orientated correctly.
      * @{ */
-    void setPosition(qreal xPos, qreal yPos);
     inline qreal getY() { return y() * -1; }
     bool isInnerView() const { return m_innerView; }
     void isInnerView(bool state) { m_innerView = state; }
     QGIViewClip* getClipGroup();
+    void updatePositionFromFeatureXY();
 
     bool isSnapping() { return snapping; }
     void snapPosition(QPointF& position);
@@ -187,6 +186,7 @@ public:
 
     bool isExporting() const;
 
+    virtual void setMovableFlag();
 
 protected:
     QGIView* getQGIVByName(std::string name) const;
@@ -202,7 +202,7 @@ protected:
     void dumpRect(const char* text, QRectF rect);
     bool m_isHovered;
 
-    void updateFrameVisibility();
+    virtual void updateFrameVisibility();
     bool shouldShowFromViewProvider() const;
     bool shouldShowFrame() const;
 
@@ -232,7 +232,7 @@ private:
     QPen m_decorPen;
     double m_lockWidth;
     double m_lockHeight;
-    int m_zOrder;
+    int m_zOrder{0};
 
     bool m_snapped{false};
 
@@ -243,8 +243,8 @@ private:
                        QPointF& outCaptionPos,
                        QPointF& outLabelPos,
                        QPointF& outLockPos) const;
+
+    bool m_inhibitSnapOnPosChange{false};
 };
 
 } // namespace
-
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEW_H

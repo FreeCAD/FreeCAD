@@ -41,7 +41,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="146"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>承認</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
@@ -59,12 +59,12 @@
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
       <source>Support Surface</source>
-      <translation type="unfinished">Support Surface</translation>
+      <translation>支持サーフェス</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="44"/>
       <source>Edges that will limit the surface</source>
-      <translation type="unfinished">Edges that will limit the surface</translation>
+      <translation>サーフェスを制限するエッジ</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="47"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>承認</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -142,12 +142,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="20"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>穴埋め</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="26"/>
       <source>Fill Type</source>
-      <translation type="unfinished">Fill Type</translation>
+      <translation>穴埋めタイプ</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="38"/>
@@ -157,12 +157,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="48"/>
       <source>Coons</source>
-      <translation type="unfinished">Coons</translation>
+      <translation>クーンズ</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="55"/>
       <source>Curved</source>
-      <translation>曲線|曲った</translation>
+      <translation>曲面</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="76"/>
@@ -185,23 +185,23 @@
       <translation>方向を反転</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="378"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="384"/>
       <source>Too many edges</source>
       <translation>エッジが多すぎます</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="379"/>
-      <location filename="../../TaskGeomFillSurface.cpp" line="387"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="385"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="393"/>
       <source>The tool requires two, three or four edges</source>
       <translation>このツールには2から4のエッジが必要です</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="386"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="392"/>
       <source>Too less edges</source>
       <translation>エッジが少なすぎます</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="398"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="404"/>
       <source>Invalid object</source>
       <translation>無効なオブジェクト</translation>
     </message>
@@ -211,12 +211,12 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="14"/>
       <source>Vertex Constraints</source>
-      <translation type="unfinished">Vertex Constraints</translation>
+      <translation>頂点拘束</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="20"/>
       <source>Constrains the surface to pass through the selected vertices</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected vertices</translation>
+      <translation>サーフェスが選択した頂点を通過するよう拘束</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="23"/>
@@ -279,7 +279,7 @@
   <context>
     <name>SurfaceGui::FillingVertexPanel</name>
     <message>
-      <location filename="../../TaskFillingVertex.cpp" line="129"/>
+      <location filename="../../TaskFillingVertex.cpp" line="127"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>穴埋め</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -343,7 +343,7 @@ vertices that are not on the boundary.</source>
       <translation>サーフェスを拡張</translation>
     </message>
     <message>
-      <location filename="../../Blending/TaskBlendCurve.cpp" line="409"/>
+      <location filename="../../Blending/TaskBlendCurve.cpp" line="410"/>
       <source>Edit blending curve</source>
       <translation>ブレンド曲線を編集</translation>
     </message>
@@ -358,12 +358,12 @@ vertices that are not on the boundary.</source>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation type="unfinished">Fill Boundary Curves</translation>
+      <translation>境界曲線を穴埋め</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>Creates a surface from 2, 3, or 4 boundary edges</source>
-      <translation type="unfinished">Creates a surface from 2, 3, or 4 boundary edges</translation>
+      <translation>2、3、または4の境界エッジからサーフェスを作成</translation>
     </message>
   </context>
   <context>
@@ -382,8 +382,8 @@ vertices that are not on the boundary.</source>
       <location filename="../../Command.cpp" line="180"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a mesh object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a mesh object.</translation>
+      <translation>メッシュの上に近似曲線を作成します。
+このコマンドはメッシュ・オブジェクトでのみ動作します。</translation>
     </message>
   </context>
   <context>
@@ -401,7 +401,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Joins 2 edges with continuity</source>
-      <translation type="unfinished">Joins 2 edges with continuity</translation>
+      <translation>連続性のある2つのエッジを結合</translation>
     </message>
   </context>
   <context>
@@ -456,43 +456,43 @@ This command only works with a mesh object.</translation>
   <context>
     <name>SurfaceGui::FillingEdgePanel</name>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="136"/>
+      <location filename="../../TaskFillingEdge.cpp" line="133"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="326"/>
+      <location filename="../../TaskFillingEdge.cpp" line="329"/>
       <source>Invalid object</source>
       <translation>無効なオブジェクト</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskFillingEdge.cpp" line="406"/>
+      <location filename="../../TaskFillingEdge.cpp" line="407"/>
       <source>Edge has %n adjacent face(s)</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
+      <translation>
+        <numerusform>エッジには %n 個の隣接面があります</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="410"/>
+      <location filename="../../TaskFillingEdge.cpp" line="411"/>
       <source>None</source>
       <translation>なし</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="431"/>
+      <location filename="../../TaskFillingEdge.cpp" line="432"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>エッジには隣接面がありません</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
-      <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
-      <translation type="unfinished">Edit Filling</translation>
+      <translation>穴埋めを編集</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="661"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="667"/>
       <source>Surface</source>
       <translation>サーフェス</translation>
     </message>
@@ -510,20 +510,20 @@ This command only works with a mesh object.</translation>
   <context>
     <name>SurfaceGui::FillingPanel</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="284"/>
+      <location filename="../../TaskFilling.cpp" line="281"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="494"/>
+      <location filename="../../TaskFilling.cpp" line="497"/>
       <source>Invalid object</source>
       <translation>無効なオブジェクト</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent faces</numerusform>
+      <translation>
+        <numerusform>エッジには %n 個の隣接面があります</numerusform>
       </translation>
     </message>
     <message>
@@ -534,18 +534,18 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>エッジには隣接面がありません</translation>
     </message>
   </context>
   <context>
     <name>SurfaceGui::SectionsPanel</name>
     <message>
-      <location filename="../../TaskSections.cpp" line="281"/>
+      <location filename="../../TaskSections.cpp" line="279"/>
       <source>Remove</source>
       <translation>削除</translation>
     </message>
     <message>
-      <location filename="../../TaskSections.cpp" line="420"/>
+      <location filename="../../TaskSections.cpp" line="424"/>
       <source>Invalid object</source>
       <translation>無効なオブジェクト</translation>
     </message>

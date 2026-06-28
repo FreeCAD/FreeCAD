@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_EDITORVIEW_H
-#define GUI_EDITORVIEW_H
+#pragma once
 
 #include "MDIView.h"
 #include "Window.h"
@@ -35,6 +34,7 @@ class QHBoxLayout;
 class QToolButton;
 class QCheckBox;
 class QSpacerItem;
+class QLabel;
 QT_END_NAMESPACE
 
 namespace Gui
@@ -77,7 +77,7 @@ public:
     void onUpdate() override
     {}
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
 
     bool canClose() override;
@@ -136,7 +136,7 @@ public:
     PythonEditorView(PythonEditor* editor, QWidget* parent);
     ~PythonEditorView() override;
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
 
 public Q_SLOTS:
@@ -165,7 +165,7 @@ protected:
     void changeEvent(QEvent*) override;
 
 public Q_SLOTS:
-    void activate();
+    void activate(const QString& prefill = QString());
     void deactivate();
     void findPrevious();
     void findNext();
@@ -175,6 +175,14 @@ private:
     void retranslateUi();
     void findText(bool skip, bool next, const QString& str);
     void updateButtons();
+    struct SearchResults
+    {
+        QVector<QPair<int, int>> matchRanges;
+        int currentIndex = -1;
+    };
+    SearchResults findAllMatches(const QString& str);
+    void updateSearchResults(const QString& str);
+    void highlightSearchResults(const SearchResults& matches);
 
 private:
     QPlainTextEdit* textEditor;
@@ -182,12 +190,12 @@ private:
     QSpacerItem* horizontalSpacer;
     QToolButton* closeButton;
     QLineEdit* searchText;
+    QLabel* resultLabel;
     QToolButton* prevButton;
     QToolButton* nextButton;
     QCheckBox* matchCase;
     QCheckBox* matchWord;
+    bool skipSearch = false;
 };
 
 }  // namespace Gui
-
-#endif  // GUI_EDITORVIEW_H

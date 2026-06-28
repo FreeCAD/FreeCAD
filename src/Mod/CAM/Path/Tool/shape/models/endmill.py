@@ -28,7 +28,6 @@ from .base import ToolBitShape
 
 class ToolBitShapeEndmill(ToolBitShape):
     name = "Endmill"
-    aliases = ("endmill",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

@@ -1,6 +1,8 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 include_directories(
     SYSTEM
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
+    ${nlohmann_json_INCLUDE_DIRS}
 )
 
 generate_from_py(ViewProvider)

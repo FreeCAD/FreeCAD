@@ -75,8 +75,7 @@
 //
  *
  ****************************************************************************/
-#ifndef FRAMES_IO_H
-#define FRAMES_IO_H
+#pragma once
 
 #include "utilities/utility_io.h"
 #include "frames.hpp"
@@ -112,5 +111,3 @@ namespace KDL {
 
 
 } // namespace Frame
-
-#endif

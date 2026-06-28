@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTIESDIALOG_H
-#define PROPERTIESDIALOG_H
+#pragma once
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <QDialog>
@@ -53,7 +52,9 @@ public:
 
 private Q_SLOTS:
     void foregroundColorChanged(const QColor& color);
+    void foregroundColorCleared();
     void backgroundColorChanged(const QColor& color);
+    void backgroundColorCleared();
     void alignmentChanged();
     void styleChanged();
     void displayUnitChanged(const QString& text);
@@ -64,14 +65,18 @@ private:
     std::vector<App::Range> ranges;
     Ui::PropertiesDialog* ui;
     Base::Color foregroundColor;
+    bool foregroundColorSet;
     Base::Color backgroundColor;
+    bool backgroundColorSet;
     int alignment;
     std::set<std::string> style;
     Spreadsheet::DisplayUnit displayUnit;
     std::string alias;
 
     Base::Color orgForegroundColor;
+    bool orgForegroundColorSet;
     Base::Color orgBackgroundColor;
+    bool orgBackgroundColorSet;
     int orgAlignment;
     std::set<std::string> orgStyle;
     Spreadsheet::DisplayUnit orgDisplayUnit;
@@ -82,5 +87,3 @@ private:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // PROPERTIESDIALOG_H

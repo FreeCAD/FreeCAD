@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSDOCUMENT_IMP_H
-#define GUI_DIALOG_DLGSETTINGSDOCUMENT_IMP_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -51,6 +50,7 @@ public:
 
 protected Q_SLOTS:
     void onLicenseTypeChanged(int index);
+    void onDateFormatChanged(const QString& text);
 
 protected:
     void changeEvent(QEvent* e) override;
@@ -62,5 +62,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGSETTINGSDOCUMENT_IMP_H

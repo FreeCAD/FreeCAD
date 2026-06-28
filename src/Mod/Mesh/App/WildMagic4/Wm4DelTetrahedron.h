@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELTETRAHEDRON_H
-#define WM4DELTETRAHEDRON_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Query3.h"
@@ -46,5 +45,3 @@ typedef DelTetrahedron<float> DelTetrahedronf;
 typedef DelTetrahedron<double> DelTetrahedrond;
 
 }
-
-#endif

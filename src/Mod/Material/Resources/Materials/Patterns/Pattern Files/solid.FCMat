@@ -4,7 +4,7 @@ General:
   UUID: "d7c6b577-b41b-4d4b-a2b3-2139a1a9a7af"
   Name: "solid"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"

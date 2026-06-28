@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_GUICONSOLE_H
-#define GUI_GUICONSOLE_H
+#pragma once
 
 
 #include <Base/Console.h>
@@ -66,5 +65,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_GUICONSOLE_H

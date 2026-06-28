@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SOTOUCHEVENTS_H
-#define SOTOUCHEVENTS_H
+#pragma once
 
 #include <QGesture>
 #include <Quarter/devices/InputDevice.h>
@@ -141,5 +140,3 @@ public:
 protected:
     QWidget* widget;
 };
-
-#endif  // SOTOUCHEVENTS_H

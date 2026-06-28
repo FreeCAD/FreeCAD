@@ -24,6 +24,7 @@ import FreeCAD
 import Path
 import Path.Base.MachineState as PathMachineState
 import Part
+from Path.Geom import CmdMoveDrill
 
 __title__ = "Feed Rate Helper Utility"
 __author__ = "sliptonic (Brad Collette)"
@@ -63,7 +64,12 @@ def setFeedRate(commandlist, ToolController):
         if command.Name not in Path.Geom.CmdMoveAll:
             continue
 
-        if _isVertical(machine.getPosition(), command):
+        # Canned drill cycles (G73, G81, G82, G83, G85) are vertical cutting operations
+        # The F word in a drill cycle specifies the feed rate for the vertical cutting component
+        # The positioning move to XY is done at rapid speed (not controlled by F word)
+        if command.Name in Path.Geom.CmdMoveDrill:
+            rate = ToolController.VertFeed.Value
+        elif _isVertical(machine.getPosition(), command):
             rate = (
                 ToolController.VertRapid.Value
                 if command.Name in Path.Geom.CmdMoveRapid

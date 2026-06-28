@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4POLYNOMIALROOTS_H
-#define WM4POLYNOMIALROOTS_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4GMatrix.h"
@@ -162,5 +161,3 @@ typedef PolynomialRoots<float> PolynomialRootsf;
 typedef PolynomialRoots<double> PolynomialRootsd;
 
 }
-
-#endif

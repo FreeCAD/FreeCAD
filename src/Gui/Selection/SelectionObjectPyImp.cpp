@@ -29,11 +29,9 @@
 #include "Selection.h"
 #include "SelectionObject.h"
 
-
-// inclusion of the generated files (generated out of SelectionObjectPy.xml)
+// generated out of SelectionObject.pyi
 #include "Selection/SelectionObjectPy.h"
 #include "Selection/SelectionObjectPy.cpp"
-
 
 using namespace Gui;
 

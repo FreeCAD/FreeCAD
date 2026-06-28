@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTY_H
-#define APP_PROPERTY_H
+#pragma once
 
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
@@ -96,8 +95,8 @@ public:
         PartialTrigger = 10,
         /// Whether to prevent to touch the owner for a recompute on property change.
         NoRecompute = 11,
-        /// Whether a floating point number should be saved as single precision.
-        Single = 12,
+        /// Whether a property is an input property.
+        Input = 12,
         /// For PropertyLists, whether the order of the elements is
         /// relevant for the container using it.
         Ordered = 13,
@@ -134,17 +133,19 @@ public:
         PropHidden = 26,
         /// Corresponds to Prop_Output.
         PropOutput = 27,
+        /// Corresponds to Prop_Input.
+        PropInput = 28,
         /// Mark the end of enum PropertyType bits.
-        PropStaticEnd = 28,
+        PropStaticEnd = 29,
 
         /// User defined status bit.
-        User1 = 28,
+        User1 = 29,
         /// User defined status bit.
-        User2 = 29,
+        User2 = 30,
         /// User defined status bit.
-        User3 = 30,
+        User3 = 31,
         /// User defined status bit.
-        User4 = 31
+        User4 = 32
     };
 
     /// Construct a property.
@@ -266,7 +267,7 @@ public:
      * This function sets the value of the property identified by the path.  It
      * is meant to be overridden for subclasses in which the `path` is
      * typically ignored.  The default implementation redirects setting a value
-     * to the the `path` ObjectIdentifier.
+     * to the `path` ObjectIdentifier.
      *
      * @param[in] path The path to the property.
      * @param[in] value The value to set.
@@ -447,24 +448,25 @@ public:
     /**
      * @brief Set the precision of floating point properties.
      *
-     * This sets the precision of properties using floating point
-     * numbers to single precision. The default is double precision.
+     * Deprecated.  All floating proint properties are double precision.
      *
-     * @param[in] single True to set single precision, false for double precision.
+     * @param[in] single Unused.
      */
-    void setSinglePrecision(bool single)
+    void setSinglePrecision(bool /*single*/)
     {
-        setStatus(App::Property::Single, single);
     }
 
     /**
      * @brief Gets precision of floating point properties.
      *
-     * @return True if single precision is set, false for double precision.
+     * This function is deprecated.  All floating point properties are
+     * double precision.
+     *
+     * @return False always.
      */
     inline bool isSinglePrecision() const
     {
-        return testStatus(App::Property::Single);
+        return false;
     }
     /// @}
 
@@ -1098,6 +1100,16 @@ public:
         guard.tryInvoke();
     }
 
+    template<std::predicate<const T&> F>
+    int removeIf(F f) {
+        ListT vals = _lValueList;
+        size_t removed = std::erase_if(vals, f);
+        if (removed > 0) {
+            setValues(std::move(vals));
+        }
+        return static_cast<int>(removed);
+    }
+
 protected:
     void setPyValues(const std::vector<PyObject*>& vals, const std::vector<int>& indices) override
     {
@@ -1134,5 +1146,3 @@ protected:
 };
 
 }  // namespace App
-
-#endif  // APP_PROPERTY_H

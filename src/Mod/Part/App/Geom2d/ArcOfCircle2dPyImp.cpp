@@ -58,7 +58,9 @@ int ArcOfCircle2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject* o;
     double u1, u2;
     PyObject* sense = Py_True;
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::Circle2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+    if (
+        PyArg_ParseTuple(args, "O!dd|O!", &(Part::Circle2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)
+    ) {
         try {
             Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(
                 static_cast<Circle2dPy*>(o)->getGeom2dCirclePtr()->handle()
@@ -128,9 +130,8 @@ void ArcOfCircle2dPy::setRadius(Py::Float arg)
 
 Py::Object ArcOfCircle2dPy::getCircle() const
 {
-    Handle(Geom2d_TrimmedCurve) curve = Handle(Geom2d_TrimmedCurve)::DownCast(
-        getGeom2dArcOfConicPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        curve = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfConicPtr()->handle());
     Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(curve->BasisCurve());
     return Py::asObject(new Circle2dPy(new Geom2dCircle(circle)));
 }

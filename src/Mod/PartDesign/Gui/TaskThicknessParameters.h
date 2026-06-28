@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskThicknessParameters_H
-#define GUI_TASKVIEW_TaskThicknessParameters_H
+#pragma once
 
 #include <Gui/Inventor/Draggers/Gizmo.h>
 
@@ -105,5 +106,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

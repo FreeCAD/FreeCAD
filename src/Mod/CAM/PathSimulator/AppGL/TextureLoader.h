@@ -22,13 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __texture_loader_h__
-#define __texture_loader_h__
+#pragma once
+
 #include <string>
 #include <vector>
 #include <QImage>
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 struct TextureItem
@@ -53,5 +53,4 @@ protected:
     std::string mImageFolder;
 };
 
-}  // namespace MillSim
-#endif  // !__texture_loader_h__
+}  // namespace CAMSimulator

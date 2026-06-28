@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_EXCEPTIONFACTORY_H
-#define BASE_EXCEPTIONFACTORY_H
+#pragma once
 
 
 #include "Factory.h"
@@ -113,6 +112,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif

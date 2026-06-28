@@ -4,24 +4,24 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="92"/>
+      <location filename="../../FirstStartWidget.cpp" line="91"/>
       <source>Done</source>
       <translation>Končano</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="95"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Welcome to %1</source>
       <translation>Dobrodošli v %1</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="98"/>
+      <location filename="../../FirstStartWidget.cpp" line="97"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>Spodaj nastavite osnovne konfiguracije.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="99"/>
+      <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>Te možnosti (in številne druge) lahko pozneje spremenite v nastavitvah.</translation>
     </message>
   </context>
   <context>
@@ -57,101 +57,101 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation type="unfinished">Displays the start page</translation>
+      <translation>Prikaži začetno stran</translation>
     </message>
   </context>
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="209"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Open File</source>
       <translation>Odpri datoteko</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>Assembly</source>
       <translation>Sestav</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>2D Draft</source>
       <translation>2D Risba</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="232"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>Ustvari 2D osnutek dokumenta</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="235"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Arhitektura</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="204"/>
+      <location filename="../../StartView.cpp" line="212"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>Prazna datoteka</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="205"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+      <translation>Ustvari novo prazno FreeCAD datoteko</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="210"/>
+      <location filename="../../StartView.cpp" line="218"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
+      <translation>Odpri obstoječo CAD datoteko ali 3D model</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="214"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>Parametrično telo</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="215"/>
+      <location filename="../../StartView.cpp" line="223"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="220"/>
-      <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Ustvari telo z delovno mizo za oblikovanje orodij</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>
-      <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <source>Creates an assembly project</source>
+      <translation>Ustvari montažni projekt</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="503"/>
+      <location filename="../../StartView.cpp" line="236"/>
+      <source>Creates an architectural project</source>
+      <translation>Ustvari arhitekturni projekt</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="520"/>
       <source>New File</source>
       <translation>Nova datoteka</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="504"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Examples</source>
       <translation>Primeri</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="505"/>
+      <location filename="../../StartView.cpp" line="524"/>
       <source>Recent Files</source>
       <translation>Nedavne datoteke</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="521"/>
+      <location filename="../../StartView.cpp" line="539"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>Odprite prve začetne nastavitve</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="522"/>
+      <location filename="../../StartView.cpp" line="540"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>Ne prikaži več te začetne strani (začni s praznim zaslonom)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="497"/>
+      <location filename="../../StartView.cpp" line="514"/>
       <source>Start</source>
       <translation>Začetek</translation>
     </message>
@@ -159,44 +159,44 @@
   <context>
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Classic</source>
       <translation>FreeCAD običajna</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
       <source>FreeCAD Dark</source>
       <translation>FreeCAD temna</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="117"/>
       <source>FreeCAD Light</source>
       <translation>FreeCAD svetla</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="247"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
       <source>Theme</source>
       <translation>Tema</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="253"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>Si želite več tem? Dobite jih lahko v &lt;a href="freecad:Std_AddonMgr"&gt;Upravljalniku dodatkov&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="257"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="260"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD temna</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="258"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD svetla</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="259"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD običajna</translation>
@@ -234,18 +234,17 @@
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>Izbirna mapa po meri, ki bo prikazana na začetni strani. Več map je mogoče dodati z ";;", da ločite poti.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>Prikaži primere datotek na začetni strani</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>Začetna stran se samodejno zapre ob zagonu FreeCAD-a</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -261,9 +260,22 @@ Multiple folders can be added using ";;" to separate paths.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="125"/>
+      <location filename="../../AppStartGui.cpp" line="139"/>
       <source>Start</source>
       <translation>Začni</translation>
+    </message>
+  </context>
+  <context>
+    <name>Start::DisplayedFilesModel</name>
+    <message>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
+      <source>Created at:</source>
+      <translation type="unfinished">Created at:</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
+      <source>Modified at:</source>
+      <translation type="unfinished">Modified at:</translation>
     </message>
   </context>
 </TS>

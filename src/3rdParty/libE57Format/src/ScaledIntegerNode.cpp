@@ -139,10 +139,10 @@ be true).
 @pre minimum <= rawValue <= maximum
 @pre scale != 0
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorFileReadOnly
-@throw ::ErrorValueOutOfBounds
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorFileReadOnly (n/c)
+@throw ::ErrorValueOutOfBounds (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ScaledIntegerNode::rawValue, Node, CompressedVectorNode, CompressedVectorNode::prototype
@@ -201,10 +201,10 @@ be true).
 @pre scaledMinimum <= scaledValue <= scaledMaximum
 @pre scale != 0
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorFileReadOnly
-@throw ::ErrorValueOutOfBounds
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorFileReadOnly (n/c)
+@throw ::ErrorValueOutOfBounds (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ScaledIntegerNode::scaledValue, Node, CompressedVectorNode, CompressedVectorNode::prototype
@@ -280,7 +280,7 @@ bool ScaledIntegerNode::isAttached() const
 
 @return The raw unscaled integer value stored.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ScaledIntegerNode::scaledValue, ScaledIntegerNode::minimum, ScaledIntegerNode::maximum
@@ -298,7 +298,7 @@ int64_t ScaledIntegerNode::rawValue() const
 
 @return The scaled value (rawValue*scale + offset) calculated from the rawValue stored.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ScaledIntegerNode::rawValue
@@ -316,7 +316,7 @@ double ScaledIntegerNode::scaledValue() const
 
 @return The declared minimum that the rawValue may take.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ScaledIntegerNode::maximum, ScaledIntegerNode::rawValue
@@ -334,7 +334,7 @@ int64_t ScaledIntegerNode::minimum() const
 
 @return The declared minimum that the rawValue may take.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ScaledIntegerNode::scaledMaximum, ScaledIntegerNode::scaledValue
@@ -352,7 +352,7 @@ double ScaledIntegerNode::scaledMinimum() const
 
 @return The declared maximum that the rawValue may take.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ScaledIntegerNode::minimum, ScaledIntegerNode::rawValue
@@ -370,7 +370,7 @@ int64_t ScaledIntegerNode::maximum() const
 
 @return The declared maximum that the rawValue may take.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ScaledIntegerNode::scaledMinimum, ScaledIntegerNode::scaledValue
@@ -388,7 +388,7 @@ double ScaledIntegerNode::scaledMaximum() const // Added by SC
 
 @return The scaling factor used to compute scaledValue from rawValue.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ScaledIntegerNode::scaledValue
@@ -406,7 +406,7 @@ double ScaledIntegerNode::scale() const
 
 @return The offset used to compute scaledValue from rawValue.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ScaledIntegerNode::scaledValue
@@ -463,7 +463,7 @@ designs that need to avoid the exception, use Node::type() to determine the actu
 before downcasting. This function must be explicitly called (c++ compiler cannot insert it
 automatically).
 
-@throw ::ErrorBadNodeDowncast
+@throw ::ErrorBadNodeDowncast (n/c)
 
 @see Node::type(), ScaledIntegerNode::operator, Node()
 */

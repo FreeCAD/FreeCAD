@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef U32_HEADER
-#define U32_HEADER
+#pragma once
 
 #include "Context.h"
 #include <istream>
@@ -56,6 +55,3 @@ struct U32
 
     uint32_t _U32;
 };
-
-
-#endif

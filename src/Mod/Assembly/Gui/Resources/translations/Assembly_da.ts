@@ -17,68 +17,68 @@
   <context>
     <name>Assembly_InsertLink</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="56"/>
+      <location filename="../../../CommandInsertLink.py" line="55"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
       <translation>&lt;p&gt;Indsætter en komponent i den aktive samling. Dette vil skabe dynamiske links til komponenter, emner, basisgeometrier og (andre) samlinger. For at kunne indsætte eksterne komponenter, skal filen være &lt;b&gt;åben i den aktuelle session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Indsæt ved at venstre klikke på elementer i listen.&lt;/li&gt;&lt;li&gt;Fjern ved at højreklikke på elementer i listen.&lt;/li&gt;&lt;li&gt;Hold skift-tasten nede mens du klikker på visningen af samlingen, for at tilføje flere forekomster af komponenten.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="81"/>
-      <source>Component</source>
-      <translation>Komponent</translation>
+      <location filename="../../../CommandInsertLink.py" line="80"/>
+      <source>Insert Component</source>
+      <translation>Indsæt komponent</translation>
     </message>
   </context>
   <context>
     <name>Assembly_SolveAssembly</name>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="50"/>
+      <location filename="../../../CommandSolveAssembly.py" line="49"/>
       <source>Solve Assembly</source>
-      <translation type="unfinished">Solve Assembly</translation>
+      <translation>Bestem samling</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="55"/>
+      <location filename="../../../CommandSolveAssembly.py" line="54"/>
       <source>Solves the currently active assembly.</source>
-      <translation type="unfinished">Solves the currently active assembly.</translation>
+      <translation>Bestemmer sammensætningen af den aktive samling.</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../../InitGui.py" line="74"/>
+      <location filename="../../../InitGui.py" line="75"/>
       <source>Assembly</source>
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="147"/>
       <source>Active object</source>
       <translation>Aktivt objekt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="125"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="154"/>
       <source>Turn flexible</source>
-      <translation type="unfinished">Turn flexible</translation>
+      <translation>Gør fleksibel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="156"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
       <translation>Din komponentgruppe er sat til at være stiv. Dette vil gøre den fleksibel i stedet.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="160"/>
       <source>Turn rigid</source>
-      <translation type="unfinished">Turn rigid</translation>
+      <translation>Gør stiv</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="162"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
       <translation>Din komponentgruppe er sat til at være fleksibel. Dette vil gøre den stiv i stedet.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="287"/>
+      <location filename="../../../App/BomObject.cpp" line="329"/>
       <source>N/A</source>
-      <translation type="unfinished">N/A</translation>
+      <translation>Ikke tilgængelig</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="311"/>
+      <location filename="../../../App/BomObject.cpp" line="353"/>
       <source>Not supported</source>
       <translation>Ikke understøttet</translation>
     </message>
@@ -86,17 +86,17 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="109"/>
+      <location filename="../../../InitGui.py" line="112"/>
       <source>Assembly</source>
       <translation>Samling</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="110"/>
+      <location filename="../../../InitGui.py" line="113"/>
       <source>Assembly Joints</source>
       <translation>Forbindelser</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="113"/>
+      <location filename="../../../InitGui.py" line="116"/>
       <source>&amp;Assembly</source>
       <translation>&amp;Assembly</translation>
     </message>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Fixed</source>
-      <translation>Fastgjort</translation>
+      <translation>Fast retnining</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
@@ -130,9 +130,9 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1700"/>
+      <location filename="../../../JointObject.py" line="1888"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Afstand</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="56"/>
@@ -170,29 +170,29 @@
       <translation>Rem</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="757"/>
+      <location filename="../../../JointObject.py" line="818"/>
       <source>Broken link in: </source>
       <translation>Ødelagt forbindelse i: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1529"/>
+      <location filename="../../../JointObject.py" line="1696"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Vælg 2 elementer fra 2 forskellige komponenter</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1702"/>
+      <location filename="../../../JointObject.py" line="1890"/>
       <source>Radius 1</source>
       <translation>Radius 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1892"/>
       <source>Thread pitch</source>
       <translation>Gevindstigning</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1706"/>
+      <location filename="../../../JointObject.py" line="1894"/>
       <source>Pitch radius</source>
-      <translation type="unfinished">Pitch radius</translation>
+      <translation>Stigningsradius</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
@@ -250,52 +250,52 @@
       <translation>Dette navn er allerede i brug. Vælg venligst et andet navn.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="364"/>
+      <location filename="../../../CommandCreateBom.py" line="365"/>
       <source>Options</source>
       <translation>Indstillinger</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="371"/>
+      <location filename="../../../CommandCreateBom.py" line="372"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
       <translation type="unfinished">Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="377"/>
+      <location filename="../../../CommandCreateBom.py" line="378"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
       <translation type="unfinished">Parts children: the children of parts will be added to the bill of materials</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="383"/>
+      <location filename="../../../CommandCreateBom.py" line="384"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
       <translation>Kun komponenter: Tilføjer kun komponentbeholdere og komponentgrupper til styklisten. Massive elementer som PartDesign emner, befæstelseselementer eller Part basisgeometrier ignoreres.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="385"/>
+      <location filename="../../../CommandCreateBom.py" line="386"/>
       <source>Columns</source>
       <translation>Kolonner</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="398"/>
+      <location filename="../../../CommandCreateBom.py" line="399"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation>Brugerdefinerede kolonner: 'Beskrivelse' og andre brugerdefinerede kolonner som du tilføjer ved at klikke på 'Tilføj kolonne' vil ikke få data overskrevet. Hvis et kolonnenavn starter med '.' efterfulgt af et egenskabsnavn (f. eks. . '.Længde'), vil kolonnen blive udfyldt automatisk. Disse kolonner kan omdøbes ved at dobbeltklikke på dem eller ved at taste F2 (omdøbning af kolonner vil for nærværende medføre tab af data).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="404"/>
+      <location filename="../../../CommandCreateBom.py" line="405"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation>Enhver kolonne (brugerdefineret eller ej), kan slettes ved at trykke på Delete-tasten</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="406"/>
+      <location filename="../../../CommandCreateBom.py" line="407"/>
       <source>Export</source>
       <translation>Eksport</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="413"/>
+      <location filename="../../../CommandCreateBom.py" line="414"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
       <translation>Det eksporterede filformat kan tilpasses i indstillingerne for værktøjskassen Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="392"/>
+      <location filename="../../../CommandCreateBom.py" line="393"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>Auto-kolonner: (Indeks, Antal, Navn...) udfyldes automatisk. Enhver ændring du foretager vil blive overskrevet. Disse kolonner kan ikke omdøbes.</translation>
     </message>
@@ -317,7 +317,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="125"/>
       <source>Joint new part origin</source>
-      <translation type="unfinished">Joint new part origin</translation>
+      <translation>Forbind origo for ny komponent</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="161"/>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="77"/>
       <source>The assembly document must be saved before inserting a new part.</source>
-      <translation type="unfinished">The assembly document must be saved before inserting a new part.</translation>
+      <translation>Samlingen skal gemmes, før en ny komponent kan indsættes.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="80"/>
@@ -347,59 +347,59 @@
       <translation>Forbind ikke</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="488"/>
-      <source>Enter your formula...</source>
-      <translation>Indtast din formel...</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="495"/>
+      <source>Enter your formula…</source>
+      <translation>Indtast din formel…</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
-      <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation>Med store bogstaver er anført variable, som skal erstattes med faktiske værdier. Der er flere detaljer om hvert eksempel i eksemplernes værktøjstip.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
+      <source>In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</source>
+      <translation type="unfinished">In capital are variables that you need to replace with actual values. 'initialValue' is dynamically replaced by the current angle or distance. More details about each example in its tooltip.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="544"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - Lineær: C + VEL*tid</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="546"/>
+      <location filename="../../../CommandCreateSimulation.py" line="553"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - Kvadratisk: C + VEL*tid + ACC*tid^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="549"/>
+      <location filename="../../../CommandCreateSimulation.py" line="556"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - Harmonisk: C + AMP*sin(VEL*tid - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="552"/>
+      <location filename="../../../CommandCreateSimulation.py" line="559"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - Eksponentiel: C*exp(tid/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="558"/>
+      <location filename="../../../CommandCreateSimulation.py" line="565"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - Udglattet trin: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(tid - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="565"/>
+      <location filename="../../../CommandCreateSimulation.py" line="572"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - Udglattet firkantimpuls: (H/pi)*(arctan(SLOPE*(tid - T1)) - arctan(SLOPE*(tid - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="572"/>
+      <location filename="../../../CommandCreateSimulation.py" line="579"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - Impuls med skrå top: ((1/pi)*(arctan(1000*(tid - T1)) - arctan(1000*(tid - T2))))*(((H2 - H1)/(T2 - T1))*(tid - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="582"/>
+      <location filename="../../../CommandCreateSimulation.py" line="589"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C er en konstant forskydning.
 VEL er en hastighed, eller hældningen/stigningen af en lige linje.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="590"/>
+      <location filename="../../../CommandCreateSimulation.py" line="597"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -408,7 +408,7 @@ VEL er en hastighed, eller hældningen/stigningen af en lige linje.
 ACC er accelerationen, eller koefficienten for en andenordens funktion. Funktionen er en parabol.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="599"/>
+      <location filename="../../../CommandCreateSimulation.py" line="606"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -419,14 +419,14 @@ VEL er vinkelhastigheden i radianer pr. sekund.
 PHASE er fasen af sinusfunktionen.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="606"/>
+      <location filename="../../../CommandCreateSimulation.py" line="613"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C er en konstant.
 TIMEC er tidskonstanten for den eksponentielle funktion.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="614"/>
+      <location filename="../../../CommandCreateSimulation.py" line="621"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -435,7 +435,7 @@ L2 er trinet efter tiden = T0.
 SLOPE definerer udglatningen for overgangen mellem L1 og L2 når tid = T0. Højere værdier giver skarpere hjørner på trinnene. Værdier for SLOPE på 1000 eller derover er egnede.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="623"/>
+      <location filename="../../../CommandCreateSimulation.py" line="630"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -446,7 +446,7 @@ T2 er slutningen af impulsen.
 SLOPE definerer udglatningen af overgangen mellem 0 og H når tid = T1 og T2. Højere værdier giver skarpere hjørner på trinnene. Værdier for SLOPE på 1000 eller derover er egnede.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="634"/>
+      <location filename="../../../CommandCreateSimulation.py" line="641"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -461,48 +461,98 @@ H2 er impulshøjden ved T2 i slutningen af impulsen.
 SLOPE definerer udglatnigen af overgangen mellem henholdsvis 0 og H1 og H2 til 0 når tid = T1 og T2. Højere værdier giver skarpere hjørnder på trinnene. Værdier for SLOPE på 1000 eller derover er egnede.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="672"/>
-      <location filename="../../../CommandCreateSimulation.py" line="689"/>
+      <location filename="../../../CommandCreateSimulation.py" line="679"/>
+      <location filename="../../../CommandCreateSimulation.py" line="696"/>
       <source>Help</source>
       <translation>Hjælp</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="687"/>
+      <location filename="../../../CommandCreateSimulation.py" line="694"/>
       <source>Hide help</source>
       <translation>Skjul hjælp</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="142"/>
+      <location filename="../../../CommandCreateSimulation.py" line="1045"/>
+      <source>Animation</source>
+      <translation>Animation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1046"/>
+      <source>Not enough frames to create an animation.</source>
+      <translation>Ikke nok billeder til at oprette en animation.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1053"/>
+      <source>Save Animation</source>
+      <translation>Gem Animation</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1075"/>
+      <source>Generating Frames…</source>
+      <translation type="unfinished">Generating Frames…</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1076"/>
+      <source>Cancel</source>
+      <translation>Annuller</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1103"/>
+      <source>Assembling animation…</source>
+      <translation>Samler animation…</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1119"/>
+      <source>An error occurred while saving the animation</source>
+      <translation>Der opstod en fejl under lagring af animationen</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1137"/>
+      <source>Pillow (PIL) is not installed. It is required for GIF export.</source>
+      <translation type="unfinished">Pillow (PIL) is not installed. It is required for GIF export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1160"/>
+      <source>OpenCV is not installed. It is required for video export.</source>
+      <translation type="unfinished">OpenCV is not installed. It is required for video export.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="1177"/>
+      <source>Could not open video writer. Check codecs.</source>
+      <translation type="unfinished">Could not open video writer. Check codecs.</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="160"/>
       <source>Create</source>
       <translation>Opret</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="158"/>
+      <location filename="../../../InitGui.py" line="176"/>
       <source>Activate</source>
       <translation>Aktivér</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="192"/>
+      <location filename="../../../InitGui.py" line="210"/>
       <source>Insert</source>
       <translation>Indsæt</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="203"/>
+      <location filename="../../../InitGui.py" line="221"/>
       <source>Grounding</source>
-      <translation type="unfinished">Grounding</translation>
+      <translation>Fixering</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="230"/>
+      <location filename="../../../InitGui.py" line="248"/>
       <source>Constraints</source>
       <translation>Relationer</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="246"/>
+      <location filename="../../../InitGui.py" line="264"/>
       <source>Tools</source>
       <translation>Værktøj</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="259"/>
+      <location filename="../../../InitGui.py" line="277"/>
       <source>Simulation</source>
       <translation>Simulation</translation>
     </message>
@@ -515,180 +565,180 @@ SLOPE definerer udglatnigen af overgangen mellem henholdsvis 0 og H1 og H2 til 0
       <translation>Forbindelsestypen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="211"/>
+      <location filename="../../../JointObject.py" line="370"/>
       <source>The first reference of the joint</source>
       <translation>Den første reference i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="223"/>
+      <location filename="../../../JointObject.py" line="218"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Dette er det lokale koordinatsystem for objektet Reference1, der vil blive brugt til forbindelse</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="235"/>
+      <location filename="../../../JointObject.py" line="230"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
-      <translation type="unfinished">This prevents Placement1 from recomputing, enabling custom positioning of the placement</translation>
+      <translation>Dette forhindrer genberegning af Placering1, og muliggør en brugerdefineret placering</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="247"/>
-      <location filename="../../../JointObject.py" line="556"/>
+      <location filename="../../../JointObject.py" line="242"/>
+      <location filename="../../../JointObject.py" line="563"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>Dette er forskydningen af fastgørelsen til det første element i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="269"/>
+      <location filename="../../../JointObject.py" line="258"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>Dette er det lokale koordinatsystem for objektet Reference2, der vil blive brugt til forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="281"/>
+      <location filename="../../../JointObject.py" line="270"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
-      <translation type="unfinished">This prevents Placement2 from recomputing, enabling custom positioning of the placement</translation>
+      <translation>Dette forhindrer genberegning af Placering2, og muliggør en brugerdefineret placering</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="293"/>
-      <location filename="../../../JointObject.py" line="567"/>
+      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="574"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>Dette er forskydningen af fastgørelsen til det andet element i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="315"/>
+      <location filename="../../../JointObject.py" line="304"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Aktiver minimumslængden for forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Aktiver maksimumslængden for forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Aktiver minimumsvinklen for forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Aktiver maksimumsvinklen for forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="384"/>
+      <location filename="../../../JointObject.py" line="391"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
       <translation>Dette er vinklen for forbindelsen. Den bruges kun for vinkelforbindelser.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="420"/>
+      <location filename="../../../JointObject.py" line="427"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Dette er den minimale afstand mellem de to koordinatsystemer (langs deres z-akser)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="432"/>
+      <location filename="../../../JointObject.py" line="439"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Dette er den maksimale afstand mellem de to koordinatsystemer (langs deres z-akser)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="444"/>
+      <location filename="../../../JointObject.py" line="451"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Dette er den minimale vinkel mellem de to koordinatsystemer (mellem deres x-akser)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="456"/>
+      <location filename="../../../JointObject.py" line="463"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Dette er den maksimale vinkel mellem de to koordinatsystemer (mellem deres x-akser)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="257"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>The second reference of the joint</source>
       <translation>Den anden reference i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="475"/>
+      <location filename="../../../JointObject.py" line="482"/>
       <source>The first object of the joint</source>
       <translation>Første objekt i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="495"/>
+      <location filename="../../../JointObject.py" line="502"/>
       <source>The second object of the joint</source>
       <translation>Det andet objekt i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="396"/>
+      <location filename="../../../JointObject.py" line="403"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Dette er afstanden mellem de forbundne elementer. Bruges ifm. afstandsforbindelser, tandstangsforbindelser, skrueforbindelser (stigningen), tandhjulsforbindelser og remforbindelser (radius1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="408"/>
+      <location filename="../../../JointObject.py" line="415"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Dette er anden afstand mellem de forbundne elementer. Den bruges kun ifm. tandhjulsforbindelser til at gemme radius2.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="509"/>
+      <location filename="../../../JointObject.py" line="516"/>
       <source>The {order} reference of the joint</source>
-      <translation type="unfinished">The {order} reference of the joint</translation>
+      <translation>Den {order} reference i forbindelsen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1151"/>
+      <location filename="../../../JointObject.py" line="1280"/>
       <source>The object to ground</source>
-      <translation type="unfinished">The object to ground</translation>
+      <translation>Objektet som skal fixeres</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="368"/>
-      <location filename="../../../CommandCreateView.py" line="405"/>
+      <location filename="../../../CommandCreateView.py" line="376"/>
+      <location filename="../../../CommandCreateView.py" line="413"/>
       <source>The objects moved by the move</source>
       <translation>Objekterne som påvirkes af bevægelsen</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="380"/>
+      <location filename="../../../CommandCreateView.py" line="388"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
-      <translation type="unfinished">This is the movement of the move. The end placement is the result of the start placement * this placement.</translation>
+      <translation>Dette er forskydningen ved bevægelsen. Slutplaceringen er resultatet af startplaceringen * denne placering.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="389"/>
+      <location filename="../../../CommandCreateView.py" line="397"/>
       <source>The type of the move</source>
       <translation>Bevægelsestypen</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="111"/>
+      <location filename="../../../CommandCreateSimulation.py" line="116"/>
       <source>Simulation start time.</source>
       <translation>Simuleringens starttidspunkt.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="123"/>
+      <location filename="../../../CommandCreateSimulation.py" line="128"/>
       <source>Simulation end time.</source>
       <translation>Simuleringens sluttidspunkt.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="135"/>
+      <location filename="../../../CommandCreateSimulation.py" line="140"/>
       <source>Simulation time step for output.</source>
-      <translation type="unfinished">Simulation time step for output.</translation>
+      <translation>Intervallet mellem hvert simuleringstidspunkt, til brug for output af resultater.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="147"/>
+      <location filename="../../../CommandCreateSimulation.py" line="152"/>
       <source>Integration global error tolerance.</source>
       <translation type="unfinished">Integration global error tolerance.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="159"/>
+      <location filename="../../../CommandCreateSimulation.py" line="164"/>
       <source>Frames Per Second.</source>
       <translation>Billeder pr. sekund.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="211"/>
+      <location filename="../../../CommandCreateSimulation.py" line="216"/>
       <source>The number of decimals to use for calculated texts</source>
-      <translation type="unfinished">The number of decimals to use for calculated texts</translation>
+      <translation>Antal decimaler for beregnede værdier</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="311"/>
+      <location filename="../../../CommandCreateSimulation.py" line="316"/>
       <source>The joint that is moved by the motion</source>
       <translation>Forbindelsen, der påvirkes af bevægelsen</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="323"/>
+      <location filename="../../../CommandCreateSimulation.py" line="328"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
       <translation>Dette er formlen for bevægelsen. For eksempel '1,0*tid'.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="332"/>
+      <location filename="../../../CommandCreateSimulation.py" line="337"/>
       <source>The type of the motion</source>
       <translation>Bevægelsestypen</translation>
     </message>
@@ -756,42 +806,52 @@ SLOPE definerer udglatnigen af overgangen mellem henholdsvis 0 og H1 og H2 til 0
       <translation>Definerer forskydning for forbindelsens andet markerede element (koordinatsystem)</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="231"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="237"/>
       <source>Reverse the direction of the joint</source>
       <translation>Vend forbindelsesretningen</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="240"/>
       <source>Reverse</source>
-      <translation>Omvendt</translation>
+      <translation>Modsat</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
+      <source>Rotate the joint 90 degrees</source>
+      <translation type="unfinished">Rotate the joint 90 degrees</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
+      <source>Rotate</source>
+      <translation>Roter</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="291"/>
       <source>Limits</source>
       <translation>Grænser</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="251"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
       <source>Min length</source>
       <translation>Mindste længde</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="274"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="320"/>
       <source>Max length</source>
       <translation>Største længde</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="297"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="343"/>
       <source>Min angle</source>
       <translation>Mindste vinkel</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="326"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="372"/>
       <source>Max angle</source>
       <translation>Største vinkel</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="358"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="404"/>
       <source>Reverse rotation</source>
       <translation>Vend rotation</translation>
     </message>
@@ -810,8 +870,8 @@ SLOPE definerer udglatnigen af overgangen mellem henholdsvis 0 og H1 og H2 til 0
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>Kan ikke finde komponenten? </translation>
+      <source>Cannot find the part?</source>
+      <translation type="unfinished">Cannot find the part?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -843,7 +903,7 @@ Du kan til enhver tid ændre denne opførsel ved enten at højreklikke på kompo
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
       <source>Rigid sub-assemblies</source>
-      <translation type="unfinished">Rigid sub-assemblies</translation>
+      <translation>Stive komponentgrupper</translation>
     </message>
   </context>
   <context>
@@ -856,14 +916,14 @@ Du kan til enhver tid ændre denne opførsel ved enten at højreklikke på kompo
     <message>
       <location filename="../preferences/Assembly.ui" line="20"/>
       <source>Allows leaving edit mode when pressing the Esc key</source>
-      <translation type="unfinished">Allows leaving edit mode when pressing the Esc key</translation>
+      <translation>Tillader at redigeringstilstand forlades når der trykkes på Esc-tasten</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Log the dragging steps of the solver. Useful to report a bug.
 The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</source>
-      <translation type="unfinished">Log the dragging steps of the solver. Useful to report a bug.
-The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</translation>
+      <translation>Log steps fra ligningsløserens ved trækningen. Kan være nyttigt ved fejlrapportering.
+Filerne hedder "runPreDrag. smt" og "dragging.log" og er placeret i standardmappen for std::ofstream (i Windows er det desktoppen)</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="59"/>
@@ -883,79 +943,68 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../preferences/Assembly.ui" line="43"/>
       <source>Log dragging steps</source>
-      <translation type="unfinished">Log dragging steps</translation>
+      <translation>Log steps under trækning</translation>
     </message>
   </context>
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="215"/>
       <source>The object is associated to one or more joints.</source>
-      <translation type="unfinished">The object is associated to one or more joints.</translation>
+      <translation>Objektet har en eller flere tilknyttede forbindelser.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="217"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vil du flytte objektet og slette tilknyttede forbindelser?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1052"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1090"/>
       <source>Move part</source>
       <translation>Flyt komponent</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
-      <source>ViewProviderAssembly</source>
-      <comment>and %1 more</comment>
-      <translation type="unfinished">ViewProviderAssembly</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1614"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1807"/>
       <source>Empty Assembly</source>
       <translation>Tom samling</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1619"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Over-constrained:</source>
-      <translation>For mange låse:</translation>
+      <translation>For mange relationer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1627"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
       <source>Malformed joints:</source>
       <translation>Fejlbehæftede forbindelser:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
-      <source>Redundant joints:</source>
-      <translation>Overflødige forbindelser:</translation>
+      <location filename="../../ViewProviderAssembly.cpp" line="1792"/>
+      <source>and %1 more</source>
+      <translation>og %1 mere</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
-      <source>Partially redundant:</source>
-      <translation>Delvis overflødig:</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1651"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1851"/>
       <source>Solver failed to converge</source>
       <translation>Løsningen konvergerer ikke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1659"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>Under-constrained:</source>
-      <translation>Ulåst:</translation>
+      <translation>For få relationer:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1661"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
-        <numerusform>%n Frihedsgrader</numerusform>
+        <numerusform>%n frihedsgrader</numerusform>
         <numerusform>%n Degrees of Freedom</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1865"/>
       <source>Fully constrained</source>
-      <translation>Låst:</translation>
+      <translation>Fuldstændigt låst</translation>
     </message>
   </context>
   <context>
@@ -967,8 +1016,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="324"/>
-      <source>&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Opretter en skrueforbindelse, der forbinder en komponent med et skydeled til en komponent med en drejeled&lt;/p&gt;&lt;p&gt;Vælg samme koordinatsystemer for skydeledet og for drejeleddet. Stigningen definerer forholdet mellem det roterende drejeled (skruen) og skydeleddet.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -994,12 +1043,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="20"/>
       <source>If checked, parts will be selected as a single solid</source>
-      <translation type="unfinished">If checked, parts will be selected as a single solid</translation>
+      <translation>Hvis markeret, vil komponenter og komponentgrupper blive valgt som massive elementer</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="23"/>
       <source>Parts as single solid</source>
-      <translation type="unfinished">Parts as single solid</translation>
+      <translation>Kompenenter som massive elementer</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="42"/>
@@ -1009,12 +1058,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="49"/>
       <source>Select a feature to align. Press Esc to cancel.</source>
-      <translation type="unfinished">Select a feature to align. Press Esc to cancel.</translation>
+      <translation>Vælg en geometri at rette ind efter. Tryk på Esc-tasten for at annullere.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="56"/>
       <source>Explode Radially</source>
-      <translation type="unfinished">Explode Radially</translation>
+      <translation>Eksploderet radialt</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
@@ -1029,7 +1078,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="14"/>
       <source>Bill of Materials</source>
-      <translation type="unfinished">Bill of Materials</translation>
+      <translation>Stykliste</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="20"/>
@@ -1088,7 +1137,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Forbindelser</translation>
     </message>
@@ -1096,9 +1145,9 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="139"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="168"/>
       <source>Toggle Rigid</source>
-      <translation type="unfinished">Toggle Rigid</translation>
+      <translation>Slå stivhed til/fra</translation>
     </message>
   </context>
   <context>
@@ -1124,7 +1173,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="50"/>
       <source>Add a prescribed motion</source>
-      <translation>Tilføj en fordefineret bevægelse</translation>
+      <translation>Tilføj en forud defineret bevægelse</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="70"/>
@@ -1150,45 +1199,50 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="98"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="105"/>
       <source>Start time of the simulation</source>
-      <translation type="unfinished">Start time of the simulation</translation>
+      <translation>Starttidspunkt for simuleringen</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="112"/>
       <source>End</source>
-      <translation type="unfinished">End</translation>
+      <translation>Slut</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="115"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="122"/>
       <source>End time of the simulation</source>
-      <translation type="unfinished">End time of the simulation</translation>
+      <translation>Sluttidspunkt for simuleringen</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="129"/>
       <source>Step</source>
-      <translation type="unfinished">Step</translation>
+      <translation>Trin</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="139"/>
       <source>Time step</source>
-      <translation type="unfinished">Time step</translation>
+      <translation>Tidsinterval</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="156"/>
       <source>Global error tolerance</source>
-      <translation type="unfinished">Global error tolerance</translation>
+      <translation>Global fejltolerance</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
+      <source>Save the animation as a GIF or video file.</source>
+      <translation>Gem animationen som en GIF- eller videofil.</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="197"/>
       <source>Animation Player</source>
-      <translation type="unfinished">Animation Player</translation>
+      <translation>Animationsafspiller</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="236"/>
       <source>Frames per second</source>
-      <translation type="unfinished">Frames per second</translation>
+      <translation>Billeder pr. sekund</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
@@ -1196,44 +1250,44 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Tolerance</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="166"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="168"/>
       <source>Generate</source>
       <translation>Generer</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="205"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Billede</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="225"/>
       <source>0.00 s</source>
       <translation>0,00 s</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="232"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="278"/>
       <source>Step backward</source>
-      <translation type="unfinished">Step backward</translation>
+      <translation>Gå tilbage</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="252"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="310"/>
       <source>Play backward</source>
-      <translation type="unfinished">Play backward</translation>
+      <translation>Afspil baglæns</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="272"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="348"/>
       <source>Stop</source>
       <translation>Stop</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="292"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="380"/>
       <source>Play forward</source>
-      <translation type="unfinished">Play forward</translation>
+      <translation>Afspil forlæns</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="312"/>
+      <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="412"/>
       <source>Step forward</source>
-      <translation type="unfinished">Step forward</translation>
+      <translation>Gå fremad</translation>
     </message>
   </context>
   <context>
@@ -1246,7 +1300,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="54"/>
       <source>Creates an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation type="unfinished">Creates an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</translation>
+      <translation>Opretter et samlingsobjekt i det aktuelle dokument eller i den aktive samling (om nogen). Begrænses til af en rod-samling pr. fil.</translation>
     </message>
   </context>
   <context>
@@ -1277,8 +1331,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
-      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;1 - Hvis en samling er aktiv : Opretter en fast forbindelse som låser to komponenter sammen, og forhindrer enhver bevægelse eller rotation&lt;/p&gt;&lt;p&gt;2 - Hvis en komponent er aktiv: Positionerer komponentdele ved at matche de valgte koordinatsystemer. Den sidst valgte komponent vil blive flyttet.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint statically locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1394,8 +1448,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="300"/>
-      <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Opretter en tandstangsforbindelse, der forbinder en del med et linært leje (tandstangen) til en del med et drejeled (tandhjulet)&lt;/p&gt;&lt;p&gt;Vælger samme koordinatsystemer det linære leje og for drejeleddet. Udvekslingen definerer bevægelsesforholdet mellem tanstang og tandhhjul.&lt;/p&gt;</translation>
+      <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1427,25 +1481,25 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="429"/>
+      <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Toggle Grounded</source>
-      <translation type="unfinished">Toggle Grounded</translation>
+      <translation>Slå fixering til/fra</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="435"/>
-      <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="437"/>
+      <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</source>
+      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateSimulation</name>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="67"/>
+      <location filename="../../../CommandCreateSimulation.py" line="72"/>
       <source>Simulation</source>
       <translation>Simulation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="72"/>
+      <location filename="../../../CommandCreateSimulation.py" line="77"/>
       <source>Creates a new simulation of the current assembly</source>
       <translation>Opretter en ny simulering af den aktuelle samling</translation>
     </message>
@@ -1453,12 +1507,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateView</name>
     <message>
-      <location filename="../../../CommandCreateView.py" line="54"/>
+      <location filename="../../../CommandCreateView.py" line="53"/>
       <source>Exploded View</source>
       <translation>Eksploderet visning</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="59"/>
+      <location filename="../../../CommandCreateView.py" line="58"/>
       <source>Creates an exploded view of the current assembly</source>
       <translation>Opretter en eksploderet visning af den aktuelle samling</translation>
     </message>
@@ -1466,19 +1520,19 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_Insert</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="65"/>
+      <location filename="../../../CommandInsertLink.py" line="64"/>
       <source>Insert Component</source>
       <translation>Indsæt komponent</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="218"/>
+      <location filename="../../../CommandInsertLink.py" line="222"/>
       <source>Partially loaded</source>
       <translation>Delvist indlæst</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="572"/>
+      <location filename="../../../CommandInsertLink.py" line="615"/>
       <source>Fully load document</source>
-      <translation type="unfinished">Fully load document</translation>
+      <translation>Indlæs hele dokumentet</translation>
     </message>
   </context>
   <context>
@@ -1486,27 +1540,139 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
-      <translation type="unfinished">Solver messages</translation>
+      <translation>Løsningsmeddelelser</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Klik for at vælge disse modstridende forbindelser.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation type="unfinished">Selects these conflicting joints</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Klik for at vælge disse overflødige forbindelser.</translation>
+      <source>Selects these redundant joints</source>
+      <translation type="unfinished">Selects these redundant joints</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
-      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
+      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Selects these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom.
+Selects these unconstrained components.
+Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Klik for at vælge disse fejlbehæftede forbindelser.</translation>
+      <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
+      <source>Selects these malformed joints</source>
+      <translation type="unfinished">Selects these malformed joints</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblyLinkSelectLinked</name>
+    <message>
+      <location filename="../../Commands.cpp" line="101"/>
+      <source>Assembly</source>
+      <translation>Samling</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="102"/>
+      <source>Go to Linked Assembly</source>
+      <translation type="unfinished">Go to Linked Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="103"/>
+      <source>Selects the linked assembly and switches to its original document</source>
+      <translation type="unfinished">Selects the linked assembly and switches to its original document</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectConflictingConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="165"/>
+      <source>Assembly</source>
+      <translation>Samling</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="166"/>
+      <source>Select Conflicting Constraints</source>
+      <translation>Vælg modstridende relationer</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="167"/>
+      <source>Selects conflicting joints in the active assembly</source>
+      <translation>Vælger modstridende forbindelser i den aktive samling</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectRedundantConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="200"/>
+      <source>Assembly</source>
+      <translation>Samling</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="201"/>
+      <source>Select Redundant Constraints</source>
+      <translation>Vælg overflødige relationer</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="202"/>
+      <source>Selects redundant joints in the active assembly</source>
+      <translation>Vælger overflødige forbindelser i den aktive samling</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectMalformedConstraints</name>
+    <message>
+      <location filename="../../Commands.cpp" line="233"/>
+      <source>Assembly</source>
+      <translation>Samling</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="234"/>
+      <source>Select Malformed Constraints</source>
+      <translation>Vælg fejlbehæftede relationer</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="235"/>
+      <source>Selects malformed joints in the active assembly</source>
+      <translation>Vælger fejlbehæftede forbindelser i den aktive samling</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectComponentsWithDoFs</name>
+    <message>
+      <location filename="../../Commands.cpp" line="267"/>
+      <source>Assembly</source>
+      <translation>Samling</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="268"/>
+      <source>Select Components With DoFs</source>
+      <translation type="unfinished">Select Components With DoFs</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="269"/>
+      <source>Selects unconstrained components in the active assembly</source>
+      <translation type="unfinished">Selects unconstrained components in the active assembly</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdAssemblySelectJointsOfComponent</name>
+    <message>
+      <location filename="../../Commands.cpp" line="310"/>
+      <source>Assembly</source>
+      <translation>Samling</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="311"/>
+      <source>Select Component Joints</source>
+      <translation type="unfinished">Select Component Joints</translation>
+    </message>
+    <message>
+      <location filename="../../Commands.cpp" line="312"/>
+      <source>Selects all joints referencing the selected component</source>
+      <translation>Vælger alle forbindelser som refererer til den valgte komponent</translation>
     </message>
   </context>
 </TS>

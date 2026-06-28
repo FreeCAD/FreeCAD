@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
-#define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
+#pragma once
 
 #include <App/PropertyUnits.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -49,6 +48,7 @@ public:
     App::PropertyEnumeration  ArrowStyle;
     App::PropertyLength LineWidth;
     App::PropertyColor  Color;
+    App::PropertyBool   AllowSnap;
 
     static const int STD_STYLE_ISO_ORIENTED     = 0;
     static const int STD_STYLE_ISO_REFERENCING  = 1;
@@ -107,6 +107,3 @@ private:
 };
 
 } // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERDIMENSION_H

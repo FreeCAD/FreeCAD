@@ -24,6 +24,7 @@
  ***************************************************************************/
 
 #include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <Base/Tools.h>
 
 #include "GeoFeatureGroupExtension.h"
@@ -156,8 +157,14 @@ GeoFeatureGroupExtension::addObjects(std::vector<App::DocumentObject*> objects)
             continue;
         }
 
-        // cross CoordinateSystem links are not allowed, so we need to move the whole link group
-        std::vector<App::DocumentObject*> links = getCSRelevantLinks(object);
+        std::vector<App::DocumentObject*> links;
+
+        // Prevent from extracting children of nested groups fixed issue:(#26743, #28830)
+        // As groups manage their own local coordinate systems and children,
+        // so transfer this and remove from the old group. if not a group then get CSRelevantLinks
+        if (!object->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            links = getCSRelevantLinks(object);
+        }
         links.push_back(object);
 
         for (auto obj : links) {
@@ -209,13 +216,13 @@ GeoFeatureGroupExtension::removeObjects(std::vector<App::DocumentObject*> object
 
 void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
 {
+    auto owner = getExtendedObject();
 
     // objects are only allowed in a single GeoFeatureGroup
     if (p == &Group && !Group.testStatus(Property::User3)) {
 
-        if ((!getExtendedObject()->isRestoring()
-             || getExtendedObject()->getDocument()->testStatus(Document::Importing))
-            && !getExtendedObject()->getDocument()->isPerformingTransaction()) {
+        if ((!owner->isRestoring() || owner->getDocument()->testStatus(Document::Importing))
+            && !owner->getDocument()->isPerformingTransaction()) {
 
             bool error = false;
             auto corrected = Group.getValues();
@@ -226,7 +233,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
                 // an error. We need a custom check
                 auto list = obj->getInList();
                 for (auto in : list) {
-                    if (in == getExtendedObject()) {
+                    if (in == owner) {
                         continue;
                     }
                     auto parent = in->getExtensionByType<GeoFeatureGroupExtension>(true);
@@ -245,6 +252,14 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
                 throw Base::RuntimeError("Object can only be in a single GeoFeatureGroup");
             }
         }
+
+        // Skip handling in parent class GroupExtension
+        return;
+    }
+
+    if (p == &owner->Visibility) {
+        // Skip visibility handling in parent class GroupExtension
+        return;
     }
 
     App::GroupExtension::extensionOnChanged(p);
@@ -488,6 +503,10 @@ bool GeoFeatureGroupExtension::isLinkValid(App::Property* prop)
     // no cross CS link for local links.
     auto result = getScopedObjectsFromLink(prop, LinkScope::Local);
     auto group = getGroupOfObject(obj);
+    if (!group && obj->isDerivedFrom<App::DocumentObjectGroup>()) {
+        return true; // this prop comes from Std_Group, scopes also are meaningless
+    }
+
     for (auto link : result) {
         if (getGroupOfObject(link) != group) {
             return false;

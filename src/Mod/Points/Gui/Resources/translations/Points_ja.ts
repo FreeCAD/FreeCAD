@@ -22,18 +22,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="151"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Points</source>
       <translation>点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="151"/>
       <source>Export Points…</source>
       <translation>ポイントをエクスポート…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
-      <location filename="../../Command.cpp" line="155"/>
+      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Exports a point cloud</source>
       <translation>点群をエクスポート</translation>
     </message>
@@ -113,7 +113,7 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="93"/>
       <source>Import points</source>
       <translation>点群をインポート</translation>
     </message>
@@ -262,24 +262,18 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Point formats</source>
       <translation>点群の形式</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="173"/>
-      <source>All Files</source>
-      <translation>すべてのファイル</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Points not at Origin</source>
       <translation>原点にない点群</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="115"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
       <translation>インポートしたポイントのバウンディングボックスに原点が含まれていません。原点に移動しますか？</translation>
     </message>
@@ -305,6 +299,14 @@
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Points</source>
       <translation>点群(&amp;P)</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../../../Init.py" line="35"/>
+      <source>Point formats</source>
+      <translation>点群の形式</translation>
     </message>
   </context>
 </TS>

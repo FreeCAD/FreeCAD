@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef DLG_SHEETCONF_H
-#define DLG_SHEETCONF_H
+#pragma once
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <QDialog>
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // DLG_SHEETCONF_H

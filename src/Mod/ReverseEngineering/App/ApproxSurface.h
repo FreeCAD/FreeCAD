@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REEN_APPROXSURFACE_H
-#define REEN_APPROXSURFACE_H
+#pragma once
 
 #include <Geom_BSplineSurface.hxx>
 #include <TColStd_Array1OfInteger.hxx>
@@ -509,5 +508,3 @@ protected:
 };
 
 }  // namespace Reen
-
-#endif  // REEN_APPROXSURFACE_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ONLINEDOCUMENTATION_H
-#define GUI_ONLINEDOCUMENTATION_H
+#pragma once
 
 #include <functional>
 #include <CXX/Objects.hxx>
@@ -105,5 +104,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_ONLINEDOCUMENTATION_H

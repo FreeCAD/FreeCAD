@@ -4,7 +4,7 @@ General:
   UUID: "52d16497-4e67-45f0-b366-62fdf93dcbe7"
   Name: "simple"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"

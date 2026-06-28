@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft PolarArray tool."""
+
 ## @package task_polararray
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft PolarArray tool.
@@ -34,9 +35,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import WorkingPlane
 import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
 from FreeCAD import Units as U
+from draftguitools.gui_field_locks import InputFieldLockGroup
 from draftutils import params
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.translate import translate
@@ -95,10 +98,18 @@ class TaskPanelPolarArray:
         # -------------------------------------------------------------------
         # Default values for the internal function, and for the task panel interface
         self.center = App.Vector()
+        # TODO: the axis is currently fixed, it should be editable
+        # or selectable from the task panel
+        self.axis = WorkingPlane.get_working_plane(update=False).axis
         self.angle = 360
         self.number = 5
         self.fuse = params.get_param("Draft_array_fuse")
         self.use_link = params.get_param("Draft_array_Link")
+
+        self.locks = InputFieldLockGroup()
+        self.locks.add_field("x", self.form.input_c_x)
+        self.locks.add_field("y", self.form.input_c_y)
+        self.locks.add_field("z", self.form.input_c_z)
 
         self.form.input_c_x.setProperty("rawValue", self.center.x)
         self.form.input_c_y.setProperty("rawValue", self.center.y)
@@ -142,18 +153,21 @@ class TaskPanelPolarArray:
         """Execute when clicking the OK button or Enter key."""
         self.selection = Gui.Selection.getSelection()
 
-        (self.number, self.angle) = self.get_number_angle()
+        self.number, self.angle = self.get_number_angle()
 
+        self.axis = self.get_axis()
         self.center = self.get_center()
 
-        self.valid_input = self.validate_input(self.selection, self.number, self.angle, self.center)
+        self.valid_input = self.validate_input(
+            self.selection, self.number, self.angle, self.axis, self.center
+        )
         if self.valid_input:
             self.create_object()
             # The internal function already displays messages
             # self.print_messages()
             self.finish()
 
-    def validate_input(self, selection, number, angle, center):
+    def validate_input(self, selection, number, angle, axis, center):
         """Check that the input is valid.
 
         Some values may not need to be checked because
@@ -191,7 +205,7 @@ class TaskPanelPolarArray:
             self.angle = -360
 
         # The other arguments are not tested but they should be present.
-        if center:
+        if axis and center:
             pass
 
         self.fuse = self.form.checkbox_fuse.isChecked()
@@ -216,7 +230,7 @@ class TaskPanelPolarArray:
         # This creates the object immediately
         # obj = Draft.make_polar_array(sel_obj,
         #                              self.number, self.angle, self.center,
-        #                              self.use_link)
+        #                              self.axis, self.use_link)
 
         # Instead, we build the commands to execute through the caller
         # of this class, the GuiCommand.
@@ -228,6 +242,7 @@ class TaskPanelPolarArray:
         _cmd += "number=" + str(self.number) + ", "
         _cmd += "angle=" + str(self.angle) + ", "
         _cmd += "center=" + DraftVecUtils.toString(self.center) + ", "
+        _cmd += "axis=" + DraftVecUtils.toString(self.axis) + ", "
         _cmd += "use_link=" + str(self.use_link)
         _cmd += ")"
 
@@ -259,8 +274,26 @@ class TaskPanelPolarArray:
         center = App.Vector(_quantity(c_x_str), _quantity(c_y_str), _quantity(c_z_str))
         return center
 
+    def constrain_point(self, point, last=None):
+        """Apply locked center coordinates to a snapped point."""
+        constrained = App.Vector(point)
+        for key in ("x", "y", "z"):
+            value = self.locks.locked_value(key)
+            if value is not None:
+                setattr(constrained, key, value)
+        return constrained
+
+    def get_axis(self):
+        """Get the axis that will be used for the array. NOT IMPLEMENTED.
+
+        It should consider a second selection of an edge or wire to use
+        as an axis.
+        """
+        return self.axis
+
     def reset_point(self):
         """Reset the center point to the original distance."""
+        self.locks.unlock_all()
         self.form.input_c_x.setProperty("rawValue", 0)
         self.form.input_c_y.setProperty("rawValue", 0)
         self.form.input_c_z.setProperty("rawValue", 0)
@@ -349,23 +382,11 @@ class TaskPanelPolarArray:
         # sby = self.form.spinbox_c_y
         # sbz = self.form.spinbox_c_z
         if dp:
-            if self.mask in ("y", "z"):
-                # sbx.setText(displayExternal(dp.x, None, 'Length'))
+            if not self.locks.is_locked("x"):
                 self.form.input_c_x.setProperty("rawValue", dp.x)
-            else:
-                # sbx.setText(displayExternal(dp.x, None, 'Length'))
-                self.form.input_c_x.setProperty("rawValue", dp.x)
-            if self.mask in ("x", "z"):
-                # sby.setText(displayExternal(dp.y, None, 'Length'))
+            if not self.locks.is_locked("y"):
                 self.form.input_c_y.setProperty("rawValue", dp.y)
-            else:
-                # sby.setText(displayExternal(dp.y, None, 'Length'))
-                self.form.input_c_y.setProperty("rawValue", dp.y)
-            if self.mask in ("x", "y"):
-                # sbz.setText(displayExternal(dp.z, None, 'Length'))
-                self.form.input_c_z.setProperty("rawValue", dp.z)
-            else:
-                # sbz.setText(displayExternal(dp.z, None, 'Length'))
+            if not self.locks.is_locked("z"):
                 self.form.input_c_z.setProperty("rawValue", dp.z)
 
         if plane:

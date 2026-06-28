@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATHGUI_TaskDlgPathCompound_H
-#define PATHGUI_TaskDlgPathCompound_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -90,5 +89,3 @@ protected:
 
 
 }  // namespace PathGui
-
-#endif  // PATHGUI_TASKDLGPATHCOMPOUND_H

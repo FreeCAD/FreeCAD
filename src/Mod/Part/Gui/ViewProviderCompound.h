@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERCOMPOUND_H
-#define PARTGUI_VIEWPROVIDERCOMPOUND_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -59,6 +58,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERCOMPOUND_H

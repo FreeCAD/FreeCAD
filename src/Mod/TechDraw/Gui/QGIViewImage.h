@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -60,4 +59,3 @@ protected:
 };
 
 } // namespace
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H

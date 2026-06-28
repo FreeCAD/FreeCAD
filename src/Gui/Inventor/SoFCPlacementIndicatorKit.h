@@ -21,11 +21,11 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef SOFCPLACEMENTINDICATORKIT_H
-#define SOFCPLACEMENTINDICATORKIT_H
+#pragma once
 
 #include <Inventor/nodekits/SoBaseKit.h>
 
+#include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -93,6 +93,7 @@ public:
     SoSFBool coloredAxis;
     SoSFFloat scaleFactor;
     SoSFFloat axisLength;
+    SoMFString axisLabels;
 
 private:
     void recomputeGeometry();
@@ -106,5 +107,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // SOFCPLACEMENTINDICATORKIT_H

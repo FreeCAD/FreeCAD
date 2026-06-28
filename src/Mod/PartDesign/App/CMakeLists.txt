@@ -1,6 +1,8 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 include_directories(
     SYSTEM
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
+    ${nlohmann_json_INCLUDE_DIRS}
 )
 
 generate_from_py(Body)
@@ -79,6 +81,8 @@ SET(FeaturesSketchBased_SRCS
     FeaturePad.h
     FeaturePocket.cpp
     FeaturePocket.h
+    FeatureRevolved.cpp
+    FeatureRevolved.h
     FeatureRevolution.cpp
     FeatureRevolution.h
     FeatureGroove.cpp
@@ -109,6 +113,8 @@ SET(Module_SRCS
     PreCompiled.h
     Measure.cpp
     Measure.h
+    PartDesignParameter.cpp
+    PartDesignParameter.h
 )
 SOURCE_GROUP("Module" FILES ${Module_SRCS})
 

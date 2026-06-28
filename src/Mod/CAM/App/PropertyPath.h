@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYPATH_H
-#define PROPERTYPATH_H
+#pragma once
 
 #include <App/Property.h>
 
@@ -73,6 +72,3 @@ private:
 
 
 }  // namespace Path
-
-
-#endif  // PROPERTYPATH_H

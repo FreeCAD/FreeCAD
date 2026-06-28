@@ -391,9 +391,7 @@ PyObject* SheetPy::setStyle(PyObject* args)
 
     if (strcmp(options, "replace") == 0) {
         Range rangeIter(cell);
-        do {
-            getSheetPtr()->setStyle(*rangeIter, style);
-        } while (rangeIter.next());
+        getSheetPtr()->setStyle(rangeIter, style);
     }
     else if (strcmp(options, "add") == 0) {
         Range rangeIter(cell);
@@ -522,9 +520,7 @@ PyObject* SheetPy::setDisplayUnit(PyObject* args)
     try {
         Range rangeIter(cell);
 
-        do {
-            getSheetPtr()->setDisplayUnit(*rangeIter, value);
-        } while (rangeIter.next());
+        getSheetPtr()->setDisplayUnit(rangeIter, value);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -693,9 +689,7 @@ PyObject* SheetPy::setAlignment(PyObject* args)
     if (strcmp(options, "replace") == 0) {
         Range rangeIter(cell);
 
-        do {
-            getSheetPtr()->setAlignment(*rangeIter, alignment);
-        } while (rangeIter.next());
+        getSheetPtr()->setAlignment(rangeIter, alignment);
     }
     else if (strcmp(options, "keep") == 0) {
         Range rangeIter(cell);
@@ -823,8 +817,31 @@ PyObject* SheetPy::setForeground(PyObject* args)
         decodeColor(value, c);
 
         Range rangeIter(range);
+        getSheetPtr()->setForeground(rangeIter, c);
+        Py_Return;
+    }
+    catch (const Base::TypeError& e) {
+        PyErr_SetString(PyExc_TypeError, e.what());
+        return nullptr;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return nullptr;
+    }
+}
+
+PyObject* SheetPy::clearForeground(PyObject* args)
+{
+    try {
+        const char* range;
+
+        if (!PyArg_ParseTuple(args, "s:clearForeground", &range)) {
+            return nullptr;
+        }
+
+        Range rangeIter(range);
         do {
-            getSheetPtr()->setForeground(*rangeIter, c);
+            getSheetPtr()->clearForeground(*rangeIter);
         } while (rangeIter.next());
         Py_Return;
     }
@@ -887,8 +904,32 @@ PyObject* SheetPy::setBackground(PyObject* args)
         decodeColor(value, c);
         Range rangeIter(strAddress);
 
+        getSheetPtr()->setBackground(rangeIter, c);
+        Py_Return;
+    }
+    catch (const Base::TypeError& e) {
+        PyErr_SetString(PyExc_TypeError, e.what());
+        return nullptr;
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return nullptr;
+    }
+}
+
+PyObject* SheetPy::clearBackground(PyObject* args)
+{
+    try {
+        const char* strAddress;
+
+        if (!PyArg_ParseTuple(args, "s:clearBackground", &strAddress)) {
+            return nullptr;
+        }
+
+        Range rangeIter(strAddress);
+
         do {
-            getSheetPtr()->setBackground(*rangeIter, c);
+            getSheetPtr()->clearBackground(*rangeIter);
         } while (rangeIter.next());
         Py_Return;
     }
@@ -1102,6 +1143,9 @@ PyObject* SheetPy::getUsedRange(PyObject* args)
         return nullptr;
     }
     auto usedRange = getSheetPtr()->getCells()->getUsedRange();
+    if (!std::get<0>(usedRange).isValid()) {
+        Py_Return;
+    }
     Py::Tuple pyTuple(2);
     pyTuple[0] = Py::String(std::get<0>(usedRange).toString());
     pyTuple[1] = Py::String(std::get<1>(usedRange).toString());

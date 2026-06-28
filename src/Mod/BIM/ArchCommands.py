@@ -57,6 +57,24 @@ else:
 # module functions ###############################################
 
 
+def is_type_or_link(obj, type_name):
+    """Checks if the given object or its linked object is of the specified type.
+
+    Parameters
+    ----------
+    obj: <App::DocumentObject>
+        The object to check.
+    type_name: str
+        The type to check against (e.g., 'Window', 'Wall').
+    """
+    if not obj:
+        return False
+
+    target = obj.getLinkedObject() if hasattr(obj, "getLinkedObject") else obj
+
+    return Draft.getType(target) == type_name
+
+
 def getStringList(objects):
     """getStringList(objects): returns a string defining a list
     of objects"""
@@ -136,12 +154,10 @@ def addComponents(objectsList, host):
         x = getattr(host, "Axes", [])
         for o in objectsList:
             if hasattr(o, "Shape"):
-                if Draft.getType(o) == "Window":
-                    if hasattr(o, "Hosts"):
-                        if not host in o.Hosts:
-                            g = o.Hosts
-                            g.append(host)
-                            o.Hosts = g
+                if is_type_or_link(o, "Window"):
+                    ensure_link_overrides(o)
+                    if hasattr(o, "Hosts") and host not in o.Hosts:
+                        o.Hosts += [host]
                 elif o in outList:
                     FreeCAD.Console.PrintWarning(
                         translate(
@@ -206,12 +222,10 @@ def removeComponents(objectsList, host=None):
                 host.Axes = a
             s = host.Subtractions
             for o in objectsList:
-                if Draft.getType(o) == "Window":
-                    if hasattr(o, "Hosts"):
-                        if not host in o.Hosts:
-                            g = o.Hosts
-                            g.append(host)
-                            o.Hosts = g
+                if is_type_or_link(o, "Window"):
+                    ensure_link_overrides(o)
+                    if hasattr(o, "Hosts") and host not in o.Hosts:
+                        o.Hosts += [host]
                 elif not o in s:
                     s.append(o)
                     if FreeCAD.GuiUp:
@@ -281,8 +295,13 @@ def removeComponents(objectsList, host=None):
                     if o in a:
                         a.remove(o)
                         h.Objects = a
-            if hasattr(o, "Hosts") and Draft.getType(o) == "Window":
+            if hasattr(o, "Hosts") and is_type_or_link(o, "Window"):
+                ensure_link_overrides(o)
+                # Ensure the hosts are recomputed upon window removal
+                old_hosts = o.Hosts[:]
                 o.Hosts = []
+                for old_host in old_hosts:
+                    old_host.touch()
 
 
 def makeComponent(baseobj=None, name=None, delete=False):
@@ -540,21 +559,22 @@ def getCutVolume(cutplane, shapes, clip=False, depth=None):
         cutface = Part.Face(cutface)
         cutnormal = DraftVecUtils.scaleTo(ax, wm)
         cutvolume = cutface.extrude(cutnormal)
-        cutnormal = cutnormal.negative()
-        invcutvolume = cutface.extrude(cutnormal)
-        if clip:
-            extrudedplane = p.extrude(cutnormal)
-            bordervolume = invcutvolume.cut(extrudedplane)
-            cutvolume = cutvolume.fuse(bordervolume)
-            cutvolume = cutvolume.removeSplitter()
-            invcutvolume = extrudedplane
-            cutface = p
+        invcutvolume = cutface.extrude(-cutnormal)
         if depth:
-            depthnormal = DraftVecUtils.scaleTo(cutnormal, depth)
+            depthnormal = DraftVecUtils.scaleTo(-cutnormal, depth)
             depthvolume = cutface.extrude(depthnormal)
             depthclipvolume = invcutvolume.cut(depthvolume)
             cutvolume = cutvolume.fuse(depthclipvolume)
+        if clip:
+            clipface = cutface.cut(p)
+            clipface.translate(-cutnormal)
+            clipvolume = clipface.extrude(2 * cutnormal)
+            cutvolume = cutvolume.fuse(clipvolume)
+            invcutvolume = invcutvolume.fuse(clipvolume)
+            cutface = p
+        if depth or clip:
             cutvolume = cutvolume.removeSplitter()
+            invcutvolume = invcutvolume.removeSplitter()
         return cutface, cutvolume, invcutvolume
 
 
@@ -697,7 +717,7 @@ def removeCurves(shape, dae=False, tolerance=5):
 
 
 def removeShape(objs, mark=True):
-    """removeShape(objs,mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
+    """removeShape(objs, mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
     the inner shape, keeping its length, width and height as parameters. If mark is True, objects that cannot
     be processed by this function will become red."""
     import DraftGeomUtils
@@ -708,32 +728,32 @@ def removeShape(objs, mark=True):
         if DraftGeomUtils.isCubic(obj.Shape):
             dims = DraftGeomUtils.getCubicDimensions(obj.Shape)
             if dims:
+                place, length, width, height = dims
                 name = obj.Name
                 tp = Draft.getType(obj)
-                print(tp)
                 if tp == "Structure":
-                    FreeCAD.ActiveDocument.removeObject(name)
-                    import ArchStructure
-
-                    str = ArchStructure.makeStructure(
-                        length=dims[1], width=dims[2], height=dims[3], name=name
-                    )
-                    str.Placement = dims[0]
-                elif tp == "Wall":
-                    FreeCAD.ActiveDocument.removeObject(name)
                     import Arch
 
-                    length = dims[1]
-                    width = dims[2]
-                    v1 = Vector(length / 2, 0, 0)
-                    v2 = v1.negative()
-                    v1 = dims[0].multVec(v1)
-                    v2 = dims[0].multVec(v2)
-                    line = Draft.makeLine(v1, v2)
-                    Arch.makeWall(line, width=width, height=dims[3], name=name)
-        else:
-            if mark:
-                obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
+                    stru = Arch.makeStructure(length=length, width=width, height=height, name=name)
+                    if height <= length:
+                        # Beam
+                        place.move(place.Rotation.multVec(Vector(-length / 2, 0, height / 2)))
+                    stru.Placement = place
+                    Draft.format_object(stru, obj)
+                    FreeCAD.ActiveDocument.removeObject(name)
+                elif tp == "Wall":
+                    import Arch
+
+                    place.move(place.Rotation.multVec(Vector(-length / 2, 0, 0)))
+                    line = Draft.makeLine(Vector(0, 0, 0), Vector(length, 0, 0))
+                    line.Placement = place
+                    wall = Arch.makeWall(
+                        line, width=width, height=height, align="Center", name=name
+                    )
+                    Draft.format_object(wall, obj)
+                    FreeCAD.ActiveDocument.removeObject(name)
+        elif FreeCAD.GuiUp and mark:
+            obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 1.0)
 
 
 def mergeCells(objectslist):
@@ -1727,3 +1747,356 @@ def makeIfcSpreadsheet(archobj=None):
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
     else:
         return ifc_spreadsheet
+
+
+def override_link_properties(link_obj, prop_names):
+    """
+    Injects local properties into a Link object to 'shadow' its source's properties.
+
+    By creating a local property, the Link can then to hold instance-specific data (like a Window's
+    'Hosts' list) without modifying the source and without triggering the heavy CopyOnChange
+    deep-copy mechanism of App::Link.
+
+    This function must be called before the Link's first recompute, which is when the core merges
+    the source's properties into the Link. This is typically achieved by calling it from within the
+    `appLinkExecute` method of the source object, or by forcefully calling it via
+    `ensure_link_overrides` if the user interacts with an unrecomputed Link.
+
+    See: https://wiki.freecad.org/Std_LinkMake#Copy_on_Change
+
+    Parameters
+    ----------
+    link_obj : <App::DocumentObject>
+        The newly created Link object (`App::Link`) that will receive the overridden properties.
+    prop_names : list of str
+        A list of property names (e.g., `["Hosts"]`) to extract from the source object and
+        recreate locally on the Link object.
+    """
+    if not link_obj or not prop_names:
+        return
+
+    # Check if we have a linked object
+    source_obj = link_obj.LinkedObject
+    if not source_obj:
+        return
+
+    for prop_name in prop_names:
+        # If the property is not in PropertiesList, the Link has not yet merged the source's
+        # properties (i.e. we're running inside the `appLinkExecute` hook), or the property
+        # genuinely doesn't exist.
+        if prop_name not in link_obj.PropertiesList:
+
+            prop_type = source_obj.getTypeIdOfProperty(prop_name)
+            if not prop_type:  # Property doesn't exist on the source
+                continue
+
+            prop_group = source_obj.getGroupOfProperty(prop_name)
+            prop_doc = source_obj.getDocumentationOfProperty(prop_name)
+
+            # Inject the shadow property locally on the Link
+            link_obj.addProperty(prop_type, prop_name, prop_group, prop_doc, locked=True)
+
+            # Initialize with the source's current value when the link is created. Afterwards, the
+            # user can change the Link's property independently, and it won't affect the source or
+            # trigger a deep copy.
+            prop_value = getattr(source_obj, prop_name)
+            setattr(link_obj, prop_name, prop_value)
+
+
+def ensure_link_overrides(obj):
+    """
+    Ensures that a Link object has its required override properties set up. This acts as a safeguard
+    if a user modifies a Link before it has been recomputed for the first time (which normally
+    triggers appLinkExecute).
+    """
+    if obj.isDerivedFrom("App::Link"):
+        source = obj.LinkedObject
+        if source and hasattr(source, "Proxy") and hasattr(source.Proxy, "LinkOverrideProperties"):
+            # Force the override injection on the spot
+            override_link_properties(obj, source.Proxy.LinkOverrideProperties)
+
+
+def resolve_pd_object(obj):
+    """
+    Normalizes a PartDesign feature selection to its parent Body.
+
+    Selections and links on a PartDesign feature (e.g. a Pad or Pocket) point to the feature, not
+    its Body. Returns the parent Body if ``obj`` belongs to one, otherwise ``obj`` itself.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The selected object to normalize.
+
+    Returns
+    -------
+    App::DocumentObject
+        The parent PartDesign::Body if ``obj`` is a member of one, otherwise ``obj`` unchanged.
+    """
+    body = getattr(obj, "_Body", None)
+    if body is not None:
+        return body
+    return obj
+
+
+def pickMainFaceName(shape, view_vector=None):
+    """
+    Returns the name of the best candidate planar face (e.g. ``"Face1"``) for a given shape.
+
+    Filters the shape's faces down to the largest planar ones (within 5% of the largest face's area)
+    and, if a view direction is supplied, picks the one most opposed to it.
+
+    Parameters
+    ----------
+    shape : Part.Shape or App::DocumentObject
+        The shape to scan. If a document object is passed, its ``Shape`` attribute is used.
+    view_vector : FreeCAD.Vector, optional
+        A camera view direction, as an interactive face selection aid. When given, the returned face
+        is the one whose normal most directly opposes this vector. That is, the one facing the
+        camera.
+
+    Returns
+    -------
+    str or None
+        The face name (e.g. ``"Face1"``), or ``None`` if the shape has no planar faces.
+    """
+    if hasattr(shape, "Shape"):
+        shape = shape.Shape
+
+    if not hasattr(shape, "Faces") or not shape.Faces:
+        return None
+
+    # Gather face data: (name, object, area)
+    faces_data = []
+    for index, face in enumerate(shape.Faces):
+        # Check for planarity
+        if face.findPlane() is None:
+            continue
+        faces_data.append((f"Face{index+1}", face, face.Area))
+
+    # Filter out all faces that are at least 5% smaller than the largest one found on the shape
+    if not faces_data:
+        return None
+
+    faces_data.sort(key=lambda x: x[2], reverse=True)
+    max_area = faces_data[0][2]
+    candidates = [x for x in faces_data if x[2] >= max_area * 0.95]
+
+    if not candidates:
+        return None
+
+    # If the camera view direction is given, return the face looking into it
+    if view_vector:
+        # Sort is ascending, so the most negative (most camera-facing) face ends up first
+        candidates.sort(key=lambda candidate: candidate[1].normalAt(0, 0).dot(view_vector))
+        return candidates[0][0]
+
+    # Default: return the first large face found
+    return candidates[0][0]
+
+
+def resolveFace(face_ref, subname=None):
+    """
+    Resolves a face reference to a planar ``Part.Face``.
+
+    Accepts either a plain document object or a ``(object, [subname])`` tuple as produced by a
+    ``LinkSub`` property. Resolution order: named sub-element, bare face shape, main
+    face of a solid, face built from closed wires.
+
+    Parameters
+    ----------
+    face_ref : App::DocumentObject or tuple
+        The reference to resolve. Either a plain document object or a ``(object, [subname])``
+        ``LinkSub`` tuple. If the tuple's sub-element list contains more than one name, only
+        the first is used; the remainder are ignored with a warning.
+    subname : str, optional
+        Name of the sub-element to extract (e.g. ``"Face3"``). Ignored if ``face_ref`` is a
+        tuple, in which case the subname is taken from the tuple instead.
+
+    Returns
+    -------
+    Part.Face or None
+        The resolved planar face, or ``None`` if no planar face could be determined.
+    """
+    if isinstance(face_ref, tuple):
+        obj, subnames = face_ref
+        if subnames and len(subnames) > 1:
+            FreeCAD.Console.PrintWarning(
+                f"ArchCommands.resolveFace: received {len(subnames)} sub-elements, "
+                f"only '{subnames[0]}' will be used.\n"
+            )
+        subname = subnames[0] if subnames else None
+        face_ref = obj
+
+    face = None
+    if subname:
+        try:
+            candidate = face_ref.getSubObject(subname)
+            if candidate.ShapeType == "Face":
+                face = candidate
+        except Exception as e:
+            FreeCAD.Console.PrintWarning(
+                f"ArchCommands.resolveFace: unable to retrieve '{subname}' from "
+                f"'{getattr(face_ref, 'Label', face_ref)}': {e}\n"
+            )
+
+    if not face and hasattr(face_ref, "Shape"):
+        if not face_ref.Shape or face_ref.Shape.isNull():
+            pass
+        elif face_ref.Shape.ShapeType == "Face":
+            face = face_ref.Shape  # Return face directly
+        elif face_ref.Shape.Solids:
+            best_face_name = pickMainFaceName(face_ref.Shape)
+            if best_face_name:
+                face = face_ref.getSubObject(best_face_name)  # Return the best face from the solid
+        elif face_ref.Shape.Wires:
+            # Attempt return a face created from any available wires
+            try:
+                closed_wires = [wire for wire in face_ref.Shape.Wires if wire.isClosed()]
+                if closed_wires:
+                    face = makeFace(closed_wires)
+                else:
+                    FreeCAD.Console.PrintWarning(translate("Arch", "No closed wires found.") + "\n")
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(
+                    f"ArchCommands.resolveFace: Unable to create face from wires: {e}\n"
+                )
+
+    if face and face.findPlane() is None:
+        FreeCAD.Console.PrintWarning(
+            f"ArchCommands.resolveFace: face on "
+            f"'{getattr(face_ref, 'Label', face_ref)}' is not planar. Non-planar faces "
+            f"are not supported at this time.\n"
+        )
+        return None
+    return face
+
+
+def getFaceFrame(face, reference_direction=None):
+    """
+    Given a planar face, creates a stable frame (U, V, Normal) anchored at the face's center.
+
+    Stable in this context means that one same face always produces the same axes, regardless of how
+    it was constructed. The goal is to avoid unexpected flips or rotations when editing the source
+    geometry.
+
+    Parameters
+    ----------
+    face : Part.Face
+        The face whose local frame is required.
+    reference_direction : FreeCAD.Vector or None
+        A previously stored U direction. When provided, U is aligned with it instead of being
+        derived from the face geometry. Falls back to the longest-edge heuristic if the reference
+        is parallel to the face normal.
+
+    Returns
+    -------
+    tuple[FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector, FreeCAD.Vector]
+        ``(u_vec, v_vec, normal, center_point)``. The U and V tangents and the face normal are unit
+        vectors, and the face center is a world-space position.
+
+    Notes
+    -----
+    Without a ``reference_direction``, U is derived from the longest edge of the face's outer
+    boundary, so the tiling grid aligns with the substrate geometry rather than world axes (e.g.
+    a rectangular slab gets a grid parallel to its long side).
+
+    When a ``reference_direction`` is supplied (typically from a stored property), it is projected
+    onto the face plane to remove any normal component. This keeps U stable across recomputes even
+    when the base geometry changes length or orientation, avoiding discontinuous 90° jumps.
+
+    If ``face.Orientation == "Reversed"``, the frame is flipped so N points outward.
+    """
+    # Build the normal
+    center_uv = face.Surface.parameter(face.BoundBox.Center)
+    tan_u, tan_v = face.Surface.tangent(*center_uv)
+    normal = tan_u.cross(tan_v).normalize()
+
+    # Build the U direction vector
+    u_vec = _derive_u_from_reference(reference_direction, normal)
+    if u_vec is None:
+        u_vec = _derive_u_from_longest_edge(face, normal)
+
+    # Build the (U, V) basis in the face plane
+    u_vec.normalize()
+    v_vec = normal.cross(u_vec).normalize()
+    u_vec = v_vec.cross(normal).normalize()
+
+    # Ensure the normal points outward from the surface, otherwise reverse the frame
+    if face.Orientation == "Reversed":
+        normal = -normal
+        v_vec = normal.cross(u_vec).normalize()
+        u_vec = v_vec.cross(normal).normalize()
+
+    center_point = face.Surface.value(*center_uv)
+    return u_vec, v_vec, normal, center_point
+
+
+def _derive_u_from_reference(reference_direction, normal):
+    """Projects a stored reference direction onto the face plane.
+
+    Returns a non-normalized U vector, or None if the projection is degenerate (reference nearly
+    parallel to normal, or zero-length input).
+    """
+    if reference_direction is None:
+        return None
+    import Part
+
+    ref = FreeCAD.Vector(reference_direction)
+    if ref.Length < Part.Precision.confusion():
+        return None
+    # Remove the normal component to project onto the face plane.
+    projected = ref - normal * ref.dot(normal)
+    if projected.Length < Part.Precision.confusion():
+        return None
+    return projected
+
+
+def _derive_u_from_longest_edge(face, normal):
+    """Derives U from the longest boundary edge, with a stabilization flip.
+
+    This is the fallback used when no stored reference direction is available.
+    """
+    edges = face.OuterWire.Edges
+    longest = max(edges, key=lambda edge: edge.Length)
+    mid_param = (longest.FirstParameter + longest.LastParameter) / 2
+    u_vec = longest.tangentAt(mid_param)
+
+    # Stabilise U: flip it if its dominant world-axis component is negative.
+    world_axes = [
+        FreeCAD.Vector(1, 0, 0),
+        FreeCAD.Vector(0, 1, 0),
+        FreeCAD.Vector(0, 0, 1),
+    ]
+    dots = [u_vec.dot(ax) for ax in world_axes]
+    abs_dots = [abs(d) for d in dots]
+    max_abs = max(abs_dots)
+    if max_abs > 0.1:
+        dominant_dot = dots[abs_dots.index(max_abs)]
+        if dominant_dot < 0:
+            u_vec.multiply(-1)
+    return u_vec
+
+
+def read_pat_pattern_names(filename):
+    """Iterate over the pattern names declared in a PAT file.
+
+    PAT files declare each pattern with a header line of the form ``*Name, Description``.
+    Missing or unreadable files produce no names.
+    """
+    import os
+
+    if not filename or not os.path.exists(filename):
+        return
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.startswith("*"):
+                    yield line.split(",", 1)[0][1:].strip()
+    except Exception as e:
+        FreeCAD.Console.PrintWarning(f"Arch: could not read pattern file {filename}: {e}\n")
+
+
+def first_pat_pattern_name(filename):
+    """Return the first pattern name in a PAT file, or ``""`` if none is found."""
+    return next(read_pat_pattern_names(filename), "")

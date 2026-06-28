@@ -42,6 +42,13 @@ const Handle(Standard_Type) Type_JtNode_Shape_Base              = STANDARD_TYPE(
 const Handle(Standard_Type) Type_JtNode_Shape_Vertex            = STANDARD_TYPE(JtNode_Shape_Vertex);
 const Handle(Standard_Type) Type_JtNode_Shape_TriStripSet       = STANDARD_TYPE(JtNode_Shape_TriStripSet);
 // clang-format on
+
+const Handle(Standard_Type) Type_JtElement_ShapeLOD_PolygonSet = STANDARD_TYPE(
+    JtElement_ShapeLOD_PolygonSet
+);
+const Handle(Standard_Type) Type_JtElement_ShapeLOD_PolylineSet = STANDARD_TYPE(
+    JtElement_ShapeLOD_PolylineSet
+);
 }  // namespace
 
 TKJtReader::TKJtReader()
@@ -52,11 +59,14 @@ void TKJtReader::clear()
 {
     result.str(std::string());
     result.clear();
+    myShapeCount = 0;
+    myFileName.clear();
 }
 
 void TKJtReader::open(const std::string& filename)
 {
     clear();
+    myFileName = filename;
 
     Base::FileInfo file(filename);
     jtDir = TCollection_ExtendedString(TCollection_AsciiString((file.dirPath() + '/').c_str()));
@@ -68,7 +78,6 @@ void TKJtReader::open(const std::string& filename)
         Handle(JtNode_Partition) aNode = aModel->Init();
         if (!aNode.IsNull()) {
             rootNode = aNode;
-
             builder.addHeader();
             builder.beginSeparator();
             Base::ShapeHintsItem shapeHints;
@@ -85,6 +94,16 @@ void TKJtReader::open(const std::string& filename)
 std::string TKJtReader::getOutput() const
 {
     return result.str();
+}
+
+int TKJtReader::shapeCount() const
+{
+    return myShapeCount;
+}
+
+std::string TKJtReader::fileName() const
+{
+    return myFileName;
 }
 
 void TKJtReader::readMaterialAttribute(const Handle(JtAttribute_Material) & aMaterial)
@@ -147,11 +166,22 @@ void TKJtReader::readShapeVertex(const Handle(JtNode_Shape_Vertex) & aShape)
             anObject = aLateLoaded[index]->DefferedObject();
         }
         if (!anObject.IsNull()) {
-            Handle(JtElement_ShapeLOD_TriStripSet) aLOD = Handle(
-                JtElement_ShapeLOD_TriStripSet
-            )::DownCast(anObject);
+            Handle(JtElement_ShapeLOD_TriStripSet)
+                aLOD = Handle(JtElement_ShapeLOD_TriStripSet)::DownCast(anObject);
             if (!aLOD.IsNull()) {
                 getTriangleStripSet(aLOD);
+                continue;
+            }
+            if (anObject->IsKind(Type_JtElement_ShapeLOD_PolygonSet)) {
+                Handle(JtElement_ShapeLOD_PolygonSet)
+                    aPolyLOD = Handle(JtElement_ShapeLOD_PolygonSet)::DownCast(anObject);
+                getPolygonSet(aPolyLOD);
+                continue;
+            }
+            if (anObject->IsKind(Type_JtElement_ShapeLOD_PolylineSet)) {
+                Handle(JtElement_ShapeLOD_PolylineSet)
+                    aLineLOD = Handle(JtElement_ShapeLOD_PolylineSet)::DownCast(anObject);
+                getPolylineSet(aLineLOD);
             }
         }
     }
@@ -178,6 +208,53 @@ void TKJtReader::getTriangleStripSet(const Handle(JtElement_ShapeLOD_TriStripSet
     // NOLINTEND
     builder.addNode(Base::Coordinate3Item {points});
     builder.addNode(Base::FaceSetItem {faces});
+    ++myShapeCount;
+}
+
+void TKJtReader::getPolygonSet(const Handle(JtElement_ShapeLOD_PolygonSet) & aLOD)
+{
+    // Polygon set: vertices are already flat triangles via the same Indices/Vertices layout
+    // as TriStripSet — treat identically (indices are already triangle-indexed after decode).
+    const int pointsPerFace = 3;
+    std::vector<Base::Vector3f> points;
+    std::vector<int> faces;
+    const JtElement_ShapeLOD_Vertex::VertexData& vertices = aLOD->Vertices();
+    const JtElement_ShapeLOD_Vertex::IndicesVec& indices = aLOD->Indices();
+    float* data = vertices.Data();
+    // NOLINTBEGIN
+    for (int index = 0; index < indices.Count(); index += 3) {
+        int coordIndex = indices[index] * 3;
+        points.emplace_back(data[coordIndex], data[coordIndex + 1], data[coordIndex + 2]);
+        coordIndex = indices[index + 1] * 3;
+        points.emplace_back(data[coordIndex], data[coordIndex + 1], data[coordIndex + 2]);
+        coordIndex = indices[index + 2] * 3;
+        points.emplace_back(data[coordIndex], data[coordIndex + 1], data[coordIndex + 2]);
+        faces.push_back(pointsPerFace);
+    }
+    // NOLINTEND
+    builder.addNode(Base::Coordinate3Item {points});
+    builder.addNode(Base::FaceSetItem {faces});
+    ++myShapeCount;
+}
+
+void TKJtReader::getPolylineSet(const Handle(JtElement_ShapeLOD_PolylineSet) & aLOD)
+{
+    // Polyline set: emit each indexed vertex as a point in a line set.
+    std::vector<Base::Vector3f> points;
+    const JtElement_ShapeLOD_Vertex::VertexData& vertices = aLOD->Vertices();
+    const JtElement_ShapeLOD_Vertex::IndicesVec& indices = aLOD->Indices();
+    float* data = vertices.Data();
+    // NOLINTBEGIN
+    for (int index = 0; index < indices.Count(); ++index) {
+        int coordIndex = indices[index] * 3;
+        points.emplace_back(data[coordIndex], data[coordIndex + 1], data[coordIndex + 2]);
+    }
+    // NOLINTEND
+    if (!points.empty()) {
+        builder.addNode(Base::Coordinate3Item {points});
+        builder.addNode(Base::LineSetItem {});
+        ++myShapeCount;
+    }
 }
 
 void TKJtReader::readPartition(const Handle(JtNode_Partition) & aPart)
@@ -197,7 +274,7 @@ void TKJtReader::readPartition(const Handle(JtNode_Partition) & aPart)
 void TKJtReader::readGroup(const Handle(JtNode_Group) & aGroup)
 {
     if (!transformations.empty()) {
-        builder.addNode(Base::TransformItem {transformations.back()});
+        builder.addNode(Base::TransformItem(transformations.back()));
         transformations.pop_back();
     }
     const auto& aChildren = aGroup->Children();
@@ -225,9 +302,8 @@ void TKJtReader::readAttributes(const JtData_Object::VectorOfObjects& attr)
     for (std::size_t aAttrIdx = 0; aAttrIdx < attr.Count(); ++aAttrIdx) {
         Handle(JtData_Object) anAttr = attr[aAttrIdx];
         if (anAttr->IsKind(Type_JtAttribute_GeometricTransform)) {
-            Handle(JtAttribute_GeometricTransform) aTransform = Handle(
-                JtAttribute_GeometricTransform
-            )::DownCast(anAttr);
+            Handle(JtAttribute_GeometricTransform)
+                aTransform = Handle(JtAttribute_GeometricTransform)::DownCast(anAttr);
             readTransformAttribute(aTransform);
         }
         else if (anAttr->IsKind(Type_JtAttribute_Material)) {

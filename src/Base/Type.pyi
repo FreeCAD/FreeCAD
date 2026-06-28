@@ -11,12 +11,10 @@ from typing import List, Final
     TwinPointer="BaseType",
     Delete=True,
 )
-@forward_declarations(
-    """
+@forward_declarations("""
 namespace Base {
     using BaseType = Type;
-}"""
-)
+}""")
 class Type(PyObjectBase):
     """
     BaseTypePy class.

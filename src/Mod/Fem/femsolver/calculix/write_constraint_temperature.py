@@ -80,13 +80,14 @@ def write_constraint(f, femobj, temp_obj, ccxwriter):
             )
         )
         f.write("\n")
-    elif temp_obj.ConstraintType == "CFlux":
+    elif temp_obj.ConstraintType == "Flux":
         f.write(f"*CFLUX{temp_amplitude}\n")
         # CFLUX has to be specified in mW
         f.write(
             "{},11,{}\n".format(
                 temp_obj.Name,
-                FreeCAD.Units.Quantity(temp_obj.CFlux.getValueAs("mW")) / NumberOfNodes,
+                FreeCAD.Units.Quantity(temp_obj.ConcentratedHeatFlux.getValueAs("mW"))
+                / NumberOfNodes,
             )
         )
         f.write("\n")

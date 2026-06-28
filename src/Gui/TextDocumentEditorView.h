@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TEXTDOCUMENTEDITORVIEW_H
-#define GUI_TEXTDOCUMENTEDITORVIEW_H
+#pragma once
 
 #include <QPlainTextEdit>
 
@@ -45,7 +44,7 @@ public:
     {
         return "TextDocumentEditorView";
     }
-    bool onMsg(const char* msg, const char** output) override;
+    bool onMsg(const char* msg) override;
     bool onHasMsg(const char* msg) const override;
 
     QPlainTextEdit* getEditor() const
@@ -81,5 +80,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif

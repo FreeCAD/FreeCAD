@@ -80,8 +80,8 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
 %%
 
 
-input:     exp                                  { ScanResult = $1; valueExpression = true;                                        }
-     |     unit_exp                             { ScanResult = $1; unitExpression = true;                                         }
+input:     exp                                  { ScanResult = std::unique_ptr<Expression>($1); valueExpression = true;                                        }
+     |     unit_exp                             { ScanResult = std::unique_ptr<Expression>($1); unitExpression = true;                                         }
      ;
 
 unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }

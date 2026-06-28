@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemResultObject_H
-#define Fem_FemResultObject_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -66,6 +65,3 @@ using FemResultObjectPython = App::FeaturePythonT<FemResultObject>;
 
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemResultObject_H

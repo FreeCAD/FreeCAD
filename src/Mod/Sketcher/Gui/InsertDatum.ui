@@ -65,6 +65,24 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="layoutType">
+     <item>
+      <widget class="QRadioButton" name="rbRadius">
+       <property name="text">
+        <string>Radius</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="rbDiameter">
+       <property name="text">
+        <string>Diameter</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QCheckBox" name="cbDriving">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">

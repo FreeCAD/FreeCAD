@@ -46,8 +46,7 @@ rm -rf ${conda_env}/lib/cmake/
 find . -name "*.h" -type f -delete
 find . -name "*.cmake" -type f -delete
 
-python_version=$(${conda_env}/bin/python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
-version_name="FreeCAD_${BUILD_TAG}-Linux-$(uname -m)-${python_version}"
+version_name="FreeCAD_${BUILD_TAG}-Linux-$(uname -m)"
 
 echo -e "\################"
 echo -e "version_name:  ${version_name}"
@@ -55,6 +54,12 @@ echo -e "################"
 
 pixi list -e default > AppDir/packages.txt
 sed -i "1s/.*/\nLIST OF PACKAGES:/" AppDir/packages.txt
+
+echo "Running FreeCAD command-line smoke test..."
+if ! "${conda_env}/bin/freecadcmd" --safe-mode --version; then
+    echo "FreeCAD command-line smoke test failed; the Linux bundle cannot start."
+    exit 1
+fi
 
 curl -LO https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$(uname -m).AppImage
 chmod a+x appimagetool-$(uname -m).AppImage

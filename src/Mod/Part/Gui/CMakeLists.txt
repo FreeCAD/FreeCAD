@@ -142,6 +142,8 @@ SET(PartGui_SRCS
     PatternParametersWidget.ui
     Resources/Part.qrc
     PreCompiled.h
+    PreviewUpdateScheduler.cpp
+    PreviewUpdateScheduler.h
     PropertyEnumAttacherItem.cpp
     PropertyEnumAttacherItem.h
     SoFCShapeObject.cpp

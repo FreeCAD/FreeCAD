@@ -40,6 +40,21 @@ SET(MaterialLib_Files
     Resources/Materials/Standard/Metal/Aluminum/Aluminum-7075-T6.FCMat
     Resources/Materials/Standard/Metal/Aluminum/Aluminum-Generic.FCMat
     Resources/Materials/Standard/Metal/Aluminum/AlZn4-5Mg1F35.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-102.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-122a.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-122b.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-150.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-220.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-230.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-443.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-464.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-510.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-614.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-647.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-655.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-706.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-715.FCMat
+    Resources/Materials/Standard/Metal/Copper/Copper-955.FCMat
     Resources/Materials/Standard/Metal/Copper/Copper-Generic.FCMat
     Resources/Materials/Standard/Metal/Iron/Iron-Generic.FCMat
     Resources/Materials/Standard/Metal/Steel/CalculiX-Steel.FCMat
@@ -255,7 +270,9 @@ SET(MaterialModel_Files
     Resources/Models/Mechanical/Density.yml
     Resources/Models/Mechanical/Hardness.yml
     Resources/Models/Mechanical/IsotropicLinearElastic.yml
+    Resources/Models/Mechanical/IsotropicLinearElasticArrays.yml
     Resources/Models/Mechanical/LinearElastic.yml
+    Resources/Models/Mechanical/LinearElasticArrays.yml
     Resources/Models/Mechanical/MooneyRivlin.yml
     Resources/Models/Mechanical/NeoHooke.yml
     Resources/Models/Mechanical/OgdenN1.yml
@@ -269,6 +286,8 @@ SET(MaterialModel_Files
     Resources/Models/Mechanical/ReducedPolynomialN1.yml
     Resources/Models/Mechanical/ReducedPolynomialN2.yml
     Resources/Models/Mechanical/ReducedPolynomialN3.yml
+    Resources/Models/Mechanical/Toughness.yml
+    Resources/Models/Mechanical/ToughnessArrays.yml
     Resources/Models/Mechanical/Yeoh.yml
     Resources/Models/Patterns/PAT.yml
     "Resources/Models/Patterns/Pattern File.yml"

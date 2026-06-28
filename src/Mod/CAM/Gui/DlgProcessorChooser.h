@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_DlgProcessorChooser_H
-#define PATH_DlgProcessorChooser_H
+#pragma once
 
 #include <QDialog>
 
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace PathGui
-
-#endif  // PATH_DlgProcessorChooser_H

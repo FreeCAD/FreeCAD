@@ -20,7 +20,10 @@ set(MeshTestDataFiles
 )
 
 if(BUILD_GUI)
-    list (APPEND Mesh_Scripts InitGui.py)
+    list (APPEND Mesh_Scripts
+          InitGui.py
+          MeshTestsGui.py
+    )
 endif(BUILD_GUI)
 
 add_custom_target(MeshScripts ALL

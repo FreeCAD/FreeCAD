@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_THUMBNAIL_H
-#define GUI_THUMBNAIL_H
+#pragma once
 
 #include <Base/Persistence.h>
 #include <QUrl>
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_THUMBNAIL_H

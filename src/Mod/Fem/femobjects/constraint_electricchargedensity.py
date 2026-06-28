@@ -100,7 +100,6 @@ class ConstraintElectricChargeDensity(base_fempythonobject.BaseFemPythonObject):
         return prop
 
     def onDocumentRestored(self, obj):
-        print("restored", obj.Name)
         # update old project with new properties
         for prop in self._get_properties():
             try:
@@ -109,7 +108,6 @@ class ConstraintElectricChargeDensity(base_fempythonobject.BaseFemPythonObject):
                 prop.add_to_object(obj)
 
     def onChanged(self, obj, prop):
-        print("change", prop)
         if prop == "Mode":
             if obj.Mode == "Total Source":
                 obj.setPropertyStatus("Concentrated", "-ReadOnly")

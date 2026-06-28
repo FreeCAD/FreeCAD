@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H
-#define GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -84,5 +83,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGSETTINGSWORKBENCHES_IMP_H

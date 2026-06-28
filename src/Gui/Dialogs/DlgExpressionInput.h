@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DLGEXPRESSIONINPUT_H
-#define GUI_DIALOG_DLGEXPRESSIONINPUT_H
+#pragma once
 
 #include <QDialog>
 #include <QTreeWidget>
@@ -124,6 +123,7 @@ private:
     void updateVarSetInfo(bool checkExpr = true);
     void createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet);
     void acceptWithVarSet();
+    void applyImpliedUnit();
     bool isPropertyNameValid(
         const QString& nameProp,
         const App::DocumentObject* obj,
@@ -159,6 +159,3 @@ private:
 };
 
 }  // namespace Gui::Dialog
-
-
-#endif  // GUI_DIALOG_EXPRESSIONINPUT_H

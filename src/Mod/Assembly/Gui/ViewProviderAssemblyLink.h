@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssemblyLink_H
-#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssemblyLink_H
+#pragma once
 
 #include <QCoreApplication>
 
@@ -77,5 +76,3 @@ public:
 };
 
 }  // namespace AssemblyGui
-
-#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssemblyLink_H

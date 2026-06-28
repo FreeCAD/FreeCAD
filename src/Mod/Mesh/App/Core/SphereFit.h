@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_SPHERE_FIT_H
-#define MESH_SPHERE_FIT_H
+#pragma once
 
 #include "Approximation.h"
 #include <Eigen/Eigenvalues>
@@ -143,5 +142,3 @@ private:
 
 
 }  // namespace MeshCoreFit
-
-#endif  // MESH_SPHERE_FIT_H

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TREE_H
-#define GUI_TREE_H
+#pragma once
 
 #include <unordered_map>
+#include <QTimer>
 #include <QElapsedTimer>
 #include <QStyledItemDelegate>
 #include <QTreeWidget>
@@ -71,7 +71,7 @@ public:
     void selectLinkedObject(App::DocumentObject* linked);
     void selectAllLinks(App::DocumentObject* obj);
     void expandSelectedItems(TreeItemMode mode);
-    static int iconSize();
+    static int getIconSize();
 
     int iconHeight() const;
     void setIconHeight(int height);
@@ -104,6 +104,16 @@ public:
     void markItem(const App::DocumentObject* Obj, bool mark);
     void syncView(ViewProviderDocumentObject* vp);
 
+    /**
+     * @brief Selects all selectable objects within the current group or document.
+     *
+     *
+     * First press: selects all sibling items of the current selected object
+     * (children of
+     * same parent) or a group and its childs.
+     * Second press: expands selection to the whole
+     * document.
+     */
     void selectAll() override;
 
     const char* getTreeName() const;
@@ -180,6 +190,8 @@ protected:
     bool event(QEvent* e) override;
     void keyPressEvent(QKeyEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     void mouseDoubleClickEvent(QMouseEvent* event) override;
 
     void showEvent(QShowEvent* ev) override;
@@ -188,6 +200,12 @@ protected:
 
 private:
     void _updateStatus(bool delay = true);
+
+    // Helpers for the two-stage "Select All" feature
+    void selectGroupItems(const QTreeWidgetItem* group, bool recursive);
+    void selectAllDocumentLevel();
+    void selectAllGroupLevel(const QTreeWidgetItem* targetNode, bool isGroup);
+    void clearSelectAllContext();
 
 protected Q_SLOTS:
     void onCreateGroup();
@@ -276,6 +294,12 @@ private:
     QTimer* selectTimer;
     QTimer* preselectTimer;
     QElapsedTimer preselectTime;
+
+    // this timer is used to prevent double click event on visibility icon
+    QTimer visibilityIconDoubleClickTimer;
+
+    bool expandIndicatorPressed = false;
+
     static std::unique_ptr<QPixmap> documentPixmap;
     static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*, DocumentItem*> DocumentMap;
@@ -294,6 +318,12 @@ private:
 
     std::string myName;  // for debugging purpose
     int updateBlocked = 0;
+
+    // State tracking for the two-stage "Select All" operation
+    bool lastSelectAllParent = false;   // true if last select was group-level, used for double-tap
+                                        // detection
+    bool inSelectAllOperation = false;  // prevents context from resetting when we change selection
+                                        // in code
 
     friend class DocumentItem;
     friend class DocumentObjectItem;
@@ -345,6 +375,7 @@ public:
     void updateItemsVisibility(QTreeWidgetItem* item, bool show);
     void updateLinks(const ViewProviderDocumentObject& view);
     ViewProviderDocumentObject* getViewProvider(App::DocumentObject*);
+    void setBaseIcon(int column, const QIcon& base);
 
     bool showHidden() const;
     void setShowHidden(bool show);
@@ -419,6 +450,8 @@ protected:
     using ViewParentMap
         = std::unordered_map<const ViewProvider*, std::vector<ViewProviderDocumentObject*>>;
     void populateParents(const ViewProvider* vp, ViewParentMap&);
+
+    void setReadOnlyIconInfo(int column, QIcon& overlayedIcon);
 
 private:
     const char* treeName;  // for debugging purpose
@@ -527,6 +560,10 @@ private:
         std::vector<bool>::const_iterator& from
     );
 
+    void setIconOverlays(int currentStatus, QPixmap& overlays) const;
+    void generateIcon(int currentStatus, QIcon::Mode mode, QIcon& icon);
+    QIcon getVisibilityIcon(int currentStatus, QIcon& original_icon);
+
     QBrush bgBrush;
     DocumentItem* myOwner;
     DocumentObjectDataPtr myData;
@@ -575,5 +612,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TREE_H

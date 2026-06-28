@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PLACEMENT_H
-#define GUI_PLACEMENT_H
+#pragma once
 
 #include <QDialog>
 #include <Base/Placement.h>
@@ -277,5 +276,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_PLACEMENT_H

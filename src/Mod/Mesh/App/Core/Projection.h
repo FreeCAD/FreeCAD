@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_PROJECTION_H
-#define MESH_PROJECTION_H
+#pragma once
 
 #include <Base/BoundBox.h>
 #include <vector>
@@ -84,5 +83,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESH_PROJECTION_H

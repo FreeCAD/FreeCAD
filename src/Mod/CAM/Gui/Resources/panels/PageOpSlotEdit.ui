@@ -347,30 +347,25 @@
        <number>3</number>
       </property>
       <item row="0" column="0">
-       <widget class="QLabel" name="layerMode_label">
+       <widget class="QLabel" name="cutPatter_label">
         <property name="text">
          <string>Layer mode</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="layerMode">
-        <property name="font">
-         <font>
-          <pointsize>8</pointsize>
-         </font>
-        </property>
+       <widget class="QComboBox" name="cutPattern">
         <property name="toolTip">
-         <string>Complete the operation in a single pass at depth, or multiple passes to final depth</string>
+         <string>Set the cut pattern for the operation</string>
         </property>
         <item>
          <property name="text">
-          <string>Single-pass</string>
+          <string>Directional</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Multi-pass</string>
+          <string>Bidirectional</string>
          </property>
         </item>
        </widget>
@@ -441,7 +436,7 @@
   <tabstop>geo2Reference</tabstop>
   <tabstop>geo1Extension</tabstop>
   <tabstop>geo2Extension</tabstop>
-  <tabstop>layerMode</tabstop>
+  <tabstop>cutPattern</tabstop>
   <tabstop>pathOrientation</tabstop>
   <tabstop>reverseDirection</tabstop>
  </tabstops>

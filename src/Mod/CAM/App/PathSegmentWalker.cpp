@@ -129,6 +129,7 @@ void PathSegmentVisitor::g38(int id, const Base::Vector3d& last, const Base::Vec
 
 PathSegmentWalker::PathSegmentWalker(const Toolpath& tp_)
     : tp(tp_)
+    , retract_mode(98)  // Default to G98 (retract to initial Z)
 {}
 
 
@@ -197,10 +198,9 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
         if ((name == "G0") || (name == "G00") || (name == "G1") || (name == "G01")) {
             // straight line
             if (nrot != lrot) {
-                double amax = std::max(
-                    fmod(fabs(a - A), 360),
-                    std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360))
-                );
+                // Use the unwrapped angular travel so multi-revolution moves
+                // (e.g. G0 A4618 -> G0 A0) get enough segments to render smoothly.
+                double amax = std::max(fabs(a - A), std::max(fabs(b - B), fabs(c - C)));
                 double angle = Base::toRadians(amax);
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0 / (deviation / angle));
 
@@ -275,10 +275,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
                 angle = std::numbers::pi * 2;
             }
 
-            double amax = std::max(
-                fmod(fabs(a - A), 360),
-                std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360))
-            );
+            double amax = std::max(fabs(a - A), std::max(fabs(b - B), fabs(c - C)));
 
             int segments = std::max(
                 ARC_MIN_SEGMENTS,
@@ -327,10 +324,24 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             // relative mode
             absolutecenter = false;
         }
-        else if ((name == "G73") || (name == "G74") || (name == "G81") || (name == "G82")
-                 || (name == "G83") || (name == "G84") || (name == "G85") || (name == "G86")
-                 || (name == "G89")) {
+        else if (
+            (name == "G73") || (name == "G74") || (name == "G81") || (name == "G82")
+            || (name == "G83") || (name == "G84") || (name == "G85") || (name == "G86")
+            || (name == "G89")
+        ) {
             // drill,tap,bore
+
+            // Check for RetractMode annotation (G98 or G99)
+            if (cmd.hasAnnotation("RetractMode")) {
+                std::string mode = cmd.getAnnotationString("RetractMode");
+                if (mode == "G99") {
+                    retract_mode = 99;
+                }
+                else if (mode == "G98") {
+                    retract_mode = 98;
+                }
+            }
+
             double r = 0;
             if (cmd.has("R")) {
                 r = cmd.getValue("R");
@@ -343,10 +354,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             p1.*pz = last.*pz;
 
             if (nrot != lrot) {
-                double amax = std::max(
-                    fmod(fabs(a - A), 360),
-                    std::max(fmod(fabs(b - B), 360), fmod(fabs(c - C), 360))
-                );
+                double amax = std::max(fabs(a - A), std::max(fabs(b - B), fabs(c - C)));
                 double angle = Base::toRadians(amax);
                 int segments = std::max(ARC_MIN_SEGMENTS, 3.0 / (deviation / angle));
 
@@ -398,7 +406,10 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             plist.push_back(p2r);
             plist.push_back(p3r);
 
-            cb.g8x(i, last, next, points, plist, qlist);
+            // Calculate rotation-compensated next point for the hole bottom
+            Base::Vector3d nextr = compensateRotation(next, nrot, rotCenter);
+
+            cb.g8x(i, last, nextr, points, plist, qlist);
 
             last = p3;
             A = a;

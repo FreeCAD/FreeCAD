@@ -84,7 +84,7 @@ class Arch_Equipment:
                 base = "FreeCAD.ActiveDocument." + base
             FreeCADGui.doCommand("obj = Arch.makeEquipment(" + base + ")")
             if mesh:
-                FreeCADGui.doCommand("obj.Mesh = FreeCAD.ActiveDocument." + mesh)
+                FreeCADGui.doCommand("obj.HiRes = FreeCAD.ActiveDocument." + mesh)
             FreeCADGui.addModule("Draft")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()

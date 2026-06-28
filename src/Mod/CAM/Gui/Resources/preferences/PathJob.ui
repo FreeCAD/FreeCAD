@@ -15,20 +15,12 @@
   </property>
   <layout class="QVBoxLayout">
    <item>
-    <widget class="QToolBox" name="toolBox">
+    <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="page">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>695</width>
-        <height>308</height>
-       </rect>
-      </property>
-      <attribute name="label">
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
        <string>General</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -82,9 +74,15 @@ If left empty no template will be preselected.</string>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="Gui::InputField" name="geometryTolerance">
+             <widget class="Gui::QuantitySpinBox" name="geometryTolerance">
               <property name="toolTip">
                <string>Default value for new jobs, used for computing Paths. Smaller increases accuracy, but slows down computation</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.001000000000000</double>
               </property>
              </widget>
             </item>
@@ -96,7 +94,17 @@ If left empty no template will be preselected.</string>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::InputField" name="curveAccuracy"/>
+             <widget class="Gui::QuantitySpinBox" name="curveAccuracy">
+              <property name="toolTip">
+               <string>Uses while calculates arcs. Smaller increases accuracy, but slows down computation</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.001000000000000</double>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -118,16 +126,8 @@ If left empty no template will be preselected.</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_2">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>695</width>
-        <height>480</height>
-       </rect>
-      </property>
-      <attribute name="label">
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
        <string>Post processor</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -334,16 +334,8 @@ See the file save policy below on how to deal with name conflicts.</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_3">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>674</width>
-        <height>619</height>
-       </rect>
-      </property>
-      <attribute name="label">
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
        <string>Setup</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">

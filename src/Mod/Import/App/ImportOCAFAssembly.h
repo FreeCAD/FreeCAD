@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMPORT_ImportOCAFAssembly_H
-#define IMPORT_ImportOCAFAssembly_H
+#pragma once
 
 #include <map>
 #include <set>
@@ -95,5 +94,3 @@ private:
 
 
 }  // namespace Import
-
-#endif  // IMPORT_ImportOCAFAssembly_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DRAGGER_H
-#define GUI_VIEWPROVIDER_DRAGGER_H
+#pragma once
 
 #include "ViewProviderDocumentObject.h"
 #include <Base/Placement.h>
@@ -64,6 +63,7 @@ public:
     /// Dragger is normally placed at the transform origin, unless explicitly overridden via
     /// ViewProviderDragger#setDraggerPlacement() method.
     App::PropertyPlacement TransformOrigin;
+    App::PropertyBool ShowPlacement;
 
     void attach(App::DocumentObject* pcObject) override;
 
@@ -83,7 +83,6 @@ public:
     /** @name Edit methods */
     //@{
     bool doubleClicked() override;
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
     void updateData(const App::Property*) override;
 
     ViewProvider* startEditing(int ModNum = 0) override;
@@ -162,5 +161,3 @@ private:
 }  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::ViewProviderDragger::DraggerComponent)
-
-#endif  // GUI_VIEWPROVIDER_DRAGGER_H

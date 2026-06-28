@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef START_PRECOMPILED_H
-#define START_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -49,6 +48,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QLocale>
 #include <QMetaObject>
 #include <QMutexLocker>
 #include <QObject>
@@ -59,5 +59,3 @@
 #include <QTimeZone>
 #include <QTimer>
 #include <QUrl>
-
-#endif  // START_PRECOMPILED_H

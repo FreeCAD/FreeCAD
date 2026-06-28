@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_PYOBJECTBASE_H
-#define BASE_PYOBJECTBASE_H
+#pragma once
 
 // clang-format off
 // NOLINTBEGIN(cppcoreguidelines-macro-usage)
@@ -101,6 +100,16 @@ inline PyObject* getTypeAsObject(PyTypeObject* type) {
 
 inline bool asBoolean(PyObject *obj) {
     return PyObject_IsTrue(obj) != 0;
+}
+
+/**
+ * @brief Make a Py::String out of a std::string_view.
+ */
+// If upstream PyCXX ever gets an std::string_view constructor for Py::String,
+// this can be trivially swapped out for that constructor.
+inline Py::String toPyString(std::string_view utf8)
+{
+    return { utf8.data(), Py_ssize_t(utf8.size()) };
 }
 
 }
@@ -572,5 +581,3 @@ void PyRegisterEnum(PyObject* module, const char* name, const std::map<const cha
 
 // NOLINTEND(cppcoreguidelines-macro-usage)
 // clang-format on
-
-#endif  // BASE_PYOBJECTBASE_H

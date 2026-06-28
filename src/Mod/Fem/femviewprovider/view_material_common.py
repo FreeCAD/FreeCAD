@@ -56,3 +56,10 @@ class VPMaterialCommon(view_base_femmaterial.VPBaseFemMaterial):
 
     def setEdit(self, vobj, mode=0):
         return super().setEdit(vobj, mode, task_material_common._TaskPanel)
+
+    def claimChildren(self):
+        nonlin = self.Object.Nonlinear
+        if nonlin:
+            return [nonlin]
+        else:
+            return []

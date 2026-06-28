@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_XMLTOOLS_H
-#define BASE_XMLTOOLS_H
+#pragma once
 
 #include <memory>
 #include <ostream>
@@ -47,6 +46,7 @@ class BaseExport XMLTools
 public:
     static std::string toStdString(const XMLCh* const toTranscode);
     static std::basic_string<XMLCh> toXMLString(const char* const fromTranscode);
+    static std::string escapeXml(const std::string& input);
     static void initialize();
     static void terminate();
 
@@ -256,5 +256,3 @@ inline const XMLCh* XUTF8Str::unicodeForm() const
 {
     return str.c_str();
 }
-
-#endif  // BASE_XMLTOOLS_H

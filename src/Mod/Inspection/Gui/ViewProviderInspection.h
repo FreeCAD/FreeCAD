@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
-#define INSPECTIOGUI_VIEWPROVIDERINSPECTION_H
+#pragma once
 
 #include <limits>
 
@@ -129,6 +128,3 @@ public:
 };
 
 }  // namespace InspectionGui
-
-
-#endif  // INSPECTIOGUI_VIEWPROVIDERINSPECTION_H

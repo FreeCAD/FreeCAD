@@ -127,7 +127,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
     if (rows == 1) {
         QMessageBox::warning(
             this,
-            tr("Selection error"),
+            tr("Selection Error"),
             tr("Only one face can be selected for a plane multi-point constraint!")
         );
         Gui::Selection().clearSelection();
@@ -137,7 +137,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
         std::vector<Gui::SelectionObject> selection
             = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
         if (selection.empty()) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
             return;
         }
         Fem::ConstraintPlaneRotation* pcConstraint
@@ -147,7 +147,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
 
         for (auto& it : selection) {  // for every selected object
             if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-                QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+                QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
                 return;
             }
 
@@ -155,7 +155,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
             if (obj->getDocument() != pcConstraint->getDocument()) {
                 QMessageBox::warning(
                     this,
-                    tr("Selection error"),
+                    tr("Selection Error"),
                     tr("External object selection is not supported")
                 );
                 return;
@@ -166,7 +166,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
                 for (const auto& subName : subNames) {  // for every selected sub element
                     bool addMe = true;
                     if ((subName.substr(0, 4) != "Face")) {
-                        QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+                        QMessageBox::warning(this, tr("Selection Error"), tr("Only faces can be picked"));
                         return;
                     }
                     Part::Feature* feat = static_cast<Part::Feature*>(obj);
@@ -175,7 +175,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
                         if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
                             QMessageBox::warning(
                                 this,
-                                tr("Selection error"),
+                                tr("Selection Error"),
                                 tr("Only planar faces can be picked")
                             );
                             return;
@@ -206,7 +206,7 @@ void TaskFemConstraintPlaneRotation::addToSelection()
             else {
                 QMessageBox::warning(
                     this,
-                    tr("Selection error"),
+                    tr("Selection Error"),
                     tr("Only one face can be selected for a plane multi-point constraint!")
                 );
                 Gui::Selection().clearSelection();
@@ -224,7 +224,7 @@ void TaskFemConstraintPlaneRotation::removeFromSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintPlaneRotation* pcConstraint
@@ -234,7 +234,7 @@ void TaskFemConstraintPlaneRotation::removeFromSelection()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();

@@ -22,8 +22,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MEASUREMANAGER_H
-#define MEASUREMANAGER_H
+#pragma once
 
 
 #include <vector>
@@ -51,10 +50,13 @@ enum class MeasureElementType
     CIRCLE,
     ARC,
     CURVE,  // Has a length but no radius or axis
+    DISC,
     PLANE,
     CYLINDER,
     VOLUME,
     SURFACE,
+    TORUS,
+    SPHERE,
 };
 
 
@@ -129,5 +131,3 @@ private:
 
 
 }  // namespace App
-
-#endif  // MEASUREMANAGER_H

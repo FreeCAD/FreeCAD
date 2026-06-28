@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_NAMESPACE_H
-#define GUI_NAMESPACE_H
+#pragma once
 
 
 namespace Gui
@@ -40,5 +39,3 @@ enum SelectionRole
 };
 
 }  // namespace Gui
-
-#endif  // GUI_NAMESPACE_H

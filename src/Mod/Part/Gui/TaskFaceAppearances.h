@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_TASKSETCOLORS_H
-#define PARTGUI_TASKSETCOLORS_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -55,6 +54,7 @@ public:
     void open();
     bool accept();
     bool reject();
+    void setSelectionGate();
 
 private:
     void setupConnections();
@@ -70,6 +70,7 @@ protected:
     void slotDeleteDocument(const Gui::Document&);
     void slotDeleteObject(const Gui::ViewProvider&);
     void updatePanel();
+    void syncMaterialWidget();
     int getFirstIndex() const;
 
 private:
@@ -101,5 +102,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_TASKSETCOLORS_H

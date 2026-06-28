@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_CommandConstraints_H
-#define SKETCHERGUI_CommandConstraints_H
+#pragma once
 
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -57,10 +56,11 @@ bool calculateAngle(
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
 /// geoId1 => geoid of the ellipse
 /// geoId2 => geoid of geom2
+/// returns false if there was an exception
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void makeTangentToEllipseviaNewPoint(
+bool makeTangentToEllipseviaNewPoint(
     Sketcher::SketchObject* Obj,
     const Part::GeomEllipse* ellipse,
     const Part::Geometry* geom2,
@@ -72,10 +72,11 @@ void makeTangentToEllipseviaNewPoint(
 /// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
 /// geoId1 => geoid of the arc of ellipse
 /// geoId2 => geoid of geom2
+/// returns false if there was an exception
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void makeTangentToArcOfEllipseviaNewPoint(
+bool makeTangentToArcOfEllipseviaNewPoint(
     Sketcher::SketchObject* Obj,
     const Part::GeomArcOfEllipse* aoe,
     const Part::Geometry* geom2,
@@ -88,10 +89,11 @@ void makeTangentToArcOfEllipseviaNewPoint(
 /// geom2 => any of an arc of hyperbola, an arc of ellipse, a circle, or an arc (of circle)
 /// geoId1 => geoid of the arc of hyperbola
 /// geoId2 => geoid of geom2
+/// returns false if there was an exception
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void makeTangentToArcOfHyperbolaviaNewPoint(
+bool makeTangentToArcOfHyperbolaviaNewPoint(
     Sketcher::SketchObject* Obj,
     const Part::GeomArcOfHyperbola* aoh,
     const Part::Geometry* geom2,
@@ -105,11 +107,12 @@ void makeTangentToArcOfHyperbolaviaNewPoint(
 /// (of circle)
 /// geoId1 => geoid of the arc of parabola
 /// geoId2 => geoid of geom2
+/// returns false if there was an exception
 /// NOTE: A command must
 /// be opened before calling this function, which this function commits or aborts as appropriate.
 /// The reason is for compatibility reasons with other code e.g. "Autoconstraints" in
 /// DrawSketchHandler.cpp
-void makeTangentToArcOfParabolaviaNewPoint(
+bool makeTangentToArcOfParabolaviaNewPoint(
     Sketcher::SketchObject* Obj,
     const Part::GeomArcOfParabola* aop,
     const Part::Geometry* geom2,
@@ -138,5 +141,15 @@ void doEndpointToEdgeTangency(
 /// notifications
 void notifyConstraintSubstitutions(const QString& message);
 
+std::string escapeForPython(const std::string& input);
+bool addListConstraint(
+    Sketcher::SketchObject* Obj,
+    std::vector<Sketcher::GeoElementId>& elts,
+    const std::string& constraintType,
+    Base::Vector2d frame_p1 = Base::Vector2d(),
+    Base::Vector2d frame_p2 = Base::Vector2d(),
+    bool isTextHeight = true,
+    const std::string& text = "",
+    const std::string& font = ""
+);
 }  // namespace SketcherGui
-#endif  // SKETCHERGUI_CommandConstraints_H

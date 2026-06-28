@@ -26,11 +26,11 @@
  * FCBRepAlgoAPI provides a wrapper for various OCCT functions.
  */
 
-#ifndef FCREPALGOAPIBOOLEANOPERATION_H
-#define FCREPALGOAPIBOOLEANOPERATION_H
+#pragma once
 
 #include <BRepAlgoAPI_BooleanOperation.hxx>
 #include <Message_ProgressRange.hxx>
+#include <TopTools_ListOfShape.hxx>
 
 class FCBRepAlgoAPIHelper
 {
@@ -78,4 +78,3 @@ private:
     );
     Standard_EXPORT void RecursiveCutCompound(const TopoDS_Shape& theArgument);
 };
-#endif

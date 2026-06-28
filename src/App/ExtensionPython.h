@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_EXTENSIONPYTHON_H
-#define APP_EXTENSIONPYTHON_H
+#pragma once
 
 #include <Base/Interpreter.h>
 #include "Extension.h"
@@ -121,5 +120,3 @@ using ExtensionPython = ExtensionPythonT<App::Extension>;
     };
 
 }  // namespace App
-
-#endif  // APP_EXTENSIONPYTHON_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REVERSE_ENGINEERING_APP_PRECOMPILED_H
-#define REVERSE_ENGINEERING_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -50,5 +49,3 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-
-#endif

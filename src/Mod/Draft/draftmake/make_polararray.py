@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create polar Array objects."""
+
 ## @package make_polararray
 # \ingroup draftmake
 # \brief Provides functions to create polar Array objects.
@@ -30,6 +31,7 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
+import WorkingPlane
 import draftutils.utils as utils
 import draftmake.make_array as make_array
 
@@ -37,7 +39,14 @@ from draftutils.messages import _err
 from draftutils.translate import translate
 
 
-def make_polar_array(base_object, number=5, angle=360, center=App.Vector(0, 0, 0), use_link=True):
+def make_polar_array(
+    base_object,
+    number=5,
+    angle=360,
+    center=App.Vector(0, 0, 0),
+    axis=None,
+    use_link=True,
+):
     """Create a polar array from the given object.
 
     Parameters
@@ -60,6 +69,11 @@ def make_polar_array(base_object, number=5, angle=360, center=App.Vector(0, 0, 0
     center: Base::Vector3, optional
         It defaults to the origin `App.Vector(0, 0, 0)`.
         The vector indicating the center of rotation of the array.
+
+    axis: Base::Vector3, optional
+        It defaults to the active Draft working plane axis if available,
+        otherwise to `App.Vector(0, 0, 1)` or the `+Z` axis.
+        The unit vector indicating the axis of rotation.
 
     use_link: bool, optional
         It defaults to `True`.
@@ -109,8 +123,14 @@ def make_polar_array(base_object, number=5, angle=360, center=App.Vector(0, 0, 0
         _err(translate("draft", "Wrong input: must be a number."))
         return None
 
+    if axis is None:
+        if App.GuiUp:
+            axis = WorkingPlane.get_working_plane(update=False).axis
+        else:
+            axis = App.Vector(0, 0, 1)
+
     try:
-        utils.type_check([(center, App.Vector)], name=_name)
+        utils.type_check([(center, App.Vector), (axis, App.Vector)], name=_name)
     except TypeError:
         _err(translate("draft", "Wrong input: must be a vector."))
         return None
@@ -119,6 +139,7 @@ def make_polar_array(base_object, number=5, angle=360, center=App.Vector(0, 0, 0
     new_obj = make_array.make_array(
         base_object, arg1=center, arg2=angle, arg3=number, use_link=use_link
     )
+    new_obj.Axis = axis
     return new_obj
 
 

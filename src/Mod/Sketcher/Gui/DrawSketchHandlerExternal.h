@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerExternal_H
-#define SKETCHERGUI_DrawSketchHandlerExternal_H
+#pragma once
 
 #include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
@@ -39,7 +38,6 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchHandler.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include <Mod/Part/App/Datums.h>
@@ -48,8 +46,6 @@
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class ExternalSelection: public Gui::SelectionFilterGate
 {
@@ -102,7 +98,8 @@ public:
         // return false;
         //}
 
-        if (pObj->isDerivedFrom<Part::DatumLine>() || pObj->isDerivedFrom<Part::DatumPoint>()) {
+        if (pObj->isDerivedFrom<Part::DatumLine>() || pObj->isDerivedFrom<Part::DatumPoint>()
+            || pObj->isDerivedFrom<App::Line>() || pObj->isDerivedFrom<App::Point>()) {
             return true;
         }
 
@@ -173,13 +170,15 @@ public:
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
             }
             std::string subName(msg.pSubName);
+
             if (obj->isDerivedFrom<App::Plane>() || obj->isDerivedFrom<Part::Datum>()
                 || obj->isDerivedFrom<Part::DatumLine>() || obj->isDerivedFrom<Part::DatumPoint>()
+                || obj->isDerivedFrom<App::Line>() || obj->isDerivedFrom<App::Point>()
                 || (subName.size() > 4 && subName.substr(0, 4) == "Edge")
                 || (subName.size() > 6 && subName.substr(0, 6) == "Vertex")
                 || (subName.size() > 4 && subName.substr(0, 4) == "Face")) {
                 try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Add external geometry"));
                     Gui::cmdAppObjectArgs(
                         sketchgui->getObject(),
                         "addExternal(\"%s\",\"%s\", %s, %s)",
@@ -189,7 +188,7 @@ public:
                         intersection ? "True" : "False"
                     );
 
-                    Gui::Command::commitCommand();
+                    commitCommand();
 
                     // adding external geometry does not require a solve() per se (the DoF is the
                     // same), however a solve is required to update the amount of solver geometry,
@@ -211,7 +210,7 @@ public:
                         QT_TRANSLATE_NOOP("Notifications", "Failed to add external geometry")
                     );
                     Gui::Selection().clearSelection();
-                    Gui::Command::abortCommand();
+                    abortCommand();
                 }
                 return true;
             }
@@ -264,6 +263,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerExternal_H

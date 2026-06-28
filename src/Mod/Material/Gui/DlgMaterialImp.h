@@ -23,14 +23,14 @@
  ***************************************************************************/
 
 
-#ifndef MATGUI_DIALOGMATERIALIMP_H
-#define MATGUI_DIALOGMATERIALIMP_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
 #include <vector>
 
 #include <App/Material.h>
+#include <App/TransactionDefs.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -95,6 +95,7 @@ public:
     ~TaskMaterial() override;
 
 public:
+    bool accept() override;
     bool reject() override;
 
     bool isAllowedAlterDocument() const override
@@ -114,8 +115,7 @@ public:
 private:
     DlgMaterialImp* widget;
     Gui::TaskView::TaskBox* taskbox;
+    int tid {App::NullTransaction};
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_DIALOGMATERIALIMP_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_FLAG_H
-#define GUI_FLAG_H
+#pragma once
 
 #include <QLayout>
 #include <QOpenGLWidget>
@@ -144,6 +143,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_FLAG_H

@@ -23,14 +23,11 @@
  ***************************************************************************/
 
 
-#ifndef SketcherGui_DrawSketchKeyboardManager_H
-#define SketcherGui_DrawSketchKeyboardManager_H
+#pragma once
 
 
 #include <QEvent>
 #include <QKeyEvent>
-
-#include <QTimer>
 
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -78,29 +75,14 @@ public:
 
     bool eventFilter(QObject* object, QEvent* event);
 
-    /// sets the timeout to the amount of milliseconds.
-    void setTimeOut(int milliseconds);
-
-    // returns the current timeout amount
-    int timeOut();
-
 private:
     /// This function decides whether events should be send to the ViewProvider
     /// or to the UI control of DSH.
-    void detectKeyboardEventHandlingMode(QKeyEvent* keyEvent);
+    KeyboardEventHandlingMode detectKeyboardEventHandlingMode(QKeyEvent* keyEvent);
 
-    void onTimeOut();
-
-private:
     /// Viewer responsible for the active document
     Gui::View3DInventorViewer* vpViewer = nullptr;
     KeyboardEventHandlingMode keyMode;
-
-    QTimer timer;
-
-    int timeOutValue = 2000;
 };
 
 }  // namespace SketcherGui
-
-#endif  // SketcherGui_DrawSketchKeyboardManager_H

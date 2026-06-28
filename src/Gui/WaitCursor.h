@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_WAIT_CURSOR_H
-#define GUI_WAIT_CURSOR_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -97,5 +96,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_WAIT_CURSOR_H

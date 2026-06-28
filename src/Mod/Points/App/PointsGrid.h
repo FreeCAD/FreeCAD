@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef POINTS_GRID_H
-#define POINTS_GRID_H
+#pragma once
 
 #include <limits>
 #include <set>
@@ -377,5 +376,3 @@ inline bool PointsGrid::CheckPos(unsigned long ulX, unsigned long ulY, unsigned 
 // --------------------------------------------------------------
 
 }  // namespace Points
-
-#endif  // POINTS_GRID_H

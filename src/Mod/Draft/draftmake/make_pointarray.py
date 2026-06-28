@@ -30,6 +30,7 @@
 
 The copies will be created at the points of a point object.
 """
+
 ## @package make_pointarray
 # \ingroup draftmake
 # \brief Provides functions to create PointArray objects.

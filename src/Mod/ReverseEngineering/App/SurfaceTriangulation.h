@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REEN_SURFACETRIANGULATION_H
-#define REEN_SURFACETRIANGULATION_H
+#pragma once
 
 #include <vector>
 
@@ -211,5 +210,3 @@ private:
 };
 
 }  // namespace Reen
-
-#endif  // REEN_SURFACETRIANGULATION_H

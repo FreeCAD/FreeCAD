@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintHeatflux_H
-#define GUI_TASKVIEW_TaskFemConstraintHeatflux_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -88,5 +87,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintHeatflux_H

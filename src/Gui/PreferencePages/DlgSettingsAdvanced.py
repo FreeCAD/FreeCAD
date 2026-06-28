@@ -19,6 +19,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Auto code generator for preference page of Display/UI"""
+
 import cog, sys
 from os import path
 

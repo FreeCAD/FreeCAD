@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <boost_graph_adjacency_list.hpp>
+#include <boost/graph/topological_sort.hpp>
 
 #include <QApplication>
 #include <QKeyEvent>
@@ -50,6 +52,7 @@
 #include "Document.h"
 #include "DockWindowManager.h"
 #include "SoFCDB.h"
+#include "SoFullPathHelper.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
@@ -189,7 +192,10 @@ void ViewProvider::setEditViewer(View3DInventorViewer*, int ModNum)
 
 void ViewProvider::unsetEditViewer(View3DInventorViewer*)
 {}
-
+void ViewProvider::setActive(bool active)
+{
+    Q_UNUSED(active);
+}
 bool ViewProvider::isUpdatesEnabled() const
 {
     return testStatus(UpdateData);
@@ -319,7 +325,7 @@ void ViewProvider::eventCallback(void* ud, SoEventCallback* node)
     }
 }
 
-SoSeparator* ViewProvider::getAnnotation()
+SoSeparator* ViewProvider::getOrCreateAnnotation()
 {
     if (!pcAnnotation) {
         pcAnnotation = new SoSeparator();
@@ -607,7 +613,6 @@ PyObject* ViewProvider::getPyObject()
     return pyViewObject;
 }
 
-#include <boost/graph/topological_sort.hpp>
 
 namespace Gui
 {
@@ -1014,6 +1019,12 @@ bool ViewProvider::getElementPicked(const SoPickedPoint* pp, std::string& subnam
     return true;
 }
 
+std::vector<std::pair<std::string, std::string>> ViewProvider::
+    getRelatedElements(const std::string& /*subname*/, const SbVec3f& /*pickPoint*/) const
+{
+    return {};
+}
+
 bool ViewProvider::getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const
 {
     if (pcRoot->findChild(pcModeSwitch) < 0) {
@@ -1058,7 +1069,7 @@ int ViewProvider::partialRender(const std::vector<std::string>& elements, bool c
         }
     }
     int count = 0;
-    auto path = static_cast<SoFullPath*>(new SoPath);
+    auto path = Gui::toFullPath(new SoPath);
     path->ref();
     SoSelectionElementAction action;
     action.setSecondary(true);
@@ -1110,6 +1121,16 @@ void ViewProvider::setRenderCacheMode(int mode)
 {
     pcRoot->renderCaching = mode == 0 ? SoSeparator::AUTO
                                       : (mode == 1 ? SoSeparator::ON : SoSeparator::OFF);
+}
+
+void ViewProvider::toggleVisibility()
+{
+    if (isShow()) {
+        hide();
+    }
+    else {
+        show();
+    }
 }
 
 Base::BoundBox3d ViewProvider::getBoundingBox(const char* subname, bool transform, MDIView* view) const

@@ -198,6 +198,7 @@ class ObjectCustom(PathOp.ObjectOp):
             else:
                 with open(gcode_file) as fd:
                     for l in fd.readlines():
+                        l = l.strip()
                         counter += 1
                         try:
                             newcommand = Path.Command(str(l))
@@ -215,8 +216,7 @@ class ObjectCustom(PathOp.ObjectOp):
 
         if errorNumLines:
             Path.Log.warning(
-                translate("PathCustom", "Please check lines: %s")
-                % ", ".join(map(str, errorNumLines))
+                translate("PathCustom", "Check lines: %s") % ", ".join(map(str, errorNumLines))
             )
 
             if len(errorLines) > 7:

@@ -4,7 +4,7 @@ General:
   UUID: "bf024194-da67-4c3c-a482-08c7efa6dbde"
   Name: "line"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"

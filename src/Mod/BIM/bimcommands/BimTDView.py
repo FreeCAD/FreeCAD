@@ -46,8 +46,13 @@ class BIM_TDView:
         }
 
     def IsActive(self):
-        v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
-        return v
+        import Draft
+
+        objs = FreeCADGui.Selection.getSelection()
+        return bool(
+            [obj for obj in objs if Draft.getType(obj) != "TechDraw::DrawPage"]
+            and FreeCAD.ActiveDocument.findObjects(Type="TechDraw::DrawPage")
+        )
 
     def Activated(self):
         import Draft
@@ -78,7 +83,7 @@ class BIM_TDView:
             return
         FreeCAD.ActiveDocument.openTransaction("Create view")
         for section in sections:
-            view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewArch", "BIM view")
+            view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewArch", "BIMView")
             view.Label = section.Label
             view.Source = section
             page.addView(view)

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_PAGEPRINTER_H
-#define TECHDRAWGUI_PAGEPRINTER_H
+#pragma once
 
 #include <QPrinter>
 
@@ -116,6 +115,3 @@ public:
 };
 
 }  // namespace TechDrawGui
-
-#endif // TECHDRAWGUI_PAGEPRINTER_H
-

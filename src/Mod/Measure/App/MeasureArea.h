@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef MEASURE_MEASUREAREA_H
-#define MEASURE_MEASUREAREA_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -86,6 +85,3 @@ private:
 };
 
 }  // namespace Measure
-
-
-#endif  // MEASURE_MEASUREAREA_H

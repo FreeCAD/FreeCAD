@@ -38,7 +38,7 @@ class BIM_Background:
             "MenuText": QT_TRANSLATE_NOOP("BIM_Background", "Toggle Background"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Background",
-                "Toggles the background of the 3D view between simple and gradient",
+                "Toggles the 3D View background between simple and gradient",
             ),
         }
 

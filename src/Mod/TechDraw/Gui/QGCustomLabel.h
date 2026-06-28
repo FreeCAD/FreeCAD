@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMLABEL_H
-#define DRAWINGGUI_QGCUSTOMLABEL_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -59,5 +58,3 @@ private:
 };
 
 }
-
-#endif // DRAWINGGUI_QGCUSTOMLABEL_H

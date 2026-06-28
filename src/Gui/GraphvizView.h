@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_GRAPHVIZVIEW_H
-#define GUI_GRAPHVIZVIEW_H
+#pragma once
 
 #include <fastsignals/signal.h>
 
@@ -49,7 +48,7 @@ public:
     QByteArray exportGraph(const QString& filter);
 
     /// Message handler
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     /// Message handler test
     bool onHasMsg(const char* pMsg) const override;
     /** @name Printing */
@@ -89,5 +88,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_GRAPHVIZVIEW_H

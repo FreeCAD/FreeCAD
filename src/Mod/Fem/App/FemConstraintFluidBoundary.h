@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_FLUIDBOUNDARY_H
-#define FEM_FLUIDBOUNDARY_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -73,6 +72,3 @@ private:
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_FLUIDBOUNDARY_H

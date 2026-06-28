@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MODELUUIDS_H
-#define MATERIAL_MODELUUIDS_H
+#pragma once
 
 #include <QString>
 
@@ -106,5 +105,3 @@ public:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_MODELUUIDS_H

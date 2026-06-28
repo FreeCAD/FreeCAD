@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -108,6 +110,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::Pad                         ::init();
     PartDesign::Pocket                      ::init();
     PartDesign::Fillet                      ::init();
+    PartDesign::Revolved                    ::init();
     PartDesign::Revolution                  ::init();
     PartDesign::Groove                      ::init();
     PartDesign::Chamfer                     ::init();

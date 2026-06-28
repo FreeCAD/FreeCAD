@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TRVECTOR_H
-#define WM4TRVECTOR_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4TRational.h"
@@ -81,5 +80,3 @@ TRVector<VSIZE,ISIZE> operator* (const TRational<ISIZE>& rkR,
 }
 
 #include "Wm4TRVector.inl"
-
-#endif

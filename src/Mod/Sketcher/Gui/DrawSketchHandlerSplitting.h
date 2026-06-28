@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerSplitting_H
-#define SKETCHERGUI_DrawSketchHandlerSplitting_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -33,7 +32,6 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchHandler.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "SnapManager.h"
@@ -41,9 +39,6 @@
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
-
 
 class SplittingSelection: public Gui::SelectionFilterGate
 {
@@ -158,7 +153,7 @@ public:
 
         if (GeoId >= 0) {
             try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
                 Gui::cmdAppObjectArgs(
                     sketchgui->getObject(),
                     "split(%d,App.Vector(%f,%f,0))",
@@ -166,7 +161,7 @@ public:
                     onSketchPos.x,
                     onSketchPos.y
                 );
-                Gui::Command::commitCommand();
+                commitCommand();
                 tryAutoRecompute(sketchgui->getObject<Sketcher::SketchObject>());
             }
             catch (const Base::Exception&) {
@@ -176,7 +171,7 @@ public:
                     QT_TRANSLATE_NOOP("Notifications", "Failed to add edge")
                 );
 
-                Gui::Command::abortCommand();
+                abortCommand();
             }
         }
         else {
@@ -218,6 +213,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerSplitting_H

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ASSEMBLY_PRECOMPILED_H
-#define ASSEMBLY_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -45,5 +44,3 @@
 #include <gp_Sphere.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
-
-#endif  // ASSEMBLY_PRECOMPILED_H

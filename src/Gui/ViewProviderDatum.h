@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDEDATUM_H_BYJRZNDL
-#define VIEWPROVIDEDATUM_H_BYJRZNDL
+#pragma once
 
 #include "ViewProviderGeometryObject.h"
 
@@ -77,5 +76,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif /* end of include guard: VIEWPROVIDEDATUM_H_BYJRZNDL */

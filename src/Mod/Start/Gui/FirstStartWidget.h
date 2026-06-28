@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_FIRSTSTARTWIDGET_H
-#define FREECAD_FIRSTSTARTWIDGET_H
+#pragma once
 
 #include <QWidget>
 #include <QGroupBox>
@@ -57,5 +56,3 @@ private:
 };
 
 }  // namespace StartGui
-
-#endif  // FREECAD_FIRSTSTARTWIDGET_H

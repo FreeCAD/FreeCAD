@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_EDGE_H
-#define MESH_EDGE_H
+#pragma once
 
 #include <Base/Handle.h>
 
@@ -63,6 +62,3 @@ public:
 };
 
 }  // namespace Mesh
-
-
-#endif  // MESH_EDGE_H

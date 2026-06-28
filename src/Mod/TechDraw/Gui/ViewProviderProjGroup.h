@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERVIEWGROUP_H
-#define DRAWINGGUI_VIEWPROVIDERVIEWGROUP_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -55,6 +54,9 @@ public:
     bool canDelete(App::DocumentObject* obj) const override;
 
     void regroupSubViews();
+    void updateData(const App::Property* prop) override;
+    void onChangeAutoDistribute();
+
 
 protected:
     bool setEdit(int ModNum) override;
@@ -62,5 +64,3 @@ protected:
 };
 
 } // namespace TechDrawGui
-
-#endif // DRAWINGGUI_VIEWPROVIDERVIEWGROUP_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKCHECKGEOMETRY_H
-#define TASKCHECKGEOMETRY_H
+#pragma once
 
 #include <functional>
 #include <tuple>
@@ -241,5 +240,3 @@ private:
     QProgressDialog* myProgress;
 };
 }  // namespace PartGui
-
-#endif  // TASKCHECKGEOMETRY_H

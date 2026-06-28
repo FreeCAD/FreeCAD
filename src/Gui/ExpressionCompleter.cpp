@@ -286,6 +286,19 @@ public:
         return result;
     }
 
+    // Store named object property list in cache for performance purposes,
+    // to avoid building it again for each requested index
+    std::vector<std::pair<const char*, App::Property*>>& getCachedPropertyNamedList(
+        DocumentObject* obj
+    ) const
+    {
+        if (!this->namedPropsCache.contains(obj)) {
+            this->namedPropsCache[obj];
+            obj->getPropertyNamedList(this->namedPropsCache[obj]);
+        }
+        return this->namedPropsCache[obj];
+    }
+
     // The completion tree structure created takes into account the current document and object
     //
     // It is done as such:
@@ -311,7 +324,6 @@ public:
         int docSize = (int)docs.size() * 2;
         int objSize = 0;
         int propSize = 0;
-        std::vector<std::pair<const char*, App::Property*>> props;
         App::Document* doc = nullptr;
         App::DocumentObject* obj = nullptr;
         const char* propName = nullptr;
@@ -361,7 +373,7 @@ public:
                         row = idx;
                     }
                     // get the properties
-                    cobj->getPropertyNamedList(props);
+                    auto& props = this->getCachedPropertyNamedList(cobj);
                     propSize = (int)props.size();
 
                     // if this is an invalid index, bail out
@@ -391,7 +403,7 @@ public:
                 QString res;
                 // we resolved the property
                 if (propName) {
-                    res = QString::fromLatin1(propName);
+                    res = QString::fromUtf8(propName);
                     // resolve the property
                     if (sep && !noProperty && !retrieveSubPaths(prop).empty()) {
                         res += QLatin1Char('.');
@@ -469,7 +481,7 @@ public:
         }
         if (!propName) {
             idx = info.prop < 0 ? row : info.prop;
-            obj->getPropertyNamedList(props);
+            auto& props = this->getCachedPropertyNamedList(obj);
             propSize = (int)props.size();
             // return if the property is invalid
             if (idx < 0 || idx >= propSize) {
@@ -484,7 +496,7 @@ public:
                     *count = propSize;
                 }
                 if (v) {
-                    QString res = QString::fromLatin1(propName);
+                    QString res = QString::fromUtf8(propName);
 
                     // check to see if we have accessible paths from this prop name?
                     if (sep && !retrieveSubPaths(prop).empty()) {
@@ -515,14 +527,13 @@ public:
                 auto str = paths[idx].getSubPathStr();
                 if (str.size() && (str[0] == '.' || str[0] == '#')) {
                     // skip the "."
-                    *v = QString::fromLatin1(str.c_str() + 1);
+                    *v = QString::fromStdString(str.substr(1));
                 }
                 else {
-                    *v = QString::fromLatin1(str.c_str());
+                    *v = QString::fromStdString(str);
                 }
             }
         }
-        return;
     }
 
     QModelIndex parent(const QModelIndex& index) const override
@@ -682,6 +693,7 @@ public:
     }
 
 private:
+    mutable std::map<DocumentObject*, std::vector<std::pair<const char*, App::Property*>>> namedPropsCache;
     std::set<App::DocumentObject*> inList;
     std::string currentDoc;
     std::string currentObj;

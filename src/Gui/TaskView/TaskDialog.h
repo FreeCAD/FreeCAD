@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKDIALOG_H
-#define GUI_TASKVIEW_TASKDIALOG_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -101,6 +100,7 @@ public:
     {
         return escapeButton;
     }
+    QDialogButtonBox::ButtonRole roleOnEscape {QDialogButtonBox::ButtonRole::RejectRole};
 
     /// Defines whether a task dialog must be closed if the document changed the
     /// active transaction.
@@ -111,6 +111,16 @@ public:
     bool isAutoCloseOnTransactionChange() const
     {
         return autoCloseTransaction;
+    }
+
+    /// Defines whether a task dialog must be closed if the document exits edit mode.
+    void setAutoCloseOnResetEdit(bool on)
+    {
+        autoCloseResetEdit = on;
+    }
+    bool isAutoCloseOnResetEdit() const
+    {
+        return autoCloseResetEdit;
     }
 
     /// Defines whether a task dialog must be closed if the document is
@@ -192,6 +202,9 @@ public:
     /// changing the active transaction
     virtual void autoClosedOnTransactionChange();
     /// is called by the framework when the dialog is automatically closed due to
+    /// exiting edit mode
+    virtual void autoClosedOnResetEdit();
+    /// is called by the framework when the dialog is automatically closed due to
     /// deleting the document
     virtual void autoClosedOnDeletedDocument();
     /// is called by the framework when the dialog is automatically closed due to
@@ -209,6 +222,13 @@ public:
     virtual void onUndo();
     /// is called by the framework if the user press the redo button
     virtual void onRedo();
+
+    /// Called by the framework when it becomes the shown dialog
+    /// of the stacked task panel (e.g. when it's document becomes active)
+    virtual void activate();
+    /// Called by the framework when it stops being the shown dialog
+    /// of the stacked task panel (e.g. when it's document stops being active)
+    virtual void deactivate();
 
     void emitDestructionSignal()
     {
@@ -229,6 +249,7 @@ private:
     const Gui::MDIView* associatedView;
     bool escapeButton;
     bool autoCloseTransaction;
+    bool autoCloseResetEdit;
     bool autoCloseDeletedDocument;
     bool autoCloseClosedView;
 
@@ -253,5 +274,3 @@ private:
 
 }  // namespace TaskView
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TASKDIALOG_H

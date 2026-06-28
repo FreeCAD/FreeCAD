@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSelectLinkProperty_H
-#define GUI_TASKVIEW_TaskSelectLinkProperty_H
+#pragma once
 
 #include "TaskView.h"
 #include <Gui/Selection/Selection.h>
@@ -121,5 +120,3 @@ private:
 
 }  // namespace TaskView
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -4,24 +4,24 @@
   <context>
     <name>StartGui::FirstStartWidget</name>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="92"/>
+      <location filename="../../FirstStartWidget.cpp" line="91"/>
       <source>Done</source>
       <translation>완료</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="95"/>
+      <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Welcome to %1</source>
       <translation>%1에 오신 것을 환영합니다.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="98"/>
+      <location filename="../../FirstStartWidget.cpp" line="97"/>
       <source>Set your basic configuration options below.</source>
-      <translation>아래에서 여러분이 작업하기에 좋은 기본 환경을 설정하세요.</translation>
+      <translation>아래에서 기본 설정 옵션을 지정하십시오.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="99"/>
+      <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation>이 설정(을 포함한 다른 추가 설정들)은 나중에 언제든지 환경설정 메뉴에서 변경할 수 있습니다.</translation>
+      <translation>이 옵션과 그 밖의 여러 설정은 나중에 환경설정에서 변경할 수 있습니다.</translation>
     </message>
   </context>
   <context>
@@ -39,7 +39,7 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="240"/>
       <source>Navigation Style</source>
-      <translation>탐색 스타일</translation>
+      <translation>네비게이션 스타일</translation>
     </message>
   </context>
   <context>
@@ -52,106 +52,106 @@
     <message>
       <location filename="../../Manipulator.cpp" line="46"/>
       <source>&amp;Start Page</source>
-      <translation>시작 화면</translation>
+      <translation>시작 페이지(&amp;S)</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation>시작 페이지를 보여줍니다</translation>
+      <translation>시작 페이지를 표시합니다</translation>
     </message>
   </context>
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="209"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Open File</source>
       <translation>파일 열기</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
-      <source>Assembly</source>
-      <translation>조립품</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="224"/>
-      <source>2D Draft</source>
-      <translation>2D 도면</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="224"/>
-      <source>Creates a 2D Draft document</source>
-      <translation>2D 제도 문서를 생성합니다</translation>
-    </message>
-    <message>
       <location filename="../../StartView.cpp" line="227"/>
+      <source>Assembly</source>
+      <translation>조립체</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="232"/>
+      <source>2D Draft</source>
+      <translation>2D 드래프트</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="232"/>
+      <source>Creates a 2D Draft document</source>
+      <translation>2D 드래프트 문서를 만듭니다</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="235"/>
       <source>BIM/Architecture</source>
       <translation>BIM/건축</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="204"/>
+      <location filename="../../StartView.cpp" line="212"/>
       <source>Empty File</source>
       <translation>빈 파일</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="205"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation>내용이 빈 새로운 프리캐드 파일을 생성합니다</translation>
+      <translation>새로운 빈 FreeCAD 파일을 만듭니다</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="210"/>
+      <location filename="../../StartView.cpp" line="218"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation>기존 CAD 파일이나 3D모형을 엽니다</translation>
+      <translation>기존 CAD 파일 또는 3D 모델을 엽니다</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="214"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Parametric Body</source>
-      <translation>매개변수 제어 몸통</translation>
+      <translation>파라메트릭 바디</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="215"/>
+      <location filename="../../StartView.cpp" line="223"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation>부품설계 작업대에서 빈 몸통을 하나 생성합니다</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="220"/>
-      <source>Creates an assembly project</source>
-      <translation>조립 작업대에서 빈 조립품을 생성하며 시작합니다</translation>
+      <translation>파트 디자인 워크벤치에서 바디를 만듭니다</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>
+      <source>Creates an assembly project</source>
+      <translation>어셈블리 프로젝트를 생성합니다</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="236"/>
       <source>Creates an architectural project</source>
       <translation>건축 프로젝트를 생성합니다</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="503"/>
+      <location filename="../../StartView.cpp" line="520"/>
       <source>New File</source>
       <translation>새 파일</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="504"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Examples</source>
       <translation>예시</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="505"/>
+      <location filename="../../StartView.cpp" line="524"/>
       <source>Recent Files</source>
       <translation>최근 파일</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="521"/>
+      <location filename="../../StartView.cpp" line="539"/>
       <source>Open First Start Setup</source>
-      <translation>초기 설정 열기</translation>
+      <translation>첫 시작 설정 열기</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="522"/>
+      <location filename="../../StartView.cpp" line="540"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation>이 시작 페이지를 다시 표시하지 않기 (빈 화면으로 시작)</translation>
+      <translation>이 시작 페이지를 다시 표시하지 않음(빈 화면으로 시작)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="497"/>
+      <location filename="../../StartView.cpp" line="514"/>
       <source>Start</source>
       <translation>시작</translation>
     </message>
@@ -159,44 +159,44 @@
   <context>
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Classic</source>
       <translation>FreeCAD 기본 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
       <source>FreeCAD Dark</source>
       <translation>FreeCAD 어두운 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="117"/>
       <source>FreeCAD Light</source>
       <translation>FreeCAD 밝은 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="247"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
       <source>Theme</source>
       <translation>테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="253"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation>더 많은 테마를 찾고 싶다면, &lt;a href="freecad:Std_AddonMgr"&gt;관리자&lt;/a&gt;를 사용하여 추가 테마를 설치할 수 있습니다.</translation>
+      <translation>더 많은 테마를 찾고 계십니까? &lt;a href="freecad:Std_AddonMgr"&gt;애드온 관리자&lt;/a&gt;에서 추가할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="257"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="260"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 어두운 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="258"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 밝은 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="259"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 기본 테마</translation>
@@ -212,40 +212,40 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Contents</source>
-      <translation>내용</translation>
+      <translation>콘텐츠</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <location filename="../../DlgStartPreferences.ui" line="86"/>
       <source>Show only FreeCAD files in additional folder</source>
-      <translation type="unfinished">Show only FreeCAD files in additional folder</translation>
+      <translation>추가 폴더에서 FreeCAD 파일만 표시</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>예시 폴더 콘텐츠 표시</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="40"/>
       <source>Show additional folder contents</source>
-      <translation type="unfinished">Show additional folder contents</translation>
+      <translation>추가 폴더 콘텐츠 표시</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>시작 페이지에 표시할 사용자 지정 폴더입니다.
+여러 폴더를 추가하려면 경로를 ";;"로 구분하십시오.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation>시작 페이지에 예제 파일을 보입니다</translation>
+      <translation>시작 페이지에 예시 파일을 표시합니다</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation>프리캐드 실행시 시작 페이지가 자동으로 닫힙니다</translation>
+      <translation>FreeCAD 실행 시 시작 페이지가 자동으로 닫힙니다</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -255,15 +255,28 @@ Multiple folders can be added using ";;" to separate paths.</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>불러온 후 시작 페이지 닫기</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="125"/>
+      <location filename="../../AppStartGui.cpp" line="139"/>
       <source>Start</source>
       <translation>시작</translation>
+    </message>
+  </context>
+  <context>
+    <name>Start::DisplayedFilesModel</name>
+    <message>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
+      <source>Created at:</source>
+      <translation>최초 작성일:</translation>
+    </message>
+    <message>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
+      <source>Modified at:</source>
+      <translation>최종 수정일:</translation>
     </message>
   </context>
 </TS>

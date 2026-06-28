@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TINTEGER_H
-#define WM4TINTEGER_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4System.h"
@@ -119,5 +118,3 @@ TInteger<N> operator* (int i, const TInteger<N>& rkI);
 }
 
 #include "Wm4TInteger.inl"
-
-#endif

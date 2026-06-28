@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALMANAGERLOCAL_H
-#define MATERIAL_MATERIALMANAGERLOCAL_H
+#pragma once
 
 #include <memory>
 
@@ -35,6 +34,7 @@
 
 namespace fs = std::filesystem;
 
+class QFileInfo;
 class QMutex;
 
 namespace App
@@ -130,5 +130,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_MATERIALMANAGERLOCAL_H

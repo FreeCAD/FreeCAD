@@ -32,17 +32,15 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "QGIProjGroup.h"
-#include "QGIViewDimension.h"
 #include "QGIViewPart.h"
-#include "Rez.h"
-
+#include "QGSPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
 
 QGIProjGroup::QGIProjGroup()
 {
-    m_origin = new QGraphicsItemGroup();                  //QGIG added to this QGIG??
+    m_origin = new QGraphicsItemGroup();
     m_origin->setParentItem(this);
 
     setFlag(ItemIsSelectable, false);
@@ -50,7 +48,7 @@ QGIProjGroup::QGIProjGroup()
     setFiltersChildEvents(true);
 }
 
-TechDraw::DrawProjGroup * QGIProjGroup::getDrawView() const
+TechDraw::DrawProjGroup * QGIProjGroup::getPGroupFeature() const
 {
     App::DocumentObject *obj = getViewObject();
     return dynamic_cast<TechDraw::DrawProjGroup *>(obj);
@@ -58,12 +56,12 @@ TechDraw::DrawProjGroup * QGIProjGroup::getDrawView() const
 
 bool QGIProjGroup::autoDistributeEnabled() const
 {
-    return getDrawView() && getDrawView()->AutoDistribute.getValue();
+    return getPGroupFeature() && getPGroupFeature()->AutoDistribute.getValue();
 }
 
 
 // note that we are not actually handling any of these events (ie we don't return true, and we don't
-// set the the event to ignore) here.
+// set the event to ignore) here.
 bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
 {
     auto qvpart = dynamic_cast<QGIViewPart*>(watched);
@@ -85,13 +83,6 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
         auto *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
 
         // Disable moves on the view to prevent double drag
-        std::vector<QGraphicsItem*> modifiedChildren;
-        for (auto* child : childItems()) {
-            if (child->isSelected() && (child->flags() & QGraphicsItem::ItemIsMovable)) {
-                child->setFlag(QGraphicsItem::ItemIsMovable, false);
-                modifiedChildren.push_back(child);
-            }
-        }
 
         switch (event->type()) {
             case QEvent::GraphicsSceneMousePress:
@@ -105,9 +96,6 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
                 break;
             default:
                 break;
-        }
-        for (auto* child : modifiedChildren) {
-            child->setFlag(QGraphicsItem::ItemIsMovable, true);
         }
         return false;
     }
@@ -168,7 +156,6 @@ void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
 void QGIProjGroup::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
     QGIView *qAnchor = getAnchorQItem();
-    // this is obsolete too?
     if(scene() && qAnchor && (qAnchor == scene()->mouseGrabberItem() || autoDistributeEnabled())) {
         if((mousePos - event->screenPos()).manhattanLength() > 5) {    //if the mouse has moved more than 5, process the mouse event
             QGIViewCollection::mouseMoveEvent(event);
@@ -201,7 +188,7 @@ void QGIProjGroup::mouseReleaseEvent(QGIView* originator, QGraphicsSceneMouseEve
 QGIView * QGIProjGroup::getAnchorQItem() const
 {
     // Get the currently assigned anchor view
-    App::DocumentObject *anchorObj = getDrawView()->Anchor.getValue();
+    App::DocumentObject *anchorObj = getPGroupFeature()->Anchor.getValue();
     auto anchorView( dynamic_cast<TechDraw::DrawView *>(anchorObj) );
     if (!anchorView) {
         return nullptr;
@@ -243,4 +230,23 @@ bool QGIProjGroup::isMember(App::DocumentObject* dvpObj) const
     return itMatch != groupOutlist.end();
 }
 
+QList<QGIViewPart*> QGIProjGroup::secondaryQViews() const
+{
+    auto* qgspage = static_cast<QGSPage*>(scene());
+    if (!qgspage) {
+        return {};
+    }
 
+    DrawProjGroup* pgFeature = getPGroupFeature();
+    auto pgViewsAll = pgFeature->getViewsAsDPGI();
+    QList<QGIViewPart*> result;
+
+    for (auto& pgView : pgViewsAll) {
+        auto* qview = dynamic_cast<QGIViewPart *>(qgspage->findQViewForDocObj(pgView));
+        if (!qview) {
+            continue;
+        }
+        result.append(qview);
+    }
+    return result;
+}

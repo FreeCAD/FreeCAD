@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERVIEWGROUPITEM_H
-#define DRAWINGGUI_VIEWPROVIDERVIEWGROUPITEM_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -53,7 +52,7 @@ public:
     TechDraw::DrawProjGroupItem* getViewObject() const override;
     TechDraw::DrawProjGroupItem* getObject() const;
     void unsetEdit(int ModNum) override;
-    bool onDelete(const std::vector<std::string> &) override;
+    bool onDelete(const std::vector<std::string>& subNames) override;
     bool canDelete(App::DocumentObject* obj) const override;
 
 protected:
@@ -62,5 +61,3 @@ protected:
 };
 
 } // namespace TechDrawGui
-
-#endif // DRAWINGGUI_VIEWPROVIDERVIEWGROUPITEM_H

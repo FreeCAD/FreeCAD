@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERBALLOON_H
-#define DRAWINGGUI_VIEWPROVIDERBALLOON_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -70,6 +69,3 @@ protected:
 };
 
 } // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERBALLOON_H

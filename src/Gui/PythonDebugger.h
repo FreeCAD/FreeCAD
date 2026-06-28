@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PYTHONDEBUG_H
-#define GUI_PYTHONDEBUG_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 #include <frameobject.h>
@@ -186,5 +185,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PYTHONDEBUG_H

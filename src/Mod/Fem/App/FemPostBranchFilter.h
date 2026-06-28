@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemPostBranchFilter_H
-#define Fem_FemPostBranchFilter_H
+#pragma once
 
 
 #include "FemPostFilter.h"
@@ -71,6 +70,3 @@ private:
 };
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemPostBranchFilter_H

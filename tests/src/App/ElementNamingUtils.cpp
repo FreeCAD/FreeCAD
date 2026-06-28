@@ -59,4 +59,29 @@ TEST_F(ElementNamingUtilsTest, findElementName)
     EXPECT_STREQ(name3, "Edge3");
     EXPECT_STREQ(name4, "Edge4");
 }
+
+TEST_F(ElementNamingUtilsTest, indexOfElement)
+{
+    // Valid cases
+    EXPECT_EQ(Data::indexOfElement("Edge1", "Edge"), 1);
+    EXPECT_EQ(Data::indexOfElement("Edge12", "Edge"), 12);
+    EXPECT_EQ(Data::indexOfElement("Edge999", "Edge"), 999);
+
+    // Prefix mismatch
+    EXPECT_EQ(Data::indexOfElement("Node5", "Edge"), 0);
+
+    // Missing numeric suffix
+    EXPECT_EQ(Data::indexOfElement("Edge", "Edge"), 0);
+
+    // Non-numeric suffix
+    EXPECT_EQ(Data::indexOfElement("EdgeX", "Edge"), 0);
+    EXPECT_EQ(Data::indexOfElement("Edge12X", "Edge"), 0);
+
+    // Zero or invalid index
+    EXPECT_EQ(Data::indexOfElement("Edge0", "Edge"), 0);
+
+    // Degenerate inputs
+    EXPECT_EQ(Data::indexOfElement("", "Edge"), 0);
+    EXPECT_EQ(Data::indexOfElement("123", ""), 0);
+}
 // NOLINTEND(readability-magic-numbers)

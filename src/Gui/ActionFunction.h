@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ACTIONFUNCTION_H
-#define GUI_ACTIONFUNCTION_H
+#pragma once
 
 #include <QObject>
 #include <QVariant>
@@ -46,13 +45,13 @@ class ActionFunctionPrivate;
     {
         Gui::ActionFunction* func = new Gui::ActionFunction(menu);
 
-        QAction* a1 = menu->addAction(QObject::tr("Menu item 1..."));
+        QAction* a1 = menu->addAction(QObject::tr("Menu item 1…"));
         func->triggered(a1, std::bind(&MyViewProvider::doItem1, this));
 
-        QAction* a2 = menu->addAction(QObject::tr("Menu item 2..."));
+        QAction* a2 = menu->addAction(QObject::tr("Menu item 2…"));
         func->triggered(a2, std::bind(&MyViewProvider::doItem2, this));
 
-        QAction* a3 = menu->addAction(QObject::tr("Menu item 3..."));
+        QAction* a3 = menu->addAction(QObject::tr("Menu item 3…"));
         func->triggered(a3, std::bind(&MyViewProvider::doItem3, this));
     }
   \endcode
@@ -115,6 +114,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_ACTIONFUNCTION_H

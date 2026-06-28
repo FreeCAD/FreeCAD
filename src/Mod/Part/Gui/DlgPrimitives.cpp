@@ -2533,6 +2533,9 @@ void Location::onPlacementChanged()
 void Location::onViewPositionButton()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
+
+    ui->viewPositionButton->setChecked(true);
+
     if (!doc) {
         return;
     }
@@ -2560,6 +2563,7 @@ void Location::pickCallback(void* ud, SoEventCallback* n)
 {
     const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
     Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Location* dlg = static_cast<Location*>(ud);
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
@@ -2569,7 +2573,6 @@ void Location::pickCallback(void* ud, SoEventCallback* n)
             if (point) {
                 SbVec3f pnt = point->getPoint();
                 SbVec3f nor = point->getNormal();
-                Location* dlg = static_cast<Location*>(ud);
                 dlg->ui->XPositionQSB->setValue(pnt[0]);
                 dlg->ui->YPositionQSB->setValue(pnt[1]);
                 dlg->ui->ZPositionQSB->setValue(pnt[2]);
@@ -2585,8 +2588,8 @@ void Location::pickCallback(void* ud, SoEventCallback* n)
             n->setHandled();
             view->setEditing(false);
             view->setRedirectToSceneGraph(false);
-            Location* dlg = static_cast<Location*>(ud);
             dlg->activeView = nullptr;
+            dlg->ui->viewPositionButton->setChecked(false);
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback, ud);
             SoNode* root = view->getSceneGraph();
             if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId())) {
@@ -2645,7 +2648,7 @@ QDialogButtonBox::StandardButtons TaskPrimitives::getStandardButtons() const
 void TaskPrimitives::modifyStandardButtons(QDialogButtonBox* box)
 {
     QPushButton* btn = box->button(QDialogButtonBox::Ok);
-    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "&Create"));
+    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "C&reate"));
 }
 
 bool TaskPrimitives::accept()

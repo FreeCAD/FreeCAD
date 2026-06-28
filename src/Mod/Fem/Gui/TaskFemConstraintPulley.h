@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintPulley_H
-#define GUI_TASKVIEW_TaskFemConstraintPulley_H
+#pragma once
 
 #include "TaskFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
@@ -69,5 +68,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintPulley_H

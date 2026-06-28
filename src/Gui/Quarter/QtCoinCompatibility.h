@@ -1,5 +1,4 @@
-#ifndef QUARTER_QTCOINCOMPATIBILITY_H
-#define QUARTER_QTCOINCOMPATIBILITY_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -47,5 +46,3 @@ namespace QtCoinCompatibility {
 }
 
 }}} // namespace
-
-#endif // QUARTER_QTCOINCOMPATIBILITY_H

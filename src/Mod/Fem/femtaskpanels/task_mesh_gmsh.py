@@ -39,20 +39,21 @@ from femmesh import gmshtools
 from . import base_femlogtaskpanel
 
 
-class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
+class _TaskPanel(base_femlogtaskpanel._BaseWorkerTaskPanel):
     """
     The TaskPanel for editing References property of
     MeshGmsh objects and creation of new FEM mesh
     """
 
     def __init__(self, obj):
-        super().__init__(obj, gmshtools.GmshTools(obj))
-
+        # set Tool and form before init base class
+        gmshtools.GmshTools(obj)
         self.form = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshGmsh.ui"
         )
-        self.text_log = self.form.te_output
-        self.text_time = self.form.l_time
+        self.observer = _Observer(self)
+
+        super().__init__(obj)
 
         self.setup_connections()
 
@@ -95,6 +96,8 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
 
     def set_widgets(self):
         "fills the widgets"
+        super().set_widgets()
+
         self.form.qsb_max_size.setProperty("value", self.clmax)
         FreeCADGui.ExpressionBinding(self.form.qsb_max_size).bind(
             self.obj, "CharacteristicLengthMax"
@@ -110,18 +113,35 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
 
     def max_changed(self, base_quantity_value):
         self.clmax = base_quantity_value
+        self.obj.CharacteristicLengthMax = self.clmax
 
     def min_changed(self, base_quantity_value):
         self.clmin = base_quantity_value
+        self.obj.CharacteristicLengthMin = self.clmin
 
     def choose_dimension(self, index):
         if index < 0:
             return
         self.form.cb_dimension.setCurrentIndex(index)
         self.dimension = self.form.cb_dimension.itemText(index)
+        self.obj.ElementDimension = self.dimension
 
     def choose_order(self, index):
         if index < 0:
             return
         self.form.cb_order.setCurrentIndex(index)
         self.order = self.form.cb_order.itemText(index)
+        self.obj.ElementOrder = self.order
+
+
+class _Observer(base_femlogtaskpanel._WorkerObserver):
+    def __init__(self, task):
+        super().__init__(task)
+        # define property groups to be observed
+        self.groups = ["Mesh Parameters"]
+
+    def slotChangedObject(self, observed, prop):
+        super().slotChangedObject(observed, prop)
+        # check if shape changes
+        if observed == self.task.obj and prop == "Shape":
+            self.task.prepared = False

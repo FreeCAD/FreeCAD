@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMEDGE_H
-#define DRAWINGGUI_QGRAPHICSITEMEDGE_H
+#pragma once
 
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -52,9 +51,6 @@ public:
     void setSmoothEdge(bool b) { isSmoothEdge = b; }
     bool getSmoothEdge() const { return(isSmoothEdge); }
     void setPrettyNormal() override;
-
-    double getEdgeFuzz() const;
-
     void setLinePen(const QPen& isoPen);
 
     void setSource(TechDraw::SourceType source) { m_source = source; }
@@ -79,5 +75,3 @@ private:
 };
 
 }
-
-#endif // DRAWINGGUI_QGRAPHICSITEMEDGE_H

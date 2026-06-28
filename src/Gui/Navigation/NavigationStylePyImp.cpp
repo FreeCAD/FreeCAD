@@ -20,10 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-// inclusion of the generated files (generated out of NavigationStylePy.pyi)
+// generated out of NavigationStyle.pyi
 #include "Navigation/NavigationStylePy.h"
 #include "Navigation/NavigationStylePy.cpp"
-
 
 using namespace Gui;
 
@@ -37,6 +36,72 @@ using namespace Gui;
 std::string NavigationStylePy::representation() const
 {
     return {"<NavigationStyle object>"};
+}
+
+/** Returns the rotation enabled state */
+PyObject* NavigationStylePy::isRotationEnabled(PyObject* args)
+{
+    PY_TRY
+    {
+        if (!PyArg_ParseTuple(args, "")) {
+            return nullptr;
+        }
+
+        if (getNavigationStylePtr()->isRotationEnabled()) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    PY_CATCH;
+}
+
+/** Sets the rotation enabled state */
+PyObject* NavigationStylePy::setRotationEnabled(PyObject* args)
+{
+    PY_TRY
+    {
+        int pEnabled;
+        if (!PyArg_ParseTuple(args, "p", &pEnabled)) {
+            return nullptr;
+        }
+
+        getNavigationStylePtr()->setRotationEnabled(pEnabled);
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+/** Returns the orientation lock state */
+PyObject* NavigationStylePy::isOrientationLocked(PyObject* args)
+{
+    PY_TRY
+    {
+        if (!PyArg_ParseTuple(args, "")) {
+            return nullptr;
+        }
+
+        if (getNavigationStylePtr()->isOrientationLocked()) {
+            Py_RETURN_TRUE;
+        }
+        Py_RETURN_FALSE;
+    }
+    PY_CATCH;
+}
+
+/** Sets the orientation lock state */
+PyObject* NavigationStylePy::setOrientationLocked(PyObject* args)
+{
+    PY_TRY
+    {
+        int pEnabled;
+        if (!PyArg_ParseTuple(args, "p", &pEnabled)) {
+            return nullptr;
+        }
+
+        getNavigationStylePtr()->setOrientationLocked(pEnabled);
+        Py_Return;
+    }
+    PY_CATCH;
 }
 
 PyObject* NavigationStylePy::getCustomAttributes(const char* /*attr*/) const

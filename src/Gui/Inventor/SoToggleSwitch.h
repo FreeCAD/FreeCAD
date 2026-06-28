@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef SO_TOGGLE_SWITCH
-#define SO_TOGGLE_SWITCH
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -55,5 +54,3 @@ protected:
 private:
     using inherited = SoSwitch;
 };
-
-#endif /* SO_TOGGLE_SWITCH */

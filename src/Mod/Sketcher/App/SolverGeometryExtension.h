@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SOLVERGEOMETRYEXTENSION_H
-#define SKETCHER_SOLVERGEOMETRYEXTENSION_H
+#pragma once
 
 #include <Base/Exception.h>
 #include <Mod/Part/App/GeometryExtension.h>
@@ -504,6 +503,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_SOLVERGEOMETRYEXTENSION_H

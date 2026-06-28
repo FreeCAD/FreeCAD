@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerRotate_H
-#define SKETCHERGUI_DrawSketchHandlerRotate_H
+#pragma once
 
 #include <QApplication>
 
@@ -37,7 +36,6 @@
 #include "DrawSketchControllableHandler.h"
 #include "SketcherTransformationExpressionHelper.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 using namespace Sketcher;
@@ -54,7 +52,8 @@ using DSHRotateController = DrawSketchDefaultWidgetController<
     /*OnViewParametersT =*/OnViewParameters<4>,
     /*WidgetParametersT =*/WidgetParameters<1>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHRotateControllerBase = DSHRotateController::ControllerBase;
 
@@ -146,7 +145,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rotate geometries"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Rotate geometries"));
 
             expressionHelper.storeOriginalExpressions(sketchgui->getSketchObject(), listOfGeoIds);
 
@@ -166,7 +165,7 @@ private:
                 deleteOriginalGeos();
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -176,7 +175,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to rotate")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -356,16 +355,19 @@ private:
                         newConstr->Second = secondIndexi;
                         newConstr->Third = thirdIndexi;
                     }
-                    else if ((cstr->Type == Coincident || cstr->Type == Tangent
-                              || cstr->Type == Symmetric || cstr->Type == Perpendicular
-                              || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
-                              || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
-                             && firstIndex >= 0 && secondIndex >= 0
-                             && thirdIndex == GeoEnum::GeoUndef) {
+                    else if (
+                        (cstr->Type == Coincident || cstr->Type == Tangent
+                         || cstr->Type == Symmetric || cstr->Type == Perpendicular
+                         || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
+                         || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
+                        && firstIndex >= 0 && secondIndex >= 0 && thirdIndex == GeoEnum::GeoUndef
+                    ) {
                         newConstr->Second = secondIndexi;
                     }
-                    else if ((cstr->Type == Radius || cstr->Type == Diameter || cstr->Type == Weight)
-                             && firstIndex >= 0) {
+                    else if (
+                        (cstr->Type == Radius || cstr->Type == Diameter || cstr->Type == Weight)
+                        && firstIndex >= 0
+                    ) {
                         if (deleteOriginal || !cloneConstraints) {
                             newConstr->setValue(cstr->getValue());
                         }
@@ -375,9 +377,10 @@ private:
                             newConstr->Second = firstIndexi;
                         }
                     }
-                    else if ((cstr->Type == Distance || cstr->Type == DistanceX
-                              || cstr->Type == DistanceY)
-                             && firstIndex >= 0) {
+                    else if (
+                        (cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
+                        && firstIndex >= 0
+                    ) {
                         if (!deleteOriginal && cloneConstraints
                             && (cstr->First == cstr->Second || secondIndex < 0)) {  // only line
                                                                                     // distances
@@ -674,6 +677,3 @@ void DSHRotateController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerRotate_H

@@ -84,10 +84,6 @@ void StdCmdPart::activated(int iMsg)
         "selected_objects = Gui.Selection.getSelection()\n"
         "if len(selected_objects) > 1:\n"
         "    for obj in selected_objects:\n"
-        "        # Add subobjects if obj is a container\n"
-        "        if hasattr(obj, 'OutList') and len(obj.OutList) > 0:\n"
-        "            for child in obj.OutList:\n"
-        "                App.activeDocument().%s.addObject(child)\n"
         "        App.activeDocument().%s.addObject(obj)\n",
         PartName.c_str(),
         PartName.c_str()
@@ -96,10 +92,25 @@ void StdCmdPart::activated(int iMsg)
     doCommand(
         Gui::Command::Gui,
         "Gui.activateView('Gui::View3DInventor', True)\n"
+        "activePart = Gui.activeView().getActiveObject('%s')\n"
+        "activeAsm = Gui.activeView().getActiveObject('%s')\n"
+        "if activePart and not activeAsm:\n"
+        "    activePart.addObject(App.activeDocument().Tip)\n"
+        "elif not activePart and activeAsm:\n"
+        "    activeAsm.addObject(App.activeDocument().Tip)\n"
+        "elif activePart and activeAsm:\n"
+        "    if activePart.hasObject(activeAsm, True):\n"
+        "        activeAsm.addObject(App.activeDocument().Tip)\n"
+        "    elif activeAsm.hasObject(activePart, True):\n"
+        "        activePart.addObject(App.activeDocument().Tip)\n"
         "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
+        PARTKEY,
+        ASSEMBLYKEY,
         PARTKEY,
         PartName.c_str()
     );
+
+    commitCommand();
 
     updateActive();
 }

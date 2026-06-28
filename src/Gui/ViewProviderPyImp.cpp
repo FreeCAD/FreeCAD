@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <Inventor/SbRotation.h>
 #include <Inventor/SoFullPath.h>
 #include <Inventor/details/SoDetail.h>
@@ -29,27 +28,27 @@
 #include <QByteArray>
 #include <QDataStream>
 
-
-#include <Base/BoundBoxPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
-
-#include "PythonWrapper.h"
-#include "SoFCDB.h"
-
-// inclusion of the generated files (generated out of ViewProviderPy.pyi)
-#include <Gui/ViewProviderPy.h>
-#include <Gui/ViewProviderPy.cpp>
 #include <Gui/View3DPy.h>
 #include <Gui/View3DInventor.h>
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>
-#include <Base/MatrixPy.h>
 #include <Base/Placement.h>
-#include <Base/PlacementPy.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
 
+#include "PythonWrapper.h"
+#include "SoFCDB.h"
+#include "SoFullPathHelper.h"
+
+// generated out of ViewProvider.pyi
+#include "ViewProviderPy.h"
+#include "ViewProviderPy.cpp"
+
+#include <Base/BoundBoxPy.h>
+#include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
+#include <App/DocumentObjectPy.h>
 
 using namespace Gui;
 
@@ -149,7 +148,7 @@ PyObject* ViewProviderPy::supportedProperties(PyObject* args)
         auto data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it.getName()));
+            res.append(Base::toPyString(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -228,7 +227,9 @@ PyObject* ViewProviderPy::canDropObject(PyObject* args, PyObject* kw)
     PyObject* pyElements = Py_None;
     const char* subname = nullptr;
     static const std::array<const char*, 5> kwlist {"obj", "owner", "subname", "elem", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist, &obj, &owner, &subname, &pyElements)) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist, &obj, &owner, &subname, &pyElements)
+    ) {
         return nullptr;
     }
 
@@ -638,7 +639,7 @@ PyObject* ViewProviderPy::getDetailPath(PyObject* args) const
         throw Base::TypeError("'path' must be a coin.SoPath");
     }
     SoDetail* det = nullptr;
-    if (!getViewProviderPtr()->getDetailPath(sub, static_cast<SoFullPath*>(pPath), append, det)) {
+    if (!getViewProviderPtr()->getDetailPath(sub, Gui::toFullPath(pPath), append, det)) {
         delete det;
         Py_Return;
     }
@@ -737,7 +738,7 @@ int ViewProviderPy::setCustomAttributes(const char* attr, PyObject* value)
 Py::Object ViewProviderPy::getAnnotation() const
 {
     try {
-        auto node = getViewProviderPtr()->getAnnotation();
+        auto node = getViewProviderPtr()->getOrCreateAnnotation();
         PyObject* Ptr
             = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", node, 1);
         node->ref();

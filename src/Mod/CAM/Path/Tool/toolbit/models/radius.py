@@ -22,6 +22,7 @@
 # ***************************************************************************
 import FreeCAD
 import Path
+from typing import Optional, Mapping
 from ...shape import ToolBitShapeRadius
 from ..mixins import RotaryToolBitMixin, CuttingToolMixin
 from .base import ToolBit
@@ -30,10 +31,12 @@ from .base import ToolBit
 class ToolBitRadius(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeRadius
 
-    def __init__(self, shape: ToolBitShapeRadius, id: str | None = None):
+    def __init__(
+        self, shape: ToolBitShapeRadius, id: str | None = None, attrs: Optional[Mapping] = None
+    ):
         Path.Log.track(f"ToolBitRadius __init__ called with shape: {shape}, id: {id}")
-        super().__init__(shape, id=id)
-        CuttingToolMixin.__init__(self, self.obj)
+        super().__init__(shape, id=id, attrs=attrs)
+        self._init_cutting_properties(self.obj)
 
     @property
     def summary(self) -> str:

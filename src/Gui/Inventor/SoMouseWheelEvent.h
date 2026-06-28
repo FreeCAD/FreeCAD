@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SOMOUSEWHEELEVENT_H_FC
-#define SOMOUSEWHEELEVENT_H_FC
+#pragma once
 
 
 #include <Inventor/events/SoEvent.h>
@@ -65,5 +64,3 @@ public:  // methods
 private:  // data
     int delta;
 };
-
-#endif

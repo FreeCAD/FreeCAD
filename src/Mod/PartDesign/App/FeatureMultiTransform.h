@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureMultiTransform_H
-#define PARTDESIGN_FeatureMultiTransform_H
+#pragma once
 
 #include "FeatureTransformed.h"
 
@@ -64,6 +65,3 @@ protected:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureMultiTransform_H

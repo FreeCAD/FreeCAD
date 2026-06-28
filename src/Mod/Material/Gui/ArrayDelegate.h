@@ -21,11 +21,9 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_ArrayDelegate_H
-#define MATGUI_ArrayDelegate_H
+#pragma once
 
 #include <QDialog>
-#include <QDir>
 #include <QStandardItem>
 #include <QStyledItemDelegate>
 #include <QSvgWidget>
@@ -63,5 +61,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_ArrayDelegate_H

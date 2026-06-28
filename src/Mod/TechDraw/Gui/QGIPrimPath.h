@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIPRIMPATH_H
-#define DRAWINGGUI_QGIPRIMPATH_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -107,10 +106,7 @@ protected:
     QColor m_colNormalFill;                     //current Normal fill color def or plain fill
     Qt::BrushStyle m_fillNormal;               //current Normal fill style
 
-private:
-
+    double m_edgeFuzz;
 };
 
 } // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGIPRIMPATH_H

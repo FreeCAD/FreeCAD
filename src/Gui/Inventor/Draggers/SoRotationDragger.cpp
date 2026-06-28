@@ -399,6 +399,14 @@ void SoRotationDraggerContainer::setArcNormalDirection(const SbVec3f& dir)
     auto currentRot = rotation.getValue();
     currentRot.multVec(currentNormal, currentNormal);
 
+    // If the two directions are collinear and opposite then ensure that the
+    // dragger is rotated along the pointer axis
+    if (dir.equals(-currentNormal, 1e-5)) {
+        SbRotation rot {getPointerDirection(), std::numbers::pi_v<float>};
+        rotation = currentRot * rot;
+        return;
+    }
+
     SbRotation rot {currentNormal, dir};
     rotation = currentRot * rot;
 }

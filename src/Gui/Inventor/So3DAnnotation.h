@@ -21,8 +21,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#ifndef GUI_SO3DANNOTATION_H
-#define GUI_SO3DANNOTATION_H
+#pragma once
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -125,5 +124,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SO3DANNOTATION_H

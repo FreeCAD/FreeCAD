@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_MODULE_IO_H
-#define GUI_MODULE_IO_H
+#pragma once
 
 #include <QCoreApplication>
 #include <FCGlobal.h>
@@ -69,5 +68,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MODULE_IO_H

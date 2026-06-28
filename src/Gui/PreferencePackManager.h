@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_PREFERENCEPACKMANAGER_H
-#define BASE_PREFERENCEPACKMANAGER_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -238,6 +237,3 @@ private:
 }  // namespace Gui
 
 Q_DECLARE_METATYPE(Gui::PreferencePackManager::TemplateFile)  // So it can be used with QVariant
-
-
-#endif

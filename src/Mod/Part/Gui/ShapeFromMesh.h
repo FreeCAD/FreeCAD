@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SHAPEFROMMESH_H
-#define PARTGUI_SHAPEFROMMESH_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -48,5 +47,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_SHAPEFROMMESH_H

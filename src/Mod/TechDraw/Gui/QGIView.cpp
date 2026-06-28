@@ -84,7 +84,8 @@ QGIView::QGIView()
     m_label(new QGCustomLabel()),
     m_border(new QGCustomBorder()),
     m_caption(new QGICaption()),
-    m_lock(new QGCustomImage())
+    m_lock(new QGCustomImage()),
+    m_inhibitSnapOnPosChange(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -185,7 +186,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         else {
             // For general views we check if we need to snap to a position
             if (!(QApplication::keyboardModifiers() & Qt::AltModifier)) {
-                snapPosition(newPos);
+                if (!m_inhibitSnapOnPosChange) {
+                    snapPosition(newPos);
+                }
+                m_inhibitSnapOnPosChange = false;
             }
         }
 
@@ -246,7 +250,7 @@ void QGIView::dragFinished()
     bool ownTransaction = (viewObj->getDocument()->getTransactionID(true) == 0);
 
     if (ownTransaction) {
-        Gui::Command::openCommand("Drag view");
+        viewObj->getDocument()->openTransaction("Drag view");
     }
     // tell the feature that we have moved
     Gui::ViewProvider *vp = getViewProvider(viewObj);
@@ -264,7 +268,7 @@ void QGIView::dragFinished()
         snapping = false;
     }
     if (ownTransaction) {
-        Gui::Command::commitCommand();
+        viewObj->getDocument()->commitTransaction();
     }
 }
 
@@ -273,11 +277,15 @@ void QGIView::dragFinished()
 //! position, otherwise it is the position within the ProjectionGroup.
 void QGIView::snapPosition(QPointF& newPosition)
 {
+    if (m_inhibitSnapOnPosChange) {
+        return;
+    }
+
     if (!Preferences::SnapViews()) {
         return;
     }
 
-    auto feature = getViewObject();
+    DrawView* feature = getViewObject();
     if (!feature) {
         return;
     }
@@ -286,14 +294,18 @@ void QGIView::snapPosition(QPointF& newPosition)
         return;
     }
 
-    auto dvp = freecad_cast<DrawViewPart*>(feature);
+    auto* dvp = freecad_cast<DrawViewPart*>(feature);
     if (dvp  &&
         !dvp->hasGeometry()) {
         // too early. wait for updates to finish.
         return;
     }
 
-    auto vpPage = getViewProviderPage(feature);
+    ViewProviderPage* vpPage = getViewProviderPage(feature);
+    if (!vpPage) {
+        // too early. not added to page yet?
+        return;
+    }
 
     QGSPage* scenePage = vpPage->getQGSPage();
     if (!scenePage) {
@@ -546,19 +558,15 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     drawBorder();
 }
 
-//sets position in /Gui(graphics), not /App
-void QGIView::setPosition(qreal xPos, qreal yPos)
+//! get the X&Y position from the feature in Page coords (could be parent coords?), convert to Qt coords and update
+//! this graphic item's scene position.
+void QGIView::updatePositionFromFeatureXY()
 {
-    double newX = xPos;
-    double newY = -yPos;
-    double oldX = pos().x();
-    double oldY = pos().y();
-
-    if (TechDraw::DrawUtil::fpCompare(newX, oldX) &&
-        TechDraw::DrawUtil::fpCompare(newY, oldY)) {
-        return;
-    } else {
-        setPos(newX, newY);
+    if (getViewObject()) {
+        m_inhibitSnapOnPosChange = true;
+        double xFeat = Rez::guiX(getViewObject()->X.getValue());
+        double yFeat = Rez::guiX(getViewObject()->Y.getValue());
+        setPos(xFeat, -yFeat);
     }
 }
 
@@ -575,19 +583,12 @@ QGIViewClip* QGIView::getClipGroup()
     return parentView;
 }
 
+//! called from ViewProvider when feature properties change.
 void QGIView::updateView(bool forceUpdate)
 {
-            //allow/prevent dragging
-    if (getViewObject()->isLocked()) {
-        setFlag(QGraphicsItem::ItemIsMovable, false);
-    } else {
-        setFlag(QGraphicsItem::ItemIsMovable, true);
-    }
+    Q_UNUSED(forceUpdate);
 
-    if (getViewObject() && forceUpdate) {
-        setPosition(Rez::guiX(getViewObject()->X.getValue()),
-                    Rez::guiX(getViewObject()->Y.getValue()));
-    }
+    setMovableFlag();
 
     double appRotation = getViewObject()->Rotation.getValue();
     double guiRotation = rotation();
@@ -659,14 +660,6 @@ void QGIView::toggleCache(bool state)
 
 void QGIView::draw()
 {
-    double xFeat, yFeat;
-    if (getViewObject()) {
-        xFeat = Rez::guiX(getViewObject()->X.getValue());
-        yFeat = Rez::guiX(getViewObject()->Y.getValue());
-        if (!getViewObject()->LockPosition.getValue()) {
-            setPosition(xFeat, yFeat);
-        }
-    }
     if (isVisible()) {
         show();
     } else {
@@ -697,7 +690,11 @@ void QGIView::layoutDecorations(const QRectF& contentArea,
     constexpr double padding{10};
     QRectF paddedContentArea = contentArea.adjusted(-padding, -padding, padding, padding);
 
-    double frameWidth = qMax(paddedContentArea.width(), labelRect.width());
+    double frameWidth = paddedContentArea.width();
+    // For standard views, expand frame to fit label. For RichAnno, keep frame tight to text.
+    if (type() != UserType::QGIRichAnno) {
+        frameWidth = qMax(frameWidth, labelRect.width());
+    }
     double frameHeight = paddedContentArea.height();
 
     outFrameRect = QRectF(paddedContentArea.center().x() - (frameWidth / 2),
@@ -1090,10 +1087,6 @@ bool QGIView::shouldShowFrame() const
         return false;
     }
 
-    if (isSelected()) {
-        return true;
-    }
-
     ViewFrameMode frameMode = PreferencesGui::getViewFrameMode();
     switch(frameMode) {
         case ViewFrameMode::Manual:
@@ -1126,18 +1119,32 @@ bool QGIView::shouldShowFromViewProvider() const
 
 bool QGIView::isExporting() const
 {
-    auto* view{freecad_cast<TechDraw::DrawView*>(getViewObject())};
-    auto vpPage = getViewProviderPage(view);
-    if (!view || !vpPage) {
+    auto* obj = getViewObject();
+    if (!obj || !obj->getDocument()) {
         return false;
     }
-
+    auto* view = freecad_cast<TechDraw::DrawView*>(obj);
+    if (!view) {
+        return false;
+    }
+    auto vpPage = getViewProviderPage(view);
+    if (!vpPage) {
+        return false;
+    }
     QGSPage* scenePage = vpPage->getQGSPage();
     if (!scenePage) {
         return false;
     }
-
     return scenePage->getExportingAny();
+}
+
+void QGIView::setMovableFlag()
+{
+    if (getViewObject()->isLocked()) {
+        setFlag(QGraphicsItem::ItemIsMovable, false);
+    } else {
+        setFlag(QGraphicsItem::ItemIsMovable, true);
+    }
 }
 
 //! Retrieves objects of type T with given indexes

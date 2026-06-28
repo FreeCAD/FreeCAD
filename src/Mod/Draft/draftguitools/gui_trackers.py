@@ -26,6 +26,7 @@ This module provides Coin (pivy) based objects
 that are used by the Draft Workbench to draw temporary geometry,
 that is, previews, of the real objects that will be created on the 3D view.
 """
+
 ## @package gui_trackers
 # \ingroup draftguitools
 # \brief Provides Coin based objects used to preview objects being built.
@@ -42,9 +43,11 @@ import pivy.coin as coin
 
 import FreeCAD
 import FreeCADGui
-import Draft
 import DraftVecUtils
 from FreeCAD import Vector
+from draftgeoutils import general as geo_general
+from draftgeoutils import geometry as geo_geometry
+from draftgeoutils import wires as geo_wires
 from draftutils import grid_observer
 from draftutils import gui_utils
 from draftutils import params
@@ -61,9 +64,8 @@ class Tracker:
     """A generic Draft Tracker, to be used by other specific trackers."""
 
     def __init__(self, dotted=False, scolor=None, swidth=None, children=[], ontop=False, name=None):
-        global Part, DraftGeomUtils
+        global Part
         import Part
-        import DraftGeomUtils
 
         self.ontop = ontop
         self.color = coin.SoBaseColor()
@@ -95,7 +97,7 @@ class Tracker:
 
     def get_scene_graph(self):
         """Returns the current scenegraph or None if this is not a 3D view"""
-        v = Draft.get3DView()
+        v = gui_utils.get_3d_view()
         if v:
             return v.getSceneGraph()
         else:
@@ -477,7 +479,7 @@ class dimTracker(Tracker):
                     proj = None
                 else:
                     base = Part.LineSegment(p1, p4).toShape()
-                    proj = DraftGeomUtils.findDistance(self.p3, base)
+                    proj = geo_geometry.findDistance(self.p3, base)
                 if not proj:
                     p2 = p1
                     p3 = p4
@@ -518,7 +520,7 @@ class bsplineTracker(Tracker):
             c = Part.BSplineCurve()
             # DNC: allows one to close the curve by placing ends close to each other
             if len(self.points) >= 3 and (
-                (self.points[0] - self.points[-1]).Length < Draft.tolerance()
+                (self.points[0] - self.points[-1]).Length < utils.tolerance()
             ):
                 # YVH: Added a try to bypass some hazardous situations
                 try:
@@ -873,7 +875,7 @@ class ghostTracker(Tracker):
             sep.addChild(obj.ViewObject.RootNode.copy())
             # add Part container offset
             if parent_place is not None:
-                if hasattr(obj, "Placement"):
+                if hasattr(obj, "Placement") and utils.get_type(obj) != "Label":
                     gpl = parent_place * obj.Placement
                 else:
                     gpl = parent_place
@@ -1049,8 +1051,8 @@ class PlaneTracker(Tracker):
 
     def __init__(self):
         # getting screen distance
-        p1 = Draft.get3DView().getPoint((100, 100))
-        p2 = Draft.get3DView().getPoint((110, 100))
+        p1 = gui_utils.get_3d_view().getPoint((100, 100))
+        p2 = gui_utils.get_3d_view().getPoint((110, 100))
         bl = (p2.sub(p1)).Length * (params.get_param("snapRange") / 2.0)
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
@@ -1108,7 +1110,7 @@ class wireTracker(Tracker):
 
     def __init__(self, wire):
         self.line = coin.SoLineSet()
-        self.closed = DraftGeomUtils.isReallyClosed(wire)
+        self.closed = geo_wires.isReallyClosed(wire)
         if self.closed:
             self.line.numVertices.setValue(len(wire.Vertexes) + 1)
         else:
@@ -1562,8 +1564,6 @@ class boxTracker(Tracker):
 
     def update(self, line=None, normal=None):
         """Update the tracker."""
-        import DraftGeomUtils
-
         if not normal:
             normal = self._get_wp().axis
         if line:
@@ -1571,10 +1571,10 @@ class boxTracker(Tracker):
                 bp = line[0]
                 lvec = line[1].sub(line[0])
             else:
-                lvec = DraftGeomUtils.vec(line.Shape.Edges[0])
+                lvec = geo_general.vec(line.Shape.Edges[0])
                 bp = line.Shape.Edges[0].Vertexes[0].Point
         elif self.baseline:
-            lvec = DraftGeomUtils.vec(self.baseline.Shape.Edges[0])
+            lvec = geo_general.vec(self.baseline.Shape.Edges[0])
             bp = self.baseline.Shape.Edges[0].Vertexes[0].Point
         else:
             return
@@ -1670,7 +1670,7 @@ class archDimTracker(Tracker):
         self.param2 = self.dimnode.param2
         self.pnts = self.dimnode.pnts
         self.string = self.dimnode.string
-        self.view = Draft.get3DView()
+        self.view = gui_utils.get_3d_view()
         self.camera = self.view.getCameraNode()
         self.setMode(mode)
         self.setString()
@@ -1712,14 +1712,15 @@ class archDimTracker(Tracker):
         self.matrix.setValue(*plane.get_placement().Matrix.transposed().A)
         self.string.setValue(text.encode("utf8"))
         # change the text position to external depending on the distance and scale values
-        volume = self.camera.getViewVolume()
-        scale = self.view.getSize()[1] / volume.getHeight()
-        if scale * self.Distance > self.size_pixel * len(text):
-            self.param2.setValue(0)
-        else:
-            self.param2.setValue(
-                1 / 2 * self.Distance + 3 / 5 * self.size_pixel * len(text) / scale
-            )
+        if self.camera:
+            volume = self.camera.getViewVolume()
+            scale = self.view.getSize()[1] / volume.getHeight()
+            if scale * self.Distance > self.size_pixel * len(text):
+                self.param2.setValue(0)
+            else:
+                self.param2.setValue(
+                    1 / 2 * self.Distance + 3 / 5 * self.size_pixel * len(text) / scale
+                )
 
     def setMode(self, mode=1):
         """Set the mode.

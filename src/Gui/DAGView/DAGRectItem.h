@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DAGRECTITEM_H
-#define DAGRECTITEM_H
+#pragma once
 
 #include <QBrush>
 #include <QGraphicsRectItem>
@@ -97,5 +96,3 @@ private:
 };
 }  // namespace DAG
 }  // namespace Gui
-
-#endif  // DAGRECTITEM_H

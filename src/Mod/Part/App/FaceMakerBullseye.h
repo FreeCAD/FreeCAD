@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FACEMAKER_BULLSEYE_H
-#define PART_FACEMAKER_BULLSEYE_H
+#pragma once
 
 #include "FaceMaker.h"
 
@@ -93,7 +92,7 @@ protected:
      * except that it is tolerant to wire orientation (wires are oriented as
      * needed automatically).
      */
-    class FaceDriller
+    class PartExport FaceDriller
     {
     public:
         FaceDriller(const gp_Pln& plane, TopoDS_Wire outerWire);
@@ -167,4 +166,3 @@ public:
 };
 
 }  // namespace Part
-#endif  // PART_FACEMAKER_BULLSEYE_H

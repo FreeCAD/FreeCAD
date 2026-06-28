@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PYTHONCONSOLE_PY_H
-#define GUI_PYTHONCONSOLE_PY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 
@@ -151,5 +150,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PYTHONCONSOLE_PY_H

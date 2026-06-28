@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_DLGINSPECTAPPEARANCE_H
-#define MATGUI_DLGINSPECTAPPEARANCE_H
+#pragma once
 
 #include <memory>
 
@@ -110,5 +109,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_DLGINSPECTAPPEARANCE_H

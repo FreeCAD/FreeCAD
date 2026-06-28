@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Block objects."""
+
 ## @package make_block
 # \ingroup draftmake
 # \brief Provides functions to create Block objects.

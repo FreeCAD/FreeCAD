@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SUPPRESSIBLEEXTENSION_H
-#define SUPPRESSIBLEEXTENSION_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectExtension.h>
@@ -62,5 +61,3 @@ using SuppressibleExtensionPython =
     ExtensionPythonT<SuppressibleExtensionPythonT<SuppressibleExtension>>;
 
 }  // namespace App
-
-#endif  // SUPPRESSIBLEEXTENSION_H

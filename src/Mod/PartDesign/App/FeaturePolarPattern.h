@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,42 +23,21 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeaturePolarPattern_H
-#define PARTDESIGN_FeaturePolarPattern_H
+#pragma once
 
-#include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
+#include <Mod/Part/App/PolarPatternExtension.h>
 #include "FeatureTransformed.h"
-
 
 namespace PartDesign
 {
-enum class PolarPatternMode
-{
-    Extent,
-    Spacing
-};
 
-class PartDesignExport PolarPattern: public PartDesign::Transformed
+class PartDesignExport PolarPattern: public PartDesign::Transformed, public Part::PolarPatternExtension
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::PolarPattern);
+    PROPERTY_HEADER_WITH_EXTENSIONS(PartDesign::PolarPattern);
 
 public:
     PolarPattern();
-
-    App::PropertyLinkSub Axis;
-    App::PropertyBool Reversed;
-    App::PropertyEnumeration Mode;
-    App::PropertyAngle Angle;
-    App::PropertyAngle Offset;
-    App::PropertyIntegerConstraint Occurrences;
-    App::PropertyFloatList Spacings;
-    App::PropertyFloatList SpacingPattern;
-
-
-    /** @name methods override feature */
-    //@{
-    short mustExecute() const override;
 
     /// returns the type name of the view provider
     const char* getViewProviderName() const override
@@ -88,26 +69,14 @@ public:
      */
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
 
+    gp_Ax2 getRotation() const override;
+
 protected:
     void handleChangedPropertyType(
         Base::XMLReader& reader,
         const char* TypeName,
         App::Property* prop
     ) override;
-    void onChanged(const App::Property* prop) override;
-
-    static const App::PropertyIntegerConstraint::Constraints intOccurrences;
-    static const App::PropertyAngle::Constraints floatAngle;
-
-private:
-    static const char* ModeEnums[];
-
-    void setReadWriteStatusForMode(PolarPatternMode mode);
-
-    void updateSpacings();
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeaturePolarPattern_H

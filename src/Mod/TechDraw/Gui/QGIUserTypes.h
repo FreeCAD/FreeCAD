@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_USERTYPES_H
-#define TECHDRAWGUI_USERTYPES_H
+#pragma once
 
 #include <QGraphicsItem>
 
@@ -101,5 +100,3 @@ text 8
 simpletext 9
 group 10
 */
-
-#endif

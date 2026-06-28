@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
-#define GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
+#pragma once
 
 #include <Inventor/SoType.h>
 
@@ -161,7 +160,7 @@ public:
     bool removeDynamicProperty(const char* prop) override;
 
     App::Property* addDynamicProperty(
-        const char* type,
+        std::string_view type,
         const char* name = nullptr,
         const char* group = nullptr,
         const char* doc = nullptr,
@@ -270,5 +269,3 @@ private:
 
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_DOCUMENTOBJECT_H

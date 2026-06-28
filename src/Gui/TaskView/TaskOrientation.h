@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_TASKORIENTATION_H
-#define GUI_TASKORIENTATION_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <App/DocumentObserver.h>
@@ -78,5 +77,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TASKORIENTATION_H

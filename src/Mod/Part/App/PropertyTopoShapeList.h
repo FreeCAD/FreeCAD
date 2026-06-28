@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PropertyTopoShapeList_H
-#define PropertyTopoShapeList_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -110,6 +109,3 @@ private:
 };
 
 }  // namespace Part
-
-
-#endif  // APP_PropertyTopoShapeList_H

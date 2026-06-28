@@ -67,7 +67,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>stdout pipe (requires OpenSCAD &gt;= 2021.1)</source>
-      <translation type="unfinished">stdout pipe (requires OpenSCAD &gt;= 2021.1)</translation>
+      <translation>stdout borusu (OpenSCAD &gt;= 2021.1 gerekir)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="227"/>
@@ -82,17 +82,17 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="269"/>
       <source>Maximum fragment size</source>
-      <translation type="unfinished">Maximum fragment size</translation>
+      <translation>En büyük parça boyutu</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="292"/>
       <source>angle (fa)</source>
-      <translation type="unfinished">angle (fa)</translation>
+      <translation>Açı (fa)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="388"/>
       <source>Convexity</source>
-      <translation type="unfinished">Convexity</translation>
+      <translation>Dışbükeylik</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="289"/>
@@ -108,22 +108,22 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD Import</source>
-      <translation type="unfinished">OpenSCAD Import</translation>
+      <translation>OpenSCAD İçe Aktarma</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
       <source>Use ViewProviders in Tree View</source>
-      <translation type="unfinished">Use ViewProviders in Tree View</translation>
+      <translation>Ağaç görünümünde ViewProvider kullan</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via</source>
-      <translation type="unfinished">Send to OpenSCAD via</translation>
+      <translation>OpenSCAD'e gönderim yöntemi</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD Export</source>
-      <translation type="unfinished">OpenSCAD Export</translation>
+      <translation>OpenSCAD Dışa Aktarma</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
@@ -168,23 +168,23 @@
     <message>
       <location filename="../../InitGui.py" line="132"/>
       <source>It looks like you may be using a Snap version of OpenSCAD.</source>
-      <translation type="unfinished">It looks like you may be using a Snap version of OpenSCAD.</translation>
+      <translation>Görünüşe göre OpenSCAD'in Snap sürümünü kullanıyor olabilirsiniz.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="137"/>
       <location filename="../../InitGui.py" line="150"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation type="unfinished">If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</translation>
+      <translation>OpenSCAD çalıştırması geçici dosyayı yükleyemezse, aktarım yöntemini değiştirmek için FreeCAD'in OpenSCAD çalışma tezgâhı Tercihleri'ni kullanın.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="145"/>
       <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
-      <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
+      <translation>Görünüşe göre FreeCAD'in korumalı alanlı bir sürümünü kullanıyor olabilirsiniz.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="94"/>
       <source>Unable to explode %s</source>
-      <translation type="unfinished">Unable to explode %s</translation>
+      <translation>%s patlatılamadı</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
@@ -216,43 +216,43 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="371"/>
       <source>as Mesh</source>
-      <translation type="unfinished">as Mesh</translation>
+      <translation>Mesh olarak</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="353"/>
       <location filename="../../OpenSCADCommands.py" line="372"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>OpenSCAD Öğesi Ekle</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="141"/>
       <source>Converts edges to faces</source>
-      <translation type="unfinished">Converts edges to faces</translation>
+      <translation>Kenarları yüze dönüştürür</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
-      <translation type="unfinished">Select 3 objects first</translation>
+      <translation>Önce 3 nesne seçin</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Clear Code</source>
-      <translation type="unfinished">Clear Code</translation>
+      <translation>Kodu Temizle</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Aç…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="339"/>
       <source>Save…</source>
-      <translation type="unfinished">Save…</translation>
+      <translation>Kaydet…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="340"/>
       <source>as mesh</source>
-      <translation type="unfinished">as mesh</translation>
+      <translation>mesh olarak</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="429"/>
@@ -263,7 +263,7 @@
       <location filename="../../OpenSCADCommands.py" line="431"/>
       <location filename="../../OpenSCADCommands.py" line="445"/>
       <source>OpenSCAD Files</source>
-      <translation type="unfinished">OpenSCAD Files</translation>
+      <translation>OpenSCAD Dosyaları</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="443"/>
@@ -274,34 +274,34 @@
       <location filename="../../OpenSCADCommands.py" line="457"/>
       <location filename="../../OpenSCADCommands.py" line="486"/>
       <source>Perform</source>
-      <translation type="unfinished">Perform</translation>
+      <translation>Uygula</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="483"/>
       <location filename="../../OpenSCADCommands.py" line="487"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Ağ Boole</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="488"/>
       <source>Minkowski sum</source>
-      <translation type="unfinished">Minkowski sum</translation>
+      <translation>Minkowski toplamı</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="650"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+      <translation>OpenSCAD dosyası hem 2B hem de 3B şekiller içeriyor. Bu içe aktarıcı bunu desteklemez; bu içe aktarıcıda tüm şekillerin boyutu aynı olmalıdır.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="661"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
-      <translation type="unfinished">Error: either all shapes must be 2D or all shapes must be 3D</translation>
+      <translation>Hata: ya tüm şekiller 2B olmalı ya da tüm şekiller 3B olmalı</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="518"/>
       <location filename="../../importCSG.py" line="1390"/>
       <source>Unsupported Function</source>
-      <translation type="unfinished">Unsupported Function</translation>
+      <translation>Desteklenmeyen İşlev</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="518"/>
@@ -315,12 +315,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="102"/>
       <source>Explode Group</source>
-      <translation type="unfinished">Explode Group</translation>
+      <translation>Grubu Patlat</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="105"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation type="unfinished">Explodes a fusion or compound and applies random colors</translation>
+      <translation>Bir birleştirmeyi veya bileşiği patlatır ve rastgele renkler uygular</translation>
     </message>
   </context>
   <context>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="118"/>
       <source>Color Shapes</source>
-      <translation type="unfinished">Color Shapes</translation>
+      <translation>Şekilleri Renklendir</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="121"/>
       <source>Colors shapes by validity and type</source>
-      <translation type="unfinished">Colors shapes by validity and type</translation>
+      <translation>Şekilleri geçerliliğine ve türüne göre renklendirir</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="158"/>
       <source>Refine Shape Feature</source>
-      <translation type="unfinished">Refine Shape Feature</translation>
+      <translation>Şekil İyileştirme Özelliği</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="161"/>
       <source>Creates a refined shape</source>
-      <translation type="unfinished">Creates a refined shape</translation>
+      <translation>İyileştirilmiş bir şekil oluşturur</translation>
     </message>
   </context>
   <context>
@@ -354,12 +354,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="268"/>
       <source>Increase Tolerance Feature</source>
-      <translation type="unfinished">Increase Tolerance Feature</translation>
+      <translation>Tolerans Artırma Özelliği</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="271"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
+      <translation>Toleransı artırmak için bir özellik oluşturur</translation>
     </message>
   </context>
   <context>
@@ -367,12 +367,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="285"/>
       <source>Expand Placements</source>
-      <translation type="unfinished">Expand Placements</translation>
+      <translation>Yerleşimleri Genişlet</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="288"/>
       <source>Expands all placements downwards in the Tree View</source>
-      <translation type="unfinished">Expands all placements downwards in the Tree View</translation>
+      <translation>Ağaç görünümünde tüm yerleşimleri alt öğelere doğru yayar</translation>
     </message>
   </context>
   <context>
@@ -385,7 +385,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="309"/>
       <source>Replaces an object in the Tree View</source>
-      <translation type="unfinished">Replaces an object in the Tree View</translation>
+      <translation>Ağaç görünümünde bir nesneyi değiştirir</translation>
     </message>
   </context>
   <context>
@@ -393,12 +393,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="319"/>
       <source>Remove Objects and Children</source>
-      <translation type="unfinished">Remove Objects and Children</translation>
+      <translation>Nesneleri ve Alt Öğelerini Kaldır</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="322"/>
       <source>Removes the selected objects and all children that are not referenced by other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
+      <translation>Seçili nesneleri ve başka nesneler tarafından başvurulmayan tüm alt öğelerini kaldırır</translation>
     </message>
   </context>
   <context>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="570"/>
       <source>Creates a hull</source>
-      <translation type="unfinished">Creates a hull</translation>
+      <translation>Konveks zarf oluşturur</translation>
     </message>
   </context>
   <context>
@@ -419,12 +419,12 @@
     <message>
       <location filename="../../InitGui.py" line="154"/>
       <source>OpenSCAD Tools</source>
-      <translation type="unfinished">OpenSCAD Tools</translation>
+      <translation>OpenSCAD Araçları</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="158"/>
       <source>Frequently-used Part WB tools</source>
-      <translation type="unfinished">Frequently-used Part WB tools</translation>
+      <translation>Sık kullanılan Parça çalışma tezgâhı araçları</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="138"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>Kenarları Yüzlere Dönüştür</translation>
     </message>
   </context>
   <context>
@@ -445,7 +445,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="191"/>
       <source>Mirrors the mesh</source>
-      <translation type="unfinished">Mirrors the mesh</translation>
+      <translation>Mesh'i aynalar</translation>
     </message>
   </context>
   <context>
@@ -453,12 +453,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="217"/>
       <source>Scale Mesh Feature</source>
-      <translation type="unfinished">Scale Mesh Feature</translation>
+      <translation>Mesh Ölçekleme Özelliği</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="221"/>
       <source>Scales the mesh</source>
-      <translation type="unfinished">Scales the mesh</translation>
+      <translation>Mesh'i ölçeklendirir</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="247"/>
       <source>Resize Mesh Feature</source>
-      <translation type="unfinished">Resize Mesh Feature</translation>
+      <translation>Mesh Yeniden Boyutlandırma Özelliği</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="251"/>
       <source>Resizes the mesh</source>
-      <translation type="unfinished">Resizes the mesh</translation>
+      <translation>Mesh'i yeniden boyutlandırır</translation>
     </message>
   </context>
   <context>
@@ -479,12 +479,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="531"/>
       <source>Add OpenSCAD Element</source>
-      <translation type="unfinished">Add OpenSCAD Element</translation>
+      <translation>OpenSCAD Öğesi Ekle</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="535"/>
       <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
-      <translation type="unfinished">Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</translation>
+      <translation>OpenSCAD ikili dosyasını kullanarak girilen OpenSCAD koduna dayalı bir OpenSCAD öğesi ekler</translation>
     </message>
   </context>
   <context>
@@ -492,12 +492,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="546"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Ağ Boole</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="550"/>
       <source>Performs a boolean operation using the OpenSCAD binary</source>
-      <translation type="unfinished">Performs a boolean operation using the OpenSCAD binary</translation>
+      <translation>OpenSCAD ikili dosyasını kullanarak bir boole işlemi gerçekleştirir</translation>
     </message>
   </context>
   <context>
@@ -505,12 +505,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="587"/>
       <source>Minkowski Sum</source>
-      <translation type="unfinished">Minkowski Sum</translation>
+      <translation>Minkowski Toplamı</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="590"/>
       <source>Creates a Minkowski sum</source>
-      <translation type="unfinished">Creates a Minkowski sum</translation>
+      <translation>Bir Minkowski toplamı oluşturur</translation>
     </message>
   </context>
 </TS>

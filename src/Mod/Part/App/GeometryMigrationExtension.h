@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_GEOMETRYMIGRATIONEXTENSION_H
-#define PART_GEOMETRYMIGRATIONEXTENSION_H
+#pragma once
 
 #include <bitset>
 #include "Geometry.h"
@@ -151,6 +150,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_GEOMETRYMIGRATIONEXTENSION_H

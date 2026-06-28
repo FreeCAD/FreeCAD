@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcSlot_H
-#define SKETCHERGUI_DrawSketchHandlerArcSlot_H
+#pragma once
 
 #include <QApplication>
 
@@ -39,13 +38,10 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerArcSlot;
 
@@ -69,6 +65,7 @@ using DSHArcSlotController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::ArcSlotConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -203,11 +200,11 @@ private:
         try {
             createShape(false);
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc slot"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc slot"));
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -216,7 +213,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add arc slot")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -615,7 +612,7 @@ void DSHArcSlotController::configureToolWidget()
         };
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
@@ -1036,6 +1033,3 @@ void DSHArcSlotController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcSlot_H

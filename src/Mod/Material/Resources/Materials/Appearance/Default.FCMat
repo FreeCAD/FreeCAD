@@ -3,7 +3,7 @@
 General:
   UUID: "5dbb7be6-8b63-479b-ab4c-87be02ead973"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Default"
   Description: "Defines the default appearance properties"
 AppearanceModels:

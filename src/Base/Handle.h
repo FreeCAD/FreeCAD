@@ -24,15 +24,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_HANDLE_H
-#define BASE_HANDLE_H
+#pragma once
 
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
-
-class QAtomicInt;
+#include <atomic>
 
 namespace Base
 {
@@ -186,9 +182,7 @@ public:
     Handled& operator=(Handled&&) = delete;
 
 private:
-    QAtomicInt* _lRefCount;
+    mutable std::atomic_int _refCount {0};
 };
 
 }  // namespace Base
-
-#endif  // BASE_HANDLE_H

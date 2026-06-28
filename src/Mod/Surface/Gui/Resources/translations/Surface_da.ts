@@ -21,17 +21,17 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
       <source>Add Edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="65"/>
       <source>Remove Edge</source>
-      <translation>Fjern Kant</translation>
+      <translation>Fjern linje</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="93"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="113"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="146"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Acceptér</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
@@ -74,12 +74,12 @@
     <message>
       <location filename="../../TaskFilling.ui" line="64"/>
       <source>Add Edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="83"/>
       <source>Remove Edge</source>
-      <translation>Fjern Kant</translation>
+      <translation>Fjern linje</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="95"/>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="151"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Acceptér</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -124,12 +124,12 @@
     <message>
       <location filename="../../TaskSections.ui" line="40"/>
       <source>Add Edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="59"/>
       <source>Remove Edge</source>
-      <translation>Fjern Kant</translation>
+      <translation>Fjern linje</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
@@ -167,12 +167,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="76"/>
       <source>Add Edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="95"/>
       <source>Remove Edge</source>
-      <translation>Fjern Kant</translation>
+      <translation>Fjern linje</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="217"/>
@@ -185,23 +185,23 @@
       <translation type="unfinished">Flip orientation</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="378"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="384"/>
       <source>Too many edges</source>
       <translation type="unfinished">Too many edges</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="379"/>
-      <location filename="../../TaskGeomFillSurface.cpp" line="387"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="385"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="393"/>
       <source>The tool requires two, three or four edges</source>
       <translation type="unfinished">The tool requires two, three or four edges</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="386"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="392"/>
       <source>Too less edges</source>
       <translation type="unfinished">Too less edges</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="398"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="404"/>
       <source>Invalid object</source>
       <translation type="unfinished">Invalid object</translation>
     </message>
@@ -250,7 +250,7 @@
       <location filename="../../Blending/TaskBlendCurve.ui" line="26"/>
       <location filename="../../Blending/TaskBlendCurve.ui" line="119"/>
       <source>Edge</source>
-      <translation type="unfinished">Edge</translation>
+      <translation>Kant</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="43"/>
@@ -279,7 +279,7 @@
   <context>
     <name>SurfaceGui::FillingVertexPanel</name>
     <message>
-      <location filename="../../TaskFillingVertex.cpp" line="129"/>
+      <location filename="../../TaskFillingVertex.cpp" line="127"/>
       <source>Remove</source>
       <translation>Fjern</translation>
     </message>
@@ -289,7 +289,7 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>
@@ -307,7 +307,7 @@
     <message>
       <location filename="../../Command.cpp" line="112"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="113"/>
@@ -344,7 +344,7 @@ vertices that are not on the boundary.</translation>
       <translation type="unfinished">Extend surface</translation>
     </message>
     <message>
-      <location filename="../../Blending/TaskBlendCurve.cpp" line="409"/>
+      <location filename="../../Blending/TaskBlendCurve.cpp" line="410"/>
       <source>Edit blending curve</source>
       <translation type="unfinished">Edit blending curve</translation>
     </message>
@@ -354,7 +354,7 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="148"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="149"/>
@@ -372,7 +372,7 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="179"/>
@@ -392,7 +392,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -410,7 +410,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="286"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
@@ -428,7 +428,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
@@ -441,12 +441,12 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="332"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="333"/>
       <source>Sections</source>
-      <translation>Sektioner</translation>
+      <translation>Tværsnit</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="334"/>
@@ -457,17 +457,17 @@ This command only works with a mesh object.</translation>
   <context>
     <name>SurfaceGui::FillingEdgePanel</name>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="136"/>
+      <location filename="../../TaskFillingEdge.cpp" line="133"/>
       <source>Remove</source>
       <translation>Fjern</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="326"/>
+      <location filename="../../TaskFillingEdge.cpp" line="329"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Ugyldigt objekt</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskFillingEdge.cpp" line="406"/>
+      <location filename="../../TaskFillingEdge.cpp" line="407"/>
       <source>Edge has %n adjacent face(s)</source>
       <translation type="unfinished">
         <numerusform>Edge has %n adjacent face(s)</numerusform>
@@ -475,12 +475,12 @@ This command only works with a mesh object.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="410"/>
+      <location filename="../../TaskFillingEdge.cpp" line="411"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../../TaskFillingEdge.cpp" line="431"/>
+      <location filename="../../TaskFillingEdge.cpp" line="432"/>
       <source>Edge has no adjacent faces</source>
       <translation type="unfinished">Edge has no adjacent faces</translation>
     </message>
@@ -489,14 +489,14 @@ This command only works with a mesh object.</translation>
     <name>QObject</name>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
-      <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskFilling.cpp" line="63"/>
       <source>Edit Filling</source>
       <translation type="unfinished">Edit Filling</translation>
     </message>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="661"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="667"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../TaskSections.cpp" line="59"/>
@@ -506,18 +506,18 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
       <source>Edit %1</source>
-      <translation>Rediger %1</translation>
+      <translation>Redigér %1</translation>
     </message>
   </context>
   <context>
     <name>SurfaceGui::FillingPanel</name>
     <message>
-      <location filename="../../TaskFilling.cpp" line="284"/>
+      <location filename="../../TaskFilling.cpp" line="281"/>
       <source>Remove</source>
       <translation>Fjern</translation>
     </message>
     <message>
-      <location filename="../../TaskFilling.cpp" line="494"/>
+      <location filename="../../TaskFilling.cpp" line="497"/>
       <source>Invalid object</source>
       <translation type="unfinished">Invalid object</translation>
     </message>
@@ -543,14 +543,14 @@ This command only works with a mesh object.</translation>
   <context>
     <name>SurfaceGui::SectionsPanel</name>
     <message>
-      <location filename="../../TaskSections.cpp" line="281"/>
+      <location filename="../../TaskSections.cpp" line="279"/>
       <source>Remove</source>
       <translation>Fjern</translation>
     </message>
     <message>
-      <location filename="../../TaskSections.cpp" line="420"/>
+      <location filename="../../TaskSections.cpp" line="424"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Ugyldigt objekt</translation>
     </message>
   </context>
 </TS>

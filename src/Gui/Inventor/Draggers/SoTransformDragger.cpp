@@ -1,26 +1,25 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2015 Thomas Anderson <blobfish[at]gmx.com>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <cassert>
 #include <numbers>
@@ -58,7 +57,7 @@
 #include "SoRotationDragger.h"
 #include "Utilities.h"
 
-#include <SoTextLabel.h>
+#include <Gui/SoTextLabel.h>
 
 
 /*
@@ -491,7 +490,14 @@ void SoTransformDragger::setUpAutoScale(SoCamera* cameraIn)
         cameraSensor.attach(&localCamera->height);
         SoScale* localScaleNode = SO_GET_ANY_PART(this, "scaleNode", SoScale);
         localScaleNode->scaleFactor.disconnect();
-        autoScaleResult.disconnect(&draggerSize);
+        // This check shouldn't be needed but since CAM has its own
+        // ViewProvider classes that implement setEdit but doesn't inherit from
+        // ViewProviderDragger, we need to call Std_TransformManip twice.
+        // This causes setEditViewer to be called twice and Coin throws an error
+        // for trying to disconnect twice.
+        if (autoScaleResult.isConnectedFromField()) {
+            autoScaleResult.disconnect(&draggerSize);
+        }
         cameraCB(this, nullptr);
     }
     else if (cameraIn->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
@@ -500,7 +506,9 @@ void SoTransformDragger::setUpAutoScale(SoCamera* cameraIn)
         cameraSensor.attach(&localCamera->position);
         SoScale* localScaleNode = SO_GET_ANY_PART(this, "scaleNode", SoScale);
         localScaleNode->scaleFactor.disconnect();
-        autoScaleResult.disconnect(&draggerSize);
+        if (autoScaleResult.isConnectedFromField()) {
+            autoScaleResult.disconnect(&draggerSize);
+        }
         cameraCB(this, nullptr);
     }
 }

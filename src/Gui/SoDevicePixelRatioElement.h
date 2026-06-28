@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef SO_DEVICE_PIXEL_RATIO_ELEMENT_H
-#define SO_DEVICE_PIXEL_RATIO_ELEMENT_H
+#pragma once
 
 #include <Inventor/elements/SoFloatElement.h>
 
@@ -48,5 +47,3 @@ public:
 protected:
     virtual ~SoDevicePixelRatioElement();
 };
-
-#endif  // SO_DEVICE_PIXEL_RATIO_ELEMENT_H

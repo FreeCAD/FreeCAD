@@ -22,18 +22,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="151"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Points</source>
       <translation>Точки</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="151"/>
       <source>Export Points…</source>
       <translation type="unfinished">Export Points…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
-      <location filename="../../Command.cpp" line="155"/>
+      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Exports a point cloud</source>
       <translation>Експорт хмари точок</translation>
     </message>
@@ -113,7 +113,7 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="94"/>
+      <location filename="../../Command.cpp" line="93"/>
       <source>Import points</source>
       <translation>Імпортувати точки</translation>
     </message>
@@ -262,24 +262,18 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="173"/>
+      <location filename="../../Command.cpp" line="81"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Point formats</source>
       <translation>Формат точок</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="173"/>
-      <source>All Files</source>
-      <translation>Всі файли</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="113"/>
       <source>Points not at Origin</source>
       <translation>Вказує не на джерело</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="115"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
       <translation type="unfinished">The bounding box of the imported points does not contain the origin. Translate it to the origin?</translation>
     </message>
@@ -305,6 +299,14 @@
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Points</source>
       <translation>&amp;Точки</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileFormat</name>
+    <message>
+      <location filename="../../../Init.py" line="35"/>
+      <source>Point formats</source>
+      <translation>Формат точок</translation>
     </message>
   </context>
 </TS>

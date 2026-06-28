@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Context_HEADER
-#define Context_HEADER
+#pragma once
 
 #include <istream>
 #include <stdint.h>
@@ -40,6 +39,3 @@ public:
 
     istream& Strm;
 };
-
-
-#endif

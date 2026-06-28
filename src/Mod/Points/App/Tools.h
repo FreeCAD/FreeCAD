@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef POINTS_TOOLS_H
-#define POINTS_TOOLS_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <algorithm>
@@ -64,5 +63,3 @@ bool copyProperty(
 }
 
 }  // namespace Points
-
-#endif  // POINTS_TOOLS_H

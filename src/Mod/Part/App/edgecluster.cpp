@@ -137,7 +137,7 @@ bool Edgecluster::PerformEdges(gp_Pnt& point)
     }
 
     gp_Pnt nextPoint;
-    if (P2.IsEqual(point, 0.2)) {
+    if (P2.IsEqual(point, Precision::Confusion())) {
         // need to reverse the edge
 
         theEdge.Reverse();
@@ -211,11 +211,11 @@ bool Edgecluster::IsValidEdge(const TopoDS_Edge& edge)
     gp_Pnt mpoint = bac.Value((fparam + lparam) * 0.5);
 
     Standard_Real dist = mpoint.Distance(lpoint);
-    if (dist <= 1e-5) {
+    if (dist <= Precision::Confusion()) {
         return false;
     }
     dist = mpoint.Distance(fpoint);
-    if (dist <= 1e-5) {
+    if (dist <= Precision::Confusion()) {
         return false;
     }
 

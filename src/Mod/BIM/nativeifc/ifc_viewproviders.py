@@ -467,7 +467,7 @@ class ifc_vp_document(ifc_vp_object):
         msg += " ?"
         dlg = QtGui.QMessageBox.question(
             None,
-            "Replace IFC file path?",
+            "Replace IFC File Path?",
             msg,
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
             QtGui.QMessageBox.No,
@@ -488,7 +488,7 @@ class ifc_vp_document(ifc_vp_object):
         msg += "Continue anyway?"
         dlg = QtGui.QMessageBox.question(
             None,
-            "Replace IFC file schema?",
+            "Replace IFC File Schema?",
             msg,
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
             QtGui.QMessageBox.No,
@@ -659,7 +659,7 @@ def get_filepath(project):
 
     sf = QtGui.QFileDialog.getSaveFileName(
         None,
-        "Save an IFC file",
+        "Save an IFC File",
         project.IfcFilePath,
         "Industry Foundation Classes (*.ifc)",
     )

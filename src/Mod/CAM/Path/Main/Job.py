@@ -33,7 +33,6 @@ import Path.Tool.Controller as PathToolController
 import json
 import time
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -65,6 +64,8 @@ class JobTemplate:
     Stock = "Stock"
     # TCs are grouped under Tools in a job, the template refers to them directly though
     ToolController = "ToolController"
+    PostProcessorPropertyOverrides = "PostPropertyOverrides"
+    Machine = "Machine"
     Version = "Version"
 
 
@@ -86,7 +87,11 @@ def createResourceClone(obj, orig, name, icon):
 
         Path.Base.Gui.IconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
-        clone.ViewObject.Transparency = 80
+        clone.ViewObject.DisplayMode = "Flat Lines"
+        clone.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
+        clone.ViewObject.Transparency = 0
+        clone.ViewObject.LineColor = (0.310, 0.333, 0.357)
+        clone.ViewObject.ShapeMaterial.Shininess = 0.85
     obj.Document.recompute()  # necessary to create the clone shape
     return clone
 
@@ -159,7 +164,7 @@ class ObjectJob:
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
         obj.addProperty(
-            "App::PropertyDistance",
+            "App::PropertyLength",
             "GeometryTolerance",
             "Geometry",
             QT_TRANSLATE_NOOP(
@@ -210,6 +215,22 @@ class ObjectJob:
             "WCS",
             QT_TRANSLATE_NOOP("App::Property", "The Work Coordinate Systems for the Job"),
         )
+        obj.addProperty(
+            "App::PropertyString",
+            "Machine",
+            "Output",
+            QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "PostProcessorPropertyOverrides",
+            "Output",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "JSON dict of postprocessor properties that override machine defaults for this job",
+            ),
+        )
+        obj.PostProcessorPropertyOverrides = "{}"
 
         obj.Fixtures = ["G54"]
 
@@ -217,7 +238,7 @@ class ObjectJob:
             setattr(obj, n[0], n[1])
 
         obj.PostProcessorOutputFile = Path.Preferences.defaultOutputFile()
-        postProcessors = Path.Preferences.allEnabledPostProcessors()
+        postProcessors = Path.Preferences.allEnabledLegacyPostProcessors()
         # Add empty string as a valid enumeration option
         if "" not in postProcessors:
             postProcessors = [""] + postProcessors
@@ -229,6 +250,7 @@ class ObjectJob:
         else:
             obj.PostProcessor = ""
         obj.PostProcessorArgs = Path.Preferences.defaultPostProcessorArgs()
+
         obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
 
         self.setupOperations(obj)
@@ -373,8 +395,9 @@ class ObjectJob:
                 obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
             if not obj.Stock:
                 obj.Stock = PathStock.CreateFromBase(obj)
-        if obj.Stock.ViewObject:
-            obj.Stock.ViewObject.Visibility = False
+        PathStock.ApplyStockViewDefaults(obj.Stock)
+        if obj.Stock and obj.Stock.ViewObject:
+            obj.Stock.ViewObject.Visibility = True
 
     def removeBase(self, obj, base, removeFromModel):
         if isResourceClone(obj, base, None):
@@ -466,10 +489,42 @@ class ObjectJob:
                 else:
                     ops.Label = label
 
+    def ensureMachineProperty(self, obj):
+        """Ensure the Machine property exists as a String.
+        Migrates from Enumeration to String if needed (legacy documents)."""
+        if not hasattr(obj, "Machine"):
+            obj.addProperty(
+                "App::PropertyString",
+                "Machine",
+                "Output",
+                QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
+            )
+        elif obj.getTypeIdOfProperty("Machine") == "App::PropertyEnumeration":
+            current_value = getattr(obj, "Machine", "") or ""
+            obj.removeProperty("Machine")
+            obj.addProperty(
+                "App::PropertyString",
+                "Machine",
+                "Output",
+                QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
+            )
+            obj.Machine = current_value
+
     def onDocumentRestored(self, obj):
         self.setupBaseModel(obj)
         self.fixupOperations(obj)
         self.setupSetupSheet(obj)
+
+        # Update PostProcessor enumeration to legacy-only posts
+        postProcessors = Path.Preferences.allEnabledLegacyPostProcessors()
+        if "" not in postProcessors:
+            postProcessors = [""] + postProcessors
+        obj.PostProcessor = postProcessors
+
+        # Ensure Machine property exists as a String.
+        # Old documents may have it as an Enumeration or not at all.
+        self.ensureMachineProperty(obj)
+
         self.setupToolTable(obj)
         self.integrityCheck(obj)
 
@@ -524,6 +579,25 @@ class ObjectJob:
             )
             obj.setEditorMode("JobType", 2)  # Hide
 
+        if not hasattr(obj, "Machine"):
+            obj.addProperty(
+                "App::PropertyString",
+                "Machine",
+                "Output",
+                QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
+            )
+        if not hasattr(obj, "PostProcessorPropertyOverrides"):
+            obj.addProperty(
+                "App::PropertyString",
+                "PostProcessorPropertyOverrides",
+                "Output",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "JSON dict of postprocessor properties that override machine defaults for this job",
+                ),
+            )
+            obj.PostProcessorPropertyOverrides = "{}"
+
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
@@ -569,13 +643,28 @@ class ObjectJob:
                 if attrs.get(JobTemplate.GeometryTolerance):
                     obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
                 if attrs.get(JobTemplate.PostProcessor):
-                    obj.PostProcessor = attrs.get(JobTemplate.PostProcessor)
+                    templatePost = attrs.get(JobTemplate.PostProcessor)
+                    # Validate that the template's postprocessor exists in current enumeration
+                    if templatePost in obj.PostProcessor:
+                        obj.PostProcessor = templatePost
+                    else:
+                        Path.Log.warning(
+                            f"PostProcessor '{templatePost}' from template not found in available postprocessors. Using default."
+                        )
+                        Path.Log.debug(f"Available postprocessors: {obj.PostProcessor}")
+                        # Keep the default postprocessor that was already set
                     if attrs.get(JobTemplate.PostProcessorArgs):
                         obj.PostProcessorArgs = attrs.get(JobTemplate.PostProcessorArgs)
                     else:
                         obj.PostProcessorArgs = ""
+                if attrs.get(JobTemplate.PostProcessorPropertyOverrides):
+                    obj.PostProcessorPropertyOverrides = json.dumps(
+                        attrs[JobTemplate.PostProcessorPropertyOverrides]
+                    )
                 if attrs.get(JobTemplate.PostProcessorOutputFile):
                     obj.PostProcessorOutputFile = attrs.get(JobTemplate.PostProcessorOutputFile)
+                if attrs.get(JobTemplate.Machine):
+                    obj.Machine = attrs.get(JobTemplate.Machine)
                 if attrs.get(JobTemplate.Description):
                     obj.Description = attrs.get(JobTemplate.Description)
 
@@ -619,8 +708,18 @@ class ObjectJob:
             attrs[JobTemplate.Fixtures] = [{f: True} for f in obj.Fixtures]
             attrs[JobTemplate.OrderOutputBy] = obj.OrderOutputBy
             attrs[JobTemplate.SplitOutput] = obj.SplitOutput
+        if (
+            hasattr(obj, "PostProcessorPropertyOverrides")
+            and obj.PostProcessorPropertyOverrides
+            and obj.PostProcessorPropertyOverrides != "{}"
+        ):
+            attrs[JobTemplate.PostProcessorPropertyOverrides] = json.loads(
+                obj.PostProcessorPropertyOverrides
+            )
         if obj.PostProcessorOutputFile:
             attrs[JobTemplate.PostProcessorOutputFile] = obj.PostProcessorOutputFile
+        if hasattr(obj, "Machine") and obj.Machine:
+            attrs[JobTemplate.Machine] = obj.Machine
         attrs[JobTemplate.GeometryTolerance] = str(obj.GeometryTolerance.Value)
         if obj.Description:
             attrs[JobTemplate.Description] = obj.Description
@@ -637,6 +736,9 @@ class ObjectJob:
         return None
 
     def execute(self, obj):
+        if not obj.GeometryTolerance:
+            obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
+
         if getattr(obj, "Operations", None):
             # obj.Path = obj.Operations.Path
             self.getCycleTime()
@@ -689,6 +791,27 @@ class ObjectJob:
                 group.append(op)
             self.obj.Operations.Group = group
             # op.Path.Center = self.obj.Operations.Path.Center
+
+    def getMachine(self):
+        """getMachine() ... returns an instantiated Machine object for this job.
+        Returns None if no machine is configured or if the machine cannot be loaded.
+        """
+        # TODO: Once Machine property is added to Job, use it here
+        # For now, return None since Machine property doesn't exist yet
+        if not hasattr(self.obj, "Machine"):
+            return None
+
+        machine_name = self.obj.Machine
+        if not machine_name:
+            return None
+
+        try:
+            from Machine.models.machine import MachineFactory
+
+            return MachineFactory.get_machine(machine_name)
+        except Exception as e:
+            Path.Log.error(f"Failed to load machine '{machine_name}': {e}")
+            return None
 
     def nextToolNumber(self):
         # returns the next available toolnumber in the job

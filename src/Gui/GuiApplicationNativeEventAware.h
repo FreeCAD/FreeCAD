@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUIAPPLICATIONNATIVEEVENTAWARE_H
-#define GUIAPPLICATIONNATIVEEVENTAWARE_H
+#pragma once
 
 #include <QApplication>
 #include <vector>
@@ -62,5 +61,3 @@ private:
 #endif
 };  // end class GUIApplicationNativeEventAware
 }  // end namespace Gui
-
-#endif  // GUIAPPLICATIONNATIVEEVENTAWARE_H

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ZOOMABLEVIEW_H
-#define ZOOMABLEVIEW_H
+#pragma once
 
 #include <QGraphicsView>
 
@@ -79,5 +78,3 @@ protected:
 
     static constexpr int zoom_step_mwheel {5}, zoom_step_kb {10};
 };
-
-#endif  // ZOOMABLEVIEW_H

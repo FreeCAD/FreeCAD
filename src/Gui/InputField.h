@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_INPUTFIELD_H
-#define GUI_INPUTFIELD_H
+#pragma once
 
 #include <QValidator>
 #include <Base/Parameter.h>
@@ -222,6 +221,7 @@ protected:
 private:
     QPixmap getValidationIcon(const char* name, const QSize& size) const;
     void updateText(const Base::Quantity&);
+    void notifyValueChanged();
 
 private:
     QByteArray m_sPrefGrp;
@@ -245,5 +245,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_INPUTFIELD_H

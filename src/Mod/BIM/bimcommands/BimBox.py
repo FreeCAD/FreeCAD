@@ -53,6 +53,7 @@ class BIM_Box:
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         self.doc = FreeCAD.ActiveDocument
         self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
         # here we will store our points
         self.points = []
         # we build a special cube tracker which is a list of 4 rectangle trackers
@@ -68,7 +69,23 @@ class BIM_Box:
                 callback=self.PointCallback,
                 movecallback=self.MoveCallback,
                 extradlg=self.taskbox(),
+                hints=self.get_hints(),
             )
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        if not self.points:
+            label = translate("BIM", "%1 pick first point")
+        else:
+            label = translate("BIM", "%1 pick next point")
+        return (
+            [FreeCADGui.InputHint(label, FreeCADGui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def MoveCallback(self, point, snapinfo):
         import DraftGeomUtils
@@ -128,6 +145,7 @@ class BIM_Box:
                 callback=self.PointCallback,
                 movecallback=self.MoveCallback,
                 extradlg=self.taskbox(),
+                hints=self.get_hints(),
             )
         elif len(self.points) == 1:
             # this is our second point
@@ -150,7 +168,7 @@ class BIM_Box:
 
         wid = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        wid.setWindowTitle(translate("BIM", "Box dimensions"))
+        wid.setWindowTitle(translate("BIM", "Box Dimensions"))
         grid = QtGui.QGridLayout(wid)
 
         label1 = QtGui.QLabel(translate("BIM", "Length"))
@@ -238,6 +256,7 @@ class BIM_Box:
             callback=self.PointCallback,
             movecallback=self.MoveCallback,
             extradlg=self.taskbox(),
+            hints=self.get_hints(),
         )
 
     def _setupForHeightInput(self):
@@ -257,13 +276,13 @@ class BIM_Box:
             r.on()
         point = self.cubetracker[0].p3()
         axis = self.cubetracker[0].p2().sub(self.cubetracker[0].p3())
-        self.wp._save()
         self.wp.align_to_point_and_axis(point, axis, upvec=self.normal, _hist_add=False)
         FreeCADGui.Snapper.getPoint(
             last=point,
             callback=self.PointCallback,
             movecallback=self.MoveCallback,
             extradlg=self.taskbox(),
+            hints=self.get_hints(),
         )
 
     def _makeBox(self):

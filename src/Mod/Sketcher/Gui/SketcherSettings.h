@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SKETCHERSETTINGS_H
-#define SKETCHERGUI_SKETCHERSETTINGS_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -73,6 +72,8 @@ public:
     explicit SketcherSettingsGrid(QWidget* parent = nullptr);
     ~SketcherSettingsGrid() override;
 
+    bool event(QEvent* event) override;
+
     void saveSettings() override;
     void loadSettings() override;
 
@@ -92,6 +93,12 @@ class SketcherSettingsDisplay: public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
+    // Characters required to be present in the selected font:
+    //   degree sign, micro sign, f with hook, stroke overlay, diameter sign,
+    //   upper half circle, mathematical f, mathematical x
+    static constexpr const char* const RequiredCharacters
+        = "\u00B0\u00B5\u0192\u0336\u2300\u25E0\U0001D453\U0001D465";
+
     explicit SketcherSettingsDisplay(QWidget* parent = nullptr);
     ~SketcherSettingsDisplay() override;
 
@@ -100,9 +107,15 @@ public:
 
 protected:
     void changeEvent(QEvent* e) override;
+    void showEvent(QShowEvent* e) override;
+
+    QColor getSketcherBackgroundColor();
+    QColor getSketcherConstraintColor();
 
 private Q_SLOTS:
     void onBtnTVApplyClicked(bool);
+    void onFontNameChanged(const QFont& font);
+    void onFontSizeChanged(int size);
 
 private:
     std::unique_ptr<Ui_SketcherSettingsDisplay> ui;
@@ -119,6 +132,8 @@ class SketcherSettingsAppearance: public Gui::Dialog::PreferencePage
 public:
     explicit SketcherSettingsAppearance(QWidget* parent = nullptr);
     ~SketcherSettingsAppearance() override;
+
+    bool event(QEvent* event) override;
 
     void saveSettings() override;
     void loadSettings() override;
@@ -144,5 +159,3 @@ enum class AutoScaleMode : int
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_SKETCHERSETTINGS_H

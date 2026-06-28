@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_ViewProviderSketchCoinAttorney_H
-#define SKETCHERGUI_ViewProviderSketchCoinAttorney_H
+#pragma once
 
 #include <QFont>
 #include <vector>
@@ -86,6 +85,10 @@ class ViewProviderSketchCoinAttorney
 private:
     static inline bool constraintHasExpression(const ViewProviderSketch& vp, int constrid);
     static inline const std::vector<Sketcher::Constraint*> getConstraints(const ViewProviderSketch& vp);
+    static inline bool isConstraintActiveInSketch(
+        const ViewProviderSketch& vp,
+        const Sketcher::Constraint* cstr
+    );
     static inline const GeoList getGeoList(const ViewProviderSketch& vp);
     static inline const GeoListFacade getGeoListFacade(const ViewProviderSketch& vp);
     static inline Base::Placement getEditingPlacement(const ViewProviderSketch& vp);
@@ -94,6 +97,7 @@ private:
 
     static inline float getScaleFactor(const ViewProviderSketch& vp);
     static inline SbVec2f getScreenCoordinates(const ViewProviderSketch& vp, SbVec2f sketchcoordinates);
+    static inline SbVec2f getScreenCoordinates(const ViewProviderSketch& vp, SbVec3f sketchcoordinates);
     static inline QFont getApplicationFont(const ViewProviderSketch& vp);
     static inline double getRotation(const ViewProviderSketch& vp, SbVec3f pos0, SbVec3f pos1);
     static inline int defaultApplicationFontSizePixels(const ViewProviderSketch& vp);
@@ -145,6 +149,14 @@ inline const std::vector<Sketcher::Constraint*> ViewProviderSketchCoinAttorney::
     return vp.getConstraints();
 }
 
+inline bool ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(
+    const ViewProviderSketch& vp,
+    const Sketcher::Constraint* cstr
+)
+{
+    return vp.isConstraintActiveInSketch(cstr);
+}
+
 inline const GeoList ViewProviderSketchCoinAttorney::getGeoList(const ViewProviderSketch& vp)
 {
     return vp.getGeoList();
@@ -180,6 +192,14 @@ inline float ViewProviderSketchCoinAttorney::getScaleFactor(const ViewProviderSk
 inline SbVec2f ViewProviderSketchCoinAttorney::getScreenCoordinates(
     const ViewProviderSketch& vp,
     SbVec2f sketchcoordinates
+)
+{
+    return vp.getScreenCoordinates(sketchcoordinates);
+}
+
+inline SbVec2f ViewProviderSketchCoinAttorney::getScreenCoordinates(
+    const ViewProviderSketch& vp,
+    SbVec3f sketchcoordinates
 )
 {
     return vp.getScreenCoordinates(sketchcoordinates);
@@ -294,6 +314,3 @@ inline void ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_ViewProviderSketchCoinAttorney_H

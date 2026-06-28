@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <sstream>
 
-
 #include <App/DocumentObjectPy.h>
+
 #include "Document.h"
 
-// inclusion of the generated files (generated out of ViewProviderDocumentObjectPy.pyi)
+// generated out of ViewProviderDocumentObject.pyi
 #include "ViewProviderDocumentObjectPy.h"
 #include "ViewProviderDocumentObjectPy.cpp"
-
 
 using namespace Gui;
 

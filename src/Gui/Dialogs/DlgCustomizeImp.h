@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGCUSTOMIZE_IMP_H
-#define GUI_DIALOG_DLGCUSTOMIZE_IMP_H
+#pragma once
 
 #include <QDialog>
 
@@ -83,5 +82,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGCUSTOMIZE_IMP_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_PRECOMPILED_H
-#define BASE_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -119,21 +118,3 @@
 // Unicode
 #include <unicode/unistr.h>
 #include <unicode/uchar.h>
-
-// QtCore
-#include <QBuffer>
-#include <QByteArray>
-#include <QCoreApplication>
-#include <QEvent>
-#include <QIODevice>
-#include <QDataStream>
-#include <QDateTime>
-#include <QElapsedTimer>
-#include <QWriteLocker>
-#include <QReadLocker>
-#include <QReadWriteLock>
-#include <QTime>
-#include <QTimeZone>
-#include <QUuid>
-
-#endif  // BASE_PRECOMPILED_H

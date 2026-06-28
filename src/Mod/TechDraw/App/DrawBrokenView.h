@@ -25,8 +25,7 @@
 //! DrawBrokenView produces a view of the Source shapes after a portion of the shapes
 //! has been removed.
 
-#ifndef DRAWBROKENVIEW_H_
-#define DRAWBROKENVIEW_H_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -175,6 +174,3 @@ private:
 using DrawBrokenViewPython = App::FeaturePythonT<DrawBrokenView>;
 
 }//namespace TechDraw
-
-#endif
-

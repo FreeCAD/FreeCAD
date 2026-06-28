@@ -5,6 +5,8 @@
 
 import FreeCAD
 
+translate = FreeCAD.Qt.translate
+
 # Append the open handler
 FreeCAD.addImportType("STL Mesh (*.stl *.STL *.ast *.AST)", "Mesh")
 FreeCAD.addImportType("Binary Mesh (*.bms *.BMS)", "Mesh")
@@ -14,10 +16,17 @@ FreeCAD.addImportType("Stanford Triangle Mesh (*.ply *.PLY)", "Mesh")
 FreeCAD.addImportType("Simple Model Format (*.smf *.SMF)", "Mesh")
 FreeCAD.addImportType("3D Manufacturing Format (*.3mf *.3MF)", "Mesh")
 
-FreeCAD.addExportType("STL Mesh (*.stl *.ast)", "Mesh")
-FreeCAD.addExportType("Binary Mesh (*.bms)", "Mesh")
-FreeCAD.addExportType("Alias Mesh (*.obj)", "Mesh")
-FreeCAD.addExportType("Object File Format Mesh (*.off)", "Mesh")
+FreeCAD.addTranslatableExportType(translate("FileFormat", "STL Mesh"), ["stl", "ast"], "Mesh")
+FreeCAD.addTranslatableExportType(translate("FileFormat", "Binary Mesh"), ["bms"], "Mesh")
+
+#: Translation note: "Alias" in this case is a product/format name and should not be translated
+FreeCAD.addTranslatableExportType(translate("FileFormat", "Alias Mesh"), ["obj"], "Mesh")
+
+#: Translation note: "Object File Format" is the official name and should not be translated
+FreeCAD.addTranslatableExportType(
+    translate("FileFormat", "Object File Format Mesh"), ["off"], "Mesh"
+)
+
 FreeCAD.addExportType("Stanford Triangle Mesh (*.ply)", "Mesh")
 FreeCAD.addExportType("Additive Manufacturing Format (*.amf)", "Mesh")
 FreeCAD.addExportType("Simple Model Format (*.smf)", "Mesh")

@@ -45,7 +45,6 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "CircleEllipseConstructionMethod.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
@@ -70,6 +69,7 @@
 #include "DrawSketchHandlerRectangle.h"
 #include "DrawSketchHandlerSlot.h"
 #include "DrawSketchHandlerSplitting.h"
+#include "DrawSketchHandlerText.h"
 #include "DrawSketchHandlerTrimming.h"
 
 
@@ -94,10 +94,6 @@ using namespace SketcherGui;
         } \
     }
 
-namespace SketcherGui
-{
-GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
-}
 
 /* Sketch commands =======================================================*/
 
@@ -219,6 +215,37 @@ bool CmdSketcherCreateLine::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
+// Polyline old tool ======================================================
+
+DEF_STD_CMD_AU(CmdSketcherCreatePolylineLegacy)
+
+CmdSketcherCreatePolylineLegacy::CmdSketcherCreatePolylineLegacy()
+    : Command("Sketcher_CreatePolylineLegacy")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Polyline");
+    sToolTipText = QT_TR_NOOP(
+        "Creates a continuous polyline. Press the 'M' key to switch segment modes"
+    );
+    sWhatsThis = "Sketcher_CreatePolylineLegacy";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreatePolyline";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolylineLegacy, "Sketcher_CreatePolylineLegacy")
+
+void CmdSketcherCreatePolylineLegacy::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerLineSet>());
+}
+
+bool CmdSketcherCreatePolylineLegacy::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
 // Polyline ================================================================
 
 DEF_STD_CMD_AU(CmdSketcherCreatePolyline)
@@ -229,9 +256,7 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Polyline");
-    sToolTipText = QT_TR_NOOP(
-        "Creates a continuous polyline. Press the 'M' key to switch segment modes"
-    );
+    sToolTipText = QT_TR_NOOP("Creates a polyline in the sketch. M key cycles through segment modes.");
     sWhatsThis = "Sketcher_CreatePolyline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePolyline";
@@ -244,7 +269,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePolyline, "Sketcher_CreatePolyline")
 void CmdSketcherCreatePolyline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerLineSet>());
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerPolyLine>());
 }
 
 bool CmdSketcherCreatePolyline::isActive()
@@ -1356,6 +1381,43 @@ public:
     }
 };
 
+// Text ================================================================
+
+DEF_STD_CMD_AU(CmdSketcherCreateText)
+
+CmdSketcherCreateText::CmdSketcherCreateText()
+    : Command("Sketcher_CreateText")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Text");
+    sToolTipText = QT_TR_NOOP(
+        "Creates text geometries controlled by a Text constraint.\n"
+        "To Edit: Double-click the Text constraint to change the text content and font.\n"
+        "To Position/Size: Apply constraints to the group's construction line.\n"
+        "Note: While the Text constraint is active, any constraints applied directly to the text "
+        "geometries will be ignored.\n"
+    );
+    sWhatsThis = "Sketcher_CreateText";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateText";
+    sAccel = "";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateText, "Sketcher_CreateText")
+
+void CmdSketcherCreateText::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerText>());
+}
+
+bool CmdSketcherCreateText::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
 // B-spline ================================================================
 
 DEF_STD_CMD_AU(CmdSketcherCreateBSpline)
@@ -1924,6 +1986,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreatePeriodicBSplineByInterpolation());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePolylineLegacy());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangleCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateOblong());
@@ -1936,6 +1999,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcSlot());
+    rcCmdMgr.addCommand(new CmdSketcherCreateText());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     rcCmdMgr.addCommand(new CmdSketcherCreateChamfer());
     // rcCmdMgr.addCommand(new CmdSketcherCreateText());

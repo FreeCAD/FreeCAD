@@ -27,9 +27,6 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
 
-    # s=os.path.dirname(__file__)
-    # s=os.path.join(s,"ProfileLib")
-    # FreeCADGui.addIconPath(s)
 
 __title__ = "Sketcher profile lib handling"
 __author__ = "Juergen Riegel"
@@ -44,9 +41,6 @@ def getSketch():
     edit = FreeCADGui.ActiveDocument.getInEdit()
     if edit and edit.isDerivedFrom("SketcherGui::ViewProviderSketch"):
         return edit.Object
-    # act = FreeCAD.ActiveDocument.ActiveObject
-    # if act and act.isDerivedFrom('Sketcher::SketchObject'):
-    #    return act
     return None
 
 

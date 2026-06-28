@@ -24,8 +24,7 @@
 
 
 
-#ifndef COMMANDHELPERS_H
-#define COMMANDHELPERS_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -62,5 +61,3 @@ std::pair<App::DocumentObject*, std::string> faceFromSelection();
 
 }   // end namespace CommandHelpers
 }   // end namespace TechDraw
-
-#endif

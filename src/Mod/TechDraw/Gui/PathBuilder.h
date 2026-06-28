@@ -23,8 +23,7 @@
 // a class for converting geometry into QPainterPaths
 
 
-#ifndef PATHBUILDER_H
-#define PATHBUILDER_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -53,4 +52,3 @@ private:
 };
 
 } //end namespace TechDraw
-#endif

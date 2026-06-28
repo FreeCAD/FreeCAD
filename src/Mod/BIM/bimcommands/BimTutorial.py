@@ -239,7 +239,7 @@ class BIM_Tutorial:
         else:
             self.form.labelTasks.hide()
         self.dock.setWindowTitle(
-            translate("BIM", "BIM Tutorial - step") + " " + str(self.step) + " / " + str(self.steps)
+            translate("BIM", "BIM Tutorial - Step") + " " + str(self.step) + " / " + str(self.steps)
         )
         self.form.progressBar.setValue(int((float(self.step) / self.steps) * 100))
 

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_DrawParametricTemplate_h_
-#define TECHDRAW_DrawParametricTemplate_h_
+#pragma once
 
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
@@ -92,7 +91,3 @@ private:
 using DrawParametricTemplatePython = App::FeaturePythonT<DrawParametricTemplate>;
 
 } //namespace TechDraw
-
-
-
-#endif //_TECHDRAW_DrawParametricTemplate_h_

@@ -45,8 +45,7 @@
  *      Experimental
  ****************************************************************************/
 
-#ifndef KDL_MOTION_VELOCITYPROFILE_TRAPHALF_H
-#define KDL_MOTION_VELOCITYPROFILE_TRAPHALF_H
+#pragma once
 
 #include "velocityprofile.hpp"
 
@@ -133,6 +132,3 @@ class VelocityProfile_TrapHalf : public VelocityProfile
 
 
 }
-
-
-#endif

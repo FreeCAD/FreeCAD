@@ -63,7 +63,9 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
     PyObject* pPlane;
     double dist;
     static const std::array<const char*, 3> keywords_pd {"Plane", "Distance", nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_pd, &(PlanePy::Type), &pPlane, &dist)) {
+    if (
+        Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_pd, &(PlanePy::Type), &pPlane, &dist)
+    ) {
         PlanePy* pcPlane = static_cast<PlanePy*>(pPlane);
         Handle(Geom_Plane) plane = Handle(Geom_Plane)::DownCast(pcPlane->getGeometryPtr()->handle());
         GC_MakePlane mc(plane->Pln(), dist);
@@ -209,7 +211,8 @@ void PlanePy::setPosition(Py::Object arg)
     }
 
     try {
-        Handle(Geom_Plane) this_surf = Handle(Geom_Plane)::DownCast(this->getGeomPlanePtr()->handle());
+        Handle(Geom_Plane)
+            this_surf = Handle(Geom_Plane)::DownCast(this->getGeomPlanePtr()->handle());
         this_surf->SetLocation(loc);
     }
     catch (Standard_Failure& e) {
@@ -219,9 +222,8 @@ void PlanePy::setPosition(Py::Object arg)
 
 Py::Object PlanePy::getAxis() const
 {
-    Handle(Geom_ElementarySurface) s = Handle(Geom_ElementarySurface)::DownCast(
-        getGeometryPtr()->handle()
-    );
+    Handle(Geom_ElementarySurface)
+        s = Handle(Geom_ElementarySurface)::DownCast(getGeometryPtr()->handle());
     gp_Dir dir = s->Axis().Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
@@ -249,9 +251,8 @@ void PlanePy::setAxis(Py::Object arg)
     }
 
     try {
-        Handle(Geom_ElementarySurface) this_surf = Handle(Geom_ElementarySurface)::DownCast(
-            this->getGeometryPtr()->handle()
-        );
+        Handle(Geom_ElementarySurface)
+            this_surf = Handle(Geom_ElementarySurface)::DownCast(this->getGeometryPtr()->handle());
         gp_Ax1 axis;
         axis.SetLocation(this_surf->Location());
         axis.SetDirection(gp_Dir(dir_x, dir_y, dir_z));

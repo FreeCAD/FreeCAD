@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
-#define DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -70,7 +69,3 @@ private:
 };
 
 } // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
-

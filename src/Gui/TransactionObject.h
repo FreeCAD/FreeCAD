@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TRANSACTIONOBJECT_H
-#define GUI_TRANSACTIONOBJECT_H
+#pragma once
 
 #include <App/Transactions.h>
 
@@ -41,6 +40,3 @@ public:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_TRANSACTIONOBJECT_H

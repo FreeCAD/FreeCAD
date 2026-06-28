@@ -110,11 +110,38 @@ class _Profile(Draft._DraftObject):
             self.Profile = state
         self.Type = "Profile"
 
+    def onDocumentRestored(self, obj):
+        """Rename property OutDiameter to OutsideDiameter and rename property group Draft to Profile"""
+
+        if hasattr(obj, "OutDiameter"):
+            # 1v1 to 1v2 changes.
+            obj.setPropertyStatus("OutDiameter", "-LockDynamic")
+            obj.renameProperty("OutDiameter", "OutsideDiameter")
+            obj.setPropertyStatus("OutsideDiameter", "LockDynamic")
+            if obj.getGroupOfProperty("OutsideDiameter") == "Draft":
+                self._update_propgroup_1v1_to_1v2(obj)
+            self.execute(obj)  # To use Part::FaceMakerCheese for the face.
+            return
+        for prop in ("Height", "Size"):
+            # Profiles other than the circular tubeprofile have either a Height or Size property.
+            if hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "Draft":
+                self._update_propgroup_1v1_to_1v2(obj)
+                return
+
+    def _update_propgroup_1v1_to_1v2(self, obj):
+        """Helper function to rename property group Draft to Profile"""
+
+        for prop in obj.PropertiesList:
+            if obj.getGroupOfProperty(prop) == "Draft":
+                obj.setPropertyStatus(prop, "-LockDynamic")
+                obj.setGroupOfProperty(prop, "Profile")
+                obj.setPropertyStatus(prop, "LockDynamic")
+
     def cleanProperties(self, obj):
         """Remove all Profile properties"""
 
         for prop in obj.PropertiesList:
-            if obj.getGroupOfProperty(prop) == "Draft":
+            if obj.getGroupOfProperty(prop) == "Profile":
                 obj.setPropertyStatus(prop, "-LockDynamic")
                 obj.removeProperty(prop)
 
@@ -126,15 +153,15 @@ class _ProfileC(_Profile):
         self.cleanProperties(obj)
         obj.addProperty(
             "App::PropertyLength",
-            "OutDiameter",
-            "Draft",
-            QT_TRANSLATE_NOOP("App::Property", "Outside Diameter"),
+            "OutsideDiameter",
+            "Profile",
+            QT_TRANSLATE_NOOP("App::Property", "Outside diameter"),
             locked=True,
-        ).OutDiameter = profile[4]
+        ).OutsideDiameter = profile[4]
         obj.addProperty(
             "App::PropertyLength",
             "Thickness",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Wall thickness"),
             locked=True,
         ).Thickness = profile[5]
@@ -144,15 +171,9 @@ class _ProfileC(_Profile):
         import Part
 
         pl = obj.Placement
-        c1 = Part.Circle()
-        c1.Radius = obj.OutDiameter.Value / 2
-        c2 = Part.Circle()
-        c2.Radius = obj.OutDiameter.Value / 2 - obj.Thickness.Value
-        cs1 = c1.toShape()
-        cs2 = c2.toShape()
-        p = Part.makeRuledSurface(cs2, cs1)
-        p.reverse()
-        obj.Shape = p
+        c1 = Part.makeCircle(obj.OutsideDiameter.Value / 2)
+        c2 = Part.makeCircle(obj.OutsideDiameter.Value / 2 - obj.Thickness.Value)
+        obj.Shape = Part.makeFace([c1, c2], "Part::FaceMakerCheese").Faces[0]
         obj.Placement = pl
 
 
@@ -164,28 +185,28 @@ class _ProfileH(_Profile):
         obj.addProperty(
             "App::PropertyLength",
             "Width",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
             locked=True,
         ).Width = profile[4]
         obj.addProperty(
             "App::PropertyLength",
             "Height",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
             locked=True,
         ).Height = profile[5]
         obj.addProperty(
             "App::PropertyLength",
             "WebThickness",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Thickness of the web"),
             locked=True,
         ).WebThickness = profile[6]
         obj.addProperty(
             "App::PropertyLength",
             "FlangeThickness",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Thickness of the flanges"),
             locked=True,
         ).FlangeThickness = profile[7]
@@ -214,9 +235,7 @@ class _ProfileH(_Profile):
         )
         p12 = Vector(-obj.Width.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p1])
-        p = Part.Face(p)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.Face(p)
         obj.Placement = pl
 
 
@@ -228,14 +247,14 @@ class _ProfileR(_Profile):
         obj.addProperty(
             "App::PropertyLength",
             "Width",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
             locked=True,
         ).Width = profile[4]
         obj.addProperty(
             "App::PropertyLength",
             "Height",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
             locked=True,
         ).Height = profile[5]
@@ -250,9 +269,7 @@ class _ProfileR(_Profile):
         p3 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p4 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p1])
-        p = Part.Face(p)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.Face(p)
         obj.Placement = pl
 
 
@@ -264,21 +281,21 @@ class _ProfileRH(_Profile):
         obj.addProperty(
             "App::PropertyLength",
             "Width",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
             locked=True,
         ).Width = profile[4]
         obj.addProperty(
             "App::PropertyLength",
             "Height",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
             locked=True,
         ).Height = profile[5]
         obj.addProperty(
             "App::PropertyLength",
             "Thickness",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Thickness of the sides"),
             locked=True,
         ).Thickness = profile[6]
@@ -312,12 +329,7 @@ class _ProfileRH(_Profile):
         )
         p = Part.makePolygon([p1, p2, p3, p4, p1])
         q = Part.makePolygon([q1, q2, q3, q4, q1])
-        # r = Part.Face([p,q])
-        # r.reverse()
-        p = Part.Face(p)
-        q = Part.Face(q)
-        r = p.cut(q)
-        obj.Shape = r
+        obj.Shape = Part.makeFace([p, q], "Part::FaceMakerCheese").Faces[0]
         obj.Placement = pl
 
 
@@ -329,28 +341,28 @@ class _ProfileU(_Profile):
         obj.addProperty(
             "App::PropertyLength",
             "Width",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
             locked=True,
         ).Width = profile[4]
         obj.addProperty(
             "App::PropertyLength",
             "Height",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
             locked=True,
         ).Height = profile[5]
         obj.addProperty(
             "App::PropertyLength",
             "WebThickness",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Thickness of the webs"),
             locked=True,
         ).WebThickness = profile[6]
         obj.addProperty(
             "App::PropertyLength",
             "FlangeThickness",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Thickness of the flange"),
             locked=True,
         ).FlangeThickness = profile[7]
@@ -377,9 +389,7 @@ class _ProfileU(_Profile):
         p7 = Vector(-obj.Width.Value / 2 + obj.FlangeThickness.Value, obj.Height.Value / 2, 0)
         p8 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p1])
-        p = Part.Face(p)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.Face(p)
         obj.Placement = pl
 
 
@@ -391,21 +401,21 @@ class _ProfileL(_Profile):
         obj.addProperty(
             "App::PropertyLength",
             "Width",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
             locked=True,
         ).Width = profile[4]
         obj.addProperty(
             "App::PropertyLength",
             "Height",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
             locked=True,
         ).Height = profile[5]
         obj.addProperty(
             "App::PropertyLength",
             "Thickness",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Thickness of the legs"),
             locked=True,
         ).Thickness = profile[6]
@@ -426,9 +436,7 @@ class _ProfileL(_Profile):
         )
         p6 = Vector(-obj.Width.Value / 2 + obj.Thickness.Value, obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p1])
-        p = Part.Face(p)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.Face(p)
         obj.Placement = pl
 
 
@@ -440,28 +448,28 @@ class _ProfileT(_Profile):
         obj.addProperty(
             "App::PropertyLength",
             "Width",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Width of the beam"),
             locked=True,
         ).Width = profile[4]
         obj.addProperty(
             "App::PropertyLength",
             "Height",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Height of the beam"),
             locked=True,
         ).Height = profile[5]
         obj.addProperty(
             "App::PropertyLength",
             "WebThickness",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Thickness of the web"),
             locked=True,
         ).WebThickness = profile[6]
         obj.addProperty(
             "App::PropertyLength",
             "FlangeThickness",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Thickness of the flanges"),
             locked=True,
         ).FlangeThickness = profile[7]
@@ -482,9 +490,7 @@ class _ProfileT(_Profile):
         )
         p8 = Vector(-obj.WebThickness.Value / 2, -obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p1])
-        p = Part.Face(p)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.Face(p)
         obj.Placement = pl
 
 
@@ -496,56 +502,56 @@ class _ProfileTSLOT(_Profile):
         obj.addProperty(
             "App::PropertyLength",
             "Size",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Overall size"),
             locked=True,
         ).Size = profile[4]
         obj.addProperty(
             "App::PropertyLength",
             "SlotSize",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Slot size"),
             locked=True,
         ).SlotSize = profile[5]
         obj.addProperty(
             "App::PropertyLength",
             "WallThickness",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Thickness of the wall"),
             locked=True,
         ).WallThickness = profile[6]
         obj.addProperty(
             "App::PropertyLength",
             "TnutSlotWidth",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "T-nut slot width"),
             locked=True,
         ).TnutSlotWidth = profile[7]
         obj.addProperty(
             "App::PropertyLength",
             "TnutSlotDepth",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "T-nut slot depth"),
             locked=True,
         ).TnutSlotDepth = profile[8]
         obj.addProperty(
             "App::PropertyLength",
             "CoreSize",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Internal core size"),
             locked=True,
         ).CoreSize = profile[9]
         obj.addProperty(
             "App::PropertyLength",
             "HoleDiameter",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Internal hole diameter"),
             locked=True,
         ).HoleDiameter = profile[10]
         obj.addProperty(
             "App::PropertyLength",
             "FilletRadius",
-            "Draft",
+            "Profile",
             QT_TRANSLATE_NOOP("App::Property", "Corner fillet radius"),
             locked=True,
         ).FilletRadius = profile[11]
@@ -598,12 +604,8 @@ class _ProfileTSLOT(_Profile):
         templist = templist + templist2
         templist.append(templist[0])
         poly = Part.makePolygon(templist)
-        pf = Part.Face(poly)
         hole = Part.makeCircle(obj.HoleDiameter / 2, FreeCAD.Vector(0, 0, 0))
-        cf = Part.Face(Part.Wire(hole))
-        p = pf.cut(cf)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.makeFace([poly, hole], "Part::FaceMakerCheese").Faces[0]
         obj.Placement = pl
 
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,10 +23,10 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Feature_H
-#define PARTDESIGN_Feature_H
+#pragma once
 
 #include <App/PropertyStandard.h>
+#include <App/PropertyLinks.h>
 #include <App/SuppressibleExtension.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PreviewExtension.h>
@@ -111,6 +113,11 @@ public:
 
     void onChanged(const App::Property* prop) override;
 
+    /// Called by Body::removeObject() when this feature's BaseFeature is
+    /// rerouted around a deleted feature. Subclasses may reroute only the
+    /// subelement links that are known to follow BaseFeature.
+    virtual void onBaseFeatureRerouted(App::DocumentObject* oldBase, App::DocumentObject* newBase);
+
     App::DocumentObject* getSubObject(
         const char* subname,
         PyObject** pyObj,
@@ -126,6 +133,11 @@ protected:
      */
     TopoShape getSolid(const TopoShape&) const;
     static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
+    static bool relinkToMatchingSubelements(
+        App::PropertyLinkSub& link,
+        App::DocumentObject* oldBase,
+        App::DocumentObject* newBase
+    );
 
     /**
      * Fix solids
@@ -157,6 +169,3 @@ protected:
 using FeaturePython = App::FeaturePythonT<Feature>;
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_Feature_H

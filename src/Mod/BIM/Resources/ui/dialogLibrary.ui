@@ -201,16 +201,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkWebSearch">
-        <property name="toolTip">
-         <string>Open the search results inside FreeCAD's web browser instead of the system browser</string>
-        </property>
-        <property name="text">
-         <string>Search using FreeCAD's web view</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="check3DPreview">
         <property name="toolTip">
          <string>Opens a 3D preview of the selected file</string>

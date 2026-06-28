@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -28,6 +30,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Transactions.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Document.h>
@@ -68,9 +71,6 @@ TaskTransformedParameters::TaskTransformedParameters(
 {
     Gui::Document* doc = TransformedView->getDocument();
     this->attachDocument(doc);
-
-    // remember initial transaction ID
-    App::GetApplication().getActiveTransaction(&transactionID);
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters* parentTask)
@@ -116,12 +116,6 @@ void TaskTransformedParameters::setupUI()
     ui->listWidgetFeatures->addAction(action);
     connect(action, &QAction::triggered, this, &TaskTransformedParameters::onFeatureDeleted);
     ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
-    connect(
-        ui->listWidgetFeatures->model(),
-        &QAbstractListModel::rowsMoved,
-        this,
-        &TaskTransformedParameters::indexesMoved
-    );
 
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled, this, &TaskTransformedParameters::onUpdateView);
 
@@ -146,7 +140,7 @@ void TaskTransformedParameters::setupUI()
             break;
     }
 
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    std::vector<App::DocumentObject*> originals = pcTransformed->getSortedOriginals();
     // Fill data into dialog elements
     for (auto obj : originals) {
         if (obj) {
@@ -232,7 +226,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
         if (selectedObject->isDerivedFrom<PartDesign::FeatureAddSub>()) {
 
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
-            std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+            std::vector<App::DocumentObject*> originals = pcTransformed->getSortedOriginals();
             const auto or_iter = std::ranges::find(originals, selectedObject);
             if (selectionMode == SelectionMode::AddFeature) {
                 if (or_iter == originals.end()) {
@@ -274,16 +268,16 @@ void TaskTransformedParameters::setupTransaction()
         return;
     }
 
-    int tid = 0;
-    App::GetApplication().getActiveTransaction(&tid);
-    if (tid != 0 && tid == transactionID) {
+    int tid = obj->getDocument()->getBookedTransactionID();
+    if (tid != App::NullTransaction) {
         return;
     }
 
     // open a transaction if none is active
+    // where is this transaction committed - theo-vt?
     std::string name("Edit ");
     name += obj->Label.getValue();
-    transactionID = App::GetApplication().setActiveTransaction(name.c_str());
+    transactionID = obj->getDocument()->openTransaction(name.c_str());
 }
 
 void TaskTransformedParameters::setEnabledTransaction(bool on)
@@ -370,7 +364,7 @@ void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
 void TaskTransformedParameters::onFeatureDeleted()
 {
     PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
+    std::vector<App::DocumentObject*> originals = pcTransformed->getSortedOriginals();
     int currentRow = ui->listWidgetFeatures->currentRow();
     if (currentRow < 0) {
         Base::Console().error("PartDesign Pattern: No feature selected for removing.\n");
@@ -586,29 +580,6 @@ void TaskTransformedParameters::addReferenceSelectionGate(AllowSelectionFlags al
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
 }
 
-void TaskTransformedParameters::indexesMoved()
-{
-    auto model = qobject_cast<QAbstractItemModel*>(sender());
-    if (!model) {
-        return;
-    }
-
-    PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-
-    QByteArray name;
-    int rows = model->rowCount();
-    for (int i = 0; i < rows; i++) {
-        QModelIndex index = model->index(i, 0);
-        name = index.data(Qt::UserRole).toByteArray().constData();
-        originals[i] = pcTransformed->getDocument()->getObject(name.constData());
-    }
-
-    setupTransaction();
-    pcTransformed->Originals.setValues(originals);
-    recomputeFeature();
-}
-
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -634,6 +605,5 @@ bool TaskDlgTransformedParameters::reject()
     parameter->exitSelectionMode();
     return TaskDlgFeatureParameters::reject();
 }
-
 
 #include "moc_TaskTransformedParameters.cpp"

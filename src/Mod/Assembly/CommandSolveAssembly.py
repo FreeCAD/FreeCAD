@@ -33,7 +33,6 @@ if App.GuiUp:
 import UtilsAssembly
 import Assembly_rc
 
-
 __title__ = "Assembly Command to Solve Assembly"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
@@ -64,10 +63,9 @@ class CommandSolveAssembly:
         if not assembly:
             return
 
-        Gui.addModule("UtilsAssembly")
         App.setActiveTransaction("Solve assembly")
-        Gui.doCommand("UtilsAssembly.activeAssembly().solve()")
-        App.closeActiveTransaction()
+        assembly.recompute(True)
+        Gui.ActiveDocument.commitCommand()
 
 
 if App.GuiUp:

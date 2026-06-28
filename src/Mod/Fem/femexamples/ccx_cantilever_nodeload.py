@@ -58,7 +58,7 @@ See forum topic post:
     )
 
 
-def setup(doc=None, solvertype="ccxtools"):
+def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
     # init FreeCAD document
     if doc is None:
@@ -69,12 +69,12 @@ def setup(doc=None, solvertype="ccxtools"):
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # setup CalculiX cantilever, apply 9 MN on the 4 nodes of the front end face
-    doc = setup_cantilever_base_solid(doc, solvertype)
+    doc = setup_cantilever_base_solid(doc, solvertype, test_mode)
     analysis = doc.Analysis
     geom_obj = doc.Box
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     con_force.References = [
         (geom_obj, "Vertex5"),
         (geom_obj, "Vertex6"),

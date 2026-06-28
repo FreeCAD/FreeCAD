@@ -15,8 +15,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef TRAJECTORY_STATIONARY_H
-#define TRAJECTORY_STATIONARY_H
+#pragma once
 
 #include "trajectory.hpp"
 
@@ -70,5 +69,3 @@ namespace KDL {
 
 
 }
-
-#endif

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef POINTS_PROPERTYPOINTKERNEL_H
-#define POINTS_PROPERTYPOINTKERNEL_H
+#pragma once
 
 #include "Points.h"
 
@@ -94,6 +93,3 @@ private:
 };
 
 }  // namespace Points
-
-
-#endif  // POINTS_PROPERTYPOINTKERNEL_H

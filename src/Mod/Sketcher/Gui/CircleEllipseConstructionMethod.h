@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_CircleEllipseConstructionMethod_H
-#define SKETCHERGUI_CircleEllipseConstructionMethod_H
+#pragma once
 
 namespace SketcherGui::ConstructionMethods
 {
@@ -37,6 +36,3 @@ enum class CircleEllipseConstructionMethod
 };
 
 }  // namespace SketcherGui::ConstructionMethods
-
-
-#endif  // SKETCHERGUI_CircleEllipseConstructionMethod_H

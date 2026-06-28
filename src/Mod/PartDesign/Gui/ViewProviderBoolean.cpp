@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -32,6 +34,7 @@
 
 #include <Base/ServiceProvider.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef IMPORT_WRITER_IGES_H
-#define IMPORT_WRITER_IGES_H
+#pragma once
 
 #include <Mod/Import/ImportGlobal.h>
 #include <Base/FileInfo.h>
@@ -42,5 +41,3 @@ private:
     Base::FileInfo file;
 };
 }  // namespace Import
-
-#endif  // IMPORT_WRITER_IGES_H

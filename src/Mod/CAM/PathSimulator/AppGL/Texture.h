@@ -22,11 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __texture_h__
-#define __texture_h__
-#include "OpenGlWrapper.h"
+#pragma once
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 class Texture
@@ -57,7 +55,4 @@ protected:
     unsigned int mTextureId = 0;
 };
 
-
-}  // namespace MillSim
-
-#endif  // !__texture_h__
+}  // namespace CAMSimulator

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Preferences_h_
-#define Preferences_h_
+#pragma once
 
 #include <Qt>
 #include <string>
@@ -148,6 +147,11 @@ public:
     static bool SnapViews();
     static double SnapLimitFactor();
 
+    static bool SnapDimensions();
+    static double SnapDimensionsTextFactor();
+    static double SnapDimensionsChainFactor();
+
+
     static Qt::KeyboardModifiers multiselectModifiers();
 
     static Qt::KeyboardModifiers balloonDragModifiers();
@@ -175,4 +179,3 @@ public:
 
 
 }//end namespace TechDraw
-#endif

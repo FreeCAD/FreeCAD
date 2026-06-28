@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemAnalysis_H
-#define Fem_FemAnalysis_H
+#pragma once
 
 #include <App/DocumentObjectGroup.h>
 #include <App/FeaturePython.h>
@@ -102,6 +101,3 @@ using FeaturePython = App::FeaturePythonT<DocumentObject>;
 
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemAnalysis_H

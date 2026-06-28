@@ -273,7 +273,10 @@ void DlgParameterFind::accept()
         opt.value = ui->checkValues->isChecked();
         opt.match = ui->checkMatch->isChecked();
 
+        // store the top item, to go back when you have reached the end
         QTreeWidgetItem* current = groupTree->currentItem();
+        QTreeWidgetItem* top = groupTree->topLevelItem(0);
+
         QTreeWidgetItem* next = findItem(current, opt);
         while (!next && current) {
             // go to the parent item and try again for each sibling after the current item
@@ -301,11 +304,30 @@ void DlgParameterFind::accept()
         }
 
         // if search was successful then make it the current item
-        if (next) {
+        if (next != nullptr) {
             groupTree->setCurrentItem(next);
         }
         else {
-            QMessageBox::warning(this, tr("Not found"), tr("Cannot find the text: %1").arg(opt.text));
+            auto ret = QMessageBox::warning(
+                this,
+                tr("Not found"),
+                tr("%1 not found. Would you like to start from the beginning?").arg(opt.text),
+                QMessageBox::Yes | QMessageBox::No
+            );
+            if (ret == QMessageBox::Yes) {
+                opt.text = "BaseApp";
+                opt.group = ui->checkGroups->isChecked();
+                opt.name = ui->checkNames->isChecked();
+                opt.value = ui->checkValues->isChecked();
+                opt.match = ui->checkMatch->isChecked();
+
+                if (groupTree->currentItem() != top) {
+                    if (top != nullptr) {
+                        groupTree->setCurrentItem(top);
+                    }
+                }
+                DlgParameterFind::findItem(current, opt);
+            }
         }
     }
 }

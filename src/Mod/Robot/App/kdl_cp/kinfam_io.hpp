@@ -21,8 +21,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_KINFAM_IO_HPP
-#define KDL_KINFAM_IO_HPP
+#pragma once
 
 #include <iostream>
 #include <fstream>
@@ -73,5 +72,3 @@ std::istream& operator >>(std::istream& is, std::vector<T>& vec) {
 ;
     */
 }
-#endif
-

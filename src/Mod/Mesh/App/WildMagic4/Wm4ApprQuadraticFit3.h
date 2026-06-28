@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4APPRQUADRATICFIT3_H
-#define WM4APPRQUADRATICFIT3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Vector3.h"
@@ -73,5 +72,3 @@ Real QuadraticSphereFit3 (int iQuantity, const Vector3<Real>* akPoint,
     Vector3<Real>& rkCenter, Real& rfRadius);
 
 }
-
-#endif

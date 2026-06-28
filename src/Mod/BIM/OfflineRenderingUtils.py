@@ -509,7 +509,7 @@ def viewer(scene=None, background=(1.0, 1.0, 1.0), lightdir=None):
 
     # Put our scene into viewer, change the title
     win.setSceneGraph(scene)
-    win.setWindowTitle("Coin viewer")
+    win.setWindowTitle("Coin Viewer")
 
     # IMPORTANT!!!!! Windows are hidden by default.
     win.show()

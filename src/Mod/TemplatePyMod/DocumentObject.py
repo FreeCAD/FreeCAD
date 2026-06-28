@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-# FreeCAD module providing base classes for document objects and view provider  
+# FreeCAD module providing base classes for document objects and view provider
 # (c) 2011 Werner Mayer LGPL
 
 import FreeCAD
@@ -28,9 +28,14 @@ class DocumentObject(object):
 
     def __getattr__(self, attr):
         if attr !="__object__" and hasattr(self.__object__,attr):
-            return getattr(self.__object__,attr)
-        else:
-            return object.__getattribute__(self,attr)
+            # Methods like "getSubObject" are called from the C++ code if they exist in
+            # this class (DocumentObject).
+            # Our __object__ also has a method with the same name ("getSubObject"),
+            # but it does not require the extra first argument "obj" which is the same
+            # as self.__object__. So we cannot map these methods 1:1.
+            if attr not in ("getSubObject", "getSubObjects", "getLinkedObject"):
+                return getattr(self.__object__,attr)
+        return object.__getattribute__(self,attr)
     def __setattr__(self, attr, value):
         if attr !="__object__" and hasattr(self.__object__,attr):
             setattr(self.__object__,attr,value)
@@ -57,9 +62,9 @@ class DocumentObject(object):
                     self.init()
                     self.initialised = True
         self.propertyChanged(prop)
-    def addProperty(self,typ,name='',group='',doc='',attr=0,readonly=False,hidden=False):
+    def addProperty(self,typ,name='',group='',doc='',attr=0,readonly=False,hidden=False,locked=True):
         "adds a new property to this object"
-        return self.__object__.addProperty(typ,name,group,doc,attr,readonly,hidden)
+        return self.__object__.addProperty(typ,name,group,doc,attr,readonly,hidden,locked)
     def supportedProperties(self):
         "lists the property types supported by this object"
         return self.__object__.supportedProperties()
@@ -91,12 +96,11 @@ class DocumentObject(object):
     def purgeTouched(self):
         "removes the to-be-recomputed flag of this object"
         return self.__object__.purgeTouched()
-    def __setstate__(self,value):
-        """allows saving custom attributes of this object as strings, so
-        they can be saved when saving the FreeCAD document"""
+    def loads(self,value):
+        """Called during document restore."""
         return None
-    def __getstate__(self):
-        """reads values previously saved with __setstate__()"""
+    def dumps(self):
+        """Called during document saving."""
         return None
     @property
     def PropertiesList(self):
@@ -181,9 +185,9 @@ class ViewProvider(object):
     #    return []
     #def setDisplayMode(self,mode):
     #    return mode
-    def addProperty(self,type,name='',group='',doc='',attr=0,readonly=False,hidden=False):
+    def addProperty(self,type,name='',group='',doc='',attr=0,readonly=False,hidden=False,locked=True):
         "adds a new property to this object"
-        self.__vobject__.addProperty(type,name,group,doc,attr,readonly,hidden)
+        self.__vobject__.addProperty(type,name,group,doc,attr,readonly,hidden,locked)
     def update(self):
         "this method is executed whenever any of the properties of this ViewProvider changes"
         self.__vobject__.update()
@@ -224,12 +228,11 @@ class ViewProvider(object):
     def getDocumentationOfProperty(self,attr):
         "returns the documentation string of a given property"
         return self.__vobject__.getDocumentationOfProperty(attr)
-    def __setstate__(self,value):
-        """allows saving custom attributes of this object as strings, so
-        they can be saved when saving the FreeCAD document"""
+    def loads(self,value):
+        """Called during document restore."""
         return None
-    def __getstate__(self):
-        """reads values previously saved with __setstate__()"""
+    def dumps(self):
+        """Called during document saving."""
         return None
     @property
     def Annotation(self):
@@ -279,9 +282,9 @@ class Box(DocumentObject):
 
     #-----------------------------INIT----------------------------------------
     def init(self):
-        self.addProperty("App::PropertyLength","Length","Box","Length of the box", locked=True).Length=1.0
-        self.addProperty("App::PropertyLength","Width","Box","Width of the box", locked=True).Width=1.0
-        self.addProperty("App::PropertyLength","Height","Box", "Height of the box", locked=True).Height=1.0
+        self.addProperty("App::PropertyLength","Length","Box","Length of the box").Length=1.0
+        self.addProperty("App::PropertyLength","Width","Box","Width of the box").Width=1.0
+        self.addProperty("App::PropertyLength","Height","Box", "Height of the box").Height=1.0
 
     #-----------------------------BEHAVIOR------------------------------------
     def propertyChanged(self,prop):

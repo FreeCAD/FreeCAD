@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_KERNEL_H
-#define MESH_KERNEL_H
+#pragma once
 
 #include <cassert>
 #include <iosfwd>
@@ -496,6 +495,10 @@ protected:
     inline Base::Vector3f GetGravityPoint(const MeshFacet& rclFacet) const;
 
 private:
+    unsigned long AddFacets(const std::vector<MeshFacet>& rclFAry);
+    unsigned long AddFacetsIfValid(const std::vector<MeshFacet>& rclFAry);
+
+private:
     MeshPointArray _aclPointArray;        /**< Holds the array of geometric points. */
     MeshFacetArray _aclFacetArray;        /**< Holds the array of facets. */
     mutable Base::BoundBox3f _clBoundBox; /**< The current calculated bounding box. */
@@ -640,5 +643,3 @@ inline void MeshKernel::SetFacetPoints(
 
 
 }  // namespace MeshCore
-
-#endif  // MESH_KERNEL_H

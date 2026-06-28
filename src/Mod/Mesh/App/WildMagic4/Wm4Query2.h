@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY2_H
-#define WM4QUERY2_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Query.h"
@@ -88,5 +87,3 @@ namespace Wm4
 typedef Query2<float> Query2f;
 typedef Query2<double> Query2d;
 }
-
-#endif

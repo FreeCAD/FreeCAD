@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef TECHDRAW_XMLQuery_h_
-#define TECHDRAW_XMLQuery_h_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <QList>
@@ -46,5 +45,3 @@ private:
 };
 
 } //namespace TechDraw
-
-#endif //TECHDRAW_XMLQuery_h_

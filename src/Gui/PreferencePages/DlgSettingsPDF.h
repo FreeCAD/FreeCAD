@@ -1,5 +1,4 @@
-#ifndef GUI_DIALOG_DLGSETTINGSPDF_H
-#define GUI_DIALOG_DLGSETTINGSPDF_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <QPagedPaintDevice>
@@ -40,5 +39,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGSETTINGSPDF_H

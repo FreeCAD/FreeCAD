@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawHatch_h_
-#define TechDraw_DrawHatch_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -85,4 +84,3 @@ private:
 using DrawHatchPython = App::FeaturePythonT<DrawHatch>;
 
 } //namespace TechDraw
-#endif

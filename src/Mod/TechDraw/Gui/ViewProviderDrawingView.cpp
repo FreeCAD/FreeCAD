@@ -31,6 +31,7 @@
 #include <App/Metadata.h>
 #include <Base/Color.h>
 #include <Base/Console.h>
+#include <Base/ProgramVersion.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -58,7 +59,6 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderDrawingView, Gui::ViewProviderDocumentO
 ViewProviderDrawingView::ViewProviderDrawingView() :
     m_myName(std::string())
 {
-//    Base::Console().message("VPDV::VPDV\n");
     initExtension(this);
 
     sPixmap = "TechDraw_TreeView";
@@ -185,10 +185,38 @@ QGIView* ViewProviderDrawingView::getQView()
 
     QGSPage* page = vpp->getQGSPage();
     if (page) {
-        return dynamic_cast<QGIView *>(page->findQViewForDocObj(getViewObject()));
+        return page->findQViewForDocObj(getViewObject());
     }
 
     return nullptr;
+}
+
+//! Returns the parent graphics item of the passed item or nullptr if the passed item has no parent item.  The parent/child
+//! relationship is based on TD features, not the QGraphicsScene.
+//! this is just qgiv->parentItem() with extra steps??
+QGIView* ViewProviderDrawingView::getOwnerQView(const QGIView* qgiv)
+{
+    auto page = dynamic_cast<QGSPage *>(qgiv->scene());
+    if (!page) {
+        return nullptr;
+    }
+
+    TechDraw::DrawView* obj = qgiv->getViewObject();
+    if (!obj) {
+        return nullptr;
+    }
+
+    App::PropertyLink* ownerProp = obj->getOwnerProperty();
+    if (!ownerProp) {
+        return nullptr;
+    }
+
+    auto* owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
+    if (!owner) {
+        return nullptr;
+    }
+
+    return page->getQGIVByName(owner->getNameInDocument());
 }
 
 bool ViewProviderDrawingView::isShow() const
@@ -215,46 +243,44 @@ void ViewProviderDrawingView::finishRestoring()
 
 void ViewProviderDrawingView::updateData(const App::Property* prop)
 {
-    TechDraw::DrawView *obj = getViewObject();
-    App::PropertyLink *ownerProp = obj->getOwnerProperty();
+    QGIView* qgiv = getQView();
+    if (!qgiv)  {
+        return;
+    }
+
+    TechDraw::DrawView* obj = getViewObject();
+    if (!obj) {
+        return;
+    }
+
+    App::PropertyLink* ownerProp = obj->getOwnerProperty();
 
     //only move the view on X, Y change
-    if (prop == &obj->X
-        || prop == &obj->Y) {
-        QGIView* qgiv = getQView();
-        if (qgiv && !qgiv->isSnapping()) {
-            qgiv->QGIView::updateView(true);
+    if (prop == &obj->X ||
+        prop == &obj->Y) {
 
-            // Update also the owner/parent view, if there is any
-            if (ownerProp) {
-                auto owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
-                if (owner) {
-                    auto page = dynamic_cast<QGSPage *>(qgiv->scene());
-                    if (page) {
-                        QGIView *ownerView = page->getQGIVByName(owner->getNameInDocument());
-                        if (ownerView) {
-                            ownerView->updateView();
-                        }
-                    }
-                }
-            }
+        if (qgiv->isSnapping() ||
+            obj->LockPosition.getValue()) {
+            Gui::ViewProviderDocumentObject::updateData(prop);
+            return;
         }
+
+        qgiv->updatePositionFromFeatureXY();
+
+        // Update also the owner/parent view, if there is any
+        QGIView* ownerView = getOwnerQView(qgiv);
+        if (ownerView) {
+            ownerView->updateView();
+        }
+
+        Gui::ViewProviderDocumentObject::updateData(prop);
+        return;
     }
-    else if (ownerProp && prop == ownerProp) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            QGIView *ownerView = nullptr;
-            auto owner = dynamic_cast<TechDraw::DrawView *>(ownerProp->getValue());
-            if (owner) {
-                auto page = dynamic_cast<QGSPage *>(qgiv->scene());
-                if (page) {
-                    ownerView = page->getQGIVByName(owner->getNameInDocument());
-                }
-            }
 
-            qgiv->switchParentItem(ownerView);
-            qgiv->updateView();
-        }
+    if (ownerProp && prop == ownerProp) {
+        QGIView* ownerView = getOwnerQView(qgiv);  // ownerView is allowed to be null here
+        qgiv->switchParentItem(ownerView);
+        qgiv->updateView();
     }
 
     Gui::ViewProviderDocumentObject::updateData(prop);
@@ -524,7 +550,7 @@ std::vector<App::DocumentObject*> ViewProviderDrawingView::claimChildren() const
 void ViewProviderDrawingView::fixColorAlphaValues()
 {
     if (!Preferences::fixColorAlphaOnLoad() ||
-        checkMiniumumDocumentVersion(1, 1)) {
+        checkMinimumDocumentVersion(Base::Version::v1_1)) {
         return;
     }
 
@@ -550,27 +576,12 @@ void ViewProviderDrawingView::fixColorAlphaValues()
     }
 }
 
-
-//! true if document toBeChecked was written by a program with version >= minMajor.minMinor.
-//! note that we can not check point releases as only the major and minor are recorded in the Document.xml
-//! file.
-//! (ex <Document SchemaVersion="4" ProgramVersion="1.2R44322 +1 (Git)" FileVersion="1" StringHasher="1">)
-bool ViewProviderDrawingView::checkMiniumumDocumentVersion(App::Document* toBeChecked,
-                                                           int minMajor,
-                                                           int minMinor)
+bool ViewProviderDrawingView::checkMinimumDocumentVersion(App::Document* toBeChecked,
+                                                           Base::Version minVersion)
 {
     const char* docVersionText = toBeChecked->getProgramVersion();
-    int docMajor{0};
-    int docMinor{0};
-    // stole this bit from App::AttachExtension.
-    // NOLINTNEXTLINE
-    if (sscanf(docVersionText, "%d.%d", &docMajor, &docMinor) != 2) {
-        Base::Console().warning("Failed to retrieve document version number for %s\n",
-                    toBeChecked ? toBeChecked->getName() : "noname");
-        return false;   // ?? should we fail here? the file appears broken.
-    }
-
-    return std::tie(docMajor, docMinor) >= std::tie(minMajor, minMinor);
+    Base::Version documentVersion = Base::getVersion(docVersionText);
+    return documentVersion >= minVersion;
 }
 
 

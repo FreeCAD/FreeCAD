@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTBOX_H
-#define PART_FEATUREPARTBOX_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 
@@ -64,6 +63,3 @@ protected:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATUREPARTBOX_H

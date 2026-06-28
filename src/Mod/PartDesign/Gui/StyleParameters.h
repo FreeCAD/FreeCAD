@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef STYLEPARAMETERS_H
-#define STYLEPARAMETERS_H
+#pragma once
 
 #include <Gui/StyleParameters/ParameterManager.h>
 
@@ -44,5 +43,3 @@ DEFINE_STYLE_PARAMETER(PreviewShapeOpacity, Gui::StyleParameters::Numeric(0.2));
 
 DEFINE_STYLE_PARAMETER(PreviewLineWidth, Gui::StyleParameters::Numeric(2));
 }  // namespace PartDesignGui::StyleParameters
-
-#endif  // STYLEPARAMETERS_H

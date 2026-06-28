@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGVIEW_H
-#define TECHDRAWGUI_QGVIEW_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -205,5 +204,3 @@ private:
 };
 
 }// namespace TechDrawGui
-
-#endif// TECHDRAWGUI_QGVIEW_H

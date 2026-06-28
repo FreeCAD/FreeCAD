@@ -568,6 +568,23 @@ class _Panel(ArchComponent.Component):
                         obj.Placement = pl
 
 
+class PanelTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
+    """A task panel for Curtain Walls using the generic options task box"""
+
+    def __init__(self, obj):
+        definitions = [
+            {"prop": "Length", "label": translate("Arch", "Length")},
+            {"prop": "Width", "label": translate("Arch", "Width")},
+            {"prop": "Thickness", "label": translate("Arch", "Thickness")},
+            {"prop": "Sheets", "label": translate("Arch", "Sheets")},
+            {"prop": "WaveLength", "label": translate("Arch", "Wave Length")},
+            {"prop": "WaveHeight", "label": translate("Arch", "Wave Height")},
+            {"prop": "WaveBottom", "label": translate("Arch", "Wave Bottom")},
+            {"prop": "WaveType", "label": translate("Arch", "Wave Type")},
+        ]
+        super().__init__(obj, definitions)
+
+
 class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
     "A View Provider for the Panel object"
 
@@ -622,6 +639,12 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
                             if obj.ViewObject.DiffuseColor != cols:
                                 obj.ViewObject.DiffuseColor = cols
         ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+        FreeCADGui.Control.showDialog(PanelTaskPanel(vobj.Object))
+        return True
 
 
 class PanelCut(Draft.DraftObject):

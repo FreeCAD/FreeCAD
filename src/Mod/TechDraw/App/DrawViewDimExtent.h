@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawViewDimExtent_h_
-#define TechDraw_DrawViewDimExtent_h_
+#pragma once
 
 #include <tuple>
 
@@ -63,4 +62,3 @@ private:
 };
 
 } //namespace TechDraw
-#endif

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_HYPOTHESISPY_H
-#define FEM_HYPOTHESISPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 #include <SMESH_Version.h>  // needed for SMESH_VERSION_MAJOR
@@ -728,5 +727,3 @@ public:
 #endif
 
 }  // namespace Fem
-
-#endif  // FEM_HYPOTHESISPY_H

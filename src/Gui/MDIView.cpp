@@ -202,10 +202,9 @@ void MDIView::viewAll()
 {}
 
 /// receive a message
-bool MDIView::onMsg(const char* pMsg, const char** ppReturn)
+bool MDIView::onMsg(const char* pMsg)
 {
     Q_UNUSED(pMsg);
-    Q_UNUSED(ppReturn);
     return false;
 }
 
@@ -285,7 +284,7 @@ void MDIView::printPdf()
         this,
         tr("Export PDF"),
         QString(),
-        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file"))
+        FileDialog::FilterList {{QStringLiteral("PDF"), {"*.pdf"}}}
     );
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);

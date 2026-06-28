@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_COORDINATESYSTEM_H
-#define BASE_COORDINATESYSTEM_H
+#pragma once
 
 #include "Axis.h"
 
@@ -122,5 +121,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_COORDINATESYSTEM_H

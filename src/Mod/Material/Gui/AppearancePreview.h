@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_APPEARANCEPREVIEW_H
-#define MATGUI_APPEARANCEPREVIEW_H
+#pragma once
 
 #include <FCConfig.h>
 #include <Gui/View3DInventorViewer.h>
@@ -89,5 +88,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_APPEARANCEPREVIEW_H

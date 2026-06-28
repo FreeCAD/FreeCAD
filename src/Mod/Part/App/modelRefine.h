@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MODELREFINE_H
-#define MODELREFINE_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -259,5 +258,3 @@ protected:
     TopTools_ListOfShape myDeleted;
 };
 }  // namespace Part
-
-#endif  // MODELREFINE_H

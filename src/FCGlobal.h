@@ -24,9 +24,7 @@
  *  \brief Include export or import macros.
  */
 
-
-#ifndef FC_GLOBAL_H
-#define FC_GLOBAL_H
+#pragma once
 
 
 #if defined(WIN64) || defined(_WIN64) || defined(__WIN64__) || defined(__CYGWIN__)
@@ -88,7 +86,5 @@
 
 #include <QtCore.h>
 #ifndef HAVE_Q_DISABLE_COPY_MOVE
-#define Q_DISABLE_COPY_MOVE FC_DEFAULT_COPY_MOVE
+#define Q_DISABLE_COPY_MOVE FC_DISABLE_COPY_MOVE
 #endif
-
-#endif //FC_GLOBAL_H

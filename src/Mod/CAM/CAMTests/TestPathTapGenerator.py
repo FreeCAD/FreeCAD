@@ -47,10 +47,11 @@ class TestPathTapGenerator(PathTestUtils.PathTestBase):
         command = result[0]
 
         self.assertTrue(command.Name == "G84")
-        self.assertTrue(command.Parameters["R"] == 10)
-        self.assertTrue(command.Parameters["X"] == 0)
-        self.assertTrue(command.Parameters["Y"] == 0)
-        self.assertTrue(command.Parameters["Z"] == 0)
+        self.assertEqual(command.Parameters["R"], 10)
+        self.assertEqual(command.Parameters["X"], 0)
+        self.assertEqual(command.Parameters["Y"], 0)
+        self.assertEqual(command.Parameters["Z"], 0)
+        self.assertEqual(command.Annotations["rigid"], "False")
 
         # repeat must be > 0
         args = {"edge": e, "repeat": 0}

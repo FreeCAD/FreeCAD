@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGPARTBOXIMP_H
-#define PARTGUI_DLGPARTBOXIMP_H
+#pragma once
 
 #include <Gui/InputVector.h>
 
@@ -42,5 +41,3 @@ public:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGPARTBOXIMP_H

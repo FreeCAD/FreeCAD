@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_TASKIMAGE_H
-#define GUI_TASKIMAGE_H
+#pragma once
 
 #include <Inventor/SbVec3f.h>
 #include <QPointer>
@@ -152,5 +151,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TASKIMAGE_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREPARTBOOLEAN_H
-#define PART_FEATUREPARTBOOLEAN_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 
@@ -56,6 +55,8 @@ public:
     short mustExecute() const override;
     //@}
 
+    void Restore(Base::XMLReader& reader) override;
+
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
     {
@@ -69,5 +70,3 @@ protected:
 };
 
 }  // namespace Part
-
-#endif  // PART_FEATUREPARTBOOLEAN_H

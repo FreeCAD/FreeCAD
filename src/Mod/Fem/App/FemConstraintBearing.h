@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINTBEARING_H
-#define FEM_CONSTRAINTBEARING_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -67,6 +66,3 @@ protected:
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTBEARING_H

@@ -66,6 +66,9 @@ QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
             },
             [](const Base::Color&) {
                 return QWidget::tr("Color");
+            },
+            [](const Gui::StyleParameters::Tuple&) {
+                return QWidget::tr("Tuple");
             }
         },
         value
@@ -278,7 +281,7 @@ public:
         font.setItalic(true);
 
         painter->setFont(font);
-        painter->drawText(rect, Qt::AlignLeft | Qt::AlignVCenter, tr("New parameter..."));
+        painter->drawText(rect, Qt::AlignLeft | Qt::AlignVCenter, tr("New parameter…"));
     }
 
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override

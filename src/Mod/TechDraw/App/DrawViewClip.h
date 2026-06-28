@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewClip_h_
-#define DrawViewClip_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -81,6 +80,3 @@ protected:
 using DrawViewClipPython = App::FeaturePythonT<DrawViewClip>;
 
 } //namespace TechDraw
-
-
-#endif

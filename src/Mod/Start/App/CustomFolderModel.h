@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_CUSTOMFOLDERMODEL_H
-#define FREECAD_START_CUSTOMFOLDERMODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QString>
@@ -50,5 +49,3 @@ private:
 };
 
 }  // namespace Start
-
-#endif  // FREECAD_START_CUSTOMFOLDERMODEL_H

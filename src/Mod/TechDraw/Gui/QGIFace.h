@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
-#define DRAWINGGUI_QGRAPHICSITEMFACE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -176,4 +175,3 @@ private:
 };
 
 }
-#endif // DRAWINGGUI_QGRAPHICSITEMFACE_H

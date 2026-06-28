@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
-#define GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
+#pragma once
 
 #include "ViewProviderDragger.h"
 #include <Inventor/lists/SoPickedPointList.h>
@@ -96,6 +95,9 @@ public:
     virtual void showBoundingBox(bool);
     //@}
 
+    void hide() override;
+    void show() override;
+
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
 
@@ -127,6 +129,3 @@ protected:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_VIEWPROVIDER_GEOMETRYOBJECT_H

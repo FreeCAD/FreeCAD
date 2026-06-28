@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderOrigin_H
-#define GUI_VIEWPROVIDER_ViewProviderOrigin_H
+#pragma once
 
 #include <functional>
 #include <Base/Bitmask.h>
@@ -95,6 +94,11 @@ public:
         return false;
     }
 
+    bool canDropObjects() const override
+    {
+        return false;
+    }
+
     /// Returns default size. Use this if it is not possible to determine appropriate size by other means
     static double defaultSize();
 
@@ -120,5 +124,3 @@ private:
 }  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::DatumElement)
-
-#endif  // GUI_VIEWPROVIDER_ViewProviderOrigin_H

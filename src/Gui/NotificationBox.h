@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_NOTIFICATIONBOX_H
-#define GUI_NOTIFICATIONBOX_H
+#pragma once
 
 #include <type_traits>
 
@@ -129,5 +128,3 @@ inline bool operator&(NotificationBox::Options lhs, NotificationBox::Options rhs
 }
 
 }  // namespace Gui
-
-#endif  // GUI_NOTIFICATIONBOX_H

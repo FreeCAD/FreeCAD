@@ -7,12 +7,34 @@
    id="svg2869"
    version="1.1"
    viewBox="0 0 64 64"
+   sodipodi:docname="FEM_EquationElectricforce.svg"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="12.875"
+     inkscape:cx="32"
+     inkscape:cy="32"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2869" />
   <defs
      id="defs2871">
     <linearGradient
@@ -403,7 +425,7 @@
      id="layer3"
      style="display:inline">
     <path
-       style="display:inline;fill:#eeeeec;fill-opacity:0.5;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6, 2;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="display:inline;fill:#eeeeec;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:6, 2;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        d="M 31,5 3,11 v 38 l 28,-8 z"
        id="path987-2" />
     <path
@@ -419,7 +441,7 @@
        style="color:#000000;fill:#3465a4;fill-rule:evenodd;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        d="m 28.3125,17.099609 -1.638672,4.039063 0.002,0.002 -1.638672,4.039062 -7.679687,-7.818359 z" />
     <path
-       style="display:inline;font-style:normal;font-weight:normal;font-size:13.3333px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#eeeeec;fill-opacity:0.5;stroke:#555753;stroke-width:2;stroke-dasharray:6, 2;paint-order:normal;stroke-linejoin:round;stroke-linecap:butt;vector-effect:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;marker:none"
+       style="display:inline;font-style:normal;font-weight:normal;font-size:13.3333px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#eeeeec;fill-opacity:1;stroke:#555753;stroke-width:2;stroke-dasharray:6, 2;paint-order:normal;stroke-linejoin:round;stroke-linecap:butt;vector-effect:none;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;marker:none"
        d="M 61,9 V 45 L 37,55 V 17 Z"
        id="path2995-9" />
     <g

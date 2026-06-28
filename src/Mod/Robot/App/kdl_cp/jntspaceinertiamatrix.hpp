@@ -21,8 +21,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_JNTSPACEINERTIAMATRIX_HPP
-#define KDL_JNTSPACEINERTIAMATRIX_HPP
+#pragma once
 
 #include "frames.hpp"
 #include "jacobian.hpp"
@@ -230,5 +229,3 @@ class MyTask : public RTT::TaskContext
     bool operator==(const JntSpaceInertiaMatrix& src1,const JntSpaceInertiaMatrix& src2);
 
 }
-
-#endif

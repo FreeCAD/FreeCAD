@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerExtend_H
-#define SKETCHERGUI_DrawSketchHandlerExtend_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -33,7 +32,6 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchHandler.h"
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "SnapManager.h"
@@ -41,8 +39,6 @@
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class ExtendSelection: public Gui::SelectionFilterGate
 {
@@ -291,7 +287,7 @@ public:
         }
         else if (Mode == STATUS_SEEK_Second) {
             try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend edge"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Extend edge"));
                 Gui::cmdAppObjectArgs(
                     sketchgui->getObject(),
                     "extend(%d, %f, %d)\n",  // GeoId, increment, PointPos
@@ -300,7 +296,7 @@ public:
                     ExtendFromStart ? static_cast<int>(Sketcher::PointPos::start)
                                     : static_cast<int>(Sketcher::PointPos::end)
                 );
-                Gui::Command::commitCommand();
+                commitCommand();
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                     "User parameter:BaseApp/Preferences/Mod/Sketcher"
@@ -345,7 +341,7 @@ public:
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
                     QT_TRANSLATE_NOOP("Notifications", "Failed to extend edge")
                 );
-                Gui::Command::abortCommand();
+                abortCommand();
             }
         }
         else {  // exit extension tool if user clicked on empty space
@@ -410,5 +406,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_DrawSketchHandlerExtend_H

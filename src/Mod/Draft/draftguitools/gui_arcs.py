@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create circular arc objects."""
+
 ## @package gui_arcs
 # \ingroup draftguitools
 # \brief Provides GUI tools to create circular arc objects.
@@ -36,9 +37,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft
 import DraftVecUtils
 from FreeCAD import Units as U
+from draftgeoutils import circles as geo_circles
+from draftgeoutils import circles as geo_circles_incomplete
+from draftgeoutils import geometry as geo_geometry
 from draftguitools import gui_base
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
@@ -144,8 +147,6 @@ class Arc(gui_base_original.Creator):
             Dictionary with strings that indicates the type of event received
             from the 3D view.
         """
-        import DraftGeomUtils
-
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
@@ -169,17 +170,17 @@ class Arc(gui_base_original.Creator):
                             self.ui.switchUi(False)
             elif self.step == 1:  # choose radius
                 if len(self.tangents) == 2:
-                    cir = DraftGeomUtils.circleFrom2tan1pt(
+                    cir = geo_circles_incomplete.circleFrom2tan1pt(
                         self.tangents[0], self.tangents[1], self.point
                     )
-                    _c = DraftGeomUtils.findClosestCircle(self.point, cir)
+                    _c = geo_circles.findClosestCircle(self.point, cir)
                     self.center = _c.Center
                     self.arctrack.setCenter(self.center)
                 elif self.tangents and self.tanpoints:
-                    cir = DraftGeomUtils.circleFrom1tan2pt(
+                    cir = geo_circles_incomplete.circleFrom1tan2pt(
                         self.tangents[0], self.tanpoints[0], self.point
                     )
-                    _c = DraftGeomUtils.findClosestCircle(self.point, cir)
+                    _c = geo_circles.findClosestCircle(self.point, cir)
                     self.center = _c.Center
                     self.arctrack.setCenter(self.center)
                 if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
@@ -190,16 +191,16 @@ class Arc(gui_base_original.Creator):
                         num = int(info["Component"].lstrip("Edge")) - 1
                         ed = ob.Shape.Edges[num]
                         if len(self.tangents) == 2:
-                            cir = DraftGeomUtils.circleFrom3tan(
+                            cir = geo_circles_incomplete.circleFrom3tan(
                                 self.tangents[0], self.tangents[1], ed
                             )
-                            cl = DraftGeomUtils.findClosestCircle(self.point, cir)
+                            cl = geo_circles.findClosestCircle(self.point, cir)
                             self.center = cl.Center
                             self.rad = cl.Radius
                             self.arctrack.setCenter(self.center)
                         else:
                             self.rad = self.center.add(
-                                DraftGeomUtils.findDistance(self.center, ed).sub(self.center)
+                                geo_geometry.findDistance(self.center, ed).sub(self.center)
                             ).Length
                     else:
                         self.rad = DraftVecUtils.dist(self.point, self.center)
@@ -249,7 +250,7 @@ class Arc(gui_base_original.Creator):
                     if self.step == 0:  # choose center
                         if not self.support:
                             gui_tool_utils.getSupport(arg)
-                            (self.point, ctrlPoint, info) = gui_tool_utils.getPoint(self, arg)
+                            self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
                         if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                             snapped = self.view.getObjectInfo(
                                 (arg["Position"][0], arg["Position"][1])
@@ -435,21 +436,23 @@ class Arc(gui_base_original.Creator):
         This function is called by the toolbar or taskpanel interface
         when a valid radius has been entered in the input field.
         """
-        import DraftGeomUtils
-
         if self.step == 1:
             self.rad = rad
             if len(self.tangents) == 2:
-                cir = DraftGeomUtils.circleFrom2tan1rad(self.tangents[0], self.tangents[1], rad)
+                cir = geo_circles_incomplete.circleFrom2tan1rad(
+                    self.tangents[0], self.tangents[1], rad
+                )
                 if self.center:
-                    _c = DraftGeomUtils.findClosestCircle(self.center, cir)
+                    _c = geo_circles.findClosestCircle(self.center, cir)
                     self.center = _c.Center
                 else:
                     self.center = cir[-1].Center
             elif self.tangents and self.tanpoints:
-                cir = DraftGeomUtils.circleFrom1tan1pt1rad(self.tangents[0], self.tanpoints[0], rad)
+                cir = geo_circles_incomplete.circleFrom1tan1pt1rad(
+                    self.tangents[0], self.tanpoints[0], rad
+                )
                 if self.center:
-                    _c = DraftGeomUtils.findClosestCircle(self.center, cir)
+                    _c = geo_circles.findClosestCircle(self.center, cir)
                     self.center = _c.Center
                 else:
                     self.center = cir[-1].Center

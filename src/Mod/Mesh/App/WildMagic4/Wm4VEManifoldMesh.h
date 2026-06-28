@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4VEMANIFOLDMESH_H
-#define WM4VEMANIFOLDMESH_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4System.h"
@@ -106,5 +105,3 @@ protected:
 }
 
 #include "Wm4VEManifoldMesh.inl"
-
-#endif

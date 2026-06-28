@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_SHAPEUTILS_H
-#define TECHDRAW_SHAPEUTILS_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -120,4 +119,3 @@ public:
 };
 
 }
-#endif

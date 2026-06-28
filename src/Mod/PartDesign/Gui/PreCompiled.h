@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_DESIGN_PRECOMPILED_H
-#define PART_DESIGN_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -54,5 +55,3 @@
 
 // Inventor
 #include <Gui/InventorAll.h>
-
-#endif  // PART_DESIGN_PRECOMPILED_H

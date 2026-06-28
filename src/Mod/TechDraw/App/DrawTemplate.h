@@ -20,8 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_DrawTemplate_h_
-#define TECHDRAW_DrawTemplate_h_
+#pragma once
+
+#include <QString>
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -92,7 +93,3 @@ private:
 using DrawTemplatePython = App::FeaturePythonT<DrawTemplate>;
 
 } //namespace TechDraw
-
-
-
-#endif //TECHDRAW_DrawTemplate_h_

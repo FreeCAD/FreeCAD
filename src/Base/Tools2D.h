@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_TOOLS2D_H
-#define BASE_TOOLS2D_H
+#pragma once
 
 #include <algorithm>
 #include <cmath>
@@ -31,9 +30,7 @@
 #include <list>
 #include <vector>
 
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 
 namespace Base
@@ -533,5 +530,3 @@ inline void BoundBox2d::Add(const Vector2d& v)
 }
 
 }  // namespace Base
-
-#endif  // BASE_TOOLS2D_H
