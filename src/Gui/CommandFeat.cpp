@@ -257,11 +257,18 @@ void StdCmdToggleSuppress::activated(int iMsg)
     std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Toggle suppress"));
-    for (Gui::SelectionSingleton::SelObj& sel : sels) {
-        if (App::DocumentObject* obj = sel.pObject) {
-            if (auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true)) {
-                if (ext && !ext->Suppressed.testStatus(App::Property::Hidden)) {
-                    ext->Suppressed.setValue(!ext->Suppressed.getValue());
+    if (!sels.empty() && sels[0].pObject) {
+        App::Document* targetDoc = sels[0].pObject->getDocument();
+        App::AutoTransaction committer(targetDoc, "Toggle suppress");
+        for (Gui::SelectionSingleton::SelObj& sel : sels) {
+            if (App::DocumentObject* obj = sel.pObject) {
+                if (obj->getDocument() != targetDoc) {
+                    continue;  // Skip objects from other documents
+                }
+                if (auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true)) {
+                    if (ext && !ext->Suppressed.testStatus(App::Property::Hidden)) {
+                        ext->Suppressed.setValue(!ext->Suppressed.getValue());
+                    }
                 }
             }
         }
