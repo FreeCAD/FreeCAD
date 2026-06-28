@@ -318,12 +318,6 @@ void AssemblyObject::preDrag(
     App::DocumentObject* movingJoint
 )
 {
-    // Clean up previous drag objects if they were left behind
-    if (dragTarget) {
-        getDocument()->removeObject(dragTarget->getNameInDocument());
-        dragTarget = nullptr;
-    }
-
     bundleFixed = true;
     solve();
     bundleFixed = false;
@@ -362,22 +356,8 @@ void AssemblyObject::preDrag(
     // Compute camera-aligned rotation from cameraViewDir
     dragCameraRotation = cameraAlignedRotation(cameraViewDir);
 
-    // Create visualization sphere at pick point
-    ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Assembly"
-    );
-    double sphereRadius = hGrp2->GetFloat("DragTargetSphereRadius", 5.0);
-    dragTarget = getDocument()->addObject("Part::Sphere", "DragTarget");
-    auto* rad = dynamic_cast<App::PropertyFloat*>(dragTarget->getPropertyByName("Radius"));
-    if (rad) {
-        rad->setValue(sphereRadius);
-    }
-
-    // Position centered on pick point
-    dragTarget->getPlacementProperty()->setValue(Base::Placement(pickPoint, Base::Rotation()));
-    addObject(dragTarget);
-    dragTarget->recomputeFeature();
-    dragTarget->purgeTouched();
+    // The drag target marker is rendered by the view provider as a GUI-only
+    // overlay; it is intentionally not added to the document here.
 
     // Pass drag context to solver (creates mouse body + constraint)
     Solver::Assembly::DragContext ctx;
@@ -392,12 +372,6 @@ void AssemblyObject::preDrag(
 
 void AssemblyObject::doDragStep(Base::Vector3d mousePos3D)
 {
-    // Update visualization sphere to follow mouse
-    if (dragTarget) {
-        dragTarget->getPlacementProperty()->setValue(Base::Placement(mousePos3D, Base::Rotation()));
-        dragTarget->purgeTouched();
-    }
-
     try {
         // Build solver parts list from dragged document objects
         std::vector<std::shared_ptr<Solver::Part>> dragSolverParts;
@@ -472,11 +446,6 @@ bool AssemblyObject::validateNewPlacements()
 void AssemblyObject::postDrag()
 {
     assembly->postDrag();
-
-    if (dragTarget) {
-        getDocument()->removeObject(dragTarget->getNameInDocument());
-        dragTarget = nullptr;
-    }
 
     purgeTouched();
 }
