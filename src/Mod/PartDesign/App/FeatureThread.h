@@ -28,7 +28,7 @@ public:
     App::PropertyLinkSub StartPlane;
     App::PropertyLength ThreadDepth;
     App::PropertyLength ThreadDiameter;
-    
+
     App::PropertyEnumeration ThreadType;
     App::PropertyEnumeration ThreadSize;
     App::PropertyEnumeration ThreadClass;
@@ -36,7 +36,7 @@ public:
     App::PropertyEnumeration DepthType;
     App::PropertyEnumeration ThreadDirection;
     App::PropertyEnumeration ThreadDepthType;
-    
+
     /** @name methods override feature */
     //@{
     /// recalculate the feature
