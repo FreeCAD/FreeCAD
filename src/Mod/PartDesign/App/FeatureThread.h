@@ -6,6 +6,7 @@
 #include <App/PropertyUnits.h>
 
 #include "FeatureDressUp.h"
+#include "ThreadUtils.h"
 
 namespace PartDesign
 {
@@ -17,10 +18,25 @@ class PartDesignExport Thread: public DressUp
 public:
     Thread();
 
-    App::PropertyEnumeration ThreadFit;
-    App::PropertyLength ThreadDiameter;
-    App::PropertyEnumeration ThreadDirection;
+    enum ThreadType
+    {
+        Metric,
+        MetricFine
+    };
 
+    App::PropertyLinkSub LateralFace;
+    App::PropertyLinkSub StartPlane;
+    App::PropertyLength ThreadDepth;
+    App::PropertyLength ThreadDiameter;
+    
+    App::PropertyEnumeration ThreadType;
+    App::PropertyEnumeration ThreadSize;
+    App::PropertyEnumeration ThreadClass;
+    App::PropertyEnumeration ThreadFit;
+    App::PropertyEnumeration DepthType;
+    App::PropertyEnumeration ThreadDirection;
+    App::PropertyEnumeration ThreadDepthType;
+    
     /** @name methods override feature */
     //@{
     /// recalculate the feature
@@ -38,6 +54,7 @@ protected:
     void onChanged(const App::Property* prop) override;
 
 private:
+    ThreadUtils threadUtils;
     void addThreadType();
 };
 

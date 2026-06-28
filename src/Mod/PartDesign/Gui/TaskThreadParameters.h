@@ -31,15 +31,27 @@ public:
     TaskThreadParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
     ~TaskThreadParameters() override;
 
+    enum threadSelectionModes {
+        None,
+        SideFaceSel,   // Seleção da face lateral
+        StartFaceSel   // Seleção da face de início da rosca
+    };
+    threadSelectionModes currentSelectionMode = None;
+
     void onRefDeleted() override;
     void setButtons(const PartDesignGui::TaskDressUpParameters::selectionModes mode) override;
     void onSelectionChanged(const Gui::SelectionChanges& change) override;
+    void QLineEditSelected(const QString& text);
 
     void apply() override;
 
 protected:
     void changeEvent(QEvent* e) override;
     // void referenceSele(const Gui::SelectionChanges& msg, QLineEdit* widget);
+    void setThreadSelectionMode(threadSelectionModes mode);
+
+private Q_SLOTS:
+    void threadTypeChanged(int index);
 
 private:
     std::unique_ptr<Ui_TaskThreadParameters> ui;
