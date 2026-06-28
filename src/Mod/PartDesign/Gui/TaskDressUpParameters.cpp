@@ -135,12 +135,12 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
 void TaskDressUpParameters::referenceQLineEditSelected(const Gui::SelectionChanges& msg, QLineEdit* widget)
 {
     // Base::Console().Message("referenceQLineEditSelected called\n");
-    
+
     if (!widget) {
         Base::Console().error("Widget is null\n");
         return;
     }
-    
+
     // Verifica documento
     if (strcmp(msg.pDocName, DressUpView->getObject()->getDocument()->getName()) != 0) {
         return;
@@ -150,8 +150,10 @@ void TaskDressUpParameters::referenceQLineEditSelected(const Gui::SelectionChang
 
     PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     App::DocumentObject* base = this->getBase();
-    
-    if (!pcDressUp || !base) return;
+
+    if (!pcDressUp || !base) {
+        return;
+    }
 
     // Verifica objeto
     if (strcmp(msg.pObjectName, base->getNameInDocument()) != 0) {
@@ -164,20 +166,20 @@ void TaskDressUpParameters::referenceQLineEditSelected(const Gui::SelectionChang
     }
 
     const std::string subName(msg.pSubName);
-    
+
     // Comportamento: sempre substitui a seleção anterior
     std::vector<std::string> refs;
     refs.push_back(subName);
-    
+
     // Atualiza a UI
     widget->setText(QString::fromStdString(subName));
-    
+
     // Atualiza o feature
     updateFeature(pcDressUp, refs);
-    
+
     // Opcional: muda o modo de seleção após selecionar
     // setSelectionMode(none);
-    
+
     // Base::Console().Message("Reference set to: %s\n", subName.c_str());
 }
 
