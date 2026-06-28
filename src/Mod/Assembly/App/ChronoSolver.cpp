@@ -613,7 +613,8 @@ int ChronoAssembly::solveStatic()
         dumpStructure();
     }
 
-    bool ok = sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+    bool ok = sys->DoAssembly(chrono::AssemblyAnalysis::POSITION)
+        != chrono::AssemblyAnalysis::ExitFlag::NOT_CONVERGED;
     if (debugLogging) {
         FC_LOG("=== Post-solve (converged=" << (ok ? "true" : "false") << ") ===");
         dumpStructure();
@@ -642,7 +643,7 @@ int ChronoAssembly::runKinematic()
     sys->SetChTime(tStart);
 
     for (double t = tStart; t <= tEnd + dt * 0.5; t += dt) {
-        sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+        sys->DoAssembly(chrono::AssemblyAnalysis::POSITION);
 
         // Snapshot current body positions
         std::vector<BodyFrameSnapshot> snapshot;
@@ -661,7 +662,7 @@ int ChronoAssembly::runKinematic()
 
 void ChronoAssembly::preDrag(const DragContext& ctx)
 {
-    sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+    sys->DoAssembly(chrono::AssemblyAnalysis::POSITION);
 
     // Auto-detect the FreeCAD→Chrono coordinate offset for each stored limit.
     // We DON'T rely on FreeCAD's Angle/Distance properties (they return the
@@ -1059,7 +1060,8 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts, B
 
     // (preSolveState was captured above, before pre-rotation)
 
-    bool ok = sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+    bool ok = sys->DoAssembly(chrono::AssemblyAnalysis::POSITION)
+        != chrono::AssemblyAnalysis::ExitFlag::NOT_CONVERGED;
 
     // Check if assembly joints started failing — if so, we've hit a kinematic limit
     {

@@ -102,7 +102,11 @@ endif(WIN32)
 if(Chrono_FOUND)
     target_compile_definitions(Assembly PRIVATE HAVE_CHRONO)
     target_include_directories(Assembly PRIVATE ${CHRONO_INCLUDE_DIRS})
-    list(APPEND Assembly_LIBS ${CHRONO_LIBRARIES})
+    # Chrono 10's CMake config exports imported targets via CHRONO_TARGETS
+    # (e.g. Chrono::Chrono_core) rather than the legacy CHRONO_LIBRARIES
+    # variable, which it leaves unset. The imported targets also carry the
+    # include directories transitively.
+    list(APPEND Assembly_LIBS ${CHRONO_TARGETS})
     target_compile_options(Assembly PRIVATE ${CHRONO_CXX_FLAGS})
 endif()
 
