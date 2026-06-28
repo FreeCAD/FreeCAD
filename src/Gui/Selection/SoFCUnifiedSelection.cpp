@@ -88,6 +88,7 @@
 #include "Document.h"
 #include "DocumentObserver.h"
 #include "MainWindow.h"
+#include "Inventor/SoFCSwitch.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelectionAction.h"
 #include "ViewParams.h"
@@ -2325,6 +2326,8 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
 
     if (action->isRenderingDelayedPaths()) {
+        // let hidden objects on this path render on top (e.g. tree preselection)
+        SoFCSwitch::OverrideScope switchOverride(path);
         SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
         if (zbenabled) {
             glDisable(GL_DEPTH_TEST);
@@ -2491,6 +2494,8 @@ void SoFCPathAnnotation::getBoundingBox(SoGetBoundingBoxAction* action)
     if (path) {
         SoGetBoundingBoxAction bboxAction(action->getViewportRegion());
         SoFCSelectionRoot::moveActionStack(action, &bboxAction, false);
+        // include hidden on-top geometry so auto near/far clipping accounts for it
+        SoFCSwitch::OverrideScope switchOverride(path);
         bboxAction.apply(path);
         SoFCSelectionRoot::moveActionStack(&bboxAction, action, true);
         auto bbox = bboxAction.getBoundingBox();

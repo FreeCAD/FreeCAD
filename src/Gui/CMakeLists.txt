@@ -1080,6 +1080,7 @@ SET(Inventor_CPP_SRCS
     Inventor/SoNaviCube.cpp
     Inventor/SoMouseWheelEvent.cpp
     Inventor/SoFCTransform.cpp
+    Inventor/SoFCSwitch.cpp
     Inventor/SoToggleSwitch.cpp
     Inventor/Draggers/SoTransformDragger.cpp
     Inventor/Draggers/SoLinearDragger.cpp
@@ -1122,6 +1123,7 @@ SET(Inventor_SRCS
     Inventor/SoNaviCube.h
     Inventor/SoMouseWheelEvent.h
     Inventor/SoFCTransform.h
+    Inventor/SoFCSwitch.h
     Inventor/SoToggleSwitch.h
     Inventor/Draggers/SoTransformDragger.h
     Inventor/Draggers/SoLinearDragger.h

@@ -83,6 +83,7 @@
 #include "Inventor/SoNaviCube.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Inventor/SoFCTransform.h"
+#include "Inventor/SoFCSwitch.h"
 #include "Inventor/SoToggleSwitch.h"
 #include "propertyeditor/PropertyItem.h"
 #include "ArcEngine.h"
@@ -162,6 +163,7 @@ void Gui::SoFCDB::init()
     SoRotatorGeometryBaseKit ::initClass();
     SoRotatorBase ::initClass();
     SoToggleSwitch ::initClass();
+    SoFCSwitch ::initClass();
     GizmoContainer ::initClass();
     SmSwitchboard ::initClass();
     SoFCSeparator ::initClass();

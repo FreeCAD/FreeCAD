@@ -136,6 +136,58 @@ class TestSelectionVisual(unittest.TestCase):
             "Clearing preselection did not restore the original rendering.",
         )
 
+    def test_preselection_renders_hidden_object(self):
+        box = self._create_test_box()
+        self._prepare_view()
+        background = self._sample_hidden(box)
+
+        # tree-view sourced preselection (tp=2) draws hidden objects on top
+        Selection.setPreselection(box, "", 0.0, 0.0, 0.0, 2)
+        self._flush_gui()
+        preselected = self._center_pixel_color()
+
+        Selection.clearPreselection()
+        self._flush_gui()
+        cleared = self._center_pixel_color()
+
+        self._assert_color_changed(
+            background,
+            preselected,
+            "Preselecting a hidden object did not render it on top.",
+        )
+        self._assert_color_restored(
+            background,
+            cleared,
+            "Clearing preselection did not remove the hidden object overlay.",
+        )
+
+    def test_internal_preselection_leaves_hidden_object_hidden(self):
+        box = self._create_test_box()
+        self._prepare_view()
+        background = self._sample_hidden(box)
+
+        # a non tree-view source (tp=1) must not draw the hidden object
+        Selection.setPreselection(box, "", 0.0, 0.0, 0.0, 1)
+        self._flush_gui()
+        preselected = self._center_pixel_color()
+
+        self._assert_color_restored(
+            background,
+            preselected,
+            "Internal-source preselection should not render a hidden object.",
+        )
+
+    def _sample_hidden(self, obj):
+        obj.ViewObject.Visibility = False
+        self._flush_gui()
+        return self._center_pixel_color()
+
+    def _create_test_box(self):
+        box = self.doc.addObject("Part::Box", "Box")
+        box.ViewObject.ShapeColor = (0.66, 0.66, 0.74)
+        self.doc.recompute()
+        return box
+
     def _create_test_plane(self):
         plane = self.doc.addObject(PART_PLANE_TYPE, "Plane")
         plane.Length = 40

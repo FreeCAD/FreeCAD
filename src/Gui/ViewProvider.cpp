@@ -47,6 +47,7 @@
 
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Inventor/SoFCTransform.h"
+#include "Inventor/SoFCSwitch.h"
 #include "ViewProvider.h"
 #include "ActionFunction.h"
 #include "Application.h"
@@ -117,7 +118,7 @@ ViewProvider::ViewProvider()
     // pcRoot = new SoFCSeparator(true);
     pcRoot = new SoFCSelectionRoot(true, this);
     pcRoot->ref();
-    pcModeSwitch = new SoSwitch();
+    pcModeSwitch = new SoFCSwitch();
     pcModeSwitch->ref();
     pcModeSwitch->setName("ModeSwitch");
     pcTransform = new SoFCTransform();
@@ -572,6 +573,7 @@ void ViewProvider::setModeSwitch()
     else {
         return;
     }
+    updateModeSwitchDefaultChild();
     for (auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>()) {
         ext->extensionModeSwitchChange();
     }
@@ -580,6 +582,7 @@ void ViewProvider::setModeSwitch()
 void ViewProvider::setDefaultMode(int val)
 {
     _iActualMode = val;
+    updateModeSwitchDefaultChild();
     for (auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>()) {
         ext->extensionModeSwitchChange();
     }
@@ -593,6 +596,15 @@ int ViewProvider::getDefaultMode() const
 int ViewProvider::getActualMode() const
 {
     return _iActualMode;
+}
+
+void ViewProvider::updateModeSwitchDefaultChild()
+{
+    // Keep defaultChild current so SoFCSwitch can draw this object on top while
+    // hidden. ViewProviderLink uses a plain SoSwitch, hence the type check.
+    if (pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId())) {
+        static_cast<SoFCSwitch*>(pcModeSwitch)->defaultChild = getDefaultMode();
+    }
 }
 
 void ViewProvider::onBeforeChange(const App::Property* prop)
