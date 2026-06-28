@@ -510,7 +510,7 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
                         FC_WARN(
                             "Recomputation required for document '"
                             << warnedDoc << "' on geo element version change in " << getFullName()
-                            << ": " << _Ver << " -> " << ver
+                            << ": " << _Ver << " -> " << correctVersion
                         );
                     }
                     owner->getDocument()->addRecomputeObject(owner);
