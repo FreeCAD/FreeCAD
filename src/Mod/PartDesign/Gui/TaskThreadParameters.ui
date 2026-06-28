@@ -47,6 +47,9 @@
 
          <item>
           <widget class="QPushButton" name="selectLateralFace">
+           <property name="checkable">
+             <bool>true</bool>
+           </property>
            <property name="text">
             <string>Select</string>
            </property>
@@ -82,6 +85,9 @@
 
          <item>
           <widget class="QPushButton" name="selectStart">
+           <property name="checkable">
+             <bool>true</bool>
+           </property>
            <property name="text">
             <string>Select</string>
            </property>
