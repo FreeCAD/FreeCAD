@@ -496,11 +496,11 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
         }
         else {
             _Shape.Restore(reader);
-            if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
-                      : _Shape.checkElementMapVersion(_Ver.c_str())) {
-                auto ver = owner ? owner->getElementMapVersion(this) : _Shape.getElementMapVersion();
+            std::string correctVersion = _Shape.getElementMapVersion();
+
+            if (_Ver != correctVersion) {
                 if (!owner || !owner->getNameInDocument()) {
-                    _Ver = ver;
+                    _Ver = correctVersion;
                 }
                 else {
                     // version mismatch, signal for regenerating.
@@ -517,7 +517,7 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
 
                     // sometimes objects will not update _Ver properly,
                     // so lets do it here to avoid unnecessary remigration
-                    _Ver = ver;
+                    _Ver = correctVersion;
                 }
             }
         }
