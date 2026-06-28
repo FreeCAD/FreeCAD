@@ -31,10 +31,11 @@ public:
     TaskThreadParameters(ViewProviderDressUp* DressUpView, QWidget* parent = nullptr);
     ~TaskThreadParameters() override;
 
-    enum threadSelectionModes {
+    enum threadSelectionModes
+    {
         None,
-        SideFaceSel,   // Seleção da face lateral
-        StartFaceSel   // Seleção da face de início da rosca
+        SideFaceSel,  // Seleção da face lateral
+        StartFaceSel  // Seleção da face de início da rosca
     };
     threadSelectionModes currentSelectionMode = None;
 

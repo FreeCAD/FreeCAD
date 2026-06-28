@@ -284,12 +284,12 @@ const char* ThreadUtils::ThreadTypeEnums[] = {
 std::vector<std::string> ThreadUtils::getThreadTypeEnums()
 {
     std::vector<std::string> result;
-    
+
     // Itera sobre o array até encontrar nullptr
     for (int i = 0; ThreadTypeEnums[i] != nullptr; ++i) {
         result.push_back(std::string(ThreadTypeEnums[i]));
     }
-    
+
     return result;
 }
 

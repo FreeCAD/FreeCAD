@@ -32,12 +32,12 @@ Thread::Thread()
 App::DocumentObjectExecReturn* Thread::execute()
 {
     Base::Console().message("THREAD EXECUTED\n");
-    //TODO: verify if this is needed for feature threading
+    // TODO: verify if this is needed for feature threading
     if (onlyHaveRefined()) {
         return App::DocumentObject::StdReturn;
     }
 
-    //TODO: verify if this is needed for feature threading
+    // TODO: verify if this is needed for feature threading
     Part::TopoShape TopShape;
     try {
         TopShape = getBaseTopoShape();
@@ -45,10 +45,10 @@ App::DocumentObjectExecReturn* Thread::execute()
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-    //TODO: verify if this is needed for feature threading
+    // TODO: verify if this is needed for feature threading
     TopShape.setTransform(Base::Matrix4D());
 
-    
+
     try {
 
         // these
@@ -64,8 +64,8 @@ App::DocumentObjectExecReturn* Thread::execute()
         // double marginZ = 0.001;
         // double H;
 
-        //this
-        // double threadDepth = ThreadDepth.getValue();
+        // this
+        //  double threadDepth = ThreadDepth.getValue();
 
         // double helixLength = threadDepth + Pitch / 2;
         // double holeDepth = Depth.getValue();
@@ -87,18 +87,18 @@ App::DocumentObjectExecReturn* Thread::execute()
         //     /* TODO */
         // }
         // else if (method == "ThroughAll") {
-            // length = getThroughAllLength();
+        // length = getThroughAllLength();
         // }
         // else {
-            // return new App::DocumentObjectExecReturn(
-                // QT_TRANSLATE_NOOP("Exception", "Hole error: Unsupported length specification")
-            // );
+        // return new App::DocumentObjectExecReturn(
+        // QT_TRANSLATE_NOOP("Exception", "Hole error: Unsupported length specification")
+        // );
         // }
 
         // if (length <= 0.0) {
-            // return new App::DocumentObjectExecReturn(
-                // QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid hole depth")
-            // );
+        // return new App::DocumentObjectExecReturn(
+        // QT_TRANSLATE_NOOP("Exception", "Hole error: Invalid hole depth")
+        // );
         // }
 
         // gp_Vec zDir(SketchVector.x, SketchVector.y, SketchVector.z);
@@ -112,10 +112,10 @@ App::DocumentObjectExecReturn* Thread::execute()
 
         TopoDS_Shape thread = threadUtils.makeThread(emptyXDir, emptyZDir, testLength);
     }
-        catch (Base::Exception& e) {
-            return new App::DocumentObjectExecReturn(e.what());
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
     }
-    
+
     return new App::DocumentObjectExecReturn(
         QT_TRANSLATE_NOOP("Exception", "Thread failed: thread not implemented")
     );

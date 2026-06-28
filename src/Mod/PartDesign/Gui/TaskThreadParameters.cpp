@@ -41,7 +41,7 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     // }
 
     QMetaObject::connectSlotsByName(this);
-    
+
     // TODO: change hardcoded for enum loop
     // TODO: change ui->standardCombo for a better name
     ui->standardCombo->addItem(tr("None"), QByteArray("None"));
@@ -72,20 +72,24 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     // }
 
     // pitch
-    //i think it depends on the class
+    // i think it depends on the class
 
-    connect(ui->standardCombo, qOverload<int>(&QComboBox::currentIndexChanged),
-        this, &TaskThreadParameters::threadTypeChanged);
+    connect(
+        ui->standardCombo,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskThreadParameters::threadTypeChanged
+    );
 
-    connect(ui->lateralFaceEdit, &QLineEdit::textChanged,
-            this, &TaskThreadParameters::QLineEditSelected);
-            
+    connect(ui->lateralFaceEdit, &QLineEdit::textChanged, this, &TaskThreadParameters::QLineEditSelected);
+
     connect(ui->selectLateralFace, &QPushButton::toggled, [this](bool checked) {
         if (checked) {
             Base::Console().message("então é lateral face\n");
             // ui->selectLateralFace->setChecked(false); // Desliga o outro
             setThreadSelectionMode(SideFaceSel);
-        } else if (currentSelectionMode == SideFaceSel) {
+        }
+        else if (currentSelectionMode == SideFaceSel) {
             Base::Console().message("não é mais lateral face\n");
             setThreadSelectionMode(None);
         }
@@ -96,7 +100,8 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
             Base::Console().message("então é start face\n");
             // ui->selectStart->setChecked(false); // Desliga o outro
             setThreadSelectionMode(StartFaceSel);
-        } else if (currentSelectionMode == StartFaceSel) {
+        }
+        else if (currentSelectionMode == StartFaceSel) {
             Base::Console().message("não é mais start face\n");
             // Base::Console().message("então é start face\n");
             setThreadSelectionMode(None);
@@ -158,33 +163,33 @@ void TaskThreadParameters::setButtons(const PartDesignGui::TaskDressUpParameters
 //             referenceQLineEditSelected(msg, ui->lateralFaceEdit);
 //         }
 //     }
- 
+
 // }
 
 void TaskThreadParameters::setThreadSelectionMode(threadSelectionModes mode)
 {
     Base::Console().message("works!\n");
     currentSelectionMode = mode;
-    
+
     // Atualiza o estado visual dos botões
     // ui->selectLateralFace->setChecked(mode == SideFaceSel);
     // ui->selectStart->setChecked(mode == StartFaceSel);
-    
-    // Configura os Gates de Seleção do FreeCAD se necessário 
+
+    // Configura os Gates de Seleção do FreeCAD se necessário
     // (ex: restringir para que apenas FACES possam ser clicadas)
     // if (mode != None) {
-        // Gui::Selection().addSelectionGate(new Gui::SelectionGateFilter("HasSubElement:Face"));
+    // Gui::Selection().addSelectionGate(new Gui::SelectionGateFilter("HasSubElement:Face"));
     // } else {
-        // Gui::Selection().rmvSelectionGate();
+    // Gui::Selection().rmvSelectionGate();
     // }
 }
 
 void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     Base::Console().message("SELECTIONCHANGED\n");
- 
+
     if (msg.Type != Gui::SelectionChanges::AddSelection) {
-            return;
+        return;
     }
 
     switch (currentSelectionMode) {
@@ -202,7 +207,7 @@ void TaskThreadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             // ui->lateralFaceEdit->setText(QString::fromStdString(msg.SubName));
             referenceQLineEditSelected(msg, ui->lateralFaceEdit);
             // Opcional: Se for seleção única, desmarca o botão após escolher
-            ui->selectLateralFace->setChecked(false); 
+            ui->selectLateralFace->setChecked(false);
             break;
         }
 
