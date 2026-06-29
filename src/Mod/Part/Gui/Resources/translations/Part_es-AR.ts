@@ -1245,7 +1245,7 @@
     <message>
       <location filename="../../Command.cpp" line="1405"/>
       <source>Applies a boolean operation with the selected shapes</source>
-      <translation type="unfinished">Applies a boolean operation with the selected shapes</translation>
+      <translation>Aplica una operación booleana con las formas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -4890,7 +4890,7 @@ se utilizará el vector normal del plano de croquis</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>Elementos insuficientes</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
@@ -5259,7 +5259,7 @@ solo los cortes creados serán visibles</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>Elementos insuficientes</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="382"/>
@@ -6503,7 +6503,7 @@ Continue?</source>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="71"/>
       <source>Delete %1 content?</source>
-      <translation type="unfinished">Delete %1 content?</translation>
+      <translation>¿Eliminar el contenido %1?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="72"/>
@@ -7613,12 +7613,12 @@ Se eliminarán los volúmenes superpuestos de las figuras.</translation>
   <context>
     <name>PartCmdRemoveSelectionGate</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="268"/>
+      <location filename="../../CommandFilter.cpp" line="273"/>
       <source>No Selection Filters</source>
       <translation>Sin filtros de selección</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="269"/>
+      <location filename="../../CommandFilter.cpp" line="274"/>
       <source>Clears all selection filters</source>
       <translation>Borra todos los filtros de selección</translation>
     </message>

@@ -869,7 +869,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Prebaci ograničenja na drugi virtuelni prostor</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1720"/>
       <source>Update constraint's virtual space</source>
       <translation>Ažuriraj virtuelni prostor ograničenja</translation>
     </message>
@@ -884,33 +884,33 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Obriši ograničenja</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1382"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1370"/>
       <source>Rename sketch constraint</source>
       <translation>Preimenuj ograničenja skice</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2133"/>
       <source>Drag Point</source>
       <translation>Prevuci tačku</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2133"/>
       <source>Drag Curve</source>
       <translation>Prevuci krivu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2108"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2134"/>
       <source>Drag geometries</source>
       <translation>Prevlači geometriju</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1349"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1354"/>
       <source>Drag Constraint</source>
       <translation>Prevuci ograničenje</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
-      <location filename="../../ViewProviderSketch.cpp" line="1598"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1603"/>
       <location filename="../../CommandConstraints.cpp" line="11246"/>
       <source>Modify sketch constraints</source>
       <translation>Izmeni ograničenja skice</translation>
@@ -977,7 +977,7 @@ nevažeća ograničenja, degenerisanu geometriju, itd</translation>
       <translation>Pomoćna geometrija</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1099"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1101"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="943"/>
       <source>Add Auto-Constraints</source>
       <translation>Napravi automatska ograničenja</translation>
@@ -3728,18 +3728,18 @@ Nisu pronađena nikakva ograničenja vezana za pomenute krajnje tačke.</transla
       <translation>Sakrij unutrašnje poravnanje (u panelu)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1744"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1773"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
       <source>Error</source>
       <translation>Greška</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1744"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
       <source>Impossible to update visibility tracking:</source>
       <translation type="unfinished">Impossible to update visibility tracking:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1773"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
       <source>Impossible to update visibility:</source>
       <translation>Nije moguće ažurirati vidljivost:</translation>
     </message>
@@ -4086,112 +4086,112 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3925"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3963"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3949"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3987"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Skica sadrži greške i ne može biti menjana.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4145"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4183"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Sledeće ograničenje je suvišno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4184"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Sledeća ograničenja su suvišna:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3898"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3936"/>
       <source>Edit Sketch</source>
       <translation>Uredi skicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3926"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3964"/>
       <source>Close this dialog?</source>
       <translation>Zatvori ovaj dijalog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3947"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3985"/>
       <source>Invalid Sketch</source>
       <translation>Neispravna skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3948"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3986"/>
       <source>Open the sketch validation tool?</source>
       <translation>Da li želiš da otvoriš alatku za proveru skice?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4131"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4169"/>
       <source>Remove the following constraint:</source>
       <translation>Ukloni sledeće ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4132"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4170"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Ukloni bar jedno od sledećih ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4138"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4176"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Ukloni sledeće suvišno ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4139"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4177"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Ukloni sledeća suvišna ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4152"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4190"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Ukloni sledeće oštećeno ograničenje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4191"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Ukloni sledeća oštećena ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4212"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4250"/>
       <source>Empty sketch</source>
       <translation>Prazna skica</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4217"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4255"/>
       <source>Over-constrained:</source>
       <translation>Previše ograničena skica:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4223"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4261"/>
       <source>Malformed constraints:</source>
       <translation>Oštećena ograničenja:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4231"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4269"/>
       <source>Redundant constraints:</source>
       <translation>Suviše ograničena skica:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4237"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4275"/>
       <source>Partially redundant:</source>
       <translation>Delimično suviše ograničena skica:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4244"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4282"/>
       <source>Solver failed to converge</source>
       <translation>Solver nije uspeo da se približi</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4250"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4288"/>
       <source>Under-constrained:</source>
       <translation>Nedovoljno ograničena skica:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4252"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4290"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Stepeni slobode</numerusform>
@@ -4200,7 +4200,7 @@ Ovo se radi analizom geometrije i ograničenja skice.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4256"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4294"/>
       <source>Fully constrained</source>
       <translation>Potpuno ograničena skica</translation>
     </message>
@@ -4691,7 +4691,7 @@ Eigen redak QR algoritam je optimizovan za retke matrice; obično brže</transla
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4195"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4233"/>
       <source>and %1 more</source>
       <translation>i %1 više</translation>
     </message>
@@ -5109,9 +5109,9 @@ Razmak mreže se menja ako postane manji od navedenog broja piksela.</translatio
       <translation>Opsecanje ivice nije uspelo</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1392"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1380"/>
       <location filename="../../EditDatumDialog.cpp" line="66"/>
-      <location filename="../../EditDatumDialog.cpp" line="342"/>
+      <location filename="../../EditDatumDialog.cpp" line="339"/>
       <source>Value Error</source>
       <translation>Greška vrednosti</translation>
     </message>

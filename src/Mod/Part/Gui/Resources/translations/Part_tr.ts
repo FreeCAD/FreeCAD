@@ -7623,12 +7623,12 @@ bir bileşiğin içindeki şekillerle 'dışlayıcı VEYA' (XOR) Boole işlemi y
   <context>
     <name>PartCmdRemoveSelectionGate</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="268"/>
+      <location filename="../../CommandFilter.cpp" line="273"/>
       <source>No Selection Filters</source>
       <translation>Seçim Filtresi Yok</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="269"/>
+      <location filename="../../CommandFilter.cpp" line="274"/>
       <source>Clears all selection filters</source>
       <translation>Tüm seçim filtrelerini temizler</translation>
     </message>

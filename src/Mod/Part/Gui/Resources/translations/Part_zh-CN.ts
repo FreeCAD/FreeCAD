@@ -7603,12 +7603,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartCmdRemoveSelectionGate</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="268"/>
+      <location filename="../../CommandFilter.cpp" line="273"/>
       <source>No Selection Filters</source>
       <translation>无选择过滤器</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="269"/>
+      <location filename="../../CommandFilter.cpp" line="274"/>
       <source>Clears all selection filters</source>
       <translation>清除所有选择过滤器</translation>
     </message>

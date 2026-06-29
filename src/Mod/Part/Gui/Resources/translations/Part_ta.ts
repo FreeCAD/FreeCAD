@@ -7623,12 +7623,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>PartCmdRemoveSelectionGate</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="268"/>
+      <location filename="../../CommandFilter.cpp" line="273"/>
       <source>No Selection Filters</source>
       <translation>தேர்வு வடிப்பான்கள் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="269"/>
+      <location filename="../../CommandFilter.cpp" line="274"/>
       <source>Clears all selection filters</source>
       <translation>அனைத்து தேர்வு வடிப்பான்களையும் அழிக்கும்</translation>
     </message>

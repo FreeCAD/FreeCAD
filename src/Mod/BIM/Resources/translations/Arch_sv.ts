@@ -248,7 +248,7 @@ När du hanterar inbyggda IFC-objekt kan du använda FreeCAD-egenskapsnamn, t.ex
     <message>
       <location filename="../ui/ArchSchedule.ui" line="174"/>
       <source>Deletes the selected row</source>
-      <translation type="unfinished">Deletes the selected row</translation>
+      <translation>Tar bort den markerade raden</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
@@ -1984,7 +1984,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="40"/>
       <source>Work On</source>
-      <translation type="unfinished">Work On</translation>
+      <translation>Arbete på</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="73"/>
@@ -2868,7 +2868,7 @@ ett visningsläge för fotavtryck</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="335"/>
       <source>No baseline</source>
-      <translation type="unfinished">No baseline</translation>
+      <translation>Ingen baslinje</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="340"/>
@@ -2878,7 +2878,7 @@ ett visningsläge för fotavtryck</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="345"/>
       <source>Sketch</source>
-      <translation type="unfinished">Sketch</translation>
+      <translation>Skiss</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="353"/>
@@ -3194,7 +3194,7 @@ om kraschar inträffar när flera kärnor är inställda.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="236"/>
       <source>Root element</source>
-      <translation type="unfinished">Root element</translation>
+      <translation>Rotelement</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="243"/>
@@ -3608,7 +3608,7 @@ Varning för detta: IFC-standarden kräver minst en byggnad i varje fil. Genom a
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="392"/>
       <source>Export FreeCAD groups</source>
-      <translation type="unfinished">Export FreeCAD groups</translation>
+      <translation>Exportera FreeCAD-grupper</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="413"/>
@@ -3935,12 +3935,12 @@ Standardmallen finns på följande plats:
     <message>
       <location filename="../../ArchStructure.py" line="309"/>
       <source>Next Point</source>
-      <translation type="unfinished">Next Point</translation>
+      <translation>Nästa punkt</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="425"/>
       <source>Structure Options</source>
-      <translation type="unfinished">Structure Options</translation>
+      <translation>Strukturalternativ</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1023"/>
@@ -4064,7 +4064,7 @@ Standardmallen finns på följande plats:
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="79"/>
       <source>Profile Settings</source>
-      <translation type="unfinished">Profile Settings</translation>
+      <translation>Profilinställningar</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="768"/>
@@ -4264,7 +4264,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchReference.py" line="991"/>
       <source>Choose Reference File</source>
-      <translation type="unfinished">Choose Reference File</translation>
+      <translation>Välj referensfil</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="911"/>
@@ -4425,7 +4425,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <location filename="../../ArchWindow.py" line="1190"/>
       <location filename="../../bimcommands/BimWindow.py" line="382"/>
       <source>Window Options</source>
-      <translation type="unfinished">Window Options</translation>
+      <translation>Fönsteralternativ</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1504"/>
@@ -4441,7 +4441,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchWindow.py" line="1695"/>
       <source>Window Elements</source>
-      <translation type="unfinished">Window Elements</translation>
+      <translation>Fönsterelement</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1696"/>
@@ -4977,7 +4977,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchPrecast.py" line="1718"/>
       <source>Remove Dent</source>
-      <translation type="unfinished">Remove Dent</translation>
+      <translation>Ta bort buckla</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1716"/>
@@ -5003,12 +5003,12 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchCoveringGui.py" line="525"/>
       <source>Parametric Pattern</source>
-      <translation type="unfinished">Parametric Pattern</translation>
+      <translation>Parametriskt mönster</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="526"/>
       <source>Monolithic</source>
-      <translation type="unfinished">Monolithic</translation>
+      <translation>Monolitisk</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="527"/>
@@ -5104,7 +5104,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchCoveringGui.py" line="725"/>
       <source>%1 objects selected</source>
-      <translation type="unfinished">%1 objects selected</translation>
+      <translation>%1 objekt markerade</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="748"/>
@@ -5120,7 +5120,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchCoveringGui.py" line="770"/>
       <source>Picking…</source>
-      <translation type="unfinished">Picking…</translation>
+      <translation>Väljer…</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="779"/>
@@ -5178,7 +5178,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchCoveringGui.py" line="868"/>
       <source>Interactive</source>
-      <translation type="unfinished">Interactive</translation>
+      <translation>Interaktiv</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="878"/>
@@ -5295,7 +5295,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchCoveringGui.py" line="1052"/>
       <source>The name of the pattern to use</source>
-      <translation type="unfinished">The name of the pattern to use</translation>
+      <translation>Namnet på mönstret att använda</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1053"/>
@@ -5335,7 +5335,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchCoveringGui.py" line="1104"/>
       <source>Texture image</source>
-      <translation type="unfinished">Texture image</translation>
+      <translation>Texturbild</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1111"/>
@@ -5355,12 +5355,12 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchCoveringGui.py" line="1165"/>
       <source>Select Texture</source>
-      <translation type="unfinished">Select Texture</translation>
+      <translation>Välj textur</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1174"/>
       <source>Select Pattern</source>
-      <translation type="unfinished">Select Pattern</translation>
+      <translation>Välj mönster</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="1390"/>
@@ -5416,7 +5416,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="182"/>
       <source>Panel Options</source>
-      <translation type="unfinished">Panel Options</translation>
+      <translation>Panelalternativ</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="219"/>
@@ -5452,12 +5452,12 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchPanel.py" line="580"/>
       <source>Wave Length</source>
-      <translation type="unfinished">Wave Length</translation>
+      <translation>Våglängd</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="581"/>
       <source>Wave Height</source>
-      <translation type="unfinished">Wave Height</translation>
+      <translation>Våghöjd</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="582"/>
@@ -5467,7 +5467,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchPanel.py" line="583"/>
       <source>Wave Type</source>
-      <translation type="unfinished">Wave Type</translation>
+      <translation>Vågtyp</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1421"/>
@@ -5503,7 +5503,7 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     </message>
     <message>
       <location filename="../../Arch.py" line="749"/>
-      <location filename="../../ArchReport.py" line="889"/>
+      <location filename="../../ArchReport.py" line="894"/>
       <source>Pipe</source>
       <translation>Rör</translation>
     </message>
@@ -5624,17 +5624,17 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
     <message>
       <location filename="../../ArchSchedule.py" line="771"/>
       <source>Remove Spreadsheet</source>
-      <translation type="unfinished">Remove Spreadsheet</translation>
+      <translation>Ta bort kalkylblad</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="773"/>
       <source>Attach Spreadsheet</source>
-      <translation type="unfinished">Attach Spreadsheet</translation>
+      <translation>Bifoga kalkylblad</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="899"/>
       <source>Import CSV File</source>
-      <translation type="unfinished">Import CSV File</translation>
+      <translation>Importera CSV-fil</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="963"/>
@@ -5642,171 +5642,171 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Kan inte känna igen den filtypen</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="879"/>
-      <location filename="../../ArchReport.py" line="1873"/>
+      <location filename="../../ArchReport.py" line="884"/>
+      <location filename="../../ArchReport.py" line="1878"/>
       <source>Report Statements</source>
       <translation type="unfinished">Report Statements</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="888"/>
+      <location filename="../../ArchReport.py" line="893"/>
       <location filename="../../ArchCommands.py" line="1360"/>
       <source>Description</source>
       <translation>Beskrivning</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="890"/>
+      <location filename="../../ArchReport.py" line="895"/>
       <source>Header</source>
       <translation>Rubrik</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="891"/>
+      <location filename="../../ArchReport.py" line="896"/>
       <source>Cols</source>
       <translation type="unfinished">Cols</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="892"/>
+      <location filename="../../ArchReport.py" line="897"/>
       <source>Status</source>
       <translation>Status</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="899"/>
+      <location filename="../../ArchReport.py" line="904"/>
       <source>A user-defined description for this statement.</source>
       <translation type="unfinished">A user-defined description for this statement.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="905"/>
+      <location filename="../../ArchReport.py" line="910"/>
       <source>If checked, this statement will use the results of the previous statement as its data source.</source>
       <translation type="unfinished">If checked, this statement will use the results of the previous statement as its data source.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="911"/>
+      <location filename="../../ArchReport.py" line="916"/>
       <source>If checked, the Description will be used as a section header in the report.</source>
       <translation type="unfinished">If checked, the Description will be used as a section header in the report.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="917"/>
+      <location filename="../../ArchReport.py" line="922"/>
       <source>If checked, the column names (e.g., 'Label', 'Area') will be included in the report.</source>
       <translation type="unfinished">If checked, the column names (e.g., 'Label', 'Area') will be included in the report.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="920"/>
+      <location filename="../../ArchReport.py" line="925"/>
       <source>Indicates the status of the SQL query.</source>
       <translation type="unfinished">Indicates the status of the SQL query.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="953"/>
+      <location filename="../../ArchReport.py" line="958"/>
       <source>Load a full report template, replacing all current statements.</source>
       <translation type="unfinished">Load a full report template, replacing all current statements.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="956"/>
-      <location filename="../../ArchReport.py" line="1027"/>
+      <location filename="../../ArchReport.py" line="961"/>
+      <location filename="../../ArchReport.py" line="1032"/>
       <source>Manage…</source>
-      <translation type="unfinished">Manage…</translation>
+      <translation>Hantera…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="959"/>
+      <location filename="../../ArchReport.py" line="964"/>
       <source>Rename, delete, or edit saved report templates.</source>
       <translation type="unfinished">Rename, delete, or edit saved report templates.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="960"/>
+      <location filename="../../ArchReport.py" line="965"/>
       <source>Save as Template…</source>
-      <translation type="unfinished">Save as Template…</translation>
+      <translation>Spara som mall…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="963"/>
+      <location filename="../../ArchReport.py" line="968"/>
       <source>Save the current set of statements as a new report template.</source>
       <translation type="unfinished">Save the current set of statements as a new report template.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="968"/>
+      <location filename="../../ArchReport.py" line="973"/>
       <source>Report Templates:</source>
-      <translation type="unfinished">Report Templates:</translation>
+      <translation>Rapportmallar:</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="974"/>
+      <location filename="../../ArchReport.py" line="979"/>
       <source>Add Statement</source>
-      <translation type="unfinished">Add Statement</translation>
+      <translation>Lägg till uttalande</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="977"/>
+      <location filename="../../ArchReport.py" line="982"/>
       <source>Add a new blank statement to the report.</source>
       <translation type="unfinished">Add a new blank statement to the report.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="980"/>
+      <location filename="../../ArchReport.py" line="985"/>
       <source>Remove Selected</source>
-      <translation type="unfinished">Remove Selected</translation>
+      <translation>Ta bort markerade</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="983"/>
+      <location filename="../../ArchReport.py" line="988"/>
       <source>Remove the selected statement from the report.</source>
       <translation type="unfinished">Remove the selected statement from the report.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="986"/>
+      <location filename="../../ArchReport.py" line="991"/>
       <source>Duplicate Selected</source>
-      <translation type="unfinished">Duplicate Selected</translation>
+      <translation>Duplicera markerade</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="989"/>
+      <location filename="../../ArchReport.py" line="994"/>
       <source>Create a copy of the selected statement.</source>
       <translation type="unfinished">Create a copy of the selected statement.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="992"/>
+      <location filename="../../ArchReport.py" line="997"/>
       <source>Edit Selected</source>
       <translation type="unfinished">Edit Selected</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="995"/>
+      <location filename="../../ArchReport.py" line="1000"/>
       <source>Load the selected statement into the editor below.</source>
       <translation type="unfinished">Load the selected statement into the editor below.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1006"/>
+      <location filename="../../ArchReport.py" line="1011"/>
       <source>Statement Editor</source>
-      <translation type="unfinished">Statement Editor</translation>
+      <translation>Uttalanderedigerare</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1017"/>
+      <location filename="../../ArchReport.py" line="1022"/>
       <source>Description:</source>
-      <translation type="unfinished">Description:</translation>
+      <translation>Beskrivning:</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1024"/>
+      <location filename="../../ArchReport.py" line="1029"/>
       <source>Load a saved query preset into the editor.</source>
       <translation type="unfinished">Load a saved query preset into the editor.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1030"/>
+      <location filename="../../ArchReport.py" line="1035"/>
       <source>Rename, delete, or edit your saved query presets.</source>
       <translation type="unfinished">Rename, delete, or edit your saved query presets.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1031"/>
+      <location filename="../../ArchReport.py" line="1036"/>
       <source>Save…</source>
       <translation>Spara…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1034"/>
+      <location filename="../../ArchReport.py" line="1039"/>
       <source>Save the current query as a new preset.</source>
       <translation type="unfinished">Save the current query as a new preset.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1038"/>
+      <location filename="../../ArchReport.py" line="1043"/>
       <source>Query Presets:</source>
       <translation type="unfinished">Query Presets:</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1043"/>
+      <location filename="../../ArchReport.py" line="1048"/>
       <source>SQL Query:</source>
-      <translation type="unfinished">SQL Query:</translation>
+      <translation>SQL-fråga:</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1045"/>
-      <location filename="../../ArchReport.py" line="1867"/>
+      <location filename="../../ArchReport.py" line="1050"/>
+      <location filename="../../ArchReport.py" line="1872"/>
       <location filename="../../ArchSql.py" line="2255"/>
       <location filename="../../ArchSql.py" line="2282"/>
       <location filename="../../ArchSql.py" line="2304"/>
@@ -5814,360 +5814,360 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Klar</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1073"/>
-      <location filename="../../ArchReport.py" line="2042"/>
+      <location filename="../../ArchReport.py" line="1078"/>
+      <location filename="../../ArchReport.py" line="2047"/>
       <source>Show Preview</source>
       <translation type="unfinished">Show Preview</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1077"/>
+      <location filename="../../ArchReport.py" line="1082"/>
       <source>Show a preview pane to test the current query in isolation.</source>
       <translation type="unfinished">Show a preview pane to test the current query in isolation.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1080"/>
+      <location filename="../../ArchReport.py" line="1085"/>
       <source>SQL Cheatsheet</source>
       <translation type="unfinished">SQL Cheatsheet</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1084"/>
+      <location filename="../../ArchReport.py" line="1089"/>
       <source>Show a cheatsheet of the supported SQL syntax.</source>
       <translation type="unfinished">Show a cheatsheet of the supported SQL syntax.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1097"/>
+      <location filename="../../ArchReport.py" line="1102"/>
       <source>Refresh</source>
       <translation>Uppdatera</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1101"/>
+      <location filename="../../ArchReport.py" line="1106"/>
       <source>Re-run the query and update the preview table.</source>
       <translation type="unfinished">Re-run the query and update the preview table.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1103"/>
+      <location filename="../../ArchReport.py" line="1108"/>
       <source>&lt;b&gt;Query Results Preview&lt;/b&gt;</source>
       <translation type="unfinished">&lt;b&gt;Query Results Preview&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1119"/>
+      <location filename="../../ArchReport.py" line="1124"/>
       <source>Display Options</source>
-      <translation type="unfinished">Display Options</translation>
+      <translation>Visningsalternativ</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1122"/>
+      <location filename="../../ArchReport.py" line="1127"/>
       <source>Use as Pipeline Step</source>
       <translation type="unfinished">Use as Pipeline Step</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1128"/>
+      <location filename="../../ArchReport.py" line="1133"/>
       <source>When checked, this statement will use the results of the previous statement as its data source.</source>
       <translation type="unfinished">When checked, this statement will use the results of the previous statement as its data source.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1131"/>
+      <location filename="../../ArchReport.py" line="1136"/>
       <source>Use Description as Section Header</source>
       <translation type="unfinished">Use Description as Section Header</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1137"/>
+      <location filename="../../ArchReport.py" line="1142"/>
       <source>When checked, the statement's description will be written as a merged header row before its results.</source>
       <translation type="unfinished">When checked, the statement's description will be written as a merged header row before its results.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1140"/>
+      <location filename="../../ArchReport.py" line="1145"/>
       <source>Include Column Names as Headers</source>
       <translation type="unfinished">Include Column Names as Headers</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1146"/>
+      <location filename="../../ArchReport.py" line="1151"/>
       <source>Include the column headers (Label, IfcType, ...) in the spreadsheet output.</source>
       <translation type="unfinished">Include the column headers (Label, IfcType, ...) in the spreadsheet output.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1147"/>
+      <location filename="../../ArchReport.py" line="1152"/>
       <source>Add Empty Row After</source>
-      <translation type="unfinished">Add Empty Row After</translation>
+      <translation>Lägg till tom rad efter</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1150"/>
+      <location filename="../../ArchReport.py" line="1155"/>
       <source>Insert one empty row after this statement's results.</source>
       <translation type="unfinished">Insert one empty row after this statement's results.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1153"/>
+      <location filename="../../ArchReport.py" line="1158"/>
       <source>Print Results in Bold</source>
       <translation type="unfinished">Print Results in Bold</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1156"/>
+      <location filename="../../ArchReport.py" line="1161"/>
       <source>Render the result cells in bold font for emphasis.</source>
       <translation type="unfinished">Render the result cells in bold font for emphasis.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1166"/>
+      <location filename="../../ArchReport.py" line="1171"/>
       <source>Save and Next</source>
-      <translation type="unfinished">Save and Next</translation>
+      <translation>Spara och nästa</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1172"/>
+      <location filename="../../ArchReport.py" line="1177"/>
       <source>If checked, clicking 'Save' will automatically load the next statement for editing.</source>
       <translation type="unfinished">If checked, clicking 'Save' will automatically load the next statement for editing.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1173"/>
+      <location filename="../../ArchReport.py" line="1178"/>
       <source>Save</source>
       <translation>Spara</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1177"/>
+      <location filename="../../ArchReport.py" line="1182"/>
       <source>Save changes to this statement and close the statement editor.</source>
       <translation type="unfinished">Save changes to this statement and close the statement editor.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1178"/>
+      <location filename="../../ArchReport.py" line="1183"/>
       <source>Discard</source>
       <translation type="unfinished">Discard</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1182"/>
+      <location filename="../../ArchReport.py" line="1187"/>
       <source>Discard all changes made in the statement editor.</source>
       <translation type="unfinished">Discard all changes made in the statement editor.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1288"/>
+      <location filename="../../ArchReport.py" line="1293"/>
       <source>--- Select a Query Preset ---</source>
       <translation type="unfinished">--- Select a Query Preset ---</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1291"/>
+      <location filename="../../ArchReport.py" line="1296"/>
       <source>--- Load a Report Template ---</source>
       <translation type="unfinished">--- Load a Report Template ---</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1327"/>
+      <location filename="../../ArchReport.py" line="1332"/>
       <source>Double-click to edit description in place.</source>
-      <translation type="unfinished">Double-click to edit description in place.</translation>
+      <translation>Dubbelklicka för att redigera beskrivningen på plats.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1342"/>
+      <location filename="../../ArchReport.py" line="1347"/>
       <source>The first statement cannot be pipelined.</source>
       <translation type="unfinished">The first statement cannot be pipelined.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1348"/>
+      <location filename="../../ArchReport.py" line="1353"/>
       <source>Toggles whether to use the previous statement's results as input</source>
       <translation type="unfinished">Toggles whether to use the previous statement's results as input</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1364"/>
+      <location filename="../../ArchReport.py" line="1369"/>
       <source>Toggles whether to use this statement's Description as a section header</source>
       <translation type="unfinished">Toggles whether to use this statement's Description as a section header</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1380"/>
+      <location filename="../../ArchReport.py" line="1385"/>
       <source>Toggles whether to include this statement's column names in the report</source>
       <translation type="unfinished">Toggles whether to include this statement's column names in the report</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1490"/>
+      <location filename="../../ArchReport.py" line="1495"/>
       <source>New Statement {len(self.obj.Proxy.live_statements) + 1}</source>
       <translation type="unfinished">New Statement {len(self.obj.Proxy.live_statements) + 1}</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1518"/>
+      <location filename="../../ArchReport.py" line="1523"/>
       <source>Remove Statement</source>
-      <translation type="unfinished">Remove Statement</translation>
+      <translation>Ta bort uttalande</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1521"/>
+      <location filename="../../ArchReport.py" line="1526"/>
       <source>Are you sure you want to remove statement '{description_to_remove}'?</source>
       <translation type="unfinished">Are you sure you want to remove statement '{description_to_remove}'?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1544"/>
+      <location filename="../../ArchReport.py" line="1549"/>
       <source>Copy of {original.description}</source>
       <translation type="unfinished">Copy of {original.description}</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1601"/>
+      <location filename="../../ArchReport.py" line="1606"/>
       <source>&lt;i&gt;Typing...&lt;/i&gt;</source>
       <translation type="unfinished">&lt;i&gt;Typing...&lt;/i&gt;</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1635"/>
+      <location filename="../../ArchReport.py" line="1640"/>
       <source>Overwrite Query?</source>
-      <translation type="unfinished">Overwrite Query?</translation>
+      <translation>Skriv över fråga?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1639"/>
+      <location filename="../../ArchReport.py" line="1644"/>
       <source>Loading a preset will overwrite the current text in the query editor. Continue?</source>
       <translation type="unfinished">Loading a preset will overwrite the current text in the query editor. Continue?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1660"/>
+      <location filename="../../ArchReport.py" line="1665"/>
       <source>Empty Query</source>
-      <translation type="unfinished">Empty Query</translation>
+      <translation>Tom fråga</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1661"/>
+      <location filename="../../ArchReport.py" line="1666"/>
       <source>Cannot save an empty query as a preset.</source>
       <translation type="unfinished">Cannot save an empty query as a preset.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1666"/>
+      <location filename="../../ArchReport.py" line="1671"/>
       <source>Save Query Preset</source>
       <translation type="unfinished">Save Query Preset</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1667"/>
+      <location filename="../../ArchReport.py" line="1672"/>
       <source>Preset Name:</source>
       <translation type="unfinished">Preset Name:</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1693"/>
+      <location filename="../../ArchReport.py" line="1698"/>
       <source>Overwrite Report?</source>
-      <translation type="unfinished">Overwrite Report?</translation>
+      <translation>Skriv över rapport?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1697"/>
+      <location filename="../../ArchReport.py" line="1702"/>
       <source>Loading a template will replace all current statements in this report. Continue?</source>
       <translation type="unfinished">Loading a template will replace all current statements in this report. Continue?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1729"/>
+      <location filename="../../ArchReport.py" line="1734"/>
       <source>Empty Report</source>
-      <translation type="unfinished">Empty Report</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReport.py" line="1730"/>
-      <source>Cannot save an empty report as a template.</source>
-      <translation type="unfinished">Cannot save an empty report as a template.</translation>
+      <translation>Tom rapport</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="1735"/>
+      <source>Cannot save an empty report as a template.</source>
+      <translation>Kan inte spara en tom rapport som en mall.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReport.py" line="1740"/>
       <source>Save Report Template</source>
-      <translation type="unfinished">Save Report Template</translation>
+      <translation>Spara rapportmall</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1736"/>
+      <location filename="../../ArchReport.py" line="1741"/>
       <source>Template Name:</source>
-      <translation type="unfinished">Template Name:</translation>
+      <translation>Mallnamn:</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1773"/>
+      <location filename="../../ArchReport.py" line="1778"/>
       <source> (from {input_count} in pipeline)</source>
       <translation type="unfinished"> (from {input_count} in pipeline)</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1788"/>
+      <location filename="../../ArchReport.py" line="1793"/>
       <source>Query is incomplete</source>
-      <translation type="unfinished">Query is incomplete</translation>
+      <translation>Frågan är ofullständig</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1865"/>
+      <location filename="../../ArchReport.py" line="1870"/>
       <source>Query incomplete or typing…</source>
       <translation type="unfinished">Query incomplete or typing…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2036"/>
+      <location filename="../../ArchReport.py" line="2041"/>
       <source>Hide Preview</source>
       <translation type="unfinished">Hide Preview</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2111"/>
+      <location filename="../../ArchReport.py" line="2116"/>
       <source>Unsaved Changes</source>
-      <translation type="unfinished">Unsaved Changes</translation>
+      <translation>Osparade ändringar</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2115"/>
+      <location filename="../../ArchReport.py" line="2120"/>
       <source>You have unsaved changes in the statement editor. Do you want to save them before closing?</source>
       <translation type="unfinished">You have unsaved changes in the statement editor. Do you want to save them before closing?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2172"/>
+      <location filename="../../ArchReport.py" line="2177"/>
       <source>Manage {mode.capitalize()} Presets</source>
       <translation type="unfinished">Manage {mode.capitalize()} Presets</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2182"/>
+      <location filename="../../ArchReport.py" line="2187"/>
       <source>Rename…</source>
-      <translation type="unfinished">Rename…</translation>
+      <translation>Döp om…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2183"/>
+      <location filename="../../ArchReport.py" line="2188"/>
       <source>Delete</source>
       <translation>Radera</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2184"/>
+      <location filename="../../ArchReport.py" line="2189"/>
       <source>Edit Source…</source>
-      <translation type="unfinished">Edit Source…</translation>
+      <translation>Redigera källa…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2185"/>
+      <location filename="../../ArchReport.py" line="2190"/>
       <source>Close</source>
       <translation>Stäng</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2247"/>
+      <location filename="../../ArchReport.py" line="2252"/>
       <source>This action is only available for user-created presets.</source>
       <translation type="unfinished">This action is only available for user-created presets.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2262"/>
+      <location filename="../../ArchReport.py" line="2267"/>
       <source>Rename Preset</source>
       <translation type="unfinished">Rename Preset</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2263"/>
+      <location filename="../../ArchReport.py" line="2268"/>
       <source>New name:</source>
-      <translation type="unfinished">New name:</translation>
+      <translation>Nytt namn:</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2270"/>
+      <location filename="../../ArchReport.py" line="2275"/>
       <source>Name Conflict</source>
-      <translation type="unfinished">Name Conflict</translation>
+      <translation>Namnkonflikt</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2274"/>
+      <location filename="../../ArchReport.py" line="2279"/>
       <source>A preset with this name already exists. Please choose a different name.</source>
       <translation type="unfinished">A preset with this name already exists. Please choose a different name.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2289"/>
+      <location filename="../../ArchReport.py" line="2294"/>
       <source>Delete Preset</source>
       <translation type="unfinished">Delete Preset</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2292"/>
+      <location filename="../../ArchReport.py" line="2297"/>
       <source>Are you sure you want to permanently delete the preset '{name}'?</source>
       <translation type="unfinished">Are you sure you want to permanently delete the preset '{name}'?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2311"/>
+      <location filename="../../ArchReport.py" line="2316"/>
       <source>File Not Found</source>
-      <translation type="unfinished">File Not Found</translation>
+      <translation>Filen hittades inte</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2312"/>
+      <location filename="../../ArchReport.py" line="2317"/>
       <source>Could not find the preset file at:
 {file_path}</source>
       <translation type="unfinished">Could not find the preset file at:
 {file_path}</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2321"/>
+      <location filename="../../ArchReport.py" line="2326"/>
       <source>Could Not Open File</source>
-      <translation type="unfinished">Could Not Open File</translation>
+      <translation>Kunde inte öppna fil</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2325"/>
+      <location filename="../../ArchReport.py" line="2330"/>
       <source>FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</source>
       <translation type="unfinished">FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2470"/>
+      <location filename="../../ArchReport.py" line="2475"/>
       <source>BIM SQL Cheatsheet</source>
       <translation type="unfinished">BIM SQL Cheatsheet</translation>
     </message>
@@ -6428,7 +6428,7 @@ Skapandet av våningen avbröts.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2550"/>
       <source>New…</source>
-      <translation type="unfinished">New…</translation>
+      <translation>Nytt…</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2816"/>
@@ -6646,12 +6646,12 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchSpace.py" line="922"/>
       <source>Finish Floor</source>
-      <translation type="unfinished">Finish Floor</translation>
+      <translation>Avsluta golv</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="923"/>
       <source>Finish Walls</source>
-      <translation type="unfinished">Finish Walls</translation>
+      <translation>Avsluta väggar</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="924"/>
@@ -6708,12 +6708,12 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="527"/>
       <source>Baseline</source>
-      <translation type="unfinished">Baseline</translation>
+      <translation>Baslinje</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="533"/>
       <source>No baseline</source>
-      <translation type="unfinished">No baseline</translation>
+      <translation>Ingen baslinje</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="534"/>
@@ -6723,7 +6723,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="535"/>
       <source>Sketch</source>
-      <translation type="unfinished">Sketch</translation>
+      <translation>Skiss</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1893"/>
@@ -6752,7 +6752,7 @@ Skapandet av byggnaden avbröts.</translation>
       <location filename="../../ArchWall.py" line="1848"/>
       <location filename="../../bimcommands/BimWall.py" line="464"/>
       <source>Wall Options</source>
-      <translation type="unfinished">Wall Options</translation>
+      <translation>Väggalternativ</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1874"/>
@@ -6915,7 +6915,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="291"/>
       <source>Remove shape</source>
-      <translation type="unfinished">Remove shape</translation>
+      <translation>Ta bort form</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="343"/>
@@ -7008,12 +7008,12 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="732"/>
       <source>Vertical Sections</source>
-      <translation type="unfinished">Vertical Sections</translation>
+      <translation>Vertikala avsnitt</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="733"/>
       <source>Horizontal Sections</source>
-      <translation type="unfinished">Horizontal Sections</translation>
+      <translation>Horisontella sektioner</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="734"/>
@@ -7038,7 +7038,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="747"/>
       <source>Panel Thickness</source>
-      <translation type="unfinished">Panel Thickness</translation>
+      <translation>Panelens tjocklek</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="748"/>
@@ -7083,7 +7083,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="415"/>
       <source>Height End</source>
-      <translation type="unfinished">Height End</translation>
+      <translation>Sluthöjd</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="416"/>
@@ -7118,7 +7118,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchSql.py" line="2312"/>
       <source>Typing…</source>
-      <translation type="unfinished">Typing…</translation>
+      <translation>Skriver…</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="2320"/>
@@ -7138,7 +7138,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1053"/>
       <source>Solar Diagrams</source>
-      <translation type="unfinished">Solar Diagrams</translation>
+      <translation>Soldiagram</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1057"/>
@@ -7179,7 +7179,7 @@ Used when calculating the sun position.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1101"/>
       <source>Time zone</source>
-      <translation type="unfinished">Time zone</translation>
+      <translation>Tidszon</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1118"/>
@@ -7198,12 +7198,12 @@ align the solar diagram and sun path.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1123"/>
       <source>Diagrams</source>
-      <translation type="unfinished">Diagrams</translation>
+      <translation>Diagram</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1126"/>
       <source>Solar Diagram</source>
-      <translation type="unfinished">Solar Diagram</translation>
+      <translation>Soldiagram</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1136"/>
@@ -7227,7 +7227,7 @@ oriented according to the north offset.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1153"/>
       <source>Sun Position</source>
-      <translation type="unfinished">Sun Position</translation>
+      <translation>Solens position</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1164"/>
@@ -7258,12 +7258,12 @@ in 24-hour local time. Steps in half-hour increments.</translation>
     <message>
       <location filename="../../ArchSite.py" line="1209"/>
       <source>Hour</source>
-      <translation type="unfinished">Hour</translation>
+      <translation>Timme</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1214"/>
       <source>Show Hour Labels</source>
-      <translation type="unfinished">Show Hour Labels</translation>
+      <translation>Visa timetiketter</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1220"/>
@@ -7781,7 +7781,7 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="158"/>
       <source>Outside diameter</source>
-      <translation type="unfinished">Outside diameter</translation>
+      <translation>Utsidesdiameter</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="520"/>
@@ -9776,7 +9776,7 @@ The ladybug or pysolar Python module is required.</translation>
     <message>
       <location filename="../../ArchReport.py" line="493"/>
       <source>The spreadsheet for the results</source>
-      <translation type="unfinished">The spreadsheet for the results</translation>
+      <translation>Kalkylbladet för resultaten</translation>
     </message>
     <message>
       <location filename="../../ArchReport.py" line="502"/>
@@ -10604,17 +10604,17 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Automatisk</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="119"/>
+      <location filename="../../BimStatus.py" line="123"/>
       <source>Toggles the BIM Views Manager on/off</source>
       <translation type="unfinished">Toggles the BIM Views Manager on/off</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="135"/>
+      <location filename="../../BimStatus.py" line="139"/>
       <source>Toggles the 3D View background between simple and gradient</source>
       <translation type="unfinished">Toggles the 3D View background between simple and gradient</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="161"/>
+      <location filename="../../BimStatus.py" line="165"/>
       <source>The value of the nudge movement (rotation is always 45°).Alt+arrows to move
 Alt+, to rotate leftAlt+. to rotate right
 Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch between auto and manual mode</source>
@@ -10658,7 +10658,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="90"/>
       <source>Search…</source>
-      <translation type="unfinished">Search…</translation>
+      <translation>Sök…</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="91"/>
@@ -10846,7 +10846,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="186"/>
       <source>Select an IFC File</source>
-      <translation type="unfinished">Select an IFC File</translation>
+      <translation>Välj en IFC-fil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="228"/>
@@ -11178,22 +11178,22 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="88"/>
       <source>Select Material</source>
-      <translation type="unfinished">Select Material</translation>
+      <translation>Välj material</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="107"/>
       <source>Search materials</source>
-      <translation type="unfinished">Search materials</translation>
+      <translation>Sök material</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="108"/>
       <source>Searches for materials in the list</source>
-      <translation type="unfinished">Searches for materials in the list</translation>
+      <translation>Söker efter material i listan</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="141"/>
       <source>New Multi-Material</source>
-      <translation type="unfinished">New Multi-Material</translation>
+      <translation>Nytt multimaterial</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="237"/>
@@ -11310,7 +11310,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <location filename="../../bimcommands/BimPreflight.py" line="92"/>
       <location filename="../../bimcommands/BimPreflight.py" line="185"/>
       <source>Performs the test</source>
-      <translation type="unfinished">Performs the test</translation>
+      <translation>Utför testet</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="595"/>
@@ -11445,12 +11445,12 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="661"/>
       <source>Save Template File</source>
-      <translation type="unfinished">Save Template File</translation>
+      <translation>Spara mallfil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="682"/>
       <source>Open Template File</source>
-      <translation type="unfinished">Open Template File</translation>
+      <translation>Öppna mallfil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="796"/>
@@ -11516,7 +11516,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="61"/>
       <source>Select Page Template</source>
-      <translation type="unfinished">Select Page Template</translation>
+      <translation>Välj sidmall</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="73"/>
@@ -11726,7 +11726,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property…</source>
-      <translation type="unfinished">Add IFC property…</translation>
+      <translation>Lägg till IFC-egenskap…</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
@@ -11915,7 +11915,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under menyn Ins
     <message>
       <location filename="../../bimcommands/BimLink.py" line="30"/>
       <source>Select an object to link</source>
-      <translation type="unfinished">Select an object to link</translation>
+      <translation>Välj ett objekt att länka</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="154"/>
@@ -12004,12 +12004,12 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under menyn Ins
   <context>
     <name>BIM_Clone</name>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="43"/>
+      <location filename="../../bimcommands/BimClone.py" line="46"/>
       <source>Clone</source>
       <translation>Klona</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="46"/>
+      <location filename="../../bimcommands/BimClone.py" line="49"/>
       <source>Clones selected objects to another location</source>
       <translation>Klonar valda objekt till en annan plats</translation>
     </message>
@@ -13518,7 +13518,7 @@ Do you want to proceed?</translation>
     <message>
       <location filename="../../ArchSql.py" line="580"/>
       <source>Counts rows that match criteria.</source>
-      <translation type="unfinished">Counts rows that match criteria.</translation>
+      <translation>Räknar rader som matchar kriterier.</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="593"/>
@@ -13556,12 +13556,12 @@ Do you want to proceed?</translation>
     <message>
       <location filename="../../ArchSql.py" line="685"/>
       <source>Converts text to lowercase.</source>
-      <translation type="unfinished">Converts text to lowercase.</translation>
+      <translation>Konverterar text till gemener.</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="705"/>
       <source>Converts text to uppercase.</source>
-      <translation type="unfinished">Converts text to uppercase.</translation>
+      <translation>Konverterar text till versaler.</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="725"/>
@@ -13578,7 +13578,7 @@ Do you want to proceed?</translation>
       <location filename="../../ArchSql.py" line="873"/>
       <location filename="../../ArchSql.py" line="922"/>
       <source>Hierarchical</source>
-      <translation type="unfinished">Hierarchical</translation>
+      <translation>Hierarkisk</translation>
     </message>
     <message>
       <location filename="../../ArchSql.py" line="845"/>
@@ -13649,7 +13649,7 @@ Do you want to proceed?</translation>
     <message>
       <location filename="../../InitGui.py" line="325"/>
       <source>IFC Management</source>
-      <translation type="unfinished">IFC Management</translation>
+      <translation>IFC-hantering</translation>
     </message>
   </context>
   <context>
@@ -13657,7 +13657,7 @@ Do you want to proceed?</translation>
     <message>
       <location filename="../../InitGui.py" line="337"/>
       <source>Report Tools</source>
-      <translation type="unfinished">Report Tools</translation>
+      <translation>Rapportverktyg</translation>
     </message>
   </context>
   <context>
@@ -13665,7 +13665,7 @@ Do you want to proceed?</translation>
     <message>
       <location filename="../../InitGui.py" line="349"/>
       <source>Cloning Tools</source>
-      <translation type="unfinished">Cloning Tools</translation>
+      <translation>Kloningsverktyg</translation>
     </message>
   </context>
   <context>

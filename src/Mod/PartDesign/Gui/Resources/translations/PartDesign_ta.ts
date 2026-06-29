@@ -3653,7 +3653,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
       <translation>எலிக்ச் திருத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="129"/>
+      <location filename="../../ViewProviderHole.cpp" line="130"/>
       <source>Edit Hole</source>
       <translation>திருத்து துளை</translation>
     </message>
@@ -4658,7 +4658,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>பிழை: முகம் சீராக இருக்க வேண்டும்</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <source>Error: Result is not a solid</source>
@@ -4783,17 +4783,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
 குறுக்குவெட்டு ச்கெட்ச் உறுப்புகள் அல்லது ச்கெட்ச்சில் பல முகங்கள் ஒரு முகம் வரை பாக்கெட்டை உருவாக்க அனுமதிக்கப்படாது.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
       <source>Thread type out of range</source>
       <translation>நூல் வகை வரம்பிற்கு வெளியே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
       <source>Thread size out of range</source>
       <translation>நூல் அளவு வரம்பிற்கு வெளியே உள்ளது</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
       <source>Error: Thread could not be built</source>
       <translation>பிழை: நூலை உருவாக்க முடியவில்லை</translation>
     </message>

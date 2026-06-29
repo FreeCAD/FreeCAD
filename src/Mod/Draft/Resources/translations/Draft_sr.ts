@@ -3032,7 +3032,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="749"/>
-      <location filename="../../DraftGui.py" line="1136"/>
+      <location filename="../../DraftGui.py" line="1138"/>
       <source>Continue</source>
       <translation>Настави</translation>
     </message>
@@ -3153,8 +3153,8 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="666"/>
       <location filename="../../DraftGui.py" line="695"/>
-      <location filename="../../DraftGui.py" line="1839"/>
-      <location filename="../../DraftGui.py" line="1857"/>
+      <location filename="../../DraftGui.py" line="1841"/>
+      <location filename="../../DraftGui.py" line="1859"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Ниједан</translation>
@@ -3202,7 +3202,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="710"/>
-      <location filename="../../DraftGui.py" line="1119"/>
+      <location filename="../../DraftGui.py" line="1121"/>
       <source>Radius</source>
       <translation>Полупречник</translation>
     </message>
@@ -3222,12 +3222,12 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>Укљ/Искљ режим помоћне геометрије</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1071"/>
+      <location filename="../../DraftGui.py" line="1072"/>
       <source>Label Type</source>
       <translation>Врста ознаке</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1120"/>
+      <location filename="../../DraftGui.py" line="1122"/>
       <source>Radius of Circle</source>
       <translation>Полупречник круга</translation>
     </message>
@@ -3285,12 +3285,12 @@ Uncheck to use working plane coordinate system</source>
       <translation>Завршава тренутну операцију цртања или уређивања</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2072"/>
+      <location filename="../../DraftGui.py" line="2074"/>
       <source>Modify Objects</source>
       <translation>Измени објекте</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2230"/>
+      <location filename="../../DraftGui.py" line="2232"/>
       <source>Facebinder Elements</source>
       <translation>Елементи Повезивача страница</translation>
     </message>
@@ -3383,50 +3383,50 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="846"/>
-      <location filename="../../DraftGui.py" line="1845"/>
-      <location filename="../../DraftGui.py" line="1863"/>
+      <location filename="../../DraftGui.py" line="1847"/>
+      <location filename="../../DraftGui.py" line="1865"/>
       <source>Autogroup off</source>
       <translation>Аутоматско груписање искључено</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="978"/>
+      <location filename="../../DraftGui.py" line="979"/>
       <location filename="../../draftguitools/gui_lines.py" line="73"/>
       <source>Line</source>
       <translation>Дуж</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="993"/>
+      <location filename="../../DraftGui.py" line="994"/>
       <source>DWire</source>
       <translation>Д-жичани оквир</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1016"/>
+      <location filename="../../DraftGui.py" line="1017"/>
       <source>Circle</source>
       <translation>Круг</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1021"/>
+      <location filename="../../DraftGui.py" line="1022"/>
       <source>Arc</source>
       <translation>Кружни лук</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1026"/>
+      <location filename="../../DraftGui.py" line="1027"/>
       <location filename="../../draftguitools/gui_rotate.py" line="291"/>
       <source>Rotate</source>
       <translation>Окрени</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1032"/>
+      <location filename="../../DraftGui.py" line="1033"/>
       <source>Point</source>
       <translation>Тачка</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1069"/>
+      <location filename="../../DraftGui.py" line="1070"/>
       <source>Label</source>
       <translation>Ознака</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1088"/>
+      <location filename="../../DraftGui.py" line="1089"/>
       <location filename="../../draftguitools/gui_offset.py" line="247"/>
       <location filename="../../draftguitools/gui_offset.py" line="262"/>
       <location filename="../../draftguitools/gui_offset.py" line="325"/>
@@ -3434,31 +3434,31 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Одмак</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1093"/>
-      <location filename="../../DraftGui.py" line="1112"/>
+      <location filename="../../DraftGui.py" line="1094"/>
+      <location filename="../../DraftGui.py" line="1114"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Distance</source>
       <translation>Растојање</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1094"/>
-      <location filename="../../DraftGui.py" line="1113"/>
+      <location filename="../../DraftGui.py" line="1095"/>
+      <location filename="../../DraftGui.py" line="1115"/>
       <location filename="../../draftguitools/gui_trimex.py" line="225"/>
       <source>Offset distance</source>
       <translation>Одмак растојање</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1109"/>
+      <location filename="../../DraftGui.py" line="1111"/>
       <source>Trimex</source>
       <translation>Тримекс</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1213"/>
       <location filename="../../DraftGui.py" line="1215"/>
-      <location filename="../../DraftGui.py" line="1216"/>
+      <location filename="../../DraftGui.py" line="1217"/>
       <location filename="../../DraftGui.py" line="1218"/>
-      <location filename="../../DraftGui.py" line="1219"/>
       <location filename="../../DraftGui.py" line="1220"/>
+      <location filename="../../DraftGui.py" line="1221"/>
+      <location filename="../../DraftGui.py" line="1222"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="125"/>
@@ -3466,12 +3466,12 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Локално {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1222"/>
-      <location filename="../../DraftGui.py" line="1223"/>
       <location filename="../../DraftGui.py" line="1224"/>
+      <location filename="../../DraftGui.py" line="1225"/>
       <location filename="../../DraftGui.py" line="1226"/>
-      <location filename="../../DraftGui.py" line="1227"/>
       <location filename="../../DraftGui.py" line="1228"/>
+      <location filename="../../DraftGui.py" line="1229"/>
+      <location filename="../../DraftGui.py" line="1230"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
@@ -3479,22 +3479,22 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Општo {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1853"/>
+      <location filename="../../DraftGui.py" line="1855"/>
       <source>Autogroup:</source>
       <translation>Аутоматско груписање:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2227"/>
+      <location filename="../../DraftGui.py" line="2229"/>
       <source>Faces</source>
       <translation>Странице</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2228"/>
+      <location filename="../../DraftGui.py" line="2230"/>
       <source>Remove</source>
       <translation>Уклони</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2229"/>
+      <location filename="../../DraftGui.py" line="2231"/>
       <source>Add</source>
       <translation>Додај</translation>
     </message>
@@ -3562,42 +3562,42 @@ or try saving to a lower DWG version.</source>
       <location filename="../../WorkingPlane.py" line="1463"/>
       <location filename="../../WorkingPlane.py" line="1762"/>
       <location filename="../../WorkingPlane.py" line="1763"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="68"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="83"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="97"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="185"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="81"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="96"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="110"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="198"/>
       <source>Custom</source>
       <translation>Сопствена</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="171"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="184"/>
       <source>Unable to convert input into a scale factor</source>
       <translation>Није могуће конвертовати унос у коефицијент скалирања</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="186"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="199"/>
       <source>Set Custom Scale</source>
       <translation>Подеси сопствену размеру</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="226"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="239"/>
       <source>Draft Scale Widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
       <translation>Графички елемент размере</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="250"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="263"/>
       <source>Set the scale used by Draft annotation tools</source>
       <translation>Подеси размеру коју користе алати за напомену</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="290"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="303"/>
       <source>Draft Snap Widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
       <translation>Графички елемент хватања</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="187"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="200"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>Подеси сопствену размеру напомене у формату x:x, x=x</translation>
     </message>
@@ -4560,124 +4560,129 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="95"/>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="663"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="677"/>
       <source>This object does not support possible coincident points</source>
       <translation>Овај објекат не подржава могуће подударне тачке, покушај поново</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="112"/>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="679"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="693"/>
       <source>Delete Point</source>
       <translation>Обриши тачку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="117"/>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="693"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="119"/>
+      <source>Set Point as First</source>
+      <translation type="unfinished">Set Point as First</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="126"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="707"/>
       <source>Add Point</source>
       <translation>Додај тачку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="126"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="135"/>
       <source>Open Wire</source>
       <translation>Отвори жичани оквир</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="129"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="138"/>
       <source>Close Wire</source>
       <translation>Затвори жичани оквир</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="133"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="142"/>
       <source>Reverse Wire</source>
       <translation>Окрени жичани оквир</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="176"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="185"/>
       <source>Active object must have more than 2 points or nodes</source>
       <translation>Активни објекат мора имати више од 2 тачке или чвора</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="199"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="213"/>
       <source>Open Spline</source>
       <translation>Отвори сплајн</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="202"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="216"/>
       <source>Close Spline</source>
       <translation>Затвори сплајн</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="205"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="219"/>
       <source>Reverse Spline</source>
       <translation>Окрени сплајн</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="370"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="384"/>
       <source>Move Arc</source>
       <translation>Помери кружни лук</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="377"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="391"/>
       <source>Set First Angle</source>
       <translation>Задај почетни угао</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="384"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="398"/>
       <source>Set Last Angle</source>
       <translation>Задај крајњи угао</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="391"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="405"/>
       <source>Set Radius</source>
       <translation>Задај полупречник</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="418"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="432"/>
       <source>Invert Arc</source>
       <translation>Окрени кружни лук</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="680"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="694"/>
       <source>Make Sharp</source>
       <translation>Направи оштро</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="682"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="696"/>
       <source>Make Tangent</source>
       <translation>Направи тангентно</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="686"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="700"/>
       <source>Make Symmetric</source>
       <translation>Направи симетрично</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="695"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="709"/>
       <source>Reverse Curve</source>
       <translation>Окрени криву</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="701"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="715"/>
       <source>Open Curve</source>
       <translation>Отвори криву</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="704"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="718"/>
       <source>Close Curve</source>
       <translation>Затвори криву</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="817"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="831"/>
       <source>Selection is not a knot</source>
       <translation>Изабрано није чвор</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="843"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="857"/>
       <source>Endpoint of Bézier curve cannot be smoothed</source>
       <translation>Крајња тачка Безјеове криве се не може направити глатком</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="911"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="925"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Активни објекат мора имати више од две тачке/споја</translation>
     </message>
@@ -4767,22 +4772,22 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Скалирај</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="261"/>
+      <location filename="../../draftguitools/gui_scale.py" line="268"/>
       <source>Pick new distance from base point</source>
       <translation>Изабери ново растојање од базне тачке</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="286"/>
+      <location filename="../../draftguitools/gui_scale.py" line="293"/>
       <source>%1 pick base point</source>
       <translation>%1 изабери базну тачку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="288"/>
+      <location filename="../../draftguitools/gui_scale.py" line="295"/>
       <source>%1 pick reference distance</source>
       <translation>%1 изабери референтно растојање</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="290"/>
+      <location filename="../../draftguitools/gui_scale.py" line="297"/>
       <source>%1 pick new distance</source>
       <translation>%1 изабери ново растојање</translation>
     </message>
@@ -4943,12 +4948,12 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Изабери објекат који желиш да клонираш</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="99"/>
+      <location filename="../../draftguitools/gui_clone.py" line="100"/>
       <source>Cannot clone objects without a shape, aborting</source>
       <translation>Није могуће клонирати објекте који немају облик, прекида се</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="103"/>
+      <location filename="../../draftguitools/gui_clone.py" line="105"/>
       <source>Cannot clone objects without a shape, skipping them</source>
       <translation>Није могуће клонирати објекте који немају облик, прескаче се</translation>
     </message>
@@ -5640,7 +5645,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
       <location filename="../../draftviewproviders/view_base.py" line="470"/>
       <location filename="../../draftviewproviders/view_clone.py" line="71"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="86"/>
+      <location filename="../../draftviewproviders/view_hatch.py" line="87"/>
       <source>Edit</source>
       <translation>Измени</translation>
     </message>
@@ -5863,7 +5868,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Отвара се хипервеза</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="165"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="171"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane</source>
       <translation>Да би одредио радну раван изабери 3 тачке, један или више облика или објекат</translation>
     </message>
@@ -6086,7 +6091,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Шара шаблона није пронађена у PAT датотеци</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_field_locks.py" line="89"/>
+      <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
       <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
       <translation type="unfinished">Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</translation>
     </message>
@@ -6094,64 +6099,49 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="112"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Draft Creation</source>
       <translation>Цртање - Прављење</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="115"/>
+      <location filename="../../InitGui.py" line="109"/>
       <source>Draft Annotation</source>
       <translation>Цртање - Напомене</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="118"/>
+      <location filename="../../InitGui.py" line="112"/>
       <source>Draft Modification</source>
       <translation>Цртање - Измене</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="121"/>
+      <location filename="../../InitGui.py" line="115"/>
       <source>Draft Utility</source>
       <translation>Цртање - Корисне алатке</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="124"/>
+      <location filename="../../InitGui.py" line="118"/>
       <source>Draft Snap</source>
       <translation>Цртање - Хватање</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="128"/>
+      <location filename="../../InitGui.py" line="123"/>
       <source>&amp;Drafting</source>
       <translation>&amp;Цртање</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="130"/>
+      <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Напомена</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="133"/>
+      <location filename="../../InitGui.py" line="129"/>
       <source>&amp;Modification</source>
       <translation>&amp;Измене</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="132"/>
       <source>&amp;Utilities</source>
       <translation>&amp;Корисни алати</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="55"/>
-      <source>Arc Tools</source>
-      <translation>Алатке за кружне лукове</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="64"/>
-      <source>Bézier Tools</source>
-      <translation>Алатке за Безјеове криве</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="95"/>
-      <source>Array Tools</source>
-      <translation>Алатке за умножавање</translation>
     </message>
   </context>
   <context>
@@ -6172,32 +6162,32 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Направи обарање ивица</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="500"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="502"/>
       <source>Save style</source>
       <translation>Сачувај стил</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="501"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="503"/>
       <source>Name of this new style</source>
       <translation>Назив овог новог стила</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="509"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="511"/>
       <source>Warning</source>
       <translation>Упозорење</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="510"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="512"/>
       <source>Name exists. Overwrite?</source>
       <translation>Име постоји. Замени?</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="530"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="532"/>
       <source>Error: json module not found. Unable to load style</source>
       <translation>Грешка: јсон модул није пронађен. Није могуће учитати стил</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="548"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="550"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>Грешка: јсон модул није пронађен. Није могуће сачувати стил</translation>
     </message>
@@ -6398,7 +6388,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
       <translation>Ознака + Материјал</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="106"/>
+      <location filename="../../draftguitools/gui_clone.py" line="108"/>
       <source>Create Clone</source>
       <translation>Направи клон</translation>
     </message>
@@ -8123,11 +8113,11 @@ beyond the dimension line</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="147"/>
-      <location filename="../../InitGui.py" line="150"/>
-      <location filename="../../InitGui.py" line="153"/>
-      <location filename="../../InitGui.py" line="156"/>
-      <location filename="../../InitGui.py" line="159"/>
+      <location filename="../../InitGui.py" line="145"/>
+      <location filename="../../InitGui.py" line="148"/>
+      <location filename="../../InitGui.py" line="151"/>
+      <location filename="../../InitGui.py" line="154"/>
+      <location filename="../../InitGui.py" line="157"/>
       <source>Draft</source>
       <translation>Закошење</translation>
     </message>

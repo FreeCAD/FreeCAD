@@ -3024,7 +3024,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../mrichtextedit.cpp" line="256"/>
       <source>Document Source</source>
-      <translation type="unfinished">Document Source</translation>
+      <translation>Dokumentkälla</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.cpp" line="353"/>
@@ -3123,7 +3123,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../Command.cpp" line="182"/>
       <source>Select a template file</source>
-      <translation type="unfinished">Select a template file</translation>
+      <translation>Välj en mallfil</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="183"/>
@@ -3133,7 +3133,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../Command.cpp" line="599"/>
       <source>Empty Selection</source>
-      <translation type="unfinished">Empty Selection</translation>
+      <translation>Tom markering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
@@ -3300,7 +3300,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../Command.cpp" line="1903"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Spara DXF-fil</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2093"/>
@@ -3748,12 +3748,12 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../CommandDecorate.cpp" line="359"/>
       <source>Image files</source>
-      <translation type="unfinished">Image files</translation>
+      <translation>Bildfiler</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="363"/>
       <source>Select an image file</source>
-      <translation type="unfinished">Select an image file</translation>
+      <translation>Välj en bildfil</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="419"/>
@@ -4292,7 +4292,7 @@ Om inget objekt har valts öppnas en filbläddrare där du kan välja en SVG- el
     <message>
       <location filename="../../SymbolChooser.cpp" line="59"/>
       <source>Select a Symbol</source>
-      <translation type="unfinished">Select a Symbol</translation>
+      <translation>Välj en symbol</translation>
     </message>
     <message>
       <location filename="../../TemplateTextField.cpp" line="54"/>
@@ -4310,48 +4310,48 @@ it has a weld symbol that would become broken.</source>
 den har en svetsningssymbol som skulle bli bruten.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="378"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="392"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Stäng öppen dialog innan du tar bort detaljobjekt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="393"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Du kan inte ta bort denna vy eftersom den har en eller flera beroende vyer som skulle bli brutna.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
       <location filename="../../ViewProviderPage.cpp" line="222"/>
       <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="174"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="182"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="190"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <source>Object dependencies</source>
       <translation>Beroende av objekt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="151"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
       <source>You cannot delete the anchor view of a projection group.</source>
       <translation>Du kan inte ta bort ankarvyn för en projektionsgrupp.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="160"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>Du kan inte ta bort den här vyn eftersom den har en sektionsvy som skulle bli trasig.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="168"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>Du kan inte ta bort den här vyn eftersom den har en detaljvy som skulle bli trasig.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="187"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>Du kan inte ta bort den här vyn eftersom den har en ledarlinje som skulle bli bruten.</translation>
     </message>
@@ -4445,7 +4445,7 @@ den har en kakelsvets som skulle bli trasig.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="152"/>
       <source>Sets the background color</source>
-      <translation type="unfinished">Sets the background color</translation>
+      <translation>Anger bakgrundsfärgen</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="159"/>
@@ -5666,7 +5666,7 @@ Detta påverkar endast verktygsfältet; alla verktyg förblir tillgängliga via 
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="684"/>
       <source>Chain factor</source>
-      <translation type="unfinished">Chain factor</translation>
+      <translation>Kedjefaktor</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="697"/>
@@ -6857,7 +6857,7 @@ Vill du fortsätta?</translation>
       <location filename="../../TaskCosVertex.cpp" line="156"/>
       <location filename="../../TaskCosVertex.cpp" line="248"/>
       <source>Pick Point</source>
-      <translation type="unfinished">Pick Point</translation>
+      <translation>Välj punkt</translation>
     </message>
     <message>
       <location filename="../../TaskCosVertex.ui" line="114"/>
@@ -7040,7 +7040,7 @@ Vill du fortsätta?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="708"/>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Format</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="718"/>
@@ -7241,68 +7241,78 @@ Vill du fortsätta?</translation>
       <translation>Detalj Ankare</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="32"/>
-      <source>Base View</source>
-      <translation>Basvy</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDetail.ui" line="89"/>
+      <location filename="../../TaskDetail.ui" line="184"/>
       <location filename="../../TaskDetail.cpp" line="252"/>
       <source>Drag Highlight</source>
       <translation>Dra höjdpunkt</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="242"/>
+      <location filename="../../TaskDetail.ui" line="230"/>
       <source>Radius</source>
       <translation>Radie</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="55"/>
+      <location filename="../../TaskDetail.ui" line="42"/>
       <source>Detail view</source>
       <translation>Detaljvy</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="86"/>
+      <location filename="../../TaskDetail.ui" line="181"/>
       <source>Enables dragging of the detail highlight to a new position</source>
       <translation>Möjliggör dragning av detaljmarkeringen till en ny position</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="120"/>
+      <location filename="../../TaskDetail.ui" line="237"/>
       <source>Scale type</source>
       <translation>Typ av skala</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="127"/>
+      <location filename="../../TaskDetail.ui" line="79"/>
       <source>Reference label</source>
       <translation>Referensetikett</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="140"/>
+      <location filename="../../TaskDetail.ui" line="253"/>
       <source>Scale factor for detail view</source>
       <translation>Skalfaktor för detaljvy</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="168"/>
+      <location filename="../../TaskDetail.ui" line="150"/>
       <source>Y-position of detail highlight within view</source>
       <translation>Y-position för detaljmarkering inom vyn</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="184"/>
+      <location filename="../../TaskDetail.ui" line="272"/>
       <source>Scale factor</source>
       <translation>Skalfaktor</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="197"/>
+      <location filename="../../TaskDetail.ui" line="291"/>
       <source>Size of detail view</source>
       <translation>Storlek på detaljvy</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="229"/>
+      <location filename="../../TaskDetail.ui" line="114"/>
       <source>X position of detail highlight within view</source>
       <translation>X position för detaljmarkering inom vy</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="256"/>
+      <location filename="../../TaskDetail.ui" line="35"/>
+      <source>Base view</source>
+      <translation>Basvy</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="91"/>
+      <source>Position</source>
+      <translation>Position</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="194"/>
+      <source>Size</source>
+      <translation>Storlek</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="205"/>
       <source>Page: scale factor of page is used
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
@@ -7313,22 +7323,22 @@ Automatisk: om detaljvyn är större än sidan,
 Anpassad: anpassad skalfaktor används</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="263"/>
+      <location filename="../../TaskDetail.ui" line="212"/>
       <source>Page</source>
       <translation>Sida</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="268"/>
+      <location filename="../../TaskDetail.ui" line="217"/>
       <source>Automatic</source>
       <translation>Automatiskt</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="273"/>
+      <location filename="../../TaskDetail.ui" line="222"/>
       <source>Custom</source>
       <translation>Anpassad</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="216"/>
+      <location filename="../../TaskDetail.ui" line="72"/>
       <source>Reference</source>
       <translation>Referens</translation>
     </message>
@@ -7543,7 +7553,7 @@ av ett negativt värde för "Övertolerans".</translation>
       <location filename="../../TaskDimension.ui" line="357"/>
       <location filename="../../TaskDimension.ui" line="403"/>
       <source>°</source>
-      <translation type="unfinished">°</translation>
+      <translation>°</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="370"/>
@@ -7865,18 +7875,18 @@ Du kan välja ytterligare punkter för att få linjesegment.</translation>
       <location filename="../../TaskLeaderLine.cpp" line="757"/>
       <location filename="../../TaskLeaderLine.cpp" line="779"/>
       <source>Edit Points</source>
-      <translation type="unfinished">Edit Points</translation>
+      <translation>Redigera punkter</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="533"/>
       <source>Save Points</source>
-      <translation type="unfinished">Save Points</translation>
+      <translation>Spara punkter</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="568"/>
       <location filename="../../TaskLeaderLine.cpp" line="585"/>
       <source>Save Changes</source>
-      <translation type="unfinished">Save Changes</translation>
+      <translation>Spara ändringar</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.cpp" line="616"/>
@@ -7949,9 +7959,9 @@ Du kan välja ytterligare punkter för att få linjesegment.</translation>
     <message numerus="yes">
       <location filename="../../TaskLineDecor.cpp" line="79"/>
       <source>%n line(s)</source>
-      <translation type="unfinished">
-        <numerusform>%n line(s)</numerusform>
-        <numerusform>%n line(s)</numerusform>
+      <translation>
+        <numerusform>%n rad</numerusform>
+        <numerusform>%n rader</numerusform>
       </translation>
     </message>
   </context>
@@ -8438,7 +8448,7 @@ med hjälp av de angivna X/Y-avstånden</translation>
     <message>
       <location filename="../../TaskRichAnno.cpp" line="661"/>
       <source>RichTextAnnotation</source>
-      <translation type="unfinished">RichTextAnnotation</translation>
+      <translation>RichTextAnnotation</translation>
     </message>
   </context>
   <context>
@@ -9032,17 +9042,17 @@ med hjälp av de angivna X/Y-avstånden</translation>
     <message>
       <location filename="../../TaskDimRepair.ui" line="107"/>
       <source>2D References</source>
-      <translation type="unfinished">2D References</translation>
+      <translation>2D-referenser</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="202"/>
       <source>3D References</source>
-      <translation type="unfinished">3D References</translation>
+      <translation>3D-referenser</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="246"/>
       <source>Sub-Element</source>
-      <translation type="unfinished">Sub-Element</translation>
+      <translation>Underelement</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.ui" line="31"/>
@@ -9305,7 +9315,7 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>ActiveView</source>
-      <translation type="unfinished">ActiveView</translation>
+      <translation>ActiveView</translation>
     </message>
   </context>
   <context>
@@ -9345,7 +9355,7 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="69"/>
       <source>LeaderLine</source>
-      <translation type="unfinished">LeaderLine</translation>
+      <translation>LeaderLine</translation>
     </message>
   </context>
   <context>
@@ -9624,7 +9634,7 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="535"/>
       <source>Fill template fields</source>
-      <translation type="unfinished">Fill template fields</translation>
+      <translation>Fyll i mallfält</translation>
     </message>
   </context>
   <context>
@@ -9692,7 +9702,7 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="63"/>
       <source>LongDashedDoubleDotted</source>
-      <translation type="unfinished">LongDashedDoubleDotted</translation>
+      <translation>LongDashedDoubleDotted</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="64"/>
@@ -9712,7 +9722,7 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="67"/>
       <source>LongDashDoubleShortDash</source>
-      <translation type="unfinished">LongDashDoubleShortDash</translation>
+      <translation>LongDashDoubleShortDash</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="68"/>
@@ -9770,7 +9780,7 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="83"/>
       <source>LongDashDoubleDashed</source>
-      <translation type="unfinished">LongDashDoubleDashed</translation>
+      <translation>LongDashDoubleDashed</translation>
     </message>
   </context>
   <context>
@@ -9838,12 +9848,12 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="101"/>
       <source>Break1</source>
-      <translation type="unfinished">Break1</translation>
+      <translation>Break1</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="102"/>
       <source>Break2</source>
-      <translation type="unfinished">Break2</translation>
+      <translation>Break2</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="103"/>
@@ -9853,12 +9863,12 @@ det finns en dialogruta med en öppen uppgift.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="104"/>
       <source>Stitch1</source>
-      <translation type="unfinished">Stitch1</translation>
+      <translation>Stitch1</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="105"/>
       <source>Stitch2</source>
-      <translation type="unfinished">Stitch2</translation>
+      <translation>Stitch2</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="106"/>
@@ -10273,7 +10283,7 @@ det finns en öppen uppgiftsdialog.</translation>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="79"/>
       <source>Sub-Element</source>
-      <translation type="unfinished">Sub-Element</translation>
+      <translation>Underelement</translation>
     </message>
     <message>
       <location filename="../../TaskDimRepair.cpp" line="245"/>
