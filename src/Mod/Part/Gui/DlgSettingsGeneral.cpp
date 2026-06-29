@@ -110,8 +110,10 @@ void DlgSettingsGeneral::loadSettings()
     ui->selectedHistoryAlgorithmEnum->onRestore();
 }
 
-void DlgSettingsGeneral::saveHistorySelector() {
-    if (ui->selectedHistoryAlgorithmEnum->currentIndex() != App::getSelectedUnderlyingHistoryAlgorithm()) {
+void DlgSettingsGeneral::saveHistorySelector()
+{
+    if (ui->selectedHistoryAlgorithmEnum->currentIndex()
+        != App::getSelectedUnderlyingHistoryAlgorithm()) {
         requireRestart();
     }
 

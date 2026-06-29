@@ -109,7 +109,9 @@ App::DocumentObjectExecReturn* Fillet::execute()
     this->positionByBaseFeature();
 
     try {
-        TopoShape shape(App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2 ? getID() : 0);  //,getDocument()->getStringHasher());
+        TopoShape shape(
+            App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2 ? getID() : 0
+        );  //,getDocument()->getStringHasher());
 
         // Add signal handler for segfault protection
 #if defined(__GNUC__) && defined(FC_OS_LINUX)

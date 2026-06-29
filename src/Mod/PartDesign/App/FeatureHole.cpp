@@ -2212,17 +2212,14 @@ TopoShape Hole::findHoles(
         Part::MappingStatus status = Part::MappingStatus::Modified;
 
         if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-            // we want to use generated here, because when an element is modified, it is usually split apart into similar elements
-            // which is not happening here. what is happening is an edge is creating a face, which is only possible with generated.
+            // we want to use generated here, because when an element is modified, it is usually
+            // split apart into similar elements which is not happening here. what is happening is
+            // an edge is creating a face, which is only possible with generated.
             status = Part::MappingStatus::Generated;
         }
 
         Part::ShapeMapper mapper;
-        mapper.populate(
-            status,
-            baseshape,
-            TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE)
-        );
+        mapper.populate(status, baseshape, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
 
         TopoShape hole(-getID());
         hole.makeShapeWithElementMap(protoHole, mapper, {baseshape});

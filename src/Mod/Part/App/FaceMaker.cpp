@@ -293,17 +293,18 @@ void Part::FaceMaker::postBuild()
                 nullptr,
                 &sids
             );
-        } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        }
+        else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
             std::vector<Data::MappedName> edgeNames;
             std::vector<std::string> edgeIDs;
-            
+
             int count = wire.countSubShapes(TopAbs_EDGE);
 
             // cap the number of names and IDs to 10 to improve performance and document size.
             for (int edgeIndex = 1; (edgeIndex <= count && edgeIndex <= 10); ++edgeIndex) {
                 Data::MappedName name
                     = face.getMappedName(Data::IndexedName::fromConst("Edge", edgeIndex), false);
-                
+
                 if (!name) {
                     continue;
                 }
@@ -318,7 +319,8 @@ void Part::FaceMaker::postBuild()
                     if (decodedNameSize == 2) {
                         if (decodedName[0].iterationTag == decodedName[1].iterationTag) {
                             index = decodedName[1].index;
-                        }  else {
+                        }
+                        else {
                             canMap = false;
                         }
                     }
@@ -326,7 +328,7 @@ void Part::FaceMaker::postBuild()
                     if (canMap) {
                         std::stringstream ss;
 
-                        for (const auto &id : decodedName[0].referenceIDs) {
+                        for (const auto& id : decodedName[0].referenceIDs) {
                             if (id != "_") {
                                 ss << id;
                                 ss << ":";
@@ -336,19 +338,22 @@ void Part::FaceMaker::postBuild()
                                     ss << ":";
                                     ss << index;
                                 }
-                                
+
                                 edgeIDs.push_back(ss.str());
 
                                 ss.str("");
                             }
                         }
                     }
-                } else {
+                }
+                else {
                     edgeNames.push_back(name);
                 }
             }
 
-            if (edgeNames.empty() && edgeIDs.empty()) continue;
+            if (edgeNames.empty() && edgeIDs.empty()) {
+                continue;
+            }
 
             int masterTag = this->myTopoShape.Tag;
 
@@ -361,20 +366,22 @@ void Part::FaceMaker::postBuild()
                 }
             }
 
-            std::string faceString = Data::MappedName::makeSection(edgeIDs,
-                                                                   edgeNames,
-                                                                   std::to_string(masterTag),
-                                                                   op,
-                                                                   "0",
-                                                                   'F',
-                                                                   "0");
-            
+            std::string faceString = Data::MappedName::makeSection(
+                edgeIDs,
+                edgeNames,
+                std::to_string(masterTag),
+                op,
+                "0",
+                'F',
+                "0"
+            );
+
             this->myTopoShape.setElementName(
                 Data::IndexedName::fromConst("Face", index),
                 Data::MappedName(faceString, this->myTopoShape.getHistoryAlgorithm()),
                 this->myTopoShape.Tag
             );
-        } 
+        }
     }
     this->myTopoShape.initCache(true);
     this->Done();

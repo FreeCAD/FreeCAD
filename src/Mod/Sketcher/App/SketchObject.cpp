@@ -272,22 +272,13 @@ void SketchObject::buildShape()
 
         if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
             builtName = name;
-        } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-            builtName = Data::MappedName::makeSection({name},
-                                                      {},
-                                                      tag,
-                                                      Part::OpCodes::Sketch,
-                                                      0,
-                                                      'V',
-                                                      0,
-                                                      {"SRC"});
+        }
+        else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            builtName
+                = Data::MappedName::makeSection({name}, {}, tag, Part::OpCodes::Sketch, 0, 'V', 0, {"SRC"});
         }
 
-        vertex.setElementName(
-            Data::IndexedName::fromConst("Vertex", 1),
-            builtName,
-            0L
-        );
+        vertex.setElementName(Data::IndexedName::fromConst("Vertex", 1), builtName, 0L);
         vertices.push_back(vertex);
         vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
     };
@@ -1905,9 +1896,9 @@ App::ElementNamePair SketchObject::getElementName(
 
     if (mapped) {
         const char* dot = strchr(mapped, '.');
-        
+
         if (dot) {
-            indexedSubname = dot + 1; 
+            indexedSubname = dot + 1;
 
             if (indexedSubname == strstr(indexedSubname, internalPrefix().c_str())) {
                 isInternalElement = true;
@@ -1923,7 +1914,7 @@ App::ElementNamePair SketchObject::getElementName(
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
         const Part::TopoShape internalShape = InternalShape.getShape();
-        if (mapped) {            
+        if (mapped) {
             mappedElement = internalShape.getElementName(name);
         }
         else if (type == ElementNameType::Export) {
