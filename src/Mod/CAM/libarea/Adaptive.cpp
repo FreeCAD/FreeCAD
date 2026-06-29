@@ -2383,7 +2383,11 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
     }
 
+#ifdef DEBUG_SVG
     writePreprocessingSVG(svgInfo);
+#else
+    UNUSED(svgInfo);
+#endif
 
     return results;
 }

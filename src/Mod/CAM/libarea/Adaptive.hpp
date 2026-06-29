@@ -40,6 +40,7 @@
 #endif
 
 // #define DEV_MODE
+// #define DEBUG_SVG
 
 #define NTOL 1.0e-7  // numeric tolerance
 
