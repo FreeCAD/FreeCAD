@@ -7046,8 +7046,7 @@ long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) con
                 FC_WARN("bad name: " << _name.toString());
             }
 
-            if (lastSection.iterationTag != Data::EMPTY_VALUE
-                && std::isdigit(lastSection.iterationTag) && std::stol(lastSection.iterationTag) == Tag
+            if (lastSection.iterationTag == std::to_string(Tag)
                 && lastSection.hasMapperFlag("GEN")) {  // TODO: globablize mapper flag
                 return true;
             }
