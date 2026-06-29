@@ -154,6 +154,9 @@ void AssemblyObject::onChanged(const App::Property* prop)
 
 int AssemblyObject::solve(bool enableRedo)
 {
+    // updateSolveStatus() solves on demand; suppress that while a solve is running.
+    Base::StateLocker lock(solveInProgress);
+
     ensureIdentityPlacements();
 
     syncGroundedJoints();
@@ -214,7 +217,9 @@ void AssemblyObject::updateSolveStatus()
     //+1 because there's a grounded joint to origin
     lastDoF = (1 + numberOfComponents()) * 6;
 
-    if (!mbdAssembly || !mbdAssembly->mbdSystem) {
+    // Solve on demand when queried before the system is solved, but not from within
+    // a solve: solve() calls this, so a failed solve would recurse indefinitely.
+    if (!solveInProgress && (!mbdAssembly || !mbdAssembly->mbdSystem)) {
         solve();
     }
 

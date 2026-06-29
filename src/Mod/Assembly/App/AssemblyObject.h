@@ -280,6 +280,9 @@ private:
 
     bool bundleFixed;
 
+    // True while solve() is running; breaks the solve()/updateSolveStatus() cycle.
+    bool solveInProgress {false};
+
     int lastDoF;
     bool lastHasConflict;
     bool lastHasRedundancies;
