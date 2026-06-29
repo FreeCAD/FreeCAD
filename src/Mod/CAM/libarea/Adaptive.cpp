@@ -24,11 +24,14 @@
 
 #include "Adaptive.hpp"
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include <cstring>
 #include <ctime>
+#include <climits>
 #include <algorithm>
 #include <numbers>
+#include <string>
 
 namespace ClipperLib
 {
@@ -1649,6 +1652,16 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     helixRampMinRadiusScaled = long(helixRampMinDiameter * scaleFactor / 2);
     finishPassOffsetScaled = finishingProfile ? long(stepOverScaled * FINISHING_THICKNESS_SCALE) : 0;
 
+    // Debug variables for SVG visualization
+    Paths step3Paths;
+    Paths step4Paths;
+    Paths step5Paths;
+    Paths step5a_stockRev;
+    Paths step5b_outsideOfStock;
+    Paths step5c_inputPathsUnion;
+    std::vector<Paths> allToolBoundPaths;
+    std::vector<Paths> allFinishingPaths;
+
     ClipperOffset clipof;
     Clipper clip;
 
@@ -1760,6 +1773,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
     }
 
+    // Save step 3 result before step 4 modifies it
+    step3Paths = inputPaths;
+
     // 4) Turn profiles into areas; mark new paths as unfinished (Z=0) and then union
     if (opType == OperationType::otProfilingOutside || opType == OperationType::otProfilingInside) {
         // offset by an extra finishPassOffsetScaled to compensate for undoing that later
@@ -1796,6 +1812,10 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
 
         inputPaths = fullPaths;
+        step4Paths = fullPaths;
+    }
+    else {
+        step4Paths = inputPaths;  // No change for non-profiling operations
     }
 
     // 5) If going outside the stock is allowed, add regionOutsideStock to both inputPaths and
@@ -1808,6 +1828,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
         clipof.Execute(stockRev, -2);
         ReversePaths(stockRev);
+        step5a_stockRev = stockRev;
 
         // 5b) Create outside-of-stock region
         Paths outsideOfStock;
@@ -1815,6 +1836,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clipof.Clear();
         clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
         clipof.Execute(outsideOfStock, overshootDistance);
+        step5b_outsideOfStock = outsideOfStock;
 
         // 5c) Union input paths with stock regions
         clip.Clear();
@@ -1835,6 +1857,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         );
 
         clip.Execute(ClipType::ctUnion, inputPaths);
+        step5c_inputPathsUnion = inputPaths;
+        step5Paths = inputPaths;
 
         // 5d) Update cleared area
         clipof.Clear();
@@ -1846,6 +1870,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clip.AddPaths(stockRev, PolyType::ptClip, true);
         clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
         clip.Execute(ClipType::ctUnion, initialClearedPaths);
+    }
+    else {
+        step5Paths = inputPaths;  // No change when forceInsideOut is true
     }
 
     // 6) Compute toolBounds = offset(input paths, -(toolRadius + finishingThickness)).
@@ -1972,8 +1999,464 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             }
 
             // 10) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
+
+            // Debug: accumulate paths from all regions for final SVG
+            allToolBoundPaths.push_back(currentTBP);
+            allFinishingPaths.push_back(finishingPass);
+
             ProcessPolyNode(boundPath, currentTBP, finishingPass, initialClearedPaths);
         }
+    }
+
+    // Write combined SVG with all accumulated paths from all regions
+    {
+        // Calculate overall bounding box
+        long long minX = LLONG_MAX, minY = LLONG_MAX, maxX = LLONG_MIN, maxY = LLONG_MIN;
+
+        // Include all finishing paths from all regions
+        for (const Paths& regionFinishingPaths : allFinishingPaths) {
+            for (const Path& fp : regionFinishingPaths) {
+                for (const auto& pt : fp) {
+                    minX = std::min(minX, pt.X);
+                    minY = std::min(minY, pt.Y);
+                    maxX = std::max(maxX, pt.X);
+                    maxY = std::max(maxY, pt.Y);
+                }
+            }
+        }
+
+        // Include all tool bound paths from all regions
+        for (const Paths& regionToolBoundPaths : allToolBoundPaths) {
+            for (const Path& tbp : regionToolBoundPaths) {
+                for (const auto& pt : tbp) {
+                    minX = std::min(minX, pt.X);
+                    minY = std::min(minY, pt.Y);
+                    maxX = std::max(maxX, pt.X);
+                    maxY = std::max(maxY, pt.Y);
+                }
+            }
+        }
+
+        // Include step 3 paths
+        for (const Path& ip : step3Paths) {
+            for (const auto& pt : ip) {
+                minX = std::min(minX, pt.X);
+                minY = std::min(minY, pt.Y);
+                maxX = std::max(maxX, pt.X);
+                maxY = std::max(maxY, pt.Y);
+            }
+        }
+
+        // Include step 4 paths
+        for (const Path& ip : step4Paths) {
+            for (const auto& pt : ip) {
+                minX = std::min(minX, pt.X);
+                minY = std::min(minY, pt.Y);
+                maxX = std::max(maxX, pt.X);
+                maxY = std::max(maxY, pt.Y);
+            }
+        }
+
+        // Include step 5 paths
+        for (const Path& ip : step5Paths) {
+            for (const auto& pt : ip) {
+                minX = std::min(minX, pt.X);
+                minY = std::min(minY, pt.Y);
+                maxX = std::max(maxX, pt.X);
+                maxY = std::max(maxY, pt.Y);
+            }
+        }
+
+        long long padding = std::max(maxX - minX, maxY - minY) / 10;
+        long long legendWidth = (maxX - minX) / 5;  // Legend takes 20% of width
+        minX -= padding;
+        minY -= padding;
+        maxX += padding + legendWidth;
+        maxY += padding;
+
+        std::ofstream svg("adaptive_combined.svg");
+        svg << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        svg << "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"" << minX << " " << -maxY << " "
+            << (maxX - minX) << " " << (maxY - minY) << "\">\n";
+
+        // Add JavaScript for toggling visibility
+        svg << "<script type=\"text/javascript\"><![CDATA[\n";
+        svg << "function toggle(id) {\n";
+        svg << "  var el = document.getElementById(id);\n";
+        svg << "  var box = document.getElementById(id + '-box');\n";
+        svg << "  if (el.style.display === 'none') {\n";
+        svg << "    el.style.display = 'inline';\n";
+        svg << "    box.setAttribute('fill', box.getAttribute('data-color'));\n";
+        svg << "  } else {\n";
+        svg << "    el.style.display = 'none';\n";
+        svg << "    box.setAttribute('fill', '#cccccc');\n";
+        svg << "  }\n";
+        svg << "}\n";
+        svg << "]]></script>\n";
+
+        // GREEN: Step 3 paths
+        svg << "<g id=\"step3-paths\">\n";
+        for (size_t i = 0; i < step3Paths.size(); i++) {
+            const Path& ip = step3Paths[i];
+            if (!ip.empty()) {
+                // Draw each edge as a separate line, solid if both endpoints have Z=1, dashed otherwise
+                for (size_t j = 0; j < ip.size(); j++) {
+                    const IntPoint& p1 = ip[j];
+                    const IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];  // Close the path
+
+                    bool edgeHasZ1 = (p1.Z == 1 && p2.Z == 1);
+                    svg << "<line x1=\"" << p1.X << "\" y1=\"" << -p1.Y << "\" x2=\"" << p2.X
+                        << "\" y2=\"" << -p2.Y << "\" stroke=\"green\" stroke-width=\""
+                        << (padding / 100) << "\"";
+                    if (!edgeHasZ1) {
+                        svg << " stroke-dasharray=\"" << (padding / 8) << "," << (padding / 8)
+                            << "\"";
+                    }
+                    svg << "/>\n";
+                }
+                // Add markers for Z=1 vertices
+                for (const auto& pt : ip) {
+                    if (pt.Z == 1) {
+                        svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                            << (3 * padding / 50) << "\" fill=\"green\"/>\n";
+                    }
+                }
+            }
+        }
+        svg << "</g>\n";
+
+        // ORANGE: Step 4 paths
+        svg << "<g id=\"step4-paths\">\n";
+        for (size_t i = 0; i < step4Paths.size(); i++) {
+            const Path& ip = step4Paths[i];
+            if (!ip.empty()) {
+                // Draw each edge as a separate line, solid if both endpoints have Z=1, dashed otherwise
+                for (size_t j = 0; j < ip.size(); j++) {
+                    const IntPoint& p1 = ip[j];
+                    const IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
+
+                    bool edgeHasZ1 = (p1.Z == 1 && p2.Z == 1);
+                    svg << "<line x1=\"" << p1.X << "\" y1=\"" << -p1.Y << "\" x2=\"" << p2.X
+                        << "\" y2=\"" << -p2.Y << "\" stroke=\"orange\" stroke-width=\""
+                        << (padding / 100) << "\"";
+                    if (!edgeHasZ1) {
+                        svg << " stroke-dasharray=\"" << (padding / 8) << "," << (padding / 8)
+                            << "\"";
+                    }
+                    svg << "/>\n";
+                }
+                // Add markers for Z=1 vertices
+                for (const auto& pt : ip) {
+                    if (pt.Z == 1) {
+                        svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                            << (3 * padding / 50) << "\" fill=\"orange\"/>\n";
+                    }
+                }
+            }
+        }
+        svg << "</g>\n";
+
+        // CYAN: Step 5a paths (stock reversed)
+        svg << "<g id=\"step5a-paths\">\n";
+        for (size_t i = 0; i < step5a_stockRev.size(); i++) {
+            const Path& ip = step5a_stockRev[i];
+            if (!ip.empty()) {
+                for (size_t j = 0; j < ip.size(); j++) {
+                    const IntPoint& p1 = ip[j];
+                    const IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
+                    bool edgeHasZ1 = (p1.Z == 1 && p2.Z == 1);
+                    svg << "<line x1=\"" << p1.X << "\" y1=\"" << -p1.Y << "\" x2=\"" << p2.X
+                        << "\" y2=\"" << -p2.Y << "\" stroke=\"cyan\" stroke-width=\""
+                        << (padding / 100) << "\"";
+                    if (!edgeHasZ1) {
+                        svg << " stroke-dasharray=\"" << (padding / 8) << "," << (padding / 8)
+                            << "\"";
+                    }
+                    svg << "/>\n";
+                }
+                for (const auto& pt : ip) {
+                    if (pt.Z == 1) {
+                        svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                            << (3 * padding / 50) << "\" fill=\"cyan\"/>\n";
+                    }
+                }
+            }
+        }
+        svg << "</g>\n";
+
+        // MAGENTA: Step 5b paths (outside of stock)
+        svg << "<g id=\"step5b-paths\">\n";
+        for (size_t i = 0; i < step5b_outsideOfStock.size(); i++) {
+            const Path& ip = step5b_outsideOfStock[i];
+            if (!ip.empty()) {
+                for (size_t j = 0; j < ip.size(); j++) {
+                    const IntPoint& p1 = ip[j];
+                    const IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
+                    bool edgeHasZ1 = (p1.Z == 1 && p2.Z == 1);
+                    svg << "<line x1=\"" << p1.X << "\" y1=\"" << -p1.Y << "\" x2=\"" << p2.X
+                        << "\" y2=\"" << -p2.Y << "\" stroke=\"magenta\" stroke-width=\""
+                        << (padding / 100) << "\"";
+                    if (!edgeHasZ1) {
+                        svg << " stroke-dasharray=\"" << (padding / 8) << "," << (padding / 8)
+                            << "\"";
+                    }
+                    svg << "/>\n";
+                }
+                for (const auto& pt : ip) {
+                    if (pt.Z == 1) {
+                        svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                            << (3 * padding / 50) << "\" fill=\"magenta\"/>\n";
+                    }
+                }
+            }
+        }
+        svg << "</g>\n";
+
+        // YELLOW: Step 5c paths (input paths union)
+        svg << "<g id=\"step5c-paths\">\n";
+        for (size_t i = 0; i < step5c_inputPathsUnion.size(); i++) {
+            const Path& ip = step5c_inputPathsUnion[i];
+            if (!ip.empty()) {
+                for (size_t j = 0; j < ip.size(); j++) {
+                    const IntPoint& p1 = ip[j];
+                    const IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
+                    bool edgeHasZ1 = (p1.Z == 1 && p2.Z == 1);
+                    svg << "<line x1=\"" << p1.X << "\" y1=\"" << -p1.Y << "\" x2=\"" << p2.X
+                        << "\" y2=\"" << -p2.Y << "\" stroke=\"yellow\" stroke-width=\""
+                        << (padding / 100) << "\"";
+                    if (!edgeHasZ1) {
+                        svg << " stroke-dasharray=\"" << (padding / 8) << "," << (padding / 8)
+                            << "\"";
+                    }
+                    svg << "/>\n";
+                }
+                for (const auto& pt : ip) {
+                    if (pt.Z == 1) {
+                        svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                            << (3 * padding / 50) << "\" fill=\"yellow\"/>\n";
+                    }
+                }
+            }
+        }
+        svg << "</g>\n";
+
+        // PURPLE: Step 5 paths
+        svg << "<g id=\"step5-paths\">\n";
+        for (size_t i = 0; i < step5Paths.size(); i++) {
+            const Path& ip = step5Paths[i];
+            if (!ip.empty()) {
+                for (size_t j = 0; j < ip.size(); j++) {
+                    const IntPoint& p1 = ip[j];
+                    const IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
+                    bool edgeHasZ1 = (p1.Z == 1 && p2.Z == 1);
+                    svg << "<line x1=\"" << p1.X << "\" y1=\"" << -p1.Y << "\" x2=\"" << p2.X
+                        << "\" y2=\"" << -p2.Y << "\" stroke=\"purple\" stroke-width=\""
+                        << (padding / 100) << "\"";
+                    if (!edgeHasZ1) {
+                        svg << " stroke-dasharray=\"" << (padding / 8) << "," << (padding / 8)
+                            << "\"";
+                    }
+                    svg << "/>\n";
+                }
+                for (const auto& pt : ip) {
+                    if (pt.Z == 1) {
+                        svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                            << (3 * padding / 50) << "\" fill=\"purple\"/>\n";
+                    }
+                }
+            }
+        }
+        svg << "</g>\n";
+
+        // BLUE: Tool bound paths from all regions (Step 6) - separate group per region
+        // These come BEFORE step 8 in SVG so they render underneath
+        for (size_t regionIdx = 0; regionIdx < allToolBoundPaths.size(); regionIdx++) {
+            svg << "<g id=\"tool-bound-paths-" << (regionIdx + 1) << "\">\n";
+            const Paths& regionToolBoundPaths = allToolBoundPaths[regionIdx];
+            for (size_t i = 0; i < regionToolBoundPaths.size(); i++) {
+                const Path& tbp = regionToolBoundPaths[i];
+                if (!tbp.empty()) {
+                    for (size_t j = 0; j < tbp.size(); j++) {
+                        const IntPoint& p1 = tbp[j];
+                        const IntPoint& p2 = (j + 1 < tbp.size()) ? tbp[j + 1] : tbp[0];
+                        bool edgeHasZ1 = (p1.Z == 1 && p2.Z == 1);
+                        svg << "<line x1=\"" << p1.X << "\" y1=\"" << -p1.Y << "\" x2=\"" << p2.X
+                            << "\" y2=\"" << -p2.Y << "\" stroke=\"blue\" stroke-width=\""
+                            << (padding / 100) << "\"";
+                        if (!edgeHasZ1) {
+                            svg << " stroke-dasharray=\"" << (padding / 8) << "," << (padding / 8)
+                                << "\"";
+                        }
+                        svg << "/>\n";
+                    }
+                    for (const auto& pt : tbp) {
+                        if (pt.Z == 1) {
+                            svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                                << (3 * padding / 50) << "\" fill=\"blue\"/>\n";
+                        }
+                    }
+                }
+            }
+            svg << "</g>\n";
+        }
+
+        // RED: Finishing paths from all regions (Step 8) - separate group per region
+        // These come AFTER step 6 in SVG so they render on top
+        for (size_t regionIdx = 0; regionIdx < allFinishingPaths.size(); regionIdx++) {
+            svg << "<g id=\"finishing-paths-" << (regionIdx + 1) << "\">\n";
+            const Paths& regionFinishingPaths = allFinishingPaths[regionIdx];
+            for (size_t i = 0; i < regionFinishingPaths.size(); i++) {
+                const Path& fp = regionFinishingPaths[i];
+                if (!fp.empty()) {
+                    // Render all edges as closed paths (including closing edge)
+                    for (size_t j = 0; j < fp.size(); j++) {
+                        const IntPoint& p1 = fp[j];
+                        const IntPoint& p2 = (j + 1 < fp.size()) ? fp[j + 1] : fp[0];
+                        bool edgeHasZ1 = (p1.Z == 1 && p2.Z == 1);
+                        svg << "<line x1=\"" << p1.X << "\" y1=\"" << -p1.Y << "\" x2=\"" << p2.X
+                            << "\" y2=\"" << -p2.Y << "\" stroke=\"red\" stroke-width=\""
+                            << (padding / 100) << "\"";
+                        if (!edgeHasZ1) {
+                            svg << " stroke-dasharray=\"" << (padding / 8) << "," << (padding / 8)
+                                << "\"";
+                        }
+                        svg << "/>\n";
+                    }
+
+                    // Add markers for Z=1 vertices
+                    for (const auto& pt : fp) {
+                        if (pt.Z == 1) {
+                            svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                                << (3 * padding / 50) << "\" fill=\"red\"/>\n";
+                        }
+                    }
+                }
+            }
+            svg << "</g>\n";
+        }
+
+        // Legend (positioned in top-left within viewBox)
+        long long legendX = minX + padding;
+        long long legendY = -maxY + padding;
+        long long boxSize = legendWidth / 15;
+        long long lineHeight = boxSize * 2;
+
+        // Calculate legend height based on number of entries
+        size_t numRegions = allToolBoundPaths.size();
+        size_t numLegendItems = 6
+            + numRegions * 2;  // 6 for steps 3,4,5a,5b,5c,5 + 2 per region (step 6, step 8)
+
+        // Background for legend
+        svg << "<rect x=\"" << legendX << "\" y=\"" << legendY << "\" width=\"" << legendWidth
+            << "\" height=\"" << (lineHeight * numLegendItems + padding)
+            << "\" fill=\"white\" stroke=\"black\" stroke-width=\"" << (padding / 200)
+            << "\" opacity=\"0.9\"/>\n";
+
+        // Legend items (in step order)
+        int legendItem = 0;
+
+        // Step 3
+        svg << "<rect id=\"step3-paths-box\" data-color=\"green\" x=\"" << (legendX + boxSize)
+            << "\" y=\"" << (legendY + lineHeight * legendItem + boxSize) << "\" width=\""
+            << boxSize << "\" height=\"" << boxSize
+            << "\" fill=\"green\" stroke=\"black\" stroke-width=\"" << (padding / 400)
+            << "\" style=\"cursor:pointer\" onclick=\"toggle('step3-paths')\"/>\n";
+        svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+            << (legendY + lineHeight * legendItem + boxSize * 1.5) << "\" font-size=\""
+            << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('step3-paths')\">Step 3: Input Paths</text>\n";
+        legendItem++;
+
+        // Step 4
+        svg << "<rect id=\"step4-paths-box\" data-color=\"orange\" x=\"" << (legendX + boxSize)
+            << "\" y=\"" << (legendY + lineHeight * legendItem + boxSize) << "\" width=\""
+            << boxSize << "\" height=\"" << boxSize
+            << "\" fill=\"orange\" stroke=\"black\" stroke-width=\"" << (padding / 400)
+            << "\" style=\"cursor:pointer\" onclick=\"toggle('step4-paths')\"/>\n";
+        svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+            << (legendY + lineHeight * legendItem + boxSize * 1.5) << "\" font-size=\""
+            << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('step4-paths')\">Step 4: Profiling Areas</text>\n";
+        legendItem++;
+
+        // Step 5a
+        svg << "<rect id=\"step5a-paths-box\" data-color=\"cyan\" x=\"" << (legendX + boxSize)
+            << "\" y=\"" << (legendY + lineHeight * legendItem + boxSize) << "\" width=\""
+            << boxSize << "\" height=\"" << boxSize
+            << "\" fill=\"cyan\" stroke=\"black\" stroke-width=\"" << (padding / 400)
+            << "\" style=\"cursor:pointer\" onclick=\"toggle('step5a-paths')\"/>\n";
+        svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+            << (legendY + lineHeight * legendItem + boxSize * 1.5) << "\" font-size=\""
+            << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('step5a-paths')\">Step 5a: Stock Reversed</text>\n";
+        legendItem++;
+
+        // Step 5b
+        svg << "<rect id=\"step5b-paths-box\" data-color=\"magenta\" x=\"" << (legendX + boxSize)
+            << "\" y=\"" << (legendY + lineHeight * legendItem + boxSize) << "\" width=\""
+            << boxSize << "\" height=\"" << boxSize
+            << "\" fill=\"magenta\" stroke=\"black\" stroke-width=\"" << (padding / 400)
+            << "\" style=\"cursor:pointer\" onclick=\"toggle('step5b-paths')\"/>\n";
+        svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+            << (legendY + lineHeight * legendItem + boxSize * 1.5) << "\" font-size=\""
+            << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('step5b-paths')\">Step 5b: Outside Stock</text>\n";
+        legendItem++;
+
+        // Step 5c
+        svg << "<rect id=\"step5c-paths-box\" data-color=\"yellow\" x=\"" << (legendX + boxSize)
+            << "\" y=\"" << (legendY + lineHeight * legendItem + boxSize) << "\" width=\""
+            << boxSize << "\" height=\"" << boxSize
+            << "\" fill=\"yellow\" stroke=\"black\" stroke-width=\"" << (padding / 400)
+            << "\" style=\"cursor:pointer\" onclick=\"toggle('step5c-paths')\"/>\n";
+        svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+            << (legendY + lineHeight * legendItem + boxSize * 1.5) << "\" font-size=\""
+            << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('step5c-paths')\">Step 5c: Input Paths Union</text>\n";
+        legendItem++;
+
+        // Step 5
+        svg << "<rect id=\"step5-paths-box\" data-color=\"purple\" x=\"" << (legendX + boxSize)
+            << "\" y=\"" << (legendY + lineHeight * legendItem + boxSize) << "\" width=\""
+            << boxSize << "\" height=\"" << boxSize
+            << "\" fill=\"purple\" stroke=\"black\" stroke-width=\"" << (padding / 400)
+            << "\" style=\"cursor:pointer\" onclick=\"toggle('step5-paths')\"/>\n";
+        svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+            << (legendY + lineHeight * legendItem + boxSize * 1.5) << "\" font-size=\""
+            << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('step5-paths')\">Step 5: Final Result</text>\n";
+        legendItem++;
+
+        // Step 6 and 8 - one entry per region
+        for (size_t regionIdx = 0; regionIdx < numRegions; regionIdx++) {
+            std::string regionLabel = (numRegions > 1)
+                ? " (Region " + std::to_string(regionIdx + 1) + ")"
+                : "";
+
+            // Step 6 for this region
+            svg << "<rect id=\"tool-bound-paths-" << (regionIdx + 1)
+                << "-box\" data-color=\"blue\" x=\"" << (legendX + boxSize) << "\" y=\""
+                << (legendY + lineHeight * legendItem + boxSize) << "\" width=\"" << boxSize
+                << "\" height=\"" << boxSize << "\" fill=\"blue\" stroke=\"black\" stroke-width=\""
+                << (padding / 400)
+                << "\" style=\"cursor:pointer\" onclick=\"toggle('tool-bound-paths-"
+                << (regionIdx + 1) << "')\"/>\n";
+            svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+                << (legendY + lineHeight * legendItem + boxSize * 1.5) << "\" font-size=\""
+                << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('tool-bound-paths-"
+                << (regionIdx + 1) << "')\">Step 6: Tool Bound Paths" << regionLabel << "</text>\n";
+            legendItem++;
+
+            // Step 8 for this region
+            svg << "<rect id=\"finishing-paths-" << (regionIdx + 1)
+                << "-box\" data-color=\"red\" x=\"" << (legendX + boxSize) << "\" y=\""
+                << (legendY + lineHeight * legendItem + boxSize) << "\" width=\"" << boxSize
+                << "\" height=\"" << boxSize << "\" fill=\"red\" stroke=\"black\" stroke-width=\""
+                << (padding / 400) << "\" style=\"cursor:pointer\" onclick=\"toggle('finishing-paths-"
+                << (regionIdx + 1) << "')\"/>\n";
+            svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+                << (legendY + lineHeight * legendItem + boxSize * 1.5) << "\" font-size=\""
+                << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('finishing-paths-"
+                << (regionIdx + 1) << "')\">Step 8: Finishing Paths" << regionLabel << "</text>\n";
+            legendItem++;
+        }
+
+        svg << "</svg>";
+        svg.close();
     }
 
     return results;
