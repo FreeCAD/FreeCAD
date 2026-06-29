@@ -211,17 +211,23 @@ bool Feature::relinkToMatchingSubelements(
         }
 
         Data::MappedElement subMappedElement = oldShape.getElementName(sub.c_str());
-        
+
         if (!subMappedElement.index) {
             return false;
         }
 
-        std::pair<TopAbs_ShapeEnum, int> subDecodedIndexedName = Part::TopoShape::shapeTypeAndIndex(subMappedElement.index);
+        std::pair<TopAbs_ShapeEnum, int> subDecodedIndexedName = Part::TopoShape::shapeTypeAndIndex(
+            subMappedElement.index
+        );
         if (subDecodedIndexedName.second <= 0) {
             return false;
         }
 
-        auto oldSubShape = oldShape.getSubTopoShape(subDecodedIndexedName.first, subDecodedIndexedName.second, true);
+        auto oldSubShape = oldShape.getSubTopoShape(
+            subDecodedIndexedName.first,
+            subDecodedIndexedName.second,
+            true
+        );
 
         if (oldSubShape.isNull()) {
             return false;
@@ -239,8 +245,10 @@ bool Feature::relinkToMatchingSubelements(
             if (matches.size() != 1) {
                 return false;
             }
-        } else if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V2) {
-            std::vector<Data::MappedElement> foundNames = findSimilarNames(subMappedElement.name, newShape);
+        }
+        else if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V2) {
+            std::vector<Data::MappedElement> foundNames
+                = findSimilarNames(subMappedElement.name, newShape);
 
             if (foundNames.size()) {
                 names.push_back(foundNames.front().name.toString());
