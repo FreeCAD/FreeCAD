@@ -112,7 +112,10 @@ class Arch_CurtainWall:
         self.points.append(point)
         if len(self.points) == 1:
             FreeCADGui.Snapper.getPoint(
-                last=self.points[0], callback=self.getPoint, hints=self.get_hints()
+                last=self.points[0],
+                callback=self.getPoint,
+                mode="line",
+                hints=self.get_hints(),
             )
         elif len(self.points) == 2:
             self.wp._restore()

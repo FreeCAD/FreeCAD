@@ -2,7 +2,7 @@
 
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2026 LubuSeb                                            *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -22,15 +22,41 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Import all Arch module unit tests in GUI mode."""
+"""GUI tests for the Arch Curtain Wall command."""
 
-from bimtests.TestArchImportersGui import TestArchImportersGui
-from bimtests.TestArchAxisGui import TestArchAxisGui
-from bimtests.TestArchBuildingPartGui import TestArchBuildingPartGui
-from bimtests.TestArchStairsGui import TestArchStairsGui
-from bimtests.TestArchReportGui import TestArchReportGui
-from bimtests.TestArchSiteGui import TestArchSiteGui
-from bimtests.TestArchWallGui import TestArchWallGui
-from bimtests.TestArchCurtainWallGui import TestArchCurtainWallGui
-from bimtests.TestWebGLExportGui import TestWebGLExportGui
-from bimtests.TestArchCoveringGui import TestArchCoveringGui
+from unittest.mock import patch
+
+import FreeCAD
+import FreeCADGui
+
+from bimcommands.BimCurtainwall import Arch_CurtainWall
+from bimtests import TestArchBaseGui
+
+
+class TestArchCurtainWallGui(TestArchBaseGui.TestArchBaseGui):
+
+    def test_second_interactive_point_uses_line_mode(self):
+        """The second point needs line mode so length/angle input is segment-relative."""
+
+        calls = []
+
+        def fake_get_point(**kwargs):
+            calls.append(kwargs)
+
+        command = Arch_CurtainWall()
+
+        try:
+            FreeCADGui.Selection.clearSelection()
+            with patch("FreeCADGui.Snapper.getPoint", side_effect=fake_get_point):
+                command.Activated()
+                command.getPoint(FreeCAD.Vector(0, 0, 0))
+                command.getPoint(None)
+        finally:
+            FreeCADGui.Selection.clearSelection()
+            if getattr(FreeCAD, "activeDraftCommand", None) is command:
+                FreeCAD.activeDraftCommand = None
+
+        self.assertEqual(len(calls), 2)
+        self.assertNotIn("mode", calls[0])
+        self.assertEqual(calls[1]["mode"], "line")
+        self.assertEqual(calls[1]["last"], FreeCAD.Vector(0, 0, 0))
