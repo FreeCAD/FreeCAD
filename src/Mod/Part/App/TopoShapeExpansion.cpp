@@ -2756,7 +2756,7 @@ static const std::string& _getElementMapVersion()
         // cross-compatibility with LinkStage3 (which retains supporting code for OCCT 6.x,
         // removed here).
         unsigned occ_ver {0x070200};
-        ss << OpCodes::Version << '.' << std::hex << occ_ver << '.' << App::getStringNameOfHistoryAlgorithm(App::getSelectedHistoryAlgorithm()) << ".";
+        ss << OpCodes::Version << '.' << std::hex << occ_ver << '.' << App::getSelectedUnderlyingHistoryAlgorithm() << ".";
         _ver = ss.str();
     }
     return _ver;

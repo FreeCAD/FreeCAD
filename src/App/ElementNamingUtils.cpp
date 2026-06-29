@@ -7,46 +7,33 @@
 #include "Application.h"
 
 App::HistoryAlgorithm App::getSelectedHistoryAlgorithm() {
-    ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Part/General"
-    );
-
-    std::string selectedHistoryAlgorithm = grp->GetASCII(
-        "HistoryAlgorithm",
-        App::getStringNameOfHistoryAlgorithm(getDefaultHistoryAlgorithm()).c_str()
-    );
-
-    return App::getHistoryAlgorithmFromString(selectedHistoryAlgorithm);
+    return App::getHistoryAlgorithm(App::getSelectedUnderlyingHistoryAlgorithm());
 }
 
 App::HistoryAlgorithm App::getDefaultHistoryAlgorithm() {
     return HistoryAlgorithm::V2;
 }
 
-std::vector<std::string> App::getAllHistoryAlgorithms() {
-    return {
-        "V1",
-        "V2"
-    };
+
+App::HistoryAlgorithm App::getHistoryAlgorithm(int fromUnderlying) {
+    if (fromUnderlying == 0) {
+        return App::HistoryAlgorithm::V1;
+    } else if (fromUnderlying == 1) {
+        return App::HistoryAlgorithm::V2;
+    } else {
+        return App::getDefaultHistoryAlgorithm();
+    }
 }
 
-App::HistoryAlgorithm App::getHistoryAlgorithmFromString(std::string historyAlgorithmTypeString) {
-    if (historyAlgorithmTypeString == "V1") {
-        return HistoryAlgorithm::V1;
-    } else if (historyAlgorithmTypeString == "V2") {
-        return HistoryAlgorithm::V2;
-    }
+int App::getSelectedUnderlyingHistoryAlgorithm() {
+    ParameterGrp::handle grp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Part/General"
+    );
 
-    return App::getDefaultHistoryAlgorithm();
-}
-
-std::string App::getStringNameOfHistoryAlgorithm(HistoryAlgorithm historyAlgorithmTypeEnum) {
-    if (historyAlgorithmTypeEnum == App::HistoryAlgorithm::V1) {
-        return "V1";
-    } else if (historyAlgorithmTypeEnum == App::HistoryAlgorithm::V2) {
-        return "V2";
-    }
-    return "";
+    return grp->GetInt(
+        "HistoryAlgorithm",
+        static_cast<int>(getDefaultHistoryAlgorithm())
+    );
 }
 
 const char* Data::isMappedElement(const char* name)

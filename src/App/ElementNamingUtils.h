@@ -18,9 +18,8 @@ enum HistoryAlgorithm : int {
 
 AppExport HistoryAlgorithm getSelectedHistoryAlgorithm();
 AppExport HistoryAlgorithm getDefaultHistoryAlgorithm();
-AppExport std::vector<std::string> getAllHistoryAlgorithms();
-AppExport HistoryAlgorithm getHistoryAlgorithmFromString(std::string historyAlgorithmTypeString);
-AppExport std::string getStringNameOfHistoryAlgorithm(HistoryAlgorithm historyAlgorithmTypeEnum);
+AppExport HistoryAlgorithm getHistoryAlgorithm(int fromUnderlyingInteger);
+AppExport int getSelectedUnderlyingHistoryAlgorithm();
 
 /// Return type for lookups of new and old style sub-element names
 struct ElementNamePair
