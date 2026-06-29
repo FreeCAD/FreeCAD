@@ -1760,6 +1760,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
         if (args.size() != 2)
             ARGUMENT_THROW("exactly two required.");
         break;
+    case ADDRESS:
     case CATH:
     case HYPOT:
     case ROTATION:
@@ -2325,6 +2326,38 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         initialiseObject(&vector, args);
         return vector;
     }
+    case ADDRESS: {
+        Py::Object row = args[0]->getPyValue();
+        Py::Object col = args[1]->getPyValue();
+        bool absRow = true;
+        bool absCol = true;
+
+        if (!PyLong_Check(row.ptr()))
+            _EXPR_THROW("Function requires the first argument to be an integer.", expr);
+        if (!PyLong_Check(col.ptr()))
+            _EXPR_THROW("Function requires the second argument to be an integer.", expr);
+
+        if (args.size() > 2) {
+            Py::Object refType = args[2]->getPyValue();
+            if (!PyLong_Check(refType.ptr()))
+                _EXPR_THROW("Function requires the third argument to be an integer.", expr);
+
+            auto value = PyLong_AsLong(refType.ptr());
+            if (value < 1 || value > 4)
+                _EXPR_THROW("Invalid reference type: must be 1, 2, 3, or 4.", expr);
+
+            // 1 is Absolute, 2 is Absolute Row / Relative Column,
+            // 3 is Relative Row / Absolute Column, 4 is Relative
+            absRow = value == 1 || value == 2;
+            absCol = value == 1 || value == 3;
+        }
+
+        auto cell = CellAddress(PyLong_AsLong(row.ptr()) - 1, PyLong_AsLong(col.ptr()) - 1, absRow, absCol);
+        if (!cell.isValid())
+            _EXPR_THROW("Cell address out of bounds.", expr);
+
+        return Py::String(cell.toString());
+    }
     case HIDDENREF:
     case HREF:
         return args[0]->getPyValue();
@@ -2777,6 +2810,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "tuple("; break;;
     case VECTOR:
         ss << "vector("; break;;
+    case ADDRESS:
+        ss << "address("; break;;
     case HIDDENREF:
         ss << "hiddenref("; break;;
     case HREF:
@@ -3667,6 +3702,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["tuple"] = FunctionExpression::TUPLE;
         registered_functions["vector"] = FunctionExpression::VECTOR;
 
+        registered_functions["address"] = FunctionExpression::ADDRESS;
         registered_functions["hiddenref"] = FunctionExpression::HIDDENREF;
         registered_functions["href"] = FunctionExpression::HREF;
 
