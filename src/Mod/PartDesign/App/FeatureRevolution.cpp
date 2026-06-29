@@ -33,8 +33,10 @@ namespace PartDesign
 
 /* TRANSLATOR PartDesign::Revolution */
 
+// Note, TwoAngles has been deprecated by the side definition. We keep it hidden so old
+// files can restore and migrate to SideType="Two sides".
 const char* Revolution::TypeEnums[]
-    = {"Angle", "UpToLast", "UpToFirst", "UpToFace", "TwoAngles", nullptr};
+    = {"Angle", "UpToLast", "UpToFirst", "UpToFace", "?TwoAngles", nullptr};
 
 const char* Revolution::FuseOrderEnums[] = {"BaseFirst", "FeatureFirst", nullptr};
 
@@ -46,8 +48,12 @@ Revolution::Revolution()
     const double fullAngle = 360.0;
     const double emptyAngle = 0.0;
 
-    ADD_PROPERTY_TYPE(Type, (0L), "Revolution", App::Prop_None, "Revolution type");
+    ADD_PROPERTY_TYPE(SideType, (0L), "Revolution", App::Prop_None, "Type of sides definition");
+    ADD_PROPERTY_TYPE(Type, (0L), "Side1", App::Prop_None, "Revolution type for side 1");
+    ADD_PROPERTY_TYPE(Type2, (0L), "Side2", App::Prop_None, "Revolution type for side 2");
+    SideType.setEnums(SideTypesEnums);
     Type.setEnums(TypeEnums);
+    Type2.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(
         Base,
         (Base::Vector3d()),
@@ -62,15 +68,22 @@ Revolution::Revolution()
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden),
         "Axis"
     );
-    ADD_PROPERTY_TYPE(Angle, (fullAngle), "Revolution", App::Prop_None, "Angle");
+    ADD_PROPERTY_TYPE(Angle, (fullAngle), "Side1", App::Prop_None, "Angle");
     ADD_PROPERTY_TYPE(
         Angle2,
         (emptyAngle),
-        "Revolution",
+        "Side2",
         App::Prop_None,
-        "Revolution length in 2nd direction"
+        "Revolution angle in 2nd direction"
     );
-    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Revolution", App::Prop_None, "Face where revolution will end");
+    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Side1", App::Prop_None, "Face where revolution will end");
+    ADD_PROPERTY_TYPE(
+        UpToFace2,
+        (nullptr),
+        "Side2",
+        App::Prop_None,
+        "Face where revolution will end on side 2"
+    );
     ADD_PROPERTY_TYPE(
         ReferenceAxis,
         (nullptr),

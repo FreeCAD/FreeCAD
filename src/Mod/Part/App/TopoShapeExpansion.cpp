@@ -4839,7 +4839,7 @@ TopoShape& TopoShape::makeElementRevolution(
         op = Part::OpCodes::Revolve;
     }
     if (Mode == RevolMode::None) {
-        Mode = RevolMode::FuseWithBase;
+        Modify = Standard_False;
     }
     TopoShape base(_base);
     if (base.isNull()) {
@@ -4852,14 +4852,18 @@ TopoShape& TopoShape::makeElementRevolution(
         base = base.makeElementFace(nullptr, face_maker, nullptr);
     }
 
+    auto mode = Mode;
     BRepFeat_MakeRevol mkRevol;
     for (TopExp_Explorer xp(profile, TopAbs_FACE); xp.More(); xp.Next()) {
-        mkRevol.Init(base.getShape(), xp.Current(), supportface, axis, static_cast<int>(Mode), Modify);
+        mkRevol.Init(base.getShape(), xp.Current(), supportface, axis, static_cast<int>(mode), Modify);
         mkRevol.Perform(uptoface);
         if (!mkRevol.IsDone()) {
             throw Base::RuntimeError("Revolution: Up to face: Could not revolve the sketch!");
         }
         base = mkRevol.Shape();
+        if (Mode == RevolMode::None) {
+            mode = RevolMode::FuseWithBase;
+        }
     }
     return makeElementShape(mkRevol, base, op);
 }

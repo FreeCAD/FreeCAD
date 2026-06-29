@@ -31,8 +31,10 @@ namespace PartDesign
 
 /* TRANSLATOR PartDesign::Groove */
 
+// Note, TwoAngles has been deprecated by the side definition. We keep it hidden so old
+// files can restore and migrate to SideType="Two sides".
 const char* Groove::TypeEnums[]
-    = {"Angle", "ThroughAll", "UpToFirst", "UpToFace", "TwoAngles", nullptr};
+    = {"Angle", "ThroughAll", "UpToFirst", "UpToFace", "?TwoAngles", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Groove, PartDesign::Revolved)
 
@@ -42,8 +44,12 @@ Groove::Groove()
     const double fullAngle = 360.0;
     const double emptyAngle = 0.0;
 
-    ADD_PROPERTY_TYPE(Type, (0L), "Groove", App::Prop_None, "Groove type");
+    ADD_PROPERTY_TYPE(SideType, (0L), "Groove", App::Prop_None, "Type of sides definition");
+    ADD_PROPERTY_TYPE(Type, (0L), "Side1", App::Prop_None, "Groove type for side 1");
+    ADD_PROPERTY_TYPE(Type2, (0L), "Side2", App::Prop_None, "Groove type for side 2");
+    SideType.setEnums(SideTypesEnums);
     Type.setEnums(TypeEnums);
+    Type2.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(
         Base,
         (Base::Vector3d()),
@@ -58,9 +64,10 @@ Groove::Groove()
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden),
         "Axis"
     );
-    ADD_PROPERTY_TYPE(Angle, (fullAngle), "Groove", App::Prop_None, "Angle");
-    ADD_PROPERTY_TYPE(Angle2, (emptyAngle), "Groove", App::Prop_None, "Groove length in 2nd direction");
-    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Groove", App::Prop_None, "Face where groove will end");
+    ADD_PROPERTY_TYPE(Angle, (fullAngle), "Side1", App::Prop_None, "Angle");
+    ADD_PROPERTY_TYPE(Angle2, (emptyAngle), "Side2", App::Prop_None, "Groove angle in 2nd direction");
+    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Side1", App::Prop_None, "Face where groove will end");
+    ADD_PROPERTY_TYPE(UpToFace2, (nullptr), "Side2", App::Prop_None, "Face where groove will end");
     ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Groove", (App::Prop_None), "Reference axis of groove");
 }
 

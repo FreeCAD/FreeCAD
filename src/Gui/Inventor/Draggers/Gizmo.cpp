@@ -24,6 +24,7 @@
 #include "Gizmo.h"
 
 #include <cmath>
+#include <numbers>
 #include <QApplication>
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -93,6 +94,34 @@ double snapToStep(double value, double step)
     }
 
     return std::round(value / step) * step;
+}
+
+double getRotationPeriod(double multFactor)
+{
+    const double factor = std::abs(multFactor);
+    if (factor <= Base::Precision::Confusion()) {
+        return 360.0;
+    }
+
+    return 2.0 * std::numbers::pi / factor;
+}
+
+double getClosestEquivalentAngle(double angle, double reference, double period)
+{
+    if (period <= Base::Precision::Confusion()) {
+        return angle;
+    }
+
+    return angle + std::round((reference - angle) / period) * period;
+}
+
+double clampDragAngle(double value, double min, double max, double period)
+{
+    if (max - min >= period - Base::Precision::Confusion()) {
+        return std::clamp(value, min, max);
+    }
+
+    return Base::clampAngle(value, min, max, Base::Precision::Confusion());
 }
 }  // namespace
 
@@ -479,6 +508,7 @@ SoRotationDraggerContainer* RotationGizmo::getDraggerContainer()
 void RotationGizmo::draggingStarted()
 {
     initialValue = property->value().getValue();
+    lastDragOffset = 0.0;
     dragger->rotationIncrementCount.setValue(0);
 
     if (isDelayedUpdateEnabled()) {
@@ -499,7 +529,10 @@ void RotationGizmo::draggingFinished()
 
 void RotationGizmo::draggingContinued()
 {
-    double value = initialValue + getRotAngle();
+    const double period = getRotationPeriod(multFactor);
+    double dragOffset = getClosestEquivalentAngle(getRotAngle(), lastDragOffset, period);
+    lastDragOffset = dragOffset;
+    double value = initialValue + dragOffset;
 
     auto fineModifier = GizmoContainer::getFineSnapModifier();
     auto modifiers = QApplication::queryKeyboardModifiers();
@@ -511,11 +544,11 @@ void RotationGizmo::draggingContinued()
         value = snapToStep(value, getCoarseRotationSnapMultiplier());
     }
 
-    value = Base::clampAngle(
+    value = clampDragAngle(
         value,
         property->minimum(),
         property->maximum(),
-        Base::Precision::Confusion()
+        period
     );
 
     property->setValue(value);
