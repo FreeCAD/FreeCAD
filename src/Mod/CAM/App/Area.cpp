@@ -1928,13 +1928,9 @@ std::vector<shared_ptr<Area>> Area::makeSections(
                 builder.MakeCompound(comp);
 
                 for (TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
-                    TopoDS_Shape shape(xp.Current());
-                    ShapeFix_ShapeTolerance sTol;
-                    sTol.SetTolerance(shape, Precision::Confusion());
-
-                    showShape(shape, nullptr, "section_%zu_shape", i);
+                    showShape(xp.Current(), nullptr, "section_%zu_shape", i);
                     std::list<TopoDS_Wire> wires;
-                    Part::CrossSection section(a, b, c, shape);
+                    Part::CrossSection section(a, b, c, xp.Current());
                     Part::FuzzyHelper::withBooleanFuzzy(.0, [&]() {
                         // Workaround for https://github.com/FreeCAD/FreeCAD/issues/17748
                         // needed to make finish pass work.
