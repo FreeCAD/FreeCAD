@@ -51,6 +51,7 @@ if(MSVC)
         optimized MSVCPRT.LIB
         Rpcrt4.lib
         version.lib
+        dbghelp.lib
     )
 
     #Universal C runtime introduced in VS 2015 (cl version 19)
@@ -86,6 +87,11 @@ if(BUILD_TRACY_FRAME_PROFILER)
 endif()
 
 list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
+
+if(cpptrace_FOUND)
+    list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAVE_CPPTRACE)
+endif()
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
@@ -305,12 +311,23 @@ SET(FreeCADBase_HPP_SRCS
     ZipHeader.h
 )
 
+SET (FreeCADBase_CrashReporter_SRCS
+    CrashReporter/Format.h
+    CrashReporter/Manager.h
+    CrashReporter/Manager.cpp
+    CrashReporter/Reader.h
+    CrashReporter/Reader.cpp
+    CrashReporter/Writer.h
+    CrashReporter/Writer.cpp
+)
+
 SET(FreeCADBase_SRCS
     ${PYCXX_SOURCES}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
     ${FreeCADBase_Pyi_SRCS}
     ${FreeCADBase_UNITAPI_SRCS}
+    ${FreeCADBase_CrashReporter_SRCS}
     PyTools.c
     PyTools.h
     PreCompiled.h
@@ -321,7 +338,10 @@ IF (MSVC)
         ${FreeCADBase_SRCS}
         StackWalker.cpp
         StackWalker.h
+        CrashReporter/WindowsMiniDump.cpp
+        CrashReporter/WindowsMiniDump.h
     )
+
 ENDIF(MSVC)
 
 if(FREECAD_USE_EXTERNAL_ZIPIOS)

@@ -26,7 +26,6 @@
 
 #if defined(_MSC_VER)
 # include <windows.h>
-# include <dbghelp.h>
 #endif
 
 #if HAVE_CONFIG_H
@@ -47,6 +46,7 @@
 #include <App/Application.h>
 #include <App/ProgramInformation.h>
 #include <Base/ConsoleObserver.h>
+#include <Base/CrashReporter/WindowsMiniDump.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
@@ -63,9 +63,6 @@ const auto sBanner = fmt::format(
     FCCopyrightYear
 );
 
-#if defined(_MSC_VER)
-void InitMiniDumpWriter(const std::string&);
-#endif
 
 class Redirection
 {
@@ -227,20 +224,22 @@ int main(int argc, char** argv)
         // Inits the Application
 #if defined(FC_OS_WIN32)
         App::Application::init(argc_, argv_.data());
+# ifdef _MSC_VER
+        // *Not* installed on mingw, etc.
+        Base::CrashReporter::WindowsCrashReporter::install(
+            App::Application::getUserAppDataDir() + "CrashReports"
+        );
+# endif
 #else
         App::Application::init(argc, argv);
 #endif
+
+
         // to set window icon on wayland, the desktop file has to be available to the compositor
         QGuiApplication::setDesktopFileName(
             QString::fromStdString(App::Application::Config()["DesktopFileName"])
         );
 
-#if defined(_MSC_VER)
-        // create a dump file when the application crashes
-        std::string dmpfile = App::Application::getUserAppDataDir();
-        dmpfile += "crash.dmp";
-        InitMiniDumpWriter(dmpfile);
-#endif
         std::map<std::string, std::string>::iterator it = App::Application::Config().find(
             "NavigationStyle"
         );
@@ -377,126 +376,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
-#if defined(_MSC_VER)
-
-typedef BOOL(__stdcall* tMDWD)(
-    IN HANDLE hProcess,
-    IN DWORD ProcessId,
-    IN HANDLE hFile,
-    IN MINIDUMP_TYPE DumpType,
-    IN CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
-    OPTIONAL IN CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
-    OPTIONAL IN CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam OPTIONAL
-);
-
-static tMDWD s_pMDWD;
-static HMODULE s_hDbgHelpMod;
-static MINIDUMP_TYPE s_dumpTyp = MiniDumpNormal;
-static std::wstring s_szMiniDumpFileName;  // initialize with whatever appropriate...
-
-# include <Base/StackWalker.h>
-class MyStackWalker: public StackWalker
-{
-    DWORD threadId;
-
-public:
-    MyStackWalker()
-        : StackWalker()
-        , threadId(GetCurrentThreadId())
-    {
-        std::string name = App::Application::Config()["UserAppData"] + "crash.log";
-        Base::Console().attachObserver(new Base::ConsoleObserverFile(name.c_str()));
-    }
-    MyStackWalker(DWORD dwProcessId, HANDLE hProcess)
-        : StackWalker(dwProcessId, hProcess)
-    {}
-    virtual void OnOutput(LPCSTR szText)
-    {
-        Base::Console().log("Id: %ld: %s", threadId, szText);
-        // StackWalker::OnOutput(szText);
-    }
-};
-
-static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
-{
-# ifdef _M_IX86
-    if (pEx->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW) {
-        // be sure that we have enough space...
-        static char MyStack[1024 * 128];
-        // it assumes that DS and SS are the same!!! (this is the case for Win32)
-        // change the stack only if the selectors are the same (this is the case for Win32)
-        //__asm push offset MyStack[1024*128];
-        //__asm pop esp;
-        __asm mov eax, offset MyStack[1024 * 128];
-        __asm mov esp, eax;
-    }
-# endif
-    MyStackWalker sw;
-    sw.ShowCallstack(GetCurrentThread(), pEx->ContextRecord);
-    Base::Console().log("*** Unhandled Exception!\n");
-    Base::Console().log("   ExpCode: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionCode);
-    Base::Console().log("   ExpFlags: %d\n", pEx->ExceptionRecord->ExceptionFlags);
-    Base::Console().log("   ExpAddress: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionAddress);
-
-    bool bFailed = true;
-    HANDLE hFile;
-    hFile = CreateFileW(
-        s_szMiniDumpFileName.c_str(),
-        GENERIC_WRITE,
-        0,
-        NULL,
-        CREATE_ALWAYS,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL
-    );
-    if (hFile != INVALID_HANDLE_VALUE) {
-        MINIDUMP_EXCEPTION_INFORMATION stMDEI;
-        stMDEI.ThreadId = GetCurrentThreadId();
-        stMDEI.ExceptionPointers = pEx;
-        stMDEI.ClientPointers = true;
-        // try to create a miniDump:
-        if (s_pMDWD(GetCurrentProcess(), GetCurrentProcessId(), hFile, s_dumpTyp, &stMDEI, NULL, NULL)) {
-            bFailed = false;  // succeeded
-        }
-        CloseHandle(hFile);
-    }
-
-    if (bFailed) {
-        return EXCEPTION_CONTINUE_SEARCH;
-    }
-
-    // Optional display an error message
-    // FatalAppExit(-1, ("Application failed!"));
-
-
-    // or return one of the following:
-    // - EXCEPTION_CONTINUE_SEARCH
-    // - EXCEPTION_CONTINUE_EXECUTION
-    // - EXCEPTION_EXECUTE_HANDLER
-    return EXCEPTION_CONTINUE_SEARCH;  // this will trigger the "normal" OS error-dialog
-}
-
-void InitMiniDumpWriter(const std::string& filename)
-{
-    if (s_hDbgHelpMod != NULL) {
-        return;
-    }
-    Base::FileInfo fi(filename);
-    s_szMiniDumpFileName = fi.toStdWString();
-
-    // Initialize the member, so we do not load the dll after the exception has occurred
-    // which might be not possible anymore...
-    s_hDbgHelpMod = LoadLibraryA(("dbghelp.dll"));
-    if (s_hDbgHelpMod != NULL) {
-        s_pMDWD = (tMDWD)GetProcAddress(s_hDbgHelpMod, "MiniDumpWriteDump");
-    }
-
-    // Register Unhandled Exception-Filter:
-    SetUnhandledExceptionFilter(MyCrashHandlerExceptionFilter);
-
-    // Additional call "PreventSetUnhandledExceptionFilter"...
-    // See also: "SetUnhandledExceptionFilter" and VC8 (and later)
-    // http://blog.kalmbachnet.de/?postid=75
-}
-#endif
