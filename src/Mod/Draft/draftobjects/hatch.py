@@ -32,7 +32,7 @@ import FreeCAD as App
 from draftgeoutils.general import geomType
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
-from draftutils.messages import _err
+from draftutils.messages import _err, _log
 from draftutils.translate import translate
 
 
@@ -47,12 +47,12 @@ class Hatch(DraftObject):
     def setProperties(self, obj):
 
         pl = obj.PropertiesList
-        if not "Base" in pl:
+        if not "Faces" in pl:
             obj.addProperty(
-                "App::PropertyLink",
-                "Base",
+                "App::PropertyLinkSubList",
+                "Faces",
                 "Hatch",
-                QT_TRANSLATE_NOOP("App::Property", "The base object used by this object"),
+                QT_TRANSLATE_NOOP("App::Property", "The objects and faces used by this object"),
                 locked=True,
             )
         if not "File" in pl:
@@ -102,10 +102,19 @@ class Hatch(DraftObject):
 
     def onDocumentRestored(self, obj):
         self.setProperties(obj)
+        if hasattr(obj, "Base"):
+            self.update_properties_1v2(obj)
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(
             obj, vp_module="view_hatch", vp_class="ViewProviderDraftHatch"
         )
+
+    def update_properties_1v2(self, obj):
+        """Update Base to Faces property."""
+        obj.Faces = obj.Base  # Conversion to list of tuples happens automatically.
+        obj.setPropertyStatus("Base", "-LockDynamic")
+        obj.removeProperty("Base")
+        _log(f"v1.2, {obj.Name} changed 'Base' to 'Faces' property")
 
     def dumps(self):
         return
@@ -117,15 +126,15 @@ class Hatch(DraftObject):
 
         if (
             self.props_changed_placement_only(obj)
-            or not obj.Base
+            or not obj.Faces
             or not obj.File
             or not obj.Pattern
             or not obj.Scale
-            or not obj.Base.isDerivedFrom("Part::Feature")
-            or not obj.Base.Shape.Faces
         ):
             self.props_changed_clear()
             return
+
+        self.props_changed_clear()
 
         if obj.File[0] == ".":
             # File path relative to the FreeCAD file directory.
@@ -138,23 +147,39 @@ class Hatch(DraftObject):
         # File checks:
         if not os.path.exists(pat_file):
             _err(obj.Label + ": " + translate("draft", "PAT file not found"))
-            self.props_changed_clear()
             return
         if not os.path.isfile(pat_file):
             _err(obj.Label + ": " + translate("draft", "Specified PAT file is not a file"))
-            self.props_changed_clear()
             return
         if os.path.splitext(pat_file)[1].lower() != ".pat":
             _err(obj.Label + ": " + translate("draft", "Specified file type is not supported"))
-            self.props_changed_clear()
             return
         if not obj.Pattern in self.getPatterns(pat_file):
             _err(obj.Label + ": " + translate("draft", "Pattern not found in PAT file"))
-            self.props_changed_clear()
             return
 
         import Part
         import TechDraw
+
+        faces = []
+        try:
+            for sel in obj.Faces:
+                if not hasattr(sel[0], "Shape"):
+                    pass
+                elif sel[1] == ("",):
+                    faces.extend(sel[0].Shape.Faces)
+                else:
+                    for sub in sel[1]:
+                        if "Face" in sub:
+                            face = Part.getShape(sel[0], sub, needSubElement=True, retType=0)
+                            faces.append(face)
+        except Part.OCCError:
+            self._report_face_error(obj)
+            return
+
+        if not faces:
+            self._report_face_error(obj)
+            return
 
         # In TechDraw edges longer than 9999.9 (ca. 10m) are considered 'crazy'.
         # Lines in hatch patterns are also checked. We need to change a parameter:
@@ -166,7 +191,7 @@ class Hatch(DraftObject):
         param_grp.SetBool("allowCrazyEdge", True)
 
         shapes = []
-        for face in obj.Base.Shape.Faces:
+        for face in faces:
             if face.findPlane():  # Only planar faces.
                 face = face.copy()
                 if obj.Translate:
@@ -213,7 +238,9 @@ class Hatch(DraftObject):
 
         if shapes:
             obj.Shape = Part.makeCompound(shapes)
-        self.props_changed_clear()
+
+    def _report_face_error(self, obj):
+        _wrn(obj.Label + ": " + translate("draft", "No valid faces for hatch"))
 
     def onChanged(self, obj, prop):
 
@@ -228,3 +255,31 @@ class Hatch(DraftObject):
                     if line.startswith("*"):
                         patterns.append(line.split(",")[0][1:])
         return patterns
+
+    def add_faces(self, obj, face_links):
+        """adds face_links to this hatch (compare addSubobjects in facebinder.py)"""
+        # face_links is an iterable or a selection set:
+        # [(<Part::Feature>, ("3.Face3", "3.Face6"))]
+        # or:
+        # Gui.Selection.getSelectionEx("", 0)
+        # or:
+        # Gui.Selection.getSelection()
+        sels = obj.Faces
+        for sel in face_links:
+            if isinstance(sel, list) or isinstance(sel, tuple):
+                sel_obj, sel_subs = sel
+            elif sel.isDerivedFrom("Gui::SelectionObject"):
+                sel_obj = sel.Object
+                sel_subs = sel.SubElementNames
+            else:
+                sel_obj = sel
+                sel_subs = ("",)
+            if sel_obj.Name != obj.Name:
+                if sel_subs in ((), ("",)):
+                    # Use all faces of the object.
+                    sels.append((sel_obj, ""))
+                else:
+                    for sub in sel_subs:
+                        if "Face" in sub:
+                            sels.append((sel_obj, sub))
+        obj.Faces = sels
