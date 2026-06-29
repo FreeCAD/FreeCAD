@@ -143,6 +143,7 @@ requirements:
         - xorg-xproto
 
   run:
+    - av
     - blas * openblas*
     - blinker
     - calculix
@@ -164,7 +165,6 @@ requirements:
     - occt>=7.9,<8.0
     - olefile
     - opencamlib
-    - opencv
     - pandas
     - pillow>=12.2,<13.0
     - pip
