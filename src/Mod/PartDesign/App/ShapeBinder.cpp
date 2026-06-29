@@ -931,8 +931,8 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options)
                     // predate sketches producing faces by default, so they keep
                     // the previous face maker (FaceMakerBullseye) to avoid
                     // silently changing their generated topology on reopen.
-                    const char* faceMaker =
-                        _Version.getValue() >= 3 ? "Part::FaceMakerBuildFace" : nullptr;
+                    const char* faceMaker = _Version.getValue() >= 3 ? "Part::FaceMakerBuildFace"
+                                                                     : nullptr;
                     result = result.makeElementFace(nullptr, faceMaker);
                 }
                 catch (...) {
