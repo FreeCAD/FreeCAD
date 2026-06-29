@@ -434,7 +434,7 @@ class AssetManager:
                 f"Get: asyncio.run for data fetching of '{asset_uri_obj}', depth {depth} completed."
             )
         except Exception as e:
-            logger.error(
+            logger.debug(
                 f"Get: Error during asyncio.run data fetching for '{asset_uri_obj}': {e}",
                 exc_info=False,
             )
@@ -534,7 +534,7 @@ class AssetManager:
         try:
             return asyncio.run(self.get_raw_async(uri, stores_list))
         except Exception as e:
-            logger.error(
+            logger.debug(
                 f"GetRaw: Error during asyncio.run for '{uri}': {e}",
                 exc_info=False,
             )
@@ -602,7 +602,7 @@ class AssetManager:
             all_construction_data_list = asyncio.run(_fetch_all_construction_data_bulk_async())
             logger.debug("GetBulk: bulk data fetching completed")
         except Exception as e:  # Should ideally not happen if gather returns exceptions
-            logger.error(
+            logger.debug(
                 f"GetBulk: Unexpected error during asyncio.run for bulk data: {e}",
                 exc_info=False,
             )
@@ -613,7 +613,7 @@ class AssetManager:
             original_uri_input = uris[i]
             # Explicitly re-raise exceptions found in the results list
             if isinstance(data_or_exc, Exception):
-                logger.error(
+                logger.debug(
                     f"GetBulk: Re-raising exception for '{original_uri_input}': {data_or_exc}",
                     exc_info=False,
                 )
@@ -686,7 +686,7 @@ class AssetManager:
             for current_store_name in stores_list:
                 store = self.stores.get(current_store_name)
                 if not store:
-                    logger.error(f"Store '{current_store_name}' not registered. Skipping.")
+                    logger.debug(f"Store '{current_store_name}' not registered.")
                     raise ValueError(f"No store registered for name: {store}")
                 try:
                     exists = await store.exists(asset_uri_obj)
@@ -712,7 +712,7 @@ class AssetManager:
         try:
             return asyncio.run(_exists_async(stores_list))
         except Exception as e:
-            logger.error(
+            logger.debug(
                 f"AssetManager.exists: Error during asyncio.run for '{uri}': {e}",
                 exc_info=False,
             )
@@ -895,7 +895,7 @@ class AssetManager:
         try:
             return asyncio.run(self.add_raw_async(asset_type, asset_id, data, store))
         except Exception as e:
-            logger.error(
+            logger.debug(
                 f"AddRaw: Error for type='{asset_type}', id='{asset_id}': {e}",
                 exc_info=False,
             )
@@ -1132,7 +1132,7 @@ class AssetManager:
         try:
             return asyncio.run(self.is_empty_async(asset_type, store))
         except Exception as e:
-            logger.error(
+            logger.debug(
                 f"IsEmpty: Error for type='{asset_type}', store='{store}': {e}",
                 exc_info=False,
             )  # Changed exc_info to False
@@ -1173,7 +1173,7 @@ class AssetManager:
         try:
             return asyncio.run(self.list_versions_async(uri, stores_list))
         except Exception as e:
-            logger.error(
+            logger.debug(
                 f"ListVersions: Error for uri='{uri}', stores='{stores_list}': {e}",
                 exc_info=False,
             )
