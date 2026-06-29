@@ -83,7 +83,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="47"/>
       <source>Kuka Compact Subroutine</source>
-      <translation type="unfinished">Kuka Compact Subroutine</translation>
+      <translation>Subrutina compacta KUKA</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="129"/>
       <source>Kuka Full Subroutine</source>
-      <translation type="unfinished">Kuka Full Subroutine</translation>
+      <translation>Subrutina completa KUKA</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="130"/>
