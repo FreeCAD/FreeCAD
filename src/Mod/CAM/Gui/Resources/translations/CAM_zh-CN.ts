@@ -930,7 +930,7 @@ Reset deletes all current items from the list and fills the list with all circul
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="314"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="334"/>
       <source>Max diameter</source>
       <translation>最大直径</translation>
     </message>
@@ -1169,17 +1169,17 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>在选定形状的内部或外部切割</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="203"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="223"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
       <translation>在清除的区域上快速链接移动期间，刀具的提升量。如果链接刀轨不干净 ，则将刀具提升到净空高度。</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="234"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="254"/>
       <source>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</source>
       <translation>将保持刀具向下链接刀轨的最大长度，与点之间的直接距离比较。如果超过直线距离，将通过将刀具升高到净空高度进行连接。</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="304"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="324"/>
       <source>Angle of the helix entry cone</source>
       <translation>螺旋入口锥角度</translation>
     </message>
@@ -1255,7 +1255,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="155"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="192"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="153"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
       <translation>切削刀具在连续切削之间移动的侧向距离*（*占刀具直径的百分比）。</translation>
     </message>
@@ -1264,8 +1263,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpHelixEdit.ui" line="168"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="195"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="156"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="333"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="362"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="353"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="382"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="232"/>
       <source>%</source>
       <translation>%</translation>
@@ -1326,62 +1325,82 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>XY 方向预留余量</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="256"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="153"/>
+      <source>The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</source>
+      <translation>切削刀具在连续路径之间移动的侧向距离，以刀具直径的百分比表示。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="178"/>
+      <source>Step over (percent)</source>
+      <translation>步距（百分比）</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="185"/>
+      <source>The sideways distance the cutting tool moves between successive passes.</source>
+      <translation>切削刀具在连续路径之间移动的侧向距离。</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="195"/>
+      <source>Step over (distance)</source>
+      <translation>步距（距离）</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="276"/>
       <source>&lt;b&gt;Helix Parameters&lt;/b&gt;</source>
       <translation>&lt;b&gt;螺旋铣参数&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="287"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="307"/>
       <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
       <translation>螺旋斜面切入的最大允许角度。设置为零以禁用坡度角限制。</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="317"/>
       <source>Cone angle</source>
       <translation>圆锥角</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="321"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="341"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</source>
       <translation>螺旋下刀的最大（及名义）直径，以刀具直径的百分比表示。</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="343"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="363"/>
       <source>Min diameter</source>
       <translation>最小直径</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="350"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="370"/>
       <source>Minimum acceptable entry diameter, as a percentage of the tool diameter.</source>
       <translation>允许的最小下刀直径，以刀具直径的百分比表示。</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="182"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="202"/>
       <source>Use outline</source>
       <translation>使用轮廓</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="196"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="216"/>
       <source>Operation type</source>
       <translation>操作类型</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="213"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="233"/>
       <source>Keep tool down ratio</source>
       <translation>保持刀具在下比率</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="220"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="240"/>
       <source>Lift distance</source>
       <translation>抬刀距离</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="227"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="247"/>
       <source>Cut region</source>
       <translation>切割区域</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="375"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="395"/>
       <source>Stop</source>
       <translation>停止</translation>
     </message>
@@ -1600,19 +1619,19 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="263"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="283"/>
       <source>Max pitch</source>
       <translation>最大螺距</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="131"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="270"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="290"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</source>
       <translation>螺旋每旋转一周允许的最大下降深度。设置为零则不限制螺距。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="138"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="280"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="300"/>
       <source>Max ramp angle</source>
       <translation>最大斜切角度</translation>
     </message>
@@ -1883,7 +1902,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="209"/>
       <source>Use rest machining</source>
       <translation>使用剩余加工</translation>
     </message>
@@ -2347,7 +2366,6 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpWaterlineEdit.ui" line="166"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="158"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="185"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="175"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
       <source>Step over</source>
       <translation>步距</translation>
@@ -2766,11 +2784,6 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <translation>标记生成</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="69"/>
-      <source>G-Code</source>
-      <translation>G-代码</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
       <source>Start at vertex</source>
       <translation>从顶点开始</translation>
@@ -2779,6 +2792,31 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <location filename="../panels/PageOpEngraveEdit.ui" line="77"/>
       <source>Specify the vertex number of the underlying shape string at which engraving should start</source>
       <translation>指定底层形状字符串的顶点编号，雕刻应从此处开始</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="72"/>
+      <source>G-code source</source>
+      <translation>G 代码来源</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="79"/>
+      <source>Select source of the G-code</source>
+      <translation>选择 G 代码的来源</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="83"/>
+      <source>Text</source>
+      <translation>文本</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="88"/>
+      <source>File</source>
+      <translation>文件</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="118"/>
+      <source>Enter the filename containing the G-code</source>
+      <translation>输入包含 G 代码的文件名</translation>
     </message>
   </context>
   <context>
@@ -4724,7 +4762,7 @@ Default: 3 mm</source>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Boundary.py" line="63"/>
-      <location filename="../../../Path/Dressup/Tags.py" line="941"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="936"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="57"/>
       <source>The base path to modify</source>
       <translation>要修改的基础刀轨</translation>
@@ -4799,38 +4837,38 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
 对于多轮廓操作可能有用，例如，使用 ZigZagOffset 模式的型腔铣</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="947"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="942"/>
       <source>Width of tags.</source>
       <translation>标签的宽度。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="953"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="948"/>
       <source>Height of tags.</source>
       <translation>标签的高度。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="959"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="954"/>
       <source>Angle of tag plunge and ascent.</source>
       <translation>标签下沉和提升的角度。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="965"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="960"/>
       <source>Radius of the fillet for the tag.</source>
       <translation>标记的圆角半径。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="971"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="966"/>
       <source>Locations of inserted holding tags</source>
       <translation>插入的挂起标记的位置</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="977"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="972"/>
       <source>IDs of disabled holding tags</source>
       <translation>禁用挂起标记的ID</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="986"/>
-      <location filename="../../../Path/Dressup/Tags.py" line="1036"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="981"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1031"/>
       <source>Split B-Spline by arcs and ignore not vertical arcs axis (experimental).</source>
       <translation>将 B 样条曲线按圆弧进行分割，并忽略非垂直的圆弧轴（实验性功能）。</translation>
     </message>
@@ -5195,34 +5233,35 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>设为False，以防止加工生成代码</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1545"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1544"/>
       <source>Side of selected faces that tool should cut</source>
       <translation>刀具应切割的选定面的哪一侧</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1554"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1553"/>
       <source>Type of adaptive operation</source>
       <translation>自适应加工类型</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1572"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1571"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1955"/>
       <location filename="../../../Path/Op/PocketBase.py" line="159"/>
       <location filename="../../../Path/Op/Helix.py" line="164"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>每次通过时要跨过的刀具直径百分比</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1581"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1580"/>
       <source>Lift distance for rapid moves</source>
       <translation>快速移动的提升距离</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1590"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1589"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
       <translation>与点之间的直接距离相比，保持刀具向下铣削(不提刀)路径的最大长度</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1563"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1562"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -5231,24 +5270,24 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 较大的值（更靠右）计算更快；较小的值（更靠左）将导致更精确的刀具路径。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1599"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1598"/>
       <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
       <translation>在XY平面上留多少余量（例如用于精加工操作）</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1608"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1607"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>沿Z轴留多少余量（例如用于精加工操作）。此属性仅在启用ModelAwareExperiment时使用。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1673"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1672"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
       <translation>螺旋斜面切入的最大允许角度（度）
 设置为零则不限制斜切角度</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1683"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1682"/>
       <location filename="../../../Path/Op/Helix.py" line="288"/>
       <location filename="../../../Path/Op/Helix.py" line="507"/>
       <source>The maximum allowable descent in a single revolution of the helix
@@ -5257,77 +5296,77 @@ Set to zero to disable limitation by pitch</source>
 设置为零则不限制螺距。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1701"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1889"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1700"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1894"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
       <translation>最大（及标称）螺旋切入直径，以刀具直径的百分比表示</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1710"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1898"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1709"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1903"/>
       <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
       <translation>最小可用螺旋切入直径，以刀具直径的百分比表示</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1737"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1736"/>
       <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>按区域而不是深度排序切割。此属性仅在启用ModelAwareExperiment时使用。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1752"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1870"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1751"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1875"/>
       <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
       <translation>启用实验性模型感知功能以尊重3D几何形状并防止在悬垂下切割</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1859"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1864"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
       <translation>沿Z轴留多少余量（例如用于精加工操作）</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1920"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1925"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
       <translation>螺旋线单圈允许的最大下降量。设为 0 可禁用螺距限制。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1617"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1616"/>
       <source>Force plunging into material inside and clearing towards the edges</source>
       <translation>强行插入材料内部并向边缘清除</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1626"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1625"/>
       <source>To take a finishing profile path at the end</source>
       <translation>在最后采用最终轮廓铣刀轨</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1632"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1642"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1631"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1641"/>
       <source>Stop processing</source>
       <translation>停止加工</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1652"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1651"/>
       <source>Internal input state</source>
       <translation>内部输入状态</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1661"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1660"/>
       <source>Internal output state</source>
       <translation>内部输出状态</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1692"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1691"/>
       <source>Helix cone angle (degrees)</source>
       <translation>螺旋锥角（度）</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1719"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1718"/>
       <location filename="../../../Path/Op/PocketShape.py" line="168"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>使用基础几何图形的轮廓铣。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1848"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1853"/>
       <source>Orders cuts by region instead of depth.</source>
       <translation>按区域而不是深度排序切割。</translation>
     </message>
@@ -5616,33 +5655,63 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
       <translation>钻孔深度延长了多远</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="71"/>
+      <location filename="../../../Path/Op/Engrave.py" line="72"/>
       <location filename="../../../Path/Op/Vcarve.py" line="409"/>
       <source>Additional base objects to be engraved</source>
       <translation>额外的蚀刻基对象</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="81"/>
+      <location filename="../../../Path/Op/Engrave.py" line="82"/>
       <source>The vertex index to start the toolpath from</source>
       <translation>刀具路径起始的顶点索引</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="88"/>
-      <location filename="../../../Path/Op/Engrave.py" line="115"/>
+      <location filename="../../../Path/Op/Engrave.py" line="89"/>
+      <location filename="../../../Path/Op/Engrave.py" line="150"/>
       <source>Reverse milling direction</source>
       <translation>反转铣削方向</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="94"/>
-      <location filename="../../../Path/Op/Engrave.py" line="122"/>
+      <location filename="../../../Path/Op/Engrave.py" line="95"/>
+      <location filename="../../../Path/Op/Engrave.py" line="157"/>
       <source>Set the cut pattern for the operation</source>
       <translation>设定该加工的切削图样</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="105"/>
-      <location filename="../../../Path/Op/Engrave.py" line="133"/>
+      <location filename="../../../Path/Op/Engrave.py" line="106"/>
+      <location filename="../../../Path/Op/Engrave.py" line="168"/>
       <source>Approximate complex curves to arcs and lines</source>
       <translation>将复杂曲线拟合为圆弧和直线</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="117"/>
+      <location filename="../../../Path/Op/Engrave.py" line="180"/>
+      <source>Order processing of the wires
+
+Manual - Using order from selection without sorting
+Automatic - Sorting wires by the nearest neighbour method, further improved with 2-opt</source>
+      <translation>导线加工顺序
+
+手动 - 使用选定顺序不进行排序
+自动 - 使用最近邻法排序导线，并结合 2-opt 算法进一步优化</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="125"/>
+      <location filename="../../../Path/Op/Engrave.py" line="188"/>
+      <source>The start point for sorting</source>
+      <translation>排序起点</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="131"/>
+      <location filename="../../../Path/Op/Engrave.py" line="196"/>
+      <source>The end point for sorting</source>
+      <translation>排序终点</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="137"/>
+      <location filename="../../../Path/Op/Engrave.py" line="204"/>
+      <source>Use end point for sorting</source>
+      <translation>使用终点进行排序</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/FeatureExtension.py" line="478"/>
@@ -5856,8 +5925,8 @@ For External profile - profile radius</source>
       <translation>使用刀轨的三维排序</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1728"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1837"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1727"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1842"/>
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="271"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
@@ -6329,24 +6398,24 @@ Manual: uses order of shapes selection</source>
       <translation>忽略高于此高度的外部水线。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="77"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="78"/>
       <location filename="../../../Path/Dressup/Array.py" line="49"/>
       <source>Pattern method</source>
       <translation>样式方法</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="131"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="132"/>
       <source>Make copies in X direction before Y in Linear 2D pattern</source>
       <translation>在线性二维阵列样式中，在Y之前沿X方向进行复制</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="102"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="103"/>
       <location filename="../../../Path/Dressup/Array.py" line="66"/>
       <source>The number of copies in X-direction in linear pattern</source>
       <translation>线性阵列中X方向的副本数量</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="110"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="111"/>
       <location filename="../../../Path/Dressup/Array.py" line="74"/>
       <source>The number of copies in Y-direction in linear pattern</source>
       <translation>线性阵列中Y方向的副本数量</translation>
@@ -6362,55 +6431,61 @@ Manual: uses order of shapes selection</source>
       <translation>要随机偏移的副本百分比</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="166"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="176"/>
       <location filename="../../../Path/Dressup/Array.py" line="115"/>
       <source>Maximum random offset of copies</source>
       <translation>副本的最大随机偏移量</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="172"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="262"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="182"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="272"/>
       <source>Use randomly offset</source>
       <translation>使用随机偏移</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="178"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="188"/>
       <location filename="../../../Path/Dressup/Array.py" line="121"/>
       <source>Seed value for jitter randomness</source>
       <translation>抖动随机数的种子值</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="54"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="55"/>
       <source>The toolpaths to array</source>
       <translation>要阵列的刀具路径</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="69"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="70"/>
       <source>The tool controller that will be used to calculate the toolpath
 Should be identical for all base operations</source>
       <translation>用于计算刀具路径的刀具控制器
 对于所有基本操作，刀具控制器应相同</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="85"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="86"/>
       <source>The number of copies in Linear1D and Polar pattern</source>
       <translation>线性一维（Linear1D）阵列和极坐标阵列中的副本数</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="94"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="95"/>
       <location filename="../../../Path/Dressup/Array.py" line="58"/>
       <source>The spacing between the array copies in linear pattern</source>
       <translation>线性阵列中阵列副本之间的间距</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="116"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="117"/>
       <location filename="../../../Path/Dressup/Array.py" line="80"/>
       <source>Total angle in polar pattern</source>
       <translation>极坐标阵列中的总角度</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="143"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="294"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="141"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="301"/>
+      <source>Start from farthest repeat</source>
+      <translation>从最远重复项开始</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="153"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="315"/>
       <source>Define the offsets and angle of rotation for repeats from selected shapes
 
 If selection without sub elements:
@@ -6423,20 +6498,20 @@ If selection without sub elements:
 - 形状包含边：仅创建一个重复实例（对导入的排样图形很有用）</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="152"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="308"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="162"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="329"/>
       <source>Define the base offsets and angle of rotation from selected shape</source>
       <translation>根据所选形状定义基础偏移量和旋转角度</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="158"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="316"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="168"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="337"/>
       <source>Sorting mode</source>
       <translation>排序模式</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="184"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="255"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="194"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="265"/>
       <source>Max angle of rotation for jitter randomness</source>
       <translation>抖动随机性的最大旋转角度</translation>
     </message>
@@ -6446,7 +6521,7 @@ If selection without sub elements:
       <translation>线性1D和极坐标阵列中的副本数量</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="122"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="123"/>
       <location filename="../../../Path/Dressup/Array.py" line="94"/>
       <source>The centre of rotation in polar pattern</source>
       <translation>极坐标阵列中的旋转中心</translation>
@@ -6458,8 +6533,8 @@ If selection without sub elements:
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="60"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="279"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="61"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="289"/>
       <source>Operations cycle time estimation</source>
       <translation>操作周期时间估算</translation>
     </message>
@@ -6885,7 +6960,7 @@ If selection without sub elements:
       <translation>所选边不可访问。如果有多个，则重新排序选择可能有效。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="630"/>
+      <location filename="../../../Path/Op/Profile.py" line="621"/>
       <source>Unable to create path for face(s).</source>
       <translation>无法为面创建刀轨。</translation>
     </message>
@@ -7249,7 +7324,7 @@ If selection without sub elements:
   <context>
     <name>PathOp</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="48"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="49"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>设为False，以防止加工生成代码</translation>
     </message>
@@ -7351,12 +7426,12 @@ Aborting op creation</source>
       <translation>基础为空或无效对象。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="383"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="405"/>
       <source>Arrays of toolpaths having different tool controllers or tool controller not selected.</source>
       <translation>刀具路径阵列具有不同的刀具控制器或未选择刀具控制器。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="392"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="414"/>
       <source>Arrays not compatible with coolant modes.</source>
       <translation>阵列与冷却模式不兼容。</translation>
     </message>
@@ -7392,12 +7467,12 @@ Aborting op creation</source>
       <translation>找不到自定义文件 %s 。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="213"/>
+      <location filename="../../../Path/Op/Custom.py" line="214"/>
       <source>Total invalid lines in Custom File G-code: %s</source>
       <translation>自定义文件G代码中无效行总数：%s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="218"/>
+      <location filename="../../../Path/Op/Custom.py" line="219"/>
       <source>Check lines: %s</source>
       <translation>检查行数: %s</translation>
     </message>
@@ -7433,12 +7508,12 @@ Aborting op creation</source>
   <context>
     <name>CAM_SelectLoop</name>
     <message>
-      <location filename="../../../PathCommands.py" line="58"/>
+      <location filename="../../../PathCommands.py" line="49"/>
       <source>Finish Selecting Loop</source>
       <translation>完成所选循环</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="71"/>
+      <location filename="../../../PathCommands.py" line="62"/>
       <source>Completes the selection of edges or faces that forms a loop
 
 Select vertical faces: searching loops faces which forms the walls.
@@ -7469,11 +7544,6 @@ Without sub selection all edges of the shape will be selected.</source>
 选择三条或更多的边：寻找水平线路。
 
 如果不进行子选择操作，该形状的所有边都会被选中。</translation>
-    </message>
-    <message>
-      <location filename="../../../PathCommands.py" line="139"/>
-      <source>Closed loop detection failed. This type of selection not supported yet.</source>
-      <translation>闭环检测失败。目前不支持这种选择方式。</translation>
     </message>
   </context>
   <context>
@@ -7649,17 +7719,17 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_DressupTag</name>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1317"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1312"/>
       <source>Cannot insert holding tags for this path - select a profile path</source>
       <translation>无法为此路径插入保持标签 - 选择轮廓路径</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1366"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1361"/>
       <source>The selected object is not a path</source>
       <translation>所选对象不是一个刀轨</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1370"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1365"/>
       <source>Select a profile object</source>
       <translation>选择一个轮廓对象</translation>
     </message>
@@ -7773,12 +7843,12 @@ Without sub selection all edges of the shape will be selected.</source>
       <translation>螺旋体</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="744"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="746"/>
       <source>Ramp Entry</source>
       <translation>斜坡切入</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="748"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="750"/>
       <source>Creates a ramp entry dress-up object from a selected toolpath</source>
       <translation>从选定的刀具路径创建斜坡切入修饰对象</translation>
     </message>
@@ -8489,32 +8559,32 @@ Without sub selection all edges of the shape will be selected.</source>
   <context>
     <name>CAM_Adaptive</name>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1512"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1511"/>
       <source>Outside</source>
       <translation>外部</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1513"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1512"/>
       <source>Inside</source>
       <translation>内部</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1516"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
       <source>Clearing</source>
       <translation>清除</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1517"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1516"/>
       <source>Profiling</source>
       <translation>轮廓铣</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="179"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="217"/>
       <source>Adaptive</source>
       <translation>自适应</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="180"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="218"/>
       <source>Adaptive clearing and profiling</source>
       <translation>自适应清除和轮廓铣</translation>
     </message>
@@ -9364,38 +9434,38 @@ This will not delete the toolbits contained within it.</source>
       <translation>LinuxCNC后处理器</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="162"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="164"/>
       <source>Automatic Tool Changer</source>
       <translation>自动换刀装置</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="168"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="170"/>
       <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
       <translation>如果机器配备了自动换刀装置，请启用此选项。若禁用，换刀时将暂停并等待人工干预。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="173"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="175"/>
       <source>Automatic Spindle Control</source>
       <translation>主轴自动控制</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="179"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="181"/>
       <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
       <translation>如果机器具备主轴转速自动控制功能，请启用此选项。若禁用，主轴指令将提示进行手动调整。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="185"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="187"/>
       <source>Suppressed (tolerated) G-code Commands</source>
       <translation>被抑制（容许）的 G 代码命令</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="191"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="193"/>
       <source>List of G-code commands tolerated but suppressed by this post-processor (one per line). Commands this list will be filtered out</source>
       <translation>此后处理器容许但会抑制的 G 代码命令列表（每行一个）。
 此列表中的指令将被过滤掉</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="198"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="200"/>
       <source>OpenSBP post processor for ShopBot controllers</source>
       <translation>适用于 ShopBot 控制器的 OpenSBP 后处理器</translation>
     </message>
@@ -9453,17 +9523,17 @@ This will not delete the toolbits contained within it.</source>
       <translation>2x Drill Tip</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="427"/>
+      <location filename="../../../Path/Op/Drilling.py" line="426"/>
       <source>Tapping strategy requires a Tap tool with Pitch</source>
       <translation>攻丝策略需要一把带有螺距参数的丝锥</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="500"/>
+      <location filename="../../../Path/Op/Drilling.py" line="499"/>
       <source>Tapping strategy requires a Tap tool with non-zero Pitch</source>
       <translation>攻丝策略需要一把螺距不为零的丝锥</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="510"/>
+      <location filename="../../../Path/Op/Drilling.py" line="509"/>
       <source>Tapping strategy requires a ToolController with non-zero SpindleSpeed</source>
       <translation>攻丝策略需要一个主轴转速不为零的主轴控制器</translation>
     </message>
@@ -10106,17 +10176,17 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Array</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="799"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="827"/>
       <source>Array</source>
       <translation>阵列</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="800"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="828"/>
       <source>Creates an array from selected toolpaths</source>
       <translation>从选定的刀具路径创建阵列</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="833"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="861"/>
       <source>Arrays can be created only from toolpath operations.</source>
       <translation>阵列只能从刀具路径操作创建。</translation>
     </message>
@@ -10150,12 +10220,17 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Custom</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="72"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="112"/>
+      <source>Select file containing the gcode</source>
+      <translation>选择包含 G 代码的文件</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="127"/>
       <source>Custom</source>
       <translation>自定义</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="73"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="128"/>
       <source>Create custom G-code snippet</source>
       <translation>创建自定义G代码片段</translation>
     </message>
@@ -10186,14 +10261,14 @@ Allowed selection only from one model:
       <translation>围绕草图字符串形状工具创建雕刻刀具路径</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="97"/>
-      <location filename="../../../Path/Op/Engrave.py" line="125"/>
+      <location filename="../../../Path/Op/Engrave.py" line="98"/>
+      <location filename="../../../Path/Op/Engrave.py" line="160"/>
       <source>Directional</source>
       <translation>单向</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="98"/>
-      <location filename="../../../Path/Op/Engrave.py" line="126"/>
+      <location filename="../../../Path/Op/Engrave.py" line="99"/>
+      <location filename="../../../Path/Op/Engrave.py" line="161"/>
       <source>Bidirectional</source>
       <translation>双向</translation>
     </message>
@@ -10635,12 +10710,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="152"/>
+      <location filename="../../../PathCommands.py" line="148"/>
       <source>Toggle Operation</source>
       <translation>切换操作</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="156"/>
+      <location filename="../../../PathCommands.py" line="152"/>
       <source>Toggles the active state of the operation</source>
       <translation>切换操作的活动状态</translation>
     </message>
@@ -10648,12 +10723,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="222"/>
+      <location filename="../../../PathCommands.py" line="218"/>
       <source>Copy Operation</source>
       <translation>复制操作</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="223"/>
+      <location filename="../../../PathCommands.py" line="219"/>
       <source>Copies the operation in the job</source>
       <translation>复制作业中的操作</translation>
     </message>
@@ -11309,7 +11384,7 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>PathHelix</name>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="710"/>
+      <location filename="../../../Path/Op/Helix.py" line="709"/>
       <source>Skipped hole at position %s</source>
       <translation>在位置 %s 处跳过了孔</translation>
     </message>

@@ -310,7 +310,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="119"/>
       <source>Distance</source>
-      <translation>Відстань</translation>
+      <translation>Відстань Х</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="127"/>

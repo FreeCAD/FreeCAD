@@ -1095,7 +1095,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated Points</source>
-      <translation type="unfinished">Duplicated Points</translation>
+      <translation>Duplicerade punkter</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>

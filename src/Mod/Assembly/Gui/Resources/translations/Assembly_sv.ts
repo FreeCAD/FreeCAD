@@ -349,7 +349,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
-      <translation type="unfinished">Enter your formula…</translation>
+      <translation>Ange din formel…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="548"/>
@@ -484,7 +484,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1053"/>
       <source>Save Animation</source>
-      <translation type="unfinished">Save Animation</translation>
+      <translation>Spara animation</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1075"/>
@@ -504,7 +504,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1119"/>
       <source>An error occurred while saving the animation</source>
-      <translation type="unfinished">An error occurred while saving the animation</translation>
+      <translation>Ett fel inträffade när animationen skulle sparas</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1137"/>
@@ -871,7 +871,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
       <source>Cannot find the part?</source>
-      <translation type="unfinished">Cannot find the part?</translation>
+      <translation>Kan inte hitta delen?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>

@@ -3654,7 +3654,7 @@ Buna karşın, daha sonra istediğiniz herhangi bir anda 'Part Design -&gt; Migr
       <translation>Helisi Düzenle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="129"/>
+      <location filename="../../ViewProviderHole.cpp" line="130"/>
       <source>Edit Hole</source>
       <translation>Deliği Düzenle</translation>
     </message>
@@ -4659,7 +4659,7 @@ Eskiz içinde kesişen öğelere izin verilmez.</translation>
       <translation>Hata: yüzey düzlemsel olmalı</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <source>Error: Result is not a solid</source>
@@ -4784,17 +4784,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
 Bir yüze kadar cep oluştururken, eskizde kesişen öğelere veya birden fazla yüze izin verilmez.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
       <source>Thread type out of range</source>
       <translation>Diş türü aralık dışında</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
       <source>Thread size out of range</source>
       <translation>Diş ölçüsü aralık dışında</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
       <source>Error: Thread could not be built</source>
       <translation>Hata: Diş oluşturulamadı</translation>
     </message>
