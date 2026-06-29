@@ -38,6 +38,8 @@ PyObject* ViewProviderFemMeshPy::applyDisplacement(PyObject* args)
     Py_Return;
 }
 
+namespace
+{
 
 Base::Color calcColor(double value, double min, double max)
 {
@@ -72,6 +74,62 @@ Base::Color calcColor(double value, double min, double max)
     return Base::Color(0, 0, 0);
 }
 
+std::map<std::vector<long>, Base::Color> colorMapFromDict(Py::Dict& arg)
+{
+    std::map<std::vector<long>, Base::Color> colorMap;
+    for (Py::Dict::iterator it = arg.begin(); it != arg.end(); ++it) {
+        std::vector<long> vecId;
+        const Py::Object& id = (*it).first;
+        if (id.isTuple()) {
+            Py::Tuple idSeq(id);
+            for (const auto& i: idSeq) {
+                vecId.emplace_back(static_cast<long>(Py::Long(i)));
+            }
+        }
+        else {
+            vecId.emplace_back(static_cast<long>(Py::Long(id)));
+        }
+        const Py::Object& value = (*it).second;
+        Py::Tuple color(value);
+        colorMap[vecId] = Base::Color(static_cast<float>(Py::Float(color[0])),
+                                      static_cast<float>(Py::Float(color[1])),
+                                      static_cast<float>(Py::Float(color[2])));
+    }
+
+    return colorMap;
+}
+
+Py::Dict colorListToDict(const std::vector<unsigned long>& elements,
+                         const std::vector<Base::Color>& colors)
+{
+    Py::Dict dict;
+    if (colors.size() == elements.size()) {
+        std::size_t num = elements.size();
+        for (std::size_t index = 0; index < num; index++) {
+            unsigned long item = elements[index];
+            Base::Color col = colors[index];
+            dict.setItem(Py::Long(item), Py::TupleN{Py::Float(col.r),
+                                                    Py::Float(col.g),
+                                                    Py::Float(col.b)});
+        }
+    }
+    else if (colors.size() == 1) {
+        int index = 0;
+        Py::Tuple tuple(Py_SAFE_DOWNCAST(elements.size(), std::size_t, Py_ssize_t));
+        for (auto item : elements) {
+            tuple.setItem(index++, Py::Long(item));
+        }
+
+        auto col = colors.front();
+        dict.setItem(tuple, Py::TupleN{Py::Float(col.r),
+                                       Py::Float(col.g),
+                                       Py::Float(col.b)});
+    }
+
+    return dict;
+}
+
+} // namespace
 
 PyObject* ViewProviderFemMeshPy::setNodeColorByScalars(PyObject* args)
 {
@@ -173,37 +231,10 @@ PyObject* ViewProviderFemMeshPy::resetNodeDisplacement(PyObject* args)
 
 Py::Dict ViewProviderFemMeshPy::getNodeColor() const
 {
-    // return Py::List();
-    throw Py::AttributeError("Not yet implemented");
+    const auto& elm = getViewProviderFemMeshPtr()->getVisibleNodes();
+    const auto& col = getViewProviderFemMeshPtr()->NodeColorArray.getValues();
+    return colorListToDict(elm, col);
 }
-
-namespace
-{
-
-std::map<std::vector<long>, Base::Color> colorMapFromDict(Py::Dict& arg)
-{
-    std::map<std::vector<long>, Base::Color> colorMap;
-        for (Py::Dict::iterator it = arg.begin(); it != arg.end(); ++it) {
-        std::vector<long> vecId;
-        const Py::Object& id = (*it).first;
-        if (id.isTuple()) {
-            Py::Tuple idSeq(id);
-            for (const Py::Object& i: idSeq) {
-                vecId.emplace_back(static_cast<long>(Py::Long(i)));
-            }
-        }
-        else {
-            vecId.emplace_back(static_cast<long>(Py::Long(id)));
-        }
-        const Py::Object& value = (*it).second;
-        Py::Tuple color(value);
-        colorMap[vecId] = Base::Color(Py::Float(color[0]), Py::Float(color[1]), Py::Float(color[2]));
-    }
-
-    return colorMap;
-}
-
-} // namespace
 
 void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
 {
@@ -219,8 +250,13 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
 
 Py::Dict ViewProviderFemMeshPy::getElementColor() const
 {
-    // return Py::List();
-    throw Py::AttributeError("Not yet implemented");
+    // For the shift value see setColorByElementId
+    auto elm = getViewProviderFemMeshPtr()->getVisibleElementFaces();
+    for (auto& item : elm) {
+        item = item >> 3;
+    }
+    const auto& col = getViewProviderFemMeshPtr()->ElementColorArray.getValues();
+    return colorListToDict(elm, col);
 }
 
 

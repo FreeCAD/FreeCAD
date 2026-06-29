@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="618"/>
+      <location filename="../../Application.cpp" line="619"/>
       <source>Unnamed</source>
       <translation>Безымянный</translation>
     </message>
@@ -66,7 +66,7 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation type="unfinished">Origin-Point</translation>
+      <translation>Точка начала координат</translation>
     </message>
   </context>
   <context>
@@ -75,8 +75,8 @@ The user should then click the Refresh button in the main toolbar.
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>Сохраняет последний выбор пользователя — применять ли настройки копии при изменении ко всем ссылкам
+которая связывается с тем же настраиваемым объектом</translation>
     </message>
   </context>
 </TS>
