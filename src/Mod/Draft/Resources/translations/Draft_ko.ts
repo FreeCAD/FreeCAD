@@ -3052,7 +3052,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="749"/>
-      <location filename="../../DraftGui.py" line="1136"/>
+      <location filename="../../DraftGui.py" line="1138"/>
       <source>Continue</source>
       <translation>계속</translation>
     </message>
@@ -3173,8 +3173,8 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="666"/>
       <location filename="../../DraftGui.py" line="695"/>
-      <location filename="../../DraftGui.py" line="1839"/>
-      <location filename="../../DraftGui.py" line="1857"/>
+      <location filename="../../DraftGui.py" line="1841"/>
+      <location filename="../../DraftGui.py" line="1859"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>없음</translation>
@@ -3222,7 +3222,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="710"/>
-      <location filename="../../DraftGui.py" line="1119"/>
+      <location filename="../../DraftGui.py" line="1121"/>
       <source>Radius</source>
       <translation>반경</translation>
     </message>
@@ -3242,12 +3242,12 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>컨스트럭션 모드를 전환합니다</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1071"/>
+      <location filename="../../DraftGui.py" line="1072"/>
       <source>Label Type</source>
       <translation>레이블 유형</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1120"/>
+      <location filename="../../DraftGui.py" line="1122"/>
       <source>Radius of Circle</source>
       <translation>원의 반경</translation>
     </message>
@@ -3305,12 +3305,12 @@ Uncheck to use working plane coordinate system</source>
       <translation>현재 그리기 또는 편집 작업을 완료합니다</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2072"/>
+      <location filename="../../DraftGui.py" line="2074"/>
       <source>Modify Objects</source>
       <translation>객체 수정</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2230"/>
+      <location filename="../../DraftGui.py" line="2232"/>
       <source>Facebinder Elements</source>
       <translation>페이스바인더 요소</translation>
     </message>
@@ -3403,50 +3403,50 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="846"/>
-      <location filename="../../DraftGui.py" line="1845"/>
-      <location filename="../../DraftGui.py" line="1863"/>
+      <location filename="../../DraftGui.py" line="1847"/>
+      <location filename="../../DraftGui.py" line="1865"/>
       <source>Autogroup off</source>
       <translation>자동그룹 해제</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="978"/>
+      <location filename="../../DraftGui.py" line="979"/>
       <location filename="../../draftguitools/gui_lines.py" line="73"/>
       <source>Line</source>
       <translation>선</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="993"/>
+      <location filename="../../DraftGui.py" line="994"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1016"/>
+      <location filename="../../DraftGui.py" line="1017"/>
       <source>Circle</source>
       <translation>원</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1021"/>
+      <location filename="../../DraftGui.py" line="1022"/>
       <source>Arc</source>
       <translation>호</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1026"/>
+      <location filename="../../DraftGui.py" line="1027"/>
       <location filename="../../draftguitools/gui_rotate.py" line="291"/>
       <source>Rotate</source>
       <translation>회전</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1032"/>
+      <location filename="../../DraftGui.py" line="1033"/>
       <source>Point</source>
       <translation>점</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1069"/>
+      <location filename="../../DraftGui.py" line="1070"/>
       <source>Label</source>
       <translation>레이블</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1088"/>
+      <location filename="../../DraftGui.py" line="1089"/>
       <location filename="../../draftguitools/gui_offset.py" line="247"/>
       <location filename="../../draftguitools/gui_offset.py" line="262"/>
       <location filename="../../draftguitools/gui_offset.py" line="325"/>
@@ -3454,31 +3454,31 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>편차</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1093"/>
-      <location filename="../../DraftGui.py" line="1112"/>
+      <location filename="../../DraftGui.py" line="1094"/>
+      <location filename="../../DraftGui.py" line="1114"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Distance</source>
       <translation>거리</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1094"/>
-      <location filename="../../DraftGui.py" line="1113"/>
+      <location filename="../../DraftGui.py" line="1095"/>
+      <location filename="../../DraftGui.py" line="1115"/>
       <location filename="../../draftguitools/gui_trimex.py" line="225"/>
       <source>Offset distance</source>
       <translation>오프셋 거리</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1109"/>
+      <location filename="../../DraftGui.py" line="1111"/>
       <source>Trimex</source>
       <translation>트림확장</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1213"/>
       <location filename="../../DraftGui.py" line="1215"/>
-      <location filename="../../DraftGui.py" line="1216"/>
+      <location filename="../../DraftGui.py" line="1217"/>
       <location filename="../../DraftGui.py" line="1218"/>
-      <location filename="../../DraftGui.py" line="1219"/>
       <location filename="../../DraftGui.py" line="1220"/>
+      <location filename="../../DraftGui.py" line="1221"/>
+      <location filename="../../DraftGui.py" line="1222"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="125"/>
@@ -3486,12 +3486,12 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>로컬 {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1222"/>
-      <location filename="../../DraftGui.py" line="1223"/>
       <location filename="../../DraftGui.py" line="1224"/>
+      <location filename="../../DraftGui.py" line="1225"/>
       <location filename="../../DraftGui.py" line="1226"/>
-      <location filename="../../DraftGui.py" line="1227"/>
       <location filename="../../DraftGui.py" line="1228"/>
+      <location filename="../../DraftGui.py" line="1229"/>
+      <location filename="../../DraftGui.py" line="1230"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
@@ -3499,22 +3499,22 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>전역 {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1853"/>
+      <location filename="../../DraftGui.py" line="1855"/>
       <source>Autogroup:</source>
       <translation>자동그룹:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2227"/>
+      <location filename="../../DraftGui.py" line="2229"/>
       <source>Faces</source>
       <translation>면</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2228"/>
+      <location filename="../../DraftGui.py" line="2230"/>
       <source>Remove</source>
       <translation>제거</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2229"/>
+      <location filename="../../DraftGui.py" line="2231"/>
       <source>Add</source>
       <translation>추가</translation>
     </message>
@@ -3584,42 +3584,42 @@ DWG 파일을 공백과 영어 이외의 문자가 없는 디렉터리 경로로
       <location filename="../../WorkingPlane.py" line="1463"/>
       <location filename="../../WorkingPlane.py" line="1762"/>
       <location filename="../../WorkingPlane.py" line="1763"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="68"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="83"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="97"/>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="185"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="81"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="96"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="110"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="198"/>
       <source>Custom</source>
       <translation>사용자 지정</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="171"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="184"/>
       <source>Unable to convert input into a scale factor</source>
       <translation>입력을 배율 계수로 변환할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="186"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="199"/>
       <source>Set Custom Scale</source>
       <translation>사용자 지정 배율 설정</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="226"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="239"/>
       <source>Draft Scale Widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
       <translation>드래프트 배율 위젯</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="250"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="263"/>
       <source>Set the scale used by Draft annotation tools</source>
       <translation>드래프트 주석 도구에 사용되는 배율을 설정합니다</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="290"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="303"/>
       <source>Draft Snap Widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
       <translation>드래프트 스냅 위젯</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="187"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="200"/>
       <source>Set custom annotation scale in format x:x, x=x</source>
       <translation>x:x, x=x 형식으로 사용자 지정 주석 배율을 설정합니다</translation>
     </message>
@@ -4582,124 +4582,129 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="95"/>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="663"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="677"/>
       <source>This object does not support possible coincident points</source>
       <translation>이 객체는 일치 점을 지원하지 않음</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="112"/>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="679"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="693"/>
       <source>Delete Point</source>
       <translation>점 삭제</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="117"/>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="693"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="119"/>
+      <source>Set Point as First</source>
+      <translation type="unfinished">Set Point as First</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="126"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="707"/>
       <source>Add Point</source>
       <translation>점 추가</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="126"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="135"/>
       <source>Open Wire</source>
       <translation>와이어 열기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="129"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="138"/>
       <source>Close Wire</source>
       <translation>와이어 닫기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="133"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="142"/>
       <source>Reverse Wire</source>
       <translation>와이어 반전</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="176"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="185"/>
       <source>Active object must have more than 2 points or nodes</source>
       <translation>활성 객체에 점 또는 노드가 2개 이상 있어야 함</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="199"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="213"/>
       <source>Open Spline</source>
       <translation>스플라인 열기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="202"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="216"/>
       <source>Close Spline</source>
       <translation>스플라인 닫기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="205"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="219"/>
       <source>Reverse Spline</source>
       <translation>스플라인 반전</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="370"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="384"/>
       <source>Move Arc</source>
       <translation>호 이동</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="377"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="391"/>
       <source>Set First Angle</source>
       <translation>첫 번째 각도 설정</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="384"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="398"/>
       <source>Set Last Angle</source>
       <translation>마지막 각도 설정</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="391"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="405"/>
       <source>Set Radius</source>
       <translation>반경 설정</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="418"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="432"/>
       <source>Invert Arc</source>
       <translation>호 반전</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="680"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="694"/>
       <source>Make Sharp</source>
       <translation>샤프 전환</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="682"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="696"/>
       <source>Make Tangent</source>
       <translation>접선 전환</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="686"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="700"/>
       <source>Make Symmetric</source>
       <translation>대칭 전환</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="695"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="709"/>
       <source>Reverse Curve</source>
       <translation>곡선 반전</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="701"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="715"/>
       <source>Open Curve</source>
       <translation>곡선 열기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="704"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="718"/>
       <source>Close Curve</source>
       <translation>곡선 닫기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="817"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="831"/>
       <source>Selection is not a knot</source>
       <translation>선택한 것이 매듭이 아님</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="843"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="857"/>
       <source>Endpoint of Bézier curve cannot be smoothed</source>
       <translation>베지에 곡선의 끝점을 스무딩할 수 없음</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="911"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="925"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>활성 객체에 점/노드가 2개 이상 있어야 함</translation>
     </message>
@@ -4789,22 +4794,22 @@ The final angle will be the base angle plus this amount.</source>
       <translation>배율</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="261"/>
+      <location filename="../../draftguitools/gui_scale.py" line="268"/>
       <source>Pick new distance from base point</source>
       <translation>기본 점에서의 새 거리 고르기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="286"/>
+      <location filename="../../draftguitools/gui_scale.py" line="293"/>
       <source>%1 pick base point</source>
       <translation type="unfinished">%1 pick base point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="288"/>
+      <location filename="../../draftguitools/gui_scale.py" line="295"/>
       <source>%1 pick reference distance</source>
       <translation type="unfinished">%1 pick reference distance</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="290"/>
+      <location filename="../../draftguitools/gui_scale.py" line="297"/>
       <source>%1 pick new distance</source>
       <translation type="unfinished">%1 pick new distance</translation>
     </message>
@@ -4965,12 +4970,12 @@ The final angle will be the base angle plus this amount.</source>
       <translation>복제할 객체 선택</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="99"/>
+      <location filename="../../draftguitools/gui_clone.py" line="100"/>
       <source>Cannot clone objects without a shape, aborting</source>
       <translation>형상 없는 객체는 복제할 수 없어 중단합니다</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="103"/>
+      <location filename="../../draftguitools/gui_clone.py" line="105"/>
       <source>Cannot clone objects without a shape, skipping them</source>
       <translation>형상 없는 객체는 복제할 수 없어 건너뜁니다</translation>
     </message>
@@ -5662,7 +5667,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="284"/>
       <location filename="../../draftviewproviders/view_base.py" line="470"/>
       <location filename="../../draftviewproviders/view_clone.py" line="71"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="86"/>
+      <location filename="../../draftviewproviders/view_hatch.py" line="87"/>
       <source>Edit</source>
       <translation>편집</translation>
     </message>
@@ -5885,7 +5890,7 @@ The final angle will be the base angle plus this amount.</source>
       <translation>하이퍼링크 열기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="165"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="171"/>
       <source>Select 3 vertices, one or more shapes or an object to define a working plane</source>
       <translation>작업 평면을 정의하려면 꼭짓점 3개, 형상 1개 이상 또는 객체를 선택하십시오</translation>
     </message>
@@ -6108,7 +6113,7 @@ FreeCAD가 이러한 라이브러리를 다운로드할 수 있도록 하려면 
       <translation>PAT 파일에서 패턴을 찾을 수 없음</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_field_locks.py" line="89"/>
+      <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
       <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
       <translation type="unfinished">Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</translation>
     </message>
@@ -6116,64 +6121,49 @@ FreeCAD가 이러한 라이브러리를 다운로드할 수 있도록 하려면 
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="112"/>
+      <location filename="../../InitGui.py" line="106"/>
       <source>Draft Creation</source>
       <translation>드래프트 생성</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="115"/>
+      <location filename="../../InitGui.py" line="109"/>
       <source>Draft Annotation</source>
       <translation>드래프트 주석</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="118"/>
+      <location filename="../../InitGui.py" line="112"/>
       <source>Draft Modification</source>
       <translation>드래프트 수정</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="121"/>
+      <location filename="../../InitGui.py" line="115"/>
       <source>Draft Utility</source>
       <translation>드래프트 유틸리티</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="124"/>
+      <location filename="../../InitGui.py" line="118"/>
       <source>Draft Snap</source>
       <translation>드래프트 스냅</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="128"/>
+      <location filename="../../InitGui.py" line="123"/>
       <source>&amp;Drafting</source>
       <translation>제도(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="130"/>
+      <location filename="../../InitGui.py" line="126"/>
       <source>&amp;Annotation</source>
       <translation>주석(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="133"/>
+      <location filename="../../InitGui.py" line="129"/>
       <source>&amp;Modification</source>
       <translation>수정(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="132"/>
       <source>&amp;Utilities</source>
       <translation>유틸리티(&amp;U)</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="55"/>
-      <source>Arc Tools</source>
-      <translation>호 도구</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="64"/>
-      <source>Bézier Tools</source>
-      <translation>베지에 도구</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="95"/>
-      <source>Array Tools</source>
-      <translation>배열 도구</translation>
     </message>
   </context>
   <context>
@@ -6194,32 +6184,32 @@ FreeCAD가 이러한 라이브러리를 다운로드할 수 있도록 하려면 
       <translation>챔퍼 만들기</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="500"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="502"/>
       <source>Save style</source>
       <translation>스타일 저장</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="501"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="503"/>
       <source>Name of this new style</source>
       <translation>이 새 스타일의 이름</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="509"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="511"/>
       <source>Warning</source>
       <translation>경고</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="510"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="512"/>
       <source>Name exists. Overwrite?</source>
       <translation>이름이 이미 존재합니다. 덮어쓰시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="530"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="532"/>
       <source>Error: json module not found. Unable to load style</source>
       <translation>오류: json 모듈을 찾을 수 없습니다. 스타일을 불러올 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="548"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="550"/>
       <source>Error: json module not found. Unable to save style</source>
       <translation>오류: json 모듈을 찾을 수 없습니다. 스타일을 저장할 수 없습니다</translation>
     </message>
@@ -6420,7 +6410,7 @@ FreeCAD가 이러한 라이브러리를 다운로드할 수 있도록 하려면 
       <translation>레이블 + 재질</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="106"/>
+      <location filename="../../draftguitools/gui_clone.py" line="108"/>
       <source>Create Clone</source>
       <translation>클론 만들기</translation>
     </message>
@@ -8143,11 +8133,11 @@ beyond the dimension line</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../InitGui.py" line="147"/>
-      <location filename="../../InitGui.py" line="150"/>
-      <location filename="../../InitGui.py" line="153"/>
-      <location filename="../../InitGui.py" line="156"/>
-      <location filename="../../InitGui.py" line="159"/>
+      <location filename="../../InitGui.py" line="145"/>
+      <location filename="../../InitGui.py" line="148"/>
+      <location filename="../../InitGui.py" line="151"/>
+      <location filename="../../InitGui.py" line="154"/>
+      <location filename="../../InitGui.py" line="157"/>
       <source>Draft</source>
       <translation>제도</translation>
     </message>

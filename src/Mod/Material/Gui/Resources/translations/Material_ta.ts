@@ -715,68 +715,68 @@ If unchecked, they will be sorted by their name.</source>
       <translation>புதிய கோப்புறை</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="96"/>
+      <location filename="../../MaterialSave.cpp" line="97"/>
       <source>Delete</source>
       <translation>நீக்கு</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="198"/>
+      <location filename="../../MaterialSave.cpp" line="199"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>அசல் கோப்பில் சேமிப்பதால் மற்ற ஆவணங்கள் உடைந்து போகலாம். இது பரிந்துரைக்கப்படவில்லை.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="222"/>
+      <location filename="../../MaterialSave.cpp" line="223"/>
       <source>Save as new material</source>
       <translation>புதிய பொருளாக சேமிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="195"/>
+      <location filename="../../MaterialSave.cpp" line="196"/>
       <source>Save over &apos;%1&apos;?</source>
       <translation>&apos;% 1&apos;க்கு மேல் சேமிக்கவா?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="220"/>
+      <location filename="../../MaterialSave.cpp" line="221"/>
       <source>Confirm Save as New Material</source>
       <translation>புதிய பொருளாக சேமிப்பதை உறுதிப்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="225"/>
+      <location filename="../../MaterialSave.cpp" line="226"/>
       <source>This material already exists in this library. Save as a new material?</source>
       <translation>இந்த பொருள் ஏற்கனவே இந்த நூலகத்தில் உள்ளது. புதிய பொருளாக சேமிக்கவா?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="247"/>
+      <location filename="../../MaterialSave.cpp" line="248"/>
       <source>Confirm Save as Copy</source>
       <translation>நகலாக சேமி என்பதை உறுதிப்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="249"/>
+      <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Save as copy</source>
       <translation>நகலாக சேமிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="252"/>
+      <location filename="../../MaterialSave.cpp" line="253"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
       <translation>நகலை சேமிப்பது பரிந்துரைக்கப்படவில்லை, ஏனெனில் அது மற்ற ஆவணங்களை உடைக்கும். ஒரு புதிய பொருளாக சேமிக்க பரிந்துரைக்கப்படுகிறது.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="255"/>
+      <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save Copy</source>
       <translation>நகலை சேமிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="256"/>
+      <location filename="../../MaterialSave.cpp" line="257"/>
       <source>Save As New</source>
       <translation>புதியதாக சேமிக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="488"/>
-      <location filename="../../MaterialSave.cpp" line="498"/>
+      <location filename="../../MaterialSave.cpp" line="489"/>
+      <location filename="../../MaterialSave.cpp" line="499"/>
       <source>New folder</source>
       <translation>புதிய கோப்புறை</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="538"/>
+      <location filename="../../MaterialSave.cpp" line="539"/>
       <source>Context Menu</source>
       <translation>சூழல் பட்டியல்</translation>
     </message>
@@ -1154,23 +1154,23 @@ If unchecked, they will be sorted by their name.</source>
       <translation>பொருள்</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="192"/>
+      <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Confirm Overwrite</source>
       <translation>மேலெழுதுவதை உறுதிப்படுத்தவும்</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="382"/>
       <location filename="../../MaterialSave.cpp" line="383"/>
+      <location filename="../../MaterialSave.cpp" line="384"/>
       <source>No writeable library</source>
       <translation>எழுதக்கூடிய நூலகம் இல்லை</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="570"/>
+      <location filename="../../MaterialSave.cpp" line="571"/>
       <source>Delete &apos;%1&apos;?</source>
       <translation>&apos;% 1&apos; ஐ நீக்கவா?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="574"/>
+      <location filename="../../MaterialSave.cpp" line="575"/>
       <source>Removing this will also remove all contents.</source>
       <translation>இதை அகற்றினால் அனைத்து உள்ளடக்கங்களும் அகற்றப்படும்.</translation>
     </message>
@@ -1195,7 +1195,7 @@ If unchecked, they will be sorted by their name.</source>
       <translation>இல்லையெனில், அனைத்து மாற்றங்களும் இழக்கப்படும்.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="567"/>
+      <location filename="../../MaterialSave.cpp" line="568"/>
       <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <source>Confirm Delete</source>

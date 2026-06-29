@@ -1234,7 +1234,15 @@ class ViewProviderJoint:
                 Since no data were serialized nothing needs to be done here."""
         return None
 
+    def setupContextMenu(self, vobj, menu):
+        action = menu.addAction(translate("Assembly", "Edit Joint"))
+        action.triggered.connect(lambda: self.editJoint(vobj))
+        return False
+
     def doubleClicked(self, vobj):
+        return self.editJoint(vobj)
+
+    def editJoint(self, vobj):
         App.ActiveDocument.abortTransaction()  # Close the auto-transaction
 
         task = Gui.Control.activeTaskDialog()

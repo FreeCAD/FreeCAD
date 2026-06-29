@@ -716,7 +716,7 @@
     <message>
       <location filename="../../ViewProviderShapeExtension.cpp" line="189"/>
       <source>Edit Shape</source>
-      <translation type="unfinished">Edit Shape</translation>
+      <translation>Redigera form</translation>
     </message>
   </context>
   <context>
@@ -1280,7 +1280,7 @@ där begränsningen eller materialet tillämpas.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="99"/>
       <source>Custom directory</source>
-      <translation type="unfinished">Custom directory</translation>
+      <translation>Anpassad katalog</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="102"/>
@@ -1761,7 +1761,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintBearing.cpp" line="215"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="224"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="171"/>
@@ -1823,7 +1823,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="131"/>
@@ -1929,7 +1929,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
@@ -1974,7 +1974,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
@@ -2064,7 +2064,7 @@ att "MAXGS" behöver ökas.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
       <source>Empty Selection</source>
-      <translation type="unfinished">Empty Selection</translation>
+      <translation>Tom markering</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
@@ -2119,7 +2119,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
@@ -2164,7 +2164,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
@@ -2201,7 +2201,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="174"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="156"/>
@@ -2246,7 +2246,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="369"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="380"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
@@ -2289,7 +2289,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="237"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="131"/>
@@ -2351,7 +2351,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
@@ -2409,7 +2409,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
@@ -2453,7 +2453,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="265"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="207"/>
@@ -2535,7 +2535,7 @@ att "MAXGS" behöver ökas.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
@@ -3408,7 +3408,7 @@ med harmonisk/oscillerande drivström</translation>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="173"/>
       <source>Concentrated</source>
-      <translation type="unfinished">Concentrated</translation>
+      <translation>Koncentrerad</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="23"/>
@@ -3527,7 +3527,7 @@ med harmonisk/oscillerande drivström</translation>
       <location filename="../ui/MeshDistance.ui" line="266"/>
       <location filename="../ui/MeshManipulate.ui" line="434"/>
       <source>Diagram</source>
-      <translation type="unfinished">Diagram</translation>
+      <translation>Diagram</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
@@ -3586,7 +3586,7 @@ Notes:
       <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
       <source>Distribution</source>
-      <translation type="unfinished">Distribution</translation>
+      <translation>Fördelning</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
@@ -3641,17 +3641,17 @@ Notes:
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
       <source>AttractorAnisoCurve</source>
-      <translation type="unfinished">AttractorAnisoCurve</translation>
+      <translation>AttractorAnisoCurve</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="53"/>
       <source>MathEval</source>
-      <translation type="unfinished">MathEval</translation>
+      <translation>MathEval</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="58"/>
       <source>MathEvalAniso</source>
-      <translation type="unfinished">MathEvalAniso</translation>
+      <translation>MathEvalAniso</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="63"/>
@@ -3715,7 +3715,7 @@ Notes:
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
       <source>Size Normal</source>
-      <translation type="unfinished">Size Normal</translation>
+      <translation>Normal storlek</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="460"/>
@@ -3762,7 +3762,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="590"/>
       <source>EQIcon</source>
-      <translation type="unfinished">EQIcon</translation>
+      <translation>EQIcon</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="625"/>
@@ -3772,7 +3772,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="728"/>
       <source>M12</source>
-      <translation type="unfinished">M12</translation>
+      <translation>M12</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="735"/>
@@ -3795,27 +3795,27 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
       <source>M33</source>
-      <translation type="unfinished">M33</translation>
+      <translation>M33</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="770"/>
       <source>M22</source>
-      <translation type="unfinished">M22</translation>
+      <translation>M22</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="805"/>
       <source>M11</source>
-      <translation type="unfinished">M11</translation>
+      <translation>M11</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="812"/>
       <source>M23</source>
-      <translation type="unfinished">M23</translation>
+      <translation>M23</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="833"/>
       <source>M13</source>
-      <translation type="unfinished">M13</translation>
+      <translation>M13</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
@@ -3901,7 +3901,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
       <source>Number of nodes on the edge</source>
-      <translation type="unfinished">Number of nodes on the edge</translation>
+      <translation>Antal noder på kanten</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
@@ -3927,12 +3927,12 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshPreview.ui" line="99"/>
       <source>Min</source>
-      <translation type="unfinished">Min</translation>
+      <translation>Min</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="112"/>
       <source>1.00e+02</source>
-      <translation type="unfinished">1.00e+02</translation>
+      <translation>1.00e+02</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="138"/>
@@ -3943,12 +3943,12 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshPreview.ui" line="141"/>
       <source>Max</source>
-      <translation type="unfinished">Max</translation>
+      <translation>Max</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="154"/>
       <source>1.00e+03</source>
-      <translation type="unfinished">1.00e+03</translation>
+      <translation>1.00e+03</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="184"/>
@@ -3958,7 +3958,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshPreview.ui" line="187"/>
       <source>Visualize</source>
-      <translation type="unfinished">Visualize</translation>
+      <translation>Visualisera</translation>
     </message>
     <message>
       <location filename="../ui/MeshPreview.ui" line="197"/>
@@ -4000,7 +4000,7 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
       <source>Triangle Orientation</source>
-      <translation type="unfinished">Triangle Orientation</translation>
+      <translation>Triangelorientering</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
@@ -4037,7 +4037,7 @@ Notes:
     <message>
       <location filename="../ui/MeshDistance.ui" line="284"/>
       <source>Interpolation</source>
-      <translation type="unfinished">Interpolation</translation>
+      <translation>Interpolering</translation>
     </message>
     <message>
       <location filename="../ui/MeshDistance.ui" line="291"/>
@@ -4058,7 +4058,7 @@ Notes:
     <message>
       <location filename="../ui/MeshDistance.ui" line="329"/>
       <source>Linear</source>
-      <translation type="unfinished">Linear</translation>
+      <translation>Linjär</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
@@ -4068,12 +4068,12 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
       <source>Restrict</source>
-      <translation type="unfinished">Restrict</translation>
+      <translation>Begränsa</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="89"/>
       <source>Threshold</source>
-      <translation type="unfinished">Threshold</translation>
+      <translation>Tröskelvärde</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="94"/>
@@ -4130,7 +4130,7 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="452"/>
       <source>Linear interpolation</source>
-      <translation type="unfinished">Linear interpolation</translation>
+      <translation>Linjär interpolering</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="472"/>
@@ -4194,7 +4194,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshShape.ui" line="57"/>
       <source>Size inside</source>
-      <translation type="unfinished">Size inside</translation>
+      <translation>Storlek inuti</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="80"/>
@@ -4205,7 +4205,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshShape.ui" line="83"/>
       <source>Size outside</source>
-      <translation type="unfinished">Size outside</translation>
+      <translation>Storlek utanför</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="106"/>
@@ -5738,7 +5738,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="136"/>
       <source>Styling</source>
-      <translation type="unfinished">Styling</translation>
+      <translation>Styling</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="142"/>
@@ -7325,7 +7325,7 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
       <source>Selection Error</source>
-      <translation type="unfinished">Selection Error</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>

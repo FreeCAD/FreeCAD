@@ -4309,48 +4309,48 @@ it has a weld symbol that would become broken.</source>
       <translation>指引线</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="378"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="392"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>删除详细对象前关闭打开的对话框</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="393"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>您不能删除此视图，因为它有一个或多个依赖的视图会被损坏。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
       <location filename="../../ViewProviderPage.cpp" line="222"/>
       <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="174"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="182"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="190"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <source>Object dependencies</source>
       <translation>对象依赖关系</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="151"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
       <source>You cannot delete the anchor view of a projection group.</source>
       <translation>您不能删除投影组的锚点视图。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="160"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>您不能删除此视图，因为它有一个剖面视图会因此损坏。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="168"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>您不能删除此视图，因为它有一个详细视图会因此损坏。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="187"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>您不能删除此视图，因为它有一个指引线会被损坏。</translation>
     </message>
@@ -7231,68 +7231,78 @@ Do you want to continue?</source>
       <translation>局部视图锚点</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="32"/>
-      <source>Base View</source>
-      <translation>基准视图</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDetail.ui" line="89"/>
+      <location filename="../../TaskDetail.ui" line="184"/>
       <location filename="../../TaskDetail.cpp" line="252"/>
       <source>Drag Highlight</source>
       <translation>拖动高亮区域</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="242"/>
+      <location filename="../../TaskDetail.ui" line="230"/>
       <source>Radius</source>
       <translation>半径</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="55"/>
+      <location filename="../../TaskDetail.ui" line="42"/>
       <source>Detail view</source>
       <translation>局部视图</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="86"/>
+      <location filename="../../TaskDetail.ui" line="181"/>
       <source>Enables dragging of the detail highlight to a new position</source>
       <translation>允许将局部高亮区域拖动到新位置</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="120"/>
+      <location filename="../../TaskDetail.ui" line="237"/>
       <source>Scale type</source>
       <translation>比例类型</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="127"/>
+      <location filename="../../TaskDetail.ui" line="79"/>
       <source>Reference label</source>
       <translation>参考标签</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="140"/>
+      <location filename="../../TaskDetail.ui" line="253"/>
       <source>Scale factor for detail view</source>
       <translation>局部视图比例因子</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="168"/>
+      <location filename="../../TaskDetail.ui" line="150"/>
       <source>Y-position of detail highlight within view</source>
       <translation>局部高亮区域在视图内的 Y 位置</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="184"/>
+      <location filename="../../TaskDetail.ui" line="272"/>
       <source>Scale factor</source>
       <translation>比例因子</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="197"/>
+      <location filename="../../TaskDetail.ui" line="291"/>
       <source>Size of detail view</source>
       <translation>局部视图大小</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="229"/>
+      <location filename="../../TaskDetail.ui" line="114"/>
       <source>X position of detail highlight within view</source>
       <translation>局部高亮区域在视图内的 X 位置</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="256"/>
+      <location filename="../../TaskDetail.ui" line="35"/>
+      <source>Base view</source>
+      <translation>基础视图</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="91"/>
+      <source>Position</source>
+      <translation>位置</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="194"/>
+      <source>Size</source>
+      <translation>大小</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="205"/>
       <source>Page: scale factor of page is used
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
@@ -7302,22 +7312,22 @@ Custom: custom scale factor is used</source>
 自定义：使用自定义比例因子</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="263"/>
+      <location filename="../../TaskDetail.ui" line="212"/>
       <source>Page</source>
       <translation>页</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="268"/>
+      <location filename="../../TaskDetail.ui" line="217"/>
       <source>Automatic</source>
       <translation>自动</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="273"/>
+      <location filename="../../TaskDetail.ui" line="222"/>
       <source>Custom</source>
       <translation>自定义</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="216"/>
+      <location filename="../../TaskDetail.ui" line="72"/>
       <source>Reference</source>
       <translation>参考</translation>
     </message>

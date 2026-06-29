@@ -369,6 +369,8 @@ public:
         TUPLE,         // Create Python tuple.
         VECTOR,        // Create vector object.
 
+        ADDRESS,    // Format a cell address string from row and column
+
         HIDDENREF,  // hidden reference that has no dependency check
         HREF,       // deprecated alias of HIDDENREF
 

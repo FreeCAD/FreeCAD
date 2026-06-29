@@ -870,7 +870,7 @@ nieprawidłowe ograniczenia oraz zdegradowaną geometrię</translation>
       <translation>Przełącz wiązania na inną przestrzeń wirtualną</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1720"/>
       <source>Update constraint's virtual space</source>
       <translation>Aktualizuj wiązania przestrzeni wirtualnej</translation>
     </message>
@@ -885,33 +885,33 @@ nieprawidłowe ograniczenia oraz zdegradowaną geometrię</translation>
       <translation>Usuń wiązania</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1382"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1370"/>
       <source>Rename sketch constraint</source>
       <translation>Zmień nazwę wiązania szkicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2133"/>
       <source>Drag Point</source>
       <translation>Przeciągnij punkt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2133"/>
       <source>Drag Curve</source>
       <translation>Przeciągnij krzywą</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2108"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2134"/>
       <source>Drag geometries</source>
       <translation>Przeciągnij geometrie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1349"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1354"/>
       <source>Drag Constraint</source>
       <translation>Przeciągnij wiązanie</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
-      <location filename="../../ViewProviderSketch.cpp" line="1598"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1603"/>
       <location filename="../../CommandConstraints.cpp" line="11246"/>
       <source>Modify sketch constraints</source>
       <translation>Modyfikuj wiązania szkicu</translation>
@@ -978,7 +978,7 @@ nieprawidłowe ograniczenia oraz zdegradowaną geometrię</translation>
       <translation>Przełącz tryb konstrukcji</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1099"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1101"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="943"/>
       <source>Add Auto-Constraints</source>
       <translation>Dodaj wiązania automatycznie</translation>
@@ -3747,18 +3747,18 @@ Wiązania zostały wymienione w Widoku raportu (menu Widok → Panele → Widok 
       <translation>Ukryj wyrównanie wewnętrzne (w widżecie)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1744"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1773"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
       <source>Error</source>
       <translation>Błąd</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1744"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>Brak możliwości śledzenia:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1773"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
       <source>Impossible to update visibility:</source>
       <translation>Aktualizacja widoczności niemożliwa:</translation>
     </message>
@@ -4106,112 +4106,112 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3925"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3963"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Okno dialogowe jest już otwarte w panelu zadań</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3949"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3987"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Szkic jest nieprawidłowy i nie może być edytowany.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4145"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4183"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Następujące wiązanie jest częściowo zbędne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4184"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Następujące wiązania są częściowo zbędne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3898"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3936"/>
       <source>Edit Sketch</source>
       <translation>Edycja szkicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3926"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3964"/>
       <source>Close this dialog?</source>
       <translation>Zamknąć to okno dialogowe?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3947"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3985"/>
       <source>Invalid Sketch</source>
       <translation>Nieprawidłowy szkic</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3948"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3986"/>
       <source>Open the sketch validation tool?</source>
       <translation>Otworzyć narzędzie weryfikacji szkicu?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4131"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4169"/>
       <source>Remove the following constraint:</source>
       <translation>Usuń następujące wiązanie:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4132"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4170"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Usuń co najmniej jedno z następujących wiązań:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4138"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4176"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Usuń następujące, nadmiarowe wiązania:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4139"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4177"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Usuń następujące, nadmiarowe wiązania:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4152"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4190"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Usuń następujące niepoprawne wiązanie:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4191"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Usuń następujące niepoprawne wiązania:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4212"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4250"/>
       <source>Empty sketch</source>
       <translation>Pusty szkic</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4217"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4255"/>
       <source>Over-constrained:</source>
       <translation>Wiązania nadmierne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4223"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4261"/>
       <source>Malformed constraints:</source>
       <translation>Uszkodzone ograniczenia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4231"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4269"/>
       <source>Redundant constraints:</source>
       <translation>Wiązania nadmiarowe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4237"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4275"/>
       <source>Partially redundant:</source>
       <translation>Częściowo nadmiarowe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4244"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4282"/>
       <source>Solver failed to converge</source>
       <translation>Solver nie osiągnął zbieżności</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4250"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4288"/>
       <source>Under-constrained:</source>
       <translation>Niedostatecznie związane:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4252"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4290"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n stopień swobody</numerusform>
@@ -4221,7 +4221,7 @@ Odbywa się to przez analizę geometrii szkicu i wiązań.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4256"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4294"/>
       <source>Fully constrained</source>
       <translation>W pełni związany</translation>
     </message>
@@ -4714,7 +4714,7 @@ Eigen Sparse QR, algorytm jest zoptymalizowany dla macierzy rzadkich, zwykle szy
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4195"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4233"/>
       <source>and %1 more</source>
       <translation>i %1 więcej</translation>
     </message>
@@ -5134,9 +5134,9 @@ Krzywe złożone i punkty nie są jeszcze obsługiwane.</translation>
       <translation>Nie udało się przyciąć krawędzi</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1392"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1380"/>
       <location filename="../../EditDatumDialog.cpp" line="66"/>
-      <location filename="../../EditDatumDialog.cpp" line="342"/>
+      <location filename="../../EditDatumDialog.cpp" line="339"/>
       <source>Value Error</source>
       <translation>Błąd wartości</translation>
     </message>

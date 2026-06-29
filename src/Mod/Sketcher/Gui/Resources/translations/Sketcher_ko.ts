@@ -865,7 +865,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>다른 가상 공간으로 구속 전환하기</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1720"/>
       <source>Update constraint's virtual space</source>
       <translation>구속의 가상 공간 업데이트</translation>
     </message>
@@ -880,33 +880,33 @@ invalid constraints, and degenerate geometry</source>
       <translation>구속 삭제</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1382"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1370"/>
       <source>Rename sketch constraint</source>
       <translation>스케치 구속 이름 바꾸기</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2133"/>
       <source>Drag Point</source>
       <translation>점 끌기</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2133"/>
       <source>Drag Curve</source>
       <translation>곡선 끌기</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2108"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2134"/>
       <source>Drag geometries</source>
       <translation>도형 끌기</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1349"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1354"/>
       <source>Drag Constraint</source>
       <translation>구속 끌기</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
-      <location filename="../../ViewProviderSketch.cpp" line="1598"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1603"/>
       <location filename="../../CommandConstraints.cpp" line="11246"/>
       <source>Modify sketch constraints</source>
       <translation>스케치 구속 수정</translation>
@@ -973,7 +973,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>보조선 전환</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1099"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1101"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="943"/>
       <source>Add Auto-Constraints</source>
       <translation>자동 구속 추가</translation>
@@ -3721,18 +3721,18 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>내부 정렬 숨기기(위젯)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1744"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1773"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
       <source>Error</source>
       <translation>오류</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1744"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>표시 추적을 업데이트할 수 없음:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1773"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
       <source>Impossible to update visibility:</source>
       <translation>표시를 업데이트할 수 없음:</translation>
     </message>
@@ -4078,119 +4078,119 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3925"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3963"/>
       <source>A dialog is already open in the task panel</source>
       <translation>테스크 패널에 이미 다이얼로그가 열려있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3949"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3987"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>스케치가 유효하지 않으므로 편집할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4145"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4183"/>
       <source>The following constraint is partially redundant:</source>
       <translation>다음 구속이 부분적으로 중복됩니다:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4184"/>
       <source>The following constraints are partially redundant:</source>
       <translation>다음 구속이 부분적으로 중복됩니다:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3898"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3936"/>
       <source>Edit Sketch</source>
       <translation>스케치 편집</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3926"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3964"/>
       <source>Close this dialog?</source>
       <translation>이 대화 상자를 닫으시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3947"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3985"/>
       <source>Invalid Sketch</source>
       <translation>잘못된 스케치</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3948"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3986"/>
       <source>Open the sketch validation tool?</source>
       <translation>스케치 검증 도구를 열까요?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4131"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4169"/>
       <source>Remove the following constraint:</source>
       <translation>다음 구속을 제거하세요:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4132"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4170"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>다음 구속 중 하나 이상을 제거하세요:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4138"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4176"/>
       <source>Remove the following redundant constraint:</source>
       <translation>다음 중복 구속을 제거하세요:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4139"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4177"/>
       <source>Remove the following redundant constraints:</source>
       <translation>다음 중복 구속을 제거하세요:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4152"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4190"/>
       <source>Remove the following malformed constraint:</source>
       <translation>다음 잘못된 구속을 제거하세요:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4191"/>
       <source>Remove the following malformed constraints:</source>
       <translation>다음 잘못된 구속을 제거하세요:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4212"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4250"/>
       <source>Empty sketch</source>
       <translation>빈 스케치</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4217"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4255"/>
       <source>Over-constrained:</source>
       <translation>과다 구속:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4223"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4261"/>
       <source>Malformed constraints:</source>
       <translation>잘못된 구속:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4231"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4269"/>
       <source>Redundant constraints:</source>
       <translation>중복 구속:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4237"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4275"/>
       <source>Partially redundant:</source>
       <translation>부분 중복:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4244"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4282"/>
       <source>Solver failed to converge</source>
       <translation>솔버가 수렴하지 못했습니다</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4250"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4288"/>
       <source>Under-constrained:</source>
       <translation>완전 구속 중:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4252"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4290"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 자유도</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4256"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4294"/>
       <source>Fully constrained</source>
       <translation>완전히 구속됨</translation>
     </message>
@@ -4680,7 +4680,7 @@ Eigen Sparse QR 알고리즘은 희소 행렬에 최적화되어 있어 보통 �
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4195"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4233"/>
       <source>and %1 more</source>
       <translation>외 %1개</translation>
     </message>
@@ -5097,9 +5097,9 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>모서리 다듬기 실패</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1392"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1380"/>
       <location filename="../../EditDatumDialog.cpp" line="66"/>
-      <location filename="../../EditDatumDialog.cpp" line="342"/>
+      <location filename="../../EditDatumDialog.cpp" line="339"/>
       <source>Value Error</source>
       <translation>값 오류</translation>
     </message>

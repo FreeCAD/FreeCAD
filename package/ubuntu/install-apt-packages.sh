@@ -39,7 +39,6 @@ packages=(
   libocct-data-exchange-dev
   libocct-ocaf-dev
   libocct-visualization-dev
-  libopencv-dev
   libproj-dev
   libpcl-dev
   libpyside6-dev
@@ -58,6 +57,7 @@ packages=(
   occt-draw
   pyside6-tools
   python3-cxx-dev
+  python3-av
   python3-dev
   python3-defusedxml
   python3-git
