@@ -544,12 +544,7 @@ void RotationGizmo::draggingContinued()
         value = snapToStep(value, getCoarseRotationSnapMultiplier());
     }
 
-    value = clampDragAngle(
-        value,
-        property->minimum(),
-        property->maximum(),
-        period
-    );
+    value = clampDragAngle(value, property->minimum(), property->maximum(), period);
 
     property->setValue(value);
     setRotAngle(value);

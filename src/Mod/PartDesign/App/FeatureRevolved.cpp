@@ -56,8 +56,7 @@ namespace
 bool usesBRepFeatRevolution(Revolved::RevolMethod method, Part::RevolMode revolMode)
 {
     return method == Revolved::RevolMethod::ToFirst || method == Revolved::RevolMethod::ToFace
-        || (method == Revolved::RevolMethod::ToLast
-            && revolMode == Part::RevolMode::FuseWithBase);
+        || (method == Revolved::RevolMethod::ToLast && revolMode == Part::RevolMode::FuseWithBase);
 }
 
 bool isLegacyTwoAngles(const std::string& method)
@@ -76,9 +75,8 @@ Revolved::Revolved()
 short Revolved::mustExecute() const
 {
     if (Placement.isTouched() || SideType.isTouched() || Type.isTouched() || Type2.isTouched()
-        || ReferenceAxis.isTouched() || Axis.isTouched() || Base.isTouched()
-        || UpToFace.isTouched() || UpToFace2.isTouched() || Angle.isTouched()
-        || Angle2.isTouched()) {
+        || ReferenceAxis.isTouched() || Axis.isTouched() || Base.isTouched() || UpToFace.isTouched()
+        || UpToFace2.isTouched() || Angle.isTouched() || Angle2.isTouched()) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -99,9 +97,8 @@ void Revolved::onChanged(const App::Property* prop)
             SideType.setValue("Symmetric");
         }
         else {
-            Base::Console().warning(
-                "Deprecated Midplane property was explicitly set to False: assuming SideType='One side'\n"
-            );
+            Base::Console()
+                .warning("Deprecated Midplane property was explicitly set to False: assuming SideType='One side'\n");
             SideType.setValue("One side");
         }
     }
@@ -272,29 +269,14 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
         const bool isThroughAll = method == RevolMethod::ThroughAll
             && revolMode == Part::RevolMode::CutFromBase;
         if (method == RevolMethod::Angle || isThroughAll) {
-            generateRevolution(
-                result,
-                sketchshape,
-                gp_Ax1(pnt, dir),
-                angle,
-                0.0,
-                true,
-                false,
-                method
-            );
+            generateRevolution(result, sketchshape, gp_Ax1(pnt, dir), angle, 0.0, true, false, method);
             addRevolution(std::move(result));
         }
         else {
             fuseSideResults = usesBRepFeatRevolution(method, revolMode);
             gp_Ax1 axis(pnt, dir);
-            TopoShape upToFace = getRevolutionUpToFace(
-                method,
-                UpToFace,
-                base,
-                sketchshape,
-                invObjLoc,
-                axis
-            );
+            TopoShape upToFace
+                = getRevolutionUpToFace(method, UpToFace, base, sketchshape, invObjLoc, axis);
             TopoShape side = tryToRevolveToFace(
                 upToFace,
                 axis,
@@ -499,39 +481,18 @@ TopoShape Revolved::generateSingleRevolutionSide(
         if (method == RevolMethod::Angle && std::fabs(angle) < Precision::Angular()) {
             return revolution;
         }
-        generateRevolution(
-            revolution,
-            sketchshape,
-            gp_Ax1(pnt, dir),
-            angle,
-            0.0,
-            false,
-            false,
-            method
-        );
+        generateRevolution(revolution, sketchshape, gp_Ax1(pnt, dir), angle, 0.0, false, false, method);
     }
     else if (
         method == RevolMethod::ToFirst
         || (method == RevolMethod::ToLast && revolMode == Part::RevolMode::FuseWithBase)
-        || method == RevolMethod::ToFace) {
+        || method == RevolMethod::ToFace
+    ) {
         gp_Ax1 axis(pnt, dir);
-        TopoShape upToFace = getRevolutionUpToFace(
-            method,
-            upToFaceProp,
-            base,
-            sketchshape,
-            invObjLoc,
-            axis
-        );
+        TopoShape upToFace
+            = getRevolutionUpToFace(method, upToFaceProp, base, sketchshape, invObjLoc, axis);
 
-        revolution = tryToRevolveToFace(
-            upToFace,
-            axis,
-            base,
-            supportface,
-            sketchshape,
-            revolMode
-        );
+        revolution = tryToRevolveToFace(upToFace, axis, base, supportface, sketchshape, revolMode);
     }
     else {
         throw Base::RuntimeError(
