@@ -307,7 +307,7 @@ void ViewParams::setup()
     addParameter("AnnotationTextColor", Unsigned {4294967295UL});
     addParameter("MarkerSize", Int {9});
     addParameter("DefaultLinkColor", Unsigned {0x66FFFF00});
-    addParameter("DefaultShapeLineColor", Unsigned {421075455UL});
+    addParameter("DefaultShapeLineColor", Unsigned {255UL});
     addParameter("DefaultShapeVertexColor", Unsigned {421075455UL});
     addParameter("DefaultShapeColor", Unsigned {0xCCCCCC00});
     addParameter("DefaultShapeTransparency", Int {0});
