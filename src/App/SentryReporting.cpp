@@ -26,6 +26,7 @@
 #include <string>
 
 #include <QLocale>
+#include <QByteArray>
 #include <QString>
 #include <QSysInfo>
 #include <QThread>
@@ -228,6 +229,7 @@ void SentryReporting::setConsentGiven(bool enabled)
         GetApplication().GetParameterGroupByPath(consentParameterPath());
     hGrp->SetBool(consentEntryName(), enabled);
     consentGiven = enabled;
+    qputenv("PARASHELL_TELEMETRY", QByteArray(enabled ? "1" : "0"));
     applyConsentToBackend();
 }
 
@@ -238,6 +240,7 @@ void SentryReporting::initialize()
     }
 
     consentGiven = isConsentGiven();
+    qputenv("PARASHELL_TELEMETRY", QByteArray(consentGiven ? "1" : "0"));
 
     startBackend();
 
