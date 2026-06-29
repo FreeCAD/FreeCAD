@@ -59,6 +59,38 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPipeParameters */
 
+namespace
+{
+bool isSubtractivePipe(ViewProviderPipe* view)
+{
+    auto* pipe = view->getObject<PartDesign::Pipe>();
+    return pipe->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+}
+
+std::string pipeTaskIconName(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? "PartDesign_SubtractivePipe" : "PartDesign_AdditivePipe";
+}
+
+QString pipeTaskTitle(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? TaskPipeParameters::tr("Subtractive Pipe Parameters")
+                                  : TaskPipeParameters::tr("Additive Pipe Parameters");
+}
+
+QString pipeOrientationTitle(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? TaskPipeOrientation::tr("Subtractive Pipe Section Orientation")
+                                  : TaskPipeOrientation::tr("Additive Pipe Section Orientation");
+}
+
+QString pipeScalingTitle(ViewProviderPipe* view)
+{
+    return isSubtractivePipe(view) ? TaskPipeScaling::tr("Subtractive Pipe Section Transformation")
+                                  : TaskPipeScaling::tr("Additive Pipe Section Transformation");
+}
+}  // namespace
+
 
 //**************************************************************************
 //**************************************************************************
@@ -66,7 +98,7 @@ using namespace Gui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Pipe Parameters"))
+    : TaskSketchBasedParameters(PipeView, parent, pipeTaskIconName(PipeView), pipeTaskTitle(PipeView))
     , ui(new Ui_TaskPipeParameters)
     , stateHandler(nullptr)
 {
@@ -595,7 +627,7 @@ bool TaskPipeParameters::accept()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section Orientation"))
+    : TaskSketchBasedParameters(PipeView, parent, pipeTaskIconName(PipeView), pipeOrientationTitle(PipeView))
     , ui(new Ui_TaskPipeOrientation)
     , stateHandler(nullptr)
 {
@@ -894,7 +926,7 @@ void TaskPipeOrientation::updateUI(int idx)
 // Task Scaling
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section Transformation"))
+    : TaskSketchBasedParameters(PipeView, parent, pipeTaskIconName(PipeView), pipeScalingTitle(PipeView))
     , ui(new Ui_TaskPipeScaling)
     , stateHandler(nullptr)
 {
