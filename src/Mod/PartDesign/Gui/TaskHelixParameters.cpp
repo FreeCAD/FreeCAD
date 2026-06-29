@@ -69,7 +69,7 @@ std::string helixTaskIconName(PartDesignGui::ViewProviderHelix* view)
 QString helixTaskTitle(PartDesignGui::ViewProviderHelix* view)
 {
     return isSubtractiveHelix(view) ? TaskHelixParameters::tr("Subtractive Helix Parameters")
-                                   : TaskHelixParameters::tr("Additive Helix Parameters");
+                                    : TaskHelixParameters::tr("Additive Helix Parameters");
 }
 }  // namespace
 

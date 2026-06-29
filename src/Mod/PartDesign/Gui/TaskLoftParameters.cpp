@@ -62,7 +62,7 @@ std::string loftTaskIconName(ViewProviderLoft* view)
 QString loftTaskTitle(ViewProviderLoft* view)
 {
     return isSubtractiveLoft(view) ? TaskLoftParameters::tr("Subtractive Loft Parameters")
-                                  : TaskLoftParameters::tr("Additive Loft Parameters");
+                                   : TaskLoftParameters::tr("Additive Loft Parameters");
 }
 }  // namespace
 

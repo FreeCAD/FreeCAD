@@ -75,19 +75,19 @@ std::string pipeTaskIconName(ViewProviderPipe* view)
 QString pipeTaskTitle(ViewProviderPipe* view)
 {
     return isSubtractivePipe(view) ? TaskPipeParameters::tr("Subtractive Pipe Parameters")
-                                  : TaskPipeParameters::tr("Additive Pipe Parameters");
+                                   : TaskPipeParameters::tr("Additive Pipe Parameters");
 }
 
 QString pipeOrientationTitle(ViewProviderPipe* view)
 {
     return isSubtractivePipe(view) ? TaskPipeOrientation::tr("Subtractive Pipe Section Orientation")
-                                  : TaskPipeOrientation::tr("Additive Pipe Section Orientation");
+                                   : TaskPipeOrientation::tr("Additive Pipe Section Orientation");
 }
 
 QString pipeScalingTitle(ViewProviderPipe* view)
 {
     return isSubtractivePipe(view) ? TaskPipeScaling::tr("Subtractive Pipe Section Transformation")
-                                  : TaskPipeScaling::tr("Additive Pipe Section Transformation");
+                                   : TaskPipeScaling::tr("Additive Pipe Section Transformation");
 }
 }  // namespace
 
