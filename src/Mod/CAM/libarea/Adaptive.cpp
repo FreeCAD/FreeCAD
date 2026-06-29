@@ -30,6 +30,7 @@
 #include <ctime>
 #include <climits>
 #include <algorithm>
+#include <map>
 #include <numbers>
 #include <string>
 
@@ -1659,6 +1660,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     Paths step5a_stockRev;
     Paths step5b_outsideOfStock;
     Paths step5c_inputPathsUnion;
+    Paths step5d_clearedArea;
     std::vector<Paths> allToolBoundPaths;
     std::vector<Paths> allFinishingPaths;
 
@@ -1858,7 +1860,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
         clip.Execute(ClipType::ctUnion, inputPaths);
         step5c_inputPathsUnion = inputPaths;
-        step5Paths = inputPaths;
 
         // 5d) Update cleared area
         clipof.Clear();
@@ -1870,9 +1871,188 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clip.AddPaths(stockRev, PolyType::ptClip, true);
         clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
         clip.Execute(ClipType::ctUnion, initialClearedPaths);
+        step5d_clearedArea = initialClearedPaths;
     }
-    else {
-        step5Paths = inputPaths;  // No change when forceInsideOut is true
+
+    // 5e) Use initialClearedPaths to zero out Z-values for parts of the input paths that do not
+    // need to be finished
+    {
+
+        // Convert initialClearedPaths to Clipper2
+        Clipper2Lib::Paths64 initialClearedPaths2;
+        for (const auto& clearedPath : initialClearedPaths) {
+            Clipper2Lib::Path64 p;
+            for (const auto& pt : clearedPath) {
+                p.emplace_back(pt.X, pt.Y, pt.Z);
+            }
+            initialClearedPaths2.push_back(p);
+        }
+
+        // Convert stockInputPaths to Clipper2
+        Clipper2Lib::Paths64 stockInputPaths2;
+        for (const auto& stockPath : stockInputPaths) {
+            Clipper2Lib::Path64 p;
+            for (const auto& pt : stockPath) {
+                p.emplace_back(pt.X, pt.Y, pt.Z);
+            }
+            stockInputPaths2.push_back(p);
+        }
+
+        // Compute noncleared area = stock - cleared
+        Clipper2Lib::Clipper64 clipDiff;
+        clipDiff.AddSubject(stockInputPaths2);
+        clipDiff.AddClip(initialClearedPaths2);
+        Clipper2Lib::Paths64 nonclearedPaths;
+        clipDiff.Execute(
+            Clipper2Lib::ClipType::Difference,
+            Clipper2Lib::FillRule::EvenOdd,
+            nonclearedPaths
+        );
+
+        Paths updatedPaths;
+        for (const auto& path : inputPaths) {
+            // Create a copy of the path with z value specifying the index
+            Clipper2Lib::Path64 indexedPath;
+            for (int i = 0; i < path.size(); i++) {
+                indexedPath.emplace_back(path[i].X, path[i].Y, i + 1);
+            }
+            indexedPath.push_back(indexedPath[0]);
+
+            const int firstNewZ = path.size() + 2;
+            int nextNewZ = firstNewZ;
+            std::map<int, double> newZToInterp;
+            std::map<int, cInt> newZNeedsFinishing;
+            Clipper2Lib::Clipper64 clip2;  // Use a new clipper object to avoid overwriting the Z
+                                           // Callback
+            clip2.SetZCallback([&nextNewZ, &newZToInterp, &newZNeedsFinishing, &path](
+                                   const Clipper2Lib::Point64& e1bot,
+                                   const Clipper2Lib::Point64& e1top,
+                                   const Clipper2Lib::Point64& e2bot,
+                                   const Clipper2Lib::Point64& e2top,
+                                   Clipper2Lib::Point64& pt
+                               ) {
+                if (pt.x == e1bot.x && pt.y == e1bot.y) {
+                    pt.z = e1bot.z;
+                    return;
+                }
+                if (pt.x == e1top.x && pt.y == e1top.y) {
+                    pt.z = e1top.z;
+                    return;
+                }
+                pt.z = nextNewZ++;
+
+                // Compute distance from e1bot to e1top
+                double dx_total = e1top.x - e1bot.x;
+                double dy_total = e1top.y - e1bot.y;
+                double dist_total = sqrt(dx_total * dx_total + dy_total * dy_total);
+
+                // Compute distance from e1bot to pt
+                double dx_pt = pt.x - e1bot.x;
+                double dy_pt = pt.y - e1bot.y;
+                double dist_pt = sqrt(dx_pt * dx_pt + dy_pt * dy_pt);
+
+                // Compute interpolated Z value based on effective Z values
+                // If one is 1 and the other is path.size(), treat the closing edge as path.size() + 1
+                double e1bot_effective = (e1bot.z == 1 && e1top.z == path.size()) ? (path.size() + 1)
+                                                                                  : e1bot.z;
+                double e1top_effective = (e1top.z == 1 && e1bot.z == path.size()) ? (path.size() + 1)
+                                                                                  : e1top.z;
+                double interp = (dist_total > 0) ? (dist_pt / dist_total) : 0.0;
+                double interpZ = e1bot_effective + interp * (e1top_effective - e1bot_effective);
+
+                // Update newZ maps
+                newZToInterp[pt.z] = interpZ;
+                cInt e1bot_origZ = (e1bot.z >= 1 && e1bot.z <= path.size())
+                    ? path[e1bot.z - 1].Z
+                    : newZNeedsFinishing[e1bot.z];
+                cInt e1top_origZ = (e1top.z >= 1 && e1top.z <= path.size())
+                    ? path[e1top.z - 1].Z
+                    : newZNeedsFinishing[e1top.z];
+                newZNeedsFinishing[pt.z] = e1bot_origZ && e1top_origZ;
+            });
+
+            // Perform open path intersection with noncleared area
+            clip2.AddOpenSubject({indexedPath});
+            clip2.AddClip(nonclearedPaths);
+            Clipper2Lib::Paths64 unusedClosedPaths, nonclearedInputs;
+            clip2.Execute(
+                Clipper2Lib::ClipType::Intersection,
+                Clipper2Lib::FillRule::EvenOdd,
+                unusedClosedPaths,
+                nonclearedInputs
+            );
+
+            // Collect all points from nonclearedInputs
+            std::vector<IntPoint> nonclearedPoints;
+            bool hasZ1 = false;  // deduplicate the start/end point, if needed
+            for (const auto& nonclearedPath : nonclearedInputs) {
+                for (const auto& pt : nonclearedPath) {
+                    if (pt.z != 1 || !hasZ1) {
+                        nonclearedPoints.push_back({pt.x, pt.y, pt.z});
+                    }
+                    hasZ1 |= pt.z == 1;
+                }
+            }
+            indexedPath.pop_back();  // remove duplicate start point from the input
+
+            // Sort nonclearedPoints by their Z values, using interpolated values from newZToInterp
+            // for new Z values
+            std::sort(
+                nonclearedPoints.begin(),
+                nonclearedPoints.end(),
+                [&newZToInterp, &firstNewZ](const IntPoint& p1, const IntPoint& p2) {
+                    double val1 = (p1.Z >= firstNewZ) ? newZToInterp.at(p1.Z) : (double)p1.Z;
+                    double val2 = (p2.Z >= firstNewZ) ? newZToInterp.at(p2.Z) : (double)p2.Z;
+                    return val1 < val2;
+                }
+            );
+
+            // Build output path by merging sorted lists with iterators
+            Path updatedPath;
+            auto nonclearedIt = nonclearedPoints.begin();
+            auto indexedIt = indexedPath.begin();
+
+            while (indexedIt != indexedPath.end() || nonclearedIt != nonclearedPoints.end()) {
+                // Get position of next noncleared point (if any)
+                double nextNonclearedPos = (nonclearedIt != nonclearedPoints.end())
+                    ? ((nonclearedIt->Z >= firstNewZ) ? newZToInterp.at(nonclearedIt->Z)
+                                                      : static_cast<double>(nonclearedIt->Z))
+                    : std::numeric_limits<double>::max();
+
+                // Get position of next indexed path point (if any)
+                double nextPathPos = (indexedIt != indexedPath.end())
+                    ? static_cast<double>(indexedIt->z)
+                    : std::numeric_limits<double>::max();
+
+                if (nextNonclearedPos < nextPathPos) {
+                    // Add interpolated path point from non-cleared area
+                    IntPoint newPt = *nonclearedIt;
+                    newPt.Z = (newPt.Z >= firstNewZ) ? newZNeedsFinishing.at(newPt.Z) : 0;
+                    updatedPath.push_back(newPt);
+                    nonclearedIt++;
+                }
+                else if (nextPathPos < nextNonclearedPos) {
+                    // Add point from original path (in cleared area, so set Z=0, no finishing pass)
+                    IntPoint newPt = path[indexedIt->z - 1];
+                    newPt.Z = 0;
+                    updatedPath.push_back(newPt);
+                    indexedIt++;
+                }
+                else {
+                    // Same point in both lists - this point is in noncleared area, keep Z
+                    IntPoint newPt = path[indexedIt->z - 1];
+                    updatedPath.push_back(newPt);
+                    indexedIt++;
+                    nonclearedIt++;
+                }
+            }
+
+            updatedPaths.push_back(updatedPath);
+        }
+
+        // Replace inputPaths with updated paths
+        inputPaths = updatedPaths;
+        step5Paths = inputPaths;
     }
 
     // 6) Compute toolBounds = offset(input paths, -(toolRadius + finishingThickness)).
@@ -2240,6 +2420,34 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
         svg << "</g>\n";
 
+        // BROWN: Step 5d paths (cleared area)
+        svg << "<g id=\"step5d-paths\">\n";
+        for (size_t i = 0; i < step5d_clearedArea.size(); i++) {
+            const Path& ip = step5d_clearedArea[i];
+            if (!ip.empty()) {
+                for (size_t j = 0; j < ip.size(); j++) {
+                    const IntPoint& p1 = ip[j];
+                    const IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
+                    bool edgeHasZ1 = (p1.Z == 1 && p2.Z == 1);
+                    svg << "<line x1=\"" << p1.X << "\" y1=\"" << -p1.Y << "\" x2=\"" << p2.X
+                        << "\" y2=\"" << -p2.Y << "\" stroke=\"brown\" stroke-width=\""
+                        << (padding / 100) << "\"";
+                    if (!edgeHasZ1) {
+                        svg << " stroke-dasharray=\"" << (padding / 8) << "," << (padding / 8)
+                            << "\"";
+                    }
+                    svg << "/>\n";
+                }
+                for (const auto& pt : ip) {
+                    if (pt.Z == 1) {
+                        svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                            << (3 * padding / 50) << "\" fill=\"brown\"/>\n";
+                    }
+                }
+            }
+        }
+        svg << "</g>\n";
+
         // PURPLE: Step 5 paths
         svg << "<g id=\"step5-paths\">\n";
         for (size_t i = 0; i < step5Paths.size(); i++) {
@@ -2343,8 +2551,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
         // Calculate legend height based on number of entries
         size_t numRegions = allToolBoundPaths.size();
-        size_t numLegendItems = 6
-            + numRegions * 2;  // 6 for steps 3,4,5a,5b,5c,5 + 2 per region (step 6, step 8)
+        size_t numLegendItems = 7
+            + numRegions * 2;  // 7 for steps 3,4,5a,5b,5c,5d,5 + 2 per region (step 6, step 8)
 
         // Background for legend
         svg << "<rect x=\"" << legendX << "\" y=\"" << legendY << "\" width=\"" << legendWidth
@@ -2410,6 +2618,17 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('step5c-paths')\">Step 5c: Input Paths Union</text>\n";
         legendItem++;
 
+        // Step 5d
+        svg << "<rect id=\"step5d-paths-box\" data-color=\"brown\" x=\"" << (legendX + boxSize)
+            << "\" y=\"" << (legendY + lineHeight * legendItem + boxSize) << "\" width=\""
+            << boxSize << "\" height=\"" << boxSize
+            << "\" fill=\"brown\" stroke=\"black\" stroke-width=\"" << (padding / 400)
+            << "\" style=\"cursor:pointer\" onclick=\"toggle('step5d-paths')\"/>\n";
+        svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+            << (legendY + lineHeight * legendItem + boxSize * 1.5) << "\" font-size=\""
+            << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('step5d-paths')\">Step 5d: Cleared Area</text>\n";
+        legendItem++;
+
         // Step 5
         svg << "<rect id=\"step5-paths-box\" data-color=\"purple\" x=\"" << (legendX + boxSize)
             << "\" y=\"" << (legendY + lineHeight * legendItem + boxSize) << "\" width=\""
@@ -2418,7 +2637,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             << "\" style=\"cursor:pointer\" onclick=\"toggle('step5-paths')\"/>\n";
         svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
             << (legendY + lineHeight * legendItem + boxSize * 1.5) << "\" font-size=\""
-            << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('step5-paths')\">Step 5: Final Result</text>\n";
+            << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('step5-paths')\">Step 5e: Input Paths to be Finished</text>\n";
         legendItem++;
 
         // Step 6 and 8 - one entry per region
