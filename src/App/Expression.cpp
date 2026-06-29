@@ -43,6 +43,8 @@
 #include <string>
 #include <fmt/format.h>
 
+#include <QObject>
+
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
@@ -562,6 +564,37 @@ static inline bool anyToDouble(double &res, const App::any &value) {
     return true;
 }
 
+std::string anyToString(const App::any &value) {
+    if (is_type(value, typeid(bool))) {
+        return (cast<bool>(value) ? QObject::tr("True") : QObject::tr("False")).toStdString();
+    }
+    else if (is_type(value, typeid(int))) {
+        return std::to_string(cast<int>(value));
+    }
+    else if (is_type(value, typeid(long))) {
+        return std::to_string(cast<long>(value));
+    }
+    else if (is_type(value, typeid(float)) || is_type(value, typeid(double))) {
+        Quantity q(is_type(value, typeid(float)) ? cast<float>(value) : cast<double>(value));
+        return q.getUserString();
+    }
+    else if (is_type(value, typeid(Quantity))) {
+        const Quantity& q = cast<Quantity>(value);
+        return q.getUserString();
+    }
+    else if (is_type(value, typeid(const char*))) {
+        const char* p = cast<const char*>(value);
+        return p ? std::string(p) : QObject::tr("Null").toStdString();
+    }
+    else if (is_type(value, typeid(std::string))) {
+        return cast<std::string>(value);
+    }
+    else {
+        Base::PyGILStateLocker lock;
+        return pyObjectFromAny(value).as_string();
+    }
+}
+
 bool isAnyEqual(const App::any &v1, const App::any &v2) {
     if(v1.empty())
         return v2.empty();
@@ -569,6 +602,23 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
         return false;
 
     if(!is_type(v1,v2.type())) {
+        // As long as anyToQuantity() throws for strings, these must be handled first
+        bool v1_string = is_type(v1, typeid(std::string));
+        bool v1_charptr = is_type(v1, typeid(const char*));
+        bool v2_string = is_type(v2, typeid(std::string));
+        bool v2_charptr = is_type(v2, typeid(const char*));
+
+        if (v1_string || v1_charptr || v2_string || v2_charptr) {
+            if (v1_string && v2_charptr) {
+                auto c = cast<const char*>(v2);
+                return c && cast<std::string>(v1) == c;
+            } else if (v2_string && v1_charptr) {
+                auto c = cast<const char*>(v1);
+                return c && cast<std::string>(v2) == c;
+            }
+            return false;
+        }
+
         if(is_type(v1,typeid(Quantity)))
             return cast<Quantity>(v1) == anyToQuantity(v2);
         else if(is_type(v2,typeid(Quantity)))
@@ -585,20 +635,6 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
                 return false;
         }else if(anyToDouble(d1,v1))
            return anyToDouble(d2,v2) && essentiallyEqual(d1,d2);
-
-        if(is_type(v1,typeid(std::string))) {
-            if(is_type(v2,typeid(const char*))) {
-                auto c = cast<const char*>(v2);
-                return c && cast<std::string>(v1)==c;
-            }
-            return false;
-        }else if(is_type(v1,typeid(const char*))) {
-            if(is_type(v2,typeid(std::string))) {
-                auto c = cast<const char*>(v1);
-                return c && cast<std::string>(v2)==c;
-            }
-            return false;
-        }
     }
 
     if (is_type(v1,typeid(int)))
