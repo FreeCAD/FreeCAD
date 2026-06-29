@@ -78,4 +78,11 @@ TEST_F(ShapeBinderTest, subShapeBinderExists)
     // Assert the elementMap is correct
 }
 
+TEST_F(ShapeBinderTest, subShapeBinderNewVersionUsesBuildFace)
+{
+    // New binders are stamped version 3, which makes update() default to
+    // FaceMakerBuildFace. Older binders keep a lower version and the old face maker.
+    EXPECT_EQ(_subbinder->_Version.getValue(), 3);
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
