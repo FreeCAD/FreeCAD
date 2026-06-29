@@ -31,6 +31,8 @@ The test is intended to be executed via FreeCAD's test runner:
   FreeCAD -t TestCoinNodeSnapshots
 
 Environment variables:
+  - FC_TESTS_DIR: path to the ``tests/`` tree (e.g. /usr/share/freecad/tests); used to locate
+    fonts and baselines when installed outside the source tree
   - FC_VISUAL_OUT_DIR: output directory (writes actual/expected/diff)
   - FC_VISUAL_BASELINE_DIR: baseline directory override (default: tests/visual/baselines/coin-nodes)
   - FC_VISUAL_UPDATE_BASELINE: if truthy, overwrite baselines with actual renders
@@ -55,8 +57,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
-_BASELINE_REL = Path("tests") / "visual" / "baselines" / "coin-nodes"
-_FONT_REL = Path("tests") / "visual" / "fonts"
+_TESTS_REL = Path("tests")
+_BASELINE_REL = Path("visual") / "baselines" / "coin-nodes"
+_FONT_REL = Path("visual") / "fonts"
 _DEFAULT_FONT_FAMILY = "Noto Sans"
 _DEFAULT_FONT_FILES = ("NotoSans-Regular.ttf",)
 _DEFAULT_FONT_SIZE = 18
@@ -73,15 +76,27 @@ def _repo_root() -> Path | None:
 def _find_repo_baseline_dir() -> Path | None:
     repo_root = _repo_root()
     if repo_root is not None:
-        candidate = repo_root / _BASELINE_REL
+        candidate = repo_root / _TESTS_REL / _BASELINE_REL
         if candidate.is_dir() and any(candidate.glob("*.png")):
             return candidate
 
     here = Path(__file__).resolve()
     for parent in here.parents:
-        candidate = parent / _BASELINE_REL
+        candidate = parent / _TESTS_REL / _BASELINE_REL
         if candidate.is_dir() and any(candidate.glob("*.png")):
             return candidate
+    return None
+
+
+def _tests_dir() -> Path | None:
+    """Return the tests/ directory path, or None.
+
+    ``FC_TESTS_DIR`` must point directly at the ``tests/`` tree
+    (e.g. ``/usr/share/freecad/tests``).
+    """
+    env = os.environ.get("FC_TESTS_DIR", "").strip()
+    if env:
+        return Path(env)
     return None
 
 
@@ -93,6 +108,10 @@ def _baseline_dir(create: bool = False) -> Path:
             p.mkdir(parents=True, exist_ok=True)
         return p
 
+    tests_dir = _tests_dir()
+    if tests_dir is not None:
+        return tests_dir / _BASELINE_REL
+
     found = _find_repo_baseline_dir()
     if found is not None:
         if create:
@@ -100,31 +119,37 @@ def _baseline_dir(create: bool = False) -> Path:
         return found
 
     raise FileNotFoundError(
-        f"baseline directory not found (expected {_BASELINE_REL}; set FC_VISUAL_BASELINE_DIR to override)"
+        f"baseline directory not found (expected {_TESTS_REL / _BASELINE_REL}; set FC_VISUAL_BASELINE_DIR or FC_TESTS_DIR to override)"
     )
 
 
 def _find_repo_font_dir() -> Path | None:
     repo_root = _repo_root()
     if repo_root is not None:
-        candidate = repo_root / _FONT_REL
+        candidate = repo_root / _TESTS_REL / _FONT_REL
         if candidate.is_dir():
             return candidate
 
     here = Path(__file__).resolve()
     for parent in here.parents:
-        candidate = parent / _FONT_REL
+        candidate = parent / _TESTS_REL / _FONT_REL
         if candidate.is_dir():
             return candidate
     return None
 
 
 def _font_dir() -> Path:
+    tests_dir = _tests_dir()
+    if tests_dir is not None:
+        return tests_dir / _FONT_REL
+
     found = _find_repo_font_dir()
     if found is not None:
         return found
 
-    raise FileNotFoundError(f"font directory not found (expected {_FONT_REL})")
+    raise FileNotFoundError(
+        f"font directory not found (expected {_TESTS_REL / _FONT_REL}; set FC_TESTS_DIR to override)"
+    )
 
 
 def _font_files() -> list[Path]:
