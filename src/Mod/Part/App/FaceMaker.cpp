@@ -325,16 +325,8 @@ void Part::FaceMaker::postBuild()
             }
 
 
-            std::string faceString = Data::MappedName::makeSection(
-                {},
-                edgeNames,
-                masterTag,
-                op,
-                0,
-                'F',
-                0,
-                {"LOW"}
-            );
+            std::string faceString
+                = Data::MappedName::makeSection({}, edgeNames, masterTag, op, 0, 'F', 0, {"LOW"});
 
             this->myTopoShape.setElementName(
                 Data::IndexedName::fromConst("Face", index),
