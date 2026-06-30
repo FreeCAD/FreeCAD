@@ -510,7 +510,7 @@ public:
      * The dependency edge registers both the object and the property (if
      * applicable) this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      *
      * @return the vector of dependency edges.
      *
@@ -524,7 +524,7 @@ public:
      * The dependency edge registers both the object and the property (if
      * applicable) this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      * @param[in,out] res The vector to fill with the objects this object depends on.
      *
      * @see OutListOption for available options.
@@ -537,7 +537,7 @@ public:
     /**
      * @brief Get a list of objects this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      *
      * @return A vector of objects this object links to.
      *
@@ -548,7 +548,7 @@ public:
     /**
      * @brief Get a list of objects this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      *
      * @param[in,out] res The vector to fill with the objects this object depends on.
      *
