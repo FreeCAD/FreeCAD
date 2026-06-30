@@ -171,6 +171,10 @@ class PartMirrorGuiTestCases(unittest.TestCase):
         label = 'a");print("Erasing your hard drive, please stand by....")'
         self.assertEqual(f"{label} (Mirror #1)", self.mirrorBoxWithLabel(label))
 
+    def testMirrorLabelWithNewlinesIsNotMangled(self):
+        label = "a\nb\nc"
+        self.assertEqual(f"{label} (Mirror #1)", self.mirrorBoxWithLabel(label))
+
 
 class SectionCutTestCases(unittest.TestCase):
     def setUp(self):
