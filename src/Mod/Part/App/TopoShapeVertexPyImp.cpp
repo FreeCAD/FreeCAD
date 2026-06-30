@@ -230,7 +230,6 @@ Py::Float TopoShapeVertexPy::getZ() const
 
 PyObject* TopoShapeVertexPy::richCompare(PyObject* self, PyObject* object, int op)
 {
-
     if (op != Py_EQ && op != Py_NE) {
             PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vertex.");
             return nullptr;
