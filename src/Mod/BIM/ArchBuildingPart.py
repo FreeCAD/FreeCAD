@@ -1205,7 +1205,7 @@ class ViewProviderBuildingPart:
         obj = self.Object
 
         if getattr(obj.ViewObject, "AutoCutView", False):
-            obj.ViewObject.CutView = (not restore)
+            obj.ViewObject.CutView = not restore
         for found in obj.Document.findObjects(Type="App::GeometryPython"):
             if found == obj:
                 continue
