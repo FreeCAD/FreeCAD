@@ -49,16 +49,17 @@ std::string TopoShapeVertexPy::representation() const
     std::stringstream str;
     try {
         const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
-        double x = BRep_Tool::Pnt(v).X();
-        double y = BRep_Tool::Pnt(v).Y();
-        double z = BRep_Tool::Pnt(v).Z();
+        gp_Pnt p = BRep_Tool::Pnt(v);
+        double x = p.X();
+        double y = p.Y();
+        double z = p.Z();
 
-        str << "< Part.Vertex (";
+        str << "<Part.Vertex (";
         str << x << ", " << y << ", " << z;
-        str << ") >";
+        str << ")>";
     }
-    catch (...) {
-        str << "< Part.Vertex() >";
+    catch (Standard_Failure) {
+        str << "<Part.Vertex()>";
     }
 
     return str.str();
@@ -229,59 +230,27 @@ Py::Float TopoShapeVertexPy::getZ() const
 
 PyObject* TopoShapeVertexPy::richCompare(PyObject* self, PyObject* object, int op)
 {
-    if (!PyObject_TypeCheck(object, &(TopoShapeVertexPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "Comparison of Vertex and non-Vertex not implemented");
-        return nullptr;
+
+    if (op != Py_EQ && op != Py_NE) {
+            PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vertex.");
+            return nullptr;
     }
-    try {
-        PyObject* o = PyObject_GetAttrString(self, (char *) "X");
-        double X = PyFloat_AsDouble(o);
-	Py_DecRef(o);
+    PyObject* same = PyUnicode_FromString("isSame");
+    PyObject* res = PyObject_CallMethodOneArg(self, same, object);
+   
+    Py_DecRef(same);
 
-        o = PyObject_GetAttrString(self, (char *) "Y");
-        double Y = PyFloat_AsDouble(o);
-	Py_DecRef(o);
+    if(!res)
+	return res;
 
-        o = PyObject_GetAttrString(self, (char *) "Z");
-        double Z = PyFloat_AsDouble(o);
-	Py_DecRef(o);
+    long result=0;
+    if (res == Py_True)
+        result=1;
 
-        o = PyObject_GetAttrString(object, (char *) "X");
-        double oX = PyFloat_AsDouble(o);
-	Py_DecRef(o);
+    if( op == Py_NE)
+        result=!result;
 
-        o = PyObject_GetAttrString(object, (char *) "Y");
-        double oY = PyFloat_AsDouble(o);
-	Py_DecRef(o);
-
-        o = PyObject_GetAttrString(object, (char *) "Z");
-        double oZ = PyFloat_AsDouble(o);
-	Py_DecRef(o);
-
-	int res=1;
-	PyObject *retval=nullptr;
-	if (op != Py_EQ && op != Py_NE) {
-		PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vertex.");
-		return nullptr;
-	}
-	if  (X!=oX)
-		res=0;
-	if  (Y!=oY)
-		res=0;
-	if  (Z!=oZ)
-		res=0;
-
-	if (op == Py_EQ)
-		retval = (!res)? Py_False : Py_True;
-	else
-		retval = (res)? Py_False : Py_True;
-	Py_INCREF(retval);
-	return retval;
-    }
-    catch (Standard_Failure& e) {
-        throw Py::RuntimeError(e.GetMessageString());
-        return Py_False;
-    }
+    return PyBool_FromLong(result);
 }
 
 Py::Object TopoShapeVertexPy::getPoint() const
@@ -294,7 +263,6 @@ Py::Object TopoShapeVertexPy::getPoint() const
         return Py::asObject(pnt);
     }
     catch (Standard_Failure& e) {
-
         throw Py::RuntimeError(e.GetMessageString());
     }
 }
