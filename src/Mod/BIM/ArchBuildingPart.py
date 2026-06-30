@@ -1194,8 +1194,7 @@ class ViewProviderBuildingPart:
     def activate(self, action=None):
         from bimcommands.BimViews import toggle_active_level
 
-        vobj = self.Object.ViewObject
-        if getattr(vobj, "DoubleClickActivates", True):
+        if getattr(self.Object.ViewObject, "DoubleClickActivates", True):
             toggle_active_level(self.Object, action)
         FreeCADGui.Selection.clearSelection()
 
