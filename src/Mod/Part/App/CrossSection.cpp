@@ -30,6 +30,7 @@
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepPrimAPI_MakeHalfSpace.hxx>
+#include <BRep_Tool.hxx>
 #include <gp_Pln.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
@@ -153,8 +154,9 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
             BRepAdaptor_Surface adapt(face);
             if (adapt.GetType() == GeomAbs_Plane) {
                 gp_Pln plane = adapt.Plane();
+                Standard_Real faceTolerance = BRep_Tool::Tolerance(face);
                 if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
-                    && plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
+                    && plane.Distance(slicePlane.Location()) < faceTolerance) {
                     // sort and repair the wires
                     TopTools_IndexedMapOfShape mapOfWires;
                     TopExp::MapShapes(face, TopAbs_WIRE, mapOfWires);
