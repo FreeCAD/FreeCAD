@@ -231,23 +231,26 @@ Py::Float TopoShapeVertexPy::getZ() const
 PyObject* TopoShapeVertexPy::richCompare(PyObject* self, PyObject* object, int op)
 {
     if (op != Py_EQ && op != Py_NE) {
-            PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vertex.");
-            return nullptr;
+        PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vertex.");
+        return nullptr;
     }
     PyObject* same = PyUnicode_FromString("isSame");
     PyObject* res = PyObject_CallMethodOneArg(self, same, object);
-   
+
     Py_DecRef(same);
 
-    if(!res)
-	return res;
+    if (!res) {
+        return res;
+    }
 
-    long result=0;
-    if (res == Py_True)
-        result=1;
+    long result = 0;
+    if (res == Py_True) {
+        result = 1;
+    }
 
-    if( op == Py_NE)
-        result=!result;
+    if (op == Py_NE) {
+        result = !result;
+    }
 
     return PyBool_FromLong(result);
 }
