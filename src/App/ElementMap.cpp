@@ -1288,7 +1288,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
                                     child.postfix.constData(),
                                     child.tag);
                     setElementName(idx, name, masterTag, &sids);
-                } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                } else if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2 && child.elementMap) {
                     std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> names = child.elementMap->findAll(childIdx);
 
                     for (const auto& name : names) {
