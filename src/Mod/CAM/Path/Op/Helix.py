@@ -322,7 +322,17 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         super().opOnChanged(obj, prop)
 
     def initAfterBase(self, obj):
+        obj.HelixConeAngle = self.coneAngle(obj)
         obj.Side = Path.Op.Util.getOpSide(obj, default="Inside")
+
+    def coneAngle(self, obj):
+        subs = [base.Shape.getElement(n) for base, names in self.baseShapes(obj) for n in names]
+        if all(isinstance(sub, Part.Face) and isinstance(sub.Surface, Part.Cone) for sub in subs):
+            angles = [round(sub.Surface.SemiAngle, Path.Geom.Decimal) for sub in subs]
+            if len(set(angles)) == 1:
+                angle = angles[0] if subs[0].Surface.Axis.z > 0 else -angles[0]
+                return math.degrees(angle)
+        return 0
 
     def opSetEditorModes(self, obj):
         obj.setEditorMode("Direction", ("ReadOnly", "Hidden"))
@@ -529,11 +539,10 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 ),
             )
             expressions = dict(obj.ExpressionEngine)
-            stepDownExpr = expressions.get("StepDown")
-            if stepDownExpr:
+            if stepDownExpr := expressions.get("StepDown"):
                 obj.setExpression("HelixMaxPitch", stepDownExpr)
             else:
-                obj.StepDown
+                obj.HelixMaxPitch = obj.StepDown
             obj.setExpression("StepDown", "StartDepth - FinalDepth")
         if not hasattr(obj, "HelixMaxRampAngle"):
             obj.addProperty(
@@ -667,7 +676,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "direction": obj.Direction,
             "startAt": obj.StartAt,
             "finish_circle": obj.FinishHelixCircle,
-            "cone_angle_rad": None,
+            "cone_angle_rad": math.radians(obj.HelixConeAngle.Value),
             "dir_angle_rad": None,
             "ramp_angle_rad": math.radians(obj.HelixMaxRampAngle) or math.pi / 2,
         }
@@ -675,11 +684,6 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         if obj.RetractFromWall:
             # do not send tooldiameter to generator for vertical retract
             args["tool_diameter"] = tooldiameter
-
-        if obj.Side == "Inside":
-            args["cone_angle_rad"] = math.radians(obj.HelixConeAngle.Value)
-        else:
-            args["cone_angle_rad"] = -math.radians(obj.HelixConeAngle.Value)
 
         machinestate = PathMachineState.MachineState()
         self.commandlist.append(Path.Command("(helix cut operation)"))
