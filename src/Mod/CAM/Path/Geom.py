@@ -900,13 +900,12 @@ def combineHorizontalFaces(faces, keepOrder=False):
     """
     horizontal = []
     offset = 10.0
+    offsetZ = 5.0
     topFace = None
     innerFaces = []
 
-    # Verify all incoming faces are at Z=0.0
     for f in faces:
-        if f.BoundBox.ZMin != 0.0:
-            f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
+        f.translate(FreeCAD.Vector(0.0, 0.0, -offsetZ - f.BoundBox.ZMin))
 
     # Make offset compound boundbox solid and cut incoming face extrusions from it
     allFaces = Part.makeCompound(faces)
@@ -919,33 +918,16 @@ def combineHorizontalFaces(faces, keepOrder=False):
         return horizontal
 
     afbb = allFaces.BoundBox
-    bboxFace = makeBoundBoxFace(afbb, offset, -5.0)
-    bboxSolid = bboxFace.extrude(FreeCAD.Vector(0.0, 0.0, 10.0))
-    extrudedFaces = []
-    for f in faces:
-        extrudedFaces.append(f.extrude(FreeCAD.Vector(0.0, 0.0, 6.0)))
-
-    # Fuse all extruded faces together
-    allFacesSolid = extrudedFaces.pop()
-    for i in range(len(extrudedFaces)):
-        temp = extrudedFaces.pop().fuse(allFacesSolid)
-        allFacesSolid = temp
-    cut = bboxSolid.cut(allFacesSolid)
-
-    # Debug
-    # Part.show(cut)
-    # FreeCAD.ActiveDocument.ActiveObject.Label = "cut"
+    bboxFace = makeBoundBoxFace(afbb, offset, -2 * offsetZ)
+    bboxSolid = bboxFace.extrude(FreeCAD.Vector(0.0, 0.0, 2 * offsetZ))
+    extrudedFaces = [f.extrude(FreeCAD.Vector(0, 0, offsetZ + 1)) for f in faces]
+    cut = bboxSolid.cut(extrudedFaces)
 
     # Identify top face and floating inner faces that are the holes in incoming faces
     for f in cut.Faces:
         fbb = f.BoundBox
-        if isRoughly(fbb.ZMin, 5.0) and isRoughly(fbb.ZMax, 5.0):
-            if (
-                isRoughly(afbb.XMin - offset, fbb.XMin)
-                and isRoughly(afbb.XMax + offset, fbb.XMax)
-                and isRoughly(afbb.YMin - offset, fbb.YMin)
-                and isRoughly(afbb.YMax + offset, fbb.YMax)
-            ):
+        if isRoughly(fbb.ZMin, 0) and isRoughly(fbb.ZMax, 0):
+            if isRoughly(afbb.XMin - offset, fbb.XMin):
                 topFace = f
             else:
                 innerFaces.append(f)
@@ -953,24 +935,11 @@ def combineHorizontalFaces(faces, keepOrder=False):
     if not topFace:
         return horizontal
 
-    outer = [Part.Face(w) for w in topFace.Wires[1:] if w.isClosed()]
-
-    if outer:
-        for f in outer:
-            f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
-
+    if outerFaces := [Part.Face(w) for w in topFace.Wires[1:] if w.isClosed()]:
         if innerFaces:
-            # inner = [Part.Face(f.Wire1) for f in innerFaces]
-            inner = innerFaces
-
-            for f in inner:
-                f.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - f.BoundBox.ZMin))
-            innerComp = Part.makeCompound(inner)
-            outerComp = Part.makeCompound(outer)
-            cut = outerComp.cut(innerComp)
-            horizontal = cut.Faces
+            horizontal = Part.makeCompound(outerFaces).cut(innerFaces).Faces
         else:
-            horizontal = outer
+            horizontal = outerFaces
 
     # restore order
     if keepOrder and len(horizontal) > 1:
