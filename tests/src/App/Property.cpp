@@ -919,3 +919,34 @@ TEST_F(MoveProperty, redoExpressionTargetContainerOtherDoc)
 {
     testRedoMovePropertyExpression(varSetDoc2, varSetDoc2, "Variable", "test#VarSet.Variable");
 }
+
+// Moving several properties in one action must form a single undo step. This mirrors the loop in
+// the property editor that opens a transaction per property and commits only the last id.
+TEST_F(MoveProperty, moveMultipleIsAtomic)
+{
+    // Arrange
+    doc1->setUndoMode(1);
+    auto* prop2 = freecad_cast<App::PropertyInteger*>(
+        varSet1Doc1->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables")
+    );
+    prop2->setValue(value + 1);
+    std::vector<App::Property*> props {prop, prop2};
+
+    // Act
+    int tid = 0;
+    for (auto* property : props) {
+        tid = doc1->openTransaction("Move Property");
+        varSet1Doc1->moveDynamicProperty(property, varSet2Doc1);
+    }
+    App::GetApplication().commitTransaction(tid);
+
+    // Assert: a single move action produces a single undo step
+    EXPECT_EQ(doc1->getAvailableUndos(), 1);
+
+    // Assert: one undo restores both properties to the source container
+    EXPECT_TRUE(doc1->undo());
+    EXPECT_NE(varSet1Doc1->getDynamicPropertyByName("Variable"), nullptr);
+    EXPECT_NE(varSet1Doc1->getDynamicPropertyByName("Variable2"), nullptr);
+    EXPECT_EQ(varSet2Doc1->getDynamicPropertyByName("Variable"), nullptr);
+    EXPECT_EQ(varSet2Doc1->getDynamicPropertyByName("Variable2"), nullptr);
+}
