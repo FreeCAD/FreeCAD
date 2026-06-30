@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
-# *                                                                         * 
+# *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
 # *   FreeCAD is free software: you can redistribute it and/or modify it    *
@@ -25,7 +25,6 @@ import json
 
 import FreeCAD
 from PySide import QtCore, QtNetwork
-
 
 BSDD_API_BASE_URL = "https://api.bsdd.buildingsmart.org"
 BSDD_PREFERENCES_PATH = "User parameter:BaseApp/Preferences/Mod/BIM"
