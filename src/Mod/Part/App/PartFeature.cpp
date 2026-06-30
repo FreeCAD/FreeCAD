@@ -238,16 +238,14 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                 }
 
                 for (const std::string& name1ConnectedName : checkSections.first.connectedElements) {
-                    for (const std::string& name2ConnectedName : checkSections.second.connectedElements) {
+                    for (const std::string& name2ConnectedName :
+                         checkSections.second.connectedElements) {
                         if ((name1ConnectedName == name2ConnectedName)
                             || (name1ConnectedName != "_" && name2ConnectedName != "_"
                                 && doNamesMatch(
                                     Data::MappedName(name1ConnectedName),
                                     Data::MappedName(name2ConnectedName)
-                                )
-                            )
-                        ) 
-                        {
+                                ))) {
                             connectedNameInterference++;
                         }
                     }
@@ -269,7 +267,8 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
 
                 if (linkedNamePass
                     && (connectedNameInterference >= 1
-                        || checkSections.first.connectedElements == checkSections.second.connectedElements)
+                        || checkSections.first.connectedElements
+                            == checkSections.second.connectedElements)
                     && (refIDInterference >= 2
                         || checkSections.first.referenceIDs == checkSections.second.referenceIDs)) {
                     Data::DecodedMappedSection modifiedFirstSection(checkSections.first);
