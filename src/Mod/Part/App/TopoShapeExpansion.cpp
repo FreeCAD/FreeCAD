@@ -2296,8 +2296,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         allConnectedElementNames {};
 
                     if (modifiedShapes.size() > 1 && lowerMapTypeEntry != lowerMapTypes.end()) {
-                        std::string stringLowerSubshapeType = shapeName(lowerMapTypeEntry->second);
-                        const char* lowerSubshapeType = stringLowerSubshapeType.c_str();
+                        const char* lowerSubshapeType = shapeName(lowerMapTypeEntry->second).c_str();
 
                         for (size_t modifiedI = 0; modifiedI < modifiedShapes.size(); modifiedI++) {
                             const TopoDS_Shape& modifiedShape = modifiedShapes[modifiedI];
@@ -2309,13 +2308,13 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                 const TopoDS_Shape& lowerShape = xp.Current();
                                 Data::IndexedName lowerSubshapeIndexName;
 
-                                if (stringLowerSubshapeType == "Edge") {
+                                if (strcmp(lowerSubshapeType, "Edge") == 0) {
                                     lowerSubshapeIndexName = Data::IndexedName::fromConst(
                                         lowerSubshapeType,
                                         edgeInfo.find(lowerShape)
                                     );
                                 }
-                                else if (stringLowerSubshapeType == "Vertex") {
+                                else if (strcmp(lowerSubshapeType, "Vertex") == 0) {
                                     lowerSubshapeIndexName = Data::IndexedName::fromConst(
                                         lowerSubshapeType,
                                         vertexInfo.find(lowerShape)
