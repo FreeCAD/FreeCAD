@@ -409,7 +409,7 @@ TopoShape Revolved::tryToRevolveToFace(
         return revolution;
     };
 
-    auto makeAdditiveTool = [&](const TopoShape& baseResult) {
+    auto makeGeneratedTool = [&](const TopoShape& baseResult) {
         if (base.isNull()) {
             return baseResult;
         }
@@ -422,7 +422,7 @@ TopoShape Revolved::tryToRevolveToFace(
         return tool;
     };
 
-    auto makeSubtractiveTool = [&](const TopoShape& baseResult) {
+    auto makeRemovedVolume = [&](const TopoShape& baseResult) {
         TopoShape tool(0, getDocument()->getStringHasher());
         tool.makeElementCut({base, baseResult}, Part::OpCodes::Revolve);
         if (tool.isNull() || tool.getShape().IsNull()) {
@@ -431,26 +431,31 @@ TopoShape Revolved::tryToRevolveToFace(
         return tool;
     };
 
-    try {
-        if (revolMode == Part::RevolMode::CutFromBase) {
-            return makeSubtractiveTool(makeRevolution(revolMode, Standard_True));
+    if (revolMode == Part::RevolMode::CutFromBase) {
+        try {
+            return makeRemovedVolume(makeRevolution(revolMode, Standard_True));
         }
-        return makeAdditiveTool(makeRevolution(Part::RevolMode::None, Standard_False));
-    }
-    catch (const Base::Exception&) {
-        // Some OCCT cases require the historical feature mode. Falling back keeps up-to-face
-        // usable instead of leaving the previous preview in place.
-    }
-    catch (const Standard_Failure&) {
-        // Fall through to the historical feature mode below.
+        catch (const Base::Exception&) {
+            // If the groove side removes no material, keep trying to return the cutter tool
+            // itself so a no-op side behaves like an angle-based groove.
+        }
+        catch (const Standard_Failure&) {
+            // Fall through to cutter generation below.
+        }
     }
 
     try {
-        TopoShape baseResult = makeRevolution(revolMode, Standard_True);
-        if (revolMode == Part::RevolMode::CutFromBase) {
-            return makeSubtractiveTool(baseResult);
-        }
-        return makeAdditiveTool(baseResult);
+        return makeGeneratedTool(makeRevolution(Part::RevolMode::None, Standard_False));
+    }
+    catch (const Base::Exception&) {
+        // Some OCCT cases require a feature mode. Falling back keeps up-to-face usable.
+    }
+    catch (const Standard_Failure&) {
+        // Fall through to the feature mode below.
+    }
+
+    try {
+        return makeGeneratedTool(makeRevolution(Part::RevolMode::FuseWithBase, Standard_True));
     }
     catch (const Base::Exception&) {
         throw Base::RuntimeError("Could not revolve the sketch!");
