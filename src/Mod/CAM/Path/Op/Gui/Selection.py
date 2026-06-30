@@ -1,33 +1,32 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2015 Dan Falck <ddfalck@gmail.com>
+# SPDX-FileCopyrightText: 2021 Schildkroet
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
-# *   Copyright (c) 2021 Schildkroet                                        *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENTE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """Selection gates and observers to control selectability while building Path operations"""
 
 import FreeCAD
 import FreeCADGui
+import Part
 import Path
-import Path.Base.Drillable as Drillable
+from Path.Base.Drillable import isDrillable
 import math
 
 if False:
@@ -37,7 +36,7 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-class PathBaseGate(object):
+class PathBaseGate:
     pass
 
 
@@ -133,7 +132,28 @@ class DRILLGate(PathBaseGate):
         subobj = shape.getElement(sub)
         if subobj.ShapeType not in ["Edge", "Face"]:
             return False
-        return Drillable.isDrillable(shape, subobj, vector=None, allowPartial=True)
+        return isDrillable(shape, subobj, vector=None, allowPartial=True)
+
+
+class HELIXGate(PathBaseGate):
+    def allow(self, doc, obj, sub):
+        try:
+            shape = obj.Shape
+        except Exception:
+            return False
+
+        if not sub or sub[0:4] not in ("Edge", "Face"):
+            return False
+
+        subShape = shape.getElement(sub)
+        if isDrillable(shape, subShape, vector=None, allowPartial=True):
+            return True
+        if subShape.ShapeType == "Edge":
+            return isinstance(subShape.Curve, Part.Circle)
+        if subShape.ShapeType == "Face":
+            return isinstance(subShape.Surface, (Part.Cylinder, Part.Cone))
+
+        return False
 
 
 class TAPGate(PathBaseGate):
@@ -145,7 +165,7 @@ class TAPGate(PathBaseGate):
         subobj = shape.getElement(sub)
         if subobj.ShapeType not in ["Edge", "Face"]:
             return False
-        return Drillable.isDrillable(shape, subobj, vector=None)
+        return isDrillable(shape, subobj, vector=None)
 
 
 class FACEGate(PathBaseGate):
@@ -248,7 +268,7 @@ class TURNGate(PathBaseGate):
         if hasattr(obj, "Shape") and sub:
             shape = obj.Shape
             subobj = shape.getElement(sub)
-            return Drillable.isDrillable(shape, subobj, vector=None)
+            return isDrillable(shape, subobj, vector=None)
         else:
             return False
 
@@ -280,6 +300,12 @@ def drillselect():
     FreeCADGui.Selection.addSelectionGate(DRILLGate())
     if not Path.Preferences.suppressSelectionModeWarning():
         FreeCAD.Console.PrintWarning("Drilling Select Mode\n")
+
+
+def helixselect():
+    FreeCADGui.Selection.addSelectionGate(HELIXGate())
+    if not Path.Preferences.suppressSelectionModeWarning():
+        FreeCAD.Console.PrintWarning("Helix Select Mode\n")
 
 
 def tapselect():
@@ -375,7 +401,7 @@ def select(op):
     opsel["Drilling"] = drillselect
     opsel["Tapping"] = tapselect
     opsel["Engrave"] = engraveselect
-    opsel["Helix"] = drillselect
+    opsel["Helix"] = helixselect
     opsel["MillFace"] = pocketselect
     opsel["MillFacing"] = pocketselect
     opsel["Pocket"] = pocketselect
