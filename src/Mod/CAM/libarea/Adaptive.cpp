@@ -1964,16 +1964,25 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     }
 
     // 3) Set Z=1 on all input paths to tag them as needing a finishing pass
+    //
+    // When finishing passes are eventually generated, they will be created only for edges with
+    // z=1 on both end vertices. This is a little bit imprecise -- ideally the segments themselves
+    // would be tagged instead of their end vertices, but clipper doesn't support that feature
+    // natively. From what I've seen this is good enough in practice, but if it becomes problematic
+    // we can try to leverage vertex z-tagging to create a more complicated system for indirectly
+    // tagging edges.
     for (Path& path : inputPaths) {
         for (IntPoint& p : path) {
             p.Z = 1;
         }
     }
-
-    // Save step 3 result before step 4 modifies it
     svgInfo.step3Paths = inputPaths;
 
     // 4) Turn profiles into areas; mark new paths as unfinished (Z=0) and then union
+    //
+    // Adaptive "profiling" clears a small area offset from the input edges, but since the goal of
+    // the operation is profiling, rather than area clearing, only the input edge needs to be
+    // finished. The far sides of those areas do not require a finishing pass
     if (opType == OperationType::otProfilingOutside || opType == OperationType::otProfilingInside) {
         // offset by an extra finishPassOffsetScaled to compensate for undoing that later
         long offset = 2 * (toolRadiusScaled + helixRampMaxRadiusScaled + finishPassOffsetScaled)
@@ -2017,6 +2026,16 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
     // 5) If going outside the stock is allowed, add regionOutsideStock to both inputPaths and
     // clearedArea. Use Z=0 to mark the stock boundary as not needing to be finished
+    //
+    // We are working towards generating the toolBoundsPath -- the region in which the tool center
+    // is allowed to be. So far we have the basis for allowing the tool within the raw input
+    // regions. In this step, if going outside the stock is allowed, we add a boundary region
+    // outside the stock to the inputs so the tool will be allowed there too.
+    //
+    // All new paths created in this process have vertices tagged with Z=0 to prevent them from
+    // receiving finishing passes. Also, the new regions are added to the representation of
+    // already-cleared area so the algorithm knows that the tool *can* go there but does not need
+    // to.
     if (!forceInsideOut) {
 
         // 5a) Shrink the stock boundary to ensure overlap with input paths that hit the boundary
@@ -2041,7 +2060,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clip.AddPaths(stockRev, PolyType::ptClip, true);
         clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
 
-        // Z callback: output Z=1 if both vertices of either input edge have Z=1
+        // Z callback: output Z=1 if both vertices of either input edge have Z=1.
+        // This callback will be invoked on new vertices created while unioning areas (i.e.
+        // intersections between segments)
         clip.ZFillFunction(
             [](IntPoint& e1bot, IntPoint& e1top, IntPoint& e2bot, IntPoint& e2top, IntPoint& pt) {
                 // Check if both vertices of edge 1 have Z=1
@@ -2070,8 +2091,50 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     }
 
     // 5e) Use initialClearedPaths to zero out Z-values for parts of the input paths that do not
-    // need to be finished
+    // need to be finished. This was added after the fact and I probably ought to make it a
+    // high-level step of its own, but I didn't want to renumber everything.
+    //
+    // So far, "input" paths are tagged as needing to be finished if the user input them, but not if
+    // they are generated to allow tool movement outside the stock or if they are generated as the
+    // boundary region of a path to be profiled. However, in addition to these exceptions, some
+    // (complete or incomplete) sections of user-specified input paths also do not require finishing
+    // passes because they protrude into regions that are already clear. For example, if the user
+    // runs adaptive on the same face twice, first with a large tool and then again with a small
+    // tool (with rest machining enabled), much of the boundary of the small-tool adaptive operation
+    // may already be cleared, and does not require a finishing pass. Only the input boundaries that
+    // are actually cut in the current operation require a finishing pass. (If the user wants a
+    // full-boundary finishing pass with the small tool in this scenario, they should leave some
+    // stock uncut at the boundary of the large-tool pass.)
+    //
+    // This computation is done by computing the initial non-cleared area and intersecting it with
+    // the input path boundary. The portions of the boundary present in this intersection need to be
+    // finished; the rest do not.
+    //
+    // In order to keep track of which vertex is which after the intersection, we start by creating
+    // a copy of the input path with z-values corresponding to the index/position in the initial
+    // path. Then we can create the updated version of the path by simultaneously iterating through
+    // the original input path and the intersection result and re-assembling the input boundary path
+    // with appropriately (z=0/z=1) tagged vertices to specify if they require a finishing pass.
+    //
+    // There is some subtlety to this tracking+reassembly process because new vertices may be
+    // generated by the intersection operation, subdividing input edges one or more times. These
+    // vertices are assigned new z-values that uniquely identify them, but these z-values do not
+    // correspond to the index of any vertex in the initial path. For these newly generated points,
+    // we separately track their position along the boundary (represented as a floating point number
+    // interpolating the positions of the vertices of their parent edges). We also check if the
+    // parent edge needs to be finished (at least as understood prior to this computation). If so,
+    // we also tag this splitting vertex as needing to be finished to preserve that property when
+    // the edge is split.
+    //
+    // During path reassembly, information about new/split-edge vertices needs to be looked up by a
+    // different process than original vertices, but all of the same information (position/order on
+    // the path, potentially requires finishing) is present, so after the information lookup is
+    // complete they can be handled the same way as original vertices.
     {
+
+        // Clipper 1's z-callback mechanism doesn't support binding local variables, so we convert
+        // to clipper 2 for this operation. This code will go away soon when we convert all of
+        // adaptive to clipper 2
 
         // Convert initialClearedPaths to Clipper2
         Clipper2Lib::Paths64 initialClearedPaths2;
@@ -2106,26 +2169,36 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
         Paths updatedPaths;
         for (const auto& path : inputPaths) {
-            // Create a copy of the path with z value specifying the index
+            // Create a copy of the path with z value specifying the index. Points are initialized
+            // with z=0 by default, so to make uninitialized-z bugs clear we skip z=0 and set z =
+            // index + 1
             Clipper2Lib::Path64 indexedPath;
             for (int i = 0; i < path.size(); i++) {
                 indexedPath.emplace_back(path[i].X, path[i].Y, i + 1);
             }
+            // Explicitly close the path, before doing a boolean operation on it as an open (well,
+            // "not implicitly closed") path. Unfortunately clipper treats points as interchangeable
+            // if they have equal x and y even if z is different, so this end vertex also shares the
+            // start vertex's z-value.
             indexedPath.push_back(indexedPath[0]);
 
+            // Prepare structures to store information about newly generated/edge-splitting points
             const int firstNewZ = path.size() + 2;
             int nextNewZ = firstNewZ;
-            std::map<int, double> newZToInterp;
+            std::map<int, double> newZPosition;
             std::map<int, cInt> newZNeedsFinishing;
-            Clipper2Lib::Clipper64 clip2;  // Use a new clipper object to avoid overwriting the Z
-                                           // Callback
-            clip2.SetZCallback([&nextNewZ, &newZToInterp, &newZNeedsFinishing, &path](
+
+            // Create a new clipper object to avoid overwriting the z callback of the main one
+            Clipper2Lib::Clipper64 clip2;
+            clip2.SetZCallback([&nextNewZ, &newZPosition, &newZNeedsFinishing, &path](
                                    const Clipper2Lib::Point64& e1bot,
                                    const Clipper2Lib::Point64& e1top,
                                    const Clipper2Lib::Point64& e2bot,
                                    const Clipper2Lib::Point64& e2top,
                                    Clipper2Lib::Point64& pt
                                ) {
+                // If the split-edge point is actuall at an edge then we have no need for a new
+                // z-value. Otherwise, generate a new z value
                 if (pt.x == e1bot.x && pt.y == e1bot.y) {
                     pt.z = e1bot.z;
                     return;
@@ -2135,6 +2208,10 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                     return;
                 }
                 pt.z = nextNewZ++;
+
+                // Compute the position of the new point by interpolating the z-values of its input
+                // parent edge (e1 is the parent edge of the subject/input path; e2 comes from the
+                // clipping/cleared area path)
 
                 // Compute distance from e1bot to e1top
                 double dx_total = e1top.x - e1bot.x;
@@ -2146,27 +2223,33 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 double dy_pt = pt.y - e1bot.y;
                 double dist_pt = sqrt(dx_pt * dx_pt + dy_pt * dy_pt);
 
-                // Compute interpolated Z value based on effective Z values
-                // If one is 1 and the other is path.size(), treat the closing edge as path.size() + 1
+                // Compute interpolated position Z value. In most cases edges are z=n and z=n+1, and
+                // we do a simple interpolation. However, the final edge connects z=path.size() to
+                // z=1, and that interpolation result does not correctly specify the position of the
+                // new point. Instead, we detect that case and interpolate between path.size() and
+                // path.size() + 1.
                 double e1bot_effective = (e1bot.z == 1 && e1top.z == path.size()) ? (path.size() + 1)
                                                                                   : e1bot.z;
                 double e1top_effective = (e1top.z == 1 && e1bot.z == path.size()) ? (path.size() + 1)
                                                                                   : e1top.z;
-                double interp = (dist_total > 0) ? (dist_pt / dist_total) : 0.0;
+                double interp = dist_pt / dist_total;
                 double interpZ = e1bot_effective + interp * (e1top_effective - e1bot_effective);
 
-                // Update newZ maps
-                newZToInterp[pt.z] = interpZ;
-                cInt e1bot_origZ = (e1bot.z >= 1 && e1bot.z <= path.size())
+                // Update data structures for the new point
+                newZPosition[pt.z] = interpZ;
+
+                // I'm pretty sure e1bot and e1top are always original vertices, but just in case
+                // we can handle the alternative possibility
+                cInt e1bot_finishing = (e1bot.z >= 1 && e1bot.z <= path.size())
                     ? path[e1bot.z - 1].Z
                     : newZNeedsFinishing[e1bot.z];
-                cInt e1top_origZ = (e1top.z >= 1 && e1top.z <= path.size())
+                cInt e1top_finishing = (e1top.z >= 1 && e1top.z <= path.size())
                     ? path[e1top.z - 1].Z
                     : newZNeedsFinishing[e1top.z];
-                newZNeedsFinishing[pt.z] = e1bot_origZ && e1top_origZ;
+                newZNeedsFinishing[pt.z] = e1bot_finishing && e1top_finishing;
             });
 
-            // Perform open path intersection with noncleared area
+            // Intersect the input boundary (i.e. open path intersection) with the noncleared area
             clip2.AddOpenSubject({indexedPath});
             clip2.AddClip(nonclearedPaths);
             Clipper2Lib::Paths64 unusedClosedPaths, nonclearedInputs;
@@ -2177,9 +2260,11 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 nonclearedInputs
             );
 
-            // Collect all points from nonclearedInputs
+            // Prepare for the final reassembly process by collecting all points from the
+            // intersection result. Also remove duplicate representations of the start/end point,
+            // since we will switch back to the clipper default of implicitly-closed paths
             std::vector<IntPoint> nonclearedPoints;
-            bool hasZ1 = false;  // deduplicate the start/end point, if needed
+            bool hasZ1 = false;
             for (const auto& nonclearedPath : nonclearedInputs) {
                 for (const auto& pt : nonclearedPath) {
                     if (pt.z != 1 || !hasZ1) {
@@ -2190,27 +2275,41 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             }
             indexedPath.pop_back();  // remove duplicate start point from the input
 
-            // Sort nonclearedPoints by their Z values, using interpolated values from newZToInterp
-            // for new Z values
+            // Further prepare for reassembly by sorting the collected points by their position
+            // (z-value for original points, newZPosition for new points). This allows us to
+            // reassemble with a single pass, simultaneously iterating through both the original
+            // input points and the intersection results in order of increasing position.
             std::sort(
                 nonclearedPoints.begin(),
                 nonclearedPoints.end(),
-                [&newZToInterp, &firstNewZ](const IntPoint& p1, const IntPoint& p2) {
-                    double val1 = (p1.Z >= firstNewZ) ? newZToInterp.at(p1.Z) : (double)p1.Z;
-                    double val2 = (p2.Z >= firstNewZ) ? newZToInterp.at(p2.Z) : (double)p2.Z;
+                [&newZPosition, &firstNewZ](const IntPoint& p1, const IntPoint& p2) {
+                    double val1 = (p1.Z >= firstNewZ) ? newZPosition.at(p1.Z) : (double)p1.Z;
+                    double val2 = (p2.Z >= firstNewZ) ? newZPosition.at(p2.Z) : (double)p2.Z;
                     return val1 < val2;
                 }
             );
 
-            // Build output path by merging sorted lists with iterators
+            // Reassemble the updated input path with new z-values.
+            //
+            // Case 1: Points present in the original input and not the intersection appear in
+            // cleared area and do not require finishing (set z=0).
+            //
+            // Case 2: Points present in the intersection and not the original input are
+            // generated/edge-splitting points and need to be added. They appear in the non-cleared
+            // area, so they should be finished if their parent edge wanted finishing (i.e. use the
+            // value in newZNeedsFinishing).
+            //
+            // Case 3: Points present in both appear in the non-cleared area, so they should be
+            // finished if they are already tagged for finishing (i.e. keep the original z-value
+            // from the input).
             Path updatedPath;
             auto nonclearedIt = nonclearedPoints.begin();
             auto indexedIt = indexedPath.begin();
 
             while (indexedIt != indexedPath.end() || nonclearedIt != nonclearedPoints.end()) {
-                // Get position of next noncleared point (if any)
+                // Get position of next noncleared point (if any remain)
                 double nextNonclearedPos = (nonclearedIt != nonclearedPoints.end())
-                    ? ((nonclearedIt->Z >= firstNewZ) ? newZToInterp.at(nonclearedIt->Z)
+                    ? ((nonclearedIt->Z >= firstNewZ) ? newZPosition.at(nonclearedIt->Z)
                                                       : static_cast<double>(nonclearedIt->Z))
                     : std::numeric_limits<double>::max();
 
@@ -2219,22 +2318,22 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                     ? static_cast<double>(indexedIt->z)
                     : std::numeric_limits<double>::max();
 
-                if (nextNonclearedPos < nextPathPos) {
-                    // Add interpolated path point from non-cleared area
-                    IntPoint newPt = *nonclearedIt;
-                    newPt.Z = (newPt.Z >= firstNewZ) ? newZNeedsFinishing.at(newPt.Z) : 0;
-                    updatedPath.push_back(newPt);
-                    nonclearedIt++;
-                }
-                else if (nextPathPos < nextNonclearedPos) {
-                    // Add point from original path (in cleared area, so set Z=0, no finishing pass)
+                if (nextPathPos < nextNonclearedPos) {
+                    // Case 1: original point is not in the noncleared region
                     IntPoint newPt = path[indexedIt->z - 1];
                     newPt.Z = 0;
                     updatedPath.push_back(newPt);
                     indexedIt++;
                 }
+                else if (nextNonclearedPos < nextPathPos) {
+                    // Case 2: newly generated/split-edge point in the noncleared region
+                    IntPoint newPt = *nonclearedIt;
+                    newPt.Z = newZNeedsFinishing.at(newPt.Z);
+                    updatedPath.push_back(newPt);
+                    nonclearedIt++;
+                }
                 else {
-                    // Same point in both lists - this point is in noncleared area, keep Z
+                    // Case 3: the same point is present in both lists
                     IntPoint newPt = path[indexedIt->z - 1];
                     updatedPath.push_back(newPt);
                     indexedIt++;
@@ -2245,15 +2344,18 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             updatedPaths.push_back(updatedPath);
         }
 
-        // Replace inputPaths with updated paths
         inputPaths = updatedPaths;
         svgInfo.step5e_inputPaths = inputPaths;
     }
 
     // 6) Compute toolBounds = offset(input paths, -(toolRadius + finishingThickness)).
-    // Z is used to indicate which paths need a finish pass. Clipper1 doesn't
-    // preserve Z with operations, so convert to Clipper2, perform the offset,
-    // then back to Clipper1 for subsequent operations
+    //
+    // This represents the locations the tool center is allowed to be during the main adatpive
+    // pass, prior to applying finishing profiling.
+    //
+    // Note: Clipper1 doesn't preserve Z values when performing offset operations, so we
+    // convert to Clipper2 to perform the offset. This temporary conversion will be eliminated soon
+    // when we convert the full operation to clipper 2.
     Clipper2Lib::Paths64 inputPaths2;
     inputPaths2.reserve(inputPaths.size());
     for (const auto& path : inputPaths) {
@@ -2298,9 +2400,26 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         toolBounds.emplace_back(p);
     }
 
-    // 7) Loop over connected components using nesting level.
+    // 7) Loop over connected components of toolBounds
+    //
+    // The main adaptive algorithm (ProcessPolyNode) is run on one connected component at a time
+    // to facilitate considering a helix-down entrance exclusively for the initial engagement of
+    // each component and using entrances from the cleared area for all subsequent reengagements.
+    //
+    // Note that connectivity here is determined based on the toolBounds representation, which
+    // indicates where the tool center is allowed to be. If two regions are connected only by
+    // narrow channels that do not fit the tool, they will be split up for independent processing
+    // here. This guarantees that the region provided to ProcessPolyNode can be fully cleared by
+    // repeated reengagement from the cleared area after the initial entrance (which may require
+    // helixing down).
+    //
+    // When we loop over toolBounds, we look for outer boundaries only. When we find one, we also
+    // accumulate all top-level holes inside of them. The boundary path and immediate hole paths are
+    // processed together. Any further-nested paths (i.e. appearing inside a hole) will be processed
+    // in a separate iteration of the loop.
     for (const auto& current : toolBounds) {
-        // nesting counts itself and the number of polygons containing it
+        // Nesting counts itself and the number of polygons containing it, so nesting % 2 == 1
+        // specifies exterior boundaries and nesting % 2 == 0 specifies holes
         int nesting = getPathNestingLevel(current, toolBounds);
         if (nesting % 2 != 0) {
             // current is an exterior boundary; now find all the holes directly inside it
@@ -2318,7 +2437,27 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             }
 
             // 8) finishingPass = offset(currentTBP, finishingThickness)
-            // Use Clipper2 to preserve Z values during offset operation
+            //
+            // Now that we have currentTBP representing where the tool center may be while during
+            // the main clearing operation, we need to reconstruct the required finishing passes for
+            // that region.
+            //
+            // Note that it is
+            // important that we offset the input inward to create the TBP and then offset part of
+            // the way back outwards from the TBP to create the finishing pass, and that we do not
+            // directly compute the finishing pass from the input by only offsetting inwards. If the
+            // input has narrow channels that are just wide enough to fit the tool for a finishing
+            // pass, those regions will not be wide enough for interior clearing. If we actually
+            // executed this "finishing" pass, the tool would be slotting when it entered that
+            // region. By instead constructing our finising pass by offsetting outward from the TBP,
+            // we guarantee that all points on the finishing pass represent a small stepover cut
+            // from already-cleared area. Thin channels that just barely/exactly fit the tool will
+            // not be cut, but that is a reality of an adaptive cutting process -- such regions must
+            // be cut by a slotting operation instead.
+            //
+            // Note that clipper 1 drops z values on offset operations, so we must convert to
+            // Clipper2. This temporary measure will be eliminated soon when we convert the full
+            // operation to clipper 2.
 
             // Convert currentTBP to Clipper2 format
             Clipper2Lib::Paths64 currentTBP2;
@@ -2352,16 +2491,38 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             }
 
             // 9) Compute bounds = offset(currentTBP, toolRadius)
+            //
+            // These paths represent the region that will actually be cleared by the interior
+            // clearing process. They do not include the region cleared by the finishing pass.
+            //
+            // When the interior clearing process completes, we will assert that this region is
+            // fully cleared. In order to make the numerics work correctly on this check, we
+            // actually need this region to be *slightly* smaller than its ideal/nominal size.
+            // Specifically, each offset operation we perform can produce up to 1 unit of error.
+            // (This is a necessary result of working on an integer grid because there must be an
+            // orientation for input segments where a tiny perturbation in the input orientation
+            // (which can always be achieved, even on an integer grid) changes the output location.
+            // This is an output change of 1 for an input change of epsilon, but the non-dicritized
+            // output would only have changed by epsilon. Therefore, offset operations must have
+            // potential to accumulate error of up to 1 unit per offset operation). We perform 2
+            // offset operations to produce this path (input -> TBP -> BP), and we will do 1 more
+            // when computing the cleared area. So when computing BP, we leave a buffer of 3 units
+            // to ensure it will be seen as fully cleared when checking a correct interior clearing
+            // pass. This process is a bit finicky -- take great care if you modify it!
             Paths boundPath;
             clipof.Clear();
             clipof.AddPaths(currentTBP, JoinType::jtRound, EndType::etClosedPolygon);
-            // 3 = number of offsets in computing boundPaths > max error in boundary
-            // Subtracting 3 ensures that rounding in boundPath is guaranteed to shrink it
-            // This is important for successfully filtering out boundPaths that should be fully
-            // covered by initialClearPaths
             clipof.Execute(boundPath, toolRadiusScaled - 3);
 
             // Skip path generation if bounds are fully cleared
+            //
+            // Note: should we also be checking that finishing passes (if any are required) are
+            // also clear? I'd think so, but I'm just documenting now and not going to change it.
+            // If I were to implement that, I'd do subtract(offset(finishing, toolRadius), cleared)
+            // and if the result contains any z=1 segments then there is finishing work left to do.
+            // I don't know if ProcessPolyNode is well equipped to handle a fully pre-cleared
+            // interior region with only finishing work to do; probably it has never been tested and
+            // it is not!
             {
                 Paths boundsToClear;
                 clip.Clear();
@@ -2373,12 +2534,10 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 }
             }
 
-            // 10) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
-
-            // Debug: accumulate paths from all regions for final SVG
             svgInfo.allToolBoundPaths.push_back(currentTBP);
             svgInfo.allFinishingPaths.push_back(finishingPass);
 
+            // 10) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
             ProcessPolyNode(boundPath, currentTBP, finishingPass, initialClearedPaths);
         }
     }
