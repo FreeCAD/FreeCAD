@@ -876,36 +876,49 @@ void TaskRevolutionParameters::setGizmoPositions()
     std::string sideType;
     std::string revolutionType;
     std::string revolutionType2;
-
-    auto getFeatureProps = [&](auto* feature) {
-        if (!feature || feature->isError()) {
+    auto getFeatureProps = [&](PartDesign::Revolved* feature) {
+        if (!feature) {
             return false;
         }
-        Part::TopoShape profile = feature->getProfileShape();
 
-        profile.getCenterOfGravity(profileCog);
-        basePos = feature->Base.getValue();
-        axisDir = feature->Axis.getValue();
-        reversed = feature->Reversed.getValue();
-        sideType = std::string(feature->SideType.getValueAsString());
-        symmetric = sideType == "Symmetric";
-        revolutionType = std::string(feature->Type.getValueAsString());
-        revolutionType2 = std::string(feature->Type2.getValueAsString());
+        try {
+            Part::TopoShape profile = feature->getProfileShape();
+            if (profile.isNull()) {
+                return false;
+            }
+
+            profile.getCenterOfGravity(profileCog);
+            basePos = feature->Base.getValue();
+            axisDir = feature->Axis.getValue();
+            if (axisDir.IsNull()) {
+                return false;
+            }
+
+            reversed = feature->Reversed.getValue();
+            sideType = std::string(feature->SideType.getValueAsString());
+            symmetric = sideType == "Symmetric";
+            revolutionType = std::string(feature->Type.getValueAsString());
+            revolutionType2 = std::string(feature->Type2.getValueAsString());
+        }
+        catch (...) {
+            return false;
+        }
+
         return true;
     };
 
-    bool ret;
-    if (isGroove) {
-        ret = getFeatureProps(getObject<PartDesign::Groove>());
-    }
-    else {
-        ret = getFeatureProps(getObject<PartDesign::Revolution>());
-    }
-
-    gizmoContainer->visible = ret;
-    if (!ret) {
+    PartDesign::Revolved* feature = isGroove
+        ? static_cast<PartDesign::Revolved*>(getObject<PartDesign::Groove>())
+        : static_cast<PartDesign::Revolved*>(getObject<PartDesign::Revolution>());
+    if (!feature) {
+        gizmoContainer->visible = false;
         return;
     }
+
+    if (!getFeatureProps(feature)) {
+        return;
+    }
+    gizmoContainer->visible = true;
 
     auto diff = profileCog - basePos;
     axisDir.Normalize();
