@@ -43,7 +43,6 @@ class BIM_Views:
             "Pixmap": "BIM_Views",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Views", "Views Manager"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Views", "Shows or hides the views manager"),
-            "Accel": "Ctrl+9",
         }
 
     def Activated(self):
