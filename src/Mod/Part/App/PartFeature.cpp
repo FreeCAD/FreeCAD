@@ -214,6 +214,7 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                 // first we need to check reference IDs
                 int refIDInterference = 0;
                 size_t linkedNameInterference = 0;
+                size_t connectedNameInterference = 0;
 
                 for (const std::string& name1ListID : checkSections.first.referenceIDs) {
                     for (const std::string& name2ListID : checkSections.second.referenceIDs) {
@@ -236,6 +237,22 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                     }
                 }
 
+                for (const std::string& name1ConnectedName : checkSections.first.connectedElements) {
+                    for (const std::string& name2ConnectedName : checkSections.second.connectedElements) {
+                        if ((name1ConnectedName == name2ConnectedName)
+                            || (name1ConnectedName != "_" && name2ConnectedName != "_"
+                                && doNamesMatch(
+                                    Data::MappedName(name1ConnectedName),
+                                    Data::MappedName(name2ConnectedName)
+                                )
+                            )
+                        ) 
+                        {
+                            connectedNameInterference++;
+                        }
+                    }
+                }
+
                 bool linkedNamePass = false;
 
                 if (checkSections.first.hasMapperFlag("LOW")
@@ -251,6 +268,8 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                 }
 
                 if (linkedNamePass
+                    && (connectedNameInterference >= 1
+                        || checkSections.first.connectedElements == checkSections.second.connectedElements)
                     && (refIDInterference >= 2
                         || checkSections.first.referenceIDs == checkSections.second.referenceIDs)) {
                     Data::DecodedMappedSection modifiedFirstSection(checkSections.first);
@@ -260,9 +279,11 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                     // check much easier.
                     modifiedFirstSection.referenceIDs.clear();
                     modifiedFirstSection.linkedNames.clear();
+                    modifiedFirstSection.connectedElements.clear();
 
                     modifiedSecondSection.referenceIDs.clear();
                     modifiedSecondSection.linkedNames.clear();
+                    modifiedSecondSection.connectedElements.clear();
 
                     if (modifiedFirstSection != modifiedSecondSection) {
                         return false;
