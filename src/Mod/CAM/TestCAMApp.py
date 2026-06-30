@@ -47,6 +47,7 @@ from CAMTests.TestPathFacingGenerator import TestPathFacingGenerator
 from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from CAMTests.TestPathGeom import TestPathGeom
 from CAMTests.TestPathLanguage import TestPathLanguage
+from CAMTests.TestPathLeadInOutGenerator import TestPathLeadInOutGenerator
 from CAMTests.TestPathOpDeburr import TestPathOpDeburr
 from CAMTests.TestPathHelpers import TestPathHelpers
 from CAMTests.TestPathHelix import TestPathHelix
