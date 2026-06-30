@@ -49,8 +49,6 @@ BSDD_DICTIONARY_META_PRESENT_KEY = "BIM_BsddActiveDictionariesPresent"
 BSDD_CONTRACT_ROLE = 33
 
 
-
-
 class BIM_Classification:
 
     def GetResources(self):
@@ -323,7 +321,9 @@ class BIM_Classification:
             ) = self._load_bsdd_dictionary_state()
             self._apply_provider_visibility()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_setup_bsdd_ui", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_setup_bsdd_ui", err)
+            )
 
     def _connect_bsdd_signals(self):
         try:
@@ -343,7 +343,9 @@ class BIM_Classification:
             self._bsdd_client.requestFailed.connect(self._on_bsdd_request_failed)
             self._bsdd_signals_connected = True
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_connect_bsdd_signals", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_connect_bsdd_signals", err)
+            )
 
     def _disconnect_bsdd_signals(self):
         try:
@@ -356,7 +358,9 @@ class BIM_Classification:
         except (RuntimeError, TypeError):
             return
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_disconnect_bsdd_signals", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_disconnect_bsdd_signals", err)
+            )
         finally:
             self._bsdd_signals_connected = False
 
@@ -365,7 +369,9 @@ class BIM_Classification:
             FreeCADGui.Selection.addObserver(self)
             self._selection_observer_installed = True
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_install_selection_observer", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_install_selection_observer", err)
+            )
 
     def _remove_selection_observer(self):
         try:
@@ -373,13 +379,17 @@ class BIM_Classification:
                 FreeCADGui.Selection.removeObserver(self)
                 self._selection_observer_installed = False
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_remove_selection_observer", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_remove_selection_observer", err)
+            )
 
     def _request_bsdd_dictionaries(self):
         try:
             self._bsdd_client.fetch_dictionaries()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_request_bsdd_dictionaries", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_request_bsdd_dictionaries", err)
+            )
 
     def _on_provider_changed(self, *_args):
         try:
@@ -390,7 +400,9 @@ class BIM_Classification:
                 self._request_bsdd_dictionaries()
                 self._schedule_bsdd_search()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_on_provider_changed", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_provider_changed", err)
+            )
 
     def _apply_provider_visibility(self):
         try:
@@ -410,7 +422,9 @@ class BIM_Classification:
             )
             self.form.groupClasses.setTitle(title)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_apply_provider_visibility", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_apply_provider_visibility", err)
+            )
 
     def _is_bsdd_provider_active(self):
         try:
@@ -419,14 +433,18 @@ class BIM_Classification:
                 and self.form.comboProvider.currentText() == "bSDD"
             )
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_is_bsdd_provider_active", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_is_bsdd_provider_active", err)
+            )
             return False
 
     def _on_bsdd_search_text_changed(self, *_args):
         try:
             self._schedule_bsdd_search()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_search_text_changed", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_search_text_changed", err)
+            )
 
     def _schedule_bsdd_search(self):
         try:
@@ -436,7 +454,9 @@ class BIM_Classification:
                 self._search_timer.stop()
             self._search_timer.start()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_schedule_bsdd_search", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_schedule_bsdd_search", err)
+            )
 
     def _normalize_bsdd_context_query(self, related_ifc_entity):
         try:
@@ -448,7 +468,9 @@ class BIM_Classification:
             normalized = re.sub(r"(?<!^)(?=[A-Z])", " ", normalized).strip()
             return normalized or str(related_ifc_entity)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_normalize_bsdd_context_query", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_normalize_bsdd_context_query", err)
+            )
             return related_ifc_entity or ""
 
     def _set_bsdd_results_placeholder(self, message):
@@ -462,7 +484,9 @@ class BIM_Classification:
                 self.form.bsddResultsModel.appendRow(item)
             self._populate_bsdd_properties(None)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_set_bsdd_results_placeholder", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_set_bsdd_results_placeholder", err)
+            )
 
     def _get_bsdd_search_inputs(self):
         try:
@@ -471,7 +495,9 @@ class BIM_Classification:
             related_ifc_entity = self._bsdd_context_ifc_class or ""
             return query_text, active_dictionaries, related_ifc_entity
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_get_bsdd_search_inputs", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_bsdd_search_inputs", err)
+            )
             return "", [], ""
 
     def _build_bsdd_search_candidates(self, query_text, active_dictionaries, related_ifc_entity):
@@ -496,7 +522,9 @@ class BIM_Classification:
                         candidates.append(candidate)
             return candidates
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_build_bsdd_search_candidates", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_build_bsdd_search_candidates", err)
+            )
             return []
 
     def _dispatch_bsdd_search_candidate(self, dictionary_uri):
@@ -522,7 +550,9 @@ class BIM_Classification:
                     dictionary_uri,
                 )
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_dispatch_bsdd_search_candidate", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_dispatch_bsdd_search_candidate", err)
+            )
 
     def _initialize_bsdd_result_tree(self, active_dictionaries):
         try:
@@ -543,7 +573,9 @@ class BIM_Classification:
                 self._bsdd_dictionary_nodes[dictionary_uri] = dict_item
             self.form.bsddResultsTree.expandAll()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_initialize_bsdd_result_tree", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_initialize_bsdd_result_tree", err)
+            )
 
     def _clear_bsdd_dictionary_branch(self, dictionary_uri):
         try:
@@ -551,7 +583,9 @@ class BIM_Classification:
             if node is not None:
                 node.removeRows(0, node.rowCount())
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_clear_bsdd_dictionary_branch", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_clear_bsdd_dictionary_branch", err)
+            )
 
     def _append_bsdd_dictionary_results(self, dictionary_uri, concepts):
         try:
@@ -572,7 +606,9 @@ class BIM_Classification:
                 if node.rowCount() and not self.form.bsddResultsTree.currentIndex().isValid():
                     self.form.bsddResultsTree.setCurrentIndex(node.child(0).index())
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_append_bsdd_dictionary_results", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_append_bsdd_dictionary_results", err)
+            )
 
     def _finalize_bsdd_dictionary_branch(self, dictionary_uri, message=None):
         try:
@@ -589,7 +625,9 @@ class BIM_Classification:
             placeholder.setSelectable(False)
             node.appendRow(placeholder)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_finalize_bsdd_dictionary_branch", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_finalize_bsdd_dictionary_branch", err)
+            )
 
     def _finalize_bsdd_search_batch_if_empty(self):
         try:
@@ -600,7 +638,11 @@ class BIM_Classification:
             for dictionary_uri in self._bsdd_dictionary_nodes.keys():
                 self._finalize_bsdd_dictionary_branch(dictionary_uri)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_finalize_bsdd_search_batch_if_empty", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format(
+                    "_finalize_bsdd_search_batch_if_empty", err
+                )
+            )
 
     def _perform_bsdd_search(self):
         try:
@@ -641,7 +683,9 @@ class BIM_Classification:
                     )
                 )
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_perform_bsdd_search", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_perform_bsdd_search", err)
+            )
 
     def _on_bsdd_dictionary_toggle(self, checked):
         try:
@@ -650,7 +694,9 @@ class BIM_Classification:
                 QtCore.Qt.DownArrow if checked else QtCore.Qt.RightArrow
             )
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_dictionary_toggle", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_dictionary_toggle", err)
+            )
 
     def _get_active_bsdd_dictionaries(self):
         active = []
@@ -662,7 +708,9 @@ class BIM_Classification:
                     if uri:
                         active.append(uri)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_get_active_bsdd_dictionaries", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_active_bsdd_dictionaries", err)
+            )
         return active
 
     def _on_bsdd_dictionary_item_changed(self, *_args):
@@ -672,7 +720,9 @@ class BIM_Classification:
             self._save_bsdd_dictionary_state()
             self._schedule_bsdd_search()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_dictionary_item_changed", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_dictionary_item_changed", err)
+            )
 
     def _on_bsdd_dictionaries_ready(self, payload):
         try:
@@ -710,8 +760,14 @@ class BIM_Classification:
             try:
                 self.form.bsddDictionaryList.blockSignals(False)
             except Exception as block_err:
-                FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_dictionaries_ready.blockSignals", block_err))
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_dictionaries_ready", err))
+                FreeCAD.Console.PrintWarning(
+                    "BIM bSDD UI warning in {}: {}\n".format(
+                        "_on_bsdd_dictionaries_ready.blockSignals", block_err
+                    )
+                )
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_dictionaries_ready", err)
+            )
 
     def _on_bsdd_search_ready(self, search_key, payload):
         try:
@@ -736,7 +792,9 @@ class BIM_Classification:
                 return
             self._append_bsdd_dictionary_results(dictionary_uri, classes)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_search_ready", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_search_ready", err)
+            )
 
     def _on_bsdd_result_changed(self, current, _previous):
         try:
@@ -754,7 +812,9 @@ class BIM_Classification:
             if concept_uri:
                 self._bsdd_client.fetch_concept(concept_uri)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_result_changed", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_result_changed", err)
+            )
 
     def _on_bsdd_concept_ready(self, concept_uri, payload):
         try:
@@ -766,7 +826,9 @@ class BIM_Classification:
                 self._update_bsdd_contract()
                 self._populate_bsdd_properties(payload)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_concept_ready", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_concept_ready", err)
+            )
 
     def _on_bsdd_request_failed(self, request_kind, message, cache_key):
         try:
@@ -787,7 +849,9 @@ class BIM_Classification:
                 "bSDD request failed [{}] {} ({})\n".format(request_kind, message, cache_key)
             )
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_request_failed", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_on_bsdd_request_failed", err)
+            )
 
     def _populate_bsdd_properties(self, payload):
         try:
@@ -821,7 +885,9 @@ class BIM_Classification:
                 self.form.bsddPropertyTable.setItem(row, 1, QtWidgets.QTableWidgetItem(str(value)))
             self.form.bsddPropertyTable.resizeColumnsToContents()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_populate_bsdd_properties", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_populate_bsdd_properties", err)
+            )
 
     def _refresh_bsdd_context(self):
         try:
@@ -832,7 +898,9 @@ class BIM_Classification:
                     translate("BIM", "Current IFC context: {}").format(context_text)
                 )
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_refresh_bsdd_context", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_refresh_bsdd_context", err)
+            )
 
     def _get_active_ifc_context(self):
         try:
@@ -850,14 +918,18 @@ class BIM_Classification:
                     if token.startswith("Ifc"):
                         return token
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_get_active_ifc_context", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_active_ifc_context", err)
+            )
         return ""
 
     def _serialize_bsdd_dictionary_state(self):
         try:
             return "|".join(self._get_active_bsdd_dictionaries())
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_serialize_bsdd_dictionary_state", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_serialize_bsdd_dictionary_state", err)
+            )
             return ""
 
     def _save_bsdd_dictionary_state(self):
@@ -870,7 +942,9 @@ class BIM_Classification:
             FreeCAD.ActiveDocument.Meta = meta
             self._has_saved_bsdd_dictionary_state = True
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_save_bsdd_dictionary_state", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_save_bsdd_dictionary_state", err)
+            )
 
     def _load_bsdd_dictionary_state(self):
         try:
@@ -883,7 +957,9 @@ class BIM_Classification:
                 return has_saved, set()
             return has_saved, {entry for entry in value.split("|") if entry}
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_load_bsdd_dictionary_state", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_load_bsdd_dictionary_state", err)
+            )
             return False, set()
 
     def _get_selected_bsdd_concept(self):
@@ -891,7 +967,9 @@ class BIM_Classification:
             index = self.form.bsddResultsTree.currentIndex()
             return index.data(QtCore.Qt.UserRole)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_get_selected_bsdd_concept", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_selected_bsdd_concept", err)
+            )
             return None
 
     def _update_bsdd_contract(self):
@@ -913,7 +991,9 @@ class BIM_Classification:
             self._bsdd_contract = contract
         except Exception as err:
             self._bsdd_contract = None
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_update_bsdd_contract", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_update_bsdd_contract", err)
+            )
 
     def _get_current_bsdd_contract(self):
         try:
@@ -921,7 +1001,9 @@ class BIM_Classification:
                 self._update_bsdd_contract()
             return self._bsdd_contract
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_get_current_bsdd_contract", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_current_bsdd_contract", err)
+            )
             return None
 
     def _store_bsdd_contract_for_item(self, tree_item, contract):
@@ -933,7 +1015,9 @@ class BIM_Classification:
             elif object_name:
                 self._bsdd_object_contracts.pop(object_name, None)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_store_bsdd_contract_for_item", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_store_bsdd_contract_for_item", err)
+            )
 
     def _get_stored_bsdd_contract_for_item(self, tree_item):
         try:
@@ -945,7 +1029,9 @@ class BIM_Classification:
                 return self._bsdd_object_contracts.get(object_name)
             return None
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_get_stored_bsdd_contract_for_item", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_stored_bsdd_contract_for_item", err)
+            )
             return None
 
     def _restore_bsdd_contract_for_item(self, tree_item, object_name):
@@ -956,7 +1042,9 @@ class BIM_Classification:
             if contract:
                 self._store_bsdd_contract_for_item(tree_item, contract)
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_restore_bsdd_contract_for_item", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_restore_bsdd_contract_for_item", err)
+            )
 
     def _apply_bsdd_contract_to_object(self, obj, contract):
         try:
@@ -996,7 +1084,9 @@ class BIM_Classification:
             prefix = self.form.comboSystem.currentText()
             return code, label, prefix
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("_get_selected_class_values", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("_get_selected_class_values", err)
+            )
             return None, None, None
 
     def addSelection(self, document, object, element, position):
@@ -1006,7 +1096,9 @@ class BIM_Classification:
             if self._is_bsdd_provider_active():
                 self._schedule_bsdd_search()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("addSelection", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("addSelection", err)
+            )
 
     def removeSelection(self, document, object, element, position=None):
         try:
@@ -1015,7 +1107,9 @@ class BIM_Classification:
             if self._is_bsdd_provider_active():
                 self._schedule_bsdd_search()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("removeSelection", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("removeSelection", err)
+            )
 
     def setSelection(self, document):
         try:
@@ -1024,7 +1118,9 @@ class BIM_Classification:
             if self._is_bsdd_provider_active():
                 self._schedule_bsdd_search()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("setSelection", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("setSelection", err)
+            )
 
     def clearSelection(self, document):
         try:
@@ -1033,7 +1129,9 @@ class BIM_Classification:
             if self._is_bsdd_provider_active():
                 self._schedule_bsdd_search()
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("clearSelection", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("clearSelection", err)
+            )
 
     def updateObjects(self, idx=None):
         # store current state of tree into self.objectslist before redrawing
@@ -1490,7 +1588,11 @@ class BIM_Classification:
                         try:
                             FreeCAD.ActiveDocument.abortTransaction()
                         except Exception as err:
-                            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("accept.abortTransaction", err))
+                            FreeCAD.Console.PrintWarning(
+                                "BIM bSDD UI warning in {}: {}\n".format(
+                                    "accept.abortTransaction", err
+                                )
+                            )
                         return self.reject()
                 if self.form.checkPrefix.isChecked() and prefix:
                     code = prefix + " " + code
@@ -1541,7 +1643,9 @@ class BIM_Classification:
                 if self.form.treeClass.itemBelow(i):
                     self.form.treeClass.setCurrentItem(self.form.treeClass.itemBelow(i))
         except Exception as err:
-            FreeCAD.Console.PrintWarning("BIM bSDD UI warning in {}: {}\n".format("onDownArrow", err))
+            FreeCAD.Console.PrintWarning(
+                "BIM bSDD UI warning in {}: {}\n".format("onDownArrow", err)
+            )
 
     def onVisible(self, index):
         PARAMS.SetInt("BimClassificationVisibleState", getattr(index, "value", index))
@@ -1569,4 +1673,3 @@ class BIM_Classification:
 
 
 FreeCADGui.addCommand("BIM_Classification", BIM_Classification())
-
