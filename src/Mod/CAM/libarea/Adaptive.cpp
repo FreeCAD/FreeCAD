@@ -2146,6 +2146,16 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             initialClearedPaths2.push_back(p);
         }
 
+        // Shrink that area to represent tool center locations that do not clear any area
+        Clipper2Lib::ClipperOffset clipof2;
+        clipof2.AddPaths(
+            initialClearedPaths2,
+            Clipper2Lib::JoinType::Round,
+            Clipper2Lib::EndType::Polygon
+        );
+        Clipper2Lib::Paths64 initialClearedCenters;
+        clipof2.Execute(-toolRadiusScaled, initialClearedCenters);
+
         // Convert stockInputPaths to Clipper2
         Clipper2Lib::Paths64 stockInputPaths2;
         for (const auto& stockPath : stockInputPaths) {
@@ -2159,7 +2169,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         // Compute noncleared area = stock - cleared
         Clipper2Lib::Clipper64 clipDiff;
         clipDiff.AddSubject(stockInputPaths2);
-        clipDiff.AddClip(initialClearedPaths2);
+        clipDiff.AddClip(initialClearedCenters);
         Clipper2Lib::Paths64 nonclearedPaths;
         clipDiff.Execute(
             Clipper2Lib::ClipType::Difference,
