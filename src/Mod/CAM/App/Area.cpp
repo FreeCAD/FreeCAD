@@ -1930,13 +1930,13 @@ std::vector<shared_ptr<Area>> Area::makeSections(
                 for (TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
                     showShape(xp.Current(), nullptr, "section_%zu_shape", i);
                     std::list<TopoDS_Wire> wires;
-                    Part::CrossSection section(a, b, c, xp.Current());
+                    Part::CrossSection section(-a, -b, -c, xp.Current());
                     Part::FuzzyHelper::withBooleanFuzzy(.0, [&]() {
                         // Workaround for https://github.com/FreeCAD/FreeCAD/issues/17748
                         // needed to make finish pass work.
                         // This fix might be better to move into Part::CrossSection but it is kept
                         // here for now to be on the safe side.
-                        wires = section.slice(-d);
+                        wires = section.slice(d);
                     });
                     showShapes(wires, nullptr, "section_%zu_wire", i);
                     if (wires.empty()) {
