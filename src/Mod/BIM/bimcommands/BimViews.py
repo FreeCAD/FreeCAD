@@ -43,6 +43,7 @@ class BIM_Views:
             "Pixmap": "BIM_Views",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Views", "Views Manager"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Views", "Shows or hides the views manager"),
+            "Accel": "Ctrl+9",
         }
 
     def Activated(self):
@@ -517,15 +518,13 @@ class BIM_Views:
 
     @staticmethod
     def activate(dialog=None):
-        from draftutils.gui_utils import toggle_working_plane
-
         vm = findWidget()
         if vm:
             if vm.tree.selectedItems():
                 item = vm.tree.selectedItems()[-1]
                 obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
                 if obj:
-                    toggle_working_plane(obj, None, restore=True, dialog=dialog)
+                    toggle_active_level(obj, dialog=dialog)
                     FreeCADGui.Selection.clearSelection()
 
     def editObject(self, item, column):
@@ -738,12 +737,10 @@ def show(item, column=None):
         FreeCADGui.Selection.addSelection(obj)
         vparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
         if obj.isDerivedFrom("TechDraw::DrawPage"):
-
-            # case 1: the object is a TD page. We switch to it simply
+            # TD page: We switch to it.
             obj.ViewObject.Visibility = True
         elif isView(obj):
-
-            # case 2: the object is a 2D view
+            # 2D view
             ssel = [obj] + obj.Group
             FreeCADGui.Selection.clearSelection()
             for o in ssel:
@@ -765,11 +762,11 @@ def show(item, column=None):
                 vparam.SetBool("Simple", True)
                 vparam.SetBool("Gradient", False)
                 vparam.SetBool("RadialGradient", False)
+        elif Draft.getType(obj) in ("BuildingPart", "IfcBuildingStorey"):
+            BIM_Views.activate()
         else:
-            # case 3: This is maybe a BuildingPart. Place the WP on it")
-            type = Draft.getType(obj)
-            if type == "BuildingPart" or type == "IfcBuildingStorey":
-                BIM_Views.activate()
+            # WP Proxy
+            FreeCADGui.runCommand("Draft_SelectPlane")
 
     if vm:
         # store the last double-clicked item for the BIM WPView command
@@ -863,6 +860,60 @@ def getParent(obj):
         for parent in obj.InList:
             if hasattr(parent, "Group") and obj in parent.Group:
                 return parent
+
+
+def toggle_active_level(obj, action=None, dialog=None):
+    """Toggle the active state of a BIM level.
+
+    This function handles the logic for activating BuildingParts and IfcBuildingStoreys.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to activate or deactivate as a working plane.
+        Must be an IfcBuildingStorey or a BuildingPart.
+    action : QAction, optional
+        The action button that triggered this function, to update its checked state.
+    dialog : QDialog, optional
+        If provided, will update the checked state of the activate button in the dialog.
+
+    Returns
+    -------
+    bool
+        True if the object was activated, False if it was deactivated.
+    """
+
+    active_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+    if active_obj is None:
+        active_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+    is_active = obj == active_obj
+
+    if getattr(obj.ViewObject, "SetWorkingPlane", False):
+        obj.ViewObject.Proxy.setWorkingPlane(restore=is_active)
+    elif (
+        not is_active
+        and active_obj is not None
+        and getattr(active_obj.ViewObject, "SetWorkingPlane", False)
+    ):
+        active_obj.ViewObject.Proxy.setWorkingPlane(restore=True)
+
+    if action:
+        action.setChecked((not is_active))
+    if dialog and hasattr(dialog, "buttonActive"):
+        dialog.buttonActive.setChecked((not is_active))
+
+    if is_active:
+        # Deactivate the object
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
+        return False
+    else:
+        # Activate the object
+        import Draft
+
+        context = "NativeIFC" if Draft.getType(obj) == "IfcBuildingStorey" else "Arch"
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, obj)
+        return True
 
 
 FreeCADGui.addCommand("BIM_Views", BIM_Views())
