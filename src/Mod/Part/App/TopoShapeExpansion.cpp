@@ -857,20 +857,18 @@ void TopoShape::mapSubElementTypeForShape(
             }
         }
         Data::IndexedName element = Data::IndexedName::fromConst(shapeType, index);
-        std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> mappedNames 
-            = other.getElementMappedNames(element); // don't get unmapped.
+        std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> mappedNames
+            = other.getElementMappedNames(element);  // don't get unmapped.
 
         if (mappedNames.empty()) {
             mappedNames.push_back(
-                {
-                    Data::MappedName::makeUnmappedName(
-                        {element.toString()},
-                        other.Tag,
-                        op,
-                        (*element.getType())
-                    ),
-                    {}
-                }
+                {Data::MappedName::makeUnmappedName(
+                     {element.toString()},
+                     other.Tag,
+                     op,
+                     (*element.getType())
+                 ),
+                 {}}
             );
         }
 
@@ -1002,20 +1000,18 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
             }
             Data::IndexedName element = Data::IndexedName::fromConst(shapetype, idx);
             Data::IndexedName otherElement = Data::IndexedName::fromConst(shapetype, i);
-            std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> mappedNames 
-                = other.getElementMappedNames(otherElement); // don't get unmapped.
+            std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> mappedNames
+                = other.getElementMappedNames(otherElement);  // don't get unmapped.
 
             if (mappedNames.empty()) {
                 mappedNames.push_back(
-                    {
-                        Data::MappedName::makeUnmappedName(
-                            {otherElement.toString()},
-                            other.Tag,
-                            op,
-                            (*element.getType())
-                        ),
-                        {}
-                    }
+                    {Data::MappedName::makeUnmappedName(
+                         {otherElement.toString()},
+                         other.Tag,
+                         op,
+                         (*element.getType())
+                     ),
+                     {}}
                 );
             }
 
@@ -2263,15 +2259,13 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     if (incomingShapeElementMappedNames.empty()) {
                         incomingShapeElementMappedNames.push_back(
-                            {
-                                Data::MappedName::makeUnmappedName(
-                                    {incomingShapeElementIndexedName.toString()},
-                                    incomingShape.Tag,
-                                    op,
-                                    (*incomingShapeElementIndexedName.getType())
-                                ),
-                                {}
-                            }
+                            {Data::MappedName::makeUnmappedName(
+                                 {incomingShapeElementIndexedName.toString()},
+                                 incomingShape.Tag,
+                                 op,
+                                 (*incomingShapeElementIndexedName.getType())
+                             ),
+                             {}}
                         );
                     }
 
