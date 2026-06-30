@@ -1954,7 +1954,9 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
                 }
                 text->size.setValue(drawingParameters.labelFontSize);
-                text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
+                text->lineWidth = drawingParameters.DimensionalConstraintLineWidth
+                    * drawingParameters.pixelScalingFactor;
+                text->linePattern = drawingParameters.DimensionalConstraintLinePattern;
                 text->useAntialiasing = false;
                 sep->addChild(text);
                 editModeScenegraphNodes.constrGroup->addChild(sep);
