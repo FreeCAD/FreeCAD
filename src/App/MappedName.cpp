@@ -155,30 +155,13 @@ DecodedMappedName MappedName::getDecodedMappedName() const {
     return MappedName::getDecodedMappedName(toString());
 }
 
-MappedName MappedName::fromDecodedMappedName(const DecodedMappedName tree) {
+MappedName MappedName::fromDecodedMappedName(const DecodedMappedName& name) {
     std::stringstream ss;
-    DecodedMappedSection section;
 
-    for (size_t i = 0; i < tree.size(); ++i) {
-        section = tree[i];
-        std::vector<MappedName> formattedLinkedNames;
+    for (size_t i = 0; i < name.size(); ++i) {
+        ss << MappedName::makeSection(name[i]);
 
-        for (const std::string& linkedName : section.linkedNames) {
-            formattedLinkedNames.push_back(MappedName(linkedName));
-        }
-
-        ss << MappedName::makeSection(
-            section.referenceIDs,
-            formattedLinkedNames,
-            section.iterationTag,
-            section.opCode.c_str(),
-            section.index,
-            section.elementType,
-            section.duplicateCount,
-            section.mapperFlags
-        );
-
-        if ((i + 1) < tree.size())
+        if ((i + 1) < name.size())
             ss << Data::NAME_SECTION_DELIMINATOR;
     }
 
@@ -244,6 +227,46 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
                                     std::vector<std::string> mapperFlags,
                                     std::vector<MappedName> connectedElements) // TODO: switch to vector of individual flags
 {
+    std::vector<std::string> formattedLinkedNames { };
+    std::vector<std::string> formattedConnectedElements { };
+
+    for (const MappedName& name : linkedNames) {
+        if (name) {
+            formattedLinkedNames.push_back(name.toString());
+        }
+    }
+
+    for (const MappedName& name : connectedElements) {
+        if (name) {
+            formattedConnectedElements.push_back(name.toString());
+        }
+    }
+
+    return MappedName::makeSection(
+        referenceIDs,
+        formattedLinkedNames,
+        iterationTag,
+        opCode,
+        index,
+        elementType,
+        duplicateCount,
+        mapperFlags,
+        formattedConnectedElements
+    );
+}
+
+// IMPORTANT: make sure the placement of the sub-sections in the return
+// string matches what is described in ElementNamingUtils.h
+std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
+                                    std::vector<std::string> linkedNames,
+                                    std::string iterationTag,
+                                    const char* opCode,
+                                    std::string index,
+                                    char elementType,
+                                    std::string duplicateCount,
+                                    std::vector<std::string> mapperFlags,
+                                    std::vector<std::string> connectedElements) // TODO: switch to vector of individual flags
+{
     std::stringstream ss;
     std::string opCodeString = (opCode == nullptr || strlen(opCode) == 0) ? "MKR" : opCode;
 
@@ -269,7 +292,7 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
                 ss << Data::SUB_SECTION_LIST_DELIMINATOR;
             }
 
-            ss << MappedName::escapeString(linkedNames[i].toString());
+            ss << MappedName::escapeString(linkedNames[i]);
         }
     }
 
@@ -307,11 +330,26 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
                 ss << Data::SUB_SECTION_LIST_DELIMINATOR;
             }
 
-            ss << MappedName::escapeString(connectedElements[i].toString());
+            ss << MappedName::escapeString(connectedElements[i]);
         }
     }
     
     return ss.str();
+}
+
+std::string MappedName::makeSection(const DecodedMappedSection& decodedSection)
+{
+    return MappedName::makeSection(
+        decodedSection.referenceIDs,
+        decodedSection.linkedNames,
+        decodedSection.iterationTag,
+        decodedSection.opCode.c_str(),
+        decodedSection.index,
+        decodedSection.elementType,
+        decodedSection.duplicateCount,
+        decodedSection.mapperFlags,
+        decodedSection.connectedElements
+    );
 }
 
 MappedName MappedName::makeUnmappedName(std::vector<std::string> indexedNames,

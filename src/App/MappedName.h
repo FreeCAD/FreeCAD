@@ -1196,7 +1196,7 @@ public:
 
     DecodedMappedName getDecodedMappedName() const;
     
-    static MappedName fromDecodedMappedName(const DecodedMappedName tree);
+    static MappedName fromDecodedMappedName(const DecodedMappedName& name);
 
     static std::vector<std::string> splitToSections(const std::string data, const char deliminator);
 
@@ -1223,6 +1223,18 @@ public:
                                    std::string duplicateCount = 0,
                                    std::vector<std::string> mapperFlags = { },
                                    std::vector<MappedName> connectedElements = { });
+
+    static std::string makeSection(std::vector<std::string> referenceIDs = { },
+                                   std::vector<std::string> linkedNames = { },
+                                   std::string iterationTag = 0,
+                                   const char* opCode = "MKR",
+                                   std::string index = 0,
+                                   char elementType = 'E',
+                                   std::string duplicateCount = 0,
+                                   std::vector<std::string> mapperFlags = { },
+                                   std::vector<std::string> connectedElements = { });
+
+    static std::string makeSection(const DecodedMappedSection& decodedSection);
 
     static MappedName makeUnmappedName(std::vector<std::string> indexedNames = { },
                                        int iterationTag = 0,
