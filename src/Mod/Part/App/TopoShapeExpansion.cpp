@@ -2653,8 +2653,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         const auto& incomingElement = otherMap.find(incomingShape._Shape, otherI);
 
                         if (incomingElement.IsPartner(mainElement)) {
-                            Data::IndexedName incomingShapeIndexedName = Data::IndexedName::fromConst(info->shapetype, otherI);
-                            
+                            Data::IndexedName incomingShapeIndexedName
+                                = Data::IndexedName::fromConst(info->shapetype, otherI);
+
                             Data::MappedName incomingShapeMapName = incomingShape.getMappedName(
                                 incomingShapeIndexedName
                             );
@@ -2671,13 +2672,14 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                         0,
                                         {"PTN"}
                                     )
-                                    .c_str()
+                                        .c_str()
                                 );
 
                                 usedPartnerNames.insert(incomingShapeMapName);
 
                                 wasMapped = true;
-                                ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
+                                ensureElementMap()
+                                    ->setElementName(mainElementIndexedName, newName, masterTag);
                                 break;
                             }
                         }
