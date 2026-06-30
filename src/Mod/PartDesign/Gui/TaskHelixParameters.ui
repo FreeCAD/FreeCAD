@@ -33,6 +33,20 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutSideMode">
+     <item>
+      <widget class="QLabel" name="labelSideMode">
+       <property name="text">
+        <string>Side mode</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="sidesMode"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="labelAxis">
@@ -172,6 +186,30 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutHeight2">
+     <item>
+      <widget class="QLabel" name="labelHeight2">
+       <property name="text">
+        <string>Height 2</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="height2">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+       <property name="value">
+        <double>30.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayoutTurns">
      <item>
       <widget class="QLabel" name="labelTurns">
@@ -182,6 +220,30 @@
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="turns">
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>3.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutTurns2">
+     <item>
+      <widget class="QLabel" name="labelTurns2">
+       <property name="text">
+        <string>Turns 2</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::QuantitySpinBox" name="turns2">
        <property name="keyboardTracking">
         <bool>false</bool>
        </property>
@@ -303,11 +365,14 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>sidesMode</tabstop>
   <tabstop>axis</tabstop>
   <tabstop>inputMode</tabstop>
   <tabstop>pitch</tabstop>
   <tabstop>height</tabstop>
+  <tabstop>height2</tabstop>
   <tabstop>turns</tabstop>
+  <tabstop>turns2</tabstop>
   <tabstop>coneAngle</tabstop>
   <tabstop>growth</tabstop>
   <tabstop>checkBoxLeftHanded</tabstop>
