@@ -50,12 +50,8 @@ std::string TopoShapeVertexPy::representation() const
     try {
         const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
         gp_Pnt p = BRep_Tool::Pnt(v);
-        double x = p.X();
-        double y = p.Y();
-        double z = p.Z();
-
         str << "<Part.Vertex (";
-        str << x << ", " << y << ", " << z;
+        str << p.X() << ", " << p.Y() << ", " << p.Z();
         str << ")>";
     }
     catch (Standard_Failure) {
@@ -168,15 +164,14 @@ PyObject* TopoShapeVertexPy::sequence_item(PyObject* self, Py_ssize_t index)
         return nullptr;
     }
 
-    switch (index) {
-        case 0:
-            return PyObject_GetAttrString(self, (char*)"X");
-        case 1:
-            return PyObject_GetAttrString(self, (char*)"Y");
-        case 2:
-            return PyObject_GetAttrString(self, (char*)"Z");
+    try {
+        const TopoDS_Vertex& v = TopoDS::Vertex(static_cast<TopoShapeVertexPy*>(self)->getTopoShapePtr()->getShape());
+        return PyFloat_FromDouble(BRep_Tool::Pnt(v).Coord(index + 1));
     }
-    return Py_None;
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return nullptr;
+    }
 }
 
 Py::Float TopoShapeVertexPy::getTolerance() const
@@ -230,29 +225,28 @@ Py::Float TopoShapeVertexPy::getZ() const
 
 PyObject* TopoShapeVertexPy::richCompare(PyObject* self, PyObject* object, int op)
 {
-    if (op != Py_EQ && op != Py_NE) {
-        PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vertex.");
+    if (!PyObject_TypeCheck(self, &(TopoShapeVertexPy::Type)) || !PyObject_TypeCheck(object, &(TopoShapeVertexPy::Type))) {
+        PyErr_SetString(PyExc_TypeError, "both operands must be Vertices");
         return nullptr;
     }
-    PyObject* same = PyUnicode_FromString("isSame");
-    PyObject* res = PyObject_CallMethodOneArg(self, same, object);
 
-    Py_DecRef(same);
-
-    if (!res) {
-        return res;
+    try {
+        const TopoDS_Vertex& lhs = TopoDS::Vertex(static_cast<TopoShapeVertexPy*>(self)->getTopoShapePtr()->getShape());
+        const TopoDS_Vertex& rhs = TopoDS::Vertex(static_cast<TopoShapeVertexPy*>(object)->getTopoShapePtr()->getShape());
+        switch (op) {
+            case Py_EQ:
+                return PyBool_FromLong(lhs.IsSame(rhs));
+            case Py_NE:
+                return PyBool_FromLong(!lhs.IsSame(rhs));
+            default:
+                PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vertex.");
+                return nullptr;
+        }
     }
-
-    long result = 0;
-    if (res == Py_True) {
-        result = 1;
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return nullptr;
     }
-
-    if (op == Py_NE) {
-        result = !result;
-    }
-
-    return PyBool_FromLong(result);
 }
 
 Py::Object TopoShapeVertexPy::getPoint() const
