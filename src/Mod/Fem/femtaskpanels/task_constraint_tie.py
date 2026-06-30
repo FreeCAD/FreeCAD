@@ -59,6 +59,16 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         QtCore.QObject.connect(
             self.parameterWidget.ckb_adjust, QtCore.SIGNAL("toggled(bool)"), self.adjust_changed
         )
+        QtCore.QObject.connect(
+            self.parameterWidget.ckb_rev_master,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.reversed_master_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.ckb_rev_slave,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.reversed_slave_changed,
+        )
         self.init_parameter_widget()
 
         # geometry selection widget
@@ -94,6 +104,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.obj.Tolerance = self.tolerance
         self.obj.Adjust = self.adjust
         self.obj.References = self.selectionWidget.references
+        self.obj.ReversedMaster = self.reversed_master
+        self.obj.ReversedSlave = self.reversed_slave
         self.selectionWidget.finish_selection()
         return super().accept()
 
@@ -104,12 +116,26 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def init_parameter_widget(self):
         self.tolerance = self.obj.Tolerance
         self.adjust = self.obj.Adjust
+        self.reversed_master = self.obj.ReversedMaster
+        self.reversed_slave = self.obj.ReversedSlave
         FreeCADGui.ExpressionBinding(self.parameterWidget.spb_tolerance).bind(self.obj, "Tolerance")
         self.parameterWidget.spb_tolerance.setProperty("value", self.tolerance)
         self.parameterWidget.ckb_adjust.setChecked(self.adjust)
+        self.parameterWidget.ckb_rev_master.setChecked(
+            False if not self.reversed_master else self.reversed_master[0]
+        )
+        self.parameterWidget.ckb_rev_slave.setChecked(
+            False if not self.reversed_slave else self.reversed_slave[0]
+        )
 
     def tolerance_changed(self, base_quantity_value):
         self.tolerance = base_quantity_value
 
     def adjust_changed(self, bool_value):
         self.adjust = bool_value
+
+    def reversed_master_changed(self, bool_value):
+        self.reversed_master = [bool_value]
+
+    def reversed_slave_changed(self, bool_value):
+        self.reversed_slave = [bool_value]
