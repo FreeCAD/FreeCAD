@@ -2608,31 +2608,33 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         const auto& incomingElement = otherMap.find(incomingShape._Shape, otherI);
 
                         if (incomingElement.IsPartner(mainElement)) {
-                            Data::IndexedName incomingShapeIndexedName
-                                = Data::IndexedName::fromConst(info->shapetype, otherI);
+                            Data::IndexedName incomingShapeIndexedName = Data::IndexedName::fromConst(info->shapetype, otherI);
+                            
                             Data::MappedName incomingShapeMapName = incomingShape.getMappedName(
                                 incomingShapeIndexedName
                             );
 
-                            Data::MappedName newName = Data::MappedName(
-                                Data::MappedName::makeSection(
-                                    {},
-                                    {incomingShapeMapName},
-                                    masterTag,
-                                    op,
-                                    usedPartnerNames.count(incomingShapeMapName),
-                                    (*info->shapetype),
-                                    0,
-                                    {"PTN"}
-                                )
+                            if (incomingShapeMapName) {
+                                Data::MappedName newName = Data::MappedName(
+                                    Data::MappedName::makeSection(
+                                        {},
+                                        {incomingShapeMapName},
+                                        masterTag,
+                                        op,
+                                        usedPartnerNames.count(incomingShapeMapName),
+                                        (*info->shapetype),
+                                        0,
+                                        {"PTN"}
+                                    )
                                     .c_str()
-                            );
+                                );
 
-                            usedPartnerNames.insert(incomingShapeMapName);
+                                usedPartnerNames.insert(incomingShapeMapName);
 
-                            wasMapped = true;
-                            ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
-                            break;
+                                wasMapped = true;
+                                ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
+                                break;
+                            }
                         }
                     }
                 }
