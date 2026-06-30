@@ -1223,6 +1223,11 @@ public:
                                    std::string duplicateCount = 0,
                                    std::vector<std::string> mapperFlags = { },
                                    std::vector<MappedName> connectedElements = { });
+
+    static MappedName makeUnmappedName(std::vector<std::string> indexedNames = { },
+                                       int iterationTag = 0,
+                                       const char* opCode = "MKR",
+                                       char elementType = 'E');
     
 private:
     QByteArray data;

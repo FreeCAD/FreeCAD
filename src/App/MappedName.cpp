@@ -314,6 +314,26 @@ std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
     return ss.str();
 }
 
+MappedName MappedName::makeUnmappedName(std::vector<std::string> indexedNames,
+                                        int iterationTag,
+                                        const char* opCode,
+                                        char elementType) 
+{
+    return MappedName(
+        MappedName::makeSection(
+            indexedNames,
+            {},
+            iterationTag,
+            opCode,
+            0,
+            elementType,
+            0,
+            {"IDX", "SRC"},
+            {}
+        )
+    );
+}
+
 MappedName::MappedName(const char* name, int size) : raw(false)
 {
     if (!name) {
