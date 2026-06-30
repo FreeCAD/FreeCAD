@@ -520,7 +520,7 @@ class PostProcessor:
             {
                 "name": "axis_precision",
                 "type": "int",
-                "label": translate("CAM", "Axis precision in ouptput"),
+                "label": translate("CAM", "Axis precision in output"),
                 "default": 2,  # degrees
                 "help": translate(
                     "CAM",
@@ -530,7 +530,7 @@ class PostProcessor:
             {
                 "name": "feed_precision",
                 "type": "int",
-                "label": translate("CAM", "Feedrate precision in ouptput"),
+                "label": translate("CAM", "Feedrate precision in output"),
                 "default": 3,
                 "help": translate(
                     "CAM",
@@ -540,7 +540,7 @@ class PostProcessor:
             {
                 "name": "spindle_decimals",
                 "type": "int",
-                "label": translate("CAM", "Spindle-speed precision in ouptput"),
+                "label": translate("CAM", "Spindle-speed precision in output"),
                 "default": 1,  # rpm
                 "help": translate(
                     "CAM",
