@@ -85,9 +85,7 @@ void PropertyPartShape::setValue(const TopoShape& sh)
             _Shape.Tag = obj->getID();
 
             if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-                auto hasher = _Shape.Hasher ? _Shape.Hasher : obj->getDocument()->getStringHasher();
-
-                _Shape.reTagElementMap(_Shape.Tag, hasher, nullptr, false);
+                _Shape.reTagElementMap(_Shape.Tag, nullptr, nullptr, false);
             }
         }
         if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
