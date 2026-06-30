@@ -475,7 +475,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
     if (feature == geo && (missing || reverse)) {
         bool resolvedMissing = false;
 
-        if (elementName.newName.size()) {
+        if (elementName.newName.size() && !reverse) {
             const char* mappedNameString = Data::isMappedElement(elementName.newName.c_str());
             Data::MappedName searchName;
 
