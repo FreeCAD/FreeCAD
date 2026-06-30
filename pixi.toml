@@ -8,6 +8,7 @@ platforms = [ "linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64" ]
 requires-pixi = ">=0.48"
 
 [dependencies]
+av = "*"
 blinker = "*"
 calculix = "*"
 ccache = "*"
@@ -39,7 +40,6 @@ numpy = ">=1.26,<1.27"
 nlohmann_json = "*"
 occt = ">=7.8,<7.9"
 opencamlib = "*"
-opencv = "*"
 openssl = "*"
 pandas = "*"
 pcl = "*"

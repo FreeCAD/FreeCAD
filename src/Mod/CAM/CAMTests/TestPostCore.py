@@ -25,6 +25,7 @@ import Path.Post.Command as PathCommand
 import Path.Post.PostList as PostList
 import Path.Post.Processor as PathPost
 import Path.Post.Utils as PostUtils
+from Path.Post.CAMErrors import CAMValueError
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
 import unittest
@@ -1030,16 +1031,17 @@ class TestJobPropertyOverrides(unittest.TestCase):
             self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1000)
             self.assertEqual(processor._machine.postprocessor_properties["cooling_delay"], 500)
 
-            # Test 3: Invalid JSON is handled gracefully
+            # Test 3: Invalid JSON is an error
             machine3 = self._create_test_machine()  # Fresh machine instance
             MachineFactory.get_machine = lambda name: machine3
             self.job.PostProcessorPropertyOverrides = (
                 '{"pierce_delay": 1800,'  # Missing closing brace
             )
             processor = PostProcessor(self.job, "", "", "mm")
-            processor.export2()
-            # Should fall back to machine defaults
-            self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1000)
+            with self.assertRaisesRegex(
+                CAMValueError, "Invalid PostProcessorPropertyOverrides JSON"
+            ) as e:
+                processor.export2()
 
             # Test 4: Unknown keys are ignored
             machine4 = self._create_test_machine()  # Fresh machine instance
