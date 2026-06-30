@@ -103,13 +103,13 @@ class Hatch(DraftObject):
     def onDocumentRestored(self, obj):
         self.setProperties(obj)
         if hasattr(obj, "Base"):
-            self.update_properties_1v2(obj)
+            self.update_properties_26v3(obj)
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(
             obj, vp_module="view_hatch", vp_class="ViewProviderDraftHatch"
         )
 
-    def update_properties_1v2(self, obj):
+    def update_properties_26v3(self, obj):
         """Update Base to Faces property."""
         obj.Faces = obj.Base  # Conversion to list of tuples happens automatically.
         obj.setPropertyStatus("Base", "-LockDynamic")
