@@ -872,6 +872,7 @@ class DraftToolBar:
 
     def redraw(self):
         """utility function that is performed after each clicked point"""
+        self.acceptPointInput()
         self.checkLocal()
 
     def setFocus(self, f=None):
@@ -1408,11 +1409,15 @@ class DraftToolBar:
                     else:
                         self.new_point = self.get_new_point(delta)
                         self.sourceCmd.numericInput(*self.new_point)
+                    self.acceptPointInput()
             elif self.textValue.isVisible():
                 return False
             else:
                 FreeCADGui.ActiveDocument.resetEdit()
         return True
+
+    def acceptPointInput(self):
+        self._locks.unlock_all()
 
     def finish(self, cont=None):
         """finish button action"""
