@@ -2302,6 +2302,12 @@ void setCategoryFilterRules()
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }
+
+bool isSuppressedQtWarning(const QMessageLogContext& context, const QString& msg)
+{
+    return context.category && strcmp(context.category, "qt.text.font.db") == 0
+        && msg.startsWith(QStringLiteral("OpenType support missing for "));
+}
 }  // namespace
 
 using _qt_msg_handler_old = void (*)(QtMsgType, const QMessageLogContext&, const QString&);
@@ -2309,6 +2315,10 @@ _qt_msg_handler_old old_qtmsg_handler = nullptr;
 
 void messageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
+    if (type == QtWarningMsg && isSuppressedQtWarning(context, msg)) {
+        return;
+    }
+
     QByteArray output;
     if (context.category && strcmp(context.category, "default") != 0) {
         output.append('(');
