@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QByteArray>
+#include <QGraphicsSceneMouseEvent>
 
 #include "QGIView.h"
 #include "QGIUserTypes.h"
@@ -57,6 +58,7 @@ public:
 
 
 protected:
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void drawSvg();
     void symbolToSvg(QByteArray qba);
     double legacyScaler(TechDraw::DrawViewSymbol* feature) const;

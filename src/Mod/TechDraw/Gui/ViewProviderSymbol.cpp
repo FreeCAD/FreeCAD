@@ -23,10 +23,14 @@
 
 
 #include <App/DocumentObject.h>
+#include <Gui/Control.h>
+#include <Gui/Selection/Selection.h>
 
+#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "QGIViewSymbol.h"
+#include "TaskProjGroup.h"
 #include "ViewProviderSymbol.h"
 
 using namespace TechDrawGui;
@@ -91,6 +95,27 @@ ViewProviderDraft::ViewProviderDraft()
     LegacyScaling.setValue(true);
 }
 
+bool ViewProviderDraft::setEdit(int ModNum)
+{
+    if (ModNum != ViewProvider::Default) {
+        return ViewProviderSymbol::setEdit(ModNum);
+    }
+    if (Gui::Control().activeDialog()) {
+        return false;
+    }
+    Gui::Selection().clearSelection();
+    auto* dlg = new TaskDlgProjGroup(false);
+    dlg->setView(getObject<TechDraw::DrawView>());
+    Gui::Control().showDialog(dlg);
+    return true;
+}
+
+bool ViewProviderDraft::doubleClicked()
+{
+    setEdit(ViewProvider::Default);
+    return true;
+}
+
 
 //**************************************************************************
 // Arch view
@@ -103,5 +128,26 @@ ViewProviderArch::ViewProviderArch()
     sPixmap = "actions/TechDraw_ArchView.svg";
     // svg files from Draft/BIM arrive in old scale
     LegacyScaling.setValue(true);
+}
+
+bool ViewProviderArch::setEdit(int ModNum)
+{
+    if (ModNum != ViewProvider::Default) {
+        return ViewProviderSymbol::setEdit(ModNum);
+    }
+    if (Gui::Control().activeDialog()) {
+        return false;
+    }
+    Gui::Selection().clearSelection();
+    auto* dlg = new TaskDlgProjGroup(false);
+    dlg->setView(getObject<TechDraw::DrawView>());
+    Gui::Control().showDialog(dlg);
+    return true;
+}
+
+bool ViewProviderArch::doubleClicked()
+{
+    setEdit(ViewProvider::Default);
+    return true;
 }
 

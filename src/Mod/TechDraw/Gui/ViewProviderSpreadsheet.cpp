@@ -22,7 +22,11 @@
 
 
 #include <App/DocumentObject.h>
+#include <Gui/Control.h>
+#include <Gui/Selection/Selection.h>
+
 #include "ViewProviderSpreadsheet.h"
+#include "TaskProjGroup.h"
 
 using namespace TechDrawGui;
 
@@ -60,4 +64,25 @@ std::vector<App::DocumentObject*> ViewProviderSpreadsheet::claimChildren() const
     }
 
     return temp;
+}
+
+bool ViewProviderSpreadsheet::setEdit(int ModNum)
+{
+    if (ModNum != ViewProvider::Default) {
+        return ViewProviderSymbol::setEdit(ModNum);
+    }
+    if (Gui::Control().activeDialog()) {
+        return false;
+    }
+    Gui::Selection().clearSelection();
+    auto* dlg = new TaskDlgProjGroup(false);
+    dlg->setView(getObject<TechDraw::DrawView>());
+    Gui::Control().showDialog(dlg);
+    return true;
+}
+
+bool ViewProviderSpreadsheet::doubleClicked()
+{
+    setEdit(ViewProvider::Default);
+    return true;
 }

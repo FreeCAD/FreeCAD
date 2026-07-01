@@ -295,8 +295,9 @@ bool ViewProviderViewPart::setEdit(int ModNum)
         }
         return setDetailEdit(ModNum, dvd);
     }
-    auto* view = getObject<TechDraw::DrawView>();
-    Gui::Control().showDialog(new TaskDlgProjGroup(view, false));
+    auto* projGroupDlg = new TaskDlgProjGroup(false);
+    projGroupDlg->setView(getObject<TechDraw::DrawView>());
+    Gui::Control().showDialog(projGroupDlg);
 
     return true;
 }

@@ -22,9 +22,14 @@
 
 
 #include <App/DocumentObject.h>
+#include <Gui/Control.h>
+#include <Gui/Selection/Selection.h>
+
+#include <Mod/TechDraw/App/DrawView.h>
 
 #include "ViewProviderImage.h"
 #include "QGIView.h"
+#include "TaskProjGroup.h"
 
 using namespace TechDrawGui;
 
@@ -76,6 +81,27 @@ void ViewProviderImage::onChanged(const App::Property *prop)
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
 
+
+bool ViewProviderImage::setEdit(int ModNum)
+{
+    if (ModNum != ViewProvider::Default) {
+        return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    if (Gui::Control().activeDialog()) {
+        return false;
+    }
+    Gui::Selection().clearSelection();
+    auto* dlg = new TaskDlgProjGroup(false);
+    dlg->setView(getObject<TechDraw::DrawView>());
+    Gui::Control().showDialog(dlg);
+    return true;
+}
+
+bool ViewProviderImage::doubleClicked()
+{
+    setEdit(ViewProvider::Default);
+    return true;
+}
 
 TechDraw::DrawViewImage* ViewProviderImage::getViewObject() const
 {

@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <QGraphicsSceneMouseEvent>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIView.h"
@@ -52,6 +54,7 @@ public:
     void rotateView() override;
 
 protected:
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void drawImage();
 
     QGCustomImage* m_imageItem;

@@ -81,7 +81,9 @@ bool ViewProviderProjGroup::setEdit(int ModNum)
         projDlg->setCreateMode(false);
         Gui::Control().showDialog(projDlg);
     } else {
-        Gui::Control().showDialog(new TaskDlgProjGroup(getObject(), false));
+        auto* projGroupDlg = new TaskDlgProjGroup(false);
+        projGroupDlg->setView(dynamic_cast<TechDraw::DrawView*>(getObject()));
+        Gui::Control().showDialog(projGroupDlg);
     }
 
     return true;

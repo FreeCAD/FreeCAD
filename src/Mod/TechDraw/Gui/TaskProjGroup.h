@@ -30,6 +30,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Gui/Selection/Selection.h>
 
 namespace Gui {
     class QuantitySpinBox;
@@ -47,12 +48,12 @@ class MDIViewPage;
 class Ui_TaskProjGroup;
 class ViewProviderDrawingView;
 
-class TaskProjGroup : public QWidget
+class TaskProjGroup : public QWidget, public Gui::SelectionObserver 
 {
     Q_OBJECT
 
 public:
-    TaskProjGroup(TechDraw::DrawView* featView, bool mode);
+    TaskProjGroup(bool mode);
     ~TaskProjGroup() override = default;
 
     virtual bool accept();
@@ -67,6 +68,7 @@ public:
     void setFractionalScale(double newScale);
     void setCreateMode(bool mode) { m_createMode = mode;}
     bool getCreateMode() const { return m_createMode; }
+    void setView(TechDraw::DrawView* v);
 
 protected:
     void changeEvent(QEvent *event) override;
@@ -84,6 +86,12 @@ protected:
     void updateUi();
     void connectWidgets();
     void initializeUi();
+
+    void addSheetView(App::DocumentObject* obj);
+    void addBIMView(App::DocumentObject* obj);
+    void addDraftView(App::DocumentObject* obj);
+    void removeView();
+    void clearViews();
 
     void turnViewToProjGroup();
     void turnProjGroupToView();
@@ -104,9 +112,12 @@ protected Q_SLOTS:
     /// Updates item spacing
     void spacingChanged();
     void scaleManuallyChanged(int unused);
-
+    void openFileButtonClicked();
+    void spreadsheetRangeChanged(); 
 
 private:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void onDeletedObject(App::DocumentObject* obj);
     TechDraw::DrawPage* m_page;
     MDIViewPage* m_mdi;
 
@@ -114,10 +125,13 @@ private:
     TechDraw::DrawView* view;
     TechDraw::DrawProjGroup* multiView;
     bool m_createMode;
+    bool m_defaultViewSet{false};
     std::string m_viewName;
 
     bool blockUpdate{true};
     bool blockCheckboxes;
+    bool m_processingSelection{false};
+    fastsignals::scoped_connection m_deletedObjectConnection;
     /// Translate a view checkbox index into represented view string, depending on projection type
     const char *  viewChkIndexToCStr(int index);
     QString getToolTipForBox(int boxNumber);
@@ -141,7 +155,7 @@ class TaskDlgProjGroup : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgProjGroup(TechDraw::DrawView* featView, bool mode);
+    TaskDlgProjGroup(bool mode);
     ~TaskDlgProjGroup() override = default;
 
     const ViewProviderDrawingView* getViewProvider() const { return viewProvider; }
@@ -165,6 +179,7 @@ public:
     void setCreateMode(bool mode);
 
     void update();
+    void setView(TechDraw::DrawView* v);
 
 protected:
     const ViewProviderDrawingView *viewProvider;

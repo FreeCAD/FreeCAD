@@ -48,6 +48,8 @@ public:
     /// returns a list of all possible modes
     void updateData(const App::Property*) override;
     void onChanged(const App::Property *prop) override;
+    bool setEdit(int ModNum) override;
+    bool doubleClicked() override;
 
     TechDraw::DrawViewImage* getViewObject() const override;
 };

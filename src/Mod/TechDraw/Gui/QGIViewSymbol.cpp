@@ -25,6 +25,7 @@
 
 # include <QGraphicsColorizeEffect>
 # include <QGraphicsItem>
+# include <QGraphicsSceneMouseEvent>
 # include <QRectF>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
@@ -66,6 +67,16 @@ QGIViewSymbol::QGIViewSymbol()
 QGIViewSymbol::~QGIViewSymbol()
 {
     // m_svgItem belongs to this group and will be deleted by Qt
+}
+
+void QGIViewSymbol::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+    auto* vp = freecad_cast<ViewProviderSymbol*>(getViewProvider(getViewObject()));
+    if (!vp) {
+        return;
+    }
+    vp->startDefaultEditMode();
+    QGraphicsItem::mouseDoubleClickEvent(event);
 }
 
 void QGIViewSymbol::setViewSymbolFeature(TechDraw::DrawViewSymbol* obj)
