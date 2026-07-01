@@ -522,7 +522,7 @@ class BIM_Views:
             if vm.tree.selectedItems():
                 item = vm.tree.selectedItems()[-1]
                 obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
-                if obj:
+                if obj and hasattr(obj.ViewObject, "DoubleClickActivates"):
                     toggle_active_level(obj, dialog=dialog)
                     FreeCADGui.Selection.clearSelection()
 
