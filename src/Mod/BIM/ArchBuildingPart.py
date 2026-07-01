@@ -1150,16 +1150,16 @@ class ViewProviderBuildingPart:
 
         if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
-        if (not hasattr(vobj, "DoubleClickActivates")) or vobj.DoubleClickActivates:
-            menuTxt = translate("Arch", "Active")
-            actionActivate = QtGui.QAction(menuTxt, menu)
-            actionActivate.setCheckable(True)
-            if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
-                actionActivate.setChecked(True)
-            else:
-                actionActivate.setChecked(False)
-            actionActivate.triggered.connect(lambda _: self.activate(actionActivate))
-            menu.addAction(actionActivate)
+
+        menuTxt = translate("Arch", "Active")
+        actionActivate = QtGui.QAction(menuTxt, menu)
+        actionActivate.setCheckable(True)
+        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
+            actionActivate.setChecked(True)
+        else:
+            actionActivate.setChecked(False)
+        actionActivate.triggered.connect(lambda _: self.activate(actionActivate))
+        menu.addAction(actionActivate)
 
         actionSetWorkingPlane = QtGui.QAction(
             QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
@@ -1194,8 +1194,7 @@ class ViewProviderBuildingPart:
     def activate(self, action=None):
         from bimcommands.BimViews import toggle_active_level
 
-        if getattr(self.Object.ViewObject, "DoubleClickActivates", True):
-            toggle_active_level(self.Object, action)
+        toggle_active_level(self.Object, action)
         FreeCADGui.Selection.clearSelection()
 
     def setWorkingPlane(self, restore=False):
