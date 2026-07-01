@@ -165,7 +165,9 @@ PyObject* TopoShapeVertexPy::sequence_item(PyObject* self, Py_ssize_t index)
     }
 
     try {
-        const TopoDS_Vertex& v = TopoDS::Vertex(static_cast<TopoShapeVertexPy*>(self)->getTopoShapePtr()->getShape());
+        const TopoDS_Vertex& v = TopoDS::Vertex(
+            static_cast<TopoShapeVertexPy*>(self)->getTopoShapePtr()->getShape()
+        );
         return PyFloat_FromDouble(BRep_Tool::Pnt(v).Coord(index + 1));
     }
     catch (Standard_Failure& e) {
@@ -225,14 +227,19 @@ Py::Float TopoShapeVertexPy::getZ() const
 
 PyObject* TopoShapeVertexPy::richCompare(PyObject* self, PyObject* object, int op)
 {
-    if (!PyObject_TypeCheck(self, &(TopoShapeVertexPy::Type)) || !PyObject_TypeCheck(object, &(TopoShapeVertexPy::Type))) {
+    if (!PyObject_TypeCheck(self, &(TopoShapeVertexPy::Type))
+        || !PyObject_TypeCheck(object, &(TopoShapeVertexPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "both operands must be Vertices");
         return nullptr;
     }
 
     try {
-        const TopoDS_Vertex& lhs = TopoDS::Vertex(static_cast<TopoShapeVertexPy*>(self)->getTopoShapePtr()->getShape());
-        const TopoDS_Vertex& rhs = TopoDS::Vertex(static_cast<TopoShapeVertexPy*>(object)->getTopoShapePtr()->getShape());
+        const TopoDS_Vertex& lhs = TopoDS::Vertex(
+            static_cast<TopoShapeVertexPy*>(self)->getTopoShapePtr()->getShape()
+        );
+        const TopoDS_Vertex& rhs = TopoDS::Vertex(
+            static_cast<TopoShapeVertexPy*>(object)->getTopoShapePtr()->getShape()
+        );
         switch (op) {
             case Py_EQ:
                 return PyBool_FromLong(lhs.IsSame(rhs));
