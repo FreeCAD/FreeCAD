@@ -491,7 +491,7 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
 
     return std::make_shared<MeasureAngleInfo>(
         true,
-        orientation, 
+        orientation,
         Base::Vector3d(position.X(), position.Y(), position.Z())
     );
 }
