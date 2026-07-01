@@ -487,31 +487,41 @@ public:
 
     virtual int getSize() const;
 
-    /** Sets the property
+    /**
+     * Accessor methods to the whole map
      */
-    void setValue()
-    {}
+    const std::map<std::string, std::string>& getValue() const;
+    void setValue();
+    void setValue(const std::map<std::string, std::string>& map);
+    void setValue(std::map<std::string, std::string>&& map);
+
+    /**
+     * Accessor methods to particular items
+     */
+    std::string getValue(const std::string& key) const;
     void setValue(const std::string& key, const std::string& value);
+    bool deleteValue(const std::string& key);
+
+    /// Adds or updates entry for a non-null value, deletes entry for a null value
     void setValue(const char* key, const char* value);
-    void setValues(const std::map<std::string, std::string>&);
-    void setValues(std::map<std::string, std::string>&&);
 
-    /// index operator
-    const std::string& operator[](const std::string& key) const;
+    /**
+     * Accessor aliases
+     */
+    const std::map<std::string, std::string>& getValues() const { return getValue(); }
+    void setValues(const std::map<std::string, std::string>& map) { setValue(map); }
+    void setValues(std::map<std::string, std::string>&& map) { setValue(map); }
+    void set1Value(const std::string& key, const std::string& value) { setValue(key, value); }
 
-    void set1Value(const std::string& key, const std::string& value)
+    const boost::any getPathValue(const ObjectIdentifier& path) const override;
+    void setPathValue(const ObjectIdentifier& path, const boost::any& value) override;
+
+    ObjectIdentifier getItemPath(const std::string& key) const;
+
+    const char* getEditorName() const override
     {
-        _lValueList.operator[](key) = value;
+        return "Gui::PropertyEditor::PropertyMapItem";
     }
-
-    const std::map<std::string, std::string>& getValues() const
-    {
-        return _lValueList;
-    }
-    const char* getValue(const char* key) const;
-
-    // virtual const char* getEditorName(void) const { return
-    // "Gui::PropertyEditor::PropertyStringListItem"; }
 
     PyObject* getPyObject() override;
     void setPyObject(PyObject* py) override;

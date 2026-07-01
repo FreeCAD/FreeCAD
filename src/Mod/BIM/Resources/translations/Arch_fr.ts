@@ -5567,7 +5567,7 @@ configurable dans les propriétés vue.</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="749"/>
-      <location filename="../../ArchReport.py" line="889"/>
+      <location filename="../../ArchReport.py" line="894"/>
       <source>Pipe</source>
       <translation>Tuyauterie</translation>
     </message>
@@ -5706,171 +5706,171 @@ configurable dans les propriétés vue.</translation>
       <translation>Impossible de reconnaître ce type de fichier</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="879"/>
-      <location filename="../../ArchReport.py" line="1873"/>
+      <location filename="../../ArchReport.py" line="884"/>
+      <location filename="../../ArchReport.py" line="1878"/>
       <source>Report Statements</source>
       <translation>Rapport des requêtes</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="888"/>
+      <location filename="../../ArchReport.py" line="893"/>
       <location filename="../../ArchCommands.py" line="1360"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="890"/>
+      <location filename="../../ArchReport.py" line="895"/>
       <source>Header</source>
       <translation>En-tête</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="891"/>
+      <location filename="../../ArchReport.py" line="896"/>
       <source>Cols</source>
       <translation>Colonnes</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="892"/>
+      <location filename="../../ArchReport.py" line="897"/>
       <source>Status</source>
       <translation>État</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="899"/>
+      <location filename="../../ArchReport.py" line="904"/>
       <source>A user-defined description for this statement.</source>
       <translation>Une description définie par l'utilisateur pour cette requête.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="905"/>
+      <location filename="../../ArchReport.py" line="910"/>
       <source>If checked, this statement will use the results of the previous statement as its data source.</source>
       <translation>Si cette case est cochée, cette requête utilisera les résultats de la précédente requête comme source de données.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="911"/>
+      <location filename="../../ArchReport.py" line="916"/>
       <source>If checked, the Description will be used as a section header in the report.</source>
       <translation>Si cette case est cochée, la description sera utilisée comme titre de section dans le rapport.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="917"/>
+      <location filename="../../ArchReport.py" line="922"/>
       <source>If checked, the column names (e.g., 'Label', 'Area') will be included in the report.</source>
       <translation>Si cette case est cochée, les noms des colonnes (par ex., « Étiquette », « Surface ») seront inclus dans le rapport.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="920"/>
+      <location filename="../../ArchReport.py" line="925"/>
       <source>Indicates the status of the SQL query.</source>
       <translation>Indique l'état de la requête SQL.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="953"/>
+      <location filename="../../ArchReport.py" line="958"/>
       <source>Load a full report template, replacing all current statements.</source>
       <translation>Charge un modèle de rapport complet, en remplaçant toutes les requêtes existantes.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="956"/>
-      <location filename="../../ArchReport.py" line="1027"/>
+      <location filename="../../ArchReport.py" line="961"/>
+      <location filename="../../ArchReport.py" line="1032"/>
       <source>Manage…</source>
       <translation>Gérer…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="959"/>
+      <location filename="../../ArchReport.py" line="964"/>
       <source>Rename, delete, or edit saved report templates.</source>
       <translation>Renommer, supprimer ou modifier les modèles de rapport enregistrés.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="960"/>
+      <location filename="../../ArchReport.py" line="965"/>
       <source>Save as Template…</source>
       <translation>Enregistrer en tant que modèle…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="963"/>
+      <location filename="../../ArchReport.py" line="968"/>
       <source>Save the current set of statements as a new report template.</source>
       <translation>Enregistre l'ensemble actuel des requêtes en tant que nouveau modèle de rapport.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="968"/>
+      <location filename="../../ArchReport.py" line="973"/>
       <source>Report Templates:</source>
       <translation>Modèles de rapport :</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="974"/>
+      <location filename="../../ArchReport.py" line="979"/>
       <source>Add Statement</source>
       <translation>Ajouter une requête</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="977"/>
+      <location filename="../../ArchReport.py" line="982"/>
       <source>Add a new blank statement to the report.</source>
       <translation>Ajoute une nouvelle requête au rapport.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="980"/>
+      <location filename="../../ArchReport.py" line="985"/>
       <source>Remove Selected</source>
       <translation>Supprimer la sélection</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="983"/>
+      <location filename="../../ArchReport.py" line="988"/>
       <source>Remove the selected statement from the report.</source>
       <translation>Supprime la requête sélectionnée du rapport.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="986"/>
+      <location filename="../../ArchReport.py" line="991"/>
       <source>Duplicate Selected</source>
       <translation>Dupliquer la sélection</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="989"/>
+      <location filename="../../ArchReport.py" line="994"/>
       <source>Create a copy of the selected statement.</source>
       <translation>Créer une copie de la requête sélectionnée.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="992"/>
+      <location filename="../../ArchReport.py" line="997"/>
       <source>Edit Selected</source>
       <translation>Modifier la sélection</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="995"/>
+      <location filename="../../ArchReport.py" line="1000"/>
       <source>Load the selected statement into the editor below.</source>
       <translation>Charge la requête sélectionnée dans l'éditeur ci-dessous.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1006"/>
+      <location filename="../../ArchReport.py" line="1011"/>
       <source>Statement Editor</source>
       <translation>Éditeur des requêtes</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1017"/>
+      <location filename="../../ArchReport.py" line="1022"/>
       <source>Description:</source>
       <translation>Description :</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1024"/>
+      <location filename="../../ArchReport.py" line="1029"/>
       <source>Load a saved query preset into the editor.</source>
       <translation>Charge un modèle de requête enregistré dans l'éditeur.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1030"/>
+      <location filename="../../ArchReport.py" line="1035"/>
       <source>Rename, delete, or edit your saved query presets.</source>
       <translation>Renommer, supprimer ou modifier vos requêtes enregistrées.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1031"/>
+      <location filename="../../ArchReport.py" line="1036"/>
       <source>Save…</source>
       <translation>Enregistrer…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1034"/>
+      <location filename="../../ArchReport.py" line="1039"/>
       <source>Save the current query as a new preset.</source>
       <translation>Enregistre la requête en cours comme un nouveau préréglage.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1038"/>
+      <location filename="../../ArchReport.py" line="1043"/>
       <source>Query Presets:</source>
       <translation>Préréglages de la requête :</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1043"/>
+      <location filename="../../ArchReport.py" line="1048"/>
       <source>SQL Query:</source>
       <translation>Requête SQL :</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1045"/>
-      <location filename="../../ArchReport.py" line="1867"/>
+      <location filename="../../ArchReport.py" line="1050"/>
+      <location filename="../../ArchReport.py" line="1872"/>
       <location filename="../../ArchSql.py" line="2255"/>
       <location filename="../../ArchSql.py" line="2282"/>
       <location filename="../../ArchSql.py" line="2304"/>
@@ -5878,360 +5878,360 @@ configurable dans les propriétés vue.</translation>
       <translation>Prêt</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1073"/>
-      <location filename="../../ArchReport.py" line="2042"/>
+      <location filename="../../ArchReport.py" line="1078"/>
+      <location filename="../../ArchReport.py" line="2047"/>
       <source>Show Preview</source>
       <translation>Afficher un aperçu</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1077"/>
+      <location filename="../../ArchReport.py" line="1082"/>
       <source>Show a preview pane to test the current query in isolation.</source>
       <translation>Affiche un volet d'aperçu permettant de tester la requête en cours de manière isolée.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1080"/>
+      <location filename="../../ArchReport.py" line="1085"/>
       <source>SQL Cheatsheet</source>
       <translation>Fiche récapitulative SQL</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1084"/>
+      <location filename="../../ArchReport.py" line="1089"/>
       <source>Show a cheatsheet of the supported SQL syntax.</source>
       <translation>Affiche une fiche récapitulative de la syntaxe SQL prise en charge.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1097"/>
+      <location filename="../../ArchReport.py" line="1102"/>
       <source>Refresh</source>
       <translation>Rafraîchir</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1101"/>
+      <location filename="../../ArchReport.py" line="1106"/>
       <source>Re-run the query and update the preview table.</source>
       <translation>Relancer la requête et actualiser l'aperçu</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1103"/>
+      <location filename="../../ArchReport.py" line="1108"/>
       <source>&lt;b&gt;Query Results Preview&lt;/b&gt;</source>
       <translation>&lt;b&gt;Aperçu des résultats de la requête&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1119"/>
+      <location filename="../../ArchReport.py" line="1124"/>
       <source>Display Options</source>
       <translation>Options d’affichage</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1122"/>
+      <location filename="../../ArchReport.py" line="1127"/>
       <source>Use as Pipeline Step</source>
       <translation>Utiliser en mode pipeline</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1128"/>
+      <location filename="../../ArchReport.py" line="1133"/>
       <source>When checked, this statement will use the results of the previous statement as its data source.</source>
       <translation>Si cette option est cochée, cette requête utilisera les résultats de la requête précédente comme source de données.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1131"/>
+      <location filename="../../ArchReport.py" line="1136"/>
       <source>Use Description as Section Header</source>
       <translation>Utiliser la description comme en-tête de section</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1137"/>
+      <location filename="../../ArchReport.py" line="1142"/>
       <source>When checked, the statement's description will be written as a merged header row before its results.</source>
       <translation>Si cette case est cochée, la description de la requête sera affichée sous forme d'en-tête fusionné avant les résultats.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1140"/>
+      <location filename="../../ArchReport.py" line="1145"/>
       <source>Include Column Names as Headers</source>
       <translation>Inclure les noms des colonnes comme en-têtes</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1146"/>
+      <location filename="../../ArchReport.py" line="1151"/>
       <source>Include the column headers (Label, IfcType, ...) in the spreadsheet output.</source>
       <translation>Inclut les en-têtes de colonnes (Étiquette, IfcType, ...) dans le la feuille de calcul générée.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1147"/>
+      <location filename="../../ArchReport.py" line="1152"/>
       <source>Add Empty Row After</source>
       <translation>Ajouter une ligne vide après</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1150"/>
+      <location filename="../../ArchReport.py" line="1155"/>
       <source>Insert one empty row after this statement's results.</source>
       <translation>Insère une ligne vide après les résultats de cette requête.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1153"/>
+      <location filename="../../ArchReport.py" line="1158"/>
       <source>Print Results in Bold</source>
       <translation>Afficher les résultats en gras</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1156"/>
+      <location filename="../../ArchReport.py" line="1161"/>
       <source>Render the result cells in bold font for emphasis.</source>
       <translation>Afficher les cellules contenant les résultats en gras pour les mettre en évidence.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1166"/>
+      <location filename="../../ArchReport.py" line="1171"/>
       <source>Save and Next</source>
       <translation>Enregistrer et suivant</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1172"/>
+      <location filename="../../ArchReport.py" line="1177"/>
       <source>If checked, clicking 'Save' will automatically load the next statement for editing.</source>
       <translation>Si cette case est cochée, cliquer sur « Enregistrer » chargera automatiquement la requête suivante pour modification.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1173"/>
+      <location filename="../../ArchReport.py" line="1178"/>
       <source>Save</source>
       <translation>Enregistrer</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1177"/>
+      <location filename="../../ArchReport.py" line="1182"/>
       <source>Save changes to this statement and close the statement editor.</source>
       <translation>Enregistre les modifications pour cette requête et ferme l'éditeur de requêtes.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1178"/>
+      <location filename="../../ArchReport.py" line="1183"/>
       <source>Discard</source>
       <translation>Annuler</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1182"/>
+      <location filename="../../ArchReport.py" line="1187"/>
       <source>Discard all changes made in the statement editor.</source>
       <translation>Annule toutes les modifications apportées dans l'éditeur de requêtes.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1288"/>
+      <location filename="../../ArchReport.py" line="1293"/>
       <source>--- Select a Query Preset ---</source>
       <translation>--- Sélectionner un préréglage de requête ---</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1291"/>
+      <location filename="../../ArchReport.py" line="1296"/>
       <source>--- Load a Report Template ---</source>
       <translation>--- Charger un modèle de rapport ---</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1327"/>
+      <location filename="../../ArchReport.py" line="1332"/>
       <source>Double-click to edit description in place.</source>
       <translation>Double-cliquer pour modifier la description en place</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1342"/>
+      <location filename="../../ArchReport.py" line="1347"/>
       <source>The first statement cannot be pipelined.</source>
       <translation>La première requête ne peut pas être traitée en mode pipeline.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1348"/>
+      <location filename="../../ArchReport.py" line="1353"/>
       <source>Toggles whether to use the previous statement's results as input</source>
       <translation>Active ou désactive l'utilisation des résultats de la précédente requête comme données d'entrée.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1364"/>
+      <location filename="../../ArchReport.py" line="1369"/>
       <source>Toggles whether to use this statement's Description as a section header</source>
       <translation>Active ou désactive l'utilisation de la description de cette requête comme en-tête de section.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1380"/>
+      <location filename="../../ArchReport.py" line="1385"/>
       <source>Toggles whether to include this statement's column names in the report</source>
       <translation>Active ou désactive l'inclusion des noms de colonnes de cette requête dans le rapport.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1490"/>
+      <location filename="../../ArchReport.py" line="1495"/>
       <source>New Statement {len(self.obj.Proxy.live_statements) + 1}</source>
       <translation>Nouvelle requête {len(self.obj.Proxy.live_statements) + 1}</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1518"/>
+      <location filename="../../ArchReport.py" line="1523"/>
       <source>Remove Statement</source>
       <translation>Supprimer une requête</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1521"/>
+      <location filename="../../ArchReport.py" line="1526"/>
       <source>Are you sure you want to remove statement '{description_to_remove}'?</source>
       <translation>Êtes-vous sûr de vouloir supprimer la requête « {description_to_remove} » ?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1544"/>
+      <location filename="../../ArchReport.py" line="1549"/>
       <source>Copy of {original.description}</source>
       <translation>Copie de {original.description}</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1601"/>
+      <location filename="../../ArchReport.py" line="1606"/>
       <source>&lt;i&gt;Typing...&lt;/i&gt;</source>
       <translation>&lt;i&gt;Saisir...&lt;/i&gt;</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1635"/>
+      <location filename="../../ArchReport.py" line="1640"/>
       <source>Overwrite Query?</source>
       <translation>Faut-il remplacer la requête ?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1639"/>
+      <location filename="../../ArchReport.py" line="1644"/>
       <source>Loading a preset will overwrite the current text in the query editor. Continue?</source>
       <translation>Le chargement d'un préréglage écrasera le texte actuel dans l'éditeur de requêtes. Faut-il continuer ?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1660"/>
+      <location filename="../../ArchReport.py" line="1665"/>
       <source>Empty Query</source>
       <translation>Requête vide</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1661"/>
+      <location filename="../../ArchReport.py" line="1666"/>
       <source>Cannot save an empty query as a preset.</source>
       <translation>Il n'est pas possible d'enregistrer une requête vide en tant que préréglage.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1666"/>
+      <location filename="../../ArchReport.py" line="1671"/>
       <source>Save Query Preset</source>
       <translation>Enregistrer le préréglage de la requête</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1667"/>
+      <location filename="../../ArchReport.py" line="1672"/>
       <source>Preset Name:</source>
       <translation>Nom du préréglage :</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1693"/>
+      <location filename="../../ArchReport.py" line="1698"/>
       <source>Overwrite Report?</source>
       <translation>Faut-il remplacer le rapport ?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1697"/>
+      <location filename="../../ArchReport.py" line="1702"/>
       <source>Loading a template will replace all current statements in this report. Continue?</source>
       <translation>Le chargement d'un modèle remplacera toutes les requêtes actuelles de ce rapport. Faut-il continuer ?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1729"/>
+      <location filename="../../ArchReport.py" line="1734"/>
       <source>Empty Report</source>
       <translation>Rapport vide</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1730"/>
+      <location filename="../../ArchReport.py" line="1735"/>
       <source>Cannot save an empty report as a template.</source>
       <translation>Il n'est pas possible d'enregistrer un rapport vide en tant que modèle.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1735"/>
+      <location filename="../../ArchReport.py" line="1740"/>
       <source>Save Report Template</source>
       <translation>Enregistrer le modèle du rapport</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1736"/>
+      <location filename="../../ArchReport.py" line="1741"/>
       <source>Template Name:</source>
       <translation>Nom du modèle :</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1773"/>
+      <location filename="../../ArchReport.py" line="1778"/>
       <source> (from {input_count} in pipeline)</source>
       <translation> (à partir de {input_count} en pipeline)</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1788"/>
+      <location filename="../../ArchReport.py" line="1793"/>
       <source>Query is incomplete</source>
       <translation>La requête est incomplète.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="1865"/>
+      <location filename="../../ArchReport.py" line="1870"/>
       <source>Query incomplete or typing…</source>
       <translation>Requête incomplète ou en cours de saisie…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2036"/>
+      <location filename="../../ArchReport.py" line="2041"/>
       <source>Hide Preview</source>
       <translation>Masquer l'aperçu</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2111"/>
+      <location filename="../../ArchReport.py" line="2116"/>
       <source>Unsaved Changes</source>
       <translation>Modifications non enregistrées</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2115"/>
+      <location filename="../../ArchReport.py" line="2120"/>
       <source>You have unsaved changes in the statement editor. Do you want to save them before closing?</source>
       <translation>Des modifications sont non enregistrées dans l'éditeur de requêtes. Faut-il les enregistrer avant de fermer ?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2172"/>
+      <location filename="../../ArchReport.py" line="2177"/>
       <source>Manage {mode.capitalize()} Presets</source>
       <translation>Gérer les préréglages {mode.capitalize()}</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2182"/>
+      <location filename="../../ArchReport.py" line="2187"/>
       <source>Rename…</source>
       <translation>Renommer…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2183"/>
+      <location filename="../../ArchReport.py" line="2188"/>
       <source>Delete</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2184"/>
+      <location filename="../../ArchReport.py" line="2189"/>
       <source>Edit Source…</source>
       <translation>Modifier la source…</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2185"/>
+      <location filename="../../ArchReport.py" line="2190"/>
       <source>Close</source>
       <translation>Fermer</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2247"/>
+      <location filename="../../ArchReport.py" line="2252"/>
       <source>This action is only available for user-created presets.</source>
       <translation>Cette action n'est disponible que pour les préréglages créés par les utilisateurs.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2262"/>
+      <location filename="../../ArchReport.py" line="2267"/>
       <source>Rename Preset</source>
       <translation>Renommer un préréglage</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2263"/>
+      <location filename="../../ArchReport.py" line="2268"/>
       <source>New name:</source>
       <translation>Nouveau nom :</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2270"/>
+      <location filename="../../ArchReport.py" line="2275"/>
       <source>Name Conflict</source>
       <translation>Conflit de noms</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2274"/>
+      <location filename="../../ArchReport.py" line="2279"/>
       <source>A preset with this name already exists. Please choose a different name.</source>
       <translation>Un préréglage avec ce nom existe déjà. Choisir un nom différent.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2289"/>
+      <location filename="../../ArchReport.py" line="2294"/>
       <source>Delete Preset</source>
       <translation>Supprimer un préréglage</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2292"/>
+      <location filename="../../ArchReport.py" line="2297"/>
       <source>Are you sure you want to permanently delete the preset '{name}'?</source>
       <translation>Êtes-vous sûr de vouloir supprimer définitivement le préréglage « {name} » ?</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2311"/>
+      <location filename="../../ArchReport.py" line="2316"/>
       <source>File Not Found</source>
       <translation>Fichier non trouvé</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2312"/>
+      <location filename="../../ArchReport.py" line="2317"/>
       <source>Could not find the preset file at:
 {file_path}</source>
       <translation>Le fichier de préréglage n'a pas été trouvé à l'emplacement suivant :
 {file_path}</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2321"/>
+      <location filename="../../ArchReport.py" line="2326"/>
       <source>Could Not Open File</source>
       <translation>Impossible d'ouvrir le fichier</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2325"/>
+      <location filename="../../ArchReport.py" line="2330"/>
       <source>FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system.</source>
       <translation>FreeCAD n'a pas pu ouvrir le fichier. Vérifier si un éditeur de texte par défaut est configuré dans votre système d'exploitation.</translation>
     </message>
     <message>
-      <location filename="../../ArchReport.py" line="2470"/>
+      <location filename="../../ArchReport.py" line="2475"/>
       <source>BIM SQL Cheatsheet</source>
       <translation>Fiche récapitulative SQL de BIM</translation>
     </message>
@@ -10723,17 +10723,17 @@ sélectionnés dans cet ordre.</translation>
       <translation>Automatique</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="119"/>
+      <location filename="../../BimStatus.py" line="123"/>
       <source>Toggles the BIM Views Manager on/off</source>
       <translation>Active/désactive le gestionnaire de vues de BIM</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="135"/>
+      <location filename="../../BimStatus.py" line="139"/>
       <source>Toggles the 3D View background between simple and gradient</source>
       <translation>Active/désactive l'arrière-plan de la vue 3D entre un fond uni et un dégradé.</translation>
     </message>
     <message>
-      <location filename="../../BimStatus.py" line="161"/>
+      <location filename="../../BimStatus.py" line="165"/>
       <source>The value of the nudge movement (rotation is always 45°).Alt+arrows to move
 Alt+, to rotate leftAlt+. to rotate right
 Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch between auto and manual mode</source>
@@ -12138,12 +12138,12 @@ Vérifier votre installation FreeCAD ou fournir un modèle personnalisé dans le
   <context>
     <name>BIM_Clone</name>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="43"/>
+      <location filename="../../bimcommands/BimClone.py" line="46"/>
       <source>Clone</source>
       <translation>Cloner</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimClone.py" line="46"/>
+      <location filename="../../bimcommands/BimClone.py" line="49"/>
       <source>Clones selected objects to another location</source>
       <translation>Cloner les objets sélectionnés à un autre endroit</translation>
     </message>

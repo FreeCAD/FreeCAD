@@ -2951,12 +2951,12 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
       <source>Constant radius</source>
-      <translation type="unfinished">Constant radius</translation>
+      <translation>Konstant radie</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="123"/>
       <source>Variable radius</source>
-      <translation type="unfinished">Variable radius</translation>
+      <translation>Variabel radie</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="291"/>
@@ -3968,7 +3968,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2458"/>
       <source>X coordinate of the start point</source>
-      <translation type="unfinished">X coordinate of the start point</translation>
+      <translation>X-koordinat för startpunkten</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2471"/>
@@ -3978,7 +3978,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2497"/>
       <source>Y coordinate of the start point</source>
-      <translation type="unfinished">Y coordinate of the start point</translation>
+      <translation>Y-koordinat för startpunkten</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2510"/>
@@ -4864,7 +4864,7 @@ kommer skissplanets normalvektor att användas</translation>
     <message>
       <location filename="../../Location.ui" line="114"/>
       <source>Pick Position</source>
-      <translation type="unfinished">Pick Position</translation>
+      <translation>Välj position</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="244"/>
@@ -4893,7 +4893,7 @@ kommer skissplanets normalvektor att användas</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="199"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>För få element</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
@@ -5262,12 +5262,12 @@ kommer endast skapade snitt att vara synliga</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
       <source>Too Few Elements</source>
-      <translation type="unfinished">Too Few Elements</translation>
+      <translation>För få element</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="382"/>
       <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
+      <translation>Ogiltig markering</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="393"/>
@@ -5638,7 +5638,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1454"/>
       <source>Run Check</source>
-      <translation type="unfinished">Run Check</translation>
+      <translation>Kör kontroll</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
@@ -5808,12 +5808,12 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1492"/>
       <source>%1 select reference</source>
-      <translation type="unfinished">%1 select reference</translation>
+      <translation>%1 välj referens</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
       <source>2x%1 select and confirm</source>
-      <translation type="unfinished">2x%1 select and confirm</translation>
+      <translation>2x%1 välj och bekräfta</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>
@@ -6140,13 +6140,13 @@ Fortsättning?</translation>
       <location filename="../../Command.cpp" line="1080"/>
       <location filename="../../Command.cpp" line="1150"/>
       <source>STEP with colors</source>
-      <translation type="unfinished">STEP with colors</translation>
+      <translation>STEP med färger</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1082"/>
       <location filename="../../Command.cpp" line="1152"/>
       <source>IGES with colors</source>
-      <translation type="unfinished">IGES with colors</translation>
+      <translation>IGES med färger</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1201"/>
@@ -6939,7 +6939,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="41"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>CompSolids</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="46"/>
@@ -7623,12 +7623,12 @@ eller med formerna i en förening.
   <context>
     <name>PartCmdRemoveSelectionGate</name>
     <message>
-      <location filename="../../CommandFilter.cpp" line="268"/>
+      <location filename="../../CommandFilter.cpp" line="273"/>
       <source>No Selection Filters</source>
       <translation>Inga markeringsfilter</translation>
     </message>
     <message>
-      <location filename="../../CommandFilter.cpp" line="269"/>
+      <location filename="../../CommandFilter.cpp" line="274"/>
       <source>Clears all selection filters</source>
       <translation>Rensar alla markeringsfilter</translation>
     </message>
@@ -7706,7 +7706,7 @@ eller med formerna i en förening.
       <location filename="../../PatternParametersWidget.cpp" line="79"/>
       <location filename="../../PatternParametersWidget.cpp" line="81"/>
       <source>Total Angle</source>
-      <translation type="unfinished">Total Angle</translation>
+      <translation>Total vinkel</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="80"/>
@@ -7745,7 +7745,7 @@ eller med formerna i en förening.
       <location filename="../../../Init.py" line="42"/>
       <source>STEP with colors</source>
       <extracomment>Translation note: "STEP" is a file type end should not be translated</extracomment>
-      <translation type="unfinished">STEP with colors</translation>
+      <translation>STEP med färger</translation>
     </message>
   </context>
   <context>

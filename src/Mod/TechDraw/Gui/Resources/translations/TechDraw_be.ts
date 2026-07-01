@@ -4352,48 +4352,48 @@ it has a weld symbol that would become broken.</source>
       <translation>Вы не можаце выдаліць лінію зноскі, бо на ёй ёсць знак зварнога шва, які можа стаць пашкоджаным.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="378"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="392"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Зачыніць дыялогавае акно адкрыцця перад выдаленнем аб'екта дэталі</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="393"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Вы не можаце выдаліць выгляд, бо ў ім ёсць адзін ці некалькі залежных выглядаў, якія могуць стаць пашкоджанымі.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
       <location filename="../../ViewProviderPage.cpp" line="222"/>
       <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="174"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="182"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="190"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <source>Object dependencies</source>
       <translation>Залежнасці аб'екта</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="151"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
       <source>You cannot delete the anchor view of a projection group.</source>
       <translation>Вы не можаце выдаліць прывязку выгляду суполкі праекцый.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="160"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>Вы не можаце выдаліць выгляд, бо ў яго ёсць прагляд перасеку, які можа стаць пашкоджаным.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="168"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>Вы не можаце выдаліць выгляд, бо ў яго ёсць вынасны элемент, які можа стаць пашкоджаным.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="187"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>Вы не можаце выдаліць выгляд, бо ў яго ёсць лінія зноскі, якая можа стаць пашкоджанай.</translation>
     </message>
@@ -7306,68 +7306,78 @@ Do you want to continue?</source>
       <translation>Падрабязная прывязка</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="32"/>
-      <source>Base View</source>
-      <translation>Асноўны выгляд</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDetail.ui" line="89"/>
+      <location filename="../../TaskDetail.ui" line="184"/>
       <location filename="../../TaskDetail.cpp" line="252"/>
       <source>Drag Highlight</source>
       <translation>Перацягнуць вылучэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="242"/>
+      <location filename="../../TaskDetail.ui" line="230"/>
       <source>Radius</source>
       <translation>Радыус</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="55"/>
+      <location filename="../../TaskDetail.ui" line="42"/>
       <source>Detail view</source>
       <translation>Падрабязны выгляд</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="86"/>
+      <location filename="../../TaskDetail.ui" line="181"/>
       <source>Enables dragging of the detail highlight to a new position</source>
       <translation>Дазваляе перацягваць вылучаную дэталь у новае становішча</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="120"/>
+      <location filename="../../TaskDetail.ui" line="237"/>
       <source>Scale type</source>
       <translation>Тып маштабавання</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="127"/>
+      <location filename="../../TaskDetail.ui" line="79"/>
       <source>Reference label</source>
       <translation>Апорная метка</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="140"/>
+      <location filename="../../TaskDetail.ui" line="253"/>
       <source>Scale factor for detail view</source>
       <translation>Маштабны каэфіцыент для падрабязнага выгляду</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="168"/>
+      <location filename="../../TaskDetail.ui" line="150"/>
       <source>Y-position of detail highlight within view</source>
       <translation>Становішча Y выдзялення дэталі ў межах выгляду</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="184"/>
+      <location filename="../../TaskDetail.ui" line="272"/>
       <source>Scale factor</source>
       <translation>Каэфіцыент маштабавання</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="197"/>
+      <location filename="../../TaskDetail.ui" line="291"/>
       <source>Size of detail view</source>
       <translation>Памер вынаснога элементу</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="229"/>
+      <location filename="../../TaskDetail.ui" line="114"/>
       <source>X position of detail highlight within view</source>
       <translation>Становішча X выдзялення дэталі ў межах выгляду</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="256"/>
+      <location filename="../../TaskDetail.ui" line="35"/>
+      <source>Base view</source>
+      <translation>Асноўны выгляд</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="91"/>
+      <source>Position</source>
+      <translation type="unfinished">Position</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="194"/>
+      <source>Size</source>
+      <translation>Памер</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="205"/>
       <source>Page: scale factor of page is used
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
@@ -7377,22 +7387,22 @@ Custom: custom scale factor is used</source>
 Карыстальніцкі: ужываецца карыстальніцкі маштабны каэфіцыент</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="263"/>
+      <location filename="../../TaskDetail.ui" line="212"/>
       <source>Page</source>
       <translation>Старонка</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="268"/>
+      <location filename="../../TaskDetail.ui" line="217"/>
       <source>Automatic</source>
       <translation>Аўтаматычны</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="273"/>
+      <location filename="../../TaskDetail.ui" line="222"/>
       <source>Custom</source>
       <translation>Карыстальніцкі</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="216"/>
+      <location filename="../../TaskDetail.ui" line="72"/>
       <source>Reference</source>
       <translation>Адносіны</translation>
     </message>

@@ -4309,48 +4309,48 @@ it has a weld symbol that would become broken.</source>
       <translation>이 지시선에는 손상될 수 있는 용접 기호가 있으므로 삭제할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="378"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="392"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>상세 객체를 삭제하기 전에 열린 대화 상자를 닫으세요.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="393"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="407"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>이 보기에는 손상될 수 있는 종속 보기가 하나 이상 있으므로 삭제할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="396"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="411"/>
       <location filename="../../ViewProviderPage.cpp" line="222"/>
       <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="174"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="182"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="190"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
       <source>Object dependencies</source>
       <translation>객체 종속성</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="151"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="162"/>
       <source>You cannot delete the anchor view of a projection group.</source>
       <translation>투상 그룹의 기준 보기는 삭제할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="160"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <source>You cannot delete this view because it has a section view that would become broken.</source>
       <translation>이 보기에는 손상될 수 있는 단면도가 있으므로 삭제할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="168"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
       <source>You cannot delete this view because it has a detail view that would become broken.</source>
       <translation>이 보기에는 손상될 수 있는 상세 보기가 있으므로 삭제할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroupItem.cpp" line="176"/>
+      <location filename="../../ViewProviderProjGroupItem.cpp" line="187"/>
       <source>You cannot delete this view because it has a leader line that would become broken.</source>
       <translation>이 보기에는 손상될 수 있는 지시선이 있으므로 삭제할 수 없습니다.</translation>
     </message>
@@ -7240,68 +7240,78 @@ Do you want to continue?</source>
       <translation>상세 기준점</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="32"/>
-      <source>Base View</source>
-      <translation>기준 보기</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDetail.ui" line="89"/>
+      <location filename="../../TaskDetail.ui" line="184"/>
       <location filename="../../TaskDetail.cpp" line="252"/>
       <source>Drag Highlight</source>
       <translation>강조 표시 끌기</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="242"/>
+      <location filename="../../TaskDetail.ui" line="230"/>
       <source>Radius</source>
       <translation>반지름</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="55"/>
+      <location filename="../../TaskDetail.ui" line="42"/>
       <source>Detail view</source>
       <translation>상세 보기</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="86"/>
+      <location filename="../../TaskDetail.ui" line="181"/>
       <source>Enables dragging of the detail highlight to a new position</source>
       <translation>상세 강조 표시를 새 위치로 끌 수 있도록 설정합니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="120"/>
+      <location filename="../../TaskDetail.ui" line="237"/>
       <source>Scale type</source>
       <translation>배율 유형</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="127"/>
+      <location filename="../../TaskDetail.ui" line="79"/>
       <source>Reference label</source>
       <translation>참조 레이블</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="140"/>
+      <location filename="../../TaskDetail.ui" line="253"/>
       <source>Scale factor for detail view</source>
       <translation>상세 보기 배율 계수</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="168"/>
+      <location filename="../../TaskDetail.ui" line="150"/>
       <source>Y-position of detail highlight within view</source>
       <translation>보기 내 상세 강조 표시의 Y 위치</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="184"/>
+      <location filename="../../TaskDetail.ui" line="272"/>
       <source>Scale factor</source>
       <translation>배율 계수</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="197"/>
+      <location filename="../../TaskDetail.ui" line="291"/>
       <source>Size of detail view</source>
       <translation>상세 보기 크기</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="229"/>
+      <location filename="../../TaskDetail.ui" line="114"/>
       <source>X position of detail highlight within view</source>
       <translation>보기 내 상세 강조 표시의 X 위치</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="256"/>
+      <location filename="../../TaskDetail.ui" line="35"/>
+      <source>Base view</source>
+      <translation>기준 보기</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="91"/>
+      <source>Position</source>
+      <translation>위치</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="194"/>
+      <source>Size</source>
+      <translation>크기</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDetail.ui" line="205"/>
       <source>Page: scale factor of page is used
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
@@ -7311,22 +7321,22 @@ Custom: custom scale factor is used</source>
 사용자 지정: 사용자 정의 배율 계수를 사용합니다.</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="263"/>
+      <location filename="../../TaskDetail.ui" line="212"/>
       <source>Page</source>
       <translation>페이지</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="268"/>
+      <location filename="../../TaskDetail.ui" line="217"/>
       <source>Automatic</source>
       <translation>자동</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="273"/>
+      <location filename="../../TaskDetail.ui" line="222"/>
       <source>Custom</source>
       <translation>사용자 정의</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="216"/>
+      <location filename="../../TaskDetail.ui" line="72"/>
       <source>Reference</source>
       <translation>참조</translation>
     </message>

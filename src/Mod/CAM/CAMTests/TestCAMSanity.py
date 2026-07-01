@@ -389,6 +389,7 @@ class TestCAMSanity(PathTestBase):
         mock_job.PostProcessor = "linuxcnc"
         mock_job.PostProcessorArgs = ""
         mock_job.PostProcessorOutputFile = ""
+        mock_job.PostProcessorPropertyOverrides = ""
 
         if has_tools:
             mock_tc = self._make_mock_tc()

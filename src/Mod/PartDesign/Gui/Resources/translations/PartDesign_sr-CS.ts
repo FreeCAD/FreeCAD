@@ -3654,7 +3654,7 @@ Mada, moći ćeš da migriraš u bilo kom trenutku kasnije pomoću 'Konstruisanj
       <translation>Uredi Zavojnicu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="129"/>
+      <location filename="../../ViewProviderHole.cpp" line="130"/>
       <source>Edit Hole</source>
       <translation>Uredi Rupu</translation>
     </message>
@@ -4659,7 +4659,7 @@ Nije dozvoljeno ukrštanje elemenata na skici.</translation>
       <translation>Greška: Stranica mora biti ravna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <source>Error: Result is not a solid</source>
@@ -4784,17 +4784,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
 Ukrštanje elemenata skice ili više stranica u skici nije dozvoljeno za pravljenje udubljenja do stranice.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
       <source>Thread type out of range</source>
       <translation>Tip navoja je van opsega</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
       <source>Thread size out of range</source>
       <translation>Veličina navoja je van opsega</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
       <source>Error: Thread could not be built</source>
       <translation>Greška: Nije moguće napraviti navoj</translation>
     </message>

@@ -868,7 +868,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>Cambiar restricciones al otro espacio virtual</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1720"/>
       <source>Update constraint's virtual space</source>
       <translation>Actualizar el espacio virtual de la restricción</translation>
     </message>
@@ -880,36 +880,36 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1250"/>
       <source>Delete constraints</source>
-      <translation type="unfinished">Delete constraints</translation>
+      <translation>Eliminar restricciones</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1382"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1370"/>
       <source>Rename sketch constraint</source>
       <translation>Renombrar restricción de croquis</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2133"/>
       <source>Drag Point</source>
       <translation>Punto de arrastre</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2133"/>
       <source>Drag Curve</source>
       <translation>Arrastrar curva</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2108"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2134"/>
       <source>Drag geometries</source>
       <translation>Arrastrar geometrías</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1349"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1354"/>
       <source>Drag Constraint</source>
       <translation>Restricción de arrastre</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
-      <location filename="../../ViewProviderSketch.cpp" line="1598"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1603"/>
       <location filename="../../CommandConstraints.cpp" line="11246"/>
       <source>Modify sketch constraints</source>
       <translation>Modificar restricciones de croquis</translation>
@@ -976,7 +976,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>Alternar geometría de construcción</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1099"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1101"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="943"/>
       <source>Add Auto-Constraints</source>
       <translation>Añadir restricciones automáticas</translation>
@@ -2460,7 +2460,7 @@ Combinaciones aceptadas: dos curvas; un punto final y una curva; dos puntos fina
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="696"/>
       <source>Delete by Filter</source>
-      <translation type="unfinished">Delete by Filter</translation>
+      <translation>Eliminar por filtro</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="811"/>
@@ -3371,17 +3371,17 @@ Admite todos los sistemas de unidades excepto 'US custom' y 'Building US/Euro'.<
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="93"/>
       <source>Font preview</source>
-      <translation type="unfinished">Font preview</translation>
+      <translation>Vista previa de fuente</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="103"/>
       <source>Preview of a constraint text when selected font family and size is used</source>
-      <translation type="unfinished">Preview of a constraint text when selected font family and size is used</translation>
+      <translation>Vista previa de un texto de restricción cuando se utiliza la familia y el tamaño de la fuente seleccionada</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="112"/>
       <source>⌀123.45 µm (ƒ𝑥)</source>
-      <translation type="unfinished">⌀123.45 µm (ƒ𝑥)</translation>
+      <translation>⌀123.45 µm (ƒ𝑥)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="149"/>
@@ -3528,7 +3528,7 @@ Por defecto en: %N = %V
     <message>
       <location filename="../../SketcherSettings.cpp" line="605"/>
       <source>Glyphs not present:</source>
-      <translation type="unfinished">Glyphs not present:</translation>
+      <translation>Glifos no presentes:</translation>
     </message>
   </context>
   <context>
@@ -3728,18 +3728,18 @@ Sin embargo, no se encontraron restricciones que los vincularan a dichos extremo
       <translation>Ocultar alineamiento interno (en widget)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1744"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1773"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1744"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>Imposible actualizar el seguimiento de visibilidad:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1773"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
       <source>Impossible to update visibility:</source>
       <translation>Imposible actualizar la visibilidad:</translation>
     </message>
@@ -3884,7 +3884,7 @@ Sin embargo, no se encontraron restricciones que los vincularan a dichos extremo
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="64"/>
       <source>Selects these conflicting constraints</source>
-      <translation type="unfinished">Selects these conflicting constraints</translation>
+      <translation>Selecciona estas restricciones conflictivas</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="67"/>
@@ -4085,112 +4085,112 @@ Esto se hace al analizar las geometrías y restricciones del croquis.</translati
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3925"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3963"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Un diálogo ya está abierto en el panel de tareas</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3949"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3987"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>El croquis no es válido y no puede editarse.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4145"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4183"/>
       <source>The following constraint is partially redundant:</source>
       <translation>La siguiente restricción es parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4184"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Las siguientes restricciones son parcialmente redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3898"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3936"/>
       <source>Edit Sketch</source>
       <translation>Croquis de edición</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3926"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3964"/>
       <source>Close this dialog?</source>
       <translation>¿Cerrar este cuadro de diálogo?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3947"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3985"/>
       <source>Invalid Sketch</source>
       <translation>Croquis no válido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3948"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3986"/>
       <source>Open the sketch validation tool?</source>
       <translation>¿Abrir la herramienta de validación de bocetos?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4131"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4169"/>
       <source>Remove the following constraint:</source>
       <translation>Eliminar la siguiente restricción:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4132"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4170"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Eliminar al menos una de las siguientes restricciones:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4138"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4176"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Eliminar la siguiente restricción redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4139"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4177"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Eliminar las siguientes restricciones redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4152"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4190"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Eliminar la siguiente restricción mal formada:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4191"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Eliminar las siguientes restricciones mal formadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4212"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4250"/>
       <source>Empty sketch</source>
       <translation>Croquis vacío</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4217"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4255"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringido:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4223"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4261"/>
       <source>Malformed constraints:</source>
       <translation>Restricciones malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4231"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4269"/>
       <source>Redundant constraints:</source>
       <translation>Restricciones redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4237"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4275"/>
       <source>Partially redundant:</source>
       <translation>Parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4244"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4282"/>
       <source>Solver failed to converge</source>
       <translation>El solver falló al converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4250"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4288"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringido:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4252"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4290"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n grados de libertad</numerusform>
@@ -4198,7 +4198,7 @@ Esto se hace al analizar las geometrías y restricciones del croquis.</translati
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4256"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4294"/>
       <source>Fully constrained</source>
       <translation>Totalmente restringido</translation>
     </message>
@@ -4687,7 +4687,7 @@ El algoritmo QR de Eigen Sparse está optimizado para matrices dispersas; genera
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4195"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4233"/>
       <source>and %1 more</source>
       <translation>y %1 más</translation>
     </message>
@@ -5105,9 +5105,9 @@ El espaciado de la cuadrícula cambia si se reduce por debajo del tamaño de pí
       <translation>Error al recortar arista</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1392"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1380"/>
       <location filename="../../EditDatumDialog.cpp" line="66"/>
-      <location filename="../../EditDatumDialog.cpp" line="342"/>
+      <location filename="../../EditDatumDialog.cpp" line="339"/>
       <source>Value Error</source>
       <translation>Error del valor</translation>
     </message>
@@ -5729,7 +5729,7 @@ En su lugar, se aplican restricciones de igualdad entre los objetos originales y
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="510"/>
       <source>Copies (+'U'/ -'J')</source>
-      <translation>Copias (+'U'/-'J')</translation>
+      <translation>Copia (+'U'/-'J')</translation>
     </message>
   </context>
   <context>

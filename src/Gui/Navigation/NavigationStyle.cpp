@@ -40,6 +40,7 @@
 #include <QMenu>
 
 
+#include <algorithm>
 #include <cmath>
 #include <limits>
 
@@ -1251,7 +1252,73 @@ void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
     hasDragged = true;
 }
 
+void NavigationStyle::beginOrbitDrag(const OrbitDragOptions& options)
+{
+    stopAnimating();
+
+    OrbitDragState state;
+    state.center = viewer->getFocalPoint();
+    state.sensitivity = std::max(0.0F, options.sensitivity);
+
+    SbSphere sceneSphere;
+    if (options.centerMode == OrbitDragOptions::CenterMode::SceneBoundingSphere
+        && getObjectBoundingSphere(sceneSphere)) {
+        state.center = sceneSphere.getCenter();
+        state.minDistance = std::max(0.0F, options.minDistanceFactor) * sceneSphere.getRadius();
+        state.clippingRadius = std::max(0.0F, options.clippingRadiusFactor) * sceneSphere.getRadius();
+    }
+
+    orbitDrag = state;
+    applyOrbitDragCameraConstraints(*orbitDrag);
+}
+
+void NavigationStyle::updateOrbitDrag(SbVec2f curpos, SbVec2f prevpos)
+{
+    if (!isRotationEnabled()) {
+        return;
+    }
+
+    if (!orbitDrag) {
+        return;
+    }
+
+    assert(this->spinprojector);
+
+    const float dragSensitivity = orbitDrag->sensitivity;
+    const auto scalePosition = [dragSensitivity](SbVec2f position) {
+        return SbVec2f(
+            0.5F + dragSensitivity * (position[0] - 0.5F),
+            0.5F + dragSensitivity * (position[1] - 0.5F)
+        );
+    };
+
+    curpos = scalePosition(curpos);
+    prevpos = scalePosition(prevpos);
+
+    if (getOrbitStyle() == FreeTurntable) {
+        SbVec2f midpos(prevpos[0], curpos[1]);
+        spinSimplifiedInternal(curpos, midpos, &orbitDrag->center);
+        spinSimplifiedInternal(midpos, prevpos, &orbitDrag->center);
+    }
+    else {
+        spinSimplifiedInternal(curpos, prevpos, &orbitDrag->center);
+    }
+
+    applyOrbitDragCameraConstraints(*orbitDrag);
+    hasDragged = true;
+}
+
+void NavigationStyle::endOrbitDrag()
+{
+    orbitDrag.reset();
+}
+
 void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
+{
+    spinSimplifiedInternal(curpos, prevpos, nullptr);
+}
+
+void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos, const SbVec3f* center)
 {
     // 0000333: Turntable camera rotation
     SbMatrix mat;
@@ -1271,7 +1338,10 @@ void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
     }
     r.invert();
 
-    if (this->rotationCenterMode && this->rotationCenterFound) {
+    if (center) {
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r, *center);
+    }
+    else if (this->rotationCenterMode && this->rotationCenterFound) {
         this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r, rotationCenter);
     }
     else {
@@ -1279,13 +1349,13 @@ void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
     }
 }
 
-bool NavigationStyle::getObjectBoundingBoxCenter(SbVec3f& center) const
+bool NavigationStyle::getObjectBoundingSphere(SbSphere& sphere) const
 {
     if (!viewer->objectGroup) {
         return false;
     }
 
-    // Get the bounding box center of the physical object group
+    // Get the bounding sphere of the physical object group.
     SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.apply(viewer->objectGroup);
     const SbBox3f boundingBox = action.getBoundingBox();
@@ -1293,8 +1363,55 @@ bool NavigationStyle::getObjectBoundingBoxCenter(SbVec3f& center) const
         return false;
     }
 
-    center = boundingBox.getCenter();
+    sphere.circumscribe(boundingBox);
     return true;
+}
+
+bool NavigationStyle::getObjectBoundingBoxCenter(SbVec3f& center) const
+{
+    SbSphere sphere;
+    if (!getObjectBoundingSphere(sphere)) {
+        return false;
+    }
+
+    center = sphere.getCenter();
+    return true;
+}
+
+void NavigationStyle::applyOrbitDragCameraConstraints(const OrbitDragState& state)
+{
+    SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+    if (!camera) {
+        return;
+    }
+
+    SbVec3f direction;
+    camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+
+    SbVec3f cameraPosition = camera->position.getValue();
+    float centerDepth = (state.center - cameraPosition).dot(direction);
+    if (state.minDistance > 0.0F && centerDepth < state.minDistance) {
+        cameraPosition -= (state.minDistance - centerDepth) * direction;
+        camera->position = cameraPosition;
+        centerDepth = state.minDistance;
+    }
+
+    if (centerDepth > 0.0F) {
+        camera->focalDistance = centerDepth;
+    }
+
+    if (state.clippingRadius <= 0.0F || centerDepth <= 0.0F) {
+        return;
+    }
+
+    const float minNearDistance = camera->isOfType(SoPerspectiveCamera::getClassTypeId())
+        ? std::max(state.clippingRadius * 1.0e-4F, 1.0e-5F)
+        : 0.0F;
+    const float minClipSpan = std::max(state.clippingRadius * 1.0e-3F, 1.0e-4F);
+    const float nearDistance = std::max(minNearDistance, centerDepth - state.clippingRadius);
+    const float farDistance = std::max(centerDepth + state.clippingRadius, nearDistance + minClipSpan);
+    camera->nearDistance = nearDistance;
+    camera->farDistance = farDistance;
 }
 
 SbBool NavigationStyle::doSpin()

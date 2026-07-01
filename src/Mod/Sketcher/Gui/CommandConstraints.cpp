@@ -8025,6 +8025,13 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
 
+            if (GeoId1 == GeoId2 && selSeq.at(0).PosId == selSeq.at(1).PosId) {
+                Gui::TranslatedUserWarning(Obj,
+                                           QObject::tr("Wrong selection"),
+                                           QObject::tr("Geometry cannot be tangent to itself"));
+                return;
+            }
+
             // check if the edge already has a Block constraint
             if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)) {
                 showNoConstraintBetweenFixedGeometry(Obj);

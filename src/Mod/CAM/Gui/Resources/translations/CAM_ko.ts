@@ -931,7 +931,7 @@ Reset deletes all current items from the list and fills the list with all circul
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="314"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="334"/>
       <source>Max diameter</source>
       <translation>최대 직경</translation>
     </message>
@@ -1170,17 +1170,17 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>선택한 형상의 안쪽 또는 바깥쪽을 절삭합니다</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="203"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="223"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
       <translation>클리어된 영역 위의 급송 연결 이동 중 툴을 얼마나 올릴지 지정합니다. 연결 경로가 클리어되지 않으면 툴이 클리어런스 높이까지 올라갑니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="234"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="254"/>
       <source>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</source>
       <translation>점 간 직선 거리와 비교한 툴 유지 연결 경로의 최대 길이입니다. 초과하면 툴을 클리어런스 높이까지 올려 연결합니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="304"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="324"/>
       <source>Angle of the helix entry cone</source>
       <translation>나선 진입 콘의 각도입니다</translation>
     </message>
@@ -1256,7 +1256,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="155"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="192"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="153"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
       <translation type="unfinished">The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</translation>
     </message>
@@ -1265,8 +1264,8 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpHelixEdit.ui" line="168"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="195"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="156"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="333"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="362"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="353"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="382"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="232"/>
       <source>%</source>
       <translation>%</translation>
@@ -1327,62 +1326,82 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <translation>XY 잔여 소재</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="256"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="153"/>
+      <source>The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</source>
+      <translation type="unfinished">The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="178"/>
+      <source>Step over (percent)</source>
+      <translation type="unfinished">Step over (percent)</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="185"/>
+      <source>The sideways distance the cutting tool moves between successive passes.</source>
+      <translation type="unfinished">The sideways distance the cutting tool moves between successive passes.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="195"/>
+      <source>Step over (distance)</source>
+      <translation type="unfinished">Step over (distance)</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="276"/>
       <source>&lt;b&gt;Helix Parameters&lt;/b&gt;</source>
       <translation>&lt;b&gt;나선 매개변수&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="287"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="307"/>
       <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
       <translation>최대 허용 램프 진입 각도입니다. 0으로 지정하면 램프 각도 제한이 비활성화됩니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="297"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="317"/>
       <source>Cone angle</source>
       <translation>콘 각도</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="321"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="341"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</source>
       <translation>최대(및 명목상) 나선 진입 직경으로, 툴 직경의 백분율입니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="343"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="363"/>
       <source>Min diameter</source>
       <translation>최소 직경</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="350"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="370"/>
       <source>Minimum acceptable entry diameter, as a percentage of the tool diameter.</source>
       <translation>최소 허용 진입 직경으로, 툴 직경의 백분율입니다.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="182"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="202"/>
       <source>Use outline</source>
       <translation>윤곽 사용</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="196"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="216"/>
       <source>Operation type</source>
       <translation>작업 유형</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="213"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="233"/>
       <source>Keep tool down ratio</source>
       <translation>툴 유지 비율</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="220"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="240"/>
       <source>Lift distance</source>
       <translation>인상 거리</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="227"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="247"/>
       <source>Cut region</source>
       <translation>절삭 영역</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="375"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="395"/>
       <source>Stop</source>
       <translation>정지</translation>
     </message>
@@ -1601,19 +1620,19 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="263"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="283"/>
       <source>Max pitch</source>
       <translation>최대 피치</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="131"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="270"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="290"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</source>
       <translation>나선의 한 회전에서 허용되는 최대 하강량입니다. 0으로 설정하면 피치 제한이 비활성화됩니다.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="138"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="280"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="300"/>
       <source>Max ramp angle</source>
       <translation>최대 램프 각도</translation>
     </message>
@@ -1884,7 +1903,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="209"/>
       <source>Use rest machining</source>
       <translation>잔삭 가공 사용</translation>
     </message>
@@ -2348,7 +2367,6 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpWaterlineEdit.ui" line="166"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="158"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="185"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="175"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
       <source>Step over</source>
       <translation>스탭오버</translation>
@@ -2767,11 +2785,6 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <translation>태그 생성</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="69"/>
-      <source>G-Code</source>
-      <translation>G코드</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
       <source>Start at vertex</source>
       <translation>정점에서 시작</translation>
@@ -2780,6 +2793,31 @@ If the radius is bigger than that which the tag shape itself supports, the resul
       <location filename="../panels/PageOpEngraveEdit.ui" line="77"/>
       <source>Specify the vertex number of the underlying shape string at which engraving should start</source>
       <translation>각인이 시작되어야 하는 기본 형상 문자열의 정점 번호를 지정합니다</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="72"/>
+      <source>G-code source</source>
+      <translation type="unfinished">G-code source</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="79"/>
+      <source>Select source of the G-code</source>
+      <translation type="unfinished">Select source of the G-code</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="83"/>
+      <source>Text</source>
+      <translation>글자</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="88"/>
+      <source>File</source>
+      <translation>파일</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="118"/>
+      <source>Enter the filename containing the G-code</source>
+      <translation type="unfinished">Enter the filename containing the G-code</translation>
     </message>
   </context>
   <context>
@@ -4725,7 +4763,7 @@ Default: 3 mm</source>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Boundary.py" line="63"/>
-      <location filename="../../../Path/Dressup/Tags.py" line="941"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="936"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="57"/>
       <source>The base path to modify</source>
       <translation>수정할 기본 경로입니다</translation>
@@ -4800,38 +4838,38 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
 다중 프로파일 작업(예: 지그재그 오프셋 패턴을 사용한 포켓)에 유용할 수 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="947"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="942"/>
       <source>Width of tags.</source>
       <translation>태그의 너비입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="953"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="948"/>
       <source>Height of tags.</source>
       <translation>태그의 높이입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="959"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="954"/>
       <source>Angle of tag plunge and ascent.</source>
       <translation>태그의 플런지 및 상승 각도입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="965"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="960"/>
       <source>Radius of the fillet for the tag.</source>
       <translation>태그의 필렛 반경입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="971"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="966"/>
       <source>Locations of inserted holding tags</source>
       <translation>삽입된 홀딩 태그의 위치입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="977"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="972"/>
       <source>IDs of disabled holding tags</source>
       <translation>비활성화된 홀딩 태그의 ID입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="986"/>
-      <location filename="../../../Path/Dressup/Tags.py" line="1036"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="981"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1031"/>
       <source>Split B-Spline by arcs and ignore not vertical arcs axis (experimental).</source>
       <translation>호별로 B-스플라인을 분할하고 수직이 아닌 호 축을 무시합니다(실험적).</translation>
     </message>
@@ -5196,34 +5234,35 @@ Only for styles: Arc, Line, Perpendicular and Tangent</source>
       <translation>False로 설정하면 작업이 코드를 생성하지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1545"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1544"/>
       <source>Side of selected faces that tool should cut</source>
       <translation>툴이 절삭해야 하는 선택한 면의 측면입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1554"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1553"/>
       <source>Type of adaptive operation</source>
       <translation>어댑티브 작업의 유형입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1572"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1571"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1955"/>
       <location filename="../../../Path/Op/PocketBase.py" line="159"/>
       <location filename="../../../Path/Op/Helix.py" line="164"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>각 패스에서 스탭오버할 커터 직경의 백분율입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1581"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1580"/>
       <source>Lift distance for rapid moves</source>
       <translation>급송 이동을 위한 리프트 거리입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1590"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1589"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
       <translation>점 간 직선 거리와 비교한 툴 다운 유지 경로의 최대 길이입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1563"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1562"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -5232,24 +5271,24 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 큰 값(오른쪽으로 갈수록)은 계산 속도가 빠르고, 작은 값(왼쪽으로 갈수록)은 더 정확한 툴패스가 생성됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1599"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1598"/>
       <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
       <translation>XY 평면에 남길 스톡의 양입니다(예: 마무리 작업용)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1608"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1607"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>Z축을 따라 남길 스톡의 양입니다(예: 마무리 작업용). 이 속성은 ModelAwareExperiment가 활성화된 경우에만 사용됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1673"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1672"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
       <translation>최대 허용 램프 진입 각도입니다.
 0으로 지정하면 램프 각도 제한을 비활성화합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1683"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1682"/>
       <location filename="../../../Path/Op/Helix.py" line="288"/>
       <location filename="../../../Path/Op/Helix.py" line="507"/>
       <source>The maximum allowable descent in a single revolution of the helix
@@ -5258,77 +5297,77 @@ Set to zero to disable limitation by pitch</source>
 0으로 설정하면 피치 제한을 비활성화합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1701"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1889"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1700"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1894"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
       <translation>최대(및 명목상) 나선 진입 직경으로, 툴 직경의 백분율입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1710"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1898"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1709"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1903"/>
       <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
       <translation>최소 허용 나선 진입 직경으로, 툴 직경의 백분율입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1737"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1736"/>
       <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation>깊이 대신 영역별로 절삭을 정렬합니다. 이 속성은 ModelAwareExperiment가 활성화된 경우에만 사용됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1752"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1870"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1751"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1875"/>
       <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
       <translation>3D 지오메트리를 존중하고 오버행 아래 절삭을 방지하는 실험적 모델 인식 기능을 활성화합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1859"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1864"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
       <translation>Z축을 따라 남길 스톡의 양입니다(예: 마무리 작업용)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1920"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1925"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
       <translation type="unfinished">The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1617"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1616"/>
       <source>Force plunging into material inside and clearing towards the edges</source>
       <translation>안쪽 재질로 플런지를 강제하고 모서리 방향으로 정리합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1626"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1625"/>
       <source>To take a finishing profile path at the end</source>
       <translation>마지막에 마무리 프로파일 경로를 수행합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1632"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1642"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1631"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1641"/>
       <source>Stop processing</source>
       <translation>처리 정지</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1652"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1651"/>
       <source>Internal input state</source>
       <translation>내부 입력 상태</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1661"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1660"/>
       <source>Internal output state</source>
       <translation>내부 출력 상태</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1692"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1691"/>
       <source>Helix cone angle (degrees)</source>
       <translation>나선 콘 각도(도)입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1719"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1718"/>
       <location filename="../../../Path/Op/PocketShape.py" line="168"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>기본 지오메트리의 윤곽을 사용합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1848"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1853"/>
       <source>Orders cuts by region instead of depth.</source>
       <translation>깊이 대신 영역별로 절삭을 정렬합니다.</translation>
     </message>
@@ -5617,33 +5656,63 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
       <translation>드릴링 깊이가 확장되는 정도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="71"/>
+      <location filename="../../../Path/Op/Engrave.py" line="72"/>
       <location filename="../../../Path/Op/Vcarve.py" line="409"/>
       <source>Additional base objects to be engraved</source>
       <translation>각인할 추가 기본 객체입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="81"/>
+      <location filename="../../../Path/Op/Engrave.py" line="82"/>
       <source>The vertex index to start the toolpath from</source>
       <translation>툴패스를 시작할 정점 인덱스입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="88"/>
-      <location filename="../../../Path/Op/Engrave.py" line="115"/>
+      <location filename="../../../Path/Op/Engrave.py" line="89"/>
+      <location filename="../../../Path/Op/Engrave.py" line="150"/>
       <source>Reverse milling direction</source>
       <translation>밀링 방향 반전</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="94"/>
-      <location filename="../../../Path/Op/Engrave.py" line="122"/>
+      <location filename="../../../Path/Op/Engrave.py" line="95"/>
+      <location filename="../../../Path/Op/Engrave.py" line="157"/>
       <source>Set the cut pattern for the operation</source>
       <translation>작업의 절삭 패턴을 설정합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="105"/>
-      <location filename="../../../Path/Op/Engrave.py" line="133"/>
+      <location filename="../../../Path/Op/Engrave.py" line="106"/>
+      <location filename="../../../Path/Op/Engrave.py" line="168"/>
       <source>Approximate complex curves to arcs and lines</source>
       <translation type="unfinished">Approximate complex curves to arcs and lines</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="117"/>
+      <location filename="../../../Path/Op/Engrave.py" line="180"/>
+      <source>Order processing of the wires
+
+Manual - Using order from selection without sorting
+Automatic - Sorting wires by the nearest neighbour method, further improved with 2-opt</source>
+      <translation type="unfinished">Order processing of the wires
+
+Manual - Using order from selection without sorting
+Automatic - Sorting wires by the nearest neighbour method, further improved with 2-opt</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="125"/>
+      <location filename="../../../Path/Op/Engrave.py" line="188"/>
+      <source>The start point for sorting</source>
+      <translation type="unfinished">The start point for sorting</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="131"/>
+      <location filename="../../../Path/Op/Engrave.py" line="196"/>
+      <source>The end point for sorting</source>
+      <translation type="unfinished">The end point for sorting</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Engrave.py" line="137"/>
+      <location filename="../../../Path/Op/Engrave.py" line="204"/>
+      <source>Use end point for sorting</source>
+      <translation type="unfinished">Use end point for sorting</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/FeatureExtension.py" line="478"/>
@@ -5857,8 +5926,8 @@ For External profile - profile radius</source>
       <translation>경로의 3D 정렬을 사용합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1728"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1837"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1727"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1842"/>
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="271"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
@@ -6330,24 +6399,24 @@ Manual: uses order of shapes selection</source>
       <translation>이 높이 위의 외부 워터라인을 무시합니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="77"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="78"/>
       <location filename="../../../Path/Dressup/Array.py" line="49"/>
       <source>Pattern method</source>
       <translation>패턴 방법</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="131"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="132"/>
       <source>Make copies in X direction before Y in Linear 2D pattern</source>
       <translation>선형 2D 패턴에서 Y 전에 X 방향으로 복사본을 만듭니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="102"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="103"/>
       <location filename="../../../Path/Dressup/Array.py" line="66"/>
       <source>The number of copies in X-direction in linear pattern</source>
       <translation>선형 패턴에서 X 방향의 복사본 수입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="110"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="111"/>
       <location filename="../../../Path/Dressup/Array.py" line="74"/>
       <source>The number of copies in Y-direction in linear pattern</source>
       <translation>선형 패턴에서 Y 방향의 복사본 수입니다</translation>
@@ -6363,55 +6432,61 @@ Manual: uses order of shapes selection</source>
       <translation>무작위로 오프셋할 복사본의 백분율입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="166"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="176"/>
       <location filename="../../../Path/Dressup/Array.py" line="115"/>
       <source>Maximum random offset of copies</source>
       <translation>복사본의 최대 무작위 오프셋입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="172"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="262"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="182"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="272"/>
       <source>Use randomly offset</source>
       <translation>무작위 오프셋 사용</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="178"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="188"/>
       <location filename="../../../Path/Dressup/Array.py" line="121"/>
       <source>Seed value for jitter randomness</source>
       <translation>지터 무작위성의 시드 값입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="54"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="55"/>
       <source>The toolpaths to array</source>
       <translation>어레이할 툴패스입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="69"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="70"/>
       <source>The tool controller that will be used to calculate the toolpath
 Should be identical for all base operations</source>
       <translation>툴패스를 계산하는 데 사용될 툴 컨트롤러입니다.
 모든 기본 작업에서 동일해야 합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="85"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="86"/>
       <source>The number of copies in Linear1D and Polar pattern</source>
       <translation>선형 1D 및 폴라 패턴의 복사본 수입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="94"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="95"/>
       <location filename="../../../Path/Dressup/Array.py" line="58"/>
       <source>The spacing between the array copies in linear pattern</source>
       <translation>선형 패턴에서 어레이 복사본 사이의 간격입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="116"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="117"/>
       <location filename="../../../Path/Dressup/Array.py" line="80"/>
       <source>Total angle in polar pattern</source>
       <translation>폴라 패턴의 총 각도입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="143"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="294"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="141"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="301"/>
+      <source>Start from farthest repeat</source>
+      <translation type="unfinished">Start from farthest repeat</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Array.py" line="153"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="315"/>
       <source>Define the offsets and angle of rotation for repeats from selected shapes
 
 If selection without sub elements:
@@ -6424,20 +6499,20 @@ If selection without sub elements:
 - shape contains edges: create only one repeat (useful for imported nesting shapes)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="152"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="308"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="162"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="329"/>
       <source>Define the base offsets and angle of rotation from selected shape</source>
       <translation type="unfinished">Define the base offsets and angle of rotation from selected shape</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="158"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="316"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="168"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="337"/>
       <source>Sorting mode</source>
       <translation type="unfinished">Sorting mode</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="184"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="255"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="194"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="265"/>
       <source>Max angle of rotation for jitter randomness</source>
       <translation>지터 무작위성의 최대 회전 각도</translation>
     </message>
@@ -6447,7 +6522,7 @@ If selection without sub elements:
       <translation>선형 1D 및 폴라 패턴의 복사본 수입니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="122"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="123"/>
       <location filename="../../../Path/Dressup/Array.py" line="94"/>
       <source>The centre of rotation in polar pattern</source>
       <translation>폴라 패턴의 회전 중심입니다</translation>
@@ -6459,8 +6534,8 @@ If selection without sub elements:
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="60"/>
-      <location filename="../../../Path/Op/Gui/Array.py" line="279"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="61"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="289"/>
       <source>Operations cycle time estimation</source>
       <translation>작업 사이클 시간 추정</translation>
     </message>
@@ -6886,7 +6961,7 @@ If selection without sub elements:
       <translation>선택한 모서리에 접근할 수 없습니다. 여러 개인 경우 선택 순서를 변경하면 작동할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="630"/>
+      <location filename="../../../Path/Op/Profile.py" line="621"/>
       <source>Unable to create path for face(s).</source>
       <translation>면에 대한 경로를 생성할 수 없습니다.</translation>
     </message>
@@ -7250,7 +7325,7 @@ If selection without sub elements:
   <context>
     <name>PathOp</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="48"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="49"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>False로 설정하면 작업이 코드를 생성하지 않습니다</translation>
     </message>
@@ -7352,12 +7427,12 @@ Aborting op creation</source>
       <translation>기본이 비어 있거나 잘못된 객체입니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="383"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="405"/>
       <source>Arrays of toolpaths having different tool controllers or tool controller not selected.</source>
       <translation>서로 다른 툴 컨트롤러를 가진 툴패스의 어레이이거나 툴 컨트롤러가 선택되지 않았습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="392"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="414"/>
       <source>Arrays not compatible with coolant modes.</source>
       <translation>어레이는 쿨런트 모드와 호환되지 않습니다.</translation>
     </message>
@@ -7393,12 +7468,12 @@ Aborting op creation</source>
       <translation>사용자 정의 파일 %s을(를) 찾을 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="213"/>
+      <location filename="../../../Path/Op/Custom.py" line="214"/>
       <source>Total invalid lines in Custom File G-code: %s</source>
       <translation>사용자 정의 파일 G-code의 총 잘못된 줄 수: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="218"/>
+      <location filename="../../../Path/Op/Custom.py" line="219"/>
       <source>Check lines: %s</source>
       <translation type="unfinished">Check lines: %s</translation>
     </message>
@@ -7434,12 +7509,12 @@ Aborting op creation</source>
   <context>
     <name>CAM_SelectLoop</name>
     <message>
-      <location filename="../../../PathCommands.py" line="58"/>
+      <location filename="../../../PathCommands.py" line="49"/>
       <source>Finish Selecting Loop</source>
       <translation>루프 선택 완료</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="71"/>
+      <location filename="../../../PathCommands.py" line="62"/>
       <source>Completes the selection of edges or faces that forms a loop
 
 Select vertical faces: searching loops faces which forms the walls.
@@ -7470,11 +7545,6 @@ or tangent edges.
 Select three or more edges: searching horizontal wires.
 
 Without sub selection all edges of the shape will be selected.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathCommands.py" line="139"/>
-      <source>Closed loop detection failed. This type of selection not supported yet.</source>
-      <translation type="unfinished">Closed loop detection failed. This type of selection not supported yet.</translation>
     </message>
   </context>
   <context>
@@ -7650,17 +7720,17 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_DressupTag</name>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1317"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1312"/>
       <source>Cannot insert holding tags for this path - select a profile path</source>
       <translation>이 경로에 홀딩 태그를 삽입할 수 없습니다 - 프로파일 경로를 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1366"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1361"/>
       <source>The selected object is not a path</source>
       <translation>선택한 객체가 경로가 아닙니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Tags.py" line="1370"/>
+      <location filename="../../../Path/Dressup/Tags.py" line="1365"/>
       <source>Select a profile object</source>
       <translation>프로파일 객체를 선택하십시오</translation>
     </message>
@@ -7774,12 +7844,12 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>나선</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="744"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="746"/>
       <source>Ramp Entry</source>
       <translation>램프 진입</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="748"/>
+      <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="750"/>
       <source>Creates a ramp entry dress-up object from a selected toolpath</source>
       <translation>선택한 툴패스에서 램프 진입 드레스업 객체를 생성합니다</translation>
     </message>
@@ -8491,32 +8561,32 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_Adaptive</name>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1512"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1511"/>
       <source>Outside</source>
       <translation>바깥쪽</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1513"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1512"/>
       <source>Inside</source>
       <translation>안쪽</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1516"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
       <source>Clearing</source>
       <translation>정리하기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1517"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1516"/>
       <source>Profiling</source>
       <translation>프로파일링</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="179"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="217"/>
       <source>Adaptive</source>
       <translation>어댑티브</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="180"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="218"/>
       <source>Adaptive clearing and profiling</source>
       <translation>어댑티브 정리하기 및 프로파일링</translation>
     </message>
@@ -9366,37 +9436,37 @@ This will not delete the toolbits contained within it.</source>
       <translation>LinuxCNC 후처리기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="162"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="164"/>
       <source>Automatic Tool Changer</source>
       <translation>자동 툴 교환기</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="168"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="170"/>
       <source>Enable if machine has automatic tool changer. If disabled, tool changes will pause for manual intervention.</source>
       <translation>장비에 자동 툴 교환기가 있는 경우 활성화합니다. 비활성화하면 툴 교환 시 수동 개입을 위해 일시 중지됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="173"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="175"/>
       <source>Automatic Spindle Control</source>
       <translation>자동 스핀들 제어</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="179"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="181"/>
       <source>Enable if machine has automatic spindle speed control. If disabled, spindle commands will prompt for manual adjustment.</source>
       <translation>장비에 자동 스핀들 속도 제어가 있는 경우 활성화합니다. 비활성화하면 스핀들 명령 시 수동 조정이 요청됩니다.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="185"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="187"/>
       <source>Suppressed (tolerated) G-code Commands</source>
       <translation type="unfinished">Suppressed (tolerated) G-code Commands</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="191"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="193"/>
       <source>List of G-code commands tolerated but suppressed by this post-processor (one per line). Commands this list will be filtered out</source>
       <translation type="unfinished">List of G-code commands tolerated but suppressed by this post-processor (one per line). Commands this list will be filtered out</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="198"/>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="200"/>
       <source>OpenSBP post processor for ShopBot controllers</source>
       <translation>ShopBot 컨트롤러용 OpenSBP 후처리기</translation>
     </message>
@@ -9454,17 +9524,17 @@ This will not delete the toolbits contained within it.</source>
       <translation>2배 드릴 팁</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="427"/>
+      <location filename="../../../Path/Op/Drilling.py" line="426"/>
       <source>Tapping strategy requires a Tap tool with Pitch</source>
       <translation>태핑 전략에는 피치가 있는 탭 툴이 필요합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="500"/>
+      <location filename="../../../Path/Op/Drilling.py" line="499"/>
       <source>Tapping strategy requires a Tap tool with non-zero Pitch</source>
       <translation>태핑 전략에는 0이 아닌 피치가 있는 탭 툴이 필요합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Drilling.py" line="510"/>
+      <location filename="../../../Path/Op/Drilling.py" line="509"/>
       <source>Tapping strategy requires a ToolController with non-zero SpindleSpeed</source>
       <translation>태핑 전략에는 0이 아닌 스핀들 속도가 있는 툴 컨트롤러가 필요합니다</translation>
     </message>
@@ -10107,17 +10177,17 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Array</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="799"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="827"/>
       <source>Array</source>
       <translation>어레이</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="800"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="828"/>
       <source>Creates an array from selected toolpaths</source>
       <translation>선택한 툴패스에서 어레이를 생성합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="833"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="861"/>
       <source>Arrays can be created only from toolpath operations.</source>
       <translation>어레이는 툴패스 작업에서만 생성할 수 있습니다.</translation>
     </message>
@@ -10151,12 +10221,17 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Custom</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="72"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="112"/>
+      <source>Select file containing the gcode</source>
+      <translation type="unfinished">Select file containing the gcode</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="127"/>
       <source>Custom</source>
       <translation>사용자 지정</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="73"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="128"/>
       <source>Create custom G-code snippet</source>
       <translation>사용자 정의 G-code 스니펫을 생성합니다</translation>
     </message>
@@ -10187,14 +10262,14 @@ Allowed selection only from one model:
       <translation>Draft ShapeString 주위에 각인 툴패스를 생성합니다</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="97"/>
-      <location filename="../../../Path/Op/Engrave.py" line="125"/>
+      <location filename="../../../Path/Op/Engrave.py" line="98"/>
+      <location filename="../../../Path/Op/Engrave.py" line="160"/>
       <source>Directional</source>
       <translation>단방향</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Engrave.py" line="98"/>
-      <location filename="../../../Path/Op/Engrave.py" line="126"/>
+      <location filename="../../../Path/Op/Engrave.py" line="99"/>
+      <location filename="../../../Path/Op/Engrave.py" line="161"/>
       <source>Bidirectional</source>
       <translation>양방향</translation>
     </message>
@@ -10637,12 +10712,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="152"/>
+      <location filename="../../../PathCommands.py" line="148"/>
       <source>Toggle Operation</source>
       <translation>작업 전환</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="156"/>
+      <location filename="../../../PathCommands.py" line="152"/>
       <source>Toggles the active state of the operation</source>
       <translation>작업의 활성 상태를 전환합니다</translation>
     </message>
@@ -10650,12 +10725,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="222"/>
+      <location filename="../../../PathCommands.py" line="218"/>
       <source>Copy Operation</source>
       <translation>작업 복사</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="223"/>
+      <location filename="../../../PathCommands.py" line="219"/>
       <source>Copies the operation in the job</source>
       <translation>작업 내의 작업을 복사합니다</translation>
     </message>
@@ -11311,7 +11386,7 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>PathHelix</name>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="710"/>
+      <location filename="../../../Path/Op/Helix.py" line="709"/>
       <source>Skipped hole at position %s</source>
       <translation>%s 위치의 홀을 건너뛰었습니다</translation>
     </message>
