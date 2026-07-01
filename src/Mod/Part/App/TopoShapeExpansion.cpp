@@ -38,6 +38,7 @@
 # include <BRepAdaptor_HCompCurve.hxx>
 #endif
 
+#include <Base/Profiler.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
@@ -1629,6 +1630,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     ElementMapPolicy elementMapPolicy
 )
 {
+    ZoneScoped;
+
     setShape(shape);
     if (shape.IsNull()) {
         FC_THROWM(NullShapeException, "Null shape");

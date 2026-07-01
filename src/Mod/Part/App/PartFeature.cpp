@@ -59,6 +59,7 @@
 #include <TopoDS.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
+#include <Base/Profiler.h>
 
 
 #include <App/Application.h>
@@ -311,6 +312,7 @@ std::vector<Data::MappedElement> Feature::findSimilarNames(
     const TopoShape& searchShape
 )
 {
+    ZoneScoped;
     std::vector<Data::MappedElement> ret {};
 
     if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
