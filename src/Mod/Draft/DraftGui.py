@@ -372,6 +372,9 @@ class DraftToolBar:
     def _is_field_locked(self, key):
         return self._locks.is_locked(key)
 
+    def has_point_constraints(self):
+        return self._locks.any_locked()
+
     def _set_field_locked(self, key, locked):
         if locked:
             field = getattr(self, self._LOCK_FIELDS.get(key, ""), None)
