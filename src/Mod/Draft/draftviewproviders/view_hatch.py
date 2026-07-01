@@ -65,13 +65,13 @@ class ViewProviderDraftHatch:
         if mode == 1 or mode == 2:
             return None
 
-        taskd = Draft_Hatch_TaskPanel(vobj.Object)
-        taskd.form.File.setFileName(vobj.Object.File)
-        taskd.form.Pattern.setCurrentText(vobj.Object.Pattern)
-        taskd.form.Scale.setValue(vobj.Object.Scale)
-        taskd.form.Rotation.setValue(vobj.Object.Rotation)
-        taskd.form.Translate.setChecked(vobj.Object.Translate)
-        Gui.Control.showDialog(taskd)
+        self.taskd = Draft_Hatch_TaskPanel(vobj.Object)
+        self.taskd.form.File.setFileName(vobj.Object.File)
+        self.taskd.form.Pattern.setCurrentText(vobj.Object.Pattern)
+        self.taskd.form.Scale.setValue(vobj.Object.Scale)
+        self.taskd.form.Rotation.setValue(vobj.Object.Rotation)
+        self.taskd.form.Translate.setChecked(vobj.Object.Translate)
+        Gui.Control.showDialog(self.taskd)
         return True
 
     def unsetEdit(self, vobj, mode):
@@ -80,6 +80,7 @@ class ViewProviderDraftHatch:
         if mode == 1 or mode == 2:
             return None
 
+        self.taskd.reject()
         return True
 
     def setupContextMenu(self, vobj, menu):

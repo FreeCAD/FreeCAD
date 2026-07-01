@@ -335,6 +335,10 @@ std::filesystem::path PathMigrationWorker::locateNewPreferences() const
 std::string PathMigrationWorker::generateNewUserAppPathString(const std::string& oldPath) const
 {
     std::filesystem::path newPath = Base::FileInfo::stringToPath(oldPath);
+    if (newPath.filename().empty()) {
+        // Handle the case where the path was constructed from a std::string with a trailing /
+        newPath = newPath.parent_path();
+    }
     if (App::Application::directories()->isVersionedPath(newPath)) {
         newPath = newPath.parent_path();
     }

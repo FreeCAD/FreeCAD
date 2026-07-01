@@ -191,7 +191,8 @@ void Command::setFromGCode(const std::string& str)
     std::string key;
     std::string value;
     for (unsigned int i = 0; i < gcode_part.size(); i++) {
-        if ((isdigit(gcode_part[i])) || (gcode_part[i] == '-') || (gcode_part[i] == '.')) {
+        if ((isdigit(gcode_part[i])) || (gcode_part[i] == '-') || (gcode_part[i] == '.')
+            || ((gcode_part[i] == 'e') && (i > 0) && (isdigit(gcode_part[i - 1])))) {
             value += gcode_part[i];
         }
         else if (isalpha(gcode_part[i])) {

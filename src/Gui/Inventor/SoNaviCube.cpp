@@ -48,6 +48,7 @@
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoFaceSet.h>
@@ -65,7 +66,6 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTexture2.h>
-#include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec4f.h>
@@ -141,72 +141,65 @@ constexpr int cubeFaceIndex(SoNaviCube::PickId id)
     return -1;
 }
 
-SoSeparator* depthClearScene()
+/** Restores the OpenGL state touched while clearing the NaviCube overlay depth. */
+class ScopedDepthClearState
 {
-    static SoSeparator* root = nullptr;
-    if (root) {
-        return root;
-    }
-
-    root = new SoSeparator;
-    root->ref();
-
-    // Ensure the quad is drawn with blending enabled and without relying on any inherited
-    // backface-culling assumptions. The quad uses alpha=0, so with blending it won't touch the
-    // color buffer while still writing depth.
+public:
+    ScopedDepthClearState()
     {
-        auto* transparency = new SoTransparencyType;
-        transparency->value = SoTransparencyType::BLEND;
-        root->addChild(transparency);
-
-        auto* hints = new SoShapeHints;
-        hints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
-        hints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
-        hints->faceType = SoShapeHints::UNKNOWN_FACE_TYPE;
-        root->addChild(hints);
+        scissorEnabled = glIsEnabled(GL_SCISSOR_TEST);
+        glGetIntegerv(GL_SCISSOR_BOX, scissorBox);
+        glGetBooleanv(GL_DEPTH_WRITEMASK, &depthWriteMask);
+        glGetDoublev(GL_DEPTH_CLEAR_VALUE, &clearDepth);
     }
 
-    // Use a dedicated camera so the caller doesn't need to manually override projection/view
-    // matrices. The quad is placed on the far plane so it writes depth=1.0 everywhere.
+    ScopedDepthClearState(const ScopedDepthClearState&) = delete;
+    ScopedDepthClearState& operator=(const ScopedDepthClearState&) = delete;
+
+    ~ScopedDepthClearState() noexcept
     {
-        auto* cam = new SoOrthographicCamera;
-        using Mapping = SoCamera::ViewportMapping;
-        cam->viewportMapping = Mapping::LEAVE_ALONE;
-        cam->aspectRatio = 1.0F;
-        cam->position = SbVec3f(0.0F, 0.0F, 0.0F);
-        cam->orientation = SbRotation();
-        cam->nearDistance = 0.0F;
-        cam->farDistance = 1.0F;
-        cam->focalDistance = 1.0F;
-        cam->height = 2.0F;
-        root->addChild(cam);
+        glScissor(
+            scissorBox[0],
+            scissorBox[1],
+            static_cast<GLsizei>(scissorBox[2]),
+            static_cast<GLsizei>(scissorBox[3])
+        );
+        if (scissorEnabled == GL_TRUE) {
+            glEnable(GL_SCISSOR_TEST);
+        }
+        else {
+            glDisable(GL_SCISSOR_TEST);
+        }
+        glDepthMask(depthWriteMask);
+        glClearDepth(clearDepth);
     }
 
-    auto* depth = new SoDepthBuffer;
-    depth->test = TRUE;
-    depth->write = TRUE;
-    depth->function = SoDepthBuffer::ALWAYS;
-    depth->range = SbVec2f(0.0F, 1.0F);
-    root->addChild(depth);
+private:
+    GLboolean scissorEnabled {GL_FALSE};
+    GLint scissorBox[4] {};
+    GLboolean depthWriteMask {GL_TRUE};
+    GLdouble clearDepth {1.0};
+};
 
-    // Render fully transparent to avoid touching the color buffer; only depth is reset.
-    auto* mat = new SoMaterial;
-    mat->diffuseColor.setValue(1.0F, 1.0F, 1.0F);
-    mat->transparency = 1.0F;
-    root->addChild(mat);
+/** Clears only the depth buffer in the NaviCube viewport, leaving color output untouched. */
+void clearOverlayDepth(int viewportX, int viewportY, int viewportWidth, int viewportHeight)
+{
+    if (viewportWidth <= 0 || viewportHeight <= 0) {
+        return;
+    }
 
-    auto* face = new SoFaceSet;
-    face->numVertices.set1Value(0, 4);
-    auto* vp = new SoVertexProperty;
-    face->vertexProperty = vp;
-    vp->vertex.setNum(4);
-    vp->vertex.set1Value(0, SbVec3f(-1.0F, -1.0F, -1.0F));
-    vp->vertex.set1Value(1, SbVec3f(1.0F, -1.0F, -1.0F));
-    vp->vertex.set1Value(2, SbVec3f(1.0F, 1.0F, -1.0F));
-    vp->vertex.set1Value(3, SbVec3f(-1.0F, 1.0F, -1.0F));
-    root->addChild(face);
+    ScopedDepthClearState state;
 
-    return root;
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(
+        viewportX,
+        viewportY,
+        static_cast<GLsizei>(viewportWidth),
+        static_cast<GLsizei>(viewportHeight)
+    );
+    glDepthMask(GL_TRUE);
+    glClearDepth(1.0);
+    glClear(GL_DEPTH_BUFFER_BIT);
 }
 
 bool pointInTriangle2D(const SbVec2f& p, const SbVec2f& a, const SbVec2f& b, const SbVec2f& c)
@@ -382,6 +375,10 @@ constexpr float OVERLAY_ORTHO_EXTENT = 2.1F;
 constexpr float OVERLAY_FOV_SCALE = 1.1F;
 constexpr float OVERLAY_CUBE_Z = -5.1F;
 constexpr float OVERLAY_BUTTON_Z = -4.0F;  // in front of the cube (cube is centered at z≈-5.1)
+constexpr float BACKSIDE_HIT_LEFT = 0.79F;
+constexpr float BACKSIDE_HIT_TOP = 0.0F;
+constexpr float BACKSIDE_HIT_RIGHT = 1.0F;
+constexpr float BACKSIDE_HIT_BOTTOM = 0.16F;
 
 }  // namespace
 
@@ -1285,9 +1282,18 @@ void SoNaviCube::beginOverlayPass(
     // Reset depth within the overlay viewport so the NaviCube can self-occlude and render
     // translucency correctly without being affected by whatever the main scene left in the depth
     // buffer.
-    state->push();
-    depthClearScene()->GLRender(action);
-    state->pop();
+    clearOverlayDepth(viewportX, viewportY, viewportWidth, viewportHeight);
+
+    // The scissored depth clear is a direct GL operation because Coin currently has no node/API for
+    // clearing only an overlay viewport's depth buffer while keeping its GL state cache coherent.
+    // Keep Coin's depth element and the actual context state aligned before the retained NaviCube
+    // scene renders. Long term, this should move behind a Coin-owned viewport-clear node/API that
+    // performs the clear and re-establishes or invalidates the affected GL state itself.
+    SoDepthBufferElement::set(state, TRUE, TRUE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0F, 1.0F));
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LEQUAL);
+    glDepthRange(0.0, 1.0);
 
     // Enforce overlay render state after the depth-clear pass.
     SoLightModelElement::set(state, this, SoLightModelElement::BASE_COLOR);
@@ -1386,6 +1392,18 @@ SoNaviCube::PickId SoNaviCube::pickAt(const SbVec2s& point) const
     if (localPoint[0] < 0 || localPoint[1] < 0 || localPoint[0] >= static_cast<short>(viewportWidth)
         || localPoint[1] >= static_cast<short>(viewportHeight)) {
         return PickId::None;
+    }
+
+    const SbVec2f overlayPoint(
+        (static_cast<float>(localPoint[0]) + 0.5F) / viewportWidth,
+        1.0F - ((static_cast<float>(localPoint[1]) + 0.5F) / viewportHeight)
+    );
+    for (PickId pickId : kButtonPickIds) {
+        const ButtonHitRect& rect = buttonHitRects[pickIndex(pickId)];
+        if (rect.active && overlayPoint[0] >= rect.left && overlayPoint[0] <= rect.right
+            && overlayPoint[1] >= rect.top && overlayPoint[1] <= rect.bottom) {
+            return pickId;
+        }
     }
 
     const SbViewportRegion vp(static_cast<int>(viewportWidth), static_cast<int>(viewportHeight));
@@ -1704,6 +1722,9 @@ void SoNaviCube::rebuildButtonFaces() const
     for (auto& outline : buttonOutlineIndices) {
         outline.clear();
     }
+    for (auto& rect : buttonHitRects) {
+        rect = {};
+    }
     addButtonFace(PickId::ArrowNorth);
     addButtonFace(PickId::ArrowSouth);
     addButtonFace(PickId::ArrowEast);
@@ -1720,9 +1741,11 @@ void SoNaviCube::addButtonFace(PickId pickId) const
     auto& verts = buttonOverlayVerts[pickIndex(pickId)];
     auto& outline = buttonOutlineIndices[pickIndex(pickId)];
     auto& tris = buttonTriangleIndices[pickIndex(pickId)];
+    auto& hitRect = buttonHitRects[pickIndex(pickId)];
     verts.clear();
     outline.clear();
     tris.clear();
+    hitRect = {};
     float scale = 0.005F;
     float offx = 0.5F;
     float offy = 0.5F;
@@ -1751,6 +1774,7 @@ void SoNaviCube::addButtonFace(PickId pickId) const
             verts.push_back(transform(pts[i * 2], pts[i * 2 + 1]));
             outline.push_back(base + i);
         }
+        outline.push_back(base);
         outline.push_back(-1);
         return base;
     };
@@ -1760,6 +1784,12 @@ void SoNaviCube::addButtonFace(PickId pickId) const
         for (int i : idx) {
             tris.push_back(base + i);
         }
+    };
+
+    const auto addPoint = [&](float x, float y) {
+        const auto index = static_cast<std::int32_t>(verts.size());
+        verts.push_back(transform(x, y));
+        return index;
     };
 
     switch (pickId) {
@@ -1794,13 +1824,37 @@ void SoNaviCube::addButtonFace(PickId pickId) const
             const auto base = appendLoop({0.0F,   -18.0F, 18.0F,  -6.0F, 12.0F,  -6.0F, 12.0F, 8.0F,
                                           4.0F,   8.0F,   4.0F,   0.0F,  -4.0F,  0.0F,  -4.0F, 8.0F,
                                           -12.0F, 8.0F,   -12.0F, -6.0F, -18.0F, -6.0F});
-            appendTriangles(base, {10, 1, 0, 9, 2, 1, 9, 3, 2, 9, 8, 3,
-                                   8,  7, 3, 7, 4, 3, 7, 6, 5, 7, 5, 4});
+            const int roofTop = 0;
+            const int roofRight = 1;
+            const int rightWallTop = 2;
+            const int rightWallBottom = 3;
+            const int doorRightBottom = 4;
+            const int doorRightTop = 5;
+            const int doorLeftTop = 6;
+            const int doorLeftBottom = 7;
+            const int leftWallBottom = 8;
+            const int leftWallTop = 9;
+            const int roofLeft = 10;
+            const int doorRightLintel = addPoint(4.0F, -6.0F) - base;
+            const int doorLeftLintel = addPoint(-4.0F, -6.0F) - base;
+
+            // Keep the door as a true cutout: fill the roof, side walls, and lintel separately
+            // instead of drawing triangles through the opening.
+            appendTriangles(base, {roofLeft,        roofRight,       roofTop,
+                                   doorRightLintel, rightWallBottom, rightWallTop,
+                                   doorRightLintel, doorRightBottom, rightWallBottom,
+                                   leftWallTop,     doorLeftBottom,  doorLeftLintel,
+                                   leftWallTop,     leftWallBottom,  doorLeftBottom,
+                                   doorLeftLintel,  doorRightTop,    doorRightLintel,
+                                   doorLeftLintel,  doorLeftTop,     doorRightTop});
             break;
         }
         case PickId::Backside: {
             offx = 0.80F;
             offy = 0.0F;
+            // The icon has two disconnected arrow loops; keep the center gap clickable.
+            hitRect
+                = {true, BACKSIDE_HIT_LEFT, BACKSIDE_HIT_TOP, BACKSIDE_HIT_RIGHT, BACKSIDE_HIT_BOTTOM};
             const auto loop1 = appendLoop(
                 {24.0F, 21.5F, 17.0F, 29.1F, 16.7F, 25.6F, 12.0F, 25.3F, 8.2F,  24.0F, 4.0F,
                  22.0F, 1.2F,  19.0F, 0.0F,  15.0F, 0.0F,  10.0F, 1.5F,  8.1F,  4.4F,  6.1F,
@@ -1835,10 +1889,11 @@ void SoNaviCube::addButtonFace(PickId pickId) const
     }
 
     if (outline.empty() && !verts.empty()) {
-        outline.reserve(verts.size() + 1);
+        outline.reserve(verts.size() + 2);
         for (std::int32_t i = 0; i < static_cast<std::int32_t>(verts.size()); ++i) {
             outline.push_back(i);
         }
+        outline.push_back(0);
         outline.push_back(-1);
     }
 

@@ -25,6 +25,7 @@
 
 #include <App/DocumentObjectGroup.h>
 #include <App/GroupExtension.h>
+#include <App/SuppressibleExtension.h>
 #include <App/Part.h>
 #include "Application.h"
 #include "Action.h"
@@ -227,6 +228,62 @@ bool StdCmdToggleFreeze::isActive()
     return (Gui::Selection().size() != 0);
 }
 
+//===========================================================================
+// Std_ToggleSuppress
+//===========================================================================
+DEF_STD_CMD_A(StdCmdToggleSuppress)
+
+StdCmdToggleSuppress::StdCmdToggleSuppress()
+    : Command("Std_ToggleSuppress")
+{
+    sGroup = "File";
+    sMenuText = QT_TR_NOOP("Toggle Suppressed");
+    static std::string toolTip = std::string("<p>")
+        + QT_TR_NOOP("Toggles suppressed state of the selected objects. "
+                     "A suppressed object behaves like it was deleted.")
+        + "</p>";
+    sToolTipText = toolTip.c_str();
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Std_ToggleSuppress";
+    sPixmap = "feature_suppressed";
+    sAccel = "";
+    eType = AlterDoc;
+}
+
+void StdCmdToggleSuppress::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
+
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Toggle suppress"));
+    for (Gui::SelectionSingleton::SelObj& sel : sels) {
+        if (App::DocumentObject* obj = sel.pObject) {
+            if (auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true)) {
+                if (ext && !ext->Suppressed.testStatus(App::Property::Hidden)) {
+                    ext->Suppressed.setValue(!ext->Suppressed.getValue());
+                }
+            }
+        }
+    }
+    Command::commitCommand();
+}
+
+bool StdCmdToggleSuppress::isActive()
+{
+    std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
+    for (Gui::SelectionSingleton::SelObj& sel : sels) {
+        if (App::DocumentObject* obj = sel.pObject) {
+            if (auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true)) {
+                if (ext && !ext->Suppressed.testStatus(App::Property::Hidden)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 
 //===========================================================================
 // Std_SendToPythonConsole
@@ -397,6 +454,7 @@ void CreateFeatCommands()
 
     rcCmdMgr.addCommand(new StdCmdFeatRecompute());
     rcCmdMgr.addCommand(new StdCmdToggleFreeze());
+    rcCmdMgr.addCommand(new StdCmdToggleSuppress());
     rcCmdMgr.addCommand(new StdCmdRandomColor());
     rcCmdMgr.addCommand(new StdCmdSendToPythonConsole());
     rcCmdMgr.addCommand(new StdCmdToggleSkipRecompute());

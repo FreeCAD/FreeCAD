@@ -169,37 +169,44 @@ public:
     static Base::Color decodeColor(const std::string& color, const Base::Color& defaultColor);
 
 private:
+    void _setAlignment(int _alignment);
+    void _setStyle(const std::set<std::string>& _style);
+    void _setForeground(const Base::Color& color);
+    void _setBackground(const Base::Color& color);
+    void _setDisplayUnit(const std::string& unit);
+    void _setComputedUnit(const Base::Unit& unit);
+
     void setParseException(const std::string& e);
 
     void setExpression(App::ExpressionPtr&& expr);
 
-    void setUsed(int mask, bool state = true);
+    void setUsed(unsigned int mask, bool state = true);
 
-    bool isUsed(int mask) const;
+    bool isUsed(unsigned int mask) const;
 
     void freeze();
 
     void unfreeze();
 
     /* Used */
-    static const int EXPRESSION_SET;
-    static const int ALIGNMENT_SET;
-    static const int STYLE_SET;
-    static const int BACKGROUND_COLOR_SET;
-    static const int FOREGROUND_COLOR_SET;
-    static const int DISPLAY_UNIT_SET;
-    static const int COMPUTED_UNIT_SET;
-    static const int ALIAS_SET;
-    static const int SPANS_SET;
-    static const int MARK_SET;
-    static const int EXCEPTION_SET;
-    static const int PARSE_EXCEPTION_SET;
-    static const int RESOLVE_EXCEPTION_SET;
+    static const unsigned int EXPRESSION_SET;
+    static const unsigned int ALIGNMENT_SET;
+    static const unsigned int STYLE_SET;
+    static const unsigned int BACKGROUND_COLOR_SET;
+    static const unsigned int FOREGROUND_COLOR_SET;
+    static const unsigned int DISPLAY_UNIT_SET;
+    static const unsigned int COMPUTED_UNIT_SET;
+    static const unsigned int ALIAS_SET;
+    static const unsigned int SPANS_SET;
+    static const unsigned int MARK_SET;
+    static const unsigned int EXCEPTION_SET;
+    static const unsigned int PARSE_EXCEPTION_SET;
+    static const unsigned int RESOLVE_EXCEPTION_SET;
 
     App::CellAddress address;
     PropertySheet* owner;
 
-    int used;
+    unsigned int used;
     mutable App::ExpressionPtr expression;
     int alignment;
     std::set<std::string> style;
