@@ -593,7 +593,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Reverse Engineering</source>
-      <translation type="unfinished">&amp;Reverse Engineering</translation>
+      <translation>Ingenie&amp;ría inversa</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
@@ -641,7 +641,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Equidistant</source>
-      <translation type="unfinished">Equidistant</translation>
+      <translation>Equidistante</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>

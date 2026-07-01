@@ -142,6 +142,11 @@ public:
         return vFaceElementIdx;
     }
 
+    const std::vector<unsigned long>& getVisibleNodes() const
+    {
+        return vNodeElementIdx;
+    }
+
     PyObject* getPyObject() override;
 
 private:

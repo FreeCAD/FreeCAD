@@ -3653,7 +3653,7 @@ Es kann später jederzeit mit 'Part Design -&gt; Migrieren ...' migriert werden.
       <translation>Wendel bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="129"/>
+      <location filename="../../ViewProviderHole.cpp" line="130"/>
       <source>Edit Hole</source>
       <translation>Bohrung bearbeiten</translation>
     </message>
@@ -4656,7 +4656,7 @@ Skizzenobjekte dürfen einander nicht schneiden.</translation>
       <translation>Fehler: Fläche muss eben sein</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <source>Error: Result is not a solid</source>
@@ -4781,17 +4781,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
 Beim Erstellen von Taschen bis zu einer Fläche sind nur einzelne Flächen in der Skizze erlaubt. Mehrere Flächen oder sich überschneidende Skizzenobjekte können nicht auf ein Mal bearbeitet werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
       <source>Thread type out of range</source>
       <translation>Gewindetyp außerhalb des Bereichs</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
       <source>Thread size out of range</source>
       <translation>Gewindegröße außerhalb des Bereichs</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
       <source>Error: Thread could not be built</source>
       <translation>Fehler: Gewinde konnte nicht gebaut werden</translation>
     </message>

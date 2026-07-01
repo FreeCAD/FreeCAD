@@ -3648,7 +3648,7 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
       <translation>Editar hélice</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="129"/>
+      <location filename="../../ViewProviderHole.cpp" line="130"/>
       <source>Edit Hole</source>
       <translation>Editar taladro</translation>
     </message>
@@ -4653,7 +4653,7 @@ No se permite la intersección de entidades en un croquis.</translation>
       <translation>Error: La cara debe ser planar</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <source>Error: Result is not a solid</source>
@@ -4778,17 +4778,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
 No se permite la intersección de entidades de croquis ni múltiples caras en un croquis para crear un vaciado hasta una cara.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
       <source>Thread type out of range</source>
       <translation>Tipo de rosca fuera de rango</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
       <source>Thread size out of range</source>
       <translation>Tamaño de rosca fuera de rango</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
       <source>Error: Thread could not be built</source>
       <translation>Error: No se pudo construir la rosca</translation>
     </message>

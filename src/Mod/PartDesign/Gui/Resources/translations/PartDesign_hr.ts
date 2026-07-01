@@ -3650,7 +3650,7 @@ Iako ćete moći migrirati u bilo svakom trenutku kasnije s 'Dizajn dijela -&gt;
       <translation>Uredi spiralu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="129"/>
+      <location filename="../../ViewProviderHole.cpp" line="130"/>
       <source>Edit Hole</source>
       <translation>Uredi rupu</translation>
     </message>
@@ -4661,7 +4661,7 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
       <translation>Greška: Površina mora biti ravna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <source>Error: Result is not a solid</source>
@@ -4787,17 +4787,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
 Ukrštanje elemenata skice ili više površina u skici nije dozvoljeno za izradu utora do plohe.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
       <source>Thread type out of range</source>
       <translation>Vrsta navoja izvan dometa</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
       <source>Thread size out of range</source>
       <translation>Veličina navoja izvan dometa</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
       <source>Error: Thread could not be built</source>
       <translation>Greška: navoj nije moguće napraviti</translation>
     </message>
