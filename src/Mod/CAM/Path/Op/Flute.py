@@ -58,6 +58,10 @@ _WALL_DS_MIN = _PREC * 10  # floating-point "is this exactly zero" epsilon
 # channel's edges converge there too and would give a false degenerate signal.
 _PCA_DEGENERATE_T_VALUES = (0.25, 0.5, 0.75)
 _VBIT_ANGLE_FRAC = 0.025  # 2.5% of groove half-angle — fuzzy margin for V-bit fit check
+# Max deviation of the oriented tangent dot product from 1.0 for two connected
+# edges to count as one continuous flute (same idiom as the old collinearity
+# test).  1e-3 ≈ 2.6° kink; below it edges merge, above it a corner splits.
+_TANGENT_DOT_TOL = 1e-3
 
 _Tol = collections.namedtuple(
     "_Tol",
@@ -745,74 +749,81 @@ def _pts_to_wire(pts):
 # ---------------------------------------------------------------------------
 
 
-def _is_straight_line_edge(edge):
-    """True if the edge's underlying curve is a straight line."""
-    try:
-        cname = edge.Curve.__class__.__name__
-        if cname in ("Line", "LineSegment"):
-            return True
-        # Geometric fallback: arc length == chord length (works for any curve type name)
-        p0 = edge.Vertexes[0].Point
-        p1 = edge.Vertexes[-1].Point
-        chord = (p1 - p0).Length
-        return abs(edge.Length - chord) < max(1e-5, edge.Length * 1e-5)
-    except Exception:
-        return False
-
-
-def _edges_are_collinear(e1, e2, tol):
-    """True if two straight-line edges lie on the same infinite line."""
-    try:
-        d1 = e1.Vertexes[-1].Point - e1.Vertexes[0].Point
-        d2 = e2.Vertexes[-1].Point - e2.Vertexes[0].Point
-        l1 = d1.Length
-        l2 = d2.Length
-        if l1 < _PREC or l2 < _PREC:
-            return False
-        # Explicit unit vectors — avoids FreeCAD.Vector.normalize() in-place ambiguity
-        u1x, u1y, u1z = d1.x / l1, d1.y / l1, d1.z / l1
-        u2x, u2y, u2z = d2.x / l2, d2.y / l2, d2.z / l2
-        # Directions must be parallel (dot product of unit vectors ≈ ±1)
-        dot = u1x * u2x + u1y * u2y + u1z * u2z
-        if abs(abs(dot) - 1.0) > 1e-3:
-            return False
-        # Perpendicular distance from e2.Vertexes[0] to the infinite line through e1
-        p0 = e1.Vertexes[0].Point
-        p1 = e2.Vertexes[0].Point
-        dx, dy, dz = p1.x - p0.x, p1.y - p0.y, p1.z - p0.z
-        proj = dx * u1x + dy * u1y + dz * u1z
-        px = dx - u1x * proj
-        py = dy - u1y * proj
-        pz = dz - u1z * proj
-        perp_sq = px * px + py * py + pz * pz
-        return perp_sq < (tol.pca_degenerate**2)
-    except Exception:
-        return False
-
-
-def _split_2d_wire_groups(groups, tol):
-    """Post-process flat (2D) wire groups for independent flute paths.
-
-    A group of connected edges is kept as ONE path only when every edge is a
-    straight line AND all edges are collinear — i.e. they form a single
-    longer straight segment.  Any group that contains arcs, curves, or
-    non-collinear line segments is split into individual single-edge groups
-    so each edge becomes its own independent flute path.
+def _tangent_at_endpoint(edge, endpoint):
+    """Unit tangent of edge at whichever of its ends is nearest `endpoint`,
+    pointing in the direction of increasing parameter.  Returns None on failure.
     """
-    result = []
-    for group in groups:
-        if len(group) == 1:
-            result.append(group)
-            continue
-        if all(_is_straight_line_edge(e) for e in group):
-            ref = group[0]
-            if all(_edges_are_collinear(ref, e, tol) for e in group[1:]):
-                result.append(group)
-                continue
-        # Non-collinear or contains curves: one group per edge
-        for edge in group:
-            result.append([edge])
-    return result
+    try:
+        p_first = edge.valueAt(edge.FirstParameter)
+        p_last = edge.valueAt(edge.LastParameter)
+        if endpoint.distanceToPoint(p_first) <= endpoint.distanceToPoint(p_last):
+            param = edge.FirstParameter
+        else:
+            param = edge.LastParameter
+        t = edge.tangentAt(param)
+        length = t.Length
+        if length < _PREC:
+            return None
+        return FreeCAD.Vector(t.x / length, t.y / length, t.z / length)
+    except Exception:
+        return None
+
+
+def _tangent_continuous(prev_edge, cur_edge, junction, prev_start, cur_end):
+    """True if two connected edges meet smoothly (G1) at `junction`.
+
+    Compares the travel direction arriving along prev_edge (prev_start → junction)
+    with the travel direction departing along cur_edge (junction → cur_end).  A
+    collinear pair of straight lines and a pair of smoothly-joined arcs both pass;
+    a sharp corner (L-shape) fails.  tangentAt is orientation-agnostic, so each
+    tangent is flipped to match the actual direction of travel before comparison.
+    """
+    t1 = _tangent_at_endpoint(prev_edge, junction)
+    t2 = _tangent_at_endpoint(cur_edge, junction)
+    if t1 is None or t2 is None:
+        return False
+    # Sign of each tangent along its travel direction.
+    arrive = junction - prev_start
+    depart = cur_end - junction
+    d = t1.dot(t2)
+    if t1.dot(arrive) < 0:
+        d = -d
+    if t2.dot(depart) < 0:
+        d = -d
+    # d ≈ 1 when the travel directions align (smooth); deviation grows with kink.
+    return (1.0 - d) <= _TANGENT_DOT_TOL
+
+
+def _split_at_corners(edges, tol):
+    """Order a connected edge set and split it into tangent-continuous sub-chains.
+
+    Consecutive edges that meet smoothly (collinear straight lines or
+    smoothly-joined curves) stay in one sub-chain; a sharp corner starts a new
+    one, so each sub-chain becomes an independent flute path.  If the edges do
+    not form a single simple open chain (branching / not connected), each edge
+    is returned as its own sub-chain.
+
+    Returns a list of ordered edge lists.
+    """
+    if len(edges) == 1:
+        return [list(edges)]
+
+    chain = _chain_wire_edges(edges, tol)
+    if not chain:
+        return [[edge] for edge in edges]
+
+    subchains = []
+    current = [chain[0][2]]
+    for i in range(1, len(chain)):
+        prev_start, junction, prev_edge = chain[i - 1]
+        _cur_start, cur_end, cur_edge = chain[i]
+        if _tangent_continuous(prev_edge, cur_edge, junction, prev_start, cur_end):
+            current.append(cur_edge)
+        else:
+            subchains.append(current)
+            current = [cur_edge]
+    subchains.append(current)
+    return subchains
 
 
 def _split_into_wires(edges, tol):
@@ -1258,7 +1269,7 @@ def _apply_2d_profile(
     """Synthesize a 3D wire from a flat (constant-Z) edge set by applying a Z ramp profile.
 
     flute_type:     "Ramp Full" | "Ramp Start" | "Ramp Start End"
-    ramp_type:      "Linear" | "Smooth" | "Arc"
+    ramp_type:      "Linear" | "S-Curve" | "Smooth" | "Fillet"
     ramp_frac:      fraction of total path length occupied by ramp(s) (0–1).
                     Ignored when ramp_length_mm > 0.
     ramp_length_mm: if > 0, overrides ramp_frac with length/total_wire_length.
@@ -1352,10 +1363,21 @@ def _apply_2d_profile(
         else:
             f = t
 
-        if ramp_type == "Smooth":
-            f = f * f * (3.0 - 2.0 * f)  # smoothstep S-curve, zero slope at both ends
-        elif ramp_type == "Arc":
-            f = math.sin(f * math.pi / 2)  # quarter-circle arc, zero slope at floor end
+        # f is the normalized ramp position: 0 at the surface entry, 1 at the
+        # floor.  Each curve reshapes it into a depth fraction.
+        if ramp_type == "S-Curve":
+            # Smoothstep: zero slope at BOTH ends (eased entry and floor).
+            f = f * f * (3.0 - 2.0 * f)
+        elif ramp_type == "Smooth":
+            # Quarter-sine: tangent (zero slope) at the floor, angled entry.
+            # Length-driven; the tangent flattening compresses as the ramp
+            # length shrinks relative to depth.
+            f = math.sin(f * math.pi / 2)
+        elif ramp_type == "Fillet":
+            # Quarter-ellipse: the roundest tangent-to-floor blend that fits the
+            # ramp box, so the tool rolls tangentially into the floor for any
+            # ramp length/depth.  Steeper (near-vertical) at the entry.
+            f = math.sqrt(max(0.0, 1.0 - (1.0 - f) ** 2))
 
         return start_z - f * depth
 
@@ -1448,11 +1470,12 @@ class ObjectFlute(PathOp.ObjectOp):
             "Flute2D",
             QtCore.QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Shape of the Z ramp on 2D wires: Linear is a straight "
-                "plunge; Smooth uses a smoothstep curve.",
+                "Shape of the Z ramp on 2D wires: Linear is a straight plunge; "
+                "S-Curve eases at both ends; Smooth is tangent to the floor "
+                "with an angled entry; Fillet rounds tangentially into the floor.",
             ),
         )
-        obj.RampType = ["Linear", "Smooth", "Arc"]
+        obj.RampType = ["Linear", "S-Curve", "Smooth", "Fillet"]
         obj.addProperty(
             "App::PropertyBool",
             "FlipStart2D",
@@ -1540,96 +1563,6 @@ class ObjectFlute(PathOp.ObjectOp):
     def onChanged(self, obj, prop):
         if prop == "Active" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
-
-    def opOnDocumentRestored(self, obj):
-        if not hasattr(obj, "BlindEndCompensation"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "BlindEndCompensation",
-                "Flute",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Pull the path end back by the tool radius when the flute "
-                    "terminates at depth (blind end). Has no effect when the "
-                    "path ramps back up to stock surface.",
-                ),
-            )
-            obj.BlindEndCompensation = False
-        if not hasattr(obj, "FlutingType"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "FlutingType",
-                "Flute2D",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Z profile applied when a flat (2D) wire is selected.",
-                ),
-            )
-            obj.FlutingType = ["Ramp Full", "Ramp Start", "Ramp Start End"]
-            obj.FlutingType = "Ramp Full"
-        else:
-            # Migrate old enum values saved without spaces
-            _migrate = {
-                "RampFull": "Ramp Full",
-                "RampStart": "Ramp Start",
-                "RampStartEnd": "Ramp Start End",
-            }
-            old_val = str(obj.FlutingType)
-            if old_val in _migrate:
-                obj.FlutingType = ["Ramp Full", "Ramp Start", "Ramp Start End"]
-                obj.FlutingType = _migrate[old_val]
-        if not hasattr(obj, "RampType"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "RampType",
-                "Flute2D",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Shape of the Z ramp on 2D wires.",
-                ),
-            )
-            obj.RampType = ["Linear", "Smooth", "Arc"]
-            obj.RampType = "Linear"
-        # Migrate: RampPercent was dropped in favour of RampLength (mm).
-        if hasattr(obj, "RampPercent"):
-            try:
-                obj.removeProperty("RampPercent")
-            except Exception:
-                pass
-        if not hasattr(obj, "FlipStart2D"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "FlipStart2D",
-                "Flute2D",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Reverse which end of the flat wire is the ramp entry point.",
-                ),
-            )
-            obj.FlipStart2D = False
-        if not hasattr(obj, "RampLength"):
-            obj.addProperty(
-                "App::PropertyDistance",
-                "RampLength",
-                "Flute2D",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Length of each ramp segment in mm. When > 0, overrides Ramp %.",
-                ),
-            )
-            obj.RampLength = 0.0
-        if not hasattr(obj, "MultiPassStrategy"):
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "MultiPassStrategy",
-                "Flute",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "How roughing passes are distributed across step-down depths.",
-                ),
-            )
-            obj.MultiPassStrategy = ["Constant Angle", "Variable Angle"]
-            obj.MultiPassStrategy = "Constant Angle"
 
     def _emitFlutePath(
         self,
@@ -2125,9 +2058,11 @@ class ObjectFlute(PathOp.ObjectOp):
                 ramp_type = getattr(obj, "RampType", "Linear")
                 ramp_frac = 1.0  # full wire; overridden by RampLength if set
                 flip = getattr(obj, "FlipStart2D", False)
-                processed_groups = _split_2d_wire_groups(flat_groups, tol)
+                processed_groups = []
+                for group in flat_groups:
+                    processed_groups.extend(_split_at_corners(group, tol))
                 Path.Log.debug(
-                    "CAM_Flute: {} flat group(s) -> {} 2D flute path(s) after collinearity split\n".format(
+                    "CAM_Flute: {} flat group(s) -> {} 2D flute path(s) after corner split\n".format(
                         len(flat_groups), len(processed_groups)
                     )
                 )
@@ -2153,8 +2088,13 @@ class ObjectFlute(PathOp.ObjectOp):
                     )
                     any_path = any_path or emitted
             else:
-                # 3D wires: edges carry Z information directly.
-                for wire_edges in solid_groups:
+                # 3D wires: edges carry Z information directly.  Split each
+                # connected component at sharp corners so a smooth run (straight
+                # or curved) is one flute and an L-corner becomes two.
+                solid_paths = []
+                for group in solid_groups:
+                    solid_paths.extend(_split_at_corners(group, tol))
+                for wire_edges in solid_paths:
                     sub_names = [edge_by_id.get(id(e), "?") for e in wire_edges]
                     wire, geo_top_z, geo_floor_z = _wire_from_edges(wire_edges, tol)
                     if wire is None:

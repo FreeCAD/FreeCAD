@@ -107,7 +107,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         )
 
         self.form.flutingType.addItems(["Ramp Full", "Ramp Start", "Ramp Start End"])
-        self.form.rampType.addItems(["Linear", "Smooth", "Arc"])
+        self.form.rampType.addItems(["Linear", "S-Curve", "Smooth", "Fillet"])
 
         # Two-way sync between Ramp Length (stored) and Ramp % (derived display).
         # Mirrors Adaptive's stepOver ↔ stepOverDistance pattern.
