@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="613"/>
+      <location filename="../../Application.cpp" line="619"/>
       <source>Unnamed</source>
       <translation>이름 없음</translation>
     </message>
@@ -36,32 +36,32 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="267"/>
       <source>X-axis</source>
-      <translation>X-축</translation>
+      <translation>X 축</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="268"/>
       <source>Y-axis</source>
-      <translation>Y-축</translation>
+      <translation>Y 축</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="269"/>
       <source>Z-axis</source>
-      <translation>Z-축</translation>
+      <translation>Z축</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="270"/>
       <source>XY-plane</source>
-      <translation>XY-평면</translation>
+      <translation>XY 평면</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="271"/>
       <source>XZ-plane</source>
-      <translation>XZ-평면</translation>
+      <translation>XZ 평면</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="272"/>
       <source>YZ-plane</source>
-      <translation>YZ-평면</translation>
+      <translation>YZ 평면</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="273"/>

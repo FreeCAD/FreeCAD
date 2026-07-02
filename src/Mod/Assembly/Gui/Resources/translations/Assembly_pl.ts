@@ -840,7 +840,7 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="257"/>
       <source>Rotate the joint 90 degrees</source>
-      <translation type="unfinished">Rotate the joint 90 degrees</translation>
+      <translation>Obróć łącznik o 90 stopni</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="260"/>
@@ -892,8 +892,8 @@ Jest on używany tylko przez połączenie zębate do przechowywania drugiego pro
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>Nie można znaleźć części? </translation>
+      <source>Cannot find the part?</source>
+      <translation>Nie można znaleźć części?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -986,37 +986,37 @@ Pliki noszą nazwy „runPreDrag.asmt” oraz „dragging.log” i są zapisywan
       <translation>Przesuń część</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1807"/>
       <source>Empty Assembly</source>
       <translation>Poste złożenie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Over-constrained:</source>
       <translation>Wiązania nadmierne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
       <source>Malformed joints:</source>
       <translation>Nieprawidłowe połączenia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1792"/>
       <source>and %1 more</source>
       <translation>i %1 więcej</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1851"/>
       <source>Solver failed to converge</source>
       <translation>Solver nie osiągnął zbieżności</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>Under-constrained:</source>
       <translation>Niedostatecznie związane:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n stopień swobody</numerusform>
@@ -1026,7 +1026,7 @@ Pliki noszą nazwy „runPreDrag.asmt” oraz „dragging.log” i są zapisywan
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1865"/>
       <source>Fully constrained</source>
       <translation>W pełni związany</translation>
     </message>
@@ -1163,7 +1163,7 @@ Bryły (np. zawartości, elementy złączne, prymitywy) są pomijane.</translati
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="689"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Połączenia</translation>
     </message>
@@ -1578,27 +1578,26 @@ o ile punkty połączenia pozostają w kontakcie.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Kliknij, aby wybrać te sprzeczne połączenia.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation>Zaznacza te konfliktowe połączenia</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Kliknij, aby wybrać te nadmiarowe połączenia.</translation>
+      <source>Selects these redundant joints</source>
+      <translation>Zaznacza te nadmiarowe połączenia</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
-      <translation>Złożenie zawiera nieograniczone komponenty generujące te Stopnie Swobody.
-Kliknij, aby zaznaczyć te nieograniczone komponenty.
-Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone części, które nadal mają wolne stopnie swobody.</translation>
+      <translation>Złożenie zawiera niezwiązane komponenty, które powodują powstawanie tych stopni swobody. Zaznacza te nieustalone komponenty. 
+Uwaga: Obecnie ta opcja wybiera tylko niepołączone części, a nie części zdefiniowane więzami, które wciąż posiadają wolne stopnie swobody.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Kliknij, aby zaznaczyć te niepoprawne połączenia.</translation>
+      <source>Selects these malformed joints</source>
+      <translation>Zaznacza wadliwe połączenia</translation>
     </message>
   </context>
   <context>
@@ -1610,7 +1609,7 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
+      <source>Go to Linked Assembly</source>
       <translation>Przejdź do połączonego złożenia</translation>
     </message>
     <message>
@@ -1628,8 +1627,8 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
-      <translation>Zaznacz sprzeczne wiązania</translation>
+      <source>Select Conflicting Constraints</source>
+      <translation>Zaznacz wiązania konfliktowe</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
@@ -1646,7 +1645,7 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
+      <source>Select Redundant Constraints</source>
       <translation>Zaznacz wiązania nadmiarowe</translation>
     </message>
     <message>
@@ -1664,8 +1663,8 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
-      <translation>Zaznacz nieprawidłowe wiązania</translation>
+      <source>Select Malformed Constraints</source>
+      <translation>Zaznacz niepoprawnie zdefiniowane wiązania</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
@@ -1682,7 +1681,7 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
+      <source>Select Components With DoFs</source>
       <translation>Zaznacz komponenty ze stopniami swobody</translation>
     </message>
     <message>
@@ -1700,7 +1699,7 @@ Uwaga: Obecnie zaznacza to tylko niepołączone części, a nie ograniczone czę
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
+      <source>Select Component Joints</source>
       <translation>Zaznacz połączenia komponentu</translation>
     </message>
     <message>

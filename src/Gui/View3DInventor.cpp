@@ -364,6 +364,10 @@ bool View3DInventor::onMsg(const char* pMsg)
         _viewer->viewAll();
         return true;
     }
+    else if (strcmp("ViewHome", pMsg) == 0) {
+        _viewer->viewHome();
+        return true;
+    }
     else if (strcmp("ViewVR", pMsg) == 0) {
         // call the VR portion of the viewer
         _viewer->viewVR();
@@ -371,26 +375,6 @@ bool View3DInventor::onMsg(const char* pMsg)
     }
     else if (strcmp("ViewSelection", pMsg) == 0) {
         _viewer->viewSelection();
-        return true;
-    }
-    else if (strcmp("SetStereoRedGreen", pMsg) == 0) {
-        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::ANAGLYPH);
-        return true;
-    }
-    else if (strcmp("SetStereoQuadBuff", pMsg) == 0) {
-        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::QUAD_BUFFER);
-        return true;
-    }
-    else if (strcmp("SetStereoInterleavedRows", pMsg) == 0) {
-        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::INTERLEAVED_ROWS);
-        return true;
-    }
-    else if (strcmp("SetStereoInterleavedColumns", pMsg) == 0) {
-        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::INTERLEAVED_COLUMNS);
-        return true;
-    }
-    else if (strcmp("SetStereoOff", pMsg) == 0) {
-        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO);
         return true;
     }
     else if (strncmp("Dump", pMsg, 4) == 0) {
@@ -525,22 +509,10 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     else if (strcmp("PrintPdf", pMsg) == 0) {
         return true;
     }
-    else if (strcmp("SetStereoRedGreen", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("SetStereoQuadBuff", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("SetStereoInterleavedRows", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("SetStereoInterleavedColumns", pMsg) == 0) {
-        return true;
-    }
-    else if (strcmp("SetStereoOff", pMsg) == 0) {
-        return true;
-    }
     else if (strcmp("ViewFit", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("ViewHome", pMsg) == 0) {
         return true;
     }
     else if (strcmp("ViewVR", pMsg) == 0) {

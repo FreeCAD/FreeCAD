@@ -931,8 +931,8 @@ ionas go seachnófar féin-trasnú.</translation>
       <translation>Cruthaigh Booleánach</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="224"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="224"/>
       <source>Add a Body</source>
       <translation>Cuir Corp leis</translation>
     </message>
@@ -1101,8 +1101,8 @@ Roghnaigh corp ón liosta thíos, nó cruthaigh corp nua.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="53"/>
-      <source>Please select</source>
-      <translation>Roghnaigh le do thoil</translation>
+      <source>Select an active body</source>
+      <translation>Roghnaigh comhlacht gníomhach</translation>
     </message>
   </context>
   <context>
@@ -3175,11 +3175,11 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Níl aon eitleáin bhailí sa cháipéis seo</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="137"/>
-      <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../SketchWorkflow.cpp" line="761"/>
+      <location filename="../../Command.cpp" line="1142"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProvider.cpp" line="137"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Tá dialóg oscailte cheana féin sa phainéal tascanna</translation>
     </message>
@@ -3204,6 +3204,11 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Níl aon chorp gníomhach ann. Gníomhachtaigh corp le do thoil sula gcuirtear eintiteas sonraí isteach.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation>Rogha Neamhbhailí</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="470"/>
       <source>Sub-shape binder</source>
       <translation>Ceanglóir fo-chrutha</translation>
@@ -3219,11 +3224,16 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Níl aon sceitse ar fáil sa doiciméad</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="138"/>
-      <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="2196"/>
+      <source>Select only one feature in an active body.</source>
+      <translation>Roghnaigh gné amháin i gcorp gníomhach.</translation>
+    </message>
+    <message>
       <location filename="../../SketchWorkflow.cpp" line="762"/>
+      <location filename="../../Command.cpp" line="1143"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProvider.cpp" line="138"/>
       <source>Close this dialog?</source>
       <translation>An bhfuil tú ag iarraidh an dialóg seo a dhúnadh?</translation>
     </message>
@@ -3255,11 +3265,6 @@ fad a thomhas feadh an treo shonraithe</translation>
       <translation>Roghnaigh imeall, aghaidh, nó corp ó chorp gníomhach.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid Selection</source>
-      <translation>Rogha Neamhbhailí</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1026"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>Smaoinigh ar úsáid a bhaint as ceanglóir cruthanna nó gné bhunúsach chun tagairt a dhéanamh do gheoiméadracht sheachtrach i gcorp</translation>
@@ -3273,11 +3278,6 @@ fad a thomhas feadh an treo shonraithe</translation>
       <location filename="../../Command.cpp" line="1848"/>
       <source>%1 works only on parts.</source>
       <translation>Ní oibríonn %1 ach ar chodanna.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2196"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation>Roghnaigh gné amháin i gcorp gníomhach le do thoil.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
@@ -3360,6 +3360,11 @@ D’fhéadfadh torthaí gan choinne a bheith mar thoradh air seo.</translation>
       <translation>Ní rud ar bith le himirce</translation>
     </message>
     <message>
+      <location filename="../../CommandBody.cpp" line="622"/>
+      <source>Edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
+      <translation>Cuir '%1' in eagar agus athshainigh é chun eitleán Bonn nó Dáta a úsáid mar an eitleán sceitse.</translation>
+    </message>
+    <message>
       <location filename="../../CommandBody.cpp" line="697"/>
       <source>Select exactly one Part Design feature or a body.</source>
       <translation>Roghnaigh gné amháin nó corp de Dhearadh Cuid go díreach.</translation>
@@ -3383,11 +3388,6 @@ D’fhéadfadh torthaí gan choinne a bheith mar thoradh air seo.</translation>
       <location filename="../../CommandBody.cpp" line="429"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
       <translation>Gan Gnéithe Dearaidh Cuid gan chorp aimsithe. Ní raibh aon rud le haistriú.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandBody.cpp" line="622"/>
-      <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Cuir '%1' in eagar agus athshainigh é chun eitleán Bonn nó Dáta a úsáid mar an eitleán sceitse.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="696"/>
@@ -3521,10 +3521,10 @@ I gcás doiciméad oidhreachta nach bhfuil corp ag réada Dearaidh Cuid iontu, b
       <translation>Chun an ghné seo a úsáid ní mór di a bheith bainteach le réad páirteach sa doiciméad.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>Cuir %1 in Eagar</translation>
     </message>
@@ -3653,7 +3653,7 @@ Cé go mbeidh tú in ann aistriú aon nóiméad níos déanaí le 'Part Design -
       <translation>Cuir an Helix in Eagar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="129"/>
+      <location filename="../../ViewProviderHole.cpp" line="130"/>
       <source>Edit Hole</source>
       <translation>Chur Poll in Eagar</translation>
     </message>
@@ -4421,12 +4421,12 @@ os cionn 90: ga poill níos mó ag an mbun</translation>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="405"/>
+      <location filename="../../../App/Body.cpp" line="406"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>Ní gné de chuid PartDesign é réad nasctha</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="414"/>
+      <location filename="../../../App/Body.cpp" line="415"/>
       <source>Tip shape is empty</source>
       <translation>Tá cruth na leid folamh</translation>
     </message>
@@ -4461,23 +4461,23 @@ os cionn 90: ga poill níos mó ag an mbun</translation>
       <translation>Ní féidir oibríocht Boole a dhéanamh le cruth bonn neamhbhailí</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Tá il-sholaid sa toradh: cumasaigh 'Ceadaigh Comhdhúil' sa chorp gníomhach.</translation>
     </message>
@@ -4513,9 +4513,9 @@ os cionn 90: ga poill níos mó ag an mbun</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <source>Resulting shape is not a solid</source>
       <translation>Ní cruth soladach é an cruth a eascraíonn as</translation>
     </message>
@@ -4657,7 +4657,7 @@ Ní cheadaítear eintitis sceitse a thrasnaíonn i sceitse.</translation>
       <translation>Earráid: Ní mór don aghaidh a bheith cothrom</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <source>Error: Result is not a solid</source>
@@ -4782,17 +4782,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
 Ní cheadaítear eintitis sceitse trasnacha nó il-aghaidheanna i sceitse chun póca a dhéanamh suas go dtí aghaidh.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
       <source>Thread type out of range</source>
       <translation>Cineál snáithe lasmuigh den raon</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
       <source>Thread size out of range</source>
       <translation>Méid an snáithe lasmuigh den raon</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
       <source>Error: Thread could not be built</source>
       <translation>Earráid: Níorbh fhéidir an snáithe a thógáil</translation>
     </message>
@@ -5431,6 +5431,14 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Earráid Ionchuir</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
@@ -5449,18 +5457,10 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
       <location filename="../../TaskFeatureParameters.cpp" line="264"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
+Adjust the parameters and try again.</source>
       <translation>Níorbh fhéidir an ghné a chruthú leis na paraiméadair tugtha.
 B’fhéidir go bhfuil an geoiméadracht neamhbhailí nó go bhfuil na paraiméadair neamh-chomhoiriúnach.
 Coigeartaigh na paraiméadair agus déan iarracht arís.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Earráid Ionchuir</translation>
     </message>
   </context>
 </TS>

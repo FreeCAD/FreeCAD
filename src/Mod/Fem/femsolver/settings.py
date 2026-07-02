@@ -271,6 +271,11 @@ _SOLVER_PARAM = {
         param_path=_PARAM_PATH + "Elmer",
         custom_path="gridBinaryPath",
     ),
+    "MPIElmer": _SolverDlg(
+        default="mpiexec",
+        param_path=_PARAM_PATH + "Elmer",
+        custom_path="mpiBinaryPath",
+    ),
     "Mystran": _SolverDlg(
         default="mystran",
         param_path=_PARAM_PATH + "Mystran",

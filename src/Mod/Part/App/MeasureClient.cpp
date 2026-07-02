@@ -331,11 +331,8 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
 
 MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
 {
-    Base::Placement placement;  // curve center + orientation
-    Base::Vector3d centerPoint;
-
     MeasureRadiusInfoPtr invalidRes
-        = std::make_shared<MeasureRadiusInfo>(false, 0.0, centerPoint, placement);
+        = std::make_shared<MeasureRadiusInfo>(false, 0.0, Base::Vector3d {}, Base::Vector3d {});
 
     TopoDS_Shape shape = getLocatedShape(subject);
 
@@ -351,7 +348,11 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
     GProp_GProps gprops;
     TopoDS_Edge edge;
     TopoDS_Face face;
-    gp_Pnt center;
+    // This is where the label is placed
+    // For now not necessarily on the curve as the name implies
+    // But in the future when https://github.com/FreeCAD/FreeCAD/issues/28937
+    // gets implemented it should be.
+    gp_Pnt pointOnCurve;
     double radius = 0.0;
 
     if (sType == TopAbs_EDGE) {
@@ -360,7 +361,7 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
         BRepAdaptor_Curve adapt(edge);
         if (adapt.GetType() == GeomAbs_Circle) {
             gp_Circ circ = adapt.Circle();
-            center = circ.Location();
+            pointOnCurve = circ.Location();
             radius = circ.Radius();
         }
     }
@@ -377,11 +378,11 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
 
         BRepAdaptor_Surface surf(face);
         if (surf.GetType() == GeomAbs_Cylinder) {
-            center = surf.Cylinder().Location();
+            pointOnCurve = surf.Cylinder().Location();
             radius = surf.Cylinder().Radius();
         }
         else if (surf.GetType() == GeomAbs_Torus) {
-            center = surf.Torus().Location();
+            pointOnCurve = surf.Torus().Location();
             radius = surf.Torus().MinorRadius();
 
             // Places the label point inside the torus
@@ -389,10 +390,10 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
             gp_Vec direction(surf.Torus().Position().XDirection());
             double majorRadius = surf.Torus().MajorRadius();
             direction = direction * majorRadius;
-            center = center.Translated(direction);
+            pointOnCurve = pointOnCurve.Translated(direction);
         }
         else if (surf.GetType() == GeomAbs_Sphere) {
-            center = surf.Sphere().Location();
+            pointOnCurve = surf.Sphere().Location();
             radius = surf.Sphere().Radius();
         }
         else if (surf.GetType() == GeomAbs_Plane) {
@@ -412,7 +413,7 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
             }
 
             gp_Circ circle = adapt.Circle();
-            center = circle.Location();
+            pointOnCurve = circle.Location();
             radius = circle.Radius();
         }
     }
@@ -420,21 +421,16 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
         return invalidRes;
     }
 
-    // Get Center of mass as the attachment point of the label
-    auto origin = gprops.CentreOfMass();
+    // Currently not in use but useful for future implementation of
+    // https://github.com/FreeCAD/FreeCAD/issues/28937
+    gp_Pnt center = gprops.CentreOfMass();
 
-
-    centerPoint = Base::Vector3d(center.X(), center.Y(), center.Z());
-
-    // a somewhat arbitrary radius from center -> point on curve
-    auto dir = (center.XYZ() - origin.XYZ()).Normalized();
-    Base::Vector3d elementDirection(dir.X(), dir.Y(), dir.Z());
-    Base::Vector3d axisUp(0.0, 0.0, 1.0);
-    Base::Rotation rot(axisUp, elementDirection);
-
-    placement = Base::Placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), rot);
-
-    return std::make_shared<MeasureRadiusInfo>(true, radius, centerPoint, placement);
+    return std::make_shared<MeasureRadiusInfo>(
+        true,
+        radius,
+        Base::Vector3d(pointOnCurve.X(), pointOnCurve.Y(), pointOnCurve.Z()),
+        Base::Vector3d(center.X(), center.Y(), center.Z())
+    );
 }
 
 

@@ -24,10 +24,13 @@
 
 #include <limits>
 #include <cmath>
+#include <initializer_list>
 #include <optional>
+#include <utility>
 
 #include <Precision.hxx>
 #include <Bnd_Box.hxx>
+#include <QApplication>
 #include <QPainter>
 #include <algorithm>
 #include <sstream>
@@ -2011,12 +2014,8 @@ class DrawSketchHandlerDimension : public DrawSketchHandler
 {
 public:
     // Helper constants for hint texts
-    static constexpr const char* PICK_EDGE = "%1 pick edge";
-    static constexpr const char* PICK_POINT_OR_EDGE = "%1 pick point or edge";
-    static constexpr const char* PICK_SECOND_POINT_OR_EDGE = "%1 pick second point or edge";
-    static constexpr const char* PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH = "%1 pick second point or edge, or click to finish";
-    static constexpr const char* PLACE_DIMENSION = "%1 place dimension";
-    static constexpr const char* MODE_HINT = "%1 switch mode";
+    static constexpr const char* PICK_POINT_OR_EDGE = "%1 pick point/edge";
+    static constexpr const char* PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH = "%1 pick next point/edge, or empty space to finish";
     explicit DrawSketchHandlerDimension(std::vector<std::string> SubNames)
         : specialConstraint(SpecialConstraint::None)
         , availableConstraint(AvailableConstraint::FIRST)
@@ -2028,6 +2027,7 @@ public:
         , selSplineAndCo({})
         , initialSelection(std::move(SubNames))
         , cstrIndexes({})
+        , singleCircleReverseOrder(false)
     {
     }
     ~DrawSketchHandlerDimension() override
@@ -2094,22 +2094,9 @@ public:
     void registerPressedKey(bool pressed, int key) override
     {
         if (key == SoKeyboardEvent::M && pressed) {
-            if (availableConstraint == AvailableConstraint::FIRST) {
-                availableConstraint = AvailableConstraint::SECOND;
-            }
-            else if (availableConstraint == AvailableConstraint::SECOND) {
-                availableConstraint = AvailableConstraint::THIRD;
-            }
-            else if (availableConstraint == AvailableConstraint::THIRD) {
-                availableConstraint = AvailableConstraint::FOURTH;
-            }
-            else if (availableConstraint == AvailableConstraint::FOURTH) {
-                availableConstraint = AvailableConstraint::FIFTH;
-            }
-            else if (availableConstraint == AvailableConstraint::FIFTH || availableConstraint == AvailableConstraint::RESET) {
-                availableConstraint = AvailableConstraint::FIRST;
-            }
+            availableConstraint = nextConstraint(availableConstraint);
             makeAppropriateConstraint(previousOnSketchPos);
+            updateHint();
         }
         else {
             DrawSketchHandler::registerPressedKey(pressed, key);
@@ -2265,29 +2252,20 @@ public:
         }
     }
 
-std::list<Gui::InputHint> getToolHints() const override {
-    if (selectionEmpty()) {
-        return {{QObject::tr(PICK_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}},
-                {QObject::tr(MODE_HINT), {Gui::InputHint::UserInput::KeyM}}};
-    } else if (selPoints.size() == 1 && selLine.empty() && selCircleArc.empty() && selEllipseAndCo.empty() && selSplineAndCo.empty()) {
-        // Single point - can add more points, lines, circles, etc.
-        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH), {Gui::InputHint::UserInput::MouseLeft}},
-                {QObject::tr(MODE_HINT), {Gui::InputHint::UserInput::KeyM}}};
-    } else if (selLine.size() == 1 && selPoints.empty() && selCircleArc.empty() && selEllipseAndCo.empty() && selSplineAndCo.empty()) {
-        // Single line - can add more points, lines, circles, etc.
-        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH), {Gui::InputHint::UserInput::MouseLeft}},
-                {QObject::tr(MODE_HINT), {Gui::InputHint::UserInput::KeyM}}};
-    } else if (selCircleArc.size() == 1 && selPoints.empty() && selLine.empty() && selEllipseAndCo.empty() && selSplineAndCo.empty()) {
-        // Single circle/arc - can add more points, lines, circles, etc.
-        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH), {Gui::InputHint::UserInput::MouseLeft}},
-                {QObject::tr(MODE_HINT), {Gui::InputHint::UserInput::KeyM}}};
-    } else {
-        // Multiple selections or complex combinations - check if more selections are possible
-        // For now, assume more selections are possible unless we have a complete constraint
-        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH), {Gui::InputHint::UserInput::MouseLeft}},
-                {QObject::tr(MODE_HINT), {Gui::InputHint::UserInput::KeyM}}};
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        const Gui::InputHint pickHint {
+            QObject::tr(selectionEmpty() ? PICK_POINT_OR_EDGE
+                                         : PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH),
+            {Gui::InputHint::UserInput::MouseLeft}
+        };
+        const QString modeHint = getNextModeHint();
+        if (modeHint.isEmpty()) {
+            return {pickHint};
+        }
+
+        return {pickHint, {modeHint, {Gui::InputHint::UserInput::KeyM}}};
     }
-}
 
 protected:
     SpecialConstraint specialConstraint;
@@ -2304,8 +2282,196 @@ protected:
     std::vector<std::string> initialSelection;
 
     std::vector<int> cstrIndexes;
+    bool singleCircleReverseOrder;
 
     Sketcher::SketchObject* Obj;
+
+    static AvailableConstraint nextConstraint(AvailableConstraint constraint)
+    {
+        switch (constraint) {
+            case AvailableConstraint::FIRST:
+                return AvailableConstraint::SECOND;
+            case AvailableConstraint::SECOND:
+                return AvailableConstraint::THIRD;
+            case AvailableConstraint::THIRD:
+                return AvailableConstraint::FOURTH;
+            case AvailableConstraint::FOURTH:
+                return AvailableConstraint::FIFTH;
+            case AvailableConstraint::FIFTH:
+            case AvailableConstraint::RESET:
+                return AvailableConstraint::FIRST;
+        }
+
+        return AvailableConstraint::FIRST;
+    }
+
+    QString getNextModeHint() const
+    {
+        const GeomSelectionSizes selection(selPoints.size(),
+                                           selLine.size(),
+                                           selCircleArc.size(),
+                                           selEllipseAndCo.size(),
+                                           selSplineAndCo.size());
+        const AvailableConstraint next = nextConstraint(availableConstraint);
+        const char* mode = getModeHint(selection, next);
+
+        return mode ? QApplication::translate("SketcherGui::DrawSketchHandlerDimension", mode)
+                    : QString();
+    }
+
+    const char* getModeHint(const GeomSelectionSizes& selection, AvailableConstraint constraint) const
+    {
+        if (selection.hasPoints()) {
+            if (selection.has1Point()) {
+                return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to distance")},
+                                    {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to lock")}},
+                                   constraint);
+            }
+            if (selection.has2Points()) {
+                return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to distance")},
+                                    {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to horizontal")},
+                                    {AvailableConstraint::THIRD, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to vertical")}},
+                                   constraint);
+            }
+            if (selection.has1Point1Line()) {
+                return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to distance")},
+                                    {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to symmetry")}},
+                                   constraint);
+            }
+            if (selection.has3Points()) {
+                return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to horizontal")},
+                                    {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to vertical")},
+                                    {AvailableConstraint::THIRD, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to symmetry")}},
+                                   constraint);
+            }
+            if (selection.has4MorePoints()) {
+                return horizontalVerticalHint(constraint);
+            }
+            if (selection.has2Points1Line()) {
+                return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to symmetry")},
+                                    {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to distance")}},
+                                   constraint);
+            }
+        }
+        else if (selection.hasLines()) {
+            if (selection.has1Line()) {
+                return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to length")},
+                                    {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to horizontal")},
+                                    {AvailableConstraint::THIRD, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to vertical")},
+                                    {AvailableConstraint::FOURTH, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to block")}},
+                                   constraint);
+            }
+            if (selection.has2Lines()) {
+                return modeHintFor({{AvailableConstraint::FIRST, getTwoLineFirstModeHint()},
+                                    {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to equal length")}},
+                                   constraint);
+            }
+        }
+        else if (selection.hasCirclesOrArcs()) {
+            if (selection.has1Circle()) {
+                return getSingleCircleModeHint(constraint);
+            }
+            if (selection.has2Circles()) {
+                return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to distance")},
+                                    {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to concentric distance")},
+                                    {AvailableConstraint::THIRD, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to equal radius")}},
+                                   constraint);
+            }
+        }
+
+        return nullptr;
+    }
+
+    const char* getTwoLineFirstModeHint() const
+    {
+        int geoId1 = selLine[0].GeoId;
+        int geoId2 = selLine[1].GeoId;
+        Sketcher::PointPos posId1 = Sketcher::PointPos::none;
+        Sketcher::PointPos posId2 = Sketcher::PointPos::none;
+        double angle = 0.0;
+
+        if (calculateAngle(Obj, geoId1, geoId2, posId1, posId2, angle) && angle == 0.0) {
+            return QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to distance");
+        }
+
+        return QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to angle");
+    }
+
+    const char* getSingleCircleModeHint(AvailableConstraint constraint) const
+    {
+        const int geoId = selCircleArc[0].GeoId;
+        const Part::Geometry* geom = Obj->getGeometry(geoId);
+        if (!geom) {
+            return nullptr;
+        }
+
+        if (singleCircleReverseOrder) {
+            return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to arc angle")},
+                                {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to arc length")},
+                                {AvailableConstraint::THIRD, radiusDiameterHint(geoId, true)},
+                                {AvailableConstraint::FOURTH, radiusDiameterHint(geoId, false)}},
+                               constraint);
+        }
+
+        if (isArcOfCircle(*geom)) {
+            return modeHintFor({{AvailableConstraint::FIRST, radiusDiameterHint(geoId, true)},
+                                {AvailableConstraint::SECOND, radiusDiameterHint(geoId, false)},
+                                {AvailableConstraint::THIRD, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to arc angle")},
+                                {AvailableConstraint::FOURTH, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to arc length")}},
+                               constraint);
+        }
+
+        return modeHintFor({{AvailableConstraint::FIRST, radiusDiameterHint(geoId, true)},
+                            {AvailableConstraint::SECOND, radiusDiameterHint(geoId, false)}},
+                           constraint);
+    }
+
+    const char* radiusDiameterHint(int geoId, bool firstCstr) const
+    {
+        const Part::Geometry* geom = Obj->getGeometry(geoId);
+        if (!geom) {
+            return nullptr;
+        }
+
+        if (isBsplinePole(geom)) {
+            return QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to weight");
+        }
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+        const bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
+        const bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
+        const bool isCircleGeom = !isArcOfCircle(*geom);
+
+        if ((firstCstr && dimensioningRadius && !dimensioningDiameter)
+            || (!firstCstr && !dimensioningRadius && dimensioningDiameter)
+            || (firstCstr && dimensioningRadius && dimensioningDiameter && !isCircleGeom)
+            || (!firstCstr && dimensioningRadius && dimensioningDiameter && isCircleGeom)) {
+            return QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to radius");
+        }
+
+        return QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to diameter");
+    }
+
+    const char* horizontalVerticalHint(AvailableConstraint constraint) const
+    {
+        return modeHintFor({{AvailableConstraint::FIRST, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to horizontal")},
+                            {AvailableConstraint::SECOND, QT_TRANSLATE_NOOP("SketcherGui::DrawSketchHandlerDimension", "%1 switch to vertical")}},
+                           constraint);
+    }
+
+    static const char* modeHintFor(
+        const std::initializer_list<std::pair<AvailableConstraint, const char*>>& modes,
+        AvailableConstraint constraint)
+    {
+        for (const auto& [mode, hint] : modes) {
+            if (mode == constraint) {
+                return hint;
+            }
+        }
+
+        return nullptr;
+    }
 
     void clearRefVectors()
     {
@@ -2314,6 +2480,7 @@ protected:
         selCircleArc.clear();
         selEllipseAndCo.clear();
         selSplineAndCo.clear();
+        singleCircleReverseOrder = false;
     }
 
     void handleInitialSelection()
@@ -2769,9 +2936,9 @@ protected:
     void makeCts_1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
         int geoId = selCircleArc[0].GeoId;
-        bool reverseOrder = isRadiusDoF(geoId);
+        singleCircleReverseOrder = isRadiusDoF(geoId);
 
-        if (reverseOrder) {
+        if (singleCircleReverseOrder) {
             if (availableConstraint == AvailableConstraint::FIRST) {
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
                 createArcAngleConstrain(geoId, onSketchPos);
@@ -7857,6 +8024,13 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair>& selSeq
         {
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
+
+            if (GeoId1 == GeoId2 && selSeq.at(0).PosId == selSeq.at(1).PosId) {
+                Gui::TranslatedUserWarning(Obj,
+                                           QObject::tr("Wrong selection"),
+                                           QObject::tr("Geometry cannot be tangent to itself"));
+                return;
+            }
 
             // check if the edge already has a Block constraint
             if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)) {

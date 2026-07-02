@@ -382,11 +382,6 @@
       <translation>배경색 지우기</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="224"/>
-      <source>Recompute Cells</source>
-      <translation>셀 재계산</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="326"/>
       <source>Insert Rows</source>
       <translation>행 삽입</translation>
@@ -397,30 +392,25 @@
       <translation>행 삭제</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="366"/>
-      <source>Remove Columns</source>
-      <translation>열 삭제</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="339"/>
       <source>Insert Columns</source>
       <translation>열 삽입</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="224"/>
+      <source>Recompute Cells</source>
+      <translation>셀 재계산</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="366"/>
+      <source>Remove Columns</source>
+      <translation>열 삭제</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="581"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>셀 지우기</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.cpp" line="243"/>
-      <source>Bind cells</source>
-      <translation>셀 바인딩</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.cpp" line="297"/>
-      <source>Unbind cells</source>
-      <translation>셀 바인딩 해제</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="204"/>
@@ -431,6 +421,16 @@
       <location filename="../../DlgSheetConf.cpp" line="309"/>
       <source>Unsetup conf table</source>
       <translation>구성 테이블 설정 해제</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="243"/>
+      <source>Bind cells</source>
+      <translation>셀 바인딩</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.cpp" line="297"/>
+      <source>Unbind cells</source>
+      <translation>셀 바인딩 해제</translation>
     </message>
   </context>
   <context>
@@ -633,7 +633,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="33"/>
       <source>Text</source>
-      <translation>텍스트</translation>
+      <translation>글자</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="43"/>
@@ -648,7 +648,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="88"/>
       <source>Horizontal</source>
-      <translation>가로</translation>
+      <translation>수평</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="95"/>
@@ -659,7 +659,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../PropertiesDialog.ui" line="102"/>
       <location filename="../../PropertiesDialog.ui" line="155"/>
       <source>Center</source>
-      <translation>가운데</translation>
+      <translation>중심</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
@@ -669,7 +669,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="141"/>
       <source>Vertical</source>
-      <translation>세로</translation>
+      <translation>수직</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="148"/>
@@ -1047,7 +1047,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="186"/>
       <location filename="../../SheetTableView.cpp" line="563"/>
       <source>Recompute</source>
-      <translation>재계산</translation>
+      <translation>새로고침</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="147"/>
@@ -1207,12 +1207,12 @@ Defaults to: %V = %A
   <context>
     <name>ZoomableView</name>
     <message>
-      <location filename="../../ZoomableView.cpp" line="116"/>
+      <location filename="../../ZoomableView.cpp" line="118"/>
       <source>New zoom level:</source>
       <translation>새 확대/축소 수준:</translation>
     </message>
     <message>
-      <location filename="../../ZoomableView.cpp" line="116"/>
+      <location filename="../../ZoomableView.cpp" line="118"/>
       <source>Zoom Level</source>
       <translation>확대/축소 수준</translation>
     </message>

@@ -1566,6 +1566,10 @@ Si angle de la cara &lt; l'angle de plec, s'utilitza un ombrejat suau</translati
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Temps</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Temps:</translation>

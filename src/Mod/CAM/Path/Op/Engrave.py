@@ -58,6 +58,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             | PathOp.FeatureHeights
             | PathOp.FeatureStepDown
             | PathOp.FeatureBaseEdges
+            | PathOp.FeatureBaseFaces
             | PathOp.FeatureCoolant
             | PathOp.FeatureLinking
         )
@@ -104,6 +105,40 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Approximate complex curves to arcs and lines"),
         )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SortingMode",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Order processing of the wires\n"
+                "\nManual - Using order from selection without sorting"
+                "\nAutomatic - Sorting wires by the nearest neighbour method, further improved with 2-opt",
+            ),
+        )
+        obj.SortingMode = ("Automatic", "Manual")
+
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "StartPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "The start point for sorting"),
+        )
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "EndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "The end point for sorting"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseEndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Use end point for sorting"),
+        )
+        obj.setEditorMode("StartPoint", 2)  # hide
+        obj.setEditorMode("EndPoint", 2)  # hide
+        obj.setEditorMode("UseEndPoint", 2)  # hide
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
@@ -132,6 +167,43 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Approximate complex curves to arcs and lines"),
             )
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Sorting",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Order processing of the wires\n"
+                    "\nManual - Using order from selection without sorting"
+                    "\nAutomatic - Sorting wires by the nearest neighbour method, further improved with 2-opt",
+                ),
+            )
+            obj.SortingMode = ("Automatic", "Manual")
+        if not hasattr(obj, "StartPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "StartPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "The start point for sorting"),
+            )
+            obj.setEditorMode("StartPoint", 2)  # hide
+        if not hasattr(obj, "EndPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "EndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "The end point for sorting"),
+            )
+            obj.setEditorMode("EndPoint", 2)  # hide
+        if not hasattr(obj, "UseEndPoint"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseEndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Use end point for sorting"),
+            )
+            obj.setEditorMode("UseEndPoint", 2)  # hide
 
         self.setupAdditionalProperties(obj)
 
@@ -139,12 +211,17 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         """opExecute(obj) ... process engraving operation"""
         Path.Log.track()
 
+        SortingMode = 0 if obj.SortingMode == "Automatic" else 2
+        obj.setEditorMode("StartPoint", SortingMode)
+        obj.setEditorMode("EndPoint", SortingMode)
+        obj.setEditorMode("UseEndPoint", SortingMode)
+
         jobshapes = []
 
         if obj.Base:
             # user has selected specific subelements
             Path.Log.track(len(obj.Base))
-            for base, subs in obj.Base:
+            for base, subs in self.baseShapes(obj):
                 edges = []
                 wires = []
                 for feature in subs:

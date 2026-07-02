@@ -871,8 +871,8 @@ SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo 
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>¿No encuentra la parte? </translation>
+      <source>Cannot find the part?</source>
+      <translation>¿No encuentra la parte?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -965,37 +965,37 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
       <translation>Mover parte</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1807"/>
       <source>Empty Assembly</source>
       <translation>Ensamblaje vacío</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringido:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
       <source>Malformed joints:</source>
       <translation>Articulaciones malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1792"/>
       <source>and %1 more</source>
       <translation>y %1 más</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1851"/>
       <source>Solver failed to converge</source>
       <translation>El solver falló al converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringido:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n grado de libertad</numerusform>
@@ -1003,7 +1003,7 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1865"/>
       <source>Fully constrained</source>
       <translation>Totalmente restringido</translation>
     </message>
@@ -1138,7 +1138,7 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="689"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Articulaciones</translation>
     </message>
@@ -1545,28 +1545,28 @@ Los archivos se llaman "runPreDrag. smt" y "dragging.log" y están ubicados en e
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Haga clic para seleccionar estas articulaciones en conflicto.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation>Selecciona estas articulaciones en conflicto</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Haga clic para seleccionar estas articulaciones redundantes.</translation>
+      <source>Selects these redundant joints</source>
+      <translation>Selecciona estas articulaciones redundantes</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
       <translation>El ensamblaje tiene componentes sin restricciones que dan lugar a esos grados de libertad.
-Haga clic para seleccionar estos componentes sin restricciones.
+Selecciona estos componentes sin restricciones.
 
 Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas que aún tienen algunos grados de libertad.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Haga clic para seleccionar estas articulaciones mal formadas.</translation>
+      <source>Selects these malformed joints</source>
+      <translation>Selecciona estas articulaciones mal formadas</translation>
     </message>
   </context>
   <context>
@@ -1578,7 +1578,7 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
+      <source>Go to Linked Assembly</source>
       <translation>Ir a ensamblaje enlazado</translation>
     </message>
     <message>
@@ -1596,7 +1596,7 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
+      <source>Select Conflicting Constraints</source>
       <translation>Seleccionar restricciones conflictivas</translation>
     </message>
     <message>
@@ -1614,7 +1614,7 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
+      <source>Select Redundant Constraints</source>
       <translation>Seleccionar restricciones redundantes</translation>
     </message>
     <message>
@@ -1632,7 +1632,7 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
+      <source>Select Malformed Constraints</source>
       <translation>Seleccionar restricciones mal formadas</translation>
     </message>
     <message>
@@ -1650,8 +1650,8 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
-      <translation>Selecciona componentes con grados de libertad</translation>
+      <source>Select Components With DoFs</source>
+      <translation>Seleccionar componentes con grados de libertad</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="269"/>
@@ -1668,8 +1668,8 @@ Nota: Actualmente, esto solo selecciona las piezas no conectadas, no las piezas 
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
-      <translation>Seleccionar las uniones de los componentes</translation>
+      <source>Select Component Joints</source>
+      <translation>Seleccionar uniones de los componentes</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>

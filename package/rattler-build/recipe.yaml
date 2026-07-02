@@ -1,5 +1,5 @@
 context:
-  version: "1.2.0dev"
+  version: "26.3.0dev"
 
 package:
   name: freecad
@@ -102,7 +102,7 @@ requirements:
   host:
     - coin3d ==4.0.3
     - eigen >=3.3,<5
-    - fmt
+    - fmt >=12.1,<12.2
     - freetype
     - hdf5
     - lark
@@ -140,6 +140,7 @@ requirements:
         - xorg-xproto
 
   run:
+    - av
     - blas * openblas*
     - blinker
     - calculix
@@ -158,7 +159,6 @@ requirements:
     - occt>=7.8,<7.9
     - olefile
     - opencamlib
-    - opencv
     - pandas
     - pip
     - pivy

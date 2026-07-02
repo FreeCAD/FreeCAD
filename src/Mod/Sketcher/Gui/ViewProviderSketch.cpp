@@ -49,10 +49,14 @@
 #include <QToolTip>
 #include <QWindow>
 
+#include <algorithm>
+#include <cmath>
 #include <limits>
+#include <numbers>
 
 #include <fmt/format.h>
 
+#include <Base/BaseClass.h>
 #include <Base/Console.h>
 #include <Base/Converter.h>
 #include <Base/ServiceProvider.h>
@@ -78,6 +82,7 @@
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 #include "DrawSketchHandler.h"
+#include "DrawSketchHandlerDragAutoConstraint.h"
 #include "EditDatumDialog.h"
 #include "EditTextDialog.h"
 #include "EditModeCoinManager.h"
@@ -96,7 +101,7 @@
 #include <TopExp.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopTools_ListOfListOfShape.hxx>
 
 #include <Mod/Part/Gui/SoFCShapeObject.h>
 
@@ -1811,7 +1816,16 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
         }
         case STATUS_SKETCH_Drag: {
             Base::Vector2d dragPos = snapHandle->compute();
-            doDragStep(dragPos.x, dragPos.y);
+            const bool temporaryMoveSucceeded = doDragStep(dragPos.x, dragPos.y);
+
+            if (dragAutoConstraintHandler) {
+                if (temporaryMoveSucceeded) {
+                    dragAutoConstraintHandler->update(drag.Dragged, dragPos);
+                }
+                else {
+                    dragAutoConstraintHandler->clear();
+                }
+            }
             return true;
         }
         case STATUS_SKETCH_DragConstraint:
@@ -1887,6 +1901,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
     }
 
     drag.reset();
+    if (dragAutoConstraintHandler) {
+        dragAutoConstraintHandler->clear();
+    }
     setSketchMode(STATUS_SKETCH_Drag);
     drag.Dragged.emplace_back(geoId, pos);
 
@@ -1942,6 +1959,12 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             drag.Dragged.emplace_back(geoIdi, posi);
         }
     }
+
+    if (!dragAutoConstraintHandler) {
+        dragAutoConstraintHandler = std::make_unique<DrawSketchHandlerDragAutoConstraint>();
+        dragAutoConstraintHandler->setSketchGui(this);
+    }
+    dragAutoConstraintHandler->initDragging(drag.Dragged);
 
     auto setRelative = [&]() {
         drag.relative = true;
@@ -2052,7 +2075,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
     getSketchObject()->initTemporaryMove(drag.Dragged, false);
 }
 
-void ViewProviderSketch::doDragStep(double x, double y)
+bool ViewProviderSketch::doDragStep(double x, double y)
 {
     Base::Vector3d vec(x - drag.xInit, y - drag.yInit, 0);
 
@@ -2097,7 +2120,10 @@ void ViewProviderSketch::doDragStep(double x, double y)
     if (getSketchObject()->moveGeometriesTemporary(drag.Dragged, vec, drag.relative) == 0) {
         setPositionText(Base::Vector2d(x, y));
         draw(true, false);
+        return true;
     }
+
+    return false;
 }
 
 void ViewProviderSketch::commitDragMove(double x, double y)
@@ -2169,15 +2195,27 @@ void ViewProviderSketch::commitDragMove(double x, double y)
 
     try {
         Gui::cmdAppObjectArgs(getObject(), cmd.str().c_str());
+        if (dragAutoConstraintHandler) {
+            dragAutoConstraintHandler->create(drag.Dragged);
+        }
     }
     catch (const Base::Exception& e) {
         getDocument()->abortCommand();
         Base::Console().developerError("ViewProviderSketch", "Drag: %s\n", e.what());
+        if (dragAutoConstraintHandler) {
+            dragAutoConstraintHandler->clear();
+        }
+        drag.reset();
+        resetPositionText();
+        return;
     }
 
     getDocument()->commitCommand();
 
     tryAutoRecomputeIfNotSolve(getSketchObject());
+    if (dragAutoConstraintHandler) {
+        dragAutoConstraintHandler->clear();
+    }
     drag.reset();
     resetPositionText();
 }
@@ -3153,6 +3191,21 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     updateColor();
 }
 
+bool ViewProviderSketch::isConstructionMode() const
+{
+    return geometryCreationMode == GeometryCreationMode::Construction;
+}
+
+void ViewProviderSketch::setGeometryCreationMode(GeometryCreationMode newMode)
+{
+    geometryCreationMode = newMode;
+}
+
+GeometryCreationMode ViewProviderSketch::getGeometryCreationMode() const
+{
+    return geometryCreationMode;
+}
+
 void ViewProviderSketch::updateColor()
 {
     assert(isInEditMode());
@@ -3549,12 +3602,53 @@ bool ViewProviderSketch::getIsShownVirtualSpace() const
 
 void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
 {
-    editCoinManager->drawEdit(EditCurve, currentGeometryCreationMode());
+    editCoinManager->drawEdit(EditCurve, geometryCreationMode);
 }
 
 void ViewProviderSketch::drawEdit(const std::list<std::vector<Base::Vector2d>>& list)
 {
-    editCoinManager->drawEdit(list, currentGeometryCreationMode());
+    editCoinManager->drawEdit(list, geometryCreationMode);
+}
+
+void ViewProviderSketch::drawLineExtensionAutoConstraintHint(
+    const std::vector<Base::Vector2d>& HintCurve
+)
+{
+    editCoinManager->drawLineExtensionAutoConstraintHint(HintCurve);
+}
+
+bool ViewProviderSketch::isLineExtensionAutoConstraintHintVisible(
+    const std::vector<Base::Vector2d>& HintCurve
+) const
+{
+    Gui::MDIView* mdi = this->getActiveView();
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(mdi);
+    if (!view || !isInEditMode()) {
+        return false;
+    }
+
+    Gui::View3DInventorViewer* viewer = view->getViewer();
+    if (!viewer || !viewer->getGLWidget()) {
+        return false;
+    }
+
+    const int width = viewer->getGLWidget()->width();
+    const int height = viewer->getGLWidget()->height();
+    if (width <= 0 || height <= 0) {
+        return false;
+    }
+
+    for (const auto& point : HintCurve) {
+        const SbVec2f screenCoordinates = getScreenCoordinates(
+            SbVec2f(static_cast<float>(point.x), static_cast<float>(point.y))
+        );
+        if (screenCoordinates[0] < 0.0F || screenCoordinates[0] > width
+            || screenCoordinates[1] < 0.0F || screenCoordinates[1] > height) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,

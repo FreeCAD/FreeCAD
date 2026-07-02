@@ -139,7 +139,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance</source>
-      <translation>Відстань</translation>
+      <translation>Відстань Х</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -382,11 +382,6 @@ The smallest value is 0.</source>
       <translation>Використовувати розв'язувач сітки Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Чистота:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Дуже грубо</translation>
@@ -437,6 +432,11 @@ The smallest value is 0.</source>
 A value in the range of 0.1-1.</source>
       <translation>Якщо цей параметр менший, то сітка стає кращою.
 Значення в діапазоні 0,1-1.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Ступінь дроблення</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>

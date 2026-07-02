@@ -870,8 +870,8 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
-      <source>Cannot find the part? </source>
-      <translation>Ne mogu da pronađem deo? </translation>
+      <source>Cannot find the part?</source>
+      <translation>Ne mogu da pronađem deo?</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -964,37 +964,37 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
       <translation>Pomeri deo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1803"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1807"/>
       <source>Empty Assembly</source>
       <translation>Prazan sklop</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1815"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1819"/>
       <source>Over-constrained:</source>
       <translation>Previše ograničena skica:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1823"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1827"/>
       <source>Malformed joints:</source>
       <translation>Oštećeni spojevi:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1788"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1792"/>
       <source>and %1 more</source>
       <translation>i %1 više</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1847"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1851"/>
       <source>Solver failed to converge</source>
       <translation>Solver nije uspeo da se približi</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1855"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1859"/>
       <source>Under-constrained:</source>
       <translation>Nedovoljno ograničena skica:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1857"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Stepeni slobode</numerusform>
@@ -1003,7 +1003,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1861"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1865"/>
       <source>Fully constrained</source>
       <translation>Potpuno ograničena skica</translation>
     </message>
@@ -1138,7 +1138,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="689"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Spojevi</translation>
     </message>
@@ -1205,7 +1205,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="112"/>
       <source>End</source>
-      <translation>Kraj</translation>
+      <translation>Крај</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="115"/>
@@ -1545,27 +1545,27 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>
-      <source>Click to select these conflicting joints.</source>
-      <translation>Klikni da bi izabrao konfliktne spojeve.</translation>
+      <source>Selects these conflicting joints</source>
+      <translation>Izaberi konfliktne spojeve</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="59"/>
-      <source>Click to select these redundant joints.</source>
-      <translation>Klikni da bi izabrao suvišne spojeve.</translation>
+      <source>Selects these redundant joints</source>
+      <translation>Izaberi suvišne spojeve</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="62"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom.
-Click to select these unconstrained components.
+Selects these unconstrained components.
 Note: Currently this selects only unconnected parts, not constrained parts that still have free DoF.</source>
       <translation>Sklop ima delove kojima nisu ograničeni svi stepeni slobode.
-Klikni da bi izabrao ovakve delove.
+Izaberi ovakve delove.
 Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i dalje imaju stepene slobode se ne biraju.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="70"/>
-      <source>Click to select these malformed joints.</source>
-      <translation>Klikni da bi izabrao oštećene spojeve.</translation>
+      <source>Selects these malformed joints</source>
+      <translation>Izaberi oštećene spojeve</translation>
     </message>
   </context>
   <context>
@@ -1577,7 +1577,7 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>
-      <source>Go to linked Assembly</source>
+      <source>Go to Linked Assembly</source>
       <translation>Idi na povezani sklop</translation>
     </message>
     <message>
@@ -1595,8 +1595,8 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
     </message>
     <message>
       <location filename="../../Commands.cpp" line="166"/>
-      <source>Select conflicting constraints</source>
-      <translation>Izaberi sukobljene spojeve</translation>
+      <source>Select Conflicting Constraints</source>
+      <translation>Izaberi sukobljena ograničenja</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="167"/>
@@ -1613,8 +1613,8 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
     </message>
     <message>
       <location filename="../../Commands.cpp" line="201"/>
-      <source>Select redundant constraints</source>
-      <translation>Izaberi suvišne spojeve</translation>
+      <source>Select Redundant Constraints</source>
+      <translation>Izaberi suvišna ograničenja</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="202"/>
@@ -1631,8 +1631,8 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
     </message>
     <message>
       <location filename="../../Commands.cpp" line="234"/>
-      <source>Select malformed constraints</source>
-      <translation>Izaberi oštećene spojeve</translation>
+      <source>Select Malformed Constraints</source>
+      <translation>Izaberi oštećena ograničenja</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="235"/>
@@ -1649,7 +1649,7 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
     </message>
     <message>
       <location filename="../../Commands.cpp" line="268"/>
-      <source>Select components with DoFs</source>
+      <source>Select Components With DoFs</source>
       <translation>Izaberi komponente sa stepenima slobode</translation>
     </message>
     <message>
@@ -1667,8 +1667,8 @@ Napomena: Trenutno se biraju samo delovi bez spojeva, delovi sa spojevima koji i
     </message>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
-      <source>Select component joints</source>
-      <translation>Izaberi sve spojeve</translation>
+      <source>Select Component Joints</source>
+      <translation>Izaberi spojeve komponente</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>

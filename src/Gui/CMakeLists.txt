@@ -760,7 +760,6 @@ SET(Editor_CPP_SRCS
     TextDocumentEditorView.cpp
     PythonConsole.cpp
     PythonConsolePy.cpp
-    PythonDebugger.cpp
     PythonTracing.cpp
     PythonEditor.cpp
     SyntaxHighlighter.cpp
@@ -772,7 +771,6 @@ SET(Editor_HPP_SRCS
     TextDocumentEditorView.h
     PythonConsole.h
     PythonConsolePy.h
-    PythonDebugger.h
     PythonTracing.h
     PythonEditor.h
     SyntaxHighlighter.h
@@ -1213,6 +1211,7 @@ SET(Params_CPP_SRCS
     OverlayParams.cpp
     ParamHandler.cpp
     ViewParams.cpp
+    SpaceMouseParameter.cpp
 )
 
 SET(Params_HPP_SRCS
@@ -1220,6 +1219,7 @@ SET(Params_HPP_SRCS
     OverlayParams.h
     ParamHandler.cpp
     ViewParams.h
+    SpaceMouseParameter.h
 )
 
 SET(Params_SRCS

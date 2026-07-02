@@ -350,28 +350,20 @@ class ViewProvider(object):
                             # Get the face
                             face = selected_obj.Shape.getElement(sub)
 
-                            # Extract the normal vector
-                            # For planar faces, use the surface axis
-                            if hasattr(face.Surface, "Axis"):
-                                normal = face.Surface.Axis
-                            else:
-                                # For non-planar faces, use center of mass normal
-                                u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
-                                v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
-                                normal = face.normalAt(u_mid, v_mid)
+                            # Extract the normal vector at the center of the face
+                            u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
+                            v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
+                            normal = face.normalAt(u_mid, v_mid)
 
                             # Normalize the vector
                             normal.normalize()
 
-                            # Use attachment engine to set operation placement
-                            # AttachmentSupport: tuple of (object, subname)
-                            # MapMode: "FlatFace" aligns Z-axis with face normal
-                            self.operation.AttachmentSupport = (obj, (sub,))
-                            self.operation.MapMode = "FlatFace"
+                            # Store the face normal as the workplane orientation
+                            self.operation.Workplane = normal
                             FreeCAD.ActiveDocument.recompute()
 
                             FreeCAD.Console.PrintMessage(
-                                f"Attached {self.operation.Label} to {obj.Label}.{sub}\n"
+                                f"Set {self.operation.Label} workplane to {normal} from {selected_obj.Label}.{sub}\n"
                             )
 
                             # Deactivate and remove observer
@@ -883,6 +875,8 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         Path.Log.track(selection)
         added = False
         for sel in selection:
+            if not hasattr(sel.Object, "Shape"):
+                continue
             # check each selection
             if self.selectionSupportedAsBaseGeometry(sel, False):
                 added = True

@@ -147,6 +147,8 @@ class SketcherGuiExport EditModeCoinManager
         void initParameters();
         void updateCurvedEdgeCountSegmentsParameter(const std::string& parametername);
         void updateLineRenderingOrderParameters(const std::string& parametername);
+        void updateAxisTransparencyParameter(const std::string& parametername);
+        void updateOccludedAxisTransparencyParameter(const std::string& parametername);
         void updateConstraintPresentationParameters(const std::string& parametername);
         void updateWidth(int& width, const std::string& parametername, int def);
         void updatePattern(unsigned int& pattern, const std::string& pname, unsigned int def);
@@ -248,6 +250,7 @@ public:
     void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers, unsigned int augmentationlevel);
     void drawEdit(const std::vector<Base::Vector2d>& EditCurve, GeometryCreationMode mode);
     void drawEdit(const std::list<std::vector<Base::Vector2d>>& list, GeometryCreationMode mode);
+    void drawLineExtensionAutoConstraintHint(const std::vector<Base::Vector2d>& HintCurve);
     void setPositionText(const Base::Vector2d& Pos, const SbString& txt);
     void setPositionText(const Base::Vector2d& Pos);
     void resetPositionText();

@@ -148,31 +148,51 @@ Larger values (further to the right) will calculate faster; smaller values (furt
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QSpinBox" name="stepOverPercent">
+       <widget class="QDoubleSpinBox" name="stepOver">
         <property name="toolTip">
-         <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter. A step over of 100% results in no overlap between two different cycles.</string>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="singleStep">
-         <number>10</number>
-        </property>
-        <property name="value">
-         <number>100</number>
+         <string>The sideways distance the cutting tool moves between successive passes, as percentage of the tool's diameter.</string>
         </property>
         <property name="suffix">
          <string>%</string>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.1</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+        <property name="singleStep">
+         <double>5.0</double>
+        </property>
+        <property name="value">
+         <double>20.0</double>
         </property>
        </widget>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Step over</string>
+         <string>Step over (percent)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::QuantitySpinBox" name="stepOverDistance" native="true">
+        <property name="toolTip">
+         <string>The sideways distance the cutting tool moves between successive passes.</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_stepOverDistance">
+        <property name="text">
+         <string>Step over (distance)</string>
         </property>
        </widget>
       </item>

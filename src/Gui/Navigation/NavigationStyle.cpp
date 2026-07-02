@@ -40,6 +40,7 @@
 #include <QMenu>
 
 
+#include <algorithm>
 #include <cmath>
 #include <limits>
 
@@ -49,6 +50,7 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Command.h"
 #include "Action.h"
 #include "Inventor/SoMouseWheelEvent.h"
@@ -59,6 +61,7 @@
 #include "Selection.h"
 #include "SoFullPathHelper.h"
 #include "View3DInventorViewer.h"
+#include "ViewParams.h"
 
 using namespace Gui;
 
@@ -323,6 +326,8 @@ NavigationStyle& NavigationStyle::operator=(const NavigationStyle& ns)
     this->menuenabled = ns.menuenabled;
     this->animationEnabled = ns.animationEnabled;
     this->spinningAnimationEnabled = ns.spinningAnimationEnabled;
+    this->rotationEnabled = ns.rotationEnabled;
+    this->orientationLocked = ns.orientationLocked;
     static_cast<FCSphereSheetProjector*>(this->spinprojector)
         ->setOrbitStyle(static_cast<FCSphereSheetProjector*>(ns.spinprojector)->getOrbitStyle());
     return *this;
@@ -342,6 +347,8 @@ void NavigationStyle::initialize()
     this->currentmode = NavigationStyle::IDLE;
     this->animationEnabled = true;
     this->spinningAnimationEnabled = false;
+    this->rotationEnabled = true;
+    this->orientationLocked = false;
     this->spinsamplecounter = 0;
     this->spinincrement = SbRotation::identity();
     this->rotationCenterFound = false;
@@ -523,6 +530,13 @@ std::shared_ptr<NavigationAnimation> NavigationStyle::setCameraOrientation(
     if (!camera) {
         return {};
     }
+    if (!canChangeCameraOrientation(
+            camera->orientation.getValue(),
+            orientation,
+            OrientationChangeSource::Programmatic
+        )) {
+        return {};
+    }
 
     animator->stop();
 
@@ -549,7 +563,7 @@ std::shared_ptr<NavigationAnimation> NavigationStyle::setCameraOrientation(
     const SbVec3f rotationCenterDistanceCam = camera->focalDistance.getValue() * SbVec3f(0, 0, 1);
 
     // Set to the given orientation
-    camera->orientation = orientation;
+    setCameraOrientationValue(camera, orientation, OrientationChangeSource::Programmatic);
 
     // Distance from rotation center to new camera position in global coordinate system
     SbVec3f newRotationCenterDistance;
@@ -701,9 +715,13 @@ void NavigationStyle::findBoundingSphere()
 /** Rotate the camera by the given amount, then reposition it so we're still pointing at the same
  * focal point
  */
-void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotation)
+void NavigationStyle::reorientCamera(
+    SoCamera* camera,
+    const SbRotation& rotation,
+    const OrientationChangeSource source
+)
 {
-    reorientCamera(camera, rotation, viewer->getFocalPoint());
+    reorientCamera(camera, rotation, viewer->getFocalPoint(), source);
 }
 
 /** Rotate the camera by the given amount, then reposition it so the rotation center stays in the
@@ -712,22 +730,29 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
 void NavigationStyle::reorientCamera(
     SoCamera* camera,
     const SbRotation& rotation,
-    const SbVec3f& rotationCenter
+    const SbVec3f& rotationCenter,
+    const OrientationChangeSource source
 )
 {
     if (!camera) {
         return;
     }
 
+    const SbRotation currentOrientation = camera->orientation.getValue();
+    const SbRotation targetOrientation = rotation * currentOrientation;
+    if (!canChangeCameraOrientation(currentOrientation, targetOrientation, source)) {
+        return;
+    }
+
     // Distance from rotation center to camera position in camera coordinate system
     SbVec3f rotationCenterDistanceCam;
-    camera->orientation.getValue().inverse().multVec(
+    currentOrientation.inverse().multVec(
         camera->position.getValue() - rotationCenter,
         rotationCenterDistanceCam
     );
 
     // Set new orientation value by accumulating the new rotation
-    camera->orientation = rotation * camera->orientation.getValue();
+    camera->orientation = targetOrientation;
 
     // Distance from rotation center to new camera position in global coordinate system
     SbVec3f newRotationCenterDistance;
@@ -1027,6 +1052,10 @@ void NavigationStyle::doScale(SoCamera* cam, float factor)
 }
 void NavigationStyle::doRotate(SoCamera* camera, float angle, const SbVec2f& pos)
 {
+    if (!isRotationEnabled()) {
+        return;
+    }
+
     SbBool zoomAtCur = this->zoomAtCursor;
     if (zoomAtCur) {
         const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
@@ -1042,7 +1071,7 @@ void NavigationStyle::doRotate(SoCamera* camera, float angle, const SbVec2f& pos
     rotcam.multVec(SbVec3f(0, 0, -1), vdir);
     // rotate
     SbRotation drot(vdir, angle);
-    camera->orientation.setValue(rotcam * drot);
+    setCameraOrientationValue(camera, rotcam * drot, OrientationChangeSource::Interactive);
 
     if (zoomAtCur) {
         const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
@@ -1089,6 +1118,10 @@ void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
  */
 void NavigationStyle::spin(const SbVec2f& pointerpos)
 {
+    if (!isRotationEnabled()) {
+        return;
+    }
+
     if (this->log.historysize < 2) {
         return;
     }
@@ -1201,6 +1234,10 @@ void NavigationStyle::spinInternal(const SbVec2f& pointerpos, const SbVec2f& las
  */
 void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
 {
+    if (!isRotationEnabled()) {
+        return;
+    }
+
     assert(this->spinprojector);
 
     if (getOrbitStyle() == FreeTurntable) {
@@ -1215,7 +1252,73 @@ void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
     hasDragged = true;
 }
 
+void NavigationStyle::beginOrbitDrag(const OrbitDragOptions& options)
+{
+    stopAnimating();
+
+    OrbitDragState state;
+    state.center = viewer->getFocalPoint();
+    state.sensitivity = std::max(0.0F, options.sensitivity);
+
+    SbSphere sceneSphere;
+    if (options.centerMode == OrbitDragOptions::CenterMode::SceneBoundingSphere
+        && getObjectBoundingSphere(sceneSphere)) {
+        state.center = sceneSphere.getCenter();
+        state.minDistance = std::max(0.0F, options.minDistanceFactor) * sceneSphere.getRadius();
+        state.clippingRadius = std::max(0.0F, options.clippingRadiusFactor) * sceneSphere.getRadius();
+    }
+
+    orbitDrag = state;
+    applyOrbitDragCameraConstraints(*orbitDrag);
+}
+
+void NavigationStyle::updateOrbitDrag(SbVec2f curpos, SbVec2f prevpos)
+{
+    if (!isRotationEnabled()) {
+        return;
+    }
+
+    if (!orbitDrag) {
+        return;
+    }
+
+    assert(this->spinprojector);
+
+    const float dragSensitivity = orbitDrag->sensitivity;
+    const auto scalePosition = [dragSensitivity](SbVec2f position) {
+        return SbVec2f(
+            0.5F + dragSensitivity * (position[0] - 0.5F),
+            0.5F + dragSensitivity * (position[1] - 0.5F)
+        );
+    };
+
+    curpos = scalePosition(curpos);
+    prevpos = scalePosition(prevpos);
+
+    if (getOrbitStyle() == FreeTurntable) {
+        SbVec2f midpos(prevpos[0], curpos[1]);
+        spinSimplifiedInternal(curpos, midpos, &orbitDrag->center);
+        spinSimplifiedInternal(midpos, prevpos, &orbitDrag->center);
+    }
+    else {
+        spinSimplifiedInternal(curpos, prevpos, &orbitDrag->center);
+    }
+
+    applyOrbitDragCameraConstraints(*orbitDrag);
+    hasDragged = true;
+}
+
+void NavigationStyle::endOrbitDrag()
+{
+    orbitDrag.reset();
+}
+
 void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
+{
+    spinSimplifiedInternal(curpos, prevpos, nullptr);
+}
+
+void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos, const SbVec3f* center)
 {
     // 0000333: Turntable camera rotation
     SbMatrix mat;
@@ -1235,7 +1338,10 @@ void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
     }
     r.invert();
 
-    if (this->rotationCenterMode && this->rotationCenterFound) {
+    if (center) {
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r, *center);
+    }
+    else if (this->rotationCenterMode && this->rotationCenterFound) {
         this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r, rotationCenter);
     }
     else {
@@ -1243,13 +1349,13 @@ void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
     }
 }
 
-bool NavigationStyle::getObjectBoundingBoxCenter(SbVec3f& center) const
+bool NavigationStyle::getObjectBoundingSphere(SbSphere& sphere) const
 {
     if (!viewer->objectGroup) {
         return false;
     }
 
-    // Get the bounding box center of the physical object group
+    // Get the bounding sphere of the physical object group.
     SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.apply(viewer->objectGroup);
     const SbBox3f boundingBox = action.getBoundingBox();
@@ -1257,8 +1363,55 @@ bool NavigationStyle::getObjectBoundingBoxCenter(SbVec3f& center) const
         return false;
     }
 
-    center = boundingBox.getCenter();
+    sphere.circumscribe(boundingBox);
     return true;
+}
+
+bool NavigationStyle::getObjectBoundingBoxCenter(SbVec3f& center) const
+{
+    SbSphere sphere;
+    if (!getObjectBoundingSphere(sphere)) {
+        return false;
+    }
+
+    center = sphere.getCenter();
+    return true;
+}
+
+void NavigationStyle::applyOrbitDragCameraConstraints(const OrbitDragState& state)
+{
+    SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+    if (!camera) {
+        return;
+    }
+
+    SbVec3f direction;
+    camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+
+    SbVec3f cameraPosition = camera->position.getValue();
+    float centerDepth = (state.center - cameraPosition).dot(direction);
+    if (state.minDistance > 0.0F && centerDepth < state.minDistance) {
+        cameraPosition -= (state.minDistance - centerDepth) * direction;
+        camera->position = cameraPosition;
+        centerDepth = state.minDistance;
+    }
+
+    if (centerDepth > 0.0F) {
+        camera->focalDistance = centerDepth;
+    }
+
+    if (state.clippingRadius <= 0.0F || centerDepth <= 0.0F) {
+        return;
+    }
+
+    const float minNearDistance = camera->isOfType(SoPerspectiveCamera::getClassTypeId())
+        ? std::max(state.clippingRadius * 1.0e-4F, 1.0e-5F)
+        : 0.0F;
+    const float minClipSpan = std::max(state.clippingRadius * 1.0e-3F, 1.0e-4F);
+    const float nearDistance = std::max(minNearDistance, centerDepth - state.clippingRadius);
+    const float farDistance = std::max(centerDepth + state.clippingRadius, nearDistance + minClipSpan);
+    camera->nearDistance = nearDistance;
+    camera->farDistance = farDistance;
 }
 
 SbBool NavigationStyle::doSpin()
@@ -1474,6 +1627,70 @@ SbBool NavigationStyle::isSpinning() const
     return currentmode == NavigationStyle::SPINNING;
 }
 
+/**
+ * @return Whether or not viewer rotation is enabled
+ */
+SbBool NavigationStyle::isRotationEnabled() const
+{
+    return rotationEnabled;
+}
+
+/**
+ * @brief Decide if camera rotation should be possible
+ */
+void NavigationStyle::setRotationEnabled(const SbBool enable)
+{
+    rotationEnabled = enable;
+    if (!enable && isSpinning()) {
+        stopAnimating();
+    }
+}
+
+SbBool NavigationStyle::canChangeCameraOrientation(
+    const SbRotation& current,
+    const SbRotation& target,
+    const OrientationChangeSource source
+) const
+{
+    if (Camera::rotationsMatch(current, target)) {
+        return true;
+    }
+    if (isOrientationLocked()) {
+        return false;
+    }
+    if (source == OrientationChangeSource::Interactive && !isRotationEnabled()) {
+        return false;
+    }
+    return true;
+}
+
+SbBool NavigationStyle::setCameraOrientationValue(
+    SoCamera* camera,
+    const SbRotation& orientation,
+    const OrientationChangeSource source
+) const
+{
+    if (!camera) {
+        return false;
+    }
+    if (!canChangeCameraOrientation(camera->orientation.getValue(), orientation, source)) {
+        return false;
+    }
+
+    camera->orientation = orientation;
+    return true;
+}
+
+SbBool NavigationStyle::isOrientationLocked() const
+{
+    return orientationLocked;
+}
+
+void NavigationStyle::setOrientationLocked(const SbBool enable)
+{
+    orientationLocked = enable;
+}
+
 void NavigationStyle::startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait) const
 {
     if (wait) {
@@ -1672,6 +1889,22 @@ bool NavigationStyle::tryStartBoxSelection(const SoLocation2Event* const ev, boo
     return tryStartBoxSelection(*selectionStartPosition, ev, additiveSelection, false);
 }
 
+bool NavigationStyle::handleSelectionDragMotion(
+    const SoLocation2Event* const ev,
+    ViewerMode& newmode,
+    bool additiveSelection,
+    bool allowBoxSelection
+)
+{
+    if (offerEventToViewer(ev)) {
+        // Once the viewer owns the drag, keep selection handling out of the way until release.
+        newmode = NavigationStyle::INTERACT;
+        return true;
+    }
+
+    return allowBoxSelection && tryStartBoxSelection(ev, additiveSelection);
+}
+
 bool NavigationStyle::tryStartBoxSelection(
     const SbVec2s& startPosition,
     const SoLocation2Event* const ev,
@@ -1680,6 +1913,11 @@ bool NavigationStyle::tryStartBoxSelection(
 )
 {
     if (!ev || mouseSelection || !viewer || !viewer->isSelectionEnabled()) {
+        return false;
+    }
+    // Some interactive tools temporarily disable selection through view preferences to keep
+    // drag/release events on their own callbacks. Rubberband selection must honor that too.
+    if (!ViewParams::instance()->getEnableSelection()) {
         return false;
     }
     if (viewer->isEditing() || viewer->isEditingViewProvider()) {
@@ -1708,10 +1946,15 @@ bool NavigationStyle::tryStartBoxSelection(
 
 bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
 {
+    auto* sceneGraph = this->viewer->getSoRenderManager()->getSceneGraph();
+    if (!sceneGraph) {
+        return false;
+    }
+
     SoRayPickAction rp(this->viewer->getSoRenderManager()->getViewportRegion());
     rp.setRadius(viewer->getPickRadius());
     rp.setPoint(pos);
-    rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
+    rp.apply(sceneGraph);
     SoPickedPoint* pick = rp.getPickedPoint();
     if (pick) {
         const auto fullpath = Gui::toFullPath(pick->getPath());
@@ -1720,8 +1963,8 @@ bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
                 return true;
             }
         }
-        return false;
     }
+
     return false;
 }
 
@@ -1942,6 +2185,11 @@ SbBool NavigationStyle::processSoEvent(const SoEvent* const ev)
     return processed;
 }
 
+bool NavigationStyle::offerEventToViewer(const SoEvent* const ev)
+{
+    return viewer ? viewer->processSoEventBase(ev) : false;
+}
+
 void NavigationStyle::syncWithEvent(const SoEvent* const ev)
 {
     // Events when in "ready-to-seek" mode are ignored, except those
@@ -2034,12 +2282,19 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
         useMotionRotationCenter = true;
     }
 
-    SbRotation newRotation(ev->getRotation() * camera->orientation.getValue());
+    const SbRotation currentRotation(camera->orientation.getValue());
+    SbRotation newRotation(currentRotation);
+    const SbRotation requestedRotation(ev->getRotation() * currentRotation);
+    if (
+        canChangeCameraOrientation(currentRotation, requestedRotation, OrientationChangeSource::Interactive)
+    ) {
+        newRotation = requestedRotation;
+    }
     SbVec3f newPosition, newDirection;
     if (useMotionRotationCenter) {
         // Reposition the camera so the rotation center stays in the same place
         SbVec3f rotationCenterDistanceCam;
-        camera->orientation.getValue().inverse().multVec(
+        currentRotation.inverse().multVec(
             camera->position.getValue() - motionRotationCenter,
             rotationCenterDistanceCam
         );
@@ -2057,7 +2312,7 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
     SbVec3f finalPosition = newPosition + (dir * translationFactor);
 
     camera->enableNotify(false);
-    camera->orientation.setValue(newRotation);
+    setCameraOrientationValue(camera, newRotation, OrientationChangeSource::Interactive);
     camera->position = finalPosition;
     camera->enableNotify(true);
     camera->touch();

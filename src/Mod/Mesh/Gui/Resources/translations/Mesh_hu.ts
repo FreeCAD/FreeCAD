@@ -1571,6 +1571,10 @@ Ha a felület szöge ≥ gyűrődésszögét, a feület árnyékolást használj
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Idő</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Idő:</translation>

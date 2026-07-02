@@ -1455,8 +1455,15 @@ void ObjectIdentifier::String::checkImport(const App::DocumentObject* owner,
 Py::Object
 ObjectIdentifier::access(const ResolveResults& result, const Py::Object* value, Dependencies* deps) const
 {
-    if (!result.resolvedDocumentObject || !result.resolvedProperty
-        || (!subObjectName.getString().empty() && !result.resolvedSubObject)) {
+    if (!result.resolvedDocumentObject) {
+        FC_THROWM(Base::RuntimeError, result.resolveErrorString()
+                      << " in '" << result.resolvedDocumentName.getString() << "'");
+    }
+    if (!result.resolvedProperty) {
+        FC_THROWM(Base::RuntimeError, result.resolveErrorString()
+                  << " in '" << result.resolvedDocumentObjectName.getString() << "'");
+    }
+    if (!subObjectName.getString().empty() && !result.resolvedSubObject) {
         FC_THROWM(Base::RuntimeError, result.resolveErrorString() << " in '" << toString() << "'");
     }
 

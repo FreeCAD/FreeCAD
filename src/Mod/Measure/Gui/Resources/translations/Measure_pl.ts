@@ -207,8 +207,8 @@ Kąt osi: %2</translation>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
-      <translation>Pomiar cech</translation>
+      <source>Measures a feature</source>
+      <translation>Wykonuje pomiar elementu</translation>
     </message>
   </context>
   <context>

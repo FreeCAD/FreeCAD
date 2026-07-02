@@ -1569,6 +1569,10 @@ Con l'ombreggiatura piatta, le normali della superficie non sono definite per og
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <source>Time</source>
+      <translation>Tempo</translation>
+    </message>
+    <message>
       <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Tempo:</translation>

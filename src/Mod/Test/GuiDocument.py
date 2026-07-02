@@ -222,6 +222,17 @@ class TestGuiDocument(unittest.TestCase):
         self.assertTrue(self._processEventsUntil(lambda: os.path.exists(self._recoveryArchive())))
         self._assertRecoveryArchiveContains()
 
+    def testAutoSaverStableSignalDoesNotBypassTimeout(self):
+        obj = self.doc.addObject("App::FeaturePython", "AutoSaveStableObject")
+        self._removeRecoveryArchive()
+
+        self.doc.openTransaction("AutoSaveStable")
+        obj.Label = "AutoSaveStillPending"
+        self.doc.commitTransaction()
+
+        QtWidgets.QApplication.processEvents(QtCore.QEventLoop.ProcessEventsFlag.AllEvents, 50)
+        self.assertFalse(os.path.exists(self._recoveryArchive()))
+
     def testAutoSaverCoalescesBlockedFlushesToLatestCommittedState(self):
         obj = self.doc.addObject("App::FeaturePython", "AutoSaveChurnObject")
         self._removeRecoveryArchive()

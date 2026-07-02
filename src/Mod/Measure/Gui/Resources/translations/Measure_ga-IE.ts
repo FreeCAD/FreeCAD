@@ -195,8 +195,8 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
-      <source>Measure a feature</source>
-      <translation>Gné a thomhas</translation>
+      <source>Measures a feature</source>
+      <translation>Tomhaiseann gné</translation>
     </message>
   </context>
   <context>

@@ -8,6 +8,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include "PartTestHelpers.h"
 #include "App/MappedElement.h"
+#include <Base/Interpreter.h>
 
 using namespace Part;
 using namespace PartTestHelpers;
@@ -207,6 +208,7 @@ TEST_F(FeaturePartTest, getSubObject)
     _common->Tool.setValue(_boxes[1]);
     App::DocumentObject sourceObject;
     PyObject* pyObj;
+    Base::PyGILStateLocker lock;  // getSubObject builds a Python wrapper for the shape
     // Act
     _common->execute();
     auto result = _boxes[1]->getSubObject("Face5", &pyObj, nullptr, false, 10);

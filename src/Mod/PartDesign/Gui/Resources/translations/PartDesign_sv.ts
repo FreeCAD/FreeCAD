@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="82"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation>Mittpunkten för helixens start; härledd från referensaxeln.</translation>
+      <translation>Mittpunkten för spiralens start; härledd från referensaxeln.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="92"/>
@@ -22,8 +22,8 @@
       <location filename="../../../App/FeatureHelix.cpp" line="106"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation>Inmatningsläget för helix anger vilka egenskaper som ska ställas in av användaren.
-Beroende egenskaper beräknas sedan.</translation>
+      <translation>Inmatningsläget för helixen anger vilka egenskaper som ska ställas in av användaren.
+Härledda egenskaper beräknas sedan.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="118"/>
@@ -46,7 +46,7 @@ Beroende egenskaper beräknas sedan.</translation>
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, negative shrinks.</source>
       <translation>Vinkeln på den kon som bildar ett skrov runt helixen.
-Värden som inte är noll förvandlar helixen till en konisk spiral.
+Värden som inte är noll förvandlar skruvlinjen till en konisk spiral.
 Positiva värden gör att radien växer, negativa krymper.</translation>
     </message>
     <message>
@@ -54,7 +54,7 @@ Positiva värden gör att radien växer, negativa krymper.</translation>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
       <translation>Ökningen av helixens radie per varv.
-Värden som inte är noll förvandlar helixen till en konisk spiral.</translation>
+Värden som inte är noll förvandlar skruvlinjen till en konisk spiral.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="167"/>
@@ -128,7 +128,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="173"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation>Det avstånd med vilket referensprofilen förskjuts utåt, normaliserat av modulen.</translation>
+      <translation>Avståndet referensprofilen förskjuts utåt, normaliserat av modulen.</translation>
     </message>
   </context>
   <context>
@@ -154,7 +154,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1565"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
@@ -172,7 +172,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1465"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1466"/>
@@ -190,7 +190,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="92"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="93"/>
@@ -208,7 +208,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="2580"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2581"/>
@@ -226,7 +226,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
@@ -244,7 +244,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1991"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1992"/>
@@ -262,7 +262,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="492"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="493"/>
@@ -280,7 +280,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="2020"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2021"/>
@@ -298,7 +298,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="762"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="763"/>
@@ -316,7 +316,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1963"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1964"/>
@@ -334,7 +334,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1395"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1396"/>
@@ -344,7 +344,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1397"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
-      <translation>Vrider skissen eller profilen runt en linje eller axel och avlägsnar den från kroppen</translation>
+      <translation>Vrider skissen eller profilen runt en linje eller axel och tar bort den från kroppen</translation>
     </message>
   </context>
   <context>
@@ -352,7 +352,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1288"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1289"/>
@@ -370,7 +370,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="223"/>
@@ -388,7 +388,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="2275"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2276"/>
@@ -406,7 +406,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="392"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="393"/>
@@ -424,7 +424,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="2218"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2219"/>
@@ -442,7 +442,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="830"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="831"/>
@@ -460,7 +460,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="1027"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1028"/>
@@ -478,7 +478,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="663"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="664"/>
@@ -488,7 +488,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="665"/>
       <source>Moves the tip of the body to the selected feature</source>
-      <translation>Flyttar kroppsspetsen till den valda funktionen</translation>
+      <translation>Flyttar kroppens spets till det valda formelementet</translation>
     </message>
   </context>
   <context>
@@ -496,7 +496,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="2449"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2450"/>
@@ -514,7 +514,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="577"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="578"/>
@@ -532,7 +532,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1230"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1231"/>
@@ -550,7 +550,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -568,7 +568,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1259"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1260"/>
@@ -586,7 +586,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="252"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="253"/>
@@ -604,7 +604,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="2344"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2345"/>
@@ -622,7 +622,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1333"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1334"/>
@@ -640,7 +640,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="2406"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2407"/>
@@ -694,7 +694,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1748"/>
       <source>PartDesign</source>
-      <translation>PartDesign</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1749"/>
@@ -712,7 +712,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1615"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1616"/>
@@ -730,7 +730,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1515"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1516"/>
@@ -748,7 +748,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="2090"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2091"/>
@@ -766,7 +766,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="76"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="77"/>
@@ -824,7 +824,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="284"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>Detaljkonstruktion</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="285"/>
@@ -931,8 +931,8 @@ så att självskärning undviks.</translation>
       <translation>Skapa Boolean</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="224"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="224"/>
       <source>Add a Body</source>
       <translation>Lägg till en kropp</translation>
     </message>
@@ -1020,7 +1020,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="14"/>
       <source>Involute Parameter</source>
-      <translation>Involut parameter</translation>
+      <translation>Evolventparameter</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="20"/>
@@ -1091,8 +1091,8 @@ så att självskärning undviks.</translation>
       <location filename="../../DlgActiveBody.ui" line="20"/>
       <source>To create a new Part Design object, there must be an active body in the document.
 Select a body from below, or create a new body.</source>
-      <translation>För att kunna skapa ett nytt Part Design-objekt måste det finnas en aktiv body i dokumentet.
-Välj en kropp från nedan eller skapa en ny kropp.</translation>
+      <translation>För att kunna skapa ett nytt detaljkonstruktionsobjekt måste det finnas en aktiv kropp i dokumentet.
+Välj en kropp nedan eller skapa en ny kropp.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="35"/>
@@ -1101,8 +1101,8 @@ Välj en kropp från nedan eller skapa en ny kropp.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="53"/>
-      <source>Please select</source>
-      <translation>Välj</translation>
+      <source>Select an active body</source>
+      <translation>Välj en aktiv kropp</translation>
     </message>
   </context>
   <context>
@@ -1405,12 +1405,12 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="32"/>
       <source>Remove Body</source>
-      <translation>Ta bort kroppen</translation>
+      <translation>Ta bort kropp</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
       <source>Fuse</source>
-      <translation>Säkring</translation>
+      <translation>Sammanfoga</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
@@ -1420,12 +1420,12 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="58"/>
       <source>Common</source>
-      <translation>Standard</translation>
+      <translation>Snitt</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="53"/>
       <source>Boolean Parameters</source>
-      <translation>Boolean Parametrar</translation>
+      <translation>Boolesk parameter</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="84"/>
@@ -1450,17 +1450,17 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="948"/>
       <source>X min must not be equal to X max!</source>
-      <translation>X min får inte vara lika med X max!</translation>
+      <translation>X min får inte vara samma som  X max!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="956"/>
       <source>Y min must not be equal to Y max!</source>
-      <translation>Y min får inte vara lika med Y max!</translation>
+      <translation>Y min får inte vara samma som Y max!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="964"/>
       <source>Z min must not be equal to Z max!</source>
-      <translation>Z min får inte vara lika med Z max!</translation>
+      <translation>Z min får inte vara samma som Z max!</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1006"/>
@@ -1470,12 +1470,12 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1051"/>
       <source>%1 fine dragging</source>
-      <translation type="unfinished">%1 fine dragging</translation>
+      <translation>finjustering</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1054"/>
       <source>%1 coarse dragging</source>
-      <translation type="unfinished">%1 coarse dragging</translation>
+      <translation>grovjustering</translation>
     </message>
   </context>
   <context>
@@ -1495,7 +1495,7 @@ Om noll, är den lika med Radius2</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the chamfers</source>
       <translation>- välj ett objekt för att markera det
-- dubbelklicka på ett objekt för att se fasningarna</translation>
+- dubbelklicka på ett objekt för att se avfasningarna</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="48"/>
@@ -1560,12 +1560,12 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="386"/>
       <source>Empty Body List</source>
-      <translation type="unfinished">Empty Body List</translation>
+      <translation>Töm kropplista</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="407"/>
       <source>Boolean: Accept: Input error</source>
-      <translation>Boolean: Acceptera: Fel vid inmatning</translation>
+      <translation>Boolesk: Acceptera: Fel vid inmatning</translation>
     </message>
   </context>
   <context>
@@ -1578,7 +1578,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="109"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>Det finns inget fastsättningsläge som passar den nuvarande uppsättningen referenser. Om du väljer att fortsätta kommer funktionen att ligga kvar där den är nu och kommer inte att flyttas när referenserna ändras. Fortsätta?</translation>
+      <translation>Det finns inget fastsättningsläge som passar den nuvarande uppsättningen referenser. Om du väljer att fortsätta kommer funktionen att ligga kvar där den är nu och kommer inte att flyttas när referenserna ändras. Fortsätt?</translation>
     </message>
   </context>
   <context>
@@ -1687,7 +1687,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="694"/>
       <source>Select reference…</source>
-      <translation>Välj referens..</translation>
+      <translation>Välj referens...</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="604"/>
@@ -1697,7 +1697,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="687"/>
       <source>Sketch normal</source>
-      <translation>Skiss normal</translation>
+      <translation>Skissnormal</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="690"/>
@@ -1741,12 +1741,12 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
-      <translation>Tillåt använda funktioner</translation>
+      <translation>Tillåt använda formelement</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="30"/>
       <source>Allow External Features</source>
-      <translation>Tillåt externa funktioner</translation>
+      <translation>Tillåt externa formelement</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
@@ -1791,7 +1791,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="75"/>
       <source>Sketch already used by other feature</source>
-      <translation>Skiss som redan används av annan funktion</translation>
+      <translation>Skiss som redan används av annat formelement</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="77"/>
@@ -1816,12 +1816,12 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="85"/>
       <source>Feature is located after the tip of the body</source>
-      <translation>Funktionen är placerad efter spetsen på kroppen</translation>
+      <translation>Formelementet är placerad efter kroppens ändpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="97"/>
       <source>Select Attachment</source>
-      <translation type="unfinished">Select Attachment</translation>
+      <translation>Välj koppling</translation>
     </message>
   </context>
   <context>
@@ -1841,7 +1841,7 @@ Om noll, är den lika med Radius2</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the fillets</source>
       <translation>- välj ett objekt för att markera det
-- dubbelklicka på ett objekt för att se filéerna</translation>
+- dubbelklicka på ett objekt för att se avrundningarna</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="46"/>
@@ -1856,7 +1856,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="205"/>
       <source>Empty fillet created!</source>
-      <translation>Tom filé skapad!</translation>
+      <translation>Tom avrundning skapad!</translation>
     </message>
   </context>
   <context>
@@ -2044,27 +2044,27 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="73"/>
       <source>ISO metric regular</source>
-      <translation>ISO metrisk regular</translation>
+      <translation>ISO metrisk normal</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>ISO metric fine</source>
-      <translation>ISO metrisk fin</translation>
+      <translation>ISO metrisk finkornig</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>UTS coarse</source>
-      <translation>UTS grov</translation>
+      <translation>UTS grovkornig</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="76"/>
       <source>UTS fine</source>
-      <translation>UTS böter</translation>
+      <translation>UTS finkornig</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="77"/>
       <source>UTS extra fine</source>
-      <translation>UTS extra fin</translation>
+      <translation>UTS extra finkornig</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="78"/>
@@ -2101,13 +2101,13 @@ Om noll, är den lika med Radius2</translation>
       <location filename="../../TaskHoleParameters.cpp" line="716"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
-      <translation>Fin</translation>
+      <translation>Finkornig</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="720"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
-      <translation>Grov</translation>
+      <translation>Grovkornig</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="726"/>
@@ -2125,7 +2125,7 @@ Om noll, är den lika med Radius2</translation>
       <location filename="../../TaskHoleParameters.cpp" line="734"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
-      <translation>Lösa</translation>
+      <translation>Lös</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="738"/>
@@ -2181,7 +2181,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
       <source>List can be reordered by dragging</source>
-      <translation>Listan kan omorganiseras genom att dra</translation>
+      <translation>Listan kan organiseras om genom att dra</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
@@ -2191,7 +2191,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="50"/>
       <source>Loft Parameters</source>
-      <translation>Loft Parametrar</translation>
+      <translation>Loftparametrar</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="74"/>
@@ -2237,7 +2237,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="77"/>
       <source>Add Mirror Transformation</source>
-      <translation>Lägg till spegel Transformation</translation>
+      <translation>Lägg till spegeltransformation</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="85"/>
@@ -2252,7 +2252,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="101"/>
       <source>Add Scale Transformation</source>
-      <translation>Lägg till skala Transformation</translation>
+      <translation>Lägg till skalningstransformation</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="104"/>
@@ -2275,22 +2275,22 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="40"/>
       <source>Pad Parameters</source>
-      <translation>Parametrar för paddar</translation>
+      <translation>Parametrar för basblock</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
       <source>Offset the pad from the face at which the pad will end on side 1</source>
-      <translation>Förskjuta dynan från den sida där dynan kommer att sluta på sida 1</translation>
+      <translation>Förskjut basblock från den sida där basblocket kommer att sluta på sida 1</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
       <source>Offset the pad from the face at which the pad will end on side 2</source>
-      <translation>Förskjuta dynan från den yta där dynan kommer att sluta på sida 2</translation>
+      <translation>Förskjuta basblocket från den yta där basblocket kommer att sluta på sida 2</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="44"/>
       <source>Reverses pad direction</source>
-      <translation>Omvänd riktning på dynan</translation>
+      <translation>Omvänd riktning på basblocket</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="73"/>
@@ -2392,7 +2392,7 @@ från modellen som referens</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="569"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation>Använd anpassad vektor för pad-riktning, annars
+      <translation>Använd anpassad vektor för basblockriktning, annars
 kommer skissplanets normalvektor att användas</translation>
     </message>
     <message>
@@ -2426,7 +2426,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="551"/>
       <source>Select reference…</source>
-      <translation>Välj referens..</translation>
+      <translation>Välj referens...</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="582"/>
@@ -2436,7 +2436,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="589"/>
       <source>X-component of direction vector</source>
-      <translation>X-komponent av riktningsvektorn</translation>
+      <translation>Riktningsvektorns X-komponent</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="611"/>
@@ -2446,7 +2446,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="618"/>
       <source>Y-component of direction vector</source>
-      <translation>Y-komponent av riktningsvektorn</translation>
+      <translation>Riktningsvektorns Y-komponent</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="640"/>
@@ -2456,13 +2456,13 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="647"/>
       <source>Z-component of direction vector</source>
-      <translation>Z-komponent av riktningsvektorn</translation>
+      <translation>Riktningsvektorns Z-komponent</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="118"/>
       <location filename="../../TaskPadPocketParameters.ui" line="347"/>
       <source>Angle to taper the extrusion</source>
-      <translation>Vinkel för att avsmalna profilen</translation>
+      <translation>Vinkel för att smalna av profilen</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
@@ -2495,7 +2495,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="678"/>
       <source>Recompute on change</source>
-      <translation>Omräkning vid ändring</translation>
+      <translation>Räkna om vid ändring</translation>
     </message>
   </context>
   <context>
@@ -2696,7 +2696,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="897"/>
       <source>Section Transformation</source>
-      <translation>Sektion Transformation</translation>
+      <translation>Sektionstransformation</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="916"/>
@@ -2829,7 +2829,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="192"/>
       <source>Recompute on change</source>
-      <translation>Omräkning vid ändring</translation>
+      <translation>Räkna om vid ändring</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="177"/>
@@ -2928,7 +2928,7 @@ mätas längs den angivna riktningen</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
       <translation>- välj ett objekt för att markera det
-- dubbelklicka på ett objekt för att se funktionerna</translation>
+- dubbelklicka på ett objekt för att se formelementen</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="46"/>
@@ -3046,7 +3046,7 @@ mätas längs den angivna riktningen</translation>
       <location filename="../../TaskTransformedParameters.cpp" line="430"/>
       <location filename="../../TaskTransformedParameters.cpp" line="466"/>
       <source>Select reference…</source>
-      <translation>Välj referens..</translation>
+      <translation>Välj referens...</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="35"/>
@@ -3061,12 +3061,12 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
       <source>Add Feature</source>
-      <translation>Lägg till funktion</translation>
+      <translation>Lägg till formelement</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="88"/>
       <source>Remove Feature</source>
-      <translation>Ta bort funktion</translation>
+      <translation>Ta bort formelement</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="122"/>
@@ -3076,7 +3076,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="106"/>
       <source>List can be reordered by dragging</source>
-      <translation>Listan kan omorganiseras genom att dra</translation>
+      <translation>Listan kan organiseras om genom att dra</translation>
     </message>
   </context>
   <context>
@@ -3097,12 +3097,12 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="1106"/>
       <source>Move Feature After…</source>
-      <translation>Flytta funktionen efter..</translation>
+      <translation>Flytta funktionen efter...</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1107"/>
       <source>Select a feature from the list</source>
-      <translation>Välj en funktion från listan</translation>
+      <translation>Välj ett formelement från listan</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1194"/>
@@ -3175,11 +3175,11 @@ mätas längs den angivna riktningen</translation>
       <translation>Inga giltiga plan i detta dokument</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="137"/>
-      <location filename="../../Command.cpp" line="1142"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../SketchWorkflow.cpp" line="761"/>
+      <location filename="../../Command.cpp" line="1142"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../ViewProvider.cpp" line="137"/>
       <source>A dialog is already open in the task panel</source>
       <translation>En dialogruta är redan öppen i uppgiftspanelen</translation>
     </message>
@@ -3204,6 +3204,11 @@ mätas längs den angivna riktningen</translation>
       <translation>Det finns ingen aktiv kropp. Aktivera en kropp innan du infogar en referenspunktsentitet.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="149"/>
+      <source>Invalid Selection</source>
+      <translation>Ogiltig markering</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="470"/>
       <source>Sub-shape binder</source>
       <translation>Underformbindare</translation>
@@ -3219,11 +3224,16 @@ mätas längs den angivna riktningen</translation>
       <translation>Ingen skiss finns tillgänglig i dokumentet</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="138"/>
-      <location filename="../../Command.cpp" line="1143"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="2196"/>
+      <source>Select only one feature in an active body.</source>
+      <translation>Välj ett enda formelement i en aktiv kropp</translation>
+    </message>
+    <message>
       <location filename="../../SketchWorkflow.cpp" line="762"/>
+      <location filename="../../Command.cpp" line="1143"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../ViewProvider.cpp" line="138"/>
       <source>Close this dialog?</source>
       <translation>Stäng den här dialogen?</translation>
     </message>
@@ -3255,11 +3265,6 @@ mätas längs den angivna riktningen</translation>
       <translation>Välj en kant, en yta eller en kropp från en aktiv kropp.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="149"/>
-      <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="1026"/>
       <source>Consider using a shape binder or a base feature to reference external geometry in a body</source>
       <translation>Överväg att använda en formbindare eller en basfunktion för att referera till extern geometri i en kropp</translation>
@@ -3273,11 +3278,6 @@ mätas längs den angivna riktningen</translation>
       <location filename="../../Command.cpp" line="1848"/>
       <source>%1 works only on parts.</source>
       <translation>%1 fungerar bara på delar.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2196"/>
-      <source>Please select only one feature in an active body.</source>
-      <translation>Välj endast en funktion i en aktiv kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="73"/>
@@ -3295,7 +3295,7 @@ mätas längs den angivna riktningen</translation>
       <location filename="../../CommandBody.cpp" line="151"/>
       <location filename="../../CommandBody.cpp" line="217"/>
       <source>Bad base feature</source>
-      <translation>Dålig basfunktion</translation>
+      <translation>Ogiltig basfunktion</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="128"/>
@@ -3310,7 +3310,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="152"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>Basfunktionen (%1) tillhör en annan del.</translation>
+      <translation>Basformelementet (%1) tillhör en annan del.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="179"/>
@@ -3340,12 +3340,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="206"/>
       <source>Base feature</source>
-      <translation>Basfunktion</translation>
+      <translation>Basformelement</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="218"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation>Kroppen får inte baseras på mer än en egenskap.</translation>
+      <translation>Kroppen får inte baseras på mer än ett formelement.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="233"/>
@@ -3358,19 +3358,24 @@ This may lead to unexpected results.</source>
       <translation>Inget att migrera</translation>
     </message>
     <message>
+      <location filename="../../CommandBody.cpp" line="622"/>
+      <source>Edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
+      <translation>Redigera '%1' och använd ett bas- eller referensplan som skissplan</translation>
+    </message>
+    <message>
       <location filename="../../CommandBody.cpp" line="697"/>
       <source>Select exactly one Part Design feature or a body.</source>
-      <translation>Välj exakt en Part Design-funktion eller en kropp.</translation>
+      <translation>Välj exakt ett detaljkonstruktionsformelement eller en kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="705"/>
       <source>Could not determine a body for the selected feature '%s'.</source>
-      <translation>Det gick inte att fastställa en kropp för den valda funktionen '%s'.</translation>
+      <translation>Det gick inte att fastställa en kropp för det valda formelementet '%s'.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="886"/>
       <source>Only features of a single source body can be moved</source>
-      <translation>Endast delar av ett enda källorgan kan flyttas</translation>
+      <translation>Endast delar av en enda källkropp kan flyttas</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="621"/>
@@ -3380,12 +3385,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="429"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
-      <translation>Ingen del Designfunktioner utan kropp hittades Inget att migrera.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandBody.cpp" line="622"/>
-      <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Redigera "%1" och omdefiniera den så att den använder ett bas- eller referenspunktsplan som skissplan.</translation>
+      <translation>Inget detaljkonstruktionsformelement utan kropp hittades. Inget att migrera.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="696"/>
@@ -3399,19 +3399,19 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="719"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Endast en kropp funktion kan vara spetsen på en kropp.</translation>
+      <translation>Endast ett solitt formelement kan vara ändpunkt i en kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="855"/>
       <location filename="../../CommandBody.cpp" line="885"/>
       <location filename="../../CommandBody.cpp" line="903"/>
       <source>Features cannot be moved</source>
-      <translation>Funktioner kan inte flyttas</translation>
+      <translation>Formelement kan inte flyttas</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="856"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation>Vissa av de utvalda funktionerna har beroenden i källkroppen</translation>
+      <translation>Vissa av de valda formelementen har beroenden i källkroppen</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="904"/>
@@ -3421,12 +3421,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="1073"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>Omöjligt att flytta basfunktionen i en kropp.</translation>
+      <translation>Omöjligt att flytta basformelementet i en kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1083"/>
       <source>Select one or more features from the same body.</source>
-      <translation>Välj en eller flera funktioner från samma kropp.</translation>
+      <translation>Välj en eller flera formelement från samma kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1098"/>
@@ -3436,26 +3436,26 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="1179"/>
       <source>Dependency violation</source>
-      <translation>Brott mot beroendeställning</translation>
+      <translation>Härledningsfel</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1180"/>
       <source>Early feature must not depend on later feature.
 
 </source>
-      <translation>En tidig funktion får inte vara beroende av en senare funktion.
+      <translation>Ett tidigare formelement får inte vara härlett från ett senare formelement.
 
 </translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="309"/>
       <source>No previous feature found</source>
-      <translation>Ingen tidigare funktion hittades</translation>
+      <translation>Inget tidigare formelement hittades</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="310"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation>Det är inte möjligt att skapa en subtraktiv funktion utan en tillgänglig basfunktion</translation>
+      <translation>Det går inte att skapa ett subtraktivt formelement utan ett tillgängligt basformelement</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
@@ -3489,40 +3489,40 @@ This may lead to unexpected results.</source>
       <source>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</source>
-      <translation>För att kunna använda Part Design krävs en aktiv kropp i dokumentet. Aktivera en kropp (dubbelklicka) eller skapa en ny.
+      <translation>För att kunna använda detaljkonstruktion krävs en aktiv kropp i dokumentet. Aktivera en kropp (dubbelklicka) eller skapa en ny.
 
-För äldre dokument med Part Design-objekt som saknar en kropp kan du använda migreringsfunktionen i Part Design för att placera dem i en kropp.</translation>
+För äldre dokument med detaljkonstruktionobjekt som saknar en kropp kan du använda migreringsfunktionen i detaljkonstruktion för att placera dem i en kropp.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="209"/>
       <source>To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</source>
-      <translation>För att skapa ett nytt Part Design-objekt krävs en aktiv kropp i dokumentet. Aktivera en befintlig kropp (dubbelklicka) eller skapa en ny.</translation>
+      <translation>För att skapa ett nytt detaljkonstruktionsobjekt krävs en aktiv kropp i dokumentet. Aktivera en befintlig kropp (dubbelklicka) eller skapa en ny.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="275"/>
       <source>Feature is not in a body</source>
-      <translation>Funktionen är inte i en kropp</translation>
+      <translation>Formelementet är inte i en kropp</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="276"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation>För att kunna använda den här funktionen måste den tillhöra ett body-objekt i dokumentet.</translation>
+      <translation>För att kunna använda det här formelementet måste det tillhöra en kropp i dokumentet.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="322"/>
       <source>Feature is not in a part</source>
-      <translation>Funktionen är inte i en del</translation>
+      <translation>Formelementet tillhör inte en del</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="323"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation>För att kunna använda den här funktionen måste den tillhöra ett delobjekt i dokumentet.</translation>
+      <translation>För att kunna använda det här formelementet måste den tillhöra ett delobjekt i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
-      <location filename="../../ViewProvider.cpp" line="94"/>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
+      <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="67"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <source>Edit %1</source>
       <translation>Redigera %1</translation>
     </message>
@@ -3568,8 +3568,8 @@ För äldre dokument med Part Design-objekt som saknar en kropp kan du använda 
       <location filename="../../ViewProviderDressUp.cpp" line="94"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
-      <translation>%1 saknar en basfunktion.
-Den här funktionen är trasig och kan inte redigeras.</translation>
+      <translation>%1 saknar en basformelement.
+Det här formelementet är trasigt och kan inte redigeras.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="222"/>
@@ -3589,7 +3589,7 @@ Den här funktionen är trasig och kan inte redigeras.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="156"/>
       <source>The document "%1" you are editing was designed with an old version of Part Design workbench.</source>
-      <translation>Dokumentet "%1" som du redigerar har utformats med en gammal version av Part Design Workbench.</translation>
+      <translation>Dokumentet "%1" som du redigerar har utformats med en gammal version av arbetsbänken detaljkonstruktion.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="163"/>
@@ -3612,8 +3612,8 @@ Den här funktionen är trasig och kan inte redigeras.</translation>
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
       <translation>Obs: Om du väljer att migrera kommer du inte att kunna redigera filen med en äldre FreeCAD-version.
-Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funktioner som Bodies och Parts. Som ett resultat kommer du inte heller att kunna använda dina delar i monteringsarbetsbänken.
-Även om du kommer att kunna migrera när som helst senare med "Part Design -&gt; Migrate".</translation>
+Om du vägrar att migrera kommer du inte att kunna använda nya detaljkonstruktionsfunktioner som kroppar och delar. Därför kommer du inte heller att kunna använda dina delar i monteringsarbetsbänken.
+Även om du kommer att kunna migrera när som helst senare med "Detaljkonstruktion -&gt; Migrera".</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="191"/>
@@ -3623,7 +3623,7 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="70"/>
       <source>Edit Boolean</source>
-      <translation>Redigera Boolean</translation>
+      <translation>Redigera boolesk</translation>
     </message>
     <message>
       <location filename="../../ViewProviderChamfer.cpp" line="42"/>
@@ -3638,7 +3638,7 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="42"/>
       <source>Edit Fillet</source>
-      <translation>Redigera Filé</translation>
+      <translation>Redigera avrundning</translation>
     </message>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="45"/>
@@ -3651,7 +3651,7 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
       <translation>Redigera helix</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="129"/>
+      <location filename="../../ViewProviderHole.cpp" line="130"/>
       <source>Edit Hole</source>
       <translation>Redigera hål</translation>
     </message>
@@ -3663,7 +3663,7 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="67"/>
       <source>Edit Loft</source>
-      <translation>Redigera Loft</translation>
+      <translation>Redigera loft</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="40"/>
@@ -3678,7 +3678,7 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
     <message>
       <location filename="../../ViewProviderPad.cpp" line="45"/>
       <source>Edit Pad</source>
-      <translation>Redigera padda</translation>
+      <translation>Redigera basblock</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="77"/>
@@ -3703,7 +3703,7 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="45"/>
       <source>Edit Revolution</source>
-      <translation>Redigera revolution</translation>
+      <translation>Redigera rotationsobjekt</translation>
     </message>
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="40"/>
@@ -3806,12 +3806,12 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
     <message>
       <location filename="../../../SprocketFeature.ui" line="136"/>
       <source>Bicycle with derailleur</source>
-      <translation>Cykel med växellåda</translation>
+      <translation>Cykel med växlar</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="141"/>
       <source>Bicycle without derailleur</source>
-      <translation>Cykel utan växellåda</translation>
+      <translation>Cykel utan växlar</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="219"/>
@@ -3901,7 +3901,7 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
     <message>
       <location filename="../../../SprocketFeature.ui" line="238"/>
       <source>0 in</source>
-      <translation>0 i</translation>
+      <translation>0 tum</translation>
     </message>
   </context>
   <context>
@@ -3926,7 +3926,7 @@ Observera att beräkningen kan ta lite tid</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="699"/>
       <source>Clearance</source>
-      <translation>Röjning</translation>
+      <translation>Frigång</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="65"/>
@@ -3951,7 +3951,7 @@ Observera att beräkningen kan ta lite tid</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="668"/>
       <source>Clearance / Passthrough</source>
-      <translation>Klarering / Genomgång</translation>
+      <translation>Frigång / Genomgång</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="686"/>
@@ -3966,12 +3966,12 @@ Observera att beräkningen kan ta lite tid</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="1078"/>
       <source>Custom Clearance</source>
-      <translation>Kundanpassad Clearance</translation>
+      <translation>Anpassad frigång</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="1091"/>
       <source>Custom Thread clearance value</source>
-      <translation>Anpassad Gänga spelvärde</translation>
+      <translation>Anpassat gängspelvärde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="881"/>
@@ -3999,32 +3999,32 @@ Endast tillgängligt för hål utan gänga</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="673"/>
       <source>Tap drill</source>
-      <translation type="unfinished">Tap drill</translation>
+      <translation>Gängborr</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="678"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Gängad</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="722"/>
       <source>Close</source>
-      <translation>Stäng</translation>
+      <translation>Slutet</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="727"/>
       <source>Wide</source>
-      <translation>Bred</translation>
+      <translation>Brett</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="805"/>
       <source>Whether the hole gets a modelled thread</source>
-      <translation type="unfinished">Whether the hole gets a modelled thread</translation>
+      <translation>Om hålet får en modellerad gänga</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="808"/>
       <source>Model Thread</source>
-      <translation type="unfinished">Model Thread</translation>
+      <translation>Modellera gänga</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="861"/>
@@ -4107,27 +4107,27 @@ Endast tillgängligt för hål utan gänga</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="610"/>
       <source>Switch direction</source>
-      <translation>Växla riktning</translation>
+      <translation>Byt riktning</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="773"/>
       <source>Thread</source>
-      <translation>Tråd</translation>
+      <translation>Gängriktning</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="905"/>
       <source>&amp;Right hand</source>
-      <translation>&amp;Höger hand</translation>
+      <translation>&amp;Högergängat</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="921"/>
       <source>&amp;Left hand</source>
-      <translation>&amp;Vänster hand</translation>
+      <translation>&amp;Vänstergängat</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="970"/>
       <source>Thread Depth Type</source>
-      <translation>Gängdjup Typ</translation>
+      <translation>Gängdjupstyp</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="984"/>
@@ -4137,24 +4137,23 @@ Endast tillgängligt för hål utan gänga</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="994"/>
       <source>Tapped (DIN76)</source>
-      <translation>Gängad (DIN76)</translation>
+      <translation>Gängat (DIN76)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="118"/>
       <source>Cut type for screw heads</source>
-      <translation>Klipptyp för skruvhuvuden</translation>
+      <translation>Spårtyp för skruvhuvuden</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="191"/>
       <source>Check to override the values predefined by the 'Type'</source>
-      <translation>Markera för att åsidosätta de värden som fördefinierats av "Type</translation>
+      <translation>Markera för att åsidosätta typens fördefinierade värden</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="306"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
-      <translation>För försänkningar är detta djupet av
-skruvens topp under ytan</translation>
+      <translation>För försänkningar är detta avståndet från ytan till skruvens ovansida</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="462"/>
@@ -4165,8 +4164,7 @@ skruvens topp under ytan</translation>
       <location filename="../../TaskHoleParameters.ui" line="399"/>
       <source>The size of the drill point will be taken into
 account for the depth of blind holes</source>
-      <translation>Borrspetsens storlek kommer att tas med i beräkningen
-hänsyn till djupet på blindhålen</translation>
+      <translation>Beräkningen av djupet på blindhålen kommer att ta hänsyn till borrspetsens storlek</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="626"/>
@@ -4181,13 +4179,13 @@ under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</source>
       <translation>Avsmalningsvinkel för hålet
 90 grader: rakt hål
-under 90: mindre hålradie i botten
+under 90: mindre hålradie nedtill
 över 90: större hålradie nedtill</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="607"/>
       <source>Reverses the hole direction</source>
-      <translation>Vänder hålets riktning</translation>
+      <translation>Byter hålets riktning</translation>
     </message>
   </context>
   <context>
@@ -4218,12 +4216,12 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Additive Features</source>
-      <translation>Additiva funktioner</translation>
+      <translation>Additiva formelement</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Subtractive Features</source>
-      <translation>Subtraktiva funktioner</translation>
+      <translation>Subtraktiva formelement</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -4233,7 +4231,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Transformation Features</source>
-      <translation>Funktioner för omvandling</translation>
+      <translation>Formelement för omvandling</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -4243,7 +4241,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Involute Gear</source>
-      <translation>Involut kugghjul</translation>
+      <translation>Evolventkugghjul</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
@@ -4273,7 +4271,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
       <source>Part Design Modeling</source>
-      <translation>Delkonstruktion Modellering</translation>
+      <translation>Detaljkonstruktionsmodellering</translation>
     </message>
   </context>
   <context>
@@ -4306,7 +4304,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
       <source>Start edge size</source>
-      <translation>Start kantstorlek</translation>
+      <translation>Storlek på startkant</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="54"/>
@@ -4395,7 +4393,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="120"/>
       <source>Missing Module</source>
-      <translation>Saknad modul</translation>
+      <translation>Modul saknas</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="126"/>
@@ -4419,24 +4417,24 @@ under 90: mindre hålradie i botten
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="405"/>
+      <location filename="../../../App/Body.cpp" line="406"/>
       <source>Linked object is not a PartDesign feature</source>
-      <translation>Länkat objekt är inte en PartDesign-funktion</translation>
+      <translation>Länkat objekt är inte ett  detaljkonstruktionsformelement</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="414"/>
+      <location filename="../../../App/Body.cpp" line="415"/>
       <source>Tip shape is empty</source>
-      <translation>Spetsformen är tom</translation>
+      <translation>Ändformelementet är tomt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="68"/>
       <source>BaseFeature link is not set</source>
-      <translation>BaseFeature-länken är inte inställd</translation>
+      <translation>BaseFeature är inte satt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="74"/>
       <source>BaseFeature must be a Part::Feature</source>
-      <translation>BaseFeature måste vara en Part::Feature</translation>
+      <translation>BaseFeature  måste vara en Part::Feature</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBase.cpp" line="84"/>
@@ -4446,12 +4444,12 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="77"/>
       <source>Cannot do boolean cut without BaseFeature</source>
-      <translation>Kan inte göra boolean cut utan BaseFeature</translation>
+      <translation>Kan inte göra booleskt klipp  utan BaseFeature</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="94"/>
       <source>Cannot do boolean with anything but Part::Feature and its derivatives</source>
-      <translation>Kan inte göra boolean med något annat än Part::Feature och dess derivat</translation>
+      <translation>Kan inte göra boolesk operation med något annat än Part::Feature och dess derivat</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="106"/>
@@ -4459,25 +4457,25 @@ under 90: mindre hålradie i botten
       <translation>Kan inte utföra boolesk operation med ogiltig basform</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureHelix.cpp" line="420"/>
       <location filename="../../../App/FeatureHelix.cpp" line="442"/>
       <location filename="../../../App/FeatureHelix.cpp" line="488"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="333"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="377"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="537"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="571"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="600"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="791"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="804"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
-      <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
+      <translation>Resultatet har flera solider: aktivera 'Tillåt samansatt' i den aktiva kroppen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="116"/>
@@ -4492,7 +4490,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="353"/>
       <source>Cannot create a pad with a total length of zero.</source>
-      <translation>Det går inte att skapa en pad med en total längd på noll.</translation>
+      <translation>Det går inte att skapa ett basblock med en total längd på noll.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="358"/>
@@ -4502,18 +4500,18 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="706"/>
       <source>No extrusion geometry was generated.</source>
-      <translation>Ingen extruderingsgeometri genererades.</translation>
+      <translation>Ingen extruderingsgeometri skapades.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="730"/>
       <source>Resulting fused extrusion is null.</source>
-      <translation>Den resulterande smälta extruderingen är noll.</translation>
+      <translation>Den resulterande sammanfogade extruderingen är noll.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="370"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="766"/>
       <source>Resulting shape is not a solid</source>
       <translation>Den resulterande formen är inte en solid</translation>
     </message>
@@ -4526,7 +4524,7 @@ under 90: mindre hålradie i botten
       <location filename="../../../App/FeatureDraft.cpp" line="330"/>
       <location filename="../../../App/FeatureFillet.cpp" line="122"/>
       <source>Resulting shape is null</source>
-      <translation>Den resulterande formen är null</translation>
+      <translation>Den resulterande formen är tom</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="144"/>
@@ -4536,7 +4534,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="211"/>
       <source>Chamfer failed: OCC kernel error in chamfer computation</source>
-      <translation type="unfinished">Chamfer failed: OCC kernel error in chamfer computation</translation>
+      <translation>Avfasning misslyckades: fel från OCC-kärnan</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="302"/>
@@ -4546,7 +4544,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="313"/>
       <source>Size2 must be greater than zero</source>
-      <translation>Storlek2 måste vara större än noll</translation>
+      <translation>Storlek 2 måste vara större än noll</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="320"/>
@@ -4556,12 +4554,12 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="97"/>
       <source>Fillet not possible on selected shapes</source>
-      <translation>Fillet inte möjligt på utvalda former</translation>
+      <translation>Avrundning inte möjligt på valda former</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="105"/>
       <source>Fillet radius must be greater than zero</source>
-      <translation>Filletradien måste vara större än noll</translation>
+      <translation>Avrundningsradien måste vara större än noll</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="159"/>
@@ -4574,7 +4572,7 @@ under 90: mindre hålradie i botten
   - the active Body does not contain a base shape, so there is no
   material to be removed;
   - the selected sketch does not belong to the active Body.</source>
-      <translation>Den begärda funktionen kan inte skapas. Anledningen kan vara att:
+      <translation>Det begärda formelementet kan inte skapas. Anledningen kan vara att:
   - den aktiva kroppen inte innehåller någon basform, så det finns inget
   material som ska tas bort;
   - den valda skissen inte hör till den aktiva kroppen.</translation>
@@ -4633,12 +4631,12 @@ Det är inte tillåtet att korsa skissentiteter i en skiss.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="270"/>
       <location filename="../../../App/FeatureHelix.cpp" line="279"/>
       <source>Error: turns too small!</source>
-      <translation>Fel: Varven är för små!</translation>
+      <translation>Fel: Varven är för få!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="285"/>
       <source>Error: either height or growth must not be zero!</source>
-      <translation>Fel: antingen höjd eller tillväxt får inte vara noll!</translation>
+      <translation>Fel: antingen höjd eller tillväxt måste vara skild från noll!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="303"/>
@@ -4656,7 +4654,7 @@ Det är inte tillåtet att korsa skissentiteter i en skiss.</translation>
       <translation>Fel: Ytan måste vara plan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2447"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
       <source>Error: Result is not a solid</source>
@@ -4690,17 +4688,17 @@ Det är inte tillåtet att korsa skissentiteter i en skiss.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1233"/>
       <source>Thread type is invalid</source>
-      <translation>Trådtypen är ogiltig</translation>
+      <translation>Gängtypen är ogiltig</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1752"/>
       <source>Hole error: Diameter too small</source>
-      <translation type="unfinished">Hole error: Diameter too small</translation>
+      <translation>Fel i hål: för liten diameter</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1789"/>
       <source>Hole error: Unsupported length specification</source>
-      <translation>Fel i hål: Längdspecifikation som inte stöds</translation>
+      <translation>Fel i hål: Längdspecifikationen stöds inte</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1795"/>
@@ -4781,19 +4779,19 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
 Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna för att skapa en ficka upp till en yta.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2270"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
       <source>Thread type out of range</source>
       <translation>Gängtyp utanför intervallet</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2273"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
       <source>Thread size out of range</source>
       <translation>Gängstorlek utanför intervallet</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2421"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
       <source>Error: Thread could not be built</source>
-      <translation>Fel i tråden: Tråden kunde inte byggas</translation>
+      <translation>Fel i tråden: Gängan kunde inte byggas</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="193"/>
@@ -4803,7 +4801,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna för att 
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="394"/>
       <source>Loft: A fatal error occurred when making the loft</source>
-      <translation>Loft: Ett fatalt fel inträffade när du gjorde loftet</translation>
+      <translation>Loft: Ett allvarligt fel inträffade när du gjorde loften</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="240"/>
@@ -4831,12 +4829,12 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="218"/>
       <source>No spine linked</source>
-      <translation>Ingen länkad rygg</translation>
+      <translation>Ingen länkad styrkurva</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="233"/>
       <source>No auxiliary spine linked.</source>
-      <translation>Ingen extra ryggrad kopplad.</translation>
+      <translation>Ingen extra styrkurva kopplad.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="255"/>
@@ -4851,7 +4849,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="282"/>
       <source>Pipe: All sections need to be Part features</source>
-      <translation>Rör: Alla sektioner måste vara delfunktioner</translation>
+      <translation>Rör: Alla sektioner måste vara formelement</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="290"/>
@@ -4871,7 +4869,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="344"/>
       <source>Path must not be a null shape</source>
-      <translation>Sökvägen får inte vara en null-form</translation>
+      <translation>Formen får inte vara en null-form</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="384"/>
@@ -4886,7 +4884,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="584"/>
       <source>Pipe: Invalid Boolean Type</source>
-      <translation type="unfinished">Pipe: Invalid Boolean Type</translation>
+      <translation>Rör: ogiltig boolesk typ</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="614"/>
@@ -4896,12 +4894,12 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="741"/>
       <source>Invalid element in spine.</source>
-      <translation>Ogiltigt element i ryggraden.</translation>
+      <translation>Ogiltigt element i styrkurvan.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="746"/>
       <source>Element in spine is neither an edge nor a wire.</source>
-      <translation>Elementet i ryggraden är varken en kant eller en tråd.</translation>
+      <translation>Elementet i styrkurvan är varken en kant eller en tråd.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="759"/>
@@ -4911,12 +4909,12 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="764"/>
       <source>Invalid spine.</source>
-      <translation>Ogiltig rygg.</translation>
+      <translation>Ogiltig styrkurva.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
       <source>Cannot subtract primitive feature without base feature</source>
-      <translation>Kan inte subtrahera primitiv funktion utan basfunktion</translation>
+      <translation>Kan inte subtrahera primitiv form utan basform</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="355"/>
@@ -4938,7 +4936,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="222"/>
       <source>Width of box too small</source>
-      <translation>Bredden på rutan är för liten</translation>
+      <translation>Bredden på lådan är för liten</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="227"/>
@@ -5041,7 +5039,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeatureRevolved.cpp" line="110"/>
       <source>Angles of revolution nullify each other</source>
-      <translation type="unfinished">Angles of revolution nullify each other</translation>
+      <translation>Rotationsvinklarna tar ut varandra</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolved.cpp" line="126"/>
@@ -5051,7 +5049,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="758"/>
       <source>Fusion with base feature failed</source>
-      <translation>Fusion med basfunktion misslyckades</translation>
+      <translation>Fusion med basform misslyckades</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="99"/>
@@ -5061,17 +5059,17 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="107"/>
       <source>No features selected to be mirrored.</source>
-      <translation type="unfinished">No features selected to be mirrored.</translation>
+      <translation>Inga formelement valda för spegling.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="110"/>
       <source>No features selected to be patterned.</source>
-      <translation type="unfinished">No features selected to be patterned.</translation>
+      <translation>Inga formelement valda för mönster.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="113"/>
       <source>No features selected to be transformed.</source>
-      <translation type="unfinished">No features selected to be transformed.</translation>
+      <translation>Inga formelement valda för transformering.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="354"/>
@@ -5081,12 +5079,12 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="405"/>
       <source>Shape of additive/subtractive feature is empty</source>
-      <translation>Formen på den additiva/subtraktiva funktionen är tom</translation>
+      <translation>Formen på det additiva/subtraktiva formelementet är tom</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="396"/>
       <source>Only additive and subtractive features can be transformed</source>
-      <translation>Endast additiva och subtraktiva funktioner kan omvandlas</translation>
+      <translation>Endast additiva och subtraktiva formelement kan omvandlas</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureThickness.cpp" line="109"/>
@@ -5099,12 +5097,12 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="62"/>
       <source>Involute Gear</source>
-      <translation>Involut kugghjul</translation>
+      <translation>Evolventkugghjul</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="66"/>
       <source>Creates or edits the involute gear definition</source>
-      <translation>Skapar eller redigerar definitionen för en involutväxel</translation>
+      <translation>Skapar eller redigerar definitionen för ett evolventkugghjul</translation>
     </message>
   </context>
   <context>
@@ -5195,7 +5193,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../CommandPrimitive.cpp" line="217"/>
       <source>Creates an additive box by its width, height, and length</source>
-      <translation>Skapar en additiv låda med dess bredd, höjd och längd</translation>
+      <translation>Skapar en additiv låda från bredd, höjd och längd</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="226"/>
@@ -5205,7 +5203,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../CommandPrimitive.cpp" line="235"/>
       <source>Creates an additive sphere by its radius and various angles</source>
-      <translation>Skapar en additiv sfär med hjälp av dess radie och olika vinklar</translation>
+      <translation>Skapar en additiv sfär från radie och olika vinklar</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="244"/>
@@ -5238,7 +5236,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../CommandPrimitive.cpp" line="402"/>
       <source>Creates a subtractive box by its width, height and length</source>
-      <translation>Skapar en subtraktiv box med dess bredd, höjd och längd</translation>
+      <translation>Skapar en subtraktiv låda från bredd, höjd och längd</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="411"/>
@@ -5248,7 +5246,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../CommandPrimitive.cpp" line="420"/>
       <source>Creates a subtractive sphere by its radius and various angles</source>
-      <translation>Skapar en subtraktiv sfär med hjälp av dess radie och olika vinklar</translation>
+      <translation>Skapar en subtraktiv sfär från radie och olika vinklar</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="429"/>
@@ -5281,7 +5279,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1103"/>
       <source>Attachment</source>
-      <translation>Bilaga</translation>
+      <translation>Fäste</translation>
     </message>
   </context>
   <context>
@@ -5289,7 +5287,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="803"/>
       <source>Revolution Parameters</source>
-      <translation>Parametrar för revolution</translation>
+      <translation>Parametrar för rotationsobjekt</translation>
     </message>
   </context>
   <context>
@@ -5305,7 +5303,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="39"/>
       <source>Transformed Feature Messages</source>
-      <translation>Transformerade funktionsmeddelanden</translation>
+      <translation>Transformerade formelementmeddelanden</translation>
     </message>
   </context>
   <context>
@@ -5360,7 +5358,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../ViewProviderFillet.h" line="44"/>
       <source>Fillet Parameters</source>
-      <translation>Parametrar för filé</translation>
+      <translation>Parametrar för avrundning</translation>
     </message>
   </context>
   <context>
@@ -5376,7 +5374,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     <message>
       <location filename="../../ViewProviderMirrored.h" line="41"/>
       <source>Mirror Parameters</source>
-      <translation>Parametrar för speglar</translation>
+      <translation>Parametrar för spegling</translation>
     </message>
   </context>
   <context>
@@ -5430,16 +5428,24 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
     </message>
   </context>
   <context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+      <location filename="../../TaskShapeBinder.cpp" line="443"/>
+      <source>Input Error</source>
+      <translation>Inmatningsfel</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesignGui::TaskFeatureParameters</name>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="138"/>
       <source>%1 fine dragging</source>
-      <translation type="unfinished">%1 fine dragging</translation>
+      <translation>%1 finjustering</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="141"/>
       <source>%1 coarse dragging</source>
-      <translation type="unfinished">%1 coarse dragging</translation>
+      <translation>%1 grovjustering</translation>
     </message>
   </context>
   <context>
@@ -5448,18 +5454,10 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
       <location filename="../../TaskFeatureParameters.cpp" line="264"/>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</source>
-      <translation>Funktionen kunde inte skapas med de angivna parametrarna.
-Geometrin kan vara ogiltig eller parametrarna kan vara inkompatibla.
+Adjust the parameters and try again.</source>
+      <translation>Formelementet kunde inte skapas med dom angivna parametrarna.
+Geometrin kan vara ogiltig eller så är parametrarna inkompatibla.
 Justera parametrarna och försök igen.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDlgShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.cpp" line="443"/>
-      <source>Input Error</source>
-      <translation>Inmatningsfel</translation>
     </message>
   </context>
 </TS>
