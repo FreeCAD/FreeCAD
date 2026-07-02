@@ -938,7 +938,7 @@ class ViewProviderBuildingPart:
         """
         Forces a refresh of the SoClipPlane by toggling the CutView property.
         """
-        if vobj and hasattr(vobj, "CutView") and vobj.CutView:
+        if vobj and getattr(vobj, "CutView", False):
             vobj.CutView = False
             vobj.CutView = True
 
