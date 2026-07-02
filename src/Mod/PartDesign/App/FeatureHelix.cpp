@@ -146,10 +146,7 @@ Helix::Helix()
         (30.0),
         "Side2",
         App::Prop_None,
-        QT_TRANSLATE_NOOP(
-            "App::Property",
-            "The height of the second helix side's path, not accounting for the extent of the profile."
-        )
+        QT_TRANSLATE_NOOP("App::Property", "The height of the second helix side's path, not accounting for the extent of the profile.")
     );
     Height2.enableNegative(true);
     ADD_PROPERTY_TYPE(
@@ -412,8 +409,8 @@ App::DocumentObjectExecReturn* Helix::execute()
             //   interactive usage to just go back to another mode and everything keeps working
         }
         if (twoSides) {
-            if ((height2Abs < Precision::Confusion())
-                && (std::abs(growth) < Precision::Confusion()) && turns > 1.0) {
+            if ((height2Abs < Precision::Confusion()) && (std::abs(growth) < Precision::Confusion())
+                && turns > 1.0) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Error: either height 2 or growth must not be zero!")
                 );
@@ -594,20 +591,15 @@ App::DocumentObjectExecReturn* Helix::execute()
         else {
             try {
                 const auto fuseSubSolids = [](TopoShape& shape) {
-                    if (shape.hasSubShape(TopAbs_SOLID)
-                        && shape.countSubShapes(TopAbs_SOLID) > 1) {
-                        shape.makeElementFuse(
-                            shape.getSubTopoShapes(TopAbs_SOLID),
-                            Part::OpCodes::Fuse
-                        );
+                    if (shape.hasSubShape(TopAbs_SOLID) && shape.countSubShapes(TopAbs_SOLID) > 1) {
+                        shape.makeElementFuse(shape.getSubTopoShapes(TopAbs_SOLID), Part::OpCodes::Fuse);
                     }
                 };
 
                 TopoShape combined(0, getDocument()->getStringHasher());
                 combined.makeElementFuse(sideShapes, Part::OpCodes::Sweep);
                 fuseSubSolids(combined);
-                if (combined.hasSubShape(TopAbs_SOLID)
-                    && combined.countSubShapes(TopAbs_SOLID) > 1) {
+                if (combined.hasSubShape(TopAbs_SOLID) && combined.countSubShapes(TopAbs_SOLID) > 1) {
                     combined.makeElementXor(sideShapes, Part::OpCodes::Sweep);
                     fuseSubSolids(combined);
                 }
@@ -1016,8 +1008,7 @@ void Helix::onChanged(const App::Property* prop)
 
 void Helix::setReadWriteStatusForMode(HelixMode inputMode)
 {
-    const bool twoSides = static_cast<HelixSideMode>(SideType.getValue())
-        == HelixSideMode::two_sides;
+    const bool twoSides = static_cast<HelixSideMode>(SideType.getValue()) == HelixSideMode::two_sides;
 
     Height2.setStatus(App::Property::ReadOnly, true);
     Turns2.setStatus(App::Property::ReadOnly, true);

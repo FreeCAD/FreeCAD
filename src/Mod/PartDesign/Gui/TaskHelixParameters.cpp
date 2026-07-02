@@ -865,9 +865,7 @@ void TaskHelixParameters::setGizmoPositions()
 
     heightGizmo->setVisibility(usesHeight);
     heightGizmo2->setVisibility(usesHeight2);
-    heightGizmo->setMultFactor(
-        sideMode == PartDesign::HelixSideMode::symmetric ? 0.5 : 1.0
-    );
+    heightGizmo->setMultFactor(sideMode == PartDesign::HelixSideMode::symmetric ? 0.5 : 1.0);
     heightGizmo2->setMultFactor(1.0);
 
     double reversed = propReversed->getValue() ? -1.0 : 1.0;
