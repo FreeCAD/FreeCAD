@@ -80,3 +80,49 @@ macro(SetupPivy)
         endif ()
     endif(FREECAD_CHECK_PIVY)
 endmacro(SetupPivy)
+
+macro(SetupBundledCoinPivy)
+    if (NOT EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/coin/CMakeLists.txt"
+        OR NOT EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/pivy/CMakeLists.txt")
+        message(FATAL_ERROR
+            "Bundled Coin/Pivy git submodules are not available. "
+            "Please run:\n"
+            "  git submodule update --init --recursive"
+        )
+    endif ()
+
+    set(USE_EXTERNAL_EXPAT ON CACHE BOOL "Use system Expat for bundled Coin" FORCE)
+    set(FREETYPE_RUNTIME_LINKING OFF CACHE BOOL "Disable FreeType runtime linking for bundled Coin" FORCE)
+    set(COIN_BUILD_TESTS OFF CACHE BOOL "Build bundled Coin tests" FORCE)
+    add_subdirectory("${CMAKE_SOURCE_DIR}/src/3rdParty/coin" "${CMAKE_BINARY_DIR}/src/3rdParty/coin")
+    # Match external Coin usage: FreeCAD targets should treat Coin headers as third-party headers.
+    target_include_directories(Coin
+        SYSTEM INTERFACE
+        "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/3rdParty/coin/include>"
+        "$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src/3rdParty/coin/include>"
+    )
+
+    set(PIVY_USE_SOQT OFF CACHE BOOL "Build bundled Pivy SoQt bindings" FORCE)
+    set(PIVY_PACKAGE_OUTPUT_DIR "${PROJECT_BINARY_DIR}/Mod/pivy"
+        CACHE PATH "Build-tree output directory for bundled Pivy" FORCE)
+    add_subdirectory("${CMAKE_SOURCE_DIR}/src/3rdParty/pivy" "${CMAKE_BINARY_DIR}/src/3rdParty/pivy" EXCLUDE_FROM_ALL)
+    add_custom_target(BundledPivy ALL
+        DEPENDS pivy
+    )
+
+    # Install pivy with FreeCAD rather than with the global Python.
+    # We add pivy with EXCLUDE_FROM_ALL to suppress its own install rule.
+    install(
+        DIRECTORY "${PIVY_PACKAGE_OUTPUT_DIR}/"
+        DESTINATION Mod/pivy
+    )
+endmacro(SetupBundledCoinPivy)
+
+macro(SetupCoinPivy)
+    if (FREECAD_USE_EXTERNAL_COIN_PIVY)
+        SetupCoin3D()
+        SetupPivy()
+    else ()
+        SetupBundledCoinPivy()
+    endif ()
+endmacro(SetupCoinPivy)
