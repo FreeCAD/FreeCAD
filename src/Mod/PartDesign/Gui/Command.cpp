@@ -622,6 +622,8 @@ static void finishFeature(
         FCMD_OBJ_HIDE(prevSolidFeature);
     }
 
+    PartDesignGui::ViewProvider::applyPreviewDisplayPreferences(feature);
+
     if (updateDocument) {
         cmd->updateActive();
     }
@@ -888,6 +890,7 @@ void prepareProfileBased(
 
         FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::" << which << "','" << FeatName << "')");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+        PartDesignGui::ViewProvider::applyPreviewDisplayPreferences(Feat);
 
         auto objCmd = Gui::Command::getObjectCmd(feature);
 
@@ -1189,10 +1192,13 @@ void prepareProfileBased(
 
 void finishProfileBased(const Gui::Command* cmd, const Part::Feature* sketch, App::DocumentObject* Feat)
 {
+    // Enter edit mode before hiding the source profile so the view transitions directly
+    // from the profile to the configured preview instead of briefly showing an empty view.
+    finishFeature(cmd, Feat);
+
     if (sketch && sketch->isDerivedFrom<Part::Part2DObject>()) {
         FCMD_OBJ_HIDE(sketch);
     }
-    finishFeature(cmd, Feat);
 }
 
 void prepareProfileBased(Gui::Command* cmd, const std::string& which, double length)
@@ -2164,12 +2170,12 @@ void prepareTransformed(
         msg += which;
         cmd->openCommand(msg.c_str());
         FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::" << which << "','" << FeatName << "')");
+        auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+        PartDesignGui::ViewProvider::applyPreviewDisplayPreferences(Feat);
         // FIXME: There seems to be kind of a race condition here, leading to sporadic errors like
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
         Gui::Command::updateActive();  // Helps to ensure that the object already exists when the
                                        // next command comes up
-
-        auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
 
         if (features.empty()) {
             FCMD_OBJ_CMD(Feat, "TransformMode = \"Whole shape\"");

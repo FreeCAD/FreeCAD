@@ -39,6 +39,7 @@
 
 #include "DlgActiveBody.h"
 #include "Utils.h"
+#include "ViewProvider.h"
 #include "WorkflowManager.h"
 
 using namespace std;
@@ -135,6 +136,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         return;
     }
     FCMD_OBJ_CMD(pcActiveBody, "addObject(" << getObjectCmd(prm) << ")");
+    PartDesignGui::ViewProvider::applyPreviewDisplayPreferences(prm);
     Gui::Command::updateActive();
 
     auto base = prm->BaseFeature.getValue();
@@ -320,9 +322,10 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
         pcActiveBody,
         "newObject('PartDesign::Subtractive" << shapeType << "','" << FeatName << "')"
     );
+    auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+    PartDesignGui::ViewProvider::applyPreviewDisplayPreferences(Feat);
     Gui::Command::updateActive();
 
-    auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
     copyVisual(Feat, "ShapeAppearance", prevSolid);
     copyVisual(Feat, "LineColor", prevSolid);
     copyVisual(Feat, "PointColor", prevSolid);
