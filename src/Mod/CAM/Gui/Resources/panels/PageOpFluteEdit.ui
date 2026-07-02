@@ -105,9 +105,6 @@
         <property name="text">
          <string>Axial Stock to Leave</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignVCenter</set>
-        </property>
        </widget>
       </item>
       <item row="2" column="1">
@@ -156,9 +153,6 @@
         <property name="text">
          <string>Fluting Type</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignVCenter</set>
-        </property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -174,15 +168,12 @@
         <property name="text">
          <string>Ramp Type</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignVCenter</set>
-        </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QComboBox" name="rampType">
         <property name="toolTip">
-         <string>Shape of the Z ramp: Linear is a constant-rate plunge; Smooth uses a smoothstep curve.</string>
+         <string>Shape of the Z ramp: Linear is a constant-rate plunge; Smooth uses a smoothstep curve; Arc uses a quarter-circle curve.</string>
         </property>
        </widget>
       </item>
@@ -192,15 +183,12 @@
         <property name="text">
          <string>Ramp Length</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignVCenter</set>
-        </property>
        </widget>
       </item>
       <item row="3" column="1">
        <widget class="Gui::QuantitySpinBox" name="rampLength">
         <property name="toolTip">
-         <string>Length of each ramp segment in mm. When greater than zero, overrides Ramp %. Set to 0 to use Ramp % instead.</string>
+         <string>Length of each ramp segment in mm. Syncs with Ramp % below. Set to 0 to drive from Ramp % only.</string>
         </property>
         <property name="unit">
          <string>mm</string>
@@ -213,15 +201,12 @@
         <property name="text">
          <string>Ramp %</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignVCenter</set>
-        </property>
        </widget>
       </item>
       <item row="4" column="1">
        <widget class="QSpinBox" name="rampPercent">
         <property name="toolTip">
-         <string>Percentage of the total path length occupied by each ramp segment. Ignored when Ramp Length is set.</string>
+         <string>Percentage of the total path length occupied by each ramp segment. Syncs with Ramp Length above.</string>
         </property>
         <property name="minimum">
          <number>1</number>

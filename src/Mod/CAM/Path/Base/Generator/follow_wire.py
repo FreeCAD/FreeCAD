@@ -51,7 +51,7 @@ def generate(wire, retract_z, horiz_feed, vert_feed, arc_chord):
         G1 X Y Z F    — cutting moves along the wire
         G0 Z          — retract
     """
-    pts = PathGeom.wireToPoints(wire, arc_chord)
+    pts = PathGeom.edgesToPoints(wire.Edges, arc_chord)
     if not pts:
         return []
 

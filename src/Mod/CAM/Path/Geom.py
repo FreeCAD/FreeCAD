@@ -559,19 +559,24 @@ def wiresForPath(path, startPoint=Vector(0, 0, 0)):
     return wires
 
 
-def wireToPoints(wire, chord):
-    """wireToPoints(wire, chord)
-    Extract an ordered list of Vector waypoints from a wire.
+def edgesToPoints(edges, chord, startPoint=None, error=Tolerance):
+    """edgesToPoints(edges, chord, [startPoint=None, error=Tolerance])
+    Extract an ordered list of Vector waypoints from a sequence of connected edges
+    (e.g. wire.Edges, or a hand-ordered edge list).
 
     Straight Line and LineSegment edges contribute only their two endpoints.
     All other curve types (arcs, splines, etc.) are discretized at the given
-    chord spacing (mm) so their shape is preserved.  Coincident consecutive
-    points are suppressed.
+    chord spacing (mm) so their shape is preserved.
+
+    Each edge's samples are oriented to continue from the previous point, so the
+    edges need not share a consistent parametric direction (they only need to
+    connect end-to-end).  startPoint, when given, orients the first edge so its
+    nearest end leads.  Consecutive points closer than error are suppressed.
 
     Returns a list of FreeCAD.Vector.
     """
     pts = []
-    for edge in wire.Edges:
+    for edge in edges:
         if isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
             raw = [
                 edge.valueAt(edge.FirstParameter),
@@ -579,8 +584,15 @@ def wireToPoints(wire, chord):
             ]
         else:
             raw = edge.discretize(Distance=chord)
+        if not raw:
+            continue
+        # Orient this edge's samples to continue from the running end (or, for
+        # the first edge, from startPoint if supplied).
+        anchor = pts[-1] if pts else startPoint
+        if anchor is not None and anchor.distanceToPoint(raw[0]) > anchor.distanceToPoint(raw[-1]):
+            raw = list(reversed(raw))
         for p in raw:
-            if not pts or not pointsCoincide(pts[-1], p):
+            if not pts or not pointsCoincide(pts[-1], p, error):
                 pts.append(p)
     return pts
 
