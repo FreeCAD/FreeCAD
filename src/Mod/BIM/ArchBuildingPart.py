@@ -850,7 +850,6 @@ class ViewProviderBuildingPart:
     def attach(self, vobj):
 
         self.Object = vobj.Object
-        self.clip = None
         from pivy import coin
 
         self.sep = coin.SoGroup()
@@ -926,6 +925,22 @@ class ViewProviderBuildingPart:
             self.onChanged(obj.ViewObject, "ChildrenOverride")
         elif prop == "Label":
             self.onChanged(obj.ViewObject, "ShowLabel")
+
+    def canAddToSceneGraph(self):
+        """
+        This function is called whenever a new 3D View is created.
+        We use it the ensure clipping is applied in new views.
+        """
+        self.refreshCutView(self.Object.ViewObject)
+        return True
+
+    def refreshCutView(self, vobj):
+        """
+        Forces a refresh of the SoClipPlane by toggling the CutView property.
+        """
+        if vobj and hasattr(vobj, "CutView") and vobj.CutView:
+            vobj.CutView = False
+            vobj.CutView = True
 
     def getColors(self, obj):
         "get the colors of objects inside this BuildingPart"
@@ -1045,46 +1060,14 @@ class ViewProviderBuildingPart:
                         ):
                             setattr(child.ViewObject, prop[8:], getattr(vobj, prop))
         elif prop in ["CutView", "CutMargin"]:
-            if (
-                hasattr(vobj, "CutView")
-                and FreeCADGui.ActiveDocument.ActiveView
-                and hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph")
-            ):
-                sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-                if vobj.CutView:
-                    from pivy import coin
+            if hasattr(vobj, "CutView") and hasattr(vobj, "CutMargin"):
+                from ArchSectionPlane import _handle_view_clipping
 
-                    if self.clip:
-                        sg.removeChild(self.clip)
-                        self.clip = None
-                    for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
-                        if hasattr(o.ViewObject, "Lighting"):
-                            o.ViewObject.Lighting = "One side"
-                    self.clip = coin.SoClipPlane()
-                    self.clip.on.setValue(True)
-                    norm = vobj.Object.Placement.multVec(FreeCAD.Vector(0, 0, 1))
-                    mp = vobj.Object.Placement.Base
-                    mp = DraftVecUtils.project(mp, norm)
-                    dist = mp.Length  # - 0.1 # to not clip exactly on the section object
-                    norm = norm.negative()
-                    marg = 1
-                    if hasattr(vobj, "CutMargin"):
-                        marg = vobj.CutMargin.Value
-                    if mp.getAngle(norm) > 1:
-                        dist += marg
-                        dist = -dist
-                    else:
-                        dist -= marg
-                    plane = coin.SbPlane(coin.SbVec3f(norm.x, norm.y, norm.z), dist)
-                    self.clip.plane.setValue(plane)
-                    sg.insertChild(self.clip, 0)
-                else:
-                    if getattr(self, "clip", None):
-                        sg.removeChild(self.clip)
-                        self.clip = None
-                    for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
-                        if hasattr(o.ViewObject, "Lighting"):
-                            o.ViewObject.Lighting = "Two side"
+                _handle_view_clipping(
+                    vobj,
+                    vobj.Object.Group,
+                    vobj.Object.Placement.multVec(FreeCAD.Vector(0, 0, 1)),
+                )
         elif prop == "Visibility":
             # turn clipping off when turning the object off
             if hasattr(vobj, "Visibility") and not (vobj.Visibility) and hasattr(vobj, "CutView"):
@@ -1114,13 +1097,7 @@ class ViewProviderBuildingPart:
 
     def onDelete(self, vobj, subelements):
 
-        if self.clip:
-            sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-            sg.removeChild(self.clip)
-            self.clip = None
-        for o in Draft.get_group_contents(vobj.Object.Group, walls=True):
-            if hasattr(o.ViewObject, "Lighting"):
-                o.ViewObject.Lighting = "Two side"
+        vobj.CutView = False
         return True
 
     def setEdit(self, vobj, mode):
