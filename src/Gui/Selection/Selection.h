@@ -318,6 +318,15 @@ public:
     std::string notAllowedReason;
 };
 
+enum class SelectionFilterMode
+{
+    Any,
+    Object,
+    Vertex,
+    Edge,
+    Face
+};
+
 /** The Selection class
  *  The selection singleton keeps track of the selection state of
  *  the whole application. It gets messages from all entities which can
@@ -423,6 +432,15 @@ public:
         const char* pSubName = nullptr
     ) const;
     bool hasSelectionGate(App::Document* pDoc) const;
+    bool hasSelectionConstraint(App::Document* pDoc) const;
+
+    void setSelectionFilterMode(SelectionFilterMode mode);
+    SelectionFilterMode getSelectionFilterMode() const;
+    bool isSelectionFilterModeElement() const;
+    bool isAllowedBySelectionFilterMode(const char* subelement) const;
+    std::unordered_set<std::string> getSelectionFilterModeTypes(
+        const std::vector<const char*>& allTypesForGeometry
+    ) const;
 
     std::string getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 
@@ -895,6 +913,7 @@ protected:
 
 
     std::map<App::Document*, SelectionInfo> docSelectionContext;
+    SelectionFilterMode selectionFilterMode {SelectionFilterMode::Any};
 
     struct SelectionAllowance
     {

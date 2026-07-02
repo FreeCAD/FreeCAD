@@ -22,6 +22,7 @@
 #include "BoxSelection.h"
 
 #include <memory>
+#include <unordered_set>
 #include <vector>
 
 #include <CXX/Objects.hxx>
@@ -161,18 +162,19 @@ std::vector<std::string> getBoxSelection(
     auto bbox3 = vp->getBoundingBox(nullptr, transform);
     Base::BoundBox2d bbox;
     const bool isBBox3Valid = bbox3.IsValid();
-    if (isBBox3Valid && selectionGate == nullptr) {
+    if (isBBox3Valid) {
         bbox = bbox3.Transformed(mat).ProjectBox(&proj);
 
         // check if both two boundary points are inside polygon, only
         // valid since we know the given polygon is a box.
-        if (polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
+        if (!selectElement && selectionGate == nullptr
+            && polygon.Contains(Base::Vector2d(bbox.MinX, bbox.MinY))
             && polygon.Contains(Base::Vector2d(bbox.MaxX, bbox.MaxY))) {
             ret.emplace_back("");
             return ret;
         }
 
-        if (!bbox.Intersect(polygon)) {
+        if (!selectElement && selectionGate == nullptr && !bbox.Intersect(polygon)) {
             return ret;
         }
     }
@@ -202,14 +204,27 @@ std::vector<std::string> getBoxSelection(
         auto data = static_cast<Data::ComplexGeoDataPy*>(pyobj)->getComplexGeoDataPtr();
         const auto& allAllowedDocumentTypes = data->getElementTypes();
 
+        auto filteredTypes = Gui::Selection().getSelectionFilterModeTypes(allAllowedDocumentTypes);
+        bool useFilteredTypes = Gui::Selection().isSelectionFilterModeElement();
         if (selectionGate) {
-            auto filteredTypes = selectionGate->getGatedTypes(allAllowedDocumentTypes);
-            if (!filteredTypes.empty()) {
-                for (const auto& type : filteredTypes) {
-                    findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode);
+            auto gateTypes = selectionGate->getGatedTypes(allAllowedDocumentTypes);
+            if (!gateTypes.empty()) {
+                if (useFilteredTypes) {
+                    std::erase_if(filteredTypes, [&gateTypes](const auto& type) {
+                        return !gateTypes.contains(type);
+                    });
                 }
-                return ret;
+                else {
+                    filteredTypes = gateTypes;
+                    useFilteredTypes = true;
+                }
             }
+        }
+        if (useFilteredTypes) {
+            for (const auto& type : filteredTypes) {
+                findObjectsOfTypeInBox(type, proj, data, polygon, ret, mode);
+            }
+            return ret;
         }
 
         for (auto type : allAllowedDocumentTypes) {
@@ -264,6 +279,33 @@ std::vector<std::string> getBoxSelection(
 }
 
 }  // namespace
+
+bool Gui::boxSelectionUsesElementGate(const App::Document* doc)
+{
+    if (Gui::Selection().isSelectionFilterModeElement()) {
+        return true;
+    }
+    if (Gui::Selection().getSelectionFilterMode() == SelectionFilterMode::Object) {
+        return false;
+    }
+
+    const auto selectionGate = SelectionSingleton::instance().getSelectionGate(doc);
+    if (!selectionGate) {
+        return false;
+    }
+
+    static const std::vector<const char*> representativeElementTypes {
+        "Face",
+        "Edge",
+        "Vertex",
+        "Volume",
+        "Mesh",
+        "Segment",
+    };
+
+    const auto gatedTypes = selectionGate->getGatedTypes(representativeElementTypes);
+    return !gatedTypes.empty() && gatedTypes.size() < representativeElementTypes.size();
+}
 
 void Gui::applyBoxSelection(
     View3DInventorViewer* viewer,

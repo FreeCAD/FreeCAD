@@ -648,7 +648,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
                   << "Separator" << "Std_ViewRotateLeft" << "Std_ViewRotateRight";
 
         *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_AlignToSelection"
-              << "Std_DrawStyle" << StdViews << "Separator"
+              << "Std_DrawStyle" << "Std_SelectionMode" << StdViews << "Separator"
               << "Std_ViewDockUndockFullscreen";
 
         if (!sels.empty()) {
@@ -755,7 +755,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     view->setCommand("&View");
     *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera"
           << "Std_MainFullscreen" << "Separator" << stdviews << "Std_FreezeViews" << "Std_DrawStyle"
-          << "Std_SelBoundingBox"
+          << "Std_SelectionMode" << "Std_SelBoundingBox"
           << "Separator" << zoom << "Std_ViewDockUndockFullscreen"
           << "Std_ViewIvIssueCamPos"
           << "Std_AxisCross"
@@ -878,7 +878,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem(root);
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
-          << "Separator" << "Std_DrawStyle" << "Separator"
+          << "Separator" << "Std_DrawStyle" << "Std_SelectionMode" << "Separator"
           << "Std_Measure" << "Std_MassProperties";
 
     // Individual views

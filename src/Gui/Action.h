@@ -28,7 +28,10 @@
 #include <QComboBox>
 #include <QKeySequence>
 #include <QMap>
+#include <Qt>
 #include <FCGlobal.h>
+
+class QToolButton;
 
 namespace Gui
 {
@@ -163,6 +166,8 @@ public:
     QList<QAction*> actions() const;
     int checkedAction() const;
     void setCheckedAction(int);
+    void setToolButtonStyle(Qt::ToolButtonStyle style);
+    void setToolButtonText(const QString& text);
 
     QActionGroup* groupAction() const
     {
@@ -182,10 +187,17 @@ Q_SIGNALS:
     void aboutToShow(QMenu*);
 
 private:
+    void updateToolButtons() const;
+    void updateToolButton(QToolButton* button) const;
+
+private:
     QActionGroup* _group;
     bool _dropDown;
     bool _isMode;
     bool _rememberLast;
+    bool _hasToolButtonStyle;
+    Qt::ToolButtonStyle _toolButtonStyle;
+    QString _toolButtonText;
 
 private:
     Q_DISABLE_COPY(ActionGroup)

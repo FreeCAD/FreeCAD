@@ -56,8 +56,8 @@ struct Candidate
     int priority {0};
     bool closeToFirst {false};
     bool isAnnotation {false};
-    bool hasGate {false};
-    bool passesGate {false};
+    bool hasConstraint {false};
+    bool passesConstraint {false};
 };
 
 GuiExport bool canFinalizeSinglePick(const std::vector<Candidate>& picked);
@@ -126,8 +126,8 @@ private:
         std::string element;
     };
 
-    static bool passesSelectionGate(const PickedInfo&);
-    static bool hasSelectionGate(const PickedInfo&);
+    static bool passesSelectionConstraint(const PickedInfo&);
+    static bool hasSelectionConstraint(const PickedInfo&);
     static SelectionPickPolicy::Candidate getPickCandidate(
         const PickedInfo&,
         const Document*,

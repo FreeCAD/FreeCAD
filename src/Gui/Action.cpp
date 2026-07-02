@@ -437,6 +437,8 @@ ActionGroup::ActionGroup(Command* pcCmd, QObject* parent)
     , _dropDown(false)
     , _isMode(false)
     , _rememberLast(true)
+    , _hasToolButtonStyle(false)
+    , _toolButtonStyle(Qt::ToolButtonIconOnly)
 {
     _group = new QActionGroup(this);
     connect(_group, &QActionGroup::triggered, this, qOverload<QAction*>(&ActionGroup::onActivated));
@@ -474,6 +476,7 @@ void ActionGroup::addTo(QWidget* widget)
             QToolButton* tb = widget->findChildren<QToolButton*>().constLast();
             tb->setPopupMode(QToolButton::MenuButtonPopup);
             tb->setObjectName(QStringLiteral("qt_toolbutton_menubutton"));
+            updateToolButton(tb);
             QList<QAction*> acts = groupAction()->actions();
             auto menu = new QMenu(tb);
             menu->addActions(acts);
@@ -563,6 +566,60 @@ void ActionGroup::setCheckedAction(int index)
         this->action()->setToolTip(act->toolTip());
     }
     this->setProperty("defaultAction", QVariant(index));
+}
+
+void ActionGroup::setToolButtonStyle(Qt::ToolButtonStyle style)
+{
+    _toolButtonStyle = style;
+    _hasToolButtonStyle = true;
+    updateToolButtons();
+}
+
+void ActionGroup::setToolButtonText(const QString& text)
+{
+    _toolButtonText = text;
+    updateToolButtons();
+}
+
+void ActionGroup::updateToolButtons() const
+{
+    auto updateWidget = [this](QWidget* widget) {
+        if (auto toolbar = qobject_cast<QToolBar*>(widget)) {
+            if (auto button = qobject_cast<QToolButton*>(toolbar->widgetForAction(action()))) {
+                updateToolButton(button);
+            }
+        }
+        else if (auto button = qobject_cast<QToolButton*>(widget)) {
+            updateToolButton(button);
+        }
+    };
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const auto associatedObjects = action()->associatedObjects();
+    for (auto object : associatedObjects) {
+        if (auto widget = qobject_cast<QWidget*>(object)) {
+            updateWidget(widget);
+        }
+    }
+#else
+    const auto widgets = action()->associatedWidgets();
+    for (auto widget : widgets) {
+        updateWidget(widget);
+    }
+#endif
+}
+
+void ActionGroup::updateToolButton(QToolButton* button) const
+{
+    if (!button) {
+        return;
+    }
+    if (_hasToolButtonStyle) {
+        button->setToolButtonStyle(_toolButtonStyle);
+    }
+    if (!_toolButtonText.isNull()) {
+        button->setText(_toolButtonText);
+    }
 }
 
 /**

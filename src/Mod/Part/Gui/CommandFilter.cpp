@@ -31,6 +31,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 
 //===============================================================================
@@ -202,7 +203,7 @@ PartCmdVertexSelection::PartCmdVertexSelection()
 void PartCmdVertexSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Vertex SELECT App::Link SUBELEMENT Vertex')");
+    Gui::Selection().setSelectionFilterMode(Gui::SelectionFilterMode::Vertex);
 }
 
 
@@ -227,7 +228,7 @@ PartCmdEdgeSelection::PartCmdEdgeSelection()
 void PartCmdEdgeSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge SELECT App::Link SUBELEMENT Edge')");
+    Gui::Selection().setSelectionFilterMode(Gui::SelectionFilterMode::Edge);
 }
 
 
@@ -252,12 +253,7 @@ PartCmdFaceSelection::PartCmdFaceSelection()
 void PartCmdFaceSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(
-        Command::Gui,
-        "Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Face "
-        "SELECT App::Link SUBELEMENT Face "
-        "SELECT Part::Part2DObject SUBELEMENT InternalFace')"
-    );
+    Gui::Selection().setSelectionFilterMode(Gui::SelectionFilterMode::Face);
 }
 
 
@@ -282,6 +278,7 @@ PartCmdRemoveSelectionGate::PartCmdRemoveSelectionGate()
 void PartCmdRemoveSelectionGate::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    Gui::Selection().setSelectionFilterMode(Gui::SelectionFilterMode::Any);
     doCommand(Command::Gui, "Gui.Selection.removeSelectionGate()");
 }
 

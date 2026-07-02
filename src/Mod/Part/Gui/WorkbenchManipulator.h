@@ -52,7 +52,6 @@ protected:
     void modifyDockWindows([[maybe_unused]] Gui::DockWindowItems* dockWindow) override;
 
 private:
-    static void addSelectionFilter(Gui::ToolBarItem* toolBar);
     static void addDatums(Gui::ToolBarItem* toolBar);
 };
 

@@ -59,6 +59,7 @@
 #include "Navigation/NavigationAnimator.h"
 #include "Navigation/NavigationAnimation.h"
 #include "Selection.h"
+#include "Selection/BoxSelection.h"
 #include "SoFullPathHelper.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
@@ -1886,7 +1887,13 @@ bool NavigationStyle::tryStartBoxSelection(const SoLocation2Event* const ev, boo
         return false;
     }
 
-    return tryStartBoxSelection(*selectionStartPosition, ev, additiveSelection, false);
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    return tryStartBoxSelection(
+        *selectionStartPosition,
+        ev,
+        additiveSelection,
+        boxSelectionUsesElementGate(doc)
+    );
 }
 
 bool NavigationStyle::handleSelectionDragMotion(

@@ -27,6 +27,11 @@
 
 class SbVec2s;
 
+namespace App
+{
+class Document;
+}
+
 namespace Gui
 {
 class View3DInventorViewer;
@@ -48,5 +53,10 @@ GuiExport void applyBoxSelection(
     bool selectElement = false,
     bool additive = false
 );
+
+/**
+ * @brief Return whether the active selection gate narrows box selection to subelements.
+ */
+GuiExport bool boxSelectionUsesElementGate(const App::Document* doc);
 
 }  // namespace Gui
