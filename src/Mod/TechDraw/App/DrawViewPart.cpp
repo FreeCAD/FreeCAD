@@ -127,6 +127,10 @@ DrawViewPart::DrawViewPart()
     //properties that control HLR algo
     ADD_PROPERTY_TYPE(CoarseView, (Preferences::getPreferenceGroup("General")->GetBool("CoarseView", false)),
         sgroup, App::Prop_None, "Coarse View on/off");
+    ADD_PROPERTY_TYPE(CoarseDeflection, (0.10), sgroup, App::Prop_None,
+                  "Linear deflection used by the polygon approximation HLR. Only used when CoarseView is true.");
+    ADD_PROPERTY_TYPE(CoarseAngularDeflection, (0.50), sgroup, App::Prop_None,
+                  "Angular deflection in radians used by the polygon approximation HLR. Only used when CoarseView is true.");
     ADD_PROPERTY_TYPE(SmoothVisible, (Preferences::getPreferenceGroup("HLR")->GetBool("SmoothViz", true)),
         sgroup, App::Prop_None, "Show Visible Smooth lines");
     ADD_PROPERTY_TYPE(SeamVisible, (Preferences::getPreferenceGroup("HLR")->GetBool("SeamViz", false)),
@@ -265,6 +269,7 @@ short DrawViewPart::mustExecute() const
         || SmoothVisible.isTouched() || SeamVisible.isTouched() || IsoVisible.isTouched()
         || HardHidden.isTouched() || SmoothHidden.isTouched() || SeamHidden.isTouched()
         || IsoHidden.isTouched() || IsoCount.isTouched() || CoarseView.isTouched()
+        || CoarseDeflection.isTouched() || CoarseAngularDeflection.isTouched()
         || CosmeticVertexes.isTouched() || CosmeticEdges.isTouched() || CenterLines.isTouched()) {
         return 1;
     }
@@ -357,7 +362,7 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(const TopoDS_Shape
     if (CoarseView.getValue()) {
         //the polygon approximation HLR process runs quickly, so doesn't need to be in a
         //separate thread
-        go->projectShapeWithPolygonAlgo(shape, viewAxis);
+        go->projectShapeWithPolygonAlgo(shape, viewAxis, CoarseDeflection.getValue(), CoarseAngularDeflection.getValue());
         return go;
     }
 

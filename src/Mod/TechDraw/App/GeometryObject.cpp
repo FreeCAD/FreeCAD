@@ -283,7 +283,7 @@ void GeometryObject::makeTDGeometry()
 
 
 //!set up a hidden line remover and project a shape with it
-void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis)
+void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis, double deflection, double angularDeflection)
 {
 //    Base::Console().message("GO::projectShapeWithPolygonAlgo()\n");
     // Clear previous Geometry
@@ -308,7 +308,9 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
     try {
         // HLRBRep_PolyAlgo will fail if the whole input shape has not been meshed.
         // meshing the faces is not sufficient.
-        BRepMesh_IncrementalMesh(inCopy, 0.10);
+        const double safeDeflection = std::max(deflection, Precision::Confusion());
+        const double safeAngularDeflection = std::max(angularDeflection, Precision::Angular());
+        BRepMesh_IncrementalMesh(inCopy, safeDeflection, false, safeAngularDeflection);
 
         brep_hlrPoly = new HLRBRep_PolyAlgo();
         brep_hlrPoly->Load(inCopy);
