@@ -1933,16 +1933,10 @@ std::vector<shared_ptr<Area>> Area::makeSections(
                     Part::CrossSection section(-a, -b, -c, xp.Current());
                     Part::FuzzyHelper::withBooleanFuzzy(.0, [&]() {
                         // Disable the (default FreeCAD/Part) boolean fuzziness -- slicing already
-                        // handles boolean tolerances correctly. Adding additional fuzziness is
-                        // actually problematic, because slicing makes decisions based on the
-                        // tolerance of the faces it processes, and adding fuzziness to the boolean
-                        // operation producing those faces changes that computation.
+                        // handles boolean tolerances correctly.
                         //
-                        // Originally added for https://github.com/FreeCAD/FreeCAD/issues/17748
-                        // to make the finish pass work.
-
-                        // This fix might be better to move into Part::CrossSection but it is kept
-                        // here for now to be on the safe side.
+                        // It might be desirable to move this override into Part::CrossSection to
+                        // avoid slicing with unnecessary fuzziness at other call sites.
                         wires = section.slice(d);
                     });
                     showShapes(wires, nullptr, "section_%zu_wire", i);
