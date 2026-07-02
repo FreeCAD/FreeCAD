@@ -35,6 +35,29 @@ import threading
 from PySide6 import QtCore
 
 
+_SENSITIVE_AUTH_KEYS = {
+    "accessToken",
+    "access_token",
+    "refreshToken",
+    "refresh_token",
+    "idToken",
+    "id_token",
+    "token",
+}
+
+
+def _sanitize_auth_payload(payload):
+    if isinstance(payload, dict):
+        return {
+            key: _sanitize_auth_payload(value)
+            for key, value in payload.items()
+            if key not in _SENSITIVE_AUTH_KEYS
+        }
+    if isinstance(payload, list):
+        return [_sanitize_auth_payload(value) for value in payload]
+    return payload
+
+
 class AgentAuthBridge(QtCore.QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -78,7 +101,7 @@ class _AuthPoller:
                 payload = None
             if payload:
                 try:
-                    text = json.dumps(payload)
+                    text = json.dumps(_sanitize_auth_payload(payload))
                 except (TypeError, ValueError):
                     text = ""
             self._bridge.set_session(text)
