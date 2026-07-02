@@ -202,6 +202,8 @@ SET(Features_SRCS
     FeatureExtrusion.h
     FeatureScale.cpp
     FeatureScale.h
+    FeatureFlex.cpp
+    FeatureFlex.h
     FeatureFace.cpp
     FeatureFace.h
     FeatureFillet.cpp
@@ -550,8 +552,12 @@ SET(Part_SRCS
     BRepOffsetAPI_MakeOffsetFix.h
     BSplineCurveBiArcs.cpp
     BSplineCurveBiArcs.h
+    Canonizer.cpp
+    Canonizer.h
     CrossSection.cpp
     CrossSection.h
+    Deformation.cpp
+    Deformation.h
     ExtrusionHelper.cpp
     ExtrusionHelper.h
     FuzzyHelper.cpp
