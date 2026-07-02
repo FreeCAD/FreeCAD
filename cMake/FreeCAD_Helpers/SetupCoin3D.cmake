@@ -95,6 +95,10 @@ macro(SetupBundledCoinPivy)
     set(FREETYPE_RUNTIME_LINKING OFF CACHE BOOL "Disable FreeType runtime linking for bundled Coin" FORCE)
     set(COIN_BUILD_TESTS OFF CACHE BOOL "Build bundled Coin tests" FORCE)
     add_subdirectory("${CMAKE_SOURCE_DIR}/src/3rdParty/coin" "${CMAKE_BINARY_DIR}/src/3rdParty/coin")
+    if (NOT DEFINED COIN_VERSION OR COIN_VERSION STREQUAL "")
+        message(FATAL_ERROR "Bundled Coin did not define COIN_VERSION")
+    endif ()
+    set(COIN3D_VERSION "${COIN_VERSION}")
     # Match external Coin usage: FreeCAD targets should treat Coin headers as third-party headers.
     target_include_directories(Coin
         SYSTEM INTERFACE
@@ -106,6 +110,9 @@ macro(SetupBundledCoinPivy)
     set(PIVY_PACKAGE_OUTPUT_DIR "${PROJECT_BINARY_DIR}/Mod/pivy"
         CACHE PATH "Build-tree output directory for bundled Pivy" FORCE)
     add_subdirectory("${CMAKE_SOURCE_DIR}/src/3rdParty/pivy" "${CMAKE_BINARY_DIR}/src/3rdParty/pivy" EXCLUDE_FROM_ALL)
+    if (NOT DEFINED PIVY_VERSION OR PIVY_VERSION STREQUAL "")
+        message(FATAL_ERROR "Bundled Pivy did not define PIVY_VERSION")
+    endif ()
     add_custom_target(BundledPivy ALL
         DEPENDS pivy
     )
@@ -120,9 +127,13 @@ endmacro(SetupBundledCoinPivy)
 
 macro(SetupCoinPivy)
     if (FREECAD_USE_EXTERNAL_COIN_PIVY)
+        set(FREECAD_COIN3D_SOURCE "external")
+        set(FREECAD_PIVY_SOURCE "external")
         SetupCoin3D()
         SetupPivy()
     else ()
+        set(FREECAD_COIN3D_SOURCE "bundled")
+        set(FREECAD_PIVY_SOURCE "bundled")
         SetupBundledCoinPivy()
     endif ()
 endmacro(SetupCoinPivy)
