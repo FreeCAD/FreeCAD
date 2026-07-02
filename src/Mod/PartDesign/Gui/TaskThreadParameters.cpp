@@ -57,12 +57,12 @@ TaskThreadParameters::TaskThreadParameters(ViewProviderDressUp* DressUpView, QWi
     ui->standardCombo->addItem(tr("ISO tyre valves"), QByteArray("Other"));
 
     // diameter
-    // ui->ThreadSize->clear();
-    // std::vector<std::string> cursor = pcHole->ThreadSize.getEnumVector();
-    // for (const auto& it : cursor) {
-    //     ui->ThreadSize->addItem(tr(it.c_str()));
-    // }
-    // ui->ThreadSize->setCurrentIndex(pcHole->ThreadSize.getValue());
+    ui->diameterCombo->clear();
+    std::vector<std::string> cursor = pcThread->ThreadSize.getEnumVector();
+    for (const auto& it : cursor) {
+        ui->diameterCombo->addItem(tr(it.c_str()));
+    }
+    ui->diameterCombo->setCurrentIndex(pcThread->ThreadSize.getValue());
 
     // class
     // ui->ThreadClass->clear();
@@ -254,6 +254,13 @@ void TaskThreadParameters::threadTypeChanged(int index)
     pcThread->ThreadType.setValue(index);
 
     // TODO: check a lot of new type consequences
+    // diameter
+    ui->diameterCombo->clear();
+    std::vector<std::string> cursor = pcThread->ThreadSize.getEnumVector();
+    for (const auto& it : cursor) {
+        ui->diameterCombo->addItem(tr(it.c_str()));
+    }
+    ui->diameterCombo->setCurrentIndex(pcThread->ThreadSize.getValue());
 
     recomputeFeature();
     Base::Console().message("THREAD TYPE CHANGED\n");

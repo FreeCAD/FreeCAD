@@ -56,6 +56,7 @@ protected:
 private:
     ThreadUtils threadUtils;
     void addThreadType();
+    void updateDiameterParam();
 };
 
 }  // namespace PartDesign

@@ -15,18 +15,32 @@ Thread::Thread()
 {
     addThreadType();
 
-    ADD_PROPERTY_TYPE(ThreadFit, (0L), "Hole", App::Prop_None, "Clearance hole fit");
-    // ThreadFit.setEnums(ClearanceMetricEnums);
-
-    ADD_PROPERTY_TYPE(ThreadDiameter, (0.0), "Hole", App::Prop_None, "Thread major diameter");
-    // ThreadDiameter.setReadOnly(true);
-
-    ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Hole", App::Prop_None, "Thread direction");
-    // ThreadDirection.setEnums(ThreadDirectionEnums);
-    // ThreadDirection.setReadOnly(true);
-
     ADD_PROPERTY_TYPE(ThreadType, (0L), "Thread", App::Prop_None, "Thread type");
     ThreadType.setEnums(threadUtils.getThreadTypeEnums());
+
+    ADD_PROPERTY_TYPE(ThreadFit, (0L), "Thread", App::Prop_None, "Clearance Thread fit");
+    // ThreadFit.setEnums(ClearanceMetricEnums);
+
+    ADD_PROPERTY_TYPE(ThreadDiameter, (0.0), "Thread", App::Prop_None, "Thread major diameter");
+
+    ADD_PROPERTY_TYPE(ThreadSize, (0L), "Thread", App::Prop_None, "Thread size");
+    ThreadSize.setEnums(threadUtils.getThreadDesignations(ThreadType.getValue()));
+
+    ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Thread", App::Prop_None, "Thread direction");
+    // ThreadDirection.setEnums(ThreadDirectionEnums);
+    // ThreadDirection.setReadOnly(true);
+}
+
+void Thread::updateDiameterParam()
+{
+    // int threadType = ThreadType.getValue();
+    // int threadSize = ThreadSize.getValue();
+    // if (threadType > 0 && threadSize > 0) {
+        // ThreadDiameter.setValue(threadDescription[threadType][threadSize].diameter);
+    // }
+    // if (auto opt = determineDiameter()) {
+    //     Diameter.setValue(opt.value());
+    // }
 }
 
 App::DocumentObjectExecReturn* Thread::execute()
@@ -123,6 +137,16 @@ App::DocumentObjectExecReturn* Thread::execute()
 
 void Thread::onChanged(const App::Property* prop)
 {
+    if (prop == &ThreadType) {
+        if (ThreadType.isValid()) {
+            // type = ThreadType.getValueAsString();
+            ThreadSize.setEnums(threadUtils.getThreadDesignations(ThreadType.getValue()));
+            // if (type != "None") {
+                // findClosestDesignation();
+            // }
+        }
+    }
+    
     DressUp::onChanged(prop);
 }
 
