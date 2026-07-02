@@ -16,10 +16,7 @@ PatternReferenceWidget::PatternReferenceWidget(QWidget* parent)
 void PatternReferenceWidget::setupReferenceCombo(QComboBox* combo)
 {
     dirLinks.setCombo(combo);
-    connect(combo,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            &PatternReferenceWidget::onDirectionChanged);
+    connect(combo, qOverload<int>(&QComboBox::activated), this, &PatternReferenceWidget::onDirectionChanged);
 }
 
 void PatternReferenceWidget::bindReference(App::PropertyLinkSub* reference)
@@ -28,10 +25,12 @@ void PatternReferenceWidget::bindReference(App::PropertyLinkSub* reference)
     updateReferenceUI();
 }
 
-void PatternReferenceWidget::addDirection(App::DocumentObject* object,
-                                          const std::string& subname,
-                                          const QString& text,
-                                          int userData)
+void PatternReferenceWidget::addDirection(
+    App::DocumentObject* object,
+    const std::string& subname,
+    const QString& text,
+    int userData
+)
 {
     dirLinks.addLink(object, subname, text, userData);
 }
@@ -48,12 +47,10 @@ void PatternReferenceWidget::updateReferenceUI()
     }
 
     const auto& subnames = referenceProperty->getSubValues();
-    const QString reference = QStringLiteral("%1:%2")
-                                  .arg(QString::fromLatin1(
-                                           referenceProperty->getValue()->getNameInDocument()),
-                                       subnames.empty()
-                                           ? QString()
-                                           : QString::fromStdString(subnames.front()));
+    const QString reference = QStringLiteral("%1:%2").arg(
+        QString::fromLatin1(referenceProperty->getValue()->getNameInDocument()),
+        subnames.empty() ? QString() : QString::fromStdString(subnames.front())
+    );
     dirLinks.addLink(*referenceProperty, reference);
     dirLinks.setCurrentLink(*referenceProperty);
 }
@@ -76,8 +73,7 @@ bool PatternReferenceWidget::isSelectReferenceMode() const
     return !dirLinks.getCurrentLink().getValue();
 }
 
-void PatternReferenceWidget::getAxis(App::DocumentObject*& object,
-                                     std::vector<std::string>& subnames) const
+void PatternReferenceWidget::getAxis(App::DocumentObject*& object, std::vector<std::string>& subnames) const
 {
     const App::PropertyLinkSub& link = dirLinks.getCurrentLink();
     object = link.getValue();

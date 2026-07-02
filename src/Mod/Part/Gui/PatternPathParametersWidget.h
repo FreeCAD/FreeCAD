@@ -24,14 +24,16 @@ public:
     explicit PatternPathParametersWidget(QWidget* parent = nullptr);
     ~PatternPathParametersWidget() override;
 
-    void bindProperties(App::PropertyLinkSub* path,
-                        App::PropertyIntegerConstraint* count,
-                        App::PropertyEnumeration* spacingMode,
-                        App::PropertyLength* spacing,
-                        App::PropertyLength* startOffset,
-                        App::PropertyLength* endOffset,
-                        App::PropertyBool* reversePath,
-                        App::PropertyBool* align);
+    void bindProperties(
+        App::PropertyLinkSub* path,
+        App::PropertyIntegerConstraint* count,
+        App::PropertyEnumeration* spacingMode,
+        App::PropertyLength* spacing,
+        App::PropertyLength* startOffset,
+        App::PropertyLength* endOffset,
+        App::PropertyBool* reversePath,
+        App::PropertyBool* align
+    );
     void updateUI();
     void applyQuantitySpinboxes() const;
     void getPath(App::DocumentObject*& object, std::vector<std::string>& subnames) const;

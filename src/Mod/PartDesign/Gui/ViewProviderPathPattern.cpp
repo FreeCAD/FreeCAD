@@ -4,12 +4,9 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderPathPattern,
-                PartDesignGui::ViewProviderLinearPattern)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderPathPattern, PartDesignGui::ViewProviderLinearPattern)
 
-void ViewProviderPathPattern::setupContextMenu(QMenu* menu,
-                                               QObject* receiver,
-                                               const char* member)
+void ViewProviderPathPattern::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit Path Pattern"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);

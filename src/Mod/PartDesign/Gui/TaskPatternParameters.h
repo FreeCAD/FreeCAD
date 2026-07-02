@@ -31,6 +31,11 @@
 
 class Ui_TaskPatternParameters;
 
+namespace PartGui
+{
+class PatternInstanceControls;
+}
+
 namespace PartDesignGui
 {
 
@@ -71,6 +76,10 @@ private:
     Base::Vector3d getLinearPatternFallbackDirection(
         Part::LinearPatternDirection direction
     ) const override;
+    Base::Vector3d transformLinearPatternDirection(const Base::Vector3d& direction) const override;
+    Base::Vector3d getLinearPatternLabelPlaneNormal(
+        Part::LinearPatternDirection direction
+    ) const override;
     void transformPolarPatternAxis(gp_Ax2& axis) const override;
     std::string buildDirectionReferencePythonString(
         const App::DocumentObject* obj,
@@ -81,10 +90,14 @@ private:
     void showOriginAxes(bool show);
     void enterReferenceSelectionMode();
     void exitReferenceSelectionMode();  // Ensure this clears gates etc.
+    void setupInstanceControls();
+    void updateInstanceControls();
+    void setInstanceSuppressed(int index, bool suppress);
 
     Base::Vector3d getStartPoint() const;
 
     std::unique_ptr<Ui_TaskPatternParameters> ui;
+    std::unique_ptr<PartGui::PatternInstanceControls> instanceControls;
 };
 
 

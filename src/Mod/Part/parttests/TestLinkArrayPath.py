@@ -25,12 +25,8 @@ class TestLinkArrayPath(unittest.TestCase):
         App.closeDocument(self.doc.Name)
 
     def testFixedCountFollowsConnectedEdges(self):
-        self.assertEqual(
-            self.array.getTypeIdOfProperty("StartOffset"), "App::PropertyLength"
-        )
-        self.assertEqual(
-            self.array.getTypeIdOfProperty("EndOffset"), "App::PropertyLength"
-        )
+        self.assertEqual(self.array.getTypeIdOfProperty("StartOffset"), "App::PropertyLength")
+        self.assertEqual(self.array.getTypeIdOfProperty("EndOffset"), "App::PropertyLength")
         self.array.Count = 5
         self.doc.recompute()
 

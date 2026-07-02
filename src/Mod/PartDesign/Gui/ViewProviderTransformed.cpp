@@ -117,7 +117,13 @@ void ViewProviderTransformed::updatePreview()
 
             Gui::coinRemoveAllChildren(pcPreviewRoot);
 
+            int index = 0;
             for (const auto& transform : transforms) {
+                if (feature->isTransformationSuppressed(index)) {
+                    ++index;
+                    continue;
+                }
+
                 Base::Matrix4D transformMatrix;
                 Part::TopoShape::convertToMatrix(transform, transformMatrix);
 
@@ -130,6 +136,7 @@ void ViewProviderTransformed::updatePreview()
                 sep->addChild(pcPreviewShape);
 
                 pcPreviewRoot->addChild(sep);
+                ++index;
             }
         }
     }
