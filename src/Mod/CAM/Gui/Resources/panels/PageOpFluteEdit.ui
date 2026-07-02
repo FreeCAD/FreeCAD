@@ -173,7 +173,7 @@
       <item row="2" column="1">
        <widget class="QComboBox" name="rampType">
         <property name="toolTip">
-         <string>Shape of the Z ramp: Linear is a constant-rate plunge; Smooth uses a smoothstep curve; Arc uses a quarter-circle curve.</string>
+         <string>Shape of the Z ramp: Linear is a constant-rate plunge; S-Curve eases at both ends (smoothstep); Smooth is tangent to the floor with an angled entry; Fillet rolls tangentially into the floor for a rounded bottom.</string>
         </property>
        </widget>
       </item>
