@@ -293,6 +293,15 @@ std::vector<std::string> ThreadUtils::getThreadTypeEnums()
     return result;
 }
 
+std::vector<std::string> ThreadUtils::getThreadDesignations(const int threadType)
+{
+    std::vector<std::string> designations;
+    for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
+        designations.push_back(std::to_string(thread.diameter));
+    }
+    return designations;
+}
+
 TopoDS_Shape ThreadUtils::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)
 {
     TopoDS_Shape emptyTopoDS_Shape;

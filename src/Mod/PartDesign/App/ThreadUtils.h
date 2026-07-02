@@ -23,6 +23,7 @@ public:
     static const std::vector<ThreadUtils::ThreadDescription> threadDescription[];
 
     std::vector<std::string> getThreadTypeEnums();
+    std::vector<std::string> getThreadDesignations(const int threadType);
 
 private:
     static const char* ThreadDepthTypeEnums[];
