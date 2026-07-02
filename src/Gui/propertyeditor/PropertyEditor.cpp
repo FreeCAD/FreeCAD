@@ -287,7 +287,14 @@ void PropertyEditor::commitData(QWidget* editor)
     committing = false;
     if (delaybuild) {
         delaybuild = false;
-        propertyModel->buildUp(PropertyModel::PropertyList());
+        // commitData() can run while a FocusOut is being delivered to the editor, and
+        // buildUp() resets the model, destroying that editor in place. Defer the
+        // rebuild until control returns to the event loop.
+        QMetaObject::invokeMethod(
+            this,
+            [this]() { propertyModel->buildUp(PropertyModel::PropertyList()); },
+            Qt::QueuedConnection
+        );
     }
 }
 
