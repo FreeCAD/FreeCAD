@@ -42,19 +42,11 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 # Z-variation threshold for flat-wire detection in the UI layer (mm).
-# Coarser than the tol.edge used at generate time — we only need to decide
-# whether to show the 2D controls, not whether to actually synthesize a profile.
 _FLAT_UI_TOL = 0.01
 
 
 def _classify_wire_selection(obj):
-    """Classify the edge selection as "flat", "3d", "mixed", or "none".
-
-    "flat"  — all selected edges lie at essentially constant Z
-    "3d"    — all selected edges carry Z variation
-    "mixed" — both types present (not allowed in one operation)
-    "none"  — no edges selected
-    """
+    """Classify the edge selection as "flat", "3d", "mixed", or "none"."""
     if not hasattr(obj, "Base") or not obj.Base:
         return "none"
     has_flat = False
@@ -84,11 +76,7 @@ def _classify_wire_selection(obj):
 
 
 def _get_selection_wire_length(obj):
-    """Return total arc length (mm) of all selected edges.
-
-    Used to convert between RampLength (mm) and RampPercent (%) in the UI.
-    Uses shape.Length (exact) rather than discretizing — close enough for display.
-    """
+    """Return total arc length (mm) of all selected edges (conversion factor for % ↔ mm)."""
     if not hasattr(obj, "Base") or not obj.Base:
         return 0.0
     total = 0.0
@@ -121,51 +109,37 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.flutingType.addItems(["Ramp Full", "Ramp Start", "Ramp Start End"])
         self.form.rampType.addItems(["Linear", "Smooth", "Arc"])
 
-        # Two-way sync: connect before FreeCAD registers getSignalsForUpdate so
-        # our slots fire first and the widget values are consistent when getFields
-        # reads them.  blockSignals() in each slot prevents infinite loops.
-        self.form.rampLength.editingFinished.connect(self._sync_pct_from_length)
-        self.form.rampPercent.valueChanged.connect(self._sync_length_from_pct)
+        # Two-way sync between Ramp Length (stored) and Ramp % (derived display).
+        # Mirrors Adaptive's stepOver ↔ stepOverDistance pattern.
+        # Connected here (before FreeCAD registers getSignalsForUpdate slots) so
+        # our slots fire first — the length widget is correct before getFields reads it.
+        self.form.rampLength.editingFinished.connect(lambda: self.updateRampPercent(obj))
+        self.form.rampPercent.valueChanged.connect(lambda: self.updateRampLength(obj))
 
-        # Stash obj so the sync slots can reach it.
-        self._flute_obj = obj
-
-    def _sync_pct_from_length(self):
-        """User finished editing Ramp Length — update Ramp % display."""
-        obj = getattr(self, "_flute_obj", None)
-        if obj is None:
-            return
+    def updateRampPercent(self, obj):
+        """Ramp Length changed — update Ramp % display."""
         wire_len = _get_selection_wire_length(obj)
         if wire_len <= 0:
             return
-        try:
-            length_mm = self.form.rampLength.value().Value
-        except Exception:
-            return
-        if length_mm <= 0:
-            return
-        pct = max(1, min(100, int(round(length_mm / wire_len * 100))))
-        self.form.rampPercent.blockSignals(True)
-        self.form.rampPercent.setValue(pct)
-        self.form.rampPercent.blockSignals(False)
+        length_mm = self.form.rampLength.property("rawValue")
+        if length_mm and length_mm > 0:
+            pct = max(1, min(100, int(round(length_mm / wire_len * 100))))
+            self.form.rampPercent.blockSignals(True)
+            self.form.rampPercent.setValue(pct)
+            self.form.rampPercent.blockSignals(False)
 
-    def _sync_length_from_pct(self, pct):
-        """User changed Ramp % — update Ramp Length display."""
-        obj = getattr(self, "_flute_obj", None)
-        if obj is None:
-            return
+    def updateRampLength(self, obj):
+        """Ramp % changed — update Ramp Length display so getFields reads the right value."""
         wire_len = _get_selection_wire_length(obj)
         if wire_len <= 0:
             return
+        pct = self.form.rampPercent.value()
         length_mm = wire_len * pct / 100.0
-        q = FreeCAD.Units.Quantity("{} mm".format(length_mm))
         self.form.rampLength.blockSignals(True)
-        self.form.rampLength.setValue(q)
+        self.form.rampLength.setProperty("rawValue", length_mm)
         self.form.rampLength.blockSignals(False)
 
     def setFields(self, obj):
-        self._flute_obj = obj
-
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
@@ -179,7 +153,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.axialStockToLeaveSpinBox.updateWidget()
 
         # 2D properties
-        flute_type = getattr(obj, "FlutingType", "RampFull")
+        flute_type = getattr(obj, "FlutingType", "Ramp Full")
         idx = self.form.flutingType.findText(flute_type)
         if idx >= 0:
             self.form.flutingType.setCurrentIndex(idx)
@@ -189,26 +163,21 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if idx >= 0:
             self.form.rampType.setCurrentIndex(idx)
 
-        # Show RampLength widget first, then derive RampPercent from it.
-        # If RampLength is 0, fall back to the stored RampPercent.
+        # Load RampLength; then derive % from it.
+        # Load length; derive % from it. If length is 0, default % display to 100.
         self.rampLengthSpinBox.updateWidget()
-
         length_mm = getattr(obj, "RampLength", None)
         length_mm = length_mm.Value if length_mm is not None else 0.0
-        wire_len = _get_selection_wire_length(obj)
 
-        self.form.rampPercent.blockSignals(True)
-        if length_mm > 0 and wire_len > 0:
-            pct = max(1, min(100, int(round(length_mm / wire_len * 100))))
-            self.form.rampPercent.setValue(pct)
+        if length_mm > 0:
+            self.updateRampPercent(obj)
         else:
-            self.form.rampPercent.setValue(int(getattr(obj, "RampPercent", 100)))
-        self.form.rampPercent.blockSignals(False)
+            self.form.rampPercent.blockSignals(True)
+            self.form.rampPercent.setValue(100)
+            self.form.rampPercent.blockSignals(False)
 
         flip = getattr(obj, "FlipStart2D", False)
-        self.form.flipStart2D.setCheckState(
-            QtCore.Qt.Checked if flip else QtCore.Qt.Unchecked
-        )
+        self.form.flipStart2D.setCheckState(QtCore.Qt.Checked if flip else QtCore.Qt.Unchecked)
 
         self._update_2d_visibility(obj)
 
@@ -224,10 +193,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.FlutingType = self.form.flutingType.currentText()
         if hasattr(obj, "RampType"):
             obj.RampType = self.form.rampType.currentText()
-        # RampLength is authoritative; RampPercent kept in sync for storage.
         self.rampLengthSpinBox.updateProperty()
-        if hasattr(obj, "RampPercent"):
-            obj.RampPercent = self.form.rampPercent.value()
         if hasattr(obj, "FlipStart2D"):
             obj.FlipStart2D = self.form.flipStart2D.isChecked()
 
@@ -243,6 +209,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                 signals.append(checkbox.stateChanged)
 
         signals.append(self.form.axialStockToLeave.editingFinished)
+        # rampLength.editingFinished triggers recompute via FreeCAD machinery.
+        # rampPercent.valueChanged is also registered so changing % triggers recompute
+        # (our updateRampLength slot runs first to sync the length widget).
         signals.append(self.form.rampLength.editingFinished)
         signals.append(self.form.flutingType.currentIndexChanged)
         signals.append(self.form.rampType.currentIndexChanged)
@@ -267,10 +236,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         self.form.flute2DOptions.setVisible(show_2d)
 
-        # Mirror visibility into the data panel properties so they don't clutter
-        # the tree when 2D mode isn't relevant.  2 = hidden, 0 = normal.
         mode = 0 if show_2d else 2
-        for prop in ("FlutingType", "RampType", "RampLength", "RampPercent", "FlipStart2D"):
+        for prop in ("FlutingType", "RampType", "RampLength", "FlipStart2D"):
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, mode)
 
