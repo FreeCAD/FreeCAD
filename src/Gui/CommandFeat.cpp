@@ -297,7 +297,7 @@ StdCmdSendToPythonConsole::StdCmdSendToPythonConsole()
     // setting the
     sGroup = "Edit";
     sMenuText = QT_TR_NOOP("&Send to Python Console");
-    sToolTipText = QT_TR_NOOP("Sends the selected object to the Python console");
+    sToolTipText = QT_TR_NOOP("Sends the selected objects to the Python console");
     sWhatsThis = "Std_SendToPythonConsole";
     sStatusTip = sToolTipText;
     sPixmap = "applications-python";
@@ -306,8 +306,8 @@ StdCmdSendToPythonConsole::StdCmdSendToPythonConsole()
 
 bool StdCmdSendToPythonConsole::isActive()
 {
-    // active only if either 1 object is selected or multiple subobjects from the same object
-    return Gui::Selection().getSelectionEx().size() == 1;
+    // active only if at least 1 object is selected
+    return Gui::Selection().getSelectionEx().size();
 }
 
 void StdCmdSendToPythonConsole::activated(int iMsg)
@@ -322,67 +322,79 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
     if (sels.empty()) {
         return;
     }
-    const App::DocumentObject* obj = sels[0].getObject();
-    if (!obj) {
-        return;
-    }
-    QString docname = QString::fromLatin1(obj->getDocument()->getName());
-    QString objname = QString::fromLatin1(obj->getNameInDocument());
-    try {
-        // clear variables from previous run, if any
-        QString cmd = QLatin1String(
-            "try:\n    del(doc,lnk,obj,shp,sub,subs)\nexcept Exception:\n    pass\n"
-        );
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
-        cmd = QStringLiteral("doc = App.getDocument(\"%1\")").arg(docname);
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
-        // support links
-        if (obj->isDerivedFrom<App::Link>()) {
-            cmd = QStringLiteral("lnk = doc.getObject(\"%1\")").arg(objname);
-            Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
-            cmd = QStringLiteral("obj = lnk.getLinkedObject()");
-            Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
-            const auto link = static_cast<const App::Link*>(obj);
-            obj = link->getLinkedObject();
+    // clear variables from previous run
+    QString cmd = QLatin1String("doc = lnk = obj = shp = sub = name = None");
+    Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+    cmd = QStringLiteral("objs, shps, subs, names = [], [], [], []");
+    Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+    const App::DocumentObject* obj;
+    for (int i = 0; i < (int)sels.size(); i++) {
+        obj = sels[i].getObject();
+        if (!obj) {
+            continue;
         }
-        else {
-            cmd = QStringLiteral("obj = doc.getObject(\"%1\")").arg(objname);
+        QString docname = QString::fromLatin1(obj->getDocument()->getName());
+        QString objname = QString::fromLatin1(obj->getNameInDocument());
+        try {
+            cmd = QStringLiteral("doc = App.getDocument(\"%1\")").arg(docname);
             Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
-        }
-        if (obj->isDerivedFrom<App::GeoFeature>()) {
-            const auto geoObj = static_cast<const App::GeoFeature*>(obj);
-            const App::PropertyGeometry* geo = geoObj->getPropertyOfGeometry();
-            if (geo) {
-                cmd = QStringLiteral("shp = obj.")
-                    + QLatin1String(geo->getName());  //"Shape", "Mesh", "Points", etc.
+            // support links
+            if (obj->isDerivedFrom<App::Link>()) {
+                cmd = QStringLiteral("lnk = doc.getObject(\"%1\")").arg(objname);
                 Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
-                if (sels[0].hasSubNames()) {
-                    std::vector<std::string> subnames = sels[0].getSubNames();
-                    QString subname = QString::fromLatin1(subnames[0].c_str());
-                    cmd = QStringLiteral("sub = obj.getSubObject(\"%1\")").arg(subname);
+                cmd = QStringLiteral("obj = lnk.getLinkedObject()");
+                Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+                const auto link = static_cast<const App::Link*>(obj);
+                obj = link->getLinkedObject();
+            }
+            else {
+                cmd = QStringLiteral("obj = doc.getObject(\"%1\")").arg(objname);
+                Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+            }
+            cmd = QStringLiteral("objs.append(obj)");
+            Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+            if (obj->isDerivedFrom<App::GeoFeature>()) {
+                const auto geoObj = static_cast<const App::GeoFeature*>(obj);
+                const App::PropertyGeometry* geo = geoObj->getPropertyOfGeometry();
+                if (geo) {
+                    cmd = QStringLiteral("shp = obj.")
+                        + QLatin1String(geo->getName());  //"Shape", "Mesh", "Points", etc.
                     Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
-                    if (subnames.size() > 1) {
-                        std::ostringstream strm;
-                        strm << "subs = [";
-                        for (const auto& subname : subnames) {
-                            strm << "obj.getSubObject(\"" << subname << "\"),";
+                    cmd = QStringLiteral("shps.append(shp)");
+                    Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+                    if (sels[i].hasSubNames()) {
+                        std::vector<std::string> subnames = sels[i].getSubNames();
+                        if (subnames.size()) {
+                            std::ostringstream strm;
+                            strm << "names = [";
+                            for (const auto& subname : subnames) {
+                                strm << "\"" << subname << "\",";
+                            }
+                            strm << "]";
+                            Gui::Command::runCommand(Gui::Command::Gui, strm.str().c_str());
                         }
-                        strm << "]";
-                        Gui::Command::runCommand(Gui::Command::Gui, strm.str().c_str());
+                        QString cmd = QLatin1String(
+                            "for name in names:\n    subs.append(obj.getSubObject(name))"
+                        );
+                        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+                        cmd = QStringLiteral("name = names[0]");
+                        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+                        cmd = QStringLiteral("sub = subs[0]");
+                        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
                     }
                 }
             }
+            // show the python console if it's not already visible, and set the keyboard focus to it
+            QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
+            auto pcPython = qobject_cast<PythonConsole*>(pc);
+            if (pcPython) {
+                DockWindowManager::instance()->activate(pcPython);
+                pcPython->setFocus();
+            }
         }
-        // show the python console if it's not already visible, and set the keyboard focus to it
-        QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
-        auto pcPython = qobject_cast<PythonConsole*>(pc);
-        if (pcPython) {
-            DockWindowManager::instance()->activate(pcPython);
-            pcPython->setFocus();
+        catch (const Base::Exception& e) {
+            e.reportException();
         }
-    }
-    catch (const Base::Exception& e) {
-        e.reportException();
     }
 }
 
