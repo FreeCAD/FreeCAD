@@ -147,6 +147,7 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
     FCBRepAlgoAPI_Cut mkCut(shape, solid);
 
     if (mkCut.IsDone()) {
+        Standard_Real fuzzyTol = mkCut.FuzzyValue();
         TopTools_IndexedMapOfShape mapOfFaces;
         TopExp::MapShapes(mkCut.Shape(), TopAbs_FACE, mapOfFaces);
         for (int i = 1; i <= mapOfFaces.Extent(); i++) {
@@ -154,9 +155,10 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
             BRepAdaptor_Surface adapt(face);
             if (adapt.GetType() == GeomAbs_Plane) {
                 gp_Pln plane = adapt.Plane();
-                Standard_Real faceTolerance = BRep_Tool::Tolerance(face);
+                Standard_Real faceTol = BRep_Tool::Tolerance(face);
+                Standard_Real tol = faceTol + fuzzyTol;
                 if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
-                    && plane.Distance(slicePlane.Location()) < faceTolerance) {
+                    && plane.Distance(slicePlane.Location()) < tol) {
                     // sort and repair the wires
                     TopTools_IndexedMapOfShape mapOfWires;
                     TopExp::MapShapes(face, TopAbs_WIRE, mapOfWires);
