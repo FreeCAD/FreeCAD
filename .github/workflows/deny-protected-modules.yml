@@ -1,0 +1,189 @@
+---
+
+name: Protected Module Guard
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+  merge_group:
+    types: [checks_requested]
+
+permissions:
+  contents: read
+
+jobs:
+  block-protected-modules:
+    name: Block protected module changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: Check out merge group
+        if: github.event_name == 'merge_group'
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Deny protected module changes
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const { execFileSync } = require('node:child_process');
+            const protectedPrefixes = [
+              'src/Mod/Agent/',
+              'src/Mod/Auth/',
+              'src/Mod/Bridge/',
+            ];
+            const commentMarker = '<!-- parashell-protected-module-guard -->';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const pr = context.payload.pull_request;
+
+            function unique(values) {
+              return [...new Set(values.filter(Boolean))];
+            }
+
+            function protectedFiles(filenames) {
+              return unique(filenames)
+                .filter(filename => protectedPrefixes.some(prefix => filename.startsWith(prefix)));
+            }
+
+            async function pullRequestChangedFilenames() {
+              if (!pr) {
+                core.setFailed('pull_request_target payload did not include a pull request.');
+                return [];
+              }
+
+              const changedFiles = await github.paginate(github.rest.pulls.listFiles, {
+                owner,
+                repo,
+                pull_number: pr.number,
+                per_page: 100,
+              });
+
+              return unique(changedFiles.flatMap(file => [
+                file.filename,
+                file.previous_filename,
+              ]));
+            }
+
+            function mergeGroupChangedFilenames() {
+              const mergeGroup = context.payload.merge_group;
+              const base = mergeGroup && mergeGroup.base_sha;
+              const head = mergeGroup && mergeGroup.head_sha;
+
+              if (!base || !head) {
+                core.setFailed('merge_group payload did not include base_sha and head_sha.');
+                return [];
+              }
+
+              const output = execFileSync(
+                'git',
+                ['diff', '--name-status', '--find-renames', base, head],
+                { encoding: 'utf8' }
+              );
+
+              return unique(output
+                .split('\n')
+                .filter(Boolean)
+                .flatMap(line => {
+                  const [status, ...paths] = line.split('\t');
+                  return status && status.startsWith('R') ? paths : paths.slice(0, 1);
+                }));
+            }
+
+            let changedFilenames = [];
+            if (context.eventName === 'pull_request_target') {
+              changedFilenames = await pullRequestChangedFilenames();
+            } else if (context.eventName === 'merge_group') {
+              changedFilenames = mergeGroupChangedFilenames();
+            } else {
+              core.setFailed(`Unsupported event for protected module guard: ${context.eventName}`);
+              return;
+            }
+
+            const blockedFiles = protectedFiles(changedFilenames);
+
+            if (blockedFiles.length === 0) {
+              core.info('No protected module changes detected.');
+              return;
+            }
+
+            if (context.eventName === 'merge_group') {
+              core.setFailed(
+                `Protected module changes reached the merge queue (${blockedFiles.length} file(s)).`
+              );
+              return;
+            }
+
+            const displayedFiles = blockedFiles
+              .slice(0, 50)
+              .map(filename => `- \`${filename}\``)
+              .join('\n');
+            const hiddenCount = blockedFiles.length - 50;
+            const hiddenMessage = hiddenCount > 0
+              ? `\n- ...and ${hiddenCount} more protected file(s)`
+              : '';
+            const blockedPathList = protectedPrefixes
+              .map(prefix => `- \`${prefix}**\``)
+              .join('\n');
+
+            const body = [
+              commentMarker,
+              'This pull request modifies protected Parashell module paths and cannot be merged.',
+              '',
+              'Blocked paths:',
+              blockedPathList,
+              '',
+              `Detected protected changes (${blockedFiles.length}):`,
+              `${displayedFiles}${hiddenMessage}`,
+              '',
+              'This PR has been closed automatically. Please open a new PR without changes to these protected modules.',
+            ].join('\n');
+
+            try {
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: pr.number,
+                state: 'closed',
+              });
+              core.info(`Closed pull request #${pr.number}.`);
+            } catch (error) {
+              core.warning(`Failed to close pull request #${pr.number}: ${error.message}`);
+            }
+
+            try {
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner,
+                repo,
+                issue_number: pr.number,
+                per_page: 100,
+              });
+
+              if (!comments.some(comment => comment.body && comment.body.includes(commentMarker))) {
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: pr.number,
+                  body,
+                });
+              } else {
+                core.info('A protected module guard comment already exists on this pull request.');
+              }
+            } catch (error) {
+              core.warning(`Failed to create protected module guard comment: ${error.message}`);
+            }
+
+            core.setFailed(
+              `Protected module changes are not allowed in this repository (${blockedFiles.length} file(s)).`
+            );
