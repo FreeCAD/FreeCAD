@@ -150,10 +150,10 @@ void TaskDlgEditSketch::saveDialogState() const
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher"
     );
-    hGrp->SetBool("ExpandedMessagesWidget", Messages->isGroupVisible());
-    hGrp->SetBool("ExpandedSolverAdvancedWidget", SolverAdvanced->isGroupVisible());
-    hGrp->SetBool("ExpandedConstraintsWidget", Constraints->isGroupVisible());
-    hGrp->SetBool("ExpandedElementsWidget", Elements->isGroupVisible());
+    hGrp->SetBool("ExpandedMessagesWidget", Messages->isExpanded());
+    hGrp->SetBool("ExpandedSolverAdvancedWidget", SolverAdvanced->isExpanded());
+    hGrp->SetBool("ExpandedConstraintsWidget", Constraints->isExpanded());
+    hGrp->SetBool("ExpandedElementsWidget", Elements->isExpanded());
 }
 
 QDialogButtonBox::StandardButtons TaskDlgEditSketch::getStandardButtons() const
