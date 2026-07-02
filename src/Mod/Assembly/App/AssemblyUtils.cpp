@@ -67,6 +67,15 @@ bool isLinkArray(App::DocumentObject* obj)
     return obj && obj->isDerivedFrom<PartApp::LinkArray>();
 }
 
+bool isSuppressedLinkElement(App::DocumentObject* obj)
+{
+    if (!obj || !obj->isDerivedFrom<App::LinkElement>()) {
+        return false;
+    }
+    auto* ext = obj->getExtensionByType<App::SuppressibleExtension>(true);
+    return ext && ext->Suppressed.getValue();
+}
+
 }  // namespace
 
 void swapJCS(const App::DocumentObject* joint)
@@ -614,6 +623,9 @@ App::DocumentObject* getObjFromRef(App::DocumentObject* comp, const std::string&
                 auto* retObj = handlePartDesignBody(linked_obj, it);
                 return retObj == linked_obj ? obj : retObj;
             }
+            else if (isLinkArray(linked_obj)) {
+                return obj;
+            }
             else if (linked_obj->isDerivedFrom<PartApp::Feature>()) {
                 return obj;
             }
@@ -765,7 +777,7 @@ void collectComponentsRecursively(
 )
 {
     for (auto* obj : objects) {
-        if (!obj) {
+        if (!obj || isSuppressedLinkElement(obj)) {
             continue;
         }
 
@@ -783,6 +795,9 @@ void collectComponentsRecursively(
         else if (obj->isLinkGroup()) {
             auto* linkGroup = static_cast<App::Link*>(obj);
             for (auto* elt : linkGroup->ElementList.getValues()) {
+                if (isSuppressedLinkElement(elt)) {
+                    continue;
+                }
                 results.push_back(elt);
             }
             continue;
@@ -797,8 +812,9 @@ void collectComponentsRecursively(
         }
         else if (auto* link = freecad_cast<App::Link*>(obj)) {
             obj = link->getLinkedObject();
-            if (obj->isDerivedFrom<App::GeoFeature>()
-                && !obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
+            if (isLinkArray(obj)
+                || (obj->isDerivedFrom<App::GeoFeature>()
+                    && !obj->isDerivedFrom<App::LocalCoordinateSystem>())) {
                 results.push_back(link);
             }
         }

@@ -20,6 +20,7 @@ class TestLinkArrayPoint(unittest.TestCase):
         )
         self.array = self.doc.addObject("Part::LinkArrayPoint", "Array")
         self.array.LinkedObject = source
+        self.array.ShowElement = False
         self.array.PointObject = self.points
 
     def tearDown(self):

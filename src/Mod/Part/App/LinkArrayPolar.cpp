@@ -71,8 +71,10 @@ std::optional<gp_Ax2> axisFromLine(App::Line* line)
     return gp_Ax2(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
 }
 
-std::optional<gp_Ax2> axisFromLocalCoordinateSystem(App::LocalCoordinateSystem* lcs,
-                                                    const std::string& role)
+std::optional<gp_Ax2> axisFromLocalCoordinateSystem(
+    App::LocalCoordinateSystem* lcs,
+    const std::string& role
+)
 {
     if (!lcs) {
         return {};

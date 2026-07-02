@@ -19,22 +19,30 @@ PatternCircularParametersWidget::PatternCircularParametersWidget(QWidget* parent
     ui->setupUi(this);
     setupReferenceCombo(ui->axisCombo);
 
-    connect(ui->radialDistance,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &PatternCircularParametersWidget::onRadialDistanceChanged);
-    connect(ui->tangentialDistance,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            &PatternCircularParametersWidget::onTangentialDistanceChanged);
-    connect(ui->numberCircles,
-            &Gui::UIntSpinBox::unsignedChanged,
-            this,
-            &PatternCircularParametersWidget::onNumberCirclesChanged);
-    connect(ui->symmetry,
-            &Gui::UIntSpinBox::unsignedChanged,
-            this,
-            &PatternCircularParametersWidget::onSymmetryChanged);
+    connect(
+        ui->radialDistance,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &PatternCircularParametersWidget::onRadialDistanceChanged
+    );
+    connect(
+        ui->tangentialDistance,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &PatternCircularParametersWidget::onTangentialDistanceChanged
+    );
+    connect(
+        ui->numberCircles,
+        &Gui::UIntSpinBox::unsignedChanged,
+        this,
+        &PatternCircularParametersWidget::onNumberCirclesChanged
+    );
+    connect(
+        ui->symmetry,
+        &Gui::UIntSpinBox::unsignedChanged,
+        this,
+        &PatternCircularParametersWidget::onSymmetryChanged
+    );
 }
 
 PatternCircularParametersWidget::~PatternCircularParametersWidget() = default;
@@ -62,10 +70,11 @@ void PatternCircularParametersWidget::bindProperties(
         ui->tangentialDistance->setUnit(Base::Unit::Length);
         ui->radialDistance->bind(*radialDistanceProperty);
         ui->tangentialDistance->bind(*tangentialDistanceProperty);
-        ui->numberCircles->setRange(numberCirclesProperty->getMinimum(),
-                                    numberCirclesProperty->getMaximum());
-        ui->symmetry->setRange(symmetryProperty->getMinimum(),
-                               symmetryProperty->getMaximum());
+        ui->numberCircles->setRange(
+            numberCirclesProperty->getMinimum(),
+            numberCirclesProperty->getMaximum()
+        );
+        ui->symmetry->setRange(symmetryProperty->getMinimum(), symmetryProperty->getMaximum());
         ui->numberCircles->bind(*numberCirclesProperty);
         ui->symmetry->bind(*symmetryProperty);
     }

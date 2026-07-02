@@ -154,6 +154,11 @@ public:
         double startAngle
     );
     void updateSpacingLabels(const Base::Vector3d& startPoint, const Base::Vector3d& direction);
+    void updateSpacingLabels(
+        const Base::Vector3d& startPoint,
+        const Base::Vector3d& direction,
+        const Base::Vector3d& planeNormal
+    );
     void clearAllSpacingLabels();
 
 private Q_SLOTS:

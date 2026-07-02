@@ -26,7 +26,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Circular pattern</string>
+      <string>Circular Pattern</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">

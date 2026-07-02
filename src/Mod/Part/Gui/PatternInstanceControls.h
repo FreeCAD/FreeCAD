@@ -23,54 +23,72 @@
 
 #pragma once
 
-#include <list>
 #include <vector>
 
-#include <App/Link.h>
-#include <Base/Placement.h>
+#include <QObject>
+#include <QPointer>
+
+#include <Base/Vector3D.h>
 #include <Mod/Part/PartGlobal.h>
 
-class gp_Trsf;
+class QToolButton;
+class QWidget;
+class SoNodeSensor;
+class SoSensor;
 
-namespace Part
+namespace Gui
+{
+class View3DInventorViewer;
+}
+
+namespace PartGui
 {
 
-class PartExport LinkArray: public App::Link
+class PartGuiExport PatternInstanceControls: public QObject
 {
-    PROPERTY_HEADER_WITH_EXTENSIONS(Part::LinkArray);
-    using inherited = App::Link;
+    Q_OBJECT
 
 public:
-    LinkArray();
-
-    const char* getViewProviderName() const override
+    struct Instance
     {
-        return "PartGui::ViewProviderLinkArray";
-    }
+        int index = -1;
+        Base::Vector3d center;
+        bool suppressed = false;
+    };
 
-    App::DocumentObjectExecReturn* execute() override;
-    void onDocumentRestored() override;
+    explicit PatternInstanceControls(Gui::View3DInventorViewer* viewer, QObject* parent = nullptr);
+    ~PatternInstanceControls() override;
 
-    Base::Placement getPlacementOf(
-        const std::string& sub,
-        App::DocumentObject* targetObj = nullptr
-    ) override;
+    void setViewer(Gui::View3DInventorViewer* viewer);
+    void setInstances(const std::vector<Instance>& instances);
+    void clear();
 
-    bool isLink() const override;
-    bool isLinkGroup() const override;
+public Q_SLOTS:
+    void updatePositions();
+
+Q_SIGNALS:
+    void toggleRequested(int index, bool suppress);
 
 protected:
-    void onChanged(const App::Property* prop) override;
-    virtual std::vector<Base::Placement> getElementPlacements();
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
-    void syncGeneratedElementPlacements(const std::vector<Base::Placement>& placements);
-    void syncGeneratedElementLinkPlacements(const std::vector<Base::Placement>& placements);
-    void enforceLinkArrayPropertyStatus();
+private:
+    struct ButtonInfo
+    {
+        Instance instance;
+        QPointer<QToolButton> button;
+    };
 
-    static Base::Placement placementFromTransform(const gp_Trsf& transform);
-    static std::vector<Base::Placement> placementsFromTransforms(
-        const std::list<gp_Trsf>& transformations
-    );
+    void refreshHostWidget();
+    void updateButton(ButtonInfo& info) const;
+    void attachCameraSensor();
+    void detachCameraSensor();
+    static void cameraSensorCallback(void* data, SoSensor* sensor);
+
+    QPointer<Gui::View3DInventorViewer> viewer;
+    QPointer<QWidget> hostWidget;
+    SoNodeSensor* cameraSensor = nullptr;
+    std::vector<ButtonInfo> buttons;
 };
 
-}  // namespace Part
+}  // namespace PartGui

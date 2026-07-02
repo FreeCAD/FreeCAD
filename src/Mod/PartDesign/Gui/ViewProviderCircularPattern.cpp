@@ -4,12 +4,9 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderCircularPattern,
-                PartDesignGui::ViewProviderPolarPattern)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderCircularPattern, PartDesignGui::ViewProviderPolarPattern)
 
-void ViewProviderCircularPattern::setupContextMenu(QMenu* menu,
-                                                   QObject* receiver,
-                                                   const char* member)
+void ViewProviderCircularPattern::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit Circular Pattern"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);

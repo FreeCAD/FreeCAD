@@ -9,8 +9,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport PointPattern: public PartDesign::Transformed,
-                                     public Part::PointPatternExtension
+class PartDesignExport PointPattern: public PartDesign::Transformed, public Part::PointPatternExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesign::PointPattern);
 
@@ -22,9 +21,7 @@ public:
         return "PartDesignGui::ViewProviderPointPattern";
     }
 
-    const std::list<gp_Trsf> getTransformations(
-        const std::vector<App::DocumentObject*>
-    ) override;
+    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
 
 protected:
     void positionBySupport() override;

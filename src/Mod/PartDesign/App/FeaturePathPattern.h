@@ -9,8 +9,7 @@
 namespace PartDesign
 {
 
-class PartDesignExport PathPattern: public PartDesign::Transformed,
-                                    public Part::PathPatternExtension
+class PartDesignExport PathPattern: public PartDesign::Transformed, public Part::PathPatternExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesign::PathPattern);
 
@@ -22,9 +21,7 @@ public:
         return "PartDesignGui::ViewProviderPathPattern";
     }
 
-    const std::list<gp_Trsf> getTransformations(
-        const std::vector<App::DocumentObject*>
-    ) override;
+    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
 };
 
 }  // namespace PartDesign
