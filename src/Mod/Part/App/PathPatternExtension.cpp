@@ -30,18 +30,11 @@ using namespace Part;
 
 EXTENSION_PROPERTY_SOURCE(Part::PathPatternExtension, App::DocumentObjectExtension)
 
-const App::PropertyIntegerConstraint::Constraints PathPatternExtension::intCount = {
-    1,
-    std::numeric_limits<int>::max(),
-    1
-};
+const App::PropertyIntegerConstraint::Constraints PathPatternExtension::intCount
+    = {1, std::numeric_limits<int>::max(), 1};
 
-const char* PathPatternExtension::SpacingModeEnums[] = {
-    "Fixed count",
-    "Fixed spacing",
-    "Fixed count and spacing",
-    nullptr
-};
+const char* PathPatternExtension::SpacingModeEnums[]
+    = {"Fixed count", "Fixed spacing", "Fixed count and spacing", nullptr};
 
 namespace
 {
@@ -74,8 +67,7 @@ std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
     if (edges.empty()) {
         const auto wires = shape.getSubShapes(TopAbs_WIRE);
         if (!wires.empty()) {
-            for (BRepTools_WireExplorer explorer(TopoDS::Wire(wires.front()));
-                 explorer.More();
+            for (BRepTools_WireExplorer explorer(TopoDS::Wire(wires.front())); explorer.More();
                  explorer.Next()) {
                 edges.emplace_back(explorer.Current());
             }
@@ -114,16 +106,22 @@ std::vector<TopoDS_Edge> getPathEdges(const App::PropertyLinkSub& pathProperty)
                 <= Precision::Confusion()) {
                 result.push_back(candidate);
             }
-            else if (BRep_Tool::Pnt(currentLast).Distance(BRep_Tool::Pnt(candidateLast))
-                     <= Precision::Confusion()) {
+            else if (
+                BRep_Tool::Pnt(currentLast).Distance(BRep_Tool::Pnt(candidateLast))
+                <= Precision::Confusion()
+            ) {
                 result.push_back(TopoDS::Edge(candidate.Reversed()));
             }
-            else if (BRep_Tool::Pnt(currentFirst).Distance(BRep_Tool::Pnt(candidateLast))
-                     <= Precision::Confusion()) {
+            else if (
+                BRep_Tool::Pnt(currentFirst).Distance(BRep_Tool::Pnt(candidateLast))
+                <= Precision::Confusion()
+            ) {
                 result.insert(result.begin(), candidate);
             }
-            else if (BRep_Tool::Pnt(currentFirst).Distance(BRep_Tool::Pnt(candidateFirst))
-                     <= Precision::Confusion()) {
+            else if (
+                BRep_Tool::Pnt(currentFirst).Distance(BRep_Tool::Pnt(candidateFirst))
+                <= Precision::Confusion()
+            ) {
                 result.insert(result.begin(), TopoDS::Edge(candidate.Reversed()));
             }
             else {
@@ -146,7 +144,10 @@ double edgeLength(const TopoDS_Edge& edge)
 {
     BRepAdaptor_Curve curve(edge);
     return GCPnts_AbscissaPoint::Length(
-        curve, curve.FirstParameter(), curve.LastParameter(), Precision::Confusion()
+        curve,
+        curve.FirstParameter(),
+        curve.LastParameter(),
+        Precision::Confusion()
     );
 }
 
@@ -163,13 +164,15 @@ bool isClosed(const std::vector<TopoDS_Edge>& edges)
     return BRep_Tool::Pnt(first).Distance(BRep_Tool::Pnt(last)) <= Precision::Confusion();
 }
 
-std::vector<double> calculateDistances(double pathLength,
-                                       bool closed,
-                                       int count,
-                                       PathPatternSpacingMode mode,
-                                       double spacing,
-                                       double startOffset,
-                                       double endOffset)
+std::vector<double> calculateDistances(
+    double pathLength,
+    bool closed,
+    int count,
+    PathPatternSpacingMode mode,
+    double spacing,
+    double startOffset,
+    double endOffset
+)
 {
     if (startOffset < 0.0 || endOffset < 0.0) {
         throw Base::ValueError("Path offsets cannot be negative");
@@ -182,9 +185,8 @@ std::vector<double> calculateDistances(double pathLength,
     std::vector<double> distances;
 
     if (mode == PathPatternSpacingMode::FixedCount) {
-        const int segments = std::max(1, closed && startOffset == 0.0 && endOffset == 0.0
-                                            ? count
-                                            : count - 1);
+        const int segments
+            = std::max(1, closed && startOffset == 0.0 && endOffset == 0.0 ? count : count - 1);
         const double step = available / segments;
         distances.reserve(count);
         for (int index = 0; index < count; ++index) {
@@ -213,27 +215,26 @@ std::vector<double> calculateDistances(double pathLength,
     return distances;
 }
 
-gp_Trsf frameAt(const std::vector<TopoDS_Edge>& edges,
-                const std::vector<double>& ends,
-                double distance,
-                bool align,
-                const Base::Vector3d& vertical)
+gp_Trsf frameAt(
+    const std::vector<TopoDS_Edge>& edges,
+    const std::vector<double>& ends,
+    double distance,
+    bool align,
+    const Base::Vector3d& vertical
+)
 {
     auto end = std::lower_bound(ends.begin(), ends.end(), distance - Precision::Confusion());
-    const std::size_t index =
-        end == ends.end() ? edges.size() - 1 : static_cast<std::size_t>(end - ends.begin());
+    const std::size_t index = end == ends.end() ? edges.size() - 1
+                                                : static_cast<std::size_t>(end - ends.begin());
     const double edgeStart = index == 0 ? 0.0 : ends[index - 1];
     const double localDistance = std::clamp(distance - edgeStart, 0.0, edgeLength(edges[index]));
 
     BRepAdaptor_Curve curve(edges[index]);
     const bool reversed = edges[index].Orientation() == TopAbs_REVERSED;
-    const double startParameter =
-        reversed ? curve.LastParameter() : curve.FirstParameter();
+    const double startParameter = reversed ? curve.LastParameter() : curve.FirstParameter();
     double parameter = startParameter;
     if (localDistance > Precision::Confusion()) {
-        GCPnts_AbscissaPoint point(
-            curve, reversed ? -localDistance : localDistance, startParameter
-        );
+        GCPnts_AbscissaPoint point(curve, reversed ? -localDistance : localDistance, startParameter);
         if (!point.IsDone()) {
             throw Base::CADKernelError("Failed to evaluate point on path");
         }
@@ -257,7 +258,7 @@ gp_Trsf frameAt(const std::vector<TopoDS_Edge>& edges,
         zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
         if (zCandidate.Magnitude() <= Precision::Confusion()) {
             zCandidate = std::abs(xDirection.Z()) < 0.9 ? gp_Vec(0.0, 0.0, 1.0)
-                                                       : gp_Vec(0.0, 1.0, 0.0);
+                                                        : gp_Vec(0.0, 1.0, 0.0);
             zCandidate -= gp_Vec(xDirection) * zCandidate.Dot(gp_Vec(xDirection));
         }
         const gp_Dir zDirection(zCandidate);
@@ -286,11 +287,13 @@ PathPatternExtension::PathPatternExtension()
     initExtensionType(PathPatternExtension::getExtensionClassTypeId());
 
     EXTENSION_ADD_PROPERTY_TYPE(
-        Path, (nullptr), "PathPattern", App::Prop_None, "Path edges used by the pattern."
+        Path,
+        (nullptr),
+        "PathPattern",
+        App::Prop_None,
+        "Path edges used by the pattern."
     );
-    EXTENSION_ADD_PROPERTY_TYPE(
-        Count, (4), "PathPattern", App::Prop_None, "Maximum number of occurrences."
-    );
+    EXTENSION_ADD_PROPERTY_TYPE(Count, (4), "PathPattern", App::Prop_None, "Maximum number of occurrences.");
     Count.setConstraints(&intCount);
     EXTENSION_ADD_PROPERTY_TYPE(
         SpacingMode,
@@ -301,19 +304,39 @@ PathPatternExtension::PathPatternExtension()
     );
     SpacingMode.setEnums(SpacingModeEnums);
     EXTENSION_ADD_PROPERTY_TYPE(
-        Spacing, (20.0), "PathPattern", App::Prop_None, "Distance between occurrences."
+        Spacing,
+        (20.0),
+        "PathPattern",
+        App::Prop_None,
+        "Distance between occurrences."
     );
     EXTENSION_ADD_PROPERTY_TYPE(
-        StartOffset, (0.0), "PathPattern", App::Prop_None, "Unused distance at path start."
+        StartOffset,
+        (0.0),
+        "PathPattern",
+        App::Prop_None,
+        "Unused distance at path start."
     );
     EXTENSION_ADD_PROPERTY_TYPE(
-        EndOffset, (0.0), "PathPattern", App::Prop_None, "Unused distance at path end."
+        EndOffset,
+        (0.0),
+        "PathPattern",
+        App::Prop_None,
+        "Unused distance at path end."
     );
     EXTENSION_ADD_PROPERTY_TYPE(
-        ReversePath, (false), "PathPattern", App::Prop_None, "Traverse the path in reverse."
+        ReversePath,
+        (false),
+        "PathPattern",
+        App::Prop_None,
+        "Traverse the path in reverse."
     );
     EXTENSION_ADD_PROPERTY_TYPE(
-        Align, (false), "PathPattern", App::Prop_None, "Align occurrence X axes to the path."
+        Align,
+        (false),
+        "PathPattern",
+        App::Prop_None,
+        "Align occurrence X axes to the path."
     );
     EXTENSION_ADD_PROPERTY_TYPE(
         VerticalVector,
@@ -351,13 +374,15 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations(bool relativeT
     }
 
     const auto mode = static_cast<PathPatternSpacingMode>(SpacingMode.getValue());
-    const auto distances = calculateDistances(totalLength,
-                                              isClosed(edges),
-                                              Count.getValue(),
-                                              mode,
-                                              Spacing.getValue(),
-                                              StartOffset.getValue(),
-                                              EndOffset.getValue());
+    const auto distances = calculateDistances(
+        totalLength,
+        isClosed(edges),
+        Count.getValue(),
+        mode,
+        Spacing.getValue(),
+        StartOffset.getValue(),
+        EndOffset.getValue()
+    );
     if (distances.empty()) {
         throw Base::ValueError("Path pattern produced no occurrences");
     }
@@ -374,10 +399,8 @@ std::list<gp_Trsf> PathPatternExtension::calculateTransformations(bool relativeT
         const gp_Quaternion inverseFirstRotation = first.GetRotation().Inverted();
         const gp_XYZ firstTranslation = first.TranslationPart();
         for (auto& transform : transformations) {
-            gp_Quaternion relativeRotation =
-                transform.GetRotation().Multiplied(inverseFirstRotation);
-            const gp_XYZ relativeTranslation =
-                transform.TranslationPart() - firstTranslation;
+            gp_Quaternion relativeRotation = transform.GetRotation().Multiplied(inverseFirstRotation);
+            const gp_XYZ relativeTranslation = transform.TranslationPart() - firstTranslation;
             transform.SetRotation(relativeRotation);
             transform.SetTranslationPart(gp_Vec(relativeTranslation));
         }

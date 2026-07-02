@@ -26,10 +26,12 @@ public:
 
     void setupReferenceCombo(QComboBox* combo);
     void bindReference(App::PropertyLinkSub* reference);
-    void addDirection(App::DocumentObject* object,
-                      const std::string& subname,
-                      const QString& text,
-                      int userData = -1);
+    void addDirection(
+        App::DocumentObject* object,
+        const std::string& subname,
+        const QString& text,
+        int userData = -1
+    );
     void updateReferenceUI();
 
     const App::PropertyLinkSub& getCurrentDirectionLink() const;

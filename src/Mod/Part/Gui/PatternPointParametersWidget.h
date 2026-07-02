@@ -24,8 +24,7 @@ public:
 
     void bindProperty(App::PropertyLinkSub* pointObject);
     void updateUI();
-    void getPointObject(App::DocumentObject*& object,
-                        std::vector<std::string>& subnames) const;
+    void getPointObject(App::DocumentObject*& object, std::vector<std::string>& subnames) const;
 
 private:
     void updatePointObjectButton();

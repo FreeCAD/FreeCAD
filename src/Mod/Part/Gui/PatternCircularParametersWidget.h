@@ -23,11 +23,13 @@ public:
     explicit PatternCircularParametersWidget(QWidget* parent = nullptr);
     ~PatternCircularParametersWidget() override;
 
-    void bindProperties(App::PropertyLinkSub* axis,
-                        App::PropertyLength* radialDistance,
-                        App::PropertyLength* tangentialDistance,
-                        App::PropertyIntegerConstraint* numberCircles,
-                        App::PropertyIntegerConstraint* symmetry);
+    void bindProperties(
+        App::PropertyLinkSub* axis,
+        App::PropertyLength* radialDistance,
+        App::PropertyLength* tangentialDistance,
+        App::PropertyIntegerConstraint* numberCircles,
+        App::PropertyIntegerConstraint* symmetry
+    );
     void updateUI();
     void applyQuantitySpinboxes() const;
 

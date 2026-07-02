@@ -57,6 +57,7 @@
 #include <boost/range.hpp>
 #include <App/ElementNamingUtils.h>
 #include <App/Document.h>
+#include <App/SuppressibleExtension.h>
 #include <Base/BoundBoxPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
@@ -90,6 +91,15 @@ using namespace Base;
 
 namespace
 {
+bool isSuppressedLinkElement(const App::DocumentObject* obj)
+{
+    if (!obj || !obj->isDerivedFrom<App::LinkElement>()) {
+        return false;
+    }
+    auto* ext = obj->getExtensionByType<App::SuppressibleExtension>(true);
+    return ext && ext->Suppressed.getValue();
+}
+
 void updateWindingOrder(Gui::LinkView* linkView, App::LinkBaseExtension* ext)
 {
     Base::Matrix4D mat = ext->getTransform(false);
@@ -1961,6 +1971,8 @@ ViewProviderLink::ViewProviderLink()
     ADD_PROPERTY(ChildViewProvider, (""));
     ChildViewProvider.setStatus(App::Property::Hidden, true);
 
+    suppressibleExt.initExtension(this);
+
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
 
     linkView = new LinkView;
@@ -2400,6 +2412,10 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
         }
     }
     else if (prop == ext->getVisibilityListProperty()) {
+        if (ext->_getShowElementValue()) {
+            updateElementList(ext);
+            return;
+        }
         const auto& vis = ext->getVisibilityListValue();
         for (size_t i = 0; i < (size_t)linkView->getSize(); ++i) {
             if (vis.size() > i) {
@@ -2438,7 +2454,16 @@ void ViewProviderLink::updateElementList(App::LinkBaseExtension* ext)
         OverrideMaterialList.setSize(0);
         MaterialList.setSize(0);
     }
-    linkView->setChildren(elements, ext->getVisibilityListValue());
+
+    boost::dynamic_bitset<> elementVisibility;
+    const auto& visibility = ext->getVisibilityListValue();
+    elementVisibility.resize(elements.size());
+    for (size_t i = 0; i < elements.size(); ++i) {
+        elementVisibility[i] = elements[i] && !isSuppressedLinkElement(elements[i])
+            && (visibility.size() <= i || visibility[i]);
+    }
+
+    linkView->setChildren(elements, elementVisibility);
     applyColors();
 }
 

@@ -39,8 +39,7 @@ void PatternPointParametersWidget::getPointObject(
 ) const
 {
     object = pointObjectProperty ? pointObjectProperty->getValue() : nullptr;
-    subnames =
-        pointObjectProperty ? pointObjectProperty->getSubValues() : std::vector<std::string>();
+    subnames = pointObjectProperty ? pointObjectProperty->getSubValues() : std::vector<std::string>();
 }
 
 void PatternPointParametersWidget::updatePointObjectButton()

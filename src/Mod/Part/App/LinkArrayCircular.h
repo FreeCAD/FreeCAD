@@ -30,8 +30,7 @@
 namespace Part
 {
 
-class PartExport LinkArrayCircular: public Part::LinkArray,
-                                    public Part::CircularPatternExtension
+class PartExport LinkArrayCircular: public Part::LinkArray, public Part::CircularPatternExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Part::LinkArrayCircular);
     using inherited = Part::LinkArray;

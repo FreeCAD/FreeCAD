@@ -11,9 +11,7 @@ PathPattern::PathPattern()
     Part::PathPatternExtension::initExtension(this);
 }
 
-const std::list<gp_Trsf> PathPattern::getTransformations(
-    const std::vector<App::DocumentObject*>
-)
+const std::list<gp_Trsf> PathPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
     return calculateTransformations(true);
 }

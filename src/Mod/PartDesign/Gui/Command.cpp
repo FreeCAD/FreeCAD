@@ -2377,25 +2377,20 @@ void CmdPartDesignCircularPattern::activated(int iMsg)
 
     Gui::Command* cmd = this;
     auto worker = [cmd,
-                   pcActiveBody](App::DocumentObject* Feat,
-                                 std::vector<App::DocumentObject*> features) {
+                   pcActiveBody](App::DocumentObject* Feat, std::vector<App::DocumentObject*> features) {
         bool direction = false;
         if (!features.empty() && features.front()->isDerivedFrom<PartDesign::ProfileBased>()) {
-            Part::Part2DObject* sketch =
-                static_cast<PartDesign::ProfileBased*>(features.front())
-                    ->getVerifiedSketch(/* silent =*/true);
+            Part::Part2DObject* sketch = static_cast<PartDesign::ProfileBased*>(features.front())
+                                             ->getVerifiedSketch(/* silent =*/true);
             if (sketch) {
-                FCMD_OBJ_CMD(Feat,
-                             "Axis = (" << Gui::Command::getObjectCmd(sketch)
-                                        << ",['N_Axis'])");
+                FCMD_OBJ_CMD(Feat, "Axis = (" << Gui::Command::getObjectCmd(sketch) << ",['N_Axis'])");
                 direction = true;
             }
         }
         if (!direction) {
             FCMD_OBJ_CMD(
                 Feat,
-                "Axis = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getZ())
-                           << ",[''])"
+                "Axis = (" << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getZ()) << ",[''])"
             );
         }
 
@@ -2421,8 +2416,7 @@ CmdPartDesignPathPattern::CmdPartDesignPathPattern()
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Path Pattern");
-    sToolTipText =
-        QT_TR_NOOP("Duplicates the selected features or active body along a path");
+    sToolTipText = QT_TR_NOOP("Duplicates the selected features or active body along a path");
     sWhatsThis = "PartDesign_PathPattern";
     sStatusTip = sToolTipText;
     sPixmap = "PartDesign_PathPattern";
@@ -2438,8 +2432,7 @@ void CmdPartDesignPathPattern::activated(int iMsg)
     }
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject* Feat,
-                        std::vector<App::DocumentObject*> /*features*/) {
+    auto worker = [cmd](App::DocumentObject* Feat, std::vector<App::DocumentObject*> /*features*/) {
         finishTransformed(cmd, Feat);
     };
     prepareTransformed(pcActiveBody, this, "PathPattern", worker);
@@ -2461,8 +2454,7 @@ CmdPartDesignPointPattern::CmdPartDesignPointPattern()
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Point Pattern");
-    sToolTipText =
-        QT_TR_NOOP("Duplicates the selected features or active body at points from a shape");
+    sToolTipText = QT_TR_NOOP("Duplicates the selected features or active body at points from a shape");
     sWhatsThis = "PartDesign_PointPattern";
     sStatusTip = sToolTipText;
     sPixmap = "PartDesign_PointPattern";
@@ -2478,8 +2470,7 @@ void CmdPartDesignPointPattern::activated(int iMsg)
     }
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](App::DocumentObject* Feat,
-                        std::vector<App::DocumentObject*> /*features*/) {
+    auto worker = [cmd](App::DocumentObject* Feat, std::vector<App::DocumentObject*> /*features*/) {
         finishTransformed(cmd, Feat);
     };
     prepareTransformed(pcActiveBody, this, "PointPattern", worker);

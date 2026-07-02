@@ -11,9 +11,7 @@ PointPattern::PointPattern()
     Part::PointPatternExtension::initExtension(this);
 }
 
-const std::list<gp_Trsf> PointPattern::getTransformations(
-    const std::vector<App::DocumentObject*>
-)
+const std::list<gp_Trsf> PointPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
     return calculateTransformations(true);
 }

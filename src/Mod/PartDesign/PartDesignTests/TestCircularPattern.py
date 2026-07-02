@@ -17,12 +17,8 @@ class TestCircularPattern(unittest.TestCase):
 
         self.assertEqual(pattern.RadialDistance, 50)
         self.assertEqual(pattern.TangentialDistance, 25)
-        self.assertEqual(
-            pattern.getTypeIdOfProperty("RadialDistance"), "App::PropertyLength"
-        )
-        self.assertEqual(
-            pattern.getTypeIdOfProperty("TangentialDistance"), "App::PropertyLength"
-        )
+        self.assertEqual(pattern.getTypeIdOfProperty("RadialDistance"), "App::PropertyLength")
+        self.assertEqual(pattern.getTypeIdOfProperty("TangentialDistance"), "App::PropertyLength")
         pattern.RadialDistance = 0.00054
         self.assertAlmostEqual(pattern.RadialDistance, 0.00054)
         self.assertEqual(pattern.NumberCircles, 3)

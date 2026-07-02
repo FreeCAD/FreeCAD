@@ -28,16 +28,10 @@ using namespace Part;
 
 EXTENSION_PROPERTY_SOURCE(Part::CircularPatternExtension, App::DocumentObjectExtension)
 
-const App::PropertyIntegerConstraint::Constraints CircularPatternExtension::intNumberCircles = {
-    2,
-    std::numeric_limits<int>::max(),
-    1
-};
-const App::PropertyIntegerConstraint::Constraints CircularPatternExtension::intSymmetry = {
-    1,
-    std::numeric_limits<int>::max(),
-    1
-};
+const App::PropertyIntegerConstraint::Constraints CircularPatternExtension::intNumberCircles
+    = {2, std::numeric_limits<int>::max(), 1};
+const App::PropertyIntegerConstraint::Constraints CircularPatternExtension::intSymmetry
+    = {1, std::numeric_limits<int>::max(), 1};
 
 CircularPatternExtension::CircularPatternExtension()
 {
@@ -50,11 +44,13 @@ CircularPatternExtension::CircularPatternExtension()
         App::Prop_None,
         "The axis and center of the circular pattern."
     );
-    EXTENSION_ADD_PROPERTY_TYPE(RadialDistance,
-                                (50.0),
-                                "CircularPattern",
-                                App::Prop_None,
-                                "Distance between consecutive concentric circles.");
+    EXTENSION_ADD_PROPERTY_TYPE(
+        RadialDistance,
+        (50.0),
+        "CircularPattern",
+        App::Prop_None,
+        "Distance between consecutive concentric circles."
+    );
     EXTENSION_ADD_PROPERTY_TYPE(
         TangentialDistance,
         (25.0),
@@ -62,11 +58,13 @@ CircularPatternExtension::CircularPatternExtension()
         App::Prop_None,
         "Approximate distance between consecutive elements on the same circle."
     );
-    EXTENSION_ADD_PROPERTY_TYPE(NumberCircles,
-                                (3),
-                                "CircularPattern",
-                                App::Prop_None,
-                                "Number of concentric circles, including the original element.");
+    EXTENSION_ADD_PROPERTY_TYPE(
+        NumberCircles,
+        (3),
+        "CircularPattern",
+        App::Prop_None,
+        "Number of concentric circles, including the original element."
+    );
     NumberCircles.setConstraints(&intNumberCircles);
     EXTENSION_ADD_PROPERTY_TYPE(
         Symmetry,
@@ -111,8 +109,7 @@ std::list<gp_Trsf> CircularPatternExtension::calculateTransformations() const
     const double fullCircle = 2.0 * std::acos(-1.0);
     for (int circle = 1; circle < circleCount; ++circle) {
         const double radius = circle * radialDistance;
-        int elementCount =
-            static_cast<int>(std::floor(fullCircle * radius / tangentialDistance));
+        int elementCount = static_cast<int>(std::floor(fullCircle * radius / tangentialDistance));
         elementCount = elementCount / symmetry * symmetry;
         if (elementCount == 0) {
             continue;
@@ -164,8 +161,7 @@ gp_Ax2 CircularPatternExtension::getRotation() const
         }
         axis *= sketch->Placement.getValue();
         base = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
-        direction =
-            gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
+        direction = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
     }
     else if (auto* line = freecad_cast<App::Line*>(reference)) {
         const Base::Vector3d point = line->getBasePoint();
@@ -194,8 +190,8 @@ gp_Ax2 CircularPatternExtension::getRotation() const
 
     Base::Placement placement;
     if (auto* object = getExtendedObject()) {
-        if (auto* property =
-                freecad_cast<App::PropertyPlacement*>(object->getPropertyByName("Placement"))) {
+        if (auto* property
+            = freecad_cast<App::PropertyPlacement*>(object->getPropertyByName("Placement"))) {
             placement = property->getValue();
         }
     }
@@ -204,12 +200,12 @@ gp_Ax2 CircularPatternExtension::getRotation() const
     double angle;
     inversePlacement.getRotation().getValue(rotationAxis, angle);
     gp_Trsf inverse;
-    inverse.SetRotation(
-        gp_Ax1(gp_Pnt(), gp_Dir(rotationAxis.x, rotationAxis.y, rotationAxis.z)), angle
-    );
-    inverse.SetTranslationPart(gp_Vec(inversePlacement.getPosition().x,
-                                      inversePlacement.getPosition().y,
-                                      inversePlacement.getPosition().z));
+    inverse.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(rotationAxis.x, rotationAxis.y, rotationAxis.z)), angle);
+    inverse.SetTranslationPart(gp_Vec(
+        inversePlacement.getPosition().x,
+        inversePlacement.getPosition().y,
+        inversePlacement.getPosition().z
+    ));
     base.Transform(inverse);
     direction.Transform(inverse);
     return gp_Ax2(base, direction);

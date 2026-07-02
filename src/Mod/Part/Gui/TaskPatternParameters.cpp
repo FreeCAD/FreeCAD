@@ -48,12 +48,14 @@ TaskPatternParameters::TaskPatternParameters() = default;
 
 TaskPatternParameters::~TaskPatternParameters() = default;
 
-void TaskPatternParameters::setupPatternParameterUI(QWidget* parent,
-                                                    QWidget* firstPlaceholder,
-                                                    QWidget* secondPlaceholder,
-                                                    Gui::View3DInventorViewer* viewer,
-                                                    QObject* signalContext,
-                                                    int updateViewTimeout)
+void TaskPatternParameters::setupPatternParameterUI(
+    QWidget* parent,
+    QWidget* firstPlaceholder,
+    QWidget* secondPlaceholder,
+    Gui::View3DInventorViewer* viewer,
+    QObject* signalContext,
+    int updateViewTimeout
+)
 {
     auto* pattern = getPatternObject();
     if (!pattern) {
@@ -78,19 +80,21 @@ void TaskPatternParameters::setupPatternParameterUI(QWidget* parent,
     firstPlaceholder->setLayout(placeholderLayout);
 
     fillDirectionCombo(parametersWidget->dirLinks, Part::LinearPatternDirection::First);
-    QObject::connect(parametersWidget,
-                     &PartGui::PatternParametersWidget::requestReferenceSelection,
-                     signalContext,
-                     [this]() {
-                         activeDirectionWidget = parametersWidget;
-                         onReferenceSelectionRequested();
-                     });
-    QObject::connect(parametersWidget,
-                     &PartGui::PatternParametersWidget::parametersChanged,
-                     signalContext,
-                     [this]() {
-                         onPatternParametersChanged();
-                     });
+    QObject::connect(
+        parametersWidget,
+        &PartGui::PatternParametersWidget::requestReferenceSelection,
+        signalContext,
+        [this]() {
+            activeDirectionWidget = parametersWidget;
+            onReferenceSelectionRequested();
+        }
+    );
+    QObject::connect(
+        parametersWidget,
+        &PartGui::PatternParametersWidget::parametersChanged,
+        signalContext,
+        [this]() { onPatternParametersChanged(); }
+    );
 
     if (linear) {
         parametersWidget2 = new PartGui::PatternParametersWidget(type, viewer, parent);
@@ -100,19 +104,21 @@ void TaskPatternParameters::setupPatternParameterUI(QWidget* parent,
         secondPlaceholder->setLayout(placeholderLayout2);
 
         fillDirectionCombo(parametersWidget2->dirLinks, Part::LinearPatternDirection::Second);
-        QObject::connect(parametersWidget2,
-                         &PartGui::PatternParametersWidget::requestReferenceSelection,
-                         signalContext,
-                         [this]() {
-                             activeDirectionWidget = parametersWidget2;
-                             onReferenceSelectionRequested();
-                         });
-        QObject::connect(parametersWidget2,
-                         &PartGui::PatternParametersWidget::parametersChanged,
-                         signalContext,
-                         [this]() {
-                             onPatternParametersChanged();
-                         });
+        QObject::connect(
+            parametersWidget2,
+            &PartGui::PatternParametersWidget::requestReferenceSelection,
+            signalContext,
+            [this]() {
+                activeDirectionWidget = parametersWidget2;
+                onReferenceSelectionRequested();
+            }
+        );
+        QObject::connect(
+            parametersWidget2,
+            &PartGui::PatternParametersWidget::parametersChanged,
+            signalContext,
+            [this]() { onPatternParametersChanged(); }
+        );
         parametersWidget2->setTitle(tr("Direction 2"));
         parametersWidget2->setCheckable(true);
     }
@@ -145,23 +151,24 @@ void TaskPatternParameters::setupCircularPatternParameterUI(
     layout->addWidget(circularParametersWidget);
 
     fillDirectionCombo(circularParametersWidget->dirLinks, Part::LinearPatternDirection::First);
-    circularParametersWidget->bindProperties(
-        axis, radialDistance, tangentialDistance, numberCircles, symmetry
-    );
+    circularParametersWidget
+        ->bindProperties(axis, radialDistance, tangentialDistance, numberCircles, symmetry);
 
-    QObject::connect(circularParametersWidget,
-                     &PatternCircularParametersWidget::requestReferenceSelection,
-                     signalContext,
-                     [this]() {
-                         activeDirectionWidget = circularParametersWidget;
-                         onReferenceSelectionRequested();
-                     });
-    QObject::connect(circularParametersWidget,
-                     &PatternCircularParametersWidget::parametersChanged,
-                     signalContext,
-                     [this]() {
-                         onPatternParametersChanged();
-                     });
+    QObject::connect(
+        circularParametersWidget,
+        &PatternCircularParametersWidget::requestReferenceSelection,
+        signalContext,
+        [this]() {
+            activeDirectionWidget = circularParametersWidget;
+            onReferenceSelectionRequested();
+        }
+    );
+    QObject::connect(
+        circularParametersWidget,
+        &PatternCircularParametersWidget::parametersChanged,
+        signalContext,
+        [this]() { onPatternParametersChanged(); }
+    );
 
     updateViewTimer = new QTimer(signalContext);
     updateViewTimer->setSingleShot(true);
@@ -191,23 +198,24 @@ void TaskPatternParameters::setupPathPatternParameterUI(
     layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(pathParametersWidget);
 
-    pathParametersWidget->bindProperties(
-        path, count, spacingMode, spacing, startOffset, endOffset, reversePath, align
-    );
+    pathParametersWidget
+        ->bindProperties(path, count, spacingMode, spacing, startOffset, endOffset, reversePath, align);
 
-    QObject::connect(pathParametersWidget,
-                     &PatternPathParametersWidget::requestReferenceSelection,
-                     signalContext,
-                     [this]() {
-                         activeDirectionWidget = pathParametersWidget;
-                         onReferenceSelectionRequested();
-                     });
-    QObject::connect(pathParametersWidget,
-                     &PatternPathParametersWidget::parametersChanged,
-                     signalContext,
-                     [this]() {
-                         onPatternParametersChanged();
-                     });
+    QObject::connect(
+        pathParametersWidget,
+        &PatternPathParametersWidget::requestReferenceSelection,
+        signalContext,
+        [this]() {
+            activeDirectionWidget = pathParametersWidget;
+            onReferenceSelectionRequested();
+        }
+    );
+    QObject::connect(
+        pathParametersWidget,
+        &PatternPathParametersWidget::parametersChanged,
+        signalContext,
+        [this]() { onPatternParametersChanged(); }
+    );
 
     updateViewTimer = new QTimer(signalContext);
     updateViewTimer->setSingleShot(true);
@@ -230,13 +238,15 @@ void TaskPatternParameters::setupPointPatternParameterUI(
     layout->addWidget(pointParametersWidget);
     pointParametersWidget->bindProperty(pointObject);
 
-    QObject::connect(pointParametersWidget,
-                     &PatternPointParametersWidget::requestReferenceSelection,
-                     signalContext,
-                     [this]() {
-                         activeDirectionWidget = pointParametersWidget;
-                         onReferenceSelectionRequested();
-                     });
+    QObject::connect(
+        pointParametersWidget,
+        &PatternPointParametersWidget::requestReferenceSelection,
+        signalContext,
+        [this]() {
+            activeDirectionWidget = pointParametersWidget;
+            onReferenceSelectionRequested();
+        }
+    );
 }
 
 void TaskPatternParameters::bindPatternProperties()
@@ -247,37 +257,43 @@ void TaskPatternParameters::bindPatternProperties()
     }
 
     if (auto* linear = dynamic_cast<Part::LinearPatternExtension*>(pattern)) {
-        parametersWidget->bindProperties(&linear->Direction,
-                                         &linear->Reversed,
-                                         &linear->Mode,
-                                         &linear->Length,
-                                         &linear->Offset,
-                                         &linear->Spacings,
-                                         &linear->SpacingPattern,
-                                         &linear->Occurrences,
-                                         pattern);
-        parametersWidget2->bindProperties(&linear->Direction2,
-                                          &linear->Reversed2,
-                                          &linear->Mode2,
-                                          &linear->Length2,
-                                          &linear->Offset2,
-                                          &linear->Spacings2,
-                                          &linear->SpacingPattern2,
-                                          &linear->Occurrences2,
-                                          pattern);
+        parametersWidget->bindProperties(
+            &linear->Direction,
+            &linear->Reversed,
+            &linear->Mode,
+            &linear->Length,
+            &linear->Offset,
+            &linear->Spacings,
+            &linear->SpacingPattern,
+            &linear->Occurrences,
+            pattern
+        );
+        parametersWidget2->bindProperties(
+            &linear->Direction2,
+            &linear->Reversed2,
+            &linear->Mode2,
+            &linear->Length2,
+            &linear->Offset2,
+            &linear->Spacings2,
+            &linear->SpacingPattern2,
+            &linear->Occurrences2,
+            pattern
+        );
         return;
     }
 
     if (auto* polar = dynamic_cast<Part::PolarPatternExtension*>(pattern)) {
-        parametersWidget->bindProperties(&polar->Axis,
-                                         &polar->Reversed,
-                                         &polar->Mode,
-                                         &polar->Angle,
-                                         &polar->Offset,
-                                         &polar->Spacings,
-                                         &polar->SpacingPattern,
-                                         &polar->Occurrences,
-                                         pattern);
+        parametersWidget->bindProperties(
+            &polar->Axis,
+            &polar->Reversed,
+            &polar->Mode,
+            &polar->Angle,
+            &polar->Offset,
+            &polar->Spacings,
+            &polar->SpacingPattern,
+            &polar->Occurrences,
+            pattern
+        );
         return;
     }
 
@@ -373,11 +389,13 @@ void TaskPatternParameters::applyPatternParameters(App::DocumentObject* pattern)
         return;
     }
 
-    auto applyWidget = [this, pattern](PartGui::PatternParametersWidget* widget,
-                                       const char* directionProperty,
-                                       const char* reversedProperty,
-                                       const char* modeProperty,
-                                       const char* spacingPatternProperty) {
+    auto applyWidget = [this, pattern](
+                           PartGui::PatternParametersWidget* widget,
+                           const char* directionProperty,
+                           const char* reversedProperty,
+                           const char* modeProperty,
+                           const char* spacingPatternProperty
+                       ) {
         std::vector<std::string> dirs;
         App::DocumentObject* obj = nullptr;
         widget->getAxis(obj, dirs);
@@ -388,10 +406,7 @@ void TaskPatternParameters::applyPatternParameters(App::DocumentObject* pattern)
         FCMD_OBJ_CMD(pattern, reversedProperty << " = " << widget->getReverse());
         FCMD_OBJ_CMD(pattern, modeProperty << " = " << widget->getMode());
         widget->applyQuantitySpinboxes();
-        FCMD_OBJ_CMD(
-            pattern,
-            spacingPatternProperty << " = " << widget->getSpacingPatternsAsString()
-        );
+        FCMD_OBJ_CMD(pattern, spacingPatternProperty << " = " << widget->getSpacingPatternsAsString());
     };
 
     if (dynamic_cast<Part::LinearPatternExtension*>(pattern)) {
@@ -420,7 +435,8 @@ void TaskPatternParameters::updatePatternSpacingLabels()
         auto updateLinearLabels = [this, linearPattern, startPoint](
                                       PartGui::PatternParametersWidget* widget,
                                       Part::LinearPatternDirection dir,
-                                      const Base::Vector3d& fallbackDirection) {
+                                      const Base::Vector3d& fallbackDirection
+                                  ) {
             if (!widget) {
                 return;
             }
@@ -436,20 +452,26 @@ void TaskPatternParameters::updatePatternSpacingLabels()
                 }
             }
             catch (const Base::Exception& e) {
-                Base::Console().warning("Could not update linear pattern spacing labels: %s\n",
-                                        e.what());
+                Base::Console().warning(
+                    "Could not update linear pattern spacing labels: %s\n",
+                    e.what()
+                );
             }
 
             direction = transformLinearPatternDirection(direction);
             widget->updateSpacingLabels(startPoint, direction);
         };
 
-        updateLinearLabels(parametersWidget,
-                           Part::LinearPatternDirection::First,
-                           getLinearPatternFallbackDirection(Part::LinearPatternDirection::First));
-        updateLinearLabels(parametersWidget2,
-                           Part::LinearPatternDirection::Second,
-                           getLinearPatternFallbackDirection(Part::LinearPatternDirection::Second));
+        updateLinearLabels(
+            parametersWidget,
+            Part::LinearPatternDirection::First,
+            getLinearPatternFallbackDirection(Part::LinearPatternDirection::First)
+        );
+        updateLinearLabels(
+            parametersWidget2,
+            Part::LinearPatternDirection::Second,
+            getLinearPatternFallbackDirection(Part::LinearPatternDirection::Second)
+        );
         return;
     }
 

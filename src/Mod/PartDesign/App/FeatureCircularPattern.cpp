@@ -15,9 +15,7 @@ CircularPattern::CircularPattern()
     Part::CircularPatternExtension::initExtension(this);
 }
 
-const std::list<gp_Trsf> CircularPattern::getTransformations(
-    const std::vector<App::DocumentObject*>
-)
+const std::list<gp_Trsf> CircularPattern::getTransformations(const std::vector<App::DocumentObject*>)
 {
     return calculateTransformations();
 }

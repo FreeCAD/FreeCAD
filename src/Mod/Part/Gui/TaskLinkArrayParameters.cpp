@@ -26,6 +26,10 @@
 #include <QPushButton>
 #include <QString>
 
+#include <algorithm>
+#include <optional>
+#include <string>
+
 #include <gp_Ax2.hxx>
 
 #include <App/Application.h>
@@ -34,6 +38,7 @@
 #include <App/GeoFeature.h>
 #include <App/Link.h>
 #include <App/Part.h>
+#include <App/SuppressibleExtension.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
@@ -46,6 +51,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Part/App/LinkArray.h>
 #include <Mod/Part/App/LinkArrayCircular.h>
 #include <Mod/Part/App/LinkArrayLinear.h>
@@ -56,6 +62,7 @@
 #include <Mod/Part/App/PolarPatternExtension.h>
 #include <Mod/Part/App/TopoShape.h>
 
+#include "PatternInstanceControls.h"
 #include "PatternParametersWidget.h"
 #include "TaskLinkArrayParameters.h"
 #include "ui_TaskLinkArrayParameters.h"
@@ -91,10 +98,9 @@ std::string stripToSelectableSubName(std::string subName)
     }
 
     const std::string tail = subName.substr(dot + 1);
-    if (tail.rfind("Face", 0) == 0 || tail.rfind("Edge", 0) == 0
-        || tail.rfind("Vertex", 0) == 0 || tail == "X_Axis" || tail == "Y_Axis"
-        || tail == "Z_Axis" || tail == "XY_Plane" || tail == "XZ_Plane"
-        || tail == "YZ_Plane") {
+    if (tail.rfind("Face", 0) == 0 || tail.rfind("Edge", 0) == 0 || tail.rfind("Vertex", 0) == 0
+        || tail == "X_Axis" || tail == "Y_Axis" || tail == "Z_Axis" || tail == "XY_Plane"
+        || tail == "XZ_Plane" || tail == "YZ_Plane") {
         return tail;
     }
 
@@ -154,6 +160,69 @@ Base::Placement arrayGlobalPlacement(const Part::LinkArray* array)
 
     return App::GeoFeature::getGlobalPlacement(array);
 }
+
+void hideArraySource(App::DocumentObject* obj)
+{
+    if (obj) {
+        obj->Visibility.setValue(false);
+    }
+}
+
+Gui::View3DInventorViewer* active3DViewer()
+{
+    if (auto* view = Gui::getMainWindow()->activeWindow()) {
+        if (view->isDerivedFrom<Gui::View3DInventor>()) {
+            return static_cast<Gui::View3DInventor*>(view)->getViewer();
+        }
+    }
+
+    return nullptr;
+}
+
+bool isSuppressed(App::DocumentObject* obj)
+{
+    auto* suppressible = obj ? obj->getExtensionByType<App::SuppressibleExtension>(true) : nullptr;
+    return suppressible && suppressible->Suppressed.getValue();
+}
+
+std::optional<Base::Vector3d> viewProviderCenter(
+    App::DocumentObject* obj,
+    Gui::View3DInventorViewer* viewer,
+    bool transform
+)
+{
+    auto* viewProvider = obj ? Gui::Application::Instance->getViewProvider(obj) : nullptr;
+    if (!viewProvider) {
+        return std::nullopt;
+    }
+
+    Base::BoundBox3d bbox = viewProvider->getBoundingBox(nullptr, nullptr, transform, viewer);
+    if (!bbox.IsValid()) {
+        return std::nullopt;
+    }
+
+    return bbox.GetCenter();
+}
+
+std::optional<Base::Vector3d> estimateElementCenter(
+    Part::LinkArray* array,
+    int index,
+    Gui::View3DInventorViewer* viewer
+)
+{
+    if (!array || index < 0) {
+        return std::nullopt;
+    }
+
+    auto localCenter = viewProviderCenter(array->getTrueLinkedObject(false), viewer, false);
+    if (!localCenter) {
+        return std::nullopt;
+    }
+
+    Base::Vector3d center;
+    array->getPlacementOf(std::to_string(index), nullptr).multVec(*localCenter, center);
+    return center;
+}
 }  // namespace
 
 namespace PartGui
@@ -202,10 +271,7 @@ void showLinkArrayPolarTask(App::DocumentObject* object)
 /* TRANSLATOR PartGui::TaskLinkArrayParameters */
 
 TaskLinkArrayParameters::TaskLinkArrayParameters(Part::LinkArray* array, QWidget* parent)
-    : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap(taskIcon(array)),
-                             taskTitle(array),
-                             true,
-                             parent)
+    : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap(taskIcon(array)), taskTitle(array), true, parent)
     , Gui::SelectionObserver(false, Gui::ResolveMode::OldStyleElement)
     , array(array)
 {
@@ -215,69 +281,71 @@ TaskLinkArrayParameters::TaskLinkArrayParameters(Part::LinkArray* array, QWidget
     groupLayout()->addWidget(proxy);
     setupLinkedObjectButton();
     applyInitialSelection();
+    Gui::View3DInventorViewer* viewer = active3DViewer();
 
     if (dynamic_cast<Part::LinkArrayCircular*>(array)) {
         ui->parametersWidgetPlaceholder2->hide();
         auto* circular = static_cast<Part::LinkArrayCircular*>(array);
-        setupCircularPatternParameterUI(proxy,
-                                        ui->parametersWidgetPlaceholder,
-                                        this,
-                                        500,
-                                        &circular->Axis,
-                                        &circular->RadialDistance,
-                                        &circular->TangentialDistance,
-                                        &circular->NumberCircles,
-                                        &circular->Symmetry);
+        setupCircularPatternParameterUI(
+            proxy,
+            ui->parametersWidgetPlaceholder,
+            this,
+            500,
+            &circular->Axis,
+            &circular->RadialDistance,
+            &circular->TangentialDistance,
+            &circular->NumberCircles,
+            &circular->Symmetry
+        );
+        setupInstanceControls(viewer);
         return;
     }
     if (dynamic_cast<Part::LinkArrayPath*>(array)) {
         ui->parametersWidgetPlaceholder2->hide();
         auto* path = static_cast<Part::LinkArrayPath*>(array);
-        setupPathPatternParameterUI(proxy,
-                                    ui->parametersWidgetPlaceholder,
-                                    this,
-                                    500,
-                                    &path->Path,
-                                    &path->Count,
-                                    &path->SpacingMode,
-                                    &path->Spacing,
-                                    &path->StartOffset,
-                                    &path->EndOffset,
-                                    &path->ReversePath,
-                                    &path->Align);
+        setupPathPatternParameterUI(
+            proxy,
+            ui->parametersWidgetPlaceholder,
+            this,
+            500,
+            &path->Path,
+            &path->Count,
+            &path->SpacingMode,
+            &path->Spacing,
+            &path->StartOffset,
+            &path->EndOffset,
+            &path->ReversePath,
+            &path->Align
+        );
+        setupInstanceControls(viewer);
         return;
     }
     if (dynamic_cast<Part::LinkArrayPoint*>(array)) {
         ui->parametersWidgetPlaceholder2->hide();
         auto* point = static_cast<Part::LinkArrayPoint*>(array);
-        setupPointPatternParameterUI(proxy,
-                                     ui->parametersWidgetPlaceholder,
-                                     this,
-                                     &point->PointObject);
+        setupPointPatternParameterUI(proxy, ui->parametersWidgetPlaceholder, this, &point->PointObject);
+        setupInstanceControls(viewer);
         return;
     }
 
-    Gui::View3DInventorViewer* viewer = nullptr;
-    if (auto* view = Gui::getMainWindow()->activeWindow()) {
-        if (view->isDerivedFrom<Gui::View3DInventor>()) {
-            viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-        }
-    }
-
-    setupPatternParameterUI(proxy,
-                            ui->parametersWidgetPlaceholder,
-                            ui->parametersWidgetPlaceholder2,
-                            viewer,
-                            this,
-                            500);
+    setupPatternParameterUI(
+        proxy,
+        ui->parametersWidgetPlaceholder,
+        ui->parametersWidgetPlaceholder2,
+        viewer,
+        this,
+        500
+    );
     if (!dynamic_cast<Part::LinkArrayLinear*>(array)) {
         ui->parametersWidgetPlaceholder2->hide();
     }
     updatePatternSpacingLabels();
+    setupInstanceControls(viewer);
 }
 
 TaskLinkArrayParameters::~TaskLinkArrayParameters()
 {
+    instanceControls.reset();
     array = nullptr;
     exitLinkedObjectSelectionMode();
     exitReferenceSelectionMode();
@@ -361,6 +429,7 @@ void TaskLinkArrayParameters::applyLinkedObjectSelection(App::DocumentObject* li
 
     setupPatternTransaction();
     array->LinkedObject.setValue(linked);
+    hideArraySource(linked);
     recomputePatternFeature();
     updatePatternSpacingLabels();
     updateLinkedObjectButton();
@@ -406,8 +475,109 @@ App::DocumentObject* TaskLinkArrayParameters::getSelectedLinkedObject() const
     return array ? array->LinkedObject.getValue() : nullptr;
 }
 
-void TaskLinkArrayParameters::fillDirectionCombo(Gui::ComboLinks& combo,
-                                                 Part::LinearPatternDirection direction)
+void TaskLinkArrayParameters::setupInstanceControls(Gui::View3DInventorViewer* viewer)
+{
+    instanceControlsViewer = viewer;
+    if (!viewer) {
+        instanceControls.reset();
+        return;
+    }
+
+    instanceControls = std::make_unique<PatternInstanceControls>(viewer, this);
+    connect(
+        instanceControls.get(),
+        &PatternInstanceControls::toggleRequested,
+        this,
+        [this](int index, bool suppress) { setInstanceSuppressed(index, suppress); }
+    );
+    updateInstanceControls();
+}
+
+void TaskLinkArrayParameters::updateInstanceControls()
+{
+    if (!instanceControls) {
+        return;
+    }
+
+    if (!array) {
+        instanceControls->clear();
+        return;
+    }
+
+    const auto elements = array->ElementList.getValues();
+    if (instanceControlCenters.size() != elements.size()) {
+        instanceControlCenters.resize(elements.size());
+        instanceControlCentersValid.assign(elements.size(), false);
+    }
+
+    std::vector<PatternInstanceControls::Instance> instances;
+    instances.reserve(elements.size());
+    for (size_t i = 0; i < elements.size(); ++i) {
+        App::DocumentObject* element = elements[i];
+        if (!element) {
+            continue;
+        }
+
+        const bool suppressed = isSuppressed(element);
+        std::optional<Base::Vector3d> center;
+        if (!suppressed) {
+            center = viewProviderCenter(element, instanceControlsViewer, true);
+        }
+        if (center) {
+            instanceControlCenters[i] = *center;
+            instanceControlCentersValid[i] = true;
+        }
+        else if (instanceControlCentersValid[i]) {
+            center = instanceControlCenters[i];
+        }
+        else {
+            center = estimateElementCenter(array, static_cast<int>(i), instanceControlsViewer);
+        }
+
+        if (!center) {
+            continue;
+        }
+
+        instances.push_back({static_cast<int>(i), *center, suppressed});
+    }
+
+    instanceControls->setInstances(instances);
+}
+
+void TaskLinkArrayParameters::setInstanceSuppressed(int index, bool suppress)
+{
+    if (!array || index < 0) {
+        return;
+    }
+
+    const auto elements = array->ElementList.getValues();
+    const auto idx = static_cast<size_t>(index);
+    if (idx >= elements.size() || !elements[idx]) {
+        return;
+    }
+
+    auto* suppressible = elements[idx]->getExtensionByType<App::SuppressibleExtension>(true);
+    if (!suppressible || suppressible->Suppressed.getValue() == suppress) {
+        return;
+    }
+
+    if (suppress) {
+        auto center = viewProviderCenter(elements[idx], instanceControlsViewer, true);
+        if (center && idx < instanceControlCenters.size()) {
+            instanceControlCenters[idx] = *center;
+            instanceControlCentersValid[idx] = true;
+        }
+    }
+
+    setupPatternTransaction();
+    suppressible->Suppressed.setValue(suppress);
+    updateInstanceControls();
+}
+
+void TaskLinkArrayParameters::fillDirectionCombo(
+    Gui::ComboLinks& combo,
+    Part::LinearPatternDirection direction
+)
 {
     combo.clear();
 
@@ -416,49 +586,69 @@ void TaskLinkArrayParameters::fillDirectionCombo(Gui::ComboLinks& combo,
     const bool isSecondDirection = direction == Part::LinearPatternDirection::Second;
 
     if (isLinear && !isSecondDirection) {
-        combo.addLink(defaultAxis,
-                      translate("Object X-axis"),
-                      PatternParametersWidget::DefaultDirectionUserData);
-        combo.addLink(nullptr,
-                      "Y_Axis",
-                      translate("Object Y-axis"),
-                      PatternParametersWidget::ObjectDirectionUserData);
-        combo.addLink(nullptr,
-                      "Z_Axis",
-                      translate("Object Z-axis"),
-                      PatternParametersWidget::ObjectDirectionUserData);
+        combo.addLink(
+            defaultAxis,
+            translate("Object X-axis"),
+            PatternParametersWidget::DefaultDirectionUserData
+        );
+        combo.addLink(
+            nullptr,
+            "Y_Axis",
+            translate("Object Y-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
+        combo.addLink(
+            nullptr,
+            "Z_Axis",
+            translate("Object Z-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
     }
     else if (isLinear && isSecondDirection) {
-        combo.addLink(nullptr,
-                      "X_Axis",
-                      translate("Object X-axis"),
-                      PatternParametersWidget::ObjectDirectionUserData);
-        combo.addLink(defaultAxis,
-                      translate("Object Y-axis"),
-                      PatternParametersWidget::DefaultDirectionUserData);
-        combo.addLink(nullptr,
-                      "Z_Axis",
-                      translate("Object Z-axis"),
-                      PatternParametersWidget::ObjectDirectionUserData);
+        combo.addLink(
+            nullptr,
+            "X_Axis",
+            translate("Object X-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
+        combo.addLink(
+            defaultAxis,
+            translate("Object Y-axis"),
+            PatternParametersWidget::DefaultDirectionUserData
+        );
+        combo.addLink(
+            nullptr,
+            "Z_Axis",
+            translate("Object Z-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
     }
     else {
-        combo.addLink(nullptr,
-                      "X_Axis",
-                      translate("Object X-axis"),
-                      PatternParametersWidget::ObjectDirectionUserData);
-        combo.addLink(nullptr,
-                      "Y_Axis",
-                      translate("Object Y-axis"),
-                      PatternParametersWidget::ObjectDirectionUserData);
-        combo.addLink(defaultAxis,
-                      translate("Object Z-axis"),
-                      PatternParametersWidget::DefaultDirectionUserData);
+        combo.addLink(
+            nullptr,
+            "X_Axis",
+            translate("Object X-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
+        combo.addLink(
+            nullptr,
+            "Y_Axis",
+            translate("Object Y-axis"),
+            PatternParametersWidget::ObjectDirectionUserData
+        );
+        combo.addLink(
+            defaultAxis,
+            translate("Object Z-axis"),
+            PatternParametersWidget::DefaultDirectionUserData
+        );
     }
 
-    combo.addLink(nullptr,
-                  std::string(),
-                  translate("Select reference..."),
-                  PatternParametersWidget::SelectReferenceUserData);
+    combo.addLink(
+        nullptr,
+        std::string(),
+        translate("Select reference..."),
+        PatternParametersWidget::SelectReferenceUserData
+    );
 }
 
 void TaskLinkArrayParameters::setupPatternTransaction()
@@ -484,6 +674,8 @@ void TaskLinkArrayParameters::recomputePatternFeature()
             array->purgeTouched();
         }
     }
+    std::fill(instanceControlCentersValid.begin(), instanceControlCentersValid.end(), false);
+    updateInstanceControls();
 }
 
 Base::Vector3d TaskLinkArrayParameters::getPatternStartPoint() const
@@ -556,9 +748,9 @@ void TaskLinkArrayParameters::enterReferenceSelectionMode()
             ? translate("Select connected path edges")
             : (dynamic_cast<Part::LinkArrayPoint*>(array)
                    ? translate("Select a sketch or shape containing points")
-            : (dynamic_cast<Part::LinkArrayPolar*>(array)
-                   ? translate("Select a rotation axis")
-                   : translate("Select a direction reference")))
+                   : (dynamic_cast<Part::LinkArrayPolar*>(array)
+                          ? translate("Select a rotation axis")
+                          : translate("Select a direction reference")))
     );
 }
 
@@ -594,10 +786,12 @@ void TaskLinkArrayParameters::onSelectionChanged(const Gui::SelectionChanges& ms
     App::DocumentObject* obj = nullptr;
     std::vector<std::string> subNames;
 
-    auto selection = Gui::Selection().getSelectionEx("*",
-                                                     App::DocumentObject::getClassTypeId(),
-                                                     Gui::ResolveMode::FollowLink,
-                                                     true);
+    auto selection = Gui::Selection().getSelectionEx(
+        "*",
+        App::DocumentObject::getClassTypeId(),
+        Gui::ResolveMode::FollowLink,
+        true
+    );
     if (!selection.empty()) {
         obj = selection.front().getObject();
         subNames = selection.front().getSubNames();
@@ -684,13 +878,12 @@ bool TaskLinkArrayParameters::accept()
     try {
         App::DocumentObject* linked = getSelectedLinkedObject();
         if (!linked) {
-            QMessageBox::warning(this,
-                                 translate("Input error"),
-                                 translate("Select an object to link."));
+            QMessageBox::warning(this, translate("Input error"), translate("Select an object to link."));
             return false;
         }
 
         array->LinkedObject.setValue(linked);
+        hideArraySource(linked);
         applyPatternParameters(array);
         consumePendingUpdate();
         recomputePatternFeature();
@@ -698,9 +891,11 @@ bool TaskLinkArrayParameters::accept()
     }
     catch (const Base::Exception& e) {
         array->getDocument()->abortTransaction();
-        QMessageBox::warning(this,
-                             translate("Input error"),
-                             QCoreApplication::translate("Exception", e.what()));
+        QMessageBox::warning(
+            this,
+            translate("Input error"),
+            QCoreApplication::translate("Exception", e.what())
+        );
         return false;
     }
 

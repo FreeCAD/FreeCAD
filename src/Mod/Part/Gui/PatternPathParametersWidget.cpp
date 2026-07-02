@@ -30,40 +30,37 @@ PatternPathParametersWidget::PatternPathParametersWidget(QWidget* parent)
             Q_EMIT parametersChanged();
         }
     });
-    connect(ui->spacingMode,
-            qOverload<int>(&QComboBox::activated),
-            this,
-            [this](int value) {
-                if (!blockUpdate && spacingModeProperty) {
-                    spacingModeProperty->setValue(value);
-                    updateVisibility();
-                    Q_EMIT parametersChanged();
-                }
-            });
+    connect(ui->spacingMode, qOverload<int>(&QComboBox::activated), this, [this](int value) {
+        if (!blockUpdate && spacingModeProperty) {
+            spacingModeProperty->setValue(value);
+            updateVisibility();
+            Q_EMIT parametersChanged();
+        }
+    });
     const auto quantityChanged = [this](App::PropertyLength* property, double value) {
         if (!blockUpdate && property) {
             property->setValue(value);
             Q_EMIT parametersChanged();
         }
     };
-    connect(ui->spacing,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            [this, quantityChanged](double value) {
-                quantityChanged(spacingProperty, value);
-            });
-    connect(ui->startOffset,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            [this, quantityChanged](double value) {
-                quantityChanged(startOffsetProperty, value);
-            });
-    connect(ui->endOffset,
-            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this,
-            [this, quantityChanged](double value) {
-                quantityChanged(endOffsetProperty, value);
-            });
+    connect(
+        ui->spacing,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        [this, quantityChanged](double value) { quantityChanged(spacingProperty, value); }
+    );
+    connect(
+        ui->startOffset,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        [this, quantityChanged](double value) { quantityChanged(startOffsetProperty, value); }
+    );
+    connect(
+        ui->endOffset,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        [this, quantityChanged](double value) { quantityChanged(endOffsetProperty, value); }
+    );
     connect(ui->reversePath, &QCheckBox::toggled, this, [this](bool value) {
         if (!blockUpdate && reversePathProperty) {
             reversePathProperty->setValue(value);
@@ -111,9 +108,7 @@ void PatternPathParametersWidget::bindProperties(
         ui->startOffset->bind(*startOffsetProperty);
         ui->endOffset->bind(*endOffsetProperty);
     }
-    ui->spacingMode->addItems(
-        {tr("Fixed count"), tr("Fixed spacing"), tr("Fixed count and spacing")}
-    );
+    ui->spacingMode->addItems({tr("Fixed count"), tr("Fixed spacing"), tr("Fixed count and spacing")});
     updateUI();
 }
 
@@ -134,8 +129,10 @@ void PatternPathParametersWidget::updateUI()
     updateVisibility();
 }
 
-void PatternPathParametersWidget::getPath(App::DocumentObject*& object,
-                                          std::vector<std::string>& subnames) const
+void PatternPathParametersWidget::getPath(
+    App::DocumentObject*& object,
+    std::vector<std::string>& subnames
+) const
 {
     object = pathProperty ? pathProperty->getValue() : nullptr;
     subnames = pathProperty ? pathProperty->getSubValues() : std::vector<std::string>();

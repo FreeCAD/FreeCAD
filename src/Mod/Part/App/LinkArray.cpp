@@ -23,6 +23,8 @@
 
 #include "LinkArray.h"
 
+#include <algorithm>
+
 #include <gp_Trsf.hxx>
 
 #include <App/Document.h>
@@ -76,26 +78,28 @@ Base::Placement LinkArray::getPlacementOf(const std::string& sub, App::DocumentO
         placement = propPlacement->getValue();
     }
 
-    std::vector<std::string> names = Base::Tools::splitSubName(sub);
-    if (names.empty() || this == targetObj) {
+    if (sub.empty() || this == targetObj) {
         return placement;
     }
 
-    int index = -1;
-    try {
-        index = std::stoi(names.front());
-    }
-    catch (...) {
+    const char* remaining = nullptr;
+    const int index = getElementIndex(sub.c_str(), &remaining);
+    if (index < 0) {
         return placement;
     }
 
-    const std::vector<Base::Placement> placements = PlacementList.getValues();
-    if (index < 0 || placements.size() <= static_cast<size_t>(index)) {
+    const auto elements = ElementList.getValues();
+    if (ShowElement.getValue() && elements.size() > static_cast<size_t>(index) && elements[index]) {
+        return placement * elements[index]->getPlacementOf(remaining ? remaining : "", targetObj);
+    }
+
+    const auto placements = PlacementList.getValues();
+    if (placements.size() <= static_cast<size_t>(index)) {
         return placement;
     }
 
     placement = placement * placements[index];
-    if (names.size() < 2) {
+    if (!remaining || !remaining[0]) {
         return placement;
     }
 
@@ -104,12 +108,17 @@ Base::Placement LinkArray::getPlacementOf(const std::string& sub, App::DocumentO
         return placement;
     }
 
-    App::DocumentObject* subObj = linked->getDocument()->getObject(names[1].c_str());
+    std::vector<std::string> names = Base::Tools::splitSubName(remaining);
+    if (names.empty()) {
+        return placement;
+    }
+
+    App::DocumentObject* subObj = linked->getDocument()->getObject(names.front().c_str());
     if (!subObj) {
         return placement;
     }
 
-    std::vector<std::string> newNames(names.begin() + 2, names.end());
+    std::vector<std::string> newNames(names.begin() + 1, names.end());
     std::string newSub = Base::Tools::joinList(newNames, ".");
 
     return placement * subObj->getPlacementOf(newSub, targetObj);
@@ -138,31 +147,49 @@ void LinkArray::syncGeneratedElementPlacements(const std::vector<Base::Placement
 {
     const auto count = static_cast<int>(placements.size());
 
-    if (PlacementList.getValues() != placements) {
-        PlacementList.setStatus(App::Property::Immutable, false);
-        PlacementList.setValue(placements);
-        PlacementList.setStatus(App::Property::Immutable, true);
-    }
-
     if (ElementCount.getValue() != count) {
         ElementCount.setStatus(App::Property::Immutable, false);
         ElementCount.setValue(count);
         ElementCount.setStatus(App::Property::Immutable, true);
     }
+
+    if (ShowElement.getValue()) {
+        syncGeneratedElementLinkPlacements(placements);
+        return;
+    }
+
+    if (PlacementList.getValues() != placements) {
+        PlacementList.setStatus(App::Property::Immutable, false);
+        PlacementList.setValue(placements);
+        PlacementList.setStatus(App::Property::Immutable, true);
+    }
+}
+
+void LinkArray::syncGeneratedElementLinkPlacements(const std::vector<Base::Placement>& placements)
+{
+    const std::vector<App::DocumentObject*> elements = ElementList.getValues();
+    const auto count = std::min(elements.size(), placements.size());
+
+    for (size_t i = 0; i < count; ++i) {
+        auto* placement = dynamic_cast<App::PropertyPlacement*>(
+            elements[i] ? elements[i]->getPropertyByName("Placement") : nullptr
+        );
+        if (!placement || placement->getValue().isSame(placements[i])) {
+            continue;
+        }
+
+        placement->setValue(placements[i]);
+        elements[i]->purgeTouched();
+    }
 }
 
 void LinkArray::enforceLinkArrayPropertyStatus()
 {
-    if (ShowElement.getValue()) {
-        ShowElement.setStatus(App::Property::Immutable, false);
-        ShowElement.setValue(false);
-    }
-
     _LinkTouched.setStatus(App::Property::Output, true);
     _LinkTouched.setStatus(App::Property::NoRecompute, true);
-    ShowElement.setStatus(App::Property::Immutable, true);
-    ShowElement.setStatus(App::Property::Hidden, true);
-    ShowElement.setStatus(App::Property::NoRecompute, true);
+    ShowElement.setStatus(App::Property::Immutable, false);
+    ShowElement.setStatus(App::Property::Hidden, false);
+    ShowElement.setStatus(App::Property::NoRecompute, false);
     ElementCount.setStatus(App::Property::Immutable, true);
     ElementCount.setStatus(App::Property::Hidden, true);
     ElementCount.setStatus(App::Property::Output, true);
@@ -183,22 +210,24 @@ void LinkArray::enforceLinkArrayPropertyStatus()
 
 Base::Placement LinkArray::placementFromTransform(const gp_Trsf& transform)
 {
-    Base::Matrix4D matrix(transform.Value(1, 1),
-                          transform.Value(1, 2),
-                          transform.Value(1, 3),
-                          transform.Value(1, 4),
-                          transform.Value(2, 1),
-                          transform.Value(2, 2),
-                          transform.Value(2, 3),
-                          transform.Value(2, 4),
-                          transform.Value(3, 1),
-                          transform.Value(3, 2),
-                          transform.Value(3, 3),
-                          transform.Value(3, 4),
-                          0.0,
-                          0.0,
-                          0.0,
-                          1.0);
+    Base::Matrix4D matrix(
+        transform.Value(1, 1),
+        transform.Value(1, 2),
+        transform.Value(1, 3),
+        transform.Value(1, 4),
+        transform.Value(2, 1),
+        transform.Value(2, 2),
+        transform.Value(2, 3),
+        transform.Value(2, 4),
+        transform.Value(3, 1),
+        transform.Value(3, 2),
+        transform.Value(3, 3),
+        transform.Value(3, 4),
+        0.0,
+        0.0,
+        0.0,
+        1.0
+    );
 
     return Base::Placement(matrix);
 }

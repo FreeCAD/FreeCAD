@@ -75,6 +75,14 @@ Transformed::Transformed()
 
     ADD_PROPERTY(TransformMode, (static_cast<long>(Mode::Features)));
     TransformMode.setEnums(transformModeEnums.data());
+
+    ADD_PROPERTY_TYPE(
+        SuppressedIndices,
+        (std::vector<long>()),
+        "Transformation",
+        App::Prop_None,
+        "Indices of generated pattern instances that are suppressed"
+    );
 }
 
 void Transformed::positionBySupport()
@@ -111,11 +119,11 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
         if (freecad_cast<const Mirrored*>(this)) {
             err = QT_TRANSLATE_NOOP("Exception", "No features selected to be mirrored.");
         }
-        else if (freecad_cast<const LinearPattern*>(this)
-                 || freecad_cast<const CircularPattern*>(this)
-                 || freecad_cast<const PathPattern*>(this)
-                 || freecad_cast<const PointPattern*>(this)
-                 || freecad_cast<const PolarPattern*>(this)) {
+        else if (
+            freecad_cast<const LinearPattern*>(this) || freecad_cast<const CircularPattern*>(this)
+            || freecad_cast<const PathPattern*>(this) || freecad_cast<const PointPattern*>(this)
+            || freecad_cast<const PolarPattern*>(this)
+        ) {
             err = QT_TRANSLATE_NOOP("Exception", "No features selected to be patterned.");
         }
         else {
@@ -266,10 +274,36 @@ void Transformed::handleChangedPropertyType(
 
 short Transformed::mustExecute() const
 {
-    if (Originals.isTouched() || TransformMode.isTouched()) {
+    if (Originals.isTouched() || TransformMode.isTouched() || SuppressedIndices.isTouched()) {
         return 1;
     }
     return PartDesign::Feature::mustExecute();
+}
+
+bool Transformed::isTransformationSuppressed(int index) const
+{
+    if (index <= 0) {
+        return false;
+    }
+
+    const auto suppressed = SuppressedIndices.getValues();
+    return std::ranges::find(suppressed, static_cast<long>(index)) != suppressed.end();
+}
+
+const std::list<gp_Trsf> Transformed::getFilteredTransformations(
+    const std::vector<App::DocumentObject*> originals
+)
+{
+    std::list<gp_Trsf> filtered;
+    int index = 0;
+    for (const auto& transformation : getTransformations(originals)) {
+        if (!isTransformationSuppressed(index)) {
+            filtered.push_back(transformation);
+        }
+        ++index;
+    }
+
+    return filtered;
 }
 
 App::DocumentObjectExecReturn* Transformed::recomputePreview()
@@ -412,6 +446,10 @@ App::DocumentObjectExecReturn* Transformed::execute()
         for (; transformIter != transformations.end(); transformIter++) {
             if (Base::Sequencer().wasCanceled()) {
                 return std::vector<TopoShape>();
+            }
+            if (isTransformationSuppressed(idx)) {
+                ++idx;
+                continue;
             }
             auto opName = Data::indexSuffix(idx++);
             shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));

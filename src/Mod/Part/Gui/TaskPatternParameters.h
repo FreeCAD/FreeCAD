@@ -46,13 +46,13 @@ class PropertyLength;
 class PropertyBool;
 class PropertyIntegerConstraint;
 class PropertyLinkSub;
-}
+}  // namespace App
 
 namespace Gui
 {
 class ComboLinks;
 class View3DInventorViewer;
-}
+}  // namespace Gui
 
 namespace PartGui
 {
@@ -79,37 +79,45 @@ public:
     virtual ~TaskPatternParameters();
 
 protected:
-    void setupPatternParameterUI(QWidget* parent,
-                                 QWidget* firstPlaceholder,
-                                 QWidget* secondPlaceholder,
-                                 Gui::View3DInventorViewer* viewer,
-                                 QObject* signalContext,
-                                 int updateViewTimeout);
-    void setupCircularPatternParameterUI(QWidget* parent,
-                                         QWidget* placeholder,
-                                         QObject* signalContext,
-                                         int updateViewTimeout,
-                                         App::PropertyLinkSub* axis,
-                                         App::PropertyLength* radialDistance,
-                                         App::PropertyLength* tangentialDistance,
-                                         App::PropertyIntegerConstraint* numberCircles,
-                                         App::PropertyIntegerConstraint* symmetry);
-    void setupPathPatternParameterUI(QWidget* parent,
-                                     QWidget* placeholder,
-                                     QObject* signalContext,
-                                     int updateViewTimeout,
-                                     App::PropertyLinkSub* path,
-                                     App::PropertyIntegerConstraint* count,
-                                     App::PropertyEnumeration* spacingMode,
-                                     App::PropertyLength* spacing,
-                                     App::PropertyLength* startOffset,
-                                     App::PropertyLength* endOffset,
-                                     App::PropertyBool* reversePath,
-                                     App::PropertyBool* align);
-    void setupPointPatternParameterUI(QWidget* parent,
-                                      QWidget* placeholder,
-                                      QObject* signalContext,
-                                      App::PropertyLinkSub* pointObject);
+    void setupPatternParameterUI(
+        QWidget* parent,
+        QWidget* firstPlaceholder,
+        QWidget* secondPlaceholder,
+        Gui::View3DInventorViewer* viewer,
+        QObject* signalContext,
+        int updateViewTimeout
+    );
+    void setupCircularPatternParameterUI(
+        QWidget* parent,
+        QWidget* placeholder,
+        QObject* signalContext,
+        int updateViewTimeout,
+        App::PropertyLinkSub* axis,
+        App::PropertyLength* radialDistance,
+        App::PropertyLength* tangentialDistance,
+        App::PropertyIntegerConstraint* numberCircles,
+        App::PropertyIntegerConstraint* symmetry
+    );
+    void setupPathPatternParameterUI(
+        QWidget* parent,
+        QWidget* placeholder,
+        QObject* signalContext,
+        int updateViewTimeout,
+        App::PropertyLinkSub* path,
+        App::PropertyIntegerConstraint* count,
+        App::PropertyEnumeration* spacingMode,
+        App::PropertyLength* spacing,
+        App::PropertyLength* startOffset,
+        App::PropertyLength* endOffset,
+        App::PropertyBool* reversePath,
+        App::PropertyBool* align
+    );
+    void setupPointPatternParameterUI(
+        QWidget* parent,
+        QWidget* placeholder,
+        QObject* signalContext,
+        App::PropertyLinkSub* pointObject
+    );
 
     void updatePatternParameterUI();
     void updatePatternSpacingLabels();
@@ -127,8 +135,7 @@ protected:
     void clearActiveDirectionWidget();
 
     virtual App::DocumentObject* getPatternObject() const = 0;
-    virtual void fillDirectionCombo(Gui::ComboLinks& combo,
-                                    Part::LinearPatternDirection direction) = 0;
+    virtual void fillDirectionCombo(Gui::ComboLinks& combo, Part::LinearPatternDirection direction) = 0;
     virtual void onReferenceSelectionRequested() = 0;
     virtual void onPatternParametersChanged() = 0;
     virtual void setupPatternTransaction() = 0;

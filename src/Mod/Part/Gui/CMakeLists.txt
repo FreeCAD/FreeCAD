@@ -153,6 +153,8 @@ SET(PartGui_SRCS
     PatternParametersWidget.cpp
     PatternParametersWidget.h
     PatternParametersWidget.ui
+    PatternInstanceControls.cpp
+    PatternInstanceControls.h
     PatternReferenceWidget.cpp
     PatternReferenceWidget.h
     Resources/Part.qrc

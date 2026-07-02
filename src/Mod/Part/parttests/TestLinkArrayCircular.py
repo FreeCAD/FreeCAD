@@ -42,9 +42,7 @@ class TestLinkArrayCircular(unittest.TestCase):
         App.closeDocument(self.doc.Name)
 
     def testRingPopulationIsRoundedToSymmetry(self):
-        self.assertEqual(
-            self.array.getTypeIdOfProperty("RadialDistance"), "App::PropertyLength"
-        )
+        self.assertEqual(self.array.getTypeIdOfProperty("RadialDistance"), "App::PropertyLength")
         self.assertEqual(
             self.array.getTypeIdOfProperty("TangentialDistance"), "App::PropertyLength"
         )
