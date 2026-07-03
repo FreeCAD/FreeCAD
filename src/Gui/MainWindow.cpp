@@ -348,8 +348,32 @@ struct MainWindowP
     fastsignals::advanced_scoped_connection connParam;
     ParameterGrp::handle hGrp;
     bool _restoring = false;
+    bool coinRealTimeSensorSuspended = false;
+    SbTime savedRealTimeInterval;
     QTime _showNormal;
     void restoreWindowState(const QByteArray&);
+
+    void suspendCoinRealTimeSensor()
+    {
+        if (coinRealTimeSensorSuspended) {
+            return;
+        }
+
+        savedRealTimeInterval = SoDB::getRealTimeInterval();
+        SoDB::enableRealTimeSensor(false);
+        coinRealTimeSensorSuspended = true;
+    }
+
+    void resumeCoinRealTimeSensor()
+    {
+        if (!coinRealTimeSensorSuspended) {
+            return;
+        }
+
+        SoDB::setRealTimeInterval(savedRealTimeInterval);
+        SoDB::enableRealTimeSensor(true);
+        coinRealTimeSensorSuspended = false;
+    }
 };
 
 }  // namespace Gui
@@ -2664,16 +2688,13 @@ void MainWindow::changeEvent(QEvent* e)
         App::GetApplication().retranslateExportTypes();
     }
     else if (e->type() == QEvent::ActivationChange) {
-        static SbTime savedRealTimeInterval = SoDB::getRealTimeInterval();
         if (isActiveWindow()) {
             QMdiSubWindow* mdi = d->mdiArea->currentSubWindow();
             setActiveSubWindow(mdi);
-            SoDB::enableRealTimeSensor(true);
-            SoDB::setRealTimeInterval(savedRealTimeInterval);
+            d->resumeCoinRealTimeSensor();
         }
         else {
-            savedRealTimeInterval = SoDB::getRealTimeInterval();
-            SoDB::enableRealTimeSensor(false);
+            d->suspendCoinRealTimeSensor();
         }
     }
     else {
