@@ -39,6 +39,11 @@ endif()
 
 option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" ON)
 
+# FreeCAD does not use C++20 modules. Keep CMake 3.28+ from enabling module
+# dependency scanning on C++20 targets, especially with toolchains that do not
+# provide a scanner such as clang-scan-deps.
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
+
 if(FREECAD_USE_CCACHE)
     find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
     if(CCACHE_PROGRAM)
@@ -127,8 +132,6 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
             find_package(NETGEN REQUIRED)
         endif()
     endif()
-    # not needed at the moment
-    #find_package(OpenCV REQUIRED)
     SetupSwig()
     SetupEigen()
     # This file is included directly due to some cMake macros that are defined within.
@@ -137,14 +140,13 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
     SetupFreetype()
 
     if(BUILD_GUI)
-        SetupCoin3D()
-        SetupPivy()
+        SetupCoinPivy()
         SetupSpaceball()
         SetupShibokenAndPyside()
         SetupMatplotlib()
     endif(BUILD_GUI)
 
-    # SetupCoin3D can overwrite find_package(Boost) output so keep this after.
+    # SetupCoinPivy can overwrite find_package(Boost) output so keep this after.
     SetupBoost()
 
     if(BUILD_BIM)
