@@ -47,6 +47,15 @@ endif()
 find_package(yaml-cpp REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 yaml-cpp ${yaml-cpp_VERSION}")
 
+# LibPacks older than 3.5.3 do not ship the build-time dependencies required to
+# compile the bundled Coin and Pivy (notably the Expat CMake config), but they do
+# provide prebuilt Coin and Pivy. Fall back to those automatically on old LibPacks.
+if(NOT FREECAD_USE_EXTERNAL_COIN_PIVY AND FREECAD_LIBPACK_VERSION VERSION_LESS "3.5.3")
+    message(STATUS "LibPack ${FREECAD_LIBPACK_VERSION} predates 3.5.3 which cannot build the "
+                   "bundled Coin and Pivy; using the LibPack's prebuilt Coin and Pivy instead.")
+    set(FREECAD_USE_EXTERNAL_COIN_PIVY ON)
+endif()
+
 if(FREECAD_USE_EXTERNAL_COIN_PIVY)
     find_package(Coin REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 
