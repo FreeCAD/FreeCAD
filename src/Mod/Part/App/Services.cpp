@@ -22,21 +22,32 @@
  ***************************************************************************/
 
 #include <BRepGProp.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRep_Tool.hxx>
 #include <GProp_GProps.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopExp_Explorer.hxx>
 
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>
+#include <Base/Precision.h>
 #include <Base/Vector3D.h>
 
+#include <App/Datums.h>
 #include <App/Link.h>
 #include <App/Part.h>
+#include <App/Placement.h>
 
 #include "Geometry.h"
 #include "PartFeature.h"
 #include "Services.h"
 #include "Tools.h"
+
+#include <optional>
 
 AttacherSubObjectPlacement::AttacherSubObjectPlacement()
     : attacher(std::make_unique<Attacher::AttachEngine3D>())
@@ -61,7 +72,335 @@ namespace
 
 constexpr double edgeEndpointSnapThreshold = 0.15;
 
+bool isAxisSystemObject(const App::SubObjectT& object)
+{
+    if (!object.getOldElementName().empty()) {
+        return false;
+    }
+
+    auto isAxisSystem = [](const App::DocumentObject* obj) {
+        return obj
+            && (obj->isDerivedFrom<App::LocalCoordinateSystem>()
+                || obj->isDerivedFrom<App::Placement>());
+    };
+
+    if (isAxisSystem(object.getObject())) {
+        return true;
+    }
+
+    auto subObjects = object.getSubObjectList();
+    return !subObjects.empty() && isAxisSystem(subObjects.back());
+}
+
+Base::Vector3d toVector(const gp_Pnt& point)
+{
+    return Base::Vector3d(point.X(), point.Y(), point.Z());
+}
+
+Base::Vector3d toVector(const gp_Dir& direction)
+{
+    return Base::Vector3d(direction.X(), direction.Y(), direction.Z());
+}
+
+Base::Vector3d pointOnAxisNear(const Base::Vector3d& point, const gp_Ax1& axis)
+{
+    const auto axisOrigin = toVector(axis.Location());
+    auto axisDirection = toVector(axis.Direction());
+    axisDirection.Normalize();
+
+    return axisOrigin + axisDirection * ((point - axisOrigin) * axisDirection);
+}
+
+Base::Rotation rotationWithZAxis(
+    const Base::Vector3d& zDirection,
+    std::optional<Base::Vector3d> xDirection = std::nullopt
+)
+{
+    auto z = zDirection;
+    if (z.Length() < Base::Precision::Confusion()) {
+        z = Base::Vector3d::UnitZ;
+    }
+    z.Normalize();
+
+    auto x = xDirection.value_or(Base::Vector3d::UnitX);
+    x = x - z * (x * z);
+    if (x.Length() < Base::Precision::Confusion()) {
+        x = Base::Vector3d::UnitX - z * (Base::Vector3d::UnitX * z);
+    }
+    if (x.Length() < Base::Precision::Confusion()) {
+        x = Base::Vector3d::UnitY - z * (Base::Vector3d::UnitY * z);
+    }
+    x.Normalize();
+
+    auto y = z.Cross(x);
+    y.Normalize();
+
+    return Base::Rotation::makeRotationByAxes(x, y, z, "ZXY");
+}
+
+Part::TopoShape getSubTopoShape(const App::SubObjectT& object)
+{
+    std::string elementName = object.getOldElementName();
+    if (!object.getObject() || elementName.empty()) {
+        return {};
+    }
+
+    auto getShape = [](const App::DocumentObject* obj, const std::string& subname) {
+        if (!obj || subname.empty()) {
+            return Part::TopoShape {};
+        }
+
+        return Part::Feature::getTopoShape(
+            obj,
+            Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+            subname.c_str()
+        );
+    };
+
+    auto tryShape = [&getShape](const App::DocumentObject* obj, const std::string& subname) {
+        auto shape = getShape(obj, subname);
+        return shape.isNull() ? Part::TopoShape {} : shape;
+    };
+
+    const auto subnameNoElement = object.getSubNameNoElement();
+    if (auto shape = tryShape(object.getObject(), subnameNoElement + elementName); !shape.isNull()) {
+        return shape;
+    }
+
+    const auto newElementName = object.getNewElementName();
+    if (!newElementName.empty() && newElementName != elementName) {
+        if (auto shape = tryShape(object.getObject(), subnameNoElement + newElementName);
+            !shape.isNull()) {
+            return shape;
+        }
+    }
+
+    auto normalizedObject = object.normalized(App::SubObjectT::NormalizeOption::KeepSubName);
+    if (normalizedObject.getObject()
+        && (normalizedObject.getObject() != object.getObject()
+            || normalizedObject.getSubName() != object.getSubName())) {
+        const auto normalizedSubname = normalizedObject.getSubNameNoElement();
+        const auto normalizedElementName = normalizedObject.getOldElementName();
+        if (auto shape
+            = tryShape(normalizedObject.getObject(), normalizedSubname + normalizedElementName);
+            !shape.isNull()) {
+            return shape;
+        }
+
+        const auto normalizedNewElementName = normalizedObject.getNewElementName();
+        if (!normalizedNewElementName.empty() && normalizedNewElementName != normalizedElementName) {
+            if (auto shape
+                = tryShape(normalizedObject.getObject(), normalizedSubname + normalizedNewElementName);
+                !shape.isNull()) {
+                return shape;
+            }
+        }
+    }
+
+    auto subObjects = object.getSubObjectList();
+    if (!subObjects.empty() && subObjects.back() != object.getObject()) {
+        if (auto shape = tryShape(subObjects.back(), elementName); !shape.isNull()) {
+            return shape;
+        }
+        if (!newElementName.empty() && newElementName != elementName) {
+            if (auto shape = tryShape(subObjects.back(), newElementName); !shape.isNull()) {
+                return shape;
+            }
+        }
+    }
+
+    return {};
+}
+
+std::optional<Base::Placement> snapPlacementFromEdge(const TopoDS_Edge& edge)
+{
+    BRepAdaptor_Curve curve(edge);
+    switch (curve.GetType()) {
+        case GeomAbs_Line: {
+            const auto line = curve.Line();
+            return Base::Placement(
+                toVector(line.Location()),
+                rotationWithZAxis(toVector(line.Direction()))
+            );
+        }
+        case GeomAbs_Circle: {
+            const auto circle = curve.Circle();
+            const auto position = circle.Position();
+            return Base::Placement(
+                toVector(circle.Location()),
+                rotationWithZAxis(toVector(circle.Axis().Direction()), toVector(position.XDirection()))
+            );
+        }
+        default:
+            return std::nullopt;
+    }
+}
+
+std::optional<Base::Placement> snapPlacementFromFace(const TopoDS_Face& face, Part::TopoShape& shape)
+{
+    BRepAdaptor_Surface surface(face, Standard_False);
+    auto origin = shape.centerOfGravity().value_or(shape.getBoundBox().GetCenter());
+
+    switch (surface.GetType()) {
+        case GeomAbs_Plane: {
+            const auto plane = surface.Plane();
+            auto normal = toVector(plane.Axis().Direction());
+            if (face.Orientation() == TopAbs_REVERSED) {
+                normal *= -1.0;
+            }
+            return Base::Placement(
+                origin,
+                rotationWithZAxis(normal, toVector(plane.Position().XDirection()))
+            );
+        }
+        case GeomAbs_Cylinder: {
+            const auto cylinder = surface.Cylinder();
+            const auto axis = cylinder.Axis();
+            return Base::Placement(
+                pointOnAxisNear(origin, axis),
+                rotationWithZAxis(toVector(axis.Direction()), toVector(cylinder.Position().XDirection()))
+            );
+        }
+        case GeomAbs_Cone: {
+            const auto cone = surface.Cone();
+            const auto axis = cone.Axis();
+            return Base::Placement(
+                pointOnAxisNear(origin, axis),
+                rotationWithZAxis(toVector(axis.Direction()), toVector(cone.Position().XDirection()))
+            );
+        }
+        case GeomAbs_Sphere:
+            return Base::Placement(toVector(surface.Sphere().Location()), {});
+        default:
+            break;
+    }
+
+    return std::nullopt;
+}
+
+std::optional<Base::Placement> snapPlacementFromShape(Part::TopoShape& shape)
+{
+    switch (shape.getShape().ShapeType()) {
+        case TopAbs_VERTEX: {
+            const auto point = BRep_Tool::Pnt(TopoDS::Vertex(shape.getShape()));
+            return Base::Placement(toVector(point), {});
+        }
+        case TopAbs_EDGE:
+            return snapPlacementFromEdge(TopoDS::Edge(shape.getShape()));
+        case TopAbs_FACE:
+            return snapPlacementFromFace(TopoDS::Face(shape.getShape()), shape);
+        default:
+            break;
+    }
+
+    for (TopExp_Explorer faceExplorer(shape.getShape(), TopAbs_FACE); faceExplorer.More();
+         faceExplorer.Next()) {
+        auto face = Part::TopoShape(faceExplorer.Current());
+        auto facePlacement = snapPlacementFromFace(TopoDS::Face(face.getShape()), face);
+        if (facePlacement) {
+            return facePlacement;
+        }
+    }
+    for (TopExp_Explorer edgeExplorer(shape.getShape(), TopAbs_EDGE); edgeExplorer.More();
+         edgeExplorer.Next()) {
+        auto edgePlacement = snapPlacementFromEdge(TopoDS::Edge(edgeExplorer.Current()));
+        if (edgePlacement) {
+            return edgePlacement;
+        }
+    }
+
+    return std::nullopt;
+}
+
+App::SubObjectPlacementProvider::SnapGeometryType snapGeometryTypeFromShape(Part::TopoShape& shape)
+{
+    using SnapGeometryType = App::SubObjectPlacementProvider::SnapGeometryType;
+
+    switch (shape.getShape().ShapeType()) {
+        case TopAbs_VERTEX:
+            return SnapGeometryType::Point;
+        case TopAbs_EDGE: {
+            BRepAdaptor_Curve curve(TopoDS::Edge(shape.getShape()));
+            switch (curve.GetType()) {
+                case GeomAbs_Line:
+                case GeomAbs_Circle:
+                    return SnapGeometryType::Axis;
+                default:
+                    return SnapGeometryType::Unknown;
+            }
+        }
+        case TopAbs_FACE: {
+            BRepAdaptor_Surface surface(TopoDS::Face(shape.getShape()), Standard_False);
+            switch (surface.GetType()) {
+                case GeomAbs_Plane:
+                    return SnapGeometryType::Plane;
+                case GeomAbs_Cylinder:
+                case GeomAbs_Cone:
+                    return SnapGeometryType::Axis;
+                case GeomAbs_Sphere:
+                    return SnapGeometryType::Point;
+                default:
+                    return SnapGeometryType::Unknown;
+            }
+        }
+        default:
+            break;
+    }
+
+    for (TopExp_Explorer faceExplorer(shape.getShape(), TopAbs_FACE); faceExplorer.More();
+         faceExplorer.Next()) {
+        auto face = Part::TopoShape(faceExplorer.Current());
+        auto type = snapGeometryTypeFromShape(face);
+        if (type != SnapGeometryType::Unknown) {
+            return type;
+        }
+    }
+    for (TopExp_Explorer edgeExplorer(shape.getShape(), TopAbs_EDGE); edgeExplorer.More();
+         edgeExplorer.Next()) {
+        auto edge = Part::TopoShape(edgeExplorer.Current());
+        auto type = snapGeometryTypeFromShape(edge);
+        if (type != SnapGeometryType::Unknown) {
+            return type;
+        }
+    }
+
+    return SnapGeometryType::Unknown;
+}
+
 }  // namespace
+
+App::SubObjectPlacementProvider::SnapGeometryType AttacherSubObjectPlacement::snapGeometryType(
+    const App::SubObjectT& object
+) const
+{
+    if (isAxisSystemObject(object)) {
+        return SnapGeometryType::AxisSystem;
+    }
+
+    auto shape = getSubTopoShape(object);
+    if (shape.isNull()) {
+        return SnapGeometryType::Unknown;
+    }
+
+    return snapGeometryTypeFromShape(shape);
+}
+
+std::optional<Base::Placement> AttacherSubObjectPlacement::snapPlacement(
+    const App::SubObjectT& object,
+    Base::Placement
+) const
+{
+    if (isAxisSystemObject(object)) {
+        return Base::Placement {};
+    }
+
+    auto shape = getSubTopoShape(object);
+    if (shape.isNull()) {
+        return std::nullopt;
+    }
+
+    return snapPlacementFromShape(shape);
+}
 
 std::optional<Base::Vector3d> AttacherSubObjectPlacement::snapPosition(
     const App::SubObjectT& object,
@@ -81,15 +420,7 @@ std::optional<Base::Vector3d> AttacherSubObjectPlacement::snapPosition(
         return std::nullopt;
     }
 
-    // Mirror the Attacher's subname construction so all object types (Part,
-    // PartDesign, links, assemblies) resolve correctly.
-    std::string fullSubname = object.getSubNameNoElement() + elementName;
-
-    auto shape = Part::Feature::getTopoShape(
-        object.getObject(),
-        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
-        fullSubname.c_str()
-    );
+    auto shape = getSubTopoShape(object);
 
     if (shape.isNull() || shape.getShape().ShapeType() != TopAbs_EDGE) {
         return std::nullopt;

@@ -32,6 +32,11 @@ public:
     AttacherSubObjectPlacement();
 
     Base::Placement calculate(App::SubObjectT object, Base::Placement basePlacement) const override;
+    SnapGeometryType snapGeometryType(const App::SubObjectT& object) const override;
+    std::optional<Base::Placement> snapPlacement(
+        const App::SubObjectT& object,
+        Base::Placement basePlacement
+    ) const override;
     std::optional<Base::Vector3d> snapPosition(
         const App::SubObjectT& object,
         std::optional<Base::Vector3d> worldCursor,
