@@ -408,13 +408,8 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
         return Part::TopoShape();
 
     try {
-        // Sketches created before 1.2 (_Version < 2) built internal faces with the
-        // WireJoiner + FaceMakerRing pipeline (split geometry tagged with op-code
-        // "SKF"). FaceMakerBuildFace, used since 1.2, decomposes the faces
-        // differently and produces different internal-face element names, which
-        // breaks references stored by downstream features (e.g. a Pocket's Profile
-        // pointing at Sketch.InternalFaceN). Keep the old pipeline for old sketches
-        // so their internal-face names regenerate identically and references resolve.
+        // Old sketches keep FaceMakerRing: FaceMakerBuildFace names the internal
+        // faces differently, breaking references from downstream features.
         const bool legacy = _Version.getValue() < 2;
 
         Part::TopoShape result(getID(), getDocument()->getStringHasher());

@@ -109,10 +109,8 @@ public:
     Part ::PropertyPartShape InternalShape;
     App ::PropertyPrecision InternalTolerance;
     App ::PropertyBool MakeInternals;
-    // Internal bookkeeping: which internal-face build pipeline this sketch was
-    // created with. 1 = legacy WireJoiner + FaceMakerRing (<= 1.1), 2 =
-    // FaceMakerBuildFace (>= 1.2). Kept so internal-face element names stay
-    // stable for old documents and downstream references keep resolving.
+    // Internal-face pipeline: 1 = legacy FaceMakerRing (<= 1.1), 2 = FaceMakerBuildFace.
+    // Kept so old documents' internal-face names stay stable and references resolve.
     App::PropertyInteger _Version;
     /** @name methods override Feature */
     //@{
