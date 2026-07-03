@@ -17,7 +17,7 @@ description = "Parashell"
 backend = { name = "pixi-build-rattler-build", version = "*" }
 
 [feature.freecad.dependencies]
-freecad = { path = "." }
+parashell = { path = "." }
 flask = "*"
 sentry-sdk = "*"
 pyjwt = "*"
