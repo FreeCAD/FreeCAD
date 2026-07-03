@@ -36,201 +36,12 @@ import webbrowser
 import FreeCAD
 import FreeCADGui
 
-from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtWidgets
 
 import auth_config
 import auth_core
 
 _singleton = None
-
-
-def _format_credits(value, currency):
-    try:
-        amount = float(value)
-    except (TypeError, ValueError):
-        return str(value)
-    if currency in ("USD", ""):
-        return "$%0.2f" % amount
-    return "%0.2f %s" % (amount, currency)
-
-
-def _eye_icon(revealed):
-    size = 16
-    pixmap = QtGui.QPixmap(size, size)
-    pixmap.fill(QtCore.Qt.GlobalColor.transparent)
-    painter = QtGui.QPainter(pixmap)
-    painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
-    pen = QtGui.QPen(QtGui.QColor(150, 150, 158), 1.4)
-    pen.setCapStyle(QtCore.Qt.PenCapStyle.RoundCap)
-    painter.setPen(pen)
-    painter.setBrush(QtCore.Qt.BrushStyle.NoBrush)
-    path = QtGui.QPainterPath()
-    path.moveTo(2, 8)
-    path.quadTo(8, 1.5, 14, 8)
-    path.quadTo(8, 14.5, 2, 8)
-    painter.drawPath(path)
-    painter.drawEllipse(QtCore.QRectF(6, 5.5, 5, 5))
-    if not revealed:
-        painter.drawLine(3, 13, 13, 3)
-    painter.end()
-    return QtGui.QIcon(pixmap)
-
-
-class _DetailsPopup(QtWidgets.QDialog):
-    sign_out_requested = QtCore.Signal()
-
-    def __init__(self, session, parent=None):
-        super().__init__(parent)
-        self._session = session
-        self._revealed = False
-        self._value_labels = {}
-        self.setWindowFlags(
-            QtCore.Qt.WindowType.Dialog | QtCore.Qt.WindowType.WindowStaysOnTopHint
-        )
-        self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
-        self.setWindowTitle("Parashell account")
-        self.setObjectName("ParashellAuthDetailsPopup")
-        self._build()
-
-    def _build(self):
-        user = self._session.get("user", {})
-        layout = QtWidgets.QVBoxLayout(self)
-        layout.setContentsMargins(16, 16, 16, 16)
-        layout.setSpacing(12)
-
-        header = QtWidgets.QHBoxLayout()
-        header.setSpacing(8)
-        title = QtWidgets.QLabel(user.get("name") or "Parashell account")
-        title.setTextInteractionFlags(
-            QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
-        )
-        header.addWidget(title, 1)
-
-        self._eye_button = QtWidgets.QToolButton(self)
-        self._eye_button.setAutoRaise(True)
-        self._eye_button.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
-        self._eye_button.setIcon(_eye_icon(self._revealed))
-        self._eye_button.setToolTip("Reveal details")
-        self._eye_button.clicked.connect(self._toggle_reveal)
-        header.addWidget(self._eye_button, 0)
-        layout.addLayout(header)
-
-        grid = QtWidgets.QGridLayout()
-        grid.setHorizontalSpacing(14)
-        grid.setVerticalSpacing(8)
-        rows = [
-            ("Email", "email", True),
-            ("Organization", "org_id", True),
-        ]
-        row_index = 0
-        for caption, key, sensitive in rows:
-            value = user.get(key, "")
-            if not value and key == "org_id":
-                continue
-            name_label = QtWidgets.QLabel(caption)
-            value_label = QtWidgets.QLabel(self._display_value(key, value, sensitive))
-            value_label.setTextInteractionFlags(
-                QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
-            )
-            grid.addWidget(name_label, row_index, 0, QtCore.Qt.AlignmentFlag.AlignRight)
-            grid.addWidget(value_label, row_index, 1)
-            self._value_labels[key] = (value, sensitive)
-            self._value_labels[key + "::label"] = value_label
-            row_index += 1
-        layout.addLayout(grid)
-
-        account_box = self._build_account_box(user)
-        if account_box is not None:
-            layout.addWidget(account_box)
-
-        sign_out = QtWidgets.QPushButton("Sign out", self)
-        sign_out.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
-        sign_out.clicked.connect(self._on_sign_out)
-        layout.addWidget(sign_out)
-
-    def _build_account_box(self, user):
-        mecontrol = self._session.get("mecontrol")
-        account = mecontrol.get("account") if isinstance(mecontrol, dict) else None
-        if not isinstance(account, dict):
-            return None
-        plan = account.get("plan") if isinstance(account.get("plan"), dict) else {}
-        credits = (
-            account.get("credits") if isinstance(account.get("credits"), dict) else {}
-        )
-        info_rows = []
-        name = account.get("name") or user.get("name") or ""
-        if name:
-            info_rows.append(("Name", name))
-        plan_name = plan.get("name") or ""
-        if plan_name:
-            status = plan.get("status")
-            label = plan_name + (" (%s)" % status if status else "")
-            info_rows.append(("Plan", label))
-        remaining = credits.get("remaining")
-        if isinstance(remaining, (int, float)):
-            currency = str(credits.get("currency") or "").upper()
-            info_rows.append(("Credits", _format_credits(remaining, currency)))
-        if not info_rows:
-            return None
-        box = QtWidgets.QFrame(self)
-        box.setObjectName("ParashellAuthAccountBox")
-        box.setStyleSheet(
-            "QFrame#ParashellAuthAccountBox { background-color: #252525;"
-            " border: 1px solid #3c3c3c; border-radius: 4px; }"
-        )
-        box_layout = QtWidgets.QGridLayout(box)
-        box_layout.setContentsMargins(10, 8, 10, 8)
-        box_layout.setHorizontalSpacing(14)
-        box_layout.setVerticalSpacing(6)
-        for index, (caption, value) in enumerate(info_rows):
-            caption_label = QtWidgets.QLabel(caption)
-            value_label = QtWidgets.QLabel(str(value))
-            value_label.setTextInteractionFlags(
-                QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
-            )
-            box_layout.addWidget(
-                caption_label, index, 0, QtCore.Qt.AlignmentFlag.AlignRight
-            )
-            box_layout.addWidget(value_label, index, 1)
-        return box
-
-    def _display_value(self, key, value, sensitive):
-        if not sensitive or self._revealed:
-            return value
-        if key == "email":
-            return auth_config.mask_email(value)
-        return "\u2022" * 12
-
-    def _toggle_reveal(self):
-        self._revealed = not self._revealed
-        self._eye_button.setIcon(_eye_icon(self._revealed))
-        self._eye_button.setToolTip(
-            "Hide details" if self._revealed else "Reveal details"
-        )
-        for key, payload in list(self._value_labels.items()):
-            if key.endswith("::label"):
-                continue
-            value, sensitive = payload
-            label = self._value_labels.get(key + "::label")
-            if label is not None:
-                label.setText(self._display_value(key, value, sensitive))
-
-    def _on_sign_out(self):
-        self.sign_out_requested.emit()
-        self.close()
-
-    def show_centered(self):
-        self.adjustSize()
-        screen = QtWidgets.QApplication.primaryScreen()
-        if screen is not None:
-            available = screen.availableGeometry()
-            x = available.left() + (available.width() - self.width()) // 2
-            y = available.top() + (available.height() - self.height()) // 2
-            self.move(x, y)
-        self.show()
-        self.raise_()
-        self.activateWindow()
-        self.setFocus(QtCore.Qt.FocusReason.ActiveWindowFocusReason)
 
 
 class AuthStatusSlot(QtCore.QObject):
@@ -242,7 +53,8 @@ class AuthStatusSlot(QtCore.QObject):
         self._flow = None
         self._poll_timer = None
         self._deadline = 0.0
-        self._popup = None
+        self._confirm_active = False
+        self._confirm_timer = None
         self._mecontrol_timer = None
         self._mecontrol_busy = False
         self._setup_alerted = False
@@ -279,6 +91,8 @@ class AuthStatusSlot(QtCore.QObject):
     def _refresh(self):
         if self._button is None:
             return
+        if self._confirm_active and auth_core.is_signed_in():
+            return
         session = auth_core.current_session()
         if session is None:
             self._button.setText("Sign in")
@@ -297,9 +111,32 @@ class AuthStatusSlot(QtCore.QObject):
         if self._flow is not None:
             return
         if auth_core.is_signed_in():
-            self._show_details()
+            if self._confirm_active:
+                self._cancel_confirm()
+                self._on_sign_out()
+            else:
+                self._begin_confirm()
         else:
             self._begin_login()
+
+    def _begin_confirm(self):
+        if self._button is None:
+            return
+        self._confirm_active = True
+        self._button.setText("Press again to sign out")
+        self._button.setToolTip("Sign out?")
+        if self._confirm_timer is None:
+            timer = QtCore.QTimer(self)
+            timer.setSingleShot(True)
+            timer.timeout.connect(self._cancel_confirm)
+            self._confirm_timer = timer
+        self._confirm_timer.start(5000)
+
+    def _cancel_confirm(self):
+        if self._confirm_timer is not None:
+            self._confirm_timer.stop()
+        self._confirm_active = False
+        self._refresh()
 
     def _begin_login(self):
         if self._flow is not None:
@@ -378,17 +215,8 @@ class AuthStatusSlot(QtCore.QObject):
         self._refresh()
         self._ensure_polling()
 
-    def _show_details(self):
-        session = auth_core.current_session()
-        if session is None:
-            self._refresh()
-            return
-        main_window = FreeCADGui.getMainWindow()
-        self._popup = _DetailsPopup(session, main_window)
-        self._popup.sign_out_requested.connect(self._on_sign_out)
-        self._popup.show_centered()
-
     def _on_sign_out(self):
+        self._cancel_confirm()
         self._stop_polling()
         auth_core.sign_out()
         FreeCAD.Console.PrintMessage("Parashell Auth: signed out\n")
