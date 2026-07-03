@@ -67,6 +67,7 @@ PropertyEditor::PropertyEditor(QWidget* parent)
     , binding(false)
     , checkDocument(false)
     , closingEditor(false)
+    , recomputing(false)
     , dragInProgress(false)
 {
     propertyModel = new PropertyModel(this);
@@ -476,6 +477,10 @@ void PropertyEditor::closeTransaction()
     }
     if (doc->getBookedTransactionID() == transactionID) {
         if (autoupdate) {
+            // A recompute can delete objects, which re-enters buildUp() synchronously
+            // while the editor being closed is still receiving its FocusOut. Mark it
+            // so buildUp() defers the model reset.
+            Base::StateLocker guard(recomputing);
             recomputeDocument(doc);
         }
         doc->commitTransaction();
@@ -697,6 +702,19 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
             "While committing the data to the property the selection has changed.\n"
         );
         delaybuild = true;
+        return;
+    }
+
+    if (recomputing) {
+        // Re-entered from the recompute in closeTransaction(): resetting the model now
+        // would destroy an editor that is still mid event-dispatch, so defer.
+        QMetaObject::invokeMethod(
+            this,
+            [this, props = std::move(props), checkDoc = _checkDocument]() mutable {
+                buildUp(std::move(props), checkDoc);
+            },
+            Qt::QueuedConnection
+        );
         return;
     }
 
