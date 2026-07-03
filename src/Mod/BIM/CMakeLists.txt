@@ -26,6 +26,8 @@ SET(Arch_SRCS
     ArchSite.py
     ArchStructure.py
     ArchCommands.py
+    ArchCovering.py
+    ArchCoveringGui.py
     ArchSectionPlane.py
     ArchWindow.py
     ArchWindowPresets.py
@@ -37,6 +39,7 @@ SET(Arch_SRCS
     ArchStairs.py
     ArchSpace.py
     ArchRebar.py
+    ArchTessellation.py
     ArchFrame.py
     ArchPanel.py
     ArchEquipment.py
@@ -122,6 +125,7 @@ SET(bimcommands_SRCS
     bimcommands/BimCompound.py
     bimcommands/BimConvert.py
     bimcommands/BimCopy.py
+    bimcommands/BimCovering.py
     bimcommands/BimCurtainwall.py
     bimcommands/BimCutPlane.py
     bimcommands/BimCut.py
@@ -177,7 +181,6 @@ SET(bimcommands_SRCS
     bimcommands/BimTDPage.py
     bimcommands/BimTDView.py
     bimcommands/BimText.py
-    bimcommands/BimTogglePanels.py
     bimcommands/BimTrash.py
     bimcommands/BimTruss.py
     bimcommands/BimTutorial.py
@@ -223,11 +226,15 @@ SET(nativeifc_SRCS
 
 SET(bimtests_SRCS
     bimtests/TestArchAxis.py
+    bimtests/TestArchAxisGui.py
     bimtests/TestArchBase.py
     bimtests/TestArchBaseGui.py
     bimtests/TestArchComponent.py
+    bimtests/TestArchCovering.py
+    bimtests/TestArchCoveringGui.py
     bimtests/TestArchBuildingPart.py
     bimtests/TestArchRoof.py
+    bimtests/test_roof_subtraction.brep
     bimtests/TestArchSpace.py
     bimtests/TestArchWall.py
     bimtests/TestArchWallGui.py
@@ -254,6 +261,7 @@ SET(bimtests_SRCS
     bimtests/TestWebGLExportGui.py
     bimtests/TestArchImportersGui.py
     bimtests/TestArchBuildingPartGui.py
+    bimtests/TestArchStairsGui.py
     bimtests/TestArchReport.py
     bimtests/TestArchReportGui.py
 )

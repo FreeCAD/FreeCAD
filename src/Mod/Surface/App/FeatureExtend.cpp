@@ -196,8 +196,9 @@ void Extend::handleChangedPropertyName(Base::XMLReader& reader, const char* Type
         ExtendUNeg.setValue(v.getValue());
         ExtendUPos.setValue(v.getValue());
     }
-    else if (App::PropertyFloatConstraint::getClassTypeId() == type
-             && strcmp(PropName, "ExtendV") == 0) {
+    else if (
+        App::PropertyFloatConstraint::getClassTypeId() == type && strcmp(PropName, "ExtendV") == 0
+    ) {
         App::PropertyFloatConstraint v;
         v.Restore(reader);
         ExtendVNeg.setValue(v.getValue());

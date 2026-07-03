@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Label object."""
+
 ## @package label
 # \ingroup draftobjects
 # \brief Provides the object code for the Label object.

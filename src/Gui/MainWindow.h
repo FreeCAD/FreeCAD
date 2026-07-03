@@ -23,9 +23,11 @@
 
 #pragma once
 
+#include <QByteArray>
 #include <QEvent>
 #include <QMainWindow>
 #include <QMdiArea>
+#include <QString>
 
 #include "Window.h"
 #include "InputHint.h"
@@ -33,6 +35,7 @@
 class QMimeData;
 class QUrl;
 class QMdiSubWindow;
+class QMenu;
 
 namespace App
 {
@@ -64,6 +67,33 @@ public:
     ~UrlHandler() override = default;
     virtual void openUrl(App::Document*, const QUrl&)
     {}
+};
+
+/**
+ * Identifies which side of the status bar an item belongs to.
+ * Left items are non-permanent (they may be temporarily hidden by status
+ * messages); Right items are permanent and never obscured.
+ */
+enum class StatusBarSlot
+{
+    Left,
+    Right,
+};
+
+/**
+ * Metadata describing a status-bar item registered through
+ * MainWindow::addStatusBarItem(). Callers provide intent (slot + order + a
+ * stable id + a human title); MainWindow owns the actual layout, ordering,
+ * visibility persistence and context-menu participation.
+ */
+struct StatusBarItemSpec
+{
+    QByteArray id;  ///< Stable identifier, used for removal and persistence.
+    QString title;  ///< Label shown in the status-bar context menu.
+    StatusBarSlot slot = StatusBarSlot::Right;
+    int order = 0;                     ///< Sort key within the slot (lower = closer to the centre).
+    bool persistentVisibility = true;  ///< Persist the user's show/hide choice across sessions.
+    int stretch = 0;                   ///< Layout stretch factor.
 };
 
 /**
@@ -281,6 +311,21 @@ public Q_SLOTS:
     void setRightSideMessage(const QString& message);
     bool isRightSideMessageVisible() const;
 
+    /** @name Status bar item registry
+     * Centralized API for placing widgets in the status bar. MainWindow owns
+     * layout, ordering, visibility persistence and context-menu participation;
+     * callers (including Python workbenches) only register a widget plus
+     * metadata and never manipulate QStatusBar directly.
+     */
+    //@{
+    /// Registers and places \a widget in the status bar according to \a spec.
+    void addStatusBarItem(QWidget* widget, const StatusBarItemSpec& spec);
+    /// Removes a previously registered item by id (does not delete the widget).
+    void removeStatusBarItem(const QByteArray& id);
+    /// Populates \a menu with checkable toggle actions for all registered items.
+    void buildStatusBarContextMenu(QMenu& menu);
+    //@}
+
     // Set main window title
     void setWindowTitle(const QString& string);
 
@@ -313,8 +358,6 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
-    bool checkFirstRun();
-    void moveToDefaultPosition(QRect rect, QPoint pos);
     void setupDockWindows();
     bool setupTaskView();
     bool setupSelectionView();
@@ -392,6 +435,13 @@ Q_SIGNALS:
     void recentFileAdded(const QString& filename);
 
 private:
+    /// Re-applies the registered status-bar items to the QStatusBar in slot+order
+    /// sequence, applying each item's enabled (show/hide) state.
+    void relayoutStatusBar();
+    /// Sets a registered item's enabled state, applies it to the widget and
+    /// persists it (when the item opts into persistence).
+    void setStatusBarItemEnabled(const QByteArray& id, bool enabled);
+
     /// some kind of singleton
     static MainWindow* instance;
     struct MainWindowP* d;

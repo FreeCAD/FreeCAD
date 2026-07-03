@@ -14,14 +14,12 @@ from typing import overload, Tuple, List, Final
     NumberProtocol=True,
     RichCompare=True,
 )
-@class_declarations(
-    """public:
+@class_declarations("""public:
     RotationPy(const Rotation & mat, PyTypeObject *T = &Type)
     :PyObjectBase(new Rotation(mat),T){}
     Rotation value() const
     { return *(getRotationPtr()); }
-        """
-)
+        """)
 class Rotation(PyObjectBase):
     """
     Base.Rotation class.
@@ -163,6 +161,16 @@ class Rotation(PyObjectBase):
             Rotation by which to multiply this rotation.
         """
         ...
+    # fmt: off
+    @overload
+    def __mul__(self, vector: Vector, /) -> Vector: ...
+    @overload
+    def __mul__(self, matrix: Matrix, /) -> Matrix: ...
+    @overload
+    def __mul__(self, placement: Placement, /) -> Placement: ...
+    @overload
+    def __mul__(self, rotation: Rotation, /) -> Rotation: ...
+    # fmt: on
 
     @constmethod
     def multVec(self, vector: Vector, /) -> Vector:

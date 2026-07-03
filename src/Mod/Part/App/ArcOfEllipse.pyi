@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export
+from Base.Metadata import export, typing_only
 from ArcOfConic import ArcOfConic
-from typing import Final
+from typing import Final, overload
 
 @export(
     PythonName="Part.ArcOfEllipse",
@@ -31,3 +31,9 @@ class ArcOfEllipse(ArcOfConic):
 
     Ellipse: Final[object] = ...
     """The internal ellipse representation"""
+
+    @typing_only
+    @overload
+    def __init__(
+        self, ellipse: "Part.Ellipse", u1: float, u2: float, sense: bool = ..., /
+    ) -> None: ...

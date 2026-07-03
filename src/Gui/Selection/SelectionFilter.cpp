@@ -26,7 +26,10 @@
 # include <unistd.h>
 #endif
 
+#include <algorithm>
 #include <sstream>
+#include <string_view>
+#include <unordered_set>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -73,6 +76,30 @@ SelectionFilterGate::~SelectionFilterGate()
 bool SelectionFilterGate::allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
 {
     return Filter->test(pObj, sSubName);
+}
+
+std::unordered_set<std::string> SelectionFilterGate::getGatedTypes(
+    const std::vector<const char*>& allTypesForGeometry
+) const
+{
+    std::unordered_set<std::string> allowedTypes;
+    std::ranges::copy_if(
+        allTypesForGeometry.begin(),
+        allTypesForGeometry.end(),
+        std::inserter(allowedTypes, allowedTypes.begin()),
+        [&](const char* type) {
+            return std::ranges::any_of(Filter->getAst()->Objects, [type](const Node_ObjectPtr& node) {
+                if (node->SubName.empty()) {
+                    return true;
+                }
+                if (std::string_view(type).starts_with(node->SubName)) {
+                    return true;
+                }
+                return false;
+            });
+        }
+    );
+    return allowedTypes;
 }
 
 // ----------------------------------------------------------------------------

@@ -26,7 +26,6 @@
 
 import FreeCAD
 
-
 # View observer code to update the Draft_ToggleGrid command button to reflect
 # the grid's visibility status.
 # Based on view observer code to update the Draft Tray.

@@ -63,9 +63,6 @@ def setStatusIcons(show=True):
         translate("BIM", "Auto"),
     ]
 
-    def toggle(state):
-        FreeCADGui.runCommand("BIM_TogglePanels")
-
     def toggleBimViews(state):
         FreeCADGui.runCommand("BIM_Views")
 
@@ -86,27 +83,6 @@ def setStatusIcons(show=True):
             utext = form.inputField.text()
         action.parent().parent().parent().setText(utext)
 
-    def toggleContextMenu(point):
-        # DISABLED - TODO need to find a way to add a context menu to a QAction...
-        FreeCADGui.BimToggleMenu = QtGui.QMenu()
-        for t in ["Report view", "Python console", "Selection view", "Combo View"]:
-            a = QtGui.QAction(t)
-            # a.setCheckable(True)
-            # a.setChecked(FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("toggle"+t.replace(" ",""),True))
-            FreeCADGui.BimToggleMenu.addAction(a)
-        pos = FreeCADGui.getMainWindow().cursor().pos()
-        FreeCADGui.BimToggleMenu.triggered.connect(toggleSaveSettings)
-        # QtCore.QObject.connect(FreeCADGui.BimToggleMenu,QtCore.SIGNAL("triggered(QAction *)"),toggleSaveSettings)
-        FreeCADGui.BimToggleMenu.popup(pos)
-
-    def toggleSaveSettings(action):
-        t = action.text()
-        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").SetBool(
-            "toggle" + t.replace(" ", ""), action.isChecked()
-        )
-        if hasattr(FreeCADGui, "BimToggleMenu"):
-            del FreeCADGui.BimToggleMenu
-
     # main code
 
     mw = FreeCADGui.getMainWindow()
@@ -126,39 +102,16 @@ def setStatusIcons(show=True):
                     "BIM Status Widget",
                     "A context menu action used to show or hide this toolbar widget",
                 )
-                statuswidget.setWindowTitle(text)
-                s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt(
-                    "ToolbarIconSize", 24
+                statuswidget.setIconSize(QtCore.QSize(16, 16))
+                # MainWindow owns placement/ordering/persistence/menu; we only register.
+                mw.addStatusBarItem(
+                    statuswidget,
+                    id="BIMStatusWidget",
+                    title=text,
+                    slot="Right",
+                    # Workbench band (550-699): just left of the Bottom Panel Toggle.
+                    order=570,
                 )
-                statuswidget.setIconSize(QtCore.QSize(s, s))
-                st.insertPermanentWidget(2, statuswidget)
-
-                # report panels toggle button
-                togglebutton = QtGui.QAction()
-                togglemenu = QtGui.QMenu()
-                for t in [
-                    "Toggle",
-                    "Report view",
-                    "Python console",
-                    "Selection view",
-                    "Combo View",
-                ]:
-                    a = QtGui.QAction(t)
-                    togglemenu.addAction(a)
-                togglemenu.triggered.connect(toggleSaveSettings)
-                togglebutton.setIcon(QtGui.QIcon(":/icons/BIM_TogglePanels.svg"))
-                togglebutton.setText("")
-                togglebutton.setToolTip(
-                    translate("BIM", "Toggles the bottom dock panels on/off (Ctrl+0)")
-                )
-                togglebutton.setCheckable(True)
-                rv = mw.findChild(QtGui.QWidget, "Python console")
-                if rv and rv.isVisible():
-                    togglebutton.setChecked(True)
-                statuswidget.togglebutton = togglebutton
-                # togglebutton.setMenu(togglemenu)
-                togglebutton.triggered.connect(toggle)
-                statuswidget.addAction(togglebutton)
 
                 # bim views widget toggle button
                 from bimcommands import BimViews
@@ -167,9 +120,7 @@ def setStatusIcons(show=True):
                 bimviewsbutton.setIcon(QtGui.QIcon(":/icons/BIM_Views.svg"))
 
                 bimviewsbutton.setText("")
-                bimviewsbutton.setToolTip(
-                    translate("BIM", "Toggles the BIM Views Manager on/off (Ctrl+9)")
-                )
+                bimviewsbutton.setToolTip(translate("BIM", "Toggles the BIM Views Manager on/off"))
                 bimviewsbutton.setCheckable(True)
                 if BimViews.findWidget():
                     bimviewsbutton.setChecked(True)

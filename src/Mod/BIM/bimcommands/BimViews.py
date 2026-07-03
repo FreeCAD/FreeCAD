@@ -43,7 +43,6 @@ class BIM_Views:
             "Pixmap": "BIM_Views",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Views", "Views Manager"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Views", "Shows or hides the views manager"),
-            "Accel": "Ctrl+9",
         }
 
     def Activated(self):
@@ -87,7 +86,7 @@ class BIM_Views:
             self.dialog.menu = QtGui.QMenu()
             for button in [
                 ("Active", translate("BIM", "Active")),
-                ("AddLevel", translate("BIM", "New Level")),
+                ("AddLevel", translate("BIM", "New Level Above")),
                 ("AddProxy", translate("BIM", "New Working Plane Proxy")),
                 ("Delete", translate("BIM", "Delete")),
                 ("Toggle", translate("BIM", "Toggle Visibility")),
@@ -117,7 +116,9 @@ class BIM_Views:
             self.dialog.buttonRename.setIcon(QtGui.QIcon(":/icons/edit-edit.svg"))
 
             # set tooltips
-            self.dialog.buttonAddLevel.setToolTip(translate("BIM", "Creates a new level"))
+            self.dialog.buttonAddLevel.setToolTip(
+                translate("BIM", "Creates a new level above the highest existing one")
+            )
             self.dialog.buttonAddProxy.setToolTip(
                 translate("BIM", "Creates a new working plane proxy")
             )
@@ -205,7 +206,7 @@ class BIM_Views:
             children = []
             for i in range(itm.childCount()):
                 children.append(_toStringList(itm.child(i)))
-            return [itm.toolTip(0), itm.text(0), itm.text(1), children]
+            return [itm.toolTip(0), itm.text(0), itm.text(1), itm.text(2), children]
 
         return [_toStringList(itm) for itm in treeViewItems]
 
@@ -391,15 +392,68 @@ class BIM_Views:
                 FreeCADGui.Selection.addSelection(obj)
 
     def addLevel(self):
-        "adds a building part"
+        """Add a new level, auto-stacked above the highest sibling level.
+
+        The new level is placed at the elevation of the highest existing
+        level's top and added to the same parent building. This mirrors the
+        level workflow in Revit and ArchiCAD: levels are sequential, sorted by
+        elevation, and adding one extends the stack upward rather than
+        colliding with existing storeys at z=0.
+        """
 
         import Arch
+        import Draft
 
-        FreeCAD.ActiveDocument.openTransaction("Create BuildingPart")
+        DEFAULT_SPACING = 3000.0  # mm, fallback vertical spacing for stacking
+
+        # Determine sibling levels (children of the same parent), if any.
+        sel = FreeCADGui.Selection.getSelection()
+        parent = None
+        if len(sel) == 1:
+            s = sel[0]
+            t = Draft.getType(s)
+            if t in ["Building", "IfcBuilding"] or getattr(s, "IfcType", "") == "Building":
+                parent = s
+            elif t in ["BuildingPart", "Building Storey", "IfcBuildingStorey"]:
+                parent = getParent(s)
+
+        siblings = []
+        scope = (
+            parent.Group if parent and hasattr(parent, "Group") else FreeCAD.ActiveDocument.Objects
+        )
+        for o in scope:
+            t = Draft.getType(o)
+            if (
+                t in ["BuildingPart", "Building Storey", "IfcBuildingStorey"]
+                or getattr(o, "IfcType", "") == "Building Storey"
+            ):
+                siblings.append(o)
+
+        top_elevation = 0.0
+        if siblings:
+
+            def _elev(o):
+                z = o.Placement.Base.z
+                if z == 0 and hasattr(o, "Elevation"):
+                    z = o.Elevation.Value
+                return z
+
+            highest = max(siblings, key=_elev)
+            h = getattr(highest, "Height", None)
+            # Use the explicit height of the level below when set, otherwise a
+            # default spacing, so the new level does not overlap the one below.
+            spacing = h.Value if (h is not None and h.Value) else DEFAULT_SPACING
+            top_elevation = _elev(highest) + spacing
+
+        FreeCAD.ActiveDocument.openTransaction("Create Level")
         obj = Arch.makeFloor()
-        self.addToSelection(obj)
+        obj.Placement.Base.z = top_elevation
+        if parent is not None and hasattr(parent, "addObject"):
+            parent.addObject(obj)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(obj)
         self.update(False)
 
     def addProxy(self):
@@ -475,14 +529,29 @@ class BIM_Views:
                     FreeCADGui.Selection.clearSelection()
 
     def editObject(self, item, column):
-        "renames or edit height of the actual object"
+        "renames or edits the elevation or height of the actual object"
 
         obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
-        if obj:
+        if not obj:
+            return
+        text = item.text(column)
+        FreeCAD.ActiveDocument.openTransaction("Edit level")
+        try:
             if column == 0:
-                obj.Label = item.text(column)
-            if column == 1:
-                obj.Placement.Base.z = FreeCAD.Units.parseQuantity(item.text(column))
+                obj.Label = text
+            elif column == 1:
+                if text:
+                    q = FreeCAD.Units.parseQuantity(text)
+                    if hasattr(obj, "Elevation") and obj.Placement.Base.z == 0:
+                        obj.Elevation = q
+                    else:
+                        obj.Placement.Base.z = q
+            elif column == 2:
+                if text and hasattr(obj, "Height"):
+                    obj.Height = FreeCAD.Units.parseQuantity(text)
+        finally:
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
     def toggle(self):
         "toggle selected item on/off"
@@ -656,8 +725,8 @@ def show(item, column=None):
         obj = FreeCAD.ActiveDocument.getObject(item)
     else:
         # called from GUI
-        if column == 1:
-            # user clicked the level field
+        if column in (1, 2):
+            # user clicked the elevation or height field
             if vm:
                 vm.tree.editItem(item, column)
                 return
@@ -675,7 +744,7 @@ def show(item, column=None):
         elif isView(obj):
 
             # case 2: the object is a 2D view
-            ssel = [obj] + obj.OutListRecursive
+            ssel = [obj] + obj.Group
             FreeCADGui.Selection.clearSelection()
             for o in ssel:
                 o.ViewObject.Visibility = True
@@ -731,19 +800,26 @@ def isView(obj):
 
 def getTreeViewItem(obj):
     """
-    from FreeCAD object make the TreeWidgetItem including icon Label and LevelHeight
-    and also make a level height in number to sort the order after
+    Build a QTreeWidgetItem for obj with three columns: label, elevation, height.
+
+    Elevation comes from Placement.Base.z, falling back to the IFC Elevation
+    property when the placement is at the origin. Height comes from the
+    BuildingPart Height property when present. Returns the item together with
+    the elevation as a number, used to sort levels vertically.
     """
     from PySide import QtCore, QtGui
 
     z = obj.Placement.Base.z
-    lvHStr = FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString
-    if z == 0:
-        # override with Elevation property if available
-        if hasattr(obj, "Elevation"):
-            z = obj.Elevation.Value
-            lvHStr = obj.Elevation.UserString
-    it = QtGui.QTreeWidgetItem([obj.Label, lvHStr])
+    elevStr = FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString
+    if z == 0 and hasattr(obj, "Elevation"):
+        z = obj.Elevation.Value
+        elevStr = obj.Elevation.UserString
+
+    heightStr = ""
+    if hasattr(obj, "Height") and hasattr(obj.Height, "UserString"):
+        heightStr = obj.Height.UserString
+
+    it = QtGui.QTreeWidgetItem([obj.Label, elevStr, heightStr])
     it.setFlags(it.flags() | QtCore.Qt.ItemIsEditable)
     it.setToolTip(0, obj.Name)
     if obj.ViewObject:

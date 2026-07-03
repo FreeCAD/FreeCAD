@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the Layer object."""
+
 ## @package view_layer
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Layer object.

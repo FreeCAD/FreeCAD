@@ -75,7 +75,7 @@ def write_meshdata_constraint(f, femobj, fix_obj, ccxwriter):
 def write_constraint(f, femobj, fix_obj, ccxwriter):
 
     # floats read from ccx should use {:.13G}, see comment in writer module
-
+    solver = ccxwriter.solver_obj
     if ccxwriter.femmesh.Volumes and (
         len(ccxwriter.member.geos_shellthickness) > 0 or len(ccxwriter.member.geos_beamsection) > 0
     ):
@@ -98,9 +98,12 @@ def write_constraint(f, femobj, fix_obj, ccxwriter):
         f.write("*BOUNDARY\n")
         f.write(fix_obj.Name + ",1\n")
         f.write(fix_obj.Name + ",2\n")
-        f.write(fix_obj.Name + ",3\n")
-        if ccxwriter.member.geos_beamsection or ccxwriter.member.geos_shellthickness:
-            f.write(fix_obj.Name + ",4\n")
-            f.write(fix_obj.Name + ",5\n")
-            f.write(fix_obj.Name + ",6\n")
+        if not (solver.ModelSpace in ["plane stress", "plane strain", "axisymmetric"]):
+            f.write(fix_obj.Name + ",3\n")
+            if (not solver.ExcludeBendingStiffness) and (
+                ccxwriter.member.geos_beamsection or ccxwriter.member.geos_shellthickness
+            ):
+                f.write(fix_obj.Name + ",4\n")
+                f.write(fix_obj.Name + ",5\n")
+                f.write(fix_obj.Name + ",6\n")
         f.write("\n")

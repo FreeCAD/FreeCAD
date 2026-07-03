@@ -25,15 +25,21 @@
 
 #include <array>
 #include <set>
+#include <cstdint>
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 
+#include <Inventor/SbColor.h>
+#include <Inventor/SoPath.h>
+#include <Inventor/details/SoDetail.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
+#include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -50,10 +56,13 @@
 #include "MDIView.h"
 #include "SelectionFilter.h"
 #include "SelectionFilterPy.h"
+#include "SelectionColors.h"
 #include "SelectionObserverPython.h"
+#include "SoFCUnifiedSelection.h"
 #include "Tree.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
+#include "Window.h"
 
 
 FC_LOG_LEVEL_INIT("Selection", false, true, true)
@@ -69,19 +78,23 @@ SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     , blockedSelection(false)
 {
     if (auto doc = App::GetApplication().getActiveDocument()) {
-        pDocumentScopeName = doc->getName();
+        documentScopeName = doc->getName();
     }
     if (attach) {
         attachSelection();
     }
 }
 
-SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool attach, ResolveMode resolve)
+SelectionObserver::SelectionObserver(
+    const ViewProviderDocumentObject* /*vp*/,
+    bool attach,
+    ResolveMode resolve
+)
     : resolve(resolve)
     , blockedSelection(false)
 {
     if (auto doc = App::GetApplication().getActiveDocument()) {
-        pDocumentScopeName = doc->getName();
+        documentScopeName = doc->getName();
     }
     if (attach) {
         attachSelection();
@@ -131,7 +144,7 @@ void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg)
 {
     try {
         if (blockedSelection
-            || (pDocumentScopeName && msg.pDocName && strcmp(pDocumentScopeName, msg.pDocName) != 0)) {
+            || (!documentScopeName.empty() && msg.pDocName && documentScopeName != msg.pDocName)) {
             return;
         }
         onSelectionChanged(msg);
@@ -522,6 +535,31 @@ bool SelectionSingleton::needPickedList(const char* pDocName) const
     return context.info->needPickedList;
 }
 
+SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(
+    const SelectionSingleton::SelectionContext& context,
+    const SelectionDescription& sel
+)
+{
+    if (!context.info || !context.info->gate) {
+        return {.allowed = true, .reason = ""};
+    }
+    const char* subelement = nullptr;
+    auto pObject = getObjectOfType(
+        sel,
+        App::DocumentObject::getClassTypeId(),
+        context.info->resolveMode,
+        &subelement
+    );
+
+
+    if (!context.info->gate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
+        std::string copyNotAllowedReason = context.info->gate->notAllowedReason;
+        context.info->gate->notAllowedReason.clear();
+        return {.allowed = false, .reason = copyNotAllowedReason};
+    }
+    return {.allowed = true, .reason = ""};
+}
+
 void SelectionSingleton::enablePickedList(bool enable, const char* pDocName)
 {
     auto context = getSelectionContext(pDocName);
@@ -687,14 +725,19 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
         return {};
     }
 
+    std::vector<App::DocumentObject*> temp;
     std::set<App::DocumentObject*> objs;
+
     for (auto& sel : context.info->selList) {
         if (App::DocumentObject* pObject = getObjectOfType(sel, typeId, resolve)) {
-            objs.insert(pObject);
+            auto ret = objs.insert(pObject);
+            if (ret.second) {
+                temp.push_back(pObject);
+            }
         }
     }
 
-    return std::vector<App::DocumentObject*>(objs.begin(), objs.end());
+    return temp;
 }
 
 std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
@@ -767,7 +810,10 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
             pObject->getTypeId().getName(),
             msg.x,
             msg.y,
-            msg.z
+            msg.z,
+            SelectionChanges::MsgSource::Any,
+            msg.hasPickedPoint ? SelectionChanges::PickedPoint::Valid
+                               : SelectionChanges::PickedPoint::Invalid
         );
 
         try {
@@ -795,6 +841,69 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
     }
 }
 
+bool SelectionSingleton::testSelection(
+    App::Document* pDoc,
+    App::DocumentObject* pObject,
+    const char* pSubName
+) const
+{
+    if (!pObject) {
+        return false;
+    }
+
+    if (!pDoc) {
+        pDoc = pObject->getDocument();
+    }
+    if (!pDoc) {
+        return false;
+    }
+
+    auto foundContext = docSelectionContext.find(pDoc);
+    if (foundContext == docSelectionContext.end() || !foundContext->second.gate) {
+        return true;
+    }
+    const auto& info = foundContext->second;
+
+    const char* objectName = pObject->getNameInDocument();
+    if (!objectName) {
+        return false;
+    }
+
+    SelectionDescription temp;
+    int ret = checkSelection(
+        pDoc->getName(),
+        objectName,
+        pSubName,
+        ResolveMode::NoResolve,
+        temp,
+        &info.selList
+    );
+    if (ret < 0) {
+        return false;
+    }
+
+    const char* subelement = nullptr;
+    auto gateObject
+        = getObjectOfType(temp, App::DocumentObject::getClassTypeId(), info.resolveMode, &subelement);
+
+    auto* gate = info.gate;
+    std::string notAllowedReason = gate->notAllowedReason;
+    bool allowed
+        = gate->allow(gateObject ? gateObject->getDocument() : temp.pDoc, gateObject, subelement);
+    gate->notAllowedReason = notAllowedReason;
+    return allowed;
+}
+
+bool SelectionSingleton::hasSelectionGate(App::Document* pDoc) const
+{
+    if (!pDoc) {
+        return false;
+    }
+
+    auto foundContext = docSelectionContext.find(pDoc);
+    return foundContext != docSelectionContext.end() && foundContext->second.gate;
+}
+
 int SelectionSingleton::setPreselect(
     const char* pDocName,
     const char* pObjectName,
@@ -802,7 +911,8 @@ int SelectionSingleton::setPreselect(
     float x,
     float y,
     float z,
-    SelectionChanges::MsgSource signal
+    SelectionChanges::MsgSource signal,
+    SelectionChanges::PickedPoint pickedPoint
 )
 {
     if (!pDocName || !pObjectName) {
@@ -815,7 +925,7 @@ int SelectionSingleton::setPreselect(
     }
 
     if (DocName == pDocName && FeatName == pObjectName && SubName == pSubName) {
-        return -1;  // Already pre-selected
+        return -1;  // Already preselected
     }
 
     rmvPreselect();
@@ -893,7 +1003,8 @@ int SelectionSingleton::setPreselect(
         x,
         y,
         z,
-        signal
+        signal,
+        pickedPoint
     );
 
     if (Chng.Type == SelectionChanges::SetPreselect) {
@@ -1072,6 +1183,18 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode 
     context.info->gate = gate;
 }
 
+const Gui::SelectionGate* SelectionSingleton::getSelectionGate(const App::Document* doc) const
+{
+    if (doc == nullptr) {
+        return nullptr;
+    }
+    auto context = getSelectionContext(doc->getName());
+    if (!context.info) {
+        return nullptr;
+    }
+    return context.info->gate;
+}
+
 // remove the active SelectionGate
 void SelectionSingleton::rmvSelectionGate(App::Document* doc)
 {
@@ -1081,9 +1204,11 @@ void SelectionSingleton::rmvSelectionGate(App::Document* doc)
         foundContext->second.gate = nullptr;
 
         // if a document is about to be closed it has no MDI view any more
-        if (Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc)) {
-            if (Gui::MDIView* mdi = guiDoc->getActiveView()) {
-                mdi->restoreOverrideCursor();
+        if (Gui::Application::Instance && Gui::getMainWindow()) {
+            if (Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc)) {
+                if (Gui::MDIView* mdi = guiDoc->getActiveView()) {
+                    mdi->restoreOverrideCursor();
+                }
             }
         }
     }
@@ -1177,7 +1302,8 @@ bool SelectionSingleton::addSelection(
     float y,
     float z,
     const std::vector<SelObj>* pickedList,
-    bool clearPreselect
+    bool clearPreselect,
+    SelectionChanges::PickedPoint pickedPoint
 )
 {
     auto context = getSelectionContext(pDocName);
@@ -1215,35 +1341,23 @@ bool SelectionSingleton::addSelection(
 
 
     // check for a Selection Gate
-    if (context.info->gate) {
-        const char* subelement = nullptr;
-        auto pObject = getObjectOfType(
-            temp,
-            App::DocumentObject::getClassTypeId(),
-            context.info->resolveMode,
-            &subelement
-        );
-        if (!context.info->gate
-                 ->allow(pObject ? pObject->getDocument() : temp.pDoc, pObject, subelement)) {
-            if (getMainWindow()) {
-                QString msg;
-                if (context.info->gate->notAllowedReason.length() > 0) {
-                    msg = QObject::tr(context.info->gate->notAllowedReason.c_str());
-                }
-                else {
-                    msg = QCoreApplication::translate(
-                        "SelectionFilter",
-                        "Selection not allowed by filter"
-                    );
-                }
-                getMainWindow()->showMessage(msg);
-                Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-                mdi->setOverrideCursor(Qt::ForbiddenCursor);
+
+    const auto& selectionAllowance = isSelectionAllowed(context, temp);
+    if (!selectionAllowance.allowed) {
+        if (getMainWindow()) {
+            QString msg;
+            if (selectionAllowance.reason.length() > 0) {
+                msg = QObject::tr(selectionAllowance.reason.c_str());
             }
-            context.info->gate->notAllowedReason.clear();
-            QApplication::beep();
-            return false;
+            else {
+                msg = QCoreApplication::translate("SelectionFilter", "Selection not allowed by filter");
+            }
+            getMainWindow()->showMessage(msg);
+            Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+            mdi->setOverrideCursor(Qt::ForbiddenCursor);
         }
+        QApplication::beep();
+        return false;
     }
 
     if (!logDisabled) {
@@ -1265,7 +1379,9 @@ bool SelectionSingleton::addSelection(
         temp.TypeName,
         x,
         y,
-        z
+        z,
+        SelectionChanges::MsgSource::Any,
+        pickedPoint
     );
 
     FC_LOG(
@@ -1492,6 +1608,10 @@ bool SelectionSingleton::addSelections(
         temp.x = 0;
         temp.y = 0;
         temp.z = 0;
+
+        if (!isSelectionAllowed(context, temp).allowed) {
+            continue;
+        }
 
         if (!logDisabled && !temp.SubName.empty()) {
             temp.logged = true;
@@ -1810,31 +1930,42 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
         auto vp = Application::Instance->getViewProvider(obj);
 
         if (vp) {
-            bool visObject;
-            if (visible >= 0) {
-                visObject = visible ? true : false;
-            }
-            else {
-                visObject = !vp->isShow();
-            }
-
-            if (visObject) {
-                vp->show();
+            if (visible < 0) {
+                // Toggle link instead of the original object
+                ViewProvider* toggleVp = vp;
+                if (parent
+                    && parent->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId(), true)) {
+                    if (auto* parentVp = Application::Instance->getViewProvider(parent)) {
+                        toggleVp = parentVp;
+                    }
+                }
+                toggleVp->toggleVisibility();
                 updateSelection(
-                    visObject,
+                    toggleVp->isShow(),
                     sel.DocName.c_str(),
                     sel.FeatName.c_str(),
                     sel.SubName.c_str()
                 );
             }
             else {
-                updateSelection(
-                    visObject,
-                    sel.DocName.c_str(),
-                    sel.FeatName.c_str(),
-                    sel.SubName.c_str()
-                );
-                vp->hide();
+                if (visible) {
+                    vp->show();
+                    updateSelection(
+                        visible,
+                        sel.DocName.c_str(),
+                        sel.FeatName.c_str(),
+                        sel.SubName.c_str()
+                    );
+                }
+                else {
+                    updateSelection(
+                        visible,
+                        sel.DocName.c_str(),
+                        sel.FeatName.c_str(),
+                        sel.SubName.c_str()
+                    );
+                    vp->hide();
+                }
             }
         }
     }
@@ -2426,6 +2557,52 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "clearPreselection() -> None\n"
      "\n"
      "Clear the preselection."},
+    {"applyCoinHighlight",
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(SelectionSingleton::sApplyCoinHighlight)),
+     METH_VARARGS | METH_KEYWORDS,
+     "applyCoinHighlight(path, detail=None, color=None) -> None\n"
+     "\n"
+     "Apply a low-level Coin highlight to a path.\n"
+     "\n"
+     "path : coin.SoPath\n"
+     "    Coin scene-graph path to update.\n"
+     "detail : coin.SoDetail, None\n"
+     "    Optional sub-element detail. When omitted, highlight the whole path.\n"
+     "color : tuple(float, float, float), None\n"
+     "    Optional normalized RGB override. When omitted, use the current View preference color."},
+    {"clearCoinHighlight",
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(SelectionSingleton::sClearCoinHighlight)),
+     METH_VARARGS | METH_KEYWORDS,
+     "clearCoinHighlight(path) -> None\n"
+     "\n"
+     "Clear a low-level Coin highlight from a path.\n"
+     "\n"
+     "path : coin.SoPath\n"
+     "    Coin scene-graph path to update."},
+    {"applyCoinSelection",
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(SelectionSingleton::sApplyCoinSelection)),
+     METH_VARARGS | METH_KEYWORDS,
+     "applyCoinSelection(path, detail=None, mode='append', color=None) -> None\n"
+     "\n"
+     "Apply a low-level Coin selection action to a path.\n"
+     "\n"
+     "path : coin.SoPath\n"
+     "    Coin scene-graph path to update.\n"
+     "detail : coin.SoDetail, None\n"
+     "    Optional sub-element detail. When omitted, target the whole path.\n"
+     "mode : str, SelectionActionMode, None\n"
+     "    One of 'append', 'remove', 'all'.\n"
+     "color : tuple(float, float, float), None\n"
+     "    Optional normalized RGB override. When omitted, use the current View preference color."},
+    {"clearCoinSelection",
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(SelectionSingleton::sClearCoinSelection)),
+     METH_VARARGS | METH_KEYWORDS,
+     "clearCoinSelection(path) -> None\n"
+     "\n"
+     "Clear a low-level Coin selection from a path.\n"
+     "\n"
+     "path : coin.SoPath\n"
+     "    Coin scene-graph path to update."},
     {"countObjectsOfType",
      (PyCFunction)SelectionSingleton::sCountObjectsOfType,
      METH_VARARGS,
@@ -2620,7 +2797,9 @@ PyObject* SelectionSingleton::sAddSelection(PyObject* /*self*/, PyObject* args)
     char* docname;
     char* subname = nullptr;
     float x = 0, y = 0, z = 0;
-    if (PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname, &subname, &x, &y, &z, &PyBool_Type, &clearPreselect)) {
+    if (
+        PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname, &subname, &x, &y, &z, &PyBool_Type, &clearPreselect)
+    ) {
         Selection()
             .addSelection(docname, objname, subname, x, y, z, nullptr, Base::asBoolean(clearPreselect));
         Py_Return;
@@ -2714,15 +2893,9 @@ PyObject* SelectionSingleton::sUpdateSelection(PyObject* /*self*/, PyObject* arg
     PyObject* show;
     PyObject* object;
     char* subname = nullptr;
-    if (!PyArg_ParseTuple(
-            args,
-            "O!O!|s",
-            &PyBool_Type,
-            &show,
-            &(App::DocumentObjectPy::Type),
-            &object,
-            &subname
-        )) {
+    if (
+        !PyArg_ParseTuple(args, "O!O!|s", &PyBool_Type, &show, &(App::DocumentObjectPy::Type), &object, &subname)
+    ) {
         return nullptr;
     }
 
@@ -2805,6 +2978,94 @@ ResolveMode toEnum(int value)
         default:
             throw Base::ValueError("Wrong enum value");
     }
+}
+
+bool convertCoinPointer(PyObject* object, const char* primaryType, const char* fallbackType, void** ptr)
+{
+    *ptr = nullptr;
+    Base::Interpreter().convertSWIGPointerObj("pivy.coin", primaryType, object, ptr, 0);
+    if (!*ptr && fallbackType) {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", fallbackType, object, ptr, 0);
+    }
+    return *ptr != nullptr;
+}
+
+SoPath* getCoinPath(PyObject* object)
+{
+    void* ptr = nullptr;
+    if (!convertCoinPointer(object, "SoPath *", "_p_SoPath", &ptr)) {
+        throw Base::TypeError("'path' must be a pivy.coin.SoPath");
+    }
+    return static_cast<SoPath*>(ptr);
+}
+
+const SoDetail* getCoinDetail(PyObject* object)
+{
+    if (!object || object == Py_None) {
+        return nullptr;
+    }
+
+    void* ptr = nullptr;
+    if (!convertCoinPointer(object, "SoDetail *", "_p_SoDetail", &ptr)) {
+        throw Base::TypeError("'detail' must be a pivy.coin.SoDetail or None");
+    }
+    return static_cast<const SoDetail*>(ptr);
+}
+
+SbColor getCoinColor(PyObject* object, const char* argName, const SbColor& fallback)
+{
+    if (!object || object == Py_None) {
+        return fallback;
+    }
+
+    if (!PyTuple_Check(object) && !PyList_Check(object)) {
+        throw Base::TypeError(std::string("'") + argName + "' must be a 3-item RGB tuple/list or None");
+    }
+
+    Py::Sequence sequence(object);
+    if (sequence.length() != 3) {
+        throw Base::TypeError(std::string("'") + argName + "' must contain exactly 3 values");
+    }
+
+    return SbColor(
+        static_cast<float>(Py::Float(sequence.getItem(0))),
+        static_cast<float>(Py::Float(sequence.getItem(1))),
+        static_cast<float>(Py::Float(sequence.getItem(2)))
+    );
+}
+
+std::string getCoinString(PyObject* object, const char* argName)
+{
+    if (PyUnicode_Check(object)) {
+        return Py::String(object).as_std_string("utf-8");
+    }
+
+    if (PyBytes_Check(object)) {
+        return Py::Bytes(object).as_std_string();
+    }
+
+    throw Base::TypeError(
+        std::string("'") + argName + "' must be a string, SelectionActionMode, or None"
+    );
+}
+
+Gui::SoSelectionElementAction::Type getCoinSelectionType(PyObject* object)
+{
+    if (!object || object == Py_None) {
+        return Gui::SoSelectionElementAction::Append;
+    }
+
+    std::string value = getCoinString(object, "mode");
+    if (boost::iequals(value, "append")) {
+        return Gui::SoSelectionElementAction::Append;
+    }
+    if (boost::iequals(value, "remove")) {
+        return Gui::SoSelectionElementAction::Remove;
+    }
+    if (boost::iequals(value, "all")) {
+        return Gui::SoSelectionElementAction::All;
+    }
+    throw Base::ValueError("Unsupported 'mode'; expected one of: append, remove, all");
 }
 }  // namespace
 
@@ -2960,6 +3221,99 @@ PyObject* SelectionSingleton::sRemPreselection(PyObject* /*self*/, PyObject* arg
     Selection().rmvPreselect();
 
     Py_Return;
+}
+
+PyObject* SelectionSingleton::sApplyCoinHighlight(PyObject* /*self*/, PyObject* args, PyObject* kwd)
+{
+    PyObject* pathObject = nullptr;
+    PyObject* detailObject = Py_None;
+    PyObject* colorObject = Py_None;
+    static const std::array<const char*, 4> kwlist {"path", "detail", "color", nullptr};
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kwd, "O|OO", kwlist, &pathObject, &detailObject, &colorObject)
+    ) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        auto* path = getCoinPath(pathObject);
+        auto* detail = getCoinDetail(detailObject);
+
+        SoHighlightElementAction action;
+        action.setHighlighted(true);
+        action.setColor(getCoinColor(colorObject, "color", SelectionColors::defaultHighlightColor()));
+        action.setElement(detail);
+        action.apply(path);
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* SelectionSingleton::sClearCoinHighlight(PyObject* /*self*/, PyObject* args, PyObject* kwd)
+{
+    PyObject* pathObject = nullptr;
+    static const std::array<const char*, 2> kwlist {"path", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "O", kwlist, &pathObject)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        SoHighlightElementAction action;
+        action.setHighlighted(false);
+        action.apply(getCoinPath(pathObject));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* SelectionSingleton::sApplyCoinSelection(PyObject* /*self*/, PyObject* args, PyObject* kwd)
+{
+    PyObject* pathObject = nullptr;
+    PyObject* detailObject = Py_None;
+    PyObject* modeObject = Py_None;
+    PyObject* colorObject = Py_None;
+    static const std::array<const char*, 5> kwlist {"path", "detail", "mode", "color", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwd,
+            "O|OOO",
+            kwlist,
+            &pathObject,
+            &detailObject,
+            &modeObject,
+            &colorObject
+        )) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        SoSelectionElementAction action(getCoinSelectionType(modeObject));
+        action.setColor(getCoinColor(colorObject, "color", SelectionColors::defaultSelectionColor()));
+        action.setElement(getCoinDetail(detailObject));
+        action.apply(getCoinPath(pathObject));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* SelectionSingleton::sClearCoinSelection(PyObject* /*self*/, PyObject* args, PyObject* kwd)
+{
+    PyObject* pathObject = nullptr;
+    static const std::array<const char*, 2> kwlist {"path", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwd, "O", kwlist, &pathObject)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        SoSelectionElementAction action(SoSelectionElementAction::None);
+        action.apply(getCoinPath(pathObject));
+        Py_Return;
+    }
+    PY_CATCH;
 }
 
 PyObject* SelectionSingleton::sGetCompleteSelection(PyObject* /*self*/, PyObject* args)

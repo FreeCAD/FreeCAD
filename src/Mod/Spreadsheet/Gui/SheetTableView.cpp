@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <string>
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
@@ -46,11 +47,13 @@
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Mod/Spreadsheet/App/Cell.h>
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 #include "DlgBindSheet.h"
 #include "DlgSheetConf.h"
 #include "PropertiesDialog.h"
 #include "SheetTableView.h"
+#include "SheetModel.h"
 
 
 using namespace SpreadsheetGui;
@@ -244,11 +247,10 @@ void SheetTableView::onBind()
 void SheetTableView::onConfSetup()
 {
     auto ranges = selectedRanges();
-    if (ranges.empty()) {
-        return;
+    if (ranges.size() == 1 && ranges.back().size() > 1) {
+        DlgSheetConf dlg {sheet, ranges.back()};
+        dlg.exec();
     }
-    DlgSheetConf dlg {sheet, ranges.back()};
-    dlg.exec();
 }
 
 void SheetTableView::cellProperties()
@@ -300,8 +302,10 @@ std::vector<Range> SheetTableView::selectedRanges() const
                     }
                     continue;
                 }
-                else if (last.rowCount() == 1 && last.from().row() == sel.top()
-                         && last.to().col() + 1 == sel.left()) {
+                else if (
+                    last.rowCount() == 1 && last.from().row() == sel.top()
+                    && last.to().col() + 1 == sel.left()
+                ) {
                     // This is the case of single row selection
                     last = Range(last.from(), CellAddress(sel.top(), sel.left()));
                     continue;
@@ -485,7 +489,7 @@ bool SheetTableView::event(QEvent* event)
                 break;
         }
         if (kevent->matches(QKeySequence::SelectAll)) {
-            QTableView::selectAll();
+            selectAll();
             return true;
         }
         if (kevent->matches(QKeySequence::Delete) || kevent->matches(QKeySequence::Backspace)) {
@@ -698,7 +702,8 @@ void SheetTableView::pasteClipboard()
         }
         else {
             QByteArray res = mimeData->data(_SheetMime);
-            Base::ByteArrayIStreambuf buf(res);
+            std::string buffer(res.constData(), static_cast<std::size_t>(res.size()));
+            Base::StringIStreambuf buf(buffer);
             std::istream in(nullptr);
             in.rdbuf(&buf);
             Base::XMLReader reader("<memory>", in);
@@ -812,8 +817,10 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetColumn--;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, 0, -1);
             }
             else {
@@ -829,8 +836,10 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetColumn += colSpan;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, 0, 1);
             }
             else {
@@ -846,8 +855,10 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetRow--;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, -1, 0);
             }
             else {
@@ -862,8 +873,10 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetRow += rowSpan;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, 1, 0);
             }
             else {
@@ -982,6 +995,20 @@ void SheetTableView::ModifyBlockSelection(int targetRow, int targetCol)
     );
 }
 
+void SheetTableView::selectAll()
+{
+    auto* sheetModel = qobject_cast<SheetModel*>(model());
+    if (!sheetModel) {
+        return;
+    }
+
+    auto* param = SheetParameter::instance();
+    if (sheetModel->rowCount() <= param->getMaximumRowCount()
+        && sheetModel->columnCount() <= param->getMaximumColumnCount()) {
+        QTableView::selectAll();
+    }
+}
+
 void SheetTableView::mergeCells()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Spreadsheet_MergeCells");
@@ -1040,6 +1067,7 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent*)
 
     auto ranges = selectedRanges();
     actionBind->setEnabled(!ranges.empty() && ranges.size() <= 2);
+    actionConf->setEnabled(ranges.size() == 1 && ranges.back().size() > 1);
 
     contextMenu.exec(QCursor::pos());
 }

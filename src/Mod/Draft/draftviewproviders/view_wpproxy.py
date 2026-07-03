@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the WorkingPlaneProxy object."""
+
 ## @package view_wpproxy
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the WorkingPlaneProxy object.

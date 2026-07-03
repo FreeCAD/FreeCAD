@@ -57,7 +57,6 @@ from .equations import magnetodynamic_writer as MgDyn_writer
 from .equations import magnetodynamic2D_writer as MgDyn2D_writer
 from .equations import staticcurrent_writer as SC_writer
 
-
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"
@@ -638,7 +637,9 @@ class Writer:
         return varName
 
     def getAllBodies(self):
-        obj = self.getSingleMember("Fem::FemMeshObject")
+        obj = self.getMesh()
+        if not obj.FemMesh.Groups:
+            raise RuntimeError(f"Mesh object '{obj.Label}' has no groups, please remesh\n")
         bodyCount = 0
         prefix = ""
         if obj.Shape.Shape.Solids:
@@ -653,7 +654,7 @@ class Writer:
         return [prefix + str(i + 1) for i in range(bodyCount)]
 
     def getMeshDimension(self):
-        obj = self.getSingleMember("Fem::FemMeshObject")
+        obj = self.getMesh()
         if obj.Shape.Shape.Solids:
             return 3
         if obj.Shape.Shape.Faces:
@@ -661,6 +662,9 @@ class Writer:
         if obj.Shape.Shape.Edges:
             return 1
         return None
+
+    def getMesh(self):
+        return membertools.get_mesh_to_solve(self.analysis)
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)

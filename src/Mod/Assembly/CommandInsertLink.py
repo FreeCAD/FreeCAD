@@ -36,7 +36,6 @@ import UtilsAssembly
 import Preferences
 import CommandCreateJoint
 
-
 __title__ = "Assembly Command Insert Component"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
@@ -78,7 +77,7 @@ class CommandInsertLink:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_InsertLink",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Component"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert Component"),
             "Accel": "I",
             "ToolTip": tooltip,
             "CmdType": "ForEdit",

@@ -23,9 +23,11 @@
 
 #pragma once
 
+#include <cstddef>
 #include <list>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -44,6 +46,24 @@ class SoDetail;
 
 namespace Gui
 {
+
+namespace SelectionPickPolicy
+{
+
+struct Candidate
+{
+    const void* owner {nullptr};
+    int priority {0};
+    bool closeToFirst {false};
+    bool isAnnotation {false};
+    bool hasGate {false};
+    bool passesGate {false};
+};
+
+GuiExport bool canFinalizeSinglePick(const std::vector<Candidate>& picked);
+GuiExport std::size_t choosePreferredPick(const std::vector<Candidate>& picked);
+
+}  // namespace SelectionPickPolicy
 
 class Document;
 class ViewProviderDocumentObject;
@@ -105,6 +125,19 @@ private:
         ViewProviderDocumentObject* vpd {nullptr};
         std::string element;
     };
+
+    static bool passesSelectionGate(const PickedInfo&);
+    static bool hasSelectionGate(const PickedInfo&);
+    static SelectionPickPolicy::Candidate getPickCandidate(
+        const PickedInfo&,
+        const Document*,
+        const PickedInfo* firstPicked = nullptr
+    );
+    static std::vector<SelectionPickPolicy::Candidate> getPickCandidates(
+        const std::vector<PickedInfo>&,
+        const Document*
+    );
+    static bool canFinalizeSinglePick(const std::vector<PickedInfo>&);
 
     bool setPreselect(const PickedInfo&);
     bool setPreselect(

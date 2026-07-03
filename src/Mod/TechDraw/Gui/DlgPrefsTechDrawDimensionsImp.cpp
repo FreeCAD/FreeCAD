@@ -66,6 +66,9 @@ void DlgPrefsTechDrawDimensionsImp::saveSettings()
     ui->pdsbGapISO->onSave();
     ui->pdsbGapASME->onSave();
     ui->pdsbLineSpacingFactorISO->onSave();
+    ui->cbSnapDims->onSave();
+    ui->dsbTextFactor->onSave();
+    ui->dsbChainFactor->onSave();
 
     enum
     {
@@ -186,6 +189,10 @@ void DlgPrefsTechDrawDimensionsImp::loadSettings()
     bool Radius = hGrp->GetBool("DimensioningRadius", true);
     index = Diameter ? (Radius ? 0 : 1) : 2;
     ui->radiusDiameterMode->setCurrentIndex(index);
+
+    ui->cbSnapDims->onRestore();
+    ui->dsbTextFactor->onRestore();
+    ui->dsbChainFactor->onRestore();
 }
 
 void DlgPrefsTechDrawDimensionsImp::dimensioningModeChanged(int index)

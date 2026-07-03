@@ -40,9 +40,8 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfParabolaPy::representation() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfParabolaPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfParabolaPtr()->handle());
     Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(trim->BasisCurve());
 
     gp_Ax1 axis = parabola->Axis();
@@ -84,7 +83,9 @@ int ArcOfParabolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject* o;
     double u1, u2;
     PyObject* sense = Py_True;
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::ParabolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+    if (
+        PyArg_ParseTuple(args, "O!dd|O!", &(Part::ParabolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)
+    ) {
         try {
             Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(
                 static_cast<ParabolaPy*>(o)->getGeomParabolaPtr()->handle()
@@ -128,9 +129,8 @@ void ArcOfParabolaPy::setFocal(Py::Float arg)
 
 Py::Object ArcOfParabolaPy::getParabola() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfParabolaPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfParabolaPtr()->handle());
     Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(trim->BasisCurve());
     return Py::Object(new ParabolaPy(new GeomParabola(parabola)), true);
 }

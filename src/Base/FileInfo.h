@@ -63,16 +63,17 @@ public:
     };
 
     /// Construction
-    explicit FileInfo(const char* fileName = "");
-    explicit FileInfo(const std::string& fileName);
+    explicit FileInfo(std::string fileName);
+    explicit FileInfo(const char* fileName = "")
+        : FileInfo(std::string {fileName})
+    {}
     /// Set a new file name
-    void setFile(const char* name);
+    void setFile(std::string name);
     /// Set a new file name
-    void setFile(const std::string& name)
+    void setFile(const char* name)
     {
-        setFile(name.c_str());
+        setFile(std::string {name});
     }
-
 
     /** @name extraction of information */
     //@{

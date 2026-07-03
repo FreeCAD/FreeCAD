@@ -27,6 +27,7 @@
 
 http://en.wikipedia.org/wiki/Inversive_geometry
 """
+
 ## @package circle_inversion
 # \ingroup draftgeoutils
 # \brief Provides various functions for inversive geometry operations.

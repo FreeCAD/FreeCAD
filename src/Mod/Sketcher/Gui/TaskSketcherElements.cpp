@@ -1843,7 +1843,7 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
     ui->listWidgetElements->repaint();
 
     // it seems that addSelections gives back the focus to the view, and not immediately.
-    QTimer::singleShot(200, [this]() {
+    QTimer::singleShot(200, this, [this]() {
         ui->listWidgetElements->setFocus();
     });
 }

@@ -19,15 +19,16 @@ permissions:
 jobs:
   stale:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
 
       - name: '🧹 Tag & close stale unconfirmed bugs'
         id: stale_issues
-        uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
+        uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 # v10.3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-issue-stale: 90
@@ -37,7 +38,8 @@ jobs:
           operations-per-run: 200  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          exempt-issue-labels: 'Status: Confirmed,Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close,3rd party: OCC'
+          only-issue-types: 'Bug'
+          exempt-issue-labels: 'Status: Confirmed,Priority: High,Priority: Critical,Blocker,no-auto-close,3rd party: OCC'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
@@ -53,7 +55,7 @@ jobs:
 
       - name: '🧹 Close stale requested feedback issues'
         id: awaiting_issues
-        uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
+        uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 # v10.3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-issue-stale: 20
@@ -63,7 +65,8 @@ jobs:
           operations-per-run: 100  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          only-labels: 'Status: Needs feedback,Status: Needs test on dev version,Status: Needs steps to reproduce'
+          only-issue-types: 'Bug'
+          only-issue-labels: 'Status: Needs feedback,Status: Needs test on dev version,Status: Needs steps to reproduce'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
@@ -80,7 +83,7 @@ jobs:
 
       - name: '🧹 Tag & close inactive issues'
         id: inactive_issues
-        uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
+        uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 # v10.3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-issue-stale: 190
@@ -90,7 +93,8 @@ jobs:
           operations-per-run: 100  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close,3rd party: OCC'
+          only-issue-types: 'Bug'
+          exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker,no-auto-close,3rd party: OCC'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
@@ -110,7 +114,7 @@ jobs:
 
       - name: '🧹 Tag & close inactive PRs'
         id: inactive_pr
-        uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
+        uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 # v10.3.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           days-before-issue-stale: -1

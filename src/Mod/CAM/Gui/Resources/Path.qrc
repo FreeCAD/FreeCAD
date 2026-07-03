@@ -66,6 +66,7 @@
         <file>icons/CAM_ToolTableAdd.svg</file>
         <file>icons/CAM_ToolTableRemove.svg</file>
         <file>icons/CAM_Vcarve.svg</file>
+        <file>icons/CAM_RotarySurface.svg</file>
         <file>icons/CAM_Waterline.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
@@ -86,6 +87,7 @@
         <file>panels/DlgJobCreate.ui</file>
         <file>panels/DlgJobModelSelect.ui</file>
         <file>panels/DlgJobTemplateExport.ui</file>
+        <file>panels/DlgPostProcess.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
         <file>panels/DlgTCChooser.ui</file>
         <file>panels/DlgToolControllerEdit.ui</file>
@@ -115,6 +117,7 @@
         <file>panels/PageOpProbeEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSlotEdit.ui</file>
+        <file>panels/PageOpRotarySurfaceEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>
         <file>panels/PageOpTappingEdit.ui</file>
         <file>panels/PageOpThreadMillingEdit.ui</file>

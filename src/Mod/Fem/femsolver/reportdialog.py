@@ -33,7 +33,6 @@ __url__ = "https://www.freecad.org"
 from PySide import QtGui
 from femtools.femutils import getOutputWinColor
 
-
 ERROR_COLOR = "Error"
 WARNING_COLOR = "Warning"
 INFO_COLOR = "Logging"

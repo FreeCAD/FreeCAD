@@ -115,9 +115,8 @@ void ArcOfConicPy::setAngleXU(Py::Float arg)
 
 Py::Object ArcOfConicPy::getAxis() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfConicPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfConicPtr()->handle());
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(trim->BasisCurve());
     gp_Ax1 axis = conic->Axis();
     gp_Dir dir = axis.Direction();
@@ -140,9 +139,8 @@ void ArcOfConicPy::setAxis(Py::Object arg)
         throw Py::TypeError(error);
     }
 
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfConicPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfConicPtr()->handle());
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(trim->BasisCurve());
     try {
         gp_Ax1 axis;
@@ -157,9 +155,8 @@ void ArcOfConicPy::setAxis(Py::Object arg)
 
 Py::Object ArcOfConicPy::getXAxis() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfConicPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfConicPtr()->handle());
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(trim->BasisCurve());
     gp_Ax1 axis = conic->XAxis();
     gp_Dir dir = axis.Direction();
@@ -182,9 +179,8 @@ void ArcOfConicPy::setXAxis(Py::Object arg)
         throw Py::TypeError(error);
     }
 
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfConicPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfConicPtr()->handle());
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(trim->BasisCurve());
     try {
         gp_Ax2 pos;
@@ -199,9 +195,8 @@ void ArcOfConicPy::setXAxis(Py::Object arg)
 
 Py::Object ArcOfConicPy::getYAxis() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfConicPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfConicPtr()->handle());
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(trim->BasisCurve());
     gp_Ax1 axis = conic->YAxis();
     gp_Dir dir = axis.Direction();
@@ -224,9 +219,8 @@ void ArcOfConicPy::setYAxis(Py::Object arg)
         throw Py::TypeError(error);
     }
 
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfConicPtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfConicPtr()->handle());
     Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(trim->BasisCurve());
     try {
         gp_Ax2 pos;

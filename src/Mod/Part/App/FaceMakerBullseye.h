@@ -92,7 +92,7 @@ protected:
      * except that it is tolerant to wire orientation (wires are oriented as
      * needed automatically).
      */
-    class FaceDriller
+    class PartExport FaceDriller
     {
     public:
         FaceDriller(const gp_Pln& plane, TopoDS_Wire outerWire);

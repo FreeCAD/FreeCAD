@@ -6,14 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>244</width>
-    <height>358</height>
+    <width>242</width>
+    <height>352</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -36,7 +48,7 @@
          </sizepolicy>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="keyboardTracking">
          <bool>false</bool>
@@ -59,7 +71,7 @@
          </sizepolicy>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="keyboardTracking">
          <bool>false</bool>
@@ -73,7 +85,7 @@
         </property>
        </widget>
       </item>
-     <item row="2" column="1">
+      <item row="2" column="1">
        <widget class="Gui::PrefQuantitySpinBox" name="centerZ">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -88,14 +100,14 @@
          </size>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="keyboardTracking">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item>
@@ -120,7 +132,7 @@
          </sizepolicy>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="keyboardTracking">
          <bool>false</bool>
@@ -143,7 +155,7 @@
          </sizepolicy>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="keyboardTracking">
          <bool>false</bool>
@@ -157,7 +169,7 @@
         </property>
        </widget>
       </item>
-     <item row="2" column="1">
+      <item row="2" column="1">
        <widget class="Gui::PrefQuantitySpinBox" name="axisZ">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -172,14 +184,14 @@
          </size>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
         </property>
         <property name="keyboardTracking">
          <bool>false</bool>
         </property>
        </widget>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item>
@@ -206,7 +218,7 @@
         </sizepolicy>
        </property>
        <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -215,12 +227,25 @@
      </item>
     </layout>
    </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <extends>QAbstractSpinBox</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
   <customwidget>

@@ -1812,8 +1812,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                     if (auto titleBar = qobject_cast<OverlayTitleBar*>(OverlayTabWidget::_Dragging)) {
                         titleBar->endDrag();
                     }
-                    else if (auto splitHandle
-                             = qobject_cast<OverlaySplitterHandle*>(OverlayTabWidget::_Dragging)) {
+                    else if (
+                        auto splitHandle
+                        = qobject_cast<OverlaySplitterHandle*>(OverlayTabWidget::_Dragging)
+                    ) {
                         splitHandle->endDrag();
                     }
                 }
@@ -1847,27 +1849,27 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
             }
             break;
         // case QEvent::NativeGesture:
-        case QEvent::Wheel:
-            if (!OverlayParams::getDockOverlayWheelPassThrough()) {
-                return false;
-            }
-            // fall through
         case QEvent::ContextMenu: {
             auto cev = static_cast<QContextMenuEvent*>(ev);
             if (cev->reason() != QContextMenuEvent::Mouse) {
                 return false;
             }
         }  // fall through
+        case QEvent::Wheel:
         case QEvent::MouseButtonDblClick:
         case QEvent::MouseButtonRelease:
         case QEvent::MouseButtonPress:
         case QEvent::MouseMove: {
+            if (ev->type() == QEvent::Wheel && !OverlayParams::getDockOverlayWheelPassThrough()) {
+                return false;
+            }
             if (OverlayTabWidget::_Dragging && OverlayTabWidget::_Dragging != o) {
                 if (auto titleBar = qobject_cast<OverlayTitleBar*>(OverlayTabWidget::_Dragging)) {
                     titleBar->endDrag();
                 }
-                else if (auto splitHandle
-                         = qobject_cast<OverlaySplitterHandle*>(OverlayTabWidget::_Dragging)) {
+                else if (
+                    auto splitHandle = qobject_cast<OverlaySplitterHandle*>(OverlayTabWidget::_Dragging)
+                ) {
                     splitHandle->endDrag();
                 }
             }
@@ -1914,8 +1916,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                 // probably do not matter.
                 return true;
             }
-            else if (ev->type() != QEvent::MouseButtonPress && ev->type() != QEvent::MouseButtonDblClick
-                     && QApplication::mouseButtons() != Qt::NoButton) {
+            else if (
+                ev->type() != QEvent::MouseButtonPress && ev->type() != QEvent::MouseButtonDblClick
+                && QApplication::mouseButtons() != Qt::NoButton
+            ) {
                 return false;
             }
 
@@ -1930,8 +1934,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                 && pos == d->_lastPos) {
                 hit = 1;
             }
-            else if (ev->type() == QEvent::Wheel && !d->wheelDelay.isNull()
-                     && (isNear(pos, d->wheelPos) || d->wheelDelay > QTime::currentTime())) {
+            else if (
+                ev->type() == QEvent::Wheel && !d->wheelDelay.isNull()
+                && (isNear(pos, d->wheelPos) || d->wheelDelay > QTime::currentTime())
+            ) {
                 d->wheelDelay = QTime::currentTime().addMSecs(
                     OverlayParams::getDockOverlayWheelDelay()
                 );
