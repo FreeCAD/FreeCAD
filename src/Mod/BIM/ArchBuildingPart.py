@@ -1192,9 +1192,9 @@ class ViewProviderBuildingPart:
         menu.addAction(actionCloneUp)
 
     def activate(self, action=None):
-        from bimcommands.BimViews import toggle_active_level
+        from bimcommands.BimViews import _toggle_active_container
 
-        toggle_active_level(self.Object, action)
+        _toggle_active_container(self.Object, action)
         FreeCADGui.Selection.clearSelection()
 
     def setWorkingPlane(self, restore=False):
