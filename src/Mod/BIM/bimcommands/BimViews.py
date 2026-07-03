@@ -523,7 +523,7 @@ class BIM_Views:
                 item = vm.tree.selectedItems()[-1]
                 obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
                 if obj and hasattr(obj.ViewObject, "DoubleClickActivates"):
-                    toggle_active_level(obj, dialog=dialog)
+                    _toggle_active_container(obj, dialog=dialog)
                     FreeCADGui.Selection.clearSelection()
 
     def editObject(self, item, column):
@@ -671,7 +671,9 @@ class BIM_Views:
             if selobj:
                 if Draft.getType(selobj).startswith("Ifc"):
                     self.dialog.buttonAddProxy.setEnabled(False)
-                if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == selobj:
+                if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == selobj:
+                    self.dialog.buttonActive.setChecked(True)
+                elif FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == selobj:
                     self.dialog.buttonActive.setChecked(True)
                 else:
                     self.dialog.buttonActive.setChecked(False)
@@ -761,7 +763,7 @@ def show(item, column=None):
                 vparam.SetBool("Simple", True)
                 vparam.SetBool("Gradient", False)
                 vparam.SetBool("RadialGradient", False)
-        elif Draft.getType(obj) in ("BuildingPart", "IfcBuildingStorey"):
+        elif Draft.getType(obj) in ("BuildingPart", "IfcBuilding", "IfcBuildingStorey"):
             BIM_Views.activate()
         else:
             # WP Proxy
@@ -819,8 +821,8 @@ def getTreeViewItem(obj):
     it.setFlags(it.flags() | QtCore.Qt.ItemIsEditable)
     it.setToolTip(0, obj.Name)
     if obj.ViewObject:
-        if hasattr(obj.ViewObject, "Proxy") and hasattr(obj.ViewObject.Proxy, "getIcon"):
-            it.setIcon(0, QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
+        if hasattr(obj.ViewObject, "Icon"):
+            it.setIcon(0, obj.ViewObject.Icon)
     return (it, z)
 
 
@@ -861,16 +863,17 @@ def getParent(obj):
                 return parent
 
 
-def toggle_active_level(obj, action=None, dialog=None):
-    """Toggle the active state of a BIM level.
+def _toggle_active_container(obj, action=None, dialog=None):
+    """Toggle the active state of a BIM building or level.
 
-    This function handles the logic for activating BuildingParts and IfcBuildingStoreys.
+    This function handles the logic for activating BuildingParts (buildings and levels),
+    IfcBuildings and IfcBuildingStoreys.
 
     Parameters
     ----------
     obj : App::DocumentObject
         The object to activate or deactivate as a working plane.
-        Must be an IfcBuildingStorey or a BuildingPart.
+        Must be a BuildingPart, an IfcBuilding or an IfcBuildingStorey.
     action : QAction, optional
         The action button that triggered this function, to update its checked state.
     dialog : QDialog, optional
@@ -882,9 +885,9 @@ def toggle_active_level(obj, action=None, dialog=None):
         True if the object was activated, False if it was deactivated.
     """
 
-    active_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+    active_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
     if active_obj is None:
-        active_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+        active_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
     is_active = obj == active_obj
 
     if getattr(obj.ViewObject, "SetWorkingPlane", False):
@@ -903,14 +906,14 @@ def toggle_active_level(obj, action=None, dialog=None):
 
     if is_active:
         # Deactivate the object
-        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
         FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
         return False
     else:
         # Activate the object
         import Draft
 
-        context = "NativeIFC" if Draft.getType(obj) == "IfcBuildingStorey" else "Arch"
+        context = "NativeIFC" if Draft.getType(obj) in ("IfcBuilding", "IfcBuildingStorey") else "Arch"
         FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, obj)
         return True
 
