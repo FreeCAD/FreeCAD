@@ -1,0 +1,69 @@
+name: Update Pixi Lockfiles
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "21 3 1 * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-pixi-lockfiles
+  cancel-in-progress: false
+
+jobs:
+  update-pixi-lockfiles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: Checkout source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up Pixi
+        uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11 # v0.9.6
+        with:
+          pixi-version: v0.68.0
+          cache: false
+          run-install: false
+
+      - name: Update Pixi lockfiles
+        id: pixi_update
+        shell: bash
+        run: |
+          set -euo pipefail
+          delimiter="pixi_diff_${RANDOM}_${RANDOM}"
+          {
+            echo "diff<<${delimiter}"
+            for manifest in pixi.toml package/rattler-build/pixi.toml; do
+              echo "## ${manifest}"
+              pixi update --manifest-path "${manifest}" --no-install --json \
+                | pixi exec --spec pixi-diff-to-markdown pixi-diff-to-markdown
+              echo
+            done
+            echo "${delimiter}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
+        with:
+          branch: automation/update-pixi-lock
+          title: "Update Pixi lockfiles"
+          commit-message: "chore: update Pixi lockfiles"
+          body: |
+            Automated refresh of Pixi lockfiles.
+
+            ${{ steps.pixi_update.outputs.diff }}
+          labels: |
+            Packaging/building
+          delete-branch: true
+          add-paths: |
+            pixi.lock
+            package/rattler-build/pixi.lock
