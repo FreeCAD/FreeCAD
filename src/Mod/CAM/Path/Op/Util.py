@@ -25,8 +25,8 @@
 import FreeCAD
 import Path
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathUtils as PathUtils
 import math
+import time
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -571,7 +571,7 @@ def getClearedAreas(currentOp, bbox):
         tool = baseOp.ToolController.Tool
         diameter = tool.Diameter.getValueAs("mm")
         # for drills, dz translates to the full width part of the tool
-        dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
+        dz = 0 if not hasattr(tool, "TipAngle") else -drillTipLength(tool)
         opPath = _stripRotaryAxes(op.Path) if rotated else op.Path
         clearedAreas.append(opPath.getClearedArea(diameter, z + dz, bbox))
     return clearedAreas
@@ -648,3 +648,77 @@ def getOpSide(obj, default="Outside"):
             return "Outside"
 
     return default
+
+
+def getCycleTimeEstimate(obj, formatted=True):
+    """getCycleTimeEstimate(obj, formated=True) ... Returns operation cycle time estimation
+    If formatted=True returns string which describes time in format 'hh:mm:ss'
+    If formatted=False returns seconds as a float value"""
+    baseOp = PathDressup.baseOp(obj)
+    tc = baseOp.ToolController
+
+    if tc is None or tc.ToolNumber == 0:
+        Path.Log.error(translate("CAM", "No Tool Controller selected."))
+        return translate("CAM", "Tool Error")
+
+    hFeedrate = tc.HorizFeed.Value
+    vFeedrate = tc.VertFeed.Value
+    hRapidrate = tc.HorizRapid.Value
+    vRapidrate = tc.VertRapid.Value
+
+    if hFeedrate == 0 or vFeedrate == 0:
+        if not Path.Preferences.suppressAllSpeedsWarning():
+            Path.Log.warning(
+                translate(
+                    "CAM",
+                    "Tool Controller feedrates required to calculate the cycle time.",
+                )
+            )
+        return translate("CAM", "Tool Feedrate Error")
+
+    if (hRapidrate == 0 or vRapidrate == 0) and not Path.Preferences.suppressRapidSpeedsWarning():
+        Path.Log.warning(
+            translate(
+                "CAM",
+                "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.",
+            )
+        )
+
+    # Get the cycle time in seconds
+    seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
+
+    if math.isnan(seconds):
+        return translate("CAM", "Cycletime Error")
+
+    if formatted:  # Convert the cycle time to a HH:MM:SS format
+        return time.strftime("%H:%M:%S", time.gmtime(seconds))
+    else:
+        return seconds
+
+
+def drillTipLength(tool):
+    """returns the length of the drillbit tip."""
+
+    if not hasattr(tool, "TipAngle"):
+        Path.Log.error(translate("Path", "Selected tool is not a drill"))
+        return 0.0
+
+    angle = tool.TipAngle
+
+    if angle <= 0 or angle >= 180:
+        Path.Log.error(
+            translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % angle
+        )
+        return 0.0
+
+    theta = math.radians(angle)
+    length = (float(tool.Diameter) / 2) / math.tan(theta / 2)
+
+    if length < 0:
+        Path.Log.error(
+            translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length")
+            % angle
+        )
+        return 0.0
+
+    return length
