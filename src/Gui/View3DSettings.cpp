@@ -363,14 +363,10 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
         }
     }
     else if (strcmp(Reason, "AxisLetterColor") == 0) {
-        unsigned long backlight = rGrp.GetUnsigned("AxisLetterColor", 0x00000000);  // default color
-                                                                                    // (black)
-        float transparency;
-        SbColor color;
-        color.setPackedValue((uint32_t)backlight, transparency);
-        for (auto _viewer : _viewers) {
-            _viewer->setAxisLetterColor(color);
-        }
+        // TODO: only the corner cross used the side effects from this hook, and it's
+        // open for consideration if it should keep the color override or use the axis
+        // colors. Ideally, it could do either but at the moment, label color override
+        // hasn't been added to the SoFCPlacementIndicatorKit and likely forthcoming
     }
     else if (strcmp(Reason, "ShowAxisCross") == 0) {
         for (auto _viewer : _viewers) {

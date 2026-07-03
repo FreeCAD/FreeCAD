@@ -390,7 +390,7 @@ void renderOverlayImage(
 
     auto& overlay = overlayImageState();
     overlay.ensureCreated();
-    if (!overlay.root || !overlay.camera || !overlay.texture || !overlay.vertices) {
+    if (!overlay.root || !overlay.camera) {
         return;
     }
 
@@ -448,71 +448,6 @@ void renderOverlaySolidColor(
     root->unref();
 }
 
-SoSeparator* createAxisArrowGeometry()
-{
-    constexpr float shaftLength = 1.0f - 1.0f / 3.0f;
-    constexpr float halfThickness = 0.02f;
-    constexpr float headHalfExtent = 0.5f / 4.0f;
-
-    auto* root = new SoSeparator;
-
-    auto* vertices = new SoVertexProperty;
-    int v = 0;
-
-    auto add = [&](float x, float y, float z) {
-        vertices->vertex.set1Value(v++, SbVec3f(x, y, z));
-    };
-
-    // Shaft (5 quads)
-    add(0.0f, -halfThickness, halfThickness);
-    add(0.0f, halfThickness, halfThickness);
-    add(shaftLength, halfThickness, halfThickness);
-    add(shaftLength, -halfThickness, halfThickness);
-
-    add(0.0f, -halfThickness, -halfThickness);
-    add(0.0f, halfThickness, -halfThickness);
-    add(shaftLength, halfThickness, -halfThickness);
-    add(shaftLength, -halfThickness, -halfThickness);
-
-    add(0.0f, -halfThickness, halfThickness);
-    add(0.0f, -halfThickness, -halfThickness);
-    add(shaftLength, -halfThickness, -halfThickness);
-    add(shaftLength, -halfThickness, halfThickness);
-
-    add(0.0f, halfThickness, halfThickness);
-    add(0.0f, halfThickness, -halfThickness);
-    add(shaftLength, halfThickness, -halfThickness);
-    add(shaftLength, halfThickness, halfThickness);
-
-    add(0.0f, halfThickness, halfThickness);
-    add(0.0f, halfThickness, -halfThickness);
-    add(0.0f, -halfThickness, -halfThickness);
-    add(0.0f, -halfThickness, halfThickness);
-
-    // Tip (2 triangles)
-    add(1.0f, 0.0f, 0.0f);
-    add(shaftLength, headHalfExtent, 0.0f);
-    add(shaftLength, -headHalfExtent, 0.0f);
-
-    add(1.0f, 0.0f, 0.0f);
-    add(shaftLength, 0.0f, headHalfExtent);
-    add(shaftLength, 0.0f, -headHalfExtent);
-
-    // Tip base (1 quad)
-    add(shaftLength, headHalfExtent, 0.0f);
-    add(shaftLength, 0.0f, headHalfExtent);
-    add(shaftLength, -headHalfExtent, 0.0f);
-    add(shaftLength, 0.0f, -headHalfExtent);
-
-    static constexpr int faceCounts[] = {4, 4, 4, 4, 4, 3, 3, 4};
-    auto* faceSet = new SoFaceSet;
-    faceSet->vertexProperty.setValue(vertices);
-    faceSet->numVertices.setValues(0, static_cast<int>(std::size(faceCounts)), faceCounts);
-
-    root->addChild(faceSet);
-    return root;
-}
-
 struct OverlayAxisCrossState
 {
     SoSeparator* axisRoot {nullptr};
@@ -521,39 +456,6 @@ struct OverlayAxisCrossState
     SoLightModel* axisLightModel {nullptr};
     SoTransform* axisTransform {nullptr};
     SoSeparator* axisGroup {nullptr};
-
-    SoSeparator* xAxis {nullptr};
-    SoMaterial* xMaterial {nullptr};
-
-    SoSeparator* yAxis {nullptr};
-    SoMaterial* yMaterial {nullptr};
-    SoRotation* yRotation {nullptr};
-
-    SoSeparator* zAxis {nullptr};
-    SoMaterial* zMaterial {nullptr};
-    SoRotation* zRotation {nullptr};
-
-    SoSeparator* lettersRoot {nullptr};
-    SoOrthographicCamera* lettersCamera {nullptr};
-    SoDepthBuffer* lettersDepth {nullptr};
-    SoLightModel* lettersLightModel {nullptr};
-    SoMaterial* lettersMaterial {nullptr};
-
-    struct Letter
-    {
-        SoSeparator* root {nullptr};
-        SoTranslation* position {nullptr};
-        SoScale* scale {nullptr};
-        SoTexture2* texture {nullptr};
-        SoVertexProperty* vertices {nullptr};
-        SoFaceSet* quad {nullptr};
-        int width {0};
-        int height {0};
-    };
-
-    Letter xLetter;
-    Letter yLetter;
-    Letter zLetter;
 
     void ensureCreated()
     {
@@ -589,104 +491,30 @@ struct OverlayAxisCrossState
         axisGroup = new SoSeparator;
         axisRoot->addChild(axisGroup);
 
-        auto* arrow = createAxisArrowGeometry();
-
-        xAxis = new SoSeparator;
-        xAxis->ref();
-        xMaterial = new SoMaterial;
-        xAxis->addChild(xMaterial);
-        xAxis->addChild(arrow);
-
-        yAxis = new SoSeparator;
-        yAxis->ref();
-        yMaterial = new SoMaterial;
-        yAxis->addChild(yMaterial);
-        yRotation = new SoRotation;
-        yRotation->rotation.setValue(
-            SbVec3f(0.0f, 0.0f, 1.0f),
-            static_cast<float>(std::numbers::pi / 2.0)
-        );
-        yAxis->addChild(yRotation);
-        yAxis->addChild(arrow);
-
-        zAxis = new SoSeparator;
-        zAxis->ref();
-        zMaterial = new SoMaterial;
-        zAxis->addChild(zMaterial);
-        zRotation = new SoRotation;
-        zRotation->rotation.setValue(
-            SbVec3f(0.0f, 1.0f, 0.0f),
-            static_cast<float>(-std::numbers::pi / 2.0)
-        );
-        zAxis->addChild(zRotation);
-        zAxis->addChild(arrow);
-
-        lettersRoot = new SoSeparator;
-        lettersRoot->ref();
-
-        lettersCamera = new SoOrthographicCamera;
-        lettersRoot->addChild(lettersCamera);
-
-        lettersDepth = new SoDepthBuffer;
-        lettersDepth->test.setValue(false);
-        lettersDepth->write.setValue(false);
-        lettersDepth->function.setValue(SoDepthBuffer::ALWAYS);
-        lettersRoot->addChild(lettersDepth);
-
-        lettersLightModel = new SoLightModel;
-        lettersLightModel->model.setValue(SoLightModel::BASE_COLOR);
-        lettersRoot->addChild(lettersLightModel);
-
-        lettersMaterial = new SoMaterial;
-        lettersMaterial->diffuseColor.setValue(1.0f, 1.0f, 1.0f);
-        lettersMaterial->transparency.setValue(0.0f);
-        lettersRoot->addChild(lettersMaterial);
-
-        auto buildLetter = [](Letter& out, int w, int h) {
-            out.width = w;
-            out.height = h;
-            out.root = new SoSeparator;
-
-            out.position = new SoTranslation;
-            out.root->addChild(out.position);
-
-            out.scale = new SoScale;
-            out.root->addChild(out.scale);
-
-            out.texture = new SoTexture2;
-            out.texture->wrapS.setValue(SoTexture2::CLAMP);
-            out.texture->wrapT.setValue(SoTexture2::CLAMP);
-            out.texture->model.setValue(SoTexture2::MODULATE);
-            out.texture->enableCompressedTexture.setValue(FALSE);
-            out.root->addChild(out.texture);
-
-            out.vertices = new SoVertexProperty;
-            out.vertices->vertex.set1Value(0, SbVec3f(0.0f, 0.0f, 0.0f));
-            out.vertices->vertex.set1Value(1, SbVec3f(static_cast<float>(w), 0.0f, 0.0f));
-            out.vertices->vertex.set1Value(
-                2,
-                SbVec3f(static_cast<float>(w), static_cast<float>(h), 0.0f)
+        auto buildAxisNode = [&](const char* label, Base::Vector3d axis, unsigned long color) {
+            // Lambda for reuse of shared values and cleaner call sites
+            return SoFCPlacementIndicatorKit::createAxisShaft(
+                label,
+                axis,
+                true,
+                true,
+                true,
+                0.9,  // axisLengthDefault = 0.6F
+                0.065,  // axisThickness = 0.065F;,
+                color,
+                0.0f
             );
-            out.vertices->vertex.set1Value(3, SbVec3f(0.0f, static_cast<float>(h), 0.0f));
-
-            out.vertices->texCoord.set1Value(0, SbVec2f(0.0f, 0.0f));
-            out.vertices->texCoord.set1Value(1, SbVec2f(1.0f, 0.0f));
-            out.vertices->texCoord.set1Value(2, SbVec2f(1.0f, 1.0f));
-            out.vertices->texCoord.set1Value(3, SbVec2f(0.0f, 1.0f));
-
-            out.quad = new SoFaceSet;
-            out.quad->vertexProperty.setValue(out.vertices);
-            out.quad->numVertices.setValue(4);
-            out.root->addChild(out.quad);
         };
 
-        buildLetter(xLetter, XPM_WIDTH, XPM_HEIGHT);
-        buildLetter(yLetter, YPM_WIDTH, YPM_HEIGHT);
-        buildLetter(zLetter, ZPM_WIDTH, ZPM_HEIGHT);
+        // Construct a new shaft axis node for each
+        axisRoot->addChild(
+            buildAxisNode("X", Base::Vector3d::UnitX, Gui::ViewParams::instance()->getAxisXColor()));
 
-        lettersRoot->addChild(xLetter.root);
-        lettersRoot->addChild(yLetter.root);
-        lettersRoot->addChild(zLetter.root);
+        axisRoot->addChild(
+            buildAxisNode("Y", Base::Vector3d::UnitY, Gui::ViewParams::instance()->getAxisYColor()));
+
+        axisRoot->addChild(
+            buildAxisNode("Z", Base::Vector3d::UnitZ, Gui::ViewParams::instance()->getAxisZColor()));
     }
 };
 
@@ -5010,41 +4838,6 @@ void View3DInventorViewer::setViewing(bool enable)
     inherited::setViewing(enable);
 }
 
-unsigned char View3DInventorViewer::XPM_pixel_data[XPM_WIDTH * XPM_HEIGHT * XPM_BYTES_PER_PIXEL + 1]
-    = {};
-unsigned char View3DInventorViewer::YPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1]
-    = {};
-unsigned char View3DInventorViewer::ZPM_pixel_data[ZPM_WIDTH * ZPM_HEIGHT * ZPM_BYTES_PER_PIXEL + 1]
-    = {};
-
-void View3DInventorViewer::setAxisLetterColor(const SbColor& color)
-{
-    unsigned packed = color.getPackedValue();
-
-    auto recolor = [&](const unsigned char* mask,
-                       unsigned char* data,
-                       unsigned width,
-                       unsigned height,
-                       unsigned bitdepth) {
-        for (unsigned y = 0; y < height; y++) {
-            for (unsigned x = 0; x < width; x++) {
-                unsigned offset = (y * width + x) * bitdepth;
-
-                const unsigned char* src = &mask[offset];
-                unsigned char* dst = &data[offset];
-
-                dst[0] = (packed >> 24) & 0xFF;  // RR - from color
-                dst[1] = (packed >> 16) & 0xFF;  // GG - from color
-                dst[2] = (packed >> 8) & 0xFF;   // BB - from color
-                dst[3] = src[3];                 // AA - from mask
-            }
-        }
-    };
-
-    recolor(XPM_PIXEL_MASK, XPM_pixel_data, XPM_WIDTH, XPM_HEIGHT, XPM_BYTES_PER_PIXEL);
-    recolor(YPM_PIXEL_MASK, YPM_pixel_data, YPM_WIDTH, YPM_HEIGHT, YPM_BYTES_PER_PIXEL);
-    recolor(ZPM_PIXEL_MASK, ZPM_pixel_data, ZPM_WIDTH, ZPM_HEIGHT, ZPM_BYTES_PER_PIXEL);
-}
 
 void View3DInventorViewer::updateColors()
 {
@@ -5129,8 +4922,7 @@ void View3DInventorViewer::drawAxisCross()
 
     auto& overlay = overlayAxisCrossState();
     overlay.ensureCreated();
-    if (!overlay.axisRoot || !overlay.axisTransform || !overlay.axisGroup || !overlay.lettersRoot
-        || !overlay.lettersCamera) {
+    if (!overlay.axisRoot || !overlay.axisTransform || !overlay.axisGroup) {
         return;
     }
 
@@ -5143,78 +4935,6 @@ void View3DInventorViewer::drawAxisCross()
     }
     overlay.axisTransform->rotation.setValue(inv);
     overlay.axisTransform->translation.setValue(0.0f, 0.0f, -3.5f);
-    overlay.xMaterial->diffuseColor.setValue(m_xColor.r, m_xColor.g, m_xColor.b);
-    overlay.yMaterial->diffuseColor.setValue(m_yColor.r, m_yColor.g, m_yColor.b);
-    overlay.zMaterial->diffuseColor.setValue(m_zColor.r, m_zColor.g, m_zColor.b);
-
-    std::array<std::pair<float, SoNode*>, 3> axes = {
-        std::pair<float, SoNode*> {xTipProjected[2], overlay.xAxis},
-        std::pair<float, SoNode*> {yTipProjected[2], overlay.yAxis},
-        std::pair<float, SoNode*> {zTipProjected[2], overlay.zAxis},
-    };
-    std::sort(axes.begin(), axes.end(), [](const auto& a, const auto& b) {
-        return a.first > b.first;
-    });
-    overlay.axisGroup->removeAllChildren();
-    for (const auto& axis : axes) {
-        overlay.axisGroup->addChild(axis.second);
-    }
-
-    const float miniViewportSize = static_cast<float>(pixelarea);
-    const float miniViewportCenter = miniViewportSize / 2.0f;
-
-    overlay.lettersCamera->aspectRatio.setValue(1.0f);
-    overlay.lettersCamera->height.setValue(miniViewportSize);
-
-    // Axis endpoints are projected into centered [-1, 1] coordinates. Convert
-    // them into the square overlay viewport's local pixel space before mapping
-    // them back to the centered coordinate system used by the letters camera.
-    auto toMiniViewportPixel = [miniViewportSize](const SbVec3f& projectedEndpoint) {
-        return SbVec2f(
-            (1.0f + projectedEndpoint[0]) * miniViewportSize / 2.0f,
-            (1.0f + projectedEndpoint[1]) * miniViewportSize / 2.0f
-        );
-    };
-
-    // Keep labels proportional to the corner widget, with readable bounds for
-    // very small or very large viewports. These values are framebuffer pixels
-    // because the letters camera is sized to the square overlay viewport.
-    constexpr float letterHeightFraction = 0.07f;
-    constexpr float minLetterHeight = 8.0f;
-    constexpr float maxLetterHeight = 18.0f;
-    const float deviceScale = static_cast<float>(devicePixelRatio());
-    const float targetLetterHeight = std::clamp(
-        miniViewportSize * letterHeightFraction,
-        minLetterHeight * deviceScale,
-        maxLetterHeight * deviceScale
-    );
-    const float letterScale = targetLetterHeight / static_cast<float>(XPM_HEIGHT);
-    overlay.xLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
-    overlay.yLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
-    overlay.zLetter.scale->scaleFactor.setValue(letterScale, letterScale, 1.0f);
-
-    auto placeLetter = [letterScale, miniViewportCenter, toMiniViewportPixel](
-                           OverlayAxisCrossState::Letter& letter,
-                           const SbVec3f& projectedEndpoint
-                       ) {
-        const SbVec2f local = toMiniViewportPixel(projectedEndpoint);
-        const float halfLetterWidth = static_cast<float>(letter.width) * letterScale / 2.0f;
-        const float halfLetterHeight = static_cast<float>(letter.height) * letterScale / 2.0f;
-
-        letter.position->translation.setValue(
-            local[0] - miniViewportCenter - halfLetterWidth,
-            local[1] - miniViewportCenter - halfLetterHeight,
-            0.0f
-        );
-    };
-
-    placeLetter(overlay.xLetter, xLetterProjected);
-    placeLetter(overlay.yLetter, yLetterProjected);
-    placeLetter(overlay.zLetter, zLetterProjected);
-
-    overlay.xLetter.texture->image.setValue(SbVec2s(XPM_WIDTH, XPM_HEIGHT), 4, XPM_pixel_data);
-    overlay.yLetter.texture->image.setValue(SbVec2s(YPM_WIDTH, YPM_HEIGHT), 4, YPM_pixel_data);
-    overlay.zLetter.texture->image.setValue(SbVec2s(ZPM_WIDTH, ZPM_HEIGHT), 4, ZPM_pixel_data);
 
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     vp.setViewportPixels(origin[0], origin[1], pixelarea, pixelarea);
@@ -5223,11 +4943,6 @@ void View3DInventorViewer::drawAxisCross()
     setOverlayCacheContext(axisAction, this);
     axisAction.setTransparencyType(SoGLRenderAction::BLEND);
     axisAction.apply(overlay.axisRoot);
-
-    SoGLRenderAction letterAction(vp);
-    setOverlayCacheContext(letterAction, this);
-    letterAction.setTransparencyType(SoGLRenderAction::BLEND);
-    letterAction.apply(overlay.lettersRoot);
 }
 
 void View3DInventorViewer::drawSingleBackground(const QColor& col)

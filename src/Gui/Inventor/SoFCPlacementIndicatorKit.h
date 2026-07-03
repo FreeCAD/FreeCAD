@@ -29,6 +29,7 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Base/Vector3D.h>
 
 #include <FCGlobal.h>
 
@@ -62,6 +63,18 @@ class GuiExport SoFCPlacementIndicatorKit: public SoBaseKit
 public:
     SoFCPlacementIndicatorKit();
     static void initClass();
+
+    static SoSeparator* createAxisShaft(
+        const char* label,
+        Base::Vector3d axis,
+        bool hasColor,
+        bool hasArrowHead,
+        bool hasLabels,
+        float axisLength,
+        float axisThickness,
+        uint32_t packedColor,
+        const double offset
+    );
 
     void notify(SoNotList* l) override;
 
