@@ -52,6 +52,7 @@ def generate(
     finish_circle=True,
     cone_angle_rad=0,
     dir_angle_rad=0,
+    ramp_angle_rad=math.pi / 2,
 ):
     """
     Example of use in Mod/CAM/Path/Op/Helix.py
@@ -78,14 +79,21 @@ def generate(
         raise TypeError("Invalid type for edge")
     topCenterPoint = edge.Vertexes[0].Point
     bottomCenterPoint = edge.Vertexes[1].Point
+    helixHeight = topCenterPoint.z - bottomCenterPoint.z
 
     if not isinstance(edge.Curve, Part.Line):
         raise TypeError("Invalid type for edge curve")
 
+    if not Path.Geom.isVertical(edge):
+        raise ValueError("edge is not aligned with Z axis")
+
+    if topCenterPoint.z < bottomCenterPoint.z:
+        raise ValueError("start point is below end point")
+
     if not isinstance(outer_radius, (float, int)):
         raise TypeError("Invalid type for outer radius")
 
-    if outer_radius <= 0:
+    if outer_radius < 0 or Path.Geom.isRoughly(outer_radius, 0):
         raise ValueError("outer_radius <= 0")
 
     if not isinstance(pitch, (float, int)):
@@ -93,6 +101,15 @@ def generate(
 
     if pitch < 0 or Path.Geom.isRoughly(pitch, 0):
         raise ValueError("pitch <= 0")
+
+    if not isinstance(ramp_angle_rad, (float, int)):
+        raise TypeError("Invalid type for 'ramp_angle_rad'")
+
+    if ramp_angle_rad < 0 or Path.Geom.isRoughly(ramp_angle_rad, 0):
+        raise ValueError("ramp_angle_rad <= 0")
+
+    if ramp_angle_rad > math.pi / 2:
+        raise ValueError("ramp_angle > 90")
 
     if not isinstance(step, (float, int)):
         raise TypeError("Invalid value for parameter 'step'")
@@ -146,12 +163,6 @@ def generate(
     if not isinstance(dir_angle_rad, (float, int)):
         raise TypeError("Invalid value for parameter 'dir_angle_rad'")
 
-    if not Path.Geom.isVertical(edge):
-        raise ValueError("edge is not aligned with Z axis")
-
-    if topCenterPoint.z < bottomCenterPoint.z:
-        raise ValueError("start point is below end point")
-
     Path.Log.track(
         "(helix: <{}, {}>\n outer radius {}\n inner radius {}\n retract height {}\n step {}\n start point {}\n end point {}\n pitch {}\n tool diameter {}\n direction {}\n startAt {})".format(
             topCenterPoint.x,
@@ -175,7 +186,7 @@ def generate(
     else:
         Path.Log.debug("(annulus mode)\n")
         work_distance = outer_radius - inner_radius
-        nr = math.ceil(work_distance / step) + 1
+        nr = math.ceil(round(work_distance / step, 6)) + 1
         radii = linspace(outer_radius, inner_radius, nr)
 
     if startAt == "Inside":
@@ -183,16 +194,17 @@ def generate(
         radii = radii[::-1]
 
     Path.Log.debug("Radii: {}".format(radii))
-    """Calculate the number of full and partial turns required
-    Each full turn is two 180 degree arcs
-    zsteps is equally spaced pitch values"""
-    helixHeight = topCenterPoint.z - bottomCenterPoint.z
-    turncount = math.ceil(helixHeight / pitch)
-    zsteps = linspace(topCenterPoint.z, bottomCenterPoint.z, 2 * turncount + 1)
 
     def helix_vertical(r):
-        """helix_vertical(r) ... returns list of commands, which forms simple helix"""
+        """helix_vertical(r) ... returns list of commands, which forms simple helix
+        Each full turn is two 180 degrees arcs"""
         commandlist = []
+
+        lengthOneTurn = math.tau * r
+        depthPerOneCircle = min(lengthOneTurn * math.tan(ramp_angle_rad), pitch)
+        turncount = math.ceil(round(helixHeight / depthPerOneCircle, 6))
+        zsteps = linspace(topCenterPoint.z, bottomCenterPoint.z, 2 * turncount + 1)
+
         arc_cmd = "G2" if direction == "CW" else "G3"
         dx = r * math.cos(dir_angle_rad)
         dy = r * math.sin(dir_angle_rad)
@@ -258,19 +270,27 @@ def generate(
 
     def helix_cone(bottomRadius):
         """helix_cone(bottomRadius) ... returns list of moves,
-        which forms cone helix inclined by angle"""
+        which forms cone helix inclined by angle
+        Each full turn is three 120 degrees arcs"""
+
         topRadius = bottomRadius + math.tan(cone_angle_rad) * helixHeight
-        commandlist = []
-        arcCmdName = "G2" if direction == "CW" else "G3"
         dx = topRadius * math.cos(dir_angle_rad)
         dy = topRadius * math.sin(dir_angle_rad)
+
+        commandlist = []
+        arcCmdName = "G2" if direction == "CW" else "G3"
         commandlist.append(
             Path.Command("G0", {"X": topCenterPoint.x + dx, "Y": topCenterPoint.y + dy})
         )
         commandlist.append(Path.Command("G1", {"Z": topCenterPoint.z}))
-        stepRotate = math.pi / 3  # step size for rotate
+
+        lengthOneTurn = math.tau * bottomRadius
+        depthPerOneCircle = min(lengthOneTurn * math.tan(ramp_angle_rad), pitch)
+        turncount = math.ceil(round(helixHeight / depthPerOneCircle, 6))
+        stepsPerRev = 6
+        stepRotate = math.tau / stepsPerRev  # step angle for rotate
         stepRotate = -stepRotate if direction == "CCW" else stepRotate
-        iters = int(math.tau * turncount / abs(stepRotate))
+        iters = turncount * stepsPerRev
         stepRadius = (topRadius - bottomRadius) / iters  # step size for spiral radius
         stepZ = helixHeight / iters
         count = 0
@@ -290,6 +310,7 @@ def generate(
             count += 1
 
         i = 0
+        assert (len(arcPoints) - 3) % 2 == 0
         while i <= len(arcPoints) - 3:
             arcEnd = arcPoints[i + 2]
             arcCenter = getArcCenter(arcPoints[i], arcPoints[i + 1], arcPoints[i + 2])

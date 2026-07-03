@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="481"/>
+      <location filename="../../Application.cpp" line="619"/>
       <source>Unnamed</source>
       <translation>Без назви</translation>
     </message>
@@ -20,13 +20,15 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1218"/>
+      <location filename="../../Document.cpp" line="1255"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
 </source>
-      <translation>Рекомендується, щоб користувач клацнув правою кнопкою миші на корені документа та вибрав опцію «Позначити для перерахунку».
-Потім слід натиснути кнопку «Оновити» на головній панелі інструментів</translation>
+      <translation>
+Рекомендується, щоб користувач клацнув правою кнопкою миші на корені документа та вибрав опцію «Позначити для перерахунку».
+Потім слід натиснути кнопку «Оновити» на головній панелі інструментів.
+</translation>
     </message>
   </context>
   <context>
@@ -49,12 +51,12 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="270"/>
       <source>XY-plane</source>
-      <translation>XY-площина</translation>
+      <translation>Площина XY</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="271"/>
       <source>XZ-plane</source>
-      <translation>XZ-площина</translation>
+      <translation>Площина XZ</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="272"/>
@@ -64,7 +66,7 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation type="unfinished">Origin-Point</translation>
+      <translation>Точка початку</translation>
     </message>
   </context>
   <context>
@@ -73,8 +75,7 @@ The user should then click the Refresh button in the main toolbar.
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>Зберігає останній вибір користувача щодо того, чи застосовувати налаштування CopyOnChange до всіх посилань, які ведуть до одного й того ж сконфігурованого об’єкта</translation>
     </message>
   </context>
 </TS>

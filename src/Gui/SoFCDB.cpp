@@ -206,6 +206,7 @@ void Gui::SoFCDB::init()
     PropertyTransientFileItem ::init();
     PropertyLinkItem ::init();
     PropertyLinkListItem ::init();
+    PropertyMapItem ::init();
 
     NavigationStyle ::init();
     UserNavigationStyle ::init();
@@ -519,7 +520,7 @@ void Gui::SoFCDB::writeX3DFields(
         SbName name = node->getName();
         std::stringstream str;
         if (name.getLength() == 0) {
-            str << "o" << numDEF++;
+            str << type << '_' << numDEF++;
         }
         else {
             str << name.getString();
@@ -702,9 +703,9 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
         << "  <head>\n"
         << "    <meta charset=\"utf-8\"/>\n"
         << "    <title>FreeCAD X3DOM Export</title>\n"
-        << "    <script src=\"http://www.x3dom.org/download/x3dom.js\"> </script>\n"
+        << "    <script src=\"https://www.x3dom.org/download/x3dom.js\"> </script>\n"
         << "    <link rel=\"stylesheet\" type=\"text/css\" "
-           "href=\"http://www.x3dom.org/download/x3dom.css\"/>\n"
+           "href=\"https://www.x3dom.org/download/x3dom.css\"/>\n"
         << "  </head>\n"
         << "  <body>\n"
         << "    <div>\n";

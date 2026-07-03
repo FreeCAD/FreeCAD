@@ -27,6 +27,7 @@
     @section toc Table of Contents
     - @ref intro_main "Introduction"
     - @ref organization "Organization of the API Documentation"
+    - @ref asyncrecompute "Async recompute threading rules"
     - @ref other_doc "Other Documentation"
 
     @section intro_main Introduction

@@ -98,6 +98,9 @@
         <file>icons/BIM_Clone.svg</file>
         <file>icons/BIM_Column.svg</file>
         <file>icons/BIM_Copy.svg</file>
+        <file>icons/BIM_Covering.svg</file>
+        <file>icons/BIM_Covering_Tree.svg</file>
+        <file>icons/BIM_Covering_Clone.svg</file>
         <file>icons/BIM_Diff.svg</file>
         <file>icons/BIM_DimensionAligned.svg</file>
         <file>icons/BIM_DimensionHorizontal.svg</file>

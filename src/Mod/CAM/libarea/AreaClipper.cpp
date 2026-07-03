@@ -5,11 +5,10 @@
 // implements CArea methods using Angus Johnson's "Clipper"
 
 #include "Area.h"
-#include "clipper.hpp"
-using namespace ClipperLib;
+#include "clipper2/clipper.h"
 
-#define TPolygon Path
-#define TPolyPolygon Paths
+using namespace heeks;
+using namespace Clipper2Lib;
 
 bool CArea::HolesLinked()
 {
@@ -19,30 +18,20 @@ bool CArea::HolesLinked()
 // static const double PI = 3.1415926535897932;
 double CArea::m_clipper_scale = 10000.0;
 
-class DoubleAreaPoint
+// Convert between PointD (double) and Point64 (int64) with scaling
+static Point64 ToPoint64(const PointD& p)
 {
-public:
-    double X, Y;
+    return Point64((int64_t)(p.x * CArea::m_clipper_scale), (int64_t)(p.y * CArea::m_clipper_scale));
+}
 
-    DoubleAreaPoint(double x, double y)
-    {
-        X = x;
-        Y = y;
-    }
-    DoubleAreaPoint(const IntPoint& p)
-    {
-        X = (double)(p.X) / CArea::m_clipper_scale;
-        Y = (double)(p.Y) / CArea::m_clipper_scale;
-    }
-    IntPoint int_point()
-    {
-        return IntPoint((long64)(X * CArea::m_clipper_scale), (long64)(Y * CArea::m_clipper_scale));
-    }
-};
+static PointD ToPointD(const Point64& p)
+{
+    return PointD((double)p.x / CArea::m_clipper_scale, (double)p.y / CArea::m_clipper_scale);
+}
 
-static std::list<DoubleAreaPoint> pts_for_AddVertex;
+static std::list<PointD> pts_for_AddVertex;
 
-static void AddPoint(const DoubleAreaPoint& p)
+static void AddPoint(const PointD& p)
 {
     pts_for_AddVertex.push_back(p);
 }
@@ -50,7 +39,7 @@ static void AddPoint(const DoubleAreaPoint& p)
 static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
 {
     if (vertex.m_type == 0 || prev_vertex == NULL) {
-        AddPoint(DoubleAreaPoint(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units));
+        AddPoint(PointD(vertex.m_p.x * CArea::m_units, vertex.m_p.y * CArea::m_units));
     }
     else {
         if (vertex.m_p != prev_vertex->m_p) {
@@ -121,7 +110,7 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
                 double nx = vertex.m_c.x * CArea::m_units + radius * cos(phi - dphi);
                 double ny = vertex.m_c.y * CArea::m_units + radius * sin(phi - dphi);
 
-                AddPoint(DoubleAreaPoint(nx, ny));
+                AddPoint(PointD(nx, ny));
 
                 px = nx;
                 py = ny;
@@ -130,28 +119,23 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
     }
 }
 
-static void MakeLoop(
-    const DoubleAreaPoint& pt0,
-    const DoubleAreaPoint& pt1,
-    const DoubleAreaPoint& pt2,
-    double radius
-)
+static void MakeLoop(const PointD& pt0, const PointD& pt1, const PointD& pt2, double radius)
 {
-    Point p0(pt0.X, pt0.Y);
-    Point p1(pt1.X, pt1.Y);
-    Point p2(pt2.X, pt2.Y);
-    Point forward0 = p1 - p0;
-    Point right0(forward0.y, -forward0.x);
+    heeks::Point p0(pt0.x, pt0.y);
+    heeks::Point p1(pt1.x, pt1.y);
+    heeks::Point p2(pt2.x, pt2.y);
+    heeks::Point forward0 = p1 - p0;
+    heeks::Point right0(forward0.y, -forward0.x);
     right0.normalize();
-    Point forward1 = p2 - p1;
-    Point right1(forward1.y, -forward1.x);
+    heeks::Point forward1 = p2 - p1;
+    heeks::Point right1(forward1.y, -forward1.x);
     right1.normalize();
 
     int arc_dir = (radius > 0) ? 1 : -1;
 
-    CVertex v0(0, p1 + right0 * radius, Point(0, 0));
+    CVertex v0(0, p1 + right0 * radius, heeks::Point(0, 0));
     CVertex v1(arc_dir, p1 + right1 * radius, p1);
-    CVertex v2(0, p2 + right1 * radius, Point(0, 0));
+    CVertex v2(0, p2 + right1 * radius, heeks::Point(0, 0));
 
     double save_units = CArea::m_units;
     CArea::m_units = 1.0;
@@ -162,10 +146,9 @@ static void MakeLoop(
     CArea::m_units = save_units;
 }
 
-static void OffsetWithLoops(const TPolyPolygon& pp, TPolyPolygon& pp_new, double inwards_value)
+static void OffsetWithLoops(const Paths64& pp, Paths64& pp_new, double inwards_value)
 {
-    Clipper c;
-    c.StrictlySimple(CArea::m_clipper_simple);
+    Clipper64 c;
 
     bool inwards = (inwards_value > 0);
     bool reverse = false;
@@ -173,52 +156,56 @@ static void OffsetWithLoops(const TPolyPolygon& pp, TPolyPolygon& pp_new, double
 
     if (inwards) {
         // add a large square on the outside, to be removed later
-        TPolygon p;
-        p.push_back(DoubleAreaPoint(-10000.0, -10000.0).int_point());
-        p.push_back(DoubleAreaPoint(-10000.0, 10000.0).int_point());
-        p.push_back(DoubleAreaPoint(10000.0, 10000.0).int_point());
-        p.push_back(DoubleAreaPoint(10000.0, -10000.0).int_point());
-        c.AddPath(p, ptSubject, true);
+        Path64 p;
+        p.push_back(ToPoint64(PointD(-10000.0, -10000.0)));
+        p.push_back(ToPoint64(PointD(-10000.0, 10000.0)));
+        p.push_back(ToPoint64(PointD(10000.0, 10000.0)));
+        p.push_back(ToPoint64(PointD(10000.0, -10000.0)));
+
+        c.AddSubject({p});
     }
     else {
         reverse = true;
     }
 
     for (unsigned int i = 0; i < pp.size(); i++) {
-        const TPolygon& p = pp[i];
+        const Path64& p = pp[i];
 
         pts_for_AddVertex.clear();
 
         if (p.size() > 2) {
             if (reverse) {
                 for (std::size_t j = p.size() - 1; j > 1; j--) {
-                    MakeLoop(p[j], p[j - 1], p[j - 2], radius);
+                    MakeLoop(ToPointD(p[j]), ToPointD(p[j - 1]), ToPointD(p[j - 2]), radius);
                 }
-                MakeLoop(p[1], p[0], p[p.size() - 1], radius);
-                MakeLoop(p[0], p[p.size() - 1], p[p.size() - 2], radius);
+                MakeLoop(ToPointD(p[1]), ToPointD(p[0]), ToPointD(p[p.size() - 1]), radius);
+                MakeLoop(ToPointD(p[0]), ToPointD(p[p.size() - 1]), ToPointD(p[p.size() - 2]), radius);
             }
             else {
-                MakeLoop(p[p.size() - 2], p[p.size() - 1], p[0], radius);
-                MakeLoop(p[p.size() - 1], p[0], p[1], radius);
+                MakeLoop(ToPointD(p[p.size() - 2]), ToPointD(p[p.size() - 1]), ToPointD(p[0]), radius);
+                MakeLoop(ToPointD(p[p.size() - 1]), ToPointD(p[0]), ToPointD(p[1]), radius);
                 for (std::size_t j = 2; j < p.size(); j++) {
-                    MakeLoop(p[j - 2], p[j - 1], p[j], radius);
+                    MakeLoop(ToPointD(p[j - 2]), ToPointD(p[j - 1]), ToPointD(p[j]), radius);
                 }
             }
 
-            TPolygon loopy_polygon;
+            Path64 loopy_polygon;
             loopy_polygon.reserve(pts_for_AddVertex.size());
-            for (std::list<DoubleAreaPoint>::iterator It = pts_for_AddVertex.begin();
+            for (std::list<PointD>::iterator It = pts_for_AddVertex.begin();
                  It != pts_for_AddVertex.end();
                  It++) {
-                loopy_polygon.push_back(It->int_point());
+                loopy_polygon.push_back(ToPoint64(*It));
             }
-            c.AddPath(loopy_polygon, ptSubject, true);
+
+            c.AddSubject({loopy_polygon});
             pts_for_AddVertex.clear();
         }
     }
 
-    // c.ForceOrientation(false);
-    c.Execute(ctUnion, pp_new, pftNonZero, pftNonZero);
+    Paths64 solution;
+    c.Execute(ClipType::Union, FillRule::NonZero, solution);
+
+    pp_new = solution;
 
     if (inwards) {
         // remove the large square
@@ -228,12 +215,12 @@ static void OffsetWithLoops(const TPolyPolygon& pp, TPolyPolygon& pp_new, double
     }
     else {
         // reverse all the resulting polygons
-        TPolyPolygon copy = pp_new;
+        Paths64 copy = pp_new;
         pp_new.clear();
         pp_new.resize(copy.size());
         for (unsigned int i = 0; i < copy.size(); i++) {
-            const TPolygon& p = copy[i];
-            TPolygon p_new;
+            const Path64& p = copy[i];
+            Path64 p_new;
             p_new.resize(p.size());
             std::size_t size_minus_one = p.size() - 1;
             for (std::size_t j = 0; j < p.size(); j++) {
@@ -244,13 +231,13 @@ static void OffsetWithLoops(const TPolyPolygon& pp, TPolyPolygon& pp_new, double
     }
 }
 
-static void MakeObround(const Point& pt0, const CVertex& vt1, double radius)
+static void MakeObround(const heeks::Point& pt0, const CVertex& vt1, double radius)
 {
     Span span(pt0, vt1);
-    Point forward0 = span.GetVector(0.0);
-    Point forward1 = span.GetVector(1.0);
-    Point right0(forward0.y, -forward0.x);
-    Point right1(forward1.y, -forward1.x);
+    heeks::Point forward0 = span.GetVector(0.0);
+    heeks::Point forward1 = span.GetVector(1.0);
+    heeks::Point right0(forward0.y, -forward0.x);
+    heeks::Point right1(forward1.y, -forward1.x);
     right0.normalize();
     right1.normalize();
 
@@ -272,16 +259,16 @@ static void MakeObround(const Point& pt0, const CVertex& vt1, double radius)
     CArea::m_units = save_units;
 }
 
-static void OffsetSpansWithObrounds(const CArea& area, TPolyPolygon& pp_new, double radius)
+static void OffsetSpansWithObrounds(const CArea& area, Paths64& pp_new, double radius)
 {
-    Clipper c;
-    c.StrictlySimple(CArea::m_clipper_simple);
+    Clipper64 c;
     pp_new.clear();
 
     for (std::list<CCurve>::const_iterator It = area.m_curves.begin(); It != area.m_curves.end();
          It++) {
         c.Clear();
-        c.AddPaths(pp_new, ptSubject, true);
+        // Add existing results back to clipper
+        c.AddSubject(pp_new);
         pp_new.clear();
         pts_for_AddVertex.clear();
 
@@ -294,29 +281,29 @@ static void OffsetSpansWithObrounds(const CArea& area, TPolyPolygon& pp_new, dou
             if (prev_vertex) {
                 MakeObround(prev_vertex->m_p, vertex, radius);
 
-                TPolygon loopy_polygon;
+                Path64 loopy_polygon;
                 loopy_polygon.reserve(pts_for_AddVertex.size());
-                for (std::list<DoubleAreaPoint>::iterator It = pts_for_AddVertex.begin();
+                for (std::list<PointD>::iterator It = pts_for_AddVertex.begin();
                      It != pts_for_AddVertex.end();
                      It++) {
-                    loopy_polygon.push_back(It->int_point());
+                    loopy_polygon.push_back(ToPoint64(*It));
                 }
-                c.AddPath(loopy_polygon, ptSubject, true);
+                c.AddSubject({loopy_polygon});
                 pts_for_AddVertex.clear();
             }
             prev_vertex = &vertex;
         }
-        c.Execute(ctUnion, pp_new, pftNonZero, pftNonZero);
+        c.Execute(ClipType::Union, FillRule::NonZero, pp_new);
     }
 
 
     // reverse all the resulting polygons
-    TPolyPolygon copy = pp_new;
+    Paths64 copy = pp_new;
     pp_new.clear();
     pp_new.resize(copy.size());
     for (unsigned int i = 0; i < copy.size(); i++) {
-        const TPolygon& p = copy[i];
-        TPolygon p_new;
+        const Path64& p = copy[i];
+        Path64 p_new;
         p_new.resize(p.size());
         std::size_t size_minus_one = p.size() - 1;
         for (std::size_t j = 0; j < p.size(); j++) {
@@ -326,7 +313,7 @@ static void OffsetSpansWithObrounds(const CArea& area, TPolyPolygon& pp_new, dou
     }
 }
 
-static void MakePoly(const CCurve& curve, TPolygon& p, bool reverse = false)
+static void MakePoly(const CCurve& curve, Path64& p, bool reverse = false)
 {
     pts_for_AddVertex.clear();
     const CVertex* prev_vertex = NULL;
@@ -351,43 +338,47 @@ static void MakePoly(const CCurve& curve, TPolygon& p, bool reverse = false)
     p.resize(pts_for_AddVertex.size());
     if (reverse) {
         std::size_t i = pts_for_AddVertex.size() - 1;  // clipper wants them the opposite way to CArea
-        for (std::list<DoubleAreaPoint>::iterator It = pts_for_AddVertex.begin();
+        for (std::list<PointD>::iterator It = pts_for_AddVertex.begin();
              It != pts_for_AddVertex.end();
              It++, i--) {
-            p[i] = It->int_point();
+            p[i] = ToPoint64(*It);
         }
     }
     else {
         unsigned int i = 0;
-        for (std::list<DoubleAreaPoint>::iterator It = pts_for_AddVertex.begin();
+        for (std::list<PointD>::iterator It = pts_for_AddVertex.begin();
              It != pts_for_AddVertex.end();
              It++, i++) {
-            p[i] = It->int_point();
+            p[i] = ToPoint64(*It);
         }
     }
 }
 
-static void MakePolyPoly(const CArea& area, TPolyPolygon& pp, bool reverse = true)
+static void MakePolyPoly(const CArea& area, Paths64& pp, bool reverse = true)
 {
     pp.clear();
 
     for (std::list<CCurve>::const_iterator It = area.m_curves.begin(); It != area.m_curves.end();
          It++) {
-        pp.push_back(TPolygon());
+        pp.push_back(Path64());
         MakePoly(*It, pp.back(), reverse);
     }
 }
 
-static void SetFromResult(CCurve& curve, TPolygon& p, bool reverse = true, bool is_closed = true)
+static void SetFromResult(CCurve& curve, Path64& p, bool reverse = true, bool is_closed = true)
 {
-    if (CArea::m_clipper_clean_distance >= Point::tolerance) {
-        CleanPolygon(p, CArea::m_clipper_clean_distance);
+    if (CArea::m_clipper_clean_distance >= heeks::Point::tolerance) {
+        p = SimplifyPath(p, CArea::m_clipper_clean_distance, is_closed);
     }
 
     for (unsigned int j = 0; j < p.size(); j++) {
-        const IntPoint& pt = p[j];
-        DoubleAreaPoint dp(pt);
-        CVertex vertex(0, Point(dp.X / CArea::m_units, dp.Y / CArea::m_units), Point(0.0, 0.0));
+        const Point64& pt = p[j];
+        PointD dp = ToPointD(pt);
+        CVertex vertex(
+            0,
+            heeks::Point(dp.x / CArea::m_units, dp.y / CArea::m_units),
+            heeks::Point(0.0, 0.0)
+        );
         if (reverse) {
             curve.m_vertices.push_front(vertex);
         }
@@ -412,7 +403,7 @@ static void SetFromResult(CCurve& curve, TPolygon& p, bool reverse = true, bool 
 
 static void SetFromResult(
     CArea& area,
-    TPolyPolygon& pp,
+    Paths64& pp,
     bool reverse = true,
     bool is_closed = true,
     bool clear = true
@@ -424,7 +415,7 @@ static void SetFromResult(
     }
 
     for (unsigned int i = 0; i < pp.size(); i++) {
-        TPolygon& p = pp[i];
+        Path64& p = pp[i];
 
         area.m_curves.emplace_back();
         CCurve& curve = area.m_curves.back();
@@ -434,142 +425,106 @@ static void SetFromResult(
 
 void CArea::Subtract(const CArea& a2)
 {
-    Clipper c;
-    c.StrictlySimple(CArea::m_clipper_simple);
-    TPolyPolygon pp1, pp2;
-    MakePolyPoly(*this, pp1);
-    MakePolyPoly(a2, pp2);
-    c.AddPaths(pp1, ptSubject, true);
-    c.AddPaths(pp2, ptClip, true);
-    TPolyPolygon solution;
-    c.Execute(ctDifference, solution);
-    SetFromResult(*this, solution);
+    Clip(ClipType::Difference, a2, FillRule::EvenOdd, FillRule::EvenOdd);
 }
 
 void CArea::Intersect(const CArea& a2)
 {
-    Clipper c;
-    c.StrictlySimple(CArea::m_clipper_simple);
-    TPolyPolygon pp1, pp2;
-    MakePolyPoly(*this, pp1);
-    MakePolyPoly(a2, pp2);
-    c.AddPaths(pp1, ptSubject, true);
-    c.AddPaths(pp2, ptClip, true);
-    TPolyPolygon solution;
-    c.Execute(ctIntersection, solution);
-    SetFromResult(*this, solution);
+    Clip(ClipType::Intersection, a2, FillRule::EvenOdd, FillRule::EvenOdd);
 }
 
 void CArea::Union(const CArea& a2)
 {
-    Clipper c;
-    c.StrictlySimple(CArea::m_clipper_simple);
-    TPolyPolygon pp1, pp2;
-    MakePolyPoly(*this, pp1);
-    MakePolyPoly(a2, pp2);
-    c.AddPaths(pp1, ptSubject, true);
-    c.AddPaths(pp2, ptClip, true);
-    TPolyPolygon solution;
-    c.Execute(ctUnion, solution);
-    SetFromResult(*this, solution);
-}
-
-// static
-CArea CArea::UniteCurves(std::list<CCurve>& curves)
-{
-    Clipper c;
-    c.StrictlySimple(CArea::m_clipper_simple);
-
-    TPolyPolygon pp;
-
-    for (std::list<CCurve>::iterator It = curves.begin(); It != curves.end(); It++) {
-        CCurve& curve = *It;
-        TPolygon p;
-        MakePoly(curve, p);
-        pp.push_back(p);
-    }
-
-    c.AddPaths(pp, ptSubject, true);
-    TPolyPolygon solution;
-    c.Execute(ctUnion, solution, pftNonZero, pftNonZero);
-    CArea area;
-    SetFromResult(area, solution);
-    return area;
+    Clip(ClipType::Union, a2, FillRule::EvenOdd, FillRule::EvenOdd);
 }
 
 void CArea::Xor(const CArea& a2)
 {
-    Clipper c;
-    c.StrictlySimple(CArea::m_clipper_simple);
-    TPolyPolygon pp1, pp2;
-    MakePolyPoly(*this, pp1);
-    MakePolyPoly(a2, pp2);
-    c.AddPaths(pp1, ptSubject, true);
-    c.AddPaths(pp2, ptClip, true);
-    TPolyPolygon solution;
-    c.Execute(ctXor, solution);
-    SetFromResult(*this, solution);
+    Clip(ClipType::Xor, a2, FillRule::EvenOdd, FillRule::EvenOdd);
 }
 
 void CArea::Offset(double inwards_value)
 {
-    TPolyPolygon pp, pp2;
+    Paths64 pp, pp2;
     MakePolyPoly(*this, pp, false);
     OffsetWithLoops(pp, pp2, inwards_value * m_units);
     SetFromResult(*this, pp2, false);
     this->Reorder();
 }
 
-void CArea::PopulateClipper(Clipper& c, PolyType type) const
+void CArea::PopulateClipper(Clipper64& c, bool as_clip) const
 {
+    Paths64 closed_paths;
+    Paths64 open_paths;
     int skipped = 0;
-    for (std::list<CCurve>::const_iterator It = m_curves.begin(); It != m_curves.end(); It++) {
-        const CCurve& curve = *It;
-        bool closed = curve.IsClosed();
-        if (!closed) {
-            if (type == ptClip) {
-                ++skipped;
-                continue;
-            }
+
+    for (const CCurve& curve : m_curves) {
+        bool is_closed = curve.IsClosed();
+
+        if (!is_closed && as_clip) {
+            ++skipped;
+            continue;
         }
-        TPolygon p;
+
+        Path64 p;
         MakePoly(curve, p, false);
-        c.AddPath(p, type, closed);
+
+        if (is_closed) {
+            closed_paths.push_back(p);
+        }
+        else {
+            open_paths.push_back(p);
+        }
     }
+
     if (skipped) {
-        std::cout << "libarea: warning skipped " << skipped << " open wires" << std::endl;
+        std::cerr << "libarea: warning skipped " << skipped << " open wires" << std::endl;
+    }
+
+    if (as_clip) {
+        if (!closed_paths.empty()) {
+            c.AddClip(closed_paths);
+        }
+    }
+    else {
+        if (!closed_paths.empty()) {
+            c.AddSubject(closed_paths);
+        }
+        if (!open_paths.empty()) {
+            c.AddOpenSubject(open_paths);
+        }
     }
 }
 
-void CArea::Clip(ClipType op, const CArea* a, PolyFillType subjFillType, PolyFillType clipFillType)
+void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType, FillRule clipFillType)
 {
-    Clipper c;
-    c.StrictlySimple(CArea::m_clipper_simple);
-    PopulateClipper(c, ptSubject);
-    if (a) {
-        a->PopulateClipper(c, ptClip);
-    }
-    PolyTree tree;
-    c.Execute(op, tree, subjFillType, clipFillType);
-    TPolyPolygon solution;
-    ClosedPathsFromPolyTree(tree, solution);
-    SetFromResult(*this, solution);
-    solution.clear();
-    OpenPathsFromPolyTree(tree, solution);
-    SetFromResult(*this, solution, false, false, false);
+    Clipper64 c;
+    PopulateClipper(c, false);
+    clip_area.PopulateClipper(c, true);
+
+    // Execute to get both closed and open paths
+    Paths64 closed_paths;
+    Paths64 open_paths;
+    c.Execute(op, subjFillType, closed_paths, open_paths);
+
+    // Set closed paths as result
+    SetFromResult(*this, closed_paths);
+
+    // Append open paths to result
+    SetFromResult(*this, open_paths, false, false, false);
 }
 
 void CArea::OffsetWithClipper(
     double offset,
-    JoinType joinType /* =jtRound */,
-    EndType endType /* =etOpenRound */,
-    double miterLimit /*  = 5.0 */,
-    double roundPrecision /*  = 0.0 */
+    JoinType joinType,
+    EndType endType,
+    double miterLimit,
+    double arcTolerance
 )
 {
     offset *= m_units * m_clipper_scale;
-    if (roundPrecision == 0.0) {
-        // Clipper roundPrecision definition: https://goo.gl/4odfQh
+    if (arcTolerance == 0.0) {
+        // Clipper arc tolerance definition: https://goo.gl/4odfQh
         double dphi = acos(1.0 - m_accuracy * m_clipper_scale / fabs(offset));
         int Segments = (int)ceil(PI / dphi);
         if (Segments < 2 * CArea::m_min_arc_points) {
@@ -578,27 +533,44 @@ void CArea::OffsetWithClipper(
         // if (Segments > CArea::m_max_arc_points)
         //     Segments=CArea::m_max_arc_points;
         dphi = PI / Segments;
-        roundPrecision = (1.0 - cos(dphi)) * fabs(offset);
+        arcTolerance = (1.0 - cos(dphi)) * fabs(offset);
     }
     else {
-        roundPrecision *= m_clipper_scale;
+        arcTolerance *= m_clipper_scale;
     }
 
-    ClipperOffset clipper(miterLimit, roundPrecision);
-    TPolyPolygon pp, pp2;
+    ClipperOffset clipper(miterLimit, arcTolerance);
+
+    Paths64 pp;
     MakePolyPoly(*this, pp, false);
+
+    // Collect closed paths to add together (holes must be added with outer boundary)
+    Paths64 closedPaths;
+
+    // Add paths with appropriate end types
     int i = 0;
     for (const CCurve& c : m_curves) {
-        clipper.AddPath(pp[i++], joinType, c.IsClosed() ? etClosedPolygon : endType);
+        if (c.IsClosed()) {
+            closedPaths.push_back(pp[i]);
+        }
+        else {
+            clipper.AddPath(pp[i], joinType, endType);
+        }
+        i++;
     }
-    clipper.Execute(pp2, (long64)(offset));
+    clipper.AddPaths(closedPaths, joinType, EndType::Polygon);
+
+    // Execute offset
+    Paths64 pp2;
+    clipper.Execute(offset, pp2);
+
     SetFromResult(*this, pp2, false);
     this->Reorder();
 }
 
 void CArea::Thicken(double value)
 {
-    TPolyPolygon pp;
+    Paths64 pp;
     OffsetSpansWithObrounds(*this, pp, value * m_units);
     SetFromResult(*this, pp, false);
     this->Reorder();
@@ -618,11 +590,14 @@ void UnFitArcs(CCurve& curve)
 
     curve.m_vertices.clear();
 
-    for (std::list<DoubleAreaPoint>::iterator It = pts_for_AddVertex.begin();
-         It != pts_for_AddVertex.end();
+    for (std::list<PointD>::iterator It = pts_for_AddVertex.begin(); It != pts_for_AddVertex.end();
          It++) {
-        DoubleAreaPoint& pt = *It;
-        CVertex vertex(0, Point(pt.X / CArea::m_units, pt.Y / CArea::m_units), Point(0.0, 0.0));
+        PointD& pt = *It;
+        CVertex vertex(
+            0,
+            heeks::Point(pt.x / CArea::m_units, pt.y / CArea::m_units),
+            heeks::Point(0.0, 0.0)
+        );
         curve.m_vertices.push_back(vertex);
     }
 }

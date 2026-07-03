@@ -87,7 +87,7 @@ class BIM_Classification:
 
         # add modified search box from bimmaterial
         searchBox = BimMaterial.MatLineEdit(self.form)
-        searchBox.setPlaceholderText(translate("BIM", "Search..."))
+        searchBox.setPlaceholderText(translate("BIM", "Search…"))
         searchBox.setToolTip(translate("BIM", "Searches classes"))
         self.form.search = searchBox
         self.form.horizontalLayout_2.addWidget(searchBox)

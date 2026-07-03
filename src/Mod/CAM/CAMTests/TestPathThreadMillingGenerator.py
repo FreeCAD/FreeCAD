@@ -28,7 +28,7 @@ import math
 from CAMTests.PathTestUtils import PathTestBase
 
 
-def radii(internal, major, minor, toolDia, toolCrest):
+def radii(internal, major, minor, toolDia, toolCrest, cuttingAngle=60.0):
     """test radii function for simple testing"""
     return (minor, major)
 

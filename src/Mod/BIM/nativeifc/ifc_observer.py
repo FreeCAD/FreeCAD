@@ -25,12 +25,16 @@
 """Document observer to act on documents containing NativeIFC objects"""
 
 import FreeCAD
+from . import has_ifcopenshell
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 
 def add_observer():
     """Adds this observer to the running FreeCAD instance"""
+
+    if not has_ifcopenshell(report=True):
+        return
 
     FreeCAD.BIMobserver = ifc_observer()
     FreeCAD.addDocumentObserver(FreeCAD.BIMobserver)
@@ -55,6 +59,8 @@ class ifc_observer:
 
     def slotStartSaveDocument(self, doc, value):
         """Save all IFC documents in this doc"""
+        if not has_ifcopenshell():
+            return
 
         from PySide import QtCore  # lazy loading
 
@@ -66,6 +72,8 @@ class ifc_observer:
 
     def slotDeletedObject(self, obj):
         """Deletes the corresponding object in the IFC document"""
+        if not has_ifcopenshell():
+            return
 
         from . import ifc_tools  # lazy loading
 
@@ -80,6 +88,8 @@ class ifc_observer:
 
     def slotChangedDocument(self, doc, prop):
         """Watch document IFC properties"""
+        if not has_ifcopenshell():
+            return
 
         # only look at locked IFC documents
         if "IfcFilePath" not in doc.PropertiesList:
@@ -107,6 +117,8 @@ class ifc_observer:
 
     def slotCreatedObject(self, obj):
         """If this is an IFC document, turn the object into IFC"""
+        if not has_ifcopenshell():
+            return
 
         doc = getattr(obj, "Document", None)
         if doc:
@@ -120,12 +132,16 @@ class ifc_observer:
 
     def slotActivateDocument(self, doc):
         """Check if we need to lock"""
+        if not has_ifcopenshell():
+            return
 
         from . import ifc_status
 
         ifc_status.on_activate()
 
     def slotRemoveDynamicProperty(self, obj, prop):
+        if not has_ifcopenshell():
+            return
 
         from . import ifc_psets
 
@@ -143,6 +159,8 @@ class ifc_observer:
 
     def save(self):
         """Saves all IFC documents contained in self.docname Document"""
+        if not has_ifcopenshell():
+            return
 
         if not hasattr(self, "docname"):
             return
@@ -185,6 +203,8 @@ class ifc_observer:
 
     def convert(self):
         """Converts an object to IFC"""
+        if not has_ifcopenshell():
+            return
 
         if not hasattr(self, "objname") or not hasattr(self, "docname"):
             return

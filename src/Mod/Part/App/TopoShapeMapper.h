@@ -186,6 +186,9 @@ struct PartExport ShapeMapper: TopoShape::Mapper
             expand(d.getShape(), dstShapes);
         }
         insert(status, src.getShape(), dstShapes);
+        if (shapeSet.insert(src.getShape()).second) {
+            shapes.push_back(src);
+        }
     }
 
     /** Expand a shape into faces, edges and vertices

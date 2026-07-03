@@ -39,6 +39,7 @@ import WorkingPlane
 import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
 from FreeCAD import Units as U
+from draftguitools.gui_field_locks import InputFieldLockGroup
 from draftutils import params
 from draftutils.messages import _err, _log, _msg, _wrn
 from draftutils.translate import translate
@@ -104,6 +105,11 @@ class TaskPanelPolarArray:
         self.number = 5
         self.fuse = params.get_param("Draft_array_fuse")
         self.use_link = params.get_param("Draft_array_Link")
+
+        self.locks = InputFieldLockGroup()
+        self.locks.add_field("x", self.form.input_c_x)
+        self.locks.add_field("y", self.form.input_c_y)
+        self.locks.add_field("z", self.form.input_c_z)
 
         self.form.input_c_x.setProperty("rawValue", self.center.x)
         self.form.input_c_y.setProperty("rawValue", self.center.y)
@@ -268,6 +274,18 @@ class TaskPanelPolarArray:
         center = App.Vector(_quantity(c_x_str), _quantity(c_y_str), _quantity(c_z_str))
         return center
 
+    def constrain_point(self, point, last=None):
+        """Apply locked center coordinates to a snapped point."""
+        constrained = App.Vector(point)
+        for key in ("x", "y", "z"):
+            value = self.locks.locked_value(key)
+            if value is not None:
+                setattr(constrained, key, value)
+        return constrained
+
+    def has_point_constraints(self):
+        return self.locks.any_locked()
+
     def get_axis(self):
         """Get the axis that will be used for the array. NOT IMPLEMENTED.
 
@@ -278,6 +296,7 @@ class TaskPanelPolarArray:
 
     def reset_point(self):
         """Reset the center point to the original distance."""
+        self.locks.unlock_all()
         self.form.input_c_x.setProperty("rawValue", 0)
         self.form.input_c_y.setProperty("rawValue", 0)
         self.form.input_c_z.setProperty("rawValue", 0)
@@ -366,23 +385,11 @@ class TaskPanelPolarArray:
         # sby = self.form.spinbox_c_y
         # sbz = self.form.spinbox_c_z
         if dp:
-            if self.mask in ("y", "z"):
-                # sbx.setText(displayExternal(dp.x, None, 'Length'))
+            if not self.locks.is_locked("x"):
                 self.form.input_c_x.setProperty("rawValue", dp.x)
-            else:
-                # sbx.setText(displayExternal(dp.x, None, 'Length'))
-                self.form.input_c_x.setProperty("rawValue", dp.x)
-            if self.mask in ("x", "z"):
-                # sby.setText(displayExternal(dp.y, None, 'Length'))
+            if not self.locks.is_locked("y"):
                 self.form.input_c_y.setProperty("rawValue", dp.y)
-            else:
-                # sby.setText(displayExternal(dp.y, None, 'Length'))
-                self.form.input_c_y.setProperty("rawValue", dp.y)
-            if self.mask in ("x", "y"):
-                # sbz.setText(displayExternal(dp.z, None, 'Length'))
-                self.form.input_c_z.setProperty("rawValue", dp.z)
-            else:
-                # sbz.setText(displayExternal(dp.z, None, 'Length'))
+            if not self.locks.is_locked("z"):
                 self.form.input_c_z.setProperty("rawValue", dp.z)
 
         if plane:

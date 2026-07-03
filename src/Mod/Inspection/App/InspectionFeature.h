@@ -263,6 +263,10 @@ public:
     short mustExecute() const override;
     /// recalculate the Feature
     App::DocumentObjectExecReturn* execute() override;
+    bool canRecomputeOnWorker() const override
+    {
+        return false;
+    }
     //@}
 
     /// returns the type name of the ViewProvider

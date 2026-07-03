@@ -29,6 +29,7 @@
 #include <Gui/Application.h>
 #include <Gui/StyleParameters/ParameterManager.h>
 #include <Gui/StyleParameters/Value.h>
+#include <src/TempDirectory.h>
 
 using namespace Gui::StyleParameters;
 
@@ -38,8 +39,8 @@ using StyleParameterManager = Gui::StyleParameters::ParameterManager;
 class YamlParameterSourceTest: public ::testing::Test
 {
 protected:
-    std::filesystem::path tempPath = std::filesystem::temp_directory_path()
-        / "test_yaml_parameter_source.yaml";
+    tests::TempDirectory tempDir {"fctest"};
+    std::filesystem::path tempPath = tempDir.path() / "test_yaml_parameter_source.yaml";
 
     void TearDown() override
     {

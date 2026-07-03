@@ -59,6 +59,9 @@ class ViewProviderFacebinder(ViewProviderDraft):
         if mode != 0:
             return None
 
+        # There is no finish or reject function:
+        if Gui.Control.activeDialog():
+            Gui.Control.closeDialog()
         return True
 
 

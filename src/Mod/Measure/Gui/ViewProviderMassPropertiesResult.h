@@ -22,6 +22,20 @@
 #pragma once
 
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/ParamHandler.h>
+#include <Base/Vector3D.h>
+
+class SoSeparator;
+class SoTranslation;
+class SoSwitch;
+class SoCoordinate3;
+class SoMaterial;
+class SoBaseColor;
+
+namespace Gui
+{
+class SoShapeScale;
+}
 
 namespace MassPropertiesGui
 {
@@ -34,10 +48,47 @@ public:
     ViewProviderMassPropertiesResult();
     ~ViewProviderMassPropertiesResult() override;
 
+    void attach(App::DocumentObject*) override;
+    void setCenters(const Base::Vector3d& cog, const Base::Vector3d& cov);
+    void setPrincipalAxes(
+        const Base::Vector3d& origin,
+        const Base::Vector3d& axis1,
+        const Base::Vector3d& axis2,
+        const Base::Vector3d& axis3,
+        bool visible = true
+    );
+
     bool allowOverride(const App::DocumentObject&) const override
     {
         return true;
     }
+
+private:
+    void updateCenterMarkers();
+    void updatePrincipalAxesMarker();
+
+    SoSeparator* displayRoot = nullptr;
+    SoTranslation* cogTranslation = nullptr;
+    SoTranslation* covTranslation = nullptr;
+    SoSwitch* lcsSwitch = nullptr;
+    SoTranslation* lcsOriginTranslation = nullptr;
+    Gui::SoShapeScale* lcsScale = nullptr;
+    SoMaterial* lcsMaterial = nullptr;
+    SoCoordinate3* lcsCoords = nullptr;
+    SoBaseColor* lcsLabel1Color = nullptr;
+    SoBaseColor* lcsLabel2Color = nullptr;
+    SoBaseColor* lcsLabel3Color = nullptr;
+    SoTranslation* lcsLabel1Translation = nullptr;
+    SoTranslation* lcsLabel2Translation = nullptr;
+    SoTranslation* lcsLabel3Translation = nullptr;
+    Base::Vector3d centerOfGravity {};
+    Base::Vector3d centerOfVolume {};
+    Base::Vector3d principalOrigin {};
+    Base::Vector3d principalAxis1 {};
+    Base::Vector3d principalAxis2 {};
+    Base::Vector3d principalAxis3 {};
+    bool showPrincipalAxes = false;
+    Gui::ParamHandlers handlers;
 };
 
 }  // namespace MassPropertiesGui

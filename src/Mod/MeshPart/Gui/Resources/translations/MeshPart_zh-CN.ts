@@ -382,11 +382,6 @@ The smallest value is 0.</source>
       <translation>使用 Netgen 网格</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>精细度：</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>非常粗糙</translation>
@@ -439,6 +434,11 @@ A value in the range of 0.1-1.</source>
 介于 0.1-1 范围内的值。</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>精度</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -489,8 +489,8 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
-      <translation>没有活动文档</translation>
+      <source>No Active Document</source>
+      <translation>无活动文档</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>

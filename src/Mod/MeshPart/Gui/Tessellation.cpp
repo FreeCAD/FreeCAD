@@ -237,13 +237,13 @@ bool Tessellation::accept()
     std::list<App::SubObjectT> shapeObjects;
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
-        QMessageBox::critical(this, windowTitle(), tr("No active document"));
+        QMessageBox::critical(this, windowTitle(), tr("No Active Document"));
         return false;
     }
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     if (!activeGui) {
-        QMessageBox::critical(this, windowTitle(), tr("No active document"));
+        QMessageBox::critical(this, windowTitle(), tr("No Active Document"));
         return false;
     }
 
@@ -397,6 +397,7 @@ void Tessellation::setFaceColors(int method, App::Document* doc, App::DocumentOb
 
                 vpmesh->highlightSegments(diff_col);
                 addFaceColors(vpmesh->getObject<Mesh::Feature>(), diff_col);
+                vpmesh->Coloring.setValue(true);
             }
         }
     }
@@ -424,6 +425,7 @@ void Tessellation::addFaceColors(Mesh::Feature* mesh, const std::vector<Base::Co
             prop->setValues(colorPerFace);
         }
     }
+    mesh->purgeTouched();
 }
 
 std::vector<Base::Color> Tessellation::getUniqueColors(const std::vector<Base::Color>& colors) const

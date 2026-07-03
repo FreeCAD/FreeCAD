@@ -94,6 +94,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     setCoinAppearance(mat);
     pcShapeMaterial->ref();
     pcShapeMaterial->setName("ShapeMaterial");
+    materialAppearance = mat;
 
     pcBoundingBox = new Gui::SoFCBoundingBox;
     pcBoundingBox->ref();
@@ -199,8 +200,8 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
                 && (ShapeAppearance[0] == defaultMaterial || ShapeAppearance[0] == materialAppearance)
                 && (material != defaultMaterial)) {
                 ShapeAppearance.setValue(material);
+                materialAppearance = material;
             }
-            materialAppearance = material;
         }
     }
 
@@ -388,14 +389,14 @@ void ViewProviderGeometryObject::handleChangedPropertyName(
 )
 {
     if (strcmp(PropName, "ShapeColor") == 0
-        && strcmp(TypeName, App::PropertyColor::getClassTypeId().getName()) == 0) {
+        && TypeName == App::PropertyColor::getClassTypeId().getName()) {
         App::PropertyColor prop;
         prop.Restore(reader);
         ShapeAppearance.setDiffuseColor(prop.getValue());
     }
     else if (
         strcmp(PropName, "ShapeMaterial") == 0
-        && strcmp(TypeName, App::PropertyMaterial::getClassTypeId().getName()) == 0
+        && TypeName == App::PropertyMaterial::getClassTypeId().getName()
     ) {
         App::PropertyMaterial prop;
         prop.Restore(reader);

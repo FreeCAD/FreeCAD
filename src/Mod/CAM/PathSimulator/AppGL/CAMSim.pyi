@@ -7,6 +7,7 @@ from typing import Any
 from Base.BaseClass import BaseClass
 from Base.Metadata import export, no_args
 
+from Gui import Document
 from Part.App.TopoShape import TopoShape
 from CAM.App.Command import Command
 
@@ -35,8 +36,7 @@ class CAMSim(BaseClass):
         """
         ...
 
-    @no_args
-    def ResetSimulation(self) -> None:
+    def ResetSimulation(self, document: Document, /) -> None:
         """
         Clear the simulation and all gcode commands
         """

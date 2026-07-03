@@ -25,10 +25,10 @@
 #pragma once
 
 #include <QObject>
-#include <list>
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 #include <FCGlobal.h>
 
 
@@ -37,7 +37,7 @@ class QDir;
 namespace Gui
 {
 
-using TStringList = std::list<std::string>;
+using TLanguageList = std::vector<std::string>;
 using TStringMap = std::map<std::string, std::string>;
 
 /**
@@ -89,7 +89,7 @@ public:
     /** Applies the current locale formatting preference to Qt and ICU. **/
     void applyLocaleFormattingPreference() const;
     /** Returns a list of supported languages. */
-    TStringList supportedLanguages() const;
+    TLanguageList supportedLanguages() const;
     /** Returns a map of supported languages/locales. */
     TStringMap supportedLocales() const;
     /** Adds a path where localization files can be found */

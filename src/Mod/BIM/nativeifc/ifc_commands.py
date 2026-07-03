@@ -51,7 +51,7 @@ class IFC_Diff:
         tt = QT_TRANSLATE_NOOP("IFC_Diff", "Shows the current unsaved changes in the IFC file")
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_Diff", "IFC Diff"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_Diff", "IFC File Diff"),
             "ToolTip": tt,
             "Accel": "I, D",
         }
