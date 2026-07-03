@@ -1,0 +1,43 @@
+name: Check Pixi Lockfiles
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - releases/**
+  pull_request:
+    types: [opened, synchronize, reopened]
+  merge_group: ~
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-pixi-lockfiles-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  check-pixi-lockfiles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@9c6d543da6e2cf95430e92fcb25740dc48eb9e2c # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: Checkout source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up Pixi
+        uses: prefix-dev/setup-pixi@5185adfbffb4bd703da3010310260805d89ebb11 # v0.9.6
+        with:
+          pixi-version: v0.68.0
+          cache: false
+          run-install: false
+
+      - name: Check root lockfile
+        run: pixi lock --check --manifest-path pixi.toml
+
+      - name: Check package lockfile
+        run: pixi lock --check --manifest-path package/rattler-build/pixi.toml
