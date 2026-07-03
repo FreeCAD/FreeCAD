@@ -144,6 +144,7 @@ private:
     QMenu* setupExpansionSubmenu(QWidget* parent);
     void collapseAll();
     void setEditorMode(const QModelIndex& parent, int start, int end);
+    void releaseEditorFocus();
     void closeTransaction();
     void recomputeDocument(App::Document*);
     std::unordered_set<App::Property*> acquireSelectedProperties() const;

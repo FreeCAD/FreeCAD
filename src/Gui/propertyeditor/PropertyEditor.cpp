@@ -293,7 +293,11 @@ void PropertyEditor::commitData(QWidget* editor)
         // rebuild until control returns to the event loop.
         QMetaObject::invokeMethod(
             this,
-            [this]() { propertyModel->buildUp(PropertyModel::PropertyList()); },
+            [this]() {
+                // The model reset destroys every persistent editor.
+                releaseEditorFocus();
+                propertyModel->buildUp(PropertyModel::PropertyList());
+            },
             Qt::QueuedConnection
         );
     }
@@ -466,6 +470,27 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
         Base::Console().error(
             "Unhandled unknown exception caught in PropertyEditor::recomputeDocument.\n"
         );
+    }
+}
+
+void PropertyEditor::releaseEditorFocus()
+{
+    // Call before the persistent editor is destroyed by a row removal or model reset.
+    // Qt does not reliably clear QApplicationPrivate::focus_widget when a focused
+    // editor is torn down that way, leaving the global focus widget -- a raw pointer,
+    // unlike our QPointer -- dangling. Move the focus back to the tree while the
+    // editor is still alive.
+    if (!activeEditor) {
+        return;
+    }
+    for (QWidget* w = qApp->focusWidget(); w; w = w->parentWidget()) {
+        if (w == activeEditor) {
+            // setFocus() delivers a synchronous FocusOut that would otherwise cascade
+            // into a re-entrant closeEditor() while the model is mid row-removal.
+            Base::StateLocker guard(closingEditor);
+            setFocus();
+            break;
+        }
     }
 }
 
@@ -643,6 +668,8 @@ void PropertyEditor::rowsAboutToBeRemoved(const QModelIndex& parent, int start, 
 
     if (editingIndex.isValid()) {
         if (editingIndex.row() >= start && editingIndex.row() <= end) {
+            // QTreeView is about to destroy the persistent editor of this row.
+            releaseEditorFocus();
             closeTransaction();
         }
         else {
