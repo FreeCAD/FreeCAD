@@ -182,7 +182,7 @@ void ViewProviderPreviewExtension::showPreview(bool enable)
             annotationRoot->addChild(pcPreviewRoot);
         }
     }
-    else {
+    else if (annotationRoot->findChild(pcPreviewRoot) >= 0) {
         annotationRoot->removeChild(pcPreviewRoot);
     }
 }
