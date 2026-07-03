@@ -1433,6 +1433,13 @@ void SketchObject::onSketchRestore()
 // clang-format on
 void SketchObject::migrateSketch()
 {
+    // Old documents lack _Version; infer it from the saving version (still the
+    // file's original at restore) so pre-1.2 sketches keep the legacy face maker.
+    if (_Version.getValue() == 0) {
+        const bool legacy = getDocument()
+            && Base::getVersion(getDocument()->getProgramVersion()) <= Base::Version::v1_1;
+        _Version.setValue(legacy ? 1 : 2);
+    }
 
     const auto& allGeoms = getInternalGeometry();
     bool noextensions = std::ranges::any_of(allGeoms, [](const auto& geo) {
