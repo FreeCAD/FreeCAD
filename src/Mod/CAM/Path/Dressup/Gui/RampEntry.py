@@ -29,7 +29,6 @@ import Path
 import Path.Dressup.Utils as PathDressup
 import math
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -320,32 +319,36 @@ class ObjectDressup:
 
         self.angle = obj.Angle
         self.method = obj.Method
-        positioned_path = PathUtils.getPathWithPlacement(obj.Base)
-        cmds = positioned_path.Commands if hasattr(positioned_path, "Commands") else []
         self.edges = []
-        start_point = (0, 0, 0)
         last_params = {}
-        for cmd in cmds:
-            # Skip repeat move commands
+        for cmd in PathUtils.getPathWithPlacement(obj.Base).Commands:
             params = cmd.Parameters
             if (
                 cmd.Name in Path.Geom.CmdMoveAll
-                and len(self.edges) > 0
+                and self.edges
                 and cmd.Name == self.edges[-1].command.Name
-            ):
-                found_diff = False
-                for k, v in params.items():
-                    if last_params.get(k, None) != v:
-                        found_diff = True
-                        break
-                if not found_diff:
+            ):  # skip repeat move command
+                if all(last_params.get(k, None) == v for k, v in params.items()):
                     continue
 
+            start_point = self.edges[-1].end_point if self.edges else (0, 0, 0)
+            edge = AnnotatedGCode(cmd, start_point)
             last_params.update(params)
 
-            annotated = AnnotatedGCode(cmd, start_point)
-            self.edges.append(annotated)
-            start_point = annotated.end_point
+            if (
+                self.edges
+                and edge.is_line
+                and self.edges[-1].is_line
+                and Path.Geom.isRoughly(self.edges[-1].xy_length, 0)
+                and Path.Geom.isRoughly(edge.xy_length, 0)
+                and self.edges[-1].end_point[2] < self.edges[-1].start_point[2]
+                and edge.end_point[2] < edge.start_point[2]
+            ):  # combine plunge commands
+                self.edges[-1] = AnnotatedGCode(cmd, self.edges[-1].start_point)
+                continue
+
+            self.edges.append(edge)
+
         if self.method in ["RampMethod1", "RampMethod2", "RampMethod3"]:
             self.outedges = self.generateRamps()
         else:
@@ -400,9 +403,7 @@ class ObjectDressup:
                             covered = True
                         i = i + 1
                     if len(rampedges) == 0:
-                        Path.Log.warning(
-                            "No suitable edges for ramping, plunge will remain as such"
-                        )
+                        Path.Log.info("No suitable edges for ramping, plunge will remain as such")
                         outedges.append(edge)
                     else:
                         # Path.Log.debug("Doing ramp to edges: {}".format(rampedges))
@@ -451,6 +452,8 @@ class ObjectDressup:
             edge = edges[i]
             if edge.is_line or edge.is_arc:
                 if edge.xy_length < 1e-6 and edge.end_point[2] < edge.start_point[2]:
+                    # this is plunge edge
+                    # check if edge is above ignore height
                     noramp_edge, edge = self.processIgnoreAbove(edge)
                     if noramp_edge is not None:
                         outedges.append(noramp_edge)
@@ -468,16 +471,14 @@ class ObjectDressup:
                             # this edge is not parallel to XY plane, not qualified for ramping.
                             # exit early, no loop found
                             break
-                        if (
-                            Path.Geom.isRoughly(edge.end_point[0], candidate.end_point[0])
-                            and Path.Geom.isRoughly(edge.end_point[1], candidate.end_point[1])
-                            and Path.Geom.isRoughly(edge.end_point[2], candidate.end_point[2])
-                        ):
+                        if Path.Geom.pointsCoincide(edge.end_point, candidate.end_point):
                             loopFound = True
                         rampedges.append(candidate)
                         j = j + 1
                     if not loopFound:
-                        Path.Log.warning("No suitable helix found, leaving as a plunge")
+                        Path.Log.info(
+                            "No suitable helix found, leaving as a plunge: %s" % edge.command
+                        )
                         outedges.append(edge)
                     else:
                         outedges.extend(self.createHelix(rampedges, edge.start_point[2]))
@@ -526,7 +527,7 @@ class ObjectDressup:
         rampheight = abs(startZ - rampedges[-1].end_point[2])
 
         max_rise_over_run = 1 / math.tan(math.radians(self.angle))
-        num_loops = math.ceil(rampheight / ramplen / max_rise_over_run)
+        num_loops = math.ceil(round(rampheight / ramplen / max_rise_over_run, 6))
         rampedges *= num_loops
         ramplen *= num_loops
 
@@ -697,6 +698,7 @@ class ObjectDressup:
 class ViewProviderDressup:
     def __init__(self, vobj):
         self.obj = vobj.Object
+        vobj.Proxy = self
 
     def attach(self, vobj):
         self.obj = vobj.Object
@@ -710,7 +712,6 @@ class ViewProviderDressup:
                         if g.Name == self.obj.Base.Name:
                             group.remove(g)
                     i.Group = group
-                    print(i.Group)
         # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.obj.Base]
 
@@ -750,27 +751,12 @@ class CommandPathDressupRampEntry:
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        return bool(PathDressup.selection())
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            Path.Log.error(translate("CAM_DressupRampEntry", "Select one toolpath object") + "\n")
-            return
-        baseObject = selection[0]
-        if not baseObject.isDerivedFrom("Path::Feature"):
-            Path.Log.error(
-                translate("CAM_DressupRampEntry", "The selected object is not a toolpath") + "\n"
-            )
-            return
-        if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(translate("CAM_DressupRampEntry", "Select a Profile object"))
+        op = PathDressup.selection(verbose=True)
+        if not op:
             return
 
         # everything ok!
@@ -781,13 +767,11 @@ class CommandPathDressupRampEntry:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "RampEntryDressup")'
         )
         FreeCADGui.doCommand("dbo = Path.Dressup.Gui.RampEntry.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + op.Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
-        FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = Path.Dressup.Gui.RampEntry.ViewProviderDressup(obj.ViewObject)"
-        )
+        FreeCADGui.doCommand("Path.Dressup.Gui.RampEntry.ViewProviderDressup(obj.ViewObject)")
         FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
         FreeCADGui.doCommand("dbo.setup(obj)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()

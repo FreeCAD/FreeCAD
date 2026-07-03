@@ -115,6 +115,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             | PathOp.FeatureBaseFaces
             | PathOp.FeatureCoolant
             | PathOp.FeatureBaseGeometry
+            | PathOp.FeatureLinking
         )
 
     def initOperation(self, obj):
@@ -215,7 +216,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         if not hasattr(self, "printInfo"):
             self.printInfo = True
         try:
-            (depth, offset, extraOffset, suppressInfo) = toolDepthAndOffset(
+            depth, offset, extraOffset, suppressInfo = toolDepthAndOffset(
                 obj.Width.Value, obj.ExtraDepth.Value, self.tool, self.printInfo
             )
             self.printInfo = not suppressInfo
@@ -231,7 +232,21 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         self.adjusted_basewires = []
         wires = []
 
-        for base, subs in obj.Base:
+        for base, subs in self.baseShapes(obj):
+            Path.Log.debug(f"Processing base {base.Label} with {len(subs)} subs")
+            # Debug: check if this is a proxy and what the shape looks like
+            if hasattr(base, "_real_obj"):
+                Path.Log.debug(f"  Using proxy wrapper for {base._real_obj.Label}")
+            if hasattr(base, "Shape") and base.Shape:
+                Path.Log.debug(
+                    f"  Base shape has {len(base.Shape.Edges)} edges, {len(base.Shape.Faces)} faces"
+                )
+                # Check shape orientation
+                if hasattr(base.Shape, "BoundBox"):
+                    bbox = base.Shape.BoundBox
+                    Path.Log.debug(
+                        f"  Shape bbox: ({bbox.XMin:.3f},{bbox.YMin:.3f},{bbox.ZMin:.3f}) to ({bbox.XMax:.3f},{bbox.YMax:.3f},{bbox.ZMax:.3f})"
+                    )
             edges = []
             basewires = []
             max_h = -99999
@@ -239,9 +254,39 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             radius_bottom = 0
 
             for f in subs:
+                Path.Log.debug(f"  Sub: {f}")
                 sub = base.Shape.getElement(f)
 
                 if type(sub) == Part.Edge:  # Edge
+                    # Debug: examine the edge geometry
+                    if hasattr(sub, "Curve") and sub.Curve:
+                        Path.Log.debug(f"    Edge type: {type(sub.Curve).__name__}")
+                        if hasattr(sub.Curve, "Center"):
+                            Path.Log.debug(f"    Edge center: {sub.Curve.Center}")
+                        if hasattr(sub.Curve, "Radius"):
+                            Path.Log.debug(f"    Edge radius: {sub.Curve.Radius}")
+                        # Check if BSpline came from a circle
+                        if type(sub.Curve).__name__ == "BSplineCurve":
+                            try:
+                                arcs = sub.Curve.toBiArcs(0.001)
+                                if (
+                                    arcs
+                                    and len(arcs) == 1
+                                    and hasattr(arcs[0], "Center")
+                                    and hasattr(arcs[0], "Radius")
+                                ):
+                                    Path.Log.debug(
+                                        f"    BSpline approximates circle with center {arcs[0].Center} and radius {arcs[0].Radius}"
+                                    )
+                                else:
+                                    Path.Log.debug(
+                                        f"    BSpline toBiArcs returned {len(arcs) if arcs else 0} segment(s)"
+                                    )
+                            except Exception:
+                                Path.Log.debug(f"    BSpline cannot be converted to arc/circle")
+                    # Check edge vertices
+                    for i, v in enumerate(sub.Vertexes):
+                        Path.Log.debug(f"    Vertex {i}: {v.Point}")
                     edges.append(sub)
 
                 elif type(sub) == Part.Face and sub.normalAt(0, 0) != FreeCAD.Vector(
@@ -368,19 +413,28 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                     basewires.append(Part.Wire(sub.Edges))
 
             self.edges = edges
+            Path.Log.debug(f"  Found {len(edges)} edges")
             for edgelist in Part.sortEdges(edges):
                 basewires.append(Part.Wire(edgelist))
 
             self.basewires.extend(basewires)
+            Path.Log.debug(f"  Total basewires: {len(basewires)}")
 
             # Set default side
             side = ["Outside"]
 
-            for w in basewires:
+            for i, w in enumerate(basewires):
                 self.adjusted_basewires.append(w)
-                wire = PathOpUtil.offsetWire(
-                    w, base.Shape, offset, True, side, self.job.GeometryTolerance.Value
-                )
+                # Debug: examine the wire geometry
+                Path.Log.debug(f"  Wire {i}: {len(w.Edges)} edges")
+                for j, e in enumerate(w.Edges):
+                    if hasattr(e, "Curve") and e.Curve:
+                        Path.Log.debug(f"    Edge {j} type: {type(e.Curve).__name__}")
+                        if hasattr(e.Curve, "Radius"):
+                            Path.Log.debug(f"    Edge {j} radius: {e.Curve.Radius}")
+                tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
+                wire = PathOpUtil.offsetWire(w, base.Shape, offset, True, side, tol)
+                Path.Log.debug(f"  offsetWire returned: {wire is not None}")
                 if wire:
                     wires.append(wire)
 
@@ -406,6 +460,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         if obj.EntryPoint < 0:
             obj.EntryPoint = 0
 
+        Path.Log.debug(f"Generated {len(wires)} wires for toolpath")
         self.wires = wires
         self.buildpathocc(obj, wires, zValues, True, forward, obj.EntryPoint)
 
@@ -426,7 +481,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("Width")
     setup.append("ExtraDepth")
     return setup

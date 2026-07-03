@@ -383,11 +383,6 @@ The smallest value is 0.</source>
       <translation>Netget mesher-ის გამოყენება</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>სიწმინდე:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>ძალიან უხეში</translation>
@@ -440,6 +435,11 @@ A value in the range of 0.1-1.</source>
 მნიშვნელობის შესაძლო შუალედია 0.1-1.</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>სიზუსტე</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -490,7 +490,7 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>აქტიური დოკუმენტის გარეშე</translation>
     </message>
     <message>

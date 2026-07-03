@@ -1503,7 +1503,7 @@ void OverlayTabWidget::updateSplitterHandles()
 
 bool OverlayTabWidget::onEscape()
 {
-    if (getState() == OverlayTabWidget::State::Hint || getState() == OverlayTabWidget::State::Hidden) {
+    if (getState() == OverlayTabWidget::State::Hint) {
         setState(OverlayTabWidget::State::HintHidden);
         return true;
     }
@@ -1552,8 +1552,10 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     if (!enable && isTransparent()) {
         option = OverlayOption::ShowTab;
     }
-    else if (enable && !isTransparent()
-             && (autoMode == AutoMode::EditShow || autoMode == AutoMode::AutoHide)) {
+    else if (
+        enable && !isTransparent()
+        && (autoMode == AutoMode::EditShow || autoMode == AutoMode::AutoHide)
+    ) {
         option = OverlayOption::Disable;
     }
     else {
@@ -1561,8 +1563,17 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     }
     setProperty("transparent", option != OverlayOption::Disable);
 
-    proxyWidget->setStyleSheet(stylesheet);
-    this->setStyleSheet(stylesheet);
+    auto refreshStyleSheet = [](QWidget* w, const QString& s) {
+        if (w->styleSheet() != s) {
+            w->setStyleSheet(s);
+        }
+        else {
+            w->style()->unpolish(w);
+            w->style()->polish(w);
+        }
+    };
+    refreshStyleSheet(proxyWidget, stylesheet);
+    refreshStyleSheet(this, stylesheet);
     setOverlayMode(this, option);
 
     _graphicsEffect->setEnabled(effectEnabled() && (enable || isTransparent()));

@@ -103,11 +103,15 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
             Path.Preferences.addAddonAssetPath(addon_root)
 
             self.assertIn(posts_dir, Path.Preferences.searchPathsPost())
-            self.assertIn(pathlib.Path(machines_dir), MachineFactory._addon_machine_dirs)
+            registered_paths = [d for _, d in MachineFactory._addon_machine_dirs]
+            self.assertIn(pathlib.Path(machines_dir), registered_paths)
 
             # Cleanup
             Path.Preferences._extra_post_paths.remove(posts_dir)
-            MachineFactory._addon_machine_dirs.remove(pathlib.Path(machines_dir))
+            mp = pathlib.Path(machines_dir)
+            MachineFactory._addon_machine_dirs[:] = [
+                (ns, d) for ns, d in MachineFactory._addon_machine_dirs if d != mp
+            ]
 
     def test10(self):
         """Default paths for tools are resolved correctly"""

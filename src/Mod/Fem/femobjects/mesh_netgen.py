@@ -56,7 +56,7 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyLinkList",
-                name="MeshRegionList",
+                name="MeshRefinementList",
                 group="Mesh Parameters",
                 doc="Refinements of the mesh",
                 value=[],
@@ -582,6 +582,16 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
             # Migrate group of properties for old projects
             if obj.getGroupOfProperty(prop.name) != prop.group:
                 obj.setGroupOfProperty(prop.name, prop.group)
+
+        # migrate old properties
+        try:
+            prop = "MeshRegionList"
+            obj.MeshRefinementList = obj.getPropertyByName(prop)
+            obj.setPropertyStatus(prop, "-LockDynamic")
+            obj.removeProperty(prop)
+        except Base.PropertyError:
+            # do nothing
+            pass
 
         if not obj.hasExtension("Fem::WorkerExtensionPython"):
             obj.addExtension("Fem::WorkerExtensionPython")

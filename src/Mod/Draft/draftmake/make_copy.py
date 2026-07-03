@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create copies of objects."""
+
 ## @package make_copy
 # \ingroup draftmake
 # \brief Provides functions to create copies of objects.

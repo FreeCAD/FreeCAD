@@ -56,6 +56,12 @@ void Grabber3d::quickView(View3DInventor* view3d,
     }
 
     int samples = 8;  //magic number from Gui::View3DInventorViewer
-    viewer->savePicture(image.width(), image.height(), samples, bgColor, image);
+    viewer->savePicture(
+        image.width(),
+        image.height(),
+        samples,
+        bgColor,
+        image,
+        View3DInventorViewer::RenderIntent::RasterCapture
+    );
 }
-

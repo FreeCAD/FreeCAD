@@ -144,6 +144,7 @@ class Arch_Window:
 
         FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
         self.wp = WorkingPlane.get_working_plane()
+        self.wp._save()
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.length(self.Width)
         self.tracker.width(self.W1)
@@ -153,9 +154,27 @@ class Arch_Window:
             translate("Arch", "Choose a face on an existing object or select a preset") + "\n"
         )
         FreeCADGui.Snapper.getPoint(
-            callback=self.getPoint, movecallback=self.update, extradlg=self.taskbox()
+            callback=self.getPoint,
+            movecallback=self.update,
+            extradlg=self.taskbox(),
+            hints=self.get_hints(),
         )
         # FreeCADGui.Snapper.setSelectMode(True)
+
+    def get_hints(self):
+        "returns status bar input hints for the current tool state"
+        from draftguitools import gui_tool_utils
+
+        return (
+            [
+                FreeCADGui.InputHint(
+                    translate("Arch", "%1 pick point on host"), FreeCADGui.UserInput.MouseLeft
+                )
+            ]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
     def has_width_and_height_constraint(self, sketch):
         width_found = False
@@ -181,6 +200,7 @@ class Arch_Window:
 
         SketchArch = False
 
+        self.wp._restore()
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         self.tracker.off()
@@ -230,7 +250,7 @@ class Arch_Window:
             # library object
             col = self.doc.Objects
             path = self.librarypresets[self.Preset - len(WindowPresets)][1]
-            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject('" + path + "')")
+            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject(" + repr(path) + ")")
             # find the latest added window
             nol = self.doc.Objects
             for o in nol[len(col) :]:

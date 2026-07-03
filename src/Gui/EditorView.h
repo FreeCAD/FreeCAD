@@ -34,6 +34,7 @@ class QHBoxLayout;
 class QToolButton;
 class QCheckBox;
 class QSpacerItem;
+class QLabel;
 QT_END_NAMESPACE
 
 namespace Gui
@@ -112,9 +113,6 @@ private Q_SLOTS:
     void undoAvailable(bool);
     void redoAvailable(bool);
 
-Q_SIGNALS:
-    void changeFileName(const QString&);
-
 private:
     void setCurrentFileName(const QString& fileName);
     bool saveFile();
@@ -140,13 +138,8 @@ public:
 
 public Q_SLOTS:
     void executeScript();
-    void startDebug();
-    void toggleBreakpoint();
-    void showDebugMarker(int line);
-    void hideDebugMarker();
 
 private:
-    PythonEditor* _pye;
     PythonTracingWatcher* watcher;
 };
 
@@ -174,6 +167,14 @@ private:
     void retranslateUi();
     void findText(bool skip, bool next, const QString& str);
     void updateButtons();
+    struct SearchResults
+    {
+        QVector<QPair<int, int>> matchRanges;
+        int currentIndex = -1;
+    };
+    SearchResults findAllMatches(const QString& str);
+    void updateSearchResults(const QString& str);
+    void highlightSearchResults(const SearchResults& matches);
 
 private:
     QPlainTextEdit* textEditor;
@@ -181,10 +182,12 @@ private:
     QSpacerItem* horizontalSpacer;
     QToolButton* closeButton;
     QLineEdit* searchText;
+    QLabel* resultLabel;
     QToolButton* prevButton;
     QToolButton* nextButton;
     QCheckBox* matchCase;
     QCheckBox* matchWord;
+    bool skipSearch = false;
 };
 
 }  // namespace Gui

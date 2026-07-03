@@ -583,7 +583,13 @@ class Joint:
                 if hasattr(joint, reference_attr):
                     ref = getattr(joint, reference_attr)
 
-                    doc_name = ref[0].Document.Name
+                    refObj = ref[0]
+                    if refObj is None:
+                        return
+
+                    refObj = refObj.getLinkedObject(False)
+
+                    doc_name = refObj.Document.Name
                     sub1 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, ref[1][0])
                     sub2 = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, ref[1][1])
 
@@ -836,7 +842,6 @@ class Joint:
 
         if len(refs) >= 1:
             joint.Reference1 = refs[0]
-            joint.Placement1 = self.findPlacement(joint, joint.Reference1, 0)
         else:
             joint.Reference1 = None
             joint.Placement1 = App.Placement()
@@ -844,7 +849,9 @@ class Joint:
 
         if len(refs) >= 2:
             joint.Reference2 = refs[1]
-            joint.Placement2 = self.findPlacement(joint, joint.Reference2, 1)
+
+            self.ensureUnconnectedIsSecondRef(joint)
+
             if joint.JointType in JointUsingPreSolve:
                 self.preSolve(joint)
             elif joint.JointType in JointParallelForbidden:
@@ -1028,6 +1035,48 @@ class Joint:
                 part1.Placement, 10, rotation_axis
             )
 
+    def ensureUnconnectedIsSecondRef(self, joint):
+        # Several joints are not solving properly if the part connected to ground is not the first.
+        # See https://github.com/FreeCAD/FreeCAD/issues/29355 for instance.
+        # This function swap the references if possible to avoid those issues.
+        assembly = self.getAssembly(joint)
+        if not assembly or assembly.Type != "Assembly":
+            return
+
+        part1 = UtilsAssembly.getMovingPart(joint.Reference1)
+        part2 = UtilsAssembly.getMovingPart(joint.Reference2)
+
+        if not part1 or not part2:
+            return
+
+        # Temporarily suppress the joint to avoid evaluating it as a valid connection
+        suppressed_backup = joint.Suppressed
+        joint.Suppressed = True
+        part1Connected = assembly.isPartConnected(part1)
+        part2Connected = assembly.isPartConnected(part2)
+        joint.Suppressed = suppressed_backup
+
+        # If only part1 is unconnected and part2 is connected, swap references and related properties
+        if not part1Connected and part2Connected:
+            ref1 = joint.Reference1
+            joint.Reference1 = joint.Reference2
+            joint.Reference2 = ref1
+
+            plc1 = joint.Placement1
+            joint.Placement1 = joint.Placement2
+            joint.Placement2 = plc1
+
+            off1 = joint.Offset1
+            joint.Offset1 = joint.Offset2
+            joint.Offset2 = off1
+
+            det1 = joint.Detach1
+            joint.Detach1 = joint.Detach2
+            joint.Detach2 = det1
+
+            if activeTask and activeTask.joint == joint:
+                activeTask.updateTaskboxFromJoint()
+
     def areJcsSameDir(self, joint):
         globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
         globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
@@ -1185,7 +1234,15 @@ class ViewProviderJoint:
                 Since no data were serialized nothing needs to be done here."""
         return None
 
+    def setupContextMenu(self, vobj, menu):
+        action = menu.addAction(translate("Assembly", "Edit Joint"))
+        action.triggered.connect(lambda: self.editJoint(vobj))
+        return False
+
     def doubleClicked(self, vobj):
+        return self.editJoint(vobj)
+
+    def editJoint(self, vobj):
         App.ActiveDocument.abortTransaction()  # Close the auto-transaction
 
         task = Gui.Control.activeTaskDialog()
@@ -1232,9 +1289,12 @@ class GroundedJoint:
             locked=True,
         )
         joint.ObjectToGround = obj_to_ground
+        self.setReadOnly(joint, True)
 
     def onDocumentRestored(self, joint):
         self.migrationScript(joint)
+
+        self.setReadOnly(joint, True)
 
     def migrationScript(self, joint):
         if (
@@ -1253,10 +1313,31 @@ class GroundedJoint:
     def loads(self, state):
         return None
 
-    def onChanged(self, fp, prop):
+    def onChanged(self, joint, prop):
         """Do something when a property has changed"""
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        pass
+        if prop == "ObjectToGround":
+            self.setReadOnly(joint, True)
+
+    def onBeforeChange(self, joint, prop):
+        if prop == "ObjectToGround":
+            self.setReadOnly(joint, False)
+
+    def onDelete(self, joint, args):
+        self.setReadOnly(joint, False)
+        return True
+
+    def setReadOnly(self, joint, value):
+        if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
+            obj = joint.ObjectToGround
+            tag = "-ReadOnly"
+            if value:
+                tag = "ReadOnly"
+
+            propList = obj.PropertiesList
+            if "Placement" in propList:
+                obj.setPropertyStatus("Placement", tag)
+            if "LinkPlacement" in propList:
+                obj.setPropertyStatus("LinkPlacement", tag)
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
@@ -1575,6 +1656,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jForm.offset1Button.clicked.connect(self.onOffset1Clicked)
         self.jForm.offset2Button.clicked.connect(self.onOffset2Clicked)
         self.jForm.PushButtonReverse.clicked.connect(self.onReverseClicked)
+        self.jForm.PushButtonRotate90.clicked.connect(self.onRotate90Clicked)
 
         self.jForm.limitCheckbox1.stateChanged.connect(self.adaptUi)
         self.jForm.limitCheckbox2.stateChanged.connect(self.adaptUi)
@@ -1782,6 +1864,17 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def onReverseClicked(self):
         self.joint.Proxy.flipOnePart(self.joint)
 
+    def onRotate90Clicked(self):
+        """Rotate the joint attachment rotation (yaw) by +90 degrees."""
+        try:
+            cur = self.jForm.rotationSpinbox.property("rawValue")
+            if cur is None:
+                cur = 0.0
+            new_val = math.fmod(cur + 90.0, 360.0)
+            self.jForm.rotationSpinbox.setProperty("rawValue", new_val)
+        except Exception as e:
+            App.Console.PrintError(f"ERROR: failed to increment rotation spinbox: {e}\n")
+
     def reverseRotToggled(self, val):
         if val:
             self.jForm.jointType.setCurrentIndex(JointTypes.index("Gears"))
@@ -1840,6 +1933,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jForm.rotationSpinbox.setVisible(not advancedOffset and needRotation)
 
         self.jForm.PushButtonReverse.setVisible(jType in JointUsingReverse)
+        self.jForm.PushButtonRotate90.setVisible(jType in JointUsingReverse)
 
         needLengthLimits = jType in JointUsingLimitLength
         needAngleLimits = jType in JointUsingLimitAngle
@@ -2135,13 +2229,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
-        # We do not need the full TNP string like :"Part.Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
-        # instead we need : "Part.Body.Pad.Face6"
-        resolved = rootObj.resolveSubElement(sub_name, True)
-        sub_name = resolved[2]
-
-        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
-
         comp, new_sub = UtilsAssembly.getComponentReference(self.assembly, rootObj, sub_name)
         if not comp:
             # Selection was not valid (not inside assembly or logic failed)
@@ -2191,12 +2278,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
-        # Apply the same processing as in addSelection to ensure consistent comparison
-        resolved = rootObj.resolveSubElement(sub_name, True)
-        sub_name = resolved[2]
-
-        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
-
         comp, new_sub = UtilsAssembly.getComponentReference(self.assembly, rootObj, sub_name)
         if not comp:
             return
@@ -2218,8 +2299,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if not sub_name:
             self.presel_ref = None
             return
-
-        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
 
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 

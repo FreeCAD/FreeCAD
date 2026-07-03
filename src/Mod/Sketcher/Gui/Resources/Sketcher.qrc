@@ -103,6 +103,7 @@
         <file>icons/elements/Sketcher_Element_SelectionTypeInvalid.svg</file>
     </qresource>
     <qresource>
+        <file>icons/general/Sketcher_CancelSketch.svg</file>
         <file>icons/general/Sketcher_EditSketch.svg</file>
         <file>icons/general/Sketcher_LeaveSketch.svg</file>
         <file>icons/general/Sketcher_MapSketch.svg</file>

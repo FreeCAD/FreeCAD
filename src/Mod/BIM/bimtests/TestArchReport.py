@@ -3,6 +3,7 @@
 # Copyright (c) 2025 The FreeCAD Project
 
 """Unit tests for the ArchReport and ArchSql modules."""
+
 import FreeCAD
 import Arch
 import Draft
@@ -2111,3 +2112,45 @@ class TestArchReport(TestArchBase.TestArchBase):
         finally:
             # CLEANUP: Always restore the user's original schema.
             FreeCAD.Units.setSchema(original_schema_index)
+
+    def test_autoupdate_controls_spreadsheet_overwrite(self):
+        """AutoUpdate=False preserves user edits on recompute;
+        AutoUpdate=True overwrites them."""
+        report = Arch.makeReport()
+        report.Proxy.live_statements[0].query_string = "SELECT Label FROM document"
+        report.Proxy.commit_statements()
+        self.doc.recompute()
+
+        sp = report.Target
+        self.assertIsNotNone(sp, "Report should have a target spreadsheet.")
+        self.assertTrue(len(sp.getUsedCells()) > 0, "Spreadsheet should have data.")
+
+        with self.subTest(AutoUpdate=False):
+            report.AutoUpdate = False
+            sp.set("Z1", "USER_EDIT")
+            self.doc.recompute()
+            self.assertIn("USER_EDIT", sp.getContents("Z1"))
+
+        with self.subTest(AutoUpdate=True):
+            report.AutoUpdate = True
+            sp.set("Z1", "USER_EDIT")
+            self.doc.recompute()
+            self.assertEqual(sp.getContents("Z1"), "")
+
+    def test_column_widths_preserved_across_recompute(self):
+        """Column widths set by the user should survive a report recompute."""
+        report = Arch.makeReport()
+        report.Proxy.live_statements[0].query_string = "SELECT Label FROM document"
+        report.Proxy.commit_statements()
+        self.doc.recompute()
+
+        sp = report.Target
+        custom_width = 200
+        sp.setColumnWidth("A", custom_width)
+        self.doc.recompute()
+
+        self.assertEqual(
+            sp.getColumnWidth("A"),
+            custom_width,
+            "Column width should be preserved after recompute.",
+        )

@@ -36,7 +36,6 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 #include <vector>
@@ -44,8 +43,6 @@
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerLine;
 
@@ -102,24 +99,28 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
-                toolWidgetManager.drawPositionAtCursor(onSketchPos);
-
-                startPoint = onSketchPos;
-
                 seekAndRenderAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f));
+
+                Base::Vector2d snapPoint;
+                startPoint = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint
+                                                                                : onSketchPos;
+
+                toolWidgetManager.drawPositionAtCursor(startPoint);
             } break;
             case SelectMode::SeekSecond: {
-                toolWidgetManager.drawDirectionAtCursor(onSketchPos, startPoint);
+                seekAndRenderAutoConstraint(sugConstraints[1], onSketchPos, onSketchPos - startPoint);
 
-                endPoint = onSketchPos;
+                Base::Vector2d snapPoint;
+                endPoint = getLineExtensionAutoConstraintSnapPoint(snapPoint) ? snapPoint
+                                                                              : onSketchPos;
+
+                toolWidgetManager.drawDirectionAtCursor(endPoint, startPoint);
 
                 try {
                     CreateAndDrawShapeGeometry();
                 }
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
-
-                seekAndRenderAutoConstraint(sugConstraints[1], onSketchPos, onSketchPos - startPoint);
             } break;
             default:
                 break;
@@ -358,7 +359,7 @@ void DSHLineController::configureToolWidget()
         };
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
-        if (isConstructionMode()) {
+        if (handler->isConstructionMode()) {
             toolWidget->setComboboxItemIcon(
                 WCombobox::FirstCombo,
                 0,
@@ -791,8 +792,10 @@ void DSHLineController::addConstraints()
                 constraintp4DistanceY();
             }
         }
-        else if (handler->constructionMethod()
-                 == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle) {
+        else if (
+            handler->constructionMethod()
+            == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle
+        ) {
             if (p3set) {
                 constraintp3length();
             }
@@ -853,8 +856,10 @@ void DSHLineController::addConstraints()
                 constraintp4DistanceY();
             }
         }
-        else if (handler->constructionMethod()
-                 == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle) {
+        else if (
+            handler->constructionMethod()
+            == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle
+        ) {
 
             int DoFs = startpointinfo.getDoFs();
             DoFs += endpointinfo.getDoFs();

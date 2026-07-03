@@ -92,9 +92,7 @@ HEADER = """;Exported by FreeCAD
 ;Post Processor: {}
 ;CAM file: {}
 ;Output Time: {}
-""".format(
-    __name__, cam_file, str(datetime.datetime.now())
-)
+""".format(__name__, cam_file, str(datetime.datetime.now()))
 
 # Preamble text will appear at the beginning of the GCODE output file.
 PREAMBLE = """G53 G00 G17

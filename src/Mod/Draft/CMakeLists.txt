@@ -58,12 +58,15 @@ SET(Draft_tests
     drafttests/test_array.py
     drafttests/test_base.py
     drafttests/test_creation.py
+    drafttests/test_dimension_gui.py
     drafttests/test_draftgeomutils.py
     drafttests/test_dwg.py
     drafttests/test_dxf.py
     drafttests/test_import.py
     drafttests/test_import_gui.py
     drafttests/test_import_tools.py
+    drafttests/test_lines_gui.py
+    drafttests/test_manual_input_gui.py
     drafttests/test_modification.py
     drafttests/test_oca.py
     drafttests/test_pivy.py
@@ -257,6 +260,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_annotationstyleeditor.py
     draftguitools/gui_base.py
     draftguitools/gui_base_original.py
+    draftguitools/gui_field_locks.py
     draftguitools/gui_tool_utils.py
     draftguitools/gui_planeproxy.py
     draftguitools/gui_selectplane.py

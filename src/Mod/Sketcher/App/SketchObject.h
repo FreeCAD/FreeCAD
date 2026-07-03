@@ -109,7 +109,6 @@ public:
     Part ::PropertyPartShape InternalShape;
     App ::PropertyPrecision InternalTolerance;
     App ::PropertyBool MakeInternals;
-    App ::PropertyInteger _ExternalGeoVersion;
     /** @name methods override Feature */
     //@{
     short mustExecute() const override;
@@ -399,15 +398,12 @@ public:
     /// Change an angle constraint to its supplementary angle.
     void reverseAngleConstraintToSupplementary(Constraint* constr, int constNum);
     void inverseAngleConstraint(Constraint* constr);
-    /// Modify an angle constraint expression string to its supplementary angle
-    static std::string reverseAngleConstraintExpression(std::string expression);
 
     // Check if a constraint has an expression associated.
     bool constraintHasExpression(int constNum) const;
     // Get a constraint associated expression
     std::string getConstraintExpression(int constNum) const;
     // Set a constraint associated expression
-    void setConstraintExpression(int constNum, const std::string& newExpression);
     void setExpression(const App::ObjectIdentifier& path, std::shared_ptr<App::Expression> expr) override;
 
     /// set the driving status of this constraint and solve
@@ -1138,6 +1134,13 @@ protected:
         Sketcher::PointPos thirdPos = Sketcher::PointPos::none
     );
 
+    // sets the constraint's orientation flag
+    // if applicable using the geometric state
+    // if reset is set to false, the function
+    // will return early when the constraint
+    // already has an orientation
+    void setOrientation(Constraint* constr, bool reset);
+
 public:
     // FIXME: These may not need to be public. Decide before merging.
     std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(
@@ -1148,6 +1151,9 @@ public:
     void changeConstraintAfterDeletingGeo(Constraint* constr, const int deletedGeoId) const;
 
 private:
+    void setOrientationDistance(Constraint* constr);
+    void setOrientationTangent(Constraint* constr);
+
     /// Internal helper method for exposeInternalGeometryForType
     /// Add geometry and constraints to `this`, then delete the geometry and constraints in the
     /// vectors Note that the contents of the two vectors are invalid after this call.

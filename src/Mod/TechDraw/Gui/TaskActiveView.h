@@ -73,6 +73,7 @@ protected:
 
 private Q_SLOTS:
     void onCropChanged();
+    void onBgTypeChanged(int index);
     void updatePreview();
 
 private:
@@ -81,6 +82,12 @@ private:
     TechDraw::DrawPage*       m_pageFeat;
     TechDraw::DrawViewImage*  m_imageFeat;
     TechDraw::DrawViewImage* m_previewImageFeat;
+
+    enum class BackgroundType {
+        Transparent = 0,
+        Solid = 1,
+        View3D = 2
+    };
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;

@@ -70,12 +70,16 @@ Q_SIGNALS:
     void emitCenterSelectedItems();
     void emitHideSelection3DVisibility();
     void emitShowSelection3DVisibility();
+    void emitDeleteAllConstraints();
+    void emitDeleteConstraints(const QList<int>&);
 
 protected Q_SLOTS:
     void modifyCurrentItem();
     void renameCurrentItem();
     void centerSelectedItems();
     void deleteSelectedItems();
+    void deleteAllItems();
+    void deleteFilterItems();
     void doSelectConstraints();
     void updateDrivingStatus();
     void updateActiveStatus();
@@ -189,6 +193,8 @@ public:
     void onListWidgetConstraintsEmitCenterSelectedItems();
     void onListWidgetConstraintsEmitShowSelection3DVisibility();
     void onListWidgetConstraintsEmitHideSelection3DVisibility();
+    void onDeleteAllConstraints();
+    void onDeleteConstraints(const QList<int>&);
     void onFilterBoxStateChanged(int val);
     void onShowHideButtonClicked(bool);
     void onSettingsRestrictVisibilityChanged(bool value = false);

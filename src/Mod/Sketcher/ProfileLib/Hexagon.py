@@ -23,7 +23,6 @@
 
 import FreeCAD, FreeCADGui, Sketcher, Part
 
-
 __title__ = "Hexagon profile lib"
 __author__ = "Juergen Riegel"
 __url__ = "https://www.freecad.org"
@@ -45,7 +44,7 @@ def makeHexagonSimple(sketchName=None):
     geoList.append(Part.LineSegment(App.Vector(20.00, -34.64, 0), App.Vector(-20.00, -34.64, 0)))
     geoList.append(Part.LineSegment(App.Vector(-20.00, -34.64, 0), App.Vector(-40.00, 0.00, 0)))
     geoList.append(Part.LineSegment(App.Vector(-40.00, 0.00, 0), App.Vector(-20.00, 34.64, 0)))
-    (l1, l2, l3, l4, l5, l6) = sketch.addGeometry(geoList)
+    l1, l2, l3, l4, l5, l6 = sketch.addGeometry(geoList)
 
     conList = []
     conList.append(Sketcher.Constraint("Coincident", l1, 2, l2, 1))

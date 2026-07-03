@@ -26,6 +26,7 @@
 
 #pragma once
 
+#include <App/DepEdge.h>
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
 #include <App/PropertyGeo.h>
@@ -40,6 +41,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace Base
@@ -183,6 +185,9 @@ public:
      * @brief Signal that the property of this object has changed.
      *
      * Subscribers will get the current object and the property that has changed.
+     * This is a raw same-thread signal. It is not marshaled back to the GUI
+     * thread; GUI code should generally subscribe to App::Document's
+     * document-scoped MainThreadSignal notifications instead.
      *
      * @param[in] obj  The document object whose property just changed.
      * @param[in] prop The property that was changed.
@@ -193,6 +198,8 @@ public:
      * @brief Emitted immediately after any property of this object has changed.
      *
      * This is fired before the outer "document-scoped" change notification.
+     * It intentionally keeps same-thread semantics and is not suitable for GUI
+     * observers that require main-thread delivery.
      *
      * @param[in] obj  The document object whose property just changed.
      * @param[in] prop The property that was changed.
@@ -318,6 +325,18 @@ public:
     void enforceRecompute();
 
     /**
+     * @brief Enforce this document object to be recomputed.
+     *
+     * The given property is a property that is marked as a dependency by a
+     * property from a different document object that is touched.  As such, the
+     * given property needs to be touched as well.
+     *
+     * @param[in] propName The name of the property that needs to be marked as
+     * touched.
+     */
+    void enforceRecompute(const std::string& propName);
+
+    /**
      * @brief Check whether the document object must be recomputed.
      *
      * This means that the 'Enforce' flag is set or that \ref mustExecute()
@@ -333,6 +352,7 @@ public:
         StatusBits.reset(ObjectStatus::Touch);
         StatusBits.reset(ObjectStatus::Enforce);
         setPropertyStatus(0, false);
+        touchedProps.clear();
     }
 
     /// Check whether this document object is in an error state.
@@ -474,13 +494,50 @@ public:
         OutListNoXLinked = 4, ///< Do not include links from PropertyXLink properties.
     };
 
+    /**
+     * @brief Get a list of dependency edges this object links to.
+     *
+     * The dependency edge registers both the object and the property (if
+     * applicable) this object links to.
+     *
+     * @return the vector of dependency edges.
+     */
+    const std::vector<DepEdge>& getOutListProp();
+
+    /**
+     * @brief Get a list of dependency edges this object links to.
+     *
+     * The dependency edge registers both the object and the property (if
+     * applicable) this object links to.
+     *
+     * @param[in] options Options for computing the OutList.
+     *
+     * @return the vector of dependency edges.
+     *
+     * @see OutListOption for available options.
+     */
+    std::vector<DepEdge> getOutListProp(int options);
+
+    /**
+     * @brief Get a list of dependency edges this object links to.
+     *
+     * The dependency edge registers both the object and the property (if
+     * applicable) this object links to.
+     *
+     * @param[in] options Options for computing the OutList.
+     * @param[in,out] res The vector to fill with the objects this object depends on.
+     *
+     * @see OutListOption for available options.
+     */
+    void getOutListProp(int options, std::vector<DepEdge>& res);
+
     /// Get a list of objects this object links to.
     const std::vector<App::DocumentObject*>& getOutList() const;
 
     /**
      * @brief Get a list of objects this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      *
      * @return A vector of objects this object links to.
      *
@@ -491,7 +548,7 @@ public:
     /**
      * @brief Get a list of objects this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      *
      * @param[in,out] res The vector to fill with the objects this object depends on.
      *
@@ -544,6 +601,15 @@ public:
     const std::vector<App::DocumentObject*>& getInList() const;
 
     /**
+     * @brief Get a list of dependency edges that link to this object.
+     *
+     * Dependency edges register both the object and the property (if applicable).
+     *
+     * @returns The list of dependency edges.
+     */
+    const std::vector<DepEdge>& getInListProp() const;
+
+    /**
      * @brief Get a list of objects that link to this object, recursively.
      *
      * This function returns all objects that link to this object directly and
@@ -578,6 +644,31 @@ public:
      * @return A set containing all objects linking to this object.
      */
     std::set<App::DocumentObject*> getInListEx(bool recursive) const;
+
+    /** @brief Get a set of all dependency edges linking to this object.
+     *
+     * This function returns a set of all dependency edges that link to this
+     * object, including possible external parent objects.  Dependency edges
+     * record both the object and the property.
+     *
+     * @param[in,out] inSet A set containing all dependency edges linking to
+     * this object.
+     * @param[in] recursive Whether to obtain the InList recursively.
+     */
+    void getInListExProp(std::set<DepEdge>& inSet, bool recursive) const;
+
+    /**
+     * @brief Get a set of all dependency edges linking to this object.
+     *
+     * This function returns a set of all dependency edges that link to this
+     * object, including possible external parent objects.  Dependency edges
+     * record both the object and the property.
+     *
+     * @param[in] recursive Whether to obtain the InList recursively.
+     *
+     * @return A set containing all dependency edges linking to this object.
+     */
+    std::set<DepEdge> getInListExProp(bool recursive) const;
 
     /**
      * @brief Get the group this object belongs to.
@@ -659,6 +750,11 @@ public:
      */
     void _addBackLink(DocumentObject*);
 
+    /// internal, used by PropertyLink to maintain DAG back links
+    void _removeBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp = nullptr);
+    /// internal, used by PropertyLink to maintain DAG back links
+    void _addBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp = nullptr);
+
     /**
      * @brief Test an about to created link for circular references.
      *
@@ -687,6 +783,18 @@ public:
 
     /// @copydoc testIfLinkDAGCompatible(DocumentObject*) const
     bool testIfLinkDAGCompatible(App::PropertyLinkSub& linkTo) const;
+
+    /// Check if the property is an input property
+    bool isInputProperty(const std::string& propName) const;
+
+    /// Check if the property is an input property
+    bool isInputProperty(const Property* prop) const;
+
+    /// Check if the property is an output property
+    bool isOutputProperty(const std::string& propName) const;
+
+    /// Check if the property is an output property
+    bool isOutputProperty(const Property* prop) const;
     ///@}
 
     /**
@@ -702,7 +810,7 @@ public:
     virtual std::string getElementMapVersion(const App::Property* prop,
                                              bool restored = false) const;
 
-    /** @brief Check the element map versionn of the property.
+    /** @brief Check the element map version of the property.
      *
      * This function checks whether the element map version of the given
      * property matches the given version string.  If the function returns
@@ -712,7 +820,7 @@ public:
      * @param[in] ver: the version string to compare with
      *
      * @return true if the element map version differs and the geometry element
-     * namess need to be recomputed.
+     * names need to be recomputed.
      */
     virtual bool checkElementMapVersion(const App::Property* prop, const char* ver) const;
 
@@ -1049,13 +1157,15 @@ public:
 
     bool renameDynamicProperty(Property *prop, const char *name) override;
 
-    App::Property* addDynamicProperty(const char* type,
-                                      const char* name = nullptr,
-                                      const char* group = nullptr,
-                                      const char* doc = nullptr,
-                                      short attr = 0,
-                                      bool ro = false,
-                                      bool hidden = false) override;
+    App::Property* addDynamicProperty(
+        std::string_view type,
+        const char* name = nullptr,
+        const char* group = nullptr,
+        const char* doc = nullptr,
+        short attr = 0,
+        bool ro = false,
+        bool hidden = false
+    ) override;
 
     /**
      * @brief Resolve the last document object referenced in the subname.
@@ -1186,6 +1296,20 @@ public:
     }
 
     /**
+     * @brief Whether this object's recompute path is safe to run on the worker thread.
+     *
+     * This is used by async recompute scheduling. Objects that can touch GUI or
+     * other thread-affine state during recompute must return false. Returning
+     * true means the recompute path is limited to worker-safe App/model work
+     * and does not depend on GUI, Qt event-loop state, or other thread-affine
+     * APIs.
+     */
+    virtual bool canRecomputeOnWorker() const
+    {
+        return true;
+    }
+
+    /**
      * @brief Called when an element reference is updated.
      *
      * @param[in] prop The property that was updated.
@@ -1251,6 +1375,23 @@ public:
 
     /// Returns the Placement property to use if any.
     virtual App::PropertyPlacement* getPlacementProperty() const;
+
+    /** Check whether a property can be referenced in an expression.
+     *
+     * @param prop: the property to check
+     *
+     * @return Return true if the property can be referenced in expressions.
+     */
+    static bool canPropBeReferenced(const App::Property* prop);
+
+    /** Get the object identifiers that reference the given property.
+     *
+     * @param prop: the property to check
+     *
+     * @return Return a set of object identifiers that reference the given
+     * property.
+     */
+    static std::set<ObjectIdentifier> getPropertyUses(const App::Property* prop);
 
 protected:
     /// Recompute only this object.
@@ -1331,6 +1472,7 @@ protected:
 
 private:
     void printInvalidLinks() const;
+    void setTouched(const char* propName);
 
 protected:  // attributes
 
@@ -1354,13 +1496,19 @@ private:
     long _Id {0};
 
 private:
+    std::unordered_set<std::string> touchedProps;
+
+private:
     // Back pointer to all the fathers in a DAG of the document
     // this is used by the document (via friend) to have a effective DAG handling
     std::vector<App::DocumentObject*> _inList;
+    std::vector<DepEdge> _inListProp;
     mutable std::vector<App::DocumentObject*> _outList;
+    mutable std::vector<DepEdge> _outListProp;
     mutable std::unordered_map<const char*, App::DocumentObject*, CStringHasher, CStringHasher>
         _outListMap;
     mutable bool _outListCached = false;
+    mutable bool _outListCachedProp = false;
 };
 
 }  // namespace App

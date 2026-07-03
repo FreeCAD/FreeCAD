@@ -1,26 +1,24 @@
 # -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 sliptonic sliptonic@freecad.org                    *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 
 __title__ = "CAM Mill Facing Operation"
@@ -35,6 +33,7 @@ import Path
 import Path.Op.Base as PathOp
 
 import Path.Base.Generator.spiral_facing as spiral_facing
+import Path.Base.Generator.facing_common as facing_common
 import Path.Base.Generator.zigzag_facing as zigzag_facing
 import Path.Base.Generator.directional_facing as directional_facing
 import Path.Base.Generator.bidirectional_facing as bidirectional_facing
@@ -72,6 +71,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
             | PathOp.FeatureHeights
             | PathOp.FeatureStepDown
             | PathOp.FeatureCoolant
+            | PathOp.FeatureLinking
         )
 
     def initOperation(self, obj):
@@ -273,6 +273,30 @@ class ObjectMillFacing(PathOp.ObjectOp):
         tool_diameter = tool.Diameter.Value
         Path.Log.debug(f"Tool diameter: {tool_diameter}")
 
+        # Prepare linking parameters
+        solids = [base.Shape for base in self.job.Model.Group]
+        linkingArgs = {
+            "start_position": None,
+            "target_position": None,
+            "heights_clearance": (obj.SafeHeight.Value, obj.ClearanceHeight.Value),
+            "solids": None,
+            "tool_shape": None,
+            "tool_diameter": None,
+            "collision_clearance": obj.CollisionClearance.Value,
+        }
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_diameter"] = tool_diameter
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
+
         # Determine the step-downs
         finish_step = 0.0  # No finish step for facing
         Path.Log.debug(
@@ -289,12 +313,11 @@ class ObjectMillFacing(PathOp.ObjectOp):
         )
         Path.Log.debug(f"Depth params object: {depthparams}")
 
-        # Always use the stock object top face for facing operations
-        job = PathUtils.findParentJob(obj)
-        Path.Log.debug(f"Job: {job.Label if job else 'None'}")
-        if job and job.Stock:
-            Path.Log.debug(f"Stock: {job.Stock.Label}")
-            stock_faces = job.Stock.Shape.Faces
+        # Use self.stock which the base class wraps with transformed geometry
+        # when a 3+2 workplane is active.
+        if self.stock and hasattr(self.stock, "Shape") and self.stock.Shape:
+            Path.Log.debug(f"Stock: {self.stock.Label}")
+            stock_faces = self.stock.Shape.Faces
             Path.Log.debug(f"Number of stock faces: {len(stock_faces)}")
 
             # Find faces with normal pointing toward Z+ (upward)
@@ -327,6 +350,12 @@ class ObjectMillFacing(PathOp.ObjectOp):
         boundary_wire = boundary_wire.makeOffset2D(
             obj.StockExtension.Value, 2
         )  # offset with intersection joins
+
+        # Convert boundary to a rectangular polygon aligned to the cut angle.
+        # Stock faces may have curved edges (e.g. cylindrical stock) and all
+        # facing strategies assume a rectangular boundary.
+        cut_angle = getattr(obj.Angle, "Value", obj.Angle)
+        boundary_wire = facing_common.get_angled_polygon(boundary_wire, cut_angle)
 
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"
@@ -396,9 +425,6 @@ class ObjectMillFacing(PathOp.ObjectOp):
         except Exception as e:
             Path.Log.error(f"Error generating toolpath: {e}")
             raise
-
-        # clear commandlist
-        self.commandlist = []
 
         # Be safe. Add first G0 to clearance height
         targetZ = obj.ClearanceHeight.Value
@@ -583,13 +609,10 @@ class ObjectMillFacing(PathOp.ObjectOp):
                         first_position = FreeCAD.Vector(target_xy[0], target_xy[1], depth)
 
                         # Generate collision-aware linking moves up to safe/clearance and back down
-                        link_commands = linking.get_linking_moves(
-                            start_position=last_position,
-                            target_position=first_position,
-                            local_clearance=obj.SafeHeight.Value,
-                            global_clearance=obj.ClearanceHeight.Value,
-                            tool_shape=obj.ToolController.Tool.Shape,
-                        )
+                        linkingArgs["start_position"] = last_position
+                        linkingArgs["target_position"] = first_position
+                        link_commands = linking.get_linking_moves(**linkingArgs)
+
                         # Append linking moves, ensuring full XYZ continuity
                         current = last_position
                         for lc in link_commands:
@@ -654,71 +677,10 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 # Prefer Z-only to avoid non-numeric XY issues
                 self.commandlist.append(Path.Command("G0", {"Z": targetZ}))
 
-        # # Sanitize commands: ensure full XYZ continuity and remove zero-length/invalid/absurd moves
-        # sanitized = []
-        # curX = curY = curZ = None
-        # # Compute XY bounds from original wire
-        # try:
-        #     bb = boundary_wire.BoundBox
-        #     import math
-
-        #     diag = math.hypot(bb.XLength, bb.YLength)
-        #     xy_limit = max(1.0, diag * 10.0)
-        # except Exception:
-        #     xy_limit = 1e6
-        # for idx, cmd in enumerate(self.commandlist):
-        #     params = dict(cmd.Parameters)
-        #     # Carry forward
-        #     if curX is not None:
-        #         params.setdefault("X", curX)
-        #         params.setdefault("Y", curY)
-        #         params.setdefault("Z", curZ)
-        #     # Extract
-        #     X = params.get("X")
-        #     Y = params.get("Y")
-        #     Z = params.get("Z")
-        #     # Skip NaN/inf
-        #     try:
-        #         _ = float(X) + float(Y) + float(Z)
-        #     except Exception:
-        #         Path.Log.warning(
-        #             f"Dropping cmd {idx} non-finite coords: {cmd.Name} {cmd.Parameters}"
-        #         )
-        #         continue
-        #     # Debug: large finite XY - log but keep for analysis (do not drop)
-        #     if abs(X) > xy_limit or abs(Y) > xy_limit:
-        #         Path.Log.warning(f"Large XY detected (limit {xy_limit}): {cmd.Name} {params}")
-        #     # Skip zero-length
-        #     if (
-        #         curX is not None
-        #         and abs(X - curX) <= 1e-12
-        #         and abs(Y - curY) <= 1e-12
-        #         and abs(Z - curZ) <= 1e-12
-        #     ):
-        #         continue
-
-        #     # Preserve I, J, K parameters for arc commands (G2/G3)
-        #     if cmd.Name in ["G2", "G3"]:
-        #         arc_params = {"X": X, "Y": Y, "Z": Z}
-        #         if "I" in params:
-        #             arc_params["I"] = params["I"]
-        #         if "J" in params:
-        #             arc_params["J"] = params["J"]
-        #         if "K" in params:
-        #             arc_params["K"] = params["K"]
-        #         if "R" in params:
-        #             arc_params["R"] = params["R"]
-        #         sanitized.append(Path.Command(cmd.Name, arc_params))
-        #     else:
-        #         sanitized.append(Path.Command(cmd.Name, {"X": X, "Y": Y, "Z": Z}))
-        #     curX, curY, curZ = X, Y, Z
-
-        # self.commandlist = sanitized
-
         # Apply feedrates to the entire commandlist, with debug on failure
         try:
             FeedRate.setFeedRate(self.commandlist, obj.ToolController)
-        except Exception as e:
+        except Exception:
             # Dump last 12 commands for diagnostics
             n = len(self.commandlist)
             start = max(0, n - 12)
@@ -746,7 +708,7 @@ def Create(name, obj=None, parentJob=None):
 
 def SetupProperties():
     """SetupProperties() ... Return list of properties required for the operation."""
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("CutMode")
     setup.append("ClearingPattern")
     setup.append("Angle")

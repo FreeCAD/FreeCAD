@@ -37,6 +37,8 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSeparator.h>
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -698,8 +700,17 @@ void ViewProviderThickness::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(100, [this]() {
-            Gui::Control().closeDialog(getDocument()->getDocument());
+        std::string docName;
+        if (auto* guiDoc = getDocument()) {
+            if (auto* appDoc = guiDoc->getDocument()) {
+                docName = appDoc->getName();
+            }
+        }
+        QTimer::singleShot(100, [docName]() {
+            auto* doc = App::GetApplication().getDocument(docName.c_str());
+            if (doc) {
+                Gui::Control().closeDialog(doc);
+            }
         });
     }
     else {

@@ -25,7 +25,6 @@
 
 import FreeCAD, os, unittest, tempfile
 
-
 # ---------------------------------------------------------------------------
 # define the functions to test the FreeCAD Document code
 # ---------------------------------------------------------------------------

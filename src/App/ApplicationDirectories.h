@@ -128,13 +128,19 @@ namespace App {
         /// \param config The path to check
         bool usingCurrentVersionConfig(std::filesystem::path config) const;
 
+        struct MigrationResult
+        {
+            std::vector<std::filesystem::path> failedPaths;
+            std::vector<std::pair<std::filesystem::path, std::filesystem::path>> migratedPaths;
+        };
+
         /// Migrate a set of versionable configuration directories from the given path to a new
         /// version. The new version's directories cannot exist yet, and the old ones *must* exist.
         /// If the old paths are themselves versioned, then the new paths will be placed at the same
         /// level in the directory structure (e.g., they will be siblings of each entry in paths).
         /// If paths are NOT versioned, the new (versioned) copies will be placed *inside* the
-        /// original paths.
-        void migrateAllPaths(const std::vector<std::filesystem::path> &paths) const;
+        /// original paths. Returns the paths of entries that could not be copied.
+        MigrationResult migrateAllPaths(const std::vector<std::filesystem::path>& paths) const;
 
         /// A utility method to generate the versioned directory name for a given version. This only
         /// returns the version string, not an entire path. As of FreeCAD 1.1, the string is of the
@@ -163,8 +169,9 @@ namespace App {
 
         /// A utility method to copy all files and directories from oldPath to newPath, handling the
         /// case where newPath might itself be a subdirectory of oldPath (and *not* attempting that
-        /// otherwise-recursive copy).
-        static void migrateConfig(const std::filesystem::path &oldPath, const std::filesystem::path &newPath);
+        /// otherwise-recursive copy). Returns the paths of entries that could not be copied.
+        static MigrationResult migrateConfig(const std::filesystem::path& oldPath,
+                                              const std::filesystem::path& newPath);
 
 #ifdef FC_OS_WIN32
         /// On Windows, gets the location of the user's "AppData" directory. Invalid on other OSes.
@@ -187,12 +194,19 @@ namespace App {
         /// false if the temp directory creation failed.
         bool startSafeMode(std::map<std::string,std::string>& mConfig);
 
-        /// Take a path and add a version to it, if it's possible to do so. A version can be
-        /// appended only if a) the versioned subdirectory already exists, or b) pathToCheck/subdirs
-        /// does NOT yet exist. This does not actually create any directories, just determines
-        /// if we can append the versioned directory name to subdirs.
+        enum class MissingDirectoryBehavior : uint8_t {
+            create,
+            doNotAppend
+        };
+
+        /// Take a path and add a version to it, if it's possible to do so. When \a behavior is
+        /// `doNotAppend`, no directories are created: the most recent existing versioned
+        /// subdirectory is appended if one is found, or the current version is appended if the
+        /// base path does not yet exist. When \a behavior is `create`, the current version is
+        /// always appended and the directory is created on disk if it does not already exist.
         void appendVersionIfPossible(const std::filesystem::path& basePath,
-                                     std::vector<std::string> &subdirs) const;
+                                     std::vector<std::string> &subdirs,
+                                     MissingDirectoryBehavior behavior) const;
 
         static std::filesystem::path findPath(
             const std::filesystem::path& stdHome,

@@ -39,7 +39,6 @@ from ...toolbit.ui.typefilter import ToolBitTypeFilterMixin
 from ...toolbit.serializers import YamlToolBitSerializer
 from ..models.library import Library
 
-
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 

@@ -129,8 +129,9 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent* const ev)
                     setupPanningPlane(getCamera());
                     this->lockrecenter = false;
                 }
-                else if (!press && ev->wasShiftDown()
-                         && (this->currentmode != NavigationStyle::SELECTION)) {
+                else if (
+                    !press && ev->wasShiftDown() && (this->currentmode != NavigationStyle::SELECTION)
+                ) {
                     SbTime tmp = (ev->getTime() - this->centerTime);
                     float dci = (float)QApplication::doubleClickInterval() / 1000.0f;
                     // is it just a left click?
@@ -325,9 +326,11 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent* const ev)
     if (ev->isOfType(SoMouseWheelEvent::getClassTypeId())) {
         processed = inherited::processSoEvent(ev);
     }
-    else if ((curmode == NavigationStyle::SELECTION || newmode == NavigationStyle::SELECTION
-              || viewer->isEditing())
-             && !processed) {
+    else if (
+        (curmode == NavigationStyle::SELECTION || newmode == NavigationStyle::SELECTION
+         || viewer->isEditing())
+        && !processed
+    ) {
         processed = inherited::processSoEvent(ev);
     }
     else {

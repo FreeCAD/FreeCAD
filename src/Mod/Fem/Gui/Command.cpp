@@ -172,8 +172,8 @@ CmdFemAddPart::CmdFemAddPart()
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Add a part to the analysis");
-    sToolTipText    = QT_TR_NOOP("Add a part to the Analysis");
+    sMenuText       = QT_TR_NOOP("Add Part to Analysis");
+    sToolTipText    = QT_TR_NOOP("Adds a part to the analysis");
     sWhatsThis      = "FEM_FemAddPart";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-add-fem-mesh";
@@ -183,7 +183,7 @@ void CmdFemAddPart::activated(int)
 {
 #ifndef FCWithNetgen
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work...."));
+            QObject::tr("Your FreeCAD is built without NETGEN support. Meshing will not work…"));
     return;
 #endif
 
@@ -304,7 +304,7 @@ void CmdFemConstraintContact::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintContact");
+    std::string FeatName = getUniqueObjectName("Contact");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make contact constraint on a face"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintContact\",\"%s\")", FeatName.c_str());
@@ -382,7 +382,7 @@ void CmdFemConstraintDisplacement::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintDisplacement");
+    std::string FeatName = getUniqueObjectName("Displacement");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make displacement boundary condition on face"));
     doCommand(
@@ -436,7 +436,7 @@ void CmdFemConstraintFixed::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintFixed");
+    std::string FeatName = getUniqueObjectName("Fixed");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make fixed boundary condition for geometry"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintFixed\",\"%s\")", FeatName.c_str());
@@ -486,7 +486,7 @@ void CmdFemConstraintRigidBody::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintRigidBody");
+    std::string FeatName = getUniqueObjectName("RigidBody");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make rigid body constraint"));
     doCommand(
@@ -605,7 +605,7 @@ void CmdFemConstraintForce::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintForce");
+    std::string FeatName = getUniqueObjectName("Force");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make force load on geometry"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")", FeatName.c_str());
@@ -716,7 +716,7 @@ void CmdFemConstraintHeatflux::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintHeatflux");
+    std::string FeatName = getUniqueObjectName("HeatFlux");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make heat flux load on face"));
     doCommand(
@@ -789,7 +789,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintInitialTemperature");
+    std::string FeatName = getUniqueObjectName("InitialTemperature");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make initial temperature condition on body"));
     doCommand(
@@ -846,7 +846,7 @@ void CmdFemConstraintPlaneRotation::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintPlaneRotation");
+    std::string FeatName = getUniqueObjectName("PlaneRotation");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make plane multi-point constraint on face"));
     doCommand(
@@ -903,7 +903,7 @@ void CmdFemConstraintPressure::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintPressure");
+    std::string FeatName = getUniqueObjectName("Pressure");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make pressure load on face"));
     doCommand(
@@ -913,7 +913,7 @@ void CmdFemConstraintPressure::activated(int)
     );
     doCommand(
         Doc,
-        "App.activeDocument().%s.Pressure = 0.1",
+        "App.activeDocument().%s.Pressure = \"1 MPa\"",
         FeatName.c_str()
     );  // OvG: set default not equal to 0
     doCommand(
@@ -967,7 +967,7 @@ void CmdFemConstraintSpring::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintSpring");
+    std::string FeatName = getUniqueObjectName("Spring");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make Spring Constraint"));
     doCommand(Doc, "App.activeDocument().addObject(\"Fem::ConstraintSpring\",\"%s\")", FeatName.c_str());
@@ -1079,7 +1079,7 @@ void CmdFemConstraintTemperature::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintTemperature");
+    std::string FeatName = getUniqueObjectName("Temperature");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make temperature boundary condition on face"));
     doCommand(
@@ -1136,7 +1136,7 @@ void CmdFemConstraintTransform::activated(int)
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("ConstraintTransform");
+    std::string FeatName = getUniqueObjectName("Transform");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make local coordinate system on face"));
     doCommand(
@@ -2123,6 +2123,9 @@ void setupFilter(Gui::Command* cmd, std::string Name)
         );
     }
 
+    // show active filter
+    cmd->doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.ViewObject.Visibility = True");
+
     cmd->updateActive();
     // open the dialog to edit the filter
     cmd->doCommand(Gui::Command::Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
@@ -2551,7 +2554,7 @@ CmdFemPostContoursFilter::CmdFemPostContoursFilter()
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
     sMenuText = QT_TR_NOOP("Contours Filter");
-    sToolTipText = QT_TR_NOOP("Define/create a contours filter which displays iso contours");
+    sToolTipText = QT_TR_NOOP("Defines a contours filter that displays iso contours");
     sWhatsThis = "FEM_PostFilterContours";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterContours";
@@ -2700,7 +2703,7 @@ void CmdFemPostFunctions::activated(int iMsg)
         if (iMsg == 0) {  // Plane
             doCommand(
                 Doc,
-                "App.ActiveDocument.%s.Origin = App.Vector(%f, %f, %f)",
+                "App.ActiveDocument.%s.PlaneOrigin = App.Vector(%f, %f, %f)",
                 FeatName.c_str(),
                 center[0],
                 center[1],
@@ -2711,7 +2714,7 @@ void CmdFemPostFunctions::activated(int iMsg)
         else if (iMsg == 1) {  // Sphere
             doCommand(
                 Doc,
-                "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
+                "App.ActiveDocument.%s.SphereCenter = App.Vector(%f, %f, %f)",
                 FeatName.c_str(),
                 center[0],
                 center[1] + box.GetLength(1) / 2,
@@ -2719,7 +2722,7 @@ void CmdFemPostFunctions::activated(int iMsg)
             );
             doCommand(
                 Doc,
-                "App.ActiveDocument.%s.Radius = %f",
+                "App.ActiveDocument.%s.SphereRadius = %f",
                 FeatName.c_str(),
                 box.GetDiagonalLength() / 2
             );
@@ -2727,7 +2730,7 @@ void CmdFemPostFunctions::activated(int iMsg)
         else if (iMsg == 2) {  // Cylinder
             doCommand(
                 Doc,
-                "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
+                "App.ActiveDocument.%s.CylinderCenter = App.Vector(%f, %f, %f)",
                 FeatName.c_str(),
                 center[0],
                 center[1] + box.GetLength(1) / 2,
@@ -2735,7 +2738,7 @@ void CmdFemPostFunctions::activated(int iMsg)
             );
             doCommand(
                 Doc,
-                "App.ActiveDocument.%s.Radius = %f",
+                "App.ActiveDocument.%s.CylinderRadius = %f",
                 FeatName.c_str(),
                 box.GetDiagonalLength() / 3.6
             );  // make cylinder a bit higher than the box
@@ -2743,17 +2746,17 @@ void CmdFemPostFunctions::activated(int iMsg)
         else if (iMsg == 3) {  // Box
             doCommand(
                 Doc,
-                "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
+                "App.ActiveDocument.%s.BoxCenter = App.Vector(%f, %f, %f)",
                 FeatName.c_str(),
                 center[0] + box.GetLength(0) / 2,
                 center[1] + box.GetLength(1) / 2,
                 center[2]
             );
-            doCommand(Doc, "App.ActiveDocument.%s.Length = %f", FeatName.c_str(), box.GetLength(0));
-            doCommand(Doc, "App.ActiveDocument.%s.Width = %f", FeatName.c_str(), box.GetLength(1));
+            doCommand(Doc, "App.ActiveDocument.%s.BoxLength = %f", FeatName.c_str(), box.GetLength(0));
+            doCommand(Doc, "App.ActiveDocument.%s.BoxWidth = %f", FeatName.c_str(), box.GetLength(1));
             doCommand(
                 Doc,
-                "App.ActiveDocument.%s.Height = %f",
+                "App.ActiveDocument.%s.BoxHeight = %f",
                 FeatName.c_str(),
                 // purposely a bit higher to avoid rendering artifacts at the box border
                 1.1 * box.GetLength(2)

@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create parametric Array objects. Grouping command."""
+
 ## @package gui_arrays
 # \ingroup draftguitools
 # \brief Provides GUI tools to create parametric Array objects.

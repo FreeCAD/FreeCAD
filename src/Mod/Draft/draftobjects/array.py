@@ -29,6 +29,7 @@ The `Array` class currently handles three types of arrays,
 orthogonal, polar, and circular. In the future, probably they should be
 split in separate classes so that they are easier to manage.
 """
+
 ## @package array
 # \ingroup draftobjects
 # \brief Provides the object code for the Array object.

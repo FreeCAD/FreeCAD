@@ -27,6 +27,7 @@
 The status bar is activated by `InitGui.py` when the workbench is started,
 and is populated by various widgets, buttons and menus.
 """
+
 ## @package init_draft_statusbar
 # \ingroup draftutils
 # \brief Provides the initialization code for the workbench's status bar.
@@ -42,6 +43,19 @@ import FreeCADGui as Gui
 from draftutils import params
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.translate import translate
+
+# Order keys within MainWindow's status-bar registry (Right slot). Workbench
+# widgets use the 550-699 band so they sit just left of the Bottom Panel Toggle.
+_SNAP_ORDER = 550
+_SCALE_ORDER = 560
+
+
+def _register_status_item(widget, item_id, title, order):
+    """Register widget through MainWindow's owned status-bar API. MainWindow
+    handles placement, ordering, visibility persistence and the context menu, so
+    workbenches never touch the QStatusBar layout directly."""
+    Gui.getMainWindow().addStatusBarItem(widget, id=item_id, title=title, slot="Right", order=order)
+
 
 # ----------------------------------------------------------------------------
 # SCALE WIDGET FUNCTIONS
@@ -251,7 +265,7 @@ def init_draft_statusbar_scale():
     scale_widget.scaleLabel = scaleLabel
 
     # add scale widget to the statusbar
-    sb.insertPermanentWidget(3, scale_widget)
+    _register_status_item(scale_widget, "draft_scale_widget", text, _SCALE_ORDER)
     scale_widget.show()
 
 
@@ -289,7 +303,7 @@ def init_draft_statusbar_snap():
     snap_widget.setWindowTitle(text)
     snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
     snap_widget.setIconSize(QtCore.QSize(16, 16))
-    sb.insertPermanentWidget(2, snap_widget)
+    _register_status_item(snap_widget, "draft_snap_widget", text, _SNAP_ORDER)
 
     # grid button:
     snap_widget.addAction(Gui.Command.get("Draft_ToggleGrid").getAction()[0])
@@ -342,7 +356,9 @@ def show_draft_statusbar_scale():
     else:
         scale_widget = mw.findChild(QtWidgets.QToolBar, "draft_scale_widget")
         if scale_widget:
-            sb.insertPermanentWidget(3, scale_widget)
+            _register_status_item(
+                scale_widget, "draft_scale_widget", scale_widget.windowTitle(), _SCALE_ORDER
+            )
             scale_widget.show()
         else:
             init_draft_statusbar_scale()
@@ -362,7 +378,9 @@ def show_draft_statusbar_snap():
     else:
         snap_widget = mw.findChild(QtWidgets.QToolBar, "draft_snap_widget")
         if snap_widget:
-            sb.insertPermanentWidget(2, snap_widget)
+            _register_status_item(
+                snap_widget, "draft_snap_widget", snap_widget.windowTitle(), _SNAP_ORDER
+            )
             snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
             snap_widget.show()
         else:

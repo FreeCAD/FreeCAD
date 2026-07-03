@@ -492,7 +492,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="546"/>
       <source>Mesh Boolean</source>
-      <translation>Logikai háló</translation>
+      <translation>Háló logikai művelet</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="550"/>

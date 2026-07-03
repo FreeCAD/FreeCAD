@@ -455,13 +455,18 @@ public:
             this->iterateToNextConstructionMethod();
         }
         else if (key == SoKeyboardEvent::ESCAPE && pressed) {
-            rightButtonOrEsc();
+            cancelCurrentAction();
         }
     }
 
     void pressRightButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
+        cancelCurrentAction();
+    }
+
+    void cancelCurrentAction() override
+    {
         rightButtonOrEsc();
     }
 
@@ -782,60 +787,76 @@ protected:
                 c->First = (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1);
                 AutoConstraints.push_back(std::move(c));
             } break;
+            case Sketcher::Perpendicular: {
+                auto c = std::make_unique<Sketcher::Constraint>();
+                c->Type = Sketcher::Perpendicular;
+                c->First = geoId1;
+                c->Second = geoId2;
+                AutoConstraints.push_back(std::move(c));
+            } break;
+            case Sketcher::Parallel: {
+                auto c = std::make_unique<Sketcher::Constraint>();
+                c->Type = Sketcher::Parallel;
+                c->First = geoId1;
+                c->Second = geoId2;
+                AutoConstraints.push_back(std::move(c));
+            } break;
             case Sketcher::Tangent: {
                 Sketcher::SketchObject* Obj = sketchgui->getObject<Sketcher::SketchObject>();
 
                 const Part::Geometry* geom1 = Obj->getGeometry(geoId1);
                 const Part::Geometry* geom2 = Obj->getGeometry(geoId2);
-
-                // ellipse tangency support using construction elements (lines)
-                if (geom1 && geom2
-                    && (geom1->is<Part::GeomEllipse>() || geom2->is<Part::GeomEllipse>())) {
-                    if (!geom1->is<Part::GeomEllipse>()) {
-                        std::swap(geoId1, geoId2);
-                    }
-
-                    // geoId1 is the ellipse
-                    geom1 = Obj->getGeometry(geoId1);
-                    geom2 = Obj->getGeometry(geoId2);
-
-                    if (geom2->is<Part::GeomEllipse>() || geom2->is<Part::GeomArcOfEllipse>()
-                        || geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>()) {
-                        // in all these cases an intermediate element is needed
-                        // makeTangentToEllipseviaNewPoint(
-                        //     Obj,
-                        //     static_cast<const Part::GeomEllipse*>(geom1),
-                        //     geom2,
-                        //     geoId1,
-                        //     geoId2);
-                        // NOTE: Temporarily deactivated
-                        return false;
-                    }
+                if (!geom1 || !geom2) {
+                    return false;
                 }
 
-                // arc of ellipse tangency support using external elements
-                if (geom1 && geom2
-                    && (geom1->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomArcOfEllipse>())) {
-                    if (!geom1->is<Part::GeomArcOfEllipse>()) {
-                        std::swap(geoId1, geoId2);
-                    }
-
-                    // geoId1 is the arc of ellipse
-                    geom1 = Obj->getGeometry(geoId1);
-                    geom2 = Obj->getGeometry(geoId2);
-
-                    if (geom2->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomCircle>()
-                        || geom2->is<Part::GeomArcOfCircle>()) {
-                        // in all these cases an intermediate element is needed
-                        // makeTangentToArcOfEllipseviaNewPoint(
-                        //     Obj,
-                        //     static_cast<const Part::GeomArcOfEllipse*>(geom1),
-                        //     geom2,
-                        //     geoId1,
-                        //     geoId2);
-                        // NOTE: Temporarily deactivated
-                        return false;
-                    }
+                // 2026.01.16: Do not use swap as it did before or it breaks resultCoincident.
+                // NOTE: Temporarily deactivated : ellipse tangency support using construction elements
+                if (geom1->is<Part::GeomEllipse>()
+                    && (geom2->is<Part::GeomConic>() || geom2->is<Part::GeomArcOfConic>())) {
+                    // makeTangentToEllipseviaNewPoint(
+                    //     Obj,
+                    //     static_cast<const Part::GeomEllipse*>(geom1),
+                    //     geom2,
+                    //     geoId1,
+                    //     geoId2);
+                    return false;
+                }
+                else if (
+                    geom2->is<Part::GeomEllipse>()
+                    && (geom1->is<Part::GeomConic>() || geom1->is<Part::GeomArcOfConic>())
+                ) {
+                    // makeTangentToEllipseviaNewPoint(
+                    //     Obj,
+                    //     static_cast<const Part::GeomEllipse*>(geom2),
+                    //     geom1,
+                    //     geoId2,
+                    //     geoId1);
+                    return false;
+                }
+                else if (
+                    geom1->is<Part::GeomArcOfEllipse>()
+                    && (geom2->is<Part::GeomConic>() || geom2->is<Part::GeomArcOfConic>())
+                ) {
+                    // makeTangentToArcOfEllipseviaNewPoint(
+                    //     Obj,
+                    //     static_cast<const Part::GeomArcOfEllipse*>(geom1),
+                    //     geom2,
+                    //     geoId1,
+                    //     geoId2);
+                    return false;
+                }
+                else if (
+                    geom2->is<Part::GeomArcOfEllipse>()
+                    && (geom1->is<Part::GeomConic>() || geom1->is<Part::GeomArcOfConic>())
+                ) {
+                    // makeTangentToArcOfEllipseviaNewPoint(
+                    //     Obj,
+                    //     static_cast<const Part::GeomArcOfEllipse*>(geom2),
+                    //     geom1,
+                    //     geoId2,
+                    //     geoId1);
+                    return false;
                 }
 
                 auto resultCoincident = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
@@ -854,16 +875,20 @@ protected:
                     // endpoint-to-endpoint tangency
                     (*resultCoincident)->Type = Sketcher::Tangent;
                 }
-                else if (resultPointOnObject != AutoConstraints.end()
-                         && isStartOrEnd((*resultPointOnObject)->FirstPos)) {
+                else if (
+                    resultPointOnObject != AutoConstraints.end()
+                    && isStartOrEnd((*resultPointOnObject)->FirstPos)
+                ) {
                     // endpoint-to-edge tangency
                     (*resultPointOnObject)->Type = Sketcher::Tangent;
                 }
-                else if (resultCoincident != AutoConstraints.end()
-                         && (*resultCoincident)->FirstPos == Sketcher::PointPos::mid
-                         && (*resultCoincident)->SecondPos == Sketcher::PointPos::mid && geom1 && geom2
-                         && (geom1->is<Part::GeomCircle>() || geom1->is<Part::GeomArcOfCircle>())
-                         && (geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>())) {
+                else if (
+                    resultCoincident != AutoConstraints.end()
+                    && (*resultCoincident)->FirstPos == Sketcher::PointPos::mid
+                    && (*resultCoincident)->SecondPos == Sketcher::PointPos::mid && geom1 && geom2
+                    && (geom1->is<Part::GeomCircle>() || geom1->is<Part::GeomArcOfCircle>())
+                    && (geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>())
+                ) {
                     // equality
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Equal;
@@ -975,7 +1000,7 @@ protected:
         sketchobject->diagnoseAdditionalConstraints(autoConstraints);
 
         if (sketchobject->getLastHasRedundancies()) {
-            Base::Console().warning(
+            Base::Console().message(
                 sketchobject->getFullLabel(),
                 QT_TRANSLATE_NOOP("Notifications", "Autoconstraints cause redundancy. Removing them") "\n"
             );
@@ -1169,6 +1194,67 @@ protected:
         arc->setRadius(radius);
         Sketcher::GeometryFacade::setConstruction(arc.get(), constructionMode);
         return static_cast<Part::GeomArcOfCircle*>(ShapeGeometry.emplace_back(std::move(arc)).get());
+    }
+
+    /** @brief Function to add an arc of ellipse to the ShapeGeometry vector.*/
+    auto addArcOfEllipseToShapeGeometry(
+        Base::Vector3d centerPoint,
+        Base::Vector3d majorAxisDirection,
+        double majorRadius,
+        double minorRadius,
+        double start,
+        double end,
+        bool constructionMode
+    )
+    {
+        auto arc = std::make_unique<Part::GeomArcOfEllipse>();
+        arc->setCenter(centerPoint);
+        arc->setMajorAxisDir(majorAxisDirection);
+        arc->setMajorRadius(majorRadius);
+        arc->setMinorRadius(minorRadius);
+        arc->setRange(start, end, true);
+        Sketcher::GeometryFacade::setConstruction(arc.get(), constructionMode);
+        return static_cast<Part::GeomArcOfEllipse*>(ShapeGeometry.emplace_back(std::move(arc)).get());
+    }
+
+    /** @brief Function to add an arc of hyperbola to the ShapeGeometry vector.*/
+    auto addArcOfHyperbolaToShapeGeometry(
+        Base::Vector3d centerPoint,
+        Base::Vector3d majorAxisDirection,
+        double majorRadius,
+        double minorRadius,
+        double start,
+        double end,
+        bool constructionMode
+    )
+    {
+        auto arc = std::make_unique<Part::GeomArcOfHyperbola>();
+        arc->setCenter(centerPoint);
+        arc->setMajorAxisDir(majorAxisDirection);
+        arc->setMajorRadius(majorRadius);
+        arc->setMinorRadius(minorRadius);
+        arc->setRange(start, end, true);
+        Sketcher::GeometryFacade::setConstruction(arc.get(), constructionMode);
+        return static_cast<Part::GeomArcOfHyperbola*>(ShapeGeometry.emplace_back(std::move(arc)).get());
+    }
+
+    /** @brief Function to add an arc of parabola to the ShapeGeometry vector.*/
+    auto addArcOfParabolaToShapeGeometry(
+        Base::Vector3d axisDirection,
+        Base::Vector3d centerPoint,
+        double focal,
+        double start,
+        double end,
+        bool constructionMode
+    )
+    {
+        auto arc = std::make_unique<Part::GeomArcOfParabola>();
+        arc->setXAxisDir(axisDirection);
+        arc->setCenter(centerPoint);
+        arc->setFocal(focal);
+        arc->setRange(start, end, true);
+        Sketcher::GeometryFacade::setConstruction(arc.get(), constructionMode);
+        return static_cast<Part::GeomArcOfParabola*>(ShapeGeometry.emplace_back(std::move(arc)).get());
     }
 
     /** @brief Function to add a point to the ShapeGeometry vector.*/
