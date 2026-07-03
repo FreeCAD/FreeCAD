@@ -48,22 +48,76 @@ protected:
 // clang-format off
 TEST_F(Expression, tokenize)
 {
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral(""), 10), QString());
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral(""), 10), QString());
     // 0.0000 deg-
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("0.00000 \xC2\xB0-"), 10), QString());
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("0.00000 \xC2\xB0-s"), 11), QStringLiteral("s"));
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QString::fromUtf8("0.00000 \xC2\xB0-ss"), 12), QStringLiteral("ss"));
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("0.00000 deg"), 5), QString());
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("0.00000 deg"), 11), QStringLiteral("deg"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QString::fromUtf8("0.00000 \xC2\xB0-"), 10), QString());
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QString::fromUtf8("0.00000 \xC2\xB0-s"), 11), QStringLiteral("s"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QString::fromUtf8("0.00000 \xC2\xB0-ss"), 12), QStringLiteral("ss"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("0.00000 deg"), 5), QString());
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("0.00000 deg"), 11), QStringLiteral("deg"));
 }
 
 TEST_F(Expression, tokenizeCompletion)
 {
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube"), 7), QStringLiteral("MyCube"));
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube0"), 8), QStringLiteral("MyCube0"));
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube 0"), 9), QStringLiteral("MyCube0"));
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube1"), 8), QStringLiteral("MyCube1"));
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube 1"), 9), QStringLiteral("MyCube1"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("My Cube"), 7), QStringLiteral("MyCube"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("My Cube0"), 8), QStringLiteral("MyCube0"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("My Cube 0"), 9), QStringLiteral("MyCube0"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("My Cube1"), 8), QStringLiteral("MyCube1"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("My Cube 1"), 9), QStringLiteral("MyCube1"));
+}
+
+TEST_F(Expression, splitCompletionPath)
+{
+    App::ExpressionTokenizer tokenizer;
+
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Sketch.")),
+              QStringList({QStringLiteral("Sketch"), QString()}));
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Sketch.Constraints.")),
+              QStringList({QStringLiteral("Sketch"), QStringLiteral("Constraints"), QString()}));
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Sketch.Constraints.Width")),
+              QStringList({QStringLiteral("Sketch"), QStringLiteral("Constraints"), QStringLiteral("Width")}));
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("<<VarSet>>.")),
+              QStringList({QStringLiteral("<<VarSet>>"), QString()}));
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Doc#Object.")),
+              QStringList({QStringLiteral("Doc"), QStringLiteral("Object"), QString()}));
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Doc#<<Object Label>>.")),
+              QStringList({QStringLiteral("Doc"), QStringLiteral("<<Object Label>>"), QString()}));
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral(".Constraints.")),
+              QStringList({QStringLiteral("Constraints"), QString()}));
+
+    // No trailing separator: single component, no empty tail.
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Sketch")),
+              QStringList({QStringLiteral("Sketch")}));
+    // Trailing '#' offers the object completion level.
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Doc#")),
+              QStringList({QStringLiteral("Doc"), QString()}));
+    // Quoted document label followed by an object.
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("<<My Doc>>#Obj.")),
+              QStringList({QStringLiteral("<<My Doc>>"), QStringLiteral("Obj"), QString()}));
+    // Separator characters inside a quoted label must not split the label.
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("<<A.B>>.")),
+              QStringList({QStringLiteral("<<A.B>>"), QString()}));
+    // Lone '.' offers the root completion level (current-object property access).
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral(".")),
+              QStringList({QString()}));
+    // Number tokens are valid component fragments and concatenate across whitespace,
+    // matching extractCompletionPrefix() ("My Cube 1" -> "MyCube1").
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("My Cube 1.")),
+              QStringList({QStringLiteral("MyCube1"), QString()}));
+    // "A1" lexes as a cell address, not an identifier, and must still be a component.
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Spreadsheet.A1")),
+              QStringList({QStringLiteral("Spreadsheet"), QStringLiteral("A1")}));
+
+    // Invalid or non-path prefixes yield an empty list so the caller can fall back.
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("")), QStringList());
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("#Obj.")), QStringList());
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Sketch..")), QStringList());
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("..")), QStringList());
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("1+2")), QStringList());
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Sketch.(")), QStringList());
+    // '#' is only valid as the first separator.
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("A.B#C")), QStringList());
+    EXPECT_EQ(tokenizer.splitCompletionPath(QStringLiteral("Doc#Obj#X")), QStringList());
 }
 
 TEST_F(Expression, tokenizeQuantity)
@@ -298,13 +352,13 @@ TEST_F(Expression, tokenizeNeg)
 
 TEST_F(Expression, tokenizePi_rad)
 {
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("p"), 1), QStringLiteral("p"));
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("pi"), 2), QString());
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("pi "), 3), QString());
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("pi r"), 4), QStringLiteral("r"));
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("pi ra"), 5), QStringLiteral("ra"));
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("pi rad"), 6), QStringLiteral("rad"));
-    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("pi rad"), 2), QString());
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("p"), 1), QStringLiteral("p"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("pi"), 2), QString());
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("pi "), 3), QString());
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("pi r"), 4), QStringLiteral("r"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("pi ra"), 5), QStringLiteral("ra"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("pi rad"), 6), QStringLiteral("rad"));
+    EXPECT_EQ(App::ExpressionTokenizer().extractCompletionPrefix(QStringLiteral("pi rad"), 2), QString());
 }
 
 TEST_F(Expression, toString)

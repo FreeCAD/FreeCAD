@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <QAbstractItemView>
 #include <QContextMenuEvent>
 #include <QLineEdit>
@@ -34,7 +33,6 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
@@ -784,104 +782,16 @@ QString ExpressionCompleter::pathFromIndex(const QModelIndex& index) const
 
 QStringList ExpressionCompleter::splitPath(const QString& input) const
 {
-    QStringList resultList;
-    std::string path = input.toUtf8().constData();
-    if (path.empty()) {
-        return resultList;
+    if (input.isEmpty()) {
+        return {};
     }
 
-    int retry = 0;
-    std::string lastElem;  // used to recover in case of parse failure after ".".
-    std::string trim;      // used to delete ._self added for another recovery path
-    while (true) {
-        try {
-            // this will not work for incomplete Tokens at the end
-            // "Sketch." will fail to parse and complete.
-
-            App::ObjectIdentifier ident = ObjectIdentifier::parse(currentObj.getObject(), path);
-
-            std::vector<std::string> stringList = ident.getStringList();
-            auto stringListIter = stringList.begin();
-            if (retry > 1 && !stringList.empty()) {
-                stringList.pop_back();
-            }
-
-            if (!stringList.empty()) {
-                if (!trim.empty() && boost::ends_with(stringList.back(), trim)) {
-                    stringList.back().resize(stringList.back().size() - trim.size());
-                }
-                while (stringListIter != stringList.end()) {
-                    resultList << QString::fromStdString(*stringListIter);
-                    ++stringListIter;
-                }
-            }
-            if (lastElem.size()) {
-                // if we finish in a trailing separator
-                if (!lastElem.empty()) {
-                    // erase the separator
-                    lastElem.erase(lastElem.begin());
-                    resultList << QString::fromStdString(lastElem);
-                }
-                else {
-                    // add empty string to allow completion after "." or "#"
-                    resultList << QString();
-                }
-            }
-            FC_TRACE(
-                "split path " << path << " -> "
-                              << resultList.join(QLatin1String("/")).toUtf8().constData()
-            );
-            return resultList;
-        }
-        catch (const Base::Exception& except) {
-            FC_TRACE("split path " << path << " error: " << except.what());
-            if (retry == 0) {
-                size_t lastElemStart = path.rfind('.');
-
-                if (lastElemStart == std::string::npos) {
-                    lastElemStart = path.rfind('#');
-                }
-                if (lastElemStart != std::string::npos) {
-                    lastElem = path.substr(lastElemStart);
-                    path = path.substr(0, lastElemStart);
-                }
-                retry++;
-                continue;
-            }
-            else if (retry == 1) {
-                // restore path from retry 0
-                if (lastElem.size() > 1) {
-                    path = path + lastElem;
-                    lastElem = "";
-                }
-                // else... we don't reset lastElem if it's a '.' or '#' to allow chaining
-                // completions
-                if (!path.empty()) {
-                    char last = path[path.size() - 1];
-                    if (last != '#' && last != '.' && path.find('#') != std::string::npos) {
-                        path += "._self";
-                        ++retry;
-                        continue;
-                    }
-                }
-            }
-            else if (retry == 2) {
-                if (path.size() >= 6) {
-                    path.resize(path.size() - 6);
-                }
-                if (!path.empty()) {
-                    char last = path[path.size() - 1];
-                    if (last != '.' && last != '<' && path.find("#<<") != std::string::npos) {
-                        path += ">>._self";
-                        ++retry;
-                        trim = ">>";
-                        continue;
-                    }
-                }
-            }
-            return QStringList() << input;
-        }
-    }
+    QStringList resultList = tokenizer.splitCompletionPath(input);
+    FC_TRACE(
+        "split path " << input.toUtf8().constData() << " -> "
+                      << resultList.join(QLatin1String("/")).toUtf8().constData()
+    );
+    return resultList.isEmpty() ? QStringList() << input : resultList;
 }
 
 // Code below inspired by blog entry:
@@ -893,7 +803,7 @@ void ExpressionCompleter::slotUpdate(const QString& prefix, int pos)
 
     init();
 
-    QString completionPrefix = tokenizer.perform(prefix, pos);
+    QString completionPrefix = tokenizer.extractCompletionPrefix(prefix, pos);
     if (completionPrefix.isEmpty()) {
         if (auto itemView = popup()) {
             itemView->setVisible(false);
