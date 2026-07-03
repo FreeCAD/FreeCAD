@@ -23,7 +23,7 @@ jobs:
       - name: Run Semgrep
         run: semgrep ci --sarif-output=semgrep.sarif || true
         env:
-          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+          SEMGREP_APP_TOKEN: ${{ secrets.SECURITY_CI_SEMGREP_APP_TOKEN }}
       - name: Upload SARIF
         uses: github/codeql-action/upload-sarif@v4
         with:
