@@ -913,7 +913,9 @@ def _toggle_active_container(obj, action=None, dialog=None):
         # Activate the object
         import Draft
 
-        context = "NativeIFC" if Draft.getType(obj) in ("IfcBuilding", "IfcBuildingStorey") else "Arch"
+        context = (
+            "NativeIFC" if Draft.getType(obj) in ("IfcBuilding", "IfcBuildingStorey") else "Arch"
+        )
         FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, obj)
         return True
 
