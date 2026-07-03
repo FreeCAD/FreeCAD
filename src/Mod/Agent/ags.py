@@ -108,6 +108,55 @@ class _AuthPoller:
             self._stop.wait(2.0)
 
 
+class SignalForwarder(QtCore.QObject):
+    def __init__(self, callback, parent=None):
+        super().__init__(parent)
+        self._callback = callback
+        self._signal = None
+        self._slot = None
+
+    @QtCore.Slot()
+    def call(self):
+        self._callback()
+
+    @QtCore.Slot(str)
+    def call_str(self, value):
+        self._callback(value)
+
+    @QtCore.Slot(object)
+    def call_object(self, value):
+        self._callback(value)
+
+    def bind(self, signal, slot):
+        self._signal = signal
+        self._slot = slot
+        signal.connect(slot)
+        return self
+
+    def disconnect(self):
+        if self._signal is None or self._slot is None:
+            return
+        try:
+            self._signal.disconnect(self._slot)
+        except (RuntimeError, TypeError):
+            pass
+        self._signal = None
+        self._slot = None
+
+
+def connect(signal, callback, arg=None):
+    forwarder = SignalForwarder(callback)
+    if arg == "str":
+        slot = forwarder.call_str
+    elif arg == "object":
+        slot = forwarder.call_object
+    elif arg is None:
+        slot = forwarder.call
+    else:
+        raise ValueError(f"Unsupported Agent signal argument type: {arg}")
+    return forwarder.bind(signal, slot)
+
+
 def create_agent_auth_bridge(provider):
     bridge = AgentAuthBridge()
     poller = _AuthPoller(bridge, provider)
