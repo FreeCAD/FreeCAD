@@ -858,7 +858,10 @@ def processSVG(fname, ext):
     # Set up the parser
     parser = xml.sax.make_parser()
     parser.setFeature(xml.sax.handler.feature_external_ges, False)
-    parser.setContentHandler(svgHandler())
+    handler = svgHandler()
+    # Only the imported shapes are consumed below, so force a flat import.
+    handler.handle_groups = False
+    parser.setContentHandler(handler)
     parser._cont_handler.doc = docSVG
 
     # pathName is a Global
