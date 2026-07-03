@@ -28,6 +28,7 @@
 
 #include <Base/Color.h>
 #include <Gui/ViewParams.h>
+#include <memory>
 
 #include "EditModeCoinManagerParameters.h"
 
@@ -40,7 +41,9 @@ int GeometryLayerParameters::getSubLayerIndex(const int geoId, const Sketcher::G
     bool isInternal = geom->isInternalAligned();
     bool isExternal = geoId <= Sketcher::GeoEnum::RefExt;
     if (isExternal) {
-        auto egf = Sketcher::ExternalGeometryFacade::getFacade(geom->clone());
+        // The ExternalGeometryFacade is not the owner of the geometry
+        std::unique_ptr<Part::Geometry> geomCopy(geom->clone());
+        auto egf = Sketcher::ExternalGeometryFacade::getFacade(geomCopy.get());
         if (egf->testFlag(Sketcher::ExternalGeometryExtension::Defining)) {
             return static_cast<int>(SubLayer::ExternalDefining);
         }
@@ -99,5 +102,7 @@ SbColor DrawingParameters::NonDrivingConstrDimColor(0.0f, 0.149f, 1.0f);  // #00
 SbColor DrawingParameters::ExprBasedConstrDimColor(1.0f, 0.5f, 0.149f);  // #FF7F26 -> (255, 127,38)
 SbColor DrawingParameters::DeactivatedConstrDimColor(0.5f, 0.5f, 0.5f);  // ##7f7f7f -> (127,127,127)
 SbColor DrawingParameters::CursorTextColor(0.0f, 0.0f, 1.0f);            // #0000FF -> (0,0,255)
+
+QString DrawingParameters::labelFontName(QString::fromUtf8(""));  // Empty string by default
 
 const MultiFieldId MultiFieldId::Invalid = MultiFieldId();

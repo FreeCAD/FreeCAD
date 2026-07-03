@@ -1738,7 +1738,7 @@ class _ArchWindowTaskPanel:
         )
         self.field6.setText(QtGui.QApplication.translate("Arch", "Get Selected Edge", None))
         self.field6.setToolTip(
-            QtGui.QApplication.translate("Arch", "Press to retrieve the selected edge", None)
+            QtGui.QApplication.translate("Arch", "Retrieves the selected edge", None)
         )
         self.invertOpeningButton.setText(
             QtGui.QApplication.translate("Arch", "Invert Opening Direction", None)

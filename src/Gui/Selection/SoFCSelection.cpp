@@ -42,6 +42,7 @@
 #include <Base/UnitsApi.h>
 
 #include "SoFCSelection.h"
+#include "SelectionColors.h"
 #include "MainWindow.h"
 #include "SoFullPathHelper.h"
 #include "SoFCSelectionAction.h"
@@ -78,8 +79,8 @@ SoFCSelection::SoFCSelection()
 {
     SO_NODE_CONSTRUCTOR(SoFCSelection);
 
-    SO_NODE_ADD_FIELD(colorHighlight, (SbColor(0.8f, 0.1f, 0.1f)));
-    SO_NODE_ADD_FIELD(colorSelection, (SbColor(0.1f, 0.8f, 0.1f)));
+    SO_NODE_ADD_FIELD(colorHighlight, (SelectionColors::highlightFallbackColor()));
+    SO_NODE_ADD_FIELD(colorSelection, (SelectionColors::selectionFallbackColor()));
     SO_NODE_ADD_FIELD(style, (EMISSIVE));
     SO_NODE_ADD_FIELD(preselectionMode, (AUTO));
     SO_NODE_ADD_FIELD(selectionMode, (SEL_ON));
@@ -384,7 +385,9 @@ void SoFCSelection::handleEvent(SoHandleEventAction* action)
                             subElementName.getValue().getString(),
                             pp->getPoint()[0],
                             pp->getPoint()[1],
-                            pp->getPoint()[2]
+                            pp->getPoint()[2],
+                            SelectionChanges::MsgSource::Any,
+                            SelectionChanges::PickedPoint::Valid
                         )) {
                         SoFCSelection::turnoffcurrent(action);
                         SoFCSelection::currenthighlight = Gui::toFullPath(action->getCurPath()->copy());
@@ -467,7 +470,10 @@ void SoFCSelection::handleEvent(SoHandleEventAction* action)
                             subElementName.getValue().getString(),
                             pt[0],
                             pt[1],
-                            pt[2]
+                            pt[2],
+                            nullptr,
+                            true,
+                            Gui::SelectionChanges::PickedPoint::Valid
                         );
 
                         if (mymode == OFF) {
@@ -500,7 +506,10 @@ void SoFCSelection::handleEvent(SoHandleEventAction* action)
                             subElementName.getValue().getString(),
                             pt[0],
                             pt[1],
-                            pt[2]
+                            pt[2],
+                            nullptr,
+                            true,
+                            Gui::SelectionChanges::PickedPoint::Valid
                         );
                     }
                     else {
@@ -511,7 +520,10 @@ void SoFCSelection::handleEvent(SoHandleEventAction* action)
                             nullptr,
                             pt[0],
                             pt[1],
-                            pt[2]
+                            pt[2],
+                            nullptr,
+                            true,
+                            Gui::SelectionChanges::PickedPoint::Valid
                         );
                     }
 
@@ -797,7 +809,6 @@ void SoFCSelection::applySettings()
 {
     // TODO Some view providers got copy of this code: make them use this (2015-09-03, Fat-Zer)
     // Note: SoFCUnifiedSelection got the same code, keep in sync or think about a way to share it
-    float transparency;
     ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
     bool enablePre = hGrp->GetBool("EnablePreselection", true);
     bool enableSel = hGrp->GetBool("EnableSelection", true);
@@ -805,22 +816,12 @@ void SoFCSelection::applySettings()
         this->preselectionMode = Gui::SoFCSelection::OFF;
     }
     else {
-        // Search for a user defined value with the current color as default
-        SbColor highlightColor = this->colorHighlight.getValue();
-        auto highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        this->colorHighlight.setValue(highlightColor);
+        this->colorHighlight.setValue(SelectionColors::defaultHighlightColor());
     }
     if (!enableSel) {
         this->selectionMode = Gui::SoFCSelection::SEL_OFF;
     }
     else {
-        // Do the same with the selection color
-        SbColor selectionColor = this->colorSelection.getValue();
-        auto selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = hGrp->GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        this->colorSelection.setValue(selectionColor);
+        this->colorSelection.setValue(SelectionColors::defaultSelectionColor());
     }
 }

@@ -1,27 +1,28 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
-/****************************************************************************
- *                                                                          *
- *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                     *
- *                                                                          *
- *   This file is part of FreeCAD.                                          *
- *                                                                          *
- *   FreeCAD is free software: you can redistribute it and/or modify it     *
- *   under the terms of the GNU Lesser General Public License as            *
- *   published by the Free Software Foundation, either version 2.1 of the   *
- *   License, or (at your option) any later version.                        *
- *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
- *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU Lesser General Public       *
- *   License along with FreeCAD. If not, see                                *
- *   <https://www.gnu.org/licenses/>.                                       *
- *                                                                          *
- ***************************************************************************/
+// SPDX-FileCopyrightText: 2024 Kacper Donat <kacper@kadet.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <sstream>
+#include <optional>
 
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoComplexity.h>
@@ -42,7 +43,7 @@
 #include "So3DAnnotation.h"
 #include "SoAxisCrossKit.h"
 
-#include <SoTextLabel.h>
+#include <Gui/SoTextLabel.h>
 #include <Utilities.h>
 #include <ViewParams.h>
 #include <ViewProvider.h>
@@ -68,6 +69,9 @@ SoFCPlacementIndicatorKit::SoFCPlacementIndicatorKit()
     SO_NODE_ADD_FIELD(axisLength, (axisLengthDefault));
     SO_NODE_ADD_FIELD(parts, (AxisCross));
     SO_NODE_ADD_FIELD(axes, (AllAxes));
+    SO_NODE_ADD_FIELD(axisLabels, ("X"));
+    axisLabels.set1Value(1, "Y");
+    axisLabels.set1Value(2, "Z");
 
     SO_NODE_DEFINE_ENUM_VALUE(Part, Axes);
     SO_NODE_DEFINE_ENUM_VALUE(Part, ArrowHeads);
@@ -99,7 +103,7 @@ void SoFCPlacementIndicatorKit::notify(SoNotList* l)
 {
     SoField* field = l->getLastField();
 
-    if (field == &parts || field == &axes || field == &axisLength) {
+    if (field == &parts || field == &axes || field == &axisLength || field == &axisLabels) {
         // certainly this is not the fastest way to recompute the geometry as it does recreate
         // everything from the scratch. It is however very easy to implement and this node should
         // not really change too often so the performance penalty is better than making code that
@@ -245,25 +249,41 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
 
     auto sep = new SoSeparator;
 
+    auto labelAt = [&](int i) -> std::optional<const char*> {
+        if (axisLabels.getNum() <= i) {
+            return std::nullopt;
+        }
+        return axisLabels[i].getString();
+    };
+
     if (axes.getValue() & X) {
-        sep->addChild(
-            createAxis("X", Base::Vector3d::UnitX, ViewParams::instance()->getAxisXColor(), xyOffset)
-        );
+        sep->addChild(createAxis(
+            labelAt(0).value_or("X"),
+            Base::Vector3d::UnitX,
+            ViewParams::instance()->getAxisXColor(),
+            xyOffset
+        ));
     }
 
     if (axes.getValue() & Y) {
-        sep->addChild(
-            createAxis("Y", Base::Vector3d::UnitY, ViewParams::instance()->getAxisYColor(), xyOffset)
-        );
+        sep->addChild(createAxis(
+            labelAt(1).value_or("Y"),
+            Base::Vector3d::UnitY,
+            ViewParams::instance()->getAxisYColor(),
+            xyOffset
+        ));
     }
 
     if (axes.getValue() & Z) {
         double zOffset = (parts.getValue() & PlaneIndicator) ? planeIndicatorMargin
                                                              : axisMargin + additionalAxisMargin;
 
-        sep->addChild(
-            createAxis("Z", Base::Vector3d::UnitZ, ViewParams::instance()->getAxisZColor(), zOffset)
-        );
+        sep->addChild(createAxis(
+            labelAt(2).value_or("Z"),
+            Base::Vector3d::UnitZ,
+            ViewParams::instance()->getAxisZColor(),
+            zOffset
+        ));
     }
 
     return sep;

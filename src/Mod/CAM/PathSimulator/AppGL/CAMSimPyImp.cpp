@@ -26,16 +26,19 @@
 #include <Base/PlacementPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
+#include <Gui/Document.h>
 #include <Mod/Mesh/App/MeshPy.h>
 #include <Mod/CAM/App/CommandPy.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
+#include "DocumentPy.h"
 // inclusion of the generated files (generated out of CAMSimPy.xml)
 #include "CAMSimPy.h"
 #include "CAMSimPy.cpp"
 
 
-using namespace CAMSimulator;
+namespace CAMSimulator
+{
 
 // returns a string which represents the object e.g. when printed in python
 std::string CAMSimPy::representation() const
@@ -56,10 +59,15 @@ int CAMSimPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 }
 
 
-PyObject* CAMSimPy::ResetSimulation()
+PyObject* CAMSimPy::ResetSimulation(PyObject* args)
 {
+    PyObject* pObjDoc;
+    if (!PyArg_ParseTuple(args, "O!", &(Gui::DocumentPy::Type), &pObjDoc)) {
+        return nullptr;
+    }
     CAMSim* sim = getCAMSimPtr();
-    sim->resetSimulation();
+    Gui::Document* doc = static_cast<Gui::DocumentPy*>(pObjDoc)->getDocumentPtr();
+    sim->resetSimulation(doc);
     Py_IncRef(Py_None);
     return Py_None;
 }
@@ -173,3 +181,5 @@ int CAMSimPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
+
+}  // namespace CAMSimulator

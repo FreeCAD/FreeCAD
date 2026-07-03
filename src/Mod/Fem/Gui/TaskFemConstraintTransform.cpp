@@ -25,6 +25,7 @@
  ***************************************************************************/
 
 
+#include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <QAction>
 #include <QMessageBox>
@@ -160,7 +161,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     ui->lw_Rect->clear();
 
     ui->lbl_info_2->setText(
-        tr("Select single geometry of type: ") + QString::fromUtf8("<b>%1</b>").arg(tr("Face"))
+        tr("Select single geometry of type: ") + QString::fromUtf8("<b>%1</b>").arg(tr("Edge, Face"))
     );
 
     // Transformable surfaces
@@ -306,15 +307,15 @@ void TaskFemConstraintTransform::addToSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
 
     if (rows == 1) {
         QMessageBox::warning(
             this,
-            tr("Selection error"),
-            tr("Only one face for rectangular local coordinate system!")
+            tr("Selection Error"),
+            tr("Only one face (edge in 2D model) for rectangular local coordinate system!")
         );
         Gui::Selection().clearSelection();
         return;
@@ -323,8 +324,8 @@ void TaskFemConstraintTransform::addToSelection()
     if ((rows == 0) && (selection.size() >= 2)) {
         QMessageBox::warning(
             this,
-            tr("Selection error"),
-            tr("Only one face for rectangular local coordinate system!")
+            tr("Selection Error"),
+            tr("Only one face (edge in 2D model) for rectangular local coordinate system!")
         );
         Gui::Selection().clearSelection();
         return;
@@ -338,7 +339,7 @@ void TaskFemConstraintTransform::addToSelection()
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -346,7 +347,7 @@ void TaskFemConstraintTransform::addToSelection()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -356,33 +357,45 @@ void TaskFemConstraintTransform::addToSelection()
         if (subNames.size() != 1) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
-                tr("Only one face for local coordinate system!")
+                tr("Selection Error"),
+                tr("Only one face (edge in 2D model) for local coordinate system!")
             );
             Gui::Selection().clearSelection();
             return;
         }
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+            Part::Feature* feat = static_cast<Part::Feature*>(obj);
+            TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subName.c_str());
+            TopAbs_ShapeEnum refType = ref.ShapeType();
+            if (refType != TopAbs_FACE && refType != TopAbs_EDGE) {
+                QMessageBox::warning(
+                    this,
+                    tr("Selection Error"),
+                    tr("Only faces (edges in 2D model) can be picked")
+                );
                 return;
             }
-            if (subName.substr(0, 4) == "Face") {
-                if (ui->rb_cylin->isChecked()) {
-                    Part::Feature* feat = static_cast<Part::Feature*>(obj);
-                    TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subName.c_str());
+            if (ui->rb_cylin->isChecked()) {
+                bool ok = false;
+                if (refType == TopAbs_FACE) {
                     BRepAdaptor_Surface surface(TopoDS::Face(ref));
-                    if (surface.GetType() != GeomAbs_Cylinder) {
-                        QMessageBox::warning(
-                            this,
-                            tr("Selection error"),
-                            tr("Only cylindrical faces can be picked")
-                        );
-                        return;
-                    }
+                    ok = surface.GetType() == GeomAbs_Cylinder;
+                }
+                else if (refType == TopAbs_EDGE) {
+                    BRepAdaptor_Curve curve(TopoDS::Edge(ref));
+                    ok = curve.GetType() == GeomAbs_Circle;
+                }
+                if (!ok) {
+                    QMessageBox::warning(
+                        this,
+                        tr("Selection Error"),
+                        tr("Only cylindrical faces (edges in 2D model) can be picked")
+                    );
+                    return;
                 }
             }
+
             for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end(); itr
                  = std::find(++itr,
                              SubElements.end(),
@@ -420,12 +433,11 @@ void TaskFemConstraintTransform::addToSelection()
                 if (Objects.empty()) {
                     QMessageBox::warning(
                         this,
-                        tr("Selection error"),
-                        tr("Only transformable faces can be selected! Apply a "
+                        tr("Selection Error"),
+                        tr("Only transformable faces (edges in 2D model) can be selected! Apply a "
                            "displacement boundary "
-                           "condition or a force load to a face first then apply "
-                           "local coordinate system to "
-                           "the face.")
+                           "condition or a force load to a boundary first then apply "
+                           "the local coordinate system.")
                     );
                     Gui::Selection().clearSelection();
                     return;
@@ -455,7 +467,7 @@ void TaskFemConstraintTransform::removeFromSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintTransform* pcConstraint = ConstraintView->getObject<Fem::ConstraintTransform>();
@@ -464,7 +476,7 @@ void TaskFemConstraintTransform::removeFromSelection()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();
@@ -634,7 +646,7 @@ bool TaskDlgFemConstraintTransform::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
     /* */

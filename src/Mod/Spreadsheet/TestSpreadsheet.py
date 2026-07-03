@@ -311,6 +311,46 @@ class SpreadsheetAggregates(unittest.TestCase):
         self.assertEqual(self.sheet.C6, 0)
         self.assertEqual(self.sheet.C7, 1)
 
+    def test_address(self):
+        # Valid cases
+        self.sheet.set("A1", "=address(1;2)")
+        self.sheet.set("A2", "=address(1;2;1)")
+        self.sheet.set("A3", "=address(1;2;2)")
+        self.sheet.set("A4", "=address(1;2;3)")
+        self.sheet.set("A5", "=address(1;2;4)")
+        self.sheet.set("A6", "=address(1;1)")
+        self.sheet.set("A7", "=address(16384;702)")
+
+        # Invalid reference type
+        self.sheet.set("A8", "=address(1;2;0)")
+        self.sheet.set("A9", "=address(1;2;5)")
+
+        # Out of bounds
+        self.sheet.set("A10", "=address(0;0)")
+        self.sheet.set("A11", "=address(0;1)")
+        self.sheet.set("A12", "=address(1;0)")
+        self.sheet.set("A13", "=address(16384+1;1)")
+        self.sheet.set("A14", "=address(1;702+1)")
+
+        self.doc.recompute()
+
+        self.assertEqual(self.sheet.A1, "$B$1")
+        self.assertEqual(self.sheet.A2, "$B$1")
+        self.assertEqual(self.sheet.A3, "B$1")
+        self.assertEqual(self.sheet.A4, "$B1")
+        self.assertEqual(self.sheet.A5, "B1")
+        self.assertEqual(self.sheet.A6, "$A$1")
+        self.assertEqual(self.sheet.A7, "$ZZ$16384")
+
+        self.assertTrue(self.sheet.A8.startswith("ERR: Invalid reference type:"))
+        self.assertTrue(self.sheet.A9.startswith("ERR: Invalid reference type:"))
+
+        self.assertTrue(self.sheet.A10.startswith("ERR: Cell address out of bounds."))
+        self.assertTrue(self.sheet.A11.startswith("ERR: Cell address out of bounds."))
+        self.assertTrue(self.sheet.A12.startswith("ERR: Cell address out of bounds."))
+        self.assertTrue(self.sheet.A13.startswith("ERR: Cell address out of bounds."))
+        self.assertTrue(self.sheet.A14.startswith("ERR: Cell address out of bounds."))
+
 
 #############################################################################################
 class SpreadsheetFunction(unittest.TestCase):

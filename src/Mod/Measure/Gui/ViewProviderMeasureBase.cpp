@@ -24,6 +24,8 @@
 #include "Gui/Application.h"
 #include "Gui/MDIView.h"
 
+#include <functional>
+
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -39,7 +41,7 @@
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/SbViewportRegion.h>
 
-
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
@@ -105,6 +107,27 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
         agroup,
         App::Prop_None,
         "Size of measurement text"
+    );
+    ADD_PROPERTY_TYPE(
+        ArrowHeight,
+        (Preferences::defaultArrowHeight()),
+        agroup,
+        App::Prop_None,
+        "Height of arrow indicators"
+    );
+    ADD_PROPERTY_TYPE(
+        ArrowRadius,
+        (Preferences::defaultArrowRadius()),
+        agroup,
+        App::Prop_None,
+        "Radius of arrow indicators"
+    );
+    ADD_PROPERTY_TYPE(
+        LabelPosition,
+        (Base::Vector3d(0, 0, 0)),
+        agroup,
+        App::Prop_None,
+        "Position of measurement label"
     );
     // NOLINTEND
 
@@ -210,6 +233,11 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     FontSize.touch();
     LineColor.touch();
     fieldFontSize.setValue(FontSize.getValue());
+    // Arrow properties
+    ArrowHeight.touch();
+    ArrowRadius.touch();
+    fieldArrowHeight.setValue(ArrowHeight.getValue());
+    fieldArrowRadius.setValue(ArrowRadius.getValue());
 }
 
 ViewProviderMeasureBase::~ViewProviderMeasureBase()
@@ -248,6 +276,10 @@ void ViewProviderMeasureBase::setDisplayMode(const char* ModeName)
 
 void ViewProviderMeasureBase::finishRestoring()
 {
+    // Restore dragger position from saved property
+    Base::Vector3d pos = LabelPosition.getValue();
+    setLabelTranslation(toSbVec3f(pos));
+
     if (Visibility.getValue() && isSubjectVisible()) {
         show();
     }
@@ -273,6 +305,12 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
     else if (prop == &FontSize) {
         pLabel->size = FontSize.getValue();
         fieldFontSize.setValue(FontSize.getValue());
+    }
+    else if (prop == &ArrowHeight) {
+        fieldArrowHeight.setValue(ArrowHeight.getValue());
+    }
+    else if (prop == &ArrowRadius) {
+        fieldArrowRadius.setValue(ArrowRadius.getValue());
     }
 
     ViewProviderDocumentObject::onChanged(prop);
@@ -320,8 +358,9 @@ void ViewProviderMeasureBase::onLabelMoveStart()
 void ViewProviderMeasureBase::onLabelMoveFinish()
 {
     SbVec3f currentLabelPos = pLabelTranslation->translation.getValue();
-    pDragger->translation.setValue(SbVec3f(0.0f, 0.0f, 0.0f));
     pDraggerFrame->translation.setValue(currentLabelPos);
+    pDragger->translation.setValue(SbVec3f(0.0f, 0.0f, 0.0f));
+    LabelPosition.setValue(Base::Vector3d(currentLabelPos[0], currentLabelPos[1], currentLabelPos[2]));
 }
 
 void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
@@ -329,9 +368,9 @@ void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
     pLabel->string.setValue(value.getUserString().c_str());
 }
 
-void ViewProviderMeasureBase::setLabelValue(const QString& value)
+void ViewProviderMeasureBase::setLabelValue(const std::string& value)
 {
-    const auto userString = Base::UnitsApi::toUnicodeSuperscript(value.toStdString());
+    const auto userString = Base::UnitsApi::toUnicodeSuperscript(value);
     const auto lines = QString::fromStdString(userString).split(QStringLiteral("\n"));
 
     int i = 0;
@@ -408,7 +447,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
         return;
     }
 
-    if (strcmp(prop->getName(), "Label") == 0) {
+    if (strcmp(prop->getName(), "Label") == 0 || prop == &obj->DisplayUnit) {
         doUpdate = true;
     }
 
@@ -433,7 +472,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
         // Update label
         std::string userLabel(obj->Label.getValue());
         std::string name = userLabel.substr(0, userLabel.find(":"));
-        obj->Label.setValue((name + ": ") + obj->getResultString().toStdString());
+        obj->Label.setValue((name + ": ") + obj->getResultString());
     }
 
     ViewProviderDocumentObject::updateData(prop);
@@ -458,15 +497,18 @@ void ViewProviderMeasureBase::connectToSubject(App::DocumentObject* subject)
         _mVisibilityChangedConnection.disconnect();
     }
 
-    // NOLINTBEGIN
-    auto bndVisibility = std::bind(
-        &ViewProviderMeasureBase::onSubjectVisibilityChanged,
-        this,
-        std::placeholders::_1,
-        std::placeholders::_2
+    App::Document* document = subject->getDocument();
+    if (!document) {
+        return;
+    }
+
+    _mVisibilityChangedConnection = document->signalChangedObject.connect(
+        [this, subject](const App::DocumentObject& obj, const App::Property& prop) {
+            if (&obj == subject) {
+                onSubjectVisibilityChanged(obj, prop);
+            }
+        }
     );
-    // NOLINTEND
-    _mVisibilityChangedConnection = subject->signalChanged.connect(bndVisibility);
 }
 
 //! connect to the subject to receive visibility updates

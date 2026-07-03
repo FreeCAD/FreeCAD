@@ -1,13 +1,20 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 Joao Matos
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 SET(Test_SRCS
     __init__.py
     Init.py
     BaseTests.py
+    AutoSaverStress.py
+    RunAutoSaverStress.py
     Document.py
     GuiDocument.py
     Metadata.py
     StringHasher.py
     Menu.py
+    Recompute.py
+    GuiRecompute.py
     TestApp.py
     TestGui.py
     UnicodeTests.py
@@ -18,7 +25,11 @@ SET(Test_SRCS
     TestPythonSyntax.py
     TestPerf.py
     TestTreeSelection.py
+    TestGraphicsViewWrapping.py
+    TestRubberbandSelection.py
     TestCoinNodeSnapshots.py
+    TestCoinSelectionVisual.py
+    TestViewProviderLink.py
 )
 
 SET(TestData_SRCS

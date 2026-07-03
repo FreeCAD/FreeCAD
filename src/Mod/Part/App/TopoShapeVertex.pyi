@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.Vector import Vector
+from Point import Point
 from TopoShape import TopoShape
-from typing import Final
+from typing import Final, overload
 
 @export(
     Twin="TopoShape",
@@ -20,6 +21,17 @@ class TopoShapeVertex(TopoShape):
 
     Author: Juergen Riegel (Juergen.Riegel@web.de)
     """
+
+    @overload
+    def __init__(self, x: float = ..., y: float = ..., z: float = ..., /) -> None: ...
+    @overload
+    def __init__(self, coordinates: Vector, /) -> None: ...
+    @overload
+    def __init__(self, coordinates: tuple[float, float, float], /) -> None: ...
+    @overload
+    def __init__(self, point: Point, /) -> None: ...
+    @overload
+    def __init__(self, shape: TopoShape, /) -> None: ...
 
     X: Final[float] = ...
     """X component of this Vertex."""

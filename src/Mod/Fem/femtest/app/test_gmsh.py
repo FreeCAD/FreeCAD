@@ -45,7 +45,7 @@ def generate_gmesh_samples_from_example_doc(doc, datapath):
     # are added into the source code
     # Note: Run this from the source folder!
     #
-    # from withing freecad with the example files open, run:
+    # from within freecad with the example files open, run:
     # from femtest.app import test_gmsh
     # test_gmsh.generate_gmesh_samples_from_example_doc(App.ActiveDocument, path_to_src_data_folder)
 
@@ -75,16 +75,19 @@ def generate_gmesh_samples_from_example_doc(doc, datapath):
 class TestGMSHBase(unittest.TestCase):
 
     # ********************************************************************************************
+    def setUp(self):
+        self.document = FreeCAD.newDocument(self.__class__.__name__)
+
+    # ********************************************************************************************
     def tearDown(self):
         # tearDown is executed after every test
-        if hasattr(self, "doc"):
-            FreeCAD.closeDocument(self.doc.Name)
+        FreeCAD.closeDocument(self.document.Name)
 
     # ********************************************************************************************
     def load_example_file(self, name):
         # opens a example file to process for testing
         module = importlib.import_module(f"femexamples.{name}")
-        self.doc = module.setup()
+        self.doc = module.setup(doc=self.document)
 
         if FreeCAD.GuiUp:
             import FreeCADGui
@@ -93,7 +96,7 @@ class TestGMSHBase(unittest.TestCase):
 
     def load_and_run_example_file(self, name):
         # opens and runs example file to process for testing
-        self.doc = manager.run_example(name, run_solver=True)
+        self.doc = manager.run_example(name, run_solver=True, doc=self.document)
 
         if FreeCAD.GuiUp:
             import FreeCADGui
@@ -115,7 +118,7 @@ class TestGMSHBase(unittest.TestCase):
     # ********************************************************************************************
     def compare_exact_mesh_to_sample(self, mesh_obj):
         # compare generated mesh to sample to be the exact same. This should only be used for
-        # meshing algorithms that gurantee to define exact node counts and locations, as well as
+        # meshing algorithms that guarantee to define exact node counts and locations, as well as
         # elements. If things can vary over gmsh versions this should not be used.
 
         # load the sample mesh we want to compare to
@@ -201,8 +204,8 @@ class TestGMSHBase(unittest.TestCase):
         )
 
     def compare_fuzzy_mesh_to_sample(self, mesh_obj, allowed_diff=0.05):
-        # compare generated mesh to sample to be the roughly the same. This accounts for sligth variations between
-        # gmsh versions. The meshes do not to be the exact same, but can varie sligthly.
+        # compare generated mesh to sample to be the roughly the same. This accounts for slight variations
+        # between gmsh versions. The meshes do not to be the exact same, but can vary slightly.
         #
         # allowed_diff is given as relation to 1 (5% = 0.05)
 

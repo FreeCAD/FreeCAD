@@ -97,7 +97,8 @@ App::DocumentObjectExecReturn* FeatureArea::execute()
 
     AreaParams params;
 
-#define AREA_PROP_GET(_param) params.PARAM_FNAME(_param) = PARAM_FNAME(_param).getValue();
+#define AREA_PROP_GET(_param) \
+    params.PARAM_FNAME(_param) = static_cast<PARAM_TYPE(_param)>(PARAM_FNAME(_param).getValue());
     PARAM_FOREACH(AREA_PROP_GET, AREA_PARAMS_CONF)
 
     myArea.clean(true);

@@ -67,7 +67,7 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shell.hxx>
 #include <TopoDS_Solid.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopTools_ListOfShape.hxx>
 
 #include <BRepFill_Generator.hxx>
 
@@ -96,6 +96,7 @@
 #include "OCCError.h"
 #include "PartFeature.h"
 #include "PartPyCXX.h"
+#include "PyException.h"
 #include "Tools.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapePy.h"
@@ -219,11 +220,14 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
             else if (pEI->v2.SquareDistance(last) <= tol3d) {
                 last = pEI->v1;
                 Standard_Real first, last;
+                BRepLib::BuildCurves3d(pEI->edge);
                 const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
-                first = curve->ReversedParameter(first);
-                last = curve->ReversedParameter(last);
-                TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
-                sorted.push_back(edgeReversed);
+                if (!curve.IsNull()) {
+                    first = curve->ReversedParameter(first);
+                    last = curve->ReversedParameter(last);
+                    TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
+                    sorted.push_back(edgeReversed);
+                }
                 edges.erase(pEI->it);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
@@ -232,11 +236,14 @@ PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge
             else if (pEI->v1.SquareDistance(first) <= tol3d) {
                 first = pEI->v2;
                 Standard_Real first, last;
+                BRepLib::BuildCurves3d(pEI->edge);
                 const Handle(Geom_Curve) & curve = BRep_Tool::Curve(pEI->edge, first, last);
-                first = curve->ReversedParameter(first);
-                last = curve->ReversedParameter(last);
-                TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
-                sorted.push_front(edgeReversed);
+                if (!curve.IsNull()) {
+                    first = curve->ReversedParameter(first);
+                    last = curve->ReversedParameter(last);
+                    TopoDS_Edge edgeReversed = BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first);
+                    sorted.push_front(edgeReversed);
+                }
                 edges.erase(pEI->it);
                 edge_points.erase(pEI);
                 pEI = edge_points.begin();
@@ -486,9 +493,12 @@ public:
         add_keyword_method(
             "makeFace",
             &Module::makeFace,
-            "makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using "
-            "facemaker class.\n"
-            "maker_class_name is a string like 'Part::FaceMakerSimple'."
+            "makeFace(list_of_shapes_or_compound, [maker_class_name, op], "
+            "*, noElementMap=False) -- "
+            "Create a face (faces) using facemaker class.\n"
+            "maker_class_name is a string like 'Part::FaceMakerSimple'.\n"
+            "Set noElementMap=True for transient geometry where stable element "
+            "naming is not needed."
         );
         add_keyword_method(
             "makeFilledSurface",
@@ -746,7 +756,8 @@ public:
         add_keyword_method(
             "getShape",
             &Module::getShape,
-            "getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0):\n"
+            "getShape(obj,subname=None,mat=None,needSubElement=False,transform=True,retType=0,"
+            "noElementMap=False,refine=False):\n"
             "Obtain the TopoShape of a given object with SubName reference\n\n"
             "* obj: the input object\n"
             "* subname: dot separated sub-object reference\n"
@@ -761,6 +772,8 @@ public:
             "'subname',\n"
             "              and 'mat' is the accumulated transformation matrix of that sub-object.\n"
             "           2: same as 1, but make sure 'subObj' is resolved if it is a link.\n"
+            "* noElementMap: if True, return a shape without mapped element names. Use this for "
+            "transient geometry where stable element naming is not needed.\n"
             "* refine: refine the returned shape"
         );
         add_varargs_method(
@@ -792,76 +805,22 @@ public:
 private:
     Py::Object invoke_method_keyword(void* method_def, const Py::Tuple& args, const Py::Dict& keywords) override
     {
-        try {
-            return Py::ExtensionModule<Module>::invoke_method_keyword(method_def, args, keywords);
-        }
-        catch (const Standard_Failure& e) {
-            std::string str;
-            Standard_CString msg = e.GetMessageString();
-            str += typeid(e).name();
-            str += " ";
-            if (msg) {
-                str += msg;
-            }
-            else {
-                str += "No OCCT Exception Message";
-            }
-            Base::Console().error("%s\n", str.c_str());
-            throw Py::Exception(Part::PartExceptionOCCError, str);
-        }
-        catch (const Base::Exception& e) {
-            std::string str;
-            str += "FreeCAD exception thrown (";
-            str += e.what();
-            str += ")";
-            e.reportException();
-            throw Py::RuntimeError(str);
-        }
-        catch (const std::exception& e) {
-            std::string str;
-            str += "C++ exception thrown (";
-            str += e.what();
-            str += ")";
-            Base::Console().error("%s\n", str.c_str());
-            throw Py::RuntimeError(str);
-        }
+        return Part::pyWrapCppExceptions(
+            [&]() {
+                return Py::ExtensionModule<Module>::invoke_method_keyword(method_def, args, keywords);
+            },
+            Part::PartExceptionOCCError,
+            true
+        );
     }
 
     Py::Object invoke_method_varargs(void* method_def, const Py::Tuple& args) override
     {
-        try {
-            return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
-        }
-        catch (const Standard_Failure& e) {
-            std::string str;
-            Standard_CString msg = e.GetMessageString();
-            str += typeid(e).name();
-            str += " ";
-            if (msg) {
-                str += msg;
-            }
-            else {
-                str += "No OCCT Exception Message";
-            }
-            Base::Console().error("%s\n", str.c_str());
-            throw Py::Exception(Part::PartExceptionOCCError, str);
-        }
-        catch (const Base::Exception& e) {
-            std::string str;
-            str += "FreeCAD exception thrown (";
-            str += e.what();
-            str += ")";
-            e.reportException();
-            throw Py::RuntimeError(str);
-        }
-        catch (const std::exception& e) {
-            std::string str;
-            str += "C++ exception thrown (";
-            str += e.what();
-            str += ")";
-            Base::Console().error("%s\n", str.c_str());
-            throw Py::RuntimeError(str);
-        }
+        return Part::pyWrapCppExceptions(
+            [&]() { return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args); },
+            Part::PartExceptionOCCError,
+            true
+        );
     }
 
     Py::Object open(const Py::Tuple& args)
@@ -1137,19 +1096,27 @@ private:
         PyObject* obj;
         const char* className = nullptr;
         const char* op = nullptr;
-        const std::array<const char*, 4> kwd_list = {"shapes", "class_name", "op", nullptr};
+        PyObject* noElementMap = Py_False;
+        const std::array<const char*, 5> kwd_list
+            = {"shapes", "class_name", "op", "noElementMap", nullptr};
         if (!Base::Wrapped_ParseTupleAndKeywords(
                 args.ptr(),
                 kwds.ptr(),
-                "O|ss",
+                "O|ss$O!",
                 kwd_list,
                 &obj,
                 &className,
-                &op
+                &op,
+                &PyBool_Type,
+                &noElementMap
             )) {
             throw Py::Exception();
         }
-        return shape2pyshape(TopoShape().makeElementFace(getPyShapes(obj), op, className));
+        auto elementMapPolicy = Base::asBoolean(noElementMap) ? ElementMapPolicy::Drop
+                                                              : ElementMapPolicy::Propagate;
+        return shape2pyshape(
+            TopoShape().makeElementFace(getPyShapes(obj), op, className, nullptr, elementMapPolicy)
+        );
     }
 
     template<class F>
@@ -1627,7 +1594,7 @@ private:
             }
 
             if (!mkPoly.IsDone()) {
-                Standard_Failure::Raise(
+                throw Standard_Failure(
                     "Cannot create polygon because less than two vertices are given"
                 );
             }

@@ -81,6 +81,12 @@ class SelectionStyle(IntEnum):
     GreedySelection = 1
 
 
+class SelectionActionMode(str, Enum):
+    Append = "append"
+    Remove = "remove"
+    All = "all"
+
+
 # The values must match with that of the Python enum class in ViewProvider.pyi
 class ToggleVisibilityMode(Enum):
     CanToggleVisibility = "CanToggleVisibility"
@@ -96,6 +102,7 @@ def _isCommandActive(name: str) -> bool:
 Gui.listCommands = Gui.Command.listAll
 Gui.isCommandActive = _isCommandActive
 Gui.Selection.SelectionStyle = SelectionStyle
+Gui.Selection.SelectionActionMode = SelectionActionMode
 
 
 # Important definitions

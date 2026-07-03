@@ -24,7 +24,8 @@
 
 #include "TextureLoader.h"
 
-using namespace MillSim;
+namespace CAMSimulator
+{
 
 TextureItem texItems[] = {
     {1, 40, 0, 0},
@@ -86,19 +87,21 @@ bool TextureLoader::AddImage(TextureItem* texItem, QImage& pixmap, unsigned int*
     return true;
 }
 
-MillSim::TextureLoader::~TextureLoader()
+TextureLoader::~TextureLoader()
 {
     if (mRawData != nullptr) {
         free(mRawData);
     }
 }
 
-unsigned int* MillSim::TextureLoader::GetRawData()
+unsigned int* TextureLoader::GetRawData()
 {
     return mRawData;
 }
 
-TextureItem* MillSim::TextureLoader::GetTextureItem(int i)
+TextureItem* TextureLoader::GetTextureItem(int i)
 {
     return texItems + i;
 }
+
+}  // namespace CAMSimulator

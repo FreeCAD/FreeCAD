@@ -161,6 +161,16 @@ class Rotation(PyObjectBase):
             Rotation by which to multiply this rotation.
         """
         ...
+    # fmt: off
+    @overload
+    def __mul__(self, vector: Vector, /) -> Vector: ...
+    @overload
+    def __mul__(self, matrix: Matrix, /) -> Matrix: ...
+    @overload
+    def __mul__(self, placement: Placement, /) -> Placement: ...
+    @overload
+    def __mul__(self, rotation: Rotation, /) -> Rotation: ...
+    # fmt: on
 
     @constmethod
     def multVec(self, vector: Vector, /) -> Vector:

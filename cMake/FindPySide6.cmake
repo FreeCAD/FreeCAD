@@ -37,6 +37,39 @@ if(PySide6_FOUND)
         message(STATUS "PySide/Qt version check passed (${_pyside6_major_minor})")
     endif()
 
+    set(_pyside6_qtsvgwidgets_consumers)
+    if(BUILD_BIM)
+        list(APPEND _pyside6_qtsvgwidgets_consumers BUILD_BIM)
+    endif()
+    if(BUILD_MATERIAL)
+        list(APPEND _pyside6_qtsvgwidgets_consumers BUILD_MATERIAL)
+    endif()
+
+    if(BUILD_GUI AND _pyside6_qtsvgwidgets_consumers)
+        execute_process(
+            COMMAND ${Python3_EXECUTABLE} -c "import PySide6.QtSvgWidgets"
+            RESULT_VARIABLE PYSIDE6_QTSVGWIDGETS_IMPORT_FAILED
+            ERROR_VARIABLE PYSIDE6_QTSVGWIDGETS_IMPORT_ERROR
+            OUTPUT_QUIET
+        )
+
+        if(PYSIDE6_QTSVGWIDGETS_IMPORT_FAILED)
+            list(JOIN _pyside6_qtsvgwidgets_consumers ", " _pyside6_qtsvgwidgets_consumer_list)
+            string(STRIP "${PYSIDE6_QTSVGWIDGETS_IMPORT_ERROR}" PYSIDE6_QTSVGWIDGETS_IMPORT_ERROR)
+            message(FATAL_ERROR
+" --------------------------------------------------------
+ PySide6.QtSvgWidgets Python module not found.
+ This configuration enables modules that require it: ${_pyside6_qtsvgwidgets_consumer_list}
+ BIM and Material use it for SVG previews.
+ Install python3-pyside6.qtsvgwidgets or provide a PySide6 installation
+ that includes QtSvgWidgets.
+ Python executable: ${Python3_EXECUTABLE}
+ Import error: ${PYSIDE6_QTSVGWIDGETS_IMPORT_ERROR}
+ --------------------------------------------------------"
+            )
+        endif()
+    endif()
+
     if(NOT PySide6_INCLUDE_DIRS AND TARGET PySide6::pyside6)
         get_property(PySide6_INCLUDE_DIRS TARGET PySide6::pyside6 PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
     endif()

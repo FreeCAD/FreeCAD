@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+#include <QCollator>
 #include <QColorDialog>
 #include <QDebug>
 #include <QDesktopServices>
@@ -33,6 +34,7 @@
 #include <QPainter>
 #include <QPlainTextEdit>
 #include <QStylePainter>
+#include <QStyledItemDelegate>
 #include <QTextBlock>
 #include <QTimer>
 #include <QToolTip>
@@ -40,6 +42,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
 #include <App/Material.h>
 
@@ -1574,6 +1577,10 @@ ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly)
 
 bool ExpLineEdit::apply(const std::string& propName)
 {
+    if (m_tentativeDiscard) {
+        m_tentativeDiscard = false;
+        m_savedExpr.reset();
+    }
 
     if (!ExpressionBinding::apply(propName)) {
         if (!autoClose) {
@@ -1624,14 +1631,7 @@ void ExpLineEdit::onChange()
 
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
-        if (result->isDerivedFrom<App::StringExpression>()) {
-            setText(
-                QString::fromUtf8(static_cast<App::StringExpression*>(result.get())->getText().c_str())
-            );
-        }
-        else {
-            setText(QString::fromUtf8(result->toString().c_str()));
-        }
+        setText(QString::fromStdString(anyToString(result->getValueAsAny())));
         setReadOnly(true);
         iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
 
@@ -1731,9 +1731,52 @@ void ExpLineEdit::finishFormulaDialog()
 
 void ExpLineEdit::keyPressEvent(QKeyEvent* event)
 {
-    if (!hasExpression()) {
+    if (m_tentativeDiscard || !hasExpression()) {
         QLineEdit::keyPressEvent(event);
     }
+}
+
+void ExpLineEdit::stashExpression()
+{
+    if (!hasExpression() || m_tentativeDiscard) {
+        return;
+    }
+    m_savedExpr = getExpression();
+    m_textAtDiscard = text();
+    m_tentativeDiscard = true;
+    setExpression(std::shared_ptr<App::Expression>());
+    onChange();
+    selectAll();
+}
+
+void ExpLineEdit::mouseDoubleClickEvent(QMouseEvent* event)
+{
+    if (hasExpression() && !m_tentativeDiscard) {
+        stashExpression();
+        return;
+    }
+    QLineEdit::mouseDoubleClickEvent(event);
+}
+
+bool ExpLineEdit::isValueTouched() const
+{
+    return text() != m_textAtDiscard;
+}
+
+void ExpLineEdit::focusOutEvent(QFocusEvent* event)
+{
+    if (m_tentativeDiscard) {
+        m_tentativeDiscard = false;
+        if (!isValueTouched()) {
+            setExpression(m_savedExpr);
+            m_savedExpr.reset();
+            onChange();
+        }
+        else {
+            m_savedExpr.reset();
+        }
+    }
+    QLineEdit::focusOutEvent(event);
 }
 
 // --------------------------------------------------------------------
@@ -1769,6 +1812,162 @@ bool ButtonGroup::exclusive() const
 {
     return _exclusive;
 }
+
+// --------------------------------------------------------------------
+
+class PropertyMapEditor::PropertyMapEditorItemDelegate: public QStyledItemDelegate
+{
+
+public:
+    explicit PropertyMapEditorItemDelegate(QWidget* parent)
+        : QStyledItemDelegate(parent)
+    {}
+
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override
+    {
+        QSize size = QStyledItemDelegate::sizeHint(option, index);
+        size += QSize(0, 5);
+        return size;
+    }
+
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override
+    {
+        painter->save();
+
+        if (index.column() == 1 && (option.state & QStyle::State_Selected)) {
+            auto lineEdit = qobject_cast<QWidget*>(parent())->findChild<Gui::ExpLineEdit*>();
+            if (lineEdit && lineEdit->isVisible()) {
+                painter->fillRect(option.rect, option.palette.color(QPalette::Normal, QPalette::Base));
+            }
+        }
+
+        QColor color = static_cast<QRgb>(QApplication::style()->styleHint(
+            QStyle::SH_Table_GridLineColor,
+            &option,
+            qobject_cast<QWidget*>(parent())
+        ));
+        painter->setPen(QPen(color));
+        painter->drawRect(option.rect);
+
+        painter->restore();
+
+        QStyleOptionViewItem plainOption(option);
+        if (index.column() == 1) {
+            plainOption.state &= ~QStyle::State_Selected;
+
+            plainOption.palette = QPalette(option.palette);
+            auto mapEditor = static_cast<PropertyMapEditor*>(parent());
+            if (mapEditor->isBound()) {
+                QTreeWidgetItem* item = mapEditor->itemFromIndex(index);
+                if (item) {
+                    App::ObjectIdentifier itemPath = mapEditor->getMapItemPath(item->text(0));
+                    if (itemPath.getDocumentObject()->getExpression(itemPath).expression != nullptr) {
+                        plainOption.palette.setColor(QPalette::Text, "#204A87");
+                    }
+                }
+            }
+        }
+
+        QStyledItemDelegate::paint(painter, plainOption, index);
+    }
+
+    virtual QWidget* createEditor(
+        QWidget* parent,
+        const QStyleOptionViewItem&,
+        const QModelIndex& index
+    ) const override
+    {
+        if (index.column() == 1) {
+            auto lineEdit = new ExpLineEdit(parent);
+            lineEdit->setFrame(false);
+            lineEdit->setContentsMargins(1, 1, 0, 0);
+
+            auto mapEditor = static_cast<PropertyMapEditor*>(this->parent());
+            if (mapEditor->isBound()) {
+                QTreeWidgetItem* item = mapEditor->itemFromIndex(index);
+                if (item) {
+                    lineEdit->bind(mapEditor->getMapItemPath(item->text(0)));
+                }
+            }
+
+            return lineEdit;
+        }
+
+        return nullptr;
+    }
+};
+
+PropertyMapEditor::PropertyMapEditor(QWidget* parent)
+    : QTreeWidget(parent)
+    , delegate(new PropertyMapEditorItemDelegate(this))
+{
+    setColumnCount(2);
+    setHeaderLabels(QStringList() << tr("Key") << tr("Value"));
+    header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    setItemDelegate(delegate);
+    setSelectionMode(QAbstractItemView::SingleSelection);
+    setEditTriggers(QAbstractItemView::AllEditTriggers);
+    setIndentation(0);
+    setAlternatingRowColors(true);
+}
+
+PropertyMapEditor::~PropertyMapEditor()
+{
+    delete delegate;
+}
+
+QVariantMap PropertyMapEditor::map() const
+{
+    QVariantMap result;
+
+    for (int i = 0; i < topLevelItemCount(); ++i) {
+        QTreeWidgetItem* item = topLevelItem(i);
+        if (item) {
+            result[item->text(0)] = item->text(1);
+        }
+    }
+
+    return result;
+}
+
+void PropertyMapEditor::setMap(const QVariantMap& data)
+{
+    clear();
+
+    QStringList keys = data.keys();
+    if (!keys.size()) {
+        return;
+    }
+    std::sort(keys.begin(), keys.end(), QCollator());
+
+    QList<QTreeWidgetItem*> items;
+    for (const QString& k : keys) {
+        QTreeWidgetItem* item = new QTreeWidgetItem();
+        item->setText(0, k);
+        item->setText(1, data[k].toString());
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
+        items << item;
+    }
+
+    addTopLevelItems(items);
+}
+
+App::ObjectIdentifier PropertyMapEditor::getMapItemPath(const QString& key) const
+{
+    App::ObjectIdentifier result = getPath();
+    result.addComponent(
+        ObjectIdentifier::Component::MapComponent(ObjectIdentifier::String(key.toStdString(), true))
+    );
+
+    return result;
+}
+
+void PropertyMapEditor::resizeEvent(QResizeEvent* e)
+{
+    QTreeWidget::resizeEvent(e);
+}
+
+// --------------------------------------------------------------------
 
 namespace Gui
 {

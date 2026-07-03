@@ -62,7 +62,7 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
                 type="App::PropertyLength",
                 name="DistanceMax",
                 group="AttractorAnisoCurve",
-                doc="Maxmium distance, above this distance from the curves, prescribe the maximum mesh sizes",
+                doc="Maximum distance, above this distance from the curves, prescribe the maximum mesh sizes",
                 value="100mm",
             ),
             _PropHelper(
@@ -83,7 +83,7 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
                 type="App::PropertyLength",
                 name="SizeMaxTangent",
                 group="AttractorAnisoCurve",
-                doc="Maximum mesh size in the direction tangeant to the closest curve",
+                doc="Maximum mesh size in the direction tangent to the closest curve",
                 value="20mm",
             ),
             _PropHelper(
@@ -97,7 +97,7 @@ class MeshAdvanced(base_femmeshelement.BaseFemMeshElement):
                 type="App::PropertyLength",
                 name="SizeMinTangent",
                 group="AttractorAnisoCurve",
-                doc="Minimum mesh size in the direction tangeant to the closest curve",
+                doc="Minimum mesh size in the direction tangent to the closest curve",
                 value="10mm",
             ),
             _PropHelper(

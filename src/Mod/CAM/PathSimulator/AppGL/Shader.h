@@ -24,16 +24,15 @@
 
 #pragma once
 
-#include <string>
 #include "linmath.h"
+#include <string>
 
-namespace MillSim
+namespace CAMSimulator
 {
+
 class Shader
 {
 public:
-    Shader()
-    {}
     ~Shader();
 
 public:
@@ -55,13 +54,12 @@ public:
     void UpdateSsaoTexSlot(int ssaoSlot);
     void UpdateKernelVals(int nVals, float* vals);
     void UpdateCurSegment(int curSeg);
+    void UpdateStartEnd(const vec3& start, const vec3& end);
+
     unsigned int CompileShader(const char* name, const char* vertShader, const char* fragShader);
     void Activate();
     void Destroy();
-    bool IsValid()
-    {
-        return shaderId > 0;
-    }
+    bool IsValid();
 
 protected:
     int mModelPos = -1;
@@ -86,6 +84,7 @@ protected:
     int mCurSegmentPos = -1;
     int mScreenWidthPos = -1;
     int mScreenHeightPos = -1;
+    int mStartEndPos = -1;
 
     std::string vertShader;
     std::string fragShader;
@@ -110,5 +109,4 @@ extern const char* FragShaderSSAOBlur;
 extern const char* VertShader3DLine;
 extern const char* FragShader3DLine;
 
-
-}  // namespace MillSim
+}  // namespace CAMSimulator

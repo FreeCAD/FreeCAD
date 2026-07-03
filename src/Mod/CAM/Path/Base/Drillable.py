@@ -348,3 +348,16 @@ def getDrillableTargets(obj, toolDiameter=None, vector=App.Vector(0, 0, 1)):
         return [(obj, f"Face{i + 1}") for i, f in enumerate(faces) if f.hashCode() in hashList]
 
     return []
+
+
+def isBlind(base, faceName):
+    """isBlind(base, name) ... returns True if cylinder face creates blind hole
+    base: Part::Feature  # base model
+    faceName: str  # is a name of cylinder face
+    """
+    try:
+        sub = base.Shape.getElement(faceName)
+        if isinstance(sub, Part.Face) and isinstance(sub.Surface, Part.Cylinder):
+            return not Path.Geom.isRoughly(sub.BoundBox.ZMin, base.Shape.BoundBox.ZMin)
+    except Exception:
+        return

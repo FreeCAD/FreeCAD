@@ -43,6 +43,8 @@
 #include <string>
 #include <fmt/format.h>
 
+#include <QObject>
+
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
@@ -562,6 +564,37 @@ static inline bool anyToDouble(double &res, const App::any &value) {
     return true;
 }
 
+std::string anyToString(const App::any &value) {
+    if (is_type(value, typeid(bool))) {
+        return (cast<bool>(value) ? QObject::tr("True") : QObject::tr("False")).toStdString();
+    }
+    else if (is_type(value, typeid(int))) {
+        return std::to_string(cast<int>(value));
+    }
+    else if (is_type(value, typeid(long))) {
+        return std::to_string(cast<long>(value));
+    }
+    else if (is_type(value, typeid(float)) || is_type(value, typeid(double))) {
+        Quantity q(is_type(value, typeid(float)) ? cast<float>(value) : cast<double>(value));
+        return q.getUserString();
+    }
+    else if (is_type(value, typeid(Quantity))) {
+        const Quantity& q = cast<Quantity>(value);
+        return q.getUserString();
+    }
+    else if (is_type(value, typeid(const char*))) {
+        const char* p = cast<const char*>(value);
+        return p ? std::string(p) : QObject::tr("Null").toStdString();
+    }
+    else if (is_type(value, typeid(std::string))) {
+        return cast<std::string>(value);
+    }
+    else {
+        Base::PyGILStateLocker lock;
+        return pyObjectFromAny(value).as_string();
+    }
+}
+
 bool isAnyEqual(const App::any &v1, const App::any &v2) {
     if(v1.empty())
         return v2.empty();
@@ -569,6 +602,23 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
         return false;
 
     if(!is_type(v1,v2.type())) {
+        // As long as anyToQuantity() throws for strings, these must be handled first
+        bool v1_string = is_type(v1, typeid(std::string));
+        bool v1_charptr = is_type(v1, typeid(const char*));
+        bool v2_string = is_type(v2, typeid(std::string));
+        bool v2_charptr = is_type(v2, typeid(const char*));
+
+        if (v1_string || v1_charptr || v2_string || v2_charptr) {
+            if (v1_string && v2_charptr) {
+                auto c = cast<const char*>(v2);
+                return c && cast<std::string>(v1) == c;
+            } else if (v2_string && v1_charptr) {
+                auto c = cast<const char*>(v1);
+                return c && cast<std::string>(v2) == c;
+            }
+            return false;
+        }
+
         if(is_type(v1,typeid(Quantity)))
             return cast<Quantity>(v1) == anyToQuantity(v2);
         else if(is_type(v2,typeid(Quantity)))
@@ -585,20 +635,6 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
                 return false;
         }else if(anyToDouble(d1,v1))
            return anyToDouble(d2,v2) && essentiallyEqual(d1,d2);
-
-        if(is_type(v1,typeid(std::string))) {
-            if(is_type(v2,typeid(const char*))) {
-                auto c = cast<const char*>(v2);
-                return c && cast<std::string>(v1)==c;
-            }
-            return false;
-        }else if(is_type(v1,typeid(const char*))) {
-            if(is_type(v2,typeid(std::string))) {
-                auto c = cast<const char*>(v1);
-                return c && cast<std::string>(v2)==c;
-            }
-            return false;
-        }
     }
 
     if (is_type(v1,typeid(int)))
@@ -909,14 +945,15 @@ ExpressionDeps Expression::getDeps(int option)  const {
     return deps;
 }
 
-void Expression::getDepObjects(
-        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels) const
+void Expression::getDepObjects(std::map<App::DocumentObject*, bool>& deps,
+                               std::vector<std::string>* labels,
+                               std::map<std::pair<std::string, App::DocumentObject*>, bool>* propDeps) const
 {
     for(auto &v : getIdentifiers()) {
         bool hidden = v.second;
         const ObjectIdentifier &var = v.first;
         std::vector<std::string> strings;
-        for(auto &dep : var.getDep(false, &strings)) {
+        for(auto &dep : var.getDep(propDeps != nullptr, &strings)) {
             DocumentObject *obj = dep.first;
             if (!obj->testStatus(ObjectStatus::Remove)) {
                 if (labels) {
@@ -926,6 +963,11 @@ void Expression::getDepObjects(
                 auto res = deps.insert(std::make_pair(obj, hidden));
                 if (!hidden || res.second)
                     res.first->second = hidden;
+                if (propDeps) {
+                    for (auto &propName : dep.second) {
+                        (*propDeps)[std::make_pair(propName, obj)] = hidden;
+                    }
+                }
             }
 
             strings.clear();
@@ -1718,6 +1760,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
         if (args.size() != 2)
             ARGUMENT_THROW("exactly two required.");
         break;
+    case ADDRESS:
     case CATH:
     case HYPOT:
     case ROTATION:
@@ -2283,6 +2326,38 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         initialiseObject(&vector, args);
         return vector;
     }
+    case ADDRESS: {
+        Py::Object row = args[0]->getPyValue();
+        Py::Object col = args[1]->getPyValue();
+        bool absRow = true;
+        bool absCol = true;
+
+        if (!PyLong_Check(row.ptr()))
+            _EXPR_THROW("Function requires the first argument to be an integer.", expr);
+        if (!PyLong_Check(col.ptr()))
+            _EXPR_THROW("Function requires the second argument to be an integer.", expr);
+
+        if (args.size() > 2) {
+            Py::Object refType = args[2]->getPyValue();
+            if (!PyLong_Check(refType.ptr()))
+                _EXPR_THROW("Function requires the third argument to be an integer.", expr);
+
+            auto value = PyLong_AsLong(refType.ptr());
+            if (value < 1 || value > 4)
+                _EXPR_THROW("Invalid reference type: must be 1, 2, 3, or 4.", expr);
+
+            // 1 is Absolute, 2 is Absolute Row / Relative Column,
+            // 3 is Relative Row / Absolute Column, 4 is Relative
+            absRow = value == 1 || value == 2;
+            absCol = value == 1 || value == 3;
+        }
+
+        auto cell = CellAddress(PyLong_AsLong(row.ptr()) - 1, PyLong_AsLong(col.ptr()) - 1, absRow, absCol);
+        if (!cell.isValid())
+            _EXPR_THROW("Cell address out of bounds.", expr);
+
+        return Py::String(cell.toString());
+    }
     case HIDDENREF:
     case HREF:
         return args[0]->getPyValue();
@@ -2735,6 +2810,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "tuple("; break;;
     case VECTOR:
         ss << "vector("; break;;
+    case ADDRESS:
+        ss << "address("; break;;
     case HIDDENREF:
         ss << "hiddenref("; break;;
     case HREF:
@@ -3625,6 +3702,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["tuple"] = FunctionExpression::TUPLE;
         registered_functions["vector"] = FunctionExpression::VECTOR;
 
+        registered_functions["address"] = FunctionExpression::ADDRESS;
         registered_functions["hiddenref"] = FunctionExpression::HIDDENREF;
         registered_functions["href"] = FunctionExpression::HREF;
 

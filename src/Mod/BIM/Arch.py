@@ -2375,6 +2375,14 @@ def _initializeArchObject(
         # Initialize view provider
         if FreeCAD.GuiUp:
             viewProvider = getattr(module, viewProviderName, None)
+            # For the special case where the view provider is in a separate file suffixed with Gui.
+            if not viewProvider:
+                try:
+                    guiModule = importlib.import_module(moduleName + "Gui")
+                    viewProvider = getattr(guiModule, viewProviderName, None)
+                except ImportError:
+                    # A separate Gui module is optional, and the None case is handled below.
+                    pass
             if not viewProvider:
                 FreeCAD.Console.PrintWarning(
                     f"View provider '{viewProviderName}' not found in module '{moduleName}'.\n"
@@ -2685,3 +2693,37 @@ def placeAlongEdge(p1, p2, horizontal=False):
                 placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1)), 90
             ).multiply(placement.Rotation)
     return placement
+
+
+def makeCovering(baseobj=None, name=None):
+    """
+    Creates a covering object from the given base object.
+
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython, optional
+        The base object for the covering. Defaults to None.
+    name : str, optional
+        The name to assign to the created covering. Defaults to None.
+
+    Returns
+    -------
+    Part::FeaturePython
+        The created covering object.
+    """
+    covering = _initializeArchObject(
+        "Part::FeaturePython",
+        baseClassName="_Covering",
+        internalName="Covering",
+        defaultLabel=name if name else translate("Arch", "Covering"),
+        moduleName="ArchCovering",
+        viewProviderName="_ViewProviderCovering",
+    )
+
+    # Initialize all relevant properties
+    if baseobj:
+        covering.Base = baseobj
+    covering.IfcType = "Covering"
+    covering.PredefinedType = "FLOORING"
+
+    return covering
