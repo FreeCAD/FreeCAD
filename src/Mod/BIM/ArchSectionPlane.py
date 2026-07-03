@@ -1264,6 +1264,7 @@ class _ViewProviderSectionPlane:
 
         self.Object = vobj.Object
         self.clip = None
+        self.clip_scene_graph = None
         self.main_transform = gui_utils.find_coin_node(vobj.RootNode, coin.SoTransform)
         self.mat1 = coin.SoMaterial()
         self.mat2 = coin.SoMaterial()
@@ -1402,6 +1403,16 @@ class _ViewProviderSectionPlane:
             vobj.CutView = False
             vobj.CutView = True
 
+    def removeClipPlane(self):
+
+        if not self.clip:
+            return
+        sg = self.clip_scene_graph
+        if sg and sg.findChild(self.clip) >= 0:
+            sg.removeChild(self.clip)
+        self.clip = None
+        self.clip_scene_graph = None
+
     def onChanged(self, vobj, prop):
 
         if prop == "LineColor":
@@ -1456,17 +1467,12 @@ class _ViewProviderSectionPlane:
             # self.txtfont.size = l1
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
-        elif prop in ["CutView", "CutMargin"]:
-            if (
-                hasattr(vobj, "CutView")
-                and FreeCADGui.ActiveDocument.ActiveView
-                and hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph")
-            ):
-                sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-                if vobj.CutView:
-                    if self.clip:
-                        sg.removeChild(self.clip)
-                        self.clip = None
+        elif prop in ["CutView", "CutMargin"] and hasattr(vobj, "CutView"):
+            if vobj.CutView:
+                active_view = getattr(FreeCADGui.ActiveDocument, "ActiveView", None)
+                if active_view and hasattr(active_view, "getSceneGraph"):
+                    sg = active_view.getSceneGraph()
+                    self.removeClipPlane()
                     for o in Draft.get_group_contents(vobj.Object.Objects, walls=True):
                         if hasattr(o.ViewObject, "Lighting"):
                             o.ViewObject.Lighting = "One side"
@@ -1488,10 +1494,9 @@ class _ViewProviderSectionPlane:
                     plane = coin.SbPlane(coin.SbVec3f(norm.x, norm.y, norm.z), dist)
                     self.clip.plane.setValue(plane)
                     sg.insertChild(self.clip, 0)
-                else:
-                    if self.clip:
-                        sg.removeChild(self.clip)
-                        self.clip = None
+                    self.clip_scene_graph = sg
+            else:
+                self.removeClipPlane()
         elif prop == "ShowLabel":
             if vobj.ShowLabel:
                 self.txt.string = vobj.Object.Label or " "
