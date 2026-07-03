@@ -121,7 +121,7 @@ SketchObject::SketchObject() : geoLastId(0)
                       "Internal Geometry",
                       App::Prop_None,
                       "Enables selection of closed profiles within a sketch as input for operations");
-    ADD_PROPERTY_TYPE(_Version,
+    ADD_PROPERTY_TYPE(_InternalFaceVersion,
                       (0),
                       "Base",
                       (App::PropertyType)(App::Prop_Hidden | App::Prop_ReadOnly),
@@ -177,7 +177,7 @@ void SketchObject::setupObject()
     ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
     MakeInternals.setValue(hGrpp->GetBool("MakeInternals", true));
     // New sketches build internal faces with FaceMakerBuildFace.
-    _Version.setValue(2);
+    _InternalFaceVersion.setValue(2);
     inherited::setupObject();
 }
 
@@ -410,7 +410,7 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
     try {
         // Old sketches keep FaceMakerRing: FaceMakerBuildFace names the internal
         // faces differently, breaking references from downstream features.
-        const bool legacy = _Version.getValue() < 2;
+        const bool legacy = _InternalFaceVersion.getValue() < 2;
 
         Part::TopoShape result(getID(), getDocument()->getStringHasher());
         Part::WireJoiner joiner;
@@ -1428,12 +1428,12 @@ void SketchObject::onSketchRestore()
 // clang-format on
 void SketchObject::migrateSketch()
 {
-    // Old documents lack _Version; infer it from the saving version (still the
+    // Old documents lack _InternalFaceVersion; infer it from the saving version (still the
     // file's original at restore) so pre-1.2 sketches keep the legacy face maker.
-    if (_Version.getValue() == 0) {
+    if (_InternalFaceVersion.getValue() == 0) {
         const bool legacy = getDocument()
             && Base::getVersion(getDocument()->getProgramVersion()) <= Base::Version::v1_1;
-        _Version.setValue(legacy ? 1 : 2);
+        _InternalFaceVersion.setValue(legacy ? 1 : 2);
     }
 
     const auto& allGeoms = getInternalGeometry();

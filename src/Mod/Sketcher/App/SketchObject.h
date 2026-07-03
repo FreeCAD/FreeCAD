@@ -111,7 +111,7 @@ public:
     App ::PropertyBool MakeInternals;
     // Internal-face pipeline: 1 = legacy FaceMakerRing (<= 1.1), 2 = FaceMakerBuildFace.
     // Kept so old documents' internal-face names stay stable and references resolve.
-    App::PropertyInteger _Version;
+    App::PropertyInteger _InternalFaceVersion;
     /** @name methods override Feature */
     //@{
     short mustExecute() const override;
