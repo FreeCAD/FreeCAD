@@ -1089,8 +1089,8 @@ class _Wall(ArchComponent.Component):
                             self.basewires = wallBaseShapeEdgesInfo.get(
                                 "wallAxis"
                             )  # 'wallEdges'  # widths, aligns, offsets?
-                            pointOnObject = wallBaseShapeEdgesInfo.get('pointOnObject')
-                            trimEdges = wallBaseShapeEdgesInfo.get('trimEdges')
+                            pointOnObject = wallBaseShapeEdgesInfo.get("pointOnObject")
+                            trimEdges = wallBaseShapeEdgesInfo.get("trimEdges")
                             clEdgeSameIndex = obj.Base.Proxy.clEdgeSameIndex
                     # Sort Sketch edges consistently with below procedures
                     # without using Sketch.Shape.Edges - found the latter order
@@ -1432,12 +1432,15 @@ class _Wall(ArchComponent.Component):
 
                             # if edges in Sketch has pointOnObject constraints,
                             # form T-Joint for corresponding wall segments
-                            if (clEdgeSameIndex and pointOnObject and
-                                not w2.isClosed() and not w1.isClosed()
+                            if (
+                                clEdgeSameIndex
+                                and pointOnObject
+                                and not w2.isClosed()
+                                and not w1.isClosed()
                             ):
                                 self.joint_enabled = True
                                 # check 1st/last edge in the wire, cl[0/-1], if it has pointOnObject Constraint
-                                startEndOfEdges = [0,-1]
+                                startEndOfEdges = [0, -1]
                                 for se in startEndOfEdges:
                                     # get cluster edges list, for [i] of self.basewires
                                     cl = clEdgeSameIndex[i]
@@ -1445,9 +1448,9 @@ class _Wall(ArchComponent.Component):
                                     lenPOObj = len(pointOnObject)
                                     for j in range(lenPOObj):
                                         # Get 1st edge vertex used in ptOnObject
-                                        #0: Curve itself, 1: Starting point, 2: Ending point
-                                        #vertex = firstPos -1
-                                        consI1Pos = pointOnObject[j][0][1]  #constriant[I].FirstPos
+                                        # 0: Curve itself, 1: Starting point, 2: Ending point
+                                        # vertex = firstPos -1
+                                        consI1Pos = pointOnObject[j][0][1]  # constriant[I].FirstPos
                                         consI1PosV = consI1Pos - 1
                                         # Check if 1st edge in the wire, cl[0/-1], has pointOnEdge constraint
                                         # and if only 1 edge, and both end may has constraints,
@@ -1457,16 +1460,20 @@ class _Wall(ArchComponent.Component):
                                         if not (cl[se] == pointOnObject[j][0][0]):
                                             continue
                                         if len(cEdgesF2) == 1:
-                                            if not( (se == 0 and consI1PosV == 1) or
-                                                    (se == -1 and consI1PosV == 0)  ):
+                                            if not (
+                                                (se == 0 and consI1PosV == 1)
+                                                or (se == -1 and consI1PosV == 0)
+                                            ):
                                                 continue
                                         # Cut 1st edge in wire cl[0] with trimEdges
                                         #
                                         # Get 1st edge other end vertex opposite to ptOnObject to test
-                                        #0: Curve itself, 1: Starting point, 2: Ending point
-                                        #vertex = firstPos -1
-                                        consI1PosVEnd = consI1PosV ^ 1  #xor, x ^ 1 : 1 -> 0, 0 -> 1, x ^ 3 : 2 -> 1, 1 -> 2
-                                        
+                                        # 0: Curve itself, 1: Starting point, 2: Ending point
+                                        # vertex = firstPos -1
+                                        consI1PosVEnd = (
+                                            consI1PosV ^ 1
+                                        )  # xor, x ^ 1 : 1 -> 0, 0 -> 1, x ^ 3 : 2 -> 1, 1 -> 2
+
                                         # 1. Get 1st edge of 'OffsetMode'(None) wire in the Wire cl[0]
                                         cEdgesF2eSe = cEdgesF2[se]
                                         # Check if edges[0] / [se] was reversed: yes if brNEdges2[0] present (not None), invert if so
@@ -1474,24 +1481,36 @@ class _Wall(ArchComponent.Component):
                                             consI1PosVEnd2 = consI1PosVEnd ^ 1  # reverse direction
                                             reversed2 = True
                                         else:
-                                            consI1PosVEnd2 = consI1PosVEnd                                            
+                                            consI1PosVEnd2 = consI1PosVEnd
                                             reversed2 = False
                                         cEdgesF2Test = cEdgesF2eSe.Vertexes[consI1PosVEnd2]
                                         # check starting point pos and if edge direction was reversed
                                         # extend edge by doubling length (extend to infinity not works)
-                                        cEdgesF2eSeLs = Part.LineSegment(cEdgesF2eSe.Vertexes[0].Point, cEdgesF2eSe.Vertexes[1].Point)
-                                        if (consI1PosV ^ reversed2):  # if consI1PosV XOR reversed Cases
+                                        cEdgesF2eSeLs = Part.LineSegment(
+                                            cEdgesF2eSe.Vertexes[0].Point,
+                                            cEdgesF2eSe.Vertexes[1].Point,
+                                        )
+                                        if (
+                                            consI1PosV ^ reversed2
+                                        ):  # if consI1PosV XOR reversed Cases
                                             cEdgesF2eSeLsLP = cEdgesF2eSeLs.LastParameter
-                                            cEdgesF2eSeExtLs = cEdgesF2eSeLs.trim(0,cEdgesF2eSeLsLP*2)
+                                            cEdgesF2eSeExtLs = cEdgesF2eSeLs.trim(
+                                                0, cEdgesF2eSeLsLP * 2
+                                            )
                                         else:
                                             cEdgesF2eSeLsLP = cEdgesF2eSeLs.LastParameter
-                                            cEdgesF2eSeExtLs = cEdgesF2eSeLs.trim(-cEdgesF2eSeLsLP,cEdgesF2eSeLsLP)
+                                            cEdgesF2eSeExtLs = cEdgesF2eSeLs.trim(
+                                                -cEdgesF2eSeLsLP, cEdgesF2eSeLsLP
+                                            )
                                         cEdgesF2eSeExtLsS = cEdgesF2eSeExtLs.toShape()
                                         cEdgesF2eSeCut = cEdgesF2eSeExtLsS.cut(trimEdges[j])
                                         cEdgesF2eSeCutEdges = cEdgesF2eSeCut.Edges
                                         # Check each vertex of resulted cutted edges to find which is connected
                                         for e2 in cEdgesF2eSeCutEdges:
-                                            ptOnEdge = any(DraftGeomUtils.isPtOnEdge(v.Point,cEdgesF2Test) for v in e2.Vertexes)
+                                            ptOnEdge = any(
+                                                DraftGeomUtils.isPtOnEdge(v.Point, cEdgesF2Test)
+                                                for v in e2.Vertexes
+                                            )
                                             # if found, update cEdgesF2[0] with trimmed / extended one
                                             if ptOnEdge:
                                                 # Update cEdgesF2 list
@@ -1506,21 +1525,33 @@ class _Wall(ArchComponent.Component):
                                             consI1PosVEnd1 = consI1PosVEnd ^ 1  # reverse direction
                                             reversed1 = True
                                         else:
-                                            consI1PosVEnd1 = consI1PosVEnd                                            
+                                            consI1PosVEnd1 = consI1PosVEnd
                                             reversed1 = False
                                         cEdgesF1Test = cEdgesF1eSe.Vertexes[consI1PosVEnd1]
-                                        cEdgesF1eSeLs = Part.LineSegment(cEdgesF1eSe.Vertexes[0].Point, cEdgesF1eSe.Vertexes[1].Point)
-                                        if (consI1PosV ^ reversed1):  # if consI1PosV XOR reversed Cases
+                                        cEdgesF1eSeLs = Part.LineSegment(
+                                            cEdgesF1eSe.Vertexes[0].Point,
+                                            cEdgesF1eSe.Vertexes[1].Point,
+                                        )
+                                        if (
+                                            consI1PosV ^ reversed1
+                                        ):  # if consI1PosV XOR reversed Cases
                                             cEdgesF1eSeLsLP = cEdgesF1eSeLs.LastParameter
-                                            cEdgesF1eSeExtLs = cEdgesF1eSeLs.trim(0,cEdgesF1eSeLsLP*2)
+                                            cEdgesF1eSeExtLs = cEdgesF1eSeLs.trim(
+                                                0, cEdgesF1eSeLsLP * 2
+                                            )
                                         else:
                                             cEdgesF1eSeLsLP = cEdgesF1eSeLs.LastParameter
-                                            cEdgesF1eSeExtLs = cEdgesF1eSeLs.trim(-cEdgesF1eSeLsLP,cEdgesF1eSeLsLP)
+                                            cEdgesF1eSeExtLs = cEdgesF1eSeLs.trim(
+                                                -cEdgesF1eSeLsLP, cEdgesF1eSeLsLP
+                                            )
                                         cEdgesF1eSeExtLsS = cEdgesF1eSeExtLs.toShape()
                                         cEdgesF1eSeCut = cEdgesF1eSeExtLsS.cut(trimEdges[j])
                                         cEdgesF1eSeCutEdges = cEdgesF1eSeCut.Edges
                                         for e1 in cEdgesF1eSeCutEdges:
-                                            ptOnEdge = any(DraftGeomUtils.isPtOnEdge(v.Point,cEdgesF1Test) for v in e1.Vertexes)
+                                            ptOnEdge = any(
+                                                DraftGeomUtils.isPtOnEdge(v.Point, cEdgesF1Test)
+                                                for v in e1.Vertexes
+                                            )
                                             if ptOnEdge:
                                                 cEdgesF1[se] = e1
                                                 anyEdgeF1Replaced = True
