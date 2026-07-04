@@ -94,6 +94,7 @@ macro(SetupBundledCoinPivy)
     set(USE_EXTERNAL_EXPAT ON CACHE BOOL "Use system Expat for bundled Coin" FORCE)
     set(FREETYPE_RUNTIME_LINKING OFF CACHE BOOL "Disable FreeType runtime linking for bundled Coin" FORCE)
     set(COIN_BUILD_TESTS OFF CACHE BOOL "Build bundled Coin tests" FORCE)
+    set(COIN_INSTALL OFF CACHE BOOL "Disable standalone install rules for bundled Coin" FORCE)
     add_subdirectory("${CMAKE_SOURCE_DIR}/src/3rdParty/coin" "${CMAKE_BINARY_DIR}/src/3rdParty/coin")
     if (NOT DEFINED COIN_VERSION OR COIN_VERSION STREQUAL "")
         message(FATAL_ERROR "Bundled Coin did not define COIN_VERSION")
@@ -104,6 +105,10 @@ macro(SetupBundledCoinPivy)
         SYSTEM INTERFACE
         "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/3rdParty/coin/include>"
         "$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src/3rdParty/coin/include>"
+    )
+    install(TARGETS Coin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} NAMELINK_SKIP
     )
 
     set(PIVY_USE_SOQT OFF CACHE BOOL "Build bundled Pivy SoQt bindings" FORCE)
