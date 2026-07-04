@@ -446,7 +446,7 @@ void CmdMeshExport::activated(int)
         filter << it.first;
     }
 
-    qsizetype formatIndex;
+    qsizetype formatIndex = -1;
     QString fn = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(),
         QObject::tr("Export Mesh"),

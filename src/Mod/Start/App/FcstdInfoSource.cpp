@@ -104,7 +104,6 @@ void FcstdInfoSource::run()
 {
     const std::string stdFilePath(_filePath.toStdString());
     App::ProjectFile proj(stdFilePath);
-    proj.loadDocument();
     auto fileStats = getProjectFileInfo(proj);
     auto thumbnail = loadFCStdThumbnail(proj, _filePath);
     Q_EMIT _signals.infoAvailable(_filePath, fileStats, thumbnail);

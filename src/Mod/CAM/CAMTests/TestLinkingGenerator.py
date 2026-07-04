@@ -21,8 +21,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
     def setUp(self):
         self.start = FreeCAD.Vector(0, 0, 0)
         self.target = FreeCAD.Vector(10, 0, 0)
-        self.local_clearance = 2.0
-        self.global_clearance = 5.0
+        self.heights_clearance = (2.0, 5.0)
         self.tooldiameter = 2
         self.tool = Part.makeCylinder(self.tooldiameter / 2, 5)
 
@@ -30,8 +29,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
         cmds = generator.get_linking_moves(
             start_position=self.start,
             target_position=self.target,
-            local_clearance=self.local_clearance,
-            global_clearance=self.global_clearance,
+            heights_clearance=self.heights_clearance,
             solids=[],
         )
         self.assertGreater(len(cmds), 0)
@@ -41,8 +39,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
         cmds = generator.get_linking_moves(
             start_position=self.start,
             target_position=self.start,
-            local_clearance=self.local_clearance,
-            global_clearance=self.global_clearance,
+            heights_clearance=self.heights_clearance,
             solids=[],
         )
         self.assertEqual(len(cmds), 0)
@@ -52,18 +49,8 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             generator.get_linking_moves(
                 start_position=self.start,
                 target_position=self.target,
-                local_clearance=self.local_clearance,
-                global_clearance=self.global_clearance,
+                heights_clearance=self.heights_clearance,
                 retract_height_offset=-1,
-            )
-
-    def test_clearance_violation_raises(self):
-        with self.assertRaises(ValueError):
-            generator.get_linking_moves(
-                start_position=self.start,
-                target_position=self.target,
-                local_clearance=10.0,
-                global_clearance=5.0,
             )
 
     def test_path_blocked_by_solid(self):
@@ -73,8 +60,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             generator.get_linking_moves(
                 start_position=self.start,
                 target_position=self.target,
-                local_clearance=self.local_clearance,
-                global_clearance=self.global_clearance,
+                heights_clearance=self.heights_clearance,
                 solids=[blocking_box],
                 tool_diameter=0,
             )
@@ -86,8 +72,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             generator.get_linking_moves(
                 start_position=self.start,
                 target_position=self.target,
-                local_clearance=5,
-                global_clearance=11,
+                heights_clearance=(5, 11),
                 collision_clearance=1.1,
                 solids=[blocking_box],
                 tool_diameter=0,
@@ -101,8 +86,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
         cmds = generator.get_linking_moves(
             start_position=start,
             target_position=target,
-            local_clearance=self.local_clearance,
-            global_clearance=self.global_clearance,
+            heights_clearance=self.heights_clearance,
             solids=[],
         )
 
@@ -134,8 +118,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
         cmds = generator.get_linking_moves(
             start_position=start,
             target_position=target,
-            local_clearance=self.local_clearance,
-            global_clearance=self.global_clearance,
+            heights_clearance=self.heights_clearance,
             solids=[],
         )
 
@@ -159,8 +142,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
         cmds = generator.get_linking_moves(
             start_position=self.start,
             target_position=self.target,
-            local_clearance=self.local_clearance,
-            global_clearance=self.global_clearance,
+            heights_clearance=self.heights_clearance,
             tool_diameter=self.tooldiameter,
             collision_clearance=0.001,
             solids=[blocking_box1, blocking_box2],
@@ -174,8 +156,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             generator.get_linking_moves(
                 start_position=self.start,
                 target_position=self.target,
-                local_clearance=self.local_clearance,
-                global_clearance=self.global_clearance,
+                heights_clearance=self.heights_clearance,
                 tool_diameter=self.tooldiameter,
                 collision_clearance=0.001,
                 solids=[blocking_box1, blocking_box2],
@@ -192,8 +173,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
         cmds = generator.get_linking_moves(
             start_position=self.start,
             target_position=self.target,
-            local_clearance=self.local_clearance,
-            global_clearance=self.global_clearance,
+            heights_clearance=self.heights_clearance,
             tool_diameter=self.tooldiameter,
             collision_clearance=0.001,
             solids=[blocking_box1, blocking_box2],
@@ -207,8 +187,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             generator.get_linking_moves(
                 start_position=self.start,
                 target_position=self.target,
-                local_clearance=self.local_clearance,
-                global_clearance=self.global_clearance,
+                heights_clearance=self.heights_clearance,
                 tool_shape=self.tool,
                 collision_clearance=0.001,
                 solids=[blocking_box1, blocking_box2],
@@ -219,8 +198,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
         cmds = generator.get_linking_moves(
             start_position=self.start,
             target_position=self.target,
-            local_clearance=self.local_clearance,
-            global_clearance=self.global_clearance,
+            heights_clearance=self.heights_clearance,
             tool_shape=Part.Shape(),
             collision_clearance=0.001,
             solids=[Part.Shape()],
@@ -232,8 +210,7 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
         cmds = generator.get_linking_moves(
             start_position=self.start,
             target_position=FreeCAD.Vector(10, 0, 5),
-            local_clearance=self.local_clearance,
-            global_clearance=self.global_clearance,
+            heights_clearance=self.heights_clearance,
             retract_height_offset=0,
         )
         self.assertTrue(any(cmd for cmd in cmds if cmd.Parameters.get("Z") == self.local_clearance))

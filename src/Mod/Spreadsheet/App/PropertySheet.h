@@ -112,22 +112,28 @@ public:
     void setContent(App::CellAddress address, const char* value);
 
     void setAlignment(App::CellAddress address, int _alignment);
+    void setAlignment(App::Range range, int _alignment);
 
     void setStyle(App::CellAddress address, const std::set<std::string>& _style);
+    void setStyle(App::Range address, const std::set<std::string>& _style);
 
     void setForeground(App::CellAddress address, const Base::Color& color);
+    void setForeground(App::Range range, const Base::Color& color);
 
     void clearForeground(App::CellAddress address);
 
     void setBackground(App::CellAddress address, const Base::Color& color);
+    void setBackground(App::Range range, const Base::Color& color);
 
     void clearBackground(App::CellAddress address);
 
     void setDisplayUnit(App::CellAddress address, const std::string& unit);
+    void setDisplayUnit(App::Range range, const std::string& unit);
 
     void setAlias(App::CellAddress address, const std::string& alias);
 
     void setComputedUnit(App::CellAddress address, const Base::Unit& unit);
+    void setComputedUnit(App::Range range, const Base::Unit& unit);
 
     void setSpans(App::CellAddress address, int rows, int columns);
 

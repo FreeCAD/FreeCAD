@@ -677,6 +677,7 @@ class PropertyType(IntEnum):
     Prop_Output = 8
     Prop_NoRecompute = 16
     Prop_NoPersist = 32
+    Prop_Input = 64
 
 App.PropertyType = PropertyType
 
@@ -1348,6 +1349,56 @@ class InitPipeline:
         paths.add(packages)
         return paths
 
+    def check_bundled_pivy(self) -> None:
+        """
+        Verify that bundled builds resolve the bundled Pivy package.
+        """
+        if App.ConfigGet("PIVY_SOURCE") != "bundled":
+            return
+
+        expected = (self.std_home / "Mod" / "pivy").resolve()
+
+        def block_system_pivy(message: str) -> None:
+            for name in list(sys.modules):
+                if name == "pivy" or name.startswith("pivy."):
+                    del sys.modules[name]
+            sys.modules["pivy"] = None
+            raise RuntimeError(message)
+
+        def path_from_import_origin(origin: str) -> Path:
+            path = Path(origin).resolve()
+            return path.parent if path.name == "__init__.py" else path
+
+        def find_pivy_path() -> Path:
+            module = sys.modules.get("pivy")
+            module_file = getattr(module, "__file__", None) if module else None
+            if module_file:
+                return path_from_import_origin(module_file)
+
+            spec = importlib.util.find_spec("pivy")
+            if spec is None:
+                block_system_pivy(
+                    f"Bundled Pivy is enabled, but pivy was not found. "
+                    f"Expected bundled Pivy at {expected!s}."
+                )
+            if spec.submodule_search_locations:
+                return Path(next(iter(spec.submodule_search_locations))).resolve()
+            if spec.origin:
+                return path_from_import_origin(spec.origin)
+            block_system_pivy(
+                f"Bundled Pivy is enabled, but pivy has no import location. "
+                f"Expected bundled Pivy at {expected!s}."
+            )
+
+        resolved = find_pivy_path()
+        if resolved != expected:
+            block_system_pivy(
+                f"Bundled Pivy is enabled, but Python resolves pivy from {resolved!s}. "
+                f"Expected bundled Pivy at {expected!s}."
+            )
+
+        Log(f"Init:   Using bundled Pivy from {expected!s}")
+
     def scan(self) -> None:
         """
         Scan step, search for standard directories, libraries and Mods.
@@ -1449,6 +1500,7 @@ class InitPipeline:
         # Update search paths to make Mods visible to import system.
         search_paths = self.search_paths
         search_paths.commit()
+        self.check_bundled_pivy()
 
         # Dir Mods first
         for mod in self.dir_mod_scanner.iter():

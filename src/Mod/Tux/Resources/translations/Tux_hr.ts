@@ -111,9 +111,9 @@ Zaobljeni Arcball</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="674"/>
-      <source>Navigation Indicator</source>
+      <source>Navigation Styles</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation type="unfinished">Navigation Indicator</translation>
+      <translation type="unfinished">Navigation Styles</translation>
     </message>
   </context>
 </TS>

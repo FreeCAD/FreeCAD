@@ -38,7 +38,8 @@ jobs:
           operations-per-run: 200  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          exempt-issue-labels: 'Status: Confirmed,Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close,3rd party: OCC'
+          only-issue-types: 'Bug'
+          exempt-issue-labels: 'Status: Confirmed,Priority: High,Priority: Critical,Blocker,no-auto-close,3rd party: OCC'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
@@ -64,7 +65,8 @@ jobs:
           operations-per-run: 100  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          only-labels: 'Status: Needs feedback,Status: Needs test on dev version,Status: Needs steps to reproduce'
+          only-issue-types: 'Bug'
+          only-issue-labels: 'Status: Needs feedback,Status: Needs test on dev version,Status: Needs steps to reproduce'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
@@ -91,7 +93,8 @@ jobs:
           operations-per-run: 100  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close,3rd party: OCC'
+          only-issue-types: 'Bug'
+          exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker,no-auto-close,3rd party: OCC'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |

@@ -759,7 +759,16 @@ bool SoFCUnifiedSelection::setPreselect(
         printPreselectionInfo(docname, objname, element, x, y, z, 1e-7);
 
 
-        int ret = Gui::Selection().setPreselect(docname, objname, element, x, y, z);
+        int ret = Gui::Selection().setPreselect(
+            docname,
+            objname,
+            element,
+            x,
+            y,
+            z,
+            SelectionChanges::MsgSource::Any,
+            SelectionChanges::PickedPoint::Valid
+        );
         if (ret < 0 && currentHighlightPath) {
             return true;
         }
@@ -866,8 +875,17 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
             // So, make sure that the object still exists afterwards (#17965)
             ViewProviderWeakPtrT guard(vpd);
             getFullSubElementName(subName);
-            bool ok = Gui::Selection()
-                          .addSelection(docname, objname, subName.c_str(), pt[0], pt[1], pt[2], &sels);
+            bool ok = Gui::Selection().addSelection(
+                docname,
+                objname,
+                subName.c_str(),
+                pt[0],
+                pt[1],
+                pt[2],
+                &sels,
+                true,
+                Gui::SelectionChanges::PickedPoint::Valid
+            );
             if (guard.expired()) {
                 return false;
             }
@@ -973,7 +991,9 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
             pt[0],
             pt[1],
             pt[2],
-            &sels
+            &sels,
+            true,
+            Gui::SelectionChanges::PickedPoint::Valid
         );
         if (ok) {
             type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
@@ -1650,7 +1670,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction* action, bool inPath)
             style = SoFCSelectionRoot::Box;
         }
         else {
-            renderBBox(action, this, ctx->hlAll ? ctx->hlColor : ctx->selColor);
+            renderBBox(action, this, (ctx->hlAll && !ctx->selAll) ? ctx->hlColor : ctx->selColor);
             return true;
         }
     }
@@ -2174,7 +2194,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                 SbColor selColor, hlColor;
                 SoFCSelectionRoot::checkSelection(sel, selColor, hl, hlColor);
                 if (sel || hl) {
-                    SoFCSelectionRoot::renderBBox(action, this, hl ? hlColor : selColor);
+                    SoFCSelectionRoot::renderBBox(action, this, (hl && !sel) ? hlColor : selColor);
                 }
                 else {
                     inherited::GLRenderInPath(action);

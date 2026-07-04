@@ -250,6 +250,82 @@ the characters listed here will be drawn using a substitute font.</string>
        </widget>
       </item>
       <item row="6" column="0">
+       <widget class="QLabel" name="label_axisTransparency">
+        <property name="text">
+         <string>Axis transparency</string>
+        </property>
+        <property name="buddy">
+         <cstring>axisTransparency</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::PrefSpinBox" name="axisTransparency">
+        <property name="toolTip">
+         <string>Transparency of visible axes.</string>
+        </property>
+        <property name="suffix">
+         <string notr="true">%</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>30</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AxisTransparency</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_occludedAxisTransparency">
+        <property name="text">
+         <string>Occluded axis transparency</string>
+        </property>
+        <property name="buddy">
+         <cstring>occludedAxisTransparency</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="Gui::PrefSpinBox" name="occludedAxisTransparency">
+        <property name="toolTip">
+         <string>Transparency of occluded axes.</string>
+        </property>
+        <property name="suffix">
+         <string notr="true">%</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>90</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>OccludedAxisTransparency</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
          <string>Segments per geometry</string>
@@ -259,7 +335,7 @@ the characters listed here will be drawn using a substitute font.</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="8" column="1">
        <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
         <property name="toolTip">
          <string>The number of polygons used for geometry approximation</string>
@@ -278,7 +354,7 @@ the characters listed here will be drawn using a substitute font.</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="2">
+      <item row="9" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
         <property name="toolTip">
          <string>Opens a dialog to input a value for new dimensional constraints after creation</string>
@@ -297,7 +373,7 @@ the characters listed here will be drawn using a substitute font.</string>
         </property>
        </widget>
       </item>
-      <item row="8" column="0" colspan="2">
+      <item row="10" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="continueMode">
         <property name="toolTip">
          <string>Keeps the current Sketcher tool active after creating geometry</string>
@@ -316,7 +392,7 @@ the characters listed here will be drawn using a substitute font.</string>
         </property>
        </widget>
       </item>
-      <item row="9" column="0" colspan="2">
+      <item row="11" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="constraintMode">
         <property name="toolTip">
          <string>Keeps the current Sketcher constraint tool active after creating geometry</string>
@@ -335,7 +411,7 @@ the characters listed here will be drawn using a substitute font.</string>
         </property>
        </widget>
       </item>
-      <item row="10" column="0" colspan="2">
+      <item row="12" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="checkBoxHideUnits">
         <property name="toolTip">
          <string>Base length units will not be displayed in constraints or cursor coordinates.
@@ -352,7 +428,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="0">
+      <item row="13" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowCursorCoords">
         <property name="toolTip">
          <string>Shows cursor position coordinates next to the cursor while editing a sketch</string>
@@ -371,7 +447,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="12" column="0">
+      <item row="14" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxUseSystemDecimals">
         <property name="toolTip">
          <string>Cursor coordinates will use the system decimals setting instead of the short form</string>
@@ -387,7 +463,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="13" column="0">
+      <item row="15" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowDimensionalName">
         <property name="toolTip">
          <string>Shows names of dimensional constraints, if they exist</string>
@@ -406,7 +482,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
         </property>
        </widget>
       </item>
-      <item row="13" column="1">
+      <item row="15" column="1">
        <widget class="Gui::PrefLineEdit" name="prefDimensionalStringFormat">
         <property name="toolTip">
          <string>The format of the dimensional constraint string presentation.
@@ -665,6 +741,8 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
   <tabstop>EditSketcherFontSize</tabstop>
   <tabstop>ConstraintSymbolSize</tabstop>
   <tabstop>viewScalingFactor</tabstop>
+  <tabstop>axisTransparency</tabstop>
+  <tabstop>occludedAxisTransparency</tabstop>
   <tabstop>SegmentsPerGeometry</tabstop>
   <tabstop>dialogOnDistanceConstraint</tabstop>
   <tabstop>continueMode</tabstop>

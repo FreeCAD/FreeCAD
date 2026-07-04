@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="613"/>
+      <location filename="../../Application.cpp" line="619"/>
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>
@@ -66,7 +66,7 @@ Användaren bör sedan klicka på knappen Uppdatera i huvudverktygsfältet.
     <message>
       <location filename="../../Datums.cpp" line="273"/>
       <source>Origin-Point</source>
-      <translation>Källa</translation>
+      <translation>Ursprungspunkt</translation>
     </message>
   </context>
   <context>
@@ -75,8 +75,7 @@ Användaren bör sedan klicka på knappen Uppdatera i huvudverktygsfältet.
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all link
-that links to the same configurable object</translation>
+      <translation>Lagra användarens senaste val om huruvida CopyOnChange ska appliceras på alla länkar som länkar till samma konfigurerbara objekt</translation>
     </message>
   </context>
 </TS>

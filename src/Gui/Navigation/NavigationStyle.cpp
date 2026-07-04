@@ -40,6 +40,7 @@
 #include <QMenu>
 
 
+#include <algorithm>
 #include <cmath>
 #include <limits>
 
@@ -49,6 +50,7 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
 #include "Application.h"
+#include "Camera.h"
 #include "Command.h"
 #include "Action.h"
 #include "Inventor/SoMouseWheelEvent.h"
@@ -59,25 +61,9 @@
 #include "Selection.h"
 #include "SoFullPathHelper.h"
 #include "View3DInventorViewer.h"
+#include "ViewParams.h"
 
 using namespace Gui;
-
-namespace
-{
-bool rotationsMatch(const SbRotation& lhs, const SbRotation& rhs, float squaredTolerance = 1e-6F)
-{
-    float l0, l1, l2, l3;
-    float r0, r1, r2, r3;
-    lhs.getValue(l0, l1, l2, l3);
-    rhs.getValue(r0, r1, r2, r3);
-    const float dot = l0 * r0 + l1 * r1 + l2 * r2 + l3 * r3;
-    const float absDot = std::fabs(dot);
-    // For unit quaternions, ||a - b||^2 = 2 - 2 * dot(a, b). Since q and -q
-    // encode the same rotation, use abs(dot) to compare against the closer sign.
-    const float squaredDistance = 2.0F * (1.0F - absDot);
-    return squaredDistance <= squaredTolerance;
-}
-}  // namespace
 
 class FCSphereSheetProjector: public SbSphereSheetProjector
 {
@@ -1266,7 +1252,73 @@ void NavigationStyle::spin_simplified(SbVec2f curpos, SbVec2f prevpos)
     hasDragged = true;
 }
 
+void NavigationStyle::beginOrbitDrag(const OrbitDragOptions& options)
+{
+    stopAnimating();
+
+    OrbitDragState state;
+    state.center = viewer->getFocalPoint();
+    state.sensitivity = std::max(0.0F, options.sensitivity);
+
+    SbSphere sceneSphere;
+    if (options.centerMode == OrbitDragOptions::CenterMode::SceneBoundingSphere
+        && getObjectBoundingSphere(sceneSphere)) {
+        state.center = sceneSphere.getCenter();
+        state.minDistance = std::max(0.0F, options.minDistanceFactor) * sceneSphere.getRadius();
+        state.clippingRadius = std::max(0.0F, options.clippingRadiusFactor) * sceneSphere.getRadius();
+    }
+
+    orbitDrag = state;
+    applyOrbitDragCameraConstraints(*orbitDrag);
+}
+
+void NavigationStyle::updateOrbitDrag(SbVec2f curpos, SbVec2f prevpos)
+{
+    if (!isRotationEnabled()) {
+        return;
+    }
+
+    if (!orbitDrag) {
+        return;
+    }
+
+    assert(this->spinprojector);
+
+    const float dragSensitivity = orbitDrag->sensitivity;
+    const auto scalePosition = [dragSensitivity](SbVec2f position) {
+        return SbVec2f(
+            0.5F + dragSensitivity * (position[0] - 0.5F),
+            0.5F + dragSensitivity * (position[1] - 0.5F)
+        );
+    };
+
+    curpos = scalePosition(curpos);
+    prevpos = scalePosition(prevpos);
+
+    if (getOrbitStyle() == FreeTurntable) {
+        SbVec2f midpos(prevpos[0], curpos[1]);
+        spinSimplifiedInternal(curpos, midpos, &orbitDrag->center);
+        spinSimplifiedInternal(midpos, prevpos, &orbitDrag->center);
+    }
+    else {
+        spinSimplifiedInternal(curpos, prevpos, &orbitDrag->center);
+    }
+
+    applyOrbitDragCameraConstraints(*orbitDrag);
+    hasDragged = true;
+}
+
+void NavigationStyle::endOrbitDrag()
+{
+    orbitDrag.reset();
+}
+
 void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
+{
+    spinSimplifiedInternal(curpos, prevpos, nullptr);
+}
+
+void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos, const SbVec3f* center)
 {
     // 0000333: Turntable camera rotation
     SbMatrix mat;
@@ -1286,7 +1338,10 @@ void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
     }
     r.invert();
 
-    if (this->rotationCenterMode && this->rotationCenterFound) {
+    if (center) {
+        this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r, *center);
+    }
+    else if (this->rotationCenterMode && this->rotationCenterFound) {
         this->reorientCamera(viewer->getSoRenderManager()->getCamera(), r, rotationCenter);
     }
     else {
@@ -1294,13 +1349,13 @@ void NavigationStyle::spinSimplifiedInternal(SbVec2f curpos, SbVec2f prevpos)
     }
 }
 
-bool NavigationStyle::getObjectBoundingBoxCenter(SbVec3f& center) const
+bool NavigationStyle::getObjectBoundingSphere(SbSphere& sphere) const
 {
     if (!viewer->objectGroup) {
         return false;
     }
 
-    // Get the bounding box center of the physical object group
+    // Get the bounding sphere of the physical object group.
     SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.apply(viewer->objectGroup);
     const SbBox3f boundingBox = action.getBoundingBox();
@@ -1308,8 +1363,55 @@ bool NavigationStyle::getObjectBoundingBoxCenter(SbVec3f& center) const
         return false;
     }
 
-    center = boundingBox.getCenter();
+    sphere.circumscribe(boundingBox);
     return true;
+}
+
+bool NavigationStyle::getObjectBoundingBoxCenter(SbVec3f& center) const
+{
+    SbSphere sphere;
+    if (!getObjectBoundingSphere(sphere)) {
+        return false;
+    }
+
+    center = sphere.getCenter();
+    return true;
+}
+
+void NavigationStyle::applyOrbitDragCameraConstraints(const OrbitDragState& state)
+{
+    SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+    if (!camera) {
+        return;
+    }
+
+    SbVec3f direction;
+    camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+
+    SbVec3f cameraPosition = camera->position.getValue();
+    float centerDepth = (state.center - cameraPosition).dot(direction);
+    if (state.minDistance > 0.0F && centerDepth < state.minDistance) {
+        cameraPosition -= (state.minDistance - centerDepth) * direction;
+        camera->position = cameraPosition;
+        centerDepth = state.minDistance;
+    }
+
+    if (centerDepth > 0.0F) {
+        camera->focalDistance = centerDepth;
+    }
+
+    if (state.clippingRadius <= 0.0F || centerDepth <= 0.0F) {
+        return;
+    }
+
+    const float minNearDistance = camera->isOfType(SoPerspectiveCamera::getClassTypeId())
+        ? std::max(state.clippingRadius * 1.0e-4F, 1.0e-5F)
+        : 0.0F;
+    const float minClipSpan = std::max(state.clippingRadius * 1.0e-3F, 1.0e-4F);
+    const float nearDistance = std::max(minNearDistance, centerDepth - state.clippingRadius);
+    const float farDistance = std::max(centerDepth + state.clippingRadius, nearDistance + minClipSpan);
+    camera->nearDistance = nearDistance;
+    camera->farDistance = farDistance;
 }
 
 SbBool NavigationStyle::doSpin()
@@ -1550,7 +1652,7 @@ SbBool NavigationStyle::canChangeCameraOrientation(
     const OrientationChangeSource source
 ) const
 {
-    if (rotationsMatch(current, target)) {
+    if (Camera::rotationsMatch(current, target)) {
         return true;
     }
     if (isOrientationLocked()) {
@@ -1787,6 +1889,22 @@ bool NavigationStyle::tryStartBoxSelection(const SoLocation2Event* const ev, boo
     return tryStartBoxSelection(*selectionStartPosition, ev, additiveSelection, false);
 }
 
+bool NavigationStyle::handleSelectionDragMotion(
+    const SoLocation2Event* const ev,
+    ViewerMode& newmode,
+    bool additiveSelection,
+    bool allowBoxSelection
+)
+{
+    if (offerEventToViewer(ev)) {
+        // Once the viewer owns the drag, keep selection handling out of the way until release.
+        newmode = NavigationStyle::INTERACT;
+        return true;
+    }
+
+    return allowBoxSelection && tryStartBoxSelection(ev, additiveSelection);
+}
+
 bool NavigationStyle::tryStartBoxSelection(
     const SbVec2s& startPosition,
     const SoLocation2Event* const ev,
@@ -1795,6 +1913,11 @@ bool NavigationStyle::tryStartBoxSelection(
 )
 {
     if (!ev || mouseSelection || !viewer || !viewer->isSelectionEnabled()) {
+        return false;
+    }
+    // Some interactive tools temporarily disable selection through view preferences to keep
+    // drag/release events on their own callbacks. Rubberband selection must honor that too.
+    if (!ViewParams::instance()->getEnableSelection()) {
         return false;
     }
     if (viewer->isEditing() || viewer->isEditingViewProvider()) {
@@ -1823,10 +1946,15 @@ bool NavigationStyle::tryStartBoxSelection(
 
 bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
 {
+    auto* sceneGraph = this->viewer->getSoRenderManager()->getSceneGraph();
+    if (!sceneGraph) {
+        return false;
+    }
+
     SoRayPickAction rp(this->viewer->getSoRenderManager()->getViewportRegion());
     rp.setRadius(viewer->getPickRadius());
     rp.setPoint(pos);
-    rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
+    rp.apply(sceneGraph);
     SoPickedPoint* pick = rp.getPickedPoint();
     if (pick) {
         const auto fullpath = Gui::toFullPath(pick->getPath());
@@ -1835,8 +1963,8 @@ bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
                 return true;
             }
         }
-        return false;
     }
+
     return false;
 }
 
@@ -2055,6 +2183,11 @@ SbBool NavigationStyle::processSoEvent(const SoEvent* const ev)
     }
 
     return processed;
+}
+
+bool NavigationStyle::offerEventToViewer(const SoEvent* const ev)
+{
+    return viewer ? viewer->processSoEventBase(ev) : false;
 }
 
 void NavigationStyle::syncWithEvent(const SoEvent* const ev)

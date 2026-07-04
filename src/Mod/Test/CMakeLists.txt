@@ -13,6 +13,8 @@ SET(Test_SRCS
     Metadata.py
     StringHasher.py
     Menu.py
+    Recompute.py
+    GuiRecompute.py
     TestApp.py
     TestGui.py
     UnicodeTests.py
@@ -23,6 +25,7 @@ SET(Test_SRCS
     TestPythonSyntax.py
     TestPerf.py
     TestTreeSelection.py
+    TestGraphicsViewWrapping.py
     TestRubberbandSelection.py
     TestCoinNodeSnapshots.py
     TestCoinSelectionVisual.py

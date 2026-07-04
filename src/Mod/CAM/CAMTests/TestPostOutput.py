@@ -722,7 +722,8 @@ class TestExport2Integration(unittest.TestCase):
                     "supports_tool_radius_compensation": False,
                     "supported_commands": Constants.GCODE_SUPPORTED
                     + Constants.GCODE_FIXTURES
-                    + Constants.MCODE_SUPPORTED,
+                    + Constants.MCODE_SUPPORTED
+                    + Constants.GCODE_NON_CONFORMING,
                     "drill_cycles_to_translate": "",
                     "preamble": "(preamble)",
                     "postamble": "(postamble)",
@@ -1361,7 +1362,9 @@ class TestExport2Integration(unittest.TestCase):
                 )
 
         numbered_lines = [line for line in lines if line.strip().startswith("N")]
-        self.assertGreater(len(numbered_lines), 0, "G-code lines should have line numbers")
+        self.assertGreater(
+            len(numbered_lines), 0, f"G-code lines should have line numbers in---\n{gcode}\n--"
+        )
         self.assertTrue(
             numbered_lines[0].strip().startswith("N100"),
             f"First line number should be N100, got: {numbered_lines[0].strip()}",

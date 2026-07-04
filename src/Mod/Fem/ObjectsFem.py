@@ -75,7 +75,7 @@ def makeConstraintBearing(doc, name="ConstraintBearing"):
     return obj
 
 
-def makeConstraintBodyHeatSource(doc, name="ConstraintBodyHeatSource"):
+def makeConstraintBodyHeatSource(doc, name="BodyHeatSource"):
     """makeConstraintBodyHeatSource(document, [name]):
     makes a Fem ConstraintBodyHeatSource object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -89,7 +89,7 @@ def makeConstraintBodyHeatSource(doc, name="ConstraintBodyHeatSource"):
     return obj
 
 
-def makeConstraintCentrif(doc, name="ConstraintCentrif"):
+def makeConstraintCentrif(doc, name="CentrifugalForce"):
     """makeConstraintCentrif(document, [name]):
     creates a centrif object to define centrifugal body load constraint"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -103,7 +103,7 @@ def makeConstraintCentrif(doc, name="ConstraintCentrif"):
     return obj
 
 
-def makeConstraintCurrentDensity(doc, name="ConstraintCurrentDensity"):
+def makeConstraintCurrentDensity(doc, name="CurrentDensity"):
     """makeConstraintCurrentDensity(document, [name]):
     makes a Fem CurrentDensity object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -117,21 +117,21 @@ def makeConstraintCurrentDensity(doc, name="ConstraintCurrentDensity"):
     return obj
 
 
-def makeConstraintContact(doc, name="ConstraintContact"):
+def makeConstraintContact(doc, name="Contact"):
     """makeConstraintContact(document, [name]):
     makes a Fem ConstraintContact object"""
     obj = doc.addObject("Fem::ConstraintContact", name)
     return obj
 
 
-def makeConstraintDisplacement(doc, name="ConstraintDisplacement"):
+def makeConstraintDisplacement(doc, name="Displacement"):
     """makeConstraintDisplacement(document, [name]):
     makes a Fem ConstraintDisplacement object"""
     obj = doc.addObject("Fem::ConstraintDisplacement", name)
     return obj
 
 
-def makeConstraintElectricChargeDensity(doc, name="ElectricChargeDensity"):
+def makeConstraintElectricChargeDensity(doc, name="ElectricCharge"):
     """makeConstraintElectricChargeDensity(document, [name]):
     makes a Fem ElectricChargeDensity object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -145,7 +145,7 @@ def makeConstraintElectricChargeDensity(doc, name="ElectricChargeDensity"):
     return obj
 
 
-def makeConstraintElectromagnetic(doc, name="ConstraintElectromagnetic"):
+def makeConstraintElectromagnetic(doc, name="Electromagnetic"):
     """makeConstraintElectromagnetic(document, [name]):
     makes a Fem Electromagnetic object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -159,21 +159,21 @@ def makeConstraintElectromagnetic(doc, name="ConstraintElectromagnetic"):
     return obj
 
 
-def makeConstraintFixed(doc, name="ConstraintFixed"):
+def makeConstraintFixed(doc, name="Fixed"):
     """makeConstraintFixed(document, [name]):
     makes a Fem ConstraintFixed object"""
     obj = doc.addObject("Fem::ConstraintFixed", name)
     return obj
 
 
-def makeConstraintRigidBody(doc, name="ConstraintRigidBody"):
+def makeConstraintRigidBody(doc, name="RigidBody"):
     """makeConstraintRigidBody(document, [name]):
     makes a Fem ConstraintRigidBody object"""
     obj = doc.addObject("Fem::ConstraintRigidBody", name)
     return obj
 
 
-def makeConstraintFlowVelocity(doc, name="ConstraintFlowVelocity"):
+def makeConstraintFlowVelocity(doc, name="FlowVelocity"):
     """makeConstraintFlowVelocity(document, [name]):
     makes a Fem ConstraintFlowVelocity object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -187,14 +187,14 @@ def makeConstraintFlowVelocity(doc, name="ConstraintFlowVelocity"):
     return obj
 
 
-def makeConstraintFluidBoundary(doc, name="ConstraintFluidBoundary"):
+def makeConstraintFluidBoundary(doc, name="FluidBoundary"):
     """makeConstraintFluidBoundary(document, name):
     makes a Fem ConstraintFluidBoundary object"""
     obj = doc.addObject("Fem::ConstraintFluidBoundary", name)
     return obj
 
 
-def makeConstraintForce(doc, name="ConstraintForce"):
+def makeConstraintForce(doc, name="Force"):
     """makeConstraintForce(document, [name]):
     makes a Fem ConstraintForce object"""
     obj = doc.addObject("Fem::ConstraintForce", name)
@@ -208,14 +208,14 @@ def makeConstraintGear(doc, name="ConstraintGear"):
     return obj
 
 
-def makeConstraintHeatflux(doc, name="ConstraintHeatflux"):
+def makeConstraintHeatflux(doc, name="HeatFlux"):
     """makeConstraintHeatflux(document, [name]):
     makes a Fem ConstraintHeatflux object"""
     obj = doc.addObject("Fem::ConstraintHeatflux", name)
     return obj
 
 
-def makeConstraintInitialFlowVelocity(doc, name="ConstraintInitialFlowVelocity"):
+def makeConstraintInitialFlowVelocity(doc, name="InitialFlowVelocity"):
     """makeConstraintInitialFlowVelocity(document, [name]):
     makes a Fem ConstraintInitialFlowVelocity object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -229,7 +229,7 @@ def makeConstraintInitialFlowVelocity(doc, name="ConstraintInitialFlowVelocity")
     return obj
 
 
-def makeConstraintInitialPressure(doc, name="ConstraintInitialPressure"):
+def makeConstraintInitialPressure(doc, name="InitialPressure"):
     """makeConstraintInitialPressure(document, [name]):
     makes a Fem ConstraintInitialPressure object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -243,14 +243,14 @@ def makeConstraintInitialPressure(doc, name="ConstraintInitialPressure"):
     return obj
 
 
-def makeConstraintInitialTemperature(doc, name="ConstraintInitialTemperature"):
+def makeConstraintInitialTemperature(doc, name="InitialTemperature"):
     """makeConstraintInitialTemperature(document, name):
     makes a Fem ConstraintInitialTemperature object"""
     obj = doc.addObject("Fem::ConstraintInitialTemperature", name)
     return obj
 
 
-def makeConstraintMagnetization(doc, name="ConstraintMagnetization"):
+def makeConstraintMagnetization(doc, name="Magnetization"):
     """makeConstraintMagnetization(document, [name]):
     makes a Fem Magnetization object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -264,28 +264,28 @@ def makeConstraintMagnetization(doc, name="ConstraintMagnetization"):
     return obj
 
 
-def makeConstraintPlaneRotation(doc, name="ConstraintPlaneRotation"):
+def makeConstraintPlaneRotation(doc, name="PlaneRotation"):
     """makeConstraintPlaneRotation(document, [name]):
     makes a Fem ConstraintPlaneRotation object"""
     obj = doc.addObject("Fem::ConstraintPlaneRotation", name)
     return obj
 
 
-def makeConstraintPressure(doc, name="ConstraintPressure"):
+def makeConstraintPressure(doc, name="Pressure"):
     """makeConstraintPressure(document, [name]):
     makes a Fem ConstraintPressure object"""
     obj = doc.addObject("Fem::ConstraintPressure", name)
     return obj
 
 
-def makeConstraintPulley(doc, name="ConstraintPulley"):
+def makeConstraintPulley(doc, name="Pulley"):
     """makeConstraintPulley(document, [name]):
     makes a Fem ConstraintPulley object"""
     obj = doc.addObject("Fem::ConstraintPulley", name)
     return obj
 
 
-def makeConstraintSelfWeight(doc, name="ConstraintSelfWeight"):
+def makeConstraintSelfWeight(doc, name="Gravity"):
     """makeConstraintSelfWeight(document, [name]):
     creates a self weight object to define a gravity load"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -299,14 +299,14 @@ def makeConstraintSelfWeight(doc, name="ConstraintSelfWeight"):
     return obj
 
 
-def makeConstraintTemperature(doc, name="ConstraintTemperature"):
+def makeConstraintTemperature(doc, name="Temperature"):
     """makeConstraintTemperature(document, [name]):
     makes a Fem ConstraintTemperature object"""
     obj = doc.addObject("Fem::ConstraintTemperature", name)
     return obj
 
 
-def makeConstraintTie(doc, name="ConstraintTie"):
+def makeConstraintTie(doc, name="Tie"):
     """makeConstraintTie(document, [name]):
     creates a tie object to define bonded faces constraint"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -320,14 +320,14 @@ def makeConstraintTie(doc, name="ConstraintTie"):
     return obj
 
 
-def makeConstraintTransform(doc, name="ConstraintTransform"):
+def makeConstraintTransform(doc, name="Transform"):
     """makeConstraintTransform(document, [name]):
     makes a Fem ConstraintTransform object"""
     obj = doc.addObject("Fem::ConstraintTransform", name)
     return obj
 
 
-def makeConstraintSectionPrint(doc, name="ConstraintSectionPrint"):
+def makeConstraintSectionPrint(doc, name="SectionPrint"):
     """makeConstraintSectionPrint(document, [name]):
     creates a section print object to evaluate forces and moments of defined face"""
     obj = doc.addObject("Fem::ConstraintPython", name)
@@ -341,7 +341,7 @@ def makeConstraintSectionPrint(doc, name="ConstraintSectionPrint"):
     return obj
 
 
-def makeConstraintSpring(doc, name="ConstraintSpring"):
+def makeConstraintSpring(doc, name="Spring"):
     """makeConstraintSpring(document, [name]):
     makes a Fem ConstraintSpring object"""
     obj = doc.addObject("Fem::ConstraintSpring", name)
