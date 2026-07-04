@@ -617,7 +617,7 @@ private:
     static SoPath* pickFilterCB(void* viewer, const SoPickedPoint* pp);
     void initialize();
     void syncNaviCubeVisibility();
-    void drawAxisCross();
+    void drawCornerCross();
     void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
@@ -667,10 +667,8 @@ private:
     SoSwitch* dimensionRoot;
 
     // small axis cross in the corner
-    bool axiscrossEnabled;
+    bool cornerCrossVisible;
     int axiscrossSize;
-    // big one in the middle
-    SoShapeScale* axisCross;
     SoGroup* axisGroup;
 
     SoGroup* rotationCenterGroup;

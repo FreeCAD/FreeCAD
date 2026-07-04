@@ -785,7 +785,6 @@ View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QOpenGLWidget*
     , navigation(nullptr)
     , renderType(Native)
     , framebuffer(nullptr)
-    , axisCross(nullptr)
     , axisGroup(nullptr)
     , rotationCenterGroup(nullptr)
     , editing(false)
@@ -809,7 +808,6 @@ View3DInventorViewer::View3DInventorViewer(
     , navigation(nullptr)
     , renderType(Native)
     , framebuffer(nullptr)
-    , axisCross(nullptr)
     , axisGroup(nullptr)
     , rotationCenterGroup(nullptr)
     , editing(false)
@@ -1244,7 +1242,7 @@ void View3DInventorViewer::initialize()
     navigation = new CADNavigationStyle();
     navigation->setViewer(this);
 
-    this->axiscrossEnabled = true;
+    this->cornerCrossVisible = true;
     this->axiscrossSize = 10;  // NOLINT
 }
 
@@ -2888,8 +2886,8 @@ void View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
         gl.apply(this->decorationroot);
     }
 
-    if (this->axiscrossEnabled) {
-        this->drawAxisCross();
+    if (this->cornerCrossVisible) {
+        this->drawCornerCross();
     }
 
     fbo->release();
@@ -3086,8 +3084,8 @@ void View3DInventorViewer::renderScene()
         }
     }
 
-    if (this->axiscrossEnabled) {
-        this->drawAxisCross();
+    if (this->cornerCrossVisible) {
+        this->drawCornerCross();
     }
 
 #if defined(ENABLE_GL_DEPTH_RANGE)
@@ -4759,16 +4757,16 @@ bool View3DInventorViewer::isPopupMenuEnabled() const
 }
 
 /*!
-  Set the flag deciding whether or not to show the axis cross.
+  Set the flag deciding whether or not to show the corner cross.
 */
 
 void View3DInventorViewer::setFeedbackVisibility(bool enable)
 {
-    if (enable == this->axiscrossEnabled) {
+    if (enable == this->cornerCrossVisible) {
         return;
     }
 
-    this->axiscrossEnabled = enable;
+    this->cornerCrossVisible = enable;
 
     if (this->isViewing()) {
         this->getSoRenderManager()->scheduleRedraw();
@@ -4781,7 +4779,7 @@ void View3DInventorViewer::setFeedbackVisibility(bool enable)
 
 bool View3DInventorViewer::isFeedbackVisible() const
 {
-    return this->axiscrossEnabled;
+    return this->cornerCrossVisible;
 }
 
 /*!
@@ -4858,7 +4856,7 @@ void View3DInventorViewer::updateColors()
     }
 }
 
-void View3DInventorViewer::drawAxisCross()
+void View3DInventorViewer::drawCornerCross()
 {
     const SbVec2s view = this->getSoRenderManager()->getSize();
     const int viewWidth = view[0];
