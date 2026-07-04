@@ -89,8 +89,9 @@ class PostProcessDialog:
         config = dlg.config()
     """
 
-    def __init__(self, job):
+    def __init__(self, job, operations=None):
         self.job = job
+        self.operations = operations
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgPostProcess.ui")
         if self.dialog is None:
             raise RuntimeError(
@@ -567,7 +568,10 @@ class PostProcessDialog:
         for op in self._get_active_operations():
             item = QtGui.QTreeWidgetItem(tree)
             item.setText(0, op.Label)
-            item.setCheckState(0, QtCore.Qt.CheckState.Checked)
+            if not self.operations or op in self.operations["operations"]:
+                item.setCheckState(0, QtCore.Qt.CheckState.Checked)
+            else:
+                item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
             item.setFlags(
                 item.flags()
                 | QtCore.Qt.ItemFlag.ItemIsUserCheckable
