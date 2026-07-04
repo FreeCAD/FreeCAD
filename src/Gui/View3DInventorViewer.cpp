@@ -455,7 +455,7 @@ struct OverlayAxisCrossState
     SoDepthBuffer* axisDepth {nullptr};
     SoLightModel* axisLightModel {nullptr};
     SoTransform* axisTransform {nullptr};
-    SoSeparator* axisGroup {nullptr};
+    SoSeparator* axisShafts {nullptr};
 
     void ensureCreated()
     {
@@ -488,8 +488,18 @@ struct OverlayAxisCrossState
         axisTransform->translation.setValue(0.0f, 0.0f, -3.5f);
         axisRoot->addChild(axisTransform);
 
-        axisGroup = new SoSeparator;
-        axisRoot->addChild(axisGroup);
+        axisShafts = new SoSeparator;
+        axisRoot->addChild(axisShafts);
+
+        rebuildAxisShafts();
+    }
+
+    // Allow rebuild of shaft components on color change
+    void rebuildAxisShafts()
+    {
+        if (!axisShafts) {
+            return;
+        }
 
         auto buildAxisNode = [&](const char* label, Base::Vector3d axis, unsigned long color) {
             // Lambda for reuse of shared values and cleaner call sites
@@ -506,6 +516,8 @@ struct OverlayAxisCrossState
                 0.0f
             );
         };
+
+        axisShafts->removeAllChildren();
 
         // Construct a new shaft axis node for each
         axisRoot->addChild(
@@ -4858,6 +4870,11 @@ void View3DInventorViewer::updateColors()
         setAxisCross(false);  // Force redraw
         setAxisCross(true);
     }
+
+    if (cornerCrossVisible) {
+        auto& overlayState = overlayAxisCrossState();
+        overlayState.rebuildAxisShafts();
+    }
 }
 
 void View3DInventorViewer::drawCornerCross()
@@ -4924,7 +4941,7 @@ void View3DInventorViewer::drawCornerCross()
 
     auto& overlay = overlayAxisCrossState();
     overlay.ensureCreated();
-    if (!overlay.axisRoot || !overlay.axisTransform || !overlay.axisGroup) {
+    if (!overlay.axisRoot || !overlay.axisTransform || !overlay.axisShafts) {
         return;
     }
 
