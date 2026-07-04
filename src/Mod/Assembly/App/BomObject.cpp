@@ -144,8 +144,6 @@ void BomObject::generateBOM()
 {
     saveCustomColumnData();
     clearAll();
-    obj_list.clear();
-    obj_mirrored_list.clear();
     size_t row = 0;
     size_t col = 0;
 
@@ -179,7 +177,13 @@ void BomObject::addObjectChildrenToBom(
     int quantityColIndex = getColumnIndex("Quantity");
     bool hasQuantityCol = hasQuantityColumn();
 
-    size_t siblingsInitialRow = row;
+    struct SiblingBomEntry
+    {
+        App::DocumentObject* object;
+        bool isMirrored;
+        size_t row;
+    };
+    std::vector<SiblingBomEntry> siblings;
 
     if (index != "") {
         index = index + ".";
@@ -212,21 +216,20 @@ void BomObject::addObjectChildrenToBom(
             continue;
         }
 
-        if (hasQuantityCol && row != siblingsInitialRow) {
+        if (hasQuantityCol) {
             // Check if the object is not already in (case of links). And if so just increment.
             // Note: an object can be used in several parts. In which case we do no want to blindly
             // increment.
             // We also check if the Mirror state matches. Mirrored parts should not group with
             // non-mirrored parts.
             bool found = false;
-            for (size_t i = siblingsInitialRow; i <= row; ++i) {
-                size_t idInList = i - 1;  // -1 for the header
-                if (idInList < obj_list.size() && child == obj_list[idInList]
-                    && idInList < obj_mirrored_list.size()
-                    && isMirrored == obj_mirrored_list[idInList]) {
-
-                    int qty = std::stoi(getText(i, quantityColIndex)) + 1;
-                    setCell(App::CellAddress(i, quantityColIndex), std::to_string(qty).c_str());
+            for (auto& sibling : siblings) {
+                if (child == sibling.object && isMirrored == sibling.isMirrored) {
+                    int qty = std::stoi(getText(sibling.row, quantityColIndex)) + 1;
+                    setCell(
+                        App::CellAddress(sibling.row, quantityColIndex),
+                        std::to_string(qty).c_str()
+                    );
                     found = true;
                     break;
                 }
@@ -239,7 +242,9 @@ void BomObject::addObjectChildrenToBom(
         std::string sub_index = index + std::to_string(sub_i);
         ++sub_i;
 
-        addObjectToBom(child, row, sub_index, isMirrored);
+        size_t childRow = row;
+        addObjectToBom(child, childRow, sub_index, isMirrored);
+        siblings.push_back({child, isMirrored, childRow});
         ++row;
 
         if ((child->isDerivedFrom<AssemblyObject>() && detailSubAssemblies.getValue())
@@ -271,8 +276,6 @@ bool BomObject::isObjMirrored(App::DocumentObject* obj)
 
 void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string index, bool isMirrored)
 {
-    obj_list.push_back(obj);
-    obj_mirrored_list.push_back(isMirrored);
     size_t col = 0;
     for (auto& columnName : columnsNames.getValues()) {
         if (columnName == "Index") {
