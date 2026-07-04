@@ -35,6 +35,11 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoComplexity.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoSensor.h>
 
@@ -44,7 +49,9 @@
 #include <algorithm>
 #include <iterator>
 #include <Inventor/SoPath.h>
+#include <Inventor/SoPickedPoint.h>
 #include <Inventor/details/SoDetail.h>
+#include <Inventor/nodes/SoCamera.h>
 
 #include <App/Link.h>
 #include <App/Document.h>
@@ -59,6 +66,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Inventor/Draggers/SoTransformDragger.h>
+#include <Gui/Inventor/SoFCBoundingBox.h>
 #include <Gui/MDIView.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
@@ -83,29 +91,8 @@
 
 #include <Gui/Utilities.h>
 
-
 using namespace Assembly;
 using namespace AssemblyGui;
-
-void printPlacement(Base::Placement plc, const char* name)
-{
-    Base::Vector3d pos = plc.getPosition();
-    Base::Vector3d axis;
-    double angle;
-    Base::Rotation rot = plc.getRotation();
-    rot.getRawValue(axis, angle);
-    Base::Console().warning(
-        "placement %s : position (%.1f, %.1f, %.1f) - axis (%.1f, %.1f, %.1f) angle %.1f\n",
-        name,
-        pos.x,
-        pos.y,
-        pos.z,
-        axis.x,
-        axis.y,
-        axis.z,
-        angle
-    );
-}
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderAssembly, Gui::ViewProviderPart)
 
@@ -337,12 +324,18 @@ void ViewProviderAssembly::unsetEdit(int mode)
         partMoving = false;
         docsToMove.clear();
 
+        // Remove the drag target marker in case edit mode ends mid-drag.
+        hideDragTarget();
+
         unsetDragger();
         detachSelection();
 
         // Check if the view is still active before trying to deactivate the assembly.
         auto activeView = getDocument()->getActiveView();
         if (!activeView) {
+            QObject::disconnect(workbenchConnection);
+            connectSolverUpdate.disconnect();
+            connectActivatedVP.disconnect();
             return;
         }
 
@@ -359,6 +352,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
 
         updateTaskPanel(false);
 
+        QObject::disconnect(workbenchConnection);
         connectSolverUpdate.disconnect();
         connectActivatedVP.disconnect();
 
@@ -611,7 +605,23 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
         );
         bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
         if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
-            assemblyPart->doDragStep();
+            // Project mouse onto camera-parallel drag plane
+            SbVec3f projected = viewer->getPointOnXYPlaneOfPlacement(cursorPos, dragPlanePlc);
+            Base::Vector3d mousePos3D(projected[0], projected[1], projected[2]);
+            assemblyPart->doDragStep(mousePos3D);
+
+            // Keep the drag target marker fixed on the dragged object: re-project
+            // the stored local pick point through the object's solved placement.
+            if (!docsToMove.empty()) {
+                Base::Placement curPlc = App::GeoFeature::getGlobalPlacement(
+                    docsToMove[0].obj,
+                    docsToMove[0].rootObj,
+                    docsToMove[0].sub
+                );
+                Base::Vector3d markerPos;
+                curPlc.multVec(dragTargetLocalOffset, markerPos);
+                moveDragTarget(markerPos);
+            }
         }
         else {
             assemblyPart->redrawJointPlacements(assemblyPart->getJoints());
@@ -1024,6 +1034,79 @@ void ViewProviderAssembly::initMove(const SbVec2s& cursorPos, Gui::View3DInvento
     }
 }
 
+void ViewProviderAssembly::showDragTarget(Gui::View3DInventorViewer* viewer, const Base::Vector3d& pos)
+{
+    // Remove any marker left over from a previous drag first.
+    hideDragTarget();
+
+    if (!viewer) {
+        return;
+    }
+    SoNode* scene = viewer->getSceneGraph();
+    if (!scene) {
+        return;
+    }
+    auto* sep = static_cast<SoSeparator*>(scene);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly"
+    );
+    auto radius = static_cast<float>(hGrp->GetFloat("DragTargetSphereRadius", 5.0));
+
+    auto* sphere = new SoSphere();
+    sphere->radius = radius;
+
+    auto* complexity = new SoComplexity();
+    complexity->value = 1;
+
+    auto* material = new SoMaterial();
+    material->diffuseColor.setValue(0.0F, 0.0F, 1.0F);  // blue
+    material->emissiveColor.setValue(0.0F, 0.0F, 1.0F);
+    material->transparency = 0.5F;
+
+    dragTargetTranslation = new SoTranslation();
+    dragTargetTranslation->translation
+        .setValue(static_cast<float>(pos.x), static_cast<float>(pos.y), static_cast<float>(pos.z));
+
+    // SoAnnotation draws the marker on top so it stays visible through parts.
+    auto* annotation = new SoAnnotation();
+    annotation->addChild(complexity);
+    annotation->addChild(material);
+    annotation->addChild(sphere);
+
+    // SoSkipBoundingGroup keeps the transient marker out of "fit all" bounds.
+    auto* group = new Gui::SoSkipBoundingGroup();
+    group->addChild(dragTargetTranslation);
+    group->addChild(annotation);
+
+    sep->addChild(group);
+    dragTargetRoot = group;
+    dragTargetViewer = viewer;
+}
+
+void ViewProviderAssembly::moveDragTarget(const Base::Vector3d& pos)
+{
+    if (dragTargetTranslation) {
+        dragTargetTranslation->translation.setValue(
+            static_cast<float>(pos.x),
+            static_cast<float>(pos.y),
+            static_cast<float>(pos.z)
+        );
+    }
+}
+
+void ViewProviderAssembly::hideDragTarget()
+{
+    if (dragTargetRoot && dragTargetViewer) {
+        if (SoNode* scene = dragTargetViewer->getSceneGraph()) {
+            static_cast<SoSeparator*>(scene)->removeChild(dragTargetRoot);
+        }
+    }
+    dragTargetRoot = nullptr;
+    dragTargetTranslation = nullptr;
+    dragTargetViewer = nullptr;
+}
+
 void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
     dragMode = findDragMode();
@@ -1109,7 +1192,50 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
         for (auto& movingObj : docsToMove) {
             dragParts.push_back(movingObj.obj);
         }
-        assemblyPart->preDrag(dragParts);
+
+        // Extract camera view direction and pick point
+        SoCamera* cam = viewer->getSoRenderManager()->getCamera();
+        SbVec3f camDir;
+        cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), camDir);
+        Base::Vector3d cameraViewDir(camDir[0], camDir[1], camDir[2]);
+
+        // Get the 3D pick point from the cursor position
+        SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
+        rp.setPoint(cursorPos);
+        rp.apply(viewer->getSoRenderManager()->getSceneGraph());
+        SoPickedPoint* pp = rp.getPickedPoint();
+        Base::Vector3d pickPoint;
+        if (pp) {
+            SbVec3f pt = pp->getPoint();
+            pickPoint = Base::Vector3d(pt[0], pt[1], pt[2]);
+        }
+        else {
+            // Fallback: use focal plane
+            SbVec3f fp = viewer->getPointOnFocalPlane(cursorPos);
+            pickPoint = Base::Vector3d(fp[0], fp[1], fp[2]);
+        }
+
+        // Build camera-parallel plane placement centered on pick point.
+        // This is used by tryMouseMove to project mouse cursor onto the drag plane.
+        {
+            dragPlanePlc = Base::Placement(pickPoint, cameraAlignedRotation(cameraViewDir));
+        }
+
+        assemblyPart->preDrag(dragParts, pickPoint, cameraViewDir, movingJoint);
+
+        // Show the drag target marker as a GUI-only overlay at the pick point.
+        // The marker is anchored to the dragged part (in its local frame) so it
+        // stays fixed on the object while the solver moves the object to bring
+        // the marker as close to the cursor as the kinematic constraints allow.
+        showDragTarget(viewer, pickPoint);
+        if (!docsToMove.empty()) {
+            Base::Placement startPlc = App::GeoFeature::getGlobalPlacement(
+                docsToMove[0].obj,
+                docsToMove[0].rootObj,
+                docsToMove[0].sub
+            );
+            startPlc.inverse().multVec(pickPoint, dragTargetLocalOffset);
+        }
     }
     else {
         assemblyPart->redrawJointPlacements(assemblyPart->getJoints());
@@ -1118,6 +1244,9 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
 
 void ViewProviderAssembly::endMove()
 {
+    // Remove the GUI-only drag target marker.
+    hideDragTarget();
+
     docsToMove.clear();
     partMoving = false;
     canStartDragging = false;

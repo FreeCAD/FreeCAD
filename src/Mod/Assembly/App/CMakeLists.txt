@@ -1,5 +1,14 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+# Optional: Project Chrono kinematic solver backend.
+# The pixi environment installs Chrono under <prefix>/lib/cmake/Chrono/.
+find_package(Chrono CONFIG QUIET)
+if(Chrono_FOUND)
+    message(STATUS "Assembly: Found Project Chrono ${CHRONO_VERSION} — ChronoSolver enabled")
+else()
+    message(STATUS "Assembly: Project Chrono not found — ChronoSolver disabled")
+endif()
+
 set(Assembly_LIBS
     Part
     PartDesign
@@ -59,9 +68,22 @@ SET(Assembly_SRCS
     ViewGroup.h
     SimulationGroup.cpp
     SimulationGroup.h
+    Solver.cpp
+    Solver.h
+    SolverRegistry.cpp
+    SolverRegistry.h
+    OndselSolver.cpp
+    OndselSolver.h
     ${Module_SRCS}
     ${Python_SRCS}
 )
+
+if(Chrono_FOUND)
+    list(APPEND Assembly_SRCS
+        ChronoSolver.cpp
+        ChronoSolver.h
+    )
+endif()
 
 add_library(Assembly SHARED ${Assembly_SRCS})
 target_include_directories(
@@ -72,6 +94,22 @@ target_include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+if(WIN32)
+    target_compile_definitions(Assembly PRIVATE _USE_MATH_DEFINES)
+endif(WIN32)
+
+if(Chrono_FOUND)
+    target_compile_definitions(Assembly PRIVATE HAVE_CHRONO)
+    target_include_directories(Assembly PRIVATE ${CHRONO_INCLUDE_DIRS})
+    # Chrono 10's CMake config exports imported targets via CHRONO_TARGETS
+    # (e.g. Chrono::Chrono_core) rather than the legacy CHRONO_LIBRARIES
+    # variable, which it leaves unset. The imported targets also carry the
+    # include directories transitively.
+    list(APPEND Assembly_LIBS ${CHRONO_TARGETS})
+    target_compile_options(Assembly PRIVATE ${CHRONO_CXX_FLAGS})
+endif()
+
 target_link_libraries(Assembly ${Assembly_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Assembly)

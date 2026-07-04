@@ -36,6 +36,8 @@ class SoSwitch;
 class SoSensor;
 class SoDragger;
 class SoFieldSensor;
+class SoGroup;
+class SoTranslation;
 
 namespace Gui
 {
@@ -281,11 +283,26 @@ private:
 
     std::unordered_map<App::DocumentObject*, ComponentState> stateBackup;
     App::DocumentObject* temporaryExplosion {nullptr};
+    Base::Placement dragPlanePlc;  // camera-parallel plane placement for mouse projection
     App::DocumentObject* isolatedJoint {nullptr};
     bool isolatedJointVisibilityBackup {false};
 
     void highlightJointElements(App::DocumentObject* joint);
     void clearJointElementHighlight();
+
+    // GUI-only drag target marker. It is rendered as a transient Coin overlay
+    // in the viewer's scene graph (not added to the document), following the
+    // approach of View3DInventorViewer::showRotationCenter().
+    void showDragTarget(Gui::View3DInventorViewer* viewer, const Base::Vector3d& pos);
+    void moveDragTarget(const Base::Vector3d& pos);
+    void hideDragTarget();
+
+    SoGroup* dragTargetRoot {nullptr};
+    SoTranslation* dragTargetTranslation {nullptr};
+    Gui::View3DInventorViewer* dragTargetViewer {nullptr};
+    // Pick point expressed in the local frame of the dragged part (docsToMove[0]),
+    // so the marker stays fixed on the object as the solver repositions it.
+    Base::Vector3d dragTargetLocalOffset;
 
     void applyIsolationRecursively(
         App::DocumentObject* current,
