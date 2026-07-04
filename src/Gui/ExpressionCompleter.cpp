@@ -316,13 +316,11 @@ public:
                     }
                 }
             }
-            
-            FC_TRACE(
-                "Cached properties for " << obj->getNameInDocument()
-                                      << " (" << this->namedPropsCache[obj].size()
-                                      << " props)"
-            );
 
+            FC_TRACE(
+                "Cached properties for " << obj->getNameInDocument() << " ("
+                                         << this->namedPropsCache[obj].size() << " props)"
+            );
         }
         return this->namedPropsCache[obj];
     }
