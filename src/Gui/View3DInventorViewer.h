@@ -80,6 +80,7 @@ class SbBox2s;
 class SoVectorizeAction;
 class QImage;
 class SoGroup;  // NOLINT
+class SoGLRenderAction;
 class SoPickStyle;
 class NaviCube;
 class SoClipPlane;
@@ -621,6 +622,8 @@ private:
     void syncNaviCubeVisibility();
     void drawAxisCross();
     void drawSingleBackground(const QColor&);
+    void recoverFromRenderMemoryException();
+    void renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
     void createStandardCursors();

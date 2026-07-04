@@ -3156,38 +3156,31 @@ void View3DInventorViewer::renderGLImage()
     }
 }
 
-// Documented in superclass. Overrides this method to be able to draw
-// the axis cross, if selected, and to keep a continuous animation
-// upon spin.
-void View3DInventorViewer::renderScene()
+void View3DInventorViewer::recoverFromRenderMemoryException()
 {
-    ZoneScoped;
+    for (auto it : _ViewProviderSet) {
+        it->hide();
+    }
 
-    // Must set up the OpenGL viewport manually, as upon resize
-    // operations, Coin won't set it up until the SoGLRenderAction is
-    // applied again. And since we need to do glClear() before applying
-    // the action..
-    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SbVec2s origin = vp.getViewportOriginPixels();
-    SbVec2s size = vp.getViewportSizePixels();
-    glViewport(origin[0], origin[1], size[0], size[1]);
+    inherited::actualRedraw();
+    QMessageBox::warning(
+        parentWidget(),
+        QObject::tr("Out of memory"),
+        QObject::tr("Not enough memory available to display the data.")
+    );
+}
 
-    const QColor col = this->backgroundColor();
-    glClearColor(float(col.redF()), float(col.greenF()), float(col.blueF()), 0.0F);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-
-    SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
+void View3DInventorViewer::renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra)
+{
     SoState* state = glra->getState();
 
-    // Render our scenegraph with the image.
     {
         ZoneScopedN("Background");
         SoDevicePixelRatioElement::set(state, devicePixelRatio());
         SoGLWidgetElement::set(state, qobject_cast<QOpenGLWidget*>(this->getGLWidget()));
         SoGLRenderActionElement::set(state, glra);
         SoGLVBOActivatedElement::set(state, this->vboEnabled);
-        drawSingleBackground(col);
+        drawSingleBackground(backgroundColor);
         glra->apply(this->backgroundroot);
     }
 
@@ -3216,25 +3209,13 @@ void View3DInventorViewer::renderScene()
         So3DAnnotation::render = false;
     }
     catch (const Base::MemoryException&) {
-        // FIXME: If this exception appears then the background and camera position get broken
-        // somehow. (Werner 2006-02-01)
-        for (auto it : _ViewProviderSet) {
-            it->hide();
-        }
-
-        inherited::actualRedraw();
-        QMessageBox::warning(
-            parentWidget(),
-            QObject::tr("Out of memory"),
-            QObject::tr("Not enough memory available to display the data.")
-        );
+        this->recoverFromRenderMemoryException();
     }
 
     if (!this->shading) {
         state->pop();
     }
 
-    // Render overlay front scenegraph.
     {
         ZoneScopedN("Foreground");
         glra->apply(this->foregroundroot);
@@ -3242,6 +3223,27 @@ void View3DInventorViewer::renderScene()
             glra->apply(this->decorationroot);
         }
     }
+}
+
+void View3DInventorViewer::renderScene()
+{
+    ZoneScoped;
+
+    // Must set up the OpenGL viewport manually, as upon resize
+    // operations, Coin won't set it up until the SoGLRenderAction is
+    // applied again. And since we need to do glClear() before applying
+    // the action..
+    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    SbVec2s origin = vp.getViewportOriginPixels();
+    SbVec2s size = vp.getViewportSizePixels();
+    glViewport(origin[0], origin[1], size[0], size[1]);
+
+    const QColor col = this->backgroundColor();
+    glClearColor(float(col.redF()), float(col.greenF()), float(col.blueF()), 0.0F);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+
+    this->renderGLActionScene(col, this->getSoRenderManager()->getGLRenderAction());
 
     if (this->axiscrossEnabled) {
         this->drawAxisCross();
