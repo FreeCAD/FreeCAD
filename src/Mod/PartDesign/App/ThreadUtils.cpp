@@ -7,6 +7,8 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
 
+#include <Base/Console.h>
+
 #include "ThreadUtils.h"
 
 using namespace PartDesign;
@@ -293,13 +295,40 @@ std::vector<std::string> ThreadUtils::getThreadTypeEnums()
     return result;
 }
 
+// TODO: change getThreadDesignations to getThreadDiameters as it can be misleading
 std::vector<std::string> ThreadUtils::getThreadDesignations(const int threadType)
 {
+    Base::Console().message("GETTING DIAMETER UPDATED");
     std::vector<std::string> designations;
     for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
         designations.push_back(std::to_string(thread.diameter));
     }
     return designations;
+}
+
+std::vector<std::string> ThreadUtils::getThreadPitches(const int threadType, const int threadDiameter)
+{
+    std::vector<std::string> pitches;
+    
+    double targetDiameter = ThreadUtils::threadDescription[threadType][threadDiameter].diameter;
+    
+    // Debug: mostra o diâmetro alvo
+    Base::Console().message("Target diameter: %f\n", targetDiameter);
+    
+    // get all pitches from a selected diameter
+    for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
+        // Debug: mostra cada diâmetro
+        Base::Console().message("Thread diameter: %f\n", thread.diameter);
+        
+        // Usa comparação com tolerância para floats
+        if (std::abs(thread.diameter - targetDiameter) < 0.001) {
+            pitches.push_back(std::to_string(thread.pitch));
+            Base::Console().message("Match found! Pitch: %f\n", thread.pitch);
+        }
+    }
+    
+    Base::Console().message("Total pitches found: %d\n", pitches.size());
+    return pitches;
 }
 
 TopoDS_Shape ThreadUtils::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)

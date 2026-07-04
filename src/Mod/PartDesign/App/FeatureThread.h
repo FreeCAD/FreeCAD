@@ -28,9 +28,11 @@ public:
     App::PropertyLinkSub StartPlane;
     App::PropertyLength ThreadDepth;
     App::PropertyLength ThreadDiameter;
+    App::PropertyLength ThreadPitch;
 
     App::PropertyEnumeration ThreadType;
     App::PropertyEnumeration ThreadSize;
+    App::PropertyEnumeration ThreadSizePitch;
     App::PropertyEnumeration ThreadClass;
     App::PropertyEnumeration ThreadFit;
     App::PropertyEnumeration DepthType;
