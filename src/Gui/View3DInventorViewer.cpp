@@ -499,8 +499,9 @@ struct OverlayAxisCrossState
                 true,
                 true,
                 true,
-                0.9,  // axisLengthDefault = 0.6F
+                0.9,    // axisLengthDefault = 0.6F
                 0.065,  // axisThickness = 0.065F;,
+                0.3,    // labelOffset = 0.4;
                 color,
                 0.0f
             );
@@ -508,13 +509,16 @@ struct OverlayAxisCrossState
 
         // Construct a new shaft axis node for each
         axisRoot->addChild(
-            buildAxisNode("X", Base::Vector3d::UnitX, Gui::ViewParams::instance()->getAxisXColor()));
+            buildAxisNode("X", Base::Vector3d::UnitX, Gui::ViewParams::instance()->getAxisXColor())
+        );
 
         axisRoot->addChild(
-            buildAxisNode("Y", Base::Vector3d::UnitY, Gui::ViewParams::instance()->getAxisYColor()));
+            buildAxisNode("Y", Base::Vector3d::UnitY, Gui::ViewParams::instance()->getAxisYColor())
+        );
 
         axisRoot->addChild(
-            buildAxisNode("Z", Base::Vector3d::UnitZ, Gui::ViewParams::instance()->getAxisZColor()));
+            buildAxisNode("Z", Base::Vector3d::UnitZ, Gui::ViewParams::instance()->getAxisZColor())
+        );
     }
 };
 

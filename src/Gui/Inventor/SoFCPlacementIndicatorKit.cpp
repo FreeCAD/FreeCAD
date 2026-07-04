@@ -179,6 +179,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxisShaft(
     bool hasLabels,
     float axisLength,
     float axisThickness,
+    double labelOffset,
     uint32_t packedColor,
     const double offset
 )
@@ -275,6 +276,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
             parts.getValue() & Labels,
             axisLength.getValue(),
             axisThickness,
+            labelOffset,
             ViewParams::instance()->getAxisXColor(),
             xyOffset
         );
@@ -291,6 +293,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
             parts.getValue() & Labels,
             axisLength.getValue(),
             axisThickness,
+            labelOffset,
             ViewParams::instance()->getAxisYColor(),
             xyOffset
         );
@@ -310,6 +313,7 @@ SoSeparator* SoFCPlacementIndicatorKit::createAxes()
             parts.getValue() & Labels,
             axisLength.getValue(),
             axisThickness,
+            labelOffset,
             ViewParams::instance()->getAxisZColor(),
             zOffset
         );

@@ -72,6 +72,7 @@ public:
         bool hasLabels,
         float axisLength,
         float axisThickness,
+        double labelOffset,
         uint32_t packedColor,
         const double offset
     );
