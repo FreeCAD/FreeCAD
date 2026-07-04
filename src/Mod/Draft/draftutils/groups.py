@@ -231,10 +231,10 @@ def get_group_contents(
         If it is `True`, the objects inside Building and BuildingParts
         (Arch Workbench) aren't added to the output list.
 
-    exclude_names: list, optional
+    exclude_names: list/tuple/set, optional
         It defaults to `None`.
-        If a list of object names is given, any object whose `Name` is
-        in this list will be excluded from the output list.
+        If an iterable of object names is given, any object whose `Name` is
+        in this iterable will be excluded from the output list.
 
     Returns
     -------
