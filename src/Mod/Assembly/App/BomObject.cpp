@@ -256,14 +256,14 @@ bool BomObject::isObjMirrored(App::DocumentObject* obj)
     // We multiply scales to handle nested mirroring (e.g., Mirrored LinkElement inside Mirrored
     // LinkGroup = Normal).
     double accumulatedScale = 1.0;
-    if (auto element = static_cast<App::LinkElement*>(obj)) {
+    if (auto* element = freecad_cast<App::LinkElement*>(obj)) {
         accumulatedScale *= element->Scale.getValue();
 
-        if (auto group = element->getLinkGroup()) {
+        if (auto* group = element->getLinkGroup()) {
             accumulatedScale *= group->Scale.getValue();
         }
     }
-    else if (auto link = static_cast<App::Link*>(obj)) {
+    else if (auto* link = freecad_cast<App::Link*>(obj)) {
         accumulatedScale *= link->Scale.getValue();
     }
     return accumulatedScale < 0.0;
