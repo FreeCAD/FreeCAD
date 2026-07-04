@@ -24,6 +24,7 @@ public:
 
     std::vector<std::string> getThreadTypeEnums();
     std::vector<std::string> getThreadDesignations(const int threadType);
+    std::vector<std::string> getThreadPitches(const int threadType, const int threadDiameter);
 
 private:
     static const char* ThreadDepthTypeEnums[];

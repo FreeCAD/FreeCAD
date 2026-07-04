@@ -26,6 +26,9 @@ Thread::Thread()
     ADD_PROPERTY_TYPE(ThreadSize, (0L), "Thread", App::Prop_None, "Thread size");
     ThreadSize.setEnums(threadUtils.getThreadDesignations(ThreadType.getValue()));
 
+    ADD_PROPERTY_TYPE(ThreadSizePitch, (0L), "Thread", App::Prop_None, "Thread size");
+    ThreadSizePitch.setEnums(threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue()));
+
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Thread", App::Prop_None, "Thread direction");
     // ThreadDirection.setEnums(ThreadDirectionEnums);
     // ThreadDirection.setReadOnly(true);
@@ -145,6 +148,9 @@ void Thread::onChanged(const App::Property* prop)
                 // findClosestDesignation();
             // }
         }
+    } else if (prop == &ThreadSize) {
+        // Base::Console().message("it was me!\n");
+        ThreadSizePitch.setEnums(threadUtils.getThreadPitches(ThreadType.getValue(), ThreadSize.getValue()));
     }
     
     DressUp::onChanged(prop);
