@@ -159,9 +159,9 @@ class TestIfcClassification(unittest.TestCase):
             "extended_properties": [],
         }
 
-        with patch.object(ifc_classification.ifc_tools, "get_ifcfile", return_value=None), patch.object(
-            ifc_classification.ifc_tools, "get_ifc_element", return_value=None
-        ):
+        with patch.object(
+            ifc_classification.ifc_tools, "get_ifcfile", return_value=None
+        ), patch.object(ifc_classification.ifc_tools, "get_ifc_element", return_value=None):
             self.assertFalse(ifc_classification.apply_canonical_contract(obj, contract))
 
     def test_apply_canonical_contract_writes_standard_code_and_calls_helpers(self):
@@ -178,7 +178,9 @@ class TestIfcClassification(unittest.TestCase):
             "legacy_string": "IFC IfcWall",
         }
 
-        with patch.object(ifc_classification.ifc_tools, "get_ifcfile", return_value=ifcfile), patch.object(
+        with patch.object(
+            ifc_classification.ifc_tools, "get_ifcfile", return_value=ifcfile
+        ), patch.object(
             ifc_classification.ifc_tools, "get_ifc_element", return_value=element
         ), patch.object(
             ifc_classification, "_upsert_classification_root", return_value=classification
