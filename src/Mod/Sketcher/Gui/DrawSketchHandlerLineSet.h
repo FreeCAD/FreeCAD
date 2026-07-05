@@ -2057,6 +2057,8 @@ void DSHPolyLineController::doConstructionMethodChanged()
             handler->setConstructionMethod(ConstructionMethod::Line);
             return;
         }
+
+        handler->resetEdge = true;
     }
 
     // Since line has 4 OVP but arc has 5, and because we are not resetting the whole tool,
