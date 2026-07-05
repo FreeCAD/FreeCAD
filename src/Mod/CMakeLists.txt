@@ -133,13 +133,13 @@ if(BUILD_WEB)
 endif(BUILD_WEB)
 
 if(BUILD_BRIDGE)
-    add_subdirectory(Bridge)
+    add_subdirectory(bridge)
 endif(BUILD_BRIDGE)
 
 if(BUILD_AGENT)
-    add_subdirectory(Agent)
+    add_subdirectory(agent)
 endif(BUILD_AGENT)
 
 if(BUILD_AUTH)
-    add_subdirectory(Auth)
+    add_subdirectory(auth)
 endif(BUILD_AUTH)
