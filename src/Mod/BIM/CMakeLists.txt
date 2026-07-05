@@ -59,6 +59,7 @@ SET(Arch_SRCS
     ArchSketchObject.py
     BimSelect.py
     BimStatus.py
+    BimBsddContract.py
     TestArch.py
     TestArchGui.py
     ArchReport.py
