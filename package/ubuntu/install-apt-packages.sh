@@ -34,6 +34,7 @@ packages=(
   libboost-serialization-dev
   libboost-thread-dev
   libeigen3-dev
+  libexpat1-dev
   libgtest-dev
   libgmock-dev
   libfmt-dev
