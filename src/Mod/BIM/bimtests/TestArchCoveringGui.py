@@ -347,7 +347,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
             switch = covering.ViewObject.SwitchNode
             if switch:
                 flat_root = gui_utils.find_coin_node_by_name(root, "FlatRoot")
- 
+
             self.assertIsNotNone(flat_root, "Could not find FlatRoot node in scene graph")
 
             # Verify children
