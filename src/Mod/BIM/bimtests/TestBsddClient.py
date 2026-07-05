@@ -44,9 +44,7 @@ class _FakeReply(QtCore.QObject):
     def __init__(self, payload=b"", error_code=None, error_message="", parent=None):
         super().__init__(parent)
         self._payload = payload
-        self._error_code = (
-            error_code if error_code is not None else QtNetwork.QNetworkReply.NoError
-        )
+        self._error_code = error_code if error_code is not None else QtNetwork.QNetworkReply.NoError
         self._error_message = error_message
         self.deleted = False
 
