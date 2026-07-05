@@ -2320,7 +2320,9 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
     auto Types       = ExternalTypes.getValues();
     auto Objects     = ExternalGeometry.getValues();
     auto SubElements = ExternalGeometry.getSubValues();
-    assert(externalGeoRef.size() == Objects.size());
+    if (externalGeoRef.size() != Objects.size()) {
+        throw Base::RuntimeError("Inconsistency with external geometries");
+    }
     auto keys = externalGeoRef;
 
     // re-check for any missing geometry element. The code here has a side
