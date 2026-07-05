@@ -23,8 +23,8 @@
 """
 Visual snapshot tests for selected Coin/Inventor nodes.
 
-This test renders a curated set of nodes offscreen and optionally compares the
-resulting PNGs against checked-in baselines.
+This test renders a curated set of nodes through the live 3D viewer and
+optionally compares the resulting PNGs against checked-in baselines.
 
 The test is intended to be executed via FreeCAD's test runner:
 
@@ -52,6 +52,7 @@ import importlib.util
 import os
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -893,8 +894,105 @@ def _make_scene_for_node(coin, type_name: str):
     return root
 
 
+class _ViewerSnapshotHarness:
+    def __init__(self, FreeCAD, FreeCADGui, width: int, height: int):
+        self.FreeCAD = FreeCAD
+        self.FreeCADGui = FreeCADGui
+        self.width = width
+        self.height = height
+        self.previous_document = FreeCAD.activeDocument()
+        self.doc = None
+        self.view = None
+        self.viewer = None
+
+        try:
+            self.doc = FreeCAD.newDocument("CoinNodeSnapshotHarness")
+            FreeCADGui.ActiveDocument = FreeCADGui.getDocument(self.doc.Name)
+            FreeCADGui.updateGui()
+            gui_doc = FreeCADGui.getDocument(self.doc.Name)
+            if gui_doc is None:
+                raise AssertionError(f"failed to resolve GUI document for {self.doc.Name}")
+
+            self.view = gui_doc.ActiveView
+            self.viewer = self.view.getViewer()
+            self.viewer.setBackgroundColor(1.0, 1.0, 1.0)
+            self.viewer.setGradientBackground("NONE")
+            graphics_view = self.view.graphicsView()
+            graphics_view.resize(width, height)
+            graphics_view.show()
+            self._wait_until(
+                lambda: graphics_view.isVisible()
+                and graphics_view.width() > 0
+                and graphics_view.height() > 0,
+                "3D view did not become ready",
+            )
+        except Exception:
+            self.close()
+            raise
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, _exc_type, _exc_value, _traceback):
+        self.close()
+
+    def _wait_until(self, predicate, message: str, *, timeout: float = 5.0):
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            self.FreeCADGui.updateGui()
+            if predicate():
+                return
+            time.sleep(0.01)
+        raise AssertionError(message)
+
+    def render(self, root, out_path: Path):
+        self.viewer.setSceneGraph(root)
+        image = None
+
+        def capture_ready():
+            nonlocal image
+            image = self.viewer.renderToImage(
+                width=self.width,
+                height=self.height,
+                samples=0,
+                includeViewerLighting=False,
+            )
+            return not image.isNull() and image.width() > 0 and image.height() > 0
+
+        self._wait_until(capture_ready, "viewer framebuffer did not become ready")
+        if image.width() != self.width or image.height() != self.height:
+            raise AssertionError(
+                "viewer framebuffer dimensions do not match the requested snapshot size: "
+                f"expected {self.width}x{self.height}, got {image.width()}x{image.height()}"
+            )
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        if not image.save(str(out_path)):
+            raise AssertionError(f"failed to save snapshot image: {out_path}")
+
+    def close(self):
+        self.viewer = None
+        self.view = None
+
+        if self.doc is not None and self.FreeCAD.getDocument(self.doc.Name):
+            document_name = self.doc.Name
+            self.FreeCAD.closeDocument(document_name)
+            self._wait_until(
+                lambda: document_name not in self.FreeCAD.listDocuments(),
+                f"document {document_name} did not close",
+            )
+        self.doc = None
+
+        if self.previous_document is not None and self.FreeCAD.getDocument(
+            self.previous_document.Name
+        ):
+            self.FreeCAD.setActiveDocument(self.previous_document.Name)
+            self.FreeCADGui.ActiveDocument = self.FreeCADGui.getDocument(
+                self.previous_document.Name
+            )
+
+
 def _render_png(
-    FreeCADGui,
+    harness,
     coin,
     root,
     out_path: Path,
@@ -938,13 +1036,7 @@ def _render_png(
         # This shows up particularly with `SoText2`/`SoTextLabel` (text draws, but gets clipped away).
         cam.nearDistance.setValue(min(cam.nearDistance.getValue(), 0.1))
 
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    off = FreeCADGui.SoQtOffscreenRenderer(width, height)
-    off.setBackgroundColor(1, 1, 1)
-    root.ref()
-    off.render(root)
-    off.writeToImage(str(out_path))
-    root.unref()
+    harness.render(root, out_path)
 
 
 def _non_background_pixel_count(path: Path) -> int:
@@ -1201,7 +1293,7 @@ def _compare_images(
 
 
 class CoinNodeSnapshotTestCase(unittest.TestCase):
-    """Render Coin nodes offscreen and compare against PNG baselines."""
+    """Render Coin nodes through the live viewer and compare against PNG baselines."""
 
     def test_so_reg_point_unpickable_regression(self):
         _, _, coin = _require_gui()
@@ -1226,7 +1318,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         )
 
     def test_so_datum_label_ignores_parent_cull_face(self):
-        _, FreeCADGui, coin = _require_gui()
+        FreeCAD, FreeCADGui, coin = _require_gui()
 
         width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
         height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
@@ -1253,6 +1345,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         callback = coin.SoCallback()
 
         def _enable_backface_culling(userdata, action):
+            if not action.isOfType(coin.SoGLRenderAction.getClassTypeId()):
+                return
             coin.SoLazyElement.setBackfaceCulling(action.getState(), True)
 
         callback.setCallback(_enable_backface_culling, None)
@@ -1280,7 +1374,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         )
         root.addChild(label)
 
-        _render_png(FreeCADGui, coin, root, actual_path, width, height, frame_camera=False)
+        with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
+            _render_png(harness, coin, root, actual_path, width, height, frame_camera=False)
         self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
         self.assertGreater(
             _non_background_pixel_count(actual_path),
@@ -1289,7 +1384,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         )
 
     def test_so_string_label_anchor_regression(self):
-        _, FreeCADGui, coin = _require_gui()
+        FreeCAD, FreeCADGui, coin = _require_gui()
 
         width = int(os.environ.get("FC_VISUAL_WIDTH", "512"))
         height = int(os.environ.get("FC_VISUAL_HEIGHT", "512"))
@@ -1345,7 +1440,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         label.textColor.setValue(0.0, 0.0, 0.0)
         root.addChild(label)
 
-        _render_png(FreeCADGui, coin, root, actual_path, width, height, frame_camera=False)
+        with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
+            _render_png(harness, coin, root, actual_path, width, height, frame_camera=False)
         self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
 
         marker_bbox = _pixel_bbox(
@@ -1385,7 +1481,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         )
 
     def test_so_brep_face_set_per_part_material_binding_regression(self):
-        _, FreeCADGui, coin = _require_gui()
+        FreeCAD, FreeCADGui, coin = _require_gui()
 
         if importlib.util.find_spec("PartGui") is not None:
             importlib.import_module("PartGui")
@@ -1473,7 +1569,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         faces.partIndex.setValues(0, 2, [2, 2])
         root.addChild(faces)
 
-        _render_png(FreeCADGui, coin, root, actual_path, width, height, frame_camera=False)
+        with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
+            _render_png(harness, coin, root, actual_path, width, height, frame_camera=False)
         self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
         self.assertGreater(
             _non_background_pixel_count(actual_path),
@@ -1547,7 +1644,8 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                 center=(5.0, 5.0, 5.0),
                 camera_height=14.0,
             )
-            _render_png(FreeCADGui, coin, root, actual_path, width, height, frame_camera=False)
+            with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
+                _render_png(harness, coin, root, actual_path, width, height, frame_camera=False)
 
             self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
             self.assertGreater(
@@ -1598,7 +1696,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         is_linux = sys.platform.startswith("linux")
         smoke_mode = is_ci and not is_linux
 
-        _, FreeCADGui, coin = _require_gui()
+        FreeCAD, FreeCADGui, coin = _require_gui()
 
         nodes_env = os.environ.get("FC_VISUAL_NODES", "")
         if nodes_env.strip():
@@ -1675,52 +1773,56 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         max_mismatched_pixels = int((width * height) * (max_mismatch_pct / 100.0))
 
         did_render = False
-        for type_name in node_types:
-            with self.subTest(node=type_name):
-                root = _make_scene_for_node(coin, type_name)
-                actual_dir = out_dir / "actual"
-                expected_dir = out_dir / "expected"
-                diff_dir = out_dir / "diff"
+        with _ViewerSnapshotHarness(FreeCAD, FreeCADGui, width, height) as harness:
+            for type_name in node_types:
+                with self.subTest(node=type_name):
+                    root = _make_scene_for_node(coin, type_name)
+                    actual_dir = out_dir / "actual"
+                    expected_dir = out_dir / "expected"
+                    diff_dir = out_dir / "diff"
 
-                actual_path = actual_dir / f"{type_name}.png"
-                _render_png(FreeCADGui, coin, root, actual_path, width, height)
-                self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
-                self.assertGreater(actual_path.stat().st_size, 0, f"empty snapshot: {actual_path}")
-                self.assertGreater(
-                    _non_background_pixel_count(actual_path),
-                    10,
-                    f"snapshot seems empty (all background): {actual_path}",
-                )
-
-                did_render = True
-                baseline_path = baseline_dir / f"{type_name}.png"
-
-                if update_baseline:
-                    baseline_path.write_bytes(actual_path.read_bytes())
-                    continue
-
-                if not baseline_path.exists():
-                    if smoke_mode:
-                        continue
-                    self.fail(
-                        f"missing baseline: {baseline_path} (run with FC_VISUAL_UPDATE_BASELINE=1)"
+                    actual_path = actual_dir / f"{type_name}.png"
+                    _render_png(harness, coin, root, actual_path, width, height)
+                    self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
+                    self.assertGreater(
+                        actual_path.stat().st_size, 0, f"empty snapshot: {actual_path}"
+                    )
+                    self.assertGreater(
+                        _non_background_pixel_count(actual_path),
+                        10,
+                        f"snapshot seems empty (all background): {actual_path}",
                     )
 
-                expected_path = expected_dir / f"{type_name}.png"
-                expected_dir.mkdir(parents=True, exist_ok=True)
-                expected_path.write_bytes(baseline_path.read_bytes())
+                    did_render = True
+                    baseline_path = baseline_dir / f"{type_name}.png"
 
-                ok, msg = _compare_images(
-                    expected_path,
-                    actual_path,
-                    diff_dir / f"{type_name}.png",
-                    tolerance=tolerance,
-                    ignore_alpha=ignore_alpha,
-                    max_mismatched_pixels=max_mismatched_pixels,
-                )
-                if smoke_mode:
-                    if not ok:
-                        print(f"SMOKE mismatch for {type_name}: {msg}")
-                else:
-                    self.assertTrue(ok, msg)
+                    if update_baseline:
+                        baseline_path.write_bytes(actual_path.read_bytes())
+                        continue
+
+                    if not baseline_path.exists():
+                        if smoke_mode:
+                            continue
+                        self.fail(
+                            f"missing baseline: {baseline_path} "
+                            "(run with FC_VISUAL_UPDATE_BASELINE=1)"
+                        )
+
+                    expected_path = expected_dir / f"{type_name}.png"
+                    expected_dir.mkdir(parents=True, exist_ok=True)
+                    expected_path.write_bytes(baseline_path.read_bytes())
+
+                    ok, msg = _compare_images(
+                        expected_path,
+                        actual_path,
+                        diff_dir / f"{type_name}.png",
+                        tolerance=tolerance,
+                        ignore_alpha=ignore_alpha,
+                        max_mismatched_pixels=max_mismatched_pixels,
+                    )
+                    if smoke_mode:
+                        if not ok:
+                            print(f"SMOKE mismatch for {type_name}: {msg}")
+                    else:
+                        self.assertTrue(ok, msg)
         self.assertTrue(did_render, "No snapshots were rendered")
