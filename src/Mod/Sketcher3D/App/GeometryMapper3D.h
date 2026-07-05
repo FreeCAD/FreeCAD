@@ -79,7 +79,8 @@ private:
     {
         None = 0,
         Point,
-        Line
+        Line,
+        Plane
     };
 
     struct GeoDef
@@ -104,6 +105,9 @@ private:
 
     /// Return the solver line index for a geometry.
     int getLineId(const GeoElementId3D& ref) const;
+
+    /// Return the solver plane index for a reference geometry(curent plane is refrence only).
+    int getPlaneId(const GeoElementId3D& ref) const;
 
     std::vector<GeoDef> Geoms;
     int rootPointId {-1};

@@ -89,6 +89,7 @@ enum ConstraintType
     Parallel3D = 38,
     L2LAngle3D = 39,
     EqualLineLength3D = 40,
+    ProjectOnPlane3D = 41,
     P2LDistance3D = 42,
 };
 
@@ -1608,6 +1609,43 @@ private:
 public:
     ConstraintEqualLineLength3D(Line3D& l1, Line3D& l2);
     ConstraintType getTypeId() override;
+};
+
+/// TODO: make plane as dof
+class ConstraintProjectOnPlane3D: public Constraint
+{
+private:
+    inline double* px()
+    {
+        return pvec[0];
+    }
+    inline double* py()
+    {
+        return pvec[1];
+    }
+    inline double* pz()
+    {
+        return pvec[2];
+    }
+    double ox, oy, oz, nx, ny, nz;
+
+public:
+    ConstraintProjectOnPlane3D(
+        Point3D& point,
+        double oX,
+        double oY,
+        double oZ,
+        double nX,
+        double nY,
+        double nZ
+    );
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ConstraintProjectOnPlane3D()
+    {}
+#endif
+    ConstraintType getTypeId() override;
+    double error() override;
+    double grad(double*) override;
 };
 
 // P2LDistance3D

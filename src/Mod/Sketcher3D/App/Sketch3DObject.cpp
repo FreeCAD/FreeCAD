@@ -31,7 +31,9 @@
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
 
 #include <App/Document.h>
 #include <App/ElementMap.h>
@@ -45,6 +47,7 @@
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 
+#include "GeomReferencePlane3D.h"
 #include "GeometryMapper3D.h"
 #include "Sketch3DObject.h"
 #include "Solver3D.h"
@@ -88,11 +91,6 @@ const std::string& Sketch3DObject::referencePrefix()
 
 Sketch3DObject::~Sketch3DObject() = default;
 
-int Sketch3DObject::addGeometry(std::unique_ptr<Part::Geometry> geom)
-{
-    return addGeometry(std::move(geom), false);
-}
-
 int Sketch3DObject::addGeometry(std::unique_ptr<Part::Geometry> geom, bool construction)
 {
     if (!geom) {
@@ -100,10 +98,7 @@ int Sketch3DObject::addGeometry(std::unique_ptr<Part::Geometry> geom, bool const
     }
     int idx = Geometry.getSize();
     Geometry.set1Value(-1, std::move(geom));
-    const auto& geos = Geometry.getValues();
-    if (idx >= 0 && idx < static_cast<int>(geos.size()) && geos[idx]) {
-        Sketcher::GeometryFacade::setConstruction(geos[idx], construction);
-    }
+    Sketcher::GeometryFacade::setConstruction(Geometry.getValues()[idx], construction);
     return idx;
 }
 
@@ -115,14 +110,14 @@ bool Sketch3DObject::getConstruction(int geoId) const
 
 int Sketch3DObject::addConstraint(const Constraint3D& c)
 {
-    const int idx = Constraints.getSize();
+    int idx = Constraints.getSize();
     Constraints.setConstraintAt(-1, c);
     return idx;
 }
 
 const Part::Geometry* Sketch3DObject::_getGeometry(int geoId) const
 {
-    const auto& geos = Geometry.getValues();
+    auto& geos = Geometry.getValues();
     if (geoId >= 0 && geoId < static_cast<int>(geos.size())) {
         return geos[geoId];
     }
@@ -169,6 +164,9 @@ GeoKind kindFromGeometry(const Part::Geometry* g)
     if (g->is<Part::GeomLineSegment>()) {
         return GeoKind::Line;
     }
+    if (g->is<GeomReferencePlane3D>()) {
+        return GeoKind::Plane;
+    }
     // Extend with Circle/Arc once they're wired through buildShape.
     return GeoKind::Unknown;
 }
@@ -200,8 +198,7 @@ GeoElementId3D resolveSubNameInShape(
     if (it == stableToIndex.end()) {
         return {};
     }
-    const int geoId = it->second;
-
+    int geoId = it->second;
     if (geoId < 0 || geoId >= static_cast<int>(geos.size())) {
         return {};
     }
@@ -217,18 +214,20 @@ GeoElementId3D Sketch3DObject::resolveSubName(const std::string& subname) const
     }
 
     const auto& geos = Geometry.getValues();
-    const auto prefix = referencePrefix();
+    const auto& prefix = referencePrefix();
 
-    if (subname.size() >= prefix.size() && subname.compare(0, prefix.size(), prefix) == 0) {
-        return resolveSubNameInShape(
-            ReferenceShape.getShape(),
-            stableToIndex,
-            geos,
-            subname.substr(prefix.size())
-        );
+    if (!subname.starts_with(prefix)) {
+        return resolveSubNameInShape(Shape.getShape(), stableToIndex, geos, subname);
     }
 
-    return resolveSubNameInShape(Shape.getShape(), stableToIndex, geos, subname);
+    auto* local = subname.c_str() + prefix.size();
+    auto type = Part::TopoShape::getElementTypeAndIndex(local);
+
+    if (type.first == "Face") {
+        return {static_cast<int>(type.second) - 1, PointPos::none, GeoKind::Plane};
+    }
+
+    return resolveSubNameInShape(ReferenceShape.getShape(), stableToIndex, geos, local);
 }
 
 TopoDS_Shape Sketch3DObject::getSubShape(const std::string& subname, bool silent) const
@@ -237,24 +236,26 @@ TopoDS_Shape Sketch3DObject::getSubShape(const std::string& subname, bool silent
         return {};
     }
 
-    const auto shapeForSubName =
-        [this](const std::string& name, std::string& localSub) -> const Part::TopoShape& {
-        const auto& prefix = referencePrefix();
-        if (name.size() >= prefix.size() && name.compare(0, prefix.size(), prefix) == 0) {
-            localSub = name.substr(prefix.size());
-            return ReferenceShape.getShape();
-        }
-        localSub = name;
-        return Shape.getShape();
-    };
+    const auto& prefix = referencePrefix();
 
-    std::string localSub;
-    const Part::TopoShape& shape = shapeForSubName(subname, localSub);
-    if (shape.isNull()) {
-        return {};
+    if (!subname.starts_with(prefix)) {
+        const auto& shape = Shape.getShape();
+        return shape.isNull() ? TopoDS_Shape() : shape.getSubShape(subname.c_str(), silent);
     }
 
-    return shape.getSubShape(localSub.c_str(), silent);
+    const char* local = subname.c_str() + prefix.size();
+    auto type = Part::TopoShape::getElementTypeAndIndex(local);
+
+    if (type.first == "Face") {
+        int geoId = static_cast<int>(type.second) - 1;
+        if (!_getGeometry(geoId)) {
+            return TopoDS_Shape();
+        }
+        return Geometry.getValues()[geoId]->toShape();
+    }
+
+    const Part::TopoShape& ref = ReferenceShape.getShape();
+    return ref.isNull() ? TopoDS_Shape() : ref.getSubShape(local, silent);
 }
 
 bool Sketch3DObject::getPointAt(const GeoElementId3D& target, Base::Vector3d& point) const
@@ -264,17 +265,13 @@ bool Sketch3DObject::getPointAt(const GeoElementId3D& target, Base::Vector3d& po
         return true;
     }
 
-    const auto& geos = Geometry.getValues();
-    if (target.GeoId < 0 || target.GeoId >= static_cast<int>(geos.size())) {
+    if (!_getGeometry(target.GeoId)) {
         return false;
     }
 
-    const Part::Geometry* geo = geos[target.GeoId];
-    if (!geo) {
-        return false;
-    }
+    Part::Geometry* geo = Geometry.getValues()[target.GeoId];
 
-    if (const auto* pt = dynamic_cast<const Part::GeomPoint*>(geo)) {
+    if (auto* pt = dynamic_cast<Part::GeomPoint*>(geo)) {
         if (target.Pos != PointPos::none) {
             return false;
         }
@@ -282,7 +279,7 @@ bool Sketch3DObject::getPointAt(const GeoElementId3D& target, Base::Vector3d& po
         return true;
     }
 
-    if (const auto* seg = dynamic_cast<const Part::GeomLineSegment*>(geo)) {
+    if (auto* seg = dynamic_cast<Part::GeomLineSegment*>(geo)) {
         switch (target.Pos) {
             case PointPos::start:
                 point = seg->getStartPoint();
@@ -363,7 +360,7 @@ void Sketch3DObject::assignStableIds()
     stableToIndex.clear();
     const auto& geos = Geometry.getValues();
     for (long i = 0; i < static_cast<long>(geos.size()); ++i) {
-        const Part::Geometry* geo = geos[i];
+        auto* geo = geos[i];
         if (!geo) {
             continue;
         }
@@ -386,7 +383,7 @@ void Sketch3DObject::assignStableIds()
 void Sketch3DObject::acceptGeometry()
 {
     const auto& geos = Geometry.getValues();
-    const int n = static_cast<int>(geos.size());
+    int n = static_cast<int>(geos.size());
 
     auto current = Constraints.getConstraints();
     std::vector<Constraint3D> kept;
@@ -424,7 +421,7 @@ int Sketch3DObject::solve(bool updateGeo)
         return Solver3D::Malformed;
     }
 
-    const int status = solver.solve();
+    int status = solver.solve();
 
     if (updateGeo && status != Solver3D::OK && status != Solver3D::Redundant) {
         Base::Console().warning(
@@ -435,7 +432,7 @@ int Sketch3DObject::solve(bool updateGeo)
 
     // write back on Redundant too, the GCS numeric solve succeeded
     // as they are not a failure.
-    const bool solved = (status == Solver3D::OK || status == Solver3D::Redundant);
+    bool solved = (status == Solver3D::OK || status == Solver3D::Redundant);
     if (updateGeo && solved) {
         mapper.updateGeometry(solver);
         Geometry.setValues(mapper.extractGeometry());
@@ -449,7 +446,7 @@ App::DocumentObjectExecReturn* Sketch3DObject::execute()
     try {
         acceptGeometry();
 
-        const int status = solve(true);
+        int status = solve(true);
 
         switch (status) {
             case Solver3D::OverConstrained:
@@ -478,112 +475,98 @@ App::DocumentObjectExecReturn* Sketch3DObject::execute()
     }
 }
 
-Part::TopoShape Sketch3DObject::makeNamedEdge(const Part::Geometry* geo, const std::string& edgeName) const
+namespace
 {
-    Part::TopoShape shape(geo->toShape());
-    if (!shape.hasElementMap()) {
-        shape.resetElementMap(std::make_shared<Data::ElementMap>());
-    }
-    shape.setElementName(
-        Data::IndexedName::fromConst("Edge", 1),
-        Data::MappedName::fromRawData(edgeName.c_str()),
-        0L
-    );
 
-    const auto* curve = dynamic_cast<const Part::GeomBoundedCurve*>(geo);
-    if (!curve) {
-        return shape;
-    }
-
-    TopTools_IndexedMapOfShape vmap;
-    TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
-    const Base::Vector3d ends[] = {curve->getStartPoint(), curve->getEndPoint()};
-    const PointPos posIds[] = {PointPos::start, PointPos::end};
-    for (int i = 1; i <= vmap.Extent(); ++i) {
-        const gp_Pnt gpt = BRep_Tool::Pnt(TopoDS::Vertex(vmap(i)));
-        const Base::Vector3d pt(gpt.X(), gpt.Y(), gpt.Z());
-        for (std::size_t j = 0; j < sizeof(posIds) / sizeof(posIds[0]); ++j) {
-            if (ends[j] == pt) {
-                const std::string vname = edgeName + 'v'
-                    + std::to_string(static_cast<int>(posIds[j]));
-                shape.setElementName(
-                    Data::IndexedName::fromConst("Vertex", i),
-                    Data::MappedName::fromRawData(vname.c_str()),
-                    0L
-                );
-                break;
-            }
-        }
-    }
+Part::TopoShape makeNamedShape(const TopoDS_Shape& ocShape)
+{
+    Part::TopoShape shape(ocShape);
+    shape.resetElementMap(std::make_shared<Data::ElementMap>());
     return shape;
 }
 
+void setElementName(Part::TopoShape& shape, const char* type, int index, const std::string& name)
+{
+    shape.setElementName(
+        Data::IndexedName::fromConst(type, index),
+        Data::MappedName::fromRawData(name.c_str()),
+        0L
+    );
+}
+
+Part::TopoShape makeNamedVertex(const TopoDS_Shape& ocShape, const std::string& gname)
+{
+    Part::TopoShape shape = makeNamedShape(ocShape);
+    setElementName(shape, "Vertex", 1, gname);
+    return shape;
+}
+
+Part::TopoShape makeNamedEdge(const TopoDS_Shape& ocShape, const std::string& gname)
+{
+    Part::TopoShape shape = makeNamedShape(ocShape);
+    setElementName(shape, "Edge", 1, gname);
+
+    auto edge = TopoDS::Edge(shape.getShape());
+    auto vStart = TopExp::FirstVertex(edge);
+    auto vEnd = TopExp::LastVertex(edge);
+
+    auto nameVertex = [&](const TopoDS_Vertex& vertex, PointPos pos) {
+        setElementName(
+            shape,
+            "Vertex",
+            shape.findShape(vertex),
+            gname + 'v' + std::to_string(static_cast<int>(pos))
+        );
+    };
+
+    nameVertex(vStart, PointPos::start);
+    if (!vStart.IsSame(vEnd)) {
+        nameVertex(vEnd, PointPos::end);
+    }
+
+    return shape;
+}
+
+}  // namespace
+
 Part::TopoShape Sketch3DObject::buildShapeForGeometry(bool construction) const
 {
-    std::vector<Part::TopoShape> edges;
-    std::vector<Part::TopoShape> vertices;
+    std::vector<Part::TopoShape> shapes;
     const auto& geos = Geometry.getValues();
-    edges.reserve(geos.size());
+    shapes.reserve(geos.size());
 
-    for (std::size_t i = 0; i < geos.size(); ++i) {
-        const Part::Geometry* g = geos[i];
-        if (!g) {
-            continue;
-        }
-        if (Sketcher::GeometryFacade::getConstruction(g) != construction) {
+    for (auto& g : geos) {
+        if (!g || Sketcher::GeometryFacade::getConstruction(g) != construction) {
             continue;
         }
 
-        TopoDS_Shape occtShape = g->toShape();
-        if (occtShape.IsNull()) {
+        auto shape = g->toShape();
+        if (shape.IsNull()) {
             continue;
         }
-        // The mapped name uses the stable id
-        const long stableId = Sketcher::GeometryFacade::getFacade(g)->getId();
-        const std::string gname = "g" + std::to_string(stableId);
 
-        if (g->is<Part::GeomPoint>()) {
-            Part::TopoShape v {TopoDS::Vertex(occtShape)};
-            if (!v.hasElementMap()) {
-                v.resetElementMap(std::make_shared<Data::ElementMap>());
-            }
-            v.setElementName(
-                Data::IndexedName::fromConst("Vertex", 1),
-                Data::MappedName::fromRawData(gname.c_str()),
-                0L
-            );
-            vertices.push_back(v);
-            vertices.back().copyElementMap(v, Part::OpCodes::Sketch3D);
+        auto gname = "g" + std::to_string(Sketcher::GeometryFacade::getFacade(g)->getId());
+
+        // Reference planes are in view only
+        if (g->is<Sketcher3D::GeomReferencePlane3D>()) {
+            continue;
         }
-        else if (g->is<Part::GeomLineSegment>()) {
-            edges.push_back(makeNamedEdge(g, gname));
+
+        if (g->is<Part::GeomLineSegment>()) {
+            shapes.push_back(makeNamedEdge(shape, gname));
+        }
+        else if (g->is<Part::GeomPoint>()) {
+            shapes.push_back(makeNamedVertex(shape, gname));
         }
         // Extend with Circle/Arc/Ellipse/BSpline.
     }
 
-    if (edges.empty() && vertices.empty()) {
+    if (shapes.empty()) {
         return Part::TopoShape();
     }
 
-    auto* doc = getDocument();
-    Part::TopoShape result(0, doc ? doc->getStringHasher() : nullptr);
-
-    std::vector<Part::TopoShape> all;
-    if (!edges.empty()) {
-        auto wires = Part::TopoShape().makeElementWires(edges, Part::OpCodes::Sketch3D);
-        for (const auto& w : wires.getSubTopoShapes(TopAbs_WIRE)) {
-            all.push_back(w);
-        }
-    }
-    all.insert(all.end(), vertices.begin(), vertices.end());
-
-    if (all.size() == 1) {
-        result = all[0];
-    }
-    else {
-        result.makeElementCompound(all);
-    }
-
+    Part::TopoShape result;
+    result.makeElementCompound(shapes, Part::OpCodes::Sketch3D);
     result.Tag = getID();
     return result;
 }

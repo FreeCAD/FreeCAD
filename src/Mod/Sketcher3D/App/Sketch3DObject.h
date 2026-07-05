@@ -73,8 +73,7 @@ public:
     }
 
     /// add a geometry primitive. Returns assigned GeoId.
-    int addGeometry(std::unique_ptr<Part::Geometry> geom);
-    int addGeometry(std::unique_ptr<Part::Geometry> geom, bool construction);
+    int addGeometry(std::unique_ptr<Part::Geometry> geom, bool construction = false);
 
     bool getConstruction(int geoId) const;
 
@@ -87,7 +86,7 @@ public:
             std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
     const GeometryT* getGeometry(int geoId) const
     {
-        return static_cast<const GeometryT*>(_getGeometry(geoId));
+        return dynamic_cast<const GeometryT*>(_getGeometry(geoId));
     }
 
     /// Resolve a shape subname like "Edge1" or "RefVertex2" to the owning
@@ -132,9 +131,6 @@ private:
 
     /// Build Shape and ReferenceShape from the current (solved) geometry.
     void buildShapes();
-
-    /// Build a named edge shape and name its endpoint vertices
-    Part::TopoShape makeNamedEdge(const Part::Geometry* geo, const std::string& edgeName) const;
 
     /// Ensure every geometry has a stable ID and rebuild the lookup from
     /// stable ID to current Geometry index.

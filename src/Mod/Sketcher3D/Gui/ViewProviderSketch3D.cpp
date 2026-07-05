@@ -31,6 +31,7 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/events/SoKeyboardEvent.h>
@@ -38,30 +39,39 @@
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFaceSet.h>
-#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoScale.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
 
 #include <Precision.hxx>
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
+#include <Base/Rotation.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Inventor/SoAutoZoomTranslation.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ToolBarManager.h>
+#include <Gui/Utilities.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/Part/Gui/ViewProviderExt.h>
 #include <Mod/Sketcher3D/App/GeoEnum3D.h>
+#include <Mod/Sketcher3D/App/GeomReferencePlane3D.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
 #include "DrawSketchHandler3D.h"
@@ -102,133 +112,53 @@ void setEmissiveColor(SoMaterial* material, const Color3f& color, float scale = 
     material->emissiveColor.setValue(color[0] * scale, color[1] * scale, color[2] * scale);
 }
 
-SoSeparator* buildAxisHandle(std::array<SoMaterial*, 3>& axisMaterials)
-{
-    struct AxisDef
-    {
-        SbVec3f dir;
-        SbVec3f side;
-        const char* name;
-    };
-    const AxisDef axes[3] = {
-        {{1.0F, 0.0F, 0.0F}, {0.0F, 1.0F, 0.0F}, "Sketcher3DAxisHandleX"},
-        {{0.0F, 1.0F, 0.0F}, {1.0F, 0.0F, 0.0F}, "Sketcher3DAxisHandleY"},
-        {{0.0F, 0.0F, 1.0F}, {1.0F, 0.0F, 0.0F}, "Sketcher3DAxisHandleZ"},
-    };
-
-    const int kSegments = 3;
-
-    auto* handle = new SoSeparator();
-    handle->setName("Sketcher3DAxisHandle");
-
-    for (std::size_t i = 0; i < 3; ++i) {
-        auto* axisSep = new SoSeparator();
-        axisSep->setName(axes[i].name);
-
-        auto* material = new SoMaterial();
-        setDiffuseColor(material, kInactiveAxisHandleColor);
-        setEmissiveColor(material, kInactiveAxisHandleColor, kInactiveAxisHandleEmissiveScale);
-        material->transparency.setValue(kAxisHandleTransparency);
-        axisSep->addChild(material);
-        axisMaterials[i] = material;
-
-        auto* style = new SoDrawStyle();
-        style->lineWidth.setValue(kAxisHandleLineWidth);
-        axisSep->addChild(style);
-
-        SbVec3f end = axes[i].dir * kAxisHandleLength;
-        SbVec3f arrowBase = end - axes[i].dir * kAxisHandleArrowLength;
-        SbVec3f sideVec = axes[i].side * (kAxisHandleArrowLength * kArrowHeadHalfWidthFactor);
-
-        auto* coords = new SoCoordinate3();
-        coords->point.setNum(6);
-        coords->point.set1Value(0, SbVec3f(0.0F, 0.0F, 0.0F));
-        coords->point.set1Value(1, end);
-        coords->point.set1Value(2, end);
-        coords->point.set1Value(3, arrowBase + sideVec);
-        coords->point.set1Value(4, end);
-        coords->point.set1Value(5, arrowBase - sideVec);
-        axisSep->addChild(coords);
-
-        auto* lineSet = new SoLineSet();
-        lineSet->numVertices.setNum(kSegments);
-        for (int s = 0; s < kSegments; ++s) {
-            lineSet->numVertices.set1Value(s, 2);
-        }
-        axisSep->addChild(lineSet);
-
-        handle->addChild(axisSep);
-    }
-
-    return handle;
-}
-
-SbVec3f planeNormal(ViewProviderSketch3D::ActivePlane p)
-{
-    switch (p) {
-        case ViewProviderSketch3D::ActivePlane::YZ:
-            return {1.0F, 0.0F, 0.0F};
-        case ViewProviderSketch3D::ActivePlane::ZX:
-            return {0.0F, 1.0F, 0.0F};
-        case ViewProviderSketch3D::ActivePlane::XY:
-        default:
-            return {0.0F, 0.0F, 1.0F};
-    }
-}
-
-float planeSizeFromCursor(
-    ViewProviderSketch3D::ActivePlane plane,
-    const Base::Vector3d& base,
-    const Base::Vector3d& cursor
+SoSeparator* addAxisArrow(
+    const SbVec3f& dir,
+    const SbVec3f& side,
+    const char* name,
+    const Color3f& color,
+    float emScale
 )
 {
-    double dx = std::abs(cursor.x - base.x);
-    double dy = std::abs(cursor.y - base.y);
-    double dz = std::abs(cursor.z - base.z);
+    auto* axisSep = new SoSeparator();
+    axisSep->setName(name);
 
-    double mouseSize = 0.0;
-    switch (plane) {
-        case ViewProviderSketch3D::ActivePlane::YZ:
-            mouseSize = std::max(dy, dz);
-            break;
-        case ViewProviderSketch3D::ActivePlane::ZX:
-            mouseSize = std::max(dx, dz);
-            break;
-        case ViewProviderSketch3D::ActivePlane::XY:
-        default:
-            mouseSize = std::max(dx, dy);
-            break;
-    }
+    auto* material = new SoMaterial();
+    setDiffuseColor(material, color);
+    setEmissiveColor(material, color, emScale);
+    material->transparency.setValue(kAxisHandleTransparency);
+    axisSep->addChild(material);
 
-    return std::max(kAxisHandleLength, (float)mouseSize);
+    auto* style = new SoDrawStyle();
+    style->lineWidth.setValue(kAxisHandleLineWidth);
+    axisSep->addChild(style);
+
+    SbVec3f end = dir * kAxisHandleLength;
+    SbVec3f arrowBase = end - dir * kAxisHandleArrowLength;
+    SbVec3f sideVec = side * (kAxisHandleArrowLength * kArrowHeadHalfWidthFactor);
+
+    auto* coords = new SoCoordinate3();
+    coords->point.setNum(4);
+    coords->point.set1Value(0, SbVec3f(0.0F, 0.0F, 0.0F));
+    coords->point.set1Value(1, end);
+    coords->point.set1Value(2, arrowBase + sideVec);
+    coords->point.set1Value(3, arrowBase - sideVec);
+    axisSep->addChild(coords);
+
+    auto* lineSet = new SoIndexedLineSet();
+    static const int32_t lineIndices[] = {0, 1, -1, 1, 2, -1, 1, 3, -1};
+    lineSet->coordIndex.setValues(0, 9, lineIndices);
+    axisSep->addChild(lineSet);
+
+    return axisSep;
 }
 
-void writePlaneQuadCoords(SoCoordinate3* coords, ViewProviderSketch3D::ActivePlane p, float size)
+float planeSizeFromFrame(const ViewProviderSketch3D::ActivePlaneFrame& frame, const Base::Vector3d& cursor)
 {
-    coords->point.setNum(kPlaneQuadVertexCount);
-    SbVec3f* pts = coords->point.startEditing();
-    switch (p) {
-        case ViewProviderSketch3D::ActivePlane::YZ:
-            pts[0] = {0.0F, -size, -size};
-            pts[1] = {0.0F, size, -size};
-            pts[2] = {0.0F, size, size};
-            pts[3] = {0.0F, -size, size};
-            break;
-        case ViewProviderSketch3D::ActivePlane::ZX:
-            pts[0] = {-size, 0.0F, -size};
-            pts[1] = {size, 0.0F, -size};
-            pts[2] = {size, 0.0F, size};
-            pts[3] = {-size, 0.0F, size};
-            break;
-        case ViewProviderSketch3D::ActivePlane::XY:
-        default:
-            pts[0] = {-size, -size, 0.0F};
-            pts[1] = {size, -size, 0.0F};
-            pts[2] = {size, size, 0.0F};
-            pts[3] = {-size, size, 0.0F};
-            break;
-    }
-    coords->point.finishEditing();
+    Base::Vector3d d = cursor - frame.origin;
+    double alongU = std::abs(d * frame.xAxis);
+    double alongV = std::abs(d * frame.yAxis);
+    return std::max(kAxisHandleLength, static_cast<float>(std::max(alongU, alongV)));
 }
 
 }  // namespace
@@ -237,13 +167,11 @@ ViewProviderSketch3D::ViewProviderSketch3D()
 {
     PointSize.setValue(5.0F);
     LineWidth.setValue(2.0F);
+    updateActivePlaneFrame();
 }
 
 ViewProviderSketch3D::~ViewProviderSketch3D()
 {
-    if (referenceFaceset) {
-        referenceFaceset->unref();
-    }
     if (referenceGeometryRoot) {
         referenceGeometryRoot->unref();
     }
@@ -263,6 +191,7 @@ void ViewProviderSketch3D::ensureReferenceGeometry()
     referenceGeometryRoot = new SoSeparator();
     referenceGeometryRoot->setName("Sketcher3DReferenceGeometry");
     referenceGeometryRoot->ref();
+    referenceGeometryRoot->renderCaching.setValue(SoSeparator::OFF);
 
     referenceGeometrySwitch = new SoSwitch();
     referenceGeometrySwitch->whichChild = SO_SWITCH_NONE;
@@ -270,23 +199,43 @@ void ViewProviderSketch3D::ensureReferenceGeometry()
 
     referenceGeometryContent = new SoSeparator();
 
+    referenceFaceCoords = new SoCoordinate3();
+    referenceGeometryContent->addChild(referenceFaceCoords);
+
+    referenceFaceNormals = new SoNormal();
+    referenceGeometryContent->addChild(referenceFaceNormals);
+
+    referenceFaceMaterial = new SoMaterial();
+    setDiffuseColor(referenceFaceMaterial, kPlaneOverlayColor);
+    referenceFaceMaterial->transparency.setValue(kPlaneTransparency);
+    referenceGeometryContent->addChild(referenceFaceMaterial);
+
+    auto* faceDrawStyle = new SoDrawStyle();
+    faceDrawStyle->style.setValue(SoDrawStyle::FILLED);
+    referenceGeometryContent->addChild(faceDrawStyle);
+
+    auto* facePick = new SoPickStyle();
+    facePick->style.setValue(SoPickStyle::SHAPE);
+    referenceGeometryContent->addChild(facePick);
+
     referenceFaceset = new PartGui::SoBrepFaceSet();
-    referenceFaceset->ref();
-
-    auto* material = new SoMaterial();
-    setDiffuseColor(material, kReferenceColor);
-    referenceGeometryContent->addChild(material);
-
-    auto* style = new SoDrawStyle();
-    style->lineWidth.setValue(LineWidth.getValue());
-    style->pointSize.setValue(PointSize.getValue());
-    referenceGeometryContent->addChild(style);
+    referenceGeometryContent->addChild(referenceFaceset);
 
     referenceCoords = new SoCoordinate3();
     referenceGeometryContent->addChild(referenceCoords);
 
     referenceNormals = new SoNormal();
     referenceGeometryContent->addChild(referenceNormals);
+
+    auto* edgeMaterial = new SoMaterial();
+    setDiffuseColor(edgeMaterial, kReferenceColor);
+    referenceGeometryContent->addChild(edgeMaterial);
+
+    auto* edgeStyle = new SoDrawStyle();
+    edgeStyle->style.setValue(SoDrawStyle::LINES);
+    edgeStyle->lineWidth.setValue(LineWidth.getValue());
+    edgeStyle->pointSize.setValue(PointSize.getValue());
+    referenceGeometryContent->addChild(edgeStyle);
 
     referenceLineset = new PartGui::SoBrepEdgeSet();
     referenceGeometryContent->addChild(referenceLineset);
@@ -301,75 +250,139 @@ void ViewProviderSketch3D::ensureReferenceGeometry()
 void ViewProviderSketch3D::updateReferenceGeometry()
 {
     ensureReferenceGeometry();
-    if (!referenceGeometrySwitch) {
-        return;
-    }
+    auto* sketch = getSketch3DObject();
 
-    if (!isEditingSketch3D()) {
+    if (!isEditingSketch3D() || !sketch) {
         referenceGeometrySwitch->whichChild = SO_SWITCH_NONE;
         return;
     }
+
+    updateReferencePlanes();
+
+    const auto& shape = sketch->ReferenceShape.getShape();
+    if (!lastRenderedRefShape.getShape().IsPartner(shape.getShape())) {
+        lastRenderedRefShape = shape;
+
+        Gui::SoSelectionElementAction saction(Gui::SoSelectionElementAction::None);
+        saction.apply(referenceLineset);
+        saction.apply(referencePointset);
+
+        auto* scratchFaceset = new PartGui::SoBrepFaceSet();
+        scratchFaceset->ref();
+        if (!shape.isNull()) {
+            PartGui::ViewProviderPartExt::setupCoinGeometry(
+                shape.getShape(),
+                referenceCoords,
+                scratchFaceset,
+                referenceNormals,
+                referenceLineset,
+                referencePointset,
+                Deviation.getValue(),
+                AngularDeflection.getValue()
+            );
+        }
+        else {
+            referenceCoords->point.setNum(0);
+            referenceLineset->coordIndex.setNum(0);
+            referencePointset->startIndex.setValue(0);
+        }
+        scratchFaceset->unref();
+    }
+
+    referenceGeometrySwitch->whichChild = SO_SWITCH_ALL;
+}
+
+void ViewProviderSketch3D::updateReferencePlanes()
+{
+    planeGeoIds.clear();
 
     auto* sketch = getSketch3DObject();
-    TopoDS_Shape shape;
-    if (sketch) {
-        shape = sketch->ReferenceShape.getValue();
-    }
-
-    if (lastRenderedRefShape.IsPartner(shape)) {
-        return;
-    }
-    lastRenderedRefShape = shape;
-
-    if (shape.IsNull()) {
-        referenceGeometrySwitch->whichChild = SO_SWITCH_NONE;
+    if (!sketch) {
         return;
     }
 
-    Gui::SoSelectionElementAction saction(Gui::SoSelectionElementAction::None);
-    saction.apply(referenceLineset);
-    saction.apply(referencePointset);
-
-    Gui::SoHighlightElementAction haction;
-    haction.apply(referenceLineset);
-    haction.apply(referencePointset);
-
-    try {
-        PartGui::ViewProviderPartExt::setupCoinGeometry(
-            shape,
-            referenceCoords,
-            referenceFaceset,
-            referenceNormals,
-            referenceLineset,
-            referencePointset,
-            Deviation.getValue(),
-            AngularDeflection.getValue()
-        );
-        referenceGeometrySwitch->whichChild = SO_SWITCH_ALL;
+    const auto& geos = sketch->Geometry.getValues();
+    std::vector<Part::TopoShape> faceShapes;
+    for (int i = 0; i < static_cast<int>(geos.size()); ++i) {
+        if (!geos[i] || !geos[i]->is<Sketcher3D::GeomReferencePlane3D>()) {
+            continue;
+        }
+        TopoDS_Shape face = geos[i]->toShape();
+        if (face.IsNull()) {
+            continue;
+        }
+        faceShapes.emplace_back(face);
+        planeGeoIds.push_back(i);
     }
-    catch (const Standard_Failure&) {
-        referenceGeometrySwitch->whichChild = SO_SWITCH_NONE;
-    }
+
+    Part::TopoShape faceCompound;
+    faceCompound.makeElementCompound(faceShapes);
+
+    referenceFaceCoords->point.setNum(0);
+    referenceFaceNormals->vector.setNum(0);
+    referenceFaceset->coordIndex.setNum(0);
+    referenceFaceset->partIndex.setNum(0);
+
+    // Face borders are discarded.
+    auto* tempLineset = new PartGui::SoBrepEdgeSet();
+    tempLineset->ref();
+    auto* tempPointset = new PartGui::SoBrepPointSet();
+    tempPointset->ref();
+    PartGui::ViewProviderPartExt::setupCoinGeometry(
+        faceCompound.getShape(),
+        referenceFaceCoords,
+        referenceFaceset,
+        referenceFaceNormals,
+        tempLineset,
+        tempPointset,
+        Deviation.getValue(),
+        AngularDeflection.getValue()
+    );
+    tempLineset->unref();
+    tempPointset->unref();
 }
 
 bool ViewProviderSketch3D::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
 {
     const SoDetail* detail = pp->getDetail();
+    if (!detail) {
+        return false;
+    }
 
-    if (detail && referenceLineset && pp->getPath()->containsNode(referenceLineset)
-        && detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-        const int edge = static_cast<const SoLineDetail*>(detail)->getLineIndex() + 1;
-        subname = Sketcher3D::Sketch3DObject::referencePrefix() + "Edge" + std::to_string(edge);
-        return true;
+    auto hit = [&](SoNode* node, SoType detailType) {
+        return node && pp->getPath()->containsNode(node) && detail->getTypeId() == detailType;
+    };
+
+    const char* element = nullptr;
+    // this is beause the referance plane is only view and follow part 1 based index
+    // and other element is follow 0 based index
+    int number = -1;
+
+    if (hit(referenceFaceset, SoFaceDetail::getClassTypeId())) {
+        element = "Face";
+        int partIdx = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
+        if (partIdx >= 0 && partIdx < static_cast<int>(planeGeoIds.size())) {
+            number = planeGeoIds[partIdx];
+        }
     }
-    if (detail && referencePointset && pp->getPath()->containsNode(referencePointset)
-        && detail->getTypeId() == SoPointDetail::getClassTypeId()) {
-        const int vertex = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex()
-            - referencePointset->startIndex.getValue() + 1;
-        subname = Sketcher3D::Sketch3DObject::referencePrefix() + "Vertex" + std::to_string(vertex);
-        return true;
+    else if (hit(referenceLineset, SoLineDetail::getClassTypeId())) {
+        element = "Edge";
+        number = static_cast<const SoLineDetail*>(detail)->getLineIndex();
     }
-    return PartGui::ViewProviderPart::getElementPicked(pp, subname);
+    else if (hit(referencePointset, SoPointDetail::getClassTypeId())) {
+        element = "Vertex";
+        number = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex()
+            - referencePointset->startIndex.getValue();
+    }
+    else {
+        return PartGui::ViewProviderPart::getElementPicked(pp, subname);
+    }
+
+    if (number < 0) {
+        return false;
+    }
+    subname = Sketcher3D::Sketch3DObject::referencePrefix() + element + std::to_string(number + 1);
+    return true;
 }
 
 bool ViewProviderSketch3D::getDetailPath(
@@ -380,51 +393,51 @@ bool ViewProviderSketch3D::getDetailPath(
 ) const
 {
     const auto& prefix = Sketcher3D::Sketch3DObject::referencePrefix();
-    if (subname && std::string(subname).compare(0, prefix.size(), prefix) == 0) {
-        if (!isEditingSketch3D() || !referenceGeometrySwitch
-            || referenceGeometrySwitch->whichChild.getValue() == SO_SWITCH_NONE) {
-            return false;
-        }
+    if (!subname || !std::string_view(subname).starts_with(prefix)) {
+        return PartGui::ViewProviderPart::getDetailPath(subname, pPath, append, det);
+    }
 
-        auto type = Part::TopoShape::getElementTypeAndIndex(subname + prefix.size());
-        std::string element = type.first;
-        int index = type.second;
+    auto [element, occIndex] = Part::TopoShape::getElementTypeAndIndex(subname + prefix.size());
+    int index = static_cast<int>(occIndex) - 1;
 
-        if (append && pPath) {
-            pPath->append(pcRoot);
-            if (referenceGeometryRoot) {
-                pPath->append(referenceGeometryRoot);
-                pPath->append(referenceGeometrySwitch);
-                if (referenceGeometryContent) {
-                    pPath->append(referenceGeometryContent);
-                    if (element == "Edge" && referenceLineset) {
-                        pPath->append(referenceLineset);
-                    }
-                    else if (element == "Vertex" && referencePointset) {
-                        pPath->append(referencePointset);
-                    }
-                }
-            }
-        }
+    SoNode* setNode = nullptr;
+    std::unique_ptr<SoDetail> detail;
 
-        if (element == "Edge") {
-            auto* detail = new SoLineDetail();
-            detail->setLineIndex(index - 1);
-            det = detail;
-            return true;
+    if (index >= 0 && element == "Edge" && referenceLineset) {
+        auto* lineDetail = new SoLineDetail();
+        lineDetail->setLineIndex(index);
+        detail.reset(lineDetail);
+        setNode = referenceLineset;
+    }
+    else if (index >= 0 && element == "Vertex" && referencePointset) {
+        auto* pointDetail = new SoPointDetail();
+        pointDetail->setCoordinateIndex(index + referencePointset->startIndex.getValue());
+        detail.reset(pointDetail);
+        setNode = referencePointset;
+    }
+    else if (index >= 0 && element == "Face" && referenceFaceset) {
+        auto it = std::find(planeGeoIds.begin(), planeGeoIds.end(), index);
+        if (it != planeGeoIds.end()) {
+            auto* faceDetail = new SoFaceDetail();
+            faceDetail->setPartIndex(static_cast<int>(std::distance(planeGeoIds.begin(), it)));
+            detail.reset(faceDetail);
+            setNode = referenceFaceset;
         }
-        if (element == "Vertex") {
-            auto* detail = new SoPointDetail();
-            detail->setCoordinateIndex(
-                index + (referencePointset ? referencePointset->startIndex.getValue() : 0) - 1
-            );
-            det = detail;
-            return true;
-        }
+    }
+
+    if (!detail) {
         return false;
     }
 
-    return PartGui::ViewProviderPart::getDetailPath(subname, pPath, append, det);
+    if (append && pPath) {
+        pPath->append(pcRoot);
+        pPath->append(referenceGeometryRoot);
+        pPath->append(referenceGeometrySwitch);
+        pPath->append(referenceGeometryContent);
+        pPath->append(setNode);
+    }
+    det = detail.release();
+    return true;
 }
 
 Sketcher3D::Sketch3DObject* ViewProviderSketch3D::getSketch3DObject() const
@@ -436,16 +449,19 @@ void ViewProviderSketch3D::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
     auto* sketch = getSketch3DObject();
-    if (sketch && prop == &sketch->ReferenceShape) {
+    if (!taskPanel || !sketch) {
+        return;
+    }
+    if (prop == &sketch->ReferenceShape) {
         updateReferenceGeometry();
     }
-    if (!taskPanel) {
-        return;
-    }
-    if (!sketch) {
-        return;
-    }
     if (prop == &sketch->Geometry || prop == &sketch->Constraints) {
+        if (activeUserPlaneGeoId >= 0 && !getActiveReferencePlane()) {
+            activeUserPlaneGeoId = -1;
+        }
+        if (prop == &sketch->Geometry) {
+            updateReferenceGeometry();
+        }
         taskPanel->refresh();
     }
 }
@@ -515,7 +531,7 @@ void ViewProviderSketch3D::unsetEdit(int ModNum)
 
     purgeHandler();
     snapManager.reset();
-    lastRenderedRefShape.Nullify();
+    lastRenderedRefShape = Part::TopoShape();
     updateReferenceGeometry();
 
     if (snapMarker) {
@@ -530,9 +546,8 @@ void ViewProviderSketch3D::unsetEdit(int ModNum)
         pcRoot->removeChild(planeOverlay);
         planeOverlay->unref();
         planeOverlay = nullptr;
-        planeOverlayTranslation = nullptr;
-        planeOverlayCoords = nullptr;
-        axisHandleMaterials = {};
+        planeOverlayTransform = nullptr;
+        planeOverlayScale = nullptr;
         planeOverlaySize = kPlaneOverlaySize;
     }
 
@@ -571,6 +586,26 @@ void ViewProviderSketch3D::purgeHandler()
     }
 }
 
+bool ViewProviderSketch3D::tryActivatePickedPlane(const std::string& subName)
+{
+    auto* sketch = getSketch3DObject();
+    if (!sketch || subName.empty()) {
+        return false;
+    }
+
+    Sketcher3D::GeoElementId3D id = sketch->resolveSubName(subName);
+    if (!id.isValid()) {
+        return false;
+    }
+
+    if (!sketch->getGeometry<Sketcher3D::GeomReferencePlane3D>(id.GeoId)) {
+        return false;
+    }
+
+    setActiveUserPlane(id.GeoId);
+    return true;
+}
+
 bool ViewProviderSketch3D::mouseButtonPressed(
     int button,
     bool pressed,
@@ -578,18 +613,26 @@ bool ViewProviderSketch3D::mouseButtonPressed(
     const Gui::View3DInventorViewer* viewer
 )
 {
-    if (!handler || !pressed) {
+    if (button != SoMouseButtonEvent::BUTTON1 || !pressed) {
         return false;
     }
 
-    if (button == SoMouseButtonEvent::BUTTON1) {
-        Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
-        Base::Vector3d p = applySnap(raw, cursorPos, viewer);
-        hideSnapMarker();
-        return handler->pressButton(p);
+    // try reference plane picking
+    if (!handler) {
+        std::unique_ptr<SoPickedPoint> pp(getPointOnRay(cursorPos, viewer));
+        if (pp) {
+            std::string subName;
+            if (getElementPicked(pp.get(), subName)) {
+                return tryActivatePickedPlane(subName);
+            }
+        }
+        return false;
     }
 
-    return false;
+    Base::Vector3d raw = projectToSketchPlane(cursorPos, viewer);
+    Base::Vector3d p = applySnap(raw, cursorPos, viewer);
+    hideSnapMarker();
+    return handler->pressButton(p);
 }
 
 bool ViewProviderSketch3D::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
@@ -634,20 +677,104 @@ bool ViewProviderSketch3D::keyPressed(bool pressed, int key)
     return handler->keyPressed(key);
 }
 
+const Sketcher3D::GeomReferencePlane3D* ViewProviderSketch3D::getActiveReferencePlane() const
+{
+    if (activeUserPlaneGeoId < 0) {
+        return nullptr;
+    }
+    auto* sketch = getSketch3DObject();
+    if (!sketch) {
+        return nullptr;
+    }
+    return sketch->getGeometry<Sketcher3D::GeomReferencePlane3D>(activeUserPlaneGeoId);
+}
+
 void ViewProviderSketch3D::cyclePlane()
 {
-    activePlane = static_cast<ActivePlane>((static_cast<int>(activePlane) + 1) % 3);
-    redrawPlaneQuad();
-    updateAxisHandleColors();
+    setActiveBasePlane(static_cast<ActivePlane>((static_cast<int>(activeBasePlane) + 1) % 3));
+}
+
+void ViewProviderSketch3D::setActiveBasePlane(ActivePlane p)
+{
+    activeBasePlane = p;
+    activeUserPlaneGeoId = -1;
+    applyActivePlaneChanges();
+}
+
+void ViewProviderSketch3D::setActiveUserPlane(int geoId)
+{
+    activeUserPlaneGeoId = geoId;
+    applyActivePlaneChanges();
+}
+
+void ViewProviderSketch3D::applyActivePlaneChanges()
+{
+    updateActivePlaneFrame();
+    updatePlaneScale();
+    updatePlaneOverlayTransform();
+    // TODO: need to add plane in task panel
     if (taskPanel) {
         taskPanel->refresh();
     }
 }
 
+void ViewProviderSketch3D::updateActivePlaneFrame()
+{
+    activeFrame.isUserPlane = false;
+    activeFrame.geoId = -1;
+
+    if (auto* plane = getActiveReferencePlane()) {
+        activeFrame.isUserPlane = true;
+        activeFrame.geoId = activeUserPlaneGeoId;
+        activeFrame.origin = plane->getLocation();
+        activeFrame.xAxis = plane->getXDir();
+        activeFrame.normal = plane->getDir();
+        activeFrame.yAxis = activeFrame.normal.Cross(activeFrame.xAxis);
+        return;
+    }
+
+    activeFrame.origin = planeBase;
+    switch (activeBasePlane) {
+        case ActivePlane::XY:
+            activeFrame.xAxis = Base::Vector3d(1, 0, 0);
+            activeFrame.yAxis = Base::Vector3d(0, 1, 0);
+            activeFrame.normal = Base::Vector3d(0, 0, 1);
+            break;
+        case ActivePlane::YZ:
+            activeFrame.xAxis = Base::Vector3d(0, 1, 0);
+            activeFrame.yAxis = Base::Vector3d(0, 0, 1);
+            activeFrame.normal = Base::Vector3d(1, 0, 0);
+            break;
+        case ActivePlane::ZX:
+            activeFrame.xAxis = Base::Vector3d(0, 0, 1);
+            activeFrame.yAxis = Base::Vector3d(1, 0, 0);
+            activeFrame.normal = Base::Vector3d(0, 1, 0);
+            break;
+    }
+}
+
+void ViewProviderSketch3D::updatePlaneOverlayTransform()
+{
+    if (!planeOverlayTransform) {
+        return;
+    }
+    auto& frame = getActivePlaneFrame();
+
+    planeOverlayTransform->translation.setValue(frame.origin.x, frame.origin.y, frame.origin.z);
+
+    auto rot
+        = Base::Rotation::makeRotationByAxes(frame.xAxis, Base::Vector3d(0, 0, 0), frame.normal, "ZXY");
+    planeOverlayTransform->rotation.setValue(Base::convertTo<SbRotation>(rot));
+}
+
 void ViewProviderSketch3D::setPlaneBase(const Base::Vector3d& base)
 {
+    if (activeFrame.isUserPlane) {
+        return;
+    }
     planeBase = base;
-    updatePlaneOverlayTranslation();
+    updateActivePlaneFrame();
+    updatePlaneOverlayTransform();
     if (taskPanel) {
         taskPanel->refresh();
     }
@@ -669,8 +796,8 @@ void ViewProviderSketch3D::ensurePlaneOverlay()
     pick->style.setValue(SoPickStyle::UNPICKABLE);
     planeOverlay->addChild(pick);
 
-    planeOverlayTranslation = new SoTranslation();
-    planeOverlay->addChild(planeOverlayTranslation);
+    planeOverlayTransform = new SoTransform();
+    planeOverlay->addChild(planeOverlayTransform);
 
     auto* quadSep = new SoSeparator();
     quadSep->setName("Sketcher3DPlaneQuad");
@@ -684,8 +811,18 @@ void ViewProviderSketch3D::ensurePlaneOverlay()
     style->style.setValue(SoDrawStyle::FILLED);
     quadSep->addChild(style);
 
-    planeOverlayCoords = new SoCoordinate3();
-    quadSep->addChild(planeOverlayCoords);
+    planeOverlayScale = new SoScale();
+    quadSep->addChild(planeOverlayScale);
+
+    auto* coords = new SoCoordinate3();
+    coords->point.setNum(kPlaneQuadVertexCount);
+    SbVec3f* pts = coords->point.startEditing();
+    pts[0] = {-1.0F, -1.0F, 0.0F};
+    pts[1] = {1.0F, -1.0F, 0.0F};
+    pts[2] = {1.0F, 1.0F, 0.0F};
+    pts[3] = {-1.0F, 1.0F, 0.0F};
+    coords->point.finishEditing();
+    quadSep->addChild(coords);
 
     auto* face = new SoFaceSet();
     face->numVertices.setNum(1);
@@ -698,7 +835,30 @@ void ViewProviderSketch3D::ensurePlaneOverlay()
     handleSep->setName("Sketcher3DAxisHandleAutoZoom");
     handleSep->addChild(new Gui::SoAutoZoomTranslation());
 
-    handleSep->addChild(buildAxisHandle(axisHandleMaterials));
+    auto* handle = new SoSeparator();
+    handle->setName("Sketcher3DAxisHandle");
+    handle->addChild(addAxisArrow(
+        {1.0F, 0.0F, 0.0F},
+        {0.0F, 1.0F, 0.0F},
+        "Sketcher3DAxisHandleX",
+        kActiveAxisHandleColor,
+        kActiveAxisHandleEmissiveScale
+    ));
+    handle->addChild(addAxisArrow(
+        {0.0F, 1.0F, 0.0F},
+        {1.0F, 0.0F, 0.0F},
+        "Sketcher3DAxisHandleY",
+        kActiveAxisHandleColor,
+        kActiveAxisHandleEmissiveScale
+    ));
+    handle->addChild(addAxisArrow(
+        {0.0F, 0.0F, 1.0F},
+        {1.0F, 0.0F, 0.0F},
+        "Sketcher3DAxisHandleZ",
+        kInactiveAxisHandleColor,
+        kInactiveAxisHandleEmissiveScale
+    ));
+    handleSep->addChild(handle);
 
     planeOverlay->addChild(handleSep);
 
@@ -711,54 +871,28 @@ void ViewProviderSketch3D::updatePlaneOverlay()
     if (!planeOverlay) {
         return;
     }
-    redrawPlaneQuad();
-    updatePlaneOverlayTranslation();
-    updateAxisHandleColors();
+    updateActivePlaneFrame();
+    updatePlaneScale();
+    updatePlaneOverlayTransform();
 }
 
-void ViewProviderSketch3D::redrawPlaneQuad()
+void ViewProviderSketch3D::updatePlaneScale()
 {
-    if (!planeOverlayCoords) {
+    if (!planeOverlayScale) {
         return;
     }
-    writePlaneQuadCoords(planeOverlayCoords, activePlane, planeOverlaySize);
-}
-
-void ViewProviderSketch3D::updatePlaneOverlayTranslation()
-{
-    if (!planeOverlayTranslation) {
-        return;
-    }
-    planeOverlayTranslation->translation.setValue(planeBase.x, planeBase.y, planeBase.z);
+    planeOverlayScale->scaleFactor.setValue(planeOverlaySize, planeOverlaySize, 1.0F);
 }
 
 void ViewProviderSketch3D::updatePlaneOverlaySize(const Base::Vector3d& cursorPos)
 {
-    float updatedSize = planeSizeFromCursor(activePlane, planeBase, cursorPos);
+    float updatedSize = planeSizeFromFrame(getActivePlaneFrame(), cursorPos);
     if (std::abs(planeOverlaySize - updatedSize) <= Precision::Confusion()) {
         return;
     }
 
     planeOverlaySize = updatedSize;
-    redrawPlaneQuad();
-}
-
-void ViewProviderSketch3D::updateAxisHandleColors()
-{
-    int normalAxisIdx = (static_cast<int>(activePlane) + 2) % 3;
-
-    for (int i = 0; i < 3; ++i) {
-        SoMaterial* m = axisHandleMaterials[i];
-        if (!m) {
-            continue;
-        }
-        bool active = (i != normalAxisIdx);
-        const Color3f& c = active ? kActiveAxisHandleColor : kInactiveAxisHandleColor;
-        float em = active ? kActiveAxisHandleEmissiveScale : kInactiveAxisHandleEmissiveScale;
-        setDiffuseColor(m, c);
-        setEmissiveColor(m, c, em);
-        m->transparency.setValue(kAxisHandleTransparency);
-    }
+    updatePlaneScale();
 }
 
 Base::Vector3d ViewProviderSketch3D::projectToSketchPlane(
@@ -770,11 +904,13 @@ Base::Vector3d ViewProviderSketch3D::projectToSketchPlane(
     SbVec3f rayEnd;
     viewer->projectPointToLine(cursorPx, rayStart, rayEnd);
 
-    SbPlane plane(planeNormal(activePlane), SbVec3f(planeBase.x, planeBase.y, planeBase.z));
+    SbPlane plane(
+        Base::convertTo<SbVec3f>(getActivePlaneFrame().normal),
+        Base::convertTo<SbVec3f>(getActivePlaneFrame().origin)
+    );
 
     SbVec3f hit;
     if (!plane.intersect(SbLine(rayStart, rayEnd), hit)) {
-        // Camera ray is parallel to the workplane.
         SbVec3f fp = viewer->getPointOnFocalPlane(cursorPx);
         return Base::Vector3d(fp[0], fp[1], fp[2]);
     }

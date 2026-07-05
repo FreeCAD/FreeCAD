@@ -22,53 +22,76 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #include "PreCompiled.h"
 
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Gui/Command.h>
+#include <Mod/Sketcher3D/App/GeomReferencePlane3D.h>
 #include <Mod/Sketcher3D/App/Sketch3DObject.h>
 
-#include "SnapManager3D.h"
+#include "DrawSketchHandlerReferencePlane3D.h"
+#include "Utils.h"
 #include "ViewProviderSketch3D.h"
-
 
 using namespace Sketcher3DGui;
 
+DrawSketchHandlerReferencePlane3D::DrawSketchHandlerReferencePlane3D() = default;
+DrawSketchHandlerReferencePlane3D::~DrawSketchHandlerReferencePlane3D() = default;
 
-SnapManager3D::SnapManager3D(ViewProviderSketch3D& vp)
-    : viewProvider(vp)
-{}
-
-SnapManager3D::~SnapManager3D() = default;
-
-Base::Vector3d SnapManager3D::snap(
-    const Base::Vector3d& rawProjected,
-    const std::string& pickedSubName,
-    Sketcher3D::GeoElementId3D& target
-) const
+void DrawSketchHandlerReferencePlane3D::onActivated()
 {
-    target = {};
-
-    Base::Vector3d snapped;
-    if (snapToPickedObject(pickedSubName, snapped, target)) {
-        return snapped;
-    }
-    return rawProjected;
+    resetToPickFirst();
 }
 
-bool SnapManager3D::snapToPickedObject(
-    const std::string& pickedSubName,
-    Base::Vector3d& snapPos,
-    Sketcher3D::GeoElementId3D& target
-) const
+bool DrawSketchHandlerReferencePlane3D::keyPressed(int key)
 {
-    auto* sketch = viewProvider.getSketch3DObject();
-    if (!sketch || pickedSubName.empty()) {
-        return false;
+    if (key == SoKeyboardEvent::ESCAPE && state != State::PickFirst) {
+        resetToPickFirst();
+        return true;
+    }
+    return DrawSketchHandler3D::keyPressed(key);
+}
+
+bool DrawSketchHandlerReferencePlane3D::pressButton(const Base::Vector3d& pos)
+{
+    if (state == State::PickFirst) {
+        threePoints[0] = pos;
+        if (auto* vp = getSketchVP()) {
+            vp->setPlaneBase(pos);
+        }
+        state = State::PickSecondPoint;
+        return true;
     }
 
-    auto picked = sketch->resolveSubName(pickedSubName);
-    if (!sketch->getPointAt(picked, snapPos)) {
-        return false;
+    if (state == State::PickSecondPoint) {
+        threePoints[1] = pos;
+        state = State::PickThirdPoint;
+        return true;
     }
-    target = picked;
+
+    threePoints[2] = pos;
+    auto plane = Sketcher3D::GeomReferencePlane3D::fromThreePoints(
+        threePoints[0],
+        threePoints[1],
+        threePoints[2]
+    );
+
+    int tid = Gui::Command::openActiveDocumentCommand(
+        QT_TRANSLATE_NOOP("Command", "Create 3D Reference Plane")
+    );
+    auto* sketch = getSketch();
+    auto* sketchVP = getSketchVP();
+    sketch->addGeometry(std::move(plane), true);
+    sketch->recomputeFeature();
+    sketchVP->setPlaneBase(threePoints[0]);
+    Gui::Command::commitCommand(tid);
+    resetToPickFirst();
     return true;
+}
+
+void DrawSketchHandlerReferencePlane3D::resetToPickFirst()
+{
+    state = State::PickFirst;
+    threePoints.fill(Base::Vector3d());
 }

@@ -20,6 +20,8 @@ SET(Sketcher3DGui_SRCS
     DrawSketchHandlerPoint3D.h
     DrawSketchHandlerPolyline3D.cpp
     DrawSketchHandlerPolyline3D.h
+    DrawSketchHandlerReferencePlane3D.cpp
+    DrawSketchHandlerReferencePlane3D.h
     PreCompiled.h
     SnapManager3D.cpp
     SnapManager3D.h

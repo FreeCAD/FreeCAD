@@ -567,6 +567,19 @@ public:
     // Two lines share the same infinite line.
     int addConstraintCollinear3D(Line3D& l1, Line3D& l2, int tagId = 0, bool driving = true);
 
+    // Project a point onto a reference plane
+    int addConstraintProjectOnPlane3D(
+        Point3D& point,
+        double oX,
+        double oY,
+        double oZ,
+        double nX,
+        double nY,
+        double nZ,
+        int tagId = 0,
+        bool driving = true
+    );
+
     // absolute distance from point to line.
     int addConstraintP2LDistance3D(
         Point3D& p,

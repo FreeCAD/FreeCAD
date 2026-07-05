@@ -149,7 +149,7 @@ bool DrawSketchHandlerPolyline3D::pressButton(const Base::Vector3d& pos)
     );
     auto seg = std::make_unique<Part::GeomLineSegment>();
     seg->setPoints(lastPos, pos);
-    const int newGeoId = sketch->addGeometry(std::move(seg), isConstructionMode());
+    int newGeoId = sketch->addGeometry(std::move(seg), isConstructionMode());
 
     // Chain the segments with a Coincident3D constraint so they stay connected when constraints are
     // applied.

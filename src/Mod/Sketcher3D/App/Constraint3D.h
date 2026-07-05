@@ -69,6 +69,7 @@ public:
         PointOnLine3D,
         PointAtLineMidpoint3D,
         Collinear3D,
+        ProjectOnPlane3D,
         NumConstraintTypes
     };
 
@@ -113,6 +114,7 @@ private:
         "PointOnLine3D",
         "PointAtLineMidpoint3D",
         "Collinear3D",
+        "ProjectOnPlane3D",
     }};
 
     std::vector<GeoElementId3D> elements;

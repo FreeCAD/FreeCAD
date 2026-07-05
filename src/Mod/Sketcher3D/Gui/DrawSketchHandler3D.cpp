@@ -103,12 +103,9 @@ DrawSketchHandler3D::PreselectionData DrawSketchHandler3D::getPreselectionData()
         if (!sketch) {
             return preSelData;
         }
-        const auto& geos = sketch->Geometry.getValues();
-        if (target.GeoId >= 0 && target.GeoId < static_cast<int>(geos.size())) {
-            if (const auto* line = dynamic_cast<const Part::GeomLineSegment*>(geos[target.GeoId])) {
-                preSelData.hitShapeDir = line->getEndPoint() - line->getStartPoint();
-                preSelData.isLine = true;
-            }
+        if (auto* line = sketch->getGeometry<Part::GeomLineSegment>(target.GeoId)) {
+            preSelData.hitShapeDir = line->getEndPoint() - line->getStartPoint();
+            preSelData.isLine = true;
         }
     }
 
@@ -151,8 +148,8 @@ void DrawSketchHandler3D::seekPreselectionAutoConstraint(
         return;
     }
 
-    const bool isPoint = preSel.kind == Sketcher3D::GeoKind::Point;
-    const bool isLineEndpoint = preSel.kind == Sketcher3D::GeoKind::Line
+    bool isPoint = preSel.kind == Sketcher3D::GeoKind::Point;
+    bool isLineEndpoint = preSel.kind == Sketcher3D::GeoKind::Line
         && (preSel.posId == Sketcher3D::PointPos::start || preSel.posId == Sketcher3D::PointPos::end);
     if (isPoint || isLineEndpoint) {
         AutoConstraint3D constr;
@@ -176,10 +173,10 @@ void DrawSketchHandler3D::createAutoConstraints(
         return;
     }
 
-    const Sketcher3D::GeoElementId3D newPoint(geoId1, posId1, geoKind1);
+    Sketcher3D::GeoElementId3D newPoint(geoId1, posId1, geoKind1);
 
     for (const AutoConstraint3D& cstr : autoConstrs) {
-        const Sketcher3D::GeoElementId3D target(cstr.GeoId, cstr.PosId, cstr.Kind);
+        Sketcher3D::GeoElementId3D target(cstr.GeoId, cstr.PosId, cstr.Kind);
         switch (cstr.Type) {
             case Sketcher3D::Constraint3D::Coincident3D: {
                 if (!target.isValid() || target == newPoint

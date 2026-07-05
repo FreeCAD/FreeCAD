@@ -67,6 +67,9 @@ public:
     /// Line between two previously added points.
     int addLine(int pointHandleA, int pointHandleB);
 
+    /// Fixed reference plane.
+    int addPlane(const Base::Vector3d& origin, const Base::Vector3d& normal);
+
     /// Coincident constraint between two points.
     void addConstraintCoincident(int tagId, int pointHandleA, int pointHandleB);
 
@@ -129,6 +132,9 @@ public:
     /// Lock the Z coordinate of a single point.
     void addConstraintCoordinateZ(int tagId, int pointHandle, double value);
 
+    /// Project a point onto a fixed plane.
+    void addConstraintProjectOnPlane(int tagId, int pointHandle, int planeHandle);
+
     int solve();
 
     /// Read back the current value of a point after solve().
@@ -164,6 +170,14 @@ private:
     // Mapping from handle index to underlying GCS struct.
     std::vector<GCS::Point3D> points;
     std::vector<GCS::Line3D> lines;
+
+    // TODO: plane is not a Dof in solver.
+    struct Plane3D
+    {
+        Base::Vector3d origin;
+        Base::Vector3d normal;
+    };
+    std::vector<Plane3D> planes;
 
     std::vector<double*> parameters;
 

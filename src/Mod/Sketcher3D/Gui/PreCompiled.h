@@ -43,6 +43,7 @@
 # include <sstream>
 # include <string>
 # include <vector>
+# include <set>
 
 // Coin3D
 # include <Inventor/SoPickedPoint.h>

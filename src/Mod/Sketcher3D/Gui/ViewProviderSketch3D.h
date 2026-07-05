@@ -25,13 +25,12 @@
 
 #pragma once
 
-#include <array>
-#include <memory>
-#include <string>
+#include "PreCompiled.h"
 
 #include <QCoreApplication>
 
 #include <Base/Vector3D.h>
+#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Sketcher3D/App/GeoEnum3D.h>
 #include <Mod/Sketcher3D/Sketcher3DGlobal.h>
@@ -42,7 +41,9 @@ class SoCoordinate3;
 class SoMaterial;
 class SoNormal;
 class SoSeparator;
+class SoScale;
 class SoSwitch;
+class SoTransform;
 class SoTranslation;
 
 namespace PartGui
@@ -54,8 +55,9 @@ class SoBrepPointSet;
 
 namespace Sketcher3D
 {
+class GeomReferencePlane3D;
 class Sketch3DObject;
-}
+}  // namespace Sketcher3D
 
 namespace Sketcher3DGui
 {
@@ -103,18 +105,44 @@ public:
     ViewProviderSketch3D();
     ~ViewProviderSketch3D() override;
 
+    struct ActivePlaneFrame
+    {
+        Base::Vector3d origin;
+        Base::Vector3d xAxis;
+        Base::Vector3d yAxis;
+        Base::Vector3d normal;
+        bool isUserPlane = false;
+        int geoId = -1;
+    };
+
     ActivePlane getActivePlane() const
     {
-        return activePlane;
+        return activeBasePlane;
     }
     const Base::Vector3d& getPlaneBase() const
     {
-        return planeBase;
+        return activeFrame.origin;
     }
+    const ActivePlaneFrame& getActivePlaneFrame() const
+    {
+        return activeFrame;
+    }
+
     /// move the workplane anchor point.
     void setPlaneBase(const Base::Vector3d& base);
     /// Switch to the next plane (XY ->YZ -> ZX -> XY).
     void cyclePlane();
+
+    void setActiveBasePlane(ActivePlane p);
+    void setActiveUserPlane(int geoId);
+    int getActiveUserPlaneGeoId() const
+    {
+        return activeUserPlaneGeoId;
+    }
+    bool isUserPlaneActive() const
+    {
+        return activeFrame.isUserPlane;
+    }
 
     void setTaskPanel(TaskSketcher3DTool* panel)
     {
@@ -177,10 +205,12 @@ private:
 
     void ensurePlaneOverlay();
     void updatePlaneOverlay();
-    void redrawPlaneQuad();
-    void updatePlaneOverlayTranslation();
+    void updatePlaneScale();
+    void updateActivePlaneFrame();
+    void updatePlaneOverlayTransform();
     void updatePlaneOverlaySize(const Base::Vector3d& cursorPos);
-    void updateAxisHandleColors();
+    void applyActivePlaneChanges();
+    const Sketcher3D::GeomReferencePlane3D* getActiveReferencePlane() const;
 
     // ---------------Snap overlay----------------------------------------------
 
@@ -202,24 +232,32 @@ private:
 
     void ensureReferenceGeometry();
     void updateReferenceGeometry();
+    void updateReferencePlanes();
     bool isEditingSketch3D() const;
+    bool tryActivatePickedPlane(const std::string& subName);
 
     // Workplane overlay nodes
-    ActivePlane activePlane {ActivePlane::XY};
+    ActivePlaneFrame activeFrame;
+    ActivePlane activeBasePlane {ActivePlane::XY};
+    int activeUserPlaneGeoId {-1};
     Base::Vector3d planeBase {0.0, 0.0, 0.0};
     SoSeparator* planeOverlay {nullptr};
-    SoTranslation* planeOverlayTranslation {nullptr};
-    SoCoordinate3* planeOverlayCoords {nullptr};
+    SoTransform* planeOverlayTransform {nullptr};
+    SoScale* planeOverlayScale {nullptr};
     float planeOverlaySize {0.0F};
-    std::array<SoMaterial*, 3> axisHandleMaterials {};
 
     // Reference geometry overlay nodes
     SoSeparator* referenceGeometryRoot {nullptr};
     SoSwitch* referenceGeometrySwitch {nullptr};
     SoSeparator* referenceGeometryContent {nullptr};
-    TopoDS_Shape lastRenderedRefShape;
+    Part::TopoShape lastRenderedRefShape;
+    /// Coin face part index -> reference-plane GeoId (geometry order).
+    std::vector<int> planeGeoIds;
     SoCoordinate3* referenceCoords {nullptr};
     SoNormal* referenceNormals {nullptr};
+    SoCoordinate3* referenceFaceCoords {nullptr};
+    SoNormal* referenceFaceNormals {nullptr};
+    SoMaterial* referenceFaceMaterial {nullptr};
     PartGui::SoBrepFaceSet* referenceFaceset {nullptr};
     PartGui::SoBrepEdgeSet* referenceLineset {nullptr};
     PartGui::SoBrepPointSet* referencePointset {nullptr};

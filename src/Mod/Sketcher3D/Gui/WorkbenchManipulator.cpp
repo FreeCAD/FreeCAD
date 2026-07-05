@@ -79,6 +79,7 @@ void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
     *editTb << "Sketcher3D_CreatePoint"
             << "Sketcher3D_CreateLine"
             << "Sketcher3D_CreatePolyline"
+            << "Sketcher3D_CreateReferencePlane"
             << "Sketcher3D_ToggleConstruction"
             << "Separator"
             << "Sketcher3D_CompDimensionTools"
@@ -87,5 +88,6 @@ void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
             << "Sketcher3D_ConstrainEqualLength"
             << "Sketcher3D_ConstrainPointOnLine"
             << "Sketcher3D_ConstrainPointAtLineMidpoint"
-            << "Sketcher3D_ConstrainCollinear";
+            << "Sketcher3D_ConstrainCollinear"
+            << "Sketcher3D_ConstrainProjectOnPlane";
 }

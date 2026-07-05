@@ -29,6 +29,7 @@
 #include <Mod/Part/App/Geometry.h>
 
 #include "Constraint3D.h"
+#include "GeomReferencePlane3D.h"
 #include "GeometryMapper3D.h"
 #include "Solver3D.h"
 
@@ -64,7 +65,7 @@ void GeometryMapper3D::addGeometry(const std::vector<Part::Geometry*>& geoList, 
     Geoms.resize(geoList.size());
 
     for (std::size_t i = 0; i < geoList.size(); ++i) {
-        const Part::Geometry* geometry = geoList[i];
+        Part::Geometry* geometry = geoList[i];
         if (!geometry) {
             continue;
         }
@@ -73,16 +74,21 @@ void GeometryMapper3D::addGeometry(const std::vector<Part::Geometry*>& geoList, 
         def.geo.reset(geometry->clone());
 
         if (def.geo->is<Part::GeomPoint>()) {
-            const auto* point = static_cast<const Part::GeomPoint*>(def.geo.get());
+            auto* point = static_cast<Part::GeomPoint*>(def.geo.get());
             def.type = Point;
             def.startPointId = solver.addPoint(point->getPoint());
         }
         else if (def.geo->is<Part::GeomLineSegment>()) {
-            const auto* segment = static_cast<const Part::GeomLineSegment*>(def.geo.get());
+            auto* segment = static_cast<Part::GeomLineSegment*>(def.geo.get());
             def.type = Line;
             def.startPointId = solver.addPoint(segment->getStartPoint());
             def.endPointId = solver.addPoint(segment->getEndPoint());
             def.index = solver.addLine(def.startPointId, def.endPointId);
+        }
+        else if (def.geo->is<GeomReferencePlane3D>()) {
+            auto* plane = static_cast<GeomReferencePlane3D*>(def.geo.get());
+            def.type = Plane;
+            def.index = solver.addPlane(plane->getLocation(), plane->getDir());
         }
         // Circle / Arc / others deferred.
     }
@@ -146,7 +152,7 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
                 return -1;
             }
 
-            const int a = getPointId(elements[0]);
+            int a = getPointId(elements[0]);
             if (a < 0) {
                 return -1;
             }
@@ -164,7 +170,7 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
                 return tagId;
             }
 
-            const int b = getPointId(elements[1]);
+            int b = getPointId(elements[1]);
             if (b < 0) {
                 return -1;
             }
@@ -183,8 +189,8 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             if (elements.size() != 2) {
                 return -1;
             }
-            const int a = getPointId(elements[0]);
-            const int b = getPointId(elements[1]);
+            int a = getPointId(elements[0]);
+            int b = getPointId(elements[1]);
             if (a < 0 || b < 0) {
                 return -1;
             }
@@ -196,8 +202,8 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
                 || elements[1].Pos != PointPos::none) {
                 return -1;
             }
-            const int a = getLineId(elements[0]);
-            const int b = getLineId(elements[1]);
+            int a = getLineId(elements[0]);
+            int b = getLineId(elements[1]);
             if (a < 0 || b < 0) {
                 return -1;
             }
@@ -209,8 +215,8 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
                 || elements[1].Pos != PointPos::none) {
                 return -1;
             }
-            const int a = getLineId(elements[0]);
-            const int b = getLineId(elements[1]);
+            int a = getLineId(elements[0]);
+            int b = getLineId(elements[1]);
             if (a < 0 || b < 0) {
                 return -1;
             }
@@ -221,15 +227,15 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             if (elements.size() != 2) {
                 return -1;
             }
-            const auto validDirection = [](PointPos pos) {
+            auto validDirection = [](PointPos pos) {
                 return pos == PointPos::none || pos == PointPos::start || pos == PointPos::end;
             };
             if (!validDirection(elements[0].Pos) || !validDirection(elements[1].Pos)) {
                 return -1;
             }
 
-            const int a = getLineId(elements[0]);
-            const int b = getLineId(elements[1]);
+            int a = getLineId(elements[0]);
+            int b = getLineId(elements[1]);
             if (a < 0 || b < 0) {
                 return -1;
             }
@@ -242,7 +248,7 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             if (elements.size() != 1 || elements[0].Pos != PointPos::none) {
                 return -1;
             }
-            const int line = getLineId(elements[0]);
+            int line = getLineId(elements[0]);
             if (line < 0) {
                 return -1;
             }
@@ -266,7 +272,7 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             int line = -1;
             for (int x = 0; x < 2; ++x) {
                 if (elements[x].Pos == PointPos::none) {
-                    const int candidate = getLineId(elements[x]);
+                    int candidate = getLineId(elements[x]);
                     if (candidate >= 0) {
                         lineIdx = x;
                         line = candidate;
@@ -277,7 +283,7 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             if (lineIdx < 0) {
                 return -1;
             }
-            const int point = getPointId(elements[1 - lineIdx]);
+            int point = getPointId(elements[1 - lineIdx]);
             if (point < 0) {
                 return -1;
             }
@@ -294,13 +300,39 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
                 || elements[1].Pos != PointPos::none) {
                 return -1;
             }
-            const int a = getLineId(elements[0]);
-            const int b = getLineId(elements[1]);
+            int a = getLineId(elements[0]);
+            int b = getLineId(elements[1]);
             if (a < 0 || b < 0) {
                 return -1;
             }
             solver.addConstraintCollinear(tagId, a, b);
             return tagId;
+        }
+        case Constraint3D::ProjectOnPlane3D: {
+            if (elements.size() != 2) {
+                return -1;
+            }
+            int plane = getPlaneId(elements[1]);
+            if (plane < 0) {
+                return -1;
+            }
+
+            // Point
+            int point = getPointId(elements[0]);
+            if (point >= 0) {
+                solver.addConstraintProjectOnPlane(tagId, point, plane);
+                return tagId;
+            }
+
+            // Line
+            if (elements[0].Pos == PointPos::none && getLineId(elements[0]) >= 0) {
+                GeoDef& def = Geoms[elements[0].GeoId];
+                solver.addConstraintProjectOnPlane(tagId, def.startPointId, plane);
+                solver.addConstraintProjectOnPlane(tagId, def.endPointId, plane);
+                return tagId;
+            }
+
+            return -1;
         }
         default:
             return -1;
@@ -339,6 +371,15 @@ int GeometryMapper3D::getLineId(const GeoElementId3D& ref) const
 
     const GeoDef& def = Geoms[ref.GeoId];
     return def.type == Line ? def.index : -1;
+}
+
+int GeometryMapper3D::getPlaneId(const GeoElementId3D& ref) const
+{
+    if (!ref.isValid() || ref.GeoId < 0 || ref.GeoId >= static_cast<int>(Geoms.size())) {
+        return -1;
+    }
+    const GeoDef& def = Geoms[ref.GeoId];
+    return def.type == Plane ? def.index : -1;
 }
 
 void GeometryMapper3D::updateGeometry(const Solver3D& solver)

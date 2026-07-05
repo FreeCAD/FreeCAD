@@ -3881,4 +3881,56 @@ void ConstraintP2LDistance3D::evaluate()
     *distance() = value();
 }
 
+// --------------------------------------------------------
+// ProjectOnPlane3D
+ConstraintProjectOnPlane3D::ConstraintProjectOnPlane3D(
+    Point3D& point,
+    double oX,
+    double oY,
+    double oZ,
+    double nX,
+    double nY,
+    double nZ
+)
+    : ox(oX)
+    , oy(oY)
+    , oz(oZ)
+    , nx(nX)
+    , ny(nY)
+    , nz(nZ)
+{
+    pvec.push_back(point.x);
+    pvec.push_back(point.y);
+    pvec.push_back(point.z);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintProjectOnPlane3D::getTypeId()
+{
+    return ProjectOnPlane3D;
+}
+
+double ConstraintProjectOnPlane3D::error()
+{
+    const double dx = *px() - ox;
+    const double dy = *py() - oy;
+    const double dz = *pz() - oz;
+    return scale * ((nx * dx) + (ny * dy) + (nz * dz));
+}
+
+double ConstraintProjectOnPlane3D::grad(double* param)
+{
+    if (param == px()) {
+        return scale * nx;
+    }
+    if (param == py()) {
+        return scale * ny;
+    }
+    if (param == pz()) {
+        return scale * nz;
+    }
+    return 0.0;
+}
+
 }  // namespace GCS

@@ -97,8 +97,8 @@ void buildGeometryLabels(
     int pointNext = 0;
     int lineNext = 0;
     for (std::size_t i = 0; i < geos.size(); ++i) {
-        const int geoId = static_cast<int>(i);
-        const Part::Geometry* geo = geos[i];
+        int geoId = static_cast<int>(i);
+        Part::Geometry* geo = geos[i];
         if (!geo) {
             continue;
         }
@@ -317,7 +317,7 @@ void TaskSketcher3DTool::populateElements()
         item->setData(Qt::UserRole, subname);
     };
 
-    const auto& geos = sketch->Geometry.getValues();
+    auto& geos = sketch->Geometry.getValues();
 
     std::map<int, int> lineLabelForGeoId;
     std::map<int, int> pointLabelForGeoId;
@@ -345,12 +345,12 @@ void TaskSketcher3DTool::populateElements()
             if (id.GeoId < 0 || id.GeoId >= static_cast<int>(geos.size())) {
                 continue;
             }
-            const auto* ls = dynamic_cast<const Part::GeomLineSegment*>(geos[id.GeoId]);
+            auto* ls = dynamic_cast<Part::GeomLineSegment*>(geos[id.GeoId]);
             if (!ls) {
                 continue;
             }
-            const int label = lineLabelForGeoId[id.GeoId];
-            const double length = (ls->getEndPoint() - ls->getStartPoint()).Length();
+            int label = lineLabelForGeoId[id.GeoId];
+            double length = (ls->getEndPoint() - ls->getStartPoint()).Length();
             addRow(
                 tr("Line%1  length %2").arg(label).arg(length, 0, 'f', 3),
                 subname,
@@ -420,7 +420,7 @@ void TaskSketcher3DTool::populateConstraints()
         return;
     }
 
-    const auto& cs = sketch->Constraints.getConstraints();
+    auto& cs = sketch->Constraints.getConstraints();
     std::map<int, int> lineLabelForGeoId;
     std::map<int, int> pointLabelForGeoId;
     buildGeometryLabels(sketch->Geometry.getValues(), pointLabelForGeoId, lineLabelForGeoId);

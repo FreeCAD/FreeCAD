@@ -30,6 +30,12 @@ SET(Solver_SRCS
 )
 SOURCE_GROUP("Solver" FILES ${Solver_SRCS})
 
+SET(Geometry_SRCS
+    GeomReferencePlane3D.cpp
+    GeomReferencePlane3D.h
+)
+SOURCE_GROUP("Geometry" FILES ${Geometry_SRCS})
+
 SET(Feature_SRCS
     Sketch3DObject.cpp
     Sketch3DObject.h
@@ -40,6 +46,7 @@ SET(Sketcher3D_SRCS
     ${Module_SRCS}
     ${Constraint_SRCS}
     ${Solver_SRCS}
+    ${Geometry_SRCS}
     ${Feature_SRCS}
 )
 

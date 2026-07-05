@@ -22,53 +22,61 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#pragma once
 
-#include <Mod/Sketcher3D/App/Sketch3DObject.h>
+#include <memory>
 
-#include "SnapManager3D.h"
-#include "ViewProviderSketch3D.h"
+#include <gp_Ax3.hxx>
 
+#include <Base/Vector3D.h>
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher3D/Sketcher3DGlobal.h>
 
-using namespace Sketcher3DGui;
-
-
-SnapManager3D::SnapManager3D(ViewProviderSketch3D& vp)
-    : viewProvider(vp)
-{}
-
-SnapManager3D::~SnapManager3D() = default;
-
-Base::Vector3d SnapManager3D::snap(
-    const Base::Vector3d& rawProjected,
-    const std::string& pickedSubName,
-    Sketcher3D::GeoElementId3D& target
-) const
+namespace Sketcher3D
 {
-    target = {};
 
-    Base::Vector3d snapped;
-    if (snapToPickedObject(pickedSubName, snapped, target)) {
-        return snapped;
-    }
-    return rawProjected;
-}
+constexpr double kReferencePlaneHalfSize = 50.0;
 
-bool SnapManager3D::snapToPickedObject(
-    const std::string& pickedSubName,
-    Base::Vector3d& snapPos,
-    Sketcher3D::GeoElementId3D& target
-) const
+/// Internal Sketcher3D reference plane stored in sketch geometry.
+class Sketcher3DExport GeomReferencePlane3D: public Part::GeomPlane
 {
-    auto* sketch = viewProvider.getSketch3DObject();
-    if (!sketch || pickedSubName.empty()) {
-        return false;
-    }
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
-    auto picked = sketch->resolveSubName(pickedSubName);
-    if (!sketch->getPointAt(picked, snapPos)) {
-        return false;
-    }
-    target = picked;
-    return true;
-}
+public:
+    GeomReferencePlane3D() = default;
+    explicit GeomReferencePlane3D(const Handle(Geom_Plane) & plane)
+        : Part::GeomPlane(plane)
+    {}
+    explicit GeomReferencePlane3D(const gp_Pln& pln)
+        : Part::GeomPlane(pln)
+    {}
+    GeomReferencePlane3D(
+        const Base::Vector3d& origin,
+        const Base::Vector3d& xDir,
+        const Base::Vector3d& normal
+    )
+        : Part::GeomPlane(gp_Pln(gp_Ax3(
+              gp_Pnt(origin.x, origin.y, origin.z),
+              gp_Dir(normal.x, normal.y, normal.z),
+              gp_Dir(xDir.x, xDir.y, xDir.z)
+          )))
+    {}
+    ~GeomReferencePlane3D() override = default;
+
+    /// Origin, x-axis point, and a third point defining the plane normal.
+    static std::unique_ptr<GeomReferencePlane3D> fromThreePoints(
+        const Base::Vector3d& origin,
+        const Base::Vector3d& xAxisPoint,
+        const Base::Vector3d& thirdPoint
+    );
+
+    Part::Geometry* copy() const override;
+
+    TopoDS_Shape toShape() const override;
+
+    unsigned int getMemSize() const override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+};
+
+}  // namespace Sketcher3D

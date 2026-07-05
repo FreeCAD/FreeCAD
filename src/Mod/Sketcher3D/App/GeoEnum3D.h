@@ -53,7 +53,8 @@ enum class GeoKind
     Point,
     Line,
     Circle,
-    Arc
+    Arc,
+    Plane
 };
 
 struct Sketcher3DExport GeoElementId3D

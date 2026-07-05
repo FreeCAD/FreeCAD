@@ -143,7 +143,7 @@ bool DrawSketchHandlerLine3D::pressButton(const Base::Vector3d& pos)
     int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create 3D line"));
     auto seg = std::make_unique<Part::GeomLineSegment>();
     seg->setPoints(startPos, pos);
-    const int newGeoId = sketch->addGeometry(std::move(seg), isConstructionMode());
+    int newGeoId = sketch->addGeometry(std::move(seg), isConstructionMode());
     if (newGeoId >= 0) {
         createAutoConstraints(sugConstr1, newGeoId, Sketcher3D::PointPos::start, Sketcher3D::GeoKind::Line);
         createAutoConstraints(sugConstr2, newGeoId, Sketcher3D::PointPos::end, Sketcher3D::GeoKind::Line);
