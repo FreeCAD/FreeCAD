@@ -1757,9 +1757,7 @@ class _ViewProviderSite:
 
         if not hasattr(self, "terrain_switches"):
             if vobj.RootNode.getNumChildren():
-                main_switch = gui_utils.find_coin_node(
-                    vobj.RootNode, coin.SoSwitch
-                )  # The display mode switch.
+                main_switch = vobj.SwitchNode  # The display mode switch.
                 if (
                     main_switch is not None and main_switch.getNumChildren() == 4
                 ):  # Check if all display modes are available.
