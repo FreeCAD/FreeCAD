@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Authentication Failed</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inclusive+Sans:wght@300;700&display=swap" rel="stylesheet">
+
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@19.1.0",
+        "react/jsx-runtime": "https://esm.sh/react@19.1.0/jsx-runtime",
+        "react-dom/client": "https://esm.sh/react-dom@19.1.0/client",
+        "@paper-design/shaders-react": "https://esm.sh/@paper-design/shaders-react@0.0.76?external=react"
+      }
+    }
+  </script>
+
+  <style>
+    html,
+    body,
+    #root {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #1a1a1a;
+      font-family: "Inclusive Sans", system-ui, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .page {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #1a1a1a;
+      overflow: hidden;
+    }
+
+    .shader {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .shader canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      color: #ffffff;
+      font-size: clamp(44px, 7vw, 96px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    p {
+      margin: 18px 0 0;
+      color: #9a9a9a;
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 300;
+      line-height: 1.4;
+    }
+
+    footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 28px;
+      z-index: 1;
+      text-align: center;
+      color: #6f6f6f;
+      font-size: 15px;
+      font-weight: 300;
+    }
+
+    a {
+      color: #8a8a8a;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="module">
+    import React, { useEffect, useState } from "react";
+    import { createRoot } from "react-dom/client";
+    import { Waves } from "@paper-design/shaders-react";
+
+    function App() {
+      const [size, setSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+
+      useEffect(() => {
+        function updateSize() {
+          setSize({
+            width: window.innerWidth,
+            height: window.innerHeight
+          });
+        }
+
+        updateSize();
+        window.addEventListener("resize", updateSize);
+        return () => window.removeEventListener("resize", updateSize);
+      }, []);
+
+      return React.createElement(
+        "div",
+        { className: "page" },
+
+        React.createElement(
+          "div",
+          { className: "shader" },
+          React.createElement(Waves, {
+            width: size.width,
+            height: size.height,
+            colorBack: "#1a1a1a",
+            colorFront: "#a46060",
+            frequency: 0.44,
+            amplitude: 0.57,
+            spacing: 1.05,
+            proportion: 0.75,
+            softness: 0,
+            shape: 2.07,
+            scale: 4
+          })
+        ),
+
+        React.createElement(
+          "main",
+          null,
+          React.createElement("h1", null, "Authentication Failed!"),
+          React.createElement("p", null, "Please contact support.")
+        ),
+
+        React.createElement(
+          "footer",
+          null,
+          React.createElement("a", { href: "https://www.parashell.cloud/legal/privacy" }, "Privacy"),
+          " | ",
+          React.createElement("a", { href: "https://www.parashell.cloud/legal/terms" }, "Terms")
+        )
+      );
+    }
+
+    createRoot(document.getElementById("root")).render(
+      React.createElement(App)
+    );
+  </script>
+</body>
+</html>
