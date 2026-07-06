@@ -58,7 +58,7 @@
       <translation>Eagar</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="908"/>
+      <location filename="../Application.cpp" line="909"/>
       <source>Import</source>
       <translation>Iompórtáil</translation>
     </message>
@@ -133,9 +133,9 @@
       <translation>Socrúchán</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="415"/>
-      <location filename="../TaskTransform.cpp" line="129"/>
-      <location filename="../TaskTransform.cpp" line="818"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="427"/>
+      <location filename="../TaskTransform.cpp" line="153"/>
+      <location filename="../TaskTransform.cpp" line="1023"/>
       <location filename="../Transform.cpp" line="108"/>
       <source>Transform</source>
       <translation>Claochlú</translation>
@@ -152,17 +152,22 @@
       <translation>Cuir íomhá in eagar</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="156"/>
+      <location filename="../CommandFeat.cpp" line="157"/>
       <source>Set Random Color</source>
       <translation>Socraigh Dath Randamach</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="208"/>
+      <location filename="../CommandFeat.cpp" line="209"/>
       <source>Toggle freeze</source>
       <translation>Athraigh an reo</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="369"/>
+      <location filename="../CommandFeat.cpp" line="259"/>
+      <source>Toggle suppress</source>
+      <translation>Scoraigh cosc</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="426"/>
       <source>Skip recomputes</source>
       <translation>Seachain athríomhanna</translation>
     </message>
@@ -190,77 +195,77 @@
   <context>
     <name>CommandGroup</name>
     <message>
-      <location filename="../Workbench.cpp" line="570"/>
+      <location filename="../Workbench.cpp" line="573"/>
       <source>File</source>
       <translation>Comhad</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="571"/>
+      <location filename="../Workbench.cpp" line="574"/>
       <source>Edit</source>
       <translation>Eagar</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="572"/>
+      <location filename="../Workbench.cpp" line="575"/>
       <source>Help</source>
       <translation>Cabhair</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="573"/>
+      <location filename="../Workbench.cpp" line="576"/>
       <source>Link</source>
       <translation>Nasc</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="574"/>
+      <location filename="../Workbench.cpp" line="577"/>
       <source>Tools</source>
       <translation>Uirlisí</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="575"/>
+      <location filename="../Workbench.cpp" line="578"/>
       <source>View</source>
       <translation>Amharc</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="576"/>
+      <location filename="../Workbench.cpp" line="579"/>
       <source>Window</source>
       <translation>Fuinneog</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="577"/>
+      <location filename="../Workbench.cpp" line="580"/>
       <source>Standard</source>
       <translation>Caighdeánach</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="578"/>
+      <location filename="../Workbench.cpp" line="581"/>
       <source>Macros</source>
       <translation>Macraí</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="579"/>
+      <location filename="../Workbench.cpp" line="582"/>
       <source>Macro</source>
       <translation>Macra</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="580"/>
+      <location filename="../Workbench.cpp" line="583"/>
       <source>Structure</source>
       <translation>Struchtúr</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="581"/>
+      <location filename="../Workbench.cpp" line="584"/>
       <source>Standard-Test</source>
       <translation>Tástáil Chaighdeánach</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="582"/>
+      <location filename="../Workbench.cpp" line="585"/>
       <source>Standard-View</source>
       <translation>Radharc Caighdeánach</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="583"/>
+      <location filename="../Workbench.cpp" line="586"/>
       <source>Tree View</source>
       <translation>Radharc Crann</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="584"/>
+      <location filename="../Workbench.cpp" line="587"/>
       <source>Measure</source>
       <translation>Beart</translation>
     </message>
@@ -745,37 +750,37 @@ ag cliceáil ar chlé nó ar dheis agus ag bogadh an luiche suas nó síos</tran
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="389"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="393"/>
       <source>Camera Settings</source>
       <translation>Socruithe Ceamara</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="396"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="400"/>
       <source>Orientation</source>
       <translation>Treoshuíomh</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="410"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="414"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="420"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="424"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="430"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="434"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="440"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="444"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="449"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="453"/>
       <source>Current View</source>
       <translation>Radharc Reatha</translation>
     </message>
@@ -4227,62 +4232,62 @@ Ciallaíonn céim súmála '1' fachtóir 7.5 do gach céim súmála.</translatio
       <translation>Díchumasaigh gotha ​​claonta an tscáileáin tadhaill</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="217"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="254"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="221"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="258"/>
       <source>Isometric</source>
       <translation>Isiméadrach</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="218"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="255"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="222"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="259"/>
       <source>Dimetric</source>
       <translation>Déiméadrach</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="219"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="256"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="223"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="260"/>
       <source>Trimetric</source>
       <translation>Trímhéadrach</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="220"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="257"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="224"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="261"/>
       <source>Top</source>
       <translation>Barr</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="221"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="258"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="225"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="262"/>
       <source>Front</source>
       <translation>Tosaigh</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="222"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="259"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
       <source>Left</source>
       <translation>Ar chlé</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="223"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="260"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
       <source>Right</source>
       <translation>Ar dheis</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="224"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="261"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
       <source>Rear</source>
       <translation>Cúil</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="225"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="262"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
       <source>Bottom</source>
       <translation>Bun</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
       <source>Custom</source>
       <translation>Saincheaptha</translation>
     </message>
@@ -4811,40 +4816,40 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
       <translation>&amp;Críochnaigh</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="640"/>
-      <location filename="../DocumentRecovery.cpp" line="704"/>
+      <location filename="../DocumentRecovery.cpp" line="642"/>
+      <location filename="../DocumentRecovery.cpp" line="706"/>
       <source>Delete</source>
       <translation>Scrios</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="650"/>
+      <location filename="../DocumentRecovery.cpp" line="652"/>
       <source>Delete the selected transient directories?</source>
       <translation>Scrios na heolairí sealadacha roghnaithe?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="652"/>
+      <location filename="../DocumentRecovery.cpp" line="654"/>
       <source>When deleting the selected transient directory it is not possible to recover any files afterwards.</source>
       <translation>Nuair a scriostar an t-eolaire sealadach roghnaithe ní féidir aon chomhaid a aisghabháil ina dhiaidh sin.</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="686"/>
+      <location filename="../DocumentRecovery.cpp" line="688"/>
       <source>Delete all transient directories?</source>
       <translation>Scrios gach eolaire sealadach?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="687"/>
+      <location filename="../DocumentRecovery.cpp" line="689"/>
       <source>When deleting all transient directories it is not possible to recover any files afterwards.</source>
       <translation>Nuair a scriostar na heolairí sealadacha go léir ní féidir aon chomhaid a aisghabháil ina dhiaidh sin.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
-      <location filename="../DocumentRecovery.cpp" line="649"/>
-      <location filename="../DocumentRecovery.cpp" line="685"/>
+      <location filename="../DocumentRecovery.cpp" line="651"/>
+      <location filename="../DocumentRecovery.cpp" line="687"/>
       <source>Cleanup</source>
       <translation>Glanadh</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="704"/>
+      <location filename="../DocumentRecovery.cpp" line="706"/>
       <source>Transient directories deleted.</source>
       <translation>Scriosadh eolairí sealadacha.</translation>
     </message>
@@ -5764,17 +5769,17 @@ a roghnaíodh ar dtús sular osclaíodh an dialóg seo</translation>
   <context>
     <name>Gui::EditorView</name>
     <message>
-      <location filename="../EditorView.cpp" line="210"/>
+      <location filename="../EditorView.cpp" line="216"/>
       <source>Modified file</source>
       <translation>Comhad modhnaithe</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="349"/>
+      <location filename="../EditorView.cpp" line="355"/>
       <source>Unsaved document</source>
       <translation>Doiciméad neamhshábháilte</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="211"/>
+      <location filename="../EditorView.cpp" line="217"/>
       <source>%1.
 
 This has been modified outside of the source editor. Reload it?</source>
@@ -5783,44 +5788,44 @@ This has been modified outside of the source editor. Reload it?</source>
 Tá sé seo modhnaithe lasmuigh den eagarthóir foinse. Athlódáil é?</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="350"/>
+      <location filename="../EditorView.cpp" line="356"/>
       <source>The document has been modified.
 Save all changes?</source>
       <translation>Tá an doiciméad modhnaithe.
 Sábháil na hathruithe go léir?</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="380"/>
+      <location filename="../EditorView.cpp" line="386"/>
       <source>FreeCAD macro</source>
       <translation>Macra FreeCAD</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="509"/>
+      <location filename="../EditorView.cpp" line="515"/>
       <source>Export PDF</source>
       <translation>Easpórtáil PDF</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="548"/>
+      <location filename="../EditorView.cpp" line="554"/>
       <source>untitled[*]</source>
       <translation>gan teideal[*]</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="553"/>
+      <location filename="../EditorView.cpp" line="559"/>
       <source> - Editor</source>
       <translation> - Eagarthóir</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="613"/>
+      <location filename="../EditorView.cpp" line="619"/>
       <source>%1 chars removed</source>
       <translation>Baineadh %1 charachtar</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="616"/>
+      <location filename="../EditorView.cpp" line="622"/>
       <source>%1 chars added</source>
       <translation>%1 carachtar curtha leis</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="619"/>
+      <location filename="../EditorView.cpp" line="625"/>
       <source>Formatted</source>
       <translation>Formáidithe</translation>
     </message>
@@ -5906,53 +5911,53 @@ Sábháil na hathruithe go léir?</translation>
   <context>
     <name>Gui::GraphvizView</name>
     <message>
-      <location filename="../GraphvizView.cpp" line="325"/>
+      <location filename="../GraphvizView.cpp" line="327"/>
       <source>Graphviz not found</source>
       <translation>Níor aimsíodh Graphviz</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="332"/>
+      <location filename="../GraphvizView.cpp" line="334"/>
       <source>Graphviz couldn't be found on your system.</source>
       <translation>Níorbh fhéidir Graphviz a aimsiú ar do chóras.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="333"/>
+      <location filename="../GraphvizView.cpp" line="335"/>
       <source>Read more about it here.</source>
       <translation>Léigh tuilleadh faoi anseo.</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="334"/>
+      <location filename="../GraphvizView.cpp" line="336"/>
       <source>Do you want to specify its installation path if it's already installed?</source>
       <translation>Ar mhaith leat a chonair suiteála a shonrú má tá sé suiteáilte cheana féin?</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="345"/>
+      <location filename="../GraphvizView.cpp" line="347"/>
       <source>Graphviz installation path</source>
       <translation>Cosán suiteála Graphviz</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="385"/>
+      <location filename="../GraphvizView.cpp" line="387"/>
       <source>Graphviz failed</source>
       <translation>Theip ar Graphviz</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="386"/>
+      <location filename="../GraphvizView.cpp" line="388"/>
       <source>Graphviz failed to create an image file</source>
       <translation>Theip ar Graphviz comhad íomhá a chruthú</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="489"/>
+      <location filename="../GraphvizView.cpp" line="491"/>
       <source>Bitmap</source>
       <translation>Giotánléarscáil</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="515"/>
+      <location filename="../GraphvizView.cpp" line="517"/>
       <location filename="../CommandDoc.cpp" line="710"/>
       <source>Export Graph</source>
       <translation>Easpórtáil Graf</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="607"/>
+      <location filename="../GraphvizView.cpp" line="609"/>
       <source>Export graph</source>
       <translation>Easpórtáil graf</translation>
     </message>
@@ -6510,137 +6515,137 @@ Conas is mian leat dul ar aghaidh?</translation>
       <translation>maoin</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="870"/>
       <source>Expand/Collapse Properties</source>
       <translation>Airíonna a Leathnú/Laghdú</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="871"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="872"/>
       <source>Expand to Default</source>
       <translation>Leathnaigh go Réamhshocrú</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="873"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="874"/>
       <source>Expand All</source>
       <translation>Leathnaigh Uile</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="875"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="876"/>
       <source>Collapse All</source>
       <translation>Laghdaigh Gach Rud</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="881"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="882"/>
       <source>Default Expand</source>
       <translation>Réamhshocrú Leathnú</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="884"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="885"/>
       <source>Auto Expand</source>
       <translation>Leathnú Uathoibríoch</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="887"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="888"/>
       <source>Auto Collapse</source>
       <translation>Laghdú Uathoibríoch</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="977"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="978"/>
       <source>object %1 (%2):
 </source>
       <translation>réad %1 (%2):
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="984"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="985"/>
       <source>property %1
 </source>
       <translation>maoin %1
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="996"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="997"/>
       <source>document %1:
 </source>
       <translation>doiciméad %1:
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1021"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1022"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
       <translation>Déantar tagairt don mhaoin %1 i réad %2 (%3) i ndoiciméad %4 le:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1037"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1038"/>
       <source>(No references found.)</source>
       <translation>(Níor aimsíodh aon tagairtí.)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1055"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1143"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1056"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1144"/>
       <source>Property Uses</source>
       <translation>Úsáidí Maoine</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1085"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
       <source>Copy</source>
       <translation>Cóipeáil</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1093"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1094"/>
       <source>Add Property</source>
       <translation>Cuir Maoin leis</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1100"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1371"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1101"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1374"/>
       <source>Rename Property Group</source>
       <translation>Athainmnigh Grúpa Maoine</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1111"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1112"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation>Ní féidir an grúpa a athainmniú: tá ainmneacha ag maoin amháin nó níos mó a thosaíonn le hainm an ghrúpa</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1120"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1341"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1121"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1344"/>
       <source>Rename Property</source>
       <translation>Athainmnigh an Mhaoin</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1121"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1311"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1122"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1314"/>
       <source>Edit Property Tooltip</source>
       <translation>Leid Uirlisí Eagarthóireachta Maoine</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1138"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1139"/>
       <source>Delete Property</source>
       <translation>Scrios an Mhaoin</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1312"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1315"/>
       <source>Tooltip</source>
       <translation>Leid Uirlis</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1153"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1154"/>
       <source>Show Hidden</source>
       <translation>Taispeáin Folaithe</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1170"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
       <source>Expression</source>
       <translation>Léiriú</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1342"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1345"/>
       <source>Property name</source>
       <translation>Ainm na maoine</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1372"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1375"/>
       <source>Group name:</source>
       <translation>Ainm an ghrúpa:</translation>
     </message>
@@ -6676,108 +6681,108 @@ Conas is mian leat dul ar aghaidh?</translation>
   <context>
     <name>Gui::PythonConsole</name>
     <message>
-      <location filename="../PythonConsole.cpp" line="850"/>
+      <location filename="../PythonConsole.cpp" line="858"/>
       <source>System exit</source>
       <translation>Scoir an chórais</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="851"/>
+      <location filename="../PythonConsole.cpp" line="859"/>
       <source>The application is still running.
 Exit without saving all data?</source>
       <translation>Tá an feidhmchlár fós ag rith.
 Scoir gan na sonraí go léir a shábháil?</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="865"/>
+      <location filename="../PythonConsole.cpp" line="873"/>
       <source>Unhandled PyCXX exception.</source>
       <translation>Eisceacht PyCXX neamhláimhseáilte.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="865"/>
-      <location filename="../PythonConsole.cpp" line="868"/>
-      <location filename="../PythonConsole.cpp" line="871"/>
-      <location filename="../PythonConsole.cpp" line="874"/>
+      <location filename="../PythonConsole.cpp" line="873"/>
+      <location filename="../PythonConsole.cpp" line="876"/>
+      <location filename="../PythonConsole.cpp" line="879"/>
+      <location filename="../PythonConsole.cpp" line="882"/>
       <source>Python Console</source>
       <translation>Consól Python</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="868"/>
+      <location filename="../PythonConsole.cpp" line="876"/>
       <source>Unhandled FreeCAD exception.</source>
       <translation>Eisceacht FreeCAD neamhláimhseáilte.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="871"/>
+      <location filename="../PythonConsole.cpp" line="879"/>
       <source>Unhandled std C++ exception.</source>
       <translation>Eisceacht chaighdeánach C++ neamhláimhseáilte.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="874"/>
+      <location filename="../PythonConsole.cpp" line="882"/>
       <source>Unhandled unknown C++ exception.</source>
       <translation>Eisceacht C++ anaithnid neamhláimhseáilte.</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1340"/>
+      <location filename="../PythonConsole.cpp" line="1348"/>
       <source>&amp;Copy</source>
       <translation>&amp;Cóipeáil</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1344"/>
+      <location filename="../PythonConsole.cpp" line="1352"/>
       <source>&amp;Copy Command</source>
       <translation>&amp;Cóipeáil Ordú</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1347"/>
+      <location filename="../PythonConsole.cpp" line="1355"/>
       <source>&amp;Copy History</source>
       <translation>&amp;Cóipeáil Stair</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1350"/>
+      <location filename="../PythonConsole.cpp" line="1358"/>
       <source>Save History As…</source>
       <translation>Sábháil Stair Mar…</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1354"/>
+      <location filename="../PythonConsole.cpp" line="1362"/>
       <source>Saves Python history across %1 sessions</source>
       <translation>Sábháil stair Python thar %1 seisiún</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1360"/>
+      <location filename="../PythonConsole.cpp" line="1368"/>
       <source>&amp;Paste</source>
       <translation>&amp;Greamaigh</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1365"/>
+      <location filename="../PythonConsole.cpp" line="1373"/>
       <source>Select All</source>
       <translation>Roghnaigh Uile</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1353"/>
-      <location filename="../PythonConsole.cpp" line="1406"/>
+      <location filename="../PythonConsole.cpp" line="1361"/>
+      <location filename="../PythonConsole.cpp" line="1414"/>
       <source>Save History</source>
       <translation>Sábháil Stair</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1369"/>
+      <location filename="../PythonConsole.cpp" line="496"/>
       <source>Clear Console</source>
       <translation>Glan an Consól</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1373"/>
+      <location filename="../PythonConsole.cpp" line="1381"/>
       <source>Insert File Name…</source>
       <translation>Cuir Ainm Comhaid isteach…</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1376"/>
+      <location filename="../PythonConsole.cpp" line="1384"/>
       <source>Word Wrap</source>
       <translation>Timfhilleadh Focal</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1408"/>
+      <location filename="../PythonConsole.cpp" line="1416"/>
       <source>Macro Files</source>
       <translation>Comhaid Macra</translation>
     </message>
     <message>
-      <location filename="../PythonConsole.cpp" line="1430"/>
+      <location filename="../PythonConsole.cpp" line="1438"/>
       <source>Insert file name</source>
       <translation>Cuir isteach ainm comhaid</translation>
     </message>
@@ -6859,24 +6864,29 @@ Scoir gan na sonraí go léir a shábháil?</translation>
   <context>
     <name>Gui::SearchBar</name>
     <message>
-      <location filename="../EditorView.cpp" line="817"/>
+      <location filename="../EditorView.cpp" line="833"/>
       <source>Previous</source>
       <translation>Roimhe Seo</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="818"/>
+      <location filename="../EditorView.cpp" line="834"/>
       <source>Next</source>
       <translation>Ar Aghaidh</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="819"/>
+      <location filename="../EditorView.cpp" line="835"/>
       <source>Case sensitive</source>
       <translation>Cás-íogair</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="820"/>
+      <location filename="../EditorView.cpp" line="836"/>
       <source>Whole words</source>
       <translation>Focail iomlána</translation>
+    </message>
+    <message>
+      <location filename="../EditorView.cpp" line="928"/>
+      <source>No results</source>
+      <translation>Gan aon torthaí</translation>
     </message>
   </context>
   <context>
@@ -7691,37 +7701,37 @@ Sonraigh eolaire eile?</translation>
   <context>
     <name>MAC_APPLICATION_MENU</name>
     <message>
-      <location filename="../Workbench.cpp" line="614"/>
+      <location filename="../Workbench.cpp" line="617"/>
       <source>Services</source>
       <translation>Seirbhísí</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="615"/>
+      <location filename="../Workbench.cpp" line="618"/>
       <source>Hide %1</source>
       <translation>Folaigh %1</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="616"/>
+      <location filename="../Workbench.cpp" line="619"/>
       <source>Hide Others</source>
       <translation>Folaigh Daoine Eile</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="617"/>
+      <location filename="../Workbench.cpp" line="620"/>
       <source>Show All</source>
       <translation>Taispeáin Gach Rud</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="618"/>
+      <location filename="../Workbench.cpp" line="621"/>
       <source>Preferences</source>
       <translation>Roghanna</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="619"/>
+      <location filename="../Workbench.cpp" line="622"/>
       <source>Quit %1</source>
       <translation>Scoir %1</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="620"/>
+      <location filename="../Workbench.cpp" line="623"/>
       <source>About %1</source>
       <translation>Maidir le %1</translation>
     </message>
@@ -7936,35 +7946,35 @@ Sonraigh eolaire eile?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="867"/>
-      <location filename="../Application.cpp" line="974"/>
-      <location filename="../Application.cpp" line="1061"/>
+      <location filename="../Application.cpp" line="868"/>
+      <location filename="../Application.cpp" line="975"/>
+      <location filename="../Application.cpp" line="1062"/>
       <source>Unknown filetype</source>
       <translation>Cineál comhaid anaithnid</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="868"/>
-      <location filename="../Application.cpp" line="975"/>
+      <location filename="../Application.cpp" line="869"/>
+      <location filename="../Application.cpp" line="976"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Ní féidir cineál comhaid anaithnid a oscailt: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1051"/>
+      <location filename="../Application.cpp" line="1052"/>
       <source>Export failed</source>
       <translation>Theip ar an easpórtáil</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1062"/>
+      <location filename="../Application.cpp" line="1063"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Ní féidir sábháil chuig cineál comhaid anaithnid: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1260"/>
+      <location filename="../Application.cpp" line="1261"/>
       <source>Recomputation required</source>
       <translation>Athríomhú ag teastáil</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1261"/>
+      <location filename="../Application.cpp" line="1262"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7973,24 +7983,24 @@ Recompute now?</source>
 Athríomh anois?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1287"/>
+      <location filename="../Application.cpp" line="1288"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>Theip ar athríomh roinnt doiciméad.
 Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1286"/>
+      <location filename="../Application.cpp" line="1287"/>
       <source>Recompute error</source>
       <translation>Earráid athríomha</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2036"/>
+      <location filename="../Application.cpp" line="2037"/>
       <source>Workbench failure</source>
       <translation>Teip ar an mbinse oibre</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2037"/>
+      <location filename="../Application.cpp" line="2038"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8005,32 +8015,32 @@ Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
       <translation>Leagan Neamhbhailí OpenGL</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="450"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="454"/>
       <source>Migrating</source>
       <translation>Ag imirce</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="558"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="562"/>
       <source>Restarting</source>
       <translation>Atosú</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="425"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="429"/>
       <source>Estimated size of data to copy: %1</source>
       <translation>Méid measta na sonraí le cóipeáil: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="451"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="455"/>
       <source>Migrating configuration data and addons…</source>
       <translation>Ag aistriú sonraí cumraíochta agus breiseán…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="488"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="492"/>
       <source>Migration Completed With Warnings</source>
       <translation>Imirce Críochnaithe le Rabhaidh</translation>
     </message>
     <message numerus="yes">
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="495"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="499"/>
       <source>%n file(s) could not be copied and were skipped. A full list has been saved to %1 in your new configuration directory.</source>
       <translation>
         <numerusform>Níorbh fhéidir %n comhad(anna) a chóipeáil agus scipeáladh iad. Tá liosta iomlán sábháilte chuig %1 i do chomhadlann chumraíochta nua.</numerusform>
@@ -8041,17 +8051,17 @@ Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="512"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="516"/>
       <source>Migration Failed</source>
       <translation>Theip ar an Imirce</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="513"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="517"/>
       <source>Migration failed. See the Report View for details.</source>
       <translation>Theip ar an imirce. Féach ar an Amharc Tuairisce le haghaidh tuilleadh sonraí.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="557"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="561"/>
       <source> → Restarting…</source>
       <translation> → Atosú…</translation>
     </message>
@@ -8061,18 +8071,18 @@ Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
       <translation>Eisceacht</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1300"/>
-      <location filename="../Application.cpp" line="1315"/>
+      <location filename="../Application.cpp" line="1301"/>
+      <location filename="../Application.cpp" line="1316"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1301"/>
+      <location filename="../Application.cpp" line="1302"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Tharla earráidí agus an comhad á luchtú. B’fhéidir gur modhnaíodh roinnt sonraí nó nár aisghabhadh ar chor ar bith iad. Féach ar an radharc tuarascála le haghaidh tuilleadh eolais faoi na réada lena mbaineann.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1316"/>
+      <location filename="../Application.cpp" line="1317"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Tharla earráidí tromchúiseacha agus an comhad á luchtú. B’fhéidir gur athraíodh cuid de na sonraí nó nár aisghabhadh ar chor ar bith iad. Is dóichí go gcaillfear sonraí má shábhálfar an tionscadal.</translation>
     </message>
@@ -8630,7 +8640,7 @@ Roghnaigh 'Níl' chun aisiompú sa doiciméad gníomhach amháin.
 Roghnaigh 'Cealaigh' chun cealú</translation>
     </message>
     <message>
-      <location filename="../EditorView.cpp" line="378"/>
+      <location filename="../EditorView.cpp" line="384"/>
       <source>Save Macro</source>
       <translation>Sábháil Macra</translation>
     </message>
@@ -8689,12 +8699,12 @@ Roghnaigh 'Cealaigh' chun cealú</translation>
       <translation>Ní féidir brabhsálaí do chórais a oscailt.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3227"/>
+      <location filename="../View3DInventorViewer.cpp" line="3228"/>
       <source>Out of memory</source>
       <translation>As cuimhne</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3228"/>
+      <location filename="../View3DInventorViewer.cpp" line="3229"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Níl dóthain cuimhne ar fáil chun na sonraí a thaispeáint.</translation>
     </message>
@@ -9068,11 +9078,6 @@ dhéantar ar an gcóip reatha.
       <translation>Cineál cuar beochana</translation>
     </message>
     <message>
-      <location filename="../ViewProviderSuppressibleExtension.cpp" line="98"/>
-      <source>Suppressed</source>
-      <translation>Faoi chois</translation>
-    </message>
-    <message>
       <location filename="../SplashScreen.cpp" line="191"/>
       <source>WARNING: This is a development version.</source>
       <translation>RABHADH: Is leagan forbartha é seo.</translation>
@@ -9380,12 +9385,12 @@ dhéantar ar an gcóip reatha.
   <context>
     <name>StdCmdFeatRecompute</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="56"/>
+      <location filename="../CommandFeat.cpp" line="57"/>
       <source>&amp;Recompute</source>
       <translation>&amp;Athríomhaigh</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="57"/>
+      <location filename="../CommandFeat.cpp" line="58"/>
       <source>Recomputes a feature or document</source>
       <translation>Athríomhann gné nó doiciméad</translation>
     </message>
@@ -9630,12 +9635,12 @@ dhéantar ar an gcóip reatha.
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
+      <location filename="../CommandFeat.cpp" line="299"/>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Seol chuig Consól Python</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="243"/>
+      <location filename="../CommandFeat.cpp" line="300"/>
       <source>Sends the selected object to the Python console</source>
       <translation>Seolann an réad roghnaithe chuig consól Python</translation>
     </message>
@@ -10204,122 +10209,122 @@ An bhfuil tú ag iarraidh an doiciméad a shábháil anois?</translation>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../Workbench.cpp" line="586"/>
+      <location filename="../Workbench.cpp" line="589"/>
       <source>&amp;File</source>
       <translation>&amp;Comhad</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="587"/>
+      <location filename="../Workbench.cpp" line="590"/>
       <source>&amp;Edit</source>
       <translation>&amp;Eagar</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="588"/>
+      <location filename="../Workbench.cpp" line="591"/>
       <source>Edit</source>
       <translation>Eagar</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="589"/>
+      <location filename="../Workbench.cpp" line="592"/>
       <source>Clipboard</source>
       <translation>Gearrthaisce</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="590"/>
+      <location filename="../Workbench.cpp" line="593"/>
       <source>Workbench</source>
       <translation>Binse oibre</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="591"/>
+      <location filename="../Workbench.cpp" line="594"/>
       <source>Structure</source>
       <translation>Struchtúr</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="592"/>
+      <location filename="../Workbench.cpp" line="595"/>
       <source>Standard &amp;Views</source>
       <translation>Radharcanna Caighdeánacha</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="593"/>
+      <location filename="../Workbench.cpp" line="596"/>
       <source>Individual Views</source>
       <translation>Radharcanna Aonair</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="602"/>
+      <location filename="../Workbench.cpp" line="605"/>
       <source>&amp;Online Help</source>
       <translation>Cabhair Ar Líne</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="610"/>
+      <location filename="../Workbench.cpp" line="613"/>
       <source>Link Actions</source>
       <translation>Gníomhartha Nasc</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="595"/>
+      <location filename="../Workbench.cpp" line="598"/>
       <source>&amp;Stereo</source>
       <translation>&amp;Steirió</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="596"/>
+      <location filename="../Workbench.cpp" line="599"/>
       <source>&amp;Zoom</source>
       <translation>&amp;Zúmáil</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="594"/>
+      <location filename="../Workbench.cpp" line="597"/>
       <source>A&amp;xonometric</source>
       <translation>A&amp;xonaiméadrach</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="597"/>
+      <location filename="../Workbench.cpp" line="600"/>
       <source>V&amp;isibility</source>
       <translation>Infheictheacht</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="598"/>
+      <location filename="../Workbench.cpp" line="601"/>
       <source>&amp;View</source>
       <translation>&amp;Féach</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="599"/>
+      <location filename="../Workbench.cpp" line="602"/>
       <source>&amp;Tools</source>
       <translation>&amp;Uirlisí</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="600"/>
+      <location filename="../Workbench.cpp" line="603"/>
       <source>&amp;Macro</source>
       <translation>&amp;Macra</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="601"/>
+      <location filename="../Workbench.cpp" line="604"/>
       <source>&amp;Windows</source>
       <translation>&amp;Fuinneoga</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="603"/>
+      <location filename="../Workbench.cpp" line="606"/>
       <source>&amp;Help</source>
       <translation>&amp;Cabhair</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="604"/>
+      <location filename="../Workbench.cpp" line="607"/>
       <source>Help</source>
       <translation>Cabhair</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="605"/>
+      <location filename="../Workbench.cpp" line="608"/>
       <source>File</source>
       <translation>Comhad</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="606"/>
+      <location filename="../Workbench.cpp" line="609"/>
       <source>Macro</source>
       <translation>Macra</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="607"/>
+      <location filename="../Workbench.cpp" line="610"/>
       <source>View</source>
       <translation>Amharc</translation>
     </message>
     <message>
-      <location filename="../Workbench.cpp" line="608"/>
+      <location filename="../Workbench.cpp" line="611"/>
       <source>Special Ops</source>
       <translation>Oibríochtaí Speisialta</translation>
     </message>
@@ -11312,42 +11317,52 @@ taispeánfaidh FreeCAD an splancscáileán.</translation>
       <translation>Gníomhachtaigh painéil fhorleagan</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="363"/>
+      <source>Activate fine-grained recomputation of documents</source>
+      <translation>Gníomhachtaigh athríomh mionsonraithe doiciméad</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="366"/>
+      <source>Fine-grained recompute (experimental)</source>
+      <translation>Athríomhú mínmhionsonraithe (turgnamhach)</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="385"/>
       <source>Preference Packs</source>
       <translation>Pacáistí Rogha</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="477"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="496"/>
       <source>Import Configuration</source>
       <translation>Cumraíocht Iompórtála</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="484"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="503"/>
       <source>Save as New</source>
       <translation>Sábháil mar Nua</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="497"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="516"/>
       <source>Manage</source>
       <translation>Bainistigh</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="504"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="523"/>
       <source>Revert</source>
       <translation>Fill ar ais</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="432"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="451"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="443"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="462"/>
       <source>Type</source>
       <translation>Cineál</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="454"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="473"/>
       <source>Load</source>
       <translation>Luchtaigh</translation>
     </message>
@@ -11357,72 +11372,72 @@ taispeánfaidh FreeCAD an splancscáileán.</translation>
       <translation>Bainistigh pacáistí roghanna</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="524"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="526"/>
       <source>Small (%1px)</source>
       <translation>Beag (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="525"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="527"/>
       <source>Medium (%1px)</source>
       <translation>Meánach (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="526"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="528"/>
       <source>Large (%1px)</source>
       <translation>Mór (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="527"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="529"/>
       <source>Extra large (%1px)</source>
       <translation>An-mhór (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="529"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="531"/>
       <source>Custom (%1px)</source>
       <translation>Saincheaptha (%1px)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="600"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="602"/>
       <source>Combined</source>
       <translation>Comhcheangailte</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="601"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="603"/>
       <source>Independent</source>
       <translation>Neamhspleách</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="633"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="635"/>
       <source>Preference Pack Name</source>
       <translation>Ainm an Phacáiste Rogha</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="633"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="635"/>
       <source>Tags</source>
       <translation>Clibeanna</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="672"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="674"/>
       <source>Apply</source>
       <translation>Cuir isteach</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="686"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="688"/>
       <source>Applies the %1 preference pack</source>
       <translation>Cuirtear an pacáiste roghanna %1 i bhfeidhm</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="771"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="773"/>
       <source>Choose a FreeCAD config file to import</source>
       <translation>Roghnaigh comhad cumraíochta FreeCAD le hallmhairiú</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="785"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="787"/>
       <source>File exists</source>
       <translation>Tá an comhad ann</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="786"/>
+      <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="788"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
       <translation>Tá pacáiste roghanna leis an ainm sin ann cheana féin. An bhfuil tú ag iarraidh é a athscríobh?</translation>
     </message>
@@ -11906,12 +11921,12 @@ neamh-theimhneach.</translation>
   <context>
     <name>StdCmdToggleFreeze</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="189"/>
+      <location filename="../CommandFeat.cpp" line="190"/>
       <source>Toggle Freeze</source>
       <translation>Athraigh Reo</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="192"/>
+      <location filename="../CommandFeat.cpp" line="193"/>
       <source>Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.</source>
       <translation>Athraíonn sé staid reoite na réad roghnaithe. Ní dhéantar réad reoite a athríomh nuair a athraíonn a thuismitheoirí.</translation>
     </message>
@@ -12287,132 +12302,134 @@ neamh-theimhneach.</translation>
       <translation>Socrúchán</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="25"/>
+      <location filename="../TaskTransform.ui" line="35"/>
       <source>Coordinate system</source>
       <translation>Córas comhordanáidí</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="36"/>
+      <location filename="../TaskTransform.ui" line="46"/>
       <source>Local coordinate system</source>
       <translation>Córas comhordanáidí áitiúil</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="41"/>
+      <location filename="../TaskTransform.ui" line="51"/>
       <source>Global coordinate system</source>
       <translation>Córas comhordanáidí domhanda</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="56"/>
+      <location filename="../TaskTransform.ui" line="118"/>
       <source>Align dragger rotation with selected coordinate system</source>
       <translation>Ailínigh rothlú an tarraingtheora leis an gcóras comhordanáidí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="94"/>
-      <location filename="../TaskTransform.ui" line="481"/>
+      <location filename="../TaskTransform.ui" line="156"/>
+      <location filename="../TaskTransform.ui" line="543"/>
       <source>Translation</source>
       <translation>Aistriúchán</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="142"/>
-      <location filename="../TaskTransform.ui" line="696"/>
+      <location filename="../TaskTransform.ui" line="204"/>
+      <location filename="../TaskTransform.ui" line="752"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="158"/>
-      <location filename="../TaskTransform.ui" line="658"/>
+      <location filename="../TaskTransform.ui" line="220"/>
+      <location filename="../TaskTransform.ui" line="714"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="174"/>
-      <location filename="../TaskTransform.ui" line="674"/>
+      <location filename="../TaskTransform.ui" line="236"/>
+      <location filename="../TaskTransform.ui" line="730"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="193"/>
+      <location filename="../TaskTransform.ui" line="255"/>
       <source>Utilities</source>
       <translation>Fóntais</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="210"/>
+      <location filename="../TaskTransform.ui" line="272"/>
       <source>Move to Other Object</source>
       <translation>Bog go Réad Eile</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="252"/>
+      <location filename="../TaskTransform.ui" line="314"/>
       <source>Translate</source>
       <translation>Aistrigh</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="262"/>
+      <location filename="../TaskTransform.ui" line="324"/>
       <source>Rotate</source>
       <translation>Rothlaigh</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="288"/>
+      <location filename="../TaskTransform.ui" line="350"/>
       <source>Match U/X</source>
       <translation>Meaitseáil U/X</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="304"/>
+      <location filename="../TaskTransform.ui" line="366"/>
       <source>Match V/Y</source>
       <translation>Meaitseáil V/Y</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="320"/>
+      <location filename="../TaskTransform.ui" line="382"/>
       <source>Match W/Z</source>
       <translation>Meaitseáil W/Z</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="336"/>
+      <location filename="../TaskTransform.ui" line="398"/>
       <source>Align U/X</source>
       <translation>Ailínigh U/X</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="352"/>
+      <location filename="../TaskTransform.ui" line="414"/>
       <source>Align V/Y</source>
       <translation>Ailínigh V/Y</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="368"/>
+      <location filename="../TaskTransform.ui" line="430"/>
       <source>Align W/Z</source>
       <translation>Ailínigh W/Z</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="554"/>
+      <location filename="../TaskTransform.ui" line="100"/>
+      <location filename="../TaskTransform.ui" line="617"/>
       <source>Pick Reference</source>
       <translation>Roghnaigh Tagairt</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="425"/>
+      <location filename="../TaskTransform.ui" line="487"/>
       <source>Flip</source>
       <translation>Smeach</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="435"/>
+      <location filename="../TaskTransform.ui" line="497"/>
       <source>Dragger</source>
       <translation>Dragaire</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="465"/>
+      <location filename="../TaskTransform.ui" line="527"/>
       <source>&lt;b&gt;Snapping&lt;/b&gt;</source>
       <translation>&lt;b&gt;Ag snapáil&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="544"/>
+      <location filename="../TaskTransform.ui" line="62"/>
+      <location filename="../TaskTransform.ui" line="582"/>
       <source>Reference</source>
       <translation>Tagairt</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="584"/>
+      <location filename="../TaskTransform.ui" line="640"/>
       <source>Mode</source>
       <translation>Mód</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.ui" line="600"/>
-      <location filename="../TaskTransform.ui" line="613"/>
+      <location filename="../TaskTransform.ui" line="656"/>
+      <location filename="../TaskTransform.ui" line="669"/>
       <source>Rotation</source>
       <translation>Rothlú</translation>
     </message>
@@ -12483,55 +12500,63 @@ neamh-theimhneach.</translation>
   <context>
     <name>Gui::TaskTransform</name>
     <message>
-      <location filename="../TaskTransform.cpp" line="87"/>
+      <location filename="../TaskTransform.cpp" line="109"/>
       <source>Transform</source>
       <translation>Claochlú</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="173"/>
+      <location filename="../TaskTransform.cpp" line="197"/>
       <source>Object origin</source>
       <translation>Bunús an réada</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="179"/>
+      <location filename="../TaskTransform.cpp" line="203"/>
       <source>Center of mass / centroid</source>
       <translation>Lár na maise / centroid</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="185"/>
+      <location filename="../TaskTransform.cpp" line="209"/>
+      <location filename="../TaskTransform.cpp" line="219"/>
       <source>Custom</source>
       <translation>Saincheaptha</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="192"/>
+      <location filename="../TaskTransform.cpp" line="216"/>
       <source>Local</source>
       <translation>Áitiúil</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="193"/>
+      <location filename="../TaskTransform.cpp" line="217"/>
       <source>Global</source>
       <translation>Domhanda</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="406"/>
+      <location filename="../TaskTransform.cpp" line="442"/>
+      <location filename="../TaskTransform.cpp" line="444"/>
       <source>Pick Reference</source>
       <translation>Roghnaigh Tagairt</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="407"/>
+      <location filename="../TaskTransform.cpp" line="443"/>
       <source>Move to Other Object</source>
       <translation>Bog go Réad Eile</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="414"/>
+      <location filename="../TaskTransform.cpp" line="451"/>
       <source>Select face, edge, or vertex…</source>
       <translation>Roghnaigh aghaidh, imeall, nó buaicphointe…</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="415"/>
-      <location filename="../TaskTransform.cpp" line="421"/>
+      <location filename="../TaskTransform.cpp" line="452"/>
+      <location filename="../TaskTransform.cpp" line="458"/>
+      <location filename="../TaskTransform.cpp" line="467"/>
       <source>Cancel</source>
       <translation>Cealaigh</translation>
+    </message>
+    <message>
+      <location filename="../TaskTransform.cpp" line="466"/>
+      <source>Select object…</source>
+      <translation>Roghnaigh réad…</translation>
     </message>
   </context>
   <context>
@@ -12837,22 +12862,22 @@ neamh-theimhneach.</translation>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="493"/>
+      <location filename="../Application.cpp" line="494"/>
       <source>Built-in Parameters</source>
       <translation>Paraiméadair Tógtha Isteach</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="467"/>
+      <location filename="../Application.cpp" line="468"/>
       <source>Theme Parameters</source>
       <translation>Paraiméadair Téama</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="502"/>
+      <location filename="../Application.cpp" line="503"/>
       <source>Theme Parameters - Fallback</source>
       <translation>Paraiméadair Téama - Cúltaca</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="514"/>
+      <location filename="../Application.cpp" line="515"/>
       <source>User Parameters</source>
       <translation>Paraiméadair Úsáideora</translation>
     </message>
@@ -13090,12 +13115,12 @@ Ar aghaidh?</translation>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="109"/>
+      <location filename="../CommandFeat.cpp" line="110"/>
       <source>Random &amp;Color</source>
       <translation>Dath Randamach</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="110"/>
+      <location filename="../CommandFeat.cpp" line="111"/>
       <source>Assigns random diffuse colors for the selected objects</source>
       <translation>Sanntar dathanna scaipthe randamacha do na réada roghnaithe</translation>
     </message>
@@ -13103,12 +13128,12 @@ Ar aghaidh?</translation>
   <context>
     <name>StdCmdToggleSkipRecompute</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="342"/>
+      <location filename="../CommandFeat.cpp" line="399"/>
       <source>Skip Recomputes</source>
       <translation>Léim thar Athríomhanna</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="344"/>
+      <location filename="../CommandFeat.cpp" line="401"/>
       <source>Enables or disables the recomputations of the document</source>
       <translation>Cumasaíonn nó díchumasaíonn sé athríomhanna an doiciméid</translation>
     </message>
@@ -14646,12 +14671,12 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
       <translation>Úsáid cumraíocht réamhshocraithe nua</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="507"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="511"/>
       <source>Migration complete</source>
       <translation>Imirce críochnaithe</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="544"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="548"/>
       <source>New default configuration created</source>
       <translation>Cumraíocht réamhshocraithe nua cruthaithe</translation>
     </message>
@@ -14816,6 +14841,19 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
       <location filename="../CommandView.cpp" line="3891"/>
       <source>Toggles the bottom dock panels</source>
       <translation>Athraíonn sé na painéil duga bun</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleSuppress</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation>Athraigh faoi chois</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation>Athraíonn sé staid choiscthe na réad roghnaithe. Oibríonn réad coiscthe amhail is dá mba scriosadh é.</translation>
     </message>
   </context>
   <context>

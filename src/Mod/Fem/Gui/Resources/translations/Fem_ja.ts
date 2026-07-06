@@ -325,17 +325,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2883"/>
+      <location filename="../../Command.cpp" line="2886"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2884"/>
+      <location filename="../../Command.cpp" line="2887"/>
       <source>Apply Changes to Pipeline</source>
       <translation>パイプラインに変更を適用</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2885"/>
+      <location filename="../../Command.cpp" line="2888"/>
       <source>Applies changes to parameters directly and not on recompute only</source>
       <translation>再計算時以外も、パラメーターに変更を直接適用</translation>
     </message>
@@ -343,27 +343,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2247"/>
+      <location filename="../../Command.cpp" line="2250"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2248"/>
+      <location filename="../../Command.cpp" line="2251"/>
       <source>Region Clip Filter</source>
       <translation>領域クリップフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2249"/>
+      <location filename="../../Command.cpp" line="2252"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
       <translation>クリップ領域を定義する関数を使用するクリップフィルターを定義</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2773"/>
+      <location filename="../../Command.cpp" line="2776"/>
       <source>Select a pipeline.</source>
       <translation>パイプラインを選択してください。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2772"/>
+      <location filename="../../Command.cpp" line="2775"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
@@ -371,17 +371,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2286"/>
+      <location filename="../../Command.cpp" line="2289"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2287"/>
+      <location filename="../../Command.cpp" line="2290"/>
       <source>Function Cut Filter</source>
       <translation>関数カットフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2288"/>
+      <location filename="../../Command.cpp" line="2291"/>
       <source>Cuts the data along an implicit function</source>
       <translation>陰関数に従ってデータを切り出し</translation>
     </message>
@@ -389,17 +389,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2323"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2324"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Line Clip Filter</source>
       <translation>直線クリップフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2325"/>
+      <location filename="../../Command.cpp" line="2328"/>
       <source>Defines a clip filter which clips a field along a line</source>
       <translation>直線に沿って場の値をクリップするクリップフィルターを定義</translation>
     </message>
@@ -407,17 +407,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2360"/>
+      <location filename="../../Command.cpp" line="2363"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2361"/>
+      <location filename="../../Command.cpp" line="2364"/>
       <source>Data at Point Clip Filter</source>
       <translation>点データクリップフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2362"/>
+      <location filename="../../Command.cpp" line="2365"/>
       <source>Defines a clip filter which clips a field data at point</source>
       <translation>点位置での場の値をクリップするクリップフィルターを定義</translation>
     </message>
@@ -425,37 +425,37 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2625"/>
+      <location filename="../../Command.cpp" line="2628"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2626"/>
+      <location filename="../../Command.cpp" line="2629"/>
       <source>Filter Functions</source>
       <translation>フィルター関数</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2627"/>
+      <location filename="../../Command.cpp" line="2630"/>
       <source>Functions for use in postprocessing filter</source>
       <translation>ポスト処理フィルターで使用する関数</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2825"/>
+      <location filename="../../Command.cpp" line="2828"/>
       <source>Plane</source>
       <translation>平面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2835"/>
+      <location filename="../../Command.cpp" line="2838"/>
       <source>Sphere</source>
       <translation>球体</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2845"/>
+      <location filename="../../Command.cpp" line="2848"/>
       <source>Cylinder</source>
       <translation>円柱</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2855"/>
+      <location filename="../../Command.cpp" line="2858"/>
       <source>Box</source>
       <translation>直方体</translation>
     </message>
@@ -463,65 +463,65 @@
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2134"/>
+      <location filename="../../Command.cpp" line="2137"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>厚み [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2140"/>
+      <location filename="../../Command.cpp" line="2143"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>圧力 [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2146"/>
+      <location filename="../../Command.cpp" line="2149"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>線形化圧力</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2152"/>
+      <location filename="../../Command.cpp" line="2155"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>薄膜</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2158"/>
+      <location filename="../../Command.cpp" line="2161"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>膜と曲げ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2164"/>
+      <location filename="../../Command.cpp" line="2167"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>合計</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2401"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2399"/>
+      <location filename="../../Command.cpp" line="2402"/>
       <source>Stress Linearization Plot</source>
       <translation>応力線形化プロット</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2403"/>
       <source>Defines a stress linearization plot</source>
       <translation>応力線形化プロットの定義</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2439"/>
-      <location filename="../../Command.cpp" line="2450"/>
+      <location filename="../../Command.cpp" line="2442"/>
+      <location filename="../../Command.cpp" line="2453"/>
       <source>Select a clip filter which clips a stress field along a line</source>
       <translation>直線に沿って応力場をクリップするクリップフィルターを選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2438"/>
-      <location filename="../../Command.cpp" line="2449"/>
+      <location filename="../../Command.cpp" line="2441"/>
+      <location filename="../../Command.cpp" line="2452"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
@@ -529,27 +529,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2924"/>
+      <location filename="../../Command.cpp" line="2927"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2925"/>
+      <location filename="../../Command.cpp" line="2928"/>
       <source>Post Pipeline From Result</source>
       <translation>結果からポスト処理パイプラインを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2926"/>
+      <location filename="../../Command.cpp" line="2929"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>結果オブジェクトからポスト処理パイプラインを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3010"/>
+      <location filename="../../Command.cpp" line="3013"/>
       <source>Wrong selection type</source>
       <translation>間違った選択タイプ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3011"/>
+      <location filename="../../Command.cpp" line="3014"/>
       <source>Select a result object.</source>
       <translation>結果オブジェクトを選択してください。</translation>
     </message>
@@ -557,17 +557,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2478"/>
+      <location filename="../../Command.cpp" line="2481"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2479"/>
+      <location filename="../../Command.cpp" line="2482"/>
       <source>Scalar Clip Filter</source>
       <translation>スカラークリップフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2480"/>
+      <location filename="../../Command.cpp" line="2483"/>
       <source>Defines a clip filter which clips a field with a scalar value</source>
       <translation>スカラー値の場をクリップするクリップフィルターを定義</translation>
     </message>
@@ -575,17 +575,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2515"/>
+      <location filename="../../Command.cpp" line="2518"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2516"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Warp Filter</source>
       <translation>たわみフィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2517"/>
+      <location filename="../../Command.cpp" line="2520"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
       <translation>ベクトル場に従って一定の係数でジオメトリーをたわめる</translation>
     </message>
@@ -704,12 +704,12 @@
       <translation>フィルターを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2659"/>
+      <location filename="../../Command.cpp" line="2662"/>
       <source>Create function</source>
       <translation>関数を作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2979"/>
+      <location filename="../../Command.cpp" line="2982"/>
       <source>Create pipeline from result</source>
       <translation>結果からパイプラインを作成</translation>
     </message>
@@ -794,22 +794,22 @@
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2827"/>
+      <location filename="../../Command.cpp" line="2830"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>原点と法線で定義された平面関数を作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2837"/>
+      <location filename="../../Command.cpp" line="2840"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>中心点と半径で定義された球関数を作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2847"/>
+      <location filename="../../Command.cpp" line="2850"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>中心点、軸、半径で定義された円筒関数を作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2857"/>
+      <location filename="../../Command.cpp" line="2860"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>中心、奥行き、幅、高さで定義された直方体関数を作成</translation>
     </message>
@@ -1072,7 +1072,7 @@ Only takes effect if 'Pipeline only' is enabled</source>
     <name>FemGui::DlgSettingsFemElmerImp</name>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="14"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="98"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="106"/>
       <source>Elmer</source>
       <translation>Elmer</translation>
     </message>
@@ -1092,57 +1092,57 @@ Only takes effect if 'Pipeline only' is enabled</source>
       <translation>ElmerGridのパス</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="199"/>
       <source>Log verbosity</source>
       <translation>ログの詳細度</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="209"/>
       <source>Maximum output level</source>
       <translation type="unfinished">Maximum output level</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="181"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="231"/>
       <source>Number of tasks</source>
       <translation>タスク数</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="191"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="241"/>
       <source>Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</source>
       <translation>並列タスク数。ElmerでMPIを使用しない場合は「1」を設定してください。&lt;br&gt;メッシュの対称性上有利なため偶数のコア数を使用することを推奨します&lt;br&gt;（8コア使用の方が9コアよりも早くなる可能性があります）。&lt;br&gt;極端な場合にはコア数が多すぎると ElmerSolver が収束しないことがあります。</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="207"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="257"/>
       <source>Threads per task</source>
       <translation>タスク毎のスレッド</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="217"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="267"/>
       <source>Number of threads per task. Take effect if Elmer uses OpenMP.</source>
       <translation>タスク毎のスレッド数。ElmerがOpenMPを使用している場合に有効になります。</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="238"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="288"/>
       <source>Results</source>
       <translation>結果</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="244"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="294"/>
       <source>Save result in binary format</source>
       <translation>結果をバイナリー形式で保存</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="247"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="297"/>
       <source>Use binary format</source>
       <translation>バイナリー形式を使用</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="263"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="313"/>
       <source>Save the index of geometric entities</source>
       <translation>ジオメトリー要素のインデックスを保存</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="266"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
       <source>Save geometry IDs</source>
       <translation>ジオメトリーIDを保存</translation>
     </message>
@@ -1157,12 +1157,22 @@ Only takes effect if 'Pipeline only' is enabled</source>
       <translation>Elmer バイナリ</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="141"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="144"/>
+      <source>MPI path</source>
+      <translation type="unfinished">MPI path</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
+      <source>Leave blank to use default MPI binary file</source>
+      <translation type="unfinished">Leave blank to use default MPI binary file</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="191"/>
       <source>Options</source>
       <translation>オプション</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="98"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="106"/>
       <source>Executable '%1' not found</source>
       <translation>実行可能な '%1' が見つかりません</translation>
     </message>
@@ -2458,82 +2468,82 @@ that "MAXGS" needs to be increased.</source>
   <context>
     <name>FemGui::TaskFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="211"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="164"/>
+      <source>Edge, Face</source>
+      <translation>エッジ、面</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="212"/>
       <source>Analysis feature update error</source>
       <translation>解析フィーチャーの更新エラー</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
-      <source>Nothing selected!</source>
-      <translation>何も選択されていません!</translation>
-    </message>
-    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="310"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="317"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="327"/>
-      <source>Only one face for rectangular local coordinate system!</source>
-      <translation>ローカルの直角座標系は1面のみです！</translation>
-    </message>
-    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="342"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="350"/>
-      <source>External object selection is not supported</source>
-      <translation>外部オブジェクトの選択はサポートされていません</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
-      <source>Only one face for local coordinate system!</source>
-      <translation>ローカルの座標系は1面のみです！</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="424"/>
-      <source>Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</source>
-      <translation>変換可能な面のみを選択できます！　まず表面に変位境界条件または荷重負荷を適用し、その後、表面にローカル座標系を適用します。</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
-      <source>Selected object is not a part!</source>
-      <translation>選択されたオブジェクトはパーツではありません！</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
-      <source>Select single geometry of type: </source>
-      <translation>以下の種類の単一ジオメトリーを選択: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
-      <source>Face</source>
-      <translation>面</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="212"/>
-      <source>The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</source>
-      <translation>変換可能な面が変更されました。変換可能な面だけを追加し、変換できない面は削除してください！</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="316"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="326"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="359"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="379"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="423"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="374"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="392"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="436"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="470"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="479"/>
       <source>Selection Error</source>
       <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
-      <source>Only faces can be picked</source>
-      <translation>面のみを選択できます。</translation>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="318"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="328"/>
+      <source>Only one face (edge in 2D model) for rectangular local coordinate system!</source>
+      <translation type="unfinished">Only one face (edge in 2D model) for rectangular local coordinate system!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="380"/>
-      <source>Only cylindrical faces can be picked</source>
-      <translation>円筒面のみを選択できます。</translation>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="361"/>
+      <source>Only one face (edge in 2D model) for local coordinate system!</source>
+      <translation type="unfinished">Only one face (edge in 2D model) for local coordinate system!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="375"/>
+      <source>Only faces (edges in 2D model) can be picked</source>
+      <translation type="unfinished">Only faces (edges in 2D model) can be picked</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="393"/>
+      <source>Only cylindrical faces (edges in 2D model) can be picked</source>
+      <translation type="unfinished">Only cylindrical faces (edges in 2D model) can be picked</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="437"/>
+      <source>Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</source>
+      <translation type="unfinished">Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="310"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="470"/>
+      <source>Nothing selected!</source>
+      <translation>何も選択されていません!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="351"/>
+      <source>External object selection is not supported</source>
+      <translation>外部オブジェクトの選択はサポートされていません</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="342"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="479"/>
+      <source>Selected object is not a part!</source>
+      <translation>選択されたオブジェクトはパーツではありません！</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="164"/>
+      <source>Select single geometry of type: </source>
+      <translation>以下の種類の単一ジオメトリーを選択: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="213"/>
+      <source>The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</source>
+      <translation>変換可能な面が変更されました。変換可能な面だけを追加し、変換できない面は削除してください！</translation>
     </message>
   </context>
   <context>
@@ -6926,17 +6936,17 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2552"/>
+      <location filename="../../Command.cpp" line="2555"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2553"/>
+      <location filename="../../Command.cpp" line="2556"/>
       <source>Contours Filter</source>
       <translation>等高線フィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2554"/>
+      <location filename="../../Command.cpp" line="2557"/>
       <source>Defines a contours filter that displays iso contours</source>
       <translation type="unfinished">Defines a contours filter that displays iso contours</translation>
     </message>
@@ -8044,17 +8054,17 @@ Leave blank to use default Python executable</source>
   <context>
     <name>CmdFemPostCalculatorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2589"/>
+      <location filename="../../Command.cpp" line="2592"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2590"/>
+      <location filename="../../Command.cpp" line="2593"/>
       <source>Calculator Filter</source>
       <translation>計算機フィルター</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2591"/>
+      <location filename="../../Command.cpp" line="2594"/>
       <source>Creates a new field from current data</source>
       <translation>現在のデータから新しいフィールドを作成</translation>
     </message>
@@ -8062,17 +8072,17 @@ Leave blank to use default Python executable</source>
   <context>
     <name>CmdFemPostBranchFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="3031"/>
+      <location filename="../../Command.cpp" line="3034"/>
       <source>Fem</source>
       <translation>有限要素法</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3032"/>
+      <location filename="../../Command.cpp" line="3035"/>
       <source>Pipeline Branch</source>
       <translation>パイプライン分岐</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3033"/>
+      <location filename="../../Command.cpp" line="3036"/>
       <source>Branches the pipeline into a new path</source>
       <translation>パイプラインを新しいパスに分岐</translation>
     </message>
@@ -8957,7 +8967,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="649"/>
       <source>Input Error</source>
       <translation>入力エラー</translation>
     </message>

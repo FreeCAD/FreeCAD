@@ -357,7 +357,7 @@
       <translation>设置单元格属性</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="628"/>
+      <location filename="../../SheetModel.cpp" line="623"/>
       <source>Edit cell</source>
       <translation>编辑单元格</translation>
     </message>
@@ -382,32 +382,32 @@
       <translation>清除背景色</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="326"/>
+      <location filename="../../SheetTableView.cpp" line="328"/>
       <source>Insert Rows</source>
       <translation>插入行</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="353"/>
+      <location filename="../../SheetTableView.cpp" line="355"/>
       <source>Remove Rows</source>
       <translation>删除行</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="339"/>
+      <location filename="../../SheetTableView.cpp" line="341"/>
       <source>Insert Columns</source>
       <translation>插入列</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="224"/>
+      <location filename="../../SheetTableView.cpp" line="226"/>
       <source>Recompute Cells</source>
       <translation>重新计算单元格</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="366"/>
+      <location filename="../../SheetTableView.cpp" line="368"/>
       <source>Remove Columns</source>
       <translation>移除列</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="581"/>
+      <location filename="../../SheetTableView.cpp" line="583"/>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>清除单元格</translation>
@@ -743,12 +743,12 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
       <translation>电子表格</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="112"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="108"/>
       <source>Export File</source>
       <translation>导出文件</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="137"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="133"/>
       <source>Show Spreadsheet</source>
       <translation>显示电子表格</translation>
     </message>
@@ -775,7 +775,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
       <translation>设置电子表格单元格的背景颜色</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="719"/>
+      <location filename="../../SheetTableView.cpp" line="721"/>
       <source>Copy &amp; Paste Failed</source>
       <translation>复制粘贴失败</translation>
     </message>
@@ -956,22 +956,47 @@ Continue?</source>
       <translation>电子表格</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="26"/>
+      <location filename="../../DlgSettings.ui" line="156"/>
+      <source>Cells</source>
+      <translation>单元格</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="165"/>
+      <source>Maximum number of columns</source>
+      <translation>最大列数</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="175"/>
+      <source>Maximum number of rows</source>
+      <translation>最大行数</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="185"/>
       <source>Display Settings</source>
       <translation>显示设置</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="35"/>
+      <location filename="../../DlgSettings.ui" line="191"/>
+      <source>Displays the cell alias using the custom format.</source>
+      <translation>使用自定义格式显示单元格别名。</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="194"/>
       <source>Show alias in cell with format</source>
       <translation>在单元格中显示带有格式的别名</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="51"/>
+      <location filename="../../DlgSettings.ui" line="207"/>
+      <source>Sets the table view zoom level from 60% to 160%.</source>
+      <translation>将表格视图的缩放级别设置为 60% 至 160%。</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="210"/>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="83"/>
+      <location filename="../../DlgSettings.ui" line="242"/>
       <source>The format of the custom cell string presentation.
 Defaults to: %V = %A
 
@@ -984,57 +1009,47 @@ Defaults to: %V = %A
 %V - 单元格值</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="119"/>
+      <location filename="../../DlgSettings.ui" line="26"/>
       <source>Import/Export Settings</source>
       <translation>导入/导出设置</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="32"/>
-      <source>Uses the custom presentation to display cell string</source>
-      <translation>使用自定义演示文稿来显示单元格字符串</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="48"/>
-      <source>Defines a default zoom level for table view from 60% to 160%</source>
-      <translation>定义表格视图的默认缩放级别，从 60% 到 160%</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="76"/>
+      <location filename="../../DlgSettings.ui" line="235"/>
       <source>Default zoom level</source>
       <translation>默认缩放级别</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="131"/>
+      <location filename="../../DlgSettings.ui" line="38"/>
       <source>Delimiter character</source>
       <translation>分隔符</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="151"/>
+      <location filename="../../DlgSettings.ui" line="58"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用作字段分隔符的字符。 默认是制表符，但通常使用逗号 (,) 和分号 (;)。从列表中选择或输入您自己的字段。 必须是单个字符或单词 &lt;span style=" font-style:italic;"&gt;制表符&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;逗号&lt;/span&gt;, 或 &lt;span style=" font-style:italic;"&gt;分号&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="167"/>
+      <location filename="../../DlgSettings.ui" line="74"/>
       <source>tab</source>
       <translation>制表符</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="191"/>
+      <location filename="../../DlgSettings.ui" line="98"/>
       <source>Quote character</source>
       <translation>引用符</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="198"/>
+      <location filename="../../DlgSettings.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用于分隔字符串的字符，通常是单引号 (') 或双引号 (&amp;quot;)。必须是单个字符。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="223"/>
+      <location filename="../../DlgSettings.ui" line="130"/>
       <source>Escape character</source>
       <translation>转义符</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="230"/>
+      <location filename="../../DlgSettings.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;转义字符，通常是反斜线 (\)，用来表示特殊的不可打印字符，如 \t = 制表符。必须是单个字符。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1042,122 +1057,122 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <location filename="../../SheetTableView.cpp" line="186"/>
-      <location filename="../../SheetTableView.cpp" line="563"/>
+      <location filename="../../SheetTableView.cpp" line="188"/>
+      <location filename="../../SheetTableView.cpp" line="565"/>
       <source>Recompute</source>
       <translation>重新计算</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="147"/>
+      <location filename="../../SheetTableView.cpp" line="149"/>
       <source>Insert %n Non-Contiguous Rows</source>
       <translation>
         <numerusform>插入 %n 个非连续行</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="150"/>
+      <location filename="../../SheetTableView.cpp" line="152"/>
       <source>Remove Rows</source>
       <translation>删除行</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="167"/>
+      <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n Non-Contiguous Columns</source>
       <translation>
         <numerusform>插入 %n 个非连续列</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="562"/>
+      <location filename="../../SheetTableView.cpp" line="564"/>
       <source>Properties…</source>
       <translation>属性…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="187"/>
-      <location filename="../../SheetTableView.cpp" line="571"/>
+      <location filename="../../SheetTableView.cpp" line="189"/>
+      <location filename="../../SheetTableView.cpp" line="573"/>
       <source>Bind…</source>
       <translation>绑定…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="564"/>
+      <location filename="../../SheetTableView.cpp" line="566"/>
       <source>Configuration Table…</source>
       <translation>配置表…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="192"/>
-      <location filename="../../SheetTableView.cpp" line="565"/>
+      <location filename="../../SheetTableView.cpp" line="194"/>
+      <location filename="../../SheetTableView.cpp" line="567"/>
       <source>Merge Cells</source>
       <translation>合并单元格</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="141"/>
+      <location filename="../../SheetTableView.cpp" line="143"/>
       <source>Insert %n Rows Above</source>
       <translation>
         <numerusform>在上方插入 %n 行</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="143"/>
+      <location filename="../../SheetTableView.cpp" line="145"/>
       <source>Insert %n Rows Below</source>
       <translation>
         <numerusform>在下方插入 %n 行</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="161"/>
+      <location filename="../../SheetTableView.cpp" line="163"/>
       <source>Insert %n Columns Left</source>
       <translation>
         <numerusform>在左侧插入 %n 列</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="163"/>
+      <location filename="../../SheetTableView.cpp" line="165"/>
       <source>Insert %n Columns Right</source>
       <translation>
         <numerusform>在右侧插入 %n 列</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="170"/>
+      <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove Columns</source>
       <translation>移除列</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="183"/>
+      <location filename="../../SheetTableView.cpp" line="185"/>
       <source>Properties</source>
       <translation>属性</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="188"/>
+      <location filename="../../SheetTableView.cpp" line="190"/>
       <source>Configuration Table</source>
       <translation>配置表格</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="197"/>
-      <location filename="../../SheetTableView.cpp" line="566"/>
+      <location filename="../../SheetTableView.cpp" line="199"/>
+      <location filename="../../SheetTableView.cpp" line="568"/>
       <source>Split Cell</source>
       <translation>拆分单元格</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="201"/>
-      <location filename="../../SheetTableView.cpp" line="569"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="571"/>
       <source>Cut</source>
       <translation>剪切</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="202"/>
-      <location filename="../../SheetTableView.cpp" line="567"/>
+      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="569"/>
       <source>Copy</source>
       <translation>复制</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="568"/>
+      <location filename="../../SheetTableView.cpp" line="205"/>
+      <location filename="../../SheetTableView.cpp" line="570"/>
       <source>Paste</source>
       <translation>粘贴</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="204"/>
-      <location filename="../../SheetTableView.cpp" line="570"/>
+      <location filename="../../SheetTableView.cpp" line="206"/>
+      <location filename="../../SheetTableView.cpp" line="572"/>
       <source>Delete</source>
       <translation>删除</translation>
     </message>

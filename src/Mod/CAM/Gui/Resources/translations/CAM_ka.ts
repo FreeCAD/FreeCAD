@@ -4636,7 +4636,7 @@ Default: 3 mm</source>
       <translation>შრომისუნარიანობის შემოწმების ანგარიშის შენახვა</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="90"/>
       <source>Choose a CAM Job</source>
       <translation>აირჩიეთ CAM დავალება</translation>
     </message>
@@ -5234,35 +5234,35 @@ Only for styles: Arc, Line, Perpendicular and Tangent</translation>
       <translation>გამორთეთ ოპერაციისთვის კოდის გენერაციის ხელის შესაშლელად</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1544"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1547"/>
       <source>Side of selected faces that tool should cut</source>
       <translation>მონიშნული ზედაპირების მხარე, რომელიც ხელსაწყომ უნდა გაჭრას</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1553"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1556"/>
       <source>Type of adaptive operation</source>
       <translation>ადაპტიური ოპერაციის ტიპი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1571"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1955"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1574"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1958"/>
       <location filename="../../../Path/Op/PocketBase.py" line="159"/>
       <location filename="../../../Path/Op/Helix.py" line="164"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>მჭრელი დიამეტრის პროცენტი თითოეულ გავლისას გადასაბიჯებლად</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1580"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1583"/>
       <source>Lift distance for rapid moves</source>
       <translation>სწრაფი გადაადგილებების აწევის მანძილი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1589"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1592"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
       <translation type="unfinished">Max length of keep tool down path compared to direct distance between points</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1562"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1565"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -5271,24 +5271,24 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1598"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1601"/>
       <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
       <translation type="unfinished">How much stock to leave in the XY plane (eg for finishing operation)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1607"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1610"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation type="unfinished">How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1672"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1675"/>
       <source>The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</source>
       <translation type="unfinished">The maximum allowable helix ramp entry angle (degrees)
 Set to zero to disable limitation by ramp angle</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1682"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1685"/>
       <location filename="../../../Path/Op/Helix.py" line="288"/>
       <location filename="../../../Path/Op/Helix.py" line="507"/>
       <source>The maximum allowable descent in a single revolution of the helix
@@ -5297,77 +5297,77 @@ Set to zero to disable limitation by pitch</source>
 Set to zero to disable limitation by pitch</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1700"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1894"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1703"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1897"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</source>
       <translation type="unfinished">Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1709"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1903"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1712"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1906"/>
       <source>Minimum acceptable helix entry diameter, as a percentage of the tool diameter</source>
       <translation type="unfinished">Minimum acceptable helix entry diameter, as a percentage of the tool diameter</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1736"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1739"/>
       <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
       <translation type="unfinished">Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1751"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1875"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1754"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1878"/>
       <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
       <translation type="unfinished">Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1864"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1867"/>
       <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
       <translation type="unfinished">How much stock to leave along the Z axis (eg for finishing operation)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1925"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1928"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
       <translation type="unfinished">The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1616"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1619"/>
       <source>Force plunging into material inside and clearing towards the edges</source>
       <translation type="unfinished">Force plunging into material inside and clearing towards the edges</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1625"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1628"/>
       <source>To take a finishing profile path at the end</source>
       <translation>ბოლოს დამსრულებელი პროფილის ტრაექტორიის არჩევა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1631"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1641"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1634"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1644"/>
       <source>Stop processing</source>
       <translation>დამუშავების შეწყვეტა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1651"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1654"/>
       <source>Internal input state</source>
       <translation>შიდა შეყვანის მდგომარეობა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1660"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1663"/>
       <source>Internal output state</source>
       <translation>შიდა გამოტანის მდგომარეობა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1691"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1694"/>
       <source>Helix cone angle (degrees)</source>
       <translation>სპირალის კონუსის კუთხე (გრადუსები)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1718"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1721"/>
       <location filename="../../../Path/Op/PocketShape.py" line="168"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>გამოიყენებს საბაზისო გეომეტრიის კონტურს.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1853"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1856"/>
       <source>Orders cuts by region instead of depth.</source>
       <translation>ალაგებს ამოჭრებს რეგიონის მიხედვით სიღრმის მაგიერ.</translation>
     </message>
@@ -5926,8 +5926,8 @@ For External profile - profile radius</translation>
       <translation>ტრაექტორიის 3D დალაგების გამოყენება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1727"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1842"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1730"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1845"/>
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="271"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
@@ -7345,71 +7345,71 @@ If selection without sub elements:
       <translation>ბაზური გეომეტრია</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="932"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="934"/>
       <source>Multiple operations are labeled as</source>
       <translation>ოპერაციების ჯგუფი მონიშნულია, როგორც</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1006"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1008"/>
       <source>Base Location</source>
       <translation>ბაზური მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1134"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1136"/>
       <source>Heights</source>
       <translation>სიმაღლეები</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1224"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1226"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation type="unfinished">FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1247"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1249"/>
       <source>Depths</source>
       <translation>სიღრმეები</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1348"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1350"/>
       <source>Diameters</source>
       <translation>დიამეტრები</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1380"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1382"/>
       <source>AreaOp Operation</source>
       <translation>ოპერაცია AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1441"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1443"/>
       <source>Operation</source>
       <translation>ოპერაცია</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1506"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1508"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>AreaOp ოპერაციის გაუქმება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1643"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1645"/>
       <source>Start Point Selection</source>
       <translation>საწყისი წერტილის არჩევანი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1644"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1646"/>
       <source>Selects the start point</source>
       <translation>მონიშნავს საწყის წერტილს</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1694"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1696"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>ხელსაწყოს შესატყვისი კონტროლერი ნაპოვნი არაა.
 ოპის შექმნა გაუქმებულია</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1698"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1700"/>
       <source>No tool controller, aborting op creation</source>
       <translation>ხელსაწყოს კონტროლერი ნაპოვნი არაა. ოპერაციის შექმნა შეჩერებულია</translation>
     </message>
@@ -8526,22 +8526,22 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_Simulator</name>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="364"/>
       <source>CAM Simulator</source>
       <translation>CAM სიმულატორი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="315"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="313"/>
       <source>High</source>
       <translation>მაღალი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="317"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="315"/>
       <source>Low</source>
       <translation>დაბალი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="319"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="317"/>
       <source>Medium</source>
       <translation>საშუალო</translation>
     </message>
@@ -8552,7 +8552,7 @@ Without sub selection all edges of the shape will be selected.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="625"/>
-      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="368"/>
+      <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="366"/>
       <source>Simulates G-code on stock</source>
       <translation>G-Code-ის სიმულაცია ნედლეულზე</translation>
     </message>
@@ -8560,22 +8560,22 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_Adaptive</name>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1511"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1514"/>
       <source>Outside</source>
       <translation>გარედან</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1512"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
       <source>Inside</source>
       <translation>შიგნიდან</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1515"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1518"/>
       <source>Clearing</source>
       <translation>გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1516"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1519"/>
       <source>Profiling</source>
       <translation>პროფილირება</translation>
     </message>
@@ -9032,7 +9032,7 @@ This will not delete the toolbits contained within it.</source>
       <translation type="unfinished">{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="373"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="375"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation type="unfinished">Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</translation>
     </message>
@@ -9058,264 +9058,264 @@ This will not delete the toolbits contained within it.</source>
       <translation>შეწყვეტა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="311"/>
+      <location filename="../../../Path/Post/Processor.py" line="314"/>
       <source>File Extension</source>
       <translation>ფაილის გაფართოება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="317"/>
+      <location filename="../../../Path/Post/Processor.py" line="320"/>
       <source>Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</source>
       <translation type="unfinished">Default file extension for output files (without the dot). Common extensions: nc, gcode, tap, ngc, sbp, etc.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="322"/>
+      <location filename="../../../Path/Post/Processor.py" line="325"/>
       <source>Tool Radius Compensation (G41/G42)</source>
       <translation type="unfinished">Tool Radius Compensation (G41/G42)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="328"/>
+      <location filename="../../../Path/Post/Processor.py" line="331"/>
       <source>Enable if this postprocessor supports G41/G42 tool radius compensation commands. When enabled, the postprocessor can output cutter compensation codes.</source>
       <translation type="unfinished">Enable if this postprocessor supports G41/G42 tool radius compensation commands. When enabled, the postprocessor can output cutter compensation codes.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="333"/>
+      <location filename="../../../Path/Post/Processor.py" line="336"/>
       <source>Supported G-code Commands</source>
       <translation>მხარდაჭერილი G-code-ის ბრძანებები</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="339"/>
+      <location filename="../../../Path/Post/Processor.py" line="342"/>
       <source>List of G-code commands supported by this postprocessor (one per line). Commands not in this list will be filtered out or cause warnings.</source>
       <translation type="unfinished">List of G-code commands supported by this postprocessor (one per line). Commands not in this list will be filtered out or cause warnings.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="344"/>
+      <location filename="../../../Path/Post/Processor.py" line="347"/>
       <source>Drill Cycles to Translate</source>
       <translation>ბურღის ციკლები გადასატანად</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="351"/>
+      <location filename="../../../Path/Post/Processor.py" line="354"/>
       <source>List of drill cycle commands to translate to G0/G1 moves (one per line). Standard drill cycles: {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}. Leave empty if postprocessor supports drill cycles natively.</source>
       <translation type="unfinished">List of drill cycle commands to translate to G0/G1 moves (one per line). Standard drill cycles: {&apos;, &apos;.join(Constants.GCODE_MOVE_DRILL)}. Leave empty if postprocessor supports drill cycles natively.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="356"/>
+      <location filename="../../../Path/Post/Processor.py" line="359"/>
       <source>Preamble</source>
       <translation>შესავალი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="360"/>
+      <location filename="../../../Path/Post/Processor.py" line="363"/>
       <source>G-code commands inserted at the start of the program after the header.</source>
       <translation type="unfinished">G-code commands inserted at the start of the program after the header.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="365"/>
+      <location filename="../../../Path/Post/Processor.py" line="368"/>
       <source>Postamble</source>
       <translation>დასკვნითი ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="367"/>
+      <location filename="../../../Path/Post/Processor.py" line="370"/>
       <source>G-code commands inserted at the end of the program.</source>
       <translation type="unfinished">G-code commands inserted at the end of the program.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="372"/>
+      <location filename="../../../Path/Post/Processor.py" line="375"/>
       <source>Safety Block</source>
       <translation>უსაფრთხოების ბლოკი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="377"/>
+      <location filename="../../../Path/Post/Processor.py" line="380"/>
       <source>Safety commands to reset machine to known safe condition (e.g., G40, G49, G80).</source>
       <translation type="unfinished">Safety commands to reset machine to known safe condition (e.g., G40, G49, G80).</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="382"/>
+      <location filename="../../../Path/Post/Processor.py" line="385"/>
       <source>Pre-Job</source>
       <translation type="unfinished">Pre-Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="384"/>
+      <location filename="../../../Path/Post/Processor.py" line="387"/>
       <source>G-code commands inserted before each Job.</source>
       <translation type="unfinished">G-code commands inserted before each Job.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="389"/>
+      <location filename="../../../Path/Post/Processor.py" line="392"/>
       <source>Post-Job</source>
       <translation type="unfinished">Post-Job</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="391"/>
+      <location filename="../../../Path/Post/Processor.py" line="394"/>
       <source>G-code commands inserted after each Job.</source>
       <translation type="unfinished">G-code commands inserted after each Job.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="396"/>
+      <location filename="../../../Path/Post/Processor.py" line="399"/>
       <source>Pre-Fixture</source>
       <translation type="unfinished">Pre-Fixture</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="398"/>
+      <location filename="../../../Path/Post/Processor.py" line="401"/>
       <source>G-code commands inserted before fixture change.</source>
       <translation type="unfinished">G-code commands inserted before fixture change.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="403"/>
+      <location filename="../../../Path/Post/Processor.py" line="406"/>
       <source>Post-Fixture</source>
       <translation type="unfinished">Post-Fixture</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="405"/>
+      <location filename="../../../Path/Post/Processor.py" line="408"/>
       <source>G-code commands inserted after fixture change.</source>
       <translation type="unfinished">G-code commands inserted after fixture change.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="410"/>
+      <location filename="../../../Path/Post/Processor.py" line="413"/>
       <source>Pre-Operation</source>
       <translation>ოპერაციისწინა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="412"/>
+      <location filename="../../../Path/Post/Processor.py" line="415"/>
       <source>G-code commands inserted before each operation.</source>
       <translation type="unfinished">G-code commands inserted before each operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="417"/>
+      <location filename="../../../Path/Post/Processor.py" line="420"/>
       <source>Post-Operation</source>
       <translation>ოპერაციისშემდეგი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="419"/>
+      <location filename="../../../Path/Post/Processor.py" line="422"/>
       <source>G-code commands inserted after each operation.</source>
       <translation type="unfinished">G-code commands inserted after each operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="424"/>
+      <location filename="../../../Path/Post/Processor.py" line="427"/>
       <source>Pre-Tool Change</source>
       <translation>ხელსაწყოს შეცვლამდე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="426"/>
+      <location filename="../../../Path/Post/Processor.py" line="429"/>
       <source>G-code commands inserted before tool changes.</source>
       <translation type="unfinished">G-code commands inserted before tool changes.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="431"/>
+      <location filename="../../../Path/Post/Processor.py" line="434"/>
       <source>Post-Tool Change</source>
       <translation>ხელსაწყოს შეცვლის შემდეგ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="433"/>
-      <location filename="../../../Path/Post/Processor.py" line="440"/>
+      <location filename="../../../Path/Post/Processor.py" line="436"/>
+      <location filename="../../../Path/Post/Processor.py" line="443"/>
       <source>G-code commands inserted after tool changes.</source>
       <translation type="unfinished">G-code commands inserted after tool changes.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="438"/>
+      <location filename="../../../Path/Post/Processor.py" line="441"/>
       <source>Tool Return after tool changes</source>
       <translation type="unfinished">Tool Return after tool changes</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="445"/>
+      <location filename="../../../Path/Post/Processor.py" line="448"/>
       <source>Pre-Rotary Move</source>
       <translation>ბრუნვისწინა გადატანა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="447"/>
+      <location filename="../../../Path/Post/Processor.py" line="450"/>
       <source>G-code commands inserted before rotary axis moves.</source>
       <translation type="unfinished">G-code commands inserted before rotary axis moves.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="452"/>
+      <location filename="../../../Path/Post/Processor.py" line="455"/>
       <source>Post-Rotary Move</source>
       <translation>ბრუნვისშემდგომი გადატანა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="454"/>
+      <location filename="../../../Path/Post/Processor.py" line="457"/>
       <source>G-code commands inserted after rotary axis moves.</source>
       <translation type="unfinished">G-code commands inserted after rotary axis moves.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="459"/>
+      <location filename="../../../Path/Post/Processor.py" line="462"/>
       <source>Show Pre-processing Dialogs</source>
       <translation>პრეპროცესინგის დიალოგების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="465"/>
+      <location filename="../../../Path/Post/Processor.py" line="468"/>
       <source>Show interactive dialogs during post-processing. Disable for automated operation or testing.</source>
       <translation type="unfinished">Show interactive dialogs during post-processing. Disable for automated operation or testing.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="470"/>
+      <location filename="../../../Path/Post/Processor.py" line="473"/>
       <source>Generated Parameter Order for GCode</source>
       <translation type="unfinished">Generated Parameter Order for GCode</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="472"/>
+      <location filename="../../../Path/Post/Processor.py" line="475"/>
       <source>Generated Parameter Order for GCode for output</source>
       <translation type="unfinished">Generated Parameter Order for GCode for output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="477"/>
+      <location filename="../../../Path/Post/Processor.py" line="480"/>
       <source>TLO after tool-change</source>
       <translation type="unfinished">TLO after tool-change</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="482"/>
+      <location filename="../../../Path/Post/Processor.py" line="485"/>
       <source>Output a G43 TLO after tool-change</source>
       <translation type="unfinished">Output a G43 TLO after tool-change</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="487"/>
+      <location filename="../../../Path/Post/Processor.py" line="490"/>
       <source>Expand drill-cycles</source>
       <translation type="unfinished">Expand drill-cycles</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="492"/>
+      <location filename="../../../Path/Post/Processor.py" line="495"/>
       <source>Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</source>
       <translation type="unfinished">Expand drill-cycles (cf. &apos;Drill Cycles to Translate&apos;) to moves</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="497"/>
+      <location filename="../../../Path/Post/Processor.py" line="500"/>
       <source>Allow tool-change</source>
       <translation type="unfinished">Allow tool-change</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="502"/>
+      <location filename="../../../Path/Post/Processor.py" line="505"/>
       <source>Unchecked to suppress tool-change (M6)</source>
       <translation type="unfinished">Unchecked to suppress tool-change (M6)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="507"/>
-      <location filename="../../../Path/Post/Processor.py" line="512"/>
+      <location filename="../../../Path/Post/Processor.py" line="510"/>
+      <location filename="../../../Path/Post/Processor.py" line="515"/>
       <source>Unit-command in output</source>
       <translation type="unfinished">Unit-command in output</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="517"/>
+      <location filename="../../../Path/Post/Processor.py" line="520"/>
       <source>Axis precision in ouptput</source>
       <translation type="unfinished">Axis precision in ouptput</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="522"/>
+      <location filename="../../../Path/Post/Processor.py" line="525"/>
       <source>Decimals of precision for axis motion</source>
       <translation type="unfinished">Decimals of precision for axis motion</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="527"/>
+      <location filename="../../../Path/Post/Processor.py" line="530"/>
       <source>Feedrate precision in ouptput</source>
       <translation type="unfinished">Feedrate precision in ouptput</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="532"/>
+      <location filename="../../../Path/Post/Processor.py" line="535"/>
       <source>Decimals of precision for feedrate (F)</source>
       <translation type="unfinished">Decimals of precision for feedrate (F)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="537"/>
+      <location filename="../../../Path/Post/Processor.py" line="540"/>
       <source>Spindle-speed precision in ouptput</source>
       <translation type="unfinished">Spindle-speed precision in ouptput</translation>
     </message>
     <message>
-      <location filename="../../../Path/Post/Processor.py" line="542"/>
+      <location filename="../../../Path/Post/Processor.py" line="545"/>
       <source>Decimals of precision for spindle-speed</source>
       <translation type="unfinished">Decimals of precision for spindle-speed</translation>
     </message>
@@ -10220,17 +10220,17 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Custom</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="112"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="120"/>
       <source>Select file containing the gcode</source>
       <translation type="unfinished">Select file containing the gcode</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="127"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="135"/>
       <source>Custom</source>
       <translation>მომხმარებლის</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="128"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="136"/>
       <source>Create custom G-code snippet</source>
       <translation>მომხმარებლის G-code-ის ფრაგმენტის შექმნა</translation>
     </message>
@@ -10711,12 +10711,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="148"/>
+      <location filename="../../../PathCommands.py" line="149"/>
       <source>Toggle Operation</source>
       <translation>ოპერაციის გადართვა</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="152"/>
+      <location filename="../../../PathCommands.py" line="153"/>
       <source>Toggles the active state of the operation</source>
       <translation>გადართავს ოპერაციის აქტიურ მდგომარეობას</translation>
     </message>
@@ -10724,12 +10724,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="218"/>
+      <location filename="../../../PathCommands.py" line="219"/>
       <source>Copy Operation</source>
       <translation>ოპერაციის კოპირება</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="219"/>
+      <location filename="../../../PathCommands.py" line="220"/>
       <source>Copies the operation in the job</source>
       <translation>აკოპირებს ოპერაციას დავალებაში</translation>
     </message>
