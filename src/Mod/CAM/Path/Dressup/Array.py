@@ -384,7 +384,7 @@ class PathArray:
                 pl = FreeCAD.Placement()
                 pl.rotate(self.centre, FreeCAD.Vector(0, 0, 1), ang)
                 np = PathUtils.applyPlacementToPath(pl, PathUtils.getPathWithPlacement(base))
-                output.addCommands(np.Commands())
+                output.addCommands(np.Commands)
 
         # return output
         return output
