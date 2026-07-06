@@ -139,6 +139,11 @@ App::DocumentObjectExecReturn* AssemblyObject::execute()
 void AssemblyObject::onChanged(const App::Property* prop)
 {
     if (prop == &Group) {
+        for (auto* obj : getInList()) {
+            if (auto* assemblyLink = freecad_cast<AssemblyLink*>(obj)) {
+                assemblyLink->updateContents();
+            }
+        }
         updateSolveStatus();
     }
     App::Part::onChanged(prop);
