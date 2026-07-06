@@ -666,11 +666,15 @@ bool ViewProviderDocumentObject::showInTree() const
     return ShowInTree.getValue();
 }
 
-bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
+bool ViewProviderDocumentObject::resolvePickedElement(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const SelectionPickContext* pickContext
+) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for (Gui::ViewProviderExtension* ext : vector) {
-        if (ext->extensionGetElementPicked(pp, subname)) {
+        if (ext->extensionGetElementPicked(pp, subname, pickContext)) {
             return true;
         }
     }
@@ -679,9 +683,11 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint* pp, std::
     int idx;
     if (!childRoot || (idx = pcModeSwitch->whichChild.getValue()) < 0
         || pcModeSwitch->getChild(idx) != childRoot) {
-        return ViewProvider::getElementPicked(pp, subname);
+        return resolvePickedElementFromDetail(pp, subname);
     }
 
+    // Document-object providers can expose child providers inside their child root. Delegate the
+    // actual element resolution to that child and prefix the owning object name.
     SoPath* path = pp->getPath();
     idx = path->findNode(childRoot);
     if (idx < 0 || idx + 1 >= path->getLength()) {
@@ -697,7 +703,7 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint* pp, std::
     }
     std::ostringstream str;
     str << obj->getNameInDocument() << '.';
-    if (vp->getElementPicked(pp, subname)) {
+    if (vp->getElementPicked(pp, subname, pickContext)) {
         str << subname;
     }
     subname = str.str();

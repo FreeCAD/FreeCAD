@@ -82,6 +82,10 @@ std::unordered_set<std::string> SelectionFilterGate::getGatedTypes(
     const std::vector<const char*>& allTypesForGeometry
 ) const
 {
+    if (!Filter || !Filter->getAst()) {
+        return {};
+    }
+
     std::unordered_set<std::string> allowedTypes;
     std::ranges::copy_if(
         allTypesForGeometry.begin(),

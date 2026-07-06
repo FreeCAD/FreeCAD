@@ -26,6 +26,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <unordered_set>
 #include <QIcon>
 #include <fastsignals/signal.h>
 #include <boost/intrusive_ptr.hpp>
@@ -38,7 +39,9 @@
 #include "TreeItemMode.h"
 
 class SbVec2s;
+class SbVec2f;
 class SbVec3f;
+class SbViewportRegion;
 class SoNode;
 class SoPath;
 class SoSeparator;
@@ -74,7 +77,35 @@ class View3DInventorViewer;
 class ViewProviderPy;
 class ObjectItem;
 class MDIView;
+class Document;
 class SelectionChanges;
+class SelectionGate;
+
+/// Additional single-pick context. All pointers are borrowed for the duration of a single pick
+/// resolution call. Callers may pass null when they only need legacy detail-to-subelement
+/// resolution.
+struct GuiExport SelectionPickContext
+{
+    const SelectionGate* gate {nullptr};
+
+    // Normalized cursor position in the current viewport.
+    const SbVec2f* normalizedCursorPosition {nullptr};
+
+    struct RepickInputs
+    {
+        // Original pick inputs, for view providers that need to repick against the scene to
+        // resolve gated subelement alternatives.
+        SoNode* sceneRoot {nullptr};
+        const SbViewportRegion* viewportRegion {nullptr};
+        const SbVec2s* eventPosition {nullptr};
+        float pickRadius {0.0F};
+
+        bool isValid() const
+        {
+            return sceneRoot && viewportRegion && eventPosition;
+        }
+    } repick;
+};
 
 enum ViewStatus
 {
@@ -281,8 +312,23 @@ public:
     /// called when the selection changes for the view provider
     virtual void onSelectionChanged(const SelectionChanges&)
     {}
-    /// return a hit element given the picked point which contains the full node path
-    virtual bool getElementPicked(const SoPickedPoint*, std::string& subname) const;
+    /// Convenience wrapper for callers that do not need pick context.
+    bool getElementPicked(const SoPickedPoint*, std::string& subname) const;
+    /// Convenience wrapper for callers that do have pick context.
+    bool getElementPicked(
+        const SoPickedPoint*,
+        std::string& subname,
+        const SelectionPickContext* pickContext
+    ) const;
+    /// Canonical virtual hook for single-pick resolution. Override this instead of the
+    /// getElementPicked() wrappers. \a pickContext may be null; when present it carries the
+    /// normalized cursor position plus the original pick action inputs for view-provider-specific
+    /// recovery.
+    virtual bool resolvePickedElement(
+        const SoPickedPoint*,
+        std::string& subname,
+        const SelectionPickContext* pickContext
+    ) const;
     /** Return additional sub-element names related to a picked element.
      *
      * Lets a view provider expand a single pick into a set of logically related
@@ -652,6 +698,10 @@ public:
     };
 
 protected:
+    // Resolve the picked subelement directly from the Coin detail without consulting extensions
+    // or virtual overloads. Derived classes can use this as a recursion-free fallback.
+    bool resolvePickedElementFromDetail(const SoPickedPoint*, std::string& subname) const;
+
     /// is called by the document when the provider goes in edit mode
     virtual bool setEdit(int ModNum);
     /// is called when you lose the edit mode

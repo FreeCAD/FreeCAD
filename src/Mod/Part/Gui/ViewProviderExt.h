@@ -70,6 +70,8 @@ class PartGuiExport ViewProviderPartExt: public Gui::ViewProviderGeometryObject
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPartExt);
 
 public:
+    using Gui::ViewProviderGeometryObject::getElementPicked;
+
     /// constructor
     ViewProviderPartExt();
     /// destructor
@@ -121,6 +123,11 @@ public:
         return true;
     }
     /// return a hit element to the selection path or 0
+    bool resolvePickedElement(
+        const SoPickedPoint*,
+        std::string& subname,
+        const Gui::SelectionPickContext* pickContext
+    ) const override;
     std::string getElement(const SoDetail*) const override;
     SoDetail* getDetail(const char*) const override;
     std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint*) const override;

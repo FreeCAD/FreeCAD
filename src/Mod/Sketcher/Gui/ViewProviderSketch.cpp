@@ -3902,7 +3902,11 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
 }
 
 // clang-format on
-bool ViewProviderSketch::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
+bool ViewProviderSketch::resolvePickedElement(
+    const SoPickedPoint* pp,
+    std::string& subname,
+    const Gui::SelectionPickContext*
+) const
 {
     if (pp->getPath()->containsNode(pcSketchFaces) && !isInEditMode()) {
         if (ViewProvider2DObject::getElementPicked(pp, subname)) {
