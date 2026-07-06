@@ -92,6 +92,164 @@ using namespace MbD;
 
 namespace PartApp = Part;
 
+namespace
+{
+
+struct RotationJointSide
+{
+    App::DocumentObject* joint = nullptr;
+    const char* carrierRefName = nullptr;
+    const char* carrierPlcName = nullptr;
+};
+
+Base::Placement getJointSideGlobalPlacement(
+    App::DocumentObject* joint,
+    const char* refName,
+    const char* plcName
+)
+{
+    if (!joint) {
+        return {};
+    }
+
+    auto* ref = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(refName));
+    if (!ref) {
+        return {};
+    }
+
+    return App::GeoFeature::getGlobalPlacement(nullptr, ref)
+        * App::GeoFeature::getPlacementFromProp(joint, plcName);
+}
+
+bool axesAreCoaxial(const Base::Placement& plc1, const Base::Placement& plc2)
+{
+    Base::Vector3d axis1 = plc1.getRotation().multVec(Base::Vector3d(0, 0, 1));
+    Base::Vector3d axis2 = plc2.getRotation().multVec(Base::Vector3d(0, 0, 1));
+    if (axis1.Length() <= Precision::Confusion() || axis2.Length() <= Precision::Confusion()) {
+        return false;
+    }
+    axis1.Normalize();
+    axis2.Normalize();
+
+    if (1.0 - std::abs(axis1 * axis2) > Precision::Confusion()) {
+        return false;
+    }
+
+    const Base::Vector3d delta = plc2.getPosition() - plc1.getPosition();
+    return delta.Cross(axis1).Length() <= Precision::Confusion();
+}
+
+bool gearJointNeedsCarrierMarker(App::DocumentObject* joint)
+{
+    const auto plc1 = getJointSideGlobalPlacement(joint, "Reference1", "Placement1");
+    const auto plc2 = getJointSideGlobalPlacement(joint, "Reference2", "Placement2");
+    return axesAreCoaxial(plc1, plc2);
+}
+
+bool isRotationCarrierJoint(JointType type)
+{
+    return type == JointType::Revolute || type == JointType::Cylindrical;
+}
+
+bool findRotationCarrierForGearSide(
+    AssemblyObject* assembly,
+    App::DocumentObject* gearJoint,
+    const char* gearRefName,
+    const char* gearPlcName,
+    RotationJointSide& carrierSide
+)
+{
+    auto* gearPart = getMovingPartFromRef(gearJoint, gearRefName);
+    if (!gearPart) {
+        return false;
+    }
+
+    const auto gearPlc = getJointSideGlobalPlacement(gearJoint, gearRefName, gearPlcName);
+    bool foundCarrier = false;
+    bool ambiguousCarrier = false;
+
+    for (auto* joint : assembly->getJoints(false, true)) {
+        if (!joint || joint == gearJoint || !getJointActivated(joint)) {
+            continue;
+        }
+        if (!isRotationCarrierJoint(getJointType(joint))) {
+            continue;
+        }
+
+        auto matchesSide = [&](const char* movingRefName,
+                               const char* movingPlcName,
+                               const char* carrierRefName,
+                               const char* carrierPlcName) {
+            if (getMovingPartFromRef(joint, movingRefName) != gearPart) {
+                return false;
+            }
+
+            const auto rotationPlc =
+                getJointSideGlobalPlacement(joint, movingRefName, movingPlcName);
+            if (!axesAreCoaxial(gearPlc, rotationPlc)) {
+                return false;
+            }
+
+            if (foundCarrier) {
+                ambiguousCarrier = true;
+                return false;
+            }
+            foundCarrier = true;
+            carrierSide.joint = joint;
+            carrierSide.carrierRefName = carrierRefName;
+            carrierSide.carrierPlcName = carrierPlcName;
+            return true;
+        };
+
+        matchesSide("Reference1", "Placement1", "Reference2", "Placement2");
+        matchesSide("Reference2", "Placement2", "Reference1", "Placement1");
+    }
+
+    return foundCarrier && !ambiguousCarrier;
+}
+
+void setGearJointCarrierMarkerIfAvailable(
+    AssemblyObject* assembly,
+    App::DocumentObject* joint,
+    const std::shared_ptr<ASMTJoint>& mbdJoint
+)
+{
+    auto gearJoint = std::dynamic_pointer_cast<ASMTGearJoint>(mbdJoint);
+    if (!gearJoint) {
+        return;
+    }
+
+    RotationJointSide side1;
+    RotationJointSide side2;
+    const bool hasCarrier1 =
+        findRotationCarrierForGearSide(assembly, joint, "Reference1", "Placement1", side1);
+    const bool hasCarrier2 =
+        findRotationCarrierForGearSide(assembly, joint, "Reference2", "Placement2", side2);
+    if (!hasCarrier1 || !hasCarrier2) {
+        return;
+    }
+
+    auto* carrierPart1 = getMovingPartFromRef(side1.joint, side1.carrierRefName);
+    auto* carrierPart2 = getMovingPartFromRef(side2.joint, side2.carrierRefName);
+    if (!carrierPart1 || !carrierPart2
+        || assembly->getMbDPart(carrierPart1) != assembly->getMbDPart(carrierPart2)) {
+        return;
+    }
+
+    const std::string carrierMarkerName = joint->getFullName() + "-Carrier";
+    std::string fullMarkerNameK = assembly->handleOneSideOfJoint(
+        side1.joint,
+        side1.carrierRefName,
+        side1.carrierPlcName,
+        carrierMarkerName
+    );
+    if (!fullMarkerNameK.empty()) {
+        gearJoint->setMarkerK(fullMarkerNameK);
+    }
+}
+
+}  // namespace
+
 
 // ================================ Assembly Object ============================
 
@@ -1417,6 +1575,10 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
     if (!mbdJoint || !isMbDJointValid(joint)) {
         return {};
     }
+    if ((jointType == JointType::Gears || jointType == JointType::Belt)
+        && gearJointNeedsCarrierMarker(joint)) {
+        setGearJointCarrierMarkerIfAvailable(this, joint, mbdJoint);
+    }
 
     std::string fullMarkerNameI, fullMarkerNameJ;
     if (jointType == JointType::RackPinion) {
@@ -1652,7 +1814,8 @@ std::vector<std::shared_ptr<MbD::ASMTJoint>> AssemblyObject::makeMbdJoint(App::D
 std::string AssemblyObject::handleOneSideOfJoint(
     App::DocumentObject* joint,
     const char* propRefName,
-    const char* propPlcName
+    const char* propPlcName,
+    const std::string& markerName
 )
 {
     App::DocumentObject* part = getMovingPartFromRef(joint, propRefName);
@@ -1688,11 +1851,11 @@ std::string AssemblyObject::handleOneSideOfJoint(
         plc = data.offsetPlc * plc;
     }
 
-    std::string markerName = joint->getFullName();
-    auto mbdMarker = makeMbdMarker(markerName, plc);
+    std::string markerNameCopy = markerName.empty() ? joint->getFullName() : markerName;
+    auto mbdMarker = makeMbdMarker(markerNameCopy, plc);
     mbdPart->addMarker(mbdMarker);
 
-    return "/OndselAssembly/" + mbdPart->name + "/" + markerName;
+    return "/OndselAssembly/" + mbdPart->name + "/" + markerNameCopy;
 }
 
 void AssemblyObject::getRackPinionMarkers(

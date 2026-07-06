@@ -141,7 +141,8 @@ public:
     std::string handleOneSideOfJoint(
         App::DocumentObject* joint,
         const char* propRefName,
-        const char* propPlcName
+        const char* propPlcName,
+        const std::string& markerName = std::string()
     );
     void getRackPinionMarkers(
         App::DocumentObject* joint,
