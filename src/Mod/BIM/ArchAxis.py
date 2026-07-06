@@ -40,13 +40,14 @@ import ArchCommands
 import Draft
 import Part
 
+from FreeCAD import Units
 from FreeCAD import Vector
 from draftutils import params
 
 if FreeCAD.GuiUp:
     import re
     from pivy import coin
-    from PySide import QtCore, QtGui
+    from PySide import QtCore, QtGui, QtWidgets
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
@@ -870,10 +871,18 @@ class _AxisTaskPanel:
         # tree
         self.tree = QtGui.QTreeWidget(self.form)
         self.grid.addWidget(self.tree, 1, 0, 1, 2)
+        self.tree.setRootIsDecorated(False)  # Remove 1st column's extra left margin.
         self.tree.setColumnCount(4)
         self.tree.header().resizeSection(0, 50)
         self.tree.header().resizeSection(1, 80)
         self.tree.header().resizeSection(2, 60)
+        # The Qt model is filled with text values. To prevent the loss of accuracy we attach 3 list
+        # attributes to the tree and only update items in those lists when they are edited.
+        # See _AxisTaskPanel_Delegate.
+        self.tree.Distances = []
+        self.tree.Angles = []
+        self.tree.Labels = []
+        self.tree.setItemDelegate(_AxisTaskPanel_Delegate(parent=self.tree))
 
         # buttons
         self.addButton = QtGui.QPushButton(self.form)
@@ -911,17 +920,20 @@ class _AxisTaskPanel:
         "fills the treewidget"
         self.updating = True
         self.tree.clear()
-        if self.obj and hasattr(self.obj, "Distances"):
-            for i in range(len(self.obj.Distances)):
+        if self.obj:
+            len_dis = len(self.obj.Distances)
+            self.tree.Distances = self.obj.Distances
+            # Ensure other lists have the same length:
+            self.tree.Angles = self.obj.Angles + [0] * len_dis
+            self.tree.Angles = self.tree.Angles[0:len_dis]
+            self.tree.Labels = self.obj.Labels + [""] * len_dis
+            self.tree.Labels = self.tree.Labels[0:len_dis]
+            for i in range(len_dis):
                 item = QtGui.QTreeWidgetItem(self.tree)
                 item.setText(0, str(i + 1))
-                if len(self.obj.Distances) > i:
-                    item.setText(1, str(self.obj.Distances[i]))
-                if len(self.obj.Angles) > i:
-                    item.setText(2, str(self.obj.Angles[i]))
-                if hasattr(self.obj, "Labels"):
-                    if len(self.obj.Labels) > i:
-                        item.setText(3, str(self.obj.Labels[i]))
+                item.setText(1, Units.Quantity(self.tree.Distances[i], Units.Length).UserString)
+                item.setText(2, Units.Quantity(self.tree.Angles[i], Units.Angle).UserString)
+                item.setText(3, self.tree.Labels[i])
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
                 item.setTextAlignment(0, QtCore.Qt.AlignLeft)
         self.retranslateUi(self.form)
@@ -929,10 +941,14 @@ class _AxisTaskPanel:
 
     def addElement(self):
 
+        len_val = Units.Quantity(1, Units.Length).getUserPreferred()[1]  # 1 mm or 1 inch.
+        self.tree.Distances.append(len_val)
+        self.tree.Angles.append(0)
+        self.tree.Labels.append("")
         item = QtGui.QTreeWidgetItem(self.tree)
         item.setText(0, str(self.tree.topLevelItemCount()))
-        item.setText(1, "1.0")
-        item.setText(2, "0.0")
+        item.setText(1, Units.Quantity(len_val, Units.Length).UserString)
+        item.setText(2, Units.Quantity(0, Units.Angle).UserString)
         item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
         self.resetObject()
 
@@ -950,26 +966,14 @@ class _AxisTaskPanel:
             self.resetObject()
 
     def resetObject(self, remove=None):
-        "transfers the values from the widget to the object"
-
-        d = []
-        a = []
-        l = []
-        for i in range(self.tree.topLevelItemCount()):
-            it = self.tree.findItems(str(i + 1), QtCore.Qt.MatchExactly, 0)[0]
-            if (remove is None) or (remove != i):
-                if it.text(1):
-                    d.append(float(it.text(1)))
-                else:
-                    d.append(0.0)
-                if it.text(2):
-                    a.append(float(it.text(2)))
-                else:
-                    a.append(0.0)
-                l.append(it.text(3))
-        self.obj.Distances = d
-        self.obj.Angles = a
-        self.obj.Labels = l
+        "transfers the values to the object"
+        if remove is not None:
+            self.tree.Distances.pop(remove)
+            self.tree.Angles.pop(remove)
+            self.tree.Labels.pop(remove)
+        self.obj.Distances = self.tree.Distances
+        self.obj.Angles = self.tree.Angles
+        self.obj.Labels = self.tree.Labels
         self.obj.touch()
         FreeCAD.ActiveDocument.recompute()
 
@@ -997,3 +1001,64 @@ class _AxisTaskPanel:
                 QtGui.QApplication.translate("Arch", "Label", None),
             ]
         )
+
+if FreeCAD.GuiUp:
+
+    class _AxisTaskPanel_Delegate(QtWidgets.QStyledItemDelegate):
+        """Model delegate"""
+
+        def __init__(self, parent, *args):
+            QtGui.QStyledItemDelegate.__init__(self, parent, *args)
+            self.parent = parent  # Tree widget with attached lists: Distances, Angles and Labels.
+            self.cur_col = 0  # For eventFilter function.
+            self.editor_height = QtWidgets.QLineEdit().sizeHint().height()
+
+        def createEditor(self, parent, option, index):
+            if index.column() == 0:
+                # Make this column read-only.
+                return None
+            self.cur_col = index.column()
+            editor = QtWidgets.QLineEdit(parent)
+            editor.installEventFilter(self)
+            return editor
+
+        def setEditorData(self, editor, index):
+            col = index.column()
+            row = index.row()
+            if col == 1:
+                txt = Units.Quantity(self.parent.Distances[row], Units.Length).UserString
+            elif col == 2:
+                txt = Units.Quantity(self.parent.Angles[row], Units.Angle).UserString
+            else:
+                txt = self.parent.Labels[row]
+            editor.setText(txt)
+
+        def setModelData(self, editor, model, index):
+            col = index.column()
+            row = index.row()
+            txt = editor.text()
+            if col == 1:
+                val = Units.Quantity(txt).Value
+                self.parent.Distances[row] = val
+                txt = Units.Quantity(val, Units.Length).UserString
+            elif col == 2:
+                val = Units.Quantity(txt).Value
+                self.parent.Angles[row] = val
+                txt = Units.Quantity(val, Units.Angle).UserString
+            else:
+                self.parent.Labels[row] = txt
+            model.setData(index, txt)
+
+        def eventFilter(self, widget, event):
+            if event.type() == QtCore.QEvent.FocusIn:
+                if self.cur_col == 3:
+                    sel_len = len(widget.text())
+                else:
+                    sel_len = FreeCADGui.draftToolBar.number_length(widget.text())
+                widget.setSelection(0, sel_len)
+            return super().eventFilter(widget, event)
+
+        def sizeHint(self, option, index):
+            size = QtGui.QStyledItemDelegate.sizeHint(self, option, index)
+            size.setHeight(max(size.height(), self.editor_height))
+            return size
