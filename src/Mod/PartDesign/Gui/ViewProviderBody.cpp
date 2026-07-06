@@ -311,6 +311,29 @@ void ViewProviderBody::updateData(const App::Property* prop)
     if (prop == &body->Group || prop == &body->BaseFeature) {
         // ensure all model features are in visual body mode
         setVisualBodyMode(true);
+
+        if (!isRestoring()) {
+            const char* propNames[] = {
+                "ShapeColor",
+                "ShapeAppearance",
+                "Transparency",
+                "LineColor",
+                "LineMaterial",
+                "LineWidth",
+                "PointColor",
+                "PointMaterial",
+                "PointSize",
+                "DrawStyle",
+                "Lighting",
+                "Deviation",
+                "AngularDeflection"
+            };
+            for (const char* pName : propNames) {
+                if (App::Property* p = this->getPropertyByName(pName)) {
+                    unifyVisualProperty(p);
+                }
+            }
+        }
     }
 
     if (prop == &body->Tip) {
