@@ -5954,9 +5954,6 @@ void DocumentItem::selectItems(SelectionReason reason)
         if (!newSelect) {
             newSelect = oldSelect;
         }
-        else {
-            getTree()->syncView(newSelect->object());
-        }
         if (newSelect) {
             getTree()->scrollToItem(newSelect);
         }
