@@ -64,7 +64,18 @@ class AssemblyWorkbench(Workbench):
         import AssemblyGui
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
-        import CommandCreateAssembly, CommandInsertLink, CommandInsertNewPart, CommandCreateJoint, CommandSolveAssembly, CommandExportASMT, CommandCreateView, CommandCreateSimulation, CommandCreateBom
+
+        import CommandCreateAssembly
+        import CommandInsertFastener
+        import CommandInsertLink
+        import CommandInsertNewPart
+        import CommandCreateJoint
+        import CommandSolveAssembly
+        import CommandExportASMT
+        import CommandCreateView
+        import CommandCreateSimulation
+
+        import CommandCreateBom
         import Preferences
 
         FreeCADGui.addLanguagePath(":/translations")
@@ -78,6 +89,7 @@ class AssemblyWorkbench(Workbench):
         cmdList = [
             "Assembly_CreateAssembly",
             "Assembly_Insert",
+            "Assembly_InsertFastener",
             "Assembly_SolveAssembly",
             "Assembly_CreateView",
             "Assembly_CreateSimulation",
@@ -204,7 +216,11 @@ class AssemblyWorkbench(Workbench):
 
             def __init__(self):
                 super().__init__()
-                self.commands = ["Assembly_Insert"]
+                self.commands = [
+                    "Assembly_InsertNewPart",
+                    "Assembly_InsertLink",
+                    "Assembly_InsertFastener",
+                ]
                 self.title = translate("Assembly", "Insert")
 
             def shouldShow(self):
