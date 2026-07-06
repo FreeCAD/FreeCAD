@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+#include <QCheckBox>
 #include <QMessageBox>
 
 
@@ -227,8 +228,8 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string
     }
 
     // The delete command calls this method once per selected object. When several
-    // non-empty groups are selected we add "Yes to All" / "No to All" buttons so the
-    // user can answer once for the whole selection instead of for every group.
+    // non-empty groups are selected we add an "Apply to all" checkbox so the user
+    // can answer once for the whole selection instead of for every group.
     const std::vector<App::DocumentObject*> selectedGroups = selectedNonEmptyGroups();
     const bool multipleGroups = selectedGroups.size() > 1;
 
@@ -255,25 +256,35 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string
                       .arg(allDescendants.size());
     }
 
-    QMessageBox::StandardButtons buttons = QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel;
-    if (multipleGroups) {
-        buttons |= QMessageBox::YesToAll | QMessageBox::NoToAll;
-    }
-
-    QMessageBox::StandardButton choice = QMessageBox::question(
-        getMainWindow(),
+    QMessageBox msgBox(
+        QMessageBox::Question,
         QObject::tr("Delete group contents recursively?"),
         message,
-        buttons,
-        QMessageBox::No
+        QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+        getMainWindow()
     );
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    QCheckBox* applyToAllCheckBox = nullptr;
+    if (multipleGroups) {
+        applyToAllCheckBox = new QCheckBox(
+            QObject::tr("Apply to all selected objects (%1) and their children")
+                .arg(selectedGroups.size()),
+            &msgBox
+        );
+        msgBox.setCheckBox(applyToAllCheckBox);
+    }
+
+    msgBox.exec();
+    QMessageBox::StandardButton choice = msgBox.standardButton(msgBox.clickedButton());
+    const bool applyToAll = applyToAllCheckBox && applyToAllCheckBox->isChecked();
 
     if (choice == QMessageBox::Cancel) {
         // don't delete anything if user has cancelled
         return false;
     }
 
-    if (choice == QMessageBox::NoToAll) {
+    if (choice == QMessageBox::No && applyToAll) {
         // Apply "No" to the whole selection: remove every other selected group now but
         // keep its children (removeObject reparents them to the document root). Those
         // groups are then already gone when their own delete call comes around; the
@@ -295,7 +306,7 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector<std::string
         return true;
     }
 
-    if (choice == QMessageBox::YesToAll) {
+    if (choice == QMessageBox::Yes && applyToAll) {
         // Apply the decision to the whole selection right away by emptying every
         // selected non-empty group now. Each group's own delete call will then find
         // it empty and return without asking again. We capture the objects by name
