@@ -307,6 +307,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         if not obj.Document.Restoring:
             self.opCheckParameters(obj)
 
+        super().opOnChanged(obj, prop)
+
     def opSetEditorModes(self, obj):
         obj.setEditorMode("Direction", ("ReadOnly", "Hidden"))
         obj.setPropertyStatus("Direction", ("ReadOnly", "Output"))
