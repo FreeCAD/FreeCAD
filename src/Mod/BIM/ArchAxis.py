@@ -1002,6 +1002,7 @@ class _AxisTaskPanel:
             ]
         )
 
+
 if FreeCAD.GuiUp:
 
     class _AxisTaskPanel_Delegate(QtWidgets.QStyledItemDelegate):
