@@ -158,3 +158,4 @@ from CAMTests.TestGcodeProcessingUtils import (
     TestNumberGenerator,
     TestDeduplicateRepeatedCommands,
 )
+from CAMTests.TestPathDressupArray import TestDressupArray
