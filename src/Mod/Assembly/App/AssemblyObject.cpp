@@ -184,8 +184,7 @@ bool findRotationCarrierForGearSide(
                 return false;
             }
 
-            const auto rotationPlc =
-                getJointSideGlobalPlacement(joint, movingRefName, movingPlcName);
+            const auto rotationPlc = getJointSideGlobalPlacement(joint, movingRefName, movingPlcName);
             if (!axesAreCoaxial(gearPlc, rotationPlc)) {
                 return false;
             }
@@ -221,10 +220,10 @@ void setGearJointCarrierMarkerIfAvailable(
 
     RotationJointSide side1;
     RotationJointSide side2;
-    const bool hasCarrier1 =
-        findRotationCarrierForGearSide(assembly, joint, "Reference1", "Placement1", side1);
-    const bool hasCarrier2 =
-        findRotationCarrierForGearSide(assembly, joint, "Reference2", "Placement2", side2);
+    const bool hasCarrier1
+        = findRotationCarrierForGearSide(assembly, joint, "Reference1", "Placement1", side1);
+    const bool hasCarrier2
+        = findRotationCarrierForGearSide(assembly, joint, "Reference2", "Placement2", side2);
     if (!hasCarrier1 || !hasCarrier2) {
         return;
     }
