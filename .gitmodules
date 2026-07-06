@@ -10,3 +10,11 @@
 [submodule "tests/lib"]
 	path = tests/lib
 	url = https://github.com/google/googletest.git
+[submodule "src/3rdParty/coin"]
+	path = src/3rdParty/coin
+	url = https://github.com/FreeCAD/coin.git
+	branch = freecad-master
+[submodule "src/3rdParty/pivy"]
+	path = src/3rdParty/pivy
+	url = https://github.com/FreeCAD/pivy.git
+	branch = freecad-master
