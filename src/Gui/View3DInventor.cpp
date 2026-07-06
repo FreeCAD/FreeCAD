@@ -383,37 +383,30 @@ bool View3DInventor::onMsg(const char* pMsg)
     }
     else if (strcmp("ViewBottom", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Bottom));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewFront", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Front));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewLeft", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Left));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewRear", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Rear));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewRight", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Right));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewTop", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Top));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewAxo", pMsg) == 0) {
         _viewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
-        _viewer->viewAll();
         return true;
     }
     else if (strcmp("ViewDimetric", pMsg) == 0) {
