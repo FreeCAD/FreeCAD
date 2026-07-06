@@ -3812,50 +3812,50 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <translation>Ní thrasnaíonn imill a chéile!</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="183"/>
+      <location filename="../../draftguitools/gui_lines.py" line="184"/>
       <source>Create Line</source>
       <translation>Cruthaigh Líne</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="206"/>
+      <location filename="../../draftguitools/gui_lines.py" line="207"/>
       <source>Create Wire</source>
       <translation>Cruthaigh Sreang</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="315"/>
+      <location filename="../../draftguitools/gui_lines.py" line="327"/>
       <source>%1 pick next point, snap to first point to close</source>
       <translation>%1 roghnaigh an chéad phointe eile, snap chuig an gcéad phointe le dúnadh</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="321"/>
+      <location filename="../../draftguitools/gui_lines.py" line="333"/>
       <source>%1 pick next point</source>
       <translation>%1 roghnaigh an chéad phointe eile</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="374"/>
+      <location filename="../../draftguitools/gui_lines.py" line="386"/>
       <source>Unable to create a wire from the selected objects</source>
       <translation>Ní féidir sreang a chruthú ó na rudaí roghnaithe</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="406"/>
+      <location filename="../../draftguitools/gui_lines.py" line="418"/>
       <source>Polyline</source>
       <translation>Polalíne</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="160"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="163"/>
-      <location filename="../../draftguitools/gui_lines.py" line="239"/>
-      <location filename="../../draftguitools/gui_lines.py" line="249"/>
-      <location filename="../../draftguitools/gui_lines.py" line="256"/>
-      <location filename="../../draftguitools/gui_lines.py" line="264"/>
-      <location filename="../../draftguitools/gui_lines.py" line="275"/>
-      <location filename="../../draftguitools/gui_splines.py" line="152"/>
-      <location filename="../../draftguitools/gui_splines.py" line="157"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="158"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="161"/>
+      <location filename="../../draftguitools/gui_lines.py" line="240"/>
+      <location filename="../../draftguitools/gui_lines.py" line="259"/>
+      <location filename="../../draftguitools/gui_lines.py" line="266"/>
+      <location filename="../../draftguitools/gui_lines.py" line="274"/>
+      <location filename="../../draftguitools/gui_lines.py" line="285"/>
+      <location filename="../../draftguitools/gui_splines.py" line="153"/>
+      <location filename="../../draftguitools/gui_splines.py" line="158"/>
       <source>Pick next point</source>
       <translation>Roghnaigh an chéad phointe eile</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="398"/>
+      <location filename="../../draftguitools/gui_lines.py" line="410"/>
       <source>Convert to Wire</source>
       <translation>Tiontaigh go Sreang</translation>
     </message>
@@ -4116,7 +4116,7 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="658"/>
-      <location filename="../../draftguitools/gui_lines.py" line="306"/>
+      <location filename="../../draftguitools/gui_lines.py" line="318"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="221"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
       <source>%1 pick first point</source>
@@ -4124,7 +4124,7 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="662"/>
-      <location filename="../../draftguitools/gui_lines.py" line="310"/>
+      <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <source>%1 pick second point</source>
       <translation>%1 roghnaigh an dara pointe</translation>
     </message>
@@ -4571,7 +4571,7 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <translation>B-Splíne</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="198"/>
+      <location filename="../../draftguitools/gui_splines.py" line="199"/>
       <source>Create B-Spline</source>
       <translation>Cruthaigh B-Spline</translation>
     </message>
@@ -4714,29 +4714,29 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <translation>Cuar Bézier</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="228"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="487"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="226"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="485"/>
       <source>Create Bézier Curve</source>
       <translation>Cruthaigh Cuar Bézier</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="285"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="283"/>
       <source>Cubic Bézier Curve</source>
       <translation>Cuar Bézier Ciúbach</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="405"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="409"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="403"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="407"/>
       <source>Click and drag to define next knot</source>
       <translation>Cliceáil agus tarraing chun an chéad snaidhm eile a shainiú</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="505"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 click and drag to define first point and knot</source>
       <translation>%1 cliceáil agus tarraing chun an chéad phointe agus an snaidhm a shainiú</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="511"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 click and drag to define next point and knot</source>
       <translation>%1 cliceáil agus tarraing chun an chéad phointe agus an snaidhm eile a shainiú</translation>
     </message>
@@ -6112,6 +6112,13 @@ Chun FreeCAD a chumasú chun na leabharlanna seo a íoslódáil, freagair Tá.</
       <translation>Níor aimsíodh patrún sa chomhad PAT</translation>
     </message>
     <message>
+      <location filename="../../drafttests/test_lines_gui.py" line="56"/>
+      <location filename="../../drafttests/test_lines_gui.py" line="94"/>
+      <location filename="../../draftguitools/gui_lines.py" line="246"/>
+      <source>Point identical to previous point</source>
+      <translation>Pointe mar an gcéanna leis an bpointe roimhe</translation>
+    </message>
+    <message>
       <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
       <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
       <translation>Coinníonn sé an luach socraithe le linn ionchuir 3T. Díghlasálann an deilbhín glasála nó cliceáil faoi dhó an réimse.</translation>
@@ -6501,12 +6508,12 @@ Suiteáil an breiseán Leabharlann DXF de láimh le do thoil
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="351"/>
+      <location filename="../../draftguitools/gui_lines.py" line="363"/>
       <source>Polyline</source>
       <translation>Polalíne</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="352"/>
+      <location filename="../../draftguitools/gui_lines.py" line="364"/>
       <source>Creates a polyline</source>
       <translation>Cruthaíonn sé polalíne</translation>
     </message>
@@ -8215,12 +8222,12 @@ thar an líne toise</translation>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="267"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="265"/>
       <source>Cubic Bézier Curve</source>
       <translation>Cuar Bézier Ciúbach</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="271"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="269"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.
 Control points and properties of each knot can be edited after creation.</source>
       <translation>Cruthaíonn sé cuar Bézier déanta as codanna den 2ú céim (cearnach) agus den 3ú céim (ciúbach). Trí chliceáil agus tarraingt is féidir codanna a shainiú.
@@ -8230,12 +8237,12 @@ Is féidir pointí rialaithe agus airíonna gach snaidhme a chur in eagar tar é
   <context>
     <name>Draft_BezierTools</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="526"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="524"/>
       <source>Bézier Tools</source>
       <translation>Uirlisí Bézier</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="529"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="527"/>
       <source>Tools to create various types of Bézier curves</source>
       <translation>Uirlisí chun cineálacha éagsúla cuar Bézier a chruthú</translation>
     </message>

@@ -3804,50 +3804,50 @@ or try saving to a lower DWG version.</source>
       <translation>I bordi non si intersecano!</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="183"/>
+      <location filename="../../draftguitools/gui_lines.py" line="184"/>
       <source>Create Line</source>
       <translation>Crea Linea</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="206"/>
+      <location filename="../../draftguitools/gui_lines.py" line="207"/>
       <source>Create Wire</source>
       <translation>Crea Polilinea</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="315"/>
+      <location filename="../../draftguitools/gui_lines.py" line="327"/>
       <source>%1 pick next point, snap to first point to close</source>
       <translation>%1 selezionare il punto successivo, snap al primo punto per chiudere</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="321"/>
+      <location filename="../../draftguitools/gui_lines.py" line="333"/>
       <source>%1 pick next point</source>
       <translation>%1 scegliere il prossimo punto</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="374"/>
+      <location filename="../../draftguitools/gui_lines.py" line="386"/>
       <source>Unable to create a wire from the selected objects</source>
       <translation>Impossibile creare una polilinea con gli oggetti selezionati</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="406"/>
+      <location filename="../../draftguitools/gui_lines.py" line="418"/>
       <source>Polyline</source>
       <translation>Polilinea</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="160"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="163"/>
-      <location filename="../../draftguitools/gui_lines.py" line="239"/>
-      <location filename="../../draftguitools/gui_lines.py" line="249"/>
-      <location filename="../../draftguitools/gui_lines.py" line="256"/>
-      <location filename="../../draftguitools/gui_lines.py" line="264"/>
-      <location filename="../../draftguitools/gui_lines.py" line="275"/>
-      <location filename="../../draftguitools/gui_splines.py" line="152"/>
-      <location filename="../../draftguitools/gui_splines.py" line="157"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="158"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="161"/>
+      <location filename="../../draftguitools/gui_lines.py" line="240"/>
+      <location filename="../../draftguitools/gui_lines.py" line="259"/>
+      <location filename="../../draftguitools/gui_lines.py" line="266"/>
+      <location filename="../../draftguitools/gui_lines.py" line="274"/>
+      <location filename="../../draftguitools/gui_lines.py" line="285"/>
+      <location filename="../../draftguitools/gui_splines.py" line="153"/>
+      <location filename="../../draftguitools/gui_splines.py" line="158"/>
       <source>Pick next point</source>
       <translation>Selezionare il punto successivo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="398"/>
+      <location filename="../../draftguitools/gui_lines.py" line="410"/>
       <source>Convert to Wire</source>
       <translation>Converti in Polilinea</translation>
     </message>
@@ -4108,7 +4108,7 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="658"/>
-      <location filename="../../draftguitools/gui_lines.py" line="306"/>
+      <location filename="../../draftguitools/gui_lines.py" line="318"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="221"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="219"/>
       <source>%1 pick first point</source>
@@ -4116,7 +4116,7 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="662"/>
-      <location filename="../../draftguitools/gui_lines.py" line="310"/>
+      <location filename="../../draftguitools/gui_lines.py" line="322"/>
       <source>%1 pick second point</source>
       <translation>%1 selezionare il secondo punto</translation>
     </message>
@@ -4563,7 +4563,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <translation>B-spline</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="198"/>
+      <location filename="../../draftguitools/gui_splines.py" line="199"/>
       <source>Create B-Spline</source>
       <translation>Crea B-spline</translation>
     </message>
@@ -4706,29 +4706,29 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <translation>Curva di Bézier</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="228"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="487"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="226"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="485"/>
       <source>Create Bézier Curve</source>
       <translation>Crea curva di Bézier</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="285"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="283"/>
       <source>Cubic Bézier Curve</source>
       <translation>Curva di Bézier cubica</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="405"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="409"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="403"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="407"/>
       <source>Click and drag to define next knot</source>
       <translation>Cliccare e trascinare per definire il prossimo nodo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="505"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 click and drag to define first point and knot</source>
       <translation>%1 cliccare e trascinare per definire i primi punto e nodo</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="511"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 click and drag to define next point and knot</source>
       <translation>%1 cliccare e trascinare per definire il successivi punto e nodo</translation>
     </message>
@@ -6104,6 +6104,13 @@ Per consentire a FreeCAD di scaricare queste librerie, accettare con Sì.</trans
       <translation>Nel file PAT non è presente un motivo</translation>
     </message>
     <message>
+      <location filename="../../drafttests/test_lines_gui.py" line="56"/>
+      <location filename="../../drafttests/test_lines_gui.py" line="94"/>
+      <location filename="../../draftguitools/gui_lines.py" line="246"/>
+      <source>Point identical to previous point</source>
+      <translation type="unfinished">Point identical to previous point</translation>
+    </message>
+    <message>
       <location filename="../../draftguitools/gui_field_locks.py" line="90"/>
       <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
       <translation>Mantiene il valore fisso durante l'input 3D. L'icona del lucchetto o un doppio clic sblocca il campo.</translation>
@@ -6493,12 +6500,12 @@ dal menu Strumenti → Addon Manager</translation>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="351"/>
+      <location filename="../../draftguitools/gui_lines.py" line="363"/>
       <source>Polyline</source>
       <translation>Polilinea</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="352"/>
+      <location filename="../../draftguitools/gui_lines.py" line="364"/>
       <source>Creates a polyline</source>
       <translation>Crea una polilinea</translation>
     </message>
@@ -8205,12 +8212,12 @@ beyond the dimension line</source>
   <context>
     <name>Draft_CubicBezCurve</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="267"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="265"/>
       <source>Cubic Bézier Curve</source>
       <translation>Curva di Bézier cubica</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="271"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="269"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.
 Control points and properties of each knot can be edited after creation.</source>
       <translation>Crea una curva di Bézier composta da segmenti di 2° grado (quadratici) e 3° grado (cubici). Cliccando e trascinando è possibile definire i segmenti.
@@ -8220,12 +8227,12 @@ I punti di controllo e le proprietà di ciascun nodo possono essere modificati d
   <context>
     <name>Draft_BezierTools</name>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="526"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="524"/>
       <source>Bézier Tools</source>
       <translation>Strumenti Bézier</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="529"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="527"/>
       <source>Tools to create various types of Bézier curves</source>
       <translation>Strumenti per creare vari tipi di curve di Bézier</translation>
     </message>

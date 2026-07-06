@@ -593,12 +593,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Reverse Engineering</source>
-      <translation type="unfinished">&amp;Reverse Engineering</translation>
+      <translation>&amp;Inżynieria Wsteczna</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Surface Reconstruction</source>
-      <translation type="unfinished">Surface Reconstruction</translation>
+      <translation>Odbudowa powierzchni</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
@@ -608,7 +608,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Approximation</source>
-      <translation type="unfinished">Approximation</translation>
+      <translation>Przybliżenie</translation>
     </message>
   </context>
   <context>
@@ -641,7 +641,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
       <source>Equidistant</source>
-      <translation type="unfinished">Equidistant</translation>
+      <translation>W jednakowej odległości</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>

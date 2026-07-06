@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1888"/>
+      <location filename="../../../JointObject.py" line="1896"/>
       <source>Distance</source>
       <translation>거리</translation>
     </message>
@@ -175,22 +175,27 @@
       <translation>끊어진 링크: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1696"/>
+      <location filename="../../../JointObject.py" line="1238"/>
+      <source>Edit Joint</source>
+      <translation type="unfinished">Edit Joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1704"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>2개의 별도 파트에서 2개의 요소를 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1890"/>
+      <location filename="../../../JointObject.py" line="1898"/>
       <source>Radius 1</source>
       <translation>반지름 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1892"/>
+      <location filename="../../../JointObject.py" line="1900"/>
       <source>Thread pitch</source>
       <translation>나사 피치</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1894"/>
+      <location filename="../../../JointObject.py" line="1902"/>
       <source>Pitch radius</source>
       <translation>피치 반경</translation>
     </message>
@@ -678,7 +683,7 @@ SLOPE는 시간 T1과 T2를 기준으로 0에서 H1, 그리고 H2에서 0으로�
       <translation>연결부의 {order} 번째 참조</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1280"/>
+      <location filename="../../../JointObject.py" line="1288"/>
       <source>The object to ground</source>
       <translation>고정할 대상체</translation>
     </message>

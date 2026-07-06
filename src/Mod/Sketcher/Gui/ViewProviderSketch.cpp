@@ -113,6 +113,19 @@ using namespace SketcherGui;
 using namespace Sketcher;
 namespace sp = std::placeholders;
 
+namespace
+{
+bool isFiniteVector(const SbVec3f& vector)
+{
+    return std::isfinite(vector[0]) && std::isfinite(vector[1]) && std::isfinite(vector[2]);
+}
+
+bool isFiniteVector(const Base::Vector3d& vector)
+{
+    return std::isfinite(vector.x) && std::isfinite(vector.y) && std::isfinite(vector.z);
+}
+}  // namespace
+
 /************** ViewProviderSketch::ParameterObserver *********************/
 
 template<typename T>
@@ -1078,11 +1091,19 @@ void ViewProviderSketch::setAngleSnapping(bool enable, Base::Vector2d referenceP
     snapManager->setAngleSnapping(enable, referencePoint);
 }
 
-void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
+bool ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
                                            const Gui::View3DInventorViewer* viewer,
                                            SbLine& line) const
 {
+    if (!viewer || !viewer->getSoRenderManager()) {
+        return false;
+    }
+
     const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
+    const SbVec2s viewportPixels = vp.getViewportSizePixels();
+    if (viewportPixels[0] <= 0 || viewportPixels[1] <= 0) {
+        return false;
+    }
 
     short x, y;
     pnt.getValue(x, y);
@@ -1091,8 +1112,13 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
     VPsize.getValue(dX, dY);
 
     float fRatio = vp.getViewportAspectRatio();
-    float pX = (float)x / float(vp.getViewportSizePixels()[0]);
-    float pY = (float)y / float(vp.getViewportSizePixels()[1]);
+    if (!std::isfinite(dX) || !std::isfinite(dY) || !std::isfinite(fRatio)
+        || fRatio <= std::numeric_limits<float>::epsilon()) {
+        return false;
+    }
+
+    float pX = static_cast<float>(x) / static_cast<float>(viewportPixels[0]);
+    float pY = static_cast<float>(y) / static_cast<float>(viewportPixels[1]);
 
     // now calculate the real points respecting aspect ratio information
     //
@@ -1103,12 +1129,19 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
         pY = (pY - 0.5f * dY) / fRatio + 0.5f * dY;
     }
 
+    if (!std::isfinite(pX) || !std::isfinite(pY)) {
+        return false;
+    }
+
     SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
-    if (!pCam)
-        return;
+    if (!pCam) {
+        return false;
+    }
+
     SbViewVolume vol = pCam->getViewVolume();
 
     vol.projectPointToLine(SbVec2f(pX, pY), line);
+    return isFiniteVector(line.getPosition()) && isFiniteVector(line.getDirection());
 }
 
 Base::Placement ViewProviderSketch::getEditingPlacement() const
@@ -1124,9 +1157,13 @@ Base::Placement ViewProviderSketch::getEditingPlacement() const
     return Base::Placement(editDoc->getEditingTransform());
 }
 
-void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal,
+bool ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal,
                                                 double& u, double& v) const
 {
+    if (!isFiniteVector(point) || !isFiniteVector(normal)) {
+        return false;
+    }
+
     // Plane form
     Base::Vector3d R0(0, 0, 0), RN(0, 0, 1), RX(1, 0, 0), RY(0, 1, 0);
 
@@ -1141,16 +1178,36 @@ void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVe
 
     // line
     Base::Vector3d R1(point[0], point[1], point[2]), RA(normal[0], normal[1], normal[2]);
-    if (fabs(RN * RA) < std::numeric_limits<float>::epsilon())
-        throw Base::ZeroDivisionError("View direction is parallel to sketch plane");
+    if (!isFiniteVector(R0) || !isFiniteVector(RN) || !isFiniteVector(RX) || !isFiniteVector(RY)
+        || !isFiniteVector(R1) || !isFiniteVector(RA)) {
+        return false;
+    }
+
+    const double denominator = RN * RA;
+    if (!std::isfinite(denominator) || fabs(denominator) < std::numeric_limits<float>::epsilon()) {
+        return false;
+    }
+
     // intersection point on plane
-    Base::Vector3d S = R1 + ((RN * (R0 - R1)) / (RN * RA)) * RA;
+    const double distance = (RN * (R0 - R1)) / denominator;
+    if (!std::isfinite(distance)) {
+        return false;
+    }
+
+    Base::Vector3d S = R1 + distance * RA;
+    if (!isFiniteVector(S)) {
+        return false;
+    }
 
     // distance to x Axle of the sketch
     S.TransformToCoordinateSystem(R0, RX, RY);
+    if (!isFiniteVector(S)) {
+        return false;
+    }
 
     u = S.x;
     v = S.y;
+    return std::isfinite(u) && std::isfinite(v);
 }
 
 bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos,
@@ -1163,7 +1220,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
     // Calculate 3d point to the mouse position
     SbLine line;
-    getProjectingLine(cursorPos, viewer, line);
+    if (!getProjectingLine(cursorPos, viewer, line)) {
+        return false;
+    }
     SbVec3f point = line.getPosition();
     SbVec3f normal = line.getDirection();
 
@@ -1196,13 +1255,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     const bool hasSelectionPoint = resolvedClickResult.hasPickedPoint() || static_cast<bool>(pp);
 
     std::unique_ptr<SnapManager::SnapHandle> snapHandle;
-    try {
-        getCoordsOnSketchPlane(pos, normal, x, y);
-        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
-    }
-    catch (const Base::ZeroDivisionError&) {
+    if (!getCoordsOnSketchPlane(pos, normal, x, y)) {
         return false;
     }
+    snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
 
     // Left Mouse button ****************************************************
     if (Button == 1) {
@@ -1751,17 +1807,16 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
 
     // Calculate 3d point to the mouse position
     SbLine line;
-    getProjectingLine(cursorPos, viewer, line);
-
-    std::unique_ptr<SnapManager::SnapHandle> snapHandle;
-    try {
-        double x, y;
-        getCoordsOnSketchPlane(line.getPosition(), line.getDirection(), x, y);
-        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
-    }
-    catch (const Base::ZeroDivisionError&) {
+    if (!getProjectingLine(cursorPos, viewer, line)) {
         return false;
     }
+
+    std::unique_ptr<SnapManager::SnapHandle> snapHandle;
+    double x, y;
+    if (!getCoordsOnSketchPlane(line.getPosition(), line.getDirection(), x, y)) {
+        return false;
+    }
+    snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
 
     bool preselectChanged = false;
     if (Mode != STATUS_SELECT_Point && Mode != STATUS_SELECT_Edge
@@ -1966,20 +2021,35 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
     }
     dragAutoConstraintHandler->initDragging(drag.Dragged);
 
+    auto cancelDrag = [&]() {
+        if (dragAutoConstraintHandler) {
+            dragAutoConstraintHandler->clear();
+        }
+        drag.reset();
+        setSketchMode(STATUS_NONE);
+    };
+
     auto setRelative = [&]() {
         drag.relative = true;
 
         // Calculate the click position and use it as the initial point
         SbLine line2;
-        getProjectingLine(DoubleClick::prvCursorPos, viewer, line2);
+        if (!getProjectingLine(DoubleClick::prvCursorPos, viewer, line2)) {
+            cancelDrag();
+            return false;
+        }
 
         double x, y;
-        getCoordsOnSketchPlane(line2.getPosition(), line2.getDirection(), x, y);
+        if (!getCoordsOnSketchPlane(line2.getPosition(), line2.getDirection(), x, y)) {
+            cancelDrag();
+            return false;
+        }
 
         auto snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
         Base::Vector2d snappedPos = snapHandle->compute();
         drag.xInit = snappedPos.x;
         drag.yInit = snappedPos.y;
+        return true;
     };
 
     if (drag.Dragged.size() == 1 && pos == Sketcher::PointPos::none) {
@@ -2056,7 +2126,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         if (geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomBSplineCurve>()
             || isEllipse(*geo) || isArcOfEllipse(*geo)
             || isArcOfHyperbola(*geo) || isArcOfParabola(*geo)) {
-            setRelative();
+            if (!setRelative()) {
+                return;
+            }
         }
 
         if (geo->is<Part::GeomBSplineCurve>()) {
@@ -2069,7 +2141,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         }
     }
     else if (drag.Dragged.size() > 1) {
-        setRelative();
+        if (!setRelative()) {
+            return;
+        }
     }
 
     getSketchObject()->initTemporaryMove(drag.Dragged, false);
@@ -5074,17 +5148,13 @@ double ViewProviderSketch::getRotation(SbVec3f pos0, SbVec3f pos1) const
     if (!pCam)
         return 0;
 
-    try {
-        SbViewVolume vol = pCam->getViewVolume();
-
-        getCoordsOnSketchPlane(pos0, vol.getProjectionDirection(), x0, y0);
-        getCoordsOnSketchPlane(pos1, vol.getProjectionDirection(), x1, y1);
-
-        return Base::toDegrees(-atan2((y1 - y0), (x1 - x0)));
-    }
-    catch (const Base::ZeroDivisionError&) {
+    SbViewVolume vol = pCam->getViewVolume();
+    if (!getCoordsOnSketchPlane(pos0, vol.getProjectionDirection(), x0, y0)
+        || !getCoordsOnSketchPlane(pos1, vol.getProjectionDirection(), x1, y1)) {
         return 0;
     }
+
+    return Base::toDegrees(-atan2((y1 - y0), (x1 - x0)));
 }
 
 

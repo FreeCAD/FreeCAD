@@ -91,24 +91,47 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
 
         view = FreeCADGui.ActiveDocument.ActiveView
         view.viewTop()
+        view.fitAll()
         self.pump(100)
 
         viewport = view.graphicsView().viewport()
-        first_point = self.viewport_to_qpoint(
-            view, viewport, view.getPointOnScreen(FreeCAD.Vector(0, 0, 0))
-        )
-        self.assertTrue(
-            viewport.rect().contains(first_point),
-            f"Expected {first_point} to fall inside the sketch viewport {viewport.rect()}",
-        )
+        origin = FreeCAD.Vector(0, 0, 0)
+
+        def wait_for_origin_point():
+            first_point = None
+
+            def origin_is_framed():
+                nonlocal first_point
+
+                width, height = view.getSize()
+                if width <= 0 or height <= 0:
+                    return False
+
+                view.fitAll()
+                point = self.viewport_to_qpoint(view, viewport, view.getPointOnScreen(origin))
+                interior_rect = viewport.rect().adjusted(20, 20, -20, -20)
+                if not interior_rect.contains(point):
+                    return False
+
+                first_point = point
+                return True
+
+            self.assertTrue(
+                self.wait_until(origin_is_framed, timeout_ms=5000, step_ms=100),
+                "Expected the sketch origin to project to an interior viewport point",
+            )
+            self.assertIsNotNone(first_point)
+            return first_point
+
+        FreeCADGui.runCommand("Sketcher_CreateRectangle")
+        self.pump(250)
+
+        first_point = wait_for_origin_point()
 
         move_target = self.clamp_to_widget(
             viewport,
             QtCore.QPoint(first_point.x() + 80, first_point.y() - 60),
         )
-
-        FreeCADGui.runCommand("Sketcher_CreateRectangle")
-        self.pump(250)
 
         self.move(viewport, first_point)
         self.click(viewport, first_point)
