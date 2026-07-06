@@ -44,6 +44,7 @@ public:
 
     void finish(QWidget* w);
 
+    void show();
     void setShowMessages(bool on);
 
     static QPixmap splashImage();
