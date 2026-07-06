@@ -102,6 +102,14 @@ void AssemblyLink::onChanged(const App::Property* prop)
         return;
     }
 
+    if (prop == &Group) {
+        for (auto* obj : getInList()) {
+            if (auto* assemblyLink = freecad_cast<AssemblyLink*>(obj)) {
+                assemblyLink->updateContents();
+            }
+        }
+    }
+
     if (prop == &Rigid) {
         Base::Placement movePlc;
 
@@ -224,6 +232,12 @@ void AssemblyLink::onChanged(const App::Property* prop)
         return;
     }
     App::Part::onChanged(prop);
+}
+
+void AssemblyLink::onDocumentRestored()
+{
+    App::Part::onDocumentRestored();
+    updateContents();
 }
 
 void AssemblyLink::updateParentJoints()
