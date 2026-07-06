@@ -30,6 +30,7 @@
 #include <QTimer>
 
 #include <QtWidgets>
+#include <optional>
 #include <unordered_set>
 #include <sstream>
 #include <tuple>
@@ -72,9 +73,13 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
-#include <TopoDS_Compound.hxx>
-#include <TopoDS_Shape.hxx>
+#include <BRepAdaptor_Curve.hxx>
 #include <BRep_Builder.hxx>
+#include <gp_Lin.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Shape.hxx>
 
 using namespace MassPropertiesGui;
 
@@ -197,6 +202,65 @@ static int getUnitsSchemaIndex(int comboIndex, int preferredSchemaIndex)
     }
 }
 
+struct AxisSelectionReference
+{
+    MassPropertiesAxisReference axis;
+    std::string label;
+};
+
+static std::optional<AxisSelectionReference> getAxisReferenceFromSelection(
+    const Gui::SelectionSingleton::SelObj& selObj
+)
+{
+    if (!selObj.pObject || !selObj.SubName || !selObj.SubName[0]) {
+        return std::nullopt;
+    }
+
+    TopoDS_Shape shape = Part::Feature::getShape(
+        selObj.pObject,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+            | Part::ShapeOption::Transform,
+        selObj.SubName
+    );
+
+    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
+        return std::nullopt;
+    }
+
+    BRepAdaptor_Curve curve(TopoDS::Edge(shape));
+    if (curve.GetType() != GeomAbs_Line) {
+        return std::nullopt;
+    }
+
+    gp_Lin line = curve.Line();
+    AxisSelectionReference reference;
+    reference.axis.origin
+        = Base::Vector3d(line.Location().X(), line.Location().Y(), line.Location().Z());
+    reference.axis.direction
+        = Base::Vector3d(line.Direction().X(), line.Direction().Y(), line.Direction().Z());
+    if (reference.axis.direction.Length() <= Base::Precision::Confusion()) {
+        return std::nullopt;
+    }
+    reference.axis.direction.Normalize();
+
+    reference.label = selObj.pObject->getNameInDocument();
+
+    App::ElementNamePair elementName;
+    App::DocumentObject* elementObject
+        = App::GeoFeature::resolveElement(selObj.pObject, selObj.SubName, elementName);
+    if (elementObject && elementObject != selObj.pObject && elementObject->getNameInDocument()) {
+        reference.label += ".";
+        reference.label += elementObject->getNameInDocument();
+    }
+
+    if (!elementName.oldName.empty()) {
+        reference.label += ".";
+        reference.label += elementName.oldName;
+    }
+
+    return reference;
+}
+
 TaskMassProperties::TaskMassProperties()
     : Gui::SelectionObserver(true, Gui::ResolveMode::NoResolve)
     , panel(new TaskMassPropertiesWidget)
@@ -206,6 +270,7 @@ TaskMassProperties::TaskMassProperties()
     currentMode = MassPropertiesMode::CenterOfGravity;
     currentDatum = nullptr;
     hasCurrentDatumPlacement = false;
+    currentAxisReference.reset();
 
     qApp->installEventFilter(this);
 
@@ -370,6 +435,10 @@ void TaskMassProperties::modifyStandardButtons(QDialogButtonBox* box)
         removeTemporaryObjects();
         clearUiFields();
         panel->ui.objectList->clear();
+        currentDatum = nullptr;
+        hasCurrentDatumPlacement = false;
+        currentAxisReference.reset();
+        panel->ui.customEdit->clear();
     });
 }
 
@@ -403,6 +472,7 @@ void TaskMassProperties::escape()
     selectingCustomCoordSystem = false;
     currentDatum = nullptr;
     hasCurrentDatumPlacement = false;
+    currentAxisReference.reset();
     panel->ui.customEdit->clear();
 
     currentInfo = MassPropertiesData {};
@@ -876,9 +946,40 @@ void TaskMassProperties::tryUpdate()
 
     hasCurrentDatumPlacement = false;
 
+    auto restoreSavedSelection = [&]() {
+        isUpdating = true;
+        Gui::Selection().clearSelection();
+        for (const auto& sel : savedSelection) {
+            if (std::get<2>(sel).empty()) {
+                Gui::Selection().addSelection(std::get<0>(sel).c_str(), std::get<1>(sel).c_str());
+            }
+            else {
+                Gui::Selection().addSelection(
+                    std::get<0>(sel).c_str(),
+                    std::get<1>(sel).c_str(),
+                    std::get<2>(sel).c_str()
+                );
+            }
+        }
+        savedSelection.clear();
+        isUpdating = false;
+    };
+
     if (selectingCustomCoordSystem) {
 
         for (const auto& selObj : guiSelection) {
+            if (auto axisReference = getAxisReferenceFromSelection(selObj)) {
+                panel->ui.customEdit->setText(QString::fromStdString(axisReference->label));
+                currentDatum = nullptr;
+                hasCurrentDatumPlacement = false;
+                currentAxisReference = axisReference->axis;
+                selectingCustomCoordSystem = false;
+
+                restoreSavedSelection();
+                tryUpdate();
+                return;
+            }
+
             App::DocumentObject* coordSystem = selObj.pObject;
 
             if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
@@ -896,30 +997,13 @@ void TaskMassProperties::tryUpdate()
             if (isReferenceObject(coordSystem)) {
                 panel->ui.customEdit->setText(QString::fromStdString(coordLabel(coordSystem)));
                 currentDatum = coordSystem;
+                currentAxisReference.reset();
                 currentDatumPlacement
                     = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
                 hasCurrentDatumPlacement = true;
                 selectingCustomCoordSystem = false;
 
-                isUpdating = true;
-                Gui::Selection().clearSelection();
-                for (const auto& sel : savedSelection) {
-                    if (std::get<2>(sel).empty()) {
-                        Gui::Selection().addSelection(
-                            std::get<0>(sel).c_str(),
-                            std::get<1>(sel).c_str()
-                        );
-                    }
-                    else {
-                        Gui::Selection().addSelection(
-                            std::get<0>(sel).c_str(),
-                            std::get<1>(sel).c_str(),
-                            std::get<2>(sel).c_str()
-                        );
-                    }
-                }
-                savedSelection.clear();
-                isUpdating = false;
+                restoreSavedSelection();
                 tryUpdate();
                 return;
             }
@@ -929,6 +1013,17 @@ void TaskMassProperties::tryUpdate()
     for (const auto& selObj : guiSelection) {
         if (!selObj.pObject) {
             continue;
+        }
+
+        if (currentMode == MassPropertiesMode::Custom && !selectingCustomCoordSystem) {
+            if (auto axisReference = getAxisReferenceFromSelection(selObj)) {
+                panel->ui.customEdit->setText(QString::fromStdString(axisReference->label));
+                currentDatum = nullptr;
+                hasCurrentDatumPlacement = false;
+                currentAxisReference = axisReference->axis;
+                referenceDatum = nullptr;
+                continue;
+            }
         }
 
         App::DocumentObject* displayObject = selObj.pObject;
@@ -981,6 +1076,7 @@ void TaskMassProperties::tryUpdate()
         if (isReferenceObject(coordSystem)) {
             if (currentMode == MassPropertiesMode::Custom && !selectingCustomCoordSystem) {
                 currentDatum = coordSystem;
+                currentAxisReference.reset();
                 currentDatumPlacement
                     = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
                 hasCurrentDatumPlacement = true;
@@ -1035,7 +1131,8 @@ void TaskMassProperties::tryUpdate()
         panel->ui.customEdit->clear();
     }
 
-    if (currentMode == MassPropertiesMode::Custom && !referenceDatum) {
+    const bool hasAxisReference = currentAxisReference.has_value();
+    if (currentMode == MassPropertiesMode::Custom && !referenceDatum && !hasAxisReference) {
         this->clearUiFields();
         this->removeTemporaryObjects();
         return;
@@ -1053,7 +1150,8 @@ void TaskMassProperties::tryUpdate()
         objectsToMeasure,
         currentMode,
         referenceDatum,
-        hasCurrentDatumPlacement ? &currentDatumPlacement : nullptr
+        hasCurrentDatumPlacement ? &currentDatumPlacement : nullptr,
+        hasAxisReference ? &*currentAxisReference : nullptr
     );
 
     if (info.volume.getValue() == 0.0 && info.mass.getValue() == 0.0) {
@@ -1142,8 +1240,8 @@ void TaskMassProperties::tryUpdate()
     setText(panel->ui.inertiaJzText, Base::Quantity(info.inertiaJ.z, Base::Unit::Inertia));
     setText(panel->ui.axisInertiaText, Base::Quantity(info.axisInertia, Base::Unit::Inertia));
 
-    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom && referenceDatum
-        && referenceDatum->isDerivedFrom<App::Line>();
+    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom
+        && (hasAxisReference || (referenceDatum && referenceDatum->isDerivedFrom<App::Line>()));
 
     const auto infoSnapshot = currentInfo;
     QTimer::singleShot(0, this, [infoSnapshot, hasAxisSelection]() {
@@ -1188,8 +1286,9 @@ void TaskMassProperties::tryUpdate()
 
 void TaskMassProperties::updateInertiaVisibility()
 {
-    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom && currentDatum
-        && currentDatum->isDerivedFrom<App::Line>();
+    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom
+        && (currentAxisReference.has_value()
+            || (currentDatum && currentDatum->isDerivedFrom<App::Line>()));
 
     panel->ui.inertiaMatrixWidget->setVisible(!hasAxisSelection);
     panel->ui.inertiaDiagWidget->setVisible(!hasAxisSelection);
@@ -1315,8 +1414,9 @@ void TaskMassProperties::onCovDatumButtonPressed()
 
 void TaskMassProperties::onLcsButtonPressed()
 {
-    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom && currentDatum
-        && currentDatum->isDerivedFrom<App::Line>();
+    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom
+        && (currentAxisReference.has_value()
+            || (currentDatum && currentDatum->isDerivedFrom<App::Line>()));
     if (!hasAxisSelection) {
         createLCS("Principal_Axes_LCS", false);
     }
@@ -1346,6 +1446,7 @@ void TaskMassProperties::onCoordinateSystemChanged(MassPropertiesMode coordSyste
         selectingCustomCoordSystem = false;
         currentDatum = nullptr;
         hasCurrentDatumPlacement = false;
+        currentAxisReference.reset();
         panel->ui.customEdit->clear();
     }
     if (Gui::Selection().getSelection().empty()) {
@@ -1364,7 +1465,8 @@ void TaskMassProperties::saveResult()
     App::Document* doc = App::GetApplication().getActiveDocument();
 
     if (!doc || panel->ui.objectList->count() == 0
-        || (currentMode == MassPropertiesMode::Custom && !currentDatum)) {
+        || (currentMode == MassPropertiesMode::Custom && !currentDatum
+            && !currentAxisReference.has_value())) {
         return;
     }
 
@@ -1474,8 +1576,9 @@ void TaskMassProperties::saveResult()
         Base::Quantity(currentInfo.cov.z, Base::Unit::Length)
     );
 
-    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom && currentDatum
-        && currentDatum->isDerivedFrom<App::Line>();
+    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom
+        && (currentAxisReference.has_value()
+            || (currentDatum && currentDatum->isDerivedFrom<App::Line>()));
 
     if (hasAxisSelection) {
         setQuantity(
